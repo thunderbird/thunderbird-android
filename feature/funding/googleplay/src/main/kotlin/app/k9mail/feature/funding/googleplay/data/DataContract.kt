@@ -9,6 +9,7 @@ import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
+import kotlinx.coroutines.flow.StateFlow
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
 import com.android.billingclient.api.BillingResult as GoogleBillingResult
 
@@ -56,6 +57,11 @@ interface DataContract {
     interface BillingClient {
 
         /**
+         * Flow that emits the last purchased contribution.
+         */
+        val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>>
+
+        /**
          * Connect to the billing service.
          *
          * @param onConnected Callback to be invoked when the billing service is connected.
@@ -92,6 +98,6 @@ interface DataContract {
         suspend fun purchaseContribution(
             activity: Activity,
             contribution: Contribution,
-        ): Contribution?
+        ): Outcome<Unit, BillingError>
     }
 }

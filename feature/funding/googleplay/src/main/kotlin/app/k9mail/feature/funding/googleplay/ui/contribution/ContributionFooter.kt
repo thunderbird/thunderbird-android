@@ -49,7 +49,11 @@ internal fun ContributionFooter(
         } else {
             ButtonFilled(
                 text = stringResource(
-                    R.string.funding_googleplay_contribution_footer_payment_button,
+                    if (isPurchaseEnabled) {
+                        R.string.funding_googleplay_contribution_footer_payment_button
+                    } else {
+                        R.string.funding_googleplay_contribution_footer_payment_unavailable_button
+                    },
                 ),
                 onClick = onPurchaseClick,
                 enabled = isPurchaseEnabled,

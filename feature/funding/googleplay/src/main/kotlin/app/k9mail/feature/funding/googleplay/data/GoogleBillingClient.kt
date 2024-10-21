@@ -3,9 +3,13 @@ package app.k9mail.feature.funding.googleplay.data
 import android.app.Activity
 import app.k9mail.core.common.cache.Cache
 import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
+import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
+import app.k9mail.feature.funding.googleplay.domain.Outcome
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
+import app.k9mail.feature.funding.googleplay.domain.handle
+import app.k9mail.feature.funding.googleplay.domain.mapFailure
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingClientStateListener
@@ -26,6 +30,9 @@ import com.android.billingclient.api.queryPurchasesAsync
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -46,6 +53,12 @@ internal class GoogleBillingClient(
     }
 
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
+
+    private val _purchasedContribution = MutableStateFlow<Outcome<Contribution?, BillingError>>(
+        value = Outcome.success(null),
+    )
+    override val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>> =
+        _purchasedContribution.asStateFlow()
 
     override suspend fun <T> connect(onConnected: suspend () -> T): T {
         return suspendCancellableCoroutine { continuation ->
@@ -83,6 +96,7 @@ internal class GoogleBillingClient(
 
     override fun disconnect() {
         productCache.clear()
+        _purchasedContribution.value = Outcome.success(null)
         clientProvider.clear()
     }
 
@@ -193,8 +207,13 @@ internal class GoogleBillingClient(
         return clientProvider.current.queryPurchasesAsync(queryPurchaseParams)
     }
 
-    override suspend fun purchaseContribution(activity: Activity, contribution: Contribution): Contribution? {
-        val productDetails = productCache[contribution.id] ?: return null
+    override suspend fun purchaseContribution(
+        activity: Activity,
+        contribution: Contribution,
+    ): Outcome<Unit, BillingError> {
+        val productDetails = productCache[contribution.id] ?: return Outcome.failure(
+            BillingError.PurchaseFailed("Product details not found for ${contribution.id}"),
+        )
         val offerToken = productDetails.subscriptionOfferDetails?.firstOrNull()?.offerToken
 
         val productDetailsParamsList = listOf(
@@ -212,42 +231,38 @@ internal class GoogleBillingClient(
             .setProductDetailsParamsList(productDetailsParamsList)
             .build()
 
-        val result = clientProvider.current.launchBillingFlow(activity, billingFlowParams)
-        return if (result.responseCode == BillingResponseCode.OK) {
-            contribution
-        } else {
-            null
-        }
+        val billingResult = clientProvider.current.launchBillingFlow(activity, billingFlowParams)
+        return resultMapper.mapToOutcome(billingResult) { }.mapFailure(
+            transformFailure = { error, _ ->
+                Timber.e("Error launching billing flow: ${error.message}")
+                error
+            },
+        )
     }
 
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
-        when (billingResult.responseCode) {
-            BillingResponseCode.OK -> coroutineScope.launch {
+        resultMapper.mapToOutcome(billingResult) { }.handle(
+            onSuccess = {
                 if (purchases != null) {
-                    purchaseHandler.handlePurchases(clientProvider, purchases)
+                    coroutineScope.launch {
+                        val contributions = purchaseHandler.handlePurchases(clientProvider, purchases)
+                        if (contributions.isNotEmpty()) {
+                            _purchasedContribution.emit(
+                                Outcome.success(
+                                    contributions.firstOrNull(),
+                                ),
+                            )
+                        }
+                    }
                 }
-            }
-
-            BillingResponseCode.USER_CANCELED -> {
-                Timber.d("User canceled the purchase")
-            }
-
-            BillingResponseCode.ITEM_ALREADY_OWNED -> coroutineScope.launch {
-                Timber.d("Item already owned by the user")
-                // TODO: Update purchases in this case
-            }
-
-            BillingResponseCode.DEVELOPER_ERROR -> {
-                // Make sure the SKU product id is correct and the test apk is signed with a release key.
-                Timber.e("Developer error: ${billingResult.debugMessage}")
-            }
-
-            else -> {
+            },
+            onFailure = { error ->
                 Timber.e(
-                    "Response Code: ${billingResult.responseCode} " +
-                        "Billing error: ${billingResult.debugMessage}",
+                    "Error onPurchasesUpdated: " +
+                        "${billingResult.responseCode}: ${billingResult.debugMessage}",
                 )
-            }
-        }
+                _purchasedContribution.value = Outcome.failure(error)
+            },
+        )
     }
 }

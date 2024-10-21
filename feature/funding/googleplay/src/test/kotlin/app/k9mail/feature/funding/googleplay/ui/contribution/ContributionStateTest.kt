@@ -18,6 +18,7 @@ internal class ContributionStateTest {
                 oneTimeContributions = persistentListOf(),
                 selectedContribution = null,
                 isRecurringContributionSelected = false,
+                purchaseError = null,
             ),
         )
     }

@@ -62,6 +62,13 @@ internal fun ContributionContent(
                 )
             }
 
+            if (state.purchaseError != null) {
+                ContributionError(
+                    error = state.purchaseError,
+                    onDismissClick = { onEvent(Event.OnDismissPurchaseErrorClicked) },
+                )
+            }
+
             ContributionFooter(
                 purchasedContribution = state.purchasedContribution,
                 onPurchaseClick = { onEvent(Event.OnPurchaseClicked(activity)) },

@@ -13,6 +13,11 @@
     <string name="funding_googleplay_contribution_list_disclaimer">Contributions are not tax-deductible as charitable donations.</string>
 
     <string name="funding_googleplay_contribution_footer_payment_button">Continue to payment</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Payment currently unavailable</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Modify monthly payment</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Help keep Thunderbird alive</string>
+
+    <string name="funding_googleplay_contribution_error_unknown">Unknown error</string>">
+    <string name="funding_googleplay_contribution_error_purchase_failed">Purchase failed.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Contributions are currently unavailable.</string>
 </resources>

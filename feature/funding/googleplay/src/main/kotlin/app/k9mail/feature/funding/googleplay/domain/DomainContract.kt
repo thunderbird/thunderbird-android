@@ -5,6 +5,7 @@ import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.flow.StateFlow
 
 interface DomainContract {
 
@@ -14,6 +15,11 @@ interface DomainContract {
     }
 
     interface BillingManager {
+        /**
+         * Flow that emits the last purchased contribution.
+         */
+        val purchasedContribution: StateFlow<Outcome<Contribution?, BillingError>>
+
         /**
          * Load contributions.
          */
@@ -34,12 +40,12 @@ interface DomainContract {
          *
          * @param activity The activity to use for the purchase flow.
          * @param contribution The contribution to purchase.
-         * @return The purchased contribution or null if the purchase failed.
+         * @return Outcome of the purchase.
          */
         suspend fun purchaseContribution(
             activity: Activity,
             contribution: Contribution,
-        ): Contribution?
+        ): Outcome<Unit, BillingError>
 
         /**
          * Release all resources.

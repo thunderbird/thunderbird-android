@@ -3,6 +3,7 @@ package app.k9mail.feature.funding.googleplay.ui.contribution
 import android.app.Activity
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
@@ -21,6 +22,8 @@ internal class ContributionContract {
         val purchasedContribution: Contribution? = null,
         val showContributionList: Boolean = true,
         val isRecurringContributionSelected: Boolean = false,
+
+        val purchaseError: BillingError? = null,
     )
 
     sealed interface Event {
@@ -40,5 +43,7 @@ internal class ContributionContract {
         data class OnManagePurchaseClicked(
             val contribution: Contribution,
         ) : Event
+
+        data object OnDismissPurchaseErrorClicked : Event
     }
 }

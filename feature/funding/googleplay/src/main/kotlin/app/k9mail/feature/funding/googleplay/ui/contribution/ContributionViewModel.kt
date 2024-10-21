@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.funding.googleplay.domain.DomainContract
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
+import app.k9mail.feature.funding.googleplay.domain.handle
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.State
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.ViewModel
@@ -25,6 +26,31 @@ internal class ContributionViewModel(
             // loadRecurringContributions()
             loadPurchasedContribution()
             selectDefaultContribution()
+        }
+
+        viewModelScope.launch {
+            billingManager.purchasedContribution.collect { result ->
+                result.handle(
+                    onSuccess = { purchasedContribution ->
+                        updateState { state ->
+                            state.copy(
+                                purchasedContribution = purchasedContribution,
+                                showContributionList = purchasedContribution == null,
+                                purchaseError = null,
+                            )
+                        }
+                    },
+                    onFailure = {
+                        updateState { state ->
+                            state.copy(
+                                purchasedContribution = null,
+                                showContributionList = true,
+                                purchaseError = it,
+                            )
+                        }
+                    },
+                )
+            }
         }
     }
 
@@ -91,6 +117,11 @@ internal class ContributionViewModel(
             is Event.OnPurchaseClicked -> onPurchaseClicked(event.activity)
             is Event.OnManagePurchaseClicked -> onManagePurchaseClicked(event.contribution)
             Event.OnShowContributionListClicked -> onShowContributionListClicked()
+            Event.OnDismissPurchaseErrorClicked -> updateState {
+                it.copy(
+                    purchaseError = null,
+                )
+            }
         }
     }
 
@@ -132,16 +163,17 @@ internal class ContributionViewModel(
 
     private fun onPurchaseClicked(activity: Activity) {
         viewModelScope.launch {
-            val result = billingManager.purchaseContribution(activity, state.value.selectedContribution!!)
-
-            if (result != null) {
-                updateState {
-                    it.copy(
-                        purchasedContribution = result,
-                        showContributionList = false,
-                    )
-                }
-            }
+            billingManager.purchaseContribution(activity, state.value.selectedContribution!!)
+                .handle(
+                    onSuccess = { },
+                    onFailure = {
+                        updateState { state ->
+                            state.copy(
+                                purchaseError = it,
+                            )
+                        }
+                    },
+                )
         }
     }
 

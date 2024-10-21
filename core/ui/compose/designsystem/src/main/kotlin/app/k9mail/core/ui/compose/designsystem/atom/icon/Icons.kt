@@ -13,6 +13,7 @@ import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.ChevronRight
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Drafts
 import androidx.compose.material.icons.outlined.ErrorOutline
@@ -69,6 +70,9 @@ object Icons {
 
         val ChevronRight: ImageVector
             get() = MaterialIcons.Outlined.ChevronRight
+
+        val Close: ImageVector
+            get() = MaterialIcons.Outlined.Close
 
         val Delete: ImageVector
             get() = MaterialIcons.Outlined.Delete

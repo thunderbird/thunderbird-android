@@ -19,12 +19,12 @@ class ContributionViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `should change selected contribution and selected type when on time contribution selected`() = runMviTest {
+    fun `should change selected contribution and selected type when one time contribution selected`() = runMviTest {
         val initialState = State(
             isRecurringContributionSelected = true,
             oneTimeContributions = FakeData.oneTimeContributions,
             recurringContributions = FakeData.recurringContributions,
-            purchasedContribution = FakeData.oneTimeContributions.first(),
+            purchasedContribution = null,
             selectedContribution = FakeData.recurringContributions[FakeData.recurringContributions.size - 2],
             showContributionList = true,
         )
@@ -41,7 +41,7 @@ class ContributionViewModelTest {
             isRecurringContributionSelected = false,
             oneTimeContributions = FakeData.oneTimeContributions,
             recurringContributions = FakeData.recurringContributions,
-            purchasedContribution = FakeData.oneTimeContributions.first(),
+            purchasedContribution = null,
             selectedContribution = FakeData.oneTimeContributions[FakeData.oneTimeContributions.size - 2],
             showContributionList = true,
         )
@@ -58,7 +58,7 @@ class ContributionViewModelTest {
             isRecurringContributionSelected = true,
             oneTimeContributions = FakeData.oneTimeContributions,
             recurringContributions = FakeData.recurringContributions,
-            purchasedContribution = FakeData.oneTimeContributions.first(),
+            purchasedContribution = null,
             selectedContribution = FakeData.recurringContributions[FakeData.oneTimeContributions.size - 2],
             showContributionList = true,
         )
