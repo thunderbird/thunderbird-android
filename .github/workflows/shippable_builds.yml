@@ -729,6 +729,7 @@ jobs:
           releaseTarget: ${{ matrix.releaseTarget }}
           appSha: ${{ steps.shanotes.outputs.app_sha }}
           appName: ${{ matrix.appName }}
+          skipGooglePlay: ${{ inputs.skipGooglePlay }}
         with:
           script: |
             await core.summary
@@ -755,7 +756,7 @@ jobs:
               core.setOutput(`${process.env.appName}_release_url`, process.env.ghReleaseUrl);
             }
 
-            if (process.env.playTargetTrack) {
+            if (process.env.skipGooglePlay != "true" && process.env.playTargetTrack && process.env.releaseTarget.includes("play")) {
               await core.summary.addRaw(`Released to the <b>${process.env.playTargetTrack}</b> track on Google Play`, true).write();
             }
 
