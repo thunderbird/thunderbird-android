@@ -5,7 +5,16 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="8.0b3" versioncode="6" date="2024-10-15">
+    <release version="8.0b4" versioncode="7" date="2024-10-21">
+        <change>Monthly financial contributions are now possible—try it today!</change>
+        <change>Accounts shown by default for better access to settings</change>
+        <change>Added Norsk Nynorsk translations</change>
+        <change>Added unread count to new folder drawer</change>
+        <change>Improved first-time user experience for importing settings</change>
+        <change>Shortened headers to prevent wrapping</change>
+        <change>Correct saving of 'Bcc all messages' setting</change>
+        <change>Better QR code import instructions</change>
+    </release>    <release version="8.0b3" versioncode="6" date="2024-10-15">
         <change>Support Thunderbird with our new in-app financial contribution feature (work in progress)</change>
         <change>OAuth support now available for Fastmail</change>
         <change>Better guidance when using the import from app feature</change>

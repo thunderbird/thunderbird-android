@@ -1,0 +1,9 @@
+Thunderbird for Android version 8.0b4, based on K-9 Mail. Changes include:
+- Monthly financial contributions are now possible—try it today!
+- Accounts shown by default for better access to settings
+- Added Norsk Nynorsk translations
+- Added unread count to new folder drawer
+- Improved first-time user experience for importing settings
+- Shortened headers to prevent wrapping
+- Correct saving of 'Bcc all messages' setting
+- Better QR code import instructions
