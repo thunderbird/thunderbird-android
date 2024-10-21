@@ -3,9 +3,9 @@ package com.fsck.k9.preferences.upgrader
 import app.k9mail.legacy.account.Account.FolderMode
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
-import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.preferences.InternalSettingsMap
 import com.fsck.k9.preferences.ValidatedSettings
+import com.fsck.k9.preferences.legacy.FolderClass
 import kotlin.test.Test
 
 class CombinedSettingsUpgraderTo100Test {
