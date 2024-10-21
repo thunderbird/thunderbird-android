@@ -51,7 +51,7 @@
         <item quantity="one">1 melding</item>
         <item quantity="other">%d meldingar</item>
     </plurals>
-    <string name="account_setup_error_network">Nettverksfeil. Ver vennleg og sjekk nettverkstatus, og prøv igjen.</string>
+    <string name="account_setup_error_network">Nettverksfeil. Sjekk nettverkstatus, og prøv igjen.</string>
     <string name="account_setup_special_folders_form_description">Spesifiser spesialmapper for kontoen din.</string>
     <string name="account_setup_special_folders_loading_message">Hentar liste over mapper…</string>
     <string name="account_setup_special_folders_error_message">Kunne ikkje hente liste over mapper frå tenaren</string>

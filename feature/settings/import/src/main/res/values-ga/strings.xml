@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">Socruithe a allmhairiú</string>
+    <string name="settings_import_button">Iompórtáil</string>
+    <string name="settings_import_status_log_in_required">Tá síniú isteach ag teastáil</string>
+    <string name="settings_import_status_not_imported">Gan iompórtáil</string>
+    <string name="settings_import_status_error">Teip iompórtála</string>
+    <string name="settings_import_later_button">Níos déanaí</string>
+    <string name="settings_importing">Socruithe á n-iompórtáil…</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Cealaíodh an t-údarú</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Theip ar údarú leis an earráid seo a leanas: <xliff:g id="error"> %s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Ní thacaítear le OAuth 2.0 leis an soláthraí seo faoi láthair.</string>
+    <string name="settings_import_general_settings_item">Socruithe ginearálta</string>
+    <string name="settings_import_pick_app_button">Iompórtáil ó aip</string>
+    <string name="settings_import_pick_document_button">Roghnaigh comhad</string>
+    <string name="settings_import_scan_qr_code_button">Scan an cód QR</string>
+    <string name="settings_import_success_generic">D\'éirigh le hiompórtáil na socruithe</string>
+    <string name="settings_import_authorization_required">Sínigh isteach le do thoil</string>
+    <string name="settings_import_pick_app_dialog_title">Iompórtáil ó aip</string>
+    <string name="settings_import_password_required">Cuir isteach pasfhocail le do thoil</string>
+    <string name="settings_import_authorization_and_password_required">Sínigh isteach agus cuir isteach pasfhocail</string>
+    <string name="settings_import_failure">Theip ar iompórtáil na socruithe</string>
+    <string name="settings_import_partial_failure">Theip ar iompórtáil roinnt socruithe</string>
+    <string name="settings_import_status_password_required">Pasfhocal ag teastáil</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Chun gur féidir leat an cuntas \"<xliff:g id="account">%s</xliff:g>\" a úsáid, ní mór duit pasfhocal an fhreastalaí a sholáthar.</item>
+        <item quantity="two">Chun gur féidir leat an cuntas \"<xliff:g id="account">%s</xliff:g>\" a úsáid, ní mór duit pasfhocail an fhreastalaí a sholáthar.</item>
+        <item quantity="few">Chun gur féidir leat an cuntas \"<xliff:g id="account">%s</xliff:g>\" a úsáid, ní mór duit pasfhocail an fhreastalaí a sholáthar.</item>
+        <item quantity="many">Chun gur féidir leat an cuntas \"<xliff:g id="account">%s</xliff:g>\" a úsáid, ní mór duit pasfhocail an fhreastalaí a sholáthar.</item>
+        <item quantity="other">Chun gur féidir leat an cuntas \"<xliff:g id="account">%s</xliff:g>\" a úsáid, ní mór duit pasfhocail an fhreastalaí a sholáthar.</item>
+    </plurals>
+    <string name="settings_import_status_success">D\'éirigh le hiompórtáil</string>
+    <string name="settings_import_read_failure">Theip ar an gcomhad socruithe a léamh</string>
+    <string name="settings_import_incoming_server_password_hint">Pasfhocal freastalaí isteach</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Úsáid an pasfhocal céanna don fhreastalaí amach</string>
+    <string name="settings_import_outgoing_server_password_hint">Pasfhocal freastalaí amach</string>
+    <string name="settings_import_server_name_format">Ainm an fhreastalaí: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_sign_in">Sínigh isteach</string>
+    <string name="settings_import_oauth_sign_in_with_google">Sínigh isteach le Google</string>
+    <string name="settings_import_oauth_error_browser_not_found">Níorbh fhéidir leis an aip brabhsálaí a aimsiú le húsáid chun rochtain a dheonú ar do chuntas.</string>
+    <string name="settings_import_oauth_description">Chun an cuntas ríomhphoist seo a úsáid, ní mór duit síniú isteach agus rochtain a thabhairt don aip ar do ríomhphoist.</string>
+    <string name="settings_import_app_version_not_supported">Ní thacaítear leis an leagan aipe.</string>
+</resources>

@@ -7,4 +7,8 @@
     <string name="funding_googleplay_contribution_list_disclaimer">Příspěvky nelze odečíst z daní jako charitativní dary.</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Měsíčně</string>
     <string name="funding_googleplay_contribution_header_title">Podpořte Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Nedostupné</string>
+    <string name="funding_googleplay_contribution_title">Podpořte Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Upravit měsíční platbu</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Pomozte udržet Thunderbird naživu</string>
 </resources>

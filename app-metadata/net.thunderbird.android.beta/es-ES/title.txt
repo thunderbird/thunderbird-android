@@ -1,1 +1,1 @@
-Versión beta de Thunderbird para testeadores
+Thunderbird Beta para pruebas

@@ -15,25 +15,10 @@ import org.robolectric.annotation.Config
 class QrCodeScannerBottomContentKtTest : ComposeTest() {
 
     @Test
-    fun `not having a total count should not show ScannedStatus`() = runComposeTest {
+    fun `text should be displayed`() = runComposeTest {
         setContentWithTheme {
             QrCodeScannerBottomContent(
-                scannedCount = 0,
-                totalCount = 0,
-                onDoneClick = {},
-            )
-        }
-
-        composeTestRule.onNodeWithTag("ScannedStatus").assertDoesNotExist()
-        composeTestRule.onNodeWithTag("DoneButton").assertExists()
-    }
-
-    @Test
-    fun `having a total count should show ScannedStatus`() = runComposeTest {
-        setContentWithTheme {
-            QrCodeScannerBottomContent(
-                scannedCount = 1,
-                totalCount = 2,
+                text = "Scanned 1 of 2",
                 onDoneClick = {},
             )
         }
@@ -48,8 +33,7 @@ class QrCodeScannerBottomContentKtTest : ComposeTest() {
 
         setContentWithTheme {
             QrCodeScannerBottomContent(
-                scannedCount = 0,
-                totalCount = 0,
+                text = "irrelevant",
                 onDoneClick = { doneClickCount++ },
             )
         }

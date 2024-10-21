@@ -5,4 +5,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Ava seadistused</string>
     <string name="migration_qrcode_scanning_progress">Skaneeritud %1$s/%2$s</string>
     <string name="migration_qrcode_done_button_text">Valmis</string>
+    <string name="migration_qrcode_scanning_instructions">Joonda Thunderbird töölauaversiooni pakutud QR-kood</string>
 </resources>

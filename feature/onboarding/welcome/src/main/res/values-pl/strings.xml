@@ -2,5 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Rozpocznij</string>
     <string name="onboarding_welcome_import_button">Importuj ustawienia</string>
-    <string name="onboarding_welcome_message">Witamy w <xliff:g id="app_name">%s</xliff:g>, kliencie poczty e-mail dla systemu Android, zaprojektowanym z myślą o zwiększonym bezpieczeństwie, łatwej personalizacji i bezproblemowym zarządzaniu wszystkimi kontami e-mail.</string>
+    <string name="onboarding_welcome_text">Otwarta, dbająca o prywatność i wolna od reklam aplikacja pocztowa na Androida.</string>
+    <string name="onboarding_welcome_developed_by">Aplikacja opracowana przez oddany zespół w MZLA Technologies i globalną społeczność wolontariuszy. Część rodziny Mozilla.</string>
 </resources>

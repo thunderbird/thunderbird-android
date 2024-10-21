@@ -2,6 +2,7 @@ package app.k9mail.feature.onboarding.migration.thunderbird
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,22 +15,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.common.provider.AppNameProvider
+import androidx.compose.ui.text.style.LineHeightStyle
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import org.koin.compose.koinInject
 
 @Composable
 internal fun TbOnboardingMigrationScreen(
-    onQrCodeScanClick: () -> Unit,
-    onAddAccountClick: () -> Unit,
+    onQrCodeScan: () -> Unit,
+    onAddAccount: () -> Unit,
+    onImport: () -> Unit,
     modifier: Modifier = Modifier,
-    appNameProvider: AppNameProvider = koinInject(),
+    brandNameProvider: BrandNameProvider = koinInject(),
 ) {
     val scrollState = rememberScrollState()
 
@@ -44,41 +50,73 @@ internal fun TbOnboardingMigrationScreen(
                 .verticalScroll(scrollState),
         ) {
             AppTitleTopHeader(
-                title = appNameProvider.appName,
+                title = brandNameProvider.brandName,
             )
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            Spacer(
+                modifier = Modifier
+                    .height(MainTheme.spacings.double)
+                    .weight(1f),
+            )
 
-            TextCard(title = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_title)) {
-                TextBodyMedium(
-                    text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_description),
-                    modifier = Modifier
-                        .padding(bottom = MainTheme.spacings.double),
-                )
+            AlreadyUsingThunderbirdCard(onQrCodeScan)
 
-                ButtonFilled(
-                    text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_button_text),
-                    onClick = onQrCodeScanClick,
-                    modifier = Modifier
-                        .testTag("QrCodeImportButton")
-                        .align(Alignment.CenterHorizontally),
-                )
-            }
+            Spacer(modifier = Modifier.height(MainTheme.spacings.triple))
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
-
-            TextCard(title = stringResource(R.string.onboarding_migration_thunderbird_new_account_title)) {
-                ButtonFilled(
+            TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_new_account_title)) {
+                ButtonOutlined(
                     text = stringResource(R.string.onboarding_migration_thunderbird_new_account_button_text),
-                    onClick = onAddAccountClick,
-                    modifier = Modifier
-                        .testTag("AddAccountButton")
-                        .align(Alignment.CenterHorizontally),
+                    onClick = onAddAccount,
+                    modifier = Modifier.testTag("AddAccountButton"),
                 )
             }
 
-            Spacer(modifier = Modifier.height(MainTheme.spacings.double))
+            TextGroup(title = stringResource(R.string.onboarding_migration_thunderbird_import_title)) {
+                ButtonOutlined(
+                    text = stringResource(R.string.onboarding_migration_thunderbird_import_button_text),
+                    onClick = onImport,
+                    modifier = Modifier.testTag("ImportButton"),
+                )
+            }
+
+            Spacer(
+                modifier = Modifier
+                    .height(MainTheme.spacings.double)
+                    .weight(1f),
+            )
         }
+    }
+}
+
+@Composable
+private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
+    TextCard(title = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_title)) {
+        TextBodyMedium(
+            text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_text),
+            modifier = Modifier
+                .padding(bottom = MainTheme.spacings.double),
+        )
+
+        TextBodyMediumFullLineHeight(
+            text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_instructions_intro),
+        )
+
+        BulletList(
+            items = persistentListOf(
+                stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1),
+                stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2),
+            ),
+            modifier = Modifier
+                .padding(bottom = MainTheme.spacings.double),
+        )
+
+        ButtonFilled(
+            text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_button_text),
+            onClick = onQrCodeScan,
+            modifier = Modifier
+                .testTag("QrCodeImportButton")
+                .align(Alignment.CenterHorizontally),
+        )
     }
 }
 
@@ -107,4 +145,54 @@ private fun TextCard(
             content()
         }
     }
+}
+
+@Composable
+private fun TextGroup(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(MainTheme.spacings.double),
+    ) {
+        TextTitleMedium(
+            text = title,
+            color = MainTheme.colors.primary,
+            modifier = Modifier
+                .padding(bottom = MainTheme.spacings.default),
+        )
+
+        content()
+    }
+}
+
+@Composable
+private fun BulletList(
+    items: ImmutableList<String>,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        for (item in items) {
+            Row {
+                TextBodyMediumFullLineHeight(text = " \u2022 ")
+                TextBodyMediumFullLineHeight(text = item)
+            }
+        }
+    }
+}
+
+@Composable
+private fun TextBodyMediumFullLineHeight(text: String) {
+    // Disable line height trimming so that the space between TextBodyMediumFullLineHeight instances following each
+    // other is the same as the space between lines of text inside a single TextBodyMedium.
+    TextBodyMedium(
+        text = text,
+        lineHeightStyle = LineHeightStyle(
+            alignment = LineHeightStyle.Alignment.Proportional,
+            trim = LineHeightStyle.Trim.None,
+        ),
+    )
 }

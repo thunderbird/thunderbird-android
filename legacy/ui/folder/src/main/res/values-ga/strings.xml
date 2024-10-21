@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="special_mailbox_name_drafts">Dréachtaí</string>
+    <string name="special_mailbox_name_outbox">Bosca Amach</string>
+    <string name="special_mailbox_name_sent">Seolta</string>
+    <string name="special_mailbox_name_trash">Bruscar</string>
+    <string name="special_mailbox_name_inbox">Bosca Isteach</string>
+</resources>

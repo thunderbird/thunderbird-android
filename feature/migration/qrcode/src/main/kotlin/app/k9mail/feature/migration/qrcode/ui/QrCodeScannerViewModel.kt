@@ -6,6 +6,7 @@ import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.Account
 import app.k9mail.feature.migration.qrcode.domain.usecase.QrCodeImageAnalysisProvider
+import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.DisplayText
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
@@ -32,6 +33,9 @@ internal class QrCodeScannerViewModel(
     private val supportedPayloadHashes = mutableSetOf<ByteString>()
     private val unsupportedPayloadHashes = ArrayDeque<ByteString>()
     private val accountDataList = mutableListOf<AccountData>()
+
+    private var scannedCount = 0
+    private var totalCount = 0
 
     override val cameraUseCasesProvider: UseCase.CameraUseCasesProvider =
         createCameraUseCaseProvider(::handleQrCodeScanned)
@@ -103,13 +107,9 @@ internal class QrCodeScannerViewModel(
     }
 
     private fun handleSupportedPayload(accountData: AccountData) {
-        val currentState = state.value
-        if (accountData.sequenceEnd == currentState.totalCount) {
+        if (accountData.sequenceEnd == totalCount) {
             accountDataList.add(accountData)
-
-            updateState {
-                it.copy(scannedCount = accountDataList.size)
-            }
+            scannedCount = accountDataList.size
         } else {
             // Total QR code count doesn't match previous value. The user has probably started over.
 
@@ -117,9 +117,12 @@ internal class QrCodeScannerViewModel(
             accountDataList.clear()
             accountDataList.add(accountData)
 
-            updateState {
-                it.copy(scannedCount = 1, totalCount = accountData.sequenceEnd)
-            }
+            scannedCount = 1
+            totalCount = accountData.sequenceEnd
+        }
+
+        updateState {
+            it.copy(displayText = DisplayText.ProgressText(scannedCount, totalCount))
         }
 
         if (accountDataList.size == accountData.sequenceEnd) {

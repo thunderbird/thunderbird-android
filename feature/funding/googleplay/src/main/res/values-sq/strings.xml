@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Përkrahni Thunderbird-in</string>
+    <string name="funding_googleplay_contribution_title">Përkrahni Thunderbird-in</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Mujor</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Jepni një herë</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Asnjë i passhëm</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Vazhdoni te pagesa</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Ndryshoni pagesë mujore</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Kontributet s’janë të zbritshëm nga taksat, si dhurime për bamirësi.</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ndihmoni të mbahet gjallë Thunderbird-i</string>
+    <string name="funding_googleplay_contribution_list_title">Kontribut i siguruar</string>
+    <string name="funding_googleplay_contribution_header_description">S’shfaqim kurrë reklama, apo të shesim të dhëna. Jemi tërësisht të financuar nga kontribute financiare nga përdoruesit tanë. Nëse ju pëlqen Thunderbird-i, ju lutemi, ndihmoni të përkrahet. Këtë s’e bëjmë dot pa ju!</string>
+</resources>

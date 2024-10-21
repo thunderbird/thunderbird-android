@@ -82,13 +82,15 @@ fun OnboardingNavHost(
                 },
                 onImportClick = { navController.navigateToSettingsImport() },
                 appNameProvider = koinInject(),
+                onboardingMigrationManager = koinInject(),
             )
         }
 
         composable(route = NESTED_NAVIGATION_ROUTE_MIGRATION) {
             onboardingMigrationManager.OnboardingMigrationScreen(
-                onQrCodeScanClick = { navController.navigateToSettingsImportQrCode() },
-                onAddAccountClick = { navController.navigateToAccountSetup() },
+                onQrCodeScan = { navController.navigateToSettingsImportQrCode() },
+                onAddAccount = { navController.navigateToAccountSetup() },
+                onImport = { navController.navigateToSettingsImport() },
             )
         }
 

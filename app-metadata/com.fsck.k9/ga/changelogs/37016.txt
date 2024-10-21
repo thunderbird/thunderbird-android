@@ -1,0 +1,5 @@
+- Ceartúcháin bheaga ar fhabht agus snas Chomhéadain/UX i socrú cuntais
+- Socraíodh timpiste de bharr idirghníomhú le OpenKeychain 6.0.0
+- Fócas ar réimsí ionchuir ábhair nó coirp agus an scáileán cumadóireachta á oscailt trí mailto: URI
+- Baineadh aistriúcháin Eabhrais agus Cóiréis toisc gur aistríodh níos lú ná 70% de na teaghráin. Bíonn fáilte i gcónaí roimh oibrithe deonacha chun na haistriúcháin a nuashonrú!
+- Aistriúcháin nuashonraithe atá fágtha

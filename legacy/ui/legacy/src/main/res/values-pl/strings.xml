@@ -221,7 +221,7 @@
     <!--The list item users select to not use a swipe action for a particular direction-->
     <string name="general_settings_swipe_action_none">Brak</string>
     <!--Name of the swipe action to select/deselect a message-->
-    <string name="general_settings_swipe_action_toggle_selection">Przełącz zaznaczenie</string>
+    <string name="general_settings_swipe_action_toggle_selection">Przełącz wybór</string>
     <!--Name of the swipe action to mark as message as read/unread-->
     <string name="general_settings_swipe_action_toggle_read">Oznacz jako (nie)przeczytane</string>
     <!--Name of the swipe action to add/remove a star-->
@@ -821,9 +821,9 @@
     <string name="push_info_disable_push_text">Jeśli nie potrzebujesz natychmiastowych powiadomień o nowych wiadomościach, wyłącz funkcję push i użyj regularnego sprawdzania. Sprawdzanie w regularnych odstępach czasu sprawdza nową pocztę i nie wymaga powiadomienia.</string>
     <string name="push_info_disable_push_action">Wyłącz funkcję push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
-    <string name="swipe_action_select">Zaznacz</string>
+    <string name="swipe_action_select">Wybierz</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
-    <string name="swipe_action_deselect">Odznacz</string>
+    <string name="swipe_action_deselect">Cofnij wybór</string>
     <!--Name of the swipe action to mark a message as read. Try to keep it short.-->
     <string name="swipe_action_mark_as_read">Oznacz jako przeczytane</string>
     <!--Name of the swipe action to mark a message as unread. Try to keep it short.-->

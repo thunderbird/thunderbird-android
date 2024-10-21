@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Toeta Thunderbirdi</string>
+    <string name="funding_googleplay_contribution_list_title">Turvaline toetus</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Iga kuu</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Jätka maksega</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Pole saadaval</string>
+    <string name="funding_googleplay_contribution_title">Toeta Thunderbirdi</string>
+    <string name="funding_googleplay_contribution_header_description">Me kunagi ei näita reklaame ega müü sinu andmeid. Meie rahastamine põhineb terves mahus vaid kasutajate toetustel. Kui sulle Thunderbird meeldib, siis palun aita meid. Me ei saaks jätkata ilma sinuta!</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Anneta üks kord</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Toetustel puudub maksuvabastus.</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Aita hoida Thunderbirdi töös</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Muuda igakuist makset</string>
+</resources>

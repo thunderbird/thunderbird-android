@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_description">Déanfaimid tú a atreorú chuig do sholáthraí ríomhphoist chun síniú isteach. Ní mór duit rochtain a thabhairt don aip ar do chuntas ríomhphoist.</string>
+    <string name="account_oauth_error_canceled">Cealaíodh an t-údarú</string>
+    <string name="account_oauth_error_browser_not_available">Níorbh fhéidir leis an aip brabhsálaí a aimsiú le húsáid chun rochtain a dheonú ar do chuntas.</string>
+    <string name="account_oauth_loading_message">Ag síniú isteach le OAuth</string>
+    <string name="account_oauth_sign_in_button">Sínigh isteach</string>
+    <string name="account_oauth_sign_in_with_google_button">Sínigh isteach le Google</string>
+    <string name="account_oauth_loading_error">Theip ar shíniú isteach OAuth</string>
+    <string name="account_oauth_error_failed">Theip ar údarú leis an earráid seo a leanas: <xliff:g id="error"> %s</xliff:g></string>
+    <string name="account_oauth_error_not_supported">Ní thacaítear le OAuth 2.0 leis an soláthraí seo faoi láthair.</string>
+</resources>

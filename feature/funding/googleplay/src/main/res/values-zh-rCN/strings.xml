@@ -7,7 +7,8 @@
     <string name="funding_googleplay_contribution_header_description">我们永远不会显示广告或出售您的数据。我们的资金完全来自用户的捐款。如果您喜欢 Thunderbird，请考虑支持它。我们需要您的支持！</string>
     <string name="funding_googleplay_contribution_list_title">立即捐款</string>
     <string name="funding_googleplay_contribution_list_type_recurring">每月</string>
-    <string name="funding_googleplay_contribution_title">设置</string>
+    <string name="funding_googleplay_contribution_title">支持 Thunderbird</string>
     <string name="funding_googleplay_contribution_footer_manage_button">修改每月付款</string>
     <string name="funding_googleplay_contribution_list_type_none_available">无可用</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">支持 Thunderbird 走得更远</string>
 </resources>

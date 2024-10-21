@@ -1,5 +1,7 @@
 package app.k9mail.feature.funding.googleplay.ui.contribution
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -8,29 +10,48 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
+import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorState
+import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
+import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.funding.googleplay.R
+import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
+import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun ContributionList(
-    oneTimeContributions: ImmutableList<OneTimeContribution>,
-    recurringContributions: ImmutableList<RecurringContribution>,
-    selectedItem: Contribution?,
-    isRecurringContributionSelected: Boolean,
+    state: ContributionListState,
     onOneTimeContributionTypeClick: () -> Unit,
     onRecurringContributionTypeClick: () -> Unit,
     onItemClick: (Contribution) -> Unit,
+    onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val contentState = remember(key1 = state.isLoading, key2 = state.error) {
+        when {
+            state.isLoading -> ContentLoadingErrorState.Loading
+            state.error != null -> ContentLoadingErrorState.Error
+            else -> ContentLoadingErrorState.Content
+        }
+    }
+
     Surface(
         color = MainTheme.colors.surfaceContainerLowest,
         shape = MainTheme.shapes.small,
@@ -45,18 +66,29 @@ internal fun ContributionList(
                 text = stringResource(R.string.funding_googleplay_contribution_list_title),
             )
 
-            TypeSelectionRow(
-                oneTimeContributions = oneTimeContributions,
-                recurringContributions = recurringContributions,
-                isRecurringContributionSelected = isRecurringContributionSelected,
-                onOneTimeContributionTypeClick = onOneTimeContributionTypeClick,
-                onRecurringContributionTypeClick = onRecurringContributionTypeClick,
-            )
-
-            ChoicesRow(
-                contributions = if (isRecurringContributionSelected) recurringContributions else oneTimeContributions,
-                selectedItem = selectedItem,
-                onItemClick = onItemClick,
+            ContentLoadingErrorView(
+                state = contentState,
+                loading = {
+                    LoadingView()
+                },
+                error = {
+                    ListErrorView(
+                        error = state.error!!,
+                        onRetryClick = onRetryClick,
+                    )
+                },
+                content = {
+                    if (state.oneTimeContributions.isEmpty() && state.recurringContributions.isEmpty()) {
+                        ListEmptyView()
+                    } else {
+                        ListContentView(
+                            state = state,
+                            onOneTimeContributionTypeClick = onOneTimeContributionTypeClick,
+                            onRecurringContributionTypeClick = onRecurringContributionTypeClick,
+                            onItemClick = onItemClick,
+                        )
+                    }
+                },
             )
 
             TextBodyMedium(
@@ -131,5 +163,101 @@ private fun ChoicesRow(
                 modifier = Modifier.weight(1f),
             )
         }
+    }
+}
+
+@Composable
+private fun ListContentView(
+    state: ContributionListState,
+    onOneTimeContributionTypeClick: () -> Unit,
+    onRecurringContributionTypeClick: () -> Unit,
+    onItemClick: (Contribution) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        modifier = modifier,
+    ) {
+        TypeSelectionRow(
+            oneTimeContributions = state.oneTimeContributions,
+            recurringContributions = state.recurringContributions,
+            isRecurringContributionSelected = state.isRecurringContributionSelected,
+            onOneTimeContributionTypeClick = onOneTimeContributionTypeClick,
+            onRecurringContributionTypeClick = onRecurringContributionTypeClick,
+        )
+
+        ChoicesRow(
+            contributions = if (state.isRecurringContributionSelected) {
+                state.recurringContributions
+            } else {
+                state.oneTimeContributions
+            },
+            selectedItem = state.selectedContribution,
+            onItemClick = onItemClick,
+        )
+    }
+}
+
+@Composable
+private fun ListEmptyView(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        modifier = modifier,
+    ) {
+        TextBodyMedium(
+            text = stringResource(R.string.funding_googleplay_contribution_list_empty_title),
+        )
+
+        // TODO The link needs to be clickable
+        TextBodyMedium(
+            text = stringResource(R.string.funding_googleplay_contribution_list_empty_message),
+        )
+    }
+}
+
+@Composable
+private fun ListErrorView(
+    error: BillingError,
+    onRetryClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val showDetails = remember { mutableStateOf(false) }
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
+        modifier = modifier,
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+        ) {
+            TextBodyLarge(
+                text = mapErrorToTitle(error),
+            )
+            if (error.message.isNotEmpty()) {
+                Icon(
+                    imageVector = if (showDetails.value) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                    contentDescription = "Show more details",
+                    modifier = Modifier
+                        .clickable { showDetails.value = !showDetails.value }
+                        .padding(MainTheme.spacings.quarter),
+                )
+            }
+
+            AnimatedVisibility(visible = showDetails.value) {
+                TextBodySmall(
+                    text = error.message,
+                    color = MainTheme.colors.onErrorContainer,
+                )
+            }
+        }
+
+        ButtonText(
+            text = stringResource(R.string.funding_googleplay_contribution_list_error_retry_button),
+            onClick = onRetryClick,
+            modifier = Modifier.padding(top = MainTheme.spacings.default),
+        )
     }
 }

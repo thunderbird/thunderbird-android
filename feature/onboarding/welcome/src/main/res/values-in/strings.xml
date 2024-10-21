@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Mulai</string>
     <string name="onboarding_welcome_import_button">Impor pengaturan</string>
-    <string name="onboarding_welcome_message">Selamat datang di <xliff:g id="app_name">%s</xliff:g>, klien surel Android yang dirancang untuk keamanan yang lebih baik, penyesuaian yang mudah, dan pengelolaan yang lancar untuk semua akun surel Anda.</string>
 </resources>

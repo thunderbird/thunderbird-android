@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">התחל</string>
     <string name="onboarding_welcome_import_button">ייבוא הגדרות</string>
-    <string name="onboarding_welcome_message">ברוכים הבאים ל <xliff:g id="app_name">%s</xliff:g>, קליינט המייל עבור אנדרואיד שעוצב עבור אבטחה מוגברת, התאמה אישית קלה וניהול ללא טרחות של חשבונות הדואר האלקטרוני שלך.</string>
 </resources>

@@ -1,0 +1,5 @@
+- Ord seasta de chéimeanna fionnachtana autoconfig
+- Athraíodh an comhaireamh taispeána réamhshocraithe go 100
+- Fógraí cumasaithe do chuntais nua de réir réamhshocraithe
+- An t-athrú ar láimhseáil mailto a thabhairt ar ais: URIanna a tugadh isteach in K-9 Mail 6.716 mar gheall ar fho-iarmhairtí neamhbheartaithe
+- Bug seasta chun "teagmhálaithe a dhathú" oibriú arís i bhfianaise na teachtaireachta

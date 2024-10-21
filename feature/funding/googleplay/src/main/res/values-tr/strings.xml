@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Thunderbird\'e Destek Ver</string>
+    <string name="funding_googleplay_contribution_header_description">Reklam göstermiyoruz veya verilerinizi satmıyoruz. Tamamen kullanıcılarımızdan gelen mali katkılarla finanse ediliyoruz. Thunderbird\'i beğeniyorsanız, lütfen destek olmaya yardımcı olun. Bunu siz olmadan yapamayız!</string>
+    <string name="funding_googleplay_contribution_list_title">Güvenli katkı</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Bir kez ver</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Aylık</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Mevcut değil</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Ödemeye geç</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Aylık ödemeyi düzenle</string>
+    <string name="funding_googleplay_contribution_title">Thunderbird\'e Destek Ver</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Thunderbird\'in yaşamasına yardımcı olun</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Katkılar bağış olarak vergiden düşülemez.</string>
+</resources>

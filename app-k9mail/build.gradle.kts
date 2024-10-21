@@ -30,6 +30,7 @@ dependencies {
     implementation(projects.feature.telemetry.noop)
     implementation(projects.feature.funding.noop)
     implementation(projects.feature.onboarding.migration.noop)
+    implementation(projects.feature.migration.launcher.noop)
 
     implementation(libs.androidx.work.runtime)
 
@@ -94,6 +95,7 @@ android {
                 "ml",
                 "nb",
                 "nl",
+                "nn",
                 "pl",
                 "pt_BR",
                 "pt_PT",

@@ -1,7 +1,6 @@
 {%- if application == 'thunderbird' -%}
 Thunderbird for Android version {{ version }}, based on K-9 Mail. Changes include:
 {%- endif -%}
-{%- for note in changes %}
+{%- for note in short_notes %}
 - {{ note }}
 {%- endfor %}
-

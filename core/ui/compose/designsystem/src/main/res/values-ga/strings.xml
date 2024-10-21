@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_molecule_error_view_button_retry">Bain triail eile as</string>
+    <string name="designsystem_atom_password_textfield_hide_password">Folaigh pasfhocal</string>
+    <string name="designsystem_molecule_email_address_input_label">Seoladh ríomhphoist</string>
+    <string name="designsystem_molecule_password_input_label">Pasfhocal</string>
+    <string name="designsystem_atom_password_textfield_show_password">Taispeáin pasfhocal</string>
+</resources>

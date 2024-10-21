@@ -368,11 +368,11 @@ internal class DrawerViewModelTest {
 
         testSubject.event(Event.OnAccountSelectorClick)
 
-        assertThat(turbines.awaitStateItem()).isEqualTo(State(showAccountSelector = true))
+        assertThat(turbines.awaitStateItem()).isEqualTo(State(showAccountSelector = false))
 
         testSubject.event(Event.OnAccountSelectorClick)
 
-        assertThat(turbines.awaitStateItem()).isEqualTo(State(showAccountSelector = false))
+        assertThat(turbines.awaitStateItem()).isEqualTo(State(showAccountSelector = true))
     }
 
     @Test

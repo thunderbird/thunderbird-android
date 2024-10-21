@@ -36,7 +36,7 @@ internal fun SyncOptionsContent(
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
-    appName: String,
+    brandName: String,
     modifier: Modifier = Modifier,
 ) {
     val resources = LocalContext.current.resources
@@ -57,7 +57,7 @@ internal fun SyncOptionsContent(
         ) {
             item {
                 AppTitleTopHeader(
-                    title = appName,
+                    title = brandName,
                 )
             }
 

@@ -1,10 +1,10 @@
 package com.fsck.k9.preferences.upgrader
 
 import app.k9mail.legacy.account.Account.FolderMode
-import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.preferences.CombinedSettingsUpgrader
 import com.fsck.k9.preferences.InternalSettingsMap
 import com.fsck.k9.preferences.ValidatedSettings
+import com.fsck.k9.preferences.legacy.FolderClass
 
 class CombinedSettingsUpgraderTo96 : CombinedSettingsUpgrader {
     override fun upgrade(account: ValidatedSettings.Account): ValidatedSettings.Account {

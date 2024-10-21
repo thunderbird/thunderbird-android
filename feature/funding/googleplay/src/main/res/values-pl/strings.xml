@@ -5,9 +5,12 @@
     <string name="funding_googleplay_contribution_list_type_one_time">Przekaż raz</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Miesięcznie</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Przejdź do płatności</string>
-    <string name="funding_googleplay_contribution_header_title">Wspieraj Thunderbirda</string>
+    <string name="funding_googleplay_contribution_header_title">Wesprzyj Thunderbirda</string>
     <string name="funding_googleplay_contribution_header_description">Nigdy nie pokazujemy reklam ani nie sprzedajemy Twoich danych. Jesteśmy w pełni finansowani ze składek finansowych od naszych użytkowników. Jeśli podoba Ci się Thunderbird, pomóż nam go wesprzeć. Nie możemy tego zrobić bez Ciebie!</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Zmodyfikuj płatność miesięczną</string>
-    <string name="funding_googleplay_contribution_title">Ustawienia</string>
+    <string name="funding_googleplay_contribution_title">Wesprzyj Thunderbirda</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Brak dostępnych</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Pomóż utrzymać Thunderbirda przy życiu</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Możliwość dokonywania wpłat w aplikacji jest obecnie niedostępna.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Odwiedź www.thunderbird.net, aby poznać więcej sposobów na wsparcie Thunderbirda</string>
 </resources>

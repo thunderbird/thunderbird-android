@@ -1,7 +1,6 @@
 package com.fsck.k9.storage.migrations
 
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.mail.FolderClass
 
 internal class MigrationTo70(private val db: SQLiteDatabase) {
     fun removePushState() {
@@ -32,7 +31,7 @@ internal class MigrationTo70(private val db: SQLiteDatabase) {
                 "poll_class TEXT, " +
                 "push_class TEXT, " +
                 "display_class TEXT, " +
-                "notify_class TEXT default '" + FolderClass.INHERITED.name + "', " +
+                "notify_class TEXT default 'INHERITED', " +
                 "more_messages TEXT default \"unknown\", " +
                 "server_id TEXT, " +
                 "local_only INTEGER, " +

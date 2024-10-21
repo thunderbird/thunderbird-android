@@ -885,4 +885,13 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="account_delete_dlg_instructions_fmt">Reikningurinn \"<xliff:g id="account">%s</xliff:g>\" verður fjarlægður úr <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Þegar ýti-tilkynningar eru notaðar, viðheldur <xliff:g id="app_name">%1$s</xliff:g> tengingu við póstþjóninn. Android krefst þess að birta tilkynningu um það á meðan forritið er enn virkt í bakgrunni. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile teymið</string>
+    <string name="settings_ui_telemetry_description">Deilir með Mozilla gögnum um afköst, notkun, vélbúnað og sérsníðingu þessa forrits til að hjálpa okkur að gera Thunderbird betra</string>
+    <string name="folder_settings_notifications_label">Tilkynningar</string>
+    <string name="folder_settings_push_label">Virkja ýti-samstillingu (push)</string>
+    <string name="settings_ui_telemetry_title">Notkun og tæknileg gögn</string>
+    <string name="settings_ui_data_collection">Gagnasöfnun</string>
+    <string name="folder_settings_sync_label">Virkja samstillingu</string>
+    <string name="folder_settings_visible_label">Sýna möppu</string>
+    <string name="folder_list_show_hidden_folders">Sýna faldar möppur</string>
+    <string name="settings_list_action_support">Styðja <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

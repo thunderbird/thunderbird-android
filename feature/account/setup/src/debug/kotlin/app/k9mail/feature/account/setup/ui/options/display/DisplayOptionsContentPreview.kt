@@ -13,7 +13,7 @@ internal fun DisplayOptionsContentPreview() {
             state = DisplayOptionsContract.State(),
             onEvent = {},
             contentPadding = PaddingValues(),
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }

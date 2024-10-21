@@ -2,5 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Starten</string>
     <string name="onboarding_welcome_import_button">Instellingen importeren</string>
-    <string name="onboarding_welcome_message">Welkom bij <xliff:g id="app_name">%s</xliff:g>, de Android-e-mailclient ontworpen voor verbeterde beveiliging, gemakkelijke aanpassingen en eenvoudig beheer van al uw e-mailaccounts.</string>
+    <string name="onboarding_welcome_text">Een open source, op privacy gerichte en advertentievrije e-mail-app voor Android.</string>
+    <string name="onboarding_welcome_developed_by">Ontwikkeld door een toegewijd team van MZLA Technologies en een wereldwijde gemeenschap van vrijwilligers. Onderdeel van de Mozilla-familie.</string>
 </resources>

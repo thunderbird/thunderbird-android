@@ -1,10 +1,14 @@
 package app.k9mail.feature.funding.googleplay.ui.contribution
 
-import android.app.Activity
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.funding.googleplay.domain.DomainContract
+import app.k9mail.feature.funding.googleplay.domain.DomainContract.UseCase
+import app.k9mail.feature.funding.googleplay.domain.entity.AvailableContributions
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
+import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
+import app.k9mail.feature.funding.googleplay.domain.handle
+import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.State
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.ViewModel
@@ -13,73 +17,95 @@ import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
 internal class ContributionViewModel(
+    private val getAvailableContributions: UseCase.GetAvailableContributions,
     private val billingManager: DomainContract.BillingManager,
     initialState: State = State(),
-) : BaseViewModel<State, Event, Nothing>(initialState),
+) : BaseViewModel<State, Event, Effect>(initialState),
     ViewModel {
 
     init {
         viewModelScope.launch {
-            loadOneTimeContributions()
-            // TODO load recurring contributions
-            // loadRecurringContributions()
-            loadPurchasedContribution()
-            selectDefaultContribution()
+            loadAvailableContributions()
+        }
+
+        viewModelScope.launch {
+            billingManager.purchasedContribution.collect { result ->
+                result.handle(
+                    onSuccess = { purchasedContribution ->
+                        updateState { state ->
+                            state.copy(
+                                listState = state.listState.copy(
+                                    isLoading = false,
+                                ),
+                                purchasedContribution = purchasedContribution,
+                                showContributionList = purchasedContribution == null,
+                                purchaseError = null,
+                            )
+                        }
+                    },
+                    onFailure = {
+                        updateState { state ->
+                            state.copy(
+                                listState = state.listState.copy(
+                                    isLoading = false,
+                                ),
+                                purchasedContribution = null,
+                                showContributionList = true,
+                                purchaseError = it,
+                            )
+                        }
+                    },
+                )
+            }
         }
     }
 
-    private suspend fun loadOneTimeContributions() {
-        val result = billingManager.loadOneTimeContributions()
+    private suspend fun loadAvailableContributions() {
+        getAvailableContributions().handle(
+            onSuccess = { data ->
+                updateState { state ->
+                    val selectedContribution = selectContribution(data)
 
-        updateState { state ->
-            state.copy(
-                oneTimeContributions = result.toImmutableList(),
-                selectedContribution = if (
-                    !state.isRecurringContributionSelected &&
-                    result.contains(state.selectedContribution).not()
-                ) {
-                    result.firstOrNull()
-                } else {
-                    state.selectedContribution
-                },
+                    state.copy(
+                        listState = state.listState.copy(
+                            oneTimeContributions = data.oneTimeContributions.toImmutableList(),
+                            recurringContributions = data.recurringContributions.toImmutableList(),
+                            selectedContribution = selectedContribution,
+                            isRecurringContributionSelected = selectedContribution is RecurringContribution,
+                            isLoading = false,
+                        ),
+                        purchasedContribution = data.purchasedContribution,
+                        showContributionList = data.purchasedContribution == null,
+                    )
+                }
+            },
+            onFailure = {
+                updateState { state ->
+                    state.copy(
+                        listState = state.listState.copy(
+                            isLoading = false,
+                            error = it,
+                        ),
+                    )
+                }
+            },
+        )
+    }
+
+    private fun selectContribution(data: AvailableContributions): Contribution? {
+        val hasSelectedContribution = state.value.listState.selectedContribution != null && (
+            data.oneTimeContributions.contains(state.value.listState.selectedContribution) ||
+                data.recurringContributions.contains(state.value.listState.selectedContribution)
             )
-        }
-    }
 
-    private suspend fun loadRecurringContributions() {
-        val result = billingManager.loadRecurringContributions()
-
-        updateState { state ->
-            state.copy(
-                recurringContributions = result.toImmutableList(),
-                selectedContribution = if (
-                    state.isRecurringContributionSelected &&
-                    result.contains(state.selectedContribution).not()
-                ) {
-                    result.firstOrNull()
-                } else {
-                    state.selectedContribution
-                },
-            )
-        }
-    }
-
-    private suspend fun loadPurchasedContribution() {
-        val purchasedContribution = billingManager.loadPurchasedContributions().firstOrNull()
-        updateState { state ->
-            state.copy(
-                purchasedContribution = purchasedContribution,
-                showContributionList = purchasedContribution == null,
-            )
-        }
-    }
-
-    private fun selectDefaultContribution() {
-        val selectedContribution = state.value.selectedContribution ?: return
-        if (state.value.oneTimeContributions.contains(selectedContribution)) {
-            onOneTimeContributionSelected()
-        } else if (state.value.recurringContributions.contains(selectedContribution)) {
-            onRecurringContributionSelected()
+        return if (hasSelectedContribution) {
+            state.value.listState.selectedContribution
+        } else {
+            if (state.value.listState.isRecurringContributionSelected) {
+                data.recurringContributions.getSecondLowestOrNull()
+            } else {
+                data.oneTimeContributions.getSecondLowestOrNull()
+            }
         }
     }
 
@@ -88,17 +114,26 @@ internal class ContributionViewModel(
             Event.OnOneTimeContributionSelected -> onOneTimeContributionSelected()
             Event.OnRecurringContributionSelected -> onRecurringContributionSelected()
             is Event.OnContributionItemClicked -> onContributionItemClicked(event.item)
-            is Event.OnPurchaseClicked -> onPurchaseClicked(event.activity)
+            is Event.OnPurchaseClicked -> onPurchaseClicked()
             is Event.OnManagePurchaseClicked -> onManagePurchaseClicked(event.contribution)
             Event.OnShowContributionListClicked -> onShowContributionListClicked()
+            Event.OnDismissPurchaseErrorClicked -> updateState {
+                it.copy(
+                    purchaseError = null,
+                )
+            }
+
+            Event.OnRetryClicked -> onRetryClicked()
         }
     }
 
     private fun onOneTimeContributionSelected() {
         updateState {
             it.copy(
-                isRecurringContributionSelected = false,
-                selectedContribution = it.oneTimeContributions.getSecondLowestOrNull(),
+                listState = it.listState.copy(
+                    isRecurringContributionSelected = false,
+                    selectedContribution = it.listState.oneTimeContributions.getSecondLowestOrNull(),
+                ),
                 showContributionList = true,
             )
         }
@@ -107,8 +142,10 @@ internal class ContributionViewModel(
     private fun onRecurringContributionSelected() {
         updateState {
             it.copy(
-                isRecurringContributionSelected = true,
-                selectedContribution = it.recurringContributions.getSecondLowestOrNull(),
+                listState = it.listState.copy(
+                    isRecurringContributionSelected = true,
+                    selectedContribution = it.listState.recurringContributions.getSecondLowestOrNull(),
+                ),
                 showContributionList = true,
             )
         }
@@ -125,29 +162,50 @@ internal class ContributionViewModel(
     private fun onContributionItemClicked(item: Contribution) {
         updateState {
             it.copy(
-                selectedContribution = item,
+                it.listState.copy(
+                    selectedContribution = item,
+                ),
             )
         }
     }
 
-    private fun onPurchaseClicked(activity: Activity) {
-        viewModelScope.launch {
-            val result = billingManager.purchaseContribution(activity, state.value.selectedContribution!!)
+    private fun onPurchaseClicked() {
+        val selectedContribution = state.value.listState.selectedContribution ?: return
 
-            if (result != null) {
-                updateState {
-                    it.copy(
-                        purchasedContribution = result,
-                        showContributionList = false,
-                    )
-                }
-            }
+        updateState {
+            it.copy(
+                listState = it.listState.copy(
+                    isLoading = true,
+                ),
+            )
         }
+        emitEffect(
+            Effect.PurchaseContribution(
+                startPurchaseFlow = { activity ->
+                    viewModelScope.launch {
+                        billingManager.purchaseContribution(activity, selectedContribution).handle(
+                            onSuccess = {
+                                // we need to wait for the callback to be called
+                            },
+                            onFailure = { error ->
+                                updateState { state ->
+                                    state.copy(
+                                        listState = state.listState.copy(
+                                            isLoading = false,
+                                        ),
+                                        purchaseError = error,
+                                    )
+                                }
+                            },
+                        )
+                    }
+                },
+            ),
+        )
     }
 
-    @Suppress("UnusedParameter")
     private fun onManagePurchaseClicked(contribution: Contribution) {
-        // TODO: Implement manage purchase logic
+        emitEffect(Effect.ManageSubscription(contribution.id))
     }
 
     private fun onShowContributionListClicked() {
@@ -155,6 +213,20 @@ internal class ContributionViewModel(
             it.copy(
                 showContributionList = true,
             )
+        }
+    }
+
+    private fun onRetryClicked() {
+        updateState {
+            it.copy(
+                listState = it.listState.copy(
+                    isLoading = true,
+                    error = null,
+                ),
+            )
+        }
+        viewModelScope.launch {
+            loadAvailableContributions()
         }
     }
 

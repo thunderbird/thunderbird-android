@@ -1,0 +1,7 @@
+{% for tag, long_notes in notes.items() %}
+{{ tag }}:
+{%- for note in long_notes %}
+- {{ note }}
+{%- endfor %}
+
+{% endfor %}

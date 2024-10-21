@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">درون‌ریزی تنظیمات</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">کاربر جدید تاندربرد؟</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">افزودن حساب رایانامه</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">استفادهٔ پیشین از تاندربر روی میزکار؟</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">در تاندربرد میزکار، رفتن به:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">«تنظیمات» در نوار ابزار فضاها (پایین سمت راست)</string>
+    <string name="onboarding_migration_thunderbird_import_title">جابه‌جایی از کاره یا افزاره‌ای دیگر؟</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">درون‌ریزی آسان تنظیمات حسابتان با پویش کد پاس.</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">درون‌ریزی تنظیمات حسابتان</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">گزینش «برون‌ریزی به همراه» و دنیال کردن دستورالعمل‌ها</string>
+</resources>

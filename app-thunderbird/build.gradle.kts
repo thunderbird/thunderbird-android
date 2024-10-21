@@ -62,6 +62,7 @@ android {
                 "ml",
                 "nb",
                 "nl",
+                "nn",
                 "pl",
                 "pt_BR",
                 "pt_PT",
@@ -230,6 +231,7 @@ dependencies {
     fullReleaseImplementation(projects.feature.funding.googleplay)
 
     implementation(projects.feature.onboarding.migration.thunderbird)
+    implementation(projects.feature.migration.launcher.thunderbird)
 
     testImplementation(libs.robolectric)
 

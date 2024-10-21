@@ -15,3 +15,29 @@ internal fun AccountAvatarPreview() {
         )
     }
 }
+
+@Composable
+@Preview(showBackground = true)
+internal fun AccountAvatarWithUnreadCountPreview() {
+    PreviewWithThemes {
+        AccountAvatar(
+            account = DISPLAY_ACCOUNT.copy(
+                unreadMessageCount = 12,
+            ),
+            onClick = {},
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun AccountAvatarWithUnreadCountMaxedPreview() {
+    PreviewWithThemes {
+        AccountAvatar(
+            account = DISPLAY_ACCOUNT.copy(
+                unreadMessageCount = 100,
+            ),
+            onClick = {},
+        )
+    }
+}
