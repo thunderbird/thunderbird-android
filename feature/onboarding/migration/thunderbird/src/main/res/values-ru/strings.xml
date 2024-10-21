@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Уже используете Thunderbird на компьютере?</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Новичок в Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Добавьте аккаунт эл. почты</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Импортируйте настройки</string>
+    <string name="onboarding_migration_thunderbird_import_title">Переходите с другого приложения или устройства?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\"Настройки\" в панели мест (внизу слева)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Можно легко импортировать настройки своего аккаунта сканированием QR-кода.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">В Thunderbird на компьютере перейдите в:</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Импортируйте настройки своего аккаунта</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Выберите \"Экспорт учётных записей для мобильных устройств\" и следуйте инструкциям</string>
+</resources>

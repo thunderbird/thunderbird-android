@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_common_button_next">Ar aghaidh</string>
+    <string name="account_common_button_back">Ar ais</string>
+    <string name="account_common_error_server_message">Chuir an freastalaí an teachtaireacht seo a leanas ar ais:\n%s</string>
+</resources>

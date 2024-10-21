@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Socruithe freastalaí á sábháil…</string>
+    <string name="account_edit_save_server_settings_error_message">Theip ar shábháil socruithe an fhreastalaí</string>
+    <string name="account_edit_save_server_settings_success_message">Sábháladh socruithe an fhreastalaí</string>
+</resources>

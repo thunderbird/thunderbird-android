@@ -1,0 +1,10 @@
+- Cuireadh láimhseáil íomhá isteach sa roghchlár comhthéacs le haghaidh hipearnasc
+- Cumas breise chun ceangaltáin oscailte a chur ar aghaidh chuig ríomhphoist nua
+- Scáileán earráide teastais feabhsaithe le linn socrú an chuntais
+- Iompórtáil socruithe feabhsaithe le linn thus cuntais
+- UI/UX socruithe cuntais feabhsaithe
+- Rindreáil feabhsaithe chuntais ar scáileáin bheaga
+- Socruithe feabhsaithe freastalaí cuntais UI/UX
+- Tuairteála AlarmManager Seasta ar Android 14
+- Athruithe inmheánacha
+- Aistriúcháin nuashonraithe

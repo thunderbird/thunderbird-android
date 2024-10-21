@@ -1,2 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_header_description">Nunca mostramos anuncios ni vendemos tus datos. Nos financiamos completamente con contribuciones financieras de nuestros usuarios. Si disfrutas de Thunderbird, por favor, ayúdanos a mantenerlo. ¡No podemos hacer esto sin ti!</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Continuar con el pago</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Mensual</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Donación única</string>
+    <string name="funding_googleplay_contribution_header_title">Apoya Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_title">Contribución segura</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Ninguno disponible</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Modifica el pago mensual</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ayuda a mantener Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Las contribuciones no son fiscalmente deducibles como donaciones benéficas.</string>
+    <string name="funding_googleplay_contribution_title">Apoya Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Reintentar</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Pago no disponible</string>
+    <string name="funding_googleplay_contribution_error_show_more">Ver más detalles</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Rechazar error</string>
+    <string name="funding_googleplay_contribution_error_unknown">Error desconocido</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Compra fallida.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Actualmente, las colaboraciones no están disponibles.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Las colaboraciones dentro de la aplicación no están disponibles actualmente.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visite www.thunderbird.net para conocer más formas de apoyar a Thunderbird</string>
+</resources>

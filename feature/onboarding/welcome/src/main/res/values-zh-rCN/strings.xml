@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">开始</string>
     <string name="onboarding_welcome_import_button">导入设置</string>
-    <string name="onboarding_welcome_message">欢迎使用 <xliff:g id="app_name">%s</xliff:g>，这是一款专为提高安全性、轻松定制和无缝管理您的所有电子邮件账号而设计的 Android 电子邮件客户端。</string>
 </resources>

@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Starta</string>
     <string name="onboarding_welcome_import_button">Importera inställningar</string>
-    <string name="onboarding_welcome_message">Tere tulemast kasutama Androidi e-postiklienti <xliff:g id="app_name">%s</xliff:g>, mis on loodud parema turvalisuse, lihtsa kohandatavuse ja kõikide sinu e-postikontode sujuva halduse nimel.</string>
 </resources>

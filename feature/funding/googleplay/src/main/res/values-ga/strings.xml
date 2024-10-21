@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_title">Tacaigh le Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Athraigh íocaíocht mhíosúil</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Cabhraigh le Thunderbird a choinneáil beo</string>
+    <string name="funding_googleplay_contribution_header_title">Tacaigh le Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_title">Ranníocaíocht slán</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Go míosúil</string>
+    <string name="funding_googleplay_contribution_header_description">Ní thaispeánaimid fógraí ná ní dhíolaimid do shonraí riamh. Táimid maoinithe go hiomlán ag ranníocaíochtaí airgeadais ónár n-úsáideoirí. Má tá tú ag baint sult as Thunderbird, le do thoil cabhrú leis. Ní féidir linn é seo a dhéanamh gan tú!</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Níl aon cheann ar fáil</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Tabhair uair amháin</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Níl ranníocaíochtaí inasbhainte ó thaobh cánach mar thabhartais charthanachta.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Lean ar aghaidh chuig an íocaíocht</string>
+</resources>

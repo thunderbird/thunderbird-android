@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Iniziamo</string>
     <string name="onboarding_welcome_import_button">Importa impostazioni</string>
-    <string name="onboarding_welcome_message">Benvenuto in <xliff:g id="app_name">%s</xliff:g>, il client di posta elettronica Android progettato per la sicurezza, la personalizzazione e una fluida gestione di tutti i tuoi account di posta elettronica.</string>
 </resources>

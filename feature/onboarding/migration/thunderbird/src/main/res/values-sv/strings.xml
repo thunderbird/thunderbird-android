@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importera inställningar</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Är du ny på Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Lägg till ett e-postkonto nu</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Använder du redan Thunderbird på datorn?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Inställningar\' i flikmenyn</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Välj \'Exportera till mobil\' och följ instruktionerna</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importera enkelt dina kontoinställningar genom att skanna en QR-kod.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">I Thunderbird för datorer, gå till:</string>
+    <string name="onboarding_migration_thunderbird_import_title">Flytta från en annan app eller enhet?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Importera dina kontoinställningar nu</string>
+</resources>

@@ -1,0 +1,31 @@
+Thunderbird güçlü ve gizlilik odaklı bir e-posta uygulamasıdır. Maksimum verimlilik için Birleşik Gelen Kutusu ile çok sayıda e-posta hesabınızı tek uygulamadan zahmetsizce yönetebilirsiniz. Açık kaynak teknolojisi üzerine inşa edilen ve özel bir geliştirici ekibinin yanı sıra gönüllüler tarafından desteklenen Thunderbird, kişisel verilerinize asla ticari bir gözle bakmaz. Yalnızca kullanıcılarımızın finansal katkılarıyla desteklenen Thunderbird'de e-postalarınızın arasına karışmış reklamlar görmek zorunda değilsiniz.
+
+<b>Neler yapabilirsiniz?</b>
+<ul>
+  <li>Aynı anda birkaç uygulama ve webmail kullanmayı bırakabilirsiniz. Tek bir uygulama ve Birleşik Gelen Kutusu size yeter.</li>
+  <li>Kişisel verilerinizi asla toplamayan ve satmayan, gizlilik dostu bir e-posta istemcisinin keyfini çıkarabilirsiniz. Sizi doğrudan e-posta sağlayıcınıza bağlıyoruz. Hepsi bu!</li>
+  <li>Mesajlarınızı şifrelemek ve çözmek için OpenKeychain uygulamasıyla OpenPGP e-posta şifrelemesini (PGP/MIME) kullanarak gizliliğinizi üst seviyeye taşıyabilirsiniz.</li>
+  <li>E-postalarınızı anında, belirli aralıklarla veya istediğiniz zaman senkronize etmeyi seçebilirsiniz.</li>
+  <li>Hem yerel hem de sunucu bazlı aramayı kullanarak önemli iletileri bulabilirsiniz.</li>
+</ul>
+
+<b>Uyumluluk</b>
+<ul>
+  <li>Thunderbird, IMAP ve POP3 protokollerini destekler. Gmail, Outlook, Yahoo Mail ve iCloud da dahil olmak üzere çok sayıda e-posta sağlayıcısıyla uyumludur.</li>
+</ul>
+
+<b>Neden Thunderbird kullanmalısınız?</b>
+<ul>
+  <li>20 yıldan uzun süredir e-posta dünyasının güvenilir ismi kabul edilen Thunderbird artık Android'de.</li>
+  <li>Thunderbird tamamen kullanıcılarımızın bağışlarıyla finanse ediliyor. Kişisel verilerinizi toplamıyoruz. Siz "ürün" değilsiniz.</li>
+  <li>Verimliliğe sizin kadar önem veren bir ekip tarafından geliştirildi. Uygulamada minimum zaman harcayıp maksimum fayda elde etmenizi istiyoruz.</li>
+  <li>Dünyanın dört bir yanındaki gönüllüler tarafından 20'den fazla dile çevrildi.</li>
+  <li>Mozilla Vakfının alt kuruluşu MZLA Technologies Corporation tarafından destekleniyor.</li>
+</ul>
+
+<b>Açık Kaynak ve Topluluk</b>
+<ul>
+  <li>Thunderbird özgür ve açık kaynaklıdır; yani kodları serbestçe görüntülenebilir, değiştirilebilir, kullanılabilir ve paylaşılabilir. Lisansı, sonsuza kadar özgür kalmasını sağlar. Thunderbird binlerce gönüllünün size armağınıdır.</li>
+  <li>Thunderbird'ü şeffaf bir şekilde geliştiriyor, gelişmeleri blogumuzda ve e-posta listelerimizde düzenli olarak paylaşıyoruz.</li>
+  <li>Teknik desteği topluluğumuz ele alıyor. İhtiyacınız olan cevapları gönüllülerimizden alabilir veya siz de katkıda bulunabilirsiniz. Soruları yanıtlayabilir, uygulamayı dilinize çevirebilir, arkadaşlarınıza ve ailenize Thunderbird'den bahsedebilirsiniz.</li>
+</ul>

@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_list_title">Sicherer Beitrag</string>
+    <string name="funding_googleplay_contribution_header_title">Thunderbird unterstützen</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Monatlich</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Keine verfügbar</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Monatliche Zahlung ändern</string>
+    <string name="funding_googleplay_contribution_title">Thunderbird unterstützen</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Die Beiträge sind nicht als wohltätige Spenden steuerlich absetzbar.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Weiter zur Zahlung</string>
+</resources>

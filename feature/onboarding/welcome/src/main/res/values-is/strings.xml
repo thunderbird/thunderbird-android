@@ -2,5 +2,4 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Byrja</string>
     <string name="onboarding_welcome_import_button">Flytja inn stillingar</string>
-    <string name="onboarding_welcome_message">Velkomin í <xliff:g id="app_name">%s</xliff:g>, tölvupóstforrit fyrir Android, sem hannað er með mesta öryggi í huga, er auðvelt að sérsníða og býður upp á saumlausa stýringu allra tölvupóstreikninganna þinna.</string>
 </resources>

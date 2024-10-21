@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Ymportynstellingen</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Nij by Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Foegje no in e-mailaccount ta</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Brûke jo Thunderbird al op de desktop?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Gean yn Thunderbird op de desktop nei:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Selektearje ‘Eksportearje foar mobyl’ en folgje de ynstruksjes</string>
+    <string name="onboarding_migration_thunderbird_import_title">Brûke jo in oare app of in oar apparaat?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Jo accountynstellingen no ymportearje</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Ymportearje ienfâldich jo accountynstellingen troch in QR-koade te scannen.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Ynstellingen’ yn de Taakbalke (linksûnder)</string>
+</resources>

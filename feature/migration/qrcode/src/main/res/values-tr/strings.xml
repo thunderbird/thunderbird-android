@@ -5,4 +5,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Ayarlara git</string>
     <string name="migration_qrcode_scanning_progress">%1$s / %2$s tarandı</string>
     <string name="migration_qrcode_done_button_text">Tamam</string>
+    <string name="migration_qrcode_scanning_instructions">Bilgisayarınızdaki Thunderbird\'ün verdiği QR kodunu okutun</string>
 </resources>

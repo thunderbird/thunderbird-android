@@ -1,24 +1,24 @@
-K-9 Mail to klient e-mail typu open source, który działa zasadniczo z każdym dostawcą wiadomości e-mail.
+<span lang="en">K-9 Mail</span> to klient poczty elektronicznej o otwartym kodzie źródłowym, który działa zasadniczo z każdym dostawcą poczty.
 
 <b>Funkcje</b>
 
-* Obsługa wiely kont
+* Obsługa wielu kont
 * Ujednolicona skrzynka odbiorcza
-* Poszanowanie prywatności (bez śledzenia, łączy się tylko z dostawcą e-maila)
-* Automatyczna synchronizacja tła lub powiadomienia push
-* Wyszukiwanie lokalne i serwerowe
-* Szyfrowanie e -mail OpenPGP (PGP/MIME)
+* Poszanowanie prywatności (bez jakiegokolwiek śledzenia, łączy się tylko z Twoim dostawcą poczty)
+* Automatyczna synchronizacja w tle lub powiadomienia push
+* Wyszukiwanie lokalne i na serwerze
+* Szyfrowanie poczty w standardzie <span lang="en">OpenPGP (PGP/MIME)</span>
 
-Zainstaluj aplikację <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a>, aby szyfrować i deszyfrować swoje e-maile za pomocą OpenPGP.
+Zainstaluj aplikację <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain"><span lang="en">OpenKeychain: Easy PGP</span></a> aby szyfrować i odszyfrowywać swoje wiadomości za pomocą <span lang="en">OpenPGP</span>.
 
 
 <b>Wsparcie</b>
 
-Jeśli masz problemy z K-9 Mail, poproś o pomoc na naszym <a href="https://forum.k9mail.app">forum wsparcia</a>.
+Jeśli masz problemy z <span lang="en">K-9 Mail</span>, poproś o pomoc na naszym <a href="https://forum.k9mail.app">forum wsparcia</a>.
 
 
 <b>Chcesz pomóc?</b>
 
-K-9 Mail to projekt opracowany przez społeczność. Jeśli chcesz pomóc w ulepszeniu aplikacji, dołącz do nas!
-Nasz kod źródłowy i wiki można znaleźć na stronie <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
-Zawsze chętnie witamy nowych programistów, projektantów, dokumentów, tłumaczy, wyszukujących błędy i innych.
+<span lang="en">K-9 Mail</span> to projekt rozwijany przez społeczność. Jeśli chcesz pomóc w ulepszaniu aplikacji, dołącz do nas!
+Nasz system zgłaszania błędów, kod źródłowy i wiki możesz znaleźć na stronie <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Zawsze chętnie witamy nowych programistów, projektantów, dokumentarzystów, tłumaczy, łowców błędów i innych.

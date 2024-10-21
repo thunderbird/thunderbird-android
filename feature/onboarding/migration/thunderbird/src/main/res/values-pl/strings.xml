@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_migration_thunderbird_new_account_title">Nie znasz jeszcze Thunderbirda?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Dodaj teraz konto e-mail</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Używasz już Thunderbirda na komputerze?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importuj ustawienia</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">„Ustawienia” na pasku miejsc (lewy dolny róg)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Wybierz opcję „Eksportuj do wersji mobilnej” i postępuj zgodnie z instrukcjami</string>
+    <string name="onboarding_migration_thunderbird_import_title">Przechodzisz z innej aplikacji lub urządzenia?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">W prosty sposób importuj ustawienia konta poprzez zeskanowanie kodu QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">W wersji komputerowej Thunderbirda przejdź do:</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Importuj teraz ustawienia konta</string>
+</resources>

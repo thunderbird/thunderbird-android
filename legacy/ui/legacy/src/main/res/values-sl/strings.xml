@@ -16,10 +16,10 @@
     <string name="changelog_title">Dnevnik sprememb</string>
     <string name="changelog_loading_error">Dnevnika sprememb ni bilo mogoče naložiti.</string>
     <string name="changelog_version_title">Različica %s</string>
-    <string name="changelog_recent_changes_title">Kaj je novega</string>
+    <string name="changelog_recent_changes_title">Novosti</string>
     <string name="changelog_show_recent_changes">Pokaže zadnje spremembe po posodobitvi programa</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">Kaj je novega v tej izdaji</string>
+    <string name="changelog_snackbar_text">Novosti v tej izdaji</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
     <!--General strings that include the app name-->
@@ -93,7 +93,7 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(ni navedene zadeve …)</string>
     <string name="general_no_sender">Ni navedenega pošiljatelja</string>
-    <string name="status_loading_more">Nalaganje sporočil\u2026</string>
+    <string name="status_loading_more">Nalaganje sporočil …</string>
     <string name="status_network_error">Napaka povezave</string>
     <string name="status_invalid_id_error">Sporočila ni mogoče najti</string>
     <string name="status_loading_error">Napaka nalaganja sporočila</string>
@@ -126,7 +126,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Napaka obveščanja</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Med poskusom ustvarjanja sistemskega obvestila za novo sporočilo je prišlo do napake. Razlog je najverjetneje manjkajoči zvok obvestila.\n\nTapni, za odpreti nastavitve obvestil.</string>
+    <string name="notification_notify_error_text">Med poskusom ustvarjanja sistemskega obvestila za novo sporočilo je prišlo do napake. Razlog je najverjetneje manjkajoči zvok obvestila.\n\nDotaknite se, če želite odpreti nastavitve obvestil.</string>
     <string name="notification_bg_sync_ticker">Preverjanje pošte: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Preverjanje pošte</string>
     <string name="notification_bg_send_ticker">Pošiljanje pošte: <xliff:g id="account">%s</xliff:g></string>
@@ -159,7 +159,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="message_compose_quote_header_to">Za:</string>
     <string name="message_compose_quote_header_cc">Kp:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> sporoča:</string>
-    <string name="message_compose_reply_header_fmt_with_date">Dne, <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> sporoča:</string>
+    <string name="message_compose_reply_header_fmt_with_date">Dne <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> sporoča:</string>
     <string name="message_compose_error_no_recipients">Dodati je treba vsaj enega prejemnika.</string>
     <string name="compose_error_incomplete_recipient">Polje prejemnika vsebuje nepopoln naslov!</string>
     <string name="error_contact_address_not_found">Za ta stik ni mogoče najti nobenega elektronskega naslova.</string>
@@ -890,4 +890,14 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="general_settings_post_mark_as_unread_action_stay">Ostani na trenutnem sporočilu</string>
     <string name="general_settings_post_mark_as_unread_action_title">Ko označite sporočilo kot neprebrano</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Vrni se na seznam sporočil</string>
+    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" bo odstranjen iz <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="settings_ui_telemetry_title">Uporaba in tehnični podatki</string>
+    <string name="settings_ui_data_collection">Zbiranje podatkov</string>
+    <string name="push_notification_state_alarm_permission_missing">Manjka dovoljenje za nastavitev alarma.</string>
+    <string name="about_title">O programu <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="folder_list_show_hidden_folders">Pokaži skrite mape</string>
+    <string name="folder_settings_notifications_label">Obvestila mape</string>
+    <string name="folder_settings_push_label">Potisk mape</string>
+    <string name="folder_settings_visible_label">Prikaz mape</string>
+    <string name="folder_settings_sync_label">Usklajevanje mape</string>
 </resources>

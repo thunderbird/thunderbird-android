@@ -7,4 +7,8 @@
     <string name="funding_googleplay_contribution_list_disclaimer">مشارکت‌ها به عنوان اعانه‌های خیریه شامل مالیات نمی‌شوند.</string>
     <string name="funding_googleplay_contribution_footer_payment_button">ادامه به پرداخت</string>
     <string name="funding_googleplay_contribution_header_description">ما هرگز تبلیغات نشان نداده یا داده‌هایتان را نمی‌فروشیم و کاملاً به دست مشارکت‌های مالی کاربرانمان تأمین می‌شویم. اگر از تاندربرد لذت می برید، لطفاُ در حمایت از آن کمک کنید. ما نمی توانیم این کار را بدون شما انجام دهیم!</string>
+    <string name="funding_googleplay_contribution_title">پشتیبانی تاندربرد</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">هیچ کدام موجود نیست</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">کمک کنید تا تاندربرد ادامه دهد</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">پرداخت ماهانه را تغییر دهید</string>
 </resources>

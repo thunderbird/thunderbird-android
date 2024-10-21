@@ -40,4 +40,5 @@
     <string name="settings_import_pick_app_button">Importo prej aplikacioni</string>
     <string name="settings_import_pick_app_dialog_title">Importo prej aplikacioni</string>
     <string name="settings_import_scan_qr_code_button">Skanoni kodin QR</string>
+    <string name="settings_import_app_version_not_supported">Version aplikacione që s’mbulohet.</string>
 </resources>

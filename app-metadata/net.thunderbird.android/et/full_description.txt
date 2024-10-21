@@ -1,0 +1,31 @@
+Thunderbird on võimas privaatsuskeskne e-postirakendus. Saad mugavalt kasutada ühes rakenduses mitut e-posti kontot ning ühise koondsisendkausta võimalus parandab sinu tõhusust. Rakendus põhineb avatud lähtekoodil, projekti veab pühendunud tiim arendajaid, kelle toeks on ülemaailmne vabatahtlike kogukond. Thunderbird mitte kunagi ei kasuta sinu privaatseid andmeid tootena - meie rahastamine põhineb vaid kasutajate toetustel ning sinu e-kirjade vahel me kunagi ei kuva reklaame.
+
+<b>Mida sa saad teha?</b>
+<ul>
+  <li>Unusta ära mitu erinevat e-posti rakendust ja veebimeil. Kasuta ühte rakendust, kust koondsisendkaust aitab sul oma suhtlust lihtsamini korraldada.</li>
+  <li>Kasuta privaatsussõbralikku e-posti klienti, mis mitte kunagi ei kogu sinu andmeid. Me vaid ühendame sind sinu e-posti kliendiga. See on ka kõik!</li>
+  <li>Kui soovid veelgi privaatsust parandada, siis OpenKeychain rakenduse abil kasuta OpenPGP-põhist läbivat e-posti krüptimist  (PGP/MIME).</li>
+  <li>Vali, kas tahad e-posti kohest sünkroniseerimist, uuendamist etteantud ajavahemike järel või ainult sinu päringu alusel - just täpselt nii, nagu sul vaja on!</li>
+  <li>Otsi vajalikke kirju nii kohaliku kui serveripõhise otsingu abil.</li>
+</ul>
+
+<b>Ühilduvus</b>
+<ul>
+  <li>Thunderbird toimib nii IMAP, kui POP3 protokollidega ning võimaldab paljude e-postiteenuste pakkujate kasutamist, sh Gmail, Outlook, Yahoo Mail, iCloud.</li>
+</ul>
+
+<b>Miks just Thunderbird on õige valik?</b>
+<ul>
+  <li>Usalusväärne posti klient juba üle 20 aasta - nüüd olemas ka Androidis.</li>
+  <li>Thunderbirdi rahastus põhineb vaid vabataktlike toetusel. Me ei ahnitse kokku ega müü sinu isiklikke andmeid - sina ei ole kunagi toode, mida müüakse.</li>
+  <li>Arendajate tiim on sarnaselt sinuga orienteeritud tõhususele. Me soovime kulutada rakendusele võimalikult vähe aega, aga saavutades selle ajaga parima tulemuse.</li>
+  <li>Üle maailma tegutsevate kaasautorite abil on Thunderbird Androidile tõlgitud enam kui 20 keelde.</li>
+  <li>Meie tegevust toetab MZLA Technologies Corporation, mis on Mozilla Foundationi täielikus omandis olev tütarettevõte.</li>
+</ul>
+
+<b>Avatud lähtekood ja kogukond</b>
+<ul>
+  <li>Thunderbird avatud lähtekoodil põhineb vaba ja tasuta tarkvara. Rakenduse lähtekood on vaba kõigile tutvumiseks, muutmiseks, kasutamiseks ja jagamiseks. Meie litsents tagab ka selle, et nii jääb igavesti. Sa võid tõlgendada seda ka nii, et Thunderbird on tuhandete kaasautorite kingitus sulle.</li>
+  <li>Meie arendustegevus on avalik ja läbipaistev ning oma tegevusest jagame pidevalt teavet nii meie ajaveebis kui postiloendites.</li>
+  <li>Meie kasutajatugi põhineb ülemaailmsel kogukonnal. Otsi vastuseid sind huvitavatele küsimustele, abista teisi, osale kogukonna töös või tutvusta kõikidele huvilistele Thunderbirdi - kõik see vastavalt sinu eelistustele.</li>
+</ul>

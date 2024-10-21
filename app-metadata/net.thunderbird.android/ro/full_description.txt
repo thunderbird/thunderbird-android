@@ -1,0 +1,31 @@
+Thunderbird este o aplicație de poștă electronică completă și modernă, axată pe confidențialitate. Gestionați fără efort mai multe conturi de poștă electronică dintr-o singură aplicație, cu o opțiune Căsuță de primire unificată pentru productivitate maximă. Construită pe tehnologia de cod-sursă deschis și susținută de o echipă dedicată de dezvoltatori, alături de o comunitate globală de voluntari, Thunderbird nu tratează niciodată datele dvs. private ca pe un produs. Susținută exclusiv prin contribuții financiare din partea utilizatorilor noștri, astfel încât să nu mai trebuiască să vedeți niciodată reclame amestecate cu corespondența dvs.
+
+<b>Ce puteți face</b>
+<ul>
+  <li>Renunțați la aplicațiile multiple și la webmail. Folosiți o singură aplicație, cu o căsuță de primire unificată opțională, pentru a vă face ziua mai ușoară.</li>
+  <li>Bucurați-vă de un client de poștă electronică care protejează confidențialitatea și care nu colectează sau vinde niciodată datele dvs. personale. Vă conectăm direct la furnizorul dvs. de poștă electronică. Asta e tot!</li>
+  <li>Duceți-vă confidențialitatea la nivelul următor utilizând criptarea OpenPGP a corespondenței (PGP/MIME) cu aplicația „OpenKeychain”, pentru a vă cripta și decripta mesajele.</li>
+  <li>Alegeți să vă sincronizați corespondența instantaneu, la intervale stabilite sau la cerere. Oricum doriți să vă verificați corespondența, depinde de dvs.!</li>
+  <li>Găsiți mesajele importante utilizând atât căutarea locală, cât și cea din partea serverului.</li>
+</ul>
+
+<b>Compatibilitate</b>
+<ul>
+  <li>Thunderbird funcționează cu protocoalele IMAP și POP3, oferind suport pentru o gamă largă de furnizori de poștă electronică, inclusiv Gmail, Outlook, Yahoo Mail, iCloud și mulți alții.</li>
+</ul>
+
+<b>De ce să folosiți Thunderbird</b>
+<ul>
+  <li>Nume de încredere în domeniul poștei electronice de peste 20 de ani - acum și pe Android.</li>
+  <li>Thunderbird este finanțat integral prin contribuții voluntare din partea utilizatorilor noștri. Nu extragem datele dvs. personale. Tu nu ești niciodată produsul.</li>
+  <li>Realizat de o echipă care este la fel de preocupată de eficiență ca și tine. Dorim să petreceți cât mai puțin timp folosind aplicația și să obțineți maximum în schimb.</li>
+  <li>Cu colaboratori din întreaga lume, Thunderbird pentru Android a fost tradus în mai mult de 20 de limbi.</li>
+  <li>Susținut de MZLA Technologies Corporation, o filială deținută integral de Mozilla Foundation.</li>
+</ul>
+
+<b>Sursă deschisă și comunitate</b>
+<ul>
+  <li>Thunderbird este gratuit și cu cod-sursă deschis, ceea ce înseamnă că codul său poate fi vizualizat, modificat, utilizat și partajat în mod liber. Licența sa asigură, de asemenea, că va fi gratuit pentru totdeauna. Vă puteți gândi la Thunderbird ca la un cadou din partea a mii de colaboratori pentru dumneavoastră.</li>
+  <li>Dezvoltăm în mod deschis, cu actualizări regulate și transparente pe blogul nostru și pe listele de discuții.</li>
+  <li>Asistența noastră pentru utilizatori este alimentată de comunitatea noastră globală. Găsiți răspunsurile de care aveți nevoie sau intrați în rolul de contribuitor - fie că răspundeți la întrebări, traduceți aplicația sau le spuneți prietenilor și familiei despre Thunderbird.</li>
+</ul>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_migration_thunderbird_new_account_title">Používáte Thunderbird poprvé?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Přidat e-mailový účet</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Používáte Thunderbird na počítači?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importovat nastavení</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">V Thunderbirdu na počítači přejděte do:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Vyberte „Exportovat do mobilu“ a řiďte se pokyny</string>
+    <string name="onboarding_migration_thunderbird_import_title">Přecházíte z jiné aplikace nebo zařízení?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">„Nastavení“ v navigační liště (vlevo dole)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Jednoduše importujte nastavení svého účtu naskenováním QR kódu.</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Importujte nastavení svého účtu</string>
+</resources>
