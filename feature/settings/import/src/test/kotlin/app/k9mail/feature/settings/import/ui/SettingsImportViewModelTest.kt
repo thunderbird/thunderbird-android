@@ -37,21 +37,35 @@ class SettingsImportViewModelTest {
     private val contentResolver = mock<ContentResolver>()
     private val settingsImporter = mock<SettingsImporter>()
     private val accountActivator = mock<AccountActivator>()
+    private val migrationManager = FakeMigrationManager(featureIncluded = true)
     private val importAppFetcher = mock<ImportAppFetcher>()
     private val viewModel = SettingsImportViewModel(
         contentResolver = contentResolver,
         settingsImporter = settingsImporter,
         accountActivator = accountActivator,
+        migrationManager = migrationManager,
         importAppFetcher = importAppFetcher,
         backgroundDispatcher = Dispatchers.Unconfined,
         viewModelScope = testScope,
     )
 
     @Test
+    fun `scanQrCodeButton and pickAppButton should be hidden when migration feature is disabled`() {
+        migrationManager.featureIncluded = false
+
+        viewModel.initialize()
+
+        val uiModel = viewModel.getUiModel().value!!
+        assertThat(uiModel.isScanQrCodeButtonVisible).isFalse()
+        assertThat(uiModel.isPickAppButtonEnabled).isFalse()
+    }
+
+    @Test
     fun `pickAppButton should only be enabled after app from which we can import has been found`() {
         importAppFetcher.stub {
             on { isAtLeastOneAppInstalled() } doReturn true
         }
+        viewModel.initialize()
         val uiModel = viewModel.getUiModel().value!!
 
         assertThat(uiModel.isPickAppButtonVisible).isTrue()
@@ -69,6 +83,7 @@ class SettingsImportViewModelTest {
         importAppFetcher.stub {
             on { isAtLeastOneAppInstalled() } doReturn false
         }
+        viewModel.initialize()
         val uiModelLiveData = viewModel.getUiModel()
 
         assertThat(uiModelLiveData.value!!.isPickAppButtonVisible).isTrue()
@@ -86,6 +101,7 @@ class SettingsImportViewModelTest {
         importAppFetcher.stub {
             on { isAtLeastOneAppInstalled() } doReturn true
         }
+        viewModel.initialize()
         val uiModelLiveData = viewModel.getUiModel()
         val actionEventsLiveData = viewModel.getActionEvents()
 
@@ -104,6 +120,7 @@ class SettingsImportViewModelTest {
         importAppFetcher.stub {
             on { isAtLeastOneAppInstalled() } doReturn true
         }
+        viewModel.initialize()
         val uiModelLiveData = viewModel.getUiModel()
 
         // Check for apps we can import from
@@ -121,6 +138,7 @@ class SettingsImportViewModelTest {
         importAppFetcher.stub {
             on { isAtLeastOneAppInstalled() } doReturn true
         }
+        viewModel.initialize()
         val uiModelLiveData = viewModel.getUiModel()
 
         // Check for apps we can import from
@@ -169,6 +187,7 @@ class SettingsImportViewModelTest {
         importAppFetcher.stub {
             on { isAtLeastOneAppInstalled() } doReturn true
         }
+        viewModel.initialize()
         val uiModelLiveData = viewModel.getUiModel()
 
         // Check for apps we can import from
@@ -200,6 +219,7 @@ class SettingsImportViewModelTest {
         importAppFetcher.stub {
             on { isAtLeastOneAppInstalled() } doReturn true
         }
+        viewModel.initialize()
         val uiModelLiveData = viewModel.getUiModel()
 
         // Check for apps we can import from
