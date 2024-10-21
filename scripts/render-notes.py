@@ -54,6 +54,16 @@ def render_notes(
             if ("0b" not in version) or (
                 "0b" in version and note["group"] == int(vers[-1])
             ):
+                if (
+                    "thunderbird_only" in note
+                    and note["thunderbird_only"]
+                    and application == "k9mail"
+                ) or (
+                    "k9mail_only" in note
+                    and note["k9mail_only"]
+                    and application == "thunderbird"
+                ):
+                    continue
                 if "note" in note:
                     tag = note["tag"].lower().capitalize()
                     if tag not in render_data["releases"][vers]["notes"]:
