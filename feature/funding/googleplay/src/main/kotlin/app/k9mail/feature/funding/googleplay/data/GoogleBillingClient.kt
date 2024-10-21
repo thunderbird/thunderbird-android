@@ -2,18 +2,16 @@ package app.k9mail.feature.funding.googleplay.data
 
 import android.app.Activity
 import app.k9mail.core.common.cache.Cache
-import app.k9mail.feature.funding.googleplay.data.DataContract.Remote.GoogleBillingClientProvider
+import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
-import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.ConsumeParams
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.ProductDetailsResult
 import com.android.billingclient.api.Purchase
@@ -22,8 +20,6 @@ import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchaseHistoryParams
 import com.android.billingclient.api.QueryPurchasesParams
-import com.android.billingclient.api.acknowledgePurchase
-import com.android.billingclient.api.consumePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchaseHistory
 import com.android.billingclient.api.queryPurchasesAsync
@@ -37,10 +33,11 @@ import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 internal class GoogleBillingClient(
-    private val clientProvider: GoogleBillingClientProvider,
+    private val clientProvider: Remote.GoogleBillingClientProvider,
     private val productMapper: DataContract.Mapper.Product,
     private val resultMapper: DataContract.Mapper.BillingResult,
     private val productCache: Cache<String, ProductDetails>,
+    private val purchaseHandler: Remote.GoogleBillingPurchaseHandler,
     backgroundDispatcher: CoroutineContext = Dispatchers.IO,
 ) : DataContract.BillingClient, PurchasesUpdatedListener {
 
@@ -124,7 +121,10 @@ internal class GoogleBillingClient(
     override suspend fun loadPurchasedContributions(): List<Contribution> {
         val inAppPurchases = queryPurchase(ProductType.INAPP)
         val subscriptionPurchases = queryPurchase(ProductType.SUBS)
-        val contributions = handlePurchases(inAppPurchases.purchasesList + subscriptionPurchases.purchasesList)
+        val contributions = purchaseHandler.handlePurchases(
+            clientProvider = clientProvider,
+            purchases = inAppPurchases.purchasesList + subscriptionPurchases.purchasesList,
+        )
         val recentContribution = if (inAppPurchases.purchasesList.isEmpty()) {
             loadInAppPurchaseHistory()
         } else {
@@ -223,7 +223,9 @@ internal class GoogleBillingClient(
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: MutableList<Purchase>?) {
         when (billingResult.responseCode) {
             BillingResponseCode.OK -> coroutineScope.launch {
-                handlePurchases(purchases)
+                if (purchases != null) {
+                    purchaseHandler.handlePurchases(clientProvider, purchases)
+                }
             }
 
             BillingResponseCode.USER_CANCELED -> {
@@ -247,53 +249,5 @@ internal class GoogleBillingClient(
                 )
             }
         }
-    }
-
-    private suspend fun handlePurchases(purchases: List<Purchase>?): List<Contribution> {
-        return purchases?.mapNotNull { purchase ->
-            handlePurchase(purchase)
-        } ?: emptyList()
-    }
-
-    private suspend fun handlePurchase(purchase: Purchase): Contribution? {
-        consumePurchase(purchase)
-
-        return if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-            val product = purchase.products.firstOrNull()?.let { productCache[it] } ?: return null
-            val contribution = productMapper.mapToContribution(product)
-
-            if (!purchase.isAcknowledged) {
-                val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-                    .setPurchaseToken(purchase.purchaseToken)
-                    .build()
-
-                val acknowledgeResult: BillingResult =
-                    clientProvider.current.acknowledgePurchase(acknowledgePurchaseParams)
-
-                if (acknowledgeResult.responseCode != BillingResponseCode.OK) {
-                    contribution
-                } else {
-                    // handle acknowledge error
-                    Timber.e("acknowledgePurchase failed")
-                    null
-                }
-            } else {
-                Timber.e("purchase already acknowledged")
-                null
-            }
-        } else {
-            Timber.e("purchase not purchased")
-            null
-        }
-    }
-
-    private suspend fun consumePurchase(purchase: Purchase) {
-        val consumeParams = ConsumeParams.newBuilder()
-            .setPurchaseToken(purchase.purchaseToken)
-            .build()
-
-        // This could fail but we can ignore the error as we handle purchases
-        // the next time the purchases are requested
-        clientProvider.current.consumePurchase(consumeParams)
     }
 }

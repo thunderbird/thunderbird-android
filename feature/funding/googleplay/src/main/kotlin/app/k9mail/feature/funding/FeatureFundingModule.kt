@@ -1,5 +1,6 @@
 package app.k9mail.feature.funding
 
+import app.k9mail.core.common.cache.Cache
 import app.k9mail.core.common.cache.InMemoryCache
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.funding.api.FundingNavigation
@@ -10,10 +11,12 @@ import app.k9mail.feature.funding.googleplay.data.GoogleBillingClient
 import app.k9mail.feature.funding.googleplay.data.mapper.BillingResultMapper
 import app.k9mail.feature.funding.googleplay.data.mapper.ProductDetailsMapper
 import app.k9mail.feature.funding.googleplay.data.remote.GoogleBillingClientProvider
+import app.k9mail.feature.funding.googleplay.data.remote.GoogleBillingPurchaseHandler
 import app.k9mail.feature.funding.googleplay.domain.BillingManager
 import app.k9mail.feature.funding.googleplay.domain.ContributionIdProvider
 import app.k9mail.feature.funding.googleplay.domain.DomainContract
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionViewModel
+import com.android.billingclient.api.ProductDetails
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -35,12 +38,24 @@ val featureFundingModule = module {
         )
     }
 
+    single<Cache<String, ProductDetails>> {
+        InMemoryCache()
+    }
+
+    single<DataContract.Remote.GoogleBillingPurchaseHandler> {
+        GoogleBillingPurchaseHandler(
+            productCache = get(),
+            productMapper = get(),
+        )
+    }
+
     single<DataContract.BillingClient> {
         GoogleBillingClient(
             clientProvider = get(),
             productMapper = get(),
             resultMapper = get(),
-            productCache = InMemoryCache(),
+            productCache = get(),
+            purchaseHandler = get(),
         )
     }
 

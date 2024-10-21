@@ -7,6 +7,7 @@ import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.BillingClient as GoogleBillingClient
 import com.android.billingclient.api.BillingResult as GoogleBillingResult
@@ -42,6 +43,13 @@ interface DataContract {
              * Disconnect from the billing service and clear the instance.
              */
             fun clear()
+        }
+
+        interface GoogleBillingPurchaseHandler {
+            suspend fun handlePurchases(
+                clientProvider: GoogleBillingClientProvider,
+                purchases: List<Purchase>,
+            ): List<Contribution>
         }
     }
 
