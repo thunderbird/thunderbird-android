@@ -53,6 +53,7 @@ import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.fsck.k9.ui.messagelist.MessageListFragment.FolderOperation
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
@@ -716,9 +717,10 @@ class MessageListFragment :
             -> {
                 if (data == null) return
 
+                val destAccountUuID = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_ACCOUNT_ID)
                 val destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
                 val messages = activeMessages!!
-                if (destinationFolderId != -1L) {
+                if (destAccountUuID != null && destinationFolderId != -1L) {
                     activeMessages = null
 
                     if (messages.isNotEmpty()) {
@@ -726,8 +728,8 @@ class MessageListFragment :
                     }
 
                     when (requestCode) {
-                        ACTIVITY_CHOOSE_FOLDER_MOVE -> move(messages, destinationFolderId)
-                        ACTIVITY_CHOOSE_FOLDER_COPY -> copy(messages, destinationFolderId)
+                        ACTIVITY_CHOOSE_FOLDER_MOVE -> move(messages, destAccountUuID, destinationFolderId)
+                        ACTIVITY_CHOOSE_FOLDER_COPY -> copy(messages, destAccountUuID, destinationFolderId)
                     }
                 }
             }
@@ -1102,6 +1104,7 @@ class MessageListFragment :
             currentFolderId = sourceFolderId,
             scrollToFolderId = lastSelectedFolderId,
             messageReference = null,
+            accountChooserEnabled = true,
         )
 
         // remember the selected messages for #onActivityResult
@@ -1117,7 +1120,7 @@ class MessageListFragment :
     private fun onArchive(messages: List<MessageReference>) {
         for ((account, messagesInAccount) in groupMessagesByAccount(messages)) {
             account.archiveFolderId?.let { archiveFolderId ->
-                move(messagesInAccount, archiveFolderId)
+                move(messagesInAccount, account.uuid, archiveFolderId)
             }
         }
     }
@@ -1139,15 +1142,24 @@ class MessageListFragment :
     private fun onSpamConfirmed(messages: List<MessageReference>) {
         for ((account, messagesInAccount) in groupMessagesByAccount(messages)) {
             account.spamFolderId?.let { spamFolderId ->
-                move(messagesInAccount, spamFolderId)
+                move(messagesInAccount, account.uuid, spamFolderId)
             }
         }
     }
 
     private fun checkCopyOrMovePossible(messages: List<MessageReference>, operation: FolderOperation): Boolean {
+        return checkCopyOrMovePossible(messages,null,operation)
+    }
+
+    private fun checkCopyOrMovePossible(messages: List<MessageReference>, destAccountUuID: String?, operation: FolderOperation): Boolean {
         if (messages.isEmpty()) return false
 
-        val account = accountManager.getAccount(messages.first().accountUuid)
+        val account = if (destAccountUuID==null) {
+            accountManager.getAccount(messages.first().accountUuid)
+        }
+        else {
+            accountManager.getAccount(destAccountUuID)
+        }
         if (operation == FolderOperation.MOVE && !messagingController.isMoveCapable(account) ||
             operation == FolderOperation.COPY && !messagingController.isCopyCapable(account)
         ) {
@@ -1171,35 +1183,39 @@ class MessageListFragment :
         return true
     }
 
-    private fun copy(messages: List<MessageReference>, folderId: Long) {
-        copyOrMove(messages, folderId, FolderOperation.COPY)
+    private fun copy(messages: List<MessageReference>, destAccountUuID : String, folderId: Long) {
+        copyOrMove(messages, destAccountUuID, folderId, FolderOperation.COPY)
     }
 
-    private fun move(messages: List<MessageReference>, folderId: Long) {
-        copyOrMove(messages, folderId, FolderOperation.MOVE)
+    private fun move(messages: List<MessageReference>, destAccountUuID: String, folderId: Long) {
+        copyOrMove(messages, destAccountUuID, folderId, FolderOperation.MOVE)
     }
 
-    private fun copyOrMove(messages: List<MessageReference>, destinationFolderId: Long, operation: FolderOperation) {
+    private fun copyOrMove(messages: List<MessageReference>, destAccountUuID: String, destinationFolderId: Long, operation: FolderOperation) {
+        // TODO it may be possible to relax the constraints of checkCopyOrMovePossible() when copying/moving to a different folder
         if (!checkCopyOrMovePossible(messages, operation)) return
+        // TODO possibly overkill when destAccountUuID is different from the source account's UUID
+        if (!checkCopyOrMovePossible(messages, destAccountUuID, operation)) return
 
         val folderMap = messages.asSequence()
-            .filterNot { it.folderId == destinationFolderId }
+            .filterNot { it.accountUuid==destAccountUuID && it.folderId == destinationFolderId }
             .groupBy { it.folderId }
 
+        val destAccount = accountManager.getAccount(destAccountUuID)
         for ((folderId, messagesInFolder) in folderMap) {
             val account = accountManager.getAccount(messagesInFolder.first().accountUuid)
 
             if (operation == FolderOperation.MOVE) {
                 if (showingThreadedList) {
-                    messagingController.moveMessagesInThread(account, folderId, messagesInFolder, destinationFolderId)
+                    messagingController.moveMessagesInThread(account, folderId, messagesInFolder, destAccount, destinationFolderId)
                 } else {
-                    messagingController.moveMessages(account, folderId, messagesInFolder, destinationFolderId)
+                    messagingController.moveMessages(account, folderId, messagesInFolder, destAccount, destinationFolderId)
                 }
             } else {
                 if (showingThreadedList) {
-                    messagingController.copyMessagesInThread(account, folderId, messagesInFolder, destinationFolderId)
+                    messagingController.copyMessagesInThread(account, folderId, messagesInFolder, destAccount, destinationFolderId)
                 } else {
-                    messagingController.copyMessages(account, folderId, messagesInFolder, destinationFolderId)
+                    messagingController.copyMessages(account, folderId, messagesInFolder, destAccount, destinationFolderId)
                 }
             }
         }

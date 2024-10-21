@@ -557,6 +557,7 @@ class MessageViewFragment :
             currentFolderId = messageReference.folderId,
             scrollToFolderId = account.lastSelectedFolderId,
             messageReference = messageReference,
+            accountChooserEnabled = true,
         )
 
         startActivityForResult(intent, requestCode)

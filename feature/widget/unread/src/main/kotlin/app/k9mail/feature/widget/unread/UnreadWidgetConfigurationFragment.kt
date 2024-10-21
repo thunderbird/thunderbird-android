@@ -59,6 +59,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
                 context = requireContext(),
                 action = ChooseFolderActivity.Action.CHOOSE,
                 accountUuid = selectedAccountUuid!!,
+                accountChooserEnabled = false,
             )
             startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
             false
