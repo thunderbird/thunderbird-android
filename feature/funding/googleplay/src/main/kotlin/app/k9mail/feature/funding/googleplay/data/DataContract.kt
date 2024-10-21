@@ -7,6 +7,8 @@ import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.ProductDetails
+import com.android.billingclient.api.PurchasesUpdatedListener
+import com.android.billingclient.api.BillingClient as GoogleBillingClient
 import com.android.billingclient.api.BillingResult as GoogleBillingResult
 
 interface DataContract {
@@ -24,6 +26,22 @@ interface DataContract {
                 billingResult: GoogleBillingResult,
                 transformSuccess: () -> T,
             ): Outcome<T, BillingError>
+        }
+    }
+
+    interface Remote {
+        interface GoogleBillingClientProvider {
+            val current: GoogleBillingClient
+
+            /**
+             * Set the listener to be notified of purchase updates.
+             */
+            fun setPurchasesUpdatedListener(listener: PurchasesUpdatedListener)
+
+            /**
+             * Disconnect from the billing service and clear the instance.
+             */
+            fun clear()
         }
     }
 

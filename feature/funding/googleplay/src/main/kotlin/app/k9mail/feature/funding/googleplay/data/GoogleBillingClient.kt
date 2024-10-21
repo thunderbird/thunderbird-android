@@ -1,13 +1,12 @@
 package app.k9mail.feature.funding.googleplay.data
 
 import android.app.Activity
-import android.content.Context
 import app.k9mail.core.common.cache.Cache
+import app.k9mail.feature.funding.googleplay.data.DataContract.Remote.GoogleBillingClientProvider
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import com.android.billingclient.api.AcknowledgePurchaseParams
-import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingClientStateListener
@@ -15,7 +14,6 @@ import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ConsumeParams
-import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.ProductDetailsResult
 import com.android.billingclient.api.Purchase
@@ -38,30 +36,23 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")
-class GoogleBillingClient(
-    private val context: Context,
+internal class GoogleBillingClient(
+    private val clientProvider: GoogleBillingClientProvider,
     private val productMapper: DataContract.Mapper.Product,
     private val resultMapper: DataContract.Mapper.BillingResult,
     private val productCache: Cache<String, ProductDetails>,
     backgroundDispatcher: CoroutineContext = Dispatchers.IO,
 ) : DataContract.BillingClient, PurchasesUpdatedListener {
 
-    private val coroutineScope = CoroutineScope(backgroundDispatcher)
-
-    private val billingClient: BillingClient by lazy {
-        BillingClient.newBuilder(context)
-            .setListener(this)
-            .enablePendingPurchases(
-                PendingPurchasesParams.newBuilder()
-                    .enableOneTimeProducts()
-                    .build(),
-            )
-            .build()
+    init {
+        clientProvider.setPurchasesUpdatedListener(this)
     }
+
+    private val coroutineScope = CoroutineScope(backgroundDispatcher)
 
     override suspend fun <T> connect(onConnected: suspend () -> T): T {
         return suspendCancellableCoroutine { continuation ->
-            billingClient.startConnection(
+            clientProvider.current.startConnection(
                 object : BillingClientStateListener {
                     override fun onBillingSetupFinished(billingResult: BillingResult) {
                         if (billingResult.responseCode == BillingResponseCode.OK) {
@@ -95,8 +86,7 @@ class GoogleBillingClient(
 
     override fun disconnect() {
         productCache.clear()
-        // TODO: this is not working as expected and leads to crashes: SERVICE_DISCONNECTED
-//        billingClient.endConnection()
+        clientProvider.clear()
     }
 
     override suspend fun loadOneTimeContributions(productIds: List<String>): List<OneTimeContribution> {
@@ -153,7 +143,7 @@ class GoogleBillingClient(
             .setProductType(ProductType.INAPP)
             .build()
 
-        val result = billingClient.queryPurchaseHistory(queryPurchaseHistoryParams)
+        val result = clientProvider.current.queryPurchaseHistory(queryPurchaseHistoryParams)
         return if (result.billingResult.responseCode == BillingResponseCode.OK) {
             val recentPurchaseId = result.purchaseHistoryRecordList.orEmpty().firstOrNull()?.products?.filter {
                 productCache.hasKey(it)
@@ -182,7 +172,7 @@ class GoogleBillingClient(
             .setProductList(productList)
             .build()
 
-        return billingClient.queryProductDetails(queryProductDetailsParams)
+        return clientProvider.current.queryProductDetails(queryProductDetailsParams)
     }
 
     private fun mapIdToProduct(
@@ -200,7 +190,7 @@ class GoogleBillingClient(
             .setProductType(productType)
             .build()
 
-        return billingClient.queryPurchasesAsync(queryPurchaseParams)
+        return clientProvider.current.queryPurchasesAsync(queryPurchaseParams)
     }
 
     override suspend fun purchaseContribution(activity: Activity, contribution: Contribution): Contribution? {
@@ -222,7 +212,7 @@ class GoogleBillingClient(
             .setProductDetailsParamsList(productDetailsParamsList)
             .build()
 
-        val result = billingClient.launchBillingFlow(activity, billingFlowParams)
+        val result = clientProvider.current.launchBillingFlow(activity, billingFlowParams)
         return if (result.responseCode == BillingResponseCode.OK) {
             contribution
         } else {
@@ -277,7 +267,8 @@ class GoogleBillingClient(
                     .setPurchaseToken(purchase.purchaseToken)
                     .build()
 
-                val acknowledgeResult: BillingResult = billingClient.acknowledgePurchase(acknowledgePurchaseParams)
+                val acknowledgeResult: BillingResult =
+                    clientProvider.current.acknowledgePurchase(acknowledgePurchaseParams)
 
                 if (acknowledgeResult.responseCode != BillingResponseCode.OK) {
                     contribution
@@ -303,6 +294,6 @@ class GoogleBillingClient(
 
         // This could fail but we can ignore the error as we handle purchases
         // the next time the purchases are requested
-        billingClient.consumePurchase(consumeParams)
+        clientProvider.current.consumePurchase(consumeParams)
     }
 }
