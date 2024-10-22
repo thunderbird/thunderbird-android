@@ -39,7 +39,9 @@ val appModule = module {
     single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { TbOAuthConfigurationFactory() }
-    single { TbAppNameProvider(androidContext()) } binds arrayOf(AppNameProvider::class, BrandNameProvider::class, FilePrefixProvider::class)
+    single {
+        TbAppNameProvider(androidContext())
+    } binds arrayOf(AppNameProvider::class, BrandNameProvider::class, FilePrefixProvider::class)
     single<ThemeProvider> { TbThemeProvider() }
     single<FeatureThemeProvider> { TbFeatureThemeProvider() }
     single<FeatureFlagFactory> { TbFeatureFlagFactory() }

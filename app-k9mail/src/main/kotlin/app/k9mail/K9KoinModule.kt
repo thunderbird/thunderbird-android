@@ -40,7 +40,9 @@ val appModule = module {
     single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { K9OAuthConfigurationFactory() }
-    single { K9AppNameProvider(androidContext()) } binds arrayOf(AppNameProvider::class, BrandNameProvider::class, FilePrefixProvider::class)
+    single {
+        K9AppNameProvider(androidContext())
+    } binds arrayOf(AppNameProvider::class, BrandNameProvider::class, FilePrefixProvider::class)
     single<ThemeProvider> { K9ThemeProvider() }
     single<FeatureThemeProvider> { K9FeatureThemeProvider() }
     single<FeatureFlagFactory> { K9FeatureFlagFactory() }
