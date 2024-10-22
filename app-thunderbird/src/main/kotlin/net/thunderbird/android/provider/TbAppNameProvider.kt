@@ -17,7 +17,5 @@ class TbAppNameProvider(
         context.getString(R.string.brand_name)
     }
 
-    override val filePrefix: String by lazy {
-        "thunderbird"
-    }
+    override val filePrefix: String = "thunderbird"
 }
