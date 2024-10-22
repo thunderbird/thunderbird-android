@@ -483,7 +483,7 @@ class SettingsExporter(
     fun generateDatedExportFileName(): String {
         val now = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        return String.format("%s_%s.%s", filePrefixProvider.filePrefix, EXPORT_FILENAME_MIDDLE_PART, dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)
+        return String.format("%s_%s_%s.%s", filePrefixProvider.filePrefix, EXPORT_FILENAME_MIDDLE_PART, dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)
     }
 
     companion object {
