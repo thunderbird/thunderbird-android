@@ -493,6 +493,7 @@ class SettingsExporter(
 
     companion object {
         private const val EXPORT_FILENAME_SUFFIX = "k9s"
+
         /**
          * File format version number.
          *
