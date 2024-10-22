@@ -3,7 +3,6 @@ package com.fsck.k9.preferences
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
-import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
@@ -16,9 +15,6 @@ import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import com.fsck.k9.preferences.Settings.SettingsDescription
 import java.io.OutputStream
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 import org.xmlpull.v1.XmlSerializer
 import timber.log.Timber
 
@@ -28,7 +24,7 @@ class SettingsExporter(
     private val folderSettingsProvider: FolderSettingsProvider,
     private val folderRepository: FolderRepository,
     private val notificationSettingsUpdater: NotificationSettingsUpdater,
-    private val brandNameProvider: BrandNameProvider,
+    private val filePrefixProvider: FilePrefixProvider,
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
@@ -482,13 +478,7 @@ class SettingsExporter(
     }
 
     fun generateDatedExportFileName(): String {
-        val now = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        return String.format("%s_%s.%s", getExportFileName(), dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)
-    }
-
-    private fun getExportFileName() : String {
-        return "${brandNameProvider.brandName}_settings_export".lowercase()
+        return String.format("%s.%s", filePrefixProvider.filePrefix, EXPORT_FILENAME_SUFFIX)
     }
 
     companion object {

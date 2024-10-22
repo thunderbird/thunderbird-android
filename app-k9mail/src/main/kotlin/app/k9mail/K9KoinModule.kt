@@ -20,6 +20,7 @@ import app.k9mail.widget.appWidgetModule
 import com.fsck.k9.AppConfig
 import com.fsck.k9.BuildConfig
 import com.fsck.k9.activity.MessageCompose
+import com.fsck.k9.preferences.FilePrefixProvider
 import com.fsck.k9.provider.K9ThemeProvider
 import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.widget.list.MessageListWidgetProvider
@@ -39,7 +40,7 @@ val appModule = module {
     single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { K9OAuthConfigurationFactory() }
-    single { K9AppNameProvider(androidContext()) } binds arrayOf(AppNameProvider::class, BrandNameProvider::class)
+    single { K9AppNameProvider(androidContext()) } binds arrayOf(AppNameProvider::class, BrandNameProvider::class, FilePrefixProvider::class)
     single<ThemeProvider> { K9ThemeProvider() }
     single<FeatureThemeProvider> { K9FeatureThemeProvider() }
     single<FeatureFlagFactory> { K9FeatureFlagFactory() }

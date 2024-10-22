@@ -13,6 +13,7 @@ import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import com.fsck.k9.AppConfig
 import com.fsck.k9.activity.MessageCompose
+import com.fsck.k9.preferences.FilePrefixProvider
 import net.thunderbird.android.auth.TbOAuthConfigurationFactory
 import net.thunderbird.android.dev.developmentModuleAdditions
 import net.thunderbird.android.featureflag.TbFeatureFlagFactory
@@ -38,7 +39,7 @@ val appModule = module {
     single(named("ClientInfoAppVersion")) { BuildConfig.VERSION_NAME }
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { TbOAuthConfigurationFactory() }
-    single { TbAppNameProvider(androidContext()) } binds arrayOf(AppNameProvider::class, BrandNameProvider::class)
+    single { TbAppNameProvider(androidContext()) } binds arrayOf(AppNameProvider::class, BrandNameProvider::class, FilePrefixProvider::class)
     single<ThemeProvider> { TbThemeProvider() }
     single<FeatureThemeProvider> { TbFeatureThemeProvider() }
     single<FeatureFlagFactory> { TbFeatureFlagFactory() }
