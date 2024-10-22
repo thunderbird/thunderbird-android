@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.featureflag.FeatureFlagKey
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
@@ -41,7 +41,7 @@ import app.k9mail.feature.settings.importing.R as SettingsImportR
 class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
     private val fundingManager: FundingManager by inject()
-    private val appNameProvider: AppNameProvider by inject()
+    private val brandNameProvider: BrandNameProvider by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var itemAdapter: ItemAdapter<GenericItem>
@@ -154,7 +154,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 featureFlagProvider.provide(FeatureFlagKey("funding_google_play"))
                     .onEnabled {
                         addIntent(
-                            text = getString(R.string.settings_list_action_support, appNameProvider.appName),
+                            text = getString(R.string.settings_list_action_support, brandNameProvider.brandName),
                             icon = Icons.Outlined.Favorite,
                             intent = FeatureLauncherActivity.getIntent(
                                 context = requireActivity(),
@@ -166,7 +166,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
 
             FundingType.LINK -> {
                 addUrlAction(
-                    text = getString(R.string.settings_list_action_support, appNameProvider.appName),
+                    text = getString(R.string.settings_list_action_support, brandNameProvider.brandName),
                     url = getString(R.string.funding_url),
                     icon = Icons.Outlined.Favorite,
                 )
