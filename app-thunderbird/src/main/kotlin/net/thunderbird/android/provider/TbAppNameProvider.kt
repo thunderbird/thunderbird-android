@@ -20,9 +20,10 @@ class TbAppNameProvider(
         context.getString(R.string.brand_name)
     }
 
-    override val filePrefix: String by lazy {
-        val now = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        "thunderbird_${dateFormat.format(now.time)}"
-    }
+    override val filePrefix: String
+        get() {
+            val now = Calendar.getInstance()
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            return "thunderbird_${dateFormat.format(now.time)}"
+        }
 }
