@@ -359,7 +359,8 @@
 
         <CheckBoxPreference
             android:key="volume_navigation"
-            android:title="@string/volume_navigation_title"
+            android:title="@string/volume_navigation_title_short"
+            android:summary="@string/volume_navigation_summary"
             />
 
         <ListPreference
