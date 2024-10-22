@@ -4,7 +4,6 @@ import android.content.Context
 import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.core.common.provider.BrandNameProvider
 import com.fsck.k9.R
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.preferences.FilePrefixProvider
 import java.text.SimpleDateFormat
 import java.util.Calendar
