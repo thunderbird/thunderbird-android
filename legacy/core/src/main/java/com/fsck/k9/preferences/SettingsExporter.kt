@@ -484,6 +484,7 @@ class SettingsExporter(
         val now = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         return String.format(
+            Locale.US,
             "%s_%s_%s.%s",
             filePrefixProvider.filePrefix,
             EXPORT_FILENAME_MIDDLE_PART,
