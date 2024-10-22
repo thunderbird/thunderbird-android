@@ -15,6 +15,7 @@ val preferencesModule = module {
             folderSettingsProvider = get(),
             folderRepository = get(),
             notificationSettingsUpdater = get(),
+            brandNameProvider = get(),
         )
     }
     factory { FolderSettingsProvider(folderRepository = get()) }

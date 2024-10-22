@@ -3,6 +3,7 @@ package com.fsck.k9.preferences
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
+import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
@@ -27,6 +28,7 @@ class SettingsExporter(
     private val folderSettingsProvider: FolderSettingsProvider,
     private val folderRepository: FolderRepository,
     private val notificationSettingsUpdater: NotificationSettingsUpdater,
+    private val brandNameProvider: BrandNameProvider,
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
@@ -482,13 +484,15 @@ class SettingsExporter(
     fun generateDatedExportFileName(): String {
         val now = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        return String.format("%s_%s.%s", EXPORT_FILENAME_PREFIX, dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)
+        return String.format("%s_%s.%s", getExportFileName(), dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)
+    }
+
+    private fun getExportFileName() : String {
+        return "${brandNameProvider.brandName}_settings_export".lowercase()
     }
 
     companion object {
-        private const val EXPORT_FILENAME_PREFIX = "k9_settings_export"
         private const val EXPORT_FILENAME_SUFFIX = "k9s"
-
         /**
          * File format version number.
          *
