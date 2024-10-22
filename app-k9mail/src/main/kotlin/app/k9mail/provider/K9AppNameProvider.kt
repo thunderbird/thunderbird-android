@@ -17,7 +17,5 @@ class K9AppNameProvider(
         context.getString(R.string.app_name)
     }
 
-    override val filePrefix: String by lazy {
-        "k9"
-    }
+    override val filePrefix: String = "k9"
 }
