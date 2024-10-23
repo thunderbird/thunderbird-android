@@ -6,7 +6,6 @@
     <ID>CyclomaticComplexMethod:MessagePartDatabaseHelpers.kt$MessagePartEntry$override fun equals(other: Any?): Boolean</ID>
     <ID>CyclomaticComplexMethod:MessagePartDatabaseHelpers.kt$MessagePartEntry$override fun hashCode(): Int</ID>
     <ID>CyclomaticComplexMethod:Migrations.kt$Migrations$@JvmStatic fun upgradeDatabase(db: SQLiteDatabase, migrationsHelper: MigrationsHelper)</ID>
-    <ID>DestructuringDeclarationWithTooManyEntries:RetrieveFolderOperationsTest.kt$RetrieveFolderOperationsTest$val (folderId1, folderId2, folderId3, folderId4) = listOf( sqliteDatabase.createFolder(name = "Folder 1", displayClass = "FIRST_CLASS"), sqliteDatabase.createFolder(name = "Folder 2", displayClass = "SECOND_CLASS"), sqliteDatabase.createFolder(name = "Folder 3", displayClass = "FIRST_CLASS"), sqliteDatabase.createFolder(name = "Folder 4", displayClass = "NO_CLASS"), )</ID>
     <ID>LongMethod:CopyMessageOperations.kt$CopyMessageOperations$private fun readMessageToContentValues(database: SQLiteDatabase, messageId: Long): ContentValues</ID>
     <ID>LongMethod:CopyMessageOperationsTest.kt$CopyMessageOperationsTest$@Test fun `copy message into an existing thread`()</ID>
     <ID>LongMethod:CopyMessageOperationsTest.kt$CopyMessageOperationsTest$@Test fun `copy message that is part of a thread`()</ID>
