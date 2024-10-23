@@ -22,7 +22,7 @@
     <!-- MessageList -->
     <item
         android:id="@+id/search_remote"
-        android:icon="@drawable/ic_search"
+        android:icon="@drawable/ic_search_remote"
         android:title="@string/action_remote_search"
         android:visible="false"
         app:showAsAction="always"
