@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -38,10 +39,10 @@ internal fun AccountAvatar(
             modifier = Modifier
                 .size(MainTheme.sizes.iconAvatar)
                 .border(2.dp, accountColor, CircleShape)
+                .clip(CircleShape)
                 .padding(2.dp)
                 .clickable(onClick = { onClick(account) }),
             color = accountColor.copy(alpha = 0.3f),
-            shape = CircleShape,
         ) {
             Box(
                 contentAlignment = Alignment.Center,
