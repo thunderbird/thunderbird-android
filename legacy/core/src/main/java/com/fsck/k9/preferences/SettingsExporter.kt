@@ -27,6 +27,7 @@ class SettingsExporter(
     private val folderSettingsProvider: FolderSettingsProvider,
     private val folderRepository: FolderRepository,
     private val notificationSettingsUpdater: NotificationSettingsUpdater,
+    private val filePrefixProvider: FilePrefixProvider,
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
@@ -482,12 +483,19 @@ class SettingsExporter(
     fun generateDatedExportFileName(): String {
         val now = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        return String.format("%s_%s.%s", EXPORT_FILENAME_PREFIX, dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)
+        return String.format(
+            Locale.US,
+            "%s_%s_%s.%s",
+            filePrefixProvider.filePrefix,
+            EXPORT_FILENAME_MIDDLE_PART,
+            dateFormat.format(now.time),
+            EXPORT_FILENAME_SUFFIX,
+        )
     }
 
     companion object {
-        private const val EXPORT_FILENAME_PREFIX = "k9_settings_export"
         private const val EXPORT_FILENAME_SUFFIX = "k9s"
+        private const val EXPORT_FILENAME_MIDDLE_PART = "settings_export"
 
         /**
          * File format version number.
