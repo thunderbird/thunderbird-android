@@ -5,24 +5,17 @@ plugins {
 }
 
 configure<SpotlessExtension> {
-    configureKotlinCheck(
-        targets = listOf(
-            "*.kt",
-        ),
-        project = project,
-        libs = libs,
-    )
-
     configureKotlinGradleCheck(
         targets = listOf(
             "*.gradle.kts",
+            "build-plugin/**/*.gradle.kts",
         ),
         project = project,
         libs = libs,
     )
 
     configureMarkdownCheck(
-        listOf(
+        targets = listOf(
             "*.md",
         ),
     )
