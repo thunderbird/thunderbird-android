@@ -192,7 +192,12 @@ open class MessageList :
     }
 
     private fun initializeFunding() {
-         fundingManager.addFundingReminder(this, FeatureLauncherActivity.getBaseIntent(this))
+        fundingManager.addFundingReminder(this) {
+            FeatureLauncherActivity.launch(
+                context = this,
+                target = FeatureLauncherTarget.Funding,
+            )
+        }
     }
 
     public override fun onNewIntent(intent: Intent) {

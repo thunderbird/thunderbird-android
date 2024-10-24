@@ -1,6 +1,5 @@
 package app.k9mail.feature.funding.googleplay
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.funding.api.FundingType
@@ -13,7 +12,7 @@ class GooglePlayFundingManager(
         return FundingType.GOOGLE_PLAY
     }
 
-    override fun addFundingReminder(activity: AppCompatActivity, launcherIntent: Intent) {
-        reminder.registerReminder(activity, launcherIntent)
+    override fun addFundingReminder(activity: AppCompatActivity, onOpenFunding: () -> Unit) {
+        reminder.registerReminder(activity, onOpenFunding)
     }
 }
