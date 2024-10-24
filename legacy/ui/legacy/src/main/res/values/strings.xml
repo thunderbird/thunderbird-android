@@ -194,6 +194,7 @@
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
     <string name="remove_attachment_action">Remove attachment</string>
+    <string name="save_attachment_action">Save attachment</string>
 
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
