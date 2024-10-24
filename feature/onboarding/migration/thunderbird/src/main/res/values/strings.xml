@@ -4,7 +4,9 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Easily import your account settings by scanning a QR code.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">In Thunderbird desktop, go to:</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Settings’ in the Spaces Toolbar (bottom left)</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Select ‘Export to Mobile’ and follow the instructions</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Select ‘Export to Mobile’</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Import requires the latest version of Thunderbird Desktop 128.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Learn how to update Thunderbird.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Import settings</string>
     <string name="onboarding_migration_thunderbird_new_account_title">New to Thunderbird?</string>
     <string name="onboarding_migration_thunderbird_new_account_button_text">Add an email account now</string>
