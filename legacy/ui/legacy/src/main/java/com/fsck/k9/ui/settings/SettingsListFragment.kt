@@ -167,7 +167,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             FundingType.LINK -> {
                 addUrlAction(
                     text = getString(R.string.settings_list_action_support, brandNameProvider.brandName),
-                    url = getString(R.string.funding_url),
+                    url = getString(R.string.funding_url, requireContext().getPackageName()),
                     icon = Icons.Outlined.Favorite,
                 )
             }
