@@ -648,7 +648,8 @@
     <string name="animations_title">Animation</string>
     <string name="animations_summary">Use gaudy visual effects</string>
 
-    <string name="volume_navigation_title">Volume key navigation in message view</string>
+    <string name="volume_navigation_title_short">Volume key navigation</string>
+    <string name="volume_navigation_summary">Navigate between messages using the volume keys in message view</string>
 
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
     <string name="show_starred_count_title">Show starred count</string>
