@@ -54,6 +54,9 @@ fun SpotlessExtension.configureMiscCheck() {
             "*.gradle",
             ".gitignore",
         )
+        targetExclude(
+            "**/build/",
+        )
         trimTrailingWhitespace()
     }
 }
