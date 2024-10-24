@@ -19,15 +19,22 @@ import app.k9mail.feature.funding.googleplay.domain.usecase.GetAvailableContribu
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionViewModel
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminder
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract
+import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderDialog
 import com.android.billingclient.api.ProductDetails
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val featureFundingModule = module {
+    single<FundingReminderContract.Dialog> {
+        FundingReminderDialog(
+            settings = get(),
+        )
+    }
 
     single<FundingReminderContract.Reminder> {
         FundingReminder(
             settings = get(),
+            dialog = get(),
         )
     }
 

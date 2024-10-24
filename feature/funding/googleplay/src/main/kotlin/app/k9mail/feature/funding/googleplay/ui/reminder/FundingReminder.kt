@@ -1,68 +1,54 @@
 package app.k9mail.feature.funding.googleplay.ui.reminder
 
-import android.os.Handler
-import android.os.Looper
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import app.k9mail.feature.funding.api.FundingSettings
-import app.k9mail.feature.funding.googleplay.R
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.datetime.Clock
 
 class FundingReminder(
     private val settings: FundingSettings,
+    private val dialog: FundingReminderContract.Dialog,
     private val clock: Clock = Clock.System,
 ) : FundingReminderContract.Reminder {
-
-    private val handler = Handler(Looper.getMainLooper())
-    private var showDialogRunnable: Runnable? = null
 
     override fun registerReminder(
         activity: AppCompatActivity,
         onOpenFunding: () -> Unit,
     ) {
-        if (!shouldShowFundingReminder()) {
+        // If the reminder reference timestamp is not set, we set it to the first install time.
+        if (settings.getReminderReferenceTimestamp() == 0L) {
+            resetReminderReferenceTimestamp(activity)
+        }
+
+        // If the reminder has already been shown, we don't need to show it again.
+        if (wasReminderShown()) {
             return
         }
 
-        showDialogRunnable = createShowDialogRunnable(activity, onOpenFunding)
-        activity.lifecycle.addObserver(
-            object : DefaultLifecycleObserver {
-                override fun onCreate(owner: LifecycleOwner) {
-                    super.onCreate(owner)
-                    handler.postDelayed(showDialogRunnable!!, FUNDING_REMINDER_DELAY_MILLIS)
-                }
-
-                override fun onDestroy(owner: LifecycleOwner) {
-                    super.onDestroy(owner)
-                    handler.removeCallbacks(showDialogRunnable!!)
-                }
-            },
-        )
-    }
-
-    private fun shouldShowFundingReminder(): Boolean {
-        return settings.getReminderShownTimestamp() == 0L
-    }
-
-    private fun createShowDialogRunnable(activity: AppCompatActivity, onOpenFunding: () -> Unit): Runnable {
-        return Runnable {
-            showFundingReminderDialog(activity, onOpenFunding)
+        if (shouldShowReminder()) {
+            dialog.show(activity, onOpenFunding)
         }
     }
 
-    private fun showFundingReminderDialog(activity: AppCompatActivity, onOpenFunding: () -> Unit) {
-        MaterialAlertDialogBuilder(activity)
-            .setIcon(R.drawable.funding_googleplay_contribution_reminder_icon)
-            .setTitle(R.string.funding_googleplay_contribution_reminder_title)
-            .setMessage(R.string.funding_googleplay_contribution_reminder_message)
-            .setPositiveButton(R.string.funding_googleplay_contribution_reminder_positive_button) { _, _ ->
-                onOpenFunding()
-            }
-            .setNegativeButton(R.string.funding_googleplay_contribution_reminder_negative_button, null)
-            .setOnDismissListener {
-                settings.setReminderShownTimestamp(clock.now().toEpochMilliseconds())
-            }.show()
+    private fun wasReminderShown(): Boolean {
+        return settings.getReminderShownTimestamp() != 0L
+    }
+
+    private fun shouldShowReminder(): Boolean {
+        val currentTime = clock.now().toEpochMilliseconds()
+
+        return settings.getReminderShownTimestamp() == 0L &&
+            settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime
+            && settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
+    }
+
+    private fun resetReminderReferenceTimestamp(context: Context) {
+        try {
+            val installTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+            settings.setReminderReferenceTimestamp(installTime)
+        } catch (exception: PackageManager.NameNotFoundException) {
+            settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
+        }
     }
 }
