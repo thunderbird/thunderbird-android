@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_webpage_url" translatable="false">https://k9mail.app/</string>
+    <string name="app_webpage_url" translatable="false">https://www.thunderbird.net/mobile</string>
     <string name="user_forum_url" translatable="false">https://support.mozilla.org/products/thunderbird-android</string>
     <string name="funding_url" translatable="false">https://www.thunderbird.net/donate/mobile/?form=tfa</string>
     <string name="message_header_mua" translatable="false">Thunderbird for Android</string>
