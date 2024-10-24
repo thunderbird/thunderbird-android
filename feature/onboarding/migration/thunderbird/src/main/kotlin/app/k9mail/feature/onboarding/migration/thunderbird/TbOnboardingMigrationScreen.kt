@@ -21,6 +21,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -104,7 +105,7 @@ private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
         BulletList(
             items = persistentListOf(
                 stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1),
-                stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2),
+                stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2),
             ),
             modifier = Modifier
                 .padding(bottom = MainTheme.spacings.double),
@@ -116,6 +117,13 @@ private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
             modifier = Modifier
                 .testTag("QrCodeImportButton")
                 .align(Alignment.CenterHorizontally),
+        )
+
+        TextBodySmall(
+            text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_instructions_require_latest),
+            // TODO add R.string.onboarding_migration_thunderbird_qr_code_import_instructions_learn_update as a hyperlink
+            modifier = Modifier
+                .padding(top = MainTheme.spacings.double),
         )
     }
 }
