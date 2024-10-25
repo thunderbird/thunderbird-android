@@ -234,21 +234,21 @@ jobs:
           OLD_VERSION_CODE: ${{ steps.appinfo.outputs.VERSION_CODE }}
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
         run: |
+          date_version_code() {
+            # Daily uses date-based calculation for version code in yDDDHHmm format
+            # y: Years since 2023 (e.g. 2024 is 1)
+            # DDD: Day of the year (3 digits, zero-padded)
+            # HH: Hour of the day (2 digits, 00-23)
+            # mm: Minute of the hour (2 digits)
+            datetime="$1"
+            year=$(( $(date -d "${datetime}" +"%Y") - 2023 ))
+            day=$(printf "%03d" $(date +"%j"))
+            time=$(date +"%H%M")
+            echo "${year}${day}${time}"
+          }
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
-            date_version_code() {
-              # Daily uses date-based calculation for version code in yDDDHHmm format
-              # y: Years since 2023 (e.g. 2024 is 1)
-              # DDD: Day of the year (3 digits, zero-padded)
-              # HH: Hour of the day (2 digits, 00-23)
-              # mm: Minute of the hour (2 digits)
-              datetime="$1"
-              year=$(( $(date -d "${datetime}" +"%Y") - 2023 ))
-              day=$(printf "%03d" $(date +"%j"))
-              time=$(date +"%H%M")
-              echo "${year}${day}${time}"
-            }
             VERSION_FILE="$(pwd)/version.properties"
             if [[ -e "$VERSION_FILE" ]]; then
               while IFS="=" read -r key value; do
@@ -260,13 +260,13 @@ jobs:
               NEW_VERSION_CODE=$(date_version_code "now")
               echo "new_version_code=${NEW_VERSION_CODE}" > $VERSION_FILE
             fi
-            # Ensure version code is not higher than max version code
-            MAX_VERSION_DATE="2025-12-31 23:59"
-            MAX_VERSION_CODE=$(date_version_code "$MAX_VERSION_DATE")
-            if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
-              echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE} (${MAX_VERSION_DATE})"
-              exit 1
-            fi
+          fi
+          # Ensure version code is not higher than max version code
+          MAX_VERSION_DATE="2025-12-31 23:59"
+          MAX_VERSION_CODE=$(date_version_code "$MAX_VERSION_DATE")
+          if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
+            echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE} (${MAX_VERSION_DATE})"
+            exit 1
           fi
           sed "s/versionCode = $OLD_VERSION_CODE/versionCode = $NEW_VERSION_CODE/" app-${APP_NAME}/build.gradle.kts > tmp_gradle_kts
 
@@ -750,16 +750,24 @@ jobs:
         shell: bash
         env:
           VERSION_CODE: ${{ steps.pkginfo.outputs.VERSION_CODE }}
+          VERSION_NAME: ${{ steps.pkginfo.outputs.VERSION_NAME }}
           APPLICATION_ID: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           REPO: ${{ github.repository }}
           APP_SHA: ${{ steps.shanotes.outputs.app_sha }}
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          APP_NAME: ${{ matrix.appName }}
         run: |
           # r0adkll/upload-google-play expects the release notes in a different structure
           mkdir whatsnew
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             FILEPATH=app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt
-            wget -O whatsnew/whatsnew-en-US https://raw.githubusercontent.com/${REPO}/${APP_SHA}/${FILEPATH}
+            wget -O whatsnew/whatsnew-en-US https://raw.githubusercontent.com/${REPO}/${APP_SHA}/${FILEPATH}?token=$(date +%s)
+          elif [[ "$RELEASE_TYPE" = "daily" ]]; then
+            COMMIT_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+            WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            echo "${APP_NAME} ${VERSION_CODE} (${VERSION_NAME}) Daily Build" > whatsnew/whatsnew-en-US
+            echo "- Built from GitHub commit: ${COMMIT_URL}" >> whatsnew/whatsnew-en-US
+            echo "- Built with GitHub workflow: ${WORKFLOW_URL}" >> whatsnew/whatsnew-en-US
           fi
 
       - name: Publish to Google Play
@@ -770,7 +778,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_ACCOUNT }}
           packageName: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           track: ${{ matrix.playTargetTrack }}
-          releaseName: ${{ steps.pkginfo.outputs.VERSION_NAME }}
+          releaseName: ${{ steps.pkginfo.outputs.VERSION_CODE }} (${{ steps.pkginfo.outputs.VERSION_NAME }})
           status: completed
           changesNotSentForReview: ${{ inputs.draftGooglePlay }}
           whatsNewDirectory: whatsnew
