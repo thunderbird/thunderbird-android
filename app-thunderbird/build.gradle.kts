@@ -241,6 +241,10 @@ dependencies {
     implementation(projects.feature.onboarding.migration.thunderbird)
     implementation(projects.feature.migration.launcher.thunderbird)
 
+    // TODO remove once OAuth ids have been moved from TBD to TBA
+    "betaImplementation"(libs.appauth)
+    releaseImplementation(libs.appauth)
+
     testImplementation(libs.robolectric)
 
     // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
