@@ -1,14 +1,17 @@
 package app.k9mail.feature.funding.googleplay.ui.reminder
 
 import android.content.Context
-import android.content.pm.PackageManager
+import android.content.pm.PackageManager.NameNotFoundException
 import androidx.appcompat.app.AppCompatActivity
 import app.k9mail.feature.funding.api.FundingSettings
 import kotlinx.datetime.Clock
+import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
+import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.FragmentLifecycleObserver
 
 class FundingReminder(
     private val settings: FundingSettings,
-    private val fragmentObserver: FundingReminderContract.FragmentLifecycleObserver,
+    private val fragmentObserver: FragmentLifecycleObserver,
+    private val activityCounterObserver: ActivityLifecycleObserver,
     private val dialog: FundingReminderContract.Dialog,
     private val clock: Clock = Clock.System,
 ) : FundingReminderContract.Reminder {
@@ -20,6 +23,13 @@ class FundingReminder(
         // If the reminder reference timestamp is not set, we set it to the first install time.
         if (settings.getReminderReferenceTimestamp() == 0L) {
             resetReminderReferenceTimestamp(activity)
+        }
+
+        // We register the activity counter observer to keep track of the time the user spends in the app.
+        // We also ensure that the observers are unregistered when the activity is destroyed.
+        activityCounterObserver.register(activity.lifecycle) {
+            fragmentObserver.unregister(activity.supportFragmentManager)
+            activityCounterObserver.unregister(activity.lifecycle)
         }
 
         // If the reminder has already been shown, we don't need to show it again.
@@ -46,11 +56,12 @@ class FundingReminder(
             settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
     }
 
+    @Suppress("SwallowedException")
     private fun resetReminderReferenceTimestamp(context: Context) {
         try {
             val installTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
             settings.setReminderReferenceTimestamp(installTime)
-        } catch (exception: PackageManager.NameNotFoundException) {
+        } catch (exception: NameNotFoundException) {
             settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
         }
     }
