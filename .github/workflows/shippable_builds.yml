@@ -134,6 +134,7 @@ jobs:
     name: Notify Build Start
     runs-on: ubuntu-latest
     needs: [dump_config]
+    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
     environment: notify_matrix
     outputs:
       actorLink: ${{ steps.actorLink.outputs.actorLink }}
@@ -180,8 +181,8 @@ jobs:
       thunderbird_sha: ${{ steps.commit.outputs.thunderbird_sha }}
       k9mail_github_notes: ${{ steps.render_notes.outputs.k9mail_github_notes }}
       thunderbird_github_notes: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
-      OLD_VERSION_CODE: ${{ steps.new_version_code.outputs.OLD_VERSION_CODE }}
-      NEW_VERSION_CODE: ${{ steps.new_version_code.outputs.NEW_VERSION_CODE }}
+      old_version_code: ${{ steps.new_version_code.outputs.old_version_code }}
+      new_version_code: ${{ steps.new_version_code.outputs.new_version_code }}
     steps:
       - name: Checkout repository
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
@@ -204,7 +205,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         with:
-          cache-disabled: "${{ contains(fromJSON('[\"daily\", \"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+          cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: never
 
       - name: Get application info
@@ -236,24 +237,35 @@ jobs:
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
-            VERSION_FILE="$(pwd)/version.properties"
-            if [[ -e "$VERSION_FILE" ]]; then
-              while IFS="=" read -r key value; do
-                if [[ "${key}" = "NEW_VERSION_CODE" ]]; then
-                  NEW_VERSION_CODE="${value}"
-                fi
-              done < $VERSION_FILE
-            else
-              # Daily uses date-based calculation for version code in yDDDHHmm format.
+            date_version_code() {
+              # Daily uses date-based calculation for version code in yDDDHHmm format
               # y: Years since 2023 (e.g. 2024 is 1)
               # DDD: Day of the year (3 digits, zero-padded)
               # HH: Hour of the day (2 digits, 00-23)
               # mm: Minute of the hour (2 digits)
-              year=$(( $(date +"%Y") - 2023 ))
+              datetime="$1"
+              year=$(( $(date -d "${datetime}" +"%Y") - 2023 ))
               day=$(printf "%03d" $(date +"%j"))
               time=$(date +"%H%M")
-              NEW_VERSION_CODE="${year}${day}${time}"
-              echo "NEW_VERSION_CODE=${NEW_VERSION_CODE}" >> $VERSION_FILE
+              echo "${year}${day}${time}"
+            }
+            VERSION_FILE="$(pwd)/version.properties"
+            if [[ -e "$VERSION_FILE" ]]; then
+              while IFS="=" read -r key value; do
+                if [[ "${key}" = "new_version_code" ]]; then
+                  NEW_VERSION_CODE="${value}"
+                fi
+              done < $VERSION_FILE
+            else
+              NEW_VERSION_CODE=$(date_version_code "now")
+              echo "new_version_code=${NEW_VERSION_CODE}" > $VERSION_FILE
+            fi
+            # Ensure version code is not higher than max version code
+            MAX_VERSION_DATE="2025-12-31 23:59"
+            MAX_VERSION_CODE=$(date_version_code "$MAX_VERSION_DATE")
+            if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
+              echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE} (${MAX_VERSION_DATE})"
+              exit 1
             fi
           fi
           sed "s/versionCode = $OLD_VERSION_CODE/versionCode = $NEW_VERSION_CODE/" app-${APP_NAME}/build.gradle.kts > tmp_gradle_kts
@@ -261,8 +273,8 @@ jobs:
           ! diff -u app-${APP_NAME}/build.gradle.kts tmp_gradle_kts # flip return value to force error if no bump
           mv tmp_gradle_kts app-${APP_NAME}/build.gradle.kts
 
-          echo "OLD_VERSION_CODE=${OLD_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
-          echo "NEW_VERSION_CODE=${NEW_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
+          echo "old_version_code=${OLD_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
+          echo "new_version_code=${NEW_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
 
       - name: Bump version suffix
         id: bump_version_suffix
@@ -290,7 +302,7 @@ jobs:
           APP_NAME: ${{ matrix.appName }}
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
-          VERSION_CODE: ${{ steps.new_version_code.outputs.NEW_VERSION_CODE }}
+          VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
           FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
         run: |
           mkdir -p ./app-metadata/${APPLICATION_ID}/en-US/changelogs
@@ -313,7 +325,7 @@ jobs:
         shell: bash
         env:
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
-          VERSION_CODE: ${{ steps.new_version_code.outputs.NEW_VERSION_CODE }}
+          VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
         run: |
           wc -c ./app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt
           RELNOTES_LENGTH=$(wc -c ./app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt | awk '{print $1}')
@@ -375,18 +387,26 @@ jobs:
           bump_sha: ${{ steps.commit.outputs.sha }}
           applicationId: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           oldFullVersion: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
-          oldVersionCode: ${{ steps.new_version_code.outputs.OLD_VERSION_CODE }}
+          oldVersionCode: ${{ steps.new_version_code.outputs.old_version_code }}
           newFullVersion: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
-          newVersionCode: ${{ steps.new_version_code.outputs.NEW_VERSION_CODE }}
+          newVersionCode: ${{ steps.new_version_code.outputs.new_version_code }}
+          releaseType: ${{ vars.RELEASE_TYPE }}
         with:
           script: |
             let env = process.env;
             console.log(env);
-            await core.summary
-              .addRaw(`Version for ${env.applicationId} bumped from ${env.oldFullVersion} (${env.oldVersionCode}) to ${env.newFullVersion} (${env.newVersionCode}) in `)
-              .addLink(process.env.bump_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${env.bump_sha}`)
-              .addEOL()
-              .write();
+            if (process.env.releaseType == "daily") {
+              await core.summary
+                .addRaw(`Version for ${env.applicationId} bumped from ${env.oldFullVersion} (${env.oldVersionCode}) to ${env.newFullVersion} (${env.newVersionCode})`)
+                .addEOL()
+                .write();
+            } else {
+              await core.summary
+                .addRaw(`Version for ${env.applicationId} bumped from ${env.oldFullVersion} (${env.oldVersionCode}) to ${env.newFullVersion} (${env.newVersionCode}) in `)
+                .addLink(process.env.bump_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${env.bump_sha}`)
+                .addEOL()
+                .write();
+            }
 
   build_unsigned:
     name: Build Unsigned
@@ -408,17 +428,9 @@ jobs:
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
           APP_NAME: ${{ matrix.appName }}
         run: |
-          if [[ "$RELEASE_TYPE" = "daily" ]]; then
-            APP_SHA=$GITHUB_SHA
-          else
-            case "${APP_NAME}" in
-              thunderbird) APP_SHA=$THUNDERBIRD_SHA ;;
-              k9mail) APP_SHA=$K9MAIL_SHA ;;
-              *) APP_SHA=$GITHUB_SHA ;;
-            esac
-          fi
-
-          echo "app_sha=$APP_SHA" >> $GITHUB_OUTPUT
+          APP_SHA_NAME=${APP_NAME^^}_SHA
+          APP_SHA="${!APP_SHA_NAME:-$GITHUB_SHA}"
+          echo "app_sha=${APP_SHA}" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
@@ -438,15 +450,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-disabled: "${{ contains(fromJSON('[\"daily\", \"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+          cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: on-failure
 
-      - name: Get Version Code for Daily
+      - name: Set Version Code for Daily
         shell: bash
         env:
           APP_NAME: ${{ matrix.appName }}
-          OLD_VERSION_CODE: ${{ needs.release_commit.outputs.OLD_VERSION_CODE }}
-          NEW_VERSION_CODE: ${{ needs.release_commit.outputs.NEW_VERSION_CODE }}
+          OLD_VERSION_CODE: ${{ needs.release_commit.outputs.old_version_code }}
+          NEW_VERSION_CODE: ${{ needs.release_commit.outputs.new_version_code }}
         run: |
           sed "s/versionCode = $OLD_VERSION_CODE/versionCode = $NEW_VERSION_CODE/" app-${APP_NAME}/build.gradle.kts > tmp_gradle_kts
           ! diff -u app-${APP_NAME}/build.gradle.kts tmp_gradle_kts # flip return value to force error if no bump
@@ -706,7 +718,8 @@ jobs:
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
         run: |
           app_sha_name=${APP_NAME^^}_SHA
-          echo "app_sha=${!app_sha_name}" >> $GITHUB_OUTPUT
+          app_sha="${!app_sha_name:-$GITHUB_SHA}"
+          echo "app_sha=${app_sha}" >> $GITHUB_OUTPUT
 
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             app_relnotes_name=${APP_NAME^^}_GITHUB_NOTES
@@ -719,7 +732,7 @@ jobs:
 
       - name: Publish to GitHub Releases
         id: publish_gh
-        if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+        if: ${{ contains(matrix.releaseTarget, 'github') }}
         uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191  # v2.0.8
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
