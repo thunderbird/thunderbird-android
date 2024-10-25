@@ -4,6 +4,7 @@
 
     <string name="funding_googleplay_contribution_header_title">Support Thunderbird</string>
     <string name="funding_googleplay_contribution_header_description">We never show advertisements or sell your data. We are fully funded by financial contributions from our users. If you’re enjoying Thunderbird, please help support it.  We can’t do this without you!</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Thank you for your generous donation! Your support directly strengthens Thunderbird, and we’re grateful to have you by our side on this journey.</string>
 
     <string name="funding_googleplay_contribution_list_title">Secure contribution</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Give once</string>
