@@ -8,6 +8,7 @@ import kotlinx.datetime.Clock
 
 class FundingReminder(
     private val settings: FundingSettings,
+    private val fragmentObserver: FundingReminderContract.FragmentLifecycleObserver,
     private val dialog: FundingReminderContract.Dialog,
     private val clock: Clock = Clock.System,
 ) : FundingReminderContract.Reminder {
@@ -27,7 +28,9 @@ class FundingReminder(
         }
 
         if (shouldShowReminder()) {
-            dialog.show(activity, onOpenFunding)
+            fragmentObserver.register(activity.supportFragmentManager) {
+                dialog.show(activity, onOpenFunding)
+            }
         }
     }
 
@@ -39,8 +42,8 @@ class FundingReminder(
         val currentTime = clock.now().toEpochMilliseconds()
 
         return settings.getReminderShownTimestamp() == 0L &&
-            settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime
-            && settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
+            settings.getReminderReferenceTimestamp() + FUNDING_REMINDER_DELAY_MILLIS <= currentTime &&
+            settings.getActivityCounterInMillis() >= FUNDING_REMINDER_MIN_ACTIVITY_MILLIS
     }
 
     private fun resetReminderReferenceTimestamp(context: Context) {
