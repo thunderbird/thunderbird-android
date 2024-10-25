@@ -1,6 +1,7 @@
 package app.k9mail.feature.funding.googleplay.ui.reminder
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 
 // 1 week in milliseconds
 const val FUNDING_REMINDER_DELAY_MILLIS = 7 * 24 * 60 * 60 * 1000L
@@ -15,5 +16,10 @@ interface FundingReminderContract {
 
     fun interface Dialog {
         fun show(activity: AppCompatActivity, onOpenFunding: () -> Unit)
+    }
+
+    interface FragmentLifecycleObserver {
+        fun register(fragmentManager: FragmentManager, onShow: () -> Unit)
+        fun unregister(fragmentManager: FragmentManager)
     }
 }
