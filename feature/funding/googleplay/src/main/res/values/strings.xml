@@ -18,7 +18,7 @@
     <string name="funding_googleplay_contribution_footer_payment_button">Continue to payment</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Payment currently unavailable</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Modify monthly payment</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Help keep Thunderbird alive</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Make another impactful contribution</string>
 
     <string name="funding_googleplay_contribution_error_show_more">Show more details</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Dismiss error</string>
