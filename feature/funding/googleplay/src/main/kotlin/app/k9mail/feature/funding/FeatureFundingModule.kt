@@ -17,6 +17,7 @@ import app.k9mail.feature.funding.googleplay.domain.ContributionIdProvider
 import app.k9mail.feature.funding.googleplay.domain.DomainContract
 import app.k9mail.feature.funding.googleplay.domain.usecase.GetAvailableContributions
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionViewModel
+import app.k9mail.feature.funding.googleplay.ui.reminder.ActivityLifecycleObserver
 import app.k9mail.feature.funding.googleplay.ui.reminder.FragmentLifecycleObserver
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminder
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract
@@ -38,11 +39,18 @@ val featureFundingModule = module {
         )
     }
 
+    single<FundingReminderContract.ActivityLifecycleObserver> {
+        ActivityLifecycleObserver(
+            settings = get(),
+        )
+    }
+
     single<FundingReminderContract.Reminder> {
         FundingReminder(
             settings = get(),
-            dialog = get(),
             fragmentObserver = get(),
+            activityCounterObserver = get(),
+            dialog = get(),
         )
     }
 

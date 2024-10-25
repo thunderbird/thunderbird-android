@@ -8,6 +8,7 @@ import androidx.lifecycle.testing.TestLifecycleOwner
 import app.k9mail.core.testing.TestClock
 import app.k9mail.feature.funding.api.FundingSettings
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
+import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.FragmentLifecycleObserver
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -15,8 +16,9 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import kotlin.test.Test
 import kotlinx.datetime.Instant
-import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 
 class FundingReminderTest {
@@ -26,15 +28,18 @@ class FundingReminderTest {
         val activity = createTestActivity()
         val settings = FakeFundingSettings(reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP_UNSET)
         val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
         val testSubject = createTestSubject(
             settings,
             fragmentObserver,
+            activityObserver,
         )
 
         testSubject.registerReminder(activity) { }
 
         assertThat(settings.getReminderReferenceTimestamp()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
         assertThat(fragmentObserver.isRegistered).isFalse()
+        assertThat(activityObserver.isRegistered).isTrue()
     }
 
     @Test
@@ -44,15 +49,18 @@ class FundingReminderTest {
         )
         val settings = FakeFundingSettings(reminderReferenceTimestamp = REMINDER_REFERENCE_TIMESTAMP)
         val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
         val testSubject = createTestSubject(
             settings,
             fragmentObserver,
+            activityObserver,
         )
 
         testSubject.registerReminder(activity) { }
 
         assertThat(settings.getReminderReferenceTimestamp()).isEqualTo(REMINDER_REFERENCE_TIMESTAMP)
         assertThat(fragmentObserver.isRegistered).isFalse()
+        assertThat(activityObserver.isRegistered).isTrue()
     }
 
     @Test
@@ -63,15 +71,19 @@ class FundingReminderTest {
             reminderShownTimestamp = REMINDER_SHOWN_TIMESTAMP,
         )
         val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
         val testSubject = createTestSubject(
             settings,
             fragmentObserver,
+            activityObserver,
         )
 
         testSubject.registerReminder(activity) { }
 
-        verifyNoInteractions(activity)
+        verify(activity).lifecycle
+        verifyNoMoreInteractions(activity)
         assertThat(fragmentObserver.isRegistered).isFalse()
+        assertThat(activityObserver.isRegistered).isTrue()
     }
 
     @Test
@@ -84,10 +96,12 @@ class FundingReminderTest {
         )
         val currentTime = REMINDER_REFERENCE_TIMESTAMP + FUNDING_REMINDER_DELAY_MILLIS
         val fragmentObserver = FakeFragmentLifecycleObserver()
+        val activityObserver = FakeActivityLifecycleObserver()
         var dialogShown = false
         val testSubject = createTestSubject(
             settings = settings,
             fragmentObserver = fragmentObserver,
+            activityObserver = activityObserver,
             dialog = { _, _ -> dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
         )
@@ -96,6 +110,7 @@ class FundingReminderTest {
 
         assertThat(dialogShown).isEqualTo(true)
         assertThat(fragmentObserver.isRegistered).isTrue()
+        assertThat(activityObserver.isRegistered).isTrue()
     }
 
     private fun createTestActivity(
@@ -128,13 +143,15 @@ class FundingReminderTest {
 
     private fun createTestSubject(
         settings: FundingSettings,
-        fragmentObserver: FragmentLifecycleObserver = FakeFragmentLifecycleObserver(),
+        fragmentObserver: FragmentLifecycleObserver,
+        activityObserver: ActivityLifecycleObserver,
         dialog: Dialog = Dialog { _, _ -> },
         clock: TestClock = TestClock(Instant.fromEpochMilliseconds(0)),
     ): FundingReminder {
         return FundingReminder(
             settings = settings,
             fragmentObserver = fragmentObserver,
+            activityCounterObserver = activityObserver,
             dialog = dialog,
             clock = clock,
         )
