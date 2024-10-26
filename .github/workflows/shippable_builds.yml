@@ -765,7 +765,7 @@ jobs:
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
             COMMIT_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
             WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-            echo "${APP_NAME} ${VERSION_CODE} (${VERSION_NAME}) Daily Build" > whatsnew/whatsnew-en-US
+            echo "${APP_NAME} ${VERSION_NAME} (${VERSION_CODE}) Daily Build" > whatsnew/whatsnew-en-US
             echo "- Built from GitHub commit: ${COMMIT_URL}" >> whatsnew/whatsnew-en-US
             echo "- Built with GitHub workflow: ${WORKFLOW_URL}" >> whatsnew/whatsnew-en-US
           fi
@@ -778,7 +778,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_ACCOUNT }}
           packageName: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           track: ${{ matrix.playTargetTrack }}
-          releaseName: ${{ steps.pkginfo.outputs.VERSION_CODE }} (${{ steps.pkginfo.outputs.VERSION_NAME }})
+          releaseName: ${{ steps.pkginfo.outputs.VERSION_NAME }} (${{ steps.pkginfo.outputs.VERSION_CODE }})
           status: completed
           changesNotSentForReview: ${{ inputs.draftGooglePlay }}
           whatsNewDirectory: whatsnew
