@@ -716,7 +716,7 @@ jobs:
           THUNDERBIRD_SHA: ${{ needs.release_commit.outputs.thunderbird_sha }}
           K9MAIL_SHA: ${{ needs.release_commit.outputs.k9mail_sha }}
           APP_NAME: ${{ matrix.appName }}
-          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
         run: |
           app_sha_name=${APP_NAME^^}_SHA
           app_sha="${!app_sha_name:-$GITHUB_SHA}"
@@ -755,7 +755,7 @@ jobs:
           APPLICATION_ID: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           REPO: ${{ github.repository }}
           APP_SHA: ${{ steps.shanotes.outputs.app_sha }}
-          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
           APP_NAME: ${{ matrix.appName }}
         run: |
           # r0adkll/upload-google-play expects the release notes in a different structure
