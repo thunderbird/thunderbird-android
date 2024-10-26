@@ -44,6 +44,7 @@ internal fun ContributionHeader(
                     logo = GoldenHearthSunburst,
                     title = ContributionIdStringMapper.mapToContributionTitle(contribution.id),
                     description = ContributionIdStringMapper.mapToContributionDescription(contribution.id),
+                    thankYou = stringResource(R.string.funding_googleplay_contribution_header_thank_you_message),
                     benefits = ContributionIdStringMapper.mapToContributionBenefits(contribution.id),
                     modifier = modifier,
                 )
@@ -67,6 +68,7 @@ private fun ContributionHeaderView(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
+    thankYou: String? = null,
     benefits: ImmutableList<String> = persistentListOf(),
 ) {
     Column(
@@ -93,6 +95,12 @@ private fun ContributionHeaderView(
             color = MainTheme.colors.primary,
             textAlign = TextAlign.Center,
         )
+
+        if (thankYou != null) {
+            TextBodyMedium(
+                text = thankYou,
+            )
+        }
 
         if (benefits.isNotEmpty()) {
             Column(
