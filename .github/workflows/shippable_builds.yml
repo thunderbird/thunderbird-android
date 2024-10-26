@@ -397,7 +397,8 @@ jobs:
             console.log(env);
             if (process.env.releaseType == "daily") {
               await core.summary
-                .addRaw(`Version for ${env.applicationId} bumped from ${env.oldFullVersion} (${env.oldVersionCode}) to ${env.newFullVersion} (${env.newVersionCode})`)
+                .addRaw(`Version for ${env.applicationId} changed from ${env.oldFullVersion} (${env.oldVersionCode}) to ${env.newFullVersion} (${env.newVersionCode}) (uncommitted) and will build from`)
+                .addLink(process.env.GITHUB_SHA, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.GITHUB_SHA}`)
                 .addEOL()
                 .write();
             } else {
