@@ -203,8 +203,8 @@ private fun ListEmptyView(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
-        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        modifier = modifier.padding(vertical = MainTheme.spacings.double),
     ) {
         TextBodyMedium(
             text = stringResource(R.string.funding_googleplay_contribution_list_empty_title),
