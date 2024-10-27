@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_update_thunderbird_url" translatable="false">https://support.mozilla.org/kb/updating-thunderbird</string>
+</resources>
