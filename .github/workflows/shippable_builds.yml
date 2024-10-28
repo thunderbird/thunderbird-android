@@ -225,6 +225,14 @@ jobs:
 
           ./gradlew :app-${APP_NAME}:printVersionInfo -PbuildType=${RELEASE_TYPE} -PflavorName=${PACKAGE_FLAVOR} --configure-on-demand
 
+      - name: Download daily version.properties artifact
+        if: ${{ needs.dump_config.outputs.releaseType == 'daily' }}
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: version-properties
+          path: ./
+
       - name: Determine new version code
         id: new_version_code
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
@@ -249,7 +257,7 @@ jobs:
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
-            VERSION_FILE="$(pwd)/version.properties"
+            VERSION_FILE="./version.properties"
             if [[ -e "$VERSION_FILE" ]]; then
               while IFS="=" read -r key value; do
                 if [[ "${key}" = "new_version_code" ]]; then
@@ -275,6 +283,13 @@ jobs:
 
           echo "old_version_code=${OLD_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
           echo "new_version_code=${NEW_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
+
+      - name: Upload daily version.properties artifact
+        if: ${{ needs.dump_config.outputs.releaseType == 'daily' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: version-properties
+          path: ./version.properties
 
       - name: Bump version suffix
         id: bump_version_suffix
