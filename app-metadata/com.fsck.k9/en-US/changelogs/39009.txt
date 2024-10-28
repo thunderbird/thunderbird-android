@@ -1,0 +1,2 @@
+- New folder drawer design.
+- Simplified folder management by revising display and push classes.
