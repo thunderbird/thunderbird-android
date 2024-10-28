@@ -55,6 +55,7 @@ jobs:
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     outputs:
       matrixInclude: ${{ steps.dump.outputs.matrixInclude }}
+      releaseDate: ${{ steps.dump.outputs.releaseDate }}
       releaseType: ${{ vars.RELEASE_TYPE }}
     steps:
       - name: Show Environment
@@ -71,6 +72,7 @@ jobs:
           draftGooglePlay: ${{ inputs.draftGooglePlay }}
         with:
           script: |
+            const NOW = new Date();
             let matrix = JSON.parse(process.env.matrixInclude);
             let skipThunderbird = process.env.skipThunderbird == "true";
             let skipK9Mail = process.env.skipK9Mail == "true";
@@ -89,6 +91,7 @@ jobs:
               return;
             }
 
+            core.setOutput("releaseDate", NOW.toString());
             core.setOutput("matrixInclude", matrixFull);
 
             await core.summary
@@ -225,14 +228,6 @@ jobs:
 
           ./gradlew :app-${APP_NAME}:printVersionInfo -PbuildType=${RELEASE_TYPE} -PflavorName=${PACKAGE_FLAVOR} --configure-on-demand
 
-      - name: Download daily version.properties artifact
-        if: ${{ needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: version-properties
-          path: ./
-
       - name: Determine new version code
         id: new_version_code
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
@@ -241,6 +236,7 @@ jobs:
           APP_NAME: ${{ matrix.appName }}
           OLD_VERSION_CODE: ${{ steps.appinfo.outputs.VERSION_CODE }}
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          RELEASE_DATE: ${{ needs.dump_config.outputs.releaseDate }}
         run: |
           date_version_code() {
             # Daily uses date-based calculation for version code in yDDDHHmm format
@@ -256,24 +252,15 @@ jobs:
           }
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
+            # Estimated max version code to get through 2025 is "30"
+            MAX_VERSION_CODE="30"
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
-            VERSION_FILE="./version.properties"
-            if [[ -e "$VERSION_FILE" ]]; then
-              while IFS="=" read -r key value; do
-                if [[ "${key}" = "new_version_code" ]]; then
-                  NEW_VERSION_CODE="${value}"
-                fi
-              done < $VERSION_FILE
-            else
-              NEW_VERSION_CODE=$(date_version_code "now")
-              echo "new_version_code=${NEW_VERSION_CODE}" > $VERSION_FILE
-            fi
+            NEW_VERSION_CODE=$(date_version_code "$RELEASE_DATE")
+            # Max version code for "2025-12-31 23:59" is "23652359"
+            MAX_VERSION_CODE="23652359"
           fi
-          # Ensure version code is not higher than max version code
-          MAX_VERSION_DATE="2025-12-31 23:59"
-          MAX_VERSION_CODE="23652359"
           if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
-            echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE} (${MAX_VERSION_DATE})"
+            echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE}"
             exit 1
           fi
           sed "s/versionCode = $OLD_VERSION_CODE/versionCode = $NEW_VERSION_CODE/" app-${APP_NAME}/build.gradle.kts > tmp_gradle_kts
@@ -283,14 +270,6 @@ jobs:
 
           echo "old_version_code=${OLD_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
           echo "new_version_code=${NEW_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
-
-      - name: Upload daily version.properties artifact
-        if: ${{ needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/upload-artifact@v4
-        continue-on-error: true
-        with:
-          name: version-properties
-          path: ./version.properties
 
       - name: Bump version suffix
         id: bump_version_suffix
