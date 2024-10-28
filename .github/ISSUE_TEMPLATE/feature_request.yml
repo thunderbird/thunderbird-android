@@ -1,45 +1,5 @@
-name: Feature request
-description: Suggest an idea for K-9 Mail
-labels: [ "type: enhancement", "unconfirmed" ]
-body:
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: Checklist
-      options:
-        - label: I have used the search function to see if someone else has already submitted the same feature request.
-          required: true
-        - label: I will describe the problem with as much detail as possible.
-          required: true
-        - label: This issue only contains a request for one single feature, **not** multiple (related) features.
-          required: true
-  - type: input
-    id: version
-    attributes:
-      label: App version
-      description: The app version you are currently using. You can find it inside the app under *Settings → About*.
-      placeholder: x.yyy
-    validations:
-      required: true
-  - type: textarea
-    id: problem
-    attributes:
-      label: Problem you are trying to solve
-      description: Give a brief explanation of the problem you are trying to solve.
-    validations:
-      required: true
-  - type: textarea
-    id: solution
-    attributes:
-      label: Suggested solution
-      description: Describe how you would like the app to help you solve that problem. Try to be as specific as possible.
-    validations:
-      required: true
-  - type: textarea
-    id: screenshots
-    attributes:
-      label: Screenshots / Drawings / Technical details
-      description: |
-        If your request is about (or includes) changing or extending the user interface (UI), describe what the UI would look like and how the user would interact with it.
-
-        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.
+blank_issues_enabled: false
+contact_links:
+  - name: Mozilla Connect
+    url: https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android
+    about: Sumbit your ideas for improving Thunderbird for Android. 
