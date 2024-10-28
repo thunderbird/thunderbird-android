@@ -97,8 +97,7 @@
     <string name="status_network_error">Eroare de conectare</string>
     <string name="status_invalid_id_error">Mesajul nu a fost găsit</string>
     <string name="status_loading_error">Eroare la încărcarea mesajului</string>
-    <string name="load_more_messages_fmt">Încarcă
-cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
+    <string name="load_more_messages_fmt">Încarcă cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -527,7 +526,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="account_setup_push_limit_1000">1000 de dosare</string>
     <string name="animations_title">Animații</string>
     <string name="animations_summary">Folosește efecte vizuale gaudi</string>
-    <string name="volume_navigation_title">Navigarea prin butoanele de volum in afișarea tip mesaj</string>
     <string name="show_unified_inbox_title">Afișează Cutia poștală de intrare unificată</string>
     <string name="show_starred_count_title">Afișează numărul de stele</string>
     <string name="integrated_inbox_title">Căsuță poștală unificată</string>
@@ -900,4 +898,7 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="folder_list_show_hidden_folders">Afișează dosarele ascunse</string>
     <string name="folder_settings_visible_label">Afișează dosarul</string>
     <string name="settings_list_action_support">Suport <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">Salvează atașamentul</string>
+    <string name="volume_navigation_summary">Navigați între mesaje utilizând tastele de volum pentru vizualizarea mesajelor</string>
+    <string name="volume_navigation_title_short">Navigare cu ajutorul tastelor de volum</string>
 </resources>

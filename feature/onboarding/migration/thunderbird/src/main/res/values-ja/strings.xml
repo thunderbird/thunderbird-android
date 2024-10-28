@@ -7,7 +7,10 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">デスクトップ版 Thunderbird で:</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">QR コードをスキャンして、アカウント設定を簡単にインポートできます。</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">スペースツールバーの「設定」(右下) を開き</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">「モバイル向けのエクスポート」を選択して指示に従ってください</string>
     <string name="onboarding_migration_thunderbird_import_title">別のアプリや端末からの移行ですか？</string>
     <string name="onboarding_migration_thunderbird_import_button_text">アカウント設定をインポート</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Thunderbird の更新方法はこちら。</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">リンクを開くアプリが見つかりません。</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">「モバイル向けのエクスポート/書き出し」を選択してください</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">インポートするには、デスクトップ版 Thunderbird 128 以降の最新版をお使いである必要があります。xliff:g id=\"link_text\"&gt;%s&lt;/xliff:g&gt;</string>
 </resources>

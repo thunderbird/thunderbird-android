@@ -524,7 +524,6 @@
     <string name="account_setup_push_limit_1000">1000 kansiota</string>
     <string name="animations_title">Animaatio</string>
     <string name="animations_summary">Käytä koreita visuaalisia tehosteita</string>
-    <string name="volume_navigation_title">Liikkuminen äänipainikkeilla viestinäkymässä</string>
     <string name="show_unified_inbox_title">Näytä \"Yhdistetty saapuneet\"</string>
     <string name="show_starred_count_title">Näytä tähdellä merkittyjen viestien määrä</string>
     <string name="integrated_inbox_title">Yhdistetty saapuneet</string>

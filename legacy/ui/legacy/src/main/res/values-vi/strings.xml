@@ -693,7 +693,6 @@
     <string name="account_setup_push_limit_100">100 thư mục</string>
     <string name="account_setup_push_limit_250">250 thư mục</string>
     <string name="account_setup_push_limit_1000">1000 thư mục</string>
-    <string name="volume_navigation_title">Di chuyển bằng phím âm lượng trong phần đọc tin nhắn</string>
     <string name="integrated_inbox_title">Hộp thư đồng nhất</string>
     <string name="integrated_inbox_detail">Tất cả tin nhắn trong thư mục đồng nhất</string>
     <string name="error_activity_not_found">Không ứng dụng phù hợp cho hành động này.</string>

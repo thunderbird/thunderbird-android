@@ -5,7 +5,7 @@ Courriel K-9 Mail est un client de courriel à code source ouvert qui fonction
 * Prend en charge plusieurs comptes
 * Boîte de réception unifiée
 * Protège vos données personnelles (aucun suivi, il ne se connecte qu’à votre service de courriel)
-* Synchronisation automatique en arrière-plan ou notifications pousser
+* Synchronisation automatique en arrière-plan ou notifications poussées
 * Recherche locale et côté serveur
 * Chiffrement des courriels OpenPGP (PGP/MIME)
 

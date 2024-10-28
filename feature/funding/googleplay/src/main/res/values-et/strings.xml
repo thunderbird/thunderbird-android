@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="funding_googleplay_contribution_header_title">Toeta Thunderbirdi</string>
-    <string name="funding_googleplay_contribution_list_title">Turvaline toetus</string>
+    <string name="funding_googleplay_contribution_list_title">Turvaline rahaline toetus</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Iga kuu</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Jätka maksega</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Pole saadaval</string>
@@ -9,6 +9,44 @@
     <string name="funding_googleplay_contribution_header_description">Me kunagi ei näita reklaame ega müü sinu andmeid. Meie rahastamine põhineb terves mahus vaid kasutajate toetustel. Kui sulle Thunderbird meeldib, siis palun aita meid. Me ei saaks jätkata ilma sinuta!</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Anneta üks kord</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Toetustel puudub maksuvabastus.</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Aita hoida Thunderbirdi töös</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Anna veel üks mõjus panus</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Muuda igakuist makset</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Rakenduse-sisene annetamise võimalus hetkel puudub.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Meie saidist www.thunderbird.net leiad veel võimalusi Thunderbirdi toetamiseks</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Proovi uuesti</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Maksmisvõimalus pole hetkel saadaval</string>
+    <string name="funding_googleplay_contribution_error_show_more">Näita lisateavet</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Sulge viga</string>
+    <string name="funding_googleplay_contribution_error_unknown">Tundmatu viga</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Suur panus</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Eriti märkimisväärne panus</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Igakuine väärtuslik panus</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Igakuine märgatav panus</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Igakuine suur panus</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Igakuine eriti märkimisväärne panus</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Sinu toetus viib meid edasi! Iga toetus loob muutusi - suur tänu!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">Sa oled suur põhjus, miks me saame teha seda, mida me teeme! Sinu suuremeelsus aitab meil saavutada uusi verstaposte.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Väärtuslik panus</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Ostutehing ei õnnestunud.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Rahalise toetamise võimalus hetkel puudub.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Märgatav panus</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Sinu abi aitab meil edasi liikuda! Isegi väikseimad toetused tekitavad muutusi ja me oleme väga tänulikud, et oled meiega koos.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Vajalik panus</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Väljapaistev panus</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">Sa aitad meil teha suuri asju! Sellisel tasemel panustades aitad meil astuda olulisi samme, mis võimaldavad meil jätkuvalt kasvada.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Sinu toetus paistab tõesti silma! Sa mängid olulist rolli meie missiooni edendamisel, aidates meil saavutada olulisi verstaposte ja saavutada suuremat mõju.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">Sa oled suur põhjus, miks me saame teha seda, mida me teeme! Tänu sinu heldusele saame võtta ette suuremaid projekte ja saavutada koos uusi verstaposte.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Sinu toetus aitab meil kasvada ja astuda olulisi samme edasi - suur tänu!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Sinu toetus on inspireeriv! Sinu panus aitab meil ületada piire ja saavutada oma eesmärke.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Sinu toetus on tõeliselt inspireeriv! Tänu sinu märkimisväärsele panusele oleme võimelised laiendama piire, uuendama ja tegema märkimisväärseid edusamme meie eesmärkide saavutamisel.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Igakuine vajalik panus</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Sa tõesti aitad meil unistada suurelt! Sinu uskumatu toetus annab meile võimaluse saavutada erakordset, jättes püsiva mõju kõigele, mida me teeme.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Igakuine väljapaistev panus</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Sinu toetus paistab silma! Sa oled meie missiooni edendamisel ja mõju saavutamisel võtmetähtsusega.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Sa aitad meil unistada suurelt! Sinu toetus annab meile võimaluse saavutada erakordseid asju.</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Jah</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Mitte praegu</string>
+    <string name="funding_googleplay_contribution_reminder_title">Toeta Thunderbirdi</string>
+    <string name="funding_googleplay_contribution_reminder_message">Meie eesmärgiks on pakkuda avatud lähtekoodil põhinevat e-postiklienti, mis on turvaline, privaatne ja vaba kõikidele kasutajatele üle maailma. Sinu rahaline toetus aitab seda tööd korraldada. Mis summaga sina täna lööd kaasa?</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Täname sind suuremeelse annetuse eest! Sinu toetus tugevdab otseselt Thunderbirdi ja me oleme tänulikud, et oled meie kõrval sellel teekonnal.</string>
 </resources>

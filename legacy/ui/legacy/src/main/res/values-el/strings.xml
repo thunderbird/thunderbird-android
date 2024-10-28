@@ -525,7 +525,6 @@
     <string name="account_setup_push_limit_1000">1000 φάκελοι</string>
     <string name="animations_title">Κινούμενα σχέδια</string>
     <string name="animations_summary">Χρήση οπτικών εφέ gaudy</string>
-    <string name="volume_navigation_title">Πλοήγηση με τα πλήκτρα ήχου όταν προβάλεται μήνυμα</string>
     <string name="show_unified_inbox_title">Εμφάνιση Ενιαία Εισερχόμενα</string>
     <string name="show_starred_count_title">Εμφάνιση πλήθους επιλεγμένων</string>
     <string name="integrated_inbox_title">Ενιαία Εισερχόμενα</string>

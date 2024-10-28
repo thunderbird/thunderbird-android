@@ -872,7 +872,6 @@
     <string name="message_list_error_folder_not_found">Папката не е намерена</string>
     <string name="account_settings_vibrate_pattern_3">Шаблон 3</string>
     <string name="background_work_notification_remove_account">Акаунтът се трие…</string>
-    <string name="volume_navigation_title">Преход между съобщения чрез бутони за звук</string>
     <string name="debug_export_logs_failure">Експортирането беше неуспешно.</string>
     <string name="message_view_show_remote_images_action">Зареди изображения</string>
     <string name="account_settings_autodownload_message_size_256">256 КБ</string>

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importera inställningar</string>
     <string name="onboarding_migration_thunderbird_new_account_title">Är du ny på Thunderbird?</string>
     <string name="onboarding_migration_thunderbird_new_account_button_text">Lägg till ett e-postkonto nu</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Använder du redan Thunderbird på datorn?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Inställningar\' i flikmenyn</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Välj \'Exportera till mobil\' och följ instruktionerna</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Importera enkelt dina kontoinställningar genom att skanna en QR-kod.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">I Thunderbird för datorer, gå till:</string>
     <string name="onboarding_migration_thunderbird_import_title">Flytta från en annan app eller enhet?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Importera dina kontoinställningar nu</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Import kräver den senaste versionen av Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Lär dig hur du uppdaterar Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Välj \"Exportera till mobil\"</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Ingen app hittades för att öppna länken.</string>
 </resources>

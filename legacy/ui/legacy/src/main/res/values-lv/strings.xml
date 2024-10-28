@@ -97,8 +97,7 @@
     <string name="status_network_error">Savienojuma kļūda</string>
     <string name="status_invalid_id_error">Ziņa nav atrasta</string>
     <string name="status_loading_error">Kļūda ielādējot vēstuli</string>
-    <string name="load_more_messages_fmt">Ielādēt līdz
-pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
+    <string name="load_more_messages_fmt">Ielādēt līdz pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -529,7 +528,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
     <string name="account_setup_push_limit_1000">1000 mapes</string>
     <string name="animations_title">Animācija</string>
     <string name="animations_summary">Izmantot spilgtus vizuālos efektus</string>
-    <string name="volume_navigation_title">Navigācija ar skaļuma taustiņu ziņu skatā</string>
     <string name="show_unified_inbox_title">Rādīt Apvienoto pastkasti (Iesūtni)</string>
     <string name="show_starred_count_title">Parādīt zvaigžņoto ziņu skaitu</string>
     <string name="integrated_inbox_title">Apvienotā Iesūtne</string>

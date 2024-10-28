@@ -7,7 +7,6 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Importe facilmente as suas configurações de conta lendo um código QR.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">No Thunderbird de computador, vá até:</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Configurações\' na barra de ferramentas de espaços (inferior esquerdo)</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Selecione \'Exportar para dispositivo móvel\' e siga as instruções</string>
     <string name="onboarding_migration_thunderbird_import_title">Movendo de outro app ou dispositivo?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Importar suas configurações de conta agora</string>
 </resources>

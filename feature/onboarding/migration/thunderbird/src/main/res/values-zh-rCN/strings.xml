@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">已经在使用桌面版 Thunderbird？</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">导入设置</string>
     <string name="onboarding_migration_thunderbird_new_account_title">第一次使用 Thunderbird？</string>
@@ -9,5 +9,8 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">空间工具栏中的“设置”（左下角）</string>
     <string name="onboarding_migration_thunderbird_import_title">从其他应用或设备迁移？</string>
     <string name="onboarding_migration_thunderbird_import_button_text">立即导入您的账号设置</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">选择“导出到移动设备”并按照说明操作</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">未找到用于打开此链接的应用。</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">选择“导出到移动设备”</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">需使用最新版 Thunderbird 桌面版版本 128 导出。<xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">了解更新 Thunderbird 的方法。</string>
 </resources>

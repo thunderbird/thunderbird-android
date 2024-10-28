@@ -7,7 +7,6 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Легко імпортуйте налаштування свого облікового запису, сканувавши QR-код.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">У Thunderbird для комп\'ютера перейдіть до:</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Налаштування’ на панелі інструментів Простори (внизу ліворуч)</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Виберіть ‘Експортувати на мобільний’ і дотримуйтесь інструкцій</string>
     <string name="onboarding_migration_thunderbird_import_title">Переходите з іншого застосунку або пристрою?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Імпортуйте налаштування свого облікового запису зараз</string>
 </resources>

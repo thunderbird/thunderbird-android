@@ -2,4 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">开始</string>
     <string name="onboarding_welcome_import_button">导入设置</string>
+    <string name="onboarding_welcome_text">开源、注重隐私且无广告的 Android 电子邮件应用。</string>
+    <string name="onboarding_welcome_developed_by">由 MZLA Technologies 的专门团队和全球志愿者社区开发，并且是 Mozilla 家族的一员。</string>
 </resources>

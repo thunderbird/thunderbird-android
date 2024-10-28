@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">כבר משתמש בת\'אנדרבירד למחשב?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">יבא הגדרות</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">הוסף חשבון דוא\"ל עכשיו</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">בת\'אנדרבירד למחשב, לך אל:</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">חדש בת\'אנדרבירד?</string>
+    <string name="onboarding_migration_thunderbird_import_title">עובר מיישום או מכשיר אחר?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">יבא את הגדרות החשבון שלך עכשיו</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">יבא בקלות את הגדרות החשבון שלך ע\"י סריקת ברקוד QR.</string>
+</resources>

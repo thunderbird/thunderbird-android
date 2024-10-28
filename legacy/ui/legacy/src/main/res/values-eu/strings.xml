@@ -524,7 +524,6 @@
     <string name="account_setup_push_limit_1000">1000 karpeta</string>
     <string name="animations_title">Animazioak</string>
     <string name="animations_summary">Erabili bistaratze efektu nabarmenak</string>
-    <string name="volume_navigation_title">Nabigatu bolumenaren botoiekin mezuak ikusterakoan</string>
     <string name="show_unified_inbox_title">Erakutsi Sarrera Ontzi Bateratua</string>
     <string name="show_starred_count_title">Erakutsi kontu izardunak</string>
     <string name="integrated_inbox_title">Sarrerako ontzi bateratua</string>
@@ -887,4 +886,12 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="settings_ui_telemetry_title">Erabilera eta datu teknikoak</string>
     <string name="folder_settings_notifications_label">Jakinarazpenak</string>
     <string name="settings_ui_telemetry_description">Aplikazio honi buruzko errendimendu, erabilera, hardware eta pertsonalizazio datuak partekatzen ditu Mozillarekin Thunderbird hobetzen laguntzeko</string>
+    <string name="save_attachment_action">Gorde eranskina</string>
+    <string name="folder_list_show_hidden_folders">Erakutsi ezkutuko karpetak</string>
+    <string name="folder_settings_sync_label">Gaitu sinkronizazioa</string>
+    <string name="folder_settings_visible_label">Erakutsi karpeta</string>
+    <string name="volume_navigation_title_short">Bolumen teklaz nabigazioa</string>
+    <string name="volume_navigation_summary">Nabigatu mezuen artean bolumen-teklak erabiliz mezuen ikuspegian</string>
+    <string name="folder_settings_push_label">Gaitu Push</string>
+    <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> laguntza</string>
 </resources>

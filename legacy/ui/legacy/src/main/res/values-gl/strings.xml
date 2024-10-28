@@ -845,7 +845,6 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="action_add_to_contacts">Engadir aos contactos</string>
     <string name="action_compose_message_to">Redactar un correo dirixido a</string>
     <string name="action_copy_email_address">Copiar enderezo de correo electrónico</string>
-    <string name="volume_navigation_title">Navegación coa tecla de volume na vista de mensaxes</string>
     <string name="general_settings_show_compose_button_title">Mostrar o botón flotante de redacción</string>
     <string name="message_list_error_title">Erro</string>
     <string name="account_settings_vibrate_pattern_2">Patrón 2</string>

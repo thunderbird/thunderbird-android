@@ -122,9 +122,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Meldingsfout</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Er is een fout opgetreden tijdens het maken van een systeemmelding voor een nieuw bericht. De reden is waarschijnlijk een ontbrekend meldingsgeluid.
-\n
-\nTik om meldingsinstellingen te openen.</string>
+    <string name="notification_notify_error_text">Er is een fout opgetreden tijdens het maken van een systeemmelding voor een nieuw bericht. De reden is waarschijnlijk een ontbrekend meldingsgeluid.\n\nTik om meldingsinstellingen te openen.</string>
     <string name="notification_bg_sync_ticker">Op berichten controleren: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Berichten controleren</string>
     <string name="notification_bg_send_ticker">Berichten versturen: <xliff:g id="account">%s</xliff:g></string>
@@ -526,7 +524,6 @@
     <string name="account_setup_push_limit_1000">1000 mappen</string>
     <string name="animations_title">Animatie</string>
     <string name="animations_summary">Opvallende visuele effecten gebruiken</string>
-    <string name="volume_navigation_title">Volumetoetsnavigatie in berichtbeeld</string>
     <string name="show_unified_inbox_title">Samengevoegd Postvak IN tonen</string>
     <string name="show_starred_count_title">Aantal berichten met een ster tonen</string>
     <string name="integrated_inbox_title">Samengevoegd Postvak IN</string>
@@ -691,8 +688,7 @@
     <string name="enable_sign_only">PGP-handtekening inschakelen</string>
     <string name="disable_sign_only">PGP-handtekening uitschakelen</string>
     <string name="openpgp_inline_title">PGP/INLINE-instellingen</string>
-    <string name="openpgp_inline_text">Het e-mailbericht is in PGP/INLINE-formaat verzonden.
-\nDit wordt alleen gebruikt voor compatibiliteit:</string>
+    <string name="openpgp_inline_text">Het e-mailbericht is in PGP/INLINE-formaat verzonden.\nDit wordt alleen gebruikt voor compatibiliteit:</string>
     <string name="openpgp_inline_plus_compat">Sommige clients ondersteunen alleen dit formaat</string>
     <string name="openpgp_inline_minus_transit">Handtekening kan onderweg beschadigd raken</string>
     <string name="openpgp_inline_minus_attach">Bijlagen worden niet ondersteund</string>
@@ -754,8 +750,7 @@
     <string name="error_sign_only_no_encryption">Versleuteling niet mogelijk in sign-onlymodus!</string>
     <string name="unsigned_text_divider_label">niet ondertekende tekst</string>
     <string name="crypto_no_provider_title">Dit e-mailbericht is versleuteld</string>
-    <string name="crypto_no_provider_message">Dit e-mailbericht is met OpenPGP versleuteld.
-\nInstalleer en stel een OpenPGP-app in om het e-mailbericht te lezen.</string>
+    <string name="crypto_no_provider_message">Dit e-mailbericht is met OpenPGP versleuteld.\nInstalleer en stel een OpenPGP-app in om het e-mailbericht te lezen.</string>
     <string name="crypto_no_provider_button">Ga naar Instellingen</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -892,4 +887,7 @@
     <string name="folder_list_show_hidden_folders">Verborgen mappen tonen</string>
     <string name="folder_settings_visible_label">Map tonen</string>
     <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> steunen</string>
+    <string name="save_attachment_action">Bijlage opslaan</string>
+    <string name="volume_navigation_title_short">Navigatie met volumeknoppen</string>
+    <string name="volume_navigation_summary">Gebruik de volumeknoppen om te navigeren tussen berichten in het berichtenoverzicht</string>
 </resources>

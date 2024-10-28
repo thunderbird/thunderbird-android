@@ -5,9 +5,12 @@
     <string name="onboarding_migration_thunderbird_new_account_button_text">Shtoni një llogari email që tani</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_title">E përdorni tashmë Thunderbird-in në desktop?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Rregullime’ te Paneli i Hapësirave (majtas poshtë)</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Përzgjidhni “Eksportoji për Celular” dhe ndiqni udhëzimet</string>
     <string name="onboarding_migration_thunderbird_import_title">Po kaloni prej një aplikacioni apo pajisje tjetër?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Importoni lehtësisht rregullimet e llogarisë tuaj, duke skanuar një kod QR.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Te Thunderbird-i për desktop kaloni te:</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Importoni që tani rregullimet e llogarisë tuaj</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Mësoni si të përditësoni Thunderbird-in.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">S’u gjet aplikacion për hapjen e lidhjes.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Përzgjidhni “Eksporto te Celular”</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Importimi lyp versionin më të ri të Thunderbird-it për Desktop 128. &lt;xliff:g id=\"link_text\"&gt;%s&lt;/xliff:g&gt;</string>
 </resources>

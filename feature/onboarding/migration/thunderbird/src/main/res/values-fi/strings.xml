@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Käytätkö Thunderbirdiä jo tietokoneella?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Tuo asetukset</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Onko Thunderbird uusi tuttavuus sinulle?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Tuo tilisi asetukset vaivatta skannaamalla QR-koodi.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Mene Thunderbirdin tietokonesovelluksella:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Asetukset’ Tilat-työkalupalkissa (vasen alareuna)</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Lisää sähköpostitili nyt</string>
+    <string name="onboarding_migration_thunderbird_import_title">Siirtymässä toisesta sovelluksesta tai laitteelta?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Tuo tilin asetukset nyt</string>
+</resources>

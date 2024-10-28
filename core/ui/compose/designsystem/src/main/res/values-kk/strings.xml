@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">Парольді жасыру</string>
+    <string name="designsystem_atom_password_textfield_show_password">Парольді көрсету</string>
+    <string name="designsystem_molecule_email_address_input_label">Электронды пошта</string>
+    <string name="designsystem_molecule_password_input_label">Пароль</string>
+</resources>

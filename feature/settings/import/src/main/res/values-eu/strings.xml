@@ -39,4 +39,6 @@
     <string name="settings_import_general_settings_item">Ezarpen orokorrak</string>
     <string name="settings_import_pick_app_button">Inportatu aplikaziotik</string>
     <string name="settings_import_pick_app_dialog_title">Inportatu aplikaziotik</string>
+    <string name="settings_import_scan_qr_code_button">Eakaneatu QR kodea</string>
+    <string name="settings_import_app_version_not_supported">Aplikazioaren bertsioa ez da onartzen.</string>
 </resources>

@@ -5,5 +5,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Gå til innstillingar</string>
     <string name="migration_qrcode_scanning_progress">Skanna %1$s av %2$s</string>
     <string name="migration_qrcode_done_button_text">Ferdig</string>
-    <string name="migration_qrcode_scanning_instructions">Juster QR-koden gjeve frå Thunderbird Desktop</string>
+    <string name="migration_qrcode_scanning_instructions">Rett kameraet mot QR-koden gjeve frå Thunderbird Desktop</string>
 </resources>

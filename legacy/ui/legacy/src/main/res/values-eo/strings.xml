@@ -9,7 +9,7 @@
     <string name="app_license">Apache License, versio 2.0</string>
     <string name="about_project_title">Malfermkoda projekto</string>
     <string name="about_website_title">Retejo</string>
-    <string name="user_forum_title">Forumo</string>
+    <string name="user_forum_title">Uzantojn forumo</string>
     <string name="about_libraries">Bibliotekoj</string>
     <string name="license">Permesilo</string>
     <string name="changelog_title">Ŝanĝoprotokolo</string>
@@ -811,4 +811,30 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="save_attachment_action">Savi kunsendaĵon</string>
+    <string name="new_messages_title">Novaj mesaĝoj</string>
+    <string name="notification_certificate_error_public">Atestilon eraro</string>
+    <string name="debug_export_logs_failure">Elportado malsukcesis.</string>
+    <string name="message_view_me_text">mi</string>
+    <string name="unsubscribe_action">Malaboni</string>
+    <string name="notification_notify_error_title">Sciigon eraro</string>
+    <string name="message_view_show_remote_images_action">Montri forajn bildojn</string>
+    <string name="changelog_snackbar_button_text">Vidi</string>
+    <string name="about_title">Pri <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">La konto \"<xliff:g id="account">%s</xliff:g>\" estos forigita el <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="get_help_title">Ricevi helpon</string>
+    <string name="message_view_recipients_format">al <xliff:g id="recipients">%s</xliff:g></string>
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <string name="general_settings_contact_name_color_label">Koloro de la kontakojn nomoj</string>
+    <string name="debug_export_logs_title">Elporti protokolojn</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Montri la antaŭan mesaĝon</string>
+    <string name="general_settings_post_remove_action_return_to_list">Reiri al la listo de mesaĝoj</string>
+    <string name="general_settings_post_remove_action_title">Post mesaĝon forigado aŭ movado</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Post mesaĝon markado kiel nelegitan</string>
+    <string name="general_settings_post_remove_action_show_next_message">Montri la sekvan mesaĝon</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Reiri al la listo de mesaĝoj</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Resti ĉe la nuna mesaĝo</string>
+    <string name="general_settings_right_swipe_title">Viŝado dekstre</string>
+    <string name="general_settings_left_swipe_title">Viŝado maldekstre</string>
+    <string name="general_settings_swipe_actions_title">Viŝadagoj</string>
 </resources>

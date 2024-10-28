@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Ja feu servir el Thunderbird a l\'escriptori?</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">És el primer cop que useu el Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importa la configuració</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">A la versió d\'escriptori del Thunderbird, aneu a:</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Afegeix un compte de correu electrònic ara</string>
+    <string name="onboarding_migration_thunderbird_import_title">Veniu d\'una altra aplicació o dispositiu?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importeu fàcilment la configuració del vostre compte escanejant un codi QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">«Configuració» a la barra d\'eines (a baix a l\'esquerra)</string>
+</resources>

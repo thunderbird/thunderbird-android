@@ -529,7 +529,6 @@
     <string name="account_setup_push_limit_1000">1000 каталогаў</string>
     <string name="animations_title">Анімацыя</string>
     <string name="animations_summary">Анімацыя інтэрфейсу</string>
-    <string name="volume_navigation_title">Навігацыя клавішамі гучнасці</string>
     <string name="show_unified_inbox_title">Агульная скрыня ўваходных лістоў для ўсіх акаўнтаў</string>
     <string name="show_starred_count_title">Паказваць колькасць адзначаных</string>
     <string name="integrated_inbox_title">Усе атрыманыя</string>

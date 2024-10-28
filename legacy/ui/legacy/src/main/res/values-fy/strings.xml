@@ -122,9 +122,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Meldingsflater</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Der is in flater bard wylst it meitsjen fan in systeemmelding foar in nij berjocht. De reden is wierskynlik in ûntbrekken fan in meldingslûd.
-\n
-\nTik om meldingsynstellingen te iepenjen.</string>
+    <string name="notification_notify_error_text">Der is in flater bard wylst it meitsjen fan in systeemmelding foar in nij berjocht. De reden is wierskynlik in ûntbrekken fan in meldingslûd.\n\nTik om meldingsynstellingen te iepenjen.</string>
     <string name="notification_bg_sync_ticker">Berjochten kontrolearje: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Berjochten kontrolearje</string>
     <string name="notification_bg_send_ticker">Berjochten ferstjoere: <xliff:g id="account">%s</xliff:g></string>
@@ -526,7 +524,6 @@
     <string name="account_setup_push_limit_1000">1000 mappen</string>
     <string name="animations_title">Animaasje</string>
     <string name="animations_summary">Fisuele effekten brûke</string>
-    <string name="volume_navigation_title">Folumetoetsnavigaasje yn berjochtbyld</string>
     <string name="show_unified_inbox_title">Kombinearre Postfek YN toane</string>
     <string name="show_starred_count_title">Tal berjochten mei in stjer toane</string>
     <string name="integrated_inbox_title">Kombinearre Postfek YN</string>
@@ -691,8 +688,7 @@
     <string name="enable_sign_only">PGP-hantekening ynskeakelje</string>
     <string name="disable_sign_only">PGP-hantekening útskeakelje</string>
     <string name="openpgp_inline_title">PGP/INLINE-ynstellingen</string>
-    <string name="openpgp_inline_text">It e-mailberjocht is yn PGP/INLINE-formaat ferstjoerd.
-\nDit wurdt allinnich brûkt foar kompatibiliteit:</string>
+    <string name="openpgp_inline_text">It e-mailberjocht is yn PGP/INLINE-formaat ferstjoerd.\nDit wurdt allinnich brûkt foar komptabiliteit:</string>
     <string name="openpgp_inline_plus_compat">Guon clients stypje allinnich dit formaat</string>
     <string name="openpgp_inline_minus_transit">Hantekeningen kinne ûnderweis skansearre reitsje</string>
     <string name="openpgp_inline_minus_attach">Bylagen wurde net stipe</string>
@@ -754,8 +750,7 @@
     <string name="error_sign_only_no_encryption">Fersifering net mooglik yn sign-only-modus!</string>
     <string name="unsigned_text_divider_label">net ûndertekene tekst</string>
     <string name="crypto_no_provider_title">Dit e-mailberjocht is fersifere</string>
-    <string name="crypto_no_provider_message">Dit e-mailberjocht is mei OpenPGP fersifere.
-\nYnstallearje en stel in OpenPGP-app yn om it e-mailberjocht te lêzen.</string>
+    <string name="crypto_no_provider_message">Dit e-mailberjocht is mei OpenPGP fersifere.\nYnstallearje en stel in OpenPGP-app yn om it e-mailberjocht te lêzen.</string>
     <string name="crypto_no_provider_button">Gean nei Ynstellingen</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -892,4 +887,7 @@
     <string name="folder_settings_sync_label">Syngronisaasje ynskeakelje</string>
     <string name="folder_settings_visible_label">Map toane</string>
     <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> stypje</string>
+    <string name="save_attachment_action">Bylage bewarje</string>
+    <string name="volume_navigation_title_short">Navigaasje mei folumeknoppen</string>
+    <string name="volume_navigation_summary">Brûk de folumeknoppen om te navigearjen tusken berjochten yn it berjochteoersjoch</string>
 </resources>

@@ -528,7 +528,6 @@
     <string name="account_setup_push_limit_1000">1000 carpetes</string>
     <string name="animations_title">Animació</string>
     <string name="animations_summary">Fes servir efectes visuals cridaners</string>
-    <string name="volume_navigation_title">Navegació amb la tecla de volum a la vista de missatges</string>
     <string name="show_unified_inbox_title">Mostra la safata d\'entrada unificada</string>
     <string name="show_starred_count_title">Mostra el recompte de destacats</string>
     <string name="integrated_inbox_title">Bústia d\'entrada unificada</string>
@@ -884,7 +883,7 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Torna a la llista de missatges</string>
     <string name="push_notification_state_alarm_permission_missing">Falta permís per a programar alarmes</string>
     <string name="push_notification_grant_alarm_permission">Toca per a concedir permís.</string>
-    <string name="about_app_authors_thunderbird">Equip de Thunderbird per al mòbil</string>
+    <string name="about_app_authors_thunderbird">Equip del Thunderbird per al mòbil</string>
     <string name="dialog_openkeychain_info_text">L\'aplicació OpenKeychain és necessària per habilitar el suport per a l\'encriptació d\'extrem a extrem.</string>
     <string name="about_title">Quant al <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà del <xliff:g id="app_name">%s</xliff:g>.</string>
