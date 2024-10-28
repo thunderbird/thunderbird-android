@@ -39,7 +39,7 @@ class FundingReminder(
 
         if (shouldShowReminder()) {
             fragmentObserver.register(activity.supportFragmentManager) {
-                dialog.show(activity, onOpenFunding)
+                showFundingReminderDialog(activity, onOpenFunding)
             }
         }
     }
@@ -64,5 +64,16 @@ class FundingReminder(
         } catch (exception: NameNotFoundException) {
             settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
         }
+    }
+
+    private fun showFundingReminderDialog(
+        activity: AppCompatActivity,
+        openFunding: () -> Unit,
+    ) {
+        // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
+        // we err on the side of the dialog not being shown rather than it being shown more than once.
+        settings.setReminderShownTimestamp(clock.now().toEpochMilliseconds())
+
+        dialog.show(activity, openFunding)
     }
 }

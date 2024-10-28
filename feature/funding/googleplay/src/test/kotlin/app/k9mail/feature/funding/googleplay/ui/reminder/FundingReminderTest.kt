@@ -13,6 +13,7 @@ import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isTrue
 import kotlin.test.Test
 import kotlinx.datetime.Instant
@@ -111,6 +112,7 @@ class FundingReminderTest {
         assertThat(dialogShown).isEqualTo(true)
         assertThat(fragmentObserver.isRegistered).isTrue()
         assertThat(activityObserver.isRegistered).isTrue()
+        assertThat(settings.getReminderShownTimestamp()).isEqualTo(currentTime)
     }
 
     private fun createTestActivity(
