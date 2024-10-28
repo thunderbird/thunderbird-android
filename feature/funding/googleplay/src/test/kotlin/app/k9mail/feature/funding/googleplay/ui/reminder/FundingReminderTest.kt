@@ -81,8 +81,6 @@ class FundingReminderTest {
 
         testSubject.registerReminder(activity) { }
 
-        verify(activity).lifecycle
-        verifyNoMoreInteractions(activity)
         assertThat(fragmentObserver.isRegistered).isFalse()
         assertThat(activityObserver.isRegistered).isTrue()
     }
@@ -103,7 +101,7 @@ class FundingReminderTest {
             settings = settings,
             fragmentObserver = fragmentObserver,
             activityObserver = activityObserver,
-            dialog = { _, _ -> dialogShown = true },
+            dialog = { dialogShown = true },
             clock = TestClock(Instant.fromEpochMilliseconds(currentTime)),
         )
 
@@ -147,7 +145,7 @@ class FundingReminderTest {
         settings: FundingSettings,
         fragmentObserver: FragmentLifecycleObserver,
         activityObserver: ActivityLifecycleObserver,
-        dialog: Dialog = Dialog { _, _ -> },
+        dialog: Dialog = Dialog { },
         clock: TestClock = TestClock(Instant.fromEpochMilliseconds(0)),
     ): FundingReminder {
         return FundingReminder(

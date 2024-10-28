@@ -16,7 +16,12 @@ interface FundingReminderContract {
     }
 
     fun interface Dialog {
-        fun show(activity: AppCompatActivity, onOpenFunding: () -> Unit)
+        fun show(fragmentManager: FragmentManager)
+
+        companion object {
+            const val FRAGMENT_REQUEST_KEY = "funding_reminder_dialog"
+            const val FRAGMENT_RESULT_SHOW_FUNDING = "show_funding"
+        }
     }
 
     interface FragmentLifecycleObserver {
