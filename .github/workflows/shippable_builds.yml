@@ -287,6 +287,7 @@ jobs:
       - name: Upload daily version.properties artifact
         if: ${{ needs.dump_config.outputs.releaseType == 'daily' }}
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: version-properties
           path: ./version.properties
