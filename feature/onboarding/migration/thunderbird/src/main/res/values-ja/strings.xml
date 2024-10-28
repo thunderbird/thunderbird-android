@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">設定をインポート</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_title">デスクトップ版 Thunderbird をお使いですか？</string>
     <string name="onboarding_migration_thunderbird_new_account_title">Thunderbird は初めてですか？</string>
@@ -12,5 +12,5 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Thunderbird の更新方法はこちら。</string>
     <string name="onboarding_migration_thunderbird_link_open_error">リンクを開くアプリが見つかりません。</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">「モバイル向けのエクスポート/書き出し」を選択してください</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">インポートするには、デスクトップ版 Thunderbird 128 以降の最新版をお使いである必要があります。xliff:g id=\"link_text\"&gt;%s&lt;/xliff:g&gt;</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">インポートするには、デスクトップ版 Thunderbird 128 以降の最新版をお使いである必要があります。<xliff:g id="link_text">%s</xliff:g></string>
 </resources>
