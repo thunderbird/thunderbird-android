@@ -811,7 +811,6 @@
     <string name="general_settings_left_swipe_title">Превлачење улево</string>
     <string name="general_settings_swipe_action_toggle_read">Означи као прочитано/непрочитано</string>
     <string name="general_settings_swipe_action_toggle_star">Додај/уклони звездицу</string>
-    <string name="volume_navigation_title">Навигација тастерима за јачину звука у приказу порука</string>
     <string name="general_settings_post_mark_as_unread_action_title">Након означавања поруке као непрочитане</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Број нових порука</string>
     <string name="account_settings_open_notification_settings_messages_summary">Конфигуриши обавештења за нове поруке</string>

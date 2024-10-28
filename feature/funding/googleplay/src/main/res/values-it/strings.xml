@@ -1,2 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_list_type_recurring">Mensile</string>
+    <string name="funding_googleplay_contribution_header_description">Non mostriamo mai pubblicità o vendiamo i tuoi dati. Siamo completamente finanziati dalle donazioni dei nostri utenti. Se Thunderbird ti piace, allora supportaci. Non potremmo farlo senza di te!</string>
+    <string name="funding_googleplay_contribution_list_title">Donazione sicura</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Non disponibile</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Continua per il pagamento</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Modifica il pagamento mensile</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Aiuta Thunderbird a rimanere in vita</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Pagamento al momento non disponibile</string>
+    <string name="funding_googleplay_contribution_error_show_more">Mostra maggiori dettagli</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visita www.thunderbird.net per supportare Thunderbird</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Acquisto non andato a buon fine.</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Riprova</string>
+    <string name="funding_googleplay_contribution_error_unknown">Errore sconosciuto</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Donazioni al momento non disponibili.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Donazioni in-app non sono al momento disponibili.</string>
+    <string name="funding_googleplay_contribution_header_title">Supporto Thunderbird</string>
+    <string name="funding_googleplay_contribution_title">Supporto Thunderbird</string>
+</resources>

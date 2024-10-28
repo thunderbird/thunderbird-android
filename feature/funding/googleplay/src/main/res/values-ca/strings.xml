@@ -4,11 +4,23 @@
     <string name="funding_googleplay_contribution_title">Dóna suport a Thunderbird</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Donació única</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Continua amb el pagament</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ajuda a mantenir viu el Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ajudeu a mantenir viu el Thunderbird</string>
     <string name="funding_googleplay_contribution_header_title">Dóna suport a Thunderbird</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Mensual</string>
     <string name="funding_googleplay_contribution_header_description">Mai mostrem anuncis ni venem les vostres dades. Estem totalment finançats amb les contribucions econòmiques dels nostres usuaris. Si us agrada Thunderbird, si us plau, ajudeu a donar-li suport. No podem fer això sense vostès!</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Cap disponible</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Les contribucions no són deduïbles fiscalment com a donacions benèfiques.</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Modifica el pagament mensual</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visiteu www.thunderbird.net per obtenir més maneres de donar suport al Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Actualment, les contribucions des de l\'aplicació no estan disponibles.</string>
+    <string name="funding_googleplay_contribution_error_show_more">Mostra més detalls</string>
+    <string name="funding_googleplay_contribution_error_unknown">Error desconegut</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">La compra ha fallat.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">En aquest moment les contribucions no estan disponibles.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Contribució essencial</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Contribució destacada</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Contribució valuosa</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Contribució important</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Gran contribució</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Contribució excepcional</string>
 </resources>

@@ -2,4 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">شروع</string>
     <string name="onboarding_welcome_import_button">درون‌برد تنظیمات</string>
+    <string name="onboarding_welcome_text">یک برنامه رایانامه متن‌باز، متمرکز بر حریم خصوصی و بدون آگهی برای اندروید.</string>
+    <string name="onboarding_welcome_developed_by">توسط یک تیم اختصاصی در MZLA Technologies و یک جامعه سراسری از داوطلبان توسعه یافته است. بخشی از خانواده Mozilla</string>
 </resources>

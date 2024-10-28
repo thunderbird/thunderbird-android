@@ -525,7 +525,6 @@
     <string name="account_setup_push_limit_1000">1000 kausta</string>
     <string name="animations_title">Animatsioon</string>
     <string name="animations_summary">Kasuta erinevaid visuaalseid efekte</string>
-    <string name="volume_navigation_title">Kasuta kirjavaates liikumiseks helivaljuse nuppe</string>
     <string name="show_unified_inbox_title">Näita koondsisendkausta</string>
     <string name="show_starred_count_title">Näita tärniga tähistatud kirjade arvu</string>
     <string name="integrated_inbox_title">Koondsisendkaust</string>
@@ -881,7 +880,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="push_notification_state_alarm_permission_missing">Puuduvad õigused alarmide seadistamiseks</string>
     <string name="push_notification_grant_alarm_permission">Õiguste jagamiseks klõpsi.</string>
     <string name="account_delete_dlg_instructions_fmt">Kasutajakonto \"<xliff:g id="account">%s</xliff:g>\" kustutatakse <xliff:g id="app_name">%s</xliff:g>ist.</string>
-    <string name="push_info_notification_explanation_text">Tõuketeenuste kasutamisel xliff:g id=\"app_name\"&gt;%1$s&lt;/xliff:g&gt; hoiab töös ühendust e-posti serveriga. Kui rakendus on taustal pidevalt aktiivne, siis Android eeldab, et selle kohta kuvatakse pidevat teavitust. Lisateave: &lt;xliff:g id=\"optional_extended_explanation\"&gt;%2$s&lt;/xliff:g&gt;</string>
+    <string name="push_info_notification_explanation_text">Tõuketeenuste kasutamisel <xliff:g id="app_name">%1$s</xliff:g> hoiab töös ühendust e-posti serveriga. Kui rakendus on taustal pidevalt aktiivne, siis Android eeldab, et selle kohta kuvatakse pidevat teavitust. Lisateave: <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_title">Teave <xliff:g id="app_name">%s</xliff:g>i kohta</string>
     <string name="dialog_openkeychain_info_text">Läbiva krüptimise kasutamiseks on vajalik OpenKeychaini rakendus.</string>
     <string name="about_app_authors_thunderbird">Thunderbirdi mobiilirakenduse arendustiim</string>
@@ -894,4 +893,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="folder_list_show_hidden_folders">Näita peidetud kaustu</string>
     <string name="folder_settings_visible_label">Näita kausta</string>
     <string name="settings_list_action_support">Toeta <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">Salvesta manus</string>
+    <string name="volume_navigation_title_short">Helivaljuse nupu kasutamine liikumiseks</string>
+    <string name="volume_navigation_summary">Sõnumite vaates liigu helivaljuse nuppudega eri sõnumite vahel</string>
 </resources>

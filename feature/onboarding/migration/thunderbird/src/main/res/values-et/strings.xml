@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Kas sa juba kasutad Thunderbirdi oma arvutis?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Impordi seadistused</string>
     <string name="onboarding_migration_thunderbird_new_account_title">Thunderbird on sinu jaoks uus rakendus?</string>
@@ -7,7 +7,6 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Impordi mugavalt oma kontoseadistused QR-koodi skaneerimise abil.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Ava Thunderbird oma laua- või sülearvutis ning ava:</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">tööriistaribalt „Sätted“ (all vasakul)</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Vali „Ekspordi nutiseadmesse“ ning järgi juhendit</string>
     <string name="onboarding_migration_thunderbird_import_title">Oled hoopis kolimas muust rakendusest või seadmest?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Impordi oma kontoseadistused nüüd</string>
 </resources>

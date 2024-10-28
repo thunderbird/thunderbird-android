@@ -98,7 +98,7 @@
     <string name="status_network_error">Помилка з’єднання</string>
     <string name="status_invalid_id_error">Повідомлення не знайдено</string>
     <string name="status_loading_error">Помилка завантаження повідомлення</string>
-    <string name="load_more_messages_fmt">Завантажити \u0020ще <xliff:g id="messages_to_load">%d</xliff:g> наступних</string>
+    <string name="load_more_messages_fmt">Завантажити ще <xliff:g id="messages_to_load">%d</xliff:g> наступних</string>
     <string name="size_format_gigabytes">%.1f ГБ</string>
     <string name="size_format_megabytes">%.1f МБ</string>
     <string name="size_format_kilobytes">%.1f кБ</string>
@@ -528,7 +528,6 @@
     <string name="account_setup_push_limit_1000">1000 тек</string>
     <string name="animations_title">Анімація</string>
     <string name="animations_summary">Використовувати яскраві візуальні ефекти</string>
-    <string name="volume_navigation_title">Навігація у повідомленні кнопками гучності</string>
     <string name="show_unified_inbox_title">Показувати Об\'єднані Вхідні</string>
     <string name="show_starred_count_title">Показати лічильник зірочок</string>
     <string name="integrated_inbox_title">Об\'єднані Вхідні</string>
@@ -905,4 +904,7 @@
     <string name="push_info_notification_explanation_text">Коли використовується Push, <xliff:g id="app_name">%1$s</xliff:g> підтримує з\'єднання з поштовим сервером. Android вимагає показу поточного сповіщення під час фонової роботи застосунку. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="settings_ui_telemetry_title">Використання та технічні дані</string>
     <string name="settings_ui_telemetry_description">Обмінюється з Mozilla даними про швидкодію, використання, апаратне забезпечення та налаштування цього застосунку, щоб допомогти нам зробити Thunderbird кращим</string>
+    <string name="save_attachment_action">Зберегти вкладення</string>
+    <string name="volume_navigation_title_short">Навігація кнопками гучності</string>
+    <string name="volume_navigation_summary">Перехід між повідомленнями за допомогою клавіш гучності у вікні перегляду повідомлень</string>
 </resources>

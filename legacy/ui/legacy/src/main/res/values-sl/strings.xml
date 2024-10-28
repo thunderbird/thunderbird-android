@@ -97,8 +97,7 @@
     <string name="status_network_error">Napaka povezave</string>
     <string name="status_invalid_id_error">Sporočila ni mogoče najti</string>
     <string name="status_loading_error">Napaka nalaganja sporočila</string>
-    <string name="load_more_messages_fmt">Naloži
-dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
+    <string name="load_more_messages_fmt">Naloži dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -525,7 +524,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="account_setup_push_limit_1000">1000 map</string>
     <string name="animations_title">Pokaži animirane učinke vmesnika</string>
     <string name="animations_summary">Prehodi dejanj in različni učinki delovanja vmesnika so animirani</string>
-    <string name="volume_navigation_title">Krmarjenje s tipko za glasnost v pogledu sporočila</string>
     <string name="show_unified_inbox_title">Pokaži skupno mapo prejetih sporočil</string>
     <string name="show_starred_count_title">Pokaži število označb z zvezdico</string>
     <string name="integrated_inbox_title">Skupna mapa prejetih sporočil</string>

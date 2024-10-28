@@ -5,4 +5,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Accéder aux paramètres</string>
     <string name="migration_qrcode_scanning_progress">%1$s codes sur %2$s a été lus</string>
     <string name="migration_qrcode_done_button_text">Terminé</string>
+    <string name="migration_qrcode_scanning_instructions">Alignez le code QR fourni par Thunderbird pour ordinateur</string>
 </resources>

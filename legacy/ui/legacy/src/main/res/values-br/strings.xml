@@ -79,8 +79,7 @@
     <string name="status_network_error">Fazi kennaskañ</string>
     <string name="status_invalid_id_error">N’eo ket bet kavet ar gemennadenn</string>
     <string name="status_loading_error">Fazi kargañ ar gemennadenn</string>
-    <string name="load_more_messages_fmt">Kargañ
-<xliff:g id="messages_to_load">%d</xliff:g> ouzhpenn</string>
+    <string name="load_more_messages_fmt">Kargañ <xliff:g id="messages_to_load">%d</xliff:g> ouzhpenn</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> gemennadenn nevez</item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> a gemennadennoù nevez</item>

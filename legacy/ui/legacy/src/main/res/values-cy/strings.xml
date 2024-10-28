@@ -515,7 +515,6 @@
     <string name="account_setup_push_limit_1000">1000 o ffolderi</string>
     <string name="animations_title">Animeiddiad</string>
     <string name="animations_summary">Defnyddio effeithiau gweledol dros ben llestri</string>
-    <string name="volume_navigation_title">Llywio gyda botymau sain ym modd golwg neges</string>
     <string name="show_unified_inbox_title">Dangos mewnflwch unedig</string>
     <string name="show_starred_count_title">Dangos cyfrif serennog</string>
     <string name="integrated_inbox_title">Mewnflwch Unedig</string>

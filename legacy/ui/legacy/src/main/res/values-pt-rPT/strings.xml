@@ -527,7 +527,6 @@
     <string name="account_setup_push_limit_1000">1000 pastas</string>
     <string name="animations_title">Animação</string>
     <string name="animations_summary">Usar efeitos visuais exuberantes</string>
-    <string name="volume_navigation_title">Navegação com os botões de volume na visualização de mensagens</string>
     <string name="show_unified_inbox_title">Mostrar caixa de entrada unificada</string>
     <string name="show_starred_count_title">Mostrar contagem de estrelas</string>
     <string name="integrated_inbox_title">Caixa de entrada unificada</string>

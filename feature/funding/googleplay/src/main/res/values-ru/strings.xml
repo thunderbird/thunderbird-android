@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="funding_googleplay_contribution_header_title">Поддержка Thunderbird</string>
-    <string name="funding_googleplay_contribution_list_type_one_time">Один раз</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Разово</string>
     <string name="funding_googleplay_contribution_title">Поддержка Thunderbird</string>
     <string name="funding_googleplay_contribution_header_description">Мы никогда не показываем рекламу и не продаём ваши данные. Мы полностью финансируемся за счёт пожертвований наших пользователей. Если вам нравится Thunderbird, поддержите его. Мы не можем обойтись без вас!</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Ежемесячно</string>
@@ -10,5 +10,43 @@
     <string name="funding_googleplay_contribution_list_type_none_available">Недоступно</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Пожертвования не подлежат налогообложению как благотворительность.</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Изменить ежемесячный платёж</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Поддержать развитие Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Сделать ещё один важный вклад</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Посетите www.thunderbird.net, чтобы узнать о других способах поддержки Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Повторить</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Платёж временно недоступен</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Игнорировать ошибку</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Платёж не выполнен.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Пожертвования временно недоступны.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Значительный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Важный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Выдающийся вклад</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Существенный ежемесячный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Исключительный ежемесячный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Ваш вклад помогает нам расти и делать значимые шаги вперёд, спасибо вам!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Вы помогаете нам мечтать о большем! Ваша поддержка даёт нам возможность достигнуть невероятных результатов.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Пожертвования из приложения сейчас недоступны.</string>
+    <string name="funding_googleplay_contribution_error_show_more">Подробнее</string>
+    <string name="funding_googleplay_contribution_error_unknown">Неизвестная ошибка</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Ценный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Ваша поддержка помогает нам двигаться вперёд! Даже самые незначительные вложения приводят к переменам, и мы очень благодарны вам за то, что вы с нами.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Существенный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Исключительный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">Вы помогаете нам творить великие дела! Внося такой вклад, вы помогаете нам делать значимые шаги вперёд и продолжать развиваться.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Ваш вклад действительно блистателен! Вы играете важную роль в реализации нашей миссии, помогая нам достичь важных целей и добиться большего результата.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">Вы — главная причина, по которой мы можем делать то, что делаем! Благодаря вашей щедрости мы можем браться за более масштабные проекты и вместе достигать новых целей.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Ваша поддержка действительно вдохновляет! Благодаря вашему существенному вкладу мы можем расширять границы, внедрять инновации и добиваться значительных успехов в достижении наших целей.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Вы действительно помогаете нам мечтать о большем! Ваша невероятная поддержка помогает нам достигать невероятных результатов, оказывая неизгладимое влияние на всё, что мы делаем.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Ваша поддержка вдохновляет! Ваш вклад поможет нам расширить границы и достичь наших целей.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Ваша поддержка помогает нам двигаться вперёд! Каждый вклад способствует переменам, спасибо вам!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">Вы — главная причина, по которой мы можем делать то, что делаем! Ваша щедрость помогает нам достигать новых высот.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Ваш вклад очевиден! Вы — ключ к продвижению нашей миссии и достижению результатов.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Ценный ежемесячный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Значительный ежемесячный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Важный ежемесячный вклад</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Выдающийся ежемесячный вклад</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Да</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Позже</string>
+    <string name="funding_googleplay_contribution_reminder_title">Поддержка Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_message">Наша миссия — создать приложение для электронной почты с открытым исходным кодом, безопасное, конфиденциальное и бесплатное для пользователей по всему миру. Ваше пожертвование поддержит нашу работу. Вы сделаете его?</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Спасибо за ваше щедрое пожертвование! Ваша поддержка напрямую укрепляет Thunderbird и мы благодарны, что вы рядом с нами в этом путешествии.</string>
 </resources>

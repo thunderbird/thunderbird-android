@@ -33,4 +33,8 @@
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autorizazione abbandunata</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Fiascu di l’autorizazione cù quellu sbagliu : <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">Attualmente, OAuth 2.0 ùn hè micca accettatu cù stu furnidore.</string>
+    <string name="settings_import_pick_app_button">Impurtà da l’appiecazione</string>
+    <string name="settings_import_pick_app_dialog_title">Impurtà da l’appiecazione</string>
+    <string name="settings_import_scan_qr_code_button">Leghje un codice QR</string>
+    <string name="settings_import_app_version_not_supported">A versione di l’appiecazione ùn hè micca accettata.</string>
 </resources>

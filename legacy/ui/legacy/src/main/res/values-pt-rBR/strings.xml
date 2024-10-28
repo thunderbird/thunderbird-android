@@ -528,7 +528,6 @@
     <string name="account_setup_push_limit_1000">1000 pastas</string>
     <string name="animations_title">Animação</string>
     <string name="animations_summary">Utilizar efeitos visuais extravagantes</string>
-    <string name="volume_navigation_title">Navegação com os botões de volume na visualização da mensagem</string>
     <string name="show_unified_inbox_title">Exibir a caixa de entrada unificada</string>
     <string name="show_starred_count_title">Mostrar a contagem de sinalizadas</string>
     <string name="integrated_inbox_title">Caixa de Entrada Unificada</string>
@@ -901,4 +900,7 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="folder_list_show_hidden_folders">Mostrar pastas escondidas</string>
     <string name="folder_settings_visible_label">Mostrar pasta</string>
     <string name="settings_list_action_support">Apoie o <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_summary">Navegue entre as mensagens usando os botões de volume</string>
+    <string name="save_attachment_action">Salvar anexo</string>
+    <string name="volume_navigation_title_short">Navegação com o botão de volume</string>
 </resources>

@@ -530,7 +530,6 @@
     <string name="account_setup_push_limit_1000">1000 папок</string>
     <string name="animations_title">Анимация</string>
     <string name="animations_summary">Анимация интерфейса</string>
-    <string name="volume_navigation_title">Управление клавишами громкости для перехода между письмами</string>
     <string name="show_unified_inbox_title">Показывать общий ящик для входящих</string>
     <string name="show_starred_count_title">Счётчик важных</string>
     <string name="integrated_inbox_title">Входящие</string>
@@ -908,4 +907,7 @@
     <string name="folder_settings_sync_label">Включить синхронизацию</string>
     <string name="folder_settings_visible_label">Показать папку</string>
     <string name="settings_list_action_support">Поддержка <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_summary">Перемещение между сообщениями с помощью кнопок громкости во время просмотра</string>
+    <string name="volume_navigation_title_short">Навигация кнопками громкости</string>
+    <string name="save_attachment_action">Сохранить вложение</string>
 </resources>

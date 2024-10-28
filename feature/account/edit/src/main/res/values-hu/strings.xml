@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Kiszolgáló beállítások mentése…</string>
+    <string name="account_edit_save_server_settings_error_message">Nem sikerült menteni a kiszolgáló beállításait</string>
+    <string name="account_edit_save_server_settings_success_message">Kiszolgáló beállítások mentése</string>
+</resources>

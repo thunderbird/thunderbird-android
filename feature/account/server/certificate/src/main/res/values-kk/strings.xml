@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_certificate_warning_title">Ескерту</string>
+    <string name="account_server_certificate_button_back">Артқа (ұсынылады)</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Сертификат қатесі</string>
+    <string name="account_server_certificate_button_continue">Тәуекелді қабылдап, жалғастыру</string>
+    <string name="account_server_certificate_section_title">Сервер сертификаты</string>
+</resources>

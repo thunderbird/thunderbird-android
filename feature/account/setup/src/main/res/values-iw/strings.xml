@@ -21,7 +21,7 @@
     <string name="account_setup_options_section_display_options">הצג אפשרויות</string>
     <string name="account_setup_options_section_sync_options">אפשרויות סנכרון</string>
     <string name="account_setup_options_email_display_count_label">כמות הודעות להצגה</string>
-    <string name="account_setup_error_network">רשת</string>
+    <string name="account_setup_error_network">שגיאת רשת. בדוק את מצב החיבורים שלך ונסה שנית.</string>
     <string name="account_setup_error_unknown">שגיאה לא ידועה</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">דרושה כתובת דוא\"ל.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">כתובת דוא\"ל זו לא מוכרת ככתובת דוא\"ל חוקית.</string>

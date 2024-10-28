@@ -5,7 +5,7 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configurer automatiquement</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Cette configuration n’est pas fiable</string>
     <string name="account_setup_options_email_signature_label">Signature du courriel</string>
-    <string name="account_setup_options_email_display_count_label">Nombre de messages à afficher</string>
+    <string name="account_setup_options_email_display_count_label">Nombre de courriels à afficher</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configurer manuellement</string>
     <string name="account_setup_options_email_signature_error_blank">La signature du courriel ne peut pas être vide.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Il est obligatoire d’approuver la configuration.</string>
@@ -58,8 +58,8 @@
         <item quantity="other">Toutes les %d heures</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
-        <item quantity="one">1 message</item>
-        <item quantity="many">%d de messages</item>
-        <item quantity="other">%d messages</item>
+        <item quantity="one">1 courriel</item>
+        <item quantity="many">%d de courriels</item>
+        <item quantity="other">%d courriels</item>
     </plurals>
 </resources>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_welcome_start_button">Inicia</string>
+    <string name="onboarding_welcome_start_button">Comença</string>
     <string name="onboarding_welcome_import_button">Importa una configuració</string>
+    <string name="onboarding_welcome_text">Una aplicació de correu electrònic de codi obert, centrada en la privadesa i sense anuncis per a Android.</string>
+    <string name="onboarding_welcome_developed_by">Desenvolupat per un equip dedicat a MZLA Technologies i una comunitat global de voluntaris. Part de la família Mozilla.</string>
 </resources>

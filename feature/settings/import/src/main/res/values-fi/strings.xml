@@ -29,7 +29,7 @@
     <string name="settings_import_outgoing_server_password_hint">Lähtevän postin palvelimen salasana</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Käytä samaa salasanaa lähtevälle palvelimelle</string>
     <string name="settings_import_server_name_format">Palvelimen nimi: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Jotta voit käyttää tätä tiliä K-9 Mailin kanssa, sinun tulee kirjautua sisään ja antaa sovellukselle oikeus päästä sähköposteihisi.</string>
+    <string name="settings_import_oauth_description">Jotta voit käyttää tätä tiliä, sinun tulee kirjautua sisään ja antaa sovellukselle oikeus päästä sähköposteihisi.</string>
     <string name="settings_import_oauth_sign_in">Kirjaudu sisään</string>
     <string name="settings_import_oauth_sign_in_with_google">Kirjaudu sisään Googlella</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Valtuutus peruttu</string>
@@ -37,4 +37,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 ei ole tällä hetkellä tuettu tämän palvelutarjoajan kohdalla.</string>
     <string name="settings_import_oauth_error_browser_not_found">Sovellus ei löytänyt selainta käytettäväksi pääsyn antamiseksi tälle tilille.</string>
     <string name="settings_import_general_settings_item">Yleiset asetukset</string>
+    <string name="settings_import_app_version_not_supported">Sovelluksen versio ei ole tuettu.</string>
+    <string name="settings_import_scan_qr_code_button">Skannaa QR-koodi</string>
+    <string name="settings_import_pick_app_button">Tuo sovelluksesta</string>
+    <string name="settings_import_pick_app_dialog_title">Tuo sovelluksesta</string>
 </resources>

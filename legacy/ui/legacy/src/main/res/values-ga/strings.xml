@@ -575,7 +575,6 @@
     <string name="account_setup_push_limit_1000">1000 fillteán</string>
     <string name="animations_title">Beochan</string>
     <string name="animations_summary">Bain úsáid as maisíochtaí amhairc gaudy</string>
-    <string name="volume_navigation_title">Nascleanúint eochracha airde in amharc teachtaireachta</string>
     <string name="show_unified_inbox_title">Taispeáin Bosca Isteach Aontaithe</string>
     <string name="show_starred_count_title">Taispeáin líon na réalta</string>
     <string name="integrated_inbox_title">Bosca Isteach Aontaithe</string>
@@ -844,4 +843,7 @@
         <item quantity="other">%1$d torthaí á fháil as %2$d</item>
     </plurals>
     <string name="push_info_notification_explanation_text">Agus Brúigh in úsáid, coinníonn <xliff:g id="app_name">%1$s</xliff:g> ceangal leis an bhfreastalaí ríomhphoist. Éilíonn Android fógra leanúnach a thaispeáint agus an aip gníomhach sa chúlra. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="volume_navigation_title_short">Nascleanúint eochair toirte</string>
+    <string name="save_attachment_action">Sábháil ceangaltán</string>
+    <string name="volume_navigation_summary">Déan nascleanúint idir teachtaireachtaí ag baint úsáide as na heochracha toirte i radharc na teachtaireachta</string>
 </resources>

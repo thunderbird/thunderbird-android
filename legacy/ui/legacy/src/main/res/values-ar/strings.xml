@@ -100,8 +100,7 @@
     <string name="status_network_error">خطأ في الإتصال</string>
     <string name="status_invalid_id_error">رسالة غير موجودة</string>
     <string name="status_loading_error">خطأ في تحميل الرسالة</string>
-    <string name="load_more_messages_fmt">تحميل
-باقي <xliff:g id="messages_to_load">%d</xliff:g></string>
+    <string name="load_more_messages_fmt">تحميل باقي <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="size_format_gigabytes">%.1f جيجا</string>
     <string name="size_format_megabytes">%.1f ميجا</string>
     <string name="size_format_kilobytes">%.1f كيلو</string>
@@ -534,7 +533,6 @@
     <string name="account_setup_push_limit_1000">1000 مجلد</string>
     <string name="animations_title">الحركة</string>
     <string name="animations_summary">استخدم تأثيرات بصرية مبهرجة </string>
-    <string name="volume_navigation_title">حجم مفتاح التنقل في عرض الرسالة </string>
     <string name="show_unified_inbox_title">إظهار علبة الوارد الموحدة </string>
     <string name="show_starred_count_title">إظهار العدد المميّز بنجمة </string>
     <string name="integrated_inbox_title">البريد الوارد الموحَّد</string>

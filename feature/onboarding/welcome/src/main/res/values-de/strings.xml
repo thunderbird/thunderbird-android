@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Los</string>
+    <string name="onboarding_welcome_start_button">Los geht’s</string>
     <string name="onboarding_welcome_import_button">Einstellungen importieren</string>
+    <string name="onboarding_welcome_text">Eine quelloffene, datenschutzorientierte und werbefreie E-Mail-App für Android.</string>
+    <string name="onboarding_welcome_developed_by">Entwickelt von einem engagierten Team bei MZLA Technologies und einer weltweiten Gemeinschaft von Freiwilligen. Teil der Mozilla-Familie.</string>
 </resources>

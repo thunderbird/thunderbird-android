@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">¿Ya utilizas Thunderbird para equipos de escritorio?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importar ajustes</string>
     <string name="onboarding_migration_thunderbird_new_account_title">¿Es la primera vez que usas Thunderbird?</string>
     <string name="onboarding_migration_thunderbird_new_account_button_text">Añade una cuenta de correo</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Puedes importar fácilmente tus cuentas de correo escaneando un código QR.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">En la versión de escritorio de Thunderbird ve a:</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">Haz clic sobre «Exportar a dispositivo móvil» y sigue las instrucciones</string>
     <string name="onboarding_migration_thunderbird_import_title">¿Vienes de otra aplicación o dispositivo?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Puedes traer tus cuentas de correo de otros sitios</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">«Ajustes» en la barra de herramientas abajo a la izquierda</string>
