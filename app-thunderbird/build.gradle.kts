@@ -47,6 +47,7 @@ android {
                 "fi",
                 "fr",
                 "fy",
+                "ga",
                 "gd",
                 "gl",
                 "hr",
