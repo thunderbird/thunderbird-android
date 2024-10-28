@@ -12,6 +12,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.feature.migration.launcher.api.MigrationManager
@@ -45,13 +46,8 @@ class SettingsImportFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.initialize()
-    }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        parentFragmentManager.setFragmentResultListener(
-            PickAppDialogFragment.FRAGMENT_RESULT_KEY,
-            viewLifecycleOwner,
-        ) { _, result: Bundle ->
+        setFragmentResultListener(PickAppDialogFragment.FRAGMENT_RESULT_KEY) { _, result: Bundle ->
             val packageName = result.getString(PickAppDialogFragment.FRAGMENT_RESULT_APP)
             if (packageName != null) {
                 viewModel.onAppPicked(packageName)
@@ -59,7 +55,9 @@ class SettingsImportFragment : Fragment() {
                 viewModel.onAppPickCanceled()
             }
         }
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_import, container, false)
     }
 

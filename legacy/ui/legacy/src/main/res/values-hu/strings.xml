@@ -524,7 +524,6 @@
     <string name="account_setup_push_limit_1000">1000 mappa</string>
     <string name="animations_title">Animációk</string>
     <string name="animations_summary">Rikító látható hatások használata</string>
-    <string name="volume_navigation_title">Hangerőgombos navigáció üzenetnézetben</string>
     <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
     <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
     <string name="integrated_inbox_title">Egységes beérkezett üzenetek</string>
@@ -893,4 +892,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="folder_list_show_hidden_folders">Rejtett mappák megjelenítése</string>
     <string name="folder_settings_visible_label">Mappa megjelenítése</string>
     <string name="settings_list_action_support">A <xliff:g id="app_name">%s</xliff:g> támogatása</string>
+    <string name="save_attachment_action">Melléklet mentése</string>
+    <string name="volume_navigation_title_short">Hangerőszabályzó gombos navigáció</string>
+    <string name="volume_navigation_summary">Az üzenetnézetben a hangerőszabályzó gombokkal navigálhat az üzenetek között</string>
 </resources>

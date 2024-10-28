@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">درون‌ریزی تنظیمات</string>
     <string name="onboarding_migration_thunderbird_new_account_title">کاربر جدید تاندربرد؟</string>
     <string name="onboarding_migration_thunderbird_new_account_button_text">افزودن حساب رایانامه</string>
@@ -9,5 +9,8 @@
     <string name="onboarding_migration_thunderbird_import_title">جابه‌جایی از کاره یا افزاره‌ای دیگر؟</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">درون‌ریزی آسان تنظیمات حسابتان با پویش کد پاس.</string>
     <string name="onboarding_migration_thunderbird_import_button_text">درون‌ریزی تنظیمات حسابتان</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">گزینش «برون‌ریزی به همراه» و دنیال کردن دستورالعمل‌ها</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">چگونگی به‌روزرسانی تاندربرد را بیاموزید.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">هیچ برنامه‌ای برای باز کردن پیوند یافت نشد.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">گزینه \"Export to Mobile\" را انتخاب کنید</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">وارد کردن، به آخرین نسخه تاندربرد نیازمند است. <xliff:g id="link_text">%s</xliff:g></string>
 </resources>

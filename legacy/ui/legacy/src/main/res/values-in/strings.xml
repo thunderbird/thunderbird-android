@@ -829,7 +829,6 @@
     <string name="account_settings_notification_light_yellow">Kuning</string>
     <string name="account_settings_notification_light_cyan">Sian</string>
     <string name="account_settings_notification_light_magenta">Magenta</string>
-    <string name="volume_navigation_title">Navigasi tombol volume dalam tampilan pesan</string>
     <string name="font_size_message_view_recipients">Penerima</string>
     <string name="save_or_discard_draft_message_changes">Simpan atau Buang perubahan?</string>
     <string name="push_notification_state_initializing">Inisialisasi…</string>

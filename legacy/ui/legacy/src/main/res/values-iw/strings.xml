@@ -88,8 +88,7 @@
     <string name="status_loading_more">טוען הודעות…</string>
     <string name="status_network_error">שגיאת חיבור</string>
     <string name="status_invalid_id_error">לא נמצאו הודעות</string>
-    <string name="load_more_messages_fmt">טען
-עד <xliff:g id="messages_to_load">%d</xliff:g> נוספים</string>
+    <string name="load_more_messages_fmt">טען עד <xliff:g id="messages_to_load">%d</xliff:g> נוספים</string>
     <string name="size_format_gigabytes">%.1f ג\"ב</string>
     <string name="size_format_megabytes">%.1f מ\"ב</string>
     <string name="size_format_kilobytes">%.1f ק\"ב</string>
@@ -744,7 +743,6 @@
     <string name="settings_compose_theme_label">תמת (theme) מחבר</string>
     <string name="settings_message_theme_selection_label">תמת הודעות קבועה (Fixed message theme)</string>
     <string name="settings_message_theme_selection_summary_on">השתמש בתמת הצגת הודעות קבועה (fixed message view theme)</string>
-    <string name="volume_navigation_title">ניווט בעזרת מקשי עוצמת השמע בתצוגת הודעות</string>
     <string name="show_unified_inbox_title">הצג תיבת דואר נכנס אחידה</string>
     <string name="crypto_msg_unencrypted_sign_error">חתימת קצה לקצה הכילה שגיאה</string>
     <string name="crypto_msg_incomplete_signed">חובה להוריד הודעה בשלמותה כדי לעבד חתימה</string>

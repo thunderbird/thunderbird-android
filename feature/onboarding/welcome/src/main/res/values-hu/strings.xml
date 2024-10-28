@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Indulás</string>
+    <string name="onboarding_welcome_start_button">Kezdje el</string>
     <string name="onboarding_welcome_import_button">Beállítások importálása</string>
+    <string name="onboarding_welcome_text">Egy nyílt forráskódú, adatvédelemre összpontosító és reklámmentes e-mail alkalmazás Androidra.</string>
+    <string name="onboarding_welcome_developed_by">Az MZLA Technologies elkötelezett csapata és önkéntesek globális közössége fejlesztette ki. A Mozilla család tagja.</string>
 </resources>

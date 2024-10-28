@@ -49,7 +49,7 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
             "smtp.gmail.com",
             "smtp.googlemail.com",
         ) to OAuthConfiguration(
-            clientId = "406964657835-2bpeeeb9mqlpg0mca8digjdv40m5ja8e.apps.googleusercontent.com",
+            clientId = "560629489500-hbru1fssmec60eoa22b8k8l5tbmj0sc1.apps.googleusercontent.com",
             scopes = listOf("https://mail.google.com/"),
             authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
             tokenEndpoint = "https://oauth2.googleapis.com/token",

@@ -9,5 +9,4 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Bilgisayarınızdaki Thunderbird\'de şunları yapın:</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Bir QR kodu okutarak hesap ayarlarınızı kolayca içe aktarabilirsiniz.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">Sekme araç çubuğundaki ‘Ayarlar’ simgesine tıklayın (sol alt köşede)</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2">‘Mobil için Dışa Aktar’ı seçip talimatları ugulayın</string>
 </resources>

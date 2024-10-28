@@ -525,7 +525,6 @@
     <string name="account_setup_push_limit_1000">1000 möppur</string>
     <string name="animations_title">Hreyfingar</string>
     <string name="animations_summary">Nota skrautlegar sjónbrellur</string>
-    <string name="volume_navigation_title">Flakk með hljóðstyrkshnöppum í skilaboðasýn</string>
     <string name="show_unified_inbox_title">Birta sameinað innhólf</string>
     <string name="show_starred_count_title">Birta fjölda stjarna</string>
     <string name="integrated_inbox_title">Sameinað innhólf</string>

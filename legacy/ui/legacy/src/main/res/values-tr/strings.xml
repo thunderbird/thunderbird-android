@@ -753,40 +753,40 @@
     <string name="openpgp_encryption">OpenPGP Şifreleme</string>
     <string name="account_settings_crypto_prefer_encrypt">Autocrypt karşılıklı kipi</string>
     <string name="dialog_autocrypt_mutual_title">Autocrypt karşılıklı kipi</string>
-    <string name="dialog_autocrypt_mutual_description_1">İletiler normalde seçilerek veya şifrelenmiş bir iletiyi yanıtlarken şifrelenecektir.</string>
-    <string name="dialog_autocrypt_mutual_description_2">Hem gönderen hem de alıcının karşılıklı kipi etkinse, şifreleme öntanımlı olarak etkinleştirilir.</string>
-    <string name="dialog_autocrypt_mutual_learn_more">Daha fazlasını öğrenmek için <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">buraya tıkla</a> .</string>
+    <string name="dialog_autocrypt_mutual_description_1">Normalde iletiler seçilerek veya şifrelenmiş bir iletiyi yanıtlarken şifrelenecektir.</string>
+    <string name="dialog_autocrypt_mutual_description_2">Hem gönderen hem de alıcının karşılıklı kipi etkinse şifreleme varsayılan olarak etkinleştirilir.</string>
+    <string name="dialog_autocrypt_mutual_learn_more">Daha fazla bilgi almak için <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">buraya tıklayabilirsiniz</a> .</string>
     <string name="general_settings_title">Genel ayarlar</string>
     <string name="dialog_openkeychain_info_title">Yüklenmiş OpenPGP uygulaması yok</string>
     <string name="dialog_openkeychain_info_install">Yükle</string>
     <string name="account_settings_crypto_encrypt_subject">İleti konularını şifrele</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Bazı alıcılar tarafından desteklenmeyebilir</string>
     <string name="toast_account_not_found">İç hata: Geçersiz hesap!</string>
-    <string name="toast_openpgp_provider_error">%s\'e bağlanırken hata oluştu!</string>
+    <string name="toast_openpgp_provider_error">%s ile bağlantı kurulurken hata oluştu!</string>
     <string name="ac_transfer_setting_title">Autocrypt Kurulum İletisi Gönder</string>
     <string name="ac_transfer_setting_summary">Uçtan uca kurulumu diğer cihazlarla güvenli bir şekilde paylaşın</string>
     <string name="ac_transfer_title">Autocrypt Kurulum İletisi</string>
-    <string name="ac_transfer_intro">Bir Autocrypt Kurulum iletisi uçtan uca kurulumunuzu diğer aygıtlarla güvenli bir şekilde paylaşır.</string>
+    <string name="ac_transfer_intro">Autocrypt Kurulum İletisi uçtan uca kurulumunuzu diğer aygıtlarla güvenli bir şekilde paylaşır.</string>
     <string name="ac_transfer_button_send">Kurulum İletisi Gönder</string>
     <string name="ac_transfer_will_be_sent">İleti adresinize gönderilecek:</string>
     <string name="ac_transfer_generating">Kurulum iletisi oluşturuluyor…</string>
     <string name="ac_transfer_sending_to">İleti şuraya gönderiliyor:</string>
-    <string name="ac_transfer_finish">Bitirmek için, iletinizi diğer aygıtınızda açın ve kurulum kodunu girin.</string>
+    <string name="ac_transfer_finish">İşlemi tamamlamak için diğer cihazınızda iletiyi açıp kurulum kodunu girin.</string>
     <string name="ac_transfer_show_code">Kurulum Kodunu Göster</string>
     <string name="ac_transfer_msg_subject">Autocrypt Kurulum İletisi</string>
-    <string name="ac_transfer_msg_body">Bu ileti otomatik şifreleme ayarlarınızı gizli anahtarınızla birlikte orijinal aygıtınızdan güvenli bir şekilde aktarmak için tüm bilgileri içerir. Yeni aygıtınıza Autocrypt kurmak için, yeni aygıtınızın size sunması gereken yönergeleri izleyin. Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullanabilirsiniz.Bunu yapmak istiyorsanız, parolayı not edip güvenli bir şekilde saklamanız gerekir.</string>
+    <string name="ac_transfer_msg_body">Bu ileti otomatik şifreleme ayarlarınızı gizli anahtarınızla birlikte asıl cihazınızdan güvenli bir şekilde aktarmak için tüm bilgileri içerir. Yeni cihazınıza Autocrypt\'i kurmak için yeni cihazınızda göreceğiniz yönergeleri izleyin. Bu iletiyi saklayabilir ve gizli anahtarınız yedeği olarak kullanabilirsiniz. Bunu yapmak istiyorsanız, arolayı not edip güvenli bir şekilde saklamanız gerekir.</string>
     <string name="ac_transfer_error_send">İleti gönderilirken bir hata oluştu. Lütfen ağ bağlantınızı ve giden sunucu yapılandırmanızı gözden geçirin.</string>
     <string name="switch_on">Açık</string>
     <string name="switch_off">Kapalı</string>
-    <string name="generic_loading_error">Veriler yüklenirken bir hata oluştu </string>
+    <string name="generic_loading_error">Veriler yüklenirken bir hata oluştu</string>
     <string name="push_notification_state_initializing">Başlatılıyor…</string>
     <string name="push_notification_state_listening">Yeni e-postalar bekleniyor</string>
-    <string name="push_notification_state_wait_background_sync">Arka plan eşzamanlamasına izin verilene kadar uyku halinde</string>
-    <string name="push_notification_state_wait_network">Şebekeye erişene kadar uyku halinde</string>
-    <string name="push_notification_info">Daha fazlasını öğrenmek için dokunun.</string>
-    <string name="push_info_configure_notification_text">Aynı zamanda Android de bildirimleri gizlemenize olanak sağlamaktadır.</string>
-    <string name="push_info_learn_more_text">Daha fazlasını öğren</string>
-    <string name="push_info_configure_notification_action">Bildirimleri ayarla</string>
+    <string name="push_notification_state_wait_background_sync">Arka planda eşitlemeye izin verilene kadar uyku halinde</string>
+    <string name="push_notification_state_wait_network">Ağa erişilene kadar uyku halinde</string>
+    <string name="push_notification_info">Bilgi almak için dokunun.</string>
+    <string name="push_info_configure_notification_text">Ancak Android bu bildirimi gizleme olanağı da sunar.</string>
+    <string name="push_info_learn_more_text">Bilgi alın</string>
+    <string name="push_info_configure_notification_action">Bildirimi yapılandır</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Seç</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -804,7 +804,7 @@
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
     <string name="swipe_action_delete">Sil</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
-    <string name="swipe_action_spam">Gereksiz posta</string>
+    <string name="swipe_action_spam">Gereksiz</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
     <string name="swipe_action_move">Taşı…</string>
     <!--Name of setting to configure whether to show a "compose" floating action button on top of the message list-->
@@ -819,7 +819,7 @@
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
     <string name="message_details_sender_section_title">Gönderen</string>
     <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
-    <string name="message_details_replyto_section_title">Yanıtla</string>
+    <string name="message_details_replyto_section_title">Yanıt</string>
     <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
     <string name="message_details_to_section_title">Kime</string>
     <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
@@ -837,11 +837,11 @@
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <string name="action_copy_email_address">E-posta adresini kopyala</string>
     <string name="message_view_me_text">ben</string>
-    <string name="action_compose_message_to">Şunun için ileti oluştur</string>
+    <string name="action_compose_message_to">Bu kişiye ileti oluştur</string>
     <string name="account_settings_vibrate_pattern_label">Titreşim şablonu</string>
     <string name="message_list_content_description_unread_prefix">okunmadı, %s</string>
     <string name="general_settings_post_remove_action_return_to_list">İleti listesine dön</string>
-    <string name="message_details_missing_date">Eksik \'Tarih\' başlığı</string>
+    <string name="message_details_missing_date">\'Tarih\' üst bilgisi eksik</string>
     <string name="account_settings_vibration">Titreşim</string>
     <string name="general_settings_message_list_density_title">Yoğunluk</string>
     <string name="font_size_message_view_recipients">Alıcılar</string>
@@ -853,7 +853,7 @@
     <string name="general_settings_contact_name_color_label">Kişi ismi rengi</string>
     <string name="action_copy_name_and_email_address">Ad ve e-posta adresini kopyala</string>
     <string name="message_view_recipients_format">Alıcı: <xliff:g id="recipients">%s</xliff:g></string>
-    <string name="push_info_title">İttirme Bilgileri</string>
+    <string name="push_info_title">Anında İlet Bilgileri</string>
     <string name="general_settings_ui_density_relaxed">Geniş</string>
     <string name="changelog_snackbar_button_text">Göster</string>
     <string name="account_settings_ignore_chat_messages_summary">E-posta sohbetlerine ait iletiler için bildirim gösterme</string>
@@ -863,10 +863,9 @@
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="general_settings_post_remove_action_show_next_message">Sonraki iletiyi göster</string>
     <string name="general_settings_post_remove_action_title">Bir iletiyi sildikten veya taşıdıktan sonra</string>
-    <string name="push_info_disable_push_action">İttirmeyi Devre Dışı Bırak</string>
+    <string name="push_info_disable_push_action">Anında iletmeyi devre dışı bırak</string>
     <string name="background_work_notification_remove_account">Hesap kaldırılıyor…</string>
-    <string name="volume_navigation_title">İleti görünümünde ses seviyesi düğmesiyle gezinti</string>
-    <string name="push_info_disable_push_text">Yeni iletiler hakkında anlık bildirimlere ihtiyacınız yoksa, ittirmeyi devre dışı bırakmalı ve bilgi çekmeyi kullanmalısınız. Bilgi çekme, düzenli aralıklarla yeni e-posta olup olmadığını denetler ve bildirime ihtiyaç duymaz.</string>
+    <string name="push_info_disable_push_text">Yeni iletiler hakkında bildirim almak istemiyorsanız anında iletmeyi devre dışı bırakıp sorgulamayı çekmeyi kullanmalısınız. Sorgulama, düzenli aralıklarla yeni e-posta olup olmadığını denetler ve bildirime ihtiyaç duymaz.</string>
     <string name="message_view_show_remote_images_action">Uzak resimleri göster</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Geçerli iletide kal</string>
     <string name="general_settings_post_mark_as_unread_action_title">Bir iletiyi okunmadı olarak işaretledikten sonra</string>
@@ -875,7 +874,7 @@
     <string name="push_notification_grant_alarm_permission">İzin vermek için dokunun.</string>
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" hesabı <xliff:g id="app_name">%s</xliff:g> uygulamasından kaldırılacak.</string>
     <string name="about_title"><xliff:g id="app_name">%s</xliff:g> Hakkında</string>
-    <string name="push_info_notification_explanation_text">İtme kullanılırken, <xliff:g id="app_name">%1$s</xliff:g> e-posta sunucusuyla bağlantıyı sürdürür. Android, uygulama arka planda etkin durumdayken devam eden bir bildirim görüntülenmesini gerektirir. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Anında ilet kullanılırken <xliff:g id="app_name">%1$s</xliff:g>, e-posta sunucusuyla bağlantıyı sürdürür. Uygulama arka planda etkin durumdayken Android\'in sürekli bir bildirim görüntülemesi gerekir. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">Uçtan uca şifreleme desteğini etkinleştirmek için OpenKeychain uygulaması gereklidir.</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobil Ekibi</string>
     <string name="folder_settings_notifications_label">Bildirimler</string>
@@ -887,4 +886,7 @@
     <string name="folder_list_show_hidden_folders">Gizli klasörleri göster</string>
     <string name="folder_settings_visible_label">Klasörü göster</string>
     <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g>\'ü destekleyin</string>
+    <string name="volume_navigation_title_short">Ses seviyesi tuşuyla gezinti</string>
+    <string name="volume_navigation_summary">İleti görünümünde ses seviyesi tuşlarını kullanarak iletiler arasında dolaş</string>
+    <string name="save_attachment_action">Eki kaydet</string>
 </resources>

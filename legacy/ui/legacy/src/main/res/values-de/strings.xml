@@ -523,7 +523,6 @@
     <string name="account_setup_push_limit_1000">1000 Ordner</string>
     <string name="animations_title">Animationen</string>
     <string name="animations_summary">Aufwendige visuelle Effekte benutzen</string>
-    <string name="volume_navigation_title">Per Lautst채rketasten durch Nachrichtenansicht navigieren</string>
     <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
     <string name="show_starred_count_title">Anzahl der wichtigen Nachrichten anzeigen</string>
     <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>
@@ -892,4 +891,7 @@ Du kannst diese Nachricht aufheben und sie als Backup f체r deinen geheimen Schl�
     <string name="folder_list_show_hidden_folders">Ausgeblendete Ordner anzeigen</string>
     <string name="folder_settings_visible_label">Ordner anzeigen</string>
     <string name="settings_list_action_support">Support <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_summary">In der Nachrichten체bersicht mit den Lautst채rketasten zwischen den Nachrichten navigieren</string>
+    <string name="save_attachment_action">Anhang speichern</string>
+    <string name="volume_navigation_title_short">Navigation mit Lautst채rketasten</string>
 </resources>

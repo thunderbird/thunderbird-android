@@ -6,7 +6,6 @@ import android.app.ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED
 import android.content.IntentSender
 import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 
 /**
@@ -21,10 +20,14 @@ object OpenPgpIntentStarter {
 
         activity.startIntentSender(
             intentSender,
-            /* fillInIntent = */ null,
-            /* flagsMask = */ 0,
-            /* flagsValues = */ 0,
-            /* extraFlags = */ 0,
+            /* fillInIntent = */
+            null,
+            /* flagsMask = */
+            0,
+            /* flagsValues = */
+            0,
+            /* extraFlags = */
+            0,
             options,
         )
     }
@@ -37,10 +40,14 @@ object OpenPgpIntentStarter {
         activity.startIntentSenderForResult(
             intentSender,
             requestCode,
-            /* fillInIntent = */ null,
-            /* flagsMask = */ 0,
-            /* flagsValues = */ 0,
-            /* extraFlags = */ 0,
+            /* fillInIntent = */
+            null,
+            /* flagsMask = */
+            0,
+            /* flagsValues = */
+            0,
+            /* extraFlags = */
+            0,
             options,
         )
     }
@@ -54,10 +61,14 @@ object OpenPgpIntentStarter {
         fragment.startIntentSenderForResult(
             intentSender,
             requestCode,
-            /* fillInIntent = */ null,
-            /* flagsMask = */ 0,
-            /* flagsValues = */ 0,
-            /* extraFlags = */ 0,
+            /* fillInIntent = */
+            null,
+            /* flagsMask = */
+            0,
+            /* flagsValues = */
+            0,
+            /* extraFlags = */
+            0,
             options,
         )
     }

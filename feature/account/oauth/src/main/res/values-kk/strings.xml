@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_button">Кіру</string>
+    <string name="account_oauth_sign_in_with_google_button">Google арқылы кіру</string>
+    <string name="account_oauth_loading_message">OAuth арқылы кіруде</string>
+</resources>

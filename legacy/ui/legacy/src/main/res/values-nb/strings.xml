@@ -84,8 +84,7 @@
     <string name="status_network_error">Tilkoblingsfeil</string>
     <string name="status_invalid_id_error">Melding ikke funnet</string>
     <string name="status_loading_error">Lasting av melding feilet</string>
-    <string name="load_more_messages_fmt">Last opp
-til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
+    <string name="load_more_messages_fmt">Last opp til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -868,7 +867,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
     <string name="message_list_error_folder_not_found">Fant ikke mappen</string>
     <string name="account_settings_vibrate_pattern_3">Mønster 3</string>
     <string name="background_work_notification_remove_account">Fjerner konto …</string>
-    <string name="volume_navigation_title">Navigasjon med lydknapper i meldingsvisning</string>
     <string name="push_info_configure_notification_action">Sett opp merknad</string>
     <string name="push_info_disable_push_text">Skru av dytting og bruk spørring hvis du ikke trenger merknader om nye meldinger. Spørring sjekker ny e-post ved regelmessige intervalles og trenger ikke merknaden.</string>
     <string name="debug_export_logs_failure">Eksport mislyktes.</string>

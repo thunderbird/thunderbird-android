@@ -2,4 +2,6 @@
 <resources>
     <string name="onboarding_welcome_start_button">Aloita</string>
     <string name="onboarding_welcome_import_button">Tuo asetukset</string>
+    <string name="onboarding_welcome_text">Avoimeen lähdekoodiin ja yksityisyyteen perustuva mainosvapaa Android-sähköpostisovellus.</string>
+    <string name="onboarding_welcome_developed_by">Kehitetty omistautuneen MZLA Technologies -tiimin ja vapaaehtoisten toimesta. Osa Mozilla-perhettä.</string>
 </resources>

@@ -885,7 +885,6 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="general_settings_swipe_action_toggle_selection">Pasirinkti / panaikinti pasirinkimą</string>
     <string name="general_settings_swipe_action_toggle_read">Pažymėti kaip skaitytą / neskaitytą</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Grįžti į laiškų sąrašą</string>
-    <string name="volume_navigation_title">Judėjimas laiškų sąrašu garso mygtukais</string>
     <string name="action_compose_message_to">Rašyti laišką</string>
     <string name="background_work_notification_remove_account">Šalinama paskyra…</string>
     <string name="message_list_content_description_unread_prefix">neskaityti, %s</string>

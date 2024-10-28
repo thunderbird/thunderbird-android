@@ -5,4 +5,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Zu den Einstellungen gehen</string>
     <string name="migration_qrcode_scanning_progress">%1$s von %2$s gescannt</string>
     <string name="migration_qrcode_done_button_text">Erledigt</string>
+    <string name="migration_qrcode_scanning_instructions">QR-Code mit dem von Thunderbird Desktop abgleichen</string>
 </resources>

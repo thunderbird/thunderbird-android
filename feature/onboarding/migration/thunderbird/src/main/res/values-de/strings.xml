@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Nutzt du bereits Thunderbird auf dem Desktop?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Einstellungen importieren</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Neu bei Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importiere deine Kontoeinstellungen ganz einfach durch Scannen eines QR-Codes.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Gehe im Thunderbird Desktop zu:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Einstellungen\' in der Spaces-Symbolleiste (unten links)</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Jetzt ein E-Mail-Konto hinzufügen</string>
+    <string name="onboarding_migration_thunderbird_import_title">Von einer anderen App oder einem anderen Gerät übertragen?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Kontoeinstellungen jetzt importieren</string>
+</resources>

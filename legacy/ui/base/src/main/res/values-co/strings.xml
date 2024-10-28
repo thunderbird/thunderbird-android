@@ -2,4 +2,5 @@
 <resources>
     <string name="okay_action">Vai</string>
     <string name="cancel_action">Abbandunà</string>
+    <string name="star_button_description">Aghjunghje una stella</string>
 </resources>

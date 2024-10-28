@@ -1,0 +1,10 @@
+- S'ha afegit la gestió d'imatges al menú contextual dels hiperenllaços
+- S'ha afegit la possibilitat de reenviar fitxers adjunts oberts a correus electrònics nous
+- S'ha millorat la pantalla d'error del certificat durant la configuració del compte
+- S'ha millorat la importació de la configuració durant la configuració del compte
+- S'ha millorat la interfície d'usuari de la configuració del compte
+- S'ha millorat la renderització de la configuració del compte en pantalles petites
+- S'ha millorat la interfície i experiència d'usuari de la configuració del servidor d'edició del compte
+- S'ha solucionat l'error d'AlarmManager a Android 14
+- Canvis interns
+- Traduccions actualitzades

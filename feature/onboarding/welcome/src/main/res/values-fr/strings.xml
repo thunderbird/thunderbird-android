@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Démarrer</string>
+    <string name="onboarding_welcome_start_button">Commencer</string>
     <string name="onboarding_welcome_import_button">Importer les paramètres</string>
+    <string name="onboarding_welcome_text">Une appli de courriel pour Android, à code source ouvert, axée sur la protection des données personnelles et sans publicité.</string>
+    <string name="onboarding_welcome_developed_by">Développée par une équipe dévouée de MZLA Technologies et une communauté mondiale de bénévoles. Membre de la famille Mozilla.</string>
 </resources>

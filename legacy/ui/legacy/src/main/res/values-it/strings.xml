@@ -528,7 +528,6 @@
     <string name="account_setup_push_limit_1000">1000 cartelle</string>
     <string name="animations_title">Animazione</string>
     <string name="animations_summary">Usa effetti visivi</string>
-    <string name="volume_navigation_title">Naviga con il tasto volume nel messaggio</string>
     <string name="show_unified_inbox_title">Mostra posta combinata</string>
     <string name="show_starred_count_title">Mostra conteggio Speciali</string>
     <string name="integrated_inbox_title">Posta combinata</string>

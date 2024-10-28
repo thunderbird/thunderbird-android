@@ -2,5 +2,5 @@
 - La til stønad for mailto: URI på NFC tagg
 - La til eksperimentell omgåing for krasj av appen i bakgrunnen
 - Optimaliserte nokre IMAP-protokoll interaksjonar
-- Ikkje utset vising av notifikasjonen når Push er aktiv
+- Ikkje utset vising av notifikasjonen når dytting er aktivt
 - Oppdaterte omsetjingar

@@ -1,1 +1,1 @@
-Thunderbird és una aplicació de correu electrònic 100% de codi obert i centrada en la privadesa.
+El Thunderbird és una aplicació de correu electrònic de codi obert i centrada en la privadesa.

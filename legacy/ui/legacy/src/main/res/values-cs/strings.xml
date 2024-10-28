@@ -27,7 +27,7 @@
     <!--=== General strings ==================================================================-->
     <string name="authors">Autoři</string>
     <string name="accounts_title">Účty</string>
-    <string name="compose_title_compose">Nová</string>
+    <string name="compose_title_compose">Nová zpráva</string>
     <string name="compose_title_reply">Odpovědět</string>
     <string name="compose_title_reply_all">Odpovědět všem</string>
     <string name="compose_title_forward">Přeposlat</string>
@@ -57,7 +57,7 @@
     <string name="refresh_folders_action">Obnovit složky</string>
     <string name="filter_folders_action">Najít složku</string>
     <string name="add_account_action">Přidat účet</string>
-    <string name="compose_action">Nová</string>
+    <string name="compose_action">Nová zpráva</string>
     <string name="search_action">Hledat</string>
     <string name="search_everywhere_action">Hledat všude</string>
     <string name="search_results">Výsledky hledání</string>
@@ -175,7 +175,7 @@
     <string name="message_view_bcc_label">Skrytá kopie (Bcc):</string>
     <string name="message_view_status_attachment_not_saved">Přílohu se nedaří uložit.</string>
     <!--Used to display the recipient list in the message view screen.-->
-    <string name="message_view_recipients_format">komu <xliff:g id="recipients">%s</xliff:g></string>
+    <string name="message_view_recipients_format">komu: <xliff:g id="recipients">%s</xliff:g></string>
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
@@ -221,7 +221,7 @@
     <!--The list item users select to not use a swipe action for a particular direction-->
     <string name="general_settings_swipe_action_none">Žádné</string>
     <!--Name of the swipe action to select/deselect a message-->
-    <string name="general_settings_swipe_action_toggle_selection">Změnit vybrané</string>
+    <string name="general_settings_swipe_action_toggle_selection">Vybrat</string>
     <!--Name of the swipe action to mark as message as read/unread-->
     <string name="general_settings_swipe_action_toggle_read">Označit jako přečtené/nepřečtené</string>
     <!--Name of the swipe action to add/remove a star-->
@@ -529,7 +529,6 @@
     <string name="account_setup_push_limit_1000">1000 složek</string>
     <string name="animations_title">Animace</string>
     <string name="animations_summary">Používat okázalé vizuální efekty</string>
-    <string name="volume_navigation_title">Navigace v zobrazení mailů pomocí tlačítek hlasitosti</string>
     <string name="show_unified_inbox_title">Ukázat sjednocený pohled na doručenou poštu</string>
     <string name="show_starred_count_title">Zobrazit počet označených hvězdičkou</string>
     <string name="integrated_inbox_title">Jednotná schránka</string>
@@ -906,4 +905,7 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="folder_list_show_hidden_folders">Zobrazit skryté složky</string>
     <string name="folder_settings_visible_label">Zobrazit složku</string>
     <string name="settings_list_action_support">Podpořte <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Navigace pomocí tlačítek hlasitosti</string>
+    <string name="volume_navigation_summary">Navigovat se mezi zprávami pomocí tlačítek hlasitosti v režimu zobrazení zpráv</string>
+    <string name="save_attachment_action">Uložit přílohu</string>
 </resources>

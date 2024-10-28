@@ -95,7 +95,7 @@
     <string name="status_network_error">连接错误</string>
     <string name="status_invalid_id_error">邮件未找到</string>
     <string name="status_loading_error">邮件加载错误</string>
-    <string name="load_more_messages_fmt">加载 <xliff:g id="messages_to_load">%d</xliff:g> 更多</string>
+    <string name="load_more_messages_fmt">另加载最多 <xliff:g id="messages_to_load">%d</xliff:g> 条消息</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -524,7 +524,6 @@
     <string name="account_setup_push_limit_1000">1000 个文件夹</string>
     <string name="animations_title">动画</string>
     <string name="animations_summary">使用绚丽的视觉效果</string>
-    <string name="volume_navigation_title">在邮件视图中使用音量键导航</string>
     <string name="show_unified_inbox_title">显示统一收件箱</string>
     <string name="show_starred_count_title">显示星标邮件数</string>
     <string name="integrated_inbox_title">统一收件箱</string>
@@ -886,4 +885,7 @@
     <string name="folder_list_show_hidden_folders">显示隐藏的文件夹</string>
     <string name="folder_settings_visible_label">显示文件夹</string>
     <string name="settings_list_action_support">支持 <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">保存附件</string>
+    <string name="volume_navigation_title_short">音量键导航</string>
+    <string name="volume_navigation_summary">在消息视图中用音量键在消息间切换</string>
 </resources>

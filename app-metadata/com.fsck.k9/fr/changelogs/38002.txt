@@ -1,5 +1,5 @@
-– Pousser : signaler à l’utilisateur l’absence d’autorisation pour programmer des alarmes exactes.
+– Poussé : signaler à l’utilisateur l’absence d’autorisation pour programmer des alarmes exactes.
 – Le paramètre « Envoyer l’ID du client » est devenu « Envoyer les renseignements du client ».
-– IMAP : ajout de la prise en charge de l’attribut de réponse LIST « \NonExistent ».
-– IMAP : envoi de la commande EXPUNGE après déplacement sans l’extension MOVE.
+– IMAP : ajout de la prise en charge de l’attribut de réponse LIST « \NonExistent ».
+– IMAP : envoi de la commande EXPUNGE après déplacement sans l’extension MOVE.
 – Mise à jour des traductions ; ajout de la traduction en hébreu.

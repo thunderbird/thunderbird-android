@@ -524,7 +524,6 @@
     <string name="account_setup_push_limit_1000">フォルダー 1000 件</string>
     <string name="animations_title">アニメーション</string>
     <string name="animations_summary">目立つ視覚効果を使用します</string>
-    <string name="volume_navigation_title">メッセージ表示画面を音量キー操作する</string>
     <string name="show_unified_inbox_title">統合受信トレイを表示する</string>
     <string name="show_starred_count_title">スター付きの数を表示する</string>
     <string name="integrated_inbox_title">統合受信トレイ</string>
@@ -885,4 +884,7 @@
     <string name="folder_settings_sync_label">同期を有効にする</string>
     <string name="folder_settings_visible_label">フォルダーを表示する</string>
     <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> を支援する</string>
+    <string name="volume_navigation_title_short">音量キー操作</string>
+    <string name="save_attachment_action">添付ファイルを保存</string>
+    <string name="volume_navigation_summary">メッセージ表示で音量キーを使用してメッセージを移動します</string>
 </resources>

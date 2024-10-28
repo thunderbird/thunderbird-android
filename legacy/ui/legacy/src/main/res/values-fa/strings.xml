@@ -526,7 +526,6 @@
     <string name="account_setup_push_limit_1000">۱۰۰۰ پوشه</string>
     <string name="animations_title">پویانمایی</string>
     <string name="animations_summary">استفاده از جلوه‌های پُرزرق‌وبرق</string>
-    <string name="volume_navigation_title">جابه‌جایی با کلیدهای تنظیم صدا</string>
     <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
     <string name="show_starred_count_title">نمایش تعداد ستاره‌دارها</string>
     <string name="integrated_inbox_title">صندوق ورودی یکپارچه</string>
@@ -895,4 +894,7 @@
     <string name="folder_list_show_hidden_folders">نمایش پوشه‌های مخفی</string>
     <string name="folder_settings_visible_label">نمایش پوشه</string>
     <string name="settings_list_action_support">پشتیبانی از <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">ذخیره پیوست</string>
+    <string name="volume_navigation_title_short">پیمایش با دکمه تنظیم صدا</string>
+    <string name="volume_navigation_summary">با استفاده از کلیدهای تنظیم صدا در صفحه نمایش پیام، بین پیام‌ها پیمایش کنید</string>
 </resources>

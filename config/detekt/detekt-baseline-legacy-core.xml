@@ -8,7 +8,6 @@
     <ID>ForbiddenComment:K9BackendFolderTest.kt$K9BackendFolderTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
     <ID>ForbiddenComment:K9BackendStorageTest.kt$K9BackendStorageTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
     <ID>FunctionOnlyReturningConstant:DisplayHtml.kt$DisplayHtml$private fun cssStyleSignature(): String</ID>
-    <ID>ImplicitDefaultLocale:SettingsExporter.kt$SettingsExporter$String.format("%s_%s.%s", EXPORT_FILENAME_PREFIX, dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)</ID>
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun delete(editor: StorageEditor, storage: Storage, account: Account)</ID>
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun loadAccount(account: Account, storage: Storage)</ID>
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun save(editor: StorageEditor, storage: Storage, account: Account)</ID>

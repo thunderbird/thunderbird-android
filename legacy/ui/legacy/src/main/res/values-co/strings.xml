@@ -496,7 +496,6 @@
     <string name="account_setup_push_limit_1000">1000 cartulari</string>
     <string name="animations_title">Animazione</string>
     <string name="animations_summary">Impiegà l’effetti visuali esagerati</string>
-    <string name="volume_navigation_title">Navigà cù vulume in a vista di messaghji</string>
     <string name="show_unified_inbox_title">Affissà a scatula di ricezzione cuncolta</string>
     <string name="show_starred_count_title">Affissà u numaru di stellati</string>
     <string name="integrated_inbox_detail">Tutti i messaghji in i cartulari cuncolti</string>
@@ -821,4 +820,13 @@
     <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l’altru.</string>
     <string name="about_title">Apprupositu di <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">A squadra Thunderbird Mobile</string>
+    <string name="folder_settings_push_label">Attivà a catapughjata</string>
+    <string name="folder_settings_sync_label">Attivà a sincrunizazione</string>
+    <string name="folder_settings_notifications_label">Nutificazioni</string>
+    <string name="settings_ui_telemetry_description">Sparte cù Mozilla i dati di perfurmenza, d’impiegu, di materiale è di persunalizazione di st’appiecazione per aiutacci à amendà Thunderbird</string>
+    <string name="settings_ui_data_collection">Culletta di dati</string>
+    <string name="settings_ui_telemetry_title">Dati d’impiegu è tecnichi</string>
+    <string name="folder_settings_visible_label">Affissà u cartulare</string>
+    <string name="folder_list_show_hidden_folders">Affissà i cartulari piattati</string>
+    <string name="settings_list_action_support">Sustene <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

@@ -529,7 +529,6 @@
     <string name="account_setup_push_limit_1000">Do 1000 folderów</string>
     <string name="animations_title">Animacje</string>
     <string name="animations_summary">Używaj efektów wizualnych</string>
-    <string name="volume_navigation_title">Nawigacja klawiszem głośności w widoku wiadomości</string>
     <string name="show_unified_inbox_title">Pokaż zintegrowaną skrzynkę odbiorczą</string>
     <string name="show_starred_count_title">Pokaż liczbę oznaczonych gwiazdką</string>
     <string name="integrated_inbox_title">Zintegrowana odbiorcza</string>
@@ -899,4 +898,7 @@
     <string name="folder_list_show_hidden_folders">Pokaż ukryte foldery</string>
     <string name="folder_settings_visible_label">Pokaż folder</string>
     <string name="settings_list_action_support">Wesprzyj <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Nawigacja przyciskami głośności</string>
+    <string name="volume_navigation_summary">Poruszaj się między wiadomościami za pomocą przycisków głośności w widoku wiadomości</string>
+    <string name="save_attachment_action">Zapisz załącznik</string>
 </resources>

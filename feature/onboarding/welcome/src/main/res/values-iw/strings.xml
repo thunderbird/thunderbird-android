@@ -2,4 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">התחל</string>
     <string name="onboarding_welcome_import_button">ייבוא הגדרות</string>
+    <string name="onboarding_welcome_text">יישום דוא\"ל בקוד פתוח לאנדרואיד, המתמקד בפרטיות ונטול פרסומות.</string>
+    <string name="onboarding_welcome_developed_by">פותח ע\"י צוות ייעודי ב־MZLA Technologies וקהילה גלובלית של מתנדבים. חלק ממשפחת Mozilla.</string>
 </resources>

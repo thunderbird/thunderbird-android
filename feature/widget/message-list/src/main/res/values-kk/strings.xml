@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="message_list_widget_compose_action">Құрастыру</string>
+    <string name="message_list_widget_list_item_loading">Жүктелуде…</string>
+    <string name="message_list_widget_initializing">Жүктелуде…</string>
+    <string name="message_list_widget_label">Хабарламалар тізімі</string>
+</resources>

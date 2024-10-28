@@ -40,4 +40,5 @@
     <string name="settings_import_general_settings_item">Configuració general</string>
     <string name="settings_import_pick_app_button">Importar des de l\'aplicació</string>
     <string name="settings_import_pick_app_dialog_title">Importar des de l\'aplicació</string>
+    <string name="settings_import_scan_qr_code_button">Escaneja el codi QR</string>
 </resources>

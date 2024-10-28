@@ -526,7 +526,6 @@
     <string name="account_setup_push_limit_1000">1000 carpetas</string>
     <string name="animations_title">Animaciones</string>
     <string name="animations_summary">Utilizar animaciones efectistas</string>
-    <string name="volume_navigation_title">Navegar con las teclas de volumen al leer el correo</string>
     <string name="show_unified_inbox_title">Mostrar bandeja de entrada unificada</string>
     <string name="show_starred_count_title">Mostrar número de mensajes destacados</string>
     <string name="integrated_inbox_title">Entrada unificada</string>
@@ -899,4 +898,7 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="folder_settings_visible_label">Mostrar carpeta</string>
     <string name="folder_list_show_hidden_folders">Ver las carpetas ocultas</string>
     <string name="settings_list_action_support">Apoya a <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Navegar con los botones de volumen</string>
+    <string name="save_attachment_action">Guardar adjunto</string>
+    <string name="volume_navigation_summary">Sube y baja por el listado de correos con los botones físicos de volumen</string>
 </resources>

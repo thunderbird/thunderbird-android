@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Utilisez-vous déjà Thunderbird pour ordinateur ?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Ajoutez un compte de courriel maintenant</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importez facilement les paramètres de votre compte en balayant un code QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Dans Thunderbird pour ordinateur, accédez à :</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">« Paramètres » dans la barre d’outils Espaces (en bas à gauche)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importer les paramètres</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Première fois sur Thunderbird ?</string>
+    <string name="onboarding_migration_thunderbird_import_title">Passez-vous d’une autre appli ou d’un autre appareil à Thunderbird ?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Importez les paramètres de votre compte maintenant</string>
+</resources>

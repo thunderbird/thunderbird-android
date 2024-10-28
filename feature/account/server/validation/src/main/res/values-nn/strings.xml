@@ -13,7 +13,7 @@
     <string name="account_server_validation_incoming_loading_message">Sjekker innkommande tenar-innstillingar…</string>
     <string name="account_server_validation_incoming_loading_error">Sjekking av innkommande tenar-innstillingar feila</string>
     <string name="account_server_validation_outgoing_loading_error">Sjekking av utgåande tenar-innstillingar feila</string>
-    <string name="account_server_validation_outgoing_success">Utgåande tenar-innstillingar verifisert</string>
-    <string name="account_server_validation_incoming_success">Innkommande tenar-innstillingar verifisert</string>
+    <string name="account_server_validation_outgoing_success">Utgåande serverinnstillingar stadfesta</string>
+    <string name="account_server_validation_incoming_success">Innkomande serverinnstillingar stadfesta</string>
     <string name="account_server_validation_outgoing_loading_message">Sjekkar utgåande tenar-innstillingar…</string>
 </resources>
