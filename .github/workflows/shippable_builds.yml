@@ -242,8 +242,8 @@ jobs:
             # mm: Minute of the hour (2 digits)
             datetime="$1"
             year=$(( $(date -d "${datetime}" +"%Y") - 2023 ))
-            day=$(printf "%03d" $(date +"%j"))
-            time=$(date +"%H%M")
+            day=$(printf "%03d" $(date -d "${datetime}" +"%j"))
+            time=$(date -d "${datetime}" +"%H%M")
             echo "${year}${day}${time}"
           }
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
@@ -263,7 +263,7 @@ jobs:
           fi
           # Ensure version code is not higher than max version code
           MAX_VERSION_DATE="2025-12-31 23:59"
-          MAX_VERSION_CODE=$(date_version_code "$MAX_VERSION_DATE")
+          MAX_VERSION_CODE="23652359"
           if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
             echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE} (${MAX_VERSION_DATE})"
             exit 1
