@@ -1,0 +1,6 @@
+Thunderbird for Android version 8.0, based on K-9 Mail. Changes include:
+- Thunderbird for Android now looks like a Thunderbird!
+- New folder drawer design.
+- Migrate settings from K-9 Mail and Thunderbird Desktop within the app.
+- Thunderbird is funded by users just like you. Contribute today, find the link in the settings.
+- Simplified folder management by revising display and push classes.
