@@ -5,7 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="8.0b4" versioncode="39008" date="2024-10-21">
+    <release version="8.0b5" versioncode="39009" date="2024-10-28">
+        <change>Unread message colors are updated for better visibility</change>
+        <change>QR code import now suggests upgrading Thunderbird Desktop</change>
+        <change>Irish translation included and 100% complete</change>
+        <change>Folder drawer is no longer too wide on some devices</change>
+        <change>New icon clarifies how to start a server-side email search</change>
+    </release>    <release version="8.0b4" versioncode="39008" date="2024-10-21">
         <change>Monthly financial contributions are now possible—try it today!</change>
         <change>Accounts shown by default for better access to settings</change>
         <change>Added Norsk Nynorsk translations</change>

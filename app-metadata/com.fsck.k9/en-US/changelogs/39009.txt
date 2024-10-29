@@ -1,0 +1,5 @@
+- Unread message colors are updated for better visibility
+- QR code import now suggests upgrading Thunderbird Desktop
+- Irish translation included and 100% complete
+- Folder drawer is no longer too wide on some devices
+- New icon clarifies how to start a server-side email search
