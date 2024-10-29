@@ -54,7 +54,7 @@ android {
 
         versionCode = 39009
         versionName = "8.0"
-        versionNameSuffix = "b5"
+        versionNameSuffix = "b4"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
