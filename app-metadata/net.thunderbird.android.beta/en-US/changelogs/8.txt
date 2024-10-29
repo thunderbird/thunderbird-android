@@ -1,0 +1,7 @@
+Thunderbird for Android version 8.0b5, based on K-9 Mail. Changes include:
+- Unread message colors are updated for better visibility
+- You will be asked for a financial contribution once you've used the app for a while. Help us continue developing Thunderbird for Android!
+- QR code import now suggests upgrading Thunderbird Desktop
+- Irish translation included and 100% complete
+- Folder drawer is no longer too wide on some devices
+- New icon clarifies how to start a server-side email search
