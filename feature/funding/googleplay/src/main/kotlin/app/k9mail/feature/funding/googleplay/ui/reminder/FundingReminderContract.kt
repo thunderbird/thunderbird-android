@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 
-// 1 week in milliseconds
-const val FUNDING_REMINDER_DELAY_MILLIS = 7 * 24 * 60 * 60 * 1000L
-// 30 minutes in milliseconds
-const val FUNDING_REMINDER_MIN_ACTIVITY_MILLIS = 30 * 60 * 1000L
+// TODO These values are temporarily reduced for testing in 8.0b5. This should be 7 days and 30
+// mintues under normal circumstances
+
+// 1 day in milliseconds
+const val FUNDING_REMINDER_DELAY_MILLIS = 1 * 24 * 60 * 60 * 1000L
+// 15 minutes in milliseconds
+const val FUNDING_REMINDER_MIN_ACTIVITY_MILLIS = 15 * 60 * 1000L
 
 interface FundingReminderContract {
 
