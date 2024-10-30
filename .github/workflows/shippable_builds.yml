@@ -551,7 +551,7 @@ jobs:
             🟡 [${{ needs.dump_config.outputs.releaseType }} build ${{ github.run_number}}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             waiting for publish approval (triggered by ${{ needs.notify_build_start.outputs.actorLink }})
 
-  pre_hold:
+  publish_hold:
     # This is a holding job meant to require approval before proceeding with the publishing jobs below
     # The environment has a deployment protection rule requiring approval from a set of named reviewers
     # before proceeding.
@@ -569,7 +569,7 @@ jobs:
   pkginfo:
     # Generate pkginfo used by the publish jobs and the release notes
     name: Generate PkgInfo
-    needs: [pre_hold, dump_config, release_commit]
+    needs: [publish_hold, dump_config, release_commit]
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
     runs-on: ubuntu-latest
     strategy:
@@ -679,7 +679,7 @@ jobs:
 
   publish_release_github:
     name: Publish Release Github
-    needs: [pre_hold, dump_config, release_commit, pkginfo]
+    needs: [publish_hold, dump_config, release_commit, pkginfo]
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
     runs-on: ubuntu-latest
     strategy:
@@ -718,7 +718,7 @@ jobs:
 
   publish_release_playstore:
     name: Publish Release Play Store
-    needs: [pre_hold, dump_config, release_commit, pkginfo]
+    needs: [publish_hold, dump_config, release_commit, pkginfo]
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
     runs-on: ubuntu-latest
     strategy:
@@ -767,7 +767,7 @@ jobs:
 
   publish_summary:
     name: Publish Release Play Store
-    needs: [pre_hold, dump_config, release_commit, pkginfo, publish_release_github, publish_release_playstore]
+    needs: [publish_hold, dump_config, release_commit, pkginfo, publish_release_github, publish_release_playstore]
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
     runs-on: ubuntu-latest
     strategy:
