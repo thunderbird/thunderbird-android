@@ -16,6 +16,11 @@ dependencies {
     implementation(libs.android.billing)
     implementation(libs.android.billing.ktx)
     implementation(libs.timber)
+    implementation(libs.android.material)
 
+    testImplementation(projects.core.testing)
     testImplementation(projects.core.ui.compose.testing)
+
+    testImplementation(libs.androidx.lifecycle.runtime.testing)
+    testImplementation(libs.androidx.fragment.testing)
 }
