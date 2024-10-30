@@ -1,6 +1,6 @@
 # Thunderbird for Android
 
-<a href="https://play.google.com/store/apps/details?id=net.thunderbird.android.beta&utm_source=thunderbird-android-github&utm_campaign=badge" target="_blank"><img alt="Get it on Google Play" src="https://www.mozilla.org/media/img/l10n/en-US/firefox/android/btn-google-play-high-res.87d9720bbc8b.png" height="28"></a>
+<a href="https://play.google.com/store/apps/details?id=net.thunderbird.android&utm_source=thunderbird-android-github&utm_campaign=badge" target="_blank"><img alt="Get it on Google Play" src="https://www.mozilla.org/media/img/l10n/en-US/firefox/android/btn-google-play-high-res.87d9720bbc8b.png" height="28"></a>
 [![Latest release](https://img.shields.io/github/release/thunderbird/thunderbird-android.svg?style=for-the-badge&filter=THUNDERBIRD_*&logo=thunderbird)](https://github.com/thunderbird/thunderbird-android/releases/latest)
 [![Latest beta release](https://img.shields.io/github/v/release/thunderbird/thunderbird-android.svg?include_prereleases&style=for-the-badge&label=beta&filter=THUNDERBIRD_*&logo=thunderbird)](https://github.com/thunderbird/thunderbird-android/releases)
 
