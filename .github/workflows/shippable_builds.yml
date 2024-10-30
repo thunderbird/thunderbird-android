@@ -773,7 +773,6 @@ jobs:
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
-    environment: publish_release
     outputs:
       thunderbird_release_url: ${{ steps.summary.outputs.thunderbird_release_url }}
       k9mail_release_url: ${{ steps.summary.outputs.k9mail_release_url }}
