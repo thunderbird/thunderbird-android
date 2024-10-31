@@ -775,7 +775,7 @@ jobs:
 
               - Built from GitHub commit: ${COMMIT_URL}
               - Built with GitHub workflow: ${WORKFLOW_URL}
-            EOF
+          EOF
           fi
 
       - name: Publish to Google Play
