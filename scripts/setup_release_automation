@@ -82,9 +82,7 @@ CHANNEL_ENVIRONMENTS = {
                 },
                 {
                     "appName": "thunderbird",
-                    "releaseTarget": "play",
                     "packageFormat": "aab",
-                    "playTargetTrack": "internal",
                     "packageFlavor": "full",
                 },
             ],
