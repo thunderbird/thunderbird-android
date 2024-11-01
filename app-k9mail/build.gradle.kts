@@ -53,8 +53,8 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39010
-        versionName = "8.0"
-        versionNameSuffix = "b5"
+        versionName = "9.0"
+        versionNameSuffix = "b0"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
