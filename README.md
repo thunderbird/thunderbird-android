@@ -24,7 +24,7 @@ Check out the [Release Notes](https://github.com/thunderbird/thunderbird-android
 
 ## Need Help? Found a bug? Have an idea? Want to chat?
 
-If the app is not behaving like it should, or you are not sure if you've encoutered a bug:
+If the app is not behaving like it should, or you are not sure if you've encountered a bug:
 
 - Check out our [knowledge base and frequently asked questions](https://support.mozilla.org/products/thunderbird-android)
 - Ask a question on our [support forum](https://support.mozilla.org/en-US/questions/new/thunderbird-android)
