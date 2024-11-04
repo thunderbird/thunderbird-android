@@ -50,7 +50,7 @@ internal fun AccountAvatar(
                     .border(2.dp, MainTheme.colors.surfaceContainerLowest, CircleShape),
             ) {
                 Placeholder(
-                    email = account.account.email,
+                    displayName = account.account.displayName,
                 )
                 // TODO: Add image loading
             }
@@ -64,11 +64,11 @@ internal fun AccountAvatar(
 
 @Composable
 private fun Placeholder(
-    email: String,
+    displayName: String,
     modifier: Modifier = Modifier,
 ) {
     TextTitleMedium(
-        text = extractDomainInitials(email).uppercase(),
+        text = extractNameInitials(displayName).uppercase(),
         modifier = modifier,
     )
 }
@@ -102,6 +102,6 @@ private fun UnreadBadge(
     }
 }
 
-private fun extractDomainInitials(email: String): String {
-    return email.split("@")[1].take(2)
+private fun extractNameInitials(displayName: String): String {
+    return displayName.take(2)
 }
