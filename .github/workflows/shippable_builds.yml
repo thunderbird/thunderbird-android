@@ -22,6 +22,9 @@ on:
       draftGooglePlay:
         type: boolean
         description: Leave Play Store version in draft state
+      skipFtpMo:
+        type: boolean
+        description: Skip publish to ftp.mozilla.org
 
 jobs:
   get_environment:
@@ -70,6 +73,7 @@ jobs:
           skipBetaBump: ${{ inputs.skipBetaBump }}
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
           draftGooglePlay: ${{ inputs.draftGooglePlay }}
+          skipFtpMo: ${{ inputs.skipFtpMo }}
         with:
           script: |
             const NOW = new Date();
@@ -132,6 +136,10 @@ jobs:
               if (process.env.skipGooglePlay != "true" && process.env.draftGooglePlay == "true") {
                 await core.summary.addList(["Play Store upload is being kept in the draft state"]).write();
               }
+              if (process.env.skipFtpMo == "true") {
+                await core.summary.addList(["ftp.mozilla.org upload is being skipped"]).write();
+              }
+
 
   notify_build_start:
     name: Notify Build Start
@@ -692,7 +700,7 @@ jobs:
           echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_OUTPUT
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_OUTPUT
           echo "APPLICATION_ID=${APPLICATION_ID}" >> $GITHUB_OUTPUT
-          echo "FTPMO_SUBDIR=${FTPMO_SUBDIR}"
+          echo "FTPMO_SUBDIR=${FTPMO_SUBDIR}" >> $GITHUB_OUTPUT
 
           cat $GITHUB_OUTPUT
 
@@ -805,7 +813,7 @@ jobs:
 
       - name: Auth to GCS for ftp.mozilla.org publishing
         uses: google-github-actions/auth@v2
-        if: ${{ contains(matrix.releaseTarget, 'ftpmo') }}
+        if: ${{ !inputs.skipFtpMo && contains(matrix.releaseTarget, 'ftpmo') }}
         with:
           workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
           service_account: my-service-account@my-project.iam.gserviceaccount.com
@@ -813,7 +821,7 @@ jobs:
       - name: GCS Upload to ftp.mozilla.org
         id: publish_ftpmo
         uses: google-github-actions/upload-cloud-storage@v2
-        if: ${{ contains(matrix.releaseTarget, 'ftpmo') }}
+        if: ${{ !inputs.skipFtpMo && contains(matrix.releaseTarget, 'ftpmo') }}
         with:
           path: uploads/${{ steps.rename.outputs.PKG_FILE }}
           destination: bucket-name/android/${{ steps.pkginfo.outputs.FTPMO_SUBDIR }}/${{ steps.pkginfo.outputs.VERSION_NAME }}
@@ -862,7 +870,7 @@ jobs:
               await core.summary.addRaw(`Released to the <b>${process.env.playTargetTrack}</b> track on Google Play`, true).write();
             }
 
-            if (process.env.releaseTarget.includes("ftpmo")) {
+            if (process.env.skipFtpMo != "true" && process.env.releaseTarget.includes("ftpmo")) {
               await core.summary.addRaw(`Published to ${process.env.FTPMO_URL_PREFIX}${process.env.ftpReleaseUrl}`, true).write();
             }
 
