@@ -36,6 +36,7 @@ If you are certain you've identified a bug in Thunderbird for Android and would 
 If you have an idea how to improve Thunderbird for Android:
 
 - Tell us about and vote on your feature ideas on [connect.mozilla.org](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android).
+- Join the discussion about the latest changes in the [Thunderbird Android Beta Topicbox](https://thunderbird.topicbox.com/groups/android-beta).
 
 The Thunderbird Community uses Matrix to communicate:
 
