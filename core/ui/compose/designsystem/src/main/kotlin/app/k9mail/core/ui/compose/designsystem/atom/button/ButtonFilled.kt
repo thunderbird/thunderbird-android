@@ -20,7 +20,7 @@ fun ButtonFilled(
     ) {
         Material3Text(
             text = text,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
