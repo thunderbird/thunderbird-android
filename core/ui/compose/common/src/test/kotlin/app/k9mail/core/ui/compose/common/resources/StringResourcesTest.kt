@@ -1,12 +1,12 @@
 package app.k9mail.core.ui.compose.common.resources
 
 import androidx.compose.ui.text.buildAnnotatedString
+import app.k9mail.core.ui.compose.common.test.R
 import app.k9mail.core.ui.compose.common.text.bold
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test
-import app.k9mail.core.ui.compose.common.test.R
 
 class StringResourcesTest : ComposeTest() {
     @Test
@@ -21,7 +21,7 @@ class StringResourcesTest : ComposeTest() {
                     append("prefix ")
                     append(argument)
                     append(" suffix")
-                }
+                },
             )
         }
     }
