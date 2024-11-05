@@ -17,7 +17,7 @@ internal fun ButtonFilledPreview() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun ButtonFilledlDisabledPreview() {
+internal fun ButtonFilledDisabledPreview() {
     PreviewWithThemes {
         ButtonFilled(
             text = "Button Filled Disabled",
