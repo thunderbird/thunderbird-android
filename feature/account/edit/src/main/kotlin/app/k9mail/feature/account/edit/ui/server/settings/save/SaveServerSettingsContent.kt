@@ -26,8 +26,10 @@ fun SaveServerSettingsContent(
             .padding(contentPadding)
             .then(modifier),
     ) {
+        val contentState = rememberContentLoadingErrorViewState(state = state)
+
         ContentLoadingErrorView(
-            state = rememberContentLoadingErrorViewState(state),
+            state = contentState.value,
             loading = {
                 LoadingView(
                     message = stringResource(id = R.string.account_edit_save_server_settings_loading_message),

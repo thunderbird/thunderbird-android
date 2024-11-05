@@ -35,13 +35,15 @@ fun SpecialFoldersContent(
             .padding(contentPadding)
             .then(modifier),
     ) {
+        val contentState = rememberContentLoadingErrorViewState(state = state)
+
         Column {
             AppTitleTopHeader(
                 title = brandName,
             )
 
             ContentLoadingErrorView(
-                state = rememberContentLoadingErrorViewState(state = state),
+                state = contentState.value,
                 loading = {
                     LoadingView(
                         message = stringResource(id = R.string.account_setup_special_folders_loading_message),

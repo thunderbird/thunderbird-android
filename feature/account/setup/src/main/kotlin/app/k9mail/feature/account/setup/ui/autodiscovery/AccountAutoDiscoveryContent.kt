@@ -88,9 +88,10 @@ internal fun AutoDiscoveryContent(
     modifier: Modifier = Modifier,
 ) {
     val resources = LocalContext.current.resources
+    val contentState = rememberContentLoadingErrorViewState(state = state)
 
     ContentLoadingErrorView(
-        state = rememberContentLoadingErrorViewState(state),
+        state = contentState.value,
         loading = {
             LoadingView(
                 message = stringResource(id = R.string.account_setup_auto_discovery_loading_message),

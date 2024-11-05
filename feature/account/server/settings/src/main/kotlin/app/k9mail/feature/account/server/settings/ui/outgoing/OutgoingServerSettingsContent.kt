@@ -38,8 +38,10 @@ internal fun OutgoingServerSettingsContent(
             .fillMaxWidth()
             .then(modifier),
     ) {
+        val contentState = rememberContentLoadingErrorViewState(state = state)
+
         ContentLoadingErrorView(
-            state = rememberContentLoadingErrorViewState(state = state),
+            state = contentState.value,
             loading = { /* no-op */ },
             error = { /* no-op */ },
         ) {

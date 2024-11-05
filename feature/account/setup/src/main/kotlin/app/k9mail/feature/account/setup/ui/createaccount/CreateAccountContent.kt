@@ -26,8 +26,10 @@ internal fun CreateAccountContent(
             .testTag("CreateAccountContent")
             .then(modifier),
     ) {
+        val contentState = rememberContentLoadingErrorViewState(state = state)
+
         ContentLoadingErrorView(
-            state = rememberContentLoadingErrorViewState(state),
+            state = contentState.value,
             loading = {
                 LoadingView(
                     message = stringResource(R.string.account_setup_create_account_creating),
