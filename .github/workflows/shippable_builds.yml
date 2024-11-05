@@ -175,6 +175,7 @@ jobs:
     needs: [dump_config, get_environment]
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     strategy:
+      max-parallel: 1
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
     permissions:
@@ -348,8 +349,12 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           # We need the metadata to point to the right application for the release commit
+          set -x
+          git pull
+          ls -l metadata
           rm metadata
           ln -sf app-metadata/${APPLICATION_ID} metadata
+          ls -l metadata
 
           # Add changelogs, build version changes and metadata symlink
           git add ./app-metadata/${APPLICATION_ID}/en-US/changelogs/*
@@ -357,24 +362,13 @@ jobs:
           git add ./app-${APP_NAME}/build.gradle.kts
           git add metadata
 
-          # Ready to commit. Make sure to pull again to reduce likelihood of race conditions
+          # Ready to commit. There should be no race conditions with max-parallel set to 1.
           git status
           git commit -m "Release: ${APPLICATION_LABEL} ${FULL_VERSION_NAME}"
-          git pull --rebase -X ours
+          git diff HEAD~1 HEAD
           git log -n 5
-
-          set +e
           git push
-          GIT_RESULT=$?
-          set -e
-
-          if [ $GIT_RESULT -gt 0 ]; then
-            echo "Push rejected, trying again once in 5 seconds"
-            sleep 5
-            git pull --rebase -X ours
-            git log -n 5
-            git push
-          fi
+          set +x
 
           echo "${APP_NAME}_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
