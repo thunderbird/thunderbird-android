@@ -19,7 +19,6 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toIncomingServerSettingsState()
     ?: State(
         username = StringInputField(value = emailAddress ?: ""),
-        isLoading = false,
     )
 
 private fun ServerSettings.toIncomingServerSettingsState(): State {
@@ -36,9 +35,6 @@ private fun ServerSettings.toIncomingServerSettingsState(): State {
         imapPrefix = StringInputField(value = pathPrefix ?: ""),
         imapUseCompression = isUseCompression,
         imapSendClientInfo = isSendClientInfo,
-
-        isLoading = false,
-        error = null,
     )
 }
 
