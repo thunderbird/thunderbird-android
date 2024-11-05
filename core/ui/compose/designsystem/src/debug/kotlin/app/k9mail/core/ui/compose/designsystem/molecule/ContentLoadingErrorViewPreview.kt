@@ -45,7 +45,7 @@ internal fun ContentLoadingErrorViewErrorPreview() {
 internal fun ContentLoadingErrorViewInteractivePreview() {
     PreviewWithThemes {
         val state = remember {
-            mutableStateOf(ContentLoadingErrorState.Loading)
+            mutableStateOf<ContentLoadingErrorState>(ContentLoadingErrorState.Loading)
         }
 
         DefaultContentLoadingErrorView(
