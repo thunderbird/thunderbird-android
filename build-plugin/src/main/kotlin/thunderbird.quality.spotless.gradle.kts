@@ -7,7 +7,7 @@ plugins {
 configure<SpotlessExtension> {
     configureKotlinCheck(
         targets = listOf(
-            "*.kt",
+            "**/*.kt",
         ),
         project = project,
         libs = libs,
