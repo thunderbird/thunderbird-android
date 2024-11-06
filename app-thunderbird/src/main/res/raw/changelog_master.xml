@@ -5,10 +5,7 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="8.1" versioncode="5" date="2024-11-06">
-        <change>Thunderbird's active development is fully funded by financial contributions from our users. If you're enjoying Thunderbird or believe in our mission, please help support it. In this version we will ask you for your support once you've had the chance to actively use Thunderbird for a while.</change>
-        <change>We've fixed one of our top crashes to give you a more stable experience</change>
-    </release>    <release version="8.0b5" versioncode="8" date="2024-10-28">
+    <release version="8.0b5" versioncode="8" date="2024-10-28">
         <change>Unread message colors are updated for better visibility</change>
         <change>You will be asked for a financial contribution once you've used the app for a while. Help us continue developing Thunderbird for Android!</change>
         <change>QR code import now suggests upgrading Thunderbird Desktop</change>
