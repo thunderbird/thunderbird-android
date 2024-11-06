@@ -8,7 +8,7 @@
     <string name="funding_googleplay_contribution_list_title">Contribución segura</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Ninguno disponible</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Modifica el pago mensual</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ayuda a mantener Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Hacer otra contribución impactante</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Las contribuciones no son fiscalmente deducibles como donaciones benéficas.</string>
     <string name="funding_googleplay_contribution_title">Apoya Thunderbird</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Reintentar</string>
@@ -44,4 +44,9 @@
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">¡Eres una de las razones principales por las que podemos hacer lo que hacemos! Su generosidad nos ayuda a alcanzar nuevas metas.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">¡Tu apoyo es inspirador! Tu contribución nos ayuda a superar los límites y alcanzar nuestras metas.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">¡Nos ayudas a soñar a lo grande! Tu apoyo nos permite lograr cosas extraordinarias.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">¡Gracias por tu generosa donación! Tu apoyo fortalece directamente a Thunderbird y estamos agradecidos de tenerte a nuestro lado en este viaje.</string>
+    <string name="funding_googleplay_contribution_reminder_title">Soporte Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_message">Nuestra misión es ofrecer una aplicación de correo electrónico de código abierto que sea segura, privada y gratuita para usuarios de todo el mundo. Tu contribución económica apoya este trabajo. ¿Quieres colaborar ahora?</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Sí</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Ahora no</string>
 </resources>

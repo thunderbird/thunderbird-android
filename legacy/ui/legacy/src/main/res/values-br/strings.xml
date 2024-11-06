@@ -758,4 +758,17 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="about_app_authors_thunderbird">Skipailh Thunderbird evit ardivinkoù hezoug</string>
+    <string name="get_help_title">Bezañ skoazellet</string>
+    <string name="changelog_loading_error">N\'eus ket bet gallet kargañ marilh ar c\'hemmoù.</string>
+    <string name="changelog_recent_changes_title">Petra nevez</string>
+    <string name="about_website_title">Lec\'hienn Web</string>
+    <string name="source_code">Kod tarzh</string>
+    <string name="changelog_version_title">Stumm %s</string>
+    <string name="about_project_title">Raktres digor e god tarzh</string>
+    <string name="user_forum_title">Forom an implijerien</string>
+    <string name="changelog_title">Marilh ar c\'hemmoù</string>
+    <string name="changelog_show_recent_changes">Diskouez ar c\'hemmoù diwezhañ goude hizivadenn an arload</string>
+    <string name="changelog_snackbar_text">Taolit ur sell war ar pezh zo nevez er stumm-mañ</string>
+    <string name="changelog_snackbar_button_text">Diskouez</string>
 </resources>

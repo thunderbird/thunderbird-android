@@ -829,4 +829,7 @@
     <string name="folder_settings_visible_label">Affissà u cartulare</string>
     <string name="folder_list_show_hidden_folders">Affissà i cartulari piattati</string>
     <string name="settings_list_action_support">Sustene <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Navigà cù i tasti di vulume in a vista di messaghji</string>
+    <string name="volume_navigation_summary">Navigà d’un messaghju à l’altru cù i tasti di vulume nant’à a vista di i messaghji</string>
+    <string name="save_attachment_action">Arregistrà a pezza aghjunta</string>
 </resources>

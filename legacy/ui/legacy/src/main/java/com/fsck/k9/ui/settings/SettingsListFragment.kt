@@ -172,9 +172,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                 )
             }
 
-            FundingType.NO_FUNDING -> {
-                // no-op
-            }
+            FundingType.NO_FUNDING -> Unit
         }
     }
 

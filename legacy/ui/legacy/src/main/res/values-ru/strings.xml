@@ -176,11 +176,11 @@
     <string name="message_view_bcc_label">Скрытая копия:</string>
     <string name="message_view_status_attachment_not_saved">Не получается сохранить вложение.</string>
     <!--Used to display the recipient list in the message view screen.-->
-    <string name="message_view_recipients_format">для <xliff:g id="recipients">%s</xliff:g></string>
+    <string name="message_view_recipients_format">кому: <xliff:g id="recipients">%s</xliff:g></string>
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <string name="message_view_additional_recipient_prefix">+</string>
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
-    <string name="message_view_me_text">меня</string>
+    <string name="message_view_me_text">мне</string>
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Загрузить изображения</string>
     <string name="message_view_no_viewer">Отсутствует просмотрщик <xliff:g id="mimetype">%s</xliff:g>.</string>

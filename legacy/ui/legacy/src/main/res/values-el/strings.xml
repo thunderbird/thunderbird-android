@@ -14,7 +14,7 @@
     <string name="about_libraries">Βιβλιοθήκες</string>
     <string name="license">Άδεια</string>
     <string name="changelog_title">Κατάλογος αλλαγών</string>
-    <string name="changelog_loading_error">Δεν ήταν δυνατή η φόρτωση του καταλόγου αλλαγών</string>
+    <string name="changelog_loading_error">Δεν ήταν δυνατή η φόρτωση του αρχείου καταγραφής αλλαγών.</string>
     <string name="changelog_version_title">Έκδοση %s</string>
     <string name="changelog_recent_changes_title">Τι νέο υπάρχει</string>
     <string name="changelog_show_recent_changes">Εμφάνιση πρόσφατων αλλαγών από την ενημέρωση της εφαρμογής</string>
@@ -143,7 +143,7 @@
     <string name="debug_enable_sensitive_logging_summary">Συνθηματικά μπορεί να εμφανιστούν στις καταγραφές.</string>
     <string name="debug_export_logs_title">Καταγραφές εξαγωγών</string>
     <string name="debug_export_logs_success">Επιτυχής εξαγωγή. Οι καταγραφές ίσως περιέχουν ευαίσθητες πληροφορίες. Προσέχετε σε ποιον/ποια τις στέλνετε.</string>
-    <string name="debug_export_logs_failure">Αποτυχία εξαγωγής</string>
+    <string name="debug_export_logs_failure">Η εξαγωγή απέτυχε.</string>
     <string name="message_list_load_more_messages_action">Φόρτωση περισσότερων μηνυμάτων</string>
     <string name="message_to_fmt">Προς:<xliff:g id="counterParty">%s</xliff:g></string>
     <string name="message_compose_subject_hint">Θέμα</string>
@@ -219,7 +219,7 @@
     <!--Name of the swipe action to select/deselect a message-->
     <string name="general_settings_swipe_action_toggle_selection">Πολλαπλή επιλογή</string>
     <!--Name of the swipe action to mark as message as read/unread-->
-    <string name="general_settings_swipe_action_toggle_read">Επισήμανση ως Αναγνωσμένο/Μη αναγν.</string>
+    <string name="general_settings_swipe_action_toggle_read">Σήμανση ως (μη) αναγνωσμένο</string>
     <!--Name of the swipe action to add/remove a star-->
     <string name="general_settings_swipe_action_toggle_star">Προσθήκη/Αφαίρεση αστεριού</string>
     <!--Name of the swipe action to archive a message-->
@@ -277,7 +277,7 @@
     <string name="account_setup_options_mail_check_frequency_1hour">Κάθε μία ώρα</string>
     <string name="account_setup_options_mail_check_frequency_2hour">Κάθε 2 ώρες</string>
     <string name="account_setup_options_mail_check_frequency_3hour">Κάθε 3 ώρες</string>
-    <string name="account_setup_options_mail_check_frequency_6hour">Κάθε 2 ώρες</string>
+    <string name="account_setup_options_mail_check_frequency_6hour">Κάθε 6 ώρες</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Κάθε 12 ώρες</string>
     <string name="account_setup_options_mail_check_frequency_24hour">Κάθε 24 ώρες</string>
     <string name="idle_refresh_period_label">Ανανέωση της σύνδεσης IDLE</string>
@@ -336,7 +336,7 @@
     <string name="account_settings_message_format_text">Απλό κείμενο (αφαιρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_html">HTML (διατηρούνται εικόνες και μορφοποίηση)</string>
     <string name="account_settings_message_format_auto">Αυτόματα (απλό κείμενο, εκτός αν απαντά σε μήνυμα HTML)</string>
-    <string name="account_settings_always_show_cc_bcc_label">Πάντα προβολή κοινοποιήσεων/ιδ. κοιν.</string>
+    <string name="account_settings_always_show_cc_bcc_label">Πάντα προβολή «Κοιν.»/«Κρυφή κοιν.»</string>
     <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
     <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
     <string name="account_settings_quote_style_label">Μορφή παράθεσης για απάντηση</string>
@@ -393,7 +393,7 @@
     <string name="account_settings_message_age_6_months">τους τελευταίους 6 μήνες</string>
     <string name="account_settings_message_age_1_year">το τελευταίο έτος</string>
     <string name="account_settings_sync_remote_deletetions_label">Συγχρονισμός διαγραφών εξυπηρετητή</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Αφαίρεση των μηνυμάτων που διαγράφονται στον εξυπηρετητή.</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Αφαίρεση των μηνυμάτων όταν διαγράφονται από τον διακομιστή</string>
     <string name="account_settings_openpgp_missing">Λείπει η εφαρμογή OpenPGP - απεγκαταστήθηκε;</string>
     <string name="folder_settings_title">Ρυθμίσεις φακέλων</string>
     <string name="folder_settings_in_top_group_label">Προβολή στην ομάδα κορυφής</string>
@@ -460,8 +460,8 @@
     <string name="default_identity_description">Αρχική ταυτότητα</string>
     <string name="choose_identity_title">Επιλογή ταυτότητας</string>
     <string name="send_as">Αποστολή ως</string>
-    <string name="no_removable_identity">Δεν μπορείτε να διαγράψετε τη μοναδική ταυτότητα.</string>
-    <string name="identity_has_no_email">Δεν μπορείτε να χρησιμοποιήσετε μια ταυτότητα δίχως ηλεκτρονική διεύθυνση.</string>
+    <string name="no_removable_identity">Δεν μπορείτε να διαγράψετε τη μοναδική σας ταυτότητα</string>
+    <string name="identity_has_no_email">Δεν μπορείτε να χρησιμοποιήσετε μια ταυτότητα χωρίς διεύθυνση email</string>
     <string name="sort_earliest_first">Παλαιότερα μηνύματα πρώτα</string>
     <string name="sort_latest_first">Πρόσφατα μηνύματα πρώτα</string>
     <string name="sort_subject_alpha">Αλφαβητικά κατά θέμα</string>
@@ -527,10 +527,10 @@
     <string name="animations_summary">Χρήση οπτικών εφέ gaudy</string>
     <string name="show_unified_inbox_title">Εμφάνιση Ενιαία Εισερχόμενα</string>
     <string name="show_starred_count_title">Εμφάνιση πλήθους επιλεγμένων</string>
-    <string name="integrated_inbox_title">Ενιαία Εισερχόμενα</string>
+    <string name="integrated_inbox_title">Ενιαία εισερχόμενα</string>
     <string name="integrated_inbox_detail">Όλα τα μηνύματα στους ενοποιημένους φακέλους</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Ενιαία Εισερχόμενα</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Όλα τα μηνύματα προβάλλονται στα Ενιαία Εισερχόμενα.</string>
+    <string name="folder_settings_include_in_integrated_inbox_summary">Όλα τα μηνύματα προβάλλονται στα Ενιαία εισερχόμενα</string>
     <string name="account_settings_no_folder_selected">Κανένας</string>
     <string name="account_settings_automatic_special_folder">Αυτόματα (%s)</string>
     <string name="font_size_settings_title">Μέγεθος γραμματοσειράς</string>
@@ -617,8 +617,8 @@
     <string name="webview_contextmenu_phone_clipboard_label">Αριθμός τηλεφώνου</string>
     <string name="webview_contextmenu_email_send_action">Αποστολή μηνύματος</string>
     <string name="webview_contextmenu_email_save_action">Αποθήκευση στις Επαφές</string>
-    <string name="webview_contextmenu_email_copy_action">Αντιγραφή της διεύθυνσης στο πρόχειρο</string>
-    <string name="webview_contextmenu_email_clipboard_label">Διεύθυνση ηλ. ταχυδρομείου</string>
+    <string name="webview_contextmenu_email_copy_action">Αντιγραφή διεύθυνσης στο πρόχειρο</string>
+    <string name="webview_contextmenu_email_clipboard_label">Διεύθυνση email</string>
     <string name="account_settings_remote_search_num_results_entries_all">Όλα</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -630,14 +630,14 @@
     <string name="account_settings_remote_search_num_label">Όριο αναζητήσεων εξυπηρετητή</string>
     <string name="remote_search_sending_query">Αποστολή αιτήματος στον εξυπηρετητή</string>
     <plurals name="remote_search_downloading">
-        <item quantity="one">Ανάκληση %d αποτελέσματος</item>
-        <item quantity="other">Μετάκληση %d αποτελεσμάτων</item>
+        <item quantity="one">Φόρτωση %d αποτελέσματος</item>
+        <item quantity="other">Φόρτωση %d αποτελεσμάτων</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Φόρτωση %1$d από %2$d αποτελέσματα</item>
         <item quantity="other"> Φόρτωση %1$d από %2$d αποτελέσματα</item>
     </plurals>
-    <string name="remote_search_error">Η απομακρυσμένη αναζήτηση απέτυχε.</string>
+    <string name="remote_search_error">Αποτυχία απομακρυσμένης αναζήτησης</string>
     <string name="account_settings_search">Αναζήτηση</string>
     <string name="action_remote_search">Αναζήτηση μηνυμάτων στον εξυπηρετητή</string>
     <string name="remote_search_unavailable_no_network">Η απομακρυσμένη αναζήτηση δεν είναι διαθέσιμη χωρίς σύνδεση δικτύου.</string>
@@ -692,7 +692,7 @@
     <string name="openpgp_inline_text">Το μήνυμα αποστέλλεται σε PGP/INLINE μορφοποίηση.\n Αυτό πρέπει να χρησιμοποιείται μόνο για λόγους συμβατότητας:</string>
     <string name="openpgp_inline_plus_compat">Κάποιες εφαρμογές υποστηρίχουν μόνο αυτή τη μπργοποίηση</string>
     <string name="openpgp_inline_minus_transit">Οι υπογραφές μπορεί να καταστραφούν κατά την μετακίνηση</string>
-    <string name="openpgp_inline_minus_attach">Τα συνημμένα αρχεία δεν υποστηρίζονται!</string>
+    <string name="openpgp_inline_minus_attach">Τα συνημμένα αρχεία δεν υποστηρίζονται</string>
     <string name="openpgp_inline_ok">Το \'πιασα!</string>
     <string name="openpgp_inline_disable">Απενεργοποίηση</string>
     <string name="openpgp_inline_keep_enabled">Να μείνει Ενεργοποιημένο</string>
@@ -709,7 +709,7 @@
     <string name="crypto_msg_unencrypted_sign_error">η υπογραφή διατερματικής κρυπτογράφησης περιείχε σφάλμα</string>
     <string name="crypto_msg_incomplete_signed">απαιτείται η πλήρης λήψη του μηνύματος για επεξεργασία υπογραφής </string>
     <string name="crypto_msg_unsupported_signed">περιέχει μη υποστηριζομενη διατερματική υπογραφή</string>
-    <string name="crypto_msg_unsupported_encrypted">Το μήνυμα είναι κρυπτογραφημένο σε μη υποστηριζόμενη μορφοποίηση</string>
+    <string name="crypto_msg_unsupported_encrypted">Το μήνυμα είναι κρυπτογραφημένο, αλλά η μορφή του δεν υποστηρίζεται.</string>
     <string name="crypto_msg_cancelled">Το μήνυμα είναι κρυπτογραφημένο, αλλά η αποκρυπτογράφηση ακυρώθηκε.</string>
     <string name="crypto_msg_title_unencrypted_signed_e2e">Διατερματικά υπογεγραμμένο απλό κείμενο</string>
     <string name="crypto_msg_unencrypted_sign_verified">από επικυρωμένο υπογράφοντα</string>
@@ -803,7 +803,7 @@
     <string name="push_notification_state_listening">Αναμονή για νέα μηνύματα</string>
     <string name="push_notification_state_wait_background_sync">Σε αδράνεια μέχρι να επιτραπεί ο συγχρονισμός στο παρασκήνιο</string>
     <string name="push_notification_state_wait_network">Σε αδράνεια μέχρι να υπάρξει διαθέσιμο δίκτυο</string>
-    <string name="push_notification_info">Πατήστε για να μάθετε περισσότερα</string>
+    <string name="push_notification_info">Πατήστε για να μάθετε περισσότερα.</string>
     <string name="push_info_title">Πληροφορίες σπρωξίματος</string>
     <string name="push_info_configure_notification_text">Παρόλα αυτά, το Android σάς επιτρέπει να κρύψετε την ειδοποίηση.</string>
     <string name="push_info_learn_more_text">Μάθετε περισσότερα</string>
@@ -841,7 +841,7 @@
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
     <string name="message_details_missing_date">Λείπει η κεφαλίδα \'Ημερομηνία\'</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
-    <string name="message_details_from_section_title">Από:</string>
+    <string name="message_details_from_section_title">Από</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
     <string name="message_details_sender_section_title">Αποστολέας</string>
     <!--Title of the "Reply to" section in the message details bottom sheet. This should probably be the same as the string 'reply_to_label'.-->
@@ -849,9 +849,9 @@
     <!--Title of the "To" section in the message details bottom sheet. This should probably be the same as the string 'recipient_to'.-->
     <string name="message_details_to_section_title">Προς</string>
     <!--Title of the "Cc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_cc'.-->
-    <string name="message_details_cc_section_title">Κοιν:</string>
+    <string name="message_details_cc_section_title">Κοιν.</string>
     <!--Title of the "Bcc" section in the message details bottom sheet. This should probably be the same as the string 'recipient_bcc'.-->
-    <string name="message_details_bcc_section_title">Κρυφή Κοιν:</string>
+    <string name="message_details_bcc_section_title">Κρυφή κοιν.</string>
     <!--Displayed when loading the message details has failed-->
     <string name="message_details_loading_error">Προέκυψε σφάλμα κατά τη φόρτωση των λεπτομερειών του μηνύματος.</string>
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -872,9 +872,28 @@
     <string name="message_list_content_description_unread_prefix">αδιάβαστα, %s</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Παραμονή στο παρών μήνυμα</string>
     <string name="general_settings_post_remove_action_return_to_list">Επιστροφή στην λίστα μηνυμάτων</string>
-    <string name="general_settings_post_mark_as_unread_action_title">Μετά το μαρκάρισμα ενός μηνύματος ως αδιάβαστο</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Μετά τη σήμανση ενός μηνύματος ως μη αναγνωσμένου</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Επιστροφή στη λίστα μηνυμάτων</string>
     <string name="general_settings_post_remove_action_show_previous_message">Εμφάνιση προηγούμενου μηνύματος</string>
     <string name="general_settings_post_remove_action_show_next_message">Εμφάνιση επόμενου μηνύματος</string>
     <string name="general_settings_post_remove_action_title">Μετά τη διαγραφή ή τη μετακίνηση ενός μηνύματος</string>
+    <string name="volume_navigation_title_short">Πλοήγηση με πλήκτρα έντασης</string>
+    <string name="push_notification_state_alarm_permission_missing">Λείπει η άδεια για τον προγραμματισμό ειδοποιήσεων</string>
+    <string name="about_app_authors_thunderbird">Η ομάδα του Thunderbird για κινητές συσκευές</string>
+    <string name="folder_settings_notifications_label">Ειδοποιήσεις</string>
+    <string name="push_notification_grant_alarm_permission">Πατήστε για να παραχωρήσετε την άδεια.</string>
+    <string name="settings_ui_data_collection">Συλλογή δεδομένων</string>
+    <string name="folder_settings_sync_label">Ενεργοποίηση συγχρονισμού</string>
+    <string name="folder_settings_push_label">Ενεργοποίηση ειδοποίησεων push</string>
+    <string name="folder_list_show_hidden_folders">Εμφάνιση κρυφών φακέλων</string>
+    <string name="about_title">Σχετικά με το <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \"<xliff:g id="account">%s</xliff:g>\" θα αφαιρεθεί από το <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="folder_settings_visible_label">Εμφάνιση φακέλου</string>
+    <string name="save_attachment_action">Αποθήκευση συνημμένου</string>
+    <string name="volume_navigation_summary">Πλοήγηση στα μηνύματα με τα πλήκτρα έντασης στην προβολή μηνυμάτων</string>
+    <string name="push_info_notification_explanation_text">Όταν χρησιμοποιείτε ειδοποιήσεις push, το <xliff:g id="app_name">%1$s</xliff:g> διατηρεί μια σύνδεση με τον διακομιστή αλληλογραφίας. Το Android απαιτεί τη συνεχή προβολή μιας ειδοποίησης όσο είναι ενεργή η εφαρμογή στο παρασκήνιο. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="settings_list_action_support">Υποστήριξη του <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="settings_ui_telemetry_description">Κοινοποιεί δεδομένα επιδόσεων, χρήσης, υλικού και προσαρμογών σχετικά με αυτήν την εφαρμογή στη Mozilla για τη βελτίωση του Thunderbird</string>
+    <string name="settings_ui_telemetry_title">Δεδομένα χρήσης και τεχνικά δεδομένα</string>
+    <string name="dialog_openkeychain_info_text">Απαιτείται η εφαρμογή OpenKeychain για την ενεργοποίηση της υποστήριξης της διατερματικής κρυπτογράφησης.</string>
 </resources>
