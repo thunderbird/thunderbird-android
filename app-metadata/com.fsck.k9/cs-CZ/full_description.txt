@@ -5,7 +5,7 @@ K-9 Mail je open-source e-mailový klient, který funguje prakticky se všemi po
 * Podporuje více účtů
 * Jednotná schránka
 * Nesleduje vás, připojuje se pouze k vašemu e-mailovému poskytovateli
-* Automatická synchronizace na pozadí a oznámení
+* Automatická synchronizace na pozadí nebo Push oznámení
 * Lokální i vzdálené vyhledávání
 * Šifrování e-mailů pomocí OpenPGP (PGP/MIME)
 
@@ -14,11 +14,11 @@ Nainstalujte si aplikaci <a href="https://f-droid.org/packages/org.sufficientlys
 
 <b>Podpora</b>
 
-Pokud máte s aplikací K-9 Mail problém, požádejte o pomoc v našem <a href="https://forum.k9mail.app">fóru</a>.
+Pokud máte s aplikací K-9 Mail problém, požádejte o pomoc na našem <a href="https://forum.k9mail.app">fóru</a>.
 
 
 <b>Chcete pomoci?</b>
 
-K-9 Mail je komunitní projekt. Pokud máte zájem podílet se na vylepšování aplikace, přidejte se k nám!
+K-9 Mail je komunitně vyvíjený projekt. Pokud máte zájem podílet se na vylepšování aplikace, přidejte se k nám!
 Náš nástroj pro sledování chyb, zdrojový kód a wiki najdete na adrese <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
 Vždy rádi přivítáme nové vývojáře, designéry, dokumentátory, překladatele, hledače chyb a přátele.

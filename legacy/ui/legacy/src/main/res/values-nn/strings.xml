@@ -21,7 +21,7 @@
     <string name="send_action">Send</string>
     <string name="empty_subject">Emnet er tomt, trykk ein gong til for å senda likevel</string>
     <string name="reply_action">Svar</string>
-    <string name="reply_all_action">Svar Alle</string>
+    <string name="reply_all_action">Svar alle</string>
     <string name="delete_action">Slett</string>
     <string name="archive_action">Arkiver</string>
     <string name="forward_action">Send vidare</string>
@@ -62,7 +62,7 @@
     <string name="about_action">Om</string>
     <string name="prefs_title">Innstillingar</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
-    <string name="general_no_subject">(Inkje emne)</string>
+    <string name="general_no_subject">(Ingen emne)</string>
     <string name="general_no_sender">Ingen avsendar</string>
     <string name="status_loading_more">Lastar meldingar\u2026</string>
     <string name="status_network_error">Tilkoplingsfeil</string>
@@ -192,7 +192,7 @@
     <string name="account_settings_show_pictures_never">Nei</string>
     <string name="account_settings_show_pictures_only_from_contacts">Frå kontaktar</string>
     <string name="account_settings_show_pictures_always">Frå kven som helst</string>
-    <string name="account_settings_composition">Sender e-post</string>
+    <string name="account_settings_composition">Sending av e-post</string>
     <string name="account_settings_message_format_label">Meldingsformat</string>
     <string name="account_settings_message_format_text">Vanleg tekst (fjernar bilete og formatering)</string>
     <string name="account_settings_message_format_html">HTML (held på bilete og formatering)</string>
@@ -206,7 +206,7 @@
     <string name="account_settings_autodownload_message_size_label">Hent meldingar opp til</string>
     <string name="account_settings_autodownload_message_size_any">uendeleg (inga grense)</string>
     <string name="account_settings_message_age_label">Synkroniser meldingar frå</string>
-    <string name="account_settings_message_age_any">kva tid som helst (inga grense)</string>
+    <string name="account_settings_message_age_any">Kva tid som helst (inga grense)</string>
     <string name="account_settings_message_age_0">i dag</string>
     <string name="account_settings_message_age_1">dei siste to dagane</string>
     <string name="account_settings_message_age_2">dei siste tre dagane</string>
@@ -389,7 +389,7 @@
     <string name="global_settings_splitview_always">Alltid</string>
     <string name="global_settings_splitview_never">Aldri</string>
     <string name="global_settings_splitview_when_in_landscape">Når skjermen er liggjande</string>
-    <string name="message_view_empty">Ver god og vel ei melding til venstre</string>
+    <string name="message_view_empty">Vel ei melding til venstre</string>
     <string name="global_settings_show_contact_picture_label">Vis kontaktbilete</string>
     <string name="global_settings_show_contact_picture_summary">Vis kontaktbilete i meldingslista</string>
     <string name="mark_all_as_read">Merk alle som lesne</string>
@@ -552,7 +552,7 @@
     <string name="debug_export_logs_title">Eksporter loggar</string>
     <string name="compose_error_incomplete_recipient">Mottakarfelt inneheld ufullstendig inndata!</string>
     <string name="general_settings_post_mark_as_unread_action_title">Etter markering av melding som ulesen</string>
-    <string name="notification_channel_push_title">Synkroniser (Push)</string>
+    <string name="notification_channel_push_title">Synkroniser (dytting)</string>
     <string name="notification_channel_push_description">Vist under venting på nye meldingar</string>
     <string name="notification_channel_miscellaneous_description">Diverse notifikasjonar, som feil, osb.</string>
     <string name="version">Versjon</string>
@@ -645,7 +645,7 @@
     <string name="account_settings_incoming_label">Innkommande tenar</string>
     <string name="account_settings_outgoing_label">Utgåande tenar</string>
     <string name="folder_settings_notifications_label">Notifikasjonar</string>
-    <string name="folder_settings_push_label">Aktiver Push</string>
+    <string name="folder_settings_push_label">Aktiver dytting</string>
     <string name="account_settings_color_summary">Aksentfargen for denne kontoen er brukt i mappe- og kontolista</string>
     <string name="account_settings_autodownload_message_size_512">512 KiB</string>
     <string name="folder_settings_sync_label">Aktiver synkronisering</string>
@@ -713,7 +713,7 @@
     <string name="settings_message_theme_selection_label">Fast meldingsdrakt</string>
     <string name="sort_flagged_last">Usternemerka meldingar fyrst</string>
     <string name="sort_unread_first">Uleste meldingar fyrst</string>
-    <string name="account_setup_push_limit_label">Maks antal mapper å sjekke med push</string>
+    <string name="account_setup_push_limit_label">Maks antal mapper å sjekke med dytting</string>
     <string name="animations_summary">Bruk glorete visuelle effektar</string>
     <string name="animations_title">Animasjon</string>
     <string name="integrated_inbox_title">Samla innboks</string>
@@ -802,7 +802,7 @@
     <string name="push_notification_state_alarm_permission_missing">Manglande løyve til å planleggje alarmar</string>
     <string name="background_work_notification_remove_account">Fjernar konto…</string>
     <string name="account_settings_crypto_hide_sign_only">Skjul ukrypterte signaturar</string>
-    <string name="push_info_disable_push_action">Deaktiver Push</string>
+    <string name="push_info_disable_push_action">Deaktiver dytting</string>
     <string name="locked_attach_unencrypted">Denne delen var ikkje kryptert, og kan vere usikker.</string>
     <string name="crypto_no_provider_title">Denne e-posten er kryptert</string>
     <string name="messageview_decrypt_cancelled">Dekrypteringa vart kansellert.</string>
@@ -875,14 +875,14 @@
     <string name="clipboard_label_name_and_email_address">Namn og e-postadresse</string>
     <string name="crypto_msg_encrypted_sign_insecure">men ende-til-ende nøkkelen er ikkje å rekne som sikker</string>
     <string name="crypto_msg_encrypted_insecure">men krypteringa er ikkje å rekne som sikker</string>
-    <string name="push_info_title">Push-informasjon</string>
+    <string name="push_info_title">Informasjon om dytting</string>
     <string name="ac_transfer_button_send">Send oppsett-melding</string>
     <string name="ac_transfer_generating">Genererer oppsett-melding…</string>
     <string name="switch_on">På</string>
     <string name="action_copy_email_address">Kopier e-postadresse</string>
     <string name="ac_transfer_show_code">Vis oppsett-kode</string>
     <string name="push_notification_state_listening">Ventar på nye e-postar</string>
-    <string name="push_notification_state_wait_background_sync">Søv til bakgrunns-synkronisering er tillaten</string>
+    <string name="push_notification_state_wait_background_sync">Søv til bakgrunnsynkronisering er lov</string>
     <string name="unsigned_text_divider_label">Usignert tekst</string>
     <string name="crypto_msg_title_encrypted_signed">Kryptert</string>
     <string name="crypto_msg_encrypted_sign_mismatch">men ende-til-ende nøkkelen samsvarer ikkje med avsendaren</string>
@@ -892,7 +892,7 @@
     <string name="ac_transfer_will_be_sent">Meldinga vil bli sendt til di adresse:</string>
     <string name="push_info_disable_push_text">Om du ikkje treng umiddelbare notifikasjonar om nye meldingar, bør du skru av dytting og bruke spørjing. Spørjing sjekkar for mail med regelmessige mellomrom og treng ikkje notifikasjonen.</string>
     <string name="crypto_msg_encrypted_sign_unknown">Frå ukjend ende-til-ende nøkkel</string>
-    <string name="volume_navigation_title_short">Volumknapp-navigasjon</string>
+    <string name="volume_navigation_title_short">Volumknappnavigasjon</string>
     <string name="volume_navigation_summary">Naviger mellom meldingar med å bruke volumknappar i meldingsvising</string>
     <string name="save_attachment_action">Lagre vedlegg</string>
 </resources>

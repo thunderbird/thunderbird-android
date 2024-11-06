@@ -768,4 +768,5 @@
     <string name="about_title"><xliff:g id="app_name">%s</xliff:g> 정보</string>
     <string name="general_settings_post_remove_action_show_next_message">다음 메시지 보기</string>
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 <xliff:g id="app_name">%s</xliff:g>에서 제거됩니다.</string>
+    <string name="notification_channel_messages_description">메시지와 관련된 알림</string>
 </resources>

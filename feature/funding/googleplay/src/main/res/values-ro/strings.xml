@@ -6,7 +6,7 @@
     <string name="funding_googleplay_contribution_list_type_none_available">Niciunul disponibil</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Treceți la efectuarea plății</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Modificați plata lunară</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ajutați la menținerea în viață a Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Faceți o altă contribuție de impact</string>
     <string name="funding_googleplay_contribution_header_description">Nu afișăm niciodată reclame și nu vă vindem datele. Suntem finanțați integral prin contribuții financiare din partea utilizatorilor noștri. Dacă vă place Thunderbird, vă rugăm să contribuiți la susținerea sa. Nu putem face asta fără tine!</string>
     <string name="funding_googleplay_contribution_title">Sprijină Thunderbird</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Contribuțiile nu sunt deductibile fiscal ca donații caritabile.</string>
@@ -48,4 +48,5 @@
     <string name="funding_googleplay_contribution_reminder_message">Misiunea noastră este de a oferi o aplicație de poștă electronică cu cod-sursă deschis care este sigură, privată și gratuită pentru utilizatorii din întreaga lume. Contribuția dvs. financiară sprijină această activitate. Veți dona astăzi?</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Nu acum</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Da</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Vă mulțumim pentru donația dvs. generoasă! Sprijinul dvs. întărește în mod direct Thunderbird și suntem recunoscători să vă avem alături în această călătorie.</string>
 </resources>
