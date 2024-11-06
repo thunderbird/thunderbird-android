@@ -5,7 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="8.0b5" versioncode="39010" date="2024-10-28">
+    <release version="8.1" versioncode="39012" date="2024-11-06">
+        <change>We've fixed one of our top crashes to give you a more stable experience</change>
+    </release>    <release version="8.0b5" versioncode="39010" date="2024-10-28">
         <change>Unread message colors are updated for better visibility</change>
         <change>Irish translation included and 100% complete</change>
         <change>Folder drawer is no longer too wide on some devices</change>
