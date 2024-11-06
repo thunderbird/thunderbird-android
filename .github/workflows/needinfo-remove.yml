@@ -10,6 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: |
+      contains(github.event.issue.labels.*.name, 'status: needs information') &&
       github.event.comment.author_association != 'OWNER' &&
       github.event.comment.author_association != 'MEMBER' &&
       github.event.comment.author_association != 'COLLABORATOR'
