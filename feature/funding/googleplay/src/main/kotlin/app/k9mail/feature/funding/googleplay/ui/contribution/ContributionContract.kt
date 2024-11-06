@@ -30,7 +30,7 @@ internal class ContributionContract {
         val oneTimeContributions: ImmutableList<OneTimeContribution> = persistentListOf(),
         val recurringContributions: ImmutableList<RecurringContribution> = persistentListOf(),
         val selectedContribution: Contribution? = null,
-        val isRecurringContributionSelected: Boolean = false,
+        val isRecurringContributionSelected: Boolean = true,
 
         val error: BillingError? = null,
         val isLoading: Boolean = true,
