@@ -189,30 +189,15 @@ public class LocalStore {
         SchemaDefinition schemaDefinition = schemaDefinitionFactory.createSchemaDefinition(migrationsHelper);
 
         database = new LockableDatabase(context, account.getUuid(), schemaDefinition);
-        database.setStorageProviderId(account.getLocalStorageProviderId());
         database.open();
 
         Clock clock = DI.get(Clock.class);
         outboxStateRepository = new OutboxStateRepository(database, clock);
-
-        // If "External storage" is selected as storage location, move database to internal storage
-        //TODO: Remove this code after 2020-12-31.
-        // If the database is still on external storage after this date, we'll just ignore it and create a new one on
-        // internal storage.
-        if (!InternalStorageProvider.ID.equals(account.getLocalStorageProviderId())) {
-            switchLocalStorage(InternalStorageProvider.ID);
-            account.setLocalStorageProviderId(InternalStorageProvider.ID);
-            getPreferences().saveAccount(account);
-        }
     }
 
     public static int getDbVersion() {
         SchemaDefinitionFactory schemaDefinitionFactory = DI.get(SchemaDefinitionFactory.class);
         return schemaDefinitionFactory.getDatabaseVersion();
-    }
-
-    public void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
-        database.switchProvider(newStorageProviderId);
     }
 
     Account getAccount() {
