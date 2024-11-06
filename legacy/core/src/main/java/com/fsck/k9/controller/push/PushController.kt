@@ -206,12 +206,7 @@ class PushController internal constructor(
             pushers.isNotEmpty()
         }
 
-        val potentialPushAccounts = if (shouldDisablePushAccounts) {
-            emptySet()
-        } else {
-            getPushCapableAccounts()
-        }
-        updatePushEnabledListeners(potentialPushAccounts)
+        updatePushEnabledListeners(getPushCapableAccounts())
 
         when {
             realPushAccounts.isEmpty() -> {
