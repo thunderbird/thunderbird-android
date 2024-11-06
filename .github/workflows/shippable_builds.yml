@@ -55,6 +55,7 @@ jobs:
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     outputs:
       matrixInclude: ${{ steps.dump.outputs.matrixInclude }}
+      releaseDate: ${{ steps.dump.outputs.releaseDate }}
       releaseType: ${{ vars.RELEASE_TYPE }}
     steps:
       - name: Show Environment
@@ -71,6 +72,7 @@ jobs:
           draftGooglePlay: ${{ inputs.draftGooglePlay }}
         with:
           script: |
+            const NOW = new Date();
             let matrix = JSON.parse(process.env.matrixInclude);
             let skipThunderbird = process.env.skipThunderbird == "true";
             let skipK9Mail = process.env.skipK9Mail == "true";
@@ -89,6 +91,7 @@ jobs:
               return;
             }
 
+            core.setOutput("releaseDate", NOW.toString());
             core.setOutput("matrixInclude", matrixFull);
 
             await core.summary
@@ -170,7 +173,6 @@ jobs:
     name: Release Bumps
     runs-on: ubuntu-latest
     needs: [dump_config, get_environment]
-    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     strategy:
       matrix:
@@ -182,35 +184,37 @@ jobs:
       thunderbird_sha: ${{ steps.commit.outputs.thunderbird_sha }}
       k9mail_github_notes: ${{ steps.render_notes.outputs.k9mail_github_notes }}
       thunderbird_github_notes: ${{ steps.render_notes.outputs.thunderbird_github_notes }}
+      old_version_code: ${{ steps.new_version_code.outputs.old_version_code }}
+      new_version_code: ${{ steps.new_version_code.outputs.new_version_code }}
     steps:
       - name: Checkout repository
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Copy CI gradle.properties
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         shell: bash
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
       - uses: actions/setup-java@v4
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         with:
           distribution: temurin
           java-version: 17
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         with:
-          cache-disabled: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+          cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: never
 
       - name: Get application info
         id: appinfo
         shell: bash
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         env:
           RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
           PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
@@ -224,21 +228,52 @@ jobs:
 
           ./gradlew :app-${APP_NAME}:printVersionInfo -PbuildType=${RELEASE_TYPE} -PflavorName=${PACKAGE_FLAVOR} --configure-on-demand
 
-      - name: Bump version code
-        id: bump_version_code
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+      - name: Determine new version code
+        id: new_version_code
+        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         shell: bash
         env:
           APP_NAME: ${{ matrix.appName }}
           OLD_VERSION_CODE: ${{ steps.appinfo.outputs.VERSION_CODE }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
+          RELEASE_DATE: ${{ needs.dump_config.outputs.releaseDate }}
         run: |
-          NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
+          date_version_code() {
+            # Daily uses date-based calculation for version code in yDDDHHmm format
+            # y: Years since 2023 (e.g. 2024 is 1)
+            # DDD: Day of the year (3 digits, zero-padded)
+            # HH: Hour of the day (2 digits, 00-23)
+            # mm: Minute of the hour (2 digits)
+            datetime="$1"
+            year=$(( $(date -d "${datetime}" +"%Y") - 2023 ))
+            day=$(date -d "${datetime}" +"%j")
+            time=$(date -d "${datetime}" +"%H%M")
+            echo "${year}${day}${time}"
+          }
+          # Android version codes max out at 2100000000. If we accidentally reach that number then
+          # all we can do is start with a new application id. These protections are meant to avoid
+          # unexpected edge cases. If the build fails here please double check the generated version
+          # code and bump it a year into the future.
+          if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
+            NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
+            # Estimated max version code to get through 2025 is "30"
+            MAX_VERSION_CODE="30"
+          elif [[ "$RELEASE_TYPE" = "daily" ]]; then
+            NEW_VERSION_CODE=$(date_version_code "$RELEASE_DATE")
+            # Max version code for "2025-11-30 23:59" is "23342359"
+            MAX_VERSION_CODE="23342359"
+          fi
+          if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
+            echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE}"
+            exit 1
+          fi
           sed "s/versionCode = $OLD_VERSION_CODE/versionCode = $NEW_VERSION_CODE/" app-${APP_NAME}/build.gradle.kts > tmp_gradle_kts
 
           ! diff -u app-${APP_NAME}/build.gradle.kts tmp_gradle_kts # flip return value to force error if no bump
           mv tmp_gradle_kts app-${APP_NAME}/build.gradle.kts
 
-          echo "CODE=${NEW_VERSION_CODE}" | tee $GITHUB_OUTPUT
+          echo "old_version_code=${OLD_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
+          echo "new_version_code=${NEW_VERSION_CODE}" | tee -a $GITHUB_OUTPUT
 
       - name: Bump version suffix
         id: bump_version_suffix
@@ -260,13 +295,13 @@ jobs:
 
       - name: Render Release Notes
         id: render_notes
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
         shell: bash
         env:
           APP_NAME: ${{ matrix.appName }}
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APPLICATION_LABEL: ${{ steps.appinfo.outputs.APPLICATION_LABEL }}
-          VERSION_CODE: ${{ steps.bump_version_code.outputs.CODE }}
+          VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
           FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
         run: |
           mkdir -p ./app-metadata/${APPLICATION_ID}/en-US/changelogs
@@ -285,11 +320,11 @@ jobs:
           echo -e "\`\`\`" | tee -a $GITHUB_STEP_SUMMARY
 
       - name: Validate Release Notes Length
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
         shell: bash
         env:
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
-          VERSION_CODE: ${{ steps.bump_version_code.outputs.CODE }}
+          VERSION_CODE: ${{ steps.new_version_code.outputs.new_version_code }}
         run: |
           wc -c ./app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt
           RELNOTES_LENGTH=$(wc -c ./app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt | awk '{print $1}')
@@ -300,7 +335,7 @@ jobs:
           fi
 
       - name: Release Commits
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: "${{ contains(matrix.releaseTarget, 'github') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
         id: commit
         shell: bash
         env:
@@ -345,24 +380,33 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
       - name: Summary
-        if: ${{ contains(matrix.releaseTarget, 'github') }}
+        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         uses: actions/github-script@v7
         env:
           bump_sha: ${{ steps.commit.outputs.sha }}
           applicationId: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           oldFullVersion: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
-          oldVersionCode: ${{ steps.appinfo.outputs.VERSION_CODE }}
+          oldVersionCode: ${{ steps.new_version_code.outputs.old_version_code }}
           newFullVersion: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
-          newVersionCode: ${{ steps.bump_version_code.outputs.CODE }}
+          newVersionCode: ${{ steps.new_version_code.outputs.new_version_code }}
+          releaseType: ${{ vars.RELEASE_TYPE }}
         with:
           script: |
             let env = process.env;
             console.log(env);
-            await core.summary
-              .addRaw(`Version for ${env.applicationId} bumped from ${env.oldFullVersion} (${env.oldVersionCode}) to ${env.newFullVersion} (${env.newVersionCode}) in `)
-              .addLink(process.env.bump_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${env.bump_sha}`)
-              .addEOL()
-              .write();
+            if (process.env.releaseType == "daily") {
+              await core.summary
+                .addRaw(`Version for ${env.applicationId} changed from ${env.oldFullVersion} (${env.oldVersionCode}) to ${env.newFullVersion} (${env.newVersionCode}) (uncommitted) and will build from `)
+                .addLink(process.env.GITHUB_SHA, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${process.env.GITHUB_SHA}`)
+                .addEOL()
+                .write();
+            } else {
+              await core.summary
+                .addRaw(`Version for ${env.applicationId} bumped from ${env.oldFullVersion} (${env.oldVersionCode}) to ${env.newFullVersion} (${env.newVersionCode}) in `)
+                .addLink(process.env.bump_sha, `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${env.bump_sha}`)
+                .addEOL()
+                .write();
+            }
 
   build_unsigned:
     name: Build Unsigned
@@ -381,15 +425,12 @@ jobs:
         env:
           THUNDERBIRD_SHA: ${{ needs.release_commit.outputs.thunderbird_sha }}
           K9MAIL_SHA: ${{ needs.release_commit.outputs.k9mail_sha }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
           APP_NAME: ${{ matrix.appName }}
         run: |
-          case "${APP_NAME}" in
-            thunderbird) APP_SHA=$THUNDERBIRD_SHA ;;
-            k9mail) APP_SHA=$K9MAIL_SHA ;;
-            *) APP_SHA=$GITHUB_SHA ;;
-          esac
-
-          echo "app_sha=$APP_SHA" >> $GITHUB_OUTPUT
+          APP_SHA_NAME=${APP_NAME^^}_SHA
+          APP_SHA="${!APP_SHA_NAME:-$GITHUB_SHA}"
+          echo "app_sha=${APP_SHA}" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
@@ -409,8 +450,20 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          cache-disabled: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+          cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: on-failure
+
+      - name: Set Version Code for Daily
+        if: ${{ needs.dump_config.outputs.releaseType == 'daily' }}
+        shell: bash
+        env:
+          APP_NAME: ${{ matrix.appName }}
+          OLD_VERSION_CODE: ${{ needs.release_commit.outputs.old_version_code }}
+          NEW_VERSION_CODE: ${{ needs.release_commit.outputs.new_version_code }}
+        run: |
+          sed "s/versionCode = $OLD_VERSION_CODE/versionCode = $NEW_VERSION_CODE/" app-${APP_NAME}/build.gradle.kts > tmp_gradle_kts
+          ! diff -u app-${APP_NAME}/build.gradle.kts tmp_gradle_kts # flip return value to force error if no bump
+          mv tmp_gradle_kts app-${APP_NAME}/build.gradle.kts
 
       - name: Build It
         shell: bash
@@ -538,7 +591,7 @@ jobs:
   notify_pre_publish:
     name: Notify Publish Approval
     needs: [dump_config, sign_mobile, notify_build_start]
-    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+    if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     runs-on: ubuntu-latest
     environment: notify_matrix
     steps:
@@ -557,7 +610,7 @@ jobs:
     # before proceeding.
     name: Wait for Approval
     needs: [dump_config, sign_mobile]
-    if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
+    if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     environment: publish_hold
     runs-on: ubuntu-latest
     steps:
@@ -663,14 +716,18 @@ jobs:
           THUNDERBIRD_SHA: ${{ needs.release_commit.outputs.thunderbird_sha }}
           K9MAIL_SHA: ${{ needs.release_commit.outputs.k9mail_sha }}
           APP_NAME: ${{ matrix.appName }}
+          RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
         run: |
           app_sha_name=${APP_NAME^^}_SHA
-          echo "app_sha=${!app_sha_name}" >> $GITHUB_OUTPUT
+          app_sha="${!app_sha_name:-$GITHUB_SHA}"
+          echo "app_sha=${app_sha}" >> $GITHUB_OUTPUT
 
-          app_relnotes_name=${APP_NAME^^}_GITHUB_NOTES
-          echo "app_github_notes<<EOF" >> $GITHUB_OUTPUT
-          echo "${!app_relnotes_name}" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
+            app_relnotes_name=${APP_NAME^^}_GITHUB_NOTES
+            echo "app_github_notes<<EOF" >> $GITHUB_OUTPUT
+            echo "${!app_relnotes_name}" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
 
           cat $GITHUB_OUTPUT
 
@@ -694,14 +751,32 @@ jobs:
         shell: bash
         env:
           VERSION_CODE: ${{ steps.pkginfo.outputs.VERSION_CODE }}
+          VERSION_NAME: ${{ steps.pkginfo.outputs.VERSION_NAME }}
           APPLICATION_ID: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           REPO: ${{ github.repository }}
           APP_SHA: ${{ steps.shanotes.outputs.app_sha }}
+          RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
+          APP_NAME: ${{ matrix.appName }}
         run: |
           # r0adkll/upload-google-play expects the release notes in a different structure
-          FILEPATH=app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt
           mkdir whatsnew
-          wget -O whatsnew/whatsnew-en-US https://raw.githubusercontent.com/${REPO}/${APP_SHA}/${FILEPATH}
+          if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
+            FILEPATH=app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt
+            wget -O whatsnew/whatsnew-en-US https://raw.githubusercontent.com/${REPO}/${APP_SHA}/${FILEPATH}?token=$(date +%s)
+          elif [[ "$RELEASE_TYPE" = "daily" ]]; then
+            COMMIT_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+            WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            sed 's/^[[:space:]]*//' > whatsnew/whatsnew-en-US <<EOF
+              ${APP_NAME^} ${VERSION_NAME} (${VERSION_CODE}) Daily Build
+
+              The Daily version is an unstable testing and development platform, make sure you back up important data regularly!
+              If you find any issues, get in touch at https://github.com/thunderbird/thunderbird-android/issues/ and find us on Matrix at https://matrix.to/#/#tb-android-dev:mozilla.org
+              Be prepared to debug the code in Android Studio :-)
+
+              - Built from GitHub commit: ${COMMIT_URL}
+              - Built with GitHub workflow: ${WORKFLOW_URL}
+          EOF
+          fi
 
       - name: Publish to Google Play
         id: publish_play
@@ -711,7 +786,7 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_ACCOUNT }}
           packageName: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           track: ${{ matrix.playTargetTrack }}
-          releaseName: ${{ steps.pkginfo.outputs.VERSION_NAME }}
+          releaseName: ${{ steps.pkginfo.outputs.VERSION_NAME }} (${{ steps.pkginfo.outputs.VERSION_CODE }})
           status: completed
           changesNotSentForReview: ${{ inputs.draftGooglePlay }}
           whatsNewDirectory: whatsnew
@@ -813,7 +888,7 @@ jobs:
             was cancelled
 
       - name: Notify Success (Beta/Release)
-        if: ${{ vars.MATRIX_NOTIFY_ROOM && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && (needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release')   }}
+        if: "${{ vars.MATRIX_NOTIFY_ROOM && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
         uses: kewisch/action-matrix-notify@v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
