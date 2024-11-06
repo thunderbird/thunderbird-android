@@ -1,0 +1,3 @@
+Thunderbird for Android version 8.1, based on K-9 Mail. Changes include:
+- Thunderbird's active development is fully funded by financial contributions from our users. If you're enjoying Thunderbird or believe in our mission, please help support it. In this version we will ask you for your support once you've had the chance to actively use Thunderbird for a while.
+- We've fixed one of our top crashes to give you a more stable experience
