@@ -20,13 +20,11 @@ import app.k9mail.legacy.notification.NotificationSettings
 import app.k9mail.legacy.notification.NotificationVibration
 import app.k9mail.legacy.notification.VibratePattern
 import com.fsck.k9.helper.Utility
-import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import timber.log.Timber
 
 class AccountPreferenceSerializer(
-    private val storageManager: StorageManager,
     private val resourceProvider: CoreResourceProvider,
     private val serverSettingsSerializer: ServerSettingsSerializer,
 ) {
@@ -42,10 +40,6 @@ class AccountPreferenceSerializer(
                 storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", ""),
             )
             oAuthState = storage.getString("$accountUuid.oAuthState", null)
-            localStorageProviderId = storage.getString(
-                "$accountUuid.localStorageProvider",
-                storageManager.defaultProviderId,
-            )
             name = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
             automaticCheckIntervalMinutes = storage.getInt(
@@ -278,7 +272,6 @@ class AccountPreferenceSerializer(
                 serverSettingsSerializer.serialize(outgoingServerSettings),
             )
             editor.putString("$accountUuid.oAuthState", oAuthState)
-            editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
             editor.putString("$accountUuid.description", name)
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
             editor.putInt("$accountUuid.automaticCheckIntervalMinutes", automaticCheckIntervalMinutes)
@@ -468,7 +461,6 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.defaultQuotedTextShown")
         editor.remove("$accountUuid.displayCount")
         editor.remove("$accountUuid.inboxFolderName")
-        editor.remove("$accountUuid.localStorageProvider")
         editor.remove("$accountUuid.messageFormat")
         editor.remove("$accountUuid.messageReadReceipt")
         editor.remove("$accountUuid.notifyMailCheck")
@@ -570,7 +562,6 @@ class AccountPreferenceSerializer(
 
     fun loadDefaults(account: Account) {
         with(account) {
-            localStorageProviderId = storageManager.defaultProviderId
             automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
             idleRefreshMinutes = 24
             displayCount = K9.DEFAULT_VISIBLE_LIMIT
