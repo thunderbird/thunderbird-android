@@ -257,8 +257,13 @@ jobs:
           # code and bump it a year into the future.
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
-            # Estimated max version code to get through 2025 is "30"
-            MAX_VERSION_CODE="30"
+            if [[ "$APP_NAME" = "thunderbird" ]]; then
+                # Estimated max version code to get through 2025 is "30"
+                MAX_VERSION_CODE="30"
+            else
+                # Estimated max version code to get through 2025 is "39037"
+                MAX_VERSION_CODE="39037"
+            fi
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
             NEW_VERSION_CODE=$(date_version_code "$RELEASE_DATE")
             # Max version code for "2025-11-30 23:59" is "23342359"
