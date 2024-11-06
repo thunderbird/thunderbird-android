@@ -13,38 +13,6 @@ if (testCoverageEnabled) {
     apply(plugin = "jacoco")
 }
 
-dependencies {
-    implementation(projects.appCommon)
-    implementation(projects.core.ui.compose.theme2.k9mail)
-    implementation(projects.core.ui.legacy.theme2.k9mail)
-    implementation(projects.feature.launcher)
-
-    implementation(projects.legacy.core)
-    implementation(projects.legacy.ui.legacy)
-
-    implementation(projects.core.featureflags)
-
-    implementation(projects.feature.widget.messageList)
-    implementation(projects.feature.widget.shortcut)
-    implementation(projects.feature.widget.unread)
-    implementation(projects.feature.telemetry.noop)
-    implementation(projects.feature.funding.noop)
-    implementation(projects.feature.onboarding.migration.noop)
-    implementation(projects.feature.migration.launcher.noop)
-
-    implementation(libs.androidx.work.runtime)
-
-    implementation(projects.feature.autodiscovery.api)
-    debugImplementation(projects.backend.demo)
-    debugImplementation(projects.feature.autodiscovery.demo)
-
-    testImplementation(libs.robolectric)
-
-    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
-    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
-    testImplementation(projects.feature.account.setup)
-}
-
 android {
     namespace = "com.fsck.k9"
 
@@ -152,6 +120,38 @@ android {
             )
         }
     }
+}
+
+dependencies {
+    implementation(projects.appCommon)
+    implementation(projects.core.ui.compose.theme2.k9mail)
+    implementation(projects.core.ui.legacy.theme2.k9mail)
+    implementation(projects.feature.launcher)
+
+    implementation(projects.legacy.core)
+    implementation(projects.legacy.ui.legacy)
+
+    implementation(projects.core.featureflags)
+    
+    implementation(projects.feature.funding.noop)
+    implementation(projects.feature.migration.launcher.noop)
+    implementation(projects.feature.onboarding.migration.noop)
+    implementation(projects.feature.telemetry.noop)
+    implementation(projects.feature.widget.messageList)
+    implementation(projects.feature.widget.shortcut)
+    implementation(projects.feature.widget.unread)
+
+    implementation(libs.androidx.work.runtime)
+
+    implementation(projects.feature.autodiscovery.api)
+    debugImplementation(projects.backend.demo)
+    debugImplementation(projects.feature.autodiscovery.demo)
+
+    testImplementation(libs.robolectric)
+
+    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
+    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
+    testImplementation(projects.feature.account.setup)
 }
 
 dependencyGuard {
