@@ -135,7 +135,7 @@
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_title">Сінхранізаваць (прымусовае правяранне)</string>
     <string name="notification_channel_push_description">Паказваецца падчас чакання новых лістоў</string>
-    <string name="notification_channel_messages_title">Паведамленні</string>
+    <string name="notification_channel_messages_title">Лісты</string>
     <string name="notification_channel_messages_description">Апавяшчэнні пра лісты</string>
     <string name="notification_channel_miscellaneous_title">Рознае</string>
     <string name="notification_channel_miscellaneous_description">Іншыя апавяшчэнні.</string>
@@ -304,7 +304,7 @@
     <string name="account_setup_options_mail_display_count_5000">5000 лістоў</string>
     <string name="account_setup_options_mail_display_count_10000">10000 лістоў</string>
     <string name="account_setup_options_mail_display_count_all">усе лісты</string>
-    <string name="move_copy_cannot_copy_unsynced_message">Немагчыма скапіяваць ці перамясціць паведамленне, якое не сінхранізавана з серверам</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Немагчыма скапіяваць ці перамясціць ліст, які не сінхранізаваны з серверам</string>
     <string name="account_settings_push_advanced_title">Дадаткова</string>
     <string name="account_settings_title_fmt">Налады акаўнта</string>
     <string name="account_settings_notify_label">Апавяшчэнне пра новую пошту</string>
@@ -443,7 +443,7 @@
     <string name="edit_identity_title">Рэдагаванне ролі</string>
     <string name="edit_identity_save">Захаваць</string>
     <string name="new_identity_action">Новая роля</string>
-    <string name="account_settings_always_bcc_label">Схаваная копія ўсіх паведамленняў</string>
+    <string name="account_settings_always_bcc_label">Схаваная копія ўсіх лістоў</string>
     <string name="manage_identities_edit_action">Рэдагаваць</string>
     <string name="manage_identities_move_up_action">Перамясціць вышэй</string>
     <string name="manage_identities_move_down_action">Перамясціць ніжэй</string>
@@ -503,7 +503,7 @@
     <string name="interaction_preferences">Інтэрфейс</string>
     <string name="accountlist_preferences">Спіс акаўнтаў</string>
     <string name="messagelist_preferences">Спіс лістоў</string>
-    <string name="messageview_preferences">Паведамленні</string>
+    <string name="messageview_preferences">Лісты</string>
     <string name="settings_theme_label">Тэма</string>
     <string name="settings_message_theme_label">Тэма прагляду лістоў</string>
     <string name="settings_compose_theme_label">Тэма рэдактара</string>
@@ -544,7 +544,7 @@
     <string name="font_size_message_list_sender">Адпраўнік</string>
     <string name="font_size_message_list_date">Дата</string>
     <string name="font_size_message_list_preview">Папярэдні прагляд</string>
-    <string name="font_size_message_view">Паведамленне</string>
+    <string name="font_size_message_view">Ліст</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
     <string name="font_size_message_view_account">Назва акаўнта</string>
     <string name="font_size_message_view_sender">Адпраўнік</string>
@@ -881,9 +881,32 @@
     <string name="clipboard_label_name_and_email_address">Імя і адрас электроннай пошты</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="general_settings_post_remove_action_title">Пасля выдалення або перамяшчэння паведамлення</string>
-    <string name="general_settings_post_remove_action_return_to_list">Вярнуцца да спіса паведамленняў</string>
+<string name="general_settings_post_remove_action_title">Пасля выдалення або перамяшчэння ліста</string>
+    <string name="general_settings_post_remove_action_return_to_list">Вярнуцца да спіса лістоў</string>
     <string name="about_app_authors_thunderbird">Каманда Thunderbird Mobile</string>
     <string name="about_title">Аб дадатке <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">Уліковый запіс \"<xliff:g id="account">%s</xliff:g>\" будзе выдален з дадатка <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="volume_navigation_summary">Перамяшчэнне паміж лістамі з дапамогай клавіш гучнасці падчас прагляду</string>
+    <string name="general_settings_post_remove_action_show_next_message">Паказаць наступны ліст</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">Заставацца на бягучым лісце</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">Вярнуцца да спіса лістоў</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Паказаць папярэдні ліст</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Пасля пазначэння ліста непрачытаным</string>
+    <string name="folder_settings_sync_label">Уключыць сінхранізацыю</string>
+    <string name="folder_settings_push_label">Уключыць push-апавяшчэнні</string>
+    <string name="folder_list_show_hidden_folders">Паказваць схаваныя каталогі</string>
+    <string name="folder_settings_visible_label">Паказаць каталог</string>
+    <string name="folder_settings_notifications_label">Апавяшчэнні</string>
+    <string name="volume_navigation_title_short">Навігацыя з дапамогай кнопак гучнасці</string>
+    <string name="save_attachment_action">Захаваць далучаныя файлы</string>
+    <string name="settings_ui_telemetry_title">Тэхнічныя даныя і даныя выкарыстання</string>
+    <string name="push_notification_grant_alarm_permission">Націсніце, каб даць дазвол.</string>
+    <string name="push_info_notification_explanation_text">Пры выкарыстанні push-апавяшчэнняў <xliff:g id="app_name">%1$s</xliff:g> падтрымлівае злучэнне з паштовым серверам. Android патрабуе паказваць бягучае апавяшчэнне, калі праграма актыўная ў фонавым рэжыме. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_notification_state_alarm_permission_missing">Няма дазволу на прызначэнне будзільнікаў</string>
+    <string name="settings_ui_data_collection">Збіранне даных</string>
+    <string name="settings_list_action_support">Падтрымка <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="dialog_openkeychain_info_text">Каб выкарыстоўваць скразное шыфраванне, патрэбная праграма OpenKeychain.</string>
+    <string name="message_list_content_description_unread_prefix">не прачытана, %s</string>
+    <string name="background_work_notification_remove_account">Выдаленне акаўнта…</string>
+    <string name="settings_ui_telemetry_description">Абагульвае з Mozilla даныя прадукцыйнасці, выкарыстання, абсталявання і налад гэтай праграмы, каб дапамагчы палепшыць Thunderbird</string>
 </resources>

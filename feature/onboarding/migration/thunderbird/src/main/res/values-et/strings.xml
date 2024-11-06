@@ -9,4 +9,8 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">tööriistaribalt „Sätted“ (all vasakul)</string>
     <string name="onboarding_migration_thunderbird_import_title">Oled hoopis kolimas muust rakendusest või seadmest?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Impordi oma kontoseadistused nüüd</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Vali „Ekspordi nutiseadmesse“</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Importimine eeldab viimase Thunderbirdi arvutiversiooni (128) kasutamist. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Lisateave Thunderbirdi uuendamise kohta.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Lingi avamiseks ei leidu rakendusi.</string>
 </resources>

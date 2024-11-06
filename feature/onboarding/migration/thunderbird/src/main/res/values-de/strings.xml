@@ -9,4 +9,8 @@
     <string name="onboarding_migration_thunderbird_new_account_button_text">Jetzt ein E-Mail-Konto hinzufügen</string>
     <string name="onboarding_migration_thunderbird_import_title">Von einer anderen App oder einem anderen Gerät übertragen?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Kontoeinstellungen jetzt importieren</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Wähle \'Auf Mobilgerät exportieren\'</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Der Import erfordert die neueste Version von Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Erfahre, wie du Thunderbird aktualisieren kannst.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Keine App zum Öffnen des Links gefunden.</string>
 </resources>

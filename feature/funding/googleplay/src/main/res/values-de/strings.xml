@@ -9,7 +9,7 @@
     <string name="funding_googleplay_contribution_list_disclaimer">Die Spenden sind nicht als wohltätige Spenden steuerlich absetzbar.</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Weiter zur Zahlung</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Einmalig</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Hilf mit, Thunderbird am Leben zu erhalten</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Leiste einen weiteren wirkungsvollen Beitrag</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Wiederholen</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Zahlung derzeit nicht möglich</string>
     <string name="funding_googleplay_contribution_error_show_more">Weitere Details anzeigen</string>
@@ -48,4 +48,5 @@
     <string name="funding_googleplay_contribution_reminder_positive_button">Ja</string>
     <string name="funding_googleplay_contribution_reminder_message">Unser Ziel ist es, eine sichere, private und kostenlose Open-Source-E-Mail-App für Nutzer auf der ganzen Welt bereitzustellen. Deine Spende unterstützt diese Arbeit. Möchtest du heute spenden?</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Jetzt nicht</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Vielen Dank für deine großzügige Spende! Deine Unterstützung stärkt Thunderbird direkt, und wir sind dankbar, dich auf diesem Weg an unserer Seite zu haben.</string>
 </resources>

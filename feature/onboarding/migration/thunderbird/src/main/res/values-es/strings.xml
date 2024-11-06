@@ -9,4 +9,8 @@
     <string name="onboarding_migration_thunderbird_import_title">¿Vienes de otra aplicación o dispositivo?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Puedes traer tus cuentas de correo de otros sitios</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">«Ajustes» en la barra de herramientas abajo a la izquierda</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Seleccione \'Exportar a móvil\'</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">La importación requiere la última versión de Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Aprende a actualizar Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">No se ha encontrado ninguna aplicación para abrir el enlace.</string>
 </resources>
