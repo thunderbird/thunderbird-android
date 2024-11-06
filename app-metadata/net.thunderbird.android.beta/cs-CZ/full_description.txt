@@ -1,4 +1,4 @@
-Pomozte nám, aby bylo další vydání Thunderbirdu co nejúžasnější stažením Thunderbird Beta a získáním předběžného přístupu k nejnovějším funkcím a oprpavám chyb před jejich oficiálním vydáním. Vaše testování a zpětná vazba jsou důležité, proto nám prosím hlaste chyby, nedodělky a podělte se s námi o své názory!
+Pomozte nám, aby bylo další vydání Thunderbirdu co nejúžasnější stažením Thunderbird Beta a získáním předběžného přístupu k nejnovějším funkcím a opravám chyb před jejich oficiálním vydáním. Vaše testování a zpětná vazba jsou důležité, proto nám prosím hlaste chyby, nedodělky a podělte se s námi o své názory!
 
 Náš systém sledování chyb, zdrojový kód a wiki najdete na stránce <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
 
