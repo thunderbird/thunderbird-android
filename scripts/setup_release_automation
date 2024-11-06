@@ -37,9 +37,16 @@ CHANNEL_ENVIRONMENTS = {
                 },
                 {
                     "appName": "k9mail",
-                    "releaseTarget": "github|play",
+                    "releaseTarget": "github",
+                    "packageFormat": "apk",
+                    "packageFlavor": "foss",
+                },
+                {
+                    "appName": "k9mail",
+                    "releaseTarget": "play",
                     "playTargetTrack": "internal",
                     "packageFormat": "apk",
+                    "packageFlavor": "full",
                 },
             ],
         },
@@ -64,9 +71,16 @@ CHANNEL_ENVIRONMENTS = {
                 },
                 {
                     "appName": "k9mail",
-                    "releaseTarget": "github|play",
+                    "releaseTarget": "github",
+                    "packageFormat": "apk",
+                    "packageFlavor": "foss",
+                },
+                {
+                    "appName": "k9mail",
+                    "releaseTarget": "play",
                     "playTargetTrack": "internal",
                     "packageFormat": "apk",
+                    "packageFlavor": "full",
                 },
             ],
         },
@@ -95,11 +109,19 @@ CHANNEL_ENVIRONMENTS = {
 
 
 SIGNING_ENVIRONMENTS = {
-    "k9mail_release_default": {
+    "k9mail_release_foss": {
         "props": "k9.release.signing.properties",
         "branch": "release",
     },
-    "k9mail_beta_default": {
+    "k9mail_release_full": {
+        "props": "k9.release.signing.properties",
+        "branch": "release",
+    },
+    "k9mail_beta_foss": {
+        "props": "k9.release.signing.properties",
+        "branch": "beta",
+    },
+    "k9mail_beta_full": {
         "props": "k9.release.signing.properties",
         "branch": "beta",
     },

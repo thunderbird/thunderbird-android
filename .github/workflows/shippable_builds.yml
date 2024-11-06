@@ -106,7 +106,7 @@ jobs:
                 ],
                 ...matrixFull.map(item => [
                   { data: item.appName },
-                  { data: item.packageFlavor || "default" },
+                  { data: item.packageFlavor },
                   { data: item.packageFormat },
                   { data: item.releaseTarget?.replace(/\|/g, ", ") || "artifact only" },
                   { data: item.playTargetTrack || "none" },
@@ -477,7 +477,7 @@ jobs:
           elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "aab" ]]; then
             BUILD_COMMAND="bundle${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
           elif [[ "$APP_NAME" = "k9mail" ]]; then
-            BUILD_COMMAND="assembleRelease"
+            BUILD_COMMAND="assemble${PACKAGE_FLAVOR^}Release"
           fi
 
           echo "BUILDING: :app-${APP_NAME}:${BUILD_COMMAND}"
@@ -509,9 +509,9 @@ jobs:
             OUT_FILE="app-${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
             UPLOAD_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
           elif [[ "$APP_NAME" = "k9mail" ]]; then
-            OUT_PATH="${OUT_BASE}/apk/release"
-            OUT_FILE="app-${APP_NAME}-release-unsigned.apk"
-            UPLOAD_FILE="${APP_NAME}-default-${RELEASE_TYPE}.apk"
+            OUT_PATH="${OUT_BASE}/apk/${PACKAGE_FLAVOR}/release"
+            OUT_FILE="app-${APP_NAME}-${PACKAGE_FLAVOR}-release-unsigned.apk"
+            UPLOAD_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.apk"
           else
             echo "PACKAGE_FORMAT $PACKAGE_FORMAT is unknown. Exiting."
             exit 23
@@ -534,7 +534,7 @@ jobs:
         env:
           UPLOAD_PATH: "uploads"
         with:
-          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: ${{ env.UPLOAD_PATH }}/
           if-no-files-found: error
 
@@ -546,13 +546,13 @@ jobs:
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
-    environment: ${{ matrix.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor || 'default' }}
+    environment: ${{ matrix.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor }}
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: uploads/
 
       - uses: noriban/sign-android-release@5f144321d3c7c2233266e78b42360345d8bbe403   # v5.1
@@ -568,7 +568,7 @@ jobs:
         if: ${{ matrix.packageFormat == 'apk' }}
         env:
           APP_NAME: ${{ matrix.appName }}
-          PACKAGE_FLAVOR: ${{ matrix.packageFlavor || 'default' }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
         run: |
           mv uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.apk
           rm uploads/*-aligned.apk
@@ -581,7 +581,7 @@ jobs:
       - name: Upload signed
         uses: actions/upload-artifact@v4
         with:
-          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           if-no-files-found: error
           path: |
             uploads/*.apk
@@ -635,12 +635,12 @@ jobs:
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
       APP_NAME: ${{ matrix.appName }}
-      PACKAGE_FLAVOR: ${{ matrix.packageFlavor || 'default' }}
+      PACKAGE_FLAVOR: ${{ matrix.packageFlavor}}
       PACKAGE_FORMAT: ${{ matrix.packageFormat }}
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: "uploads/"
 
       - name: Get Package Info
