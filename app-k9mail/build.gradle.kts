@@ -106,6 +106,19 @@ android {
         }
     }
 
+    flavorDimensions += listOf("app")
+    productFlavors {
+        create("foss") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"foss\"")
+        }
+
+        create("full") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"full\"")
+        }
+    }
+
     packaging {
         jniLibs {
             excludes += listOf("kotlin/**")
@@ -132,8 +145,9 @@ dependencies {
     implementation(projects.legacy.ui.legacy)
 
     implementation(projects.core.featureflags)
-    
-    implementation(projects.feature.funding.noop)
+
+    "fossImplementation"(projects.feature.funding.noop)
+    "fullImplementation"(projects.feature.funding.noop)
     implementation(projects.feature.migration.launcher.noop)
     implementation(projects.feature.onboarding.migration.noop)
     implementation(projects.feature.telemetry.noop)
@@ -155,7 +169,8 @@ dependencies {
 }
 
 dependencyGuard {
-    configuration("releaseRuntimeClasspath")
+    configuration("fossReleaseRuntimeClasspath")
+    configuration("fullReleaseRuntimeClasspath")
 }
 
 tasks.create("printVersionInfo") {
