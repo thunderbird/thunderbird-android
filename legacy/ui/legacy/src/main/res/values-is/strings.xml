@@ -893,4 +893,7 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="folder_settings_visible_label">Sýna möppu</string>
     <string name="folder_list_show_hidden_folders">Sýna faldar möppur</string>
     <string name="settings_list_action_support">Styðja <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_summary">Fara á milli skilaboða með hljóðstyrkshnöppum í skilaboðasýn</string>
+    <string name="save_attachment_action">Vista viðhengi</string>
+    <string name="volume_navigation_title_short">Flakk með hljóðstyrkshnöppum</string>
 </resources>

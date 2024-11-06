@@ -96,7 +96,7 @@
     <string name="status_network_error">Konexio errorea</string>
     <string name="status_invalid_id_error">Ez da mezua aurkitu</string>
     <string name="status_loading_error">Akatsa mezua kargatzean</string>
-    <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> gehiago kargatu</string>
+    <string name="load_more_messages_fmt">Kargatu gehienez <xliff:g id="messages_to_load">%d</xliff:g> gehiago</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
