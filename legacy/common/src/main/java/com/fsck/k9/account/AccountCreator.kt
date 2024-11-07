@@ -9,6 +9,7 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.legacy.account.Account.SpecialFolderSelection
 import com.fsck.k9.Core
+import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.logging.Timber
@@ -78,6 +79,11 @@ class AccountCreator(
         newAccount.markSetupFinished()
 
         preferences.saveAccount(newAccount)
+
+        if (preferences.getAccounts().size > 1) {
+            K9.isShowUnifiedInbox = true
+            K9.saveSettingsAsync()
+        }
 
         Core.setServicesEnabled(context)
 
