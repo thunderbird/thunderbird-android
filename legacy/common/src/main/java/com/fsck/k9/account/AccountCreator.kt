@@ -9,7 +9,6 @@ import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.legacy.account.Account.SpecialFolderSelection
 import com.fsck.k9.Core
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.logging.Timber
@@ -21,6 +20,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.mailstore.SpecialFolderUpdater
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
+import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -35,6 +35,7 @@ class AccountCreator(
     private val messagingController: MessagingController,
     private val deletePolicyProvider: DeletePolicyProvider,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
 ) : AccountSetupExternalContract.AccountCreator {
 
     @Suppress("TooGenericExceptionCaught")
@@ -81,10 +82,7 @@ class AccountCreator(
 
         preferences.saveAccount(newAccount)
 
-        if (preferences.getAccounts().size > 1) {
-            K9.isShowUnifiedInbox = true
-            K9.saveSettingsAsync()
-        }
+        unifiedInboxConfigurator.configureUnifiedInbox()
 
         Core.setServicesEnabled(context)
 
