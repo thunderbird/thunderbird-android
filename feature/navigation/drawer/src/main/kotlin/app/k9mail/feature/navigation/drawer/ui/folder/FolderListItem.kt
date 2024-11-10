@@ -21,6 +21,7 @@ internal fun FolderListItem(
     selected: Boolean,
     onClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
+    showUnReadCount: Boolean,
     folderNameFormatter: FolderNameFormatter,
     modifier: Modifier = Modifier,
 ) {
@@ -39,6 +40,7 @@ internal fun FolderListItem(
                 unreadCount = displayFolder.unreadMessageCount,
                 starredCount = displayFolder.starredMessageCount,
                 showStarredCount = showStarredCount,
+                showUnReadCount = showUnReadCount,
             )
         },
     )

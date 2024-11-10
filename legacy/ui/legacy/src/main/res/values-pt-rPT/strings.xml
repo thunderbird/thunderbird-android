@@ -529,6 +529,7 @@
     <string name="animations_summary">Usar efeitos visuais exuberantes</string>
     <string name="show_unified_inbox_title">Mostrar caixa de entrada unificada</string>
     <string name="show_starred_count_title">Mostrar contagem de estrelas</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Caixa de entrada unificada</string>
     <string name="integrated_inbox_detail">Todas as mensagens em pastas unificadas</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>

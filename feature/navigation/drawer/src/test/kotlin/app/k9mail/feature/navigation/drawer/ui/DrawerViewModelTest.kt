@@ -420,10 +420,12 @@ internal class DrawerViewModelTest {
     private fun createDrawerConfig(
         showUnifiedInbox: Boolean = false,
         showStarredCount: Boolean = false,
+        showUnReadCount: Boolean = true,
     ): DrawerConfig {
         return DrawerConfig(
             showUnifiedFolders = showUnifiedInbox,
             showStarredCount = showStarredCount,
+            showUnReadCount = showUnReadCount,
         )
     }
 

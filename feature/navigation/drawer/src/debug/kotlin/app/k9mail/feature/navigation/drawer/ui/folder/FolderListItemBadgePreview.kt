@@ -12,6 +12,7 @@ internal fun FolderListItemBadgePreview() {
             unreadCount = 99,
             starredCount = 0,
             showStarredCount = true,
+            showUnReadCount = true,
         )
     }
 }
@@ -24,6 +25,7 @@ internal fun FolderListItemBadgeWithStarredCountPreview() {
             unreadCount = 99,
             starredCount = 1,
             showStarredCount = true,
+            showUnReadCount = true,
         )
     }
 }
@@ -36,6 +38,7 @@ internal fun FolderListItemBadgeWithZeroUnreadCountPreview() {
             unreadCount = 0,
             starredCount = 1,
             showStarredCount = true,
+            showUnReadCount = true,
         )
     }
 }
@@ -48,6 +51,7 @@ internal fun FolderListItemBadgeWithZeroStarredCountPreview() {
             unreadCount = 99,
             starredCount = 0,
             showStarredCount = true,
+            showUnReadCount = true,
         )
     }
 }
@@ -60,6 +64,7 @@ internal fun FolderListItemBadgeWithZeroCountsPreview() {
             unreadCount = 0,
             starredCount = 0,
             showStarredCount = true,
+            showUnReadCount = true,
         )
     }
 }
@@ -72,6 +77,7 @@ internal fun FolderListItemBadgeWithoutStarredCountPreview() {
             unreadCount = 99,
             starredCount = 1,
             showStarredCount = false,
+            showUnReadCount = true,
         )
     }
 }
@@ -84,6 +90,7 @@ internal fun FolderListItemBadgeWith100CountsPreview() {
             unreadCount = 100,
             starredCount = 100,
             showStarredCount = true,
+            showUnReadCount = true,
         )
     }
 }
@@ -96,6 +103,7 @@ internal fun FolderListItemBadgeWith1000CountsPreview() {
             unreadCount = 1000,
             starredCount = 1000,
             showStarredCount = true,
+            showUnReadCount = true,
         )
     }
 }

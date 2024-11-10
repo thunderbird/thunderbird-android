@@ -784,6 +784,7 @@
     <string name="notification_channel_push_title">Sinkronisasi (Dorongan)</string>
     <string name="debug_export_logs_failure">Ekspor gagal.</string>
     <string name="show_starred_count_title">Tampilkan jumlah pesan berbintang</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Jumlah pesan baru</string>
     <string name="notification_notify_error_title">Kesalahan notifikasi</string>
     <string name="notification_channel_push_description">Ditampilkan saat menunggu pesan baru</string>

@@ -839,6 +839,7 @@
     <string name="account_settings_notification_light_cyan">Цијан</string>
     <string name="account_settings_notification_light_magenta">Магента</string>
     <string name="show_starred_count_title">Прикажи број означених звездицом</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="save_or_discard_draft_message_changes">Сачувати или одбацити измене?</string>
     <string name="reply_to_label">Одговори на</string>
     <string name="generic_loading_error">Дошло је до грешке приликом учитавања података</string>

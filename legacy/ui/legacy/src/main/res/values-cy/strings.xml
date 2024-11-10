@@ -517,6 +517,7 @@
     <string name="animations_summary">Defnyddio effeithiau gweledol dros ben llestri</string>
     <string name="show_unified_inbox_title">Dangos mewnflwch unedig</string>
     <string name="show_starred_count_title">Dangos cyfrif serennog</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Mewnflwch Unedig</string>
     <string name="integrated_inbox_detail">Holl negeseuon pob cyfrif mewn un ffolder unedig</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Uno</string>

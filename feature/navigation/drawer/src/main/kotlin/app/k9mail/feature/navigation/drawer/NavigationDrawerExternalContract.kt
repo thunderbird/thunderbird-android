@@ -5,6 +5,7 @@ interface NavigationDrawerExternalContract {
     data class DrawerConfig(
         val showUnifiedFolders: Boolean,
         val showStarredCount: Boolean,
+        val showUnReadCount: Boolean,
     )
 
     fun interface DrawerConfigLoader {

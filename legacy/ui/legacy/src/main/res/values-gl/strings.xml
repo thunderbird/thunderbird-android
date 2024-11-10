@@ -488,6 +488,7 @@
     <string name="animations_summary">Usar animacións</string>
     <string name="show_unified_inbox_title">Amosar a caixa de entrada unificada</string>
     <string name="show_starred_count_title">Amosar o reconto das estrelas</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Entrada unificada</string>
     <string name="integrated_inbox_detail">Mensajes na Entrada unificada</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>

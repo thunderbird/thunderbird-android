@@ -325,6 +325,7 @@
     <string name="notification_notify_error_title">Notification error</string>
     <string name="setting_theme_follow_system">Use system default</string>
     <string name="show_starred_count_title">Show starred count</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="dialog_confirm_spam_cancel_button">No</string>
     <string name="account_setup_options_mail_display_count_all">all messages</string>
     <string name="account_settings_autodownload_message_size_label">Fetch messages up to</string>

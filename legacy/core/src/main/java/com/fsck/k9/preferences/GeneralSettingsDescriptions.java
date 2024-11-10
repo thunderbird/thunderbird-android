@@ -279,6 +279,9 @@ class GeneralSettingsDescriptions {
         s.put("showStarredCount", Settings.versions(
                 new V(75, new BooleanSetting(false))
         ));
+        s.put("showUnReadCount", Settings.versions(
+                new V(102, new BooleanSetting(true))
+        ));
         s.put("swipeRightAction", Settings.versions(
                 new V(83, new EnumSetting<>(SwipeAction.class, SwipeAction.ToggleSelection))
         ));

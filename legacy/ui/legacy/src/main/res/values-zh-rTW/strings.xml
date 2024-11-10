@@ -524,6 +524,7 @@
     <string name="animations_summary">使用絢麗的視覺特效</string>
     <string name="show_unified_inbox_title">顯示統一收件匣</string>
     <string name="show_starred_count_title">顯示有標記星號的數量</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">統一收件匣</string>
     <string name="integrated_inbox_detail">統一資料夾中的所有訊息</string>
     <string name="folder_settings_include_in_integrated_inbox_label">統一</string>

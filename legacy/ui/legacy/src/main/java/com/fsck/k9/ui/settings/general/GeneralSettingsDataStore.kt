@@ -28,6 +28,7 @@ class GeneralSettingsDataStore(
             "animations" -> K9.isShowAnimations
             "show_unified_inbox" -> K9.isShowUnifiedInbox
             "show_starred_count" -> K9.isShowStarredCount
+            "show_unread_count" -> K9.isShowUnReadCount
             "messagelist_stars" -> K9.isShowMessageListStars
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
@@ -58,6 +59,7 @@ class GeneralSettingsDataStore(
             "animations" -> K9.isShowAnimations = value
             "show_unified_inbox" -> K9.isShowUnifiedInbox = value
             "show_starred_count" -> K9.isShowStarredCount = value
+            "show_unread_count" -> K9.isShowUnReadCount = value
             "messagelist_stars" -> K9.isShowMessageListStars = value
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value

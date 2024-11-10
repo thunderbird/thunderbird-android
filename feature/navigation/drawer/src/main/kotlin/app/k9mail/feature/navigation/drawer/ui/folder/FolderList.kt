@@ -22,6 +22,7 @@ internal fun FolderList(
     selectedFolder: DisplayFolder?,
     onFolderClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
+    showUnReadCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val resources = LocalContext.current.resources
@@ -40,6 +41,7 @@ internal fun FolderList(
                 displayFolder = folder,
                 selected = folder == selectedFolder,
                 showStarredCount = showStarredCount,
+                showUnReadCount = showUnReadCount,
                 onClick = onFolderClick,
                 folderNameFormatter = folderNameFormatter,
             )

@@ -531,6 +531,7 @@
     <string name="animations_summary">Анімацыя інтэрфейсу</string>
     <string name="show_unified_inbox_title">Агульная скрыня ўваходных лістоў для ўсіх акаўнтаў</string>
     <string name="show_starred_count_title">Паказваць колькасць адзначаных</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Усе атрыманыя</string>
     <string name="integrated_inbox_detail">Усе лісты са ўсіх каталогаў</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Усе атрыманыя</string>

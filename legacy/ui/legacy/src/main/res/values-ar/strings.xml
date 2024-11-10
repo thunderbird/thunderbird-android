@@ -535,6 +535,7 @@
     <string name="animations_summary">استخدم تأثيرات بصرية مبهرجة </string>
     <string name="show_unified_inbox_title">إظهار علبة الوارد الموحدة </string>
     <string name="show_starred_count_title">إظهار العدد المميّز بنجمة </string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">البريد الوارد الموحَّد</string>
     <string name="integrated_inbox_detail">كل الرسائل في مجلدات موحَّدة</string>
     <string name="folder_settings_include_in_integrated_inbox_label">التوحيد</string>

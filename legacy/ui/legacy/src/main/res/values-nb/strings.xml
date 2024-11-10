@@ -799,6 +799,7 @@
     <string name="notification_notify_error_title">Merknadsfeil</string>
     <string name="swipe_action_move">Flytt …</string>
     <string name="show_starred_count_title">Vis antall stjernemerkede</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="ac_transfer_generating">Genererer oppsettsmelding …</string>
     <string name="account_settings_vibrate_pattern_4">Mønster 4</string>
     <string name="debug_export_logs_success">Eksporteringen lyktes. Logger kan inneholde sensitiv info. Vær forsiktig med hvem du sender dem til.</string>

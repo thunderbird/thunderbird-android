@@ -527,6 +527,7 @@
     <string name="animations_summary">Använd snygga visuella effekter</string>
     <string name="show_unified_inbox_title">Visa samlad inkorg</string>
     <string name="show_starred_count_title">Visa antalet stjärnmarkerade</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Samlad inkorg</string>
     <string name="integrated_inbox_detail">Alla meddelanden i samlade mappar</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Förena</string>

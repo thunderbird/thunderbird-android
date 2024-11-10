@@ -526,6 +526,7 @@
     <string name="animations_summary">Käytä koreita visuaalisia tehosteita</string>
     <string name="show_unified_inbox_title">Näytä \"Yhdistetty saapuneet\"</string>
     <string name="show_starred_count_title">Näytä tähdellä merkittyjen viestien määrä</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Yhdistetty saapuneet</string>
     <string name="integrated_inbox_detail">Kaikki viestit Yhdistetty saapuneet -kansiossa</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Yhdistä</string>

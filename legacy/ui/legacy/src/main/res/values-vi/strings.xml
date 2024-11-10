@@ -500,6 +500,7 @@
     <string name="dialog_confirm_mark_all_as_read_title">Xác nhận đánh dấu tất cả là đã đọc</string>
     <string name="sort_flagged_first">Tin nhắn đã gắn dấu sao trước</string>
     <string name="show_starred_count_title">Hiển thị số lượng gắn dấu sao</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="locked_attach_title">Tệp đính kèm không được bảo vệ</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Có thể không được một số người nhận hỗ trợ</string>
     <string name="sort_subject_re_alpha">Chủ đề đảo ngược bảng chữ cái</string>

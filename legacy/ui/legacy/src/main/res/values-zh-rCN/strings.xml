@@ -526,6 +526,7 @@
     <string name="animations_summary">使用绚丽的视觉效果</string>
     <string name="show_unified_inbox_title">显示统一收件箱</string>
     <string name="show_starred_count_title">显示星标邮件数</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">统一收件箱</string>
     <string name="integrated_inbox_detail">统一文件夹中的所有邮件</string>
     <string name="folder_settings_include_in_integrated_inbox_label">统一</string>

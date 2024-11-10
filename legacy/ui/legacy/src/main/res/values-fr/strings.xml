@@ -528,6 +528,7 @@
     <string name="animations_summary">Utiliser des effets visuels voyants</string>
     <string name="show_unified_inbox_title">Afficher la boîte de réception unifiée</string>
     <string name="show_starred_count_title">Afficher le compte d’étoilés</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Boîte de réception unifiée</string>
     <string name="integrated_inbox_detail">Tous les courriels dans les dossiers unifiés</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unifier</string>

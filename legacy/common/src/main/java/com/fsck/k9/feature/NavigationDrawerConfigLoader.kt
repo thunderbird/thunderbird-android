@@ -9,6 +9,7 @@ class NavigationDrawerConfigLoader : DrawerConfigLoader {
         return DrawerConfig(
             showUnifiedFolders = K9.isShowUnifiedInbox,
             showStarredCount = K9.isShowStarredCount,
+            showUnReadCount = K9.isShowUnReadCount,
         )
     }
 }

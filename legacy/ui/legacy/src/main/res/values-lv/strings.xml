@@ -530,6 +530,7 @@
     <string name="animations_summary">Izmantot spilgtus vizuālos efektus</string>
     <string name="show_unified_inbox_title">Rādīt Apvienoto pastkasti (Iesūtni)</string>
     <string name="show_starred_count_title">Parādīt zvaigžņoto ziņu skaitu</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Apvienotā Iesūtne</string>
     <string name="integrated_inbox_detail">Visas ziņas apvienotās mapēs</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Apvienot</string>

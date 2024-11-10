@@ -526,6 +526,7 @@
     <string name="animations_summary">Opvallende visuele effecten gebruiken</string>
     <string name="show_unified_inbox_title">Samengevoegd Postvak IN tonen</string>
     <string name="show_starred_count_title">Aantal berichten met een ster tonen</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Samengevoegd Postvak IN</string>
     <string name="integrated_inbox_detail">Alle berichten in gecombineerde mappen</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Combineer</string>

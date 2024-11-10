@@ -70,6 +70,7 @@ internal fun DrawerContent(
                             onEvent(Event.OnFolderClick(folder))
                         },
                         showStarredCount = state.config.showStarredCount,
+                        showUnReadCount = state.config.showUnReadCount,
                         modifier = Modifier.weight(1f),
                     )
                     DividerHorizontal()

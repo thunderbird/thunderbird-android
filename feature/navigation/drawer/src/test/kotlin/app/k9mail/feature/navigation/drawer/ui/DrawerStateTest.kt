@@ -18,6 +18,7 @@ internal class DrawerStateTest {
                 config = DrawerConfig(
                     showUnifiedFolders = false,
                     showStarredCount = false,
+                    showUnReadCount = true,
                 ),
                 accounts = persistentListOf(),
                 selectedAccountId = null,

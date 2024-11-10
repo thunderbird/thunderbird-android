@@ -14,6 +14,7 @@ internal class GetDrawerConfigTest {
         val drawerConfig = DrawerConfig(
             showUnifiedFolders = true,
             showStarredCount = true,
+            showUnReadCount = true,
         )
 
         val testSubject = GetDrawerConfig(
@@ -26,6 +27,7 @@ internal class GetDrawerConfigTest {
             DrawerConfig(
                 showUnifiedFolders = true,
                 showStarredCount = true,
+                showUnReadCount = true,
             ),
         )
     }

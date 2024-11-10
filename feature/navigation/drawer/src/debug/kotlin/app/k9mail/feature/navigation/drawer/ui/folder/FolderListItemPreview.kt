@@ -17,6 +17,7 @@ internal fun FolderListItemPreview() {
             displayFolder = DISPLAY_FOLDER,
             selected = false,
             showStarredCount = false,
+            showUnReadCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
@@ -31,6 +32,7 @@ internal fun FolderListItemSelectedPreview() {
             displayFolder = DISPLAY_FOLDER,
             selected = true,
             showStarredCount = false,
+            showUnReadCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
@@ -45,6 +47,7 @@ internal fun FolderListItemWithStarredPreview() {
             displayFolder = DISPLAY_FOLDER,
             selected = false,
             showStarredCount = true,
+            showUnReadCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
@@ -59,6 +62,7 @@ internal fun FolderListItemWithStarredSelectedPreview() {
             displayFolder = DISPLAY_FOLDER,
             selected = true,
             showStarredCount = true,
+            showUnReadCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
@@ -77,6 +81,7 @@ internal fun FolderListItemWithInboxFolderPreview() {
             ),
             selected = false,
             showStarredCount = true,
+            showUnReadCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )
@@ -91,6 +96,7 @@ internal fun FolderListItemWithUnifiedFolderPreview() {
             displayFolder = UNIFIED_FOLDER,
             selected = false,
             showStarredCount = false,
+            showUnReadCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )

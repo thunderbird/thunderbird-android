@@ -719,6 +719,7 @@
     <string name="integrated_inbox_title">Samla innboks</string>
     <string name="integrated_inbox_detail">Alle meldingar i samla mapper</string>
     <string name="show_starred_count_title">Vis antal stjernemerka</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="settings_message_theme_selection_summary_off">Vel meldinsvisingsdrakt for vising av meldingar</string>
     <string name="settings_message_theme_selection_summary_on">Bruk fast drakt for vising av meldingar</string>
     <string name="show_unified_inbox_title">Vis samla innboks</string>

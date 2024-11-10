@@ -654,6 +654,7 @@
     <string name="global_settings_lock_screen_notification_visibility_everything">זהה למצב בו המסך אינו נעול</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">כמות הודעות ושולחים</string>
     <string name="show_starred_count_title">הצג כמות הודעות מסומנות בכוכב</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="send_failed_reason">שליחה נכשלה: %s</string>
     <string name="dialog_confirm_clear_local_folder_title">למחוק הודעות מקומיות?</string>
     <string name="dialog_confirm_clear_local_folder_message">זה יסיר את כל ההודעות המקומיות מהתיקייה. אף הודעה לא תימחק מהשרת.</string>

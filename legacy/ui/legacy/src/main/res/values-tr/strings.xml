@@ -513,6 +513,7 @@
     <string name="animations_summary">Gösterişli görsel efektleri kullan</string>
     <string name="show_unified_inbox_title">Birleşik gelen kutusunu göster</string>
     <string name="show_starred_count_title">Yıldızlı sayısını göster</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Birleşik Gelen Kutusu</string>
     <string name="integrated_inbox_detail">Tüm iletiler birleşik klasörlerde</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Birleştir</string>

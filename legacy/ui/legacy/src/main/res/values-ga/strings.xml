@@ -577,6 +577,7 @@
     <string name="animations_summary">Bain úsáid as maisíochtaí amhairc gaudy</string>
     <string name="show_unified_inbox_title">Taispeáin Bosca Isteach Aontaithe</string>
     <string name="show_starred_count_title">Taispeáin líon na réalta</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Bosca Isteach Aontaithe</string>
     <string name="integrated_inbox_detail">Gach teachtaireacht i bhfillteáin aontaithe</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Aontú</string>

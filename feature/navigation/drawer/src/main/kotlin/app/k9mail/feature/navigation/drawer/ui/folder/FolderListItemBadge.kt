@@ -16,17 +16,20 @@ internal fun FolderListItemBadge(
     unreadCount: Int,
     starredCount: Int,
     showStarredCount: Boolean,
+    showUnReadCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
     if (showStarredCount) {
         FolderCountAndStarredBadge(
             unreadCount = unreadCount,
             starredCount = starredCount,
+            showUnReadCount = showUnReadCount,
             modifier = modifier,
         )
     } else {
         FolderCountBadge(
             unreadCount = unreadCount,
+            showUnReadCount = showUnReadCount,
             modifier = modifier,
         )
     }
@@ -35,9 +38,10 @@ internal fun FolderListItemBadge(
 @Composable
 private fun FolderCountBadge(
     unreadCount: Int,
+    showUnReadCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    if (unreadCount > 0) {
+    if (unreadCount > 0 && showUnReadCount) {
         val resources = LocalContext.current.resources
 
         NavigationDrawerItemBadge(
@@ -54,6 +58,7 @@ private fun FolderCountBadge(
 private fun FolderCountAndStarredBadge(
     unreadCount: Int,
     starredCount: Int,
+    showUnReadCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
     if (unreadCount > 0 || starredCount > 0) {
@@ -64,7 +69,7 @@ private fun FolderCountAndStarredBadge(
         ) {
             val resources = LocalContext.current.resources
 
-            if (unreadCount > 0) {
+            if (unreadCount > 0 && showUnReadCount) {
                 NavigationDrawerItemBadge(
                     label = labelForCount(
                         count = unreadCount,

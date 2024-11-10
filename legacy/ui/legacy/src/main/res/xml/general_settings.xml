@@ -215,6 +215,11 @@
                 android:title="@string/show_starred_count_title"
                 />
 
+            <CheckBoxPreference
+                android:key="show_unread_count"
+                android:title="@string/show_unread_count_title"
+                />
+
         </PreferenceCategory>
 
         <PreferenceCategory

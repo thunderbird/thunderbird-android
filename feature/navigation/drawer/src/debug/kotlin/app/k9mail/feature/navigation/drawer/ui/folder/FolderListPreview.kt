@@ -18,6 +18,7 @@ internal fun FolderListPreview() {
             selectedFolder = null,
             onFolderClick = {},
             showStarredCount = false,
+            showUnReadCount = true,
         )
     }
 }
@@ -33,6 +34,7 @@ internal fun FolderListPreviewSelected() {
             selectedFolder = DISPLAY_FOLDER,
             onFolderClick = {},
             showStarredCount = false,
+            showUnReadCount = true,
         )
     }
 }
@@ -49,6 +51,7 @@ internal fun FolderListWithUnifiedFolderPreview() {
             selectedFolder = DISPLAY_FOLDER,
             onFolderClick = {},
             showStarredCount = false,
+            showUnReadCount = true,
         )
     }
 }

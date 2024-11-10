@@ -526,6 +526,7 @@
     <string name="animations_summary">Prehodi dejanj in različni učinki delovanja vmesnika so animirani</string>
     <string name="show_unified_inbox_title">Pokaži skupno mapo prejetih sporočil</string>
     <string name="show_starred_count_title">Pokaži število označb z zvezdico</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Skupna mapa prejetih sporočil</string>
     <string name="integrated_inbox_detail">Vsa sporočila v skupnih mapah</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Združi</string>

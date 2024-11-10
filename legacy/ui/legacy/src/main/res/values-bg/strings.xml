@@ -826,6 +826,7 @@
     <string name="account_settings_notification_light_default_color">Цвят по подразбиране</string>
     <string name="swipe_action_move">Премести…</string>
     <string name="show_starred_count_title">Брой важни съобщения</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
     <string name="debug_export_logs_success">Експортиране успешно. Докладите може да съдържат лична информация. Внимавайте кому ги пращате.</string>
     <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия.

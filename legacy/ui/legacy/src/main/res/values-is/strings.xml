@@ -527,6 +527,7 @@
     <string name="animations_summary">Nota skrautlegar sjónbrellur</string>
     <string name="show_unified_inbox_title">Birta sameinað innhólf</string>
     <string name="show_starred_count_title">Birta fjölda stjarna</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Sameinað innhólf</string>
     <string name="integrated_inbox_detail">Öll skilaboð í sameinuðum möppum</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Sameina</string>

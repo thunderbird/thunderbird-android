@@ -204,6 +204,9 @@ object K9 : KoinComponent {
     var isShowStarredCount = false
 
     @JvmStatic
+    var isShowUnReadCount = true
+
+    @JvmStatic
     var isAutoFitWidth: Boolean = false
 
     var isQuietTimeEnabled = false
@@ -330,6 +333,7 @@ object K9 : KoinComponent {
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", false)
         isShowStarredCount = storage.getBoolean("showStarredCount", false)
+        isShowUnReadCount = storage.getBoolean("showUnReadCount", true)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
@@ -425,6 +429,7 @@ object K9 : KoinComponent {
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("showUnifiedInbox", isShowUnifiedInbox)
         editor.putBoolean("showStarredCount", isShowStarredCount)
+        editor.putBoolean("showUnReadCount", isShowUnReadCount)
         editor.putBoolean("messageListStars", isShowMessageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)

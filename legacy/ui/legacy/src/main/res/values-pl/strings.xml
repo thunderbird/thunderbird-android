@@ -531,6 +531,7 @@
     <string name="animations_summary">Używaj efektów wizualnych</string>
     <string name="show_unified_inbox_title">Pokaż zintegrowaną skrzynkę odbiorczą</string>
     <string name="show_starred_count_title">Pokaż liczbę oznaczonych gwiazdką</string>
+    <string name="show_unread_count_title">Show Unread Count</string>
     <string name="integrated_inbox_title">Zintegrowana odbiorcza</string>
     <string name="integrated_inbox_detail">Nieprzeczytane wiadomości ze wszystkich kont</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Integruj</string>
