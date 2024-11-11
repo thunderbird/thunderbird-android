@@ -64,7 +64,7 @@ internal class DrawerViewModelTest {
     fun `should change loading state when OnSyncAccount event is received`() = runMviTest {
         val initialState = State(
             accounts = listOf(DISPLAY_ACCOUNT).toImmutableList(),
-            selectedAccountUuid = DISPLAY_ACCOUNT.uuid,
+            selectedAccountId = DISPLAY_ACCOUNT.uuid,
         )
         val testSubject = createTestSubject(
             initialState = initialState,
@@ -84,7 +84,7 @@ internal class DrawerViewModelTest {
 
     @Test
     fun `should skip loading when no account is selected and OnSyncAccount event is received`() = runMviTest {
-        val initialState = State(selectedAccountUuid = null)
+        val initialState = State(selectedAccountId = null)
         var counter = 0
         val testSubject = createTestSubject(
             initialState = initialState,
@@ -187,7 +187,7 @@ internal class DrawerViewModelTest {
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(displayAccounts.size)
         assertThat(testSubject.state.value.accounts).isEqualTo(displayAccounts)
-        assertThat(testSubject.state.value.selectedAccountUuid).isEqualTo(displayAccounts.first().uuid)
+        assertThat(testSubject.state.value.selectedAccountId).isEqualTo(displayAccounts.first().uuid)
     }
 
     @Test
@@ -207,7 +207,7 @@ internal class DrawerViewModelTest {
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(newDisplayAccounts.size)
         assertThat(testSubject.state.value.accounts).isEqualTo(newDisplayAccounts)
-        assertThat(testSubject.state.value.selectedAccountUuid).isEqualTo(newDisplayAccounts.first().uuid)
+        assertThat(testSubject.state.value.selectedAccountId).isEqualTo(newDisplayAccounts.first().uuid)
     }
 
     @Test
@@ -220,7 +220,7 @@ internal class DrawerViewModelTest {
         advanceUntilIdle()
 
         assertThat(testSubject.state.value.accounts.size).isEqualTo(0)
-        assertThat(testSubject.state.value.selectedAccountUuid).isEqualTo(null)
+        assertThat(testSubject.state.value.selectedAccountId).isEqualTo(null)
     }
 
     @Test
@@ -234,7 +234,7 @@ internal class DrawerViewModelTest {
             testSubject,
             State(
                 accounts = displayAccounts.toImmutableList(),
-                selectedAccountUuid = displayAccounts.first().uuid,
+                selectedAccountId = displayAccounts.first().uuid,
             ),
         )
 
@@ -305,7 +305,7 @@ internal class DrawerViewModelTest {
         val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
         val initialState = State(
             accounts = displayAccounts.toImmutableList(),
-            selectedAccountUuid = displayAccounts[0].uuid,
+            selectedAccountId = displayAccounts[0].uuid,
             folders = displayFoldersMap[displayAccounts[0].account.uuid]!!.toImmutableList(),
             selectedFolderId = displayFoldersMap[displayAccounts[0].account.uuid]!![0].id,
         )
@@ -339,7 +339,7 @@ internal class DrawerViewModelTest {
             val displayFoldersFlow = MutableStateFlow(displayFoldersMap)
             val initialState = State(
                 accounts = displayAccounts.toImmutableList(),
-                selectedAccountUuid = displayAccounts[0].account.uuid,
+                selectedAccountId = displayAccounts[0].account.uuid,
                 folders = displayFoldersMap[displayAccounts[0].account.uuid]!!.toImmutableList(),
                 selectedFolderId = displayFoldersMap[displayAccounts[0].account.uuid]!![0].id,
             )
@@ -411,8 +411,8 @@ internal class DrawerViewModelTest {
             initialState = initialState,
             getDrawerConfig = { drawerConfigFlow },
             getDisplayAccounts = { displayAccountsFlow },
-            getDisplayFoldersForAccount = { accountUuid, _ ->
-                displayFoldersFlow.map { it[accountUuid] ?: emptyList() }
+            getDisplayFoldersForAccount = { accountid, _ ->
+                displayFoldersFlow.map { it[accountid] ?: emptyList() }
             },
             syncAccount = { syncAccountFlow },
             syncAllAccounts = { syncAllAccounts },
@@ -468,7 +468,7 @@ internal class DrawerViewModelTest {
     }
 
     private fun createDisplayFolder(
-        accountUuid: String = "uuid",
+        accountId: String = "uuid",
         id: Long = 1234,
         name: String = "name",
         type: FolderType = FolderType.REGULAR,
@@ -483,7 +483,7 @@ internal class DrawerViewModelTest {
         )
 
         return DisplayAccountFolder(
-            accountUuid = accountUuid,
+            accountId = accountId,
             folder = folder,
             isInTopGroup = false,
             unreadMessageCount = unreadCount,

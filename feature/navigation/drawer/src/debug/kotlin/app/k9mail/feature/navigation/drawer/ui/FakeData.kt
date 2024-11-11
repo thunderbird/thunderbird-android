@@ -48,7 +48,7 @@ internal object FakeData {
     )
 
     val DISPLAY_FOLDER = DisplayAccountFolder(
-        accountUuid = ACCOUNT_UUID,
+        accountId = ACCOUNT_UUID,
         folder = FOLDER,
         isInTopGroup = false,
         unreadMessageCount = 14,
