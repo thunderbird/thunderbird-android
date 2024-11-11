@@ -50,6 +50,7 @@ internal fun AccountList(
                     AccountListItem(
                         account = account,
                         onClick = { onAccountClick(account) },
+                        selected = selectedAccount == account,
                     )
                 }
             }
