@@ -65,7 +65,7 @@ internal fun AccountView(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AccountIndicator(
-                accountColor = account.account.chipColor,
+                accountColor = account.color,
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(end = MainTheme.spacings.oneHalf),
@@ -74,11 +74,11 @@ internal fun AccountView(
                 verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
             ) {
                 TextBodyLarge(
-                    text = account.account.displayName,
+                    text = account.name,
                     color = MainTheme.colors.onSurface,
                 )
                 TextBodyMedium(
-                    text = account.account.email,
+                    text = account.email,
                     color = MainTheme.colors.onSurfaceVariant,
                 )
             }

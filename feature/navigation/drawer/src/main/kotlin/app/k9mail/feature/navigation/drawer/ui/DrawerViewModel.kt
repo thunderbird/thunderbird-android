@@ -61,13 +61,13 @@ internal class DrawerViewModel(
     }
 
     private fun updateAccounts(accounts: List<DisplayAccount>) {
-        val selectedAccount = accounts.find { it.uuid == state.value.selectedAccountId }
+        val selectedAccount = accounts.find { it.id == state.value.selectedAccountId }
             ?: accounts.firstOrNull()
 
         updateState {
             it.copy(
                 accounts = accounts.toImmutableList(),
-                selectedAccountId = selectedAccount?.uuid,
+                selectedAccountId = selectedAccount?.id,
             )
         }
     }
@@ -139,7 +139,7 @@ internal class DrawerViewModel(
 
     private fun openAccount(account: DisplayAccount?) {
         if (account != null) {
-            emitEffect(Effect.OpenAccount(account.uuid))
+            emitEffect(Effect.OpenAccount(account.id))
         }
     }
 
