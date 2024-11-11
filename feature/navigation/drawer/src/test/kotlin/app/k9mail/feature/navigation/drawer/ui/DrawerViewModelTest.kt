@@ -245,7 +245,7 @@ internal class DrawerViewModelTest {
         advanceUntilIdle()
 
         turbines.assertThatAndEffectTurbineConsumed {
-            isEqualTo(Effect.OpenAccount(displayAccounts[1].account))
+            isEqualTo(Effect.OpenAccount(displayAccounts[1].account.uuid))
         }
     }
 

@@ -22,7 +22,7 @@ internal data class FolderDrawerState(
 
 class FolderDrawer(
     override val parent: AppCompatActivity,
-    private val openAccount: (account: Account) -> Unit,
+    private val openAccount: (accountId: String) -> Unit,
     private val openFolder: (folderId: Long) -> Unit,
     private val openUnifiedFolder: () -> Unit,
     private val openManageFolders: () -> Unit,

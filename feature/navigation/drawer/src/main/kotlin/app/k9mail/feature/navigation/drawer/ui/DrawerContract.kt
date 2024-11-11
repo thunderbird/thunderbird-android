@@ -5,7 +5,6 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
-import app.k9mail.legacy.account.Account
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -41,7 +40,7 @@ internal interface DrawerContract {
     }
 
     sealed interface Effect {
-        data class OpenAccount(val account: Account) : Effect
+        data class OpenAccount(val accountId: String) : Effect
         data class OpenFolder(val folderId: Long) : Effect
         data object OpenUnifiedFolder : Effect
         data object OpenManageFolders : Effect

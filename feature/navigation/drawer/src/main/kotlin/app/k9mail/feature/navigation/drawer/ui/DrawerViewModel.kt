@@ -139,7 +139,7 @@ internal class DrawerViewModel(
 
     private fun openAccount(account: DisplayAccount?) {
         if (account != null) {
-            emitEffect(Effect.OpenAccount(account.account))
+            emitEffect(Effect.OpenAccount(account.uuid))
         }
     }
 
