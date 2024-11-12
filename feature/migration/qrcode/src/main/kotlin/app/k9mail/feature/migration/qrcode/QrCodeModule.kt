@@ -3,6 +3,10 @@ package app.k9mail.feature.migration.qrcode
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.domain.usecase.QrCodePayloadReader
 import app.k9mail.feature.migration.qrcode.domain.usecase.QrCodeSettingsWriter
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadAdapter
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadMapper
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadParser
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadValidator
 import app.k9mail.feature.migration.qrcode.settings.DefaultUuidGenerator
 import app.k9mail.feature.migration.qrcode.settings.UuidGenerator
 import app.k9mail.feature.migration.qrcode.settings.XmlSettingWriter
@@ -18,7 +22,18 @@ val qrCodeModule = module {
         )
     }
 
-    factory<UseCase.QrCodePayloadReader> { QrCodePayloadReader() }
+    factory { QrCodePayloadAdapter() }
+    factory { QrCodePayloadParser(qrCodePayloadAdapter = get()) }
+    factory { QrCodePayloadValidator() }
+    factory { QrCodePayloadMapper(qrCodePayloadValidator = get()) }
+
+    factory<UseCase.QrCodePayloadReader> {
+        QrCodePayloadReader(
+            parser = get(),
+            mapper = get(),
+        )
+    }
+
     factory<UseCase.QrCodeSettingsWriter> {
         QrCodeSettingsWriter(
             context = get(),

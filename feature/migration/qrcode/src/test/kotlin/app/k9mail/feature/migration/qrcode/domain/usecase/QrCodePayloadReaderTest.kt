@@ -4,6 +4,10 @@ import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadAdapter
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadMapper
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadParser
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadValidator
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
@@ -12,7 +16,10 @@ import kotlin.test.Test
 
 @Suppress("LongMethod")
 class QrCodePayloadReaderTest {
-    private val reader = QrCodePayloadReader()
+    private val reader = QrCodePayloadReader(
+        parser = QrCodePayloadParser(QrCodePayloadAdapter()),
+        mapper = QrCodePayloadMapper(QrCodePayloadValidator()),
+    )
 
     @Test
     fun `one account, one identity, no passwords`() {

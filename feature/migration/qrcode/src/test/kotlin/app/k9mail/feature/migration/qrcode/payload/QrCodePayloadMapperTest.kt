@@ -13,7 +13,7 @@ import assertk.assertions.prop
 import kotlin.test.Test
 
 class QrCodePayloadMapperTest {
-    private val mapper = QrCodePayloadMapper()
+    private val mapper = QrCodePayloadMapper(QrCodePayloadValidator())
 
     @Test
     fun `valid input should be mapped to expected output`() {

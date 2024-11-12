@@ -6,7 +6,7 @@ import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
 
 internal class QrCodePayloadMapper(
-    private val qrCodePayloadValidator: QrCodePayloadValidator = QrCodePayloadValidator(),
+    private val qrCodePayloadValidator: QrCodePayloadValidator,
 ) {
     fun toAccountData(data: QrCodeData): AccountData? {
         return if (qrCodePayloadValidator.isValid(data)) {
