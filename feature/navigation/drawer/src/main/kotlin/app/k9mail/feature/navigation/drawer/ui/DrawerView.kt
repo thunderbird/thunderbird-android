@@ -8,13 +8,12 @@ import app.k9mail.feature.navigation.drawer.FolderDrawerState
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.ViewModel
-import app.k9mail.legacy.account.Account
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun DrawerView(
     drawerState: FolderDrawerState,
-    openAccount: (account: Account) -> Unit,
+    openAccount: (accountId: String) -> Unit,
     openFolder: (folderId: Long) -> Unit,
     openUnifiedFolder: () -> Unit,
     openManageFolders: () -> Unit,
@@ -24,7 +23,7 @@ internal fun DrawerView(
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
-            is Effect.OpenAccount -> openAccount(effect.account)
+            is Effect.OpenAccount -> openAccount(effect.accountId)
             is Effect.OpenFolder -> openFolder(effect.folderId)
             Effect.OpenUnifiedFolder -> openUnifiedFolder()
             is Effect.OpenManageFolders -> openManageFolders()

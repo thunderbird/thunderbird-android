@@ -593,7 +593,7 @@ open class MessageList :
     private fun initializeFolderDrawer() {
         navigationDrawer = FolderDrawer(
             parent = this,
-            openAccount = { account -> openRealAccount(account) },
+            openAccount = { accountId -> openRealAccount(accountId) },
             openFolder = { folderId -> openFolder(folderId) },
             openUnifiedFolder = { openUnifiedInbox() },
             openManageFolders = { launchManageFoldersScreen() },
@@ -666,17 +666,14 @@ open class MessageList :
         ManageFoldersActivity.launch(this, account!!)
     }
 
-    fun openRealAccount(account: Account): Boolean {
-        val shouldCloseDrawer = account.autoExpandFolderId != null
-
+    fun openRealAccount(accountId: String) {
+        val account = accountManager.getAccount(accountId) ?: return
         val folderId = defaultFolderProvider.getDefaultFolder(account)
 
         val search = LocalSearch()
         search.addAllowedFolder(folderId)
         search.addAccountUuid(account.uuid)
         actionDisplaySearch(this, search, noThreading = false, newTask = false)
-
-        return shouldCloseDrawer
     }
 
     private fun performSearch(search: LocalSearch) {

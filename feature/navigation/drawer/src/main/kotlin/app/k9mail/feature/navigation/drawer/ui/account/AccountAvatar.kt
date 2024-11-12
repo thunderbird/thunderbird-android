@@ -28,7 +28,7 @@ internal fun AccountAvatar(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val accountColor = calculateAccountColor(account.account.chipColor)
+    val accountColor = calculateAccountColor(account.color)
     val accountColorRoles = accountColor.toColorRoles(context)
 
     Box(
@@ -50,7 +50,7 @@ internal fun AccountAvatar(
                     .border(2.dp, MainTheme.colors.surfaceContainerLowest, CircleShape),
             ) {
                 Placeholder(
-                    displayName = account.account.displayName,
+                    displayName = account.name,
                 )
                 // TODO: Add image loading
             }
