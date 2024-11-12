@@ -4,10 +4,12 @@ import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
+import app.k9mail.feature.migration.qrcode.payload.FakeDeletePolicyProvider
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadAdapter
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadMapper
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadParser
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadValidator
+import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
@@ -18,7 +20,10 @@ import kotlin.test.Test
 class QrCodePayloadReaderTest {
     private val reader = QrCodePayloadReader(
         parser = QrCodePayloadParser(QrCodePayloadAdapter()),
-        mapper = QrCodePayloadMapper(QrCodePayloadValidator()),
+        mapper = QrCodePayloadMapper(
+            qrCodePayloadValidator = QrCodePayloadValidator(),
+            deletePolicyProvider = FakeDeletePolicyProvider(),
+        ),
     )
 
     @Test
@@ -37,6 +42,7 @@ class QrCodePayloadReaderTest {
                 accounts = listOf(
                     AccountData.Account(
                         accountName = "My Account",
+                        deletePolicy = FakeDeletePolicyProvider.DELETE_POLICY,
                         incomingServer = AccountData.IncomingServer(
                             protocol = AccountData.IncomingServerProtocol.Imap,
                             hostname = "imap.domain.example".toHostname(),
@@ -92,6 +98,7 @@ class QrCodePayloadReaderTest {
                 accounts = listOf(
                     AccountData.Account(
                         accountName = "user@domain.example",
+                        deletePolicy = FakeDeletePolicyProvider.DELETE_POLICY,
                         incomingServer = AccountData.IncomingServer(
                             protocol = AccountData.IncomingServerProtocol.Imap,
                             hostname = "imap.domain.example".toHostname(),
@@ -127,6 +134,7 @@ class QrCodePayloadReaderTest {
                     ),
                     AccountData.Account(
                         accountName = "user@company.example",
+                        deletePolicy = FakeDeletePolicyProvider.DELETE_POLICY,
                         incomingServer = AccountData.IncomingServer(
                             protocol = AccountData.IncomingServerProtocol.Imap,
                             hostname = "imap.company.example".toHostname(),

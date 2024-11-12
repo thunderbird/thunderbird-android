@@ -1,12 +1,17 @@
 package app.k9mail.feature.migration.qrcode.payload
 
+import app.k9mail.core.common.mail.Protocols
 import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
+import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.IncomingServerProtocol
+import app.k9mail.legacy.account.Account.DeletePolicy
+import com.fsck.k9.account.DeletePolicyProvider
 
 internal class QrCodePayloadMapper(
     private val qrCodePayloadValidator: QrCodePayloadValidator,
+    private val deletePolicyProvider: DeletePolicyProvider,
 ) {
     fun toAccountData(data: QrCodeData): AccountData? {
         return if (qrCodePayloadValidator.isValid(data)) {
@@ -31,9 +36,11 @@ internal class QrCodePayloadMapper(
             accountName = account.incomingServer.accountName,
             identity = outgoingServerGroups.first().identities.first(),
         )
+        val deletePolicy = getDeletePolicy(incomingServer.protocol)
 
         return AccountData.Account(
             accountName = accountName,
+            deletePolicy = deletePolicy,
             incomingServer = incomingServer,
             outgoingServerGroups = outgoingServerGroups,
         )
@@ -91,5 +98,14 @@ internal class QrCodePayloadMapper(
             emailAddress = identity.emailAddress.toUserEmailAddress(),
             displayName = identity.displayName,
         )
+    }
+
+    private fun getDeletePolicy(protocol: IncomingServerProtocol): DeletePolicy {
+        val accountType = when (protocol) {
+            IncomingServerProtocol.Imap -> Protocols.IMAP
+            IncomingServerProtocol.Pop3 -> Protocols.POP3
+        }
+
+        return deletePolicyProvider.getDeletePolicy(accountType)
     }
 }

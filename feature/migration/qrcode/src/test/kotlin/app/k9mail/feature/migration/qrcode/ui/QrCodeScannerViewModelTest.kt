@@ -8,6 +8,7 @@ import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.domain.usecase.QrCodePayloadReader
+import app.k9mail.feature.migration.qrcode.payload.FakeDeletePolicyProvider
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadAdapter
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadMapper
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadParser
@@ -141,7 +142,10 @@ private class QrCodeScannerScreenRobot(
     private val viewModel = QrCodeScannerViewModel(
         qrCodePayloadReader = QrCodePayloadReader(
             parser = QrCodePayloadParser(QrCodePayloadAdapter()),
-            mapper = QrCodePayloadMapper(QrCodePayloadValidator()),
+            mapper = QrCodePayloadMapper(
+                qrCodePayloadValidator = QrCodePayloadValidator(),
+                deletePolicyProvider = FakeDeletePolicyProvider(),
+            ),
         ),
         qrCodeSettingsWriter = qrCodeSettingsWriter,
         createCameraUseCaseProvider = { listener ->

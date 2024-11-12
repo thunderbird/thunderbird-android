@@ -25,7 +25,12 @@ val qrCodeModule = module {
     factory { QrCodePayloadAdapter() }
     factory { QrCodePayloadParser(qrCodePayloadAdapter = get()) }
     factory { QrCodePayloadValidator() }
-    factory { QrCodePayloadMapper(qrCodePayloadValidator = get()) }
+    factory {
+        QrCodePayloadMapper(
+            qrCodePayloadValidator = get(),
+            deletePolicyProvider = get(),
+        )
+    }
 
     factory<UseCase.QrCodePayloadReader> {
         QrCodePayloadReader(
