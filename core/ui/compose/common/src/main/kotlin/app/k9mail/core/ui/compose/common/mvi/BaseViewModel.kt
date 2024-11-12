@@ -19,10 +19,10 @@ import kotlinx.coroutines.launch
  * represented as a state.
  * @param EVENT The type that represents user actions that can occur and should be handled by the ViewModel. For
  * example, a button click can be represented as an event.
- * @param EFFECT The  type that represents side-effects that can occur in response to the state changes. For example,
+ * @param EFFECT The type that represents side-effects that can occur in response to the state changes. For example,
  * a navigation event can be represented as an effect.
  *
- * @property initialState The initial [STATE] of the ViewModel.
+ * @param initialState The initial [STATE] of the ViewModel.
  */
 abstract class BaseViewModel<STATE, EVENT, EFFECT>(
     initialState: STATE,
