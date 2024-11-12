@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.edit.ui.server.settings.save
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import app.k9mail.feature.account.common.ui.loadingerror.LoadingErrorState
+import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 
 interface SaveServerSettingsContract {
 

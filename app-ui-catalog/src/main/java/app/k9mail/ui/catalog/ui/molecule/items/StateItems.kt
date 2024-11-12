@@ -130,7 +130,7 @@ private fun StatefulContentLoadingView() {
 @Composable
 private fun StatefulContentLoadingErrorView() {
     val state = remember {
-        mutableStateOf(ContentLoadingErrorState.Loading)
+        mutableStateOf<ContentLoadingErrorState>(ContentLoadingErrorState.Loading)
     }
 
     ContentLoadingErrorView(

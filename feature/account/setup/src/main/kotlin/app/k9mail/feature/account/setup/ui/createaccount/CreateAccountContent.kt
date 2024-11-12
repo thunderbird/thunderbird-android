@@ -11,7 +11,6 @@ import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
-import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
 import app.k9mail.feature.account.setup.R
 
 @Composable
@@ -27,7 +26,7 @@ internal fun CreateAccountContent(
             .then(modifier),
     ) {
         ContentLoadingErrorView(
-            state = rememberContentLoadingErrorViewState(state),
+            state = state,
             loading = {
                 LoadingView(
                     message = stringResource(R.string.account_setup_create_account_creating),
