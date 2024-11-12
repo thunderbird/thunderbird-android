@@ -27,6 +27,7 @@ val newAccountModule = module {
             localFoldersCreator = get(),
             preferences = get(),
             context = androidApplication(),
+            deletePolicyProvider = get(),
             messagingController = get(),
         )
     }
@@ -50,4 +51,6 @@ val newAccountModule = module {
             messagingController = get(),
         )
     }
+
+    factory<DeletePolicyProvider> { DefaultDeletePolicyProvider() }
 }

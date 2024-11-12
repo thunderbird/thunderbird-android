@@ -33,6 +33,7 @@ class AccountCreator(
     private val preferences: Preferences,
     private val context: Context,
     private val messagingController: MessagingController,
+    private val deletePolicyProvider: DeletePolicyProvider,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountSetupExternalContract.AccountCreator {
 
@@ -67,7 +68,7 @@ class AccountCreator(
         newAccount.automaticCheckIntervalMinutes = account.options.checkFrequencyInMinutes
         newAccount.displayCount = account.options.messageDisplayCount
 
-        newAccount.deletePolicy = DeletePolicyHelper.getDefaultDeletePolicy(newAccount.incomingServerSettings.type)
+        newAccount.deletePolicy = deletePolicyProvider.getDeletePolicy(newAccount.incomingServerSettings.type)
         newAccount.chipColor = accountColorPicker.pickColor()
 
         localFoldersCreator.createSpecialLocalFolders(newAccount)
