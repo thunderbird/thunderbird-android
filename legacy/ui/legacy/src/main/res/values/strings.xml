@@ -236,7 +236,7 @@
     <string name="general_settings_contact_name_color_label">Contact name color</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain text messages</string>
     <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>
     <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>
 
