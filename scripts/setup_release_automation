@@ -3,7 +3,7 @@
 # See docs/CI/Release_Automation.md for more details
 # Run this from the .signing directory with all the keys and properties files in it.
 
-# python -m venv venv; source venv/bin/activate; pip install requests, pynacl
+# python -m venv venv; source venv/bin/activate; pip install requests pynacl
 
 import os
 import json
