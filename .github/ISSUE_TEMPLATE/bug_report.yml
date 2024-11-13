@@ -29,7 +29,7 @@ body:
     attributes:
       label: App version
       description: |
-        What's the "latest version" changes all the time, so we need the exact version number. You can find it 
+        What's the "latest version" changes all the time, so we need the exact version number. You can find it
         inside the app under *Settings → About*.
       placeholder: x.y
     validations:
@@ -69,7 +69,7 @@ body:
     id: expected
     attributes:
       label: Expected behavior
-      description: After following the steps, what did you think K-9 Mail would do?
+      description: After following the steps, what did you think the app would do?
     validations:
       required: true
   - type: textarea
@@ -77,7 +77,7 @@ body:
     attributes:
       label: Actual behavior
       description: |
-        What did K-9 Mail do instead? Screenshots might help. Usually, you can take a screenshot by pressing 
+        What did the app do instead? Screenshots might help. Usually, you can take a screenshot by pressing
         *Power* + *Volume down* for a few seconds.
     validations:
       required: true
@@ -86,7 +86,7 @@ body:
     attributes:
       label: Logs
       description: |
-        Please take some time to [retrieve logs](https://github.com/thunderbird/thunderbird-android/wiki/LoggingErrors) 
+        Please take some time to [retrieve logs](https://github.com/thunderbird/thunderbird-android/wiki/LoggingErrors)
         and attach them here.
 
         Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in.

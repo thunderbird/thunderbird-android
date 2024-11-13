@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Feature Request
+    url: https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android
+    about: Submit your ideas to improve Thunderbird for Android.
   - name: Mozilla Support Forum (SUMO)
     url: https://support.mozilla.org/products/thunderbird-android
     about: Most issues are not bugs. Ask the community for help.
