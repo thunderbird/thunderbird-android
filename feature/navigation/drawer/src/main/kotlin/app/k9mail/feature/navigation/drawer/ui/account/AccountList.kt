@@ -47,12 +47,10 @@ internal fun AccountList(
                     items = accounts,
                     key = { account -> account.id },
                 ) { account ->
-                    if (selectedAccount != null && account == selectedAccount) {
-                        return@items
-                    }
                     AccountListItem(
                         account = account,
                         onClick = { onAccountClick(account) },
+                        selected = selectedAccount == account,
                     )
                 }
             }

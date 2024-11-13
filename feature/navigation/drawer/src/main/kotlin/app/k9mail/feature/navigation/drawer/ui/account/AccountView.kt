@@ -45,7 +45,8 @@ internal fun AccountView(
                 ) {
                     AccountAvatar(
                         account = account,
-                        onClick = { },
+                        onClick = null,
+                        selected = false,
                     )
                 }
             }
