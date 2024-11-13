@@ -8,7 +8,7 @@ import kotlin.test.Test
 
 @Suppress("LongMethod")
 class QrCodePayloadParserTest {
-    private val parser = QrCodePayloadParser()
+    private val parser = QrCodePayloadParser(QrCodePayloadAdapter())
 
     @Test
     fun `one account, one identity, no account name, no passwords`() {

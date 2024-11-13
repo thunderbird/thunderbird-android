@@ -6,8 +6,8 @@ import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadMapper
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadParser
 
 internal class QrCodePayloadReader(
-    private val parser: QrCodePayloadParser = QrCodePayloadParser(),
-    private val mapper: QrCodePayloadMapper = QrCodePayloadMapper(),
+    private val parser: QrCodePayloadParser,
+    private val mapper: QrCodePayloadMapper,
 ) : UseCase.QrCodePayloadReader {
     override fun read(payload: String): AccountData? {
         val parsedData = parser.parse(payload) ?: return null

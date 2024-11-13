@@ -6,11 +6,13 @@ import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.Identity
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.IncomingServer
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.OutgoingServer
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.OutgoingServerGroup
+import app.k9mail.legacy.account.Account.DeletePolicy
 import java.io.OutputStream
 import org.xmlpull.v1.XmlSerializer
 
 // TODO: This duplicates much of the code in SettingsExporter. Add an abstraction layer for the input data, so we can
 //  use a single XML writer class for exporting accounts and writing QR code payloads to a settings file.
+@Suppress("TooManyFunctions")
 internal class XmlSettingWriter(
     private val uuidGenerator: UuidGenerator,
 ) {
@@ -56,10 +58,26 @@ internal class XmlSettingWriter(
         attribute(null, UUID_ATTRIBUTE, accountUuid)
 
         writeElement(NAME_ELEMENT, account.accountName)
+        writeSettings(account)
         writeIncomingServer(account.incomingServer)
         writeOutgoingServers(account.outgoingServerGroups)
 
         endTag(null, ACCOUNT_ELEMENT)
+    }
+
+    private fun XmlSerializer.writeSettings(account: Account) {
+        startTag(null, SETTINGS_ELEMENT)
+        writeKeyValue("deletePolicy", account.deletePolicy.toSettingsFileValue())
+        endTag(null, SETTINGS_ELEMENT)
+    }
+
+    private fun XmlSerializer.writeKeyValue(key: String, value: String?) {
+        startTag(null, VALUE_ELEMENT)
+        attribute(null, KEY_ATTRIBUTE, key)
+        if (value != null) {
+            text(value)
+        }
+        endTag(null, VALUE_ELEMENT)
     }
 
     private fun XmlSerializer.writeIncomingServer(incomingServer: IncomingServer) {
@@ -139,6 +157,9 @@ internal class XmlSettingWriter(
         private const val ACCOUNTS_ELEMENT = "accounts"
         private const val ACCOUNT_ELEMENT = "account"
         private const val UUID_ATTRIBUTE = "uuid"
+        private const val SETTINGS_ELEMENT = "settings"
+        private const val VALUE_ELEMENT = "value"
+        private const val KEY_ATTRIBUTE = "key"
         private const val INCOMING_SERVER_ELEMENT = "incoming-server"
         private const val OUTGOING_SERVER_ELEMENT = "outgoing-server"
         private const val TYPE_ATTRIBUTE = "type"
@@ -152,5 +173,14 @@ internal class XmlSettingWriter(
         private const val IDENTITY_ELEMENT = "identity"
         private const val NAME_ELEMENT = "name"
         private const val EMAIL_ELEMENT = "email"
+    }
+}
+
+private fun DeletePolicy.toSettingsFileValue(): String {
+    return when (this) {
+        DeletePolicy.NEVER -> "NEVER"
+        DeletePolicy.SEVEN_DAYS -> error("Unsupported value")
+        DeletePolicy.ON_DELETE -> "DELETE"
+        DeletePolicy.MARK_AS_READ -> "MARK_AS_READ"
     }
 }
