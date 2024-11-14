@@ -50,7 +50,6 @@ internal fun AutoDiscoveryResultHeaderView(
             )
             TextBodyMedium(
                 text = stringResource(state.subtitleResourceId),
-                color = selectColor(state),
             )
         }
         if (state.isExpandable) {
