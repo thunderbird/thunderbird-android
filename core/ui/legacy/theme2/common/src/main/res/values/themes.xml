@@ -72,8 +72,16 @@
 
     <style name="Theme2.Main.DayNight" parent="Theme2.Main.Light" />
 
-    <style name="Theme2.Main.Startup" parent="Theme2.Main.Dark">
-        <item name="android:windowBackground">@android:color/black</item>
-    </style>
+    <!--
+    Android uses the theme configured in the manifest for its initial startup animation. On Android versions that don't
+    support switching the system theme we have to optimize for either the light or dark theme. We chose the dark theme
+    because it's often used in low light conditions and a bright flash during startup is more annoying than using a dark
+    startup animation when the app is configured to use the light theme.
+
+    On modern Android versions we override Theme2.Main.Startup to use Theme2.Main.DayNight instead. That way the startup
+    animation will match the app theme if the app follows the system theme (which is the default configuration).
+    See <values-v28/themes.xml>.
+    -->
+    <style name="Theme2.Main.Startup" parent="Theme2.Main.Dark" />
 
 </resources>
