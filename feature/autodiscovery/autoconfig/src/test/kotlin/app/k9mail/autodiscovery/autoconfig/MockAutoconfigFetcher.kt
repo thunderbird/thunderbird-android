@@ -18,6 +18,9 @@ internal class MockAutoconfigFetcher : AutoconfigFetcher {
     val callCount: Int
         get() = callArguments.size
 
+    val urls: List<String>
+        get() = callArguments.map { (url, _) -> url.toString() }
+
     private val results = mutableListOf<AutoDiscoveryResult>()
 
     fun addResult(discoveryResult: AutoDiscoveryResult) {
