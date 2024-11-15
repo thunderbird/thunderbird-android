@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto">
     <queries>
-        <provider android:authorities="net.discdd.provider.datastoreprovider" />
+        <provider android:authorities="net.discdd.datastore.providers.MessageProvider" />
     </queries>
     <uses-permission
         android:name="net.discdd.bundleclient.permission.MESSAGE_PROVIDER_READ"
