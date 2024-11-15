@@ -147,7 +147,7 @@ dependencies {
     implementation(projects.core.featureflags)
 
     "fossImplementation"(projects.feature.funding.noop)
-    "fullImplementation"(projects.feature.funding.noop)
+    "fullImplementation"(projects.feature.funding.googleplay)
     implementation(projects.feature.migration.launcher.noop)
     implementation(projects.feature.onboarding.migration.noop)
     implementation(projects.feature.telemetry.noop)
