@@ -1,5 +1,6 @@
 package com.fsck.k9.preferences
 
+import app.k9mail.legacy.di.DI.get
 import assertk.all
 import assertk.assertFailure
 import assertk.assertThat
@@ -16,10 +17,23 @@ import com.fsck.k9.Preferences
 import java.util.UUID
 import org.junit.Before
 import org.junit.Test
-import org.koin.test.inject
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 
 class SettingsImporterTest : K9RobolectricTest() {
-    private val settingsImporter: SettingsImporter by inject()
+    private val unifiedInboxConfigurator = mock<UnifiedInboxConfigurator>()
+    private val settingsImporter = SettingsImporter(
+        settingsFileParser = get(),
+        generalSettingsValidator = get(),
+        accountSettingsValidator = get(),
+        generalSettingsUpgrader = get(),
+        accountSettingsWriter = get(),
+        accountSettingsUpgrader = get(),
+        generalSettingsWriter = get(),
+        unifiedInboxConfigurator = unifiedInboxConfigurator,
+    )
 
     @Before
     fun before() {
@@ -152,6 +166,93 @@ class SettingsImporterTest : K9RobolectricTest() {
                 }
             }
         }
+    }
+
+    @Test
+    fun `importSettings()  configures unifiedInbox when globalSettingsImported is false`() {
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="1">
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name>Account</name>
+                  <incoming-server type="IMAP">
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <username>user@gmail.com</username>
+                    <authentication-type>CRAM_MD5</authentication-type>
+                    <host>googlemail.com</host>
+                  </incoming-server>
+                  <outgoing-server type="SMTP">
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <username>user@googlemail.com</username>
+                    <authentication-type>CRAM_MD5</authentication-type>
+                    <host>googlemail.com</host>
+                  </outgoing-server>
+                  <settings>
+                    <value key="a">b</value>
+                  </settings>
+                  <identities>
+                    <identity>
+                      <email>user@gmail.com</email>
+                    </identity>
+                  </identities>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+        val accountUuids = listOf("uuid-1")
+
+        val results = settingsImporter.importSettings(inputStream, globalSettings = false, accountUuids)
+
+        assertThat(results.globalSettings).isFalse()
+        verify(unifiedInboxConfigurator, times(1)).configureUnifiedInbox()
+    }
+
+    @Test
+    fun `importSettings()  does not not configure unifiedInbox when globalSettingsImported is true`() {
+        val accountUuid = UUID.randomUUID().toString()
+        val inputStream =
+            """
+            <k9settings format="1" version="101">
+            <global>
+                <value key="confirmDelete">false</value>
+                <value key="changeRegisteredNameColor">false</value>
+                <value key="confirmSpam">false</value>
+              </global>
+              <accounts>
+                <account uuid="$accountUuid">
+                  <name>Account</name>
+                  <incoming-server type="IMAP">
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <username>user@gmail.com</username>
+                    <authentication-type>CRAM_MD5</authentication-type>
+                    <host>googlemail.com</host>
+                  </incoming-server>
+                  <outgoing-server type="SMTP">
+                    <connection-security>SSL_TLS_REQUIRED</connection-security>
+                    <username>user@googlemail.com</username>
+                    <authentication-type>CRAM_MD5</authentication-type>
+                    <host>googlemail.com</host>
+                  </outgoing-server>
+                  <settings>
+                    <value key="a">b</value>
+                  </settings>
+                  <identities>
+                    <identity>
+                      <email>user@gmail.com</email>
+                    </identity>
+                  </identities>
+                </account>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+        val accountUuids = listOf("uuid-1")
+
+        val results = settingsImporter.importSettings(inputStream, globalSettings = true, accountUuids)
+
+        assertThat(results.globalSettings).isTrue()
+        verify(unifiedInboxConfigurator, never()).configureUnifiedInbox()
     }
 
     @Test

@@ -9,6 +9,7 @@ import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
 import timber.log.Timber
 
+@Suppress("LongParameterList")
 class SettingsImporter internal constructor(
     private val settingsFileParser: SettingsFileParser,
     private val generalSettingsValidator: GeneralSettingsValidator,
@@ -17,6 +18,7 @@ class SettingsImporter internal constructor(
     private val accountSettingsUpgrader: AccountSettingsUpgrader,
     private val generalSettingsWriter: GeneralSettingsWriter,
     private val accountSettingsWriter: AccountSettingsWriter,
+    private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
 ) {
     /**
      * Parses an import [InputStream] and returns information on whether it contains global settings and/or account
@@ -98,6 +100,10 @@ class SettingsImporter internal constructor(
 
                     erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                 }
+            }
+
+            if (!globalSettingsImported) {
+                unifiedInboxConfigurator.configureUnifiedInbox()
             }
 
             return ImportResults(globalSettingsImported, importedAccounts, erroneousAccounts)

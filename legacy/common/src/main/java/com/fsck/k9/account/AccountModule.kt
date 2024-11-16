@@ -29,6 +29,7 @@ val newAccountModule = module {
             context = androidApplication(),
             deletePolicyProvider = get(),
             messagingController = get(),
+            unifiedInboxConfigurator = get(),
         )
     }
 
