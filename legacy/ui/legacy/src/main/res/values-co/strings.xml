@@ -8,6 +8,8 @@
     <string name="changelog_recent_changes_title">Ciò chì hè novu</string>
     <string name="changelog_show_recent_changes">Affissà i cambiamenti recente quandu l’appiecazione hè stata messa à livellu</string>
     <string name="changelog_snackbar_button_text">Affissà</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="authors">Autori</string>
     <string name="compose_title_compose">Cumpone</string>
     <string name="compose_title_reply_all">Risponde à tutti</string>

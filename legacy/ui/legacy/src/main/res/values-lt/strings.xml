@@ -889,6 +889,8 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="background_work_notification_remove_account">Šalinama paskyra…</string>
     <string name="message_list_content_description_unread_prefix">neskaityti, %s</string>
     <string name="changelog_snackbar_button_text">Peržiūrėti</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="about_app_authors_thunderbird">„Thunderbird Mobile“ komanda</string>
     <string name="settings_ui_telemetry_description">Bendrina su „Mozilla“ šios programos veikimo, naudojimo, aparatinės įrangos ir tinkinimo duomenis, kad padėtų mums tobulinti „Thunderbird“</string>
     <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „<xliff:g id="app_name">%s</xliff:g>“.</string>

@@ -795,6 +795,8 @@
     <string name="notification_notify_error_title">Грешка при известие</string>
     <string name="unsubscribe_action">Отписване</string>
     <string name="changelog_snackbar_button_text">Покажи</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="get_help_title">Помощ</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Остани на сегашното съобщение</string>
     <string name="general_settings_swipe_action_toggle_read">Отбележи като прочетено/непрочетено</string>
@@ -888,3 +890,4 @@
     <string name="push_notification_grant_alarm_permission">Докоснете, за да дадете разрешение.</string>
     <string name="account_delete_dlg_instructions_fmt">Профилът „<xliff:g id="account">%s</xliff:g>“ ще бъде премахнат от <xliff:g id="app_name">%s</xliff:g>.</string>
 </resources>
+

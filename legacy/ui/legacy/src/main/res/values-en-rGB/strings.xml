@@ -125,6 +125,8 @@
     <string name="unsubscribe_action">Unsubscribe</string>
     <string name="changelog_show_recent_changes">Show recent changes when app was updated</string>
     <string name="changelog_snackbar_button_text">View</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="about_project_title">Open Source Project</string>
     <string name="compose_title_reply">Reply</string>
     <string name="license">License</string>

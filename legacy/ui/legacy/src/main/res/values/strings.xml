@@ -22,6 +22,8 @@
     <string name="changelog_snackbar_text">Find out what\'s new in this release</string>
     <!-- Button text of the "snack bar" that is displayed when the app was updated. -->
     <string name="changelog_snackbar_button_text">View</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
 
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from <xliff:g id="app_name">%s</xliff:g>.</string>

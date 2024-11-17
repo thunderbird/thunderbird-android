@@ -856,6 +856,8 @@
     <string name="push_info_title">Anında İlet Bilgileri</string>
     <string name="general_settings_ui_density_relaxed">Geniş</string>
     <string name="changelog_snackbar_button_text">Göster</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="account_settings_ignore_chat_messages_summary">E-posta sohbetlerine ait iletiler için bildirim gösterme</string>
     <string name="message_details_loading_error">İleti ayrıntıları yüklenirken bir hata oluştu.</string>
     <string name="action_add_to_contacts">Kişilere ekle</string>

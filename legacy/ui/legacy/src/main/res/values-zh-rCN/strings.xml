@@ -22,6 +22,8 @@
     <string name="changelog_snackbar_text">了解此版本的新增功能</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">查看</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->
@@ -885,3 +887,4 @@
     <string name="volume_navigation_title_short">音量键导航</string>
     <string name="volume_navigation_summary">在邮件视图中使用音量键在邮件之间导航</string>
 </resources>
+

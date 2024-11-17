@@ -685,6 +685,8 @@
     <string name="disable_inline_pgp">כבה PGP/INLINE</string>
     <string name="settings_export_success_generic">הגדרות יוצאו בהצלחה</string>
     <string name="changelog_snackbar_button_text">הצג</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="global_settings_sender_above_subject_label">שם השולח מעל הנושא</string>
     <string name="general_settings_swipe_action_toggle_selection">החלפה בין בחירה/ביטול בחירה</string>
     <string name="general_settings_left_swipe_title">החלקה שמאלה</string>
@@ -909,3 +911,4 @@
     <string name="folder_list_show_hidden_folders">הצג תיקיות מוסתרות</string>
     <string name="settings_list_action_support">תמיכה <xliff:g id="app_name">%s</xliff:g></string>
 </resources>
+

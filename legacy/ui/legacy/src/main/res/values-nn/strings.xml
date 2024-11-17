@@ -501,6 +501,8 @@
     <string name="changelog_version_title">Versjon %s</string>
     <string name="changelog_recent_changes_title">Kva er nytt</string>
     <string name="changelog_snackbar_button_text">Vis</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="changelog_show_recent_changes">Vis nylege endringar etter at appen har blitt oppdatert</string>
     <string name="search_everywhere_action">Søk overalt</string>
     <string name="get_help_title">Få hjelp</string>

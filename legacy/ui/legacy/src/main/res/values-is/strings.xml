@@ -22,6 +22,8 @@
     <string name="changelog_snackbar_text">Skoðaðu hvað sé nýtt við þessa útgáfu</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Skoða</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->

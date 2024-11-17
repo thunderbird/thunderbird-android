@@ -22,6 +22,8 @@
     <string name="changelog_snackbar_text">了解此版本的新增功能</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">檢視</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->
@@ -890,3 +892,4 @@
     <string name="folder_list_show_hidden_folders">顯示已隱藏資料夾</string>
     <string name="settings_list_action_support">支援 <xliff:g id="app_name">%s</xliff:g></string>
 </resources>
+

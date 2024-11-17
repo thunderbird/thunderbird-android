@@ -157,6 +157,8 @@
     <string name="changelog_show_recent_changes">Taispeáin athruithe le déanaí nuair a nuashonraíodh an feidhmchlár</string>
     <string name="changelog_snackbar_text">Faigh amach cad atá nua san eisiúint seo</string>
     <string name="changelog_snackbar_button_text">Amharc</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="compose_title_reply">Freagra</string>
     <string name="compose_title_reply_all">Freagair gach rud</string>
     <string name="compose_title_forward_as_attachment">Ar aghaidh mar iatán</string>

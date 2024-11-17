@@ -881,6 +881,8 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="general_settings_post_remove_action_show_previous_message">Pokaži prejšnje sporočilo</string>
     <string name="general_settings_ui_density_relaxed">Široko</string>
     <string name="changelog_snackbar_button_text">Poglej</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="general_settings_ui_density_compact">Strnjeno</string>
     <string name="general_settings_post_remove_action_show_next_message">Pokaži naslednje sporočilo</string>
     <string name="general_settings_post_remove_action_title">Po brisanju ali premikanju sporočila</string>
@@ -907,3 +909,4 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="settings_list_action_support">Podprite <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Ko uporabljate potisna sporočila, <xliff:g id="app_name">%1$s</xliff:g> vzdržuje povezavo s poštnim strežnikom. Android zahteva prikaz obvestila, ko je aplikacija aktivna v ozadju. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
 </resources>
+

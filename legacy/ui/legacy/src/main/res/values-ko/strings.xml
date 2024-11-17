@@ -747,6 +747,8 @@
     <string name="swipe_action_mark_as_read">읽음으로 표시</string>
     <string name="message_list_error_title">오류</string>
     <string name="changelog_snackbar_button_text">보기</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="account_settings_vibrate_pattern_label">진동 패턴</string>
     <string name="locked_attach_unlock">잠금 해제</string>
     <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
@@ -851,3 +853,4 @@
     <string name="dialog_autocrypt_mutual_learn_more">자세한 내용은<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">여기를 클릭</a>하십시오.</string>
     <string name="ac_transfer_setting_summary">종단간 설정을 다른 장치와 안전하게 공유</string>
 </resources>
+

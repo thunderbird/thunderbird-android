@@ -783,6 +783,8 @@
     <string name="general_settings_ui_density_relaxed">Opušteno</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Broj novih poruka</string>
     <string name="changelog_snackbar_button_text">Pregledaj</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="changelog_snackbar_text">Saznajte što je novo u ovom izdanju</string>
     <string name="changelog_version_title">Verzija %s</string>
     <string name="about_title">O aplikaciji <xliff:g id="app_name">%s</xliff:g></string>

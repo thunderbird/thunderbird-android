@@ -861,6 +861,8 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="notification_notify_error_title">Erro de notificación</string>
     <string name="get_help_title">Obter axuda</string>
     <string name="changelog_snackbar_button_text">Vista</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="message_view_recipients_format">aos <xliff:g id="destinatarios">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="general_settings_swipe_action_toggle_read">Marcar como lido/non lido</string>

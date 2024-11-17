@@ -824,6 +824,8 @@
     <string name="unsubscribe_action">Opphev abonnement</string>
     <string name="changelog_show_recent_changes">Vis nylige endringer etter at appen har blitt oppdatert</string>
     <string name="changelog_snackbar_button_text">Vis</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="account_settings_vibrate_pattern_2">Mønster 2</string>
     <string name="account_settings_vibrate_pattern_1">Mønster 1</string>
     <string name="push_notification_state_wait_network">I dvale til nettverk er tilgjengelig</string>

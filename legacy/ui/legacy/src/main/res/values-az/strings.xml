@@ -114,6 +114,8 @@
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_view_theme_action_light">İşıqlı fona keçin</string>
     <string name="changelog_snackbar_button_text">Baxın</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="prefs_title">Tənzimləmələr</string>
     <string name="message_view_theme_action_dark">Qaranlıq fona keç</string>
     <string name="about_action">Haqqında</string>

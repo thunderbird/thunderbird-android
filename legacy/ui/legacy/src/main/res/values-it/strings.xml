@@ -22,6 +22,8 @@
     <string name="changelog_snackbar_text">Scopri le novità di questa versione</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Vedi</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->
@@ -901,3 +903,4 @@
     <string name="settings_list_action_support">Supporta <xliff:g id="app_name">%s</xliff:g></string>
     <string name="volume_navigation_title_short">Naviga con i tasti del volume</string>
 </resources>
+

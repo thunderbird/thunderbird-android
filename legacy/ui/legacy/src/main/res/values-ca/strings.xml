@@ -22,6 +22,8 @@
     <string name="changelog_snackbar_text">Esbrineu les novetats d’aquesta versió</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Mostra</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->
@@ -901,3 +903,4 @@
     <string name="volume_navigation_title_short">Navegació amb els botons de volum</string>
     <string name="volume_navigation_summary">Navegueu entre missatges mitjançant les tecles de volum a la vista de missatges</string>
 </resources>
+

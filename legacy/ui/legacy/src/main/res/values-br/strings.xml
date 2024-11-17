@@ -771,4 +771,6 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <string name="changelog_show_recent_changes">Diskouez ar c\'hemmoù diwezhañ goude hizivadenn an arload</string>
     <string name="changelog_snackbar_text">Taolit ur sell war ar pezh zo nevez er stumm-mañ</string>
     <string name="changelog_snackbar_button_text">Diskouez</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
 </resources>

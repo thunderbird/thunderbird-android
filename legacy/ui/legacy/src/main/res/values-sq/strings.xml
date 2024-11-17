@@ -22,6 +22,8 @@
     <string name="changelog_snackbar_text">Mësoni çka të re në këtë hedhje në qarkullim</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Shiheni</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->
@@ -891,3 +893,4 @@
     <string name="save_attachment_action">Ruaje bashkëngjitjen</string>
     <string name="folder_settings_push_label">Aktivizo Push</string>
 </resources>
+

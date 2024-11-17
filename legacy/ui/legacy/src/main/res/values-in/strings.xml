@@ -778,6 +778,8 @@
     <string name="changelog_snackbar_text">Cari tahu apa yang baru dalam rilis ini</string>
     <string name="changelog_show_recent_changes">Tampilkan perubahan terkini saat aplikasi diperbarui</string>
     <string name="changelog_snackbar_button_text">Lihat</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="choose_folder_move_title">Pindahkan ke…</string>
     <string name="choose_folder_copy_title">Salin ke…</string>
     <string name="new_messages_title">Pesan baru</string>

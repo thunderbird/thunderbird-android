@@ -48,6 +48,8 @@
     <string name="unsubscribe_action">अनसब्सक्राइब करें</string>
     <string name="changelog_show_recent_changes">ऐप अपडेट होने पे हाल के बदलाव दिखाएं</string>
     <string name="changelog_snackbar_button_text">देखें</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="about_project_title">ओपन सोर्स प्रोजेक्ट</string>
     <string name="compose_title_reply">जवाब दें</string>
     <string name="general_no_subject">(सब्जेक्ट नहीं है)</string>

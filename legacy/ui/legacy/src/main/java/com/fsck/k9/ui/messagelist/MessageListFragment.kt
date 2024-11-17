@@ -68,6 +68,7 @@ import timber.log.Timber
 private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 private const val MINIMUM_CLICK_INTERVAL = 200L
 private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
+private const val ARCHIVE_ERROR_SNACKBAR_DURATION = 2 * 1000
 
 class MessageListFragment :
     Fragment(),
@@ -90,6 +91,7 @@ class MessageListFragment :
     private lateinit var fragmentListener: MessageListFragmentListener
 
     private lateinit var recentChangesSnackbar: Snackbar
+    private lateinit var archiveErrorSnackbar: Snackbar
     private var recyclerView: RecyclerView? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
@@ -277,6 +279,7 @@ class MessageListFragment :
         initializeFloatingActionButton(view)
         initializeRecyclerView(view)
         initializeRecentChangesSnackbar()
+        initializeArchiveErrorSnackbar()
 
         // This needs to be done before loading the message list below
         initializeSortSettings()
@@ -379,6 +382,13 @@ class MessageListFragment :
 
         recentChangesViewModel.shouldShowRecentChangesHint
             .observe(viewLifecycleOwner, shouldShowRecentChangesHintObserver)
+    }
+
+    private fun initializeArchiveErrorSnackbar() {
+        val coordinatorLayout = requireView().findViewById<View>(R.id.message_list_coordinator)
+        archiveErrorSnackbar = Snackbar
+            .make(coordinatorLayout, R.string.archive_error_snackbar_text, ARCHIVE_ERROR_SNACKBAR_DURATION)
+            .setAction(R.string.archive_error_snackbar_button_text) { archiveErrorSnackbar.dismiss() }
     }
 
     private fun launchRecentChangesActivity() {
@@ -1645,7 +1655,12 @@ class MessageListFragment :
                 }
 
                 SwipeAction.Archive -> {
-                    onArchive(item.messageReference)
+                    item.account.archiveFolderId?.let {
+                        onArchive(item.messageReference)
+                    } ?: run {
+                        resetSwipedView(item.messageReference)
+                        archiveErrorSnackbar.show()
+                    }
                 }
 
                 SwipeAction.Delete -> {
@@ -1683,7 +1698,7 @@ class MessageListFragment :
             SwipeAction.ToggleRead -> !isOutbox
             SwipeAction.ToggleStar -> !isOutbox
             SwipeAction.Archive -> {
-                !isOutbox && item.account.hasArchiveFolder() && item.folderId != item.account.archiveFolderId
+                !isOutbox && item.folderId != item.account.archiveFolderId
             }
 
             SwipeAction.Delete -> true

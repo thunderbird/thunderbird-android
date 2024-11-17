@@ -820,6 +820,8 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="notification_notify_error_title">Sciigon eraro</string>
     <string name="message_view_show_remote_images_action">Montri forajn bildojn</string>
     <string name="changelog_snackbar_button_text">Vidi</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="about_title">Pri <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">La konto \"<xliff:g id="account">%s</xliff:g>\" estos forigita el <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="get_help_title">Ricevi helpon</string>

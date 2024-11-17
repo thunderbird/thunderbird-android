@@ -10,6 +10,8 @@
     <string name="changelog_recent_changes_title">Šta je novo</string>
     <string name="changelog_show_recent_changes">Prikaži skorije izmjene kad se aplikacija ažurira</string>
     <string name="changelog_snackbar_button_text">Pogledaj</string>
+    <string name="archive_error_snackbar_text">Archive folder is not selected. Unable to archive</string>
+    <string name="archive_error_snackbar_button_text">Dismiss</string>
     <string name="compose_title_reply">Odgovori</string>
     <string name="choose_folder_move_title">Premjesti u…</string>
     <string name="choose_folder_copy_title">Kopiraj u…</string>
