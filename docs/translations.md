@@ -41,9 +41,8 @@ When adding a new code module that is including translatable strings, a new comp
 10. Under "Monolingual base language file", enter the path to the string source file,
     e.g. `feature/account/common/src/main/res/values/strings.xml`.
 11. Uncheck "Edit base file".
-12. Change "Adding new translation" to "Contact maintainers".
-13. For "Translation license", select "Apache License 2.0".
-14. Press the "Save" button.
+12. For "Translation license", select "Apache License 2.0".
+13. Press the "Save" button.
 
 ## Things to note
 
