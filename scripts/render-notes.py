@@ -6,8 +6,19 @@ import requests
 import yaml
 import time
 import sys
+import re
 
 from jinja2 import Template
+
+VERSION_RE = re.compile(r"^([0-9.]+)(?:b([0-9]+))?$")
+
+
+def get_version_parts(version):
+    match = VERSION_RE.match(version)
+    if match:
+        return match.group(1), match.group(2)
+    else:
+        return None, None
 
 
 def render_notes(
@@ -27,8 +38,10 @@ def render_notes(
     """
     tb_notes_filename = f"{version}.yml"
     tb_notes_directory = "android_release"
-    if "0b" in version:
-        tb_notes_filename = f"{version[0:-1]}eta.yml"
+    base_version, beta_number = get_version_parts(version)
+
+    if beta_number:
+        tb_notes_filename = f"{base_version}beta.yml"
         tb_notes_directory = "android_beta"
 
     if os.path.isdir(os.path.expanduser(notesrepo)):
@@ -64,9 +77,7 @@ def render_notes(
         render_data["releases"][vers]["short_notes"] = []
         render_data["releases"][vers]["notes"] = {}
         for note in yaml_content["notes"]:
-            if ("0b" not in version) or (
-                "0b" in version and note["group"] == int(vers[-1])
-            ):
+            if not beta_number or note["group"] == int(beta_number):
                 if (
                     note.get("thunderbird_only", False) and application == "k9mail"
                 ) or (note.get("k9mail_only", False) and application == "thunderbird"):
@@ -105,7 +116,9 @@ def render_notes(
     template_base = os.path.join(os.path.dirname(sys.argv[0]), "templates")
 
     for render_file in render_files:
-        with open(os.path.join(template_base, render_files[render_file]["template"]), "r") as file:
+        with open(
+            os.path.join(template_base, render_files[render_file]["template"]), "r"
+        ) as file:
             template = file.read()
         template = Template(template)
         rendered = template.render(render_files[render_file]["render_data"])
