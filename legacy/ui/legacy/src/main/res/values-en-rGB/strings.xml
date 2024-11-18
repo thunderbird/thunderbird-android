@@ -614,7 +614,7 @@
     <string name="account_setup_options_mail_check_frequency_3hour">Every 3 hours</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configure error and status notifications</string>
     <string name="manage_identities_edit_action">Edit</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain text messages</string>
     <string name="about_action">About</string>
     <string name="account_settings_vibrate_times">Repeat vibration</string>
     <string name="idle_refresh_period_6min">Every 6 minutes</string>

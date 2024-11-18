@@ -143,7 +143,7 @@
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g>이 씀:</string>
     <string name="message_compose_reply_header_fmt_with_date">On <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> 작성함:</string>
     <string name="message_compose_error_no_recipients">한 명 이상의 받는 사람을 입력하십시오.</string>
-    <string name="compose_error_incomplete_recipient">받는 사람이 완성되지 않았습니다!</string>
+    <string name="compose_error_incomplete_recipient">받는 사람 입력에 불완전한 입력이 포함되어 있습니다!</string>
     <string name="error_contact_address_not_found">이메일 주소를 찾을 수 없습니다.</string>
     <string name="message_compose_attachments_skipped_toast">일부 첨부 파일이 다운로드되지 않아 전달될 수 없습니다.</string>
     <string name="message_compose_attachments_forward_toast">일부 첨부 파일이 다운로드되지 않아 전달할 수 없습니다.</string>
@@ -238,7 +238,7 @@
     <string name="account_setup_expunge_policy_on_poll">수신 시</string>
     <string name="account_setup_expunge_policy_manual">항상 수동으로</string>
     <string name="drafts_folder_label">임시 보관함 폴더</string>
-    <string name="sent_folder_label">보낸 편지함 폴더</string>
+    <string name="sent_folder_label">보낸 편지함</string>
     <string name="trash_folder_label">휴지통 폴더</string>
     <string name="archive_folder_label">보관 폴더</string>
     <string name="spam_folder_label">스팸 폴더</string>
@@ -446,7 +446,7 @@
     <string name="animations_title">애니메이션</string>
     <string name="animations_summary">매끄러운 시각 효과 사용</string>
     <string name="integrated_inbox_title">통합 편지함</string>
-    <string name="integrated_inbox_detail">통합된 폴더의 모든 이메일</string>
+    <string name="integrated_inbox_detail">통합 폴더의 모든 이메일</string>
     <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">통합 편지함에서 모든 메시지를 볼 수 있습니다</string>
     <string name="account_settings_no_folder_selected">없음</string>
@@ -599,14 +599,14 @@
     <string name="crypto_msg_title_unencrypted_signed">서명된 일반 글</string>
     <string name="crypto_msg_unencrypted_sign_mismatch">하지만 종단간 키가 보낸 사람과 일치하지 않습니다</string>
     <string name="crypto_msg_unencrypted_sign_expired">하지만 종단간 키가 만료되었습니다</string>
-    <string name="crypto_msg_unencrypted_sign_unknown">미지 종단간 키</string>
+    <string name="crypto_msg_unencrypted_sign_unknown">알 수 없는 종단 간 키에서 가져옴</string>
     <string name="crypto_msg_title_encrypted_unknown">암호화됨</string>
     <string name="crypto_msg_encrypted_error">복호화 오류가 발생했습니다</string>
     <string name="crypto_msg_title_encrypted_unsigned">암호화됨</string>
     <string name="crypto_msg_encrypted_unsigned">하지만 종단간 형식이 아닙니다.</string>
     <string name="crypto_msg_title_encrypted_signed_e2e">종단간 암호화됨</string>
     <string name="crypto_msg_title_encrypted_signed">암호화됨</string>
-    <string name="crypto_msg_encrypted_sign_unknown">미지 키</string>
+    <string name="crypto_msg_encrypted_sign_unknown">알 수 없는 종단 간 키에서 가져옴</string>
     <string name="crypto_msg_encrypted_sign_mismatch">하지만 종단간 키가 보낸 사람과 일치하지 않습니다</string>
     <string name="crypto_msg_encrypted_sign_expired">하지만 종단간 키가 만료되었습니다</string>
     <string name="locked_attach_title">보호되지 않은 첨부 파일</string>
@@ -622,7 +622,7 @@
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">암호화할 수 없습니다</string>
-    <string name="openpgp_enabled_error_msg">선택한 받는 사람 중 일부는 이 기능을 지원하지 않습니다!</string>
+    <string name="openpgp_enabled_error_msg">선택된 몇몇 받는 사람들은 이 기능을 지원하지 않습니다!</string>
     <string name="enable_encryption">암호화 활성화</string>
     <string name="openpgp_enabled_error_gotit">알았습니다</string>
     <string name="openpgp_enabled_error_back">뒤로</string>
@@ -631,7 +631,7 @@
     <string name="dialog_openkeychain_info_title">OpenPGP 앱이 설치되지 않음</string>
     <string name="dialog_openkeychain_info_install">설치</string>
     <string name="account_settings_crypto_encrypt_subject">메시지 제목을 암호화하기</string>
-    <string name="account_settings_crypto_encrypt_subject_subtitle">일부 받는 사람에게는 지원되지 않을 수 있습니다</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">일부 수신자에게는 지원되지 않을 수 있습니다</string>
     <string name="toast_openpgp_provider_error">%s에 연결하는 동안 오류가 발생했습니다!</string>
     <string name="ac_transfer_title">오토크립트 설정의 메시지</string>
     <string name="ac_transfer_button_send">설정 메시지를 보내기</string>
@@ -769,4 +769,85 @@
     <string name="general_settings_post_remove_action_show_next_message">다음 메시지 보기</string>
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" 계정이 <xliff:g id="app_name">%s</xliff:g>에서 제거됩니다.</string>
     <string name="notification_channel_messages_description">메시지와 관련된 알림</string>
+    <string name="global_settings_lock_screen_notification_visibility_message_count">새 메시지 수</string>
+    <string name="volume_navigation_title_short">볼륨 버튼으로 탐색</string>
+    <string name="openpgp_dialog_sign_only_minus_break">서명이 메일링 리스트로 전송될 때 손상될 수 있습니다.</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">일부 클라이언트에서는 서명이 \'signature.asc\' 첨부 파일로 표시될 수 있습니다.</string>
+    <string name="account_settings_crypto_key">종단간 키 구성</string>
+    <string name="save_attachment_action">첨부 파일 저장</string>
+    <string name="volume_navigation_summary">메시지 보기에서 볼륨 키를 사용하여 메시지 간 탐색</string>
+    <string name="unknown_recipient">&lt;알 수 없는 수신자&gt;</string>
+    <string name="dialog_confirm_clear_local_folder_action">메시지 지우기</string>
+    <string name="global_settings_background_as_unread_indicator_label">읽을 때 색상 변경</string>
+    <string name="account_settings_ignore_chat_messages_summary">이메일 채팅에 속한 메시지의 알림을 표시하지 않음</string>
+    <string name="account_settings_open_notification_settings_messages_summary">새 메시지에 대한 알림 구성</string>
+    <string name="account_settings_open_notification_settings_miscellaneous_summary">오류 및 상태 알림 구성</string>
+    <string name="account_settings_crypto_summary_config">구성 중…</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">모든 초안을 암호화하여 저장</string>
+    <string name="account_settings_crypto_summary_on">%s에 연결됨</string>
+    <string name="crypto_msg_unencrypted_sign_error">종단간 서명에 오류가 있음</string>
+    <string name="error_crypto_provider_incompatible">암호화 공급자가 호환되지 않는 버전을 사용합니다. 설정을 확인해 주세요!</string>
+    <string name="account_settings_ignore_chat_messages_label">챗 메시지 무시</string>
+    <string name="account_settings_upload_sent_messages_label">보낸 메시지 업로드</string>
+    <string name="preference_search_no_results">구성을 찾을 수 없음</string>
+    <string name="account_setup_push_limit_5">5개 폴더</string>
+    <string name="show_starred_count_title">별표 표시된 개수 표시</string>
+    <string name="account_settings_automatic_special_folder">자동%s</string>
+    <string name="font_size_message_view_recipients">받는 사람</string>
+    <string name="webview_contextmenu_link_text_copy_action">클립보드에 링크 텍스트 복사</string>
+    <string name="global_settings_background_as_unread_indicator_summary">다른 배경은 메시지를 읽었음을 나타냅니다</string>
+    <string name="openpgp_dialog_sign_only_text">이 모드에서는 PGP 키를 사용하여 암호화되지 않은 이메일의 암호화 서명을 만듭니다.</string>
+    <string name="openpgp_dialog_sign_only_neutral_encsigned">암호화된 메시지에는 항상 서명이 포함됩니다.</string>
+    <string name="crypto_msg_unsupported_signed">지원되지 않는 종단간 서명이 포함되어 있습니다</string>
+    <string name="crypto_msg_unencrypted_sign_insecure">종단간 키는 안전한 것으로 간주되지 않습니다</string>
+    <string name="crypto_msg_encrypted_sign_revoked">종단간 키가 취소되었습니다</string>
+    <string name="crypto_msg_encrypted_insecure">암호화가 안전한 것으로 간주되지 않음</string>
+    <string name="messageview_decrypt_incomplete">암호 해독을 위해 암호화된 메시지를 다운로드해야 합니다.</string>
+    <string name="reply_to_label">회신 대상</string>
+    <string name="account_settings_openpgp_missing">OpenPGP 앱이 누락되었습니다 - 제거되었습니까?</string>
+    <string name="folder_settings_push_label">푸시 활성화</string>
+    <string name="folder_settings_notifications_label">알림</string>
+    <string name="account_settings_notification_light_label">알림 표시등</string>
+    <string name="folder_list_filter_hint">폴더 이름 포함</string>
+    <string name="dialog_confirm_clear_local_folder_title">로컬 메시지를 지우시겠습니까?</string>
+    <string name="crypto_msg_unencrypted_sign_revoked">종단 간 키가 취소되었습니다</string>
+    <string name="general_settings_message_list_density_title">밀도</string>
+    <string name="dialog_confirm_empty_trash_message">휴지통 폴더를 비우시겠습니까?</string>
+    <string name="folder_settings_sync_label">동기화 활성화</string>
+    <string name="folder_list_show_hidden_folders">숨겨진 폴더 표시</string>
+    <string name="save_or_discard_draft_message_changes">변경 사항을 저장하거나 취소하시겠습니까?</string>
+    <string name="dialog_confirm_clear_local_folder_message">이렇게 하면 폴더에서 모든 로컬 메시지가 제거됩니다. 서버에서 메시지가 삭제되지 않습니다.</string>
+    <string name="dialog_confirm_empty_trash_title">휴지통 비우기 확인</string>
+    <string name="webview_contextmenu_link_text_clipboard_label">링크 텍스트</string>
+    <string name="unknown_sender">&lt;알 수 없는 발신자&gt;</string>
+    <string name="error_crypto_provider_ui_required">종단 간 암호화를 초기화하지 못했습니다. 설정을 확인하십시오.</string>
+    <string name="compose_error_no_key_configured">이 계정에 구성된 키가 없습니다! 설정을 확인합니다.</string>
+    <string name="error_crypto_provider_connect">암호화 공급자에 연결할 수 없습니다. 설정을 확인하거나 암호화 아이콘을 클릭하여 다시 시도하십시오!</string>
+    <string name="crypto_msg_incomplete_signed">서명을 처리하려면 메시지를 완전히 다운로드해야 합니다</string>
+    <string name="openpgp_dialog_sign_only_plus_verified">이메일을 암호화하지 않지만 키에서 전송되었는지 확인합니다.</string>
+    <string name="crypto_msg_encrypted_no_provider">암호화 앱이 구성되어 있지 않음</string>
+    <string name="crypto_msg_encrypted_sign_insecure">종단간 키가 안전한 것으로 간주되지 않습니다</string>
+    <string name="crypto_msg_encrypted_sign_error">종단간 데이터에 오류가 있습니다</string>
+    <string name="general_settings_ui_density_compact">밀집한 형식</string>
+    <string name="general_settings_ui_density_relaxed">느슨한 형식</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_on">모든 초안은 암호화되어 저장됨</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">암호화가 활성화된 경우에만 초안 암호화</string>
+    <string name="account_settings_upload_sent_messages_summary">보낸 후 보낸 편지함 폴더에 메시지 업로드</string>
+    <string name="folder_settings_visible_label">폴더 표시</string>
+    <string name="openpgp_inline_text">이메일은 PGP/INLINE 형식으로 전송됩니다.\n호환성을 위해서만 사용해야 합니다:</string>
+    <string name="show_unified_inbox_title">통합 편지함 표시</string>
+    <string name="settings_list_action_support">지원 <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="openpgp_description_text3">모든 수신자가 호환되고 이전에 이메일을 보낸 적이 있는 경우에만 암호화가 표시됩니다.</string>
+    <string name="dialog_autocrypt_mutual_description_1">일반적으로 메시지는 메시지를 선택하거나 암호화된 메시지에 회신할 때 암호화됩니다.</string>
+    <string name="dialog_autocrypt_mutual_description_2">보낸 사람과 받는 사람이 모두 상호 모드를 활성화하면 암호화가 기본적으로 활성화됩니다.</string>
+    <string name="crypto_no_provider_message">이 이메일은 OpenPGP로 암호화되었습니다.\n이 메일을 읽으려면 호환되는 OpenPGP 앱을 설치하고 구성해야 합니다.</string>
+    <string name="openpgp_description_text1">메시지를 암호화하면 다른 사람이 메시지를 읽지 못하도록 하고 받는 사람만 메시지를 읽을 수 있습니다.</string>
+    <string name="dialog_autocrypt_mutual_title">자동 암호화 상호 모드</string>
+    <string name="account_settings_crypto_prefer_encrypt">자동 암호화 상호 모드</string>
+    <string name="toast_account_not_found">내부 오류: 유효하지 않은 계정입니다!</string>
+    <string name="ac_transfer_setting_title">자동 암호화 설정 메시지 보내기</string>
+    <string name="error_sign_only_no_encryption">서명 전용 모드에서는 암호화를 사용할 수 없습니다!</string>
+    <string name="openpgp_description_text2">이 아이콘을 클릭하면 암호화가 전환됩니다.</string>
+    <string name="dialog_autocrypt_mutual_learn_more">자세한 내용은<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">여기를 클릭</a>하십시오.</string>
+    <string name="ac_transfer_setting_summary">종단간 설정을 다른 장치와 안전하게 공유</string>
 </resources>

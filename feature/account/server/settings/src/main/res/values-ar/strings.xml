@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">لا يمكن أن تكون بادئة IMAP فارغة.</string>
+    <string name="account_server_settings_protocol_type_label">البروتوكول</string>
+    <string name="account_server_settings_server_label">الخادم</string>
+    <string name="account_server_settings_security_label">الأمان</string>
+    <string name="account_server_settings_port_label">المنفذ</string>
+    <string name="account_server_settings_authentication_label">المصادقة</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_password_cleartext">كلمة المرور العادية</string>
+    <string name="account_server_settings_authentication_password_encrypted">كلمة المرور المشفرة</string>
+    <string name="account_server_settings_authentication_client_certificate">شهادة العميل</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_client_certificate_label">شهادة العميل</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">التعرف التلقائي على مساحة اسم IMAP</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">بادئة مسار IMAP</string>
+    <string name="account_server_settings_incoming_imap_compression_label">استخدام تقنية الضغط</string>
+    <string name="account_server_settings_username_label">اسم المستخدم</string>
+    <string name="account_server_settings_client_certificate_none_selected">بدون</string>
+    <string name="account_server_settings_authentication_none">بدون</string>
+    <string name="account_server_settings_incoming_top_bar_title">إعدادات خادم البريد الوارد</string>
+    <string name="account_server_settings_connection_security_none">بدون</string>
+    <string name="account_server_settings_validation_error_username_required">يُرجى ادخال اسم المستخدم.</string>
+    <string name="account_server_settings_validation_error_password_required">يُرجى إدخال كلمة المرور.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">إعدادات خادم البريد الصادر</string>
+    <string name="account_server_settings_validation_error_server_required">يُرجى ادخال اسم الخادم.</string>
+    <string name="account_server_settings_validation_error_port_required">يُرجى ادخال المنفذ.</string>
+    <string name="account_server_settings_validation_error_port_invalid">المنفذ غير صالح (يجب أن يكون من 1 إلى 65535).</string>
+    <string name="account_server_settings_password_authentication_title">إثبات هويتك</string>
+    <string name="account_server_settings_password_authentication_subtitle">افتح القفل لعرض كلمة المرور الخاصة بك</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">لعرض كلمة المرور الخاصة بك هنا، قم بتفعيل قفل الشاشة على هذا الجهاز.</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">إرسال معلومات العميل</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">عنوان الـ IP أو اسم المضيف غير صالح</string>
+</resources>

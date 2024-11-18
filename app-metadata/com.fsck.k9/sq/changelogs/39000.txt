@@ -1,0 +1,6 @@
+- Nisi shndërrimi i ndërfaqes së përdoruesit në Material 3
+- U shtua mbulim për URI mailto: te etiketë NFC
+- U shtua rrugëzgjidhje eksperimentale për vithisje aplikacioni në prapaskenë
+- U optimizuan disa nga ndërveprimet e protokollit IMAP
+- Ndreqje që të mos vonohet shfaqja e njoftimit, kur Push është aktiv
+- U përditësuan përkthime

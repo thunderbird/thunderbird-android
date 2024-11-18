@@ -896,4 +896,8 @@
     <string name="folder_list_show_hidden_folders">Mostra cartelle nascoste</string>
     <string name="folder_settings_sync_label">Attiva sincronizzazione</string>
     <string name="folder_settings_visible_label">Mostra cartella</string>
+    <string name="save_attachment_action">Salva l\'allegato</string>
+    <string name="volume_navigation_summary">In visualizzazione dei messaggi utilizza i tasti del volume per spostarti tra di essi</string>
+    <string name="settings_list_action_support">Supporta <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Naviga con i tasti del volume</string>
 </resources>

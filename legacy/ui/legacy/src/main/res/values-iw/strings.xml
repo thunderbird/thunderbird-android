@@ -896,4 +896,16 @@
     <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" יוסר מ <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">כאשר משתמשים בדחיפה, <xliff:g id="app_name">%1$s</xliff:g> שומר על קשר עם שרת הדואר. אנדרואיד צורך הצגת התראה מתמשכת בזמן שהאפליקציה פועלת ברקע. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_title">אודות <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">שמור קובץ מצורף</string>
+    <string name="volume_navigation_title_short">ניווט בעזרת מקשי שמע</string>
+    <string name="volume_navigation_summary">נווטו בין הודעות בשימוש במקשי השמע בתצוגת הודעה</string>
+    <string name="folder_settings_notifications_label">התראות</string>
+    <string name="folder_settings_push_label">הפעל דחיפה</string>
+    <string name="settings_ui_data_collection">איסוף מידע</string>
+    <string name="folder_settings_sync_label">הפעל סנכרון</string>
+    <string name="settings_ui_telemetry_title">מידע על שימוש ומידע טכני</string>
+    <string name="settings_ui_telemetry_description">שתפו מידע על ביצועים, שימוש, חומרה והתאמות אישיות של האפליקציה עם מוזילה בכדי לשפר את ת\'אנדרבירד</string>
+    <string name="folder_settings_visible_label">הצג תיקייה</string>
+    <string name="folder_list_show_hidden_folders">הצג תיקיות מוסתרות</string>
+    <string name="settings_list_action_support">תמיכה <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

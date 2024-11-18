@@ -164,7 +164,7 @@
     <string name="global_settings_registered_name_color_label">Livañ an darempredoù</string>
     <string name="global_settings_registered_name_color_changed">Livañ an anvioù en ho roll darempredoù</string>
     <string name="global_settings_messageview_fixedwidth_label">Nodrezhoù digemm o ledander</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Arverañ un nodrezh digemm e ledander pa vez skrammet kemennadennoù e testenn blaen </string>
+    <string name="global_settings_messageview_fixedwidth_summary">Arverañ un nodrezh digemm e ledander pa vez skrammet kemennadennoù e testenn blaen</string>
     <string name="global_settings_messageview_autofit_width_label">Klotañ ar c’hemennadennoù</string>
     <string name="global_settings_messageview_autofit_width_summary">Krennat ar c’hemennadennoù evit klotañ ouzh ar skramm</string>
     <string name="global_settings_confirm_actions_title">Kadarnat ar gwezhioù</string>

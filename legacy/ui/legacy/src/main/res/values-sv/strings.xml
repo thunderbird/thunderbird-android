@@ -197,7 +197,7 @@
     <string name="global_settings_registered_name_color_changed">Färglägg namn i din kontaktlista</string>
     <string name="general_settings_contact_name_color_label">Färg på kontaktnamn</string>
     <string name="global_settings_messageview_fixedwidth_label">Teckensnitt med fast bredd</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd när meddelanden med enbart oformaterad text visas</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd när du visar oformaterade textmeddelanden</string>
     <string name="global_settings_messageview_autofit_width_label">Anpassa automatiskt meddelanden</string>
     <string name="global_settings_messageview_autofit_width_summary">Krymp meddelanden så att de får plats på skärmen</string>
     <string name="global_settings_confirm_actions_title">Bekräfta åtgärder</string>

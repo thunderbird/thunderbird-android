@@ -1,4 +1,4 @@
-Thunderbird er ein kraftfull, personvernfokusert e-postapp. Uanstrengt handering av fleire e-postkontar frå ein app, med samla innboks-moglegheit for maksimal produktivitet. Bygd på open kjeldekode teknologi og støtta av eit dedikert team av utviklarar, på sida av eit globalt samfunn av frivillige. Thunderbird behandlar aldri den private dataen din som eit produkt. Utelukkande støtta av økonomiske bidrag frå brukarane våre, så du aldri treng å sjå annonsar blanda med e-postane dine igjen.
+Thunderbird er ein kraftfull, personvernfokusert e-postapp. Uanstrengt handering av fleire e-postkontoar frå ein app, med samla innboks-moglegheit for maksimal produktivitet. Bygd på open kjeldekode teknologi og støtta av eit dedikert team av utviklarar, på sida av eit globalt samfunn av frivillige. Thunderbird behandlar aldri den private dataen din som eit produkt. Utelukkande støtta av økonomiske bidrag frå brukarane våre, så du aldri treng å sjå annonsar blanda med e-postane dine igjen.
 
 <b>Kva du kan gjere</b>
 <ul>
