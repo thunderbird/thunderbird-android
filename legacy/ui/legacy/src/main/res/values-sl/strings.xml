@@ -902,4 +902,8 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="volume_navigation_title_short">Navigacija s tipko za glasnost</string>
     <string name="push_notification_grant_alarm_permission">Tapnite za odobritev dovoljenja.</string>
     <string name="dialog_openkeychain_info_text">Aplikacija OpenKeychain je potrebna za omogočanje podpore za šifriranje od konca do konca.</string>
+    <string name="settings_ui_telemetry_description">Z Mozillo deli podatke o zmogljivosti, uporabi, strojni opremi in prilagajanju tega programa z namenom izboljšanja Thunderbirda</string>
+    <string name="volume_navigation_summary">V pogledu sporočil se med sporočili pomikajte z gumboma za glasnost</string>
+    <string name="settings_list_action_support">Podprite <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Ko uporabljate potisna sporočila, <xliff:g id="app_name">%1$s</xliff:g> vzdržuje povezavo s poštnim strežnikom. Android zahteva prikaz obvestila, ko je aplikacija aktivna v ozadju. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
 </resources>

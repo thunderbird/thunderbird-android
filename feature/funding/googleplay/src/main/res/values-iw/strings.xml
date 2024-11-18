@@ -10,7 +10,7 @@
     <string name="funding_googleplay_contribution_footer_payment_button">המשך לתשלום</string>
     <string name="funding_googleplay_contribution_footer_manage_button">שנה תשלום חודשי</string>
     <string name="funding_googleplay_contribution_title">תמוך בת\'אנדרבירד</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">עזור להשאיר את ת\'אנדרבירד בחיים</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">בצעו תרומה משמעותית נוספת</string>
     <string name="funding_googleplay_contribution_tfa_onetime_l_title">תרומה רצינית</string>
     <string name="funding_googleplay_contribution_tfa_onetime_m_description">התרומה שלך ממש זוהרת! אתה משחק תפקיד גדול בקידום המשימה שלנו, ועוזר לנו להגיע לאבני דרך חשובות ולהצליח לייצר השפעה גדולה יותר.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">תרומה בלתי רגילה</string>
@@ -29,4 +29,6 @@
     <string name="funding_googleplay_contribution_tfa_onetime_s_title">תרומה ערכית</string>
     <string name="funding_googleplay_contribution_tfa_onetime_m_title">תרומה משמעותית</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xl_title">תרומה ניכרת</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">תודה לכם על תרומתכם הנדיבה! התרומה שלכם מחזרת באופן ישיר את ת\'אנדרבירד, ואנחנו מלאי הכרת תודה על זה שאתם לצידנו במסע הזה.</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">לדחות את השגיאה</string>
 </resources>

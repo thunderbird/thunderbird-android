@@ -282,7 +282,7 @@
     <string name="global_settings_registered_name_color_changed">Dathaigh ainmneacha i do liosta teagmhála</string>
     <string name="general_settings_contact_name_color_label">Dath ainm teagmhála</string>
     <string name="global_settings_messageview_fixedwidth_label">Clónna leithead seasta</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Úsáid cló ar leithead seasta agus teachtaireachtaí gnáth-théacs á dtaispeáint</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Úsáid cló ar leithead seasta agus teachtaireachtaí gnáth-théacs á dtaispeáint agat</string>
     <string name="global_settings_messageview_autofit_width_summary">Laghdaigh teachtaireachtaí chun an scáileán a oiriúnú</string>
     <string name="general_settings_post_remove_action_return_to_list">Fill ar liosta na dteachtaireachtaí</string>
     <string name="general_settings_post_remove_action_title">Tar éis teachtaireacht a scriosadh nó a bhogadh</string>

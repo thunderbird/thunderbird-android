@@ -8,7 +8,7 @@
     <string name="funding_googleplay_contribution_list_type_recurring">Mensalmente</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Nenhum disponível</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Modificar pagamento mensal</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Ajude a manter o Thunderbird vivo</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Faça outra contribuição impactante</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Dar uma vez</string>
     <string name="funding_googleplay_contribution_header_description">Não mostramos anúncios ou vendemos seus dados. Somos totalmente suportados por doações de nossos usuários. Se você está gostando do Thunderbird, por favor nos ajude à suportá-lo. Não podemos fazer isso sem você!</string>
     <string name="funding_googleplay_contribution_list_empty_title">Contribuições dentro do app estão indisponíveis no momento.</string>
@@ -28,4 +28,11 @@
     <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Contribuição Incrível</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Seu apoio nos mantém andando! Até as pequenas contribuições criam grandes mudanças, e somos gratos de ter você a bordo.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_s_description">Você está nos ajudando a fazer coisas boas acontecer! Ao contribuir neste nível, você nos ajuda com passos significantes, permitindo que continuamos crescendo.</string>
+    <string name="funding_googleplay_contribution_reminder_title">Apoie o Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Sim</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Agora não</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Obrigado pela sua doação generosa! Seu apoio diretamente enfortalece o Thunderbird, e estamos gratos de ter você ao nosso lado nesta jornada.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">Você é um grande motivo pelo qual nos podemos fazer o que fazemos! Graças a sua generosidade, podemos trabalhar em projetos maiores e chegar em conquistas novas juntos.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Seu apoio é realmente inspirador! Graças à sua contribuição substancial, podemos avançar novas barreiras, inovar, e promover grandes passos em direção aos nossos objetivos.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Sua contribuição realmente brilha! Você desempenha uma grande parte na nossa missão, nos ajudando a chegar a passos importantes e causar um grande impacto.</string>
 </resources>

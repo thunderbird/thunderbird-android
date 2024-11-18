@@ -95,7 +95,7 @@
     <string name="status_network_error">连接错误</string>
     <string name="status_invalid_id_error">邮件未找到</string>
     <string name="status_loading_error">邮件加载错误</string>
-    <string name="load_more_messages_fmt">另加载最多 <xliff:g id="messages_to_load">%d</xliff:g> 条消息</string>
+    <string name="load_more_messages_fmt">最多加载 <xliff:g id="messages_to_load">%d</xliff:g> 封邮件</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -120,9 +120,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">通知错误</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">尝试为新邮件创建系统通知时出错。原因很可能是缺少通知声音。
-\n
-\n轻击打开通知设置。</string>
+    <string name="notification_notify_error_text">尝试为新邮件创建系统通知时出错。原因很可能是缺少通知声音。\n\n轻击打开通知设置。</string>
     <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%1$s</xliff:g>：<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">正在检查邮件</string>
     <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
@@ -684,8 +682,7 @@
     <string name="enable_sign_only">启用 PGP 仅签名</string>
     <string name="disable_sign_only">禁用 PGP 仅签名</string>
     <string name="openpgp_inline_title">PGP/INLINE 模式</string>
-    <string name="openpgp_inline_text">电子邮件以 PGP/INLINE 格式发送。
-\n这只能用于兼容：</string>
+    <string name="openpgp_inline_text">电子邮件以 PGP/INLINE 格式发送。\n这只能用于兼容：</string>
     <string name="openpgp_inline_plus_compat">部分客户端仅支持此格式</string>
     <string name="openpgp_inline_minus_transit">签名在传输过程中可能损坏</string>
     <string name="openpgp_inline_minus_attach">不支持附件</string>
@@ -747,8 +744,7 @@
     <string name="error_sign_only_no_encryption">在仅签名模式下无法使用加密！</string>
     <string name="unsigned_text_divider_label">未签名的文本</string>
     <string name="crypto_no_provider_title">此电子邮件已加密</string>
-    <string name="crypto_no_provider_message">此电子邮件已使用 OpenPGP 加密。
-\n要阅读它，您需要安装和配置兼容的 OpenPGP 应用。</string>
+    <string name="crypto_no_provider_message">此电子邮件已使用 OpenPGP 加密。\n要阅读它，您需要安装和配置兼容的 OpenPGP 应用。</string>
     <string name="crypto_no_provider_button">转到设置</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -887,5 +883,5 @@
     <string name="settings_list_action_support">支持 <xliff:g id="app_name">%s</xliff:g></string>
     <string name="save_attachment_action">保存附件</string>
     <string name="volume_navigation_title_short">音量键导航</string>
-    <string name="volume_navigation_summary">在消息视图中用音量键在消息间切换</string>
+    <string name="volume_navigation_summary">在邮件视图中使用音量键在邮件之间导航</string>
 </resources>

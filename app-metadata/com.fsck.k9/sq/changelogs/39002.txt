@@ -1,0 +1,8 @@
+- U ndryshuan plotë gjëra të brendshme, për të migruar në Material 3. Ju lutemi, mbani parasysh se UI me Material 3 është ende në hapat fillestare.
+- U ndryshua radha e veprimeve të panelit, te pamja mesazhe, për ta përputhur me radhën nën mënyrën multi-përzgjedhje
+- U ndryshua vlera parazgjedhje për “Sill mesazhe deri në” si 128KiB
+- U ndreq e metë nën të cilën ikonat e paneli shfaqeshin me ngjyrë të gabuar, pas kryerjes së një veprimi fërkimi ekrani
+- U ndreq vithisje, kur prerja eadresave email nga një fushë marrësi, kur hartohet një mesazh
+- U ndreq madhësi paneli, kur përdoret një madhësi jo parazgjedhje shkronjash sistemi
+- U shtuan përkthimet në gjuhën korsikane, koreane dhe vietnameze
+- U përditësuan përkthime

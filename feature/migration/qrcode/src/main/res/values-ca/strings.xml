@@ -5,4 +5,5 @@
     <string name="migration_qrcode_go_to_settings_button_text">Vés a la configuració</string>
     <string name="migration_qrcode_scanning_progress">S\'han escanejat %1$s de %2$s</string>
     <string name="migration_qrcode_done_button_text">Fet</string>
+    <string name="migration_qrcode_scanning_instructions">Alineeu el codi QR proporcionat des de la versió d\'escriptori del Thunderbird</string>
 </resources>

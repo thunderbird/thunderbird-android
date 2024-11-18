@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">Позволете достъп до котактите си, за да можем да Ви покажем техните имена и снимки.</string>
+    <string name="onboarding_permissions_contacts_description">Предоставете достъп до контактите, за да можем да покажем техните имена и снимки.</string>
     <string name="onboarding_permissions_notifications_description">Включете известията, за да не пропускате съобщения.</string>
     <string name="onboarding_permissions_notifications_title">Известия</string>
-    <string name="onboarding_permissions_screen_title">Подобри преживяването</string>
+    <string name="onboarding_permissions_screen_title">Подобрете изживяването</string>
     <string name="onboarding_permissions_contacts_title">Контакти</string>
-    <string name="onboarding_permissions_allow_button">Разреши</string>
-    <string name="onboarding_permissions_skip_button">Прескочи</string>
+    <string name="onboarding_permissions_allow_button">Разрешаване</string>
+    <string name="onboarding_permissions_skip_button">Пропускане</string>
 </resources>

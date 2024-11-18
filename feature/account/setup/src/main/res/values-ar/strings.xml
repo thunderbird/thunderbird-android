@@ -1,2 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_error_unknown">خطأ غير معروف</string>
+    <string name="account_setup_special_folders_loading_message">يتم الآن الحصول على قائمة المجلدات…</string>
+    <string name="account_setup_special_folders_drafts_folder_label">مجلد المسودات</string>
+    <string name="account_setup_options_display_name_label">الاسم</string>
+    <string name="account_setup_create_account_creating">جارٍ إنشاء الحساب…</string>
+    <string name="account_setup_create_account_created">تم إنشاء الحساب بنجاح</string>
+    <string name="account_setup_create_account_error">حدث خطأ ما أثناء محاولة إنشاء الحساب</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">تم العثور على الإعدادات</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">لم يتم العثور على الإعدادات</string>
+    <string name="account_setup_auto_discovery_loading_message">جارٍ البحث عن الإعدادات…</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">يُرجى إدخال كلمة المرور.</string>
+    <string name="account_setup_special_folders_spam_folder_label">مجلد الرسائل الغير مرغوب فيها</string>
+    <string name="account_setup_special_folders_trash_folder_label">مجلد المهملات</string>
+    <string name="account_setup_options_account_check_frequency_label">معدل تكرار التحقق</string>
+    <string name="account_setup_options_email_check_frequency_never">مطلقًا</string>
+    <string name="account_setup_options_email_display_count_label">عدد الرسائل المُراد عرضها</string>
+    <string name="account_setup_options_account_name_error_blank">لا يمكن أن يكون اسم الحساب فارغًا.</string>
+    <string name="account_setup_options_section_sync_options">خيارات المزامنة</string>
+    <string name="account_setup_error_network">خطأ في الشبكة. يرجى التحقق من حالة الاتصال والمحاولة مرة أخرى.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">لم يتم التعرف على عنوان بريدك الإلكتروني.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">تشفير SSL/TLS</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">عنوان البريد الإلكتروني هذا غير مسموح به.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">عنوان البريد الإلكتروني هذا غير مدعوم.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">هذه الإعدادات غير موثوق بها</string>
+    <string name="account_setup_auto_discovery_loading_error">تعذر تحميل إعدادات البريد الإلكتروني</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">تغيير الإعدادات</string>
+    <string name="account_setup_special_folders_archive_folder_label">مجلد الأرشيف</string>
+    <string name="account_setup_options_section_display_options">خيارات العرض</string>
+    <string name="account_setup_options_account_name_label">اسم الحساب</string>
+    <string name="account_setup_options_email_signature_error_blank">لا يمكن أن يكون اسم توقيع البريد الإلكتروني فارغًا.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="zero">كل 0 دقيقة</item>
+        <item quantity="one">كل دقيقة</item>
+        <item quantity="two">كل دقيقتين</item>
+        <item quantity="few">كل %d دقائق</item>
+        <item quantity="many">كل %d دقيقة</item>
+        <item quantity="other">كل %d دقيقة</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="zero">كل 0 ساعة</item>
+        <item quantity="one">كل ساعة</item>
+        <item quantity="two">كل ساعتين</item>
+        <item quantity="few">كل %d ساعات</item>
+        <item quantity="many">كل %d ساعة</item>
+        <item quantity="other">كل %d ساعة</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="zero">0 رسالة</item>
+        <item quantity="one">رسالة واحدة</item>
+        <item quantity="two">رسالتين</item>
+        <item quantity="few">%d رسائل</item>
+        <item quantity="many">%d رسالة</item>
+        <item quantity="other">%d رسالة</item>
+    </plurals>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">لقد تلقينا الإعدادات الخاصة بخادم البريد الإلكتروني الخاص بك عبر اتصال ليس بمستوى الأمان الذي نريده. هذا يعني أن هناك فرصة ضئيلة أن يكون شخص ما قد قام بتعديلها. هل يمكنك إعادة فحص الإعدادات المزودة للتأكد من أنها كما ينبغي أن تكون؟</string>
+    <string name="account_setup_special_folders_form_description_automatic">عند اختيار \"تلقائي\" سوف يتم اتباع التغييرات التي يجريها الخادم تلقائيًا بشكل مستمر. يتم عرض قيمة الخادم الحالية بين قوسين.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">الإعداد تلقائيًا</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">الإعداد يدويًا</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">أثق في هذه الإعدادات</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">يتطلب ذلك الموافقة على هذه الإعدادات.</string>
+    <string name="account_setup_special_folders_form_description">يُرجى تحديد المجلدات الخاصة بحسابك.</string>
+    <string name="account_setup_special_folders_error_message">فشل الحصول على قائمة المجلدات من الخادم</string>
+    <string name="account_setup_special_folders_success_message">لقد تم إعداد جميع المجلدات الخاصة تلقائيًا بواسطة الخادم.</string>
+    <string name="account_setup_special_folders_sent_folder_label">مجلد البريد المرسَل</string>
+    <string name="account_setup_special_folders_folder_none">لا شيء</string>
+    <string name="account_setup_special_folders_folder_automatic">تلقائي (%s)</string>
+    <string name="account_setup_options_email_signature_label">توقيع البريد الإلكتروني</string>
+    <string name="account_setup_options_show_notifications_label">عرض الإشعارات</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">يُرجى إدخال عنوان البريد الإلكتروني.</string>
+    <string name="account_setup_options_display_name_error_required">يُرجى ادخال الاسم.</string>
+</resources>

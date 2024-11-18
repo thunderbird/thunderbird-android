@@ -12,7 +12,7 @@
     <string name="funding_googleplay_contribution_list_empty_message">Rendez-vous sur www.thunderbird.net pour découvrir d’autres façons de soutenir Thunderbird</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Réessayer</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Le paiement n’est pas accessible actuellement</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Aidez-nous à assurer la pérennité de Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Faites un autre don remarqué</string>
     <string name="funding_googleplay_contribution_error_show_more">Afficher plus de détails</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Rejeter l’erreur</string>
     <string name="funding_googleplay_contribution_error_unknown">Erreur inconnue</string>
@@ -48,4 +48,5 @@
     <string name="funding_googleplay_contribution_reminder_message">Notre mission est de fournir aux utilisateurs du monde entier une appli de courriel à code source ouvert, sécurisée, gratuite et qui respecte leurs données personnelles. Votre contribution financière soutien cette mission. Ferez-vous un don aujourd’hui ?</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Oui</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Pas maintenant</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Merci pour votre don généreux. Votre soutien renforce Thunderbird directement et nous sommes reconnaissants de vous avoir à nos côtés dans cette aventure.</string>
 </resources>

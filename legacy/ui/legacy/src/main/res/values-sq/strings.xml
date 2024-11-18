@@ -889,4 +889,5 @@
     <string name="volume_navigation_summary">Lëvizni nëpër mesazhe duke përdorur tastet e volumit te pamja mesazhe</string>
     <string name="volume_navigation_title_short">Lëvizje me tastet e volumit</string>
     <string name="save_attachment_action">Ruaje bashkëngjitjen</string>
+    <string name="folder_settings_push_label">Aktivizo Push</string>
 </resources>

@@ -897,4 +897,7 @@
     <string name="settings_ui_telemetry_title">Dades tècniques i d\'ús</string>
     <string name="folder_settings_visible_label">Mostra la carpeta</string>
     <string name="settings_list_action_support">Doneu suport al <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">Desa l\'adjunt</string>
+    <string name="volume_navigation_title_short">Navegació amb els botons de volum</string>
+    <string name="volume_navigation_summary">Navegueu entre missatges mitjançant les tecles de volum a la vista de missatges</string>
 </resources>

@@ -1,0 +1,7 @@
+- U shtua mbulim për DNSSEC, kur shihet për rregullime shërbyesi, gjatë ujdisjes
+- U bë bhë ndryshim për të penguar disa tastiera “software” të kalojnë në shkronjë të madhe/të ndreqin automatikisht adresa email, gjatë ujdisjes së llogarive
+- U ndreq në vithisje, kur përdoret një subjekt shumë i gjatë
+- U ndreq shfaqje mesazhesh gabimesh OAuth 2.0
+- U ndreq vithisje e rrallë, kur shkarkohet një bashkëngjitje
+- U shtua kod për të mos lejuar ndërprerje rreshtash në dhënie teksti në një rresht të vetëm
+- U përditësuan përkthime

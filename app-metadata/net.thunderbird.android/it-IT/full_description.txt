@@ -1,0 +1,31 @@
+Thunderbird è una potente app di posta elettronica incentrata sulla privacy. Gestisci senza sforzo più account di posta elettronica da un'unica app, con un'opzione Posta in arrivo unificata per la massima produttività. Basato su tecnologia open source e supportato da un team dedicato di sviluppatori insieme a una comunità globale di volontari, Thunderbird non tratta mai i tuoi dati privati come un prodotto. Supportato esclusivamente dai contributi finanziari dei nostri utenti, così non dovrai mai più vedere annunci pubblicitari mescolati alle tue e-mail.
+
+<b>Cosa puoi fare</b>
+<ul>
+<li>Abbandona diverse app e webmail. Utilizza un'unica app, con una Posta in arrivo unificata opzionale, per affrontare la giornata.</li>
+<li>Goditi un client di posta elettronica rispettoso della privacy che non raccoglie o vende mai i tuoi dati personali. Ti colleghiamo direttamente al tuo provider di posta elettronica. Ecco fatto!</li>
+<li>Porta la tua privacy a un livello superiore utilizzando la crittografia e-mail OpenPGP (PGP/MIME) con l'app "OpenKeychain", per crittografare e decrittografare i tuoi messaggi.</li>
+<li>Scegli di sincronizzare la tua e-mail all'istante, a intervalli stabiliti o su richiesta. In qualunque modo tu voglia controllare la tua e-mail, la scelta è tua!</li>
+<li>Trova i tuoi messaggi importanti utilizzando la ricerca locale e lato server.</li>
+</ul>
+
+<b>Compatibilità</b>
+<ul>
+<li>Thunderbird funziona con i protocolli IMAP e POP3, supportando un'ampia gamma di provider di posta elettronica, tra cui Gmail, Outlook, Yahoo Mail, iCloud e altri.</li>
+</ul>
+
+<b>Perché usare Thunderbird</b>
+<ul>
+<li>Il nome di fiducia nella posta elettronica da oltre 20 anni, ora su Android.</li>
+<li>Thunderbird è interamente finanziato da contributi volontari dei nostri utenti. Non estraiamo i tuoi dati personali. Non sei mai il prodotto.</li>
+<li>Realizzato da un team che ha la stessa attenzione all'efficienza che hai tu. Vogliamo che tu trascorra il minimo tempo possibile utilizzando l'app ottenendo il massimo in cambio.</li>
+<li>Con collaboratori da tutto il mondo, Thunderbird per Android è stato tradotto in più di 20 lingue.</li>
+<li>Supportato da MZLA Technologies Corporation, una sussidiaria interamente controllata dalla Mozilla Foundation.</li>
+</ul>
+
+<b>Open Source e Community</b>
+<ul>
+<li>Thunderbird è gratuito e open source, il che significa che il suo codice è disponibile per essere consultato, modificato, utilizzato e condiviso liberamente. La sua licenza garantisce inoltre che sarà gratuito per sempre. Puoi pensare a Thunderbird come a un regalo di migliaia di collaboratori a te.</li>
+<li>Sviluppiamo in modo aperto con aggiornamenti regolari e trasparenti sul nostro blog e sulle mailing list.</li>
+<li>Il nostro supporto agli utenti è alimentato dalla nostra community globale. Trova le risposte di cui hai bisogno o mettiti nei panni di un collaboratore, che si tratti di rispondere a domande, tradurre l'app o raccontare ai tuoi amici e familiari di Thunderbird.</li>
+</ul>
