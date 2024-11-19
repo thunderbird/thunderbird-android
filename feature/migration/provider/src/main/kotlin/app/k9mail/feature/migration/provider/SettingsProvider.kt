@@ -148,13 +148,13 @@ class SettingsProvider : ContentProvider(), KoinComponent {
         val packageInfo = packageManager.getPackageInfo(callerPackage, PackageManager.GET_SIGNATURES)
 
         // We don't expect our callers to have multiple signers, so we don't service such requests.
-        if (packageInfo.signatures.size != 1) {
+        if (packageInfo.signatures?.size != 1) {
             return null
         }
 
         // In case of signature rotation, this will report the oldest used certificate, pretending that the signature
         // rotation never took place. We can only rely on our allowlist being up-to-date in this case.
-        return packageInfo.signatures[0]
+        return packageInfo.signatures?.firstOrNull()
     }
 
     @TargetApi(Build.VERSION_CODES.P)
@@ -164,15 +164,15 @@ class SettingsProvider : ContentProvider(), KoinComponent {
         val packageInfo = packageManager.getPackageInfo(callerPackage, PackageManager.GET_SIGNING_CERTIFICATES)
 
         // We don't expect our callers to have multiple signers, so we don't service such requests.
-        if (packageInfo.signingInfo.hasMultipleSigners()) {
+        if (packageInfo.signingInfo?.hasMultipleSigners() == true) {
             return null
         }
 
         // We currently don't support servicing requests from callers that performed certificate rotation.
-        if (packageInfo.signingInfo.hasPastSigningCertificates()) {
+        if (packageInfo.signingInfo?.hasPastSigningCertificates() == true) {
             return null
         }
 
-        return packageInfo.signingInfo.signingCertificateHistory[0]
+        return packageInfo.signingInfo?.signingCertificateHistory?.firstOrNull()
     }
 }
