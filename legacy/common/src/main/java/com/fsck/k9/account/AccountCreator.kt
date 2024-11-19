@@ -20,6 +20,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.mailstore.SpecialFolderUpdater
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
+import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -32,7 +33,9 @@ class AccountCreator(
     private val preferences: Preferences,
     private val context: Context,
     private val messagingController: MessagingController,
+    private val deletePolicyProvider: DeletePolicyProvider,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
 ) : AccountSetupExternalContract.AccountCreator {
 
     @Suppress("TooGenericExceptionCaught")
@@ -66,7 +69,7 @@ class AccountCreator(
         newAccount.automaticCheckIntervalMinutes = account.options.checkFrequencyInMinutes
         newAccount.displayCount = account.options.messageDisplayCount
 
-        newAccount.deletePolicy = DeletePolicyHelper.getDefaultDeletePolicy(newAccount.incomingServerSettings.type)
+        newAccount.deletePolicy = deletePolicyProvider.getDeletePolicy(newAccount.incomingServerSettings.type)
         newAccount.chipColor = accountColorPicker.pickColor()
 
         localFoldersCreator.createSpecialLocalFolders(newAccount)
@@ -78,6 +81,8 @@ class AccountCreator(
         newAccount.markSetupFinished()
 
         preferences.saveAccount(newAccount)
+
+        unifiedInboxConfigurator.configureUnifiedInbox()
 
         Core.setServicesEnabled(context)
 

@@ -7,19 +7,16 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.testing.TestLifecycleOwner
 import app.k9mail.core.testing.TestClock
 import app.k9mail.feature.funding.api.FundingSettings
-import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
+import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.FragmentLifecycleObserver
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
-import assertk.assertions.isNotEqualTo
 import assertk.assertions.isTrue
 import kotlin.test.Test
 import kotlinx.datetime.Instant
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 
 class FundingReminderTest {
@@ -170,4 +167,3 @@ class FundingReminderTest {
         const val FUNDING_REMINDER_MIN_ACTIVITY_MILLIS = 30 * 60 * 1000L
     }
 }
-

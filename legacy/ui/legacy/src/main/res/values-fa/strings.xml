@@ -198,7 +198,7 @@
     <string name="global_settings_registered_name_color_changed">نام‌های موجود در سیاههٔ آشنایان رنگی شود</string>
     <string name="general_settings_contact_name_color_label">رنگ نام آشنا</string>
     <string name="global_settings_messageview_fixedwidth_label">قلم‌های تک‌عرض</string>
-    <string name="global_settings_messageview_fixedwidth_summary">هنگام نمایش پیام‌های متنی از قلم تک‌عرض استفاده کن</string>
+    <string name="global_settings_messageview_fixedwidth_summary">هنگام نمایش پیام‌های متنی ساده از قلم تک‌عرض استفاده کن</string>
     <string name="global_settings_messageview_autofit_width_label">جاگیری خودکار پیام‌ها</string>
     <string name="global_settings_messageview_autofit_width_summary">پیام‌ها را کوچک می‌کند تا در صفحه جا شوند</string>
     <string name="global_settings_confirm_actions_title">تأیید کنش‌ها</string>

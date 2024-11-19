@@ -17,6 +17,7 @@ configure<SpotlessExtension> {
     configureMarkdownCheck(
         targets = listOf(
             "*.md",
+            "docs/**/*.md",
         ),
     )
 

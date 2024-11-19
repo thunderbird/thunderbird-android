@@ -31,27 +31,6 @@ internal fun ContentLoadingViewLoadingPreview() {
 }
 
 @Composable
-@Preview(showBackground = true)
-internal fun ContentLoadingViewInteractivePreview() {
-    PreviewWithThemes {
-        val state = remember {
-            mutableStateOf(ContentLoadingState.Loading)
-        }
-
-        DefaultContentLoadingView(
-            state = state.value,
-            modifier = Modifier
-                .clickable {
-                    when (state.value) {
-                        ContentLoadingState.Loading -> state.value = ContentLoadingState.Content
-                        ContentLoadingState.Content -> state.value = ContentLoadingState.Loading
-                    }
-                },
-        )
-    }
-}
-
-@Composable
 private fun DefaultContentLoadingView(
     state: ContentLoadingState,
     modifier: Modifier = Modifier,
@@ -67,3 +46,34 @@ private fun DefaultContentLoadingView(
         modifier = modifier.fillMaxSize(),
     )
 }
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingViewInteractivePreview() {
+    PreviewWithThemes {
+        val state = remember {
+            mutableStateOf(State(isLoading = true, content = "Hello world"))
+        }
+
+        ContentLoadingView(
+            state = state.value,
+            loading = {
+                TextTitleMedium(text = "Loading...")
+            },
+            content = { targetState ->
+                TextTitleMedium(text = targetState.content)
+            },
+            modifier = Modifier
+                .clickable {
+                    val currentValue = state.value
+                    state.value = currentValue.copy(isLoading = currentValue.isLoading.not())
+                }
+                .fillMaxSize(),
+        )
+    }
+}
+
+private data class State(
+    override val isLoading: Boolean,
+    val content: String,
+) : LoadingState

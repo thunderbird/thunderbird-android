@@ -9,4 +9,8 @@
     <string name="onboarding_migration_thunderbird_import_button_text">Importa le tue impostazioni ora</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Impostazioni\' nella barra degli spazi (in basso a sinistra)</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Importa facilmente le tue impostazioni scannerizzando il QR code.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Seleziona \"Esporta sul telefono\"</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">L\'importazione richiede l\'ultima versione di Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Come aggiornare Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Non è stata trovata nessuna app per aprire il link.</string>
 </resources>

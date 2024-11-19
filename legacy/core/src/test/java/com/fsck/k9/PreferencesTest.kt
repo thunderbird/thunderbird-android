@@ -17,7 +17,6 @@ class PreferencesTest {
         storagePersister = InMemoryStoragePersister(),
         localStoreProvider = mock(),
         accountPreferenceSerializer = AccountPreferenceSerializer(
-            storageManager = mock(),
             resourceProvider = mock(),
             serverSettingsSerializer = mock {
                 on { serialize(any()) } doReturn ""

@@ -37,7 +37,6 @@ val coreNotificationModule = module {
     }
     single {
         AccountPreferenceSerializer(
-            storageManager = get(),
             resourceProvider = get(),
             serverSettingsSerializer = get(),
         )

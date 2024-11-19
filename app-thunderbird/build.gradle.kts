@@ -78,7 +78,7 @@ android {
             ),
         )
 
-        buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird\"")
+        buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
 
     signingConfigs {

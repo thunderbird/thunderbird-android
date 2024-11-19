@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="Theme.Thunderbird.Startup" parent="Theme2.Thunderbird.Dark">
-        <item name="android:windowBackground">@android:color/black</item>
-    </style>
+    <style name="Theme.Thunderbird.Startup" parent="Theme2.Main.Startup" />
 
     <style name="Theme.Thunderbird.Light" parent="Theme2.Thunderbird.Light">
         <item name="actionModeCloseDrawable">@drawable/ic_close</item>

@@ -5,6 +5,7 @@ import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.ConnectionSecurity
+import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.first
 import assertk.assertions.isEqualTo
@@ -13,7 +14,10 @@ import assertk.assertions.prop
 import kotlin.test.Test
 
 class QrCodePayloadMapperTest {
-    private val mapper = QrCodePayloadMapper()
+    private val mapper = QrCodePayloadMapper(
+        qrCodePayloadValidator = QrCodePayloadValidator(),
+        deletePolicyProvider = FakeDeletePolicyProvider(),
+    )
 
     @Test
     fun `valid input should be mapped to expected output`() {
@@ -111,6 +115,7 @@ class QrCodePayloadMapperTest {
             accounts = listOf(
                 AccountData.Account(
                     accountName = "Account name",
+                    deletePolicy = FakeDeletePolicyProvider.DELETE_POLICY,
                     incomingServer = AccountData.IncomingServer(
                         protocol = AccountData.IncomingServerProtocol.Imap,
                         hostname = "imap.domain.example".toHostname(),

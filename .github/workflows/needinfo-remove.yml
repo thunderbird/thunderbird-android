@@ -10,6 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: |
+      contains(github.event.issue.labels.*.name, 'status: needs information') &&
       github.event.comment.author_association != 'OWNER' &&
       github.event.comment.author_association != 'MEMBER' &&
       github.event.comment.author_association != 'COLLABORATOR'
@@ -23,3 +24,10 @@ jobs:
           curl --request DELETE \
             --url 'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/status%3A%20needs%20information' \
             --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}'
+      - name: Add answered label
+        run: |
+          curl --request POST \
+            --url 'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels' \
+            --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
+            --header 'Content-Type: application/json' \
+            --data '{"labels": ["status: answered"]}'

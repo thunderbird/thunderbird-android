@@ -202,7 +202,7 @@
     <string name="global_settings_confirm_actions_title">操作の確認</string>
     <string name="global_settings_confirm_actions_summary">選択した動作を実行するときは常にダイアログを表示します</string>
     <string name="global_settings_confirm_action_delete">削除</string>
-    <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージ表示画面)</string>
+    <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージビュー)</string>
     <string name="global_settings_confirm_action_spam">迷惑メール</string>
     <string name="global_settings_confirm_menu_discard">メッセージ破棄</string>
     <string name="global_settings_confirm_menu_mark_all_read">すべてのメールを既読にする</string>
@@ -500,13 +500,13 @@
     <string name="messagelist_preferences">メッセージ一覧</string>
     <string name="messageview_preferences">メッセージ</string>
     <string name="settings_theme_label">テーマ</string>
-    <string name="settings_message_theme_label">メッセージ表示画面のテーマ</string>
+    <string name="settings_message_theme_label">メッセージビューのテーマ</string>
     <string name="settings_compose_theme_label">メッセージ作成画面のテーマ</string>
     <string name="settings_language_label">言語</string>
     <string name="preference_search_no_results">設定が見つかりません</string>
     <string name="settings_message_theme_selection_label">メッセージのテーマを固定する</string>
-    <string name="settings_message_theme_selection_summary_off">メッセージ表示中のテーマを選択します</string>
-    <string name="settings_message_theme_selection_summary_on">メッセージ表示画面のテーマを変更します</string>
+    <string name="settings_message_theme_selection_summary_off">メッセージ表示中のメッセージビューのテーマを選択します</string>
+    <string name="settings_message_theme_selection_summary_on">メッセージビューのテーマを変更します</string>
     <string name="setting_language_system">システム標準</string>
     <string name="background_ops_label">バックグラウンド同期</string>
     <string name="background_ops_never">同期しない</string>
@@ -654,7 +654,7 @@
     <string name="global_settings_colorize_missing_contact_pictures_label">頭文字の連絡先アイコンに色を付ける</string>
     <string name="global_settings_colorize_missing_contact_pictures_summary">連絡先に画像がない場合に頭文字のアイコンに色を付けます</string>
     <string name="global_settings_messageview_visible_refile_actions_title">表示するメッセージのアクション</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">メッセージ表示画面のメニューに選択したアクションを表示します</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">メッセージビューのメニューに選択したアクションを表示します</string>
     <string name="loading_attachment">添付ファイルを読み込み中…</string>
     <string name="fetching_attachment_dialog_title_send">メッセージを送信中</string>
     <string name="fetching_attachment_dialog_title_save">下書きを保存中</string>
@@ -886,5 +886,5 @@
     <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> を支援する</string>
     <string name="volume_navigation_title_short">音量キー操作</string>
     <string name="save_attachment_action">添付ファイルを保存</string>
-    <string name="volume_navigation_summary">メッセージ表示で音量キーを使用してメッセージを移動します</string>
+    <string name="volume_navigation_summary">メッセージビューで音量キーを使用してメッセージを移動します</string>
 </resources>

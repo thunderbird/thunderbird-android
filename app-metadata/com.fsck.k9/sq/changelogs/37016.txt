@@ -1,0 +1,5 @@
+- Ndreqje të metash të vockla dhe lustrim i UI/UX-it te ujdisja e llogarisë
+- U ndreq një e metë e shkaktuar nga një ndërveprim me OpenKeychain 6.0.0
+- Fokusi te fusha dhënieje subjekti, ose lënde, kur hapet skena e hartuesit përmes një URI mailto: 
+- Heqje e përkthimeve në hebraishte dhe koreane, ngaqë janë të përkthyera më pak se 70% e vargjeve. Vullnetarët për të përditësuar përkthimet janë përherë të mirëpritur!
+- Updated remaining translations

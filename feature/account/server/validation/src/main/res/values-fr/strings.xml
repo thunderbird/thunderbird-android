@@ -4,11 +4,11 @@
     <string name="account_server_validation_error_authentication">Erreur d\'authentification</string>
     <string name="account_server_validation_outgoing_loading_message">Vérification des paramètres du serveur sortant…</string>
     <string name="account_server_validation_error_network">Erreur réseau</string>
-    <string name="account_server_validation_outgoing_success">Les paramètres du serveur sortant sont vérifiés</string>
+    <string name="account_server_validation_outgoing_success">Les paramètres du serveur sortant sont confirmés</string>
     <string name="account_server_validation_error_unknown">Erreur inconnue</string>
-    <string name="account_server_validation_sign_in">Veuillez vous connecter</string>
+    <string name="account_server_validation_sign_in">Connectez-vous</string>
     <string name="account_server_validation_outgoing_loading_error">Échec de vérification des paramètres du serveur sortant</string>
-    <string name="account_server_validation_incoming_success">Les paramètres du serveur entrant sont vérifiés</string>
+    <string name="account_server_validation_incoming_success">Les paramètres du serveur entrant sont confirmés</string>
     <string name="account_server_validation_incoming_loading_error">Échec de vérification des paramètres du serveur entrant</string>
     <string name="account_server_validation_error_server">Erreur du serveur</string>
     <string name="account_server_validation_error_missing_server_capability">Le serveur ne dispose pas d’une capacité</string>

@@ -198,7 +198,7 @@ object K9 : KoinComponent {
     var isUseVolumeKeysForNavigation = false
 
     @JvmStatic
-    var isShowUnifiedInbox = true
+    var isShowUnifiedInbox = false
 
     @JvmStatic
     var isShowStarredCount = false
@@ -328,7 +328,7 @@ object K9 : KoinComponent {
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
-        isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", true)
+        isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", false)
         isShowStarredCount = storage.getBoolean("showStarredCount", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListStars = storage.getBoolean("messageListStars", true)

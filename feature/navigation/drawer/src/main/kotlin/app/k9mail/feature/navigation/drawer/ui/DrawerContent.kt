@@ -35,7 +35,7 @@ internal fun DrawerContent(
             .fillMaxHeight()
             .testTag("DrawerContent"),
     ) {
-        val selectedAccount = state.accounts.firstOrNull { it.uuid == state.selectedAccountUuid }
+        val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
         Column {
             selectedAccount?.let {
                 AccountView(

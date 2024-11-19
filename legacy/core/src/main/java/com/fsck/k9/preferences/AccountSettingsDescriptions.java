@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.Context;
@@ -24,7 +23,6 @@ import com.fsck.k9.AccountPreferenceSerializer;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
-import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
 import com.fsck.k9.preferences.Settings.EnumSetting;
@@ -119,9 +117,6 @@ class AccountSettingsDescriptions {
         s.put("ledColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF0000FF)),
                 new V(80, null)
-        ));
-        s.put("localStorageProvider", Settings.versions(
-                new V(1, new StorageProviderSetting())
         ));
         s.put("markMessageAsReadOnView", Settings.versions(
                 new V(7, new BooleanSetting(true))
@@ -404,29 +399,6 @@ class AccountSettingsDescriptions {
         public String fromString(String value) {
             //TODO: add validation
             return value;
-        }
-    }
-
-    private static class StorageProviderSetting extends SettingsDescription<String> {
-        private final Context context = DI.get(Context.class);
-
-        StorageProviderSetting() {
-            super(null);
-        }
-
-        @Override
-        public String getDefaultValue() {
-            return StorageManager.getInstance(context).getDefaultProviderId();
-        }
-
-        @Override
-        public String fromString(String value) {
-            StorageManager storageManager = StorageManager.getInstance(context);
-            Set<String> providers = storageManager.getAvailableProviders();
-            if (providers.contains(value)) {
-                return value;
-            }
-            throw new RuntimeException("Validation failed");
         }
     }
 
