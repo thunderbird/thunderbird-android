@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_list_title">Bezpečné přispění</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Jednou</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Pokračovat k platbě</string>
@@ -17,7 +17,7 @@
     <string name="funding_googleplay_contribution_error_show_more">Zobrazit další podrobnosti</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Zavřít chybu</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Výjimečný měsíční dar</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Navštivte www.thunderbird.net pro další způsoby, jak podpořit Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Navštivte <xliff:g id="link_text">%s</xliff:g> pro další způsoby, jak podpořit Thunderbird.</string>
     <string name="funding_googleplay_contribution_error_purchase_failed">Nákup se nezdařil.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Podstatný dar</string>
     <string name="funding_googleplay_contribution_error_service_disconnected">Dary nejsou v tuto chvíli dostupné.</string>

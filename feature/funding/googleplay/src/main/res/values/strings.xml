@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <string name="funding_googleplay_contribution_title">Support Thunderbird</string>
 
     <string name="funding_googleplay_contribution_header_title">Support Thunderbird</string>
@@ -14,7 +15,7 @@
     <!-- The disclaimer could be found at https://www.thunderbird.net/donate/mobile/?form=tfa for other languages -->
     <string name="funding_googleplay_contribution_list_disclaimer">Contributions are not tax-deductible as charitable donations.</string>
     <string name="funding_googleplay_contribution_list_empty_title">In-app contributions are currently unavailable.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Visit www.thunderbird.net for more ways to support Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visit <xliff:g id="link_text">%s</xliff:g> for more ways to support Thunderbird.</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Retry</string>
 
     <string name="funding_googleplay_contribution_footer_payment_button">Continue to payment</string>

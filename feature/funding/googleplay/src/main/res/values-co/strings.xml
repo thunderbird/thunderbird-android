@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Sustene Thunderbird</string>
     <string name="funding_googleplay_contribution_list_title">Cuntribuzione assicurata</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Dà una volta</string>
@@ -8,7 +8,7 @@
     <string name="funding_googleplay_contribution_footer_payment_button">Cuntinuà u pagamentu</string>
     <string name="funding_googleplay_contribution_title">Sustene Thunderbird</string>
     <string name="funding_googleplay_contribution_list_empty_title">Ora, e cuntribuzioni ùn sò micca dispunibule via l’appiecazione.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Visitate u situ www.thunderbird.net per cunnosce parechje manere di sustene Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visitate u situ <xliff:g id="link_text">%s</xliff:g> per cunnosce parechje manere di sustene Thunderbird.</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Pruvà torna</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Pagamentu indispunibule attualmente</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Mudificà u pagamentu misincu</string>

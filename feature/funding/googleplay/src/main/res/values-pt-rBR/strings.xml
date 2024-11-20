@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Apoie o Thunderbird</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Contribuições não são deduzíveis em impostos como doações de caridade.</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Continuar para o pagamento</string>
@@ -18,7 +18,7 @@
     <string name="funding_googleplay_contribution_error_purchase_failed">Compra falhou.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Contribuição Essencial</string>
     <string name="funding_googleplay_contribution_tfa_onetime_s_title">Contribuição de Valor</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Visite www.thunderbird.net para mais metódos de apoiar o Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visite <xliff:g id="link_text">%s</xliff:g> para mais metódos de apoiar o Thunderbird.</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Ignorar erro</string>
     <string name="funding_googleplay_contribution_tfa_onetime_m_title">Contribuição Significante</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Pagamento atualmente não disponível</string>

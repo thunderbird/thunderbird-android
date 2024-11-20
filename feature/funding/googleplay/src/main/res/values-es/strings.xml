@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_description">Nunca mostramos anuncios ni vendemos tus datos. Nos financiamos completamente con contribuciones financieras de nuestros usuarios. Si disfrutas de Thunderbird, por favor, ayúdanos a mantenerlo. ¡No podemos hacer esto sin ti!</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Continuar con el pago</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Mensual</string>
@@ -19,7 +19,7 @@
     <string name="funding_googleplay_contribution_error_purchase_failed">Compra fallida.</string>
     <string name="funding_googleplay_contribution_error_service_disconnected">Actualmente, las colaboraciones no están disponibles.</string>
     <string name="funding_googleplay_contribution_list_empty_title">Las colaboraciones dentro de la aplicación no están disponibles actualmente.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Visite www.thunderbird.net para conocer más formas de apoyar a Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visite <xliff:g id="link_text">%s</xliff:g> para conocer más formas de apoyar a Thunderbird.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_l_title">Gran contribución</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Aporte excepcional</string>
     <string name="funding_googleplay_contribution_tfa_onetime_m_description">¡Tu colaboración realmente brilla! Está desempeñando un papel importante en el avance de nuestra misión, ayudándonos a alcanzar hitos importantes y lograr un mayor impacto.</string>
