@@ -56,7 +56,7 @@ detektPluginCompose = "0.4.18"
 fastAdapter = "5.7.0"
 forkhandlesBom = "2.20.0.0"
 glide = "4.16.0"
-gradle = "8.11"
+gradle = "8.11.1"
 http4kBom = "5.35.2.0"
 icu4j = "72.1"
 javaDiffUtils = "4.12"
@@ -104,7 +104,7 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
