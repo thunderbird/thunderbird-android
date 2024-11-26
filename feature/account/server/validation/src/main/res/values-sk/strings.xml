@@ -5,4 +5,15 @@
     <string name="account_server_validation_outgoing_success">Nastavenia servera odchádzajúcej pošty sú platné</string>
     <string name="account_server_validation_outgoing_loading_error">Kontrola nastavení servera odchádzajúcej pošty zlyhala</string>
     <string name="account_server_validation_incoming_success">Nastavenia servera prichádzajúcej pošty sú platné</string>
+    <string name="account_server_validation_incoming_loading_error">Chyba overovania nastavenia servera prichádzajúcej pošty</string>
+    <string name="account_server_validation_error_server">Chyba servera</string>
+    <string name="account_server_validation_error_unknown">Neznáma chyba</string>
+    <string name="account_server_validation_error_client_certificate_expired">Klientský certifikát už nie je platný</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Klientský certifikát nie je prístupný</string>
+    <string name="account_server_validation_error_missing_server_capability">Chýbajúca funkčnosť servera</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Chýbajúca funkčnosť servera:\n%s</string>
+    <string name="account_server_validation_error_details">Podrobnosti:\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Overujem nastavenia servera prichádzajúcej pošty…</string>
+    <string name="account_server_validation_sign_in">Prosím prihláste sa</string>
+    <string name="account_server_validation_error_authentication">Chyba autentifikácie</string>
 </resources>
