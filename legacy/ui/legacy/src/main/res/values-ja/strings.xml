@@ -486,7 +486,7 @@
     <string name="account_settings_signature__location_label">署名の位置</string>
     <string name="account_settings_signature__location_before_quoted_text">引用メッセージの前に挿入する</string>
     <string name="account_settings_signature__location_after_quoted_text">引用メッセージの後に挿入する</string>
-    <string name="setting_theme_global">アプリのテーマを使用</string>
+    <string name="setting_theme_global">アプリのテーマを使用する</string>
     <string name="setting_theme_dark">ダーク</string>
     <string name="setting_theme_light">ライト</string>
     <string name="setting_theme_follow_system">システム標準を使用</string>

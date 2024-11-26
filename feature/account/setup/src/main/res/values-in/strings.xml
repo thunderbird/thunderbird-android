@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_setup_special_folders_form_description_automatic">Entri \"Otomatis\" akan mengikuti perubahan yang dilakukan oleh server secara otomatis. Nilai server saat ini ditampilkan dalam tanda kurung.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Entri \"Otomatis\" akan mengikuti perubahan yang dilakukan oleh peladen secara otomatis. Nilai peladen saat ini ditampilkan dalam tanda kurung.</string>
     <string name="account_setup_special_folders_loading_message">Mengambil daftar folder…</string>
-    <string name="account_setup_special_folders_form_description">Silakan tentukan folder spesial untuk akun Anda.</string>
-    <string name="account_setup_special_folders_error_message">Gagal mengambil daftar folder dari server</string>
-    <string name="account_setup_special_folders_success_message">Semua folder spesial telah dikonfigurasi secara otomatis oleh server.</string>
+    <string name="account_setup_special_folders_form_description">Silakan tentukan folder khusus untuk akun Anda.</string>
+    <string name="account_setup_special_folders_error_message">Gagal mengambil daftar folder dari peladen</string>
+    <string name="account_setup_special_folders_success_message">Semua folder khusus telah dikonfigurasi secara otomatis oleh peladen.</string>
     <string name="account_setup_special_folders_archive_folder_label">Folder arsip</string>
     <string name="account_setup_special_folders_spam_folder_label">Folder spam</string>
     <string name="account_setup_special_folders_trash_folder_label">Folder sampah</string>
@@ -14,32 +14,32 @@
     <string name="account_setup_options_account_check_frequency_label">Frekuensi pengecekan</string>
     <string name="account_setup_options_email_display_count_label">Jumlah pesan yang akan ditampilkan</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Kata sandi diperlukan.</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Kami menerima konfigurasi untuk server surel Anda atas koneksi yang tidak seaman kami. Ini berarti bahwa ada kesempatan kecil bagi orang lain untuk mengubahnya. Bisakah Anda memeriksa ulang konfigurasi tersebut untuk memastikan bahwa itu sudah benar?</string>
-    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Edit konfigurasi</string>
-    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Saya percaya konfigurasi ini</string>
-    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Diperlukan persetujuan untuk memakai konfigurasi ini.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Kami menerima kknnfigurasi peladen surel Anda melalui koneksi jaringan yang tidak seaman yang kami hendaki. Hal ini memberikan celah kecil bagi orang lain untuk dapat mengubah peladen surel Anda. Dapatkah Anda periksa ulang konfigurasi tersebut untuk memastikan bahwa konfigurasi tersebut sudah benar?</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Sunting konfigurasi</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Saya memercayai konfigurasi ini</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Persetujuan Anda akan konfigurasi ini diperlukan.</string>
     <string name="account_setup_special_folders_drafts_folder_label">Folder draf</string>
     <string name="account_setup_special_folders_folder_none">Tidak ada</string>
     <string name="account_setup_special_folders_folder_automatic">Otomatis (%s)</string>
     <string name="account_setup_options_account_name_label">Nama akun</string>
-    <string name="account_setup_options_section_display_options">Opsi tampilan</string>
+    <string name="account_setup_options_section_display_options">Pilihan tampilan</string>
     <string name="account_setup_options_account_name_error_blank">Nama akun tidak boleh kosong.</string>
     <string name="account_setup_options_display_name_label">Nama Anda</string>
     <string name="account_setup_options_display_name_error_required">Nama Anda diperlukan.</string>
     <string name="account_setup_options_email_signature_label">Tanda tangan surel</string>
     <string name="account_setup_options_email_signature_error_blank">Nama tanda tangan surel tidak boleh kosong.</string>
-    <string name="account_setup_options_section_sync_options">Opsi sinkronisasi</string>
+    <string name="account_setup_options_section_sync_options">Pilihan penyinkronan</string>
     <string name="account_setup_create_account_creating">Membuat akun…</string>
-    <string name="account_setup_create_account_error">Terjadi galat saat mencoba untuk membuat akun</string>
+    <string name="account_setup_create_account_error">Terdapat galat saat mencoba untuk membuat akun</string>
     <string name="account_setup_create_account_created">Akun berhasil dibuat</string>
-    <string name="account_setup_error_network">Jaringan</string>
+    <string name="account_setup_error_network">Terdapat galat jaringan. Harap periksa status koneksi Anda dan coba lagi.</string>
     <string name="account_setup_error_unknown">Galat tak diketahui</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Alamat surel diperlukan.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Alamat surel ini tidak diperbolehkan.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Alamat surel ini tidak didukung.</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Ini tidak diakui sebagai alamat surel yang valid.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Yang Anda masukkan tidak diakui sebagai alamat surel yang valid.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurasi manual</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurasikan secara manual</string>
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="other">%d pesan</item>
     </plurals>
@@ -48,7 +48,7 @@
     <string name="account_setup_auto_discovery_loading_error">Gagal memuat konfigurasi surel</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfigurasi ditemukan</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfigurasi tidak ditemukan</string>
-    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigurasi otomatis</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Konfigurasikan secara otomatis</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Konfigurasi ini tidak dipercaya</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="other">Setiap %d menit</item>

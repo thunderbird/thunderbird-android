@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">تعذر الوصول إلى شهادة العميل</string>
+    <string name="account_server_validation_error_client_certificate_expired">شهادة العميل لم تعد صالحة</string>
+    <string name="account_server_validation_error_details">التفاصيل:\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability">هناك إمكانية مفقودة في الخادم</string>
+    <string name="account_server_validation_error_missing_server_capability_details">يفتقد الخادم هذه الإمكانية:\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">التحقق من إعدادات خادم البريد الوارد…</string>
+    <string name="account_server_validation_incoming_success">تم التحقق من إعدادات خادم البريد الوارد</string>
+    <string name="account_server_validation_outgoing_loading_message">التحقق من إعدادات خادم البريد الصادر…</string>
+    <string name="account_server_validation_sign_in">يُرجى القيام بتسجيل الدخول</string>
+    <string name="account_server_validation_incoming_loading_error">فشل التحقق من إعدادات خادم البريد الوارد</string>
+    <string name="account_server_validation_outgoing_loading_error">فشل التحقق من إعدادات خادم البريد الصادر</string>
+    <string name="account_server_validation_error_authentication">خطأ في المصادقة</string>
+    <string name="account_server_validation_error_network">خطأ في الشبكة</string>
+    <string name="account_server_validation_error_server">خطأ في الخادم</string>
+    <string name="account_server_validation_error_unknown">خطأ غير معروف</string>
+    <string name="account_server_validation_outgoing_success">تم التحقق من إعدادات خادم البريد الصادر</string>
+</resources>

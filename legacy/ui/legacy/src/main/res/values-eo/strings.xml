@@ -875,7 +875,7 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="background_work_notification_remove_account">Konton forigado…</string>
     <string name="font_size_message_view_recipients">Ricevintoj</string>
     <string name="action_add_to_contacts">Aldoni al kontaktaro</string>
-    <string name="push_notification_grant_alarm_permission">Tapetu por doni la permeson.</string>
+    <string name="push_notification_grant_alarm_permission">Tuŝu por doni la permeson.</string>
     <string name="push_notification_state_alarm_permission_missing">Mankas permeson plani alarmojn</string>
     <string name="action_compose_message_to">Ekskribi mesaĝon al</string>
     <string name="message_list_error_title">Eraro</string>
@@ -885,4 +885,5 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="clipboard_label_name_and_email_address">Nomo kaj retpoŝtadreso</string>
     <string name="settings_ui_data_collection">Datumojn kolekto</string>
     <string name="message_details_toolbar_title">Mesaĝon detaloj</string>
+    <string name="push_info_notification_explanation_text">Dum la uzo de puŝ-sciigoj, <xliff:g id="app_name">%1$s</xliff:g> daŭrigas konekton al la retpoŝta servilo. Android postulas montri daŭran sciigon kiam la apo estas fone aktiva. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
 </resources>

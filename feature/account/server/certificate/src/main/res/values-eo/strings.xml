@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">Averto</string>
     <string name="account_server_certificate_unknown_error_subtitle">Atestila eraro</string>
     <string name="account_server_certificate_fingerprints_section">Fingrospuroj</string>
-    <string name="account_server_certificate_subject">Temo</string>
+    <string name="account_server_certificate_subject"></string>
     <string name="account_server_certificate_section_title">Servila atestilo</string>
     <string name="account_server_certificate_button_back">Reen (rekomendate)</string>
+    <string name="account_server_certificate_button_advanced">Spertula</string>
+    <string name="account_server_certificate_button_continue">Akcepti la riskon kaj daŭrigi</string>
+    <string name="account_server_certificate_not_valid_before">Ne valida antaŭ</string>
+    <string name="account_server_certificate_not_valid_after">Ne valida post</string>
+    <string name="account_server_certificate_unknown_error_description_format">La apo detektis eblan sekurecan minacon kaj ne daŭrigis kontekti al <xliff:g id="serverName">%s</xliff:g>.\nSe vi daŭrigas, atakantoj eble provos ŝteli informojn, interalie pasvortojn aŭ retpoŝtmesaĝojn.</string>
 </resources>

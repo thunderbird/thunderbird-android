@@ -11,4 +11,6 @@
     <string name="account_server_certificate_not_valid_after">Ni veljavno po</string>
     <string name="account_server_certificate_issuer">Izdajatelj</string>
     <string name="account_server_certificate_fingerprints_section">Prstni odtisi</string>
+    <string name="account_server_certificate_subject_alternative_names">Nadomestna imena subjekta</string>
+    <string name="account_server_certificate_subject">Subjekt</string>
 </resources>

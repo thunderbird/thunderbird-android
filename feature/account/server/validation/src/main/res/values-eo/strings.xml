@@ -6,4 +6,5 @@
     <string name="account_server_validation_error_server">Servila eraro</string>
     <string name="account_server_validation_error_network">Reta eraro</string>
     <string name="account_server_validation_error_unknown">Nekonata eraro</string>
+    <string name="account_server_validation_error_authentication">Aŭtentokontrola eraro</string>
 </resources>

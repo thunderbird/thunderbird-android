@@ -332,7 +332,7 @@
         <item quantity="other">Vil du verkeleg sletta <xliff:g id="message_count">%1$d</xliff:g> meldingar?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Ja</string>
-    <string name="dialog_confirm_delete_cancel_button">NEI!!!!!1</string>
+    <string name="dialog_confirm_delete_cancel_button">Nei</string>
     <string name="dialog_confirm_mark_all_as_read_title">Stadfest lesemarkering</string>
     <string name="dialog_confirm_mark_all_as_read_message">Vil du merkja alle meldingane som lesne?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Ja</string>

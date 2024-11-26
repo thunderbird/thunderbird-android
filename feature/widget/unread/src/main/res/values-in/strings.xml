@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="unread_widget_select_account">Perlihatkan jumlah belum terbaca untuk…</string>
+    <string name="unread_widget_select_account">Perlihatkan jumlah surel belum terbaca akun…</string>
     <string name="unread_widget_account_title">Akun</string>
-    <string name="unread_widget_account_summary">Akun dengan jumlah surat yang belum dibaca harus ditampilkan</string>
+    <string name="unread_widget_account_summary">Akun dengan jumlah surel yang belum dibaca harus ditampilkan</string>
     <string name="unread_widget_unified_inbox_account_summary">Kotak Masuk Terpadu</string>
     <string name="unread_widget_folder_enabled_title">Penghitung folder</string>
-    <string name="unread_widget_folder_enabled_summary">Tampilkan jumlah yang belum dibaca hanya dari satu folder</string>
+    <string name="unread_widget_folder_enabled_summary">Tampilkan jumlah surel yang belum dibaca hanya dari satu folder</string>
     <string name="unread_widget_folder_title">Folder</string>
-    <string name="unread_widget_folder_summary">Folder dengan jumlah surat yang belum dibaca seharusnya ditampilkan</string>
+    <string name="unread_widget_folder_summary">Folder dengan jumlah surel yang belum dibaca seharusnya ditampilkan</string>
     <string name="unread_widget_action_done">Selesai</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">Tidak ada akun yang dipilih</string>
     <string name="unread_widget_folder_not_selected">Tidak ada folder yang dipilih</string>
     <string name="unread_widget_choose_account_title">Pilih Akun</string>
-    <string name="unread_widget_label">Jumlah yang belum dibaca</string>
+    <string name="unread_widget_label">Jumlah surel yang belum dibaca</string>
 </resources>

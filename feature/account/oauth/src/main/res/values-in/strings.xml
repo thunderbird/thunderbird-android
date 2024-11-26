@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_description">Kami akan mengarahkan Anda ke penyedia surel Anda untuk masuk. Anda harus memberikan akses aplikasi ke akun surel Anda.</string>
+    <string name="account_oauth_sign_in_description">Kami akan mengarahkan Anda ke penyedia surel untuk masuk ke akun Anda. Namun, izinkan akses aplikasi ke akun surel Anda terlebih dahulu.</string>
     <string name="account_oauth_sign_in_button">Masuk</string>
     <string name="account_oauth_sign_in_with_google_button">Masuk dengan Google</string>
     <string name="account_oauth_loading_message">Masuk dengan OAuth</string>
     <string name="account_oauth_loading_error">Gagal masuk dengan OAuth</string>
     <string name="account_oauth_error_canceled">Otorisasi dibatalkan</string>
-    <string name="account_oauth_error_failed">Otorisasi gagal dengan kesalahan berikut: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_failed">Otorisasi gagal akibat galat berikut: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 saat ini tidak didukung oleh penyedia ini.</string>
     <string name="account_oauth_error_browser_not_available">Aplikasi ini tidak menemukan peramban yang bisa digunakan untuk memberikan akses ke akun Anda.</string>
 </resources>
