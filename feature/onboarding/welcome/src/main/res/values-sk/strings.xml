@@ -2,4 +2,5 @@
 <resources>
     <string name="onboarding_welcome_start_button">Začať</string>
     <string name="onboarding_welcome_import_button">Importovať nastavenia</string>
+    <string name="onboarding_welcome_text">Open source e-mail klient pre Android zo zamerením na súkromie a bez reklám.</string>
 </resources>
