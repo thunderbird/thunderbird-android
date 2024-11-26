@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_sign_in_button">تسجيل الدخول</string>
+    <string name="account_oauth_sign_in_with_google_button">تسجيل الدخول باستخدام جوجل</string>
+    <string name="account_oauth_sign_in_description">سيتم إعادة توجيهك إلى مزود البريد الإلكتروني الخاص بك لتقوم بتسجيل الدخول. تحتاج إلى منح التطبيق إمكانية الوصول إلى حساب بريدك الإلكتروني.</string>
+    <string name="account_oauth_loading_message">يتم الآن تسجيل الدخول باستخدام OAuth</string>
+    <string name="account_oauth_loading_error">فشل تسجيل الدخول باستخدام OAuth</string>
+    <string name="account_oauth_error_browser_not_available">لم يتمكن التطبيق من العثور على متصفح لاستخدامه لمنح الوصول إلى حسابك.</string>
+    <string name="account_oauth_error_canceled">تم إلغاء التفويض</string>
+    <string name="account_oauth_error_not_supported">استخدام OAuth 2.0 مع هذا المزود غير مدعوم حاليًا.</string>
+    <string name="account_oauth_error_failed">فشل التفويض مع الخطأ التالي: <xliff:g id="error">%s</xliff:g></string>
+</resources>

@@ -1,4 +1,4 @@
-- Menambahkan penanganan gambar dalam menu konteks untuk pranala
+- Menambahkan penanganan gambar dalam menu konteks pranala
 - Menambahkan kemampuan untuk meneruskan lampiran terbuka ke surel baru
 - Memperbaiki layar kesalahan sertifikat yang terjadi saat pengaturan akun
 - Meningkatkan pengaturan impor selama pengaturan akun

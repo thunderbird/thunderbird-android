@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP atau nama hos tidak valid</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP atau nama hos takvalid</string>
     <string name="account_server_settings_validation_error_username_required">Nama pengguna diperlukan.</string>
     <string name="account_server_settings_validation_error_password_required">Kata sandi diperlukan.</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">Prefiks IMAP tidak boleh kosong.</string>
-    <string name="account_server_settings_password_authentication_title">Verifikasi identitas Anda</string>
+    <string name="account_server_settings_password_authentication_title">Verifikasikan identitas Anda</string>
     <string name="account_server_settings_password_authentication_subtitle">Buka untuk melihat kata sandi Anda</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Untuk melihat kata sandi Anda di sini, aktifkanlah layar kunci pada perangkat ini.</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Kirim informasi klien</string>
     <string name="account_server_settings_protocol_type_label">Protokol</string>
-    <string name="account_server_settings_server_label">Server</string>
+    <string name="account_server_settings_server_label">Peladen</string>
     <string name="account_server_settings_security_label">Keamanan</string>
     <string name="account_server_settings_port_label">Porta</string>
     <string name="account_server_settings_authentication_label">Autentikasi</string>
@@ -24,12 +24,12 @@
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_client_certificate_none_selected">Tidak ada</string>
     <string name="account_server_settings_client_certificate_label">Sertifikat klien</string>
-    <string name="account_server_settings_incoming_top_bar_title">Pengaturan server masuk</string>
+    <string name="account_server_settings_incoming_top_bar_title">Pengaturan peladen yang masuk</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Deteksi otomatis namespace IMAP</string>
     <string name="account_server_settings_incoming_imap_prefix_label">Prefiks lokasi IMAP</string>
-    <string name="account_server_settings_validation_error_port_invalid">Porta tidak valid (harus bernilai 1–65535).</string>
+    <string name="account_server_settings_validation_error_port_invalid">Porta takvalid (harus bernilai 1—65535).</string>
     <string name="account_server_settings_incoming_imap_compression_label">Gunakan kompresi</string>
-    <string name="account_server_settings_outgoing_top_bar_title">Pengaturan server keluar</string>
-    <string name="account_server_settings_validation_error_server_required">Nama server diperlukan.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Pengaturan peladen yang keluar</string>
+    <string name="account_server_settings_validation_error_server_required">Nama peladen diperlukan.</string>
     <string name="account_server_settings_validation_error_port_required">Porta diperlukan.</string>
 </resources>

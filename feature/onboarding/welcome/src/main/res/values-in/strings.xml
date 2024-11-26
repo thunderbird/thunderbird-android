@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Mulai</string>
+    <string name="onboarding_welcome_start_button">Mari kita mulai</string>
     <string name="onboarding_welcome_import_button">Impor pengaturan</string>
+    <string name="onboarding_welcome_text">Aplikasi surel bersumber terbuka yang berfokus pada privasi dan bebas iklan di Android.</string>
+    <string name="onboarding_welcome_developed_by">Dikembangkan oleh tim pada MZLA Technologies yang berdedikasi dan komunitas sukarelawan global. Bagian dari keluarga Mozilla.</string>
 </resources>

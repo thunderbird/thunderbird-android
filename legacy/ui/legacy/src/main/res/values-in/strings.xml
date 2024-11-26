@@ -173,7 +173,7 @@
     <string name="global_settings_registered_name_color_label">Warnai kontak</string>
     <string name="global_settings_registered_name_color_changed">Warnai nama di daftar kontak Anda</string>
     <string name="global_settings_messageview_fixedwidth_label">Fon lebar tetap</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Gunakan fon lebar tetap saat menampilkan pesan teks biasa</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Gunakan fon berlebar tetap saat menampilkan pesan teks biasa</string>
     <string name="global_settings_messageview_autofit_width_label">Pesan pas otomatis</string>
     <string name="global_settings_messageview_autofit_width_summary">Kecilkan pesan agar sesuai dengan layar</string>
     <string name="global_settings_confirm_actions_title">Konfirmasi tindakan</string>
@@ -877,4 +877,11 @@
     <string name="about_app_authors_thunderbird">Tim Thunderbird Mobile</string>
     <string name="about_title">Tentang <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">Akun \"<xliff:g id="account">%s</xliff:g>\" akan dihapus dari <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="save_attachment_action">Simpan lampiran</string>
+    <string name="volume_navigation_title_short">Navigasi kunci volume</string>
+    <string name="folder_settings_sync_label">Nyalakan sinkronisasi</string>
+    <string name="settings_ui_data_collection">Pengumpulan data</string>
+    <string name="folder_settings_visible_label">Tampilkan folder</string>
+    <string name="folder_list_show_hidden_folders">Tampilkan folder tersembunyi</string>
+    <string name="folder_settings_notifications_label">Notifikasi</string>
 </resources>

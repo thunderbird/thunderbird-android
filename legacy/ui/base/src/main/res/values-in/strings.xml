@@ -2,5 +2,6 @@
 <resources>
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">Oke</string>
-    <string name="cancel_action">Batal</string>
+    <string name="cancel_action">Batalkan</string>
+    <string name="star_button_description">Bintang</string>
 </resources>
