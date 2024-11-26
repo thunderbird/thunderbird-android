@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_allow_button">اسمح</string>
+    <string name="onboarding_permissions_contacts_title">جهات الاتصال</string>
+    <string name="onboarding_permissions_notifications_title">الإشعارات</string>
+    <string name="onboarding_permissions_notifications_description">قم بتفعيل الإشعارات حتى لا تفوتك أي رسالة.</string>
+    <string name="onboarding_permissions_skip_button">‌‌تخطي</string>
+    <string name="onboarding_permissions_screen_title">تحسين التجربة</string>
+    <string name="onboarding_permissions_contacts_description">قم بالسماح بالوصول لإمكانية تقديم اقتراحات جهات الاتصال وعرض أسماء جهات الاتصال وصورهم.</string>
+</resources>

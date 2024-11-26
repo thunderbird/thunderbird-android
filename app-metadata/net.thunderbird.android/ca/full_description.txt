@@ -1,9 +1,3 @@
-Ajudeu a fer que la propera versió del Thunderbird sigui tan increïble com sigui possible baixant-vos el Thunderbird Beta i obtenint accés anticipat a les últimes funcionalitats i correccions d'errors abans que es publiquin oficialment. Les vostres proves i els vostres comentaris són importants, així que si us plau, informeu-nos d'errors, dels detalls poc polits i compartiu les vostres opinions amb nosaltres.
-
-Trobareu el nostre rastrejador d'errors, el codi font i la nostra wiki a <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
-
-Sempre ens complau donar la benvinguda a nous desenvolupadors, dissenyadors, documentalistes, traductors, triadors d'errors i amics. Visiteu-nos a <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> per començar.
-
 El Thunderbird és una potent aplicació de correu electrònic centrada en la privadesa. Gestioneu sense esforç diversos comptes de correu electrònic des d'una aplicació, amb una opció de «Safata d'entrada unificada» per obtenir la màxima productivitat. Basat en tecnologia de codi obert i recolzat per un equip dedicat de desenvolupadors juntament amb una comunitat global de voluntaris, el Thunderbird mai tracta les vostres dades privades com un producte. Està totalment finançat per les contribucions econòmiques dels nostres usuaris, de manera que no haureu de tornar a veure anuncis barrejats amb els vostres correus electrònics.
 
 <b>Què podeu fer</b>

@@ -10,30 +10,34 @@
     <string name="settings_import_failure">Gagal mengimpor pengaturan</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_read_failure">Gagal membaca berkas pengaturan</string>
-    <string name="settings_import_partial_failure">Gagal mengimpor beberapa pengaturan</string>
+    <string name="settings_import_partial_failure">Ada pengaturan yang gagal diimpor</string>
     <string name="settings_import_status_success">Berhasil diimpor</string>
     <string name="settings_import_status_password_required">Kata sandi diperlukan</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_import_status_not_imported">Tidak diimpor</string>
-    <string name="settings_import_status_error">Impor gagal</string>
+    <string name="settings_import_status_error">Pengimporan gagal</string>
     <string name="settings_import_later_button">Nanti</string>
     <string name="settings_importing">Mengimpor pengaturan…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="other">Untuk dapat menggunakan akun \"<xliff:g id="account">%s</xliff:g>\" Anda perlu memberikan kata sandi server.</item>
+        <item quantity="other">Agar dapat menggunakan akun \"<xliff:g id="account">%s</xliff:g>\", Anda perlu memberikan kata sandi peladen.</item>
     </plurals>
-    <string name="settings_import_incoming_server_password_hint">Kata sandi server masuk</string>
-    <string name="settings_import_outgoing_server_password_hint">Kata sandi server keluar</string>
-    <string name="settings_import_use_same_password_for_outgoing_server">Gunakan kata sandi yang sama untuk server keluar</string>
-    <string name="settings_import_server_name_format">Nama server: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_incoming_server_password_hint">Kata sandi peladen yang masuk</string>
+    <string name="settings_import_outgoing_server_password_hint">Kata sandi peladen yang keluar</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Gunakan kata sandi yang sama untuk peladen yang keluar</string>
+    <string name="settings_import_server_name_format">Nama peladen: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_general_settings_item">Pengaturan umum</string>
     <string name="settings_import_authorization_required">Silakan masuk</string>
     <string name="settings_import_authorization_and_password_required">Silakan masuk dan masukkan kata sandi</string>
-    <string name="settings_import_status_log_in_required">Diperlukan proses masuk</string>
-    <string name="settings_import_oauth_description">Untuk menggunakan akun surel ini, Anda perlu masuk dan memberikan akses aplikasi ke surel Anda.</string>
+    <string name="settings_import_status_log_in_required">Proses masuk diperlukan</string>
+    <string name="settings_import_oauth_description">Agar dapat menggunakan akun surel ini, Anda perlu masuk dan memberikan akses aplikasi ke surel Anda.</string>
     <string name="settings_import_oauth_sign_in">Masuk</string>
     <string name="settings_import_oauth_sign_in_with_google">Masuk dengan Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Otorisasi dibatalkan</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Otorisasi gagal dengan pesan berikut: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Otorisasi gagal dengan galat sebagai berikut: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 saat ini tidak didukung oleh penyedia ini.</string>
-    <string name="settings_import_oauth_error_browser_not_found">Aplikasi ini tidak bisa menemukan peramban yang bisa digunakan untuk memberikan akses ke akun Anda.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Aplikasi ini tidak dapat menemukan peramban yang bisa digunakan untuk memberikan akses ke akun Anda.</string>
+    <string name="settings_import_pick_app_dialog_title">Impor dari aplikasi</string>
+    <string name="settings_import_pick_app_button">Impor dari aplikasi</string>
+    <string name="settings_import_scan_qr_code_button">Pindai kode Respons Cepat (QR)</string>
+    <string name="settings_import_app_version_not_supported">Versi ini tidak didukung.</string>
 </resources>
