@@ -16,7 +16,7 @@ Thunderbird for Android can be downloaded from a couple of sources:
 - Thunderbird on [Google Play](https://play.google.com/store/apps/details?id=net.thunderbird.android&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dlink) or [F-Droid](https://f-droid.org/packages/net.thunderbird.android)
 - Thunderbird Beta on [Google Play](https://play.google.com/store/apps/details?id=net.thunderbird.android.beta&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dlink) or [F-Droid](https://f-droid.org/packages/net.thunderbird.android.beta)
 - [Github Releases](https://github.com/thunderbird/thunderbird-android/releases)
-- FFUpdater coming soon
+- [FFUpdater](https://f-droid.org/packages/de.marmaro.krt.ffupdater/) allows installing the latest versions from ftp.mozilla.org
 
 By using Thunderbird for Android Beta, you have early access to current development and are able to try new features earlier.
 
@@ -26,7 +26,7 @@ Check out the [Release Notes](https://github.com/thunderbird/thunderbird-android
 
 If the app is not behaving like it should, or you are not sure if you've encountered a bug:
 
-- Check out our [knowledge base and frequently asked questions](https://support.mozilla.org/products/thunderbird-android)
+- Check out our [knowledge base](https://support.mozilla.org/products/thunderbird-android) and [frequently asked questions](https://support.mozilla.org/kb/thunderbird-android-8-faq)
 - Ask a question on our [support forum](https://support.mozilla.org/en-US/questions/new/thunderbird-android)
 
 If you are certain you've identified a bug in Thunderbird for Android and would like to help fix it:
