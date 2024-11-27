@@ -7,4 +7,5 @@
     <string name="funding_googleplay_contribution_header_thank_you_message">Your contribution furthers the development of secure, private and open-source email. We are truly grateful to have you with us!</string>
     <string name="funding_googleplay_contribution_list_empty_message">K-9 Mail is developed by Thunderbird.\nVisit www.thunderbird.net for more ways to support our work.</string>
     <string name="funding_googleplay_contribution_reminder_title">Support K-9 Mail</string>
+    <string name="funding_googleplay_contribution_reminder_statement">K-9 Mail is free and open source.</string>
 </resources>

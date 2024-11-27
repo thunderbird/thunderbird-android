@@ -10,10 +10,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 internal class FundingReminderDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val contentView = layoutInflater.inflate(R.layout.funding_googleplay_contribution_reminder, null)
+
         return MaterialAlertDialogBuilder(requireContext())
             .setIcon(R.drawable.funding_googleplay_contribution_reminder_icon)
             .setTitle(R.string.funding_googleplay_contribution_reminder_title)
-            .setMessage(R.string.funding_googleplay_contribution_reminder_message)
+            .setView(contentView)
             .setPositiveButton(R.string.funding_googleplay_contribution_reminder_positive_button) { _, _ ->
                 handlePositiveButton()
             }
