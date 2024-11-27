@@ -15,6 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.withStyle
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
@@ -83,7 +87,11 @@ internal fun ContributionList(
             )
 
             TextBodyMedium(
-                text = stringResource(R.string.funding_googleplay_contribution_list_disclaimer),
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                        append(stringResource(R.string.funding_googleplay_contribution_list_disclaimer))
+                    }
+                },
                 modifier = Modifier.padding(top = MainTheme.spacings.default),
             )
         }
