@@ -94,7 +94,12 @@
     </array>
 
     <string name="funding_googleplay_contribution_reminder_title">Support Thunderbird</string>
-    <string name="funding_googleplay_contribution_reminder_message">Our mission is to provide an open source email app that is secure, private and free for users around the world. Your financial contribution supports this work. Will you give today?</string>
+
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird is free and open source.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">We don’t show ads.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">We don’t sell your data.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">We are funded solely by users like you. </string>
+    <string name="funding_googleplay_contribution_reminder_message">Join our mission to create the best privacy-respecting, customizable email experience possible.</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Yes</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Not now</string>
 </resources>
