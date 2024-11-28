@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.runtime.Composable
@@ -14,7 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
+import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.ui.catalog.ui.common.list.defaultItem
@@ -37,6 +41,12 @@ fun LazyGridScope.imageItems() {
     fixedScaleImagesCropped()
     fixedScaleImagesOverflow()
     fixedScaleImagesAlignment()
+
+    sectionHeaderItem(text = "Remote images")
+    remoteImage(
+        url = "https://www.thunderbird.net/media/img/thunderbird/favicon-196.png",
+        description = "Weblink",
+    )
 }
 
 private fun LazyGridScope.fixedScaleImagesCropped() {
@@ -144,5 +154,28 @@ private fun FixedScaleImageView(
             )
         }
         TextBodySmall(text = description)
+    }
+}
+
+private fun LazyGridScope.remoteImage(
+    url: String,
+    description: String,
+) {
+    fullSpanItem {
+        Column(
+            modifier = Modifier.padding(defaultItemPadding()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            RemoteImage(
+                url = url,
+                modifier = Modifier.size(MainTheme.sizes.large),
+                placeholder = {
+                    Icon(
+                        imageVector = Icons.Filled.Star,
+                    )
+                },
+            )
+            TextBodySmall(text = description)
+        }
     }
 }

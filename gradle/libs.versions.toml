@@ -79,6 +79,7 @@ kotlinxDateTime = "0.6.1"
 kotlinxSerialization = "1.7.3"
 ktlint = "1.2.1"
 kxml2 = "1.0"
+landscapist = "2.4.4"
 leakcanary = "2.13"
 mime4j = "0.8.9"
 minidns = "1.0.5"
@@ -219,6 +220,7 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 kxml2 = { module = "com.github.cketti:kxml2-extracted-from-android", version.ref = "kxml2" }
+lanscapist-coil = { module = "com.github.skydoves:landscapist-coil3", version.ref = "landscapist" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 mime4j-core = { module = "org.apache.james:apache-mime4j-core", version.ref = "mime4j" }
 mime4j-dom = { module = "org.apache.james:apache-mime4j-dom", version.ref = "mime4j" }
