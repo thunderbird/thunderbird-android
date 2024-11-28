@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Sudah menggunakan Thunderbird di komputer/laptop?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Impor pengaturan</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Baru mengenal Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Tambahkan akun surel sekarang</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Impor pengaturan akun Anda dengan mudah dengan memindai kode Respons Cepat (QR).</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Di Thunderbird laptop/komputer, buka:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Pengaturan\' di Toolbar Spaces (kiri bawah)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Pilih \'Ekspor ke Seluler\'</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Pelajari cara memutakhirkan Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_import_title">Pindah dari aplikasi atau perangkat lain?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Impor pengaturan akun Anda sekarang</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Aplikasi untuk membuka tautan tidak ditemukan.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Pengimpiran memerlukan versi termutakhir Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+</resources>

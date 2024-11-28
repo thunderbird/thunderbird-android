@@ -202,7 +202,7 @@
     <string name="global_settings_confirm_actions_title">操作の確認</string>
     <string name="global_settings_confirm_actions_summary">選択した動作を実行するときは常にダイアログを表示します</string>
     <string name="global_settings_confirm_action_delete">削除</string>
-    <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージ表示画面)</string>
+    <string name="global_settings_confirm_action_delete_starred">スター付きメッセージの削除 (メッセージビュー)</string>
     <string name="global_settings_confirm_action_spam">迷惑メール</string>
     <string name="global_settings_confirm_menu_discard">メッセージ破棄</string>
     <string name="global_settings_confirm_menu_mark_all_read">すべてのメールを既読にする</string>
@@ -303,12 +303,6 @@
     <string name="account_settings_push_advanced_title">プッシュ接続の拡張設定</string>
     <string name="account_settings_title_fmt">アカウント設定</string>
     <string name="account_settings_notify_label">新着メール通知</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">通知するフォルダー</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">すべて</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">1st クラスフォルダーのみ</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1st および 2nd クラスフォルダー</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">2nd クラスフォルダーを除くすべて</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">なし</string>
     <string name="account_settings_notify_sync_label">同期通知</string>
     <string name="account_settings_email_label">メールアドレス</string>
     <string name="account_settings_notify_summary">メールの受信時はステータスバーに通知します</string>
@@ -397,27 +391,12 @@
     <string name="account_settings_message_age_3_months">3 か月前</string>
     <string name="account_settings_message_age_6_months">6 か月前</string>
     <string name="account_settings_message_age_1_year">1 年前</string>
-    <string name="account_settings_folder_display_mode_label">表示するフォルダー</string>
-    <string name="account_settings_folder_display_mode_all">すべて</string>
-    <string name="account_settings_folder_display_mode_first_class">1st クラスフォルダーのみ</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1st および 2nd クラスフォルダー</string>
-    <string name="account_settings_folder_display_mode_not_second_class">2nd クラスフォルダーを除くすべて</string>
-    <string name="account_settings_folder_sync_mode_label">同期するフォルダー</string>
-    <string name="account_settings_folder_sync_mode_all">すべて</string>
-    <string name="account_settings_folder_sync_mode_first_class">1st クラスフォルダーのみ</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1st および 2nd クラスフォルダー</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">2nd クラスフォルダーを除くすべて</string>
-    <string name="account_settings_folder_sync_mode_none">なし</string>
     <string name="account_settings_sync_remote_deletetions_label">サーバーのメッセージ削除を同期する</string>
     <string name="account_settings_sync_remote_deletetions_summary">サーバーでメッセージが削除されたときにローカルのメッセージも削除します</string>
     <string name="account_settings_openpgp_missing">OpenPGP アプリが見つかりません - アンインストールしましたか？</string>
     <string name="folder_settings_title">フォルダー設定</string>
     <string name="folder_settings_in_top_group_label">一覧の先頭グループに表示する</string>
     <string name="folder_settings_in_top_group_summary">フォルダー一覧の先頭に表示します</string>
-    <string name="folder_settings_folder_display_mode_label">フォルダー表示クラス</string>
-    <string name="folder_settings_folder_display_mode_normal">クラスなし</string>
-    <string name="folder_settings_folder_display_mode_first_class">1st クラス</string>
-    <string name="folder_settings_folder_display_mode_second_class">2nd クラス</string>
     <string name="folder_settings_clear_local_folder_action">ローカルのメッセージをクリア</string>
     <string name="account_settings_incoming_label">受信メールサーバー設定</string>
     <string name="account_settings_incoming_summary">受信メールサーバーを設定します</string>
@@ -507,7 +486,7 @@
     <string name="account_settings_signature__location_label">署名の位置</string>
     <string name="account_settings_signature__location_before_quoted_text">引用メッセージの前に挿入する</string>
     <string name="account_settings_signature__location_after_quoted_text">引用メッセージの後に挿入する</string>
-    <string name="setting_theme_global">アプリのテーマを使用</string>
+    <string name="setting_theme_global">アプリのテーマを使用する</string>
     <string name="setting_theme_dark">ダーク</string>
     <string name="setting_theme_light">ライト</string>
     <string name="setting_theme_follow_system">システム標準を使用</string>
@@ -521,13 +500,13 @@
     <string name="messagelist_preferences">メッセージ一覧</string>
     <string name="messageview_preferences">メッセージ</string>
     <string name="settings_theme_label">テーマ</string>
-    <string name="settings_message_theme_label">メッセージ表示画面のテーマ</string>
+    <string name="settings_message_theme_label">メッセージビューのテーマ</string>
     <string name="settings_compose_theme_label">メッセージ作成画面のテーマ</string>
     <string name="settings_language_label">言語</string>
     <string name="preference_search_no_results">設定が見つかりません</string>
     <string name="settings_message_theme_selection_label">メッセージのテーマを固定する</string>
-    <string name="settings_message_theme_selection_summary_off">メッセージ表示中のテーマを選択します</string>
-    <string name="settings_message_theme_selection_summary_on">メッセージ表示画面のテーマを変更します</string>
+    <string name="settings_message_theme_selection_summary_off">メッセージ表示中のメッセージビューのテーマを選択します</string>
+    <string name="settings_message_theme_selection_summary_on">メッセージビューのテーマを変更します</string>
     <string name="setting_language_system">システム標準</string>
     <string name="background_ops_label">バックグラウンド同期</string>
     <string name="background_ops_never">同期しない</string>
@@ -545,7 +524,6 @@
     <string name="account_setup_push_limit_1000">フォルダー 1000 件</string>
     <string name="animations_title">アニメーション</string>
     <string name="animations_summary">目立つ視覚効果を使用します</string>
-    <string name="volume_navigation_title">メッセージ表示画面を音量キー操作する</string>
     <string name="show_unified_inbox_title">統合受信トレイを表示する</string>
     <string name="show_starred_count_title">スター付きの数を表示する</string>
     <string name="integrated_inbox_title">統合受信トレイ</string>
@@ -676,7 +654,7 @@
     <string name="global_settings_colorize_missing_contact_pictures_label">頭文字の連絡先アイコンに色を付ける</string>
     <string name="global_settings_colorize_missing_contact_pictures_summary">連絡先に画像がない場合に頭文字のアイコンに色を付けます</string>
     <string name="global_settings_messageview_visible_refile_actions_title">表示するメッセージのアクション</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">メッセージ表示画面のメニューに選択したアクションを表示します</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">メッセージビューのメニューに選択したアクションを表示します</string>
     <string name="loading_attachment">添付ファイルを読み込み中…</string>
     <string name="fetching_attachment_dialog_title_send">メッセージを送信中</string>
     <string name="fetching_attachment_dialog_title_save">下書きを保存中</string>
@@ -904,4 +882,9 @@
     <string name="folder_settings_push_label">プッシュを有効にする</string>
     <string name="folder_list_show_hidden_folders">隠しフォルダーを表示</string>
     <string name="folder_settings_sync_label">同期を有効にする</string>
+    <string name="folder_settings_visible_label">フォルダーを表示する</string>
+    <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> を支援する</string>
+    <string name="volume_navigation_title_short">音量キー操作</string>
+    <string name="save_attachment_action">添付ファイルを保存</string>
+    <string name="volume_navigation_summary">メッセージビューで音量キーを使用してメッセージを移動します</string>
 </resources>

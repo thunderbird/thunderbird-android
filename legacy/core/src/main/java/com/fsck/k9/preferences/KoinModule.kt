@@ -15,6 +15,7 @@ val preferencesModule = module {
             folderSettingsProvider = get(),
             folderRepository = get(),
             notificationSettingsUpdater = get(),
+            filePrefixProvider = get(),
         )
     }
     factory { FolderSettingsProvider(folderRepository = get()) }
@@ -56,6 +57,8 @@ val preferencesModule = module {
         )
     }
 
+    factory { UnifiedInboxConfigurator(accountManager = get()) }
+
     factory {
         SettingsImporter(
             settingsFileParser = get(),
@@ -65,6 +68,7 @@ val preferencesModule = module {
             accountSettingsUpgrader = get(),
             generalSettingsWriter = get(),
             accountSettingsWriter = get(),
+            unifiedInboxConfigurator = get(),
         )
     }
 }

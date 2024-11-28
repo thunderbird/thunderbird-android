@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_permissions_allow_button">Ceadaigh</string>
+    <string name="onboarding_permissions_screen_title">Feabhas a chur ar an taithí</string>
+    <string name="onboarding_permissions_contacts_title">Teagmhálaithe</string>
+    <string name="onboarding_permissions_contacts_description">Ceadaigh rochtain a bheith in ann moltaí teagmhála a sholáthar agus ainmneacha teagmhála agus grianghraif a thaispeáint.</string>
+    <string name="onboarding_permissions_notifications_title">Fógraí</string>
+    <string name="onboarding_permissions_notifications_description">Cuir fógraí ar siúl ionas nach gcaillfidh tú aon ríomhphost.</string>
+    <string name="onboarding_permissions_skip_button">Scipeáil</string>
+</resources>

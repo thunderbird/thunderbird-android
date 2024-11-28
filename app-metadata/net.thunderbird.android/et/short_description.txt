@@ -1,0 +1,1 @@
+Thunderbird on avatud tarkvaral põhinev ja privaatsusest lähtuv e-posti klient.

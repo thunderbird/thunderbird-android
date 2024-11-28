@@ -204,7 +204,6 @@
     <string name="account_settings_notification_light_white">White</string>
     <string name="message_discarded_toast">Message discarded</string>
     <string name="edit_identity_description_label">Identity description</string>
-    <string name="account_settings_folder_display_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_vibrate_pattern_label">Vibration pattern</string>
     <string name="account_setup_options_mail_check_frequency_1hour">Every hour</string>
     <string name="folder_settings_in_top_group_label">Show in top group</string>
@@ -221,11 +220,9 @@
     <string name="dialog_confirm_delete_confirm_button">Yes</string>
     <string name="account_settings_notify_sync_summary">Notify in status bar while mail is checked</string>
     <string name="animations_summary">Use gaudy visual effects</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="settings_export_success_generic">Settings successfully exported</string>
     <string name="account_setup_push_limit_label">Max folders to check with push</string>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> more on <xliff:g id="account">%2$s</xliff:g></string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">All except 2nd Class folders</string>
     <string name="setting_theme_light">Light</string>
     <string name="general_settings_post_mark_as_unread_action_title">After marking a message as unread</string>
     <string name="account_setup_expunge_policy_manual">Manually</string>
@@ -244,7 +241,6 @@
     <string name="account_settings_message_age_2">the last 3 days</string>
     <string name="general_settings_swipe_action_spam">Spam</string>
     <string name="font_size_message_view_date">Time and date</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
     <string name="dialog_confirm_clear_local_folder_message">This will remove all local messages from the folder. No messages will be deleted from the server.</string>
     <string name="account_settings_message_age_3_months">the last 3 months</string>
     <string name="sort_by_subject">Subject</string>
@@ -282,7 +278,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
     <string name="account_settings_quote_style_prefix">Prefix (like Gmail)</string>
     <string name="account_settings_message_age_0">today</string>
-    <string name="folder_settings_folder_display_mode_second_class">2nd Class</string>
     <string name="edit_identity_signature_label">Signature</string>
     <string name="account_settings_notification_light_label">Notification light</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
@@ -311,7 +306,6 @@
     <string name="notification_action_mark_all_as_read">Mark All Read</string>
     <string name="font_size_message_list_preview">Preview</string>
     <string name="error_contact_address_not_found">No email address could be found for this contact.</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Notifications folders</string>
     <string name="sort_flagged_first">Starred messages first</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Do you really want to delete this message?</item>
@@ -334,7 +328,6 @@
     <string name="dialog_confirm_spam_cancel_button">No</string>
     <string name="account_setup_options_mail_display_count_all">all messages</string>
     <string name="account_settings_autodownload_message_size_label">Fetch messages up to</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Only 1st Class folders</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Store all drafts encrypted</string>
     <string name="account_settings_vibrate_pattern_4">Pattern 4</string>
     <string name="debug_export_logs_success">Export successful. Logs might contain sensitive information. Be careful who you send them to.</string>
@@ -354,7 +347,6 @@
     <string name="account_settings_message_format_html">HTML (keep images and formatting)</string>
     <string name="quiet_time_notification">Disable notifications</string>
     <string name="message_compose_content_hint">Message text</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">None</string>
     <string name="message_compose_quote_header_separator">-------- Original Message --------</string>
     <string name="edit_identity_signature_hint">(Optional)</string>
     <string name="notification_bg_send_ticker">Sending mail: <xliff:g id="account">%s</xliff:g></string>
@@ -406,7 +398,6 @@
     <string name="sort_subject_re_alpha">Subject reverse alphabetical</string>
     <string name="sort_by_arrival">Arrival</string>
     <string name="send_as">Send as</string>
-    <string name="account_settings_folder_display_mode_not_second_class">All except 2nd Class folders</string>
     <string name="account_setup_push_limit_25">25 folders</string>
     <string name="account_setup_push_limit_500">500 folders</string>
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
@@ -418,7 +409,6 @@
     <string name="message_compose_attachments_skipped_toast">Some attachments cannot be forwarded because they have not been downloaded.</string>
     <string name="account_settings_always_show_cc_bcc_label">Always show Cc/Bcc</string>
     <string name="dialog_confirm_empty_trash_message">Do you want to empty the trash folder?</string>
-    <string name="account_settings_folder_sync_mode_all">All</string>
     <string name="account_settings_signature__location_label">Signature position</string>
     <string name="account_settings_outgoing_summary">Configure the outgoing mail (SMTP) server</string>
     <string name="notification_action_delete">Delete</string>
@@ -446,7 +436,6 @@
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="account_settings_outgoing_label">Outgoing server</string>
     <string name="idle_refresh_period_label">Refresh IDLE connection</string>
-    <string name="account_settings_folder_sync_mode_label">Poll folders</string>
     <string name="account_settings_quote_prefix_label">Quoted text prefix</string>
     <string name="account_settings_ignore_chat_messages_summary">Don\'t show notifications for messages belonging to an email chat</string>
     <string name="account_setup_basics_title">Set up a new account</string>
@@ -459,7 +448,6 @@
     <string name="notification_authentication_error_title">Authentication failed</string>
     <string name="notification_channel_messages_description">Notifications related to messages</string>
     <string name="account_settings_composition">Sending mail</string>
-    <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
     <string name="dialog_confirm_spam_title">Confirm move to spam folder</string>
     <string name="account_settings_composition_title">Message composition options</string>
     <string name="account_settings_notify_self_label">Include outgoing mail</string>
@@ -483,7 +471,6 @@
     <string name="account_settings_mark_message_as_read_on_delete_label">Mark as read when deleted</string>
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="error_activity_not_found">No suitable application for this action found.</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">All</string>
     <string name="font_size_message_view">Messages</string>
     <string name="account_setup_options_mail_display_count_100">100 messages</string>
     <string name="idle_refresh_period_36min">Every 36 minutes</string>
@@ -519,7 +506,6 @@
     <string name="size_format_bytes">%d B</string>
     <string name="animations_title">Animation</string>
     <string name="account_settings_message_age_7">the last week</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
     <string name="account_settings_show_pictures_label">Always show images</string>
     <string name="account_settings_identities_summary">Set up alternate \'From\' addresses and signatures</string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
@@ -533,13 +519,11 @@
     <string name="message_view_cc_label">Cc:</string>
     <string name="global_settings_show_contact_name_label">Show contact names</string>
     <string name="notification_action_mark_as_read">Mark Read</string>
-    <string name="account_settings_folder_display_mode_label">Folders to display</string>
     <string name="account_setup_options_mail_display_count_25">25 messages</string>
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
     <string name="global_settings_confirm_action_delete_notif">Delete (from notification)</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="send_failed_reason">Send failed: %s</string>
-    <string name="folder_settings_folder_display_mode_first_class">1st Class</string>
     <string name="general_settings_ui_density_compact">Compact</string>
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="account_settings_folders">Folders</string>
@@ -569,7 +553,6 @@
     <string name="account_settings_message_format_auto">Automatic</string>
     <string name="account_settings_ignore_chat_messages_label">Ignore chat messages</string>
     <string name="account_settings_always_bcc_label">Bcc all messages to</string>
-    <string name="folder_settings_folder_display_mode_label">Folder display class</string>
     <string name="account_settings_strip_signature_label">Strip signatures on reply</string>
     <string name="message_to_label">To:</string>
     <string name="interaction_preferences">Interaction</string>
@@ -577,16 +560,12 @@
     <string name="account_settings_message_age_21">the last 3 weeks</string>
     <string name="account_settings_quote_style_header">Header (like Outlook)</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="folder_settings_folder_display_mode_normal">No Class</string>
     <string name="account_settings_autodownload_message_size_32">32 KiB</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Do you really want to move this message to the spam folder?</item>
         <item quantity="other">Do you really want to move <xliff:g id="message_count">%1$d</xliff:g> messages to the spam folder?</item>
     </plurals>
     <string name="save_or_discard_draft_message_changes">Save or Discard changes?</string>
-    <string name="account_settings_folder_sync_mode_none">None</string>
-    <string name="account_settings_folder_display_mode_all">All</string>
     <string name="global_settings_show_contact_name_summary">Use recipient names from Contacts when available</string>
     <string name="debug_enable_sensitive_logging_title">Log sensitive information</string>
     <string name="preference_search_no_results">No settings found</string>
@@ -635,7 +614,7 @@
     <string name="account_setup_options_mail_check_frequency_3hour">Every 3 hours</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Configure error and status notifications</string>
     <string name="manage_identities_edit_action">Edit</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain text messages</string>
     <string name="about_action">About</string>
     <string name="account_settings_vibrate_times">Repeat vibration</string>
     <string name="idle_refresh_period_6min">Every 6 minutes</string>
@@ -655,7 +634,6 @@
     <string name="account_settings_vibrate_pattern_3">Pattern 3</string>
     <string name="message_view_bcc_label">Bcc:</string>
     <string name="general_settings_swipe_action_none">None</string>
-    <string name="volume_navigation_title">Volume key navigation in message view</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="debug_export_logs_failure">Export failed.</string>
     <string name="notification_action_delete_all">Delete All</string>

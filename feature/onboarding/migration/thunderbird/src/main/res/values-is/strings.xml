@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Þegar að nota Thunderbird á vinnutölvu?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Flytja inn stillingar</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Nýr í Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Útbúðu núna tölvupóstreikning</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Flyttu inn stillingar notandaaðgangsins þíns með því að skanna QR-kóða.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Í Thunderbird fyrir borðtölvur skaltu fara í:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Lærðu hvernig á að uppfæra Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_import_title">Ertu að flytja frá öðru forriti eða tæki?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Veldu \'Flytja út í farsíma’</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Innflutningur krefst nýjustu útgáfunnar af Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Flyttu núna inn stillingar notandaaðgangsins þíns</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Ekkert forrit fannst til að opna tengilinn.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Stillingar’ í svæðastikunni (neðst til hægri)</string>
+</resources>

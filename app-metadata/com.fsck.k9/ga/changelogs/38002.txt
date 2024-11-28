@@ -1,0 +1,5 @@
+- Brúigh: Cuir an t-úsáideoir ar an eolas má tá cead chun aláraim chruinne a sceidealú in easnamh
+- Athainmníodh an socrú "Seol ID an chliaint" chun "Seol faisnéis an chliaint"
+- IMAP: Tacaíocht bhreise don aitreabúid freagartha \Liosta nach bhfuil ann
+- IMAP: Eisigh ordú EXPUNGE tar éis bogadh gan síneadh MOVE
+- Aistriúcháin nuashonraithe; aistriúchán Eabhraise leis

@@ -95,7 +95,7 @@
     <string name="status_network_error">连接错误</string>
     <string name="status_invalid_id_error">邮件未找到</string>
     <string name="status_loading_error">邮件加载错误</string>
-    <string name="load_more_messages_fmt">加载 <xliff:g id="messages_to_load">%d</xliff:g> 更多</string>
+    <string name="load_more_messages_fmt">最多加载 <xliff:g id="messages_to_load">%d</xliff:g> 封邮件</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -120,9 +120,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">通知错误</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">尝试为新邮件创建系统通知时出错。原因很可能是缺少通知声音。
-\n
-\n轻击打开通知设置。</string>
+    <string name="notification_notify_error_text">尝试为新邮件创建系统通知时出错。原因很可能是缺少通知声音。\n\n轻击打开通知设置。</string>
     <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%1$s</xliff:g>：<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">正在检查邮件</string>
     <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
@@ -303,12 +301,6 @@
     <string name="account_settings_push_advanced_title">高级</string>
     <string name="account_settings_title_fmt">账号设置</string>
     <string name="account_settings_notify_label">新邮件通知</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">通知文件夹</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1 级和 2 级文件夹</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">无</string>
     <string name="account_settings_notify_sync_label">同步通知</string>
     <string name="account_settings_email_label">您的电子邮件地址</string>
     <string name="account_settings_notify_summary">邮件到达时在状态栏中通知</string>
@@ -397,27 +389,12 @@
     <string name="account_settings_message_age_3_months">最近 3 个月</string>
     <string name="account_settings_message_age_6_months">最近 6 个月</string>
     <string name="account_settings_message_age_1_year">最近 1 年</string>
-    <string name="account_settings_folder_display_mode_label">要显示的文件夹</string>
-    <string name="account_settings_folder_display_mode_all">全部</string>
-    <string name="account_settings_folder_display_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1 级与 2 级文件夹</string>
-    <string name="account_settings_folder_display_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
-    <string name="account_settings_folder_sync_mode_label">轮询文件夹</string>
-    <string name="account_settings_folder_sync_mode_all">全部</string>
-    <string name="account_settings_folder_sync_mode_first_class">仅 1 级文件夹</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1 级与 2 级文件夹</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">除 2 级文件夹外的所有文件夹</string>
-    <string name="account_settings_folder_sync_mode_none">无</string>
     <string name="account_settings_sync_remote_deletetions_label">同步服务器的删除</string>
     <string name="account_settings_sync_remote_deletetions_summary">在服务器上删除邮件时移除邮件</string>
     <string name="account_settings_openpgp_missing">缺少 OpenPGP 应用 - 是否已卸载？</string>
     <string name="folder_settings_title">文件夹设置</string>
     <string name="folder_settings_in_top_group_label">显示在置顶的组中</string>
     <string name="folder_settings_in_top_group_summary">显示在文件夹列表的顶部附近</string>
-    <string name="folder_settings_folder_display_mode_label">文件夹显示级别</string>
-    <string name="folder_settings_folder_display_mode_normal">无级别</string>
-    <string name="folder_settings_folder_display_mode_first_class">1 级</string>
-    <string name="folder_settings_folder_display_mode_second_class">2 级</string>
     <string name="folder_settings_clear_local_folder_action">清空本地邮件</string>
     <string name="account_settings_incoming_label">收件服务器</string>
     <string name="account_settings_incoming_summary">配置收件服务器</string>
@@ -545,7 +522,6 @@
     <string name="account_setup_push_limit_1000">1000 个文件夹</string>
     <string name="animations_title">动画</string>
     <string name="animations_summary">使用绚丽的视觉效果</string>
-    <string name="volume_navigation_title">在邮件视图中使用音量键导航</string>
     <string name="show_unified_inbox_title">显示统一收件箱</string>
     <string name="show_starred_count_title">显示星标邮件数</string>
     <string name="integrated_inbox_title">统一收件箱</string>
@@ -706,8 +682,7 @@
     <string name="enable_sign_only">启用 PGP 仅签名</string>
     <string name="disable_sign_only">禁用 PGP 仅签名</string>
     <string name="openpgp_inline_title">PGP/INLINE 模式</string>
-    <string name="openpgp_inline_text">电子邮件以 PGP/INLINE 格式发送。
-\n这只能用于兼容：</string>
+    <string name="openpgp_inline_text">电子邮件以 PGP/INLINE 格式发送。\n这只能用于兼容：</string>
     <string name="openpgp_inline_plus_compat">部分客户端仅支持此格式</string>
     <string name="openpgp_inline_minus_transit">签名在传输过程中可能损坏</string>
     <string name="openpgp_inline_minus_attach">不支持附件</string>
@@ -769,8 +744,7 @@
     <string name="error_sign_only_no_encryption">在仅签名模式下无法使用加密！</string>
     <string name="unsigned_text_divider_label">未签名的文本</string>
     <string name="crypto_no_provider_title">此电子邮件已加密</string>
-    <string name="crypto_no_provider_message">此电子邮件已使用 OpenPGP 加密。
-\n要阅读它，您需要安装和配置兼容的 OpenPGP 应用。</string>
+    <string name="crypto_no_provider_message">此电子邮件已使用 OpenPGP 加密。\n要阅读它，您需要安装和配置兼容的 OpenPGP 应用。</string>
     <string name="crypto_no_provider_button">转到设置</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -905,4 +879,9 @@
     <string name="folder_settings_push_label">启用推送</string>
     <string name="folder_settings_sync_label">启用同步</string>
     <string name="folder_list_show_hidden_folders">显示隐藏的文件夹</string>
+    <string name="folder_settings_visible_label">显示文件夹</string>
+    <string name="settings_list_action_support">支持 <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">保存附件</string>
+    <string name="volume_navigation_title_short">音量键导航</string>
+    <string name="volume_navigation_summary">在邮件视图中使用音量键在邮件之间导航</string>
 </resources>

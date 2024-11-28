@@ -13,6 +13,7 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 internal fun AccountListItem(
     account: DisplayAccount,
     onClick: (DisplayAccount) -> Unit,
+    selected: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -23,6 +24,7 @@ internal fun AccountListItem(
         AccountAvatar(
             account = account,
             onClick = onClick,
+            selected = selected,
         )
     }
 }

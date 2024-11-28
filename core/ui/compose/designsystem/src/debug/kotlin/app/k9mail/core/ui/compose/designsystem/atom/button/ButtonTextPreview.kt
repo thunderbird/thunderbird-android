@@ -39,3 +39,14 @@ internal fun ButtonTextDisabledPreview() {
         )
     }
 }
+
+@Composable
+@Preview(showBackground = true)
+internal fun ButtonTextMultiLinePreview() {
+    PreviewWithThemes {
+        ButtonText(
+            text = "First\nSecond line",
+            onClick = {},
+        )
+    }
+}

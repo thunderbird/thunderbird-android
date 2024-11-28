@@ -5,7 +5,7 @@ import java.io.IOException
 import timber.log.Timber
 
 internal class QrCodePayloadParser(
-    private val qrCodePayloadAdapter: QrCodePayloadAdapter = QrCodePayloadAdapter(),
+    private val qrCodePayloadAdapter: QrCodePayloadAdapter,
 ) {
     /**
      * Parses the QR code payload as JSON and reads it into [QrCodeData].

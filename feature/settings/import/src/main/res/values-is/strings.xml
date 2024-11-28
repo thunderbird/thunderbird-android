@@ -37,4 +37,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 er ekki stutt í augnablikinu hjá þessari þjónustuveitu.</string>
     <string name="settings_import_oauth_error_browser_not_found">Forritið fann engan vafra til að nota til að fá aðgang að notandaaðgangnum þinum.</string>
     <string name="settings_import_general_settings_item">Almennar stillingar</string>
+    <string name="settings_import_pick_app_button">Flytja inn úr forriti</string>
+    <string name="settings_import_app_version_not_supported">Útgáfa forrits ekki studd.</string>
+    <string name="settings_import_scan_qr_code_button">Skannaðu QR-kóða</string>
+    <string name="settings_import_pick_app_dialog_title">Flytja inn úr forriti</string>
 </resources>

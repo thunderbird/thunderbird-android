@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_footer_payment_button">Pokračujte na platbu</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Teraz nie</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Áno</string>
+    <string name="funding_googleplay_contribution_title">Podporte Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_title">Podporte Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Zadať raz</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Mesačne</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Nedostupné</string>
+    <string name="funding_googleplay_contribution_error_show_more">Zobraziť viac podrobností</string>
+    <string name="funding_googleplay_contribution_error_unknown">Neznáma chyba</string>
+    <string name="funding_googleplay_contribution_reminder_title">Podporte Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Skúsiť znova</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Nákup zlyhal.</string>
+</resources>

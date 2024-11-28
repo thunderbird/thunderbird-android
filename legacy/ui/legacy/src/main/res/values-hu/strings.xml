@@ -303,12 +303,6 @@
     <string name="account_settings_push_advanced_title">Bővített</string>
     <string name="account_settings_title_fmt">Fiók beállításai</string>
     <string name="account_settings_notify_label">Új levél értesítések</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Értesítések mappái</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Összes</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Csak 1. osztályú mappák</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. és 2. osztályú mappák</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Összes, kivéve a 2. osztályú mappákat</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Nincs</string>
     <string name="account_settings_notify_sync_label">Szinkronizációs értesítések</string>
     <string name="account_settings_email_label">Saját e-mail-cím</string>
     <string name="account_settings_notify_summary">Értesítés az állapotsávon új levél érkezésekor</string>
@@ -397,27 +391,12 @@
     <string name="account_settings_message_age_3_months">az elmúlt 3 hónap</string>
     <string name="account_settings_message_age_6_months">az elmúlt 6 hónap</string>
     <string name="account_settings_message_age_1_year">az elmúlt év</string>
-    <string name="account_settings_folder_display_mode_label">Megjelenítendő mappák</string>
-    <string name="account_settings_folder_display_mode_all">Összes</string>
-    <string name="account_settings_folder_display_mode_first_class">Csak 1. osztályú mappák</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1. és 2. osztályú mappák</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Összes, kivéve a 2. osztályú mappákat</string>
-    <string name="account_settings_folder_sync_mode_label">Mappák lekérdezése</string>
-    <string name="account_settings_folder_sync_mode_all">Összes</string>
-    <string name="account_settings_folder_sync_mode_first_class">Csak 1. osztályú mappák</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1. és 2. osztályú mappák</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Összes, kivéve a 2. osztályú mappákat</string>
-    <string name="account_settings_folder_sync_mode_none">Nincs</string>
     <string name="account_settings_sync_remote_deletetions_label">Kiszolgáló törléseinek szinkronizálása</string>
     <string name="account_settings_sync_remote_deletetions_summary">Üzenetek eltávolítása a kiszolgálóról törléskor</string>
     <string name="account_settings_openpgp_missing">Hiányzó OpenPGP alkalmazás – talán eltávolításra került\?</string>
     <string name="folder_settings_title">Mappa beállításai</string>
     <string name="folder_settings_in_top_group_label">Megjelenítés a felső csoportban</string>
     <string name="folder_settings_in_top_group_summary">Megjelenítés a mappalista teteje környékén</string>
-    <string name="folder_settings_folder_display_mode_label">Mappa megjelenítésnek osztálya</string>
-    <string name="folder_settings_folder_display_mode_normal">Nincs osztály</string>
-    <string name="folder_settings_folder_display_mode_first_class">1. osztály</string>
-    <string name="folder_settings_folder_display_mode_second_class">2. osztály</string>
     <string name="folder_settings_clear_local_folder_action">Helyi üzenetek törlése</string>
     <string name="account_settings_incoming_label">Bejövő kiszolgáló</string>
     <string name="account_settings_incoming_summary">A bejövő levelek kiszolgálójának beállítása</string>
@@ -510,7 +489,7 @@
     <string name="setting_theme_global">Alkalmazás témájának használata</string>
     <string name="setting_theme_dark">Sötét</string>
     <string name="setting_theme_light">Világos</string>
-    <string name="setting_theme_follow_system">Rendszer alapértelmezettjének használata</string>
+    <string name="setting_theme_follow_system">Rendszer alapértelmezésének használata</string>
     <string name="display_preferences">Megjelenés</string>
     <string name="global_preferences">Globális</string>
     <string name="debug_preferences">Hibakeresés</string>
@@ -528,7 +507,7 @@
     <string name="settings_message_theme_selection_label">Rögzített üzenet téma</string>
     <string name="settings_message_theme_selection_summary_off">Az üzenetmegtekintési téma kiválasztása, miközben megtekinti az üzenetet</string>
     <string name="settings_message_theme_selection_summary_on">Rögzített üzenetmegtekintési téma használata</string>
-    <string name="setting_language_system">Rendszer alapértelmezettje</string>
+    <string name="setting_language_system">Rendszer alapértelmezése</string>
     <string name="background_ops_label">Háttér-szinkronizálás</string>
     <string name="background_ops_never">Soha</string>
     <string name="background_ops_always">Mindig</string>
@@ -545,7 +524,6 @@
     <string name="account_setup_push_limit_1000">1000 mappa</string>
     <string name="animations_title">Animációk</string>
     <string name="animations_summary">Rikító látható hatások használata</string>
-    <string name="volume_navigation_title">Hangerőgombos navigáció üzenetnézetben</string>
     <string name="show_unified_inbox_title">Egységes beérkezett üzenetek megjelenítése</string>
     <string name="show_starred_count_title">Csillagszámláló megjelenítése</string>
     <string name="integrated_inbox_title">Egységes beérkezett üzenetek</string>
@@ -896,14 +874,14 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="general_settings_post_remove_action_show_next_message">Következő üzenet megjelenítése</string>
     <string name="general_settings_post_remove_action_title">Üzenet törlése vagy áthelyezése után</string>
     <string name="about_app_authors_thunderbird">A Thunderbird Mobile csapata</string>
-    <string name="account_delete_dlg_instructions_fmt">A „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a <xliff:g id="app_name">%s</xliff:g> fiókból.</string>
+    <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a <xliff:g id="app_name">%s</xliff:g> alkalmazásból.</string>
     <string name="push_notification_state_alarm_permission_missing">Hiányzó engedély a riasztások ütemezéséhez</string>
     <string name="push_notification_grant_alarm_permission">Koppintson az engedély megadásához.</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Vissza az üzenetekhez</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Maradás a jelenlegi üzenetnél</string>
     <string name="settings_ui_data_collection">Adatgyűjtés</string>
     <string name="settings_ui_telemetry_title">Felhasználási és műszaki adatok</string>
-    <string name="general_settings_post_mark_as_unread_action_title">Üzenet olvashatatlannak jelölése után</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Üzenet olvasatlannak jelölése után</string>
     <string name="folder_settings_push_label">Leküldések engedélyezése</string>
     <string name="folder_settings_notifications_label">Értesítések</string>
     <string name="settings_ui_telemetry_description">Megosztja az alkalmazás teljesítmény-, használati-, hardver- és testreszabási adatait a Mozillával, hogy segítsen nekünk a Thunderbird jobbá tételében</string>
@@ -912,4 +890,9 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="push_info_notification_explanation_text">Lekérdezések használatakor a <xliff:g id="app_name">%1$s</xliff:g> kapcsolatot tart fenn a levelezőkiszolgálóval. Az Android megköveteli a folyamatos értesítés megjelenítését, amíg az alkalmazás aktív a háttérben. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="folder_settings_sync_label">Szinkronizálás engedélyezése</string>
     <string name="folder_list_show_hidden_folders">Rejtett mappák megjelenítése</string>
+    <string name="folder_settings_visible_label">Mappa megjelenítése</string>
+    <string name="settings_list_action_support">A <xliff:g id="app_name">%s</xliff:g> támogatása</string>
+    <string name="save_attachment_action">Melléklet mentése</string>
+    <string name="volume_navigation_title_short">Hangerőszabályzó gombos navigáció</string>
+    <string name="volume_navigation_summary">Az üzenetnézetben a hangerőszabályzó gombokkal navigálhat az üzenetek között</string>
 </resources>

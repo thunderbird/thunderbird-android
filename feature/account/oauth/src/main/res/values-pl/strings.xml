@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Zaloguj się przez Google</string>
     <string name="account_oauth_loading_error">Logowanie OAuth nie powiodło się</string>
-    <string name="account_oauth_error_failed">Autoryzacja nie powiodła się z powodu następującego błędu: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_failed">Autoryzacja nie powiodła się z powodu następującego błędu: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Aplikacja nie mogła znaleźć przeglądarki, za pomocą której można uzyskać dostęp do Twojego konta.</string>
     <string name="account_oauth_error_not_supported">Ten dostawca nie obsługuje obecnie protokołu OAuth 2.0.</string>
     <string name="account_oauth_error_canceled">Autoryzacja anulowana</string>

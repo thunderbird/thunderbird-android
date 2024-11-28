@@ -43,38 +43,6 @@
         <item name="android:background">?attr/colorSurfaceContainer</item>
     </style>
 
-    <style name="Widget.MaterialDrawerStyle.K9" parent="Widget.MaterialDrawerStyle">
-        <item name="materialDrawerBackground">?android:colorBackground</item>
-        <item name="materialDrawerPrimaryText">?android:textColorPrimary</item>
-        <item name="materialDrawerPrimaryIcon">?android:textColorSecondary</item>
-        <item name="materialDrawerSecondaryText">?android:textColorSecondary</item>
-        <item name="materialDrawerSecondaryIcon">?android:textColorSecondary</item>
-        <item name="materialDrawerSelectedBackgroundColor">?android:textColorTertiary</item>
-        <item name="materialDrawerDividerColor">?attr/colorOnSurfaceVariant</item>
-    </style>
-
-    <style name="Widget.MaterialDrawerStyle.K9.Light" parent="Widget.MaterialDrawerStyle.K9">
-        <item name="materialDrawerInsetForeground">@android:color/transparent</item>
-    </style>
-
-    <style name="Widget.MaterialDrawerStyle.K9.Dark" parent="Widget.MaterialDrawerStyle.K9">
-        <item name="materialDrawerInsetForeground">@android:color/transparent</item>
-    </style>
-
-    <style name="Widget.MaterialDrawerHeaderStyle.K9">
-        <item name="materialDrawerCompactStyle">false</item>
-    </style>
-
-    <style name="Widget.MaterialDrawerHeaderStyle.K9.Light" parent="Widget.MaterialDrawerHeaderStyle.K9">
-        <item name="materialDrawerHeaderSelectionText">?android:textColorPrimaryInverse</item>
-        <item name="materialDrawerHeaderSelectionSubtext">?android:textColorSecondaryInverse</item>
-    </style>
-
-    <style name="Widget.MaterialDrawerHeaderStyle.K9.Dark" parent="Widget.MaterialDrawerHeaderStyle.K9">
-        <item name="materialDrawerHeaderSelectionText">?android:textColorPrimary</item>
-        <item name="materialDrawerHeaderSelectionSubtext">?android:textColorSecondary</item>
-    </style>
-
     <style name="AttachmentView" parent="">
         <item name="android:layout_width">match_parent</item>
     </style>

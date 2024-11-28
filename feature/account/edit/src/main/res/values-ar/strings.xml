@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">يتم الآن حفظ إعدادات الخادم…</string>
+    <string name="account_edit_save_server_settings_error_message">تعذر حفظ إعدادات الخادم</string>
+    <string name="account_edit_save_server_settings_success_message">تم حفظ إعدادات الخادم</string>
+</resources>

@@ -15,7 +15,7 @@ internal fun DrawerContentPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(),
-                selectedAccountUuid = null,
+                selectedAccountId = null,
                 folders = persistentListOf(),
             ),
             onEvent = {},
@@ -30,7 +30,7 @@ internal fun DrawerContentWithAccountPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(DISPLAY_ACCOUNT),
-                selectedAccountUuid = DISPLAY_ACCOUNT.uuid,
+                selectedAccountId = DISPLAY_ACCOUNT.id,
                 folders = persistentListOf(),
             ),
             onEvent = {},
@@ -47,7 +47,7 @@ internal fun DrawerContentWithFoldersPreview() {
                 accounts = persistentListOf(
                     DISPLAY_ACCOUNT,
                 ),
-                selectedAccountUuid = null,
+                selectedAccountId = null,
                 folders = persistentListOf(
                     UNIFIED_FOLDER,
                     DISPLAY_FOLDER,
@@ -67,7 +67,7 @@ internal fun DrawerContentWithSelectedFolderPreview() {
                 accounts = persistentListOf(
                     DISPLAY_ACCOUNT,
                 ),
-                selectedAccountUuid = DISPLAY_ACCOUNT.uuid,
+                selectedAccountId = DISPLAY_ACCOUNT.id,
                 folders = persistentListOf(
                     UNIFIED_FOLDER,
                     DISPLAY_FOLDER,
@@ -88,7 +88,7 @@ internal fun DrawerContentWithSelectedUnifiedFolderPreview() {
                 accounts = persistentListOf(
                     DISPLAY_ACCOUNT,
                 ),
-                selectedAccountUuid = DISPLAY_ACCOUNT.uuid,
+                selectedAccountId = DISPLAY_ACCOUNT.id,
                 folders = persistentListOf(
                     UNIFIED_FOLDER,
                     DISPLAY_FOLDER,

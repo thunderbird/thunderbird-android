@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- These are the funding feature overwrites that are K-9 specific -->
+    <string name="funding_googleplay_contribution_title">Support K-9 Mail</string>
+    <string name="funding_googleplay_contribution_header_title">Support K-9 Mail</string>
+    <string name="funding_googleplay_contribution_header_description">We never show ads or sell your data. We are entirely funded by individual contributions from users like you. If you’re enjoying K-9 Mail, please help support it. We can’t do this without you!</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Your contribution furthers the development of secure, private and open-source email. We are truly grateful to have you with us!</string>
+    <string name="funding_googleplay_contribution_list_empty_message">K-9 Mail is developed by Thunderbird.\nVisit www.thunderbird.net for more ways to support our work.</string>
+    <string name="funding_googleplay_contribution_reminder_title">Support K-9 Mail</string>
+    <string name="funding_googleplay_contribution_reminder_statement">K-9 Mail is free and open source.</string>
+</resources>

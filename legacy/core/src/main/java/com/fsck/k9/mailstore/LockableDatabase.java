@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteException;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
 import timber.log.Timber;
 
 import static java.lang.System.currentTimeMillis;
@@ -45,8 +46,6 @@ public class LockableDatabase {
          */
         void doDbUpgrade(SQLiteDatabase db);
     }
-
-    private String mStorageProviderId;
 
     private SQLiteDatabase mDb;
     /**
@@ -93,12 +92,8 @@ public class LockableDatabase {
         this.mSchemaDefinition = schemaDefinition;
     }
 
-    public void setStorageProviderId(String mStorageProviderId) {
-        this.mStorageProviderId = mStorageProviderId;
-    }
-
     public String getStorageProviderId() {
-        return mStorageProviderId;
+        return InternalStorageProvider.ID;
     }
 
     private StorageManager getStorageManager() {
@@ -196,51 +191,6 @@ public class LockableDatabase {
         }
     }
 
-    /**
-     * @param newProviderId
-     *            Never <code>null</code>.
-     * @throws MessagingException
-     */
-    public void switchProvider(final String newProviderId) throws MessagingException {
-        if (newProviderId.equals(mStorageProviderId)) {
-            Timber.v("LockableDatabase: Ignoring provider switch request as they are equal: %s", newProviderId);
-            return;
-        }
-
-        Timber.v("LockableDatabase: Switching provider from %s to %s", mStorageProviderId, newProviderId);
-
-        final String oldProviderId = mStorageProviderId;
-        lockWrite();
-        try {
-            try {
-                mDb.close();
-            } catch (Exception e) {
-                Timber.i(e, "Unable to close DB on local store migration");
-            }
-
-            final StorageManager storageManager = getStorageManager();
-            File oldDatabase = storageManager.getDatabase(uUid, oldProviderId);
-
-            // create new path
-            prepareStorage(newProviderId);
-
-            // move all database files
-            FileHelper.moveRecursive(oldDatabase, storageManager.getDatabase(uUid, newProviderId));
-            // move all attachment files
-            FileHelper.moveRecursive(storageManager.getAttachmentDirectory(uUid, oldProviderId),
-                    storageManager.getAttachmentDirectory(uUid, newProviderId));
-            // remove any remaining old journal files
-            deleteDatabase(oldDatabase);
-
-            mStorageProviderId = newProviderId;
-
-            // re-initialize this class with the new Uri
-            openOrCreateDataspace();
-        } finally {
-            unlockWrite();
-        }
-    }
-
     public void open() {
         lockWrite();
         try {
@@ -253,7 +203,7 @@ public class LockableDatabase {
     private void openOrCreateDataspace() {
         lockWrite();
         try {
-            final File databaseFile = prepareStorage(mStorageProviderId);
+            final File databaseFile = prepareStorage();
             try {
                 doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
@@ -276,17 +226,11 @@ public class LockableDatabase {
     }
 
     private void doOpenOrCreateDb(final File databaseFile) {
-        if (StorageManager.InternalStorageProvider.ID.equals(mStorageProviderId)) {
-            // internal storage
-            mDb = context.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE,
-                    null);
-        } else {
-            // external storage
-            mDb = SQLiteDatabase.openOrCreateDatabase(databaseFile, null);
-        }
+        mDb = context.openOrCreateDatabase(databaseFile.getName(), Context.MODE_PRIVATE, null);
     }
 
-    protected File prepareStorage(final String providerId) {
+    protected File prepareStorage() {
+        String providerId = getStorageProviderId();
         final StorageManager storageManager = getStorageManager();
 
         final File databaseFile = storageManager.getDatabase(uUid, providerId);
@@ -331,6 +275,7 @@ public class LockableDatabase {
     private void delete(final boolean recreate) {
         lockWrite();
         try {
+            String storageProviderId = getStorageProviderId();
             try {
                 mDb.close();
             } catch (Exception e) {
@@ -338,7 +283,7 @@ public class LockableDatabase {
             }
             final StorageManager storageManager = getStorageManager();
             try {
-                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, mStorageProviderId);
+                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, storageProviderId);
                 final File[] attachments = attachmentDirectory.listFiles();
                 for (File attachment : attachments) {
                     if (attachment.exists()) {
@@ -358,7 +303,7 @@ public class LockableDatabase {
                 Timber.d("Exception caught in clearing attachments: %s", e.getMessage());
             }
             try {
-                deleteDatabase(storageManager.getDatabase(uUid, mStorageProviderId));
+                deleteDatabase(storageManager.getDatabase(uUid, storageProviderId));
             } catch (Exception e) {
                 Timber.i(e, "LockableDatabase: delete(): Unable to delete backing DB file");
             }

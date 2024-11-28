@@ -1,0 +1,37 @@
+Ndihmoni të bëhet hedhja pasuese në qarkullim e Thunderbird-it sa më mahnitëse që të jetë e mundur, duke shkarkuar Thunderbird Beta dhe duke përdorur herët veçoritë më të reja dhe ndreqjet e të metave, para se të jepen zyrtarisht. Testimi dhe përshtypjet tuaj janë të rëndësishme, ndaj, ju lutemi, njoftoni të meta, anë të palatuara dhe jepnani mendimet tuaja!
+
+Ndjekësin tonë të të metave, kodin burim dhe wiki-n i gjeni te <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+
+Jemi përherë të gëzuar t’u japim mirëseardhjen programuesve, skicuesve, dokumentuesve, përkthyesve, testuesve të të metave dhe miqve tanë të rinj. Për t’ia filluar, na vizitoni te <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a>.
+
+Thunderbird-i është një aplikacion email-esh i fuqishëm, i përqendruar te privatësia. Administroni pa mundim llogari të shumta email, nga një aplikacion, përmes një mundësi “Të marrë të Njësuar”, për maksimumin e prodhimtarisë. Ngritur mbi teknologji me burim të hapët dhe mbështetur në një ekip enkas zhvilluesish, tok me një bashkësi globale vullnetarësh, Thunderbird-i s’i trajton kurrë si produkt të dhënat tuaja private. I mbajtur në këmbë vetëm nga kontribute financiare prej përdoruesve tanë, ndaj s’do t’ju duhet kurrë më të shihni reklama përzierë me emaile-t tuaj.
+
+<b>Ç’mund të bëni</b>
+<ul>
+  <li>Të hidhni tej aplikacione të shumta dhe “webmail”. Përdorni një aplikacion, me një “Të marrë të Njësuar” opsional, përgjatë ditës.</li>
+  <li>Të shijoni një klient email dashamirës ndaj privatësisë, që nuk mbledh, apo shet kurrë të dhënat tuaja personale. Ju lidhim drejtpërdrejt me shërbimin tuaj email. Kaq!</li>
+  <li>Shpjereni privatësinë tuaj një shkallë më lart, duke përdorur fshehtëzim OpenPGP email-esh (PGP/MIME) me aplikacionin “OpenKeychain”, për të fshehtëzuar dhe shfshehtëzuar mesazhet tuaj.</li>
+  <li>Zgjidhni njëkohësimin në çast të email-it tuaj, në intervale të caktuar, ose sipas dëshirës. Si dëshironi të shihni për email-e, e keni ju në dorë!</li>
+  <li>Gjeni mesazhe të rëndësishëm, duke përdorur si kërkim vendor, ashtu edhe më anë shërbyesi.</li>
+</ul>
+
+<b>Përputhje</b>
+<ul>
+  <li>Thunderbird-i funksionon me protokolle IMAP dhe POP3, duke mbuluar një gamë të gjerë shërbimesh email, përfshi Gmail, Outlook, Yahoo Mail, iCloud, etj.</li>
+</ul>
+
+<b>Pse të përdoret Thunderbird-i</b>
+<ul>
+  <li>Emri i besuar në email për mbi 20 vjet - tani në Android.</li>
+  <li>Thunderbird-i është plotësisht i financuar nga kontribute vullnetarësh nga përdoruesit tanë. Nuk shfrytëzojmë të dhënat tuaja personale. S’jeni kurrë një produkt.</li>
+  <li>Prodhuar nga një ekip me efikasitetin në mendje, si ju. Duam të shpenzoni kohën minimale duke përdorur aplikacionin, teksa përfitoni maksimumin.</li>
+  <li>Me kontribute nga anembanë bota, Thunderbird-i për Android është përkthyer në më shumë se 20 gjuhë.</li>
+  <li>Me përkrahjen e MZLA Technologies Corporation, një nëndegë në pronësi të plotë e Mozilla Foundation.</li>
+</ul>
+
+<b>Burim i Hapët dhe Bashkësisë</b>
+<ul>
+  <li>Thunderbird-i është falas dhe me burim të hapët, që do të thotë se kodi i tij mund të shihet, ndryshohet, përdoret dhe jepet lirisht. Licenca e tij garanton gjithashtu se do të jetë kështu përgjithmonë. Mund ta mendoni Thunderbird-in si një dhuratë për ju nga mijëra kontribues.</li>
+  <li>E zhvillojmë haptazi, me përditësime të rregullta, të tejdukshme, në blogun dhe listat tona të postimeve.</li>
+  <li>Asistenca jonë e përdoruesve bazohet në bashkësinë tonë globale. Gjeni përgjigjet që ju duhen, ose i hyni rolit të një kontribuesi - qoftë kur i përgjigjeni një pyetjeje, përktheni aplikacioni, apo u tregoni shokëve dhe familjes tuaj rreth Thunderbird-it.</li>
+</ul>

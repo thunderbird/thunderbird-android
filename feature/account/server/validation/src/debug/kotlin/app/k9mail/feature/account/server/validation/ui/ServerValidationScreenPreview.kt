@@ -6,7 +6,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.feature.account.common.ui.fake.FakeAccountStateRepository
 import app.k9mail.feature.account.server.certificate.data.InMemoryServerCertificateErrorRepository
 import app.k9mail.feature.account.server.validation.ui.fake.FakeAccountOAuthViewModel
-import app.k9mail.feature.account.server.validation.ui.fake.FakeAppNameProvider
+import app.k9mail.feature.account.server.validation.ui.fake.FakeBrandNameProvider
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
 
 @Composable
@@ -23,7 +23,7 @@ internal fun IncomingServerValidationScreenPreview() {
                 certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
                 oAuthViewModel = FakeAccountOAuthViewModel(),
             ),
-            appNameProvider = FakeAppNameProvider,
+            brandNameProvider = FakeBrandNameProvider,
         )
     }
 }
@@ -42,7 +42,7 @@ internal fun OutgoingServerValidationScreenPreview() {
                 certificateErrorRepository = InMemoryServerCertificateErrorRepository(),
                 oAuthViewModel = FakeAccountOAuthViewModel(),
             ),
-            appNameProvider = FakeAppNameProvider,
+            brandNameProvider = FakeBrandNameProvider,
         )
     }
 }

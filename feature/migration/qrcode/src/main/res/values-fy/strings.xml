@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Kameratagong fereaske</string>
+    <string name="migration_qrcode_permission_denied_message">Gean nei Android-ynstellingen, tik op ‘toestemmingen’, en stean tagong ta de kamera ta.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Gea nei ynstellingen</string>
+    <string name="migration_qrcode_scanning_progress">Scand %1$s fan %2$s</string>
+    <string name="migration_qrcode_done_button_text">Dien</string>
+    <string name="migration_qrcode_scanning_instructions">De QR-koade fan Thunderbird desktop útlynje</string>
+</resources>

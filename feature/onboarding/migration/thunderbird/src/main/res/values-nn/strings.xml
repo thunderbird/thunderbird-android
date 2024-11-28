@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importer innstillingar</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Er du ny Thunderbird-brukar?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Legg til e-postkonto no</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Bruker du allereie Thunderbird på Desktop-PC?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importer innstillingane dine enkelt, med å skanne ein QR-kode.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Innstillingar’ i områdeverktøylinja (nede til venstre)</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Importer kontoinnstillingane dine no</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">I Thunderbird Desktop, gå til:</string>
+    <string name="onboarding_migration_thunderbird_import_title">Flytt frå annan app eller eining?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Vel ‘Eksport til mobil’</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Import krev den nyaste versjonen av Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Lær deg korleis du oppdaterer Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Ingen app funnen til å opne linken med.</string>
+</resources>

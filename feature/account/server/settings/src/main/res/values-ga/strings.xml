@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_settings_protocol_type_label">Prótacal</string>
+    <string name="account_server_settings_server_label">Freastalaí</string>
+    <string name="account_server_settings_connection_security_none">Dada</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_authentication_none">Dada</string>
+    <string name="account_server_settings_client_certificate_label">Deimhniú cliant</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Úsáid comhbhrúite</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Seol faisnéis chliaint</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Socruithe freastalaí amach</string>
+    <string name="account_server_settings_password_authentication_subtitle">Díghlasáil chun féachaint ar do phasfhocal</string>
+    <string name="account_server_settings_port_label">Port</string>
+    <string name="account_server_settings_incoming_top_bar_title">Socruithe freastalaí isteach</string>
+    <string name="account_server_settings_username_label">Ainm úsáideora</string>
+    <string name="account_server_settings_authentication_password_cleartext">Gnáth-fhocal faire</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_security_label">Slándáil</string>
+    <string name="account_server_settings_authentication_client_certificate">Deimhniú cliant</string>
+    <string name="account_server_settings_authentication_label">Fíordheimhniú</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_client_certificate_none_selected">Dada</string>
+    <string name="account_server_settings_authentication_password_encrypted">Pasfhocal criptithe</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Auto-bhrath ainmspás IMAP</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Réimír cosán IMAP</string>
+    <string name="account_server_settings_validation_error_password_required">Tá pasfhocal ag teastáil.</string>
+    <string name="account_server_settings_validation_error_server_required">Tá ainm an fhreastalaí ag teastáil.</string>
+    <string name="account_server_settings_validation_error_port_required">Port ag teastáil.</string>
+    <string name="account_server_settings_validation_error_username_required">Tá ainm úsáideora ag teastáil.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Ní féidir le réimír IMAP a bheith bán.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP nó óstainm neamhbhailí</string>
+    <string name="account_server_settings_validation_error_port_invalid">Tá an port neamhbhailí (caithfidh sé a bheith 1–65535).</string>
+    <string name="account_server_settings_password_authentication_title">Fíoraigh d\'aitheantas</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Chun féachaint ar do phasfhocal anseo, cumasaigh glas scáileáin ar an ngléas seo.</string>
+</resources>

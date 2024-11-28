@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Thunderbird\'ü Destekleyin</string>
+    <string name="funding_googleplay_contribution_header_description">Reklam göstermiyoruz veya verilerinizi satmıyoruz. Tamamen kullanıcılarımızın bağışlarıyla finanse ediliyoruz. Thunderbird\'ü beğeniyorsanız lütfen siz de bağış yapın. Siz olmadan başaramayız!</string>
+    <string name="funding_googleplay_contribution_list_title">Güvenli bağış</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Tek seferlik</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Her ay</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Mevcut değil</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Ödemeye geç</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Aylık ödemeyi değiştir</string>
+    <string name="funding_googleplay_contribution_title">Thunderbird\'ü Destekleyin</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Thunderbird’ü yaşatmamıza yardım edin</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Bağışlarınız vergiden düşülemez.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Şu anda uygulama içi bağış yapılamıyor.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Thunderbird\'ü nasıl destekleyebileceğinizi öğrenmek için www.thunderbird.net\'i ziyaret edin</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Şu anda ödeme yapılamıyor</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Yeniden dene</string>
+    <string name="funding_googleplay_contribution_error_show_more">Ayrıntıları göster</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Hatayı kapat</string>
+    <string name="funding_googleplay_contribution_error_unknown">Bilinmeyen hata</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Satın alma başarısız oldu.</string>
+</resources>

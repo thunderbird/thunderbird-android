@@ -1,0 +1,5 @@
+- Push: Notify përdoruesin, nëse s’kihet leja për të vënë në plan alarme të përpiktë
+- U riemërtua rregullimi “Dërgo ID klienti” si “Dërgo hollësi klienti”
+- IMAP: U shtua mbulim për atribut përgjigje \NonExistent LIST
+- IMAP: Dhënie e urdhrit EXPUNGE, pas lëvizjeje pa zgjerimin MOVE
+- U përditësuan përkthime; u shtua përkthimi hebraisht

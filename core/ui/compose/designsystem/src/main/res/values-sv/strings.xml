@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="designsystem_atom_password_textfield_hide_password">Dölj lösenord</string>
-    <string name="designsystem_molecule_email_address_input_label">E-post adress</string>
+    <string name="designsystem_molecule_email_address_input_label">E-postadress</string>
     <string name="designsystem_atom_password_textfield_show_password">Visa lösenord</string>
     <string name="designsystem_molecule_password_input_label">Lösenord</string>
     <string name="designsystem_molecule_error_view_button_retry">Försök igen</string>

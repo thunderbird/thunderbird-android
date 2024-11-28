@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">開始</string>
+    <string name="onboarding_welcome_start_button">はじめる</string>
     <string name="onboarding_welcome_import_button">設定をインポート</string>
-    <string name="onboarding_welcome_message">強固なセキュリティと簡単なカスタマイズ、複数アカウントのシームレスな管理のために設計された Android メールクライアント、<xliff:g id="app_name">%s</xliff:g> へようこそ。</string>
+    <string name="onboarding_welcome_text">オープンソース、プライバシー重視、広告なしの Android 向けメールアプリ</string>
+    <string name="onboarding_welcome_developed_by">MZLA Technologies の専門チームとボランティアの国際コミュニティにより開発されました。Mozilla ファミリーの一員です。</string>
 </resources>

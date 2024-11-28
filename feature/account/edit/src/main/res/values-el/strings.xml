@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Αποθηκεύονται οι ρυθμίσεις στον διακομιστή…</string>
+    <string name="account_edit_save_server_settings_error_message">Αποτυχία αποθήκευσης ρυθμίσεων στον διακομιστή</string>
+    <string name="account_edit_save_server_settings_success_message">Οι ρυθμίσεις αποθηκεύτηκαν στον διακομιστή</string>
+</resources>

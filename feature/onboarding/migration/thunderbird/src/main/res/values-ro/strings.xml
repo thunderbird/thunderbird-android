@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Utilizați deja Thunderbird pe calculator?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importare configurări</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Puteți importa cu ușurință configurările contului dvs. prin scanarea unui cod QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">În versiunea Thunderbird din calculator, mergeți la:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">„Setări” în bara de instrumente (stânga jos)</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Nu sunteți familiarizat încă cu Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Adaugă un cont de e-mail</string>
+    <string name="onboarding_migration_thunderbird_import_title">Veniți de la o altă aplicație sau dispozitiv?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Importați acum configurația contului dvs.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Selectați «Exportați la dispozitivul mobil»</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Aflați cum să actualizați Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Nu s-a găsit nicio aplicație pentru a deschide legătura.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Importarea necesită cea mai recentă versiune a Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+</resources>

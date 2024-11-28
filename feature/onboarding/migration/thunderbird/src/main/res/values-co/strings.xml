@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Impiegate dighjà Thunderbird nant’à l’urdinatore ?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Impurtà i parametri</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Impurtate in quattru è trè sette i vostri parametri di conti analizendu un codice QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">« Parametri » in a barra d’attrezzi di i spazii (in bassu è à manca)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">In Thunderbird nant’à l’urdinatore, andà à :</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Principiante nant’à Thunderbird ?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Aghjunghje subitu un contu di messaghjeria</string>
+    <string name="onboarding_migration_thunderbird_import_title">Venite da un’altra appiecazione o d’un altru apparechju ?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Impurtà subitu i vostri parametri di conti</string>
+</resources>

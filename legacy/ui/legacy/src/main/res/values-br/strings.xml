@@ -79,8 +79,7 @@
     <string name="status_network_error">Fazi kennaskañ</string>
     <string name="status_invalid_id_error">N’eo ket bet kavet ar gemennadenn</string>
     <string name="status_loading_error">Fazi kargañ ar gemennadenn</string>
-    <string name="load_more_messages_fmt">Kargañ
-<xliff:g id="messages_to_load">%d</xliff:g> ouzhpenn</string>
+    <string name="load_more_messages_fmt">Kargañ <xliff:g id="messages_to_load">%d</xliff:g> ouzhpenn</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> gemennadenn nevez</item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> a gemennadennoù nevez</item>
@@ -165,7 +164,7 @@
     <string name="global_settings_registered_name_color_label">Livañ an darempredoù</string>
     <string name="global_settings_registered_name_color_changed">Livañ an anvioù en ho roll darempredoù</string>
     <string name="global_settings_messageview_fixedwidth_label">Nodrezhoù digemm o ledander</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Arverañ un nodrezh digemm e ledander pa vez skrammet kemennadennoù e testenn blaen </string>
+    <string name="global_settings_messageview_fixedwidth_summary">Arverañ un nodrezh digemm e ledander pa vez skrammet kemennadennoù e testenn blaen</string>
     <string name="global_settings_messageview_autofit_width_label">Klotañ ar c’hemennadennoù</string>
     <string name="global_settings_messageview_autofit_width_summary">Krennat ar c’hemennadennoù evit klotañ ouzh ar skramm</string>
     <string name="global_settings_confirm_actions_title">Kadarnat ar gwezhioù</string>
@@ -262,12 +261,6 @@
     <string name="account_settings_push_advanced_title">Kemplezhoc’h</string>
     <string name="account_settings_title_fmt">Arventennoù ar gont</string>
     <string name="account_settings_notify_label">Rebuzadurioù posteloù nevez</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Teuliadoù rebuzadurioù</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Pep tra</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Teuliadoù ar rummad 1añ hepken</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Teuliadoù ar rummad 1añ hag an eil</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">An holl estreget teuliadoù an eil rummad</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Netra</string>
     <string name="account_settings_notify_sync_label">Rebuzadurioù goubredañ</string>
     <string name="account_settings_email_label">Ho chomlec’h postel</string>
     <string name="account_settings_notify_summary">Rebuziñ en ho parrenn-statud pa erru ur postel</string>
@@ -335,27 +328,12 @@
     <string name="account_settings_message_age_3_months">an 3 miz tremenet</string>
     <string name="account_settings_message_age_6_months">ar 6 miz tremenet</string>
     <string name="account_settings_message_age_1_year">ar bloaz tremenet</string>
-    <string name="account_settings_folder_display_mode_label">Teuliadoù da ziskouez</string>
-    <string name="account_settings_folder_display_mode_all">An holl</string>
-    <string name="account_settings_folder_display_mode_first_class">Teuliadoù ar rummad 1añ hepken</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Teuliadoù ar rummad 1añ hag an eil</string>
-    <string name="account_settings_folder_display_mode_not_second_class">An holl estreget teuliadoù an eil rummad</string>
-    <string name="account_settings_folder_sync_mode_label">Kerc’hat an teuliadoù</string>
-    <string name="account_settings_folder_sync_mode_all">Pep tra</string>
-    <string name="account_settings_folder_sync_mode_first_class">Teuliadoù ar rummad 1añ hepken</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Teuliadoù ar rummad 1añ hag an eil</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">An holl estreget teuliadoù an eil rummad</string>
-    <string name="account_settings_folder_sync_mode_none">Netra</string>
     <string name="account_settings_sync_remote_deletetions_label">Goubredañ dilamadurioù an dafariad</string>
     <string name="account_settings_sync_remote_deletetions_summary">Dilemel ar c’hemennadennoù pa ’z int dilamet war an dafariad</string>
     <string name="account_settings_openpgp_missing">Diouer a arload OpenPGP - ha staliet eo bet?</string>
     <string name="folder_settings_title">Arventennoù an teuliad</string>
     <string name="folder_settings_in_top_group_label">Diskouez er strollad uhelañ</string>
     <string name="folder_settings_in_top_group_summary">Diskouez e-kichen krec’h roll an teuliadoù</string>
-    <string name="folder_settings_folder_display_mode_label">Rummad skrammañ an teuliad</string>
-    <string name="folder_settings_folder_display_mode_normal">Rummad ebet</string>
-    <string name="folder_settings_folder_display_mode_first_class">1añ rummad</string>
-    <string name="folder_settings_folder_display_mode_second_class">Eil rummad</string>
     <string name="folder_settings_clear_local_folder_action">Skarzhañ ar c’hemennadennoù lec’hel</string>
     <string name="account_settings_incoming_label">Dafariad degemer</string>
     <string name="account_settings_incoming_summary">Kefluniañ an dafariad postel degemer</string>
@@ -780,4 +758,17 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
+<string name="about_app_authors_thunderbird">Skipailh Thunderbird evit ardivinkoù hezoug</string>
+    <string name="get_help_title">Bezañ skoazellet</string>
+    <string name="changelog_loading_error">N\'eus ket bet gallet kargañ marilh ar c\'hemmoù.</string>
+    <string name="changelog_recent_changes_title">Petra nevez</string>
+    <string name="about_website_title">Lec\'hienn Web</string>
+    <string name="source_code">Kod tarzh</string>
+    <string name="changelog_version_title">Stumm %s</string>
+    <string name="about_project_title">Raktres digor e god tarzh</string>
+    <string name="user_forum_title">Forom an implijerien</string>
+    <string name="changelog_title">Marilh ar c\'hemmoù</string>
+    <string name="changelog_show_recent_changes">Diskouez ar c\'hemmoù diwezhañ goude hizivadenn an arload</string>
+    <string name="changelog_snackbar_text">Taolit ur sell war ar pezh zo nevez er stumm-mañ</string>
+    <string name="changelog_snackbar_button_text">Diskouez</string>
 </resources>

@@ -1,0 +1,31 @@
+Thunderbird pribatutasunean zentratutako posta elektronikoko aplikazio indartsua da. Kudeatu esfortzurik gabe posta elektronikoko hainbat kontu aplikazio bakarretik, produktibitate handiena lortzeko Sarrera-ontzi bateratu aukerarekin. Kode irekiko teknologian eraikia eta garatzaile talde dedikatu batek lagunduta, boluntarioen komunitate global batekin batera, Thunderbird-ek ez ditu inoiz zure datu pribatuak produktu gisa tratatzen. Gure erabiltzaileen diru-ekarpenekin soilik onartzen da, beraz, ez duzu inoiz berriro ikusi behar iragarkiak zure mezu elektronikoekin nahastuta.
+
+<b>Zer egin dezakezu:</b>
+<ul>
+  <li>Utzi hainbat aplikazio eta web-posta erabiltzen. Erabili aplikazio bat, aukerako Sarrera-ontzi bateratua duena, zure eguna aurrera ateratzeko.</li>
+  <li>Gozatu zure datu pertsonalak inoiz biltzen edo saltzen ez dituen pribatutasun egokia duen posta-bezero batez. Zuzenean zure posta-hornitzailearekin konektatzen zaitugu. Hori da!</li>
+  <li>Eraman zure pribatutasuna hurrengo mailara OpenPGP posta elektronikoaren enkriptatzea (PGP/MIME) erabiliz "OpenKeychain" aplikazioarekin, zure mezuak enkriptatzeko eta deszifratzeko.</li>
+  <li>Aukeratu zure posta elektronikoa berehala sinkronizatzea, ezarritako maiztasunarekin edo eskaeraren arabera.</li>
+  <li>Bilatu zure mezu garrantzitsuak bilaketa lokala eta zerbitzariaren aldeko bilaketa erabiliz.</li>
+</ul>
+
+<b>Bateragarritasuna</b>
+<ul>
+  <li>Thunderbird-ek IMAP eta POP3 protokoloekin funtzionatzen du eta posta elektronikoko hornitzaile ugari onartzen ditu, besteak beste, Gmail, Outlook, Yahoo Mail, iCloud eta abar.</li>
+</ul>
+
+<b>Zergatik erabili Thunderbird:</b>
+<ul>
+  <li>20 urtetik gorako posta elektronikoko aplikazio fidagarria - orain Android-en.</li>
+  <li>Thunderbird gure erabiltzaileen borondatezko ekarpenekin finantzatzen da guztiz. Ez ditugu zure datu pertsonalak erabiltzen. Ez zara inoiz produktua.</li>
+  <li>Zu bezain eraginkorra den talde batek egina. Aplikazioa erabiltzen denbora gutxien igaro dezazun nahi dugu, trukean gehienez.</li>
+  <li>Mundu osoko laguntzaileekin, Thunderbird Android-erako 20 hizkuntza baino gehiagotara itzuli da.</li>
+  <li>MZLA Technologies Corporation-ek lagunduta, Mozilla Fundazioaren jabetza osoa duen filiala.</li>
+</ul>
+
+<b>Kode irekia eta komunitatea</b>
+<ul>
+  <li>Thunderbird doakoa eta kode irekia da, hau da, bere kodea eskuragarri dago libreki ikusteko, aldatzeko, erabiltzeko eta partekatzeko. Bere lizentziak betirako doakoa izango dela ziurtatzen du. Thunderbird milaka kolaboratzaileren opari bat dela pentsa dezakezu.</li>
+  <li>Gure blogean eta posta zerrendetan ohiko eguneratze gardenekin garatzen gara.</li>
+  <li>Gure erabiltzaileentzako laguntza gure mundu mailako komunitateak eskaintzen du. Bilatu behar dituzun erantzunak edo sartu kolaboratzaile baten rola: galderak erantzuten, aplikazioa itzultzen edo zure lagunei eta senideei Thunderbird-i buruz kontatu.</li>
+</ul>

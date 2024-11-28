@@ -1,0 +1,5 @@
+- Små feilrettingar og UI/UX finpuss i konto-oppsett
+- Fiksa krasj som følgje av samhandling med OpenKeychain 6.0.0
+- Fokuser på emne eller kroppinndatafelter under opning av komposeringskjerm via ein mailto: URI
+- Fjerna hebraisk og koreansk omsetjing fordi under 70% av strengene var omsatt. Bidragsytarar er alltid velkommen til å oppdatere omsetjingane!
+- Oppdaterte gjenverande omsetjingar

@@ -1,0 +1,24 @@
+Is cliant ríomhphoist foinse oscailte é K-9 Mail a oibríonn go bunúsach le gach soláthraí ríomhphoist.
+
+<b>Gnéithe</b>
+
+* Tacaíocht cuntais iolrach
+* Bosca Isteach Aontaithe
+* Cairdiúil don phríobháideacht (gan aon rian a choinneáil ar bith, ní cheanglaíonn sé ach le do sholáthraí ríomhphoist)
+* Sioncrónú cúlra uathoibríoch nó fógraí a bhrú
+* Cuardach áitiúil agus freastalaí-taobh
+* Criptiú ríomhphoist OpenPGP (PGP/MIME)
+
+Suiteáil an aip <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: PGP Éasca</a> chun do ríomhphoist a chriptiú/dhíchriptiú le OpenPGP.
+
+
+<b>Tacaíocht</b>
+
+Má tá trioblóid agat le K-9 Mail, iarr cabhair inár <a href="https://forum.k9mail.app">fóram tacaíochta</a>.
+
+
+<b>Ar mhaith leat cabhrú?</b>
+
+Is tionscadal forbartha pobail é K-9 Mail. Má tá suim agat cabhrú leis an aip a fheabhsú, bí linn!
+Is féidir leat ár lorgaire fabhtanna, ár gcód foinse agus ár vicí a fháil ag <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> .
+Tá áthas orainn i gcónaí fáilte a chur roimh fhorbróirí nua, dearthóirí, doiciméadaithe, aistritheoirí, triáiseoirí fabhtanna agus cairde.

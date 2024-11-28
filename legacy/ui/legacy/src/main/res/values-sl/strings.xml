@@ -16,10 +16,10 @@
     <string name="changelog_title">Dnevnik sprememb</string>
     <string name="changelog_loading_error">Dnevnika sprememb ni bilo mogoče naložiti.</string>
     <string name="changelog_version_title">Različica %s</string>
-    <string name="changelog_recent_changes_title">Kaj je novega</string>
+    <string name="changelog_recent_changes_title">Novosti</string>
     <string name="changelog_show_recent_changes">Pokaže zadnje spremembe po posodobitvi programa</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">Kaj je novega v tej izdaji</string>
+    <string name="changelog_snackbar_text">Novosti v tej izdaji</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
     <!--General strings that include the app name-->
@@ -93,12 +93,11 @@
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(ni navedene zadeve …)</string>
     <string name="general_no_sender">Ni navedenega pošiljatelja</string>
-    <string name="status_loading_more">Nalaganje sporočil\u2026</string>
+    <string name="status_loading_more">Nalaganje sporočil …</string>
     <string name="status_network_error">Napaka povezave</string>
     <string name="status_invalid_id_error">Sporočila ni mogoče najti</string>
     <string name="status_loading_error">Napaka nalaganja sporočila</string>
-    <string name="load_more_messages_fmt">Naloži
-dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
+    <string name="load_more_messages_fmt">Naloži dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -126,7 +125,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Napaka obveščanja</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Med poskusom ustvarjanja sistemskega obvestila za novo sporočilo je prišlo do napake. Razlog je najverjetneje manjkajoči zvok obvestila.\n\nTapni, za odpreti nastavitve obvestil.</string>
+    <string name="notification_notify_error_text">Med poskusom ustvarjanja sistemskega obvestila za novo sporočilo je prišlo do napake. Razlog je najverjetneje manjkajoči zvok obvestila.\n\nDotaknite se, če želite odpreti nastavitve obvestil.</string>
     <string name="notification_bg_sync_ticker">Preverjanje pošte: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Preverjanje pošte</string>
     <string name="notification_bg_send_ticker">Pošiljanje pošte: <xliff:g id="account">%s</xliff:g></string>
@@ -159,7 +158,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="message_compose_quote_header_to">Za:</string>
     <string name="message_compose_quote_header_cc">Kp:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> sporoča:</string>
-    <string name="message_compose_reply_header_fmt_with_date">Dne, <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> sporoča:</string>
+    <string name="message_compose_reply_header_fmt_with_date">Dne <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> sporoča:</string>
     <string name="message_compose_error_no_recipients">Dodati je treba vsaj enega prejemnika.</string>
     <string name="compose_error_incomplete_recipient">Polje prejemnika vsebuje nepopoln naslov!</string>
     <string name="error_contact_address_not_found">Za ta stik ni mogoče najti nobenega elektronskega naslova.</string>
@@ -200,7 +199,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="global_settings_registered_name_color_changed">Obarvaj imena na seznamu stikov</string>
     <string name="general_settings_contact_name_color_label">Barva imena stika</string>
     <string name="global_settings_messageview_fixedwidth_label">Pisava s stalno širino</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Pri prikazu neoblikovanih besedilnih sporočil se uporabi pisava s črkami stalne širine</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Pri prikazu sporočil v golem besedilu uporabi pisavo s stalno širino</string>
     <string name="global_settings_messageview_autofit_width_label">Samodejno prilagodi prikaz sporočil</string>
     <string name="global_settings_messageview_autofit_width_summary">Prikaz sporočila se skrči, da se po širini prilagodi zaslonu</string>
     <string name="global_settings_confirm_actions_title">Zahtevaj potrditev dejanj</string>
@@ -304,12 +303,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="account_settings_push_advanced_title">Napredne možnosti</string>
     <string name="account_settings_title_fmt">Nastavitve računa</string>
     <string name="account_settings_notify_label">Obvestila za prejem nove pošte</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Prikaz obvestil</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Za vse ravni map</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Za mape 1. ravni</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Za mape 1. in 2. ravni</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Za vse, razen map 2. ravni</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Ne pokaži obvestil</string>
     <string name="account_settings_notify_sync_label">Obvestila usklajevanja</string>
     <string name="account_settings_email_label">Elektronski naslov</string>
     <string name="account_settings_notify_summary">Pokaže obvestilo v vrstici stanja ob prihodu novega sporočila</string>
@@ -398,27 +391,12 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="account_settings_message_age_3_months">Zadnjih 3 mesecev</string>
     <string name="account_settings_message_age_6_months">Zadnjih 6 mesecev</string>
     <string name="account_settings_message_age_1_year">Zadnjega leta</string>
-    <string name="account_settings_folder_display_mode_label">Prikaz map</string>
-    <string name="account_settings_folder_display_mode_all">Pokaži vse mape</string>
-    <string name="account_settings_folder_display_mode_first_class">Pokaži le mape 1. ravni</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Pokaži mape 1. in 2. ravni</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Pokaži vse, razen map 2. ravni</string>
-    <string name="account_settings_folder_sync_mode_label">Izpraševanje map</string>
-    <string name="account_settings_folder_sync_mode_all">Izprašaj vse mape</string>
-    <string name="account_settings_folder_sync_mode_first_class">Izprašaj le mape 1. ravni</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Izprašaj mape 1. in 2. ravni</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Izprašaj vse, razen map 2. ravni</string>
-    <string name="account_settings_folder_sync_mode_none">Ne izprašuj map</string>
     <string name="account_settings_sync_remote_deletetions_label">Usklajevanje izbrisanih sporočil</string>
     <string name="account_settings_sync_remote_deletetions_summary">Odstrani sporočila, ki so bila izbrisana na strežniku</string>
     <string name="account_settings_openpgp_missing">Ni programa OpenPGP – ali je bila namestitev odstranjena?</string>
     <string name="folder_settings_title">Nastavitve mape</string>
     <string name="folder_settings_in_top_group_label">Pokaži mapo v zgornji skupini</string>
     <string name="folder_settings_in_top_group_summary">Razvrsti mapo v zgornjo skupino map na seznamu</string>
-    <string name="folder_settings_folder_display_mode_label">Prikaz map</string>
-    <string name="folder_settings_folder_display_mode_normal">Brez ravni</string>
-    <string name="folder_settings_folder_display_mode_first_class">Pokaži mape 1. ravni</string>
-    <string name="folder_settings_folder_display_mode_second_class">Pokaži mape 2. ravni</string>
     <string name="folder_settings_clear_local_folder_action">Počisti krajevna sporočila</string>
     <string name="account_settings_incoming_label">Dohodni strežnik</string>
     <string name="account_settings_incoming_summary">Nastavitev strežnika dohodne pošte</string>
@@ -546,7 +524,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <string name="account_setup_push_limit_1000">1000 map</string>
     <string name="animations_title">Pokaži animirane učinke vmesnika</string>
     <string name="animations_summary">Prehodi dejanj in različni učinki delovanja vmesnika so animirani</string>
-    <string name="volume_navigation_title">Krmarjenje s tipko za glasnost v pogledu sporočila</string>
     <string name="show_unified_inbox_title">Pokaži skupno mapo prejetih sporočil</string>
     <string name="show_starred_count_title">Pokaži število označb z zvezdico</string>
     <string name="integrated_inbox_title">Skupna mapa prejetih sporočil</string>
@@ -911,4 +888,23 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="general_settings_post_mark_as_unread_action_stay">Ostani na trenutnem sporočilu</string>
     <string name="general_settings_post_mark_as_unread_action_title">Ko označite sporočilo kot neprebrano</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Vrni se na seznam sporočil</string>
+    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" bo odstranjen iz <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="settings_ui_telemetry_title">Uporaba in tehnični podatki</string>
+    <string name="settings_ui_data_collection">Zbiranje podatkov</string>
+    <string name="push_notification_state_alarm_permission_missing">Manjka dovoljenje za nastavitev alarma.</string>
+    <string name="about_title">O programu <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="folder_list_show_hidden_folders">Pokaži skrite mape</string>
+    <string name="folder_settings_notifications_label">Obvestila mape</string>
+    <string name="folder_settings_push_label">Potisk mape</string>
+    <string name="folder_settings_visible_label">Prikaz mape</string>
+    <string name="folder_settings_sync_label">Usklajevanje mape</string>
+    <string name="save_attachment_action">Shrani priponko</string>
+    <string name="volume_navigation_title_short">Navigacija s tipko za glasnost</string>
+    <string name="push_notification_grant_alarm_permission">Tapnite za odobritev dovoljenja.</string>
+    <string name="dialog_openkeychain_info_text">Aplikacija OpenKeychain je potrebna za omogočanje podpore za šifriranje od konca do konca.</string>
+    <string name="settings_ui_telemetry_description">Z Mozillo deli podatke o zmogljivosti, uporabi, strojni opremi in prilagajanju tega programa z namenom izboljšanja Thunderbirda</string>
+    <string name="volume_navigation_summary">V pogledu sporočil se med sporočili pomikajte z gumboma za glasnost</string>
+    <string name="settings_list_action_support">Podprite <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Ko uporabljate potisna sporočila, <xliff:g id="app_name">%1$s</xliff:g> vzdržuje povezavo s poštnim strežnikom. Android zahteva prikaz obvestila, ko je aplikacija aktivna v ozadju. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="about_app_authors_thunderbird">Thunderbirdova mobilna ekipa</string>
 </resources>

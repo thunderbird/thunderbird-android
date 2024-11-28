@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Enregistrement des paramètres du serveur…</string>
+    <string name="account_edit_save_server_settings_error_message">Échec d’enregistrement des paramètres du serveur</string>
+    <string name="account_edit_save_server_settings_success_message">Les paramètres du serveur ont été enregistrés</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Mahaigainekoan Thunderbird erabiltzen duzu dagoeneko?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Inportatu ezarpenak</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Gehitu email kontua orain</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Mahaigaineko Tunderbirden, zoaz hona:</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Inportatu zure kontuaren ezarpenak orain</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Berria Thunderbird-en?</string>
+    <string name="onboarding_migration_thunderbird_import_title">Beste aplikazio edo gailu batetik mugitzen ari zara?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Erraz inportatu zure kontuaren ezarpenak QR kode bat eskaneatuz.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\"Ezarpenak\" tresna-barran (behean ezkerrean)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Ikasi nola eguneratu Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Ez da aurkitu aplikaziorik lotura irekitzeko.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Hautatu \"Mugikorrera esportatu\"</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Inportatzeko mahaigaineko Thunderbird 128ko azken bertsioa behar da <xliff:g id="link_text">%s</xliff:g></string>
+</resources>

@@ -33,7 +33,6 @@ out/
 # IDEA/Android Studio includes
 !.idea/icon.png
 !.idea/codeStyles/
-!.idea/inspectionProfiles/
 !.idea/fileTemplates/
 
 # Android Studio captures folder
@@ -41,3 +40,6 @@ captures/
 
 # Mac thumbnail db
 .DS_Store
+
+# Screenshots
+adb-screenshots/

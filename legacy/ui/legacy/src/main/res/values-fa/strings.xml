@@ -198,7 +198,7 @@
     <string name="global_settings_registered_name_color_changed">نام‌های موجود در سیاههٔ آشنایان رنگی شود</string>
     <string name="general_settings_contact_name_color_label">رنگ نام آشنا</string>
     <string name="global_settings_messageview_fixedwidth_label">قلم‌های تک‌عرض</string>
-    <string name="global_settings_messageview_fixedwidth_summary">هنگام نمایش پیام‌های متنی از قلم تک‌عرض استفاده کن</string>
+    <string name="global_settings_messageview_fixedwidth_summary">هنگام نمایش پیام‌های متنی ساده از قلم تک‌عرض استفاده کن</string>
     <string name="global_settings_messageview_autofit_width_label">جاگیری خودکار پیام‌ها</string>
     <string name="global_settings_messageview_autofit_width_summary">پیام‌ها را کوچک می‌کند تا در صفحه جا شوند</string>
     <string name="global_settings_confirm_actions_title">تأیید کنش‌ها</string>
@@ -305,12 +305,6 @@
     <string name="account_settings_push_advanced_title">پیشرفته</string>
     <string name="account_settings_title_fmt">تنظیمات حساب</string>
     <string name="account_settings_notify_label">آگاهی‌های نامهٔ جدید</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">پوشه‌های دارای آگاهی</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">همه</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">فقط پوشه‌های سطح ۱</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">پوشه‌های سطح ۱ و ۲</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">همه به‌جز پوشه‌های سطح ۲</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">هیچ‌کدام</string>
     <string name="account_settings_notify_sync_label">آگاهی‌های همگام‌سازی</string>
     <string name="account_settings_email_label">نشانی رایانامه‌تان</string>
     <string name="account_settings_notify_summary">آگاهی در نپار وضعیت هنگام رسیدن نامه</string>
@@ -399,27 +393,12 @@
     <string name="account_settings_message_age_3_months">۳ ماه پیش</string>
     <string name="account_settings_message_age_6_months">۶ ماه پیش</string>
     <string name="account_settings_message_age_1_year">سال قبل</string>
-    <string name="account_settings_folder_display_mode_label">پوشه‌های نمایان</string>
-    <string name="account_settings_folder_display_mode_all">همه</string>
-    <string name="account_settings_folder_display_mode_first_class">فقط پوشه‌های سطح ۱</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">پوشه‌های سطح ۱ و ۲</string>
-    <string name="account_settings_folder_display_mode_not_second_class">همه به‌جز پوشه‌های سطح ۲</string>
-    <string name="account_settings_folder_sync_mode_label">پوشه‌ها برای سرکشی</string>
-    <string name="account_settings_folder_sync_mode_all">همه</string>
-    <string name="account_settings_folder_sync_mode_first_class">فقط پوشه‌های سطح ۱</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">پوشه‌های سطح ۱ و ۲</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">همه به‌جز پوشه‌های سطح ۲</string>
-    <string name="account_settings_folder_sync_mode_none">هیچ‌کدام</string>
     <string name="account_settings_sync_remote_deletetions_label">همگام‌سازی حذفیات کارساز</string>
     <string name="account_settings_sync_remote_deletetions_summary">وقتی پیام‌ها در کارساز پاک شدند از اینجا هم حذف شود</string>
     <string name="account_settings_openpgp_missing">برنامهٔ OpenPGP نیست - حذف شده؟</string>
     <string name="folder_settings_title">تنظیمات پوشه</string>
     <string name="folder_settings_in_top_group_label">نمایش در بالا</string>
     <string name="folder_settings_in_top_group_summary">نمایش در بالای سیاههٔ پوشه‌ها</string>
-    <string name="folder_settings_folder_display_mode_label">سطح نمایش پوشه</string>
-    <string name="folder_settings_folder_display_mode_normal">بدون سطح</string>
-    <string name="folder_settings_folder_display_mode_first_class">سطح ۱</string>
-    <string name="folder_settings_folder_display_mode_second_class">سطح ۲</string>
     <string name="folder_settings_clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
     <string name="account_settings_incoming_label">کارساز ورودی</string>
     <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>
@@ -547,7 +526,6 @@
     <string name="account_setup_push_limit_1000">۱۰۰۰ پوشه</string>
     <string name="animations_title">پویانمایی</string>
     <string name="animations_summary">استفاده از جلوه‌های پُرزرق‌وبرق</string>
-    <string name="volume_navigation_title">جابه‌جایی با کلیدهای تنظیم صدا</string>
     <string name="show_unified_inbox_title">نمایش صندوق یکپارچه</string>
     <string name="show_starred_count_title">نمایش تعداد ستاره‌دارها</string>
     <string name="integrated_inbox_title">صندوق ورودی یکپارچه</string>
@@ -914,4 +892,9 @@
     <string name="settings_ui_data_collection">جمع‌آوری داده</string>
     <string name="folder_settings_sync_label">فعال‌سازی همگام‌سازی</string>
     <string name="folder_list_show_hidden_folders">نمایش پوشه‌های مخفی</string>
+    <string name="folder_settings_visible_label">نمایش پوشه</string>
+    <string name="settings_list_action_support">پشتیبانی از <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">ذخیره پیوست</string>
+    <string name="volume_navigation_title_short">پیمایش با دکمه تنظیم صدا</string>
+    <string name="volume_navigation_summary">با استفاده از کلیدهای تنظیم صدا در صفحه نمایش پیام، بین پیام‌ها پیمایش کنید</string>
 </resources>

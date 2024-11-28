@@ -302,12 +302,6 @@
     <string name="account_settings_push_advanced_title">Erweitert</string>
     <string name="account_settings_title_fmt">Kontoeinstellungen</string>
     <string name="account_settings_notify_label">Bei neuen Nachrichten</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Benachrichtigungsordner</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Alle</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Nur Hauptordner</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Haupt- und Nebenordner</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Alle außer Nebenordner</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Kein</string>
     <string name="account_settings_notify_sync_label">Benachrichtigung bei Synchronisation</string>
     <string name="account_settings_email_label">Deine E-Mail-Adresse</string>
     <string name="account_settings_notify_summary">Benachrichtigung in der Statuszeile anzeigen, wenn eine neue Nachricht empfangen wird</string>
@@ -396,27 +390,12 @@
     <string name="account_settings_message_age_3_months">der letzten 3 Monate</string>
     <string name="account_settings_message_age_6_months">der letzten 6 Monate</string>
     <string name="account_settings_message_age_1_year">des letzten Jahres</string>
-    <string name="account_settings_folder_display_mode_label">Angezeigte Ordner</string>
-    <string name="account_settings_folder_display_mode_all">Alle</string>
-    <string name="account_settings_folder_display_mode_first_class">Nur Hauptordner</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Haupt- und Nebenordner</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Alle außer Nebenordner</string>
-    <string name="account_settings_folder_sync_mode_label">Abzufragende Ordner</string>
-    <string name="account_settings_folder_sync_mode_all">Alle</string>
-    <string name="account_settings_folder_sync_mode_first_class">Nur Hauptordner</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Haupt- und Nebenordner</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Alle außer Nebenordner</string>
-    <string name="account_settings_folder_sync_mode_none">Keine</string>
     <string name="account_settings_sync_remote_deletetions_label">Löschungen vom Server übernehmen</string>
     <string name="account_settings_sync_remote_deletetions_summary">Nachrichten löschen, wenn sie vom Server gelöscht wurden</string>
     <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App – wurde sie deinstalliert?</string>
     <string name="folder_settings_title">Ordnereinstellungen</string>
     <string name="folder_settings_in_top_group_label">Oben anzeigen</string>
     <string name="folder_settings_in_top_group_summary">Ordner am Anfang der Ordnerliste anzeigen</string>
-    <string name="folder_settings_folder_display_mode_label">Anzeigeklasse</string>
-    <string name="folder_settings_folder_display_mode_normal">Keine Klasse</string>
-    <string name="folder_settings_folder_display_mode_first_class">Hauptordner</string>
-    <string name="folder_settings_folder_display_mode_second_class">Nebenordner</string>
     <string name="folder_settings_clear_local_folder_action">Lokale Nachrichten löschen</string>
     <string name="account_settings_incoming_label">Posteingangsserver</string>
     <string name="account_settings_incoming_summary">Einstellungen des Posteingangsservers bearbeiten</string>
@@ -544,7 +523,6 @@
     <string name="account_setup_push_limit_1000">1000 Ordner</string>
     <string name="animations_title">Animationen</string>
     <string name="animations_summary">Aufwendige visuelle Effekte benutzen</string>
-    <string name="volume_navigation_title">Per Lautstärketasten durch Nachrichtenansicht navigieren</string>
     <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
     <string name="show_starred_count_title">Anzahl der wichtigen Nachrichten anzeigen</string>
     <string name="integrated_inbox_title">Gemeinsamer Posteingang</string>
@@ -911,4 +889,9 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="folder_settings_push_label">Push aktivieren</string>
     <string name="folder_settings_sync_label">Synchronisation aktivieren</string>
     <string name="folder_list_show_hidden_folders">Ausgeblendete Ordner anzeigen</string>
+    <string name="folder_settings_visible_label">Ordner anzeigen</string>
+    <string name="settings_list_action_support">Support <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_summary">In der Nachrichtenübersicht mit den Lautstärketasten zwischen den Nachrichten navigieren</string>
+    <string name="save_attachment_action">Anhang speichern</string>
+    <string name="volume_navigation_title_short">Navigation mit Lautstärketasten</string>
 </resources>

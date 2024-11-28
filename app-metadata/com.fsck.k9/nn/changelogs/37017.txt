@@ -1,0 +1,5 @@
+- Fiksa rekkefølgje for oppdagingstrinnene for automatisk konfigurasjon
+- Endra standard antal viste til 100
+- Aktiverte notifikasjonar for nye kontoar som standard
+- Tilbakeførte endringar på handtering av mailto: URI-ar introdusert i K-9 Mail 6.716 på grunn av uønskte bivirkningar
+- Fiksa bug for å få "fargelegg kontaktar" til å virke igjen i meldingsvising

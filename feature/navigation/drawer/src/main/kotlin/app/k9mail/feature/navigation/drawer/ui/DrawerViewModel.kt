@@ -61,13 +61,13 @@ internal class DrawerViewModel(
     }
 
     private fun updateAccounts(accounts: List<DisplayAccount>) {
-        val selectedAccount = accounts.find { it.uuid == state.value.selectedAccountUuid }
+        val selectedAccount = accounts.find { it.id == state.value.selectedAccountId }
             ?: accounts.firstOrNull()
 
         updateState {
             it.copy(
                 accounts = accounts.toImmutableList(),
-                selectedAccountUuid = selectedAccount?.uuid,
+                selectedAccountId = selectedAccount?.id,
             )
         }
     }
@@ -75,13 +75,13 @@ internal class DrawerViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadFolders() {
         state.map {
-            it.selectedAccountUuid?.let { accountUuid ->
-                Pair(accountUuid, it.config.showUnifiedFolders)
+            it.selectedAccountId?.let { accountId ->
+                Pair(accountId, it.config.showUnifiedFolders)
             }
         }.filterNotNull()
             .distinctUntilChanged()
-            .flatMapLatest { (accountUuid, showUnifiedInbox) ->
-                getDisplayFoldersForAccount(accountUuid, showUnifiedInbox)
+            .flatMapLatest { (accountId, showUnifiedInbox) ->
+                getDisplayFoldersForAccount(accountId, showUnifiedInbox)
             }.collectLatest { folders ->
                 updateFolders(folders)
             }
@@ -102,7 +102,7 @@ internal class DrawerViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is Event.SelectAccount -> selectAccount(event.accountUuid)
+            is Event.SelectAccount -> selectAccount(event.accountId)
             is Event.SelectFolder -> selectFolder(event.folderId)
 
             is Event.OnAccountClick -> openAccount(event.account)
@@ -121,10 +121,10 @@ internal class DrawerViewModel(
         }
     }
 
-    private fun selectAccount(accountUuid: String?) {
+    private fun selectAccount(accountId: String?) {
         updateState {
             it.copy(
-                selectedAccountUuid = accountUuid,
+                selectedAccountId = accountId,
             )
         }
     }
@@ -139,7 +139,7 @@ internal class DrawerViewModel(
 
     private fun openAccount(account: DisplayAccount?) {
         if (account != null) {
-            emitEffect(Effect.OpenAccount(account.account))
+            emitEffect(Effect.OpenAccount(account.id))
         }
     }
 
@@ -168,14 +168,14 @@ internal class DrawerViewModel(
     }
 
     private fun onSyncAccount() {
-        if (state.value.isLoading || state.value.selectedAccountUuid == null) return
+        if (state.value.isLoading || state.value.selectedAccountId == null) return
 
         viewModelScope.launch {
             updateState {
                 it.copy(isLoading = true)
             }
 
-            state.value.selectedAccountUuid?.let { syncAccount(it).collect() }
+            state.value.selectedAccountId?.let { syncAccount(it).collect() }
 
             updateState {
                 it.copy(isLoading = false)

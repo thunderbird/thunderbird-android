@@ -96,7 +96,7 @@
     <string name="status_network_error">Konexio errorea</string>
     <string name="status_invalid_id_error">Ez da mezua aurkitu</string>
     <string name="status_loading_error">Akatsa mezua kargatzean</string>
-    <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> gehiago kargatu</string>
+    <string name="load_more_messages_fmt">Kargatu gehienez <xliff:g id="messages_to_load">%d</xliff:g> gehiago</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -303,12 +303,6 @@
     <string name="account_settings_push_advanced_title">Aurreratua</string>
     <string name="account_settings_title_fmt">Kontu ezarpenak</string>
     <string name="account_settings_notify_label">Posta berrien jakinarazpenak</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Jakinarazpenen karpeta</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Guztiak</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">1. klaseko karpetak bakarrik</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Bat ere ez</string>
     <string name="account_settings_notify_sync_label">Sinkronizazio jakinarazpenak</string>
     <string name="account_settings_email_label">Zure posta helbidea</string>
     <string name="account_settings_notify_summary">Jakinarazi egoera barran posta iristean</string>
@@ -397,27 +391,12 @@
     <string name="account_settings_message_age_3_months">azken 3 hilabeteak</string>
     <string name="account_settings_message_age_6_months">azken 6 hilabeteak</string>
     <string name="account_settings_message_age_1_year">azken urtea</string>
-    <string name="account_settings_folder_display_mode_label">Bistaratuko diren karpetak</string>
-    <string name="account_settings_folder_display_mode_all">Guztiak</string>
-    <string name="account_settings_folder_display_mode_first_class">1. klaseko karpetak bakarrik</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
-    <string name="account_settings_folder_sync_mode_label">Atzitu karpetak</string>
-    <string name="account_settings_folder_sync_mode_all">Guztiak</string>
-    <string name="account_settings_folder_sync_mode_first_class">1. klaseko karpetak bakarrik</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1. eta 2. klaseko karpetak</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Guztiak 2. klaseko karpetak izan ezik</string>
-    <string name="account_settings_folder_sync_mode_none">Bat ere ez</string>
     <string name="account_settings_sync_remote_deletetions_label">sinkronizatu zerbitzariko ezabatzeak</string>
     <string name="account_settings_sync_remote_deletetions_summary">Kendu mezuak zerbitzarian ezabatzean</string>
     <string name="account_settings_openpgp_missing">OpenPGP aplikazioa falta da, desinstalatu da?</string>
     <string name="folder_settings_title">Karpeta ezarpenak</string>
     <string name="folder_settings_in_top_group_label">Erakutsi goiko taldean</string>
     <string name="folder_settings_in_top_group_summary">Erakutsi karpeta zerrendaren goialdetik hurbil</string>
-    <string name="folder_settings_folder_display_mode_label">Bistaratzeko karpeta klaseak</string>
-    <string name="folder_settings_folder_display_mode_normal">Klaserik ez</string>
-    <string name="folder_settings_folder_display_mode_first_class">1. klasea</string>
-    <string name="folder_settings_folder_display_mode_second_class">2. klasea</string>
     <string name="folder_settings_clear_local_folder_action">Garbitu mezu lokalak</string>
     <string name="account_settings_incoming_label">Sarrerako zerbitzaria</string>
     <string name="account_settings_incoming_summary">Konfiguratu sarrerako posta zerbitzaria</string>
@@ -545,7 +524,6 @@
     <string name="account_setup_push_limit_1000">1000 karpeta</string>
     <string name="animations_title">Animazioak</string>
     <string name="animations_summary">Erabili bistaratze efektu nabarmenak</string>
-    <string name="volume_navigation_title">Nabigatu bolumenaren botoiekin mezuak ikusterakoan</string>
     <string name="show_unified_inbox_title">Erakutsi Sarrera Ontzi Bateratua</string>
     <string name="show_starred_count_title">Erakutsi kontu izardunak</string>
     <string name="integrated_inbox_title">Sarrerako ontzi bateratua</string>
@@ -908,4 +886,12 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="settings_ui_telemetry_title">Erabilera eta datu teknikoak</string>
     <string name="folder_settings_notifications_label">Jakinarazpenak</string>
     <string name="settings_ui_telemetry_description">Aplikazio honi buruzko errendimendu, erabilera, hardware eta pertsonalizazio datuak partekatzen ditu Mozillarekin Thunderbird hobetzen laguntzeko</string>
+    <string name="save_attachment_action">Gorde eranskina</string>
+    <string name="folder_list_show_hidden_folders">Erakutsi ezkutuko karpetak</string>
+    <string name="folder_settings_sync_label">Gaitu sinkronizazioa</string>
+    <string name="folder_settings_visible_label">Erakutsi karpeta</string>
+    <string name="volume_navigation_title_short">Bolumen teklaz nabigazioa</string>
+    <string name="volume_navigation_summary">Nabigatu mezuen artean bolumen-teklak erabiliz mezuen ikuspegian</string>
+    <string name="folder_settings_push_label">Gaitu Push</string>
+    <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> laguntza</string>
 </resources>

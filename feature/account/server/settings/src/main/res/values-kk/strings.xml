@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_settings_protocol_type_label">Протокол</string>
+    <string name="account_server_settings_security_label">Қауіпсіздік</string>
+    <string name="account_server_settings_server_label">Сервер</string>
+    <string name="account_server_settings_port_label">Порт</string>
+    <string name="account_server_settings_authentication_label">Аутентификация</string>
+    <string name="account_server_settings_username_label">Пайдаланушы аты</string>
+    <string name="account_server_settings_connection_security_none">Ешнәрсе</string>
+</resources>

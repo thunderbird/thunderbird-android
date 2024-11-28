@@ -1,0 +1,7 @@
+- Socrú cuntais nua agus feabhsaithe
+- Rogha breise chun filleadh ar an liosta teachtaireachtaí tar éis teachtaireacht a mharcáil mar neamhléite san amharc teachtaireachta
+- Rinne sé níos deacra gníomhartha swipe a thionscnamh de thaisme ar an scáileán liosta teachtaireachtaí
+- Taithí feabhsaithe léitheoir scáileáin in áiteanna éagsúla
+- IMAP: Tacaíocht bhreise chun an t-ordú aitheantais a sheoladh (a theastaíonn ó roinnt soláthraithe ríomhphoist)
+- Ceartúcháin agus feabhsuithe éagsúla eile ar fhabht; féach athruithe le haghaidh leaganacha 6.7xx
+- Baineadh na haistriúcháin Eabhrais agus na Cóiré mar gheall ar chomh neamhiomlán agus a bhí siad; fáilte roimh aistritheoirí deonacha!

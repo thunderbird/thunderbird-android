@@ -41,4 +41,6 @@
     <string name="settings_import_general_settings_item">Hlavní nastavení</string>
     <string name="settings_import_pick_app_button">Importovat z aplikace</string>
     <string name="settings_import_pick_app_dialog_title">Importovat z aplikace</string>
+    <string name="settings_import_scan_qr_code_button">Naskenovat QR kód</string>
+    <string name="settings_import_app_version_not_supported">Verze aplikace není podporována.</string>
 </resources>

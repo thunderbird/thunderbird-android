@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="Theme.Thunderbird.Startup" parent="Theme2.Thunderbird.Dark">
-        <item name="android:windowBackground">@android:color/black</item>
-    </style>
+    <style name="Theme.Thunderbird.Startup" parent="Theme2.Main.Startup" />
 
     <style name="Theme.Thunderbird.Light" parent="Theme2.Thunderbird.Light">
         <item name="actionModeCloseDrawable">@drawable/ic_close</item>
@@ -46,9 +44,6 @@
         <item name="openpgp_blue">#336699</item>
         <item name="openpgp_grey">#bbb</item>
         <item name="openpgp_dark_grey">#888</item>
-
-        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Light</item>
-        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Light</item>
     </style>
 
     <style name="Theme.Thunderbird.Dark" parent="Theme2.Thunderbird.Dark">
@@ -93,9 +88,6 @@
         <item name="openpgp_blue">#6699cc</item>
         <item name="openpgp_grey">#888</item>
         <item name="openpgp_dark_grey">#bbb</item>
-
-        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Dark</item>
-        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Dark</item>
     </style>
 
     <style name="Theme.Thunderbird.Light.Dialog" parent="Theme.Thunderbird.Light" />

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">שומר הגדרות שרת…</string>
+    <string name="account_edit_save_server_settings_error_message">נכשל בשמירת הגדרות השרת</string>
+    <string name="account_edit_save_server_settings_success_message">הגדרות שרת נשמרו</string>
+</resources>

@@ -305,12 +305,6 @@
     <string name="account_settings_push_advanced_title">Avanzado</string>
     <string name="account_settings_title_fmt">Ajustes de la cuenta</string>
     <string name="account_settings_notify_label">Notificar sobre correos entrantes</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Carpetas de notificaciones</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Sólo carpetas de 1ª clase</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Carpetas de 1ª y 2ª clase</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Todas excepto las carpetas de 2ª clase</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Ninguna</string>
     <string name="account_settings_notify_sync_label">Notificar sincronización</string>
     <string name="account_settings_email_label">Tu dirección de correo</string>
     <string name="account_settings_notify_summary">Avisar cuando llegue correo nuevo</string>
@@ -399,27 +393,12 @@
     <string name="account_settings_message_age_3_months">los últimos 3 meses</string>
     <string name="account_settings_message_age_6_months">los últimos 6 meses</string>
     <string name="account_settings_message_age_1_year">el último año</string>
-    <string name="account_settings_folder_display_mode_label">Carpetas a mostrar</string>
-    <string name="account_settings_folder_display_mode_all">Todas</string>
-    <string name="account_settings_folder_display_mode_first_class">Sólo 1ª clase</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1ª y 2ª clase</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Todas excepto las de 2ª clase</string>
-    <string name="account_settings_folder_sync_mode_label">Comprobación de carpetas</string>
-    <string name="account_settings_folder_sync_mode_all">Todas</string>
-    <string name="account_settings_folder_sync_mode_first_class">Sólo 1ª clase</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1ª y 2ª clase</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Todas excepto las de 2ª clase</string>
-    <string name="account_settings_folder_sync_mode_none">Ninguna</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar con el borrado remoto</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eliminar los correos cuando se borren del servidor</string>
     <string name="account_settings_openpgp_missing">Falta la aplicación OpenPGP, ¿se ha desinstalado?</string>
     <string name="folder_settings_title">Ajustes de carpetas</string>
     <string name="folder_settings_in_top_group_label">Mostrar al principio</string>
     <string name="folder_settings_in_top_group_summary">Mostrar cerca del principio de la lista</string>
-    <string name="folder_settings_folder_display_mode_label">Tipos de carpeta mostrados</string>
-    <string name="folder_settings_folder_display_mode_normal">Sin clase</string>
-    <string name="folder_settings_folder_display_mode_first_class">1ª clase</string>
-    <string name="folder_settings_folder_display_mode_second_class">2ª clase</string>
     <string name="folder_settings_clear_local_folder_action">Borrar correos locales</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
@@ -547,7 +526,6 @@
     <string name="account_setup_push_limit_1000">1000 carpetas</string>
     <string name="animations_title">Animaciones</string>
     <string name="animations_summary">Utilizar animaciones efectistas</string>
-    <string name="volume_navigation_title">Navegar con las teclas de volumen al leer el correo</string>
     <string name="show_unified_inbox_title">Mostrar bandeja de entrada unificada</string>
     <string name="show_starred_count_title">Mostrar número de mensajes destacados</string>
     <string name="integrated_inbox_title">Entrada unificada</string>
@@ -904,9 +882,9 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="general_settings_post_mark_as_unread_action_stay">Seguir en el correo actual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Tras marcar un correo como no leído</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Volver al listado de correos</string>
-    <string name="push_notification_state_alarm_permission_missing">Falta permiso para programar alarmas</string>
-    <string name="push_notification_grant_alarm_permission">Pulse para conceder el permiso.</string>
-    <string name="about_app_authors_thunderbird">Equipo de Thunderbird Mobile</string>
+    <string name="push_notification_state_alarm_permission_missing">Falta el permiso para programar alarmas</string>
+    <string name="push_notification_grant_alarm_permission">Toca aquí para conceder el permiso.</string>
+    <string name="about_app_authors_thunderbird">El equipo de Thunderbird Mobile</string>
     <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">La aplicación OpenKeychain es necesaria para permitir el cifrado de extremo a extremo.</string>
     <string name="push_info_notification_explanation_text">Cuando se utiliza Push, <xliff:g id="app_name">%1$s</xliff:g> mantiene una conexión con el servidor de correo. Android requiere mostrar una notificación continua mientras la aplicación está activa en segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
@@ -915,5 +893,12 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="settings_ui_telemetry_title">Datos técnicos y de uso</string>
     <string name="settings_ui_data_collection">Recopilación de datos</string>
     <string name="settings_ui_telemetry_description">Comparte datos de rendimiento, uso, hardware y personalización sobre esta aplicación con Mozilla para ayudarnos a mejorar Thunderbird</string>
-    <string name="folder_settings_push_label">Activar push</string>
+    <string name="folder_settings_push_label">Activar sincronización rápida («push»)</string>
+    <string name="folder_settings_sync_label">Activar sincronización</string>
+    <string name="folder_settings_visible_label">Mostrar carpeta</string>
+    <string name="folder_list_show_hidden_folders">Ver las carpetas ocultas</string>
+    <string name="settings_list_action_support">Apoya a <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Navegar con los botones de volumen</string>
+    <string name="save_attachment_action">Guardar adjunto</string>
+    <string name="volume_navigation_summary">Sube y baja por el listado de correos con los botones físicos de volumen</string>
 </resources>

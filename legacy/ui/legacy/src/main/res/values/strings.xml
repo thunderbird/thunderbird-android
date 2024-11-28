@@ -194,6 +194,7 @@
     <string name="message_compose_description_delete_quoted_text">Remove quoted text</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
     <string name="remove_attachment_action">Remove attachment</string>
+    <string name="save_attachment_action">Save attachment</string>
 
     <string name="message_to_label">To:</string>
     <string name="message_view_cc_label">Cc:</string>
@@ -235,7 +236,7 @@
     <string name="general_settings_contact_name_color_label">Contact name color</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain text messages</string>
     <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>
     <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>
 
@@ -376,13 +377,6 @@
     <string name="account_settings_title_fmt">Account settings</string>
     <string name="account_settings_notify_label">New mail notifications</string>
 
-    <string name="account_settings_folder_notify_new_mail_mode_label">Notifications folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">All</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">None</string>
-
     <string name="account_settings_notify_sync_label">Sync notifications</string>
     <string name="account_settings_email_label">Your email address</string>
     <string name="account_settings_notify_summary">Notify in status bar when mail arrives</string>
@@ -487,13 +481,6 @@
     <string name="account_settings_message_age_3_months">the last 3 months</string>
     <string name="account_settings_message_age_6_months">the last 6 months</string>
     <string name="account_settings_message_age_1_year">the last year</string>
-
-    <string name="account_settings_folder_sync_mode_label">Poll folders</string>
-    <string name="account_settings_folder_sync_mode_all">All</string>
-    <string name="account_settings_folder_sync_mode_first_class">Only 1st Class folders</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1st and 2nd Class folders</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">All except 2nd Class folders</string>
-    <string name="account_settings_folder_sync_mode_none">None</string>
 
     <string name="account_settings_sync_remote_deletetions_label">Sync server deletions</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
@@ -662,7 +649,8 @@
     <string name="animations_title">Animation</string>
     <string name="animations_summary">Use gaudy visual effects</string>
 
-    <string name="volume_navigation_title">Volume key navigation in message view</string>
+    <string name="volume_navigation_title_short">Volume key navigation</string>
+    <string name="volume_navigation_summary">Navigate between messages using the volume keys in message view</string>
 
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
     <string name="show_starred_count_title">Show starred count</string>

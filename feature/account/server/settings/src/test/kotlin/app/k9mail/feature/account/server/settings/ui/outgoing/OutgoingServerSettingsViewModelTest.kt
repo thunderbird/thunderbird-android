@@ -5,6 +5,7 @@ import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
+import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.AccountDomainContract
@@ -23,7 +24,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -33,7 +33,7 @@ class OutgoingServerSettingsViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `should load account setup state when LoadAccountState event is received`() = runTest {
+    fun `should load account setup state when LoadAccountState event is received`() = runMviTest {
         val accountState = AccountState(
             emailAddress = "test@example.com",
             outgoingServerSettings = ServerSettings(
@@ -72,26 +72,23 @@ class OutgoingServerSettingsViewModelTest {
                     authenticationType = AuthenticationType.PasswordCleartext,
                     username = StringInputField(value = "username"),
                     password = StringInputField(value = "password"),
-
-                    isLoading = false,
                 ),
             )
         }
     }
 
     @Test
-    fun `should change state when ServerChanged event is received`() = runTest {
+    fun `should change state when ServerChanged event is received`() = runMviTest {
         eventStateTest(
             viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.ServerChanged("server"),
             expectedState = State(server = StringInputField(value = "server")),
-            coroutineScope = backgroundScope,
         )
     }
 
     @Test
-    fun `should change security and port when SecurityChanged event is received`() = runTest {
+    fun `should change security and port when SecurityChanged event is received`() = runMviTest {
         eventStateTest(
             viewModel = createTestSubject(State()),
             initialState = State(),
@@ -100,67 +97,61 @@ class OutgoingServerSettingsViewModelTest {
                 security = ConnectionSecurity.StartTLS,
                 port = NumberInputField(value = ConnectionSecurity.StartTLS.toSmtpDefaultPort()),
             ),
-            coroutineScope = backgroundScope,
         )
     }
 
     @Test
-    fun `should change state when PortChanged event is received`() = runTest {
+    fun `should change state when PortChanged event is received`() = runMviTest {
         eventStateTest(
             viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.PortChanged(456L),
             expectedState = State(port = NumberInputField(value = 456L)),
-            coroutineScope = backgroundScope,
         )
     }
 
     @Test
-    fun `should change state when AuthenticationTypeChanged event is received`() = runTest {
+    fun `should change state when AuthenticationTypeChanged event is received`() = runMviTest {
         eventStateTest(
             viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.AuthenticationTypeChanged(AuthenticationType.PasswordEncrypted),
             expectedState = State(authenticationType = AuthenticationType.PasswordEncrypted),
-            coroutineScope = backgroundScope,
         )
     }
 
     @Test
-    fun `should change state when UsernameChanged event is received`() = runTest {
+    fun `should change state when UsernameChanged event is received`() = runMviTest {
         eventStateTest(
             viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.UsernameChanged("username"),
             expectedState = State(username = StringInputField(value = "username")),
-            coroutineScope = backgroundScope,
         )
     }
 
     @Test
-    fun `should change state when PasswordChanged event is received`() = runTest {
+    fun `should change state when PasswordChanged event is received`() = runMviTest {
         eventStateTest(
             viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.PasswordChanged("password"),
             expectedState = State(password = StringInputField(value = "password")),
-            coroutineScope = backgroundScope,
         )
     }
 
     @Test
-    fun `should change state when ClientCertificateChanged event is received`() = runTest {
+    fun `should change state when ClientCertificateChanged event is received`() = runMviTest {
         eventStateTest(
             viewModel = createTestSubject(State()),
             initialState = State(),
             event = Event.ClientCertificateChanged("clientCertificate"),
             expectedState = State(clientCertificateAlias = "clientCertificate"),
-            coroutineScope = backgroundScope,
         )
     }
 
     @Test
-    fun `should save state and emit effect NavigateNext when OnNextClicked is received and input valid`() = runTest {
+    fun `should save state and emit effect NavigateNext when OnNextClicked is received and input valid`() = runMviTest {
         val initialState = State()
         val repository = InMemoryAccountStateRepository()
         val testSubject = createTestSubject(
@@ -207,7 +198,7 @@ class OutgoingServerSettingsViewModelTest {
 
     @Test
     fun `should save state and emit effect NavigateNext when OnNextClicked is received and input valid with OAuth`() =
-        runTest {
+        runMviTest {
             val initialState = State(
                 authenticationType = AuthenticationType.OAuth2,
             )
@@ -256,7 +247,7 @@ class OutgoingServerSettingsViewModelTest {
 
     @Test
     fun `should change state and not emit NavigateNext effect when OnNextClicked event received and input invalid`() =
-        runTest {
+        runMviTest {
             val initialState = State()
             val testSubject = createTestSubject(
                 validator = FakeOutgoingServerSettingsValidator(
@@ -284,7 +275,7 @@ class OutgoingServerSettingsViewModelTest {
         }
 
     @Test
-    fun `should emit NavigateBack effect when OnBackClicked event received`() = runTest {
+    fun `should emit NavigateBack effect when OnBackClicked event received`() = runMviTest {
         val initialState = State()
         val testSubject = createTestSubject(initialState)
         val turbines = turbinesWithInitialStateCheck(testSubject, initialState)

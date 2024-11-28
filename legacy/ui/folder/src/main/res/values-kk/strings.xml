@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="special_mailbox_name_outbox">Шығыс</string>
+    <string name="special_mailbox_name_drafts">Шимай қағаз</string>
+    <string name="special_mailbox_name_sent">Жіберілген</string>
+    <string name="special_mailbox_name_trash">Қоқыс шелегі</string>
+</resources>

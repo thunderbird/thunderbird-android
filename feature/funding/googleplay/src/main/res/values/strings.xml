@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_title">Support Thunderbird</string>
+
+    <string name="funding_googleplay_contribution_header_title">Support Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird is funded entirely by contributions from users like you. We never show ads or sell your data.  If you’re enjoying Thunderbird, please help support it.  We can’t do this without you!</string>
+    <string name="funding_googleplay_contribution_header_thank_you">A sincere thank you from all of us!</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Your contribution furthers the development of Thunderbird and we are truly grateful for your support.</string>
+
+    <string name="funding_googleplay_contribution_list_title">Secure contribution</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Give once</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Monthly</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">None available</string>
+    <!-- The disclaimer could be found at https://www.thunderbird.net/donate/mobile/?form=tfa for other languages -->
+    <string name="funding_googleplay_contribution_list_disclaimer">Contributions are not tax-deductible as charitable donations.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">In-app contributions are currently unavailable.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visit www.thunderbird.net for more ways to support Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Retry</string>
+
+    <string name="funding_googleplay_contribution_footer_payment_button">Continue to payment</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Payment currently unavailable</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Modify monthly payment</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Make another impactful contribution</string>
+
+    <string name="funding_googleplay_contribution_error_show_more">Show more details</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Dismiss error</string>
+    <string name="funding_googleplay_contribution_error_unknown">Unknown error</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Purchase failed.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Contributions are currently unavailable.</string>
+
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Essential Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Valued Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Significant Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Major Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Outstanding Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Exceptional Contribution</string>
+
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Your support keeps us moving forward! Even the smallest contributions create ripples of change, and we’re so grateful to have you on board.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">You’re helping us make great things happen! By contributing at this level, you’re helping us take meaningful steps forward allowing us to continue growing.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Your contribution really shines! You’re playing a major role in advancing our mission, helping us reach important milestones and achieve a greater impact.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">You’re a big reason we’re able to do what we do! Thanks to your generosity, we can take on bigger projects and reach new milestones together.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Your support is truly inspiring! Thanks to your substantial contribution, we’re able to push boundaries, innovate, and make significant strides toward our goals.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">You’re really helping us dream big!  Your incredible support empowers us to achieve the extraordinary, leaving a lasting impact on everything we do.</string>
+
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Essential Monthly Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Valued Monthly Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Significant Monthly Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Major Monthly Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Outstanding Monthly Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Exceptional Monthly Contribution</string>
+
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Your support drives us forward! Every contribution creates change—thank you!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Your contribution helps us grow and take meaningful steps forward—thank you!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Your contribution shines! You’re key to advancing our mission and achieving impact.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">You’re a big reason we can do what we do! Your generosity helps us reach new milestones.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Your support is inspiring! Your contribution helps us push boundaries and achieve our goals.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">You’re helping us dream big! Your support empowers us to achieve extraordinary things.</string>
+
+    <array name="funding_googleplay_contribution_tfa_recurring_xs_benefits">
+        <item>A monthly, voluntary contribution</item>
+        <item>Support the backbone of our efforts</item>
+        <item>Keep us moving forward</item>
+        <item>Contributions are not tax-deductible</item>
+    </array>
+    <array name="funding_googleplay_contribution_tfa_recurring_s_benefits">
+        <item>A monthly, voluntary contribution</item>
+        <item>Enable us to build new features</item>
+        <item>Help us take meaningful steps forward</item>
+        <item>Contributions are not tax-deductible</item>
+    </array>
+    <array name="funding_googleplay_contribution_tfa_recurring_m_benefits">
+        <item>A monthly, voluntary contribution</item>
+        <item>Play a major role in aiding our mission</item>
+        <item>Support key improvements</item>
+        <item>Contributions are not tax-deductible</item>
+    </array>
+    <array name="funding_googleplay_contribution_tfa_recurring_l_benefits">
+        <item>A monthly, voluntary contribution</item>
+        <item>Be a driving force behind our success</item>
+        <item>Enable us to take on larger projects</item>
+        <item>Contributions are not tax-deductible</item>
+    </array>
+    <array name="funding_googleplay_contribution_tfa_recurring_xl_benefits">
+        <item>A monthly, voluntary contribution</item>
+        <item>Enable us to make significant strides</item>
+        <item>Help us push boundaries</item>
+        <item>Contributions are not tax-deductible</item>
+    </array>
+    <array name="funding_googleplay_contribution_tfa_recurring_xxl_benefits">
+        <item>A monthly, voluntary contribution</item>
+        <item>Empower us to dream bigger</item>
+        <item>Make our boldest ideas a reality</item>
+        <item>Contributions are not tax-deductible</item>
+    </array>
+
+    <string name="funding_googleplay_contribution_reminder_title">Support Thunderbird</string>
+
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird is free and open source.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">We don’t show ads.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">We don’t sell your data.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">We are funded solely by users like you. </string>
+    <string name="funding_googleplay_contribution_reminder_message">Join our mission to create the best privacy-respecting, customizable email experience possible.</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Yes</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Not now</string>
+</resources>

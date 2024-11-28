@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Gebruikt u Thunderbird al op de desktop?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importinstellingen</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Nieuw bij Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Voeg nu een e-mailaccount toe</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importeer eenvoudig uw accountinstellingen door een QR-code te scannen.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Ga in Thunderbird op de desktop naar:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Instellingen’ in de Taakbalk (linksonder)</string>
+    <string name="onboarding_migration_thunderbird_import_title">Gebruikt u een andere app of een ander apparaat?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Uw accountinstellingen nu importeren</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Geen app gevonden om de koppeling te openen.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Voor importeren is de nieuwste versie van Thunderbird Desktop 128 vereist. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Selecteer ‘Exporteren voor mobiel’</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Meer info over het updaten van Thunderbird.</string>
+</resources>

@@ -124,9 +124,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Notifica errore</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Errore nella generazione di una notifica di ricezione di un nuovo messaggio. Errore probabilmente dovuto alla mancanza di un suono di notifica.
-\n
-\nTocca per le impostazioni di notifica.</string>
+    <string name="notification_notify_error_text">Errore nella generazione di una notifica di ricezione di un nuovo messaggio. Errore probabilmente dovuto alla mancanza di un suono di notifica. \n \nTocca per le impostazioni di notifica.</string>
     <string name="notification_bg_sync_ticker">Controllo posta: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Controllo posta</string>
     <string name="notification_bg_send_ticker">Invio posta: <xliff:g id="account">%s</xliff:g></string>
@@ -307,12 +305,6 @@
     <string name="account_settings_push_advanced_title">Avanzate</string>
     <string name="account_settings_title_fmt">Impostazioni account</string>
     <string name="account_settings_notify_label">Notifiche nuovi messaggi</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Cartelle notificate</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Tutte</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Solo cartelle di 1a classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Tutte salvo cartelle di 2a classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Nessuna</string>
     <string name="account_settings_notify_sync_label">Notifiche di sincronizzazione</string>
     <string name="account_settings_email_label">Il tuo indirizzo email</string>
     <string name="account_settings_notify_summary">Notifica nella barra di stato la ricezione di un nuovi messaggi</string>
@@ -401,27 +393,12 @@
     <string name="account_settings_message_age_3_months">ultimi 3 mesi</string>
     <string name="account_settings_message_age_6_months">ultimi 6 mesi</string>
     <string name="account_settings_message_age_1_year">ultimo anno</string>
-    <string name="account_settings_folder_display_mode_label">Cartelle da visualizzare</string>
-    <string name="account_settings_folder_display_mode_all">Tutte</string>
-    <string name="account_settings_folder_display_mode_first_class">Solo cartelle di 1a classe</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Tutte tranne cartelle di 2a classe</string>
-    <string name="account_settings_folder_sync_mode_label">Cartelle da sincronizzare</string>
-    <string name="account_settings_folder_sync_mode_all">Tutte</string>
-    <string name="account_settings_folder_sync_mode_first_class">Solo cartelle di 1a classe</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Tutte tranne cartelle di 2a classe</string>
-    <string name="account_settings_folder_sync_mode_none">Nessuna</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizza eliminazioni del server</string>
     <string name="account_settings_sync_remote_deletetions_summary">Rimuovi i messaggi eliminati dal server</string>
     <string name="account_settings_openpgp_missing">Applicazione OpenPGP non trovata, è stata disinstallata\?</string>
     <string name="folder_settings_title">Impostazioni cartella</string>
     <string name="folder_settings_in_top_group_label">Mostra in alto</string>
     <string name="folder_settings_in_top_group_summary">Mostra nella parte superiore dell\'elenco delle cartelle</string>
-    <string name="folder_settings_folder_display_mode_label">Classe cartelle visualizzate</string>
-    <string name="folder_settings_folder_display_mode_normal">Nessuna classe</string>
-    <string name="folder_settings_folder_display_mode_first_class">1a classe</string>
-    <string name="folder_settings_folder_display_mode_second_class">2a classe</string>
     <string name="folder_settings_clear_local_folder_action">Pulisci messaggi locali</string>
     <string name="account_settings_incoming_label">Server posta in arrivo</string>
     <string name="account_settings_incoming_summary">Configura server della posta in arrivo</string>
@@ -549,7 +526,6 @@
     <string name="account_setup_push_limit_1000">1000 cartelle</string>
     <string name="animations_title">Animazione</string>
     <string name="animations_summary">Usa effetti visivi</string>
-    <string name="volume_navigation_title">Naviga con il tasto volume nel messaggio</string>
     <string name="show_unified_inbox_title">Mostra posta combinata</string>
     <string name="show_starred_count_title">Mostra conteggio Speciali</string>
     <string name="integrated_inbox_title">Posta combinata</string>
@@ -718,8 +694,7 @@
     <string name="enable_sign_only">Abilita PGP solo firma</string>
     <string name="disable_sign_only">Disabilita PGP solo firma</string>
     <string name="openpgp_inline_title">Modalità PGP/INLINE</string>
-    <string name="openpgp_inline_text">Messaggio inviato nel formato PGP/INLINE.
-\nFormato da utilizzare solo per compatibilità:</string>
+    <string name="openpgp_inline_text">Messaggio inviato nel formato PGP/INLINE. \nFormato da utilizzare solo per compatibilità:</string>
     <string name="openpgp_inline_plus_compat">Alcuni client supportano solo questo formato</string>
     <string name="openpgp_inline_minus_transit">Le firme potrebbero danneggiarsi nel transito</string>
     <string name="openpgp_inline_minus_attach">Gli allegati non sono supportati</string>
@@ -781,8 +756,7 @@
     <string name="error_sign_only_no_encryption">Crittografia non disponibile in modalità solo firma!</string>
     <string name="unsigned_text_divider_label">Testo non firmato</string>
     <string name="crypto_no_provider_title">Questo messaggio è criptato</string>
-    <string name="crypto_no_provider_message">Questo messaggio è stato criptato con OpenPGP.
-\nPer leggerlo, devi installare e configurare un\'applicazione compatibile con OpenPGP.</string>
+    <string name="crypto_no_provider_message">Questo messaggio è stato criptato con OpenPGP. \nPer leggerlo, devi installare e configurare un\'applicazione compatibile con OpenPGP.</string>
     <string name="crypto_no_provider_button">Vai alle impostazioni</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -917,4 +891,9 @@
     <string name="settings_ui_data_collection">Raccolta dati</string>
     <string name="folder_list_show_hidden_folders">Mostra cartelle nascoste</string>
     <string name="folder_settings_sync_label">Attiva sincronizzazione</string>
+    <string name="folder_settings_visible_label">Mostra cartella</string>
+    <string name="save_attachment_action">Salva l\'allegato</string>
+    <string name="volume_navigation_summary">In visualizzazione messaggi naviga con i tasti volume</string>
+    <string name="settings_list_action_support">Supporta <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Naviga con i tasti del volume</string>
 </resources>

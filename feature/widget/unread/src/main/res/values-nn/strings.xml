@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="unread_widget_select_account">Syn talet på ulesne for …</string>
+    <string name="unread_widget_select_account">Vis talet på ulesne for…</string>
     <string name="unread_widget_choose_account_title">Vel konto</string>
     <string name="unread_widget_label">Antal ulesne</string>
     <string name="unread_widget_account_title">Konto</string>
+    <string name="unread_widget_account_summary">Kontoen der talet på ulesne meldingar skal visast</string>
+    <string name="unread_widget_folder_enabled_title">Mappeantal</string>
+    <string name="unread_widget_unified_inbox_account_summary">Samla innboks</string>
+    <string name="unread_widget_folder_enabled_summary">Vis antal ulesne frå kun ei mappe</string>
+    <string name="unread_widget_folder_title">Mappe</string>
+    <string name="unread_widget_folder_summary">Mappa der antal ulesne skal visast</string>
+    <string name="unread_widget_action_done">Ferdig</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+    <string name="unread_widget_account_not_selected">Ingen konto valt</string>
+    <string name="unread_widget_folder_not_selected">Ingen mappe valt</string>
 </resources>

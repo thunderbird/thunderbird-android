@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Tallennetaan palvelimen asetuksia…</string>
+    <string name="account_edit_save_server_settings_error_message">Palvelimen asetusten tallentaminen epäonnistui</string>
+    <string name="account_edit_save_server_settings_success_message">Palvelimen asetukset tallennettu</string>
+</resources>

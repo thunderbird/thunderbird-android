@@ -21,7 +21,7 @@
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <string name="changelog_snackbar_text">Esbrineu les novetats d’aquesta versió</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
-    <string name="changelog_snackbar_button_text">Vista</string>
+    <string name="changelog_snackbar_button_text">Mostra</string>
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->
@@ -307,12 +307,6 @@
     <string name="account_settings_push_advanced_title">Avançat</string>
     <string name="account_settings_title_fmt">Configuració del compte</string>
     <string name="account_settings_notify_label">Notificacions noves de correu</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Carpetes de notificacions</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Tot</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Només carpetes de 1a Classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Totes les carpetes excepte de 2a Classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Cap</string>
     <string name="account_settings_notify_sync_label">Notificacions de sincronització</string>
     <string name="account_settings_email_label">La vostra adreça de correu</string>
     <string name="account_settings_notify_summary">Notifica-ho a la barra d\'estat quan arribi correu</string>
@@ -401,27 +395,12 @@
     <string name="account_settings_message_age_3_months">dels darrers 3 mesos</string>
     <string name="account_settings_message_age_6_months">dels darrers 6 mesos</string>
     <string name="account_settings_message_age_1_year">del darrer any</string>
-    <string name="account_settings_folder_display_mode_label">Carpetes a mostrar</string>
-    <string name="account_settings_folder_display_mode_all">Tot</string>
-    <string name="account_settings_folder_display_mode_first_class">Només carpetes de 1a Classe</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Tot excepte carpetes de 2a classe</string>
-    <string name="account_settings_folder_sync_mode_label">Comprova les carpetes</string>
-    <string name="account_settings_folder_sync_mode_all">Tot</string>
-    <string name="account_settings_folder_sync_mode_first_class">Només carpetes de 1a Classe</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Carpetes de 1a i 2a Classe</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Tot excepte carpetes de 2a Classe</string>
-    <string name="account_settings_folder_sync_mode_none">Cap</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronitza els elements suprimits al servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Elimina els missatges quan se suprimeixin al servidor</string>
     <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat\?</string>
     <string name="folder_settings_title">Configuració de les carpetes</string>
     <string name="folder_settings_in_top_group_label">Mostra al grup superior</string>
     <string name="folder_settings_in_top_group_summary">Mostra a prop del capdamunt de la llista de carpetes</string>
-    <string name="folder_settings_folder_display_mode_label">Classe de vista de carpetes</string>
-    <string name="folder_settings_folder_display_mode_normal">Sense Classe</string>
-    <string name="folder_settings_folder_display_mode_first_class">1a Classe</string>
-    <string name="folder_settings_folder_display_mode_second_class">2a Classe</string>
     <string name="folder_settings_clear_local_folder_action">Neteja els missatges locals</string>
     <string name="account_settings_incoming_label">Servidor d\'entrada</string>
     <string name="account_settings_incoming_summary">Configura el servidor d\'entrada</string>
@@ -549,7 +528,6 @@
     <string name="account_setup_push_limit_1000">1000 carpetes</string>
     <string name="animations_title">Animació</string>
     <string name="animations_summary">Fes servir efectes visuals cridaners</string>
-    <string name="volume_navigation_title">Navegació amb la tecla de volum a la vista de missatges</string>
     <string name="show_unified_inbox_title">Mostra la safata d\'entrada unificada</string>
     <string name="show_starred_count_title">Mostra el recompte de destacats</string>
     <string name="integrated_inbox_title">Bústia d\'entrada unificada</string>
@@ -905,10 +883,10 @@
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Torna a la llista de missatges</string>
     <string name="push_notification_state_alarm_permission_missing">Falta permís per a programar alarmes</string>
     <string name="push_notification_grant_alarm_permission">Toca per a concedir permís.</string>
-    <string name="about_app_authors_thunderbird">Equip de Thunderbird per al mòbil</string>
+    <string name="about_app_authors_thunderbird">Equip del Thunderbird per al mòbil</string>
     <string name="dialog_openkeychain_info_text">L\'aplicació OpenKeychain és necessària per habilitar el suport per a l\'encriptació d\'extrem a extrem.</string>
-    <string name="about_title">Quant a <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà de <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="about_title">Quant al <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà del <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Quan s\'utilitza Push, <xliff:g id="app_name">%1$s</xliff:g> manté una connexió amb el servidor de correu. Android requereix que es mostri una notificació en curs mentre l\'aplicació està activa en segon pla. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="folder_settings_notifications_label">Notificacions</string>
     <string name="settings_ui_data_collection">Recollida de dades</string>
@@ -917,4 +895,9 @@
     <string name="folder_list_show_hidden_folders">Mostra les carpetes ocultes</string>
     <string name="settings_ui_telemetry_description">Comparteix dades de rendiment, ús, maquinari i personalització d\'aquesta aplicació amb Mozilla per ajudar-nos a millorar el Thunderbird</string>
     <string name="settings_ui_telemetry_title">Dades tècniques i d\'ús</string>
+    <string name="folder_settings_visible_label">Mostra la carpeta</string>
+    <string name="settings_list_action_support">Doneu suport al <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">Desa l\'adjunt</string>
+    <string name="volume_navigation_title_short">Navegació amb els botons de volum</string>
+    <string name="volume_navigation_summary">Navegueu entre missatges mitjançant les tecles de volum a la vista de missatges</string>
 </resources>

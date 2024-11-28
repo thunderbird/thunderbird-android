@@ -1,1 +1,1 @@
-Tam özellikli e-posta istemcisi
+Tam donanımlı e-posta istemcisi

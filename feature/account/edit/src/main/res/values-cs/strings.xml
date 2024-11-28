@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_error_message">Nepodařilo se uložit nastavení serveru</string>
+    <string name="account_edit_save_server_settings_loading_message">Ukládání nastavení serveru…</string>
+    <string name="account_edit_save_server_settings_success_message">Nastavení serveru uložena</string>
+</resources>

@@ -37,7 +37,7 @@
     <string name="choose_folder_copy_title">Kopjojeni te…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> të përzgjedhur</string>
     <string name="send_action">Dërgoje</string>
-    <string name="empty_subject">Subjekti është i zbrazët, riklikojeni që të dërgohet sido qoftë</string>
+    <string name="empty_subject">Subjekti është i zbrazët, riprekeni që të dërgohet sido qoftë</string>
     <string name="reply_action">Përgjigjuni</string>
     <string name="reply_all_action">Përgjigjuni të tërëve</string>
     <string name="delete_action">Fshije</string>
@@ -96,7 +96,7 @@
     <string name="status_network_error">Gabim lidhjeje</string>
     <string name="status_invalid_id_error">Su gjet mesazh</string>
     <string name="status_loading_error">Gabim ngarkimi mesazhi</string>
-    <string name="load_more_messages_fmt">Ngarko deri \u0020 \u0020në <xliff:g id="messages_to_load">%d</xliff:g> më tepër</string>
+    <string name="load_more_messages_fmt">Ngarko deri në <xliff:g id="messages_to_load">%d</xliff:g> më tepër</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -122,9 +122,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Gabim njoftimi</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Ndodhi një gabim teksa provohej të krijohej një njoftim sistemi për një mesazh të ri. Arsyeja ka shumë gjasa të jetë mungesa e një tingulli njoftimesh.
-\n
-\nPrekeni që të hapen rregullimet për njoftimet.</string>
+    <string name="notification_notify_error_text">Ndodhi një gabim teksa provohej të krijohej një njoftim sistemi për një mesazh të ri. Arsyeja ka shumë gjasa të jetë mungesa e një tingulli njoftimesh. \n \nPrekeni që të hapen rregullimet për njoftimet.</string>
     <string name="notification_bg_sync_ticker">Po merret postë: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Marrje poste</string>
     <string name="notification_bg_send_ticker">Po dërgohet postë: <xliff:g id="account">%s</xliff:g></string>
@@ -304,12 +302,6 @@
     <string name="account_settings_push_advanced_title">Të mëtejshme</string>
     <string name="account_settings_title_fmt">Rregullime llogarie</string>
     <string name="account_settings_notify_label">Njoftime email-i të ri</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Dosje njoftimesh</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Krejt</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Asnjë</string>
     <string name="account_settings_notify_sync_label">Njoftime njëkohësimesh</string>
     <string name="account_settings_email_label">Adresa juaj email</string>
     <string name="account_settings_notify_summary">Njofto në shtyllë gjendjeje kur mbërrin postë</string>
@@ -398,27 +390,12 @@
     <string name="account_settings_message_age_3_months">3 muajt e shkuar</string>
     <string name="account_settings_message_age_6_months">6 muajt e shkuar</string>
     <string name="account_settings_message_age_1_year">vitin e shkuar</string>
-    <string name="account_settings_folder_display_mode_label">Dosje për tu shfaqur</string>
-    <string name="account_settings_folder_display_mode_all">Krejt</string>
-    <string name="account_settings_folder_display_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
-    <string name="account_settings_folder_sync_mode_label">Vili dosjet</string>
-    <string name="account_settings_folder_sync_mode_all">Krejt</string>
-    <string name="account_settings_folder_sync_mode_first_class">Vetëm dosje të Klasës I</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Dosje të Klasës I dhe II</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Krejt, hiq dosje të Klasës II</string>
-    <string name="account_settings_folder_sync_mode_none">Asnjë</string>
     <string name="account_settings_sync_remote_deletetions_label">Njëkohëso fshirje në shërbyes</string>
     <string name="account_settings_sync_remote_deletetions_summary">Hiqi mesazhet kur janë fshirë në shërbyes</string>
     <string name="account_settings_openpgp_missing">Mungon aplikacioni OpenPGP - mos është çinstaluar?</string>
     <string name="folder_settings_title">Rregullime dosjeje</string>
     <string name="folder_settings_in_top_group_label">Shfaqe në grupin e epërm</string>
     <string name="folder_settings_in_top_group_summary">Shfaqe pranë kreut të listës së dosjeve</string>
-    <string name="folder_settings_folder_display_mode_label">Klasë shfaqjeje dosjesh</string>
-    <string name="folder_settings_folder_display_mode_normal">Pa Klasë</string>
-    <string name="folder_settings_folder_display_mode_first_class">Klasa I</string>
-    <string name="folder_settings_folder_display_mode_second_class">Klasa II</string>
     <string name="folder_settings_clear_local_folder_action">Pastro mesazhet vendore</string>
     <string name="account_settings_incoming_label">Shërbyes për marrje</string>
     <string name="account_settings_incoming_summary">Formësoni shërbyesin për marrje</string>
@@ -546,7 +523,6 @@
     <string name="account_setup_push_limit_1000">1000 dosje</string>
     <string name="animations_title">Animacion</string>
     <string name="animations_summary">Përdor efekte pamore Gaudy</string>
-    <string name="volume_navigation_title">Lëvizje me tastin e volumit, te pamje mesazhi</string>
     <string name="show_unified_inbox_title">Shfaq Kuti Poste të Njësuar</string>
     <string name="show_starred_count_title">Shfaq llogari me yll</string>
     <string name="integrated_inbox_title">Kuti Poste e Njësuar</string>
@@ -711,8 +687,7 @@
     <string name="enable_sign_only">Aktivizo PGP Vetëm-Nënshkrim</string>
     <string name="disable_sign_only">Çaktivizo PGP Vetëm-Nënshkrim</string>
     <string name="openpgp_inline_title">Mënyra PGP/Brendazi</string>
-    <string name="openpgp_inline_text">Email-i po dërgohet nën formatin PGP/INLINE.
-\nKjo duhet të përdoret vetëm për arsye përputhshmërie:</string>
+    <string name="openpgp_inline_text">Email-i po dërgohet nën formatin PGP/INLINE. \nKjo duhet të përdoret vetëm për arsye përputhshmërie:</string>
     <string name="openpgp_inline_plus_compat">Disa klientë mbulojnë vetëm këtë format</string>
     <string name="openpgp_inline_minus_transit">Nënshkrimet mund të cenohen gjatë shpërnguljes</string>
     <string name="openpgp_inline_minus_attach">Nuk mbulohen bashkëngjitjet</string>
@@ -774,8 +749,7 @@
     <string name="error_sign_only_no_encryption">Smund të kihet fshehtëzim nën mënyrën vetëm-nënshkrim!</string>
     <string name="unsigned_text_divider_label">Tekst i Panënshkruar</string>
     <string name="crypto_no_provider_title">Ky email është i fshehtëzuar</string>
-    <string name="crypto_no_provider_message">Ky email është fshehtëzuar me OpenPGP.
-\nQë ta lexoni, lypset të instaloni dhe formësoni një aplikacion të përputhshëm me OpenPGP-në.</string>
+    <string name="crypto_no_provider_message">Ky email është fshehtëzuar me OpenPGP. \nQë ta lexoni, lypset të instaloni dhe formësoni një aplikacion të përputhshëm me OpenPGP-në.</string>
     <string name="crypto_no_provider_button">Kaloni te Rregullimet</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -904,4 +878,16 @@
     <string name="account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%s</xliff:g>\" do të hiqet nga <xliff:g id="app_name">%s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Kur përdoret Push, <xliff:g id="app_name">%1$s</xliff:g> mban një lidhje me shërbyesin e postës. Android-i lyp shfaqjen e vazhdueshme të një njoftimi, teksa aplikacioni është aktiv në prapaskenë. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Ekipi i Thunderbird-it Për Celular</string>
+    <string name="settings_ui_data_collection">Grumbullim të dhënash</string>
+    <string name="settings_ui_telemetry_title">Të dhëna përdorimi dhe teknike</string>
+    <string name="settings_ui_telemetry_description">I jepen Mozilla-s të dhëna funksionimi, rreth hardware-it dhe përshtatjesh për këtë aplikacion, për të ndihmuar të bëhet më i mirë Thunderbird</string>
+    <string name="folder_settings_sync_label">Aktivizo njëkohësim</string>
+    <string name="folder_settings_notifications_label">Njoftime</string>
+    <string name="folder_settings_visible_label">Shfaq dosjen</string>
+    <string name="settings_list_action_support">Përkrahni <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="folder_list_show_hidden_folders">Shfaq dosje të fshehura</string>
+    <string name="volume_navigation_summary">Lëvizni nëpër mesazhe duke përdorur tastet e volumit te pamja mesazhe</string>
+    <string name="volume_navigation_title_short">Lëvizje me tastet e volumit</string>
+    <string name="save_attachment_action">Ruaje bashkëngjitjen</string>
+    <string name="folder_settings_push_label">Aktivizo Push</string>
 </resources>

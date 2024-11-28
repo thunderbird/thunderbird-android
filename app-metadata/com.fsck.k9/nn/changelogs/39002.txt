@@ -1,0 +1,8 @@
+- Gjorde mange interne endringar for å klargjere migrering til Material 3. Hugs at Material 3 grensesnittet er framleis i ein tidlig versjon.
+- Endra rekkefølgje på verktøylinje-handlingar i meldingsvising, for å samsvare med rekkefølgja i fleirvalgsmodus
+- Endra standardverdi for "Hent meldingar opp til" til 128KiB
+- Fiksa ein feil der verktøylinje-ikona var viste med feil farge etter å ha utført ein sveip-handling
+- Fiksa krasj under klipping av e-postadresse frå mottakarfelt under skriving av melding
+- Fiksa verktøylinjestorleik når ein ikkje-standard systemskriftstorleik er i bruk
+- La til korsiske, koreanske og vietnamesiske omsetjingar
+- Oppdaterte omsetjingar

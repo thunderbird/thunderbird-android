@@ -17,7 +17,7 @@ internal fun PermissionContentPreview() {
                 isNextButtonVisible = false,
             ),
             onEvent = {},
-            appName = "AppName",
+            brandName = "BrandName",
         )
     }
 }

@@ -12,6 +12,19 @@ internal fun AccountListItemPreview() {
         AccountListItem(
             account = DISPLAY_ACCOUNT,
             onClick = { },
+            selected = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun AccountListItemSelectedPreview() {
+    PreviewWithThemes {
+        AccountListItem(
+            account = DISPLAY_ACCOUNT,
+            onClick = { },
+            selected = true,
         )
     }
 }

@@ -301,12 +301,6 @@
     <string name="account_settings_push_advanced_title">進階</string>
     <string name="account_settings_title_fmt">帳號設定</string>
     <string name="account_settings_notify_label">新郵件通知</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">通知信件匣</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">僅第一類信件匣</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">第一類與第二類信件匣</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">不包括下層信件匣</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">無</string>
     <string name="account_settings_notify_sync_label">同步通知</string>
     <string name="account_settings_email_label">您的電子郵件地址</string>
     <string name="account_settings_notify_summary">新郵件到達時在通知欄中顯示通知</string>
@@ -395,27 +389,12 @@
     <string name="account_settings_message_age_3_months">三個月內</string>
     <string name="account_settings_message_age_6_months">六個月內</string>
     <string name="account_settings_message_age_1_year">一年內</string>
-    <string name="account_settings_folder_display_mode_label">顯示的信件匣</string>
-    <string name="account_settings_folder_display_mode_all">全部</string>
-    <string name="account_settings_folder_display_mode_first_class">僅第一類信件匣</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">第一類與第二類信件匣</string>
-    <string name="account_settings_folder_display_mode_not_second_class">不包括下層文件匣</string>
-    <string name="account_settings_folder_sync_mode_label">檢查信件匣</string>
-    <string name="account_settings_folder_sync_mode_all">全部</string>
-    <string name="account_settings_folder_sync_mode_first_class">僅第一類信件匣</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">第一類與第二類信件匣</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">不包括下層信件匣</string>
-    <string name="account_settings_folder_sync_mode_none">無</string>
     <string name="account_settings_sync_remote_deletetions_label">同步伺服器上的刪除</string>
     <string name="account_settings_sync_remote_deletetions_summary">刪除在伺服器上被刪除的郵件的本地複製</string>
     <string name="account_settings_openpgp_missing">未發現 OpenPGP 應用程式 - 它已被解除安裝了嗎？</string>
     <string name="folder_settings_title">信件匣設定</string>
     <string name="folder_settings_in_top_group_label">顯示在置頂的組中</string>
     <string name="folder_settings_in_top_group_summary">顯示在置頂的組之後</string>
-    <string name="folder_settings_folder_display_mode_label">信件匣顯示層別</string>
-    <string name="folder_settings_folder_display_mode_normal">不分類</string>
-    <string name="folder_settings_folder_display_mode_first_class">第一類</string>
-    <string name="folder_settings_folder_display_mode_second_class">下層</string>
     <string name="folder_settings_clear_local_folder_action">清除本地郵件</string>
     <string name="account_settings_incoming_label">內送伺服器</string>
     <string name="account_settings_incoming_summary">設定內送伺服器</string>
@@ -543,7 +522,6 @@
     <string name="account_setup_push_limit_1000">1000個信件匣</string>
     <string name="animations_title">動畫</string>
     <string name="animations_summary">使用絢麗的視覺特效</string>
-    <string name="volume_navigation_title">訊息檢視中音量鍵導航</string>
     <string name="show_unified_inbox_title">顯示統一收件匣</string>
     <string name="show_starred_count_title">顯示有標記星號的數量</string>
     <string name="integrated_inbox_title">統一收件匣</string>
@@ -903,4 +881,12 @@
     <string name="folder_settings_notifications_label">通知</string>
     <string name="settings_ui_telemetry_title">使用和技術數據</string>
     <string name="settings_ui_telemetry_description">將關於此應用程式的效能、使用情況、硬體及自訂數據與 Mozilla 共享，以幫助我們改進 Thunderbird</string>
+    <string name="volume_navigation_title_short">音量鍵導航</string>
+    <string name="save_attachment_action">儲存附件</string>
+    <string name="volume_navigation_summary">在訊息檢視中使用音量鍵在訊息之間導航</string>
+    <string name="folder_settings_push_label">啟用推送</string>
+    <string name="folder_settings_visible_label">顯示資料夾</string>
+    <string name="folder_settings_sync_label">啟用同步</string>
+    <string name="folder_list_show_hidden_folders">顯示已隱藏資料夾</string>
+    <string name="settings_list_action_support">支援 <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

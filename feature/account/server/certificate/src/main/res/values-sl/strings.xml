@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_button_back">Pojdi nazaj (priporočljivo)</string>
+    <string name="account_server_certificate_warning_title">Opozorilo</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Napaka potrdila</string>
+    <string name="account_server_certificate_unknown_error_description_format">Program je zaznal morebitno varnostno grožnjo in se ni povezal na <xliff:g id="serverName">%s</xliff:g>.\nČe nadaljujete, bodo napadalci lahko poizkusili ukrasti podatke, kot je vaše geslo ali e-pošto.</string>
+    <string name="account_server_certificate_button_advanced">Napredno</string>
+    <string name="account_server_certificate_button_continue">Sprejmi tveganje in nadaljuj</string>
+    <string name="account_server_certificate_section_title">Potrdilo strežnika</string>
+    <string name="account_server_certificate_not_valid_before">Ni veljavno pred</string>
+    <string name="account_server_certificate_not_valid_after">Ni veljavno po</string>
+    <string name="account_server_certificate_issuer">Izdajatelj</string>
+    <string name="account_server_certificate_fingerprints_section">Prstni odtisi</string>
+    <string name="account_server_certificate_subject_alternative_names">Nadomestna imena subjekta</string>
+    <string name="account_server_certificate_subject">Subjekt</string>
+</resources>

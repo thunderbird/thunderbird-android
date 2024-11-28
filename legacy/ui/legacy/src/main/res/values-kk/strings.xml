@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="clipboard_label_email_address">Электрондық пошта адресі</string>
+    <string name="action_add_to_contacts">Контакттарға қосу</string>
+    <string name="background_work_notification_remove_account">Тіркелгіні өшіруде…</string>
+    <string name="clipboard_label_name_and_email_address">Аты-жөні және электрондық пошта адресі</string>
+    <string name="message_list_error_title">Қате</string>
+    <string name="settings_ui_data_collection">Деректер жинау</string>
+    <string name="settings_ui_telemetry_title">Пайдалану және техникалық мәліметтер</string>
+    <string name="source_code">Бастапқы коды</string>
+    <string name="app_license">Apache лицензиясы, 2.0 нұсқасы</string>
+    <string name="about_website_title">Сайт</string>
+    <string name="get_help_title">Көмек алу</string>
+</resources>

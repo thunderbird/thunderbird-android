@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">सेटिंग्स को आयात करें</string>
     <string name="settings_import_pick_document_button">फ़ाईल पसंद करें</string>
+    <string name="settings_import_pick_app_dialog_title">ऐप से आयात करें</string>
+    <string name="settings_import_authorization_and_password_required">कृपया साइन इन करें और पासवर्ड दर्ज करें</string>
+    <string name="settings_import_partial_failure">कुछ सेटिंग आयात करने में विफल</string>
+    <string name="settings_import_server_name_format">सर्वर नाम: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">प्राधिकरण रद्द कर दिया गया</string>
+    <string name="settings_import_pick_app_button">ऐप से आयात करें</string>
+    <string name="settings_import_status_error">आयात विफलता</string>
+    <string name="settings_import_incoming_server_password_hint">इनकमिंग सर्वर पासवर्ड</string>
+    <string name="settings_import_outgoing_server_password_hint">आउटगोइंग सर्वर पासवर्ड</string>
+    <string name="settings_import_general_settings_item">सामान्य सेटिंग्स</string>
+    <string name="settings_import_scan_qr_code_button">क्यू आर कोड स्कैन करें</string>
+    <string name="settings_import_button">आयात करें</string>
+    <string name="settings_import_success_generic">सेटिंग सफलतापूर्वक आयातित की गईं</string>
+    <string name="settings_import_password_required">कृपया पासवर्ड दर्ज करें</string>
+    <string name="settings_import_authorization_required">साइन इन करें</string>
+    <string name="settings_import_failure">सेटिंग आयात करने में विफल</string>
+    <string name="settings_import_read_failure">सेटिंग फ़ाइल पढ़ने में विफल</string>
+    <string name="settings_import_status_success">सफलतापूर्वक आयातित</string>
+    <string name="settings_import_status_password_required">पासवर्ड आवश्यक है</string>
+    <string name="settings_import_status_log_in_required">साइन इन आवश्यक</string>
+    <string name="settings_import_status_not_imported">आयातित नहीं</string>
+    <string name="settings_import_later_button">बाद में</string>
+    <string name="settings_importing">सेटिंग्स आयात की जा रही हैं…</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">आउटगोइंग सर्वर के लिए समान पासवर्ड का उपयोग करें</string>
+    <string name="settings_import_oauth_sign_in">साइन इन करें</string>
+    <string name="settings_import_oauth_sign_in_with_google">गूगल से साइन इन करें</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">निम्न त्रुटि के साथ प्राधिकरण विफल हुआ: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_not_supported">ओआथ 2.0 वर्तमान में इस प्रदाता के साथ समर्थित नहीं है।</string>
+    <string name="settings_import_oauth_error_browser_not_found">ऐप को आपके खाते तक पहुंच प्रदान करने के लिए कोई ब्राउज़र नहीं मिला।</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" खाते का उपयोग करने के लिए आपको सर्वर पासवर्ड प्रदान करना होगा।</item>
+        <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" खाते का उपयोग करने के लिए आपको सर्वर पासवर्ड प्रदान करना होगा।</item>
+    </plurals>
+    <string name="settings_import_oauth_description">इस ईमेल खाते का उपयोग करने के लिए, आपको साइन इन करना होगा और ऐप को अपने ईमेल तक पहुंच प्रदान करनी होगी।</string>
+    <string name="settings_import_app_version_not_supported">ऐप्प संस्करण समर्थित नहीं है।</string>
 </resources>

@@ -1,3 +1,7 @@
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.xpath.XPathConstants
+import javax.xml.xpath.XPathFactory
+
 plugins {
     id(ThunderbirdPlugins.App.androidCompose)
     alias(libs.plugins.dependency.guard)
@@ -17,7 +21,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 4
-        versionName = "8.0"
+        versionName = "10.0"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -25,7 +29,6 @@ android {
                 "ar",
                 "be",
                 "bg",
-                "br",
                 "ca",
                 "co",
                 "cs",
@@ -43,7 +46,7 @@ android {
                 "fi",
                 "fr",
                 "fy",
-                "gd",
+                "ga",
                 "gl",
                 "hr",
                 "hu",
@@ -55,15 +58,14 @@ android {
                 "ko",
                 "lt",
                 "lv",
-                "ml",
                 "nb",
                 "nl",
+                "nn",
                 "pl",
                 "pt_BR",
                 "pt_PT",
                 "ro",
                 "ru",
-                "sk",
                 "sl",
                 "sq",
                 "sr",
@@ -76,7 +78,7 @@ android {
             ),
         )
 
-        buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird\"")
+        buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
 
     signingConfigs {
@@ -169,6 +171,14 @@ android {
         }
     }
 
+    @Suppress("UnstableApiUsage")
+    bundle {
+        language {
+            // Don't split by language. Otherwise our in-app language switcher won't work.
+            enableSplit = false
+        }
+    }
+
     packaging {
         jniLibs {
             excludes += listOf("kotlin/**")
@@ -220,10 +230,17 @@ dependencies {
 
     "fossImplementation"(projects.feature.funding.link)
 
-    fullDebugImplementation(projects.feature.funding.link)
+    fullDebugImplementation(projects.feature.funding.googleplay)
     fullDailyImplementation(projects.feature.funding.googleplay)
     fullBetaImplementation(projects.feature.funding.googleplay)
     fullReleaseImplementation(projects.feature.funding.googleplay)
+
+    implementation(projects.feature.onboarding.migration.thunderbird)
+    implementation(projects.feature.migration.launcher.thunderbird)
+
+    // TODO remove once OAuth ids have been moved from TBD to TBA
+    "betaImplementation"(libs.appauth)
+    releaseImplementation(libs.appauth)
 
     testImplementation(libs.robolectric)
 
@@ -249,6 +266,48 @@ tasks.create("printConfigurations") {
             configuration.dependencies.forEach { dependency ->
                 println("  - ${dependency.group}:${dependency.name}:${dependency.version}")
             }
+        }
+    }
+}
+
+tasks.create("printVersionInfo") {
+    val targetBuildType = project.findProperty("buildType") ?: "debug"
+    val targetFlavorName = project.findProperty("flavorName") ?: "full"
+
+    doLast {
+        android.applicationVariants.all { variant ->
+            if (variant.buildType.name == targetBuildType && variant.flavorName == targetFlavorName) {
+                val flavor = variant.mergedFlavor
+
+                var buildTypeSource = android.sourceSets.getByName(targetBuildType).res.srcDirs.first()
+                var stringsXmlFile = File(buildTypeSource, "values/strings.xml")
+                if (!stringsXmlFile.exists()) {
+                    buildTypeSource = android.sourceSets.getByName("main").res.srcDirs.first()
+                    stringsXmlFile = File(buildTypeSource, "values/strings.xml")
+                }
+
+                val xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stringsXmlFile)
+                val xPath = XPathFactory.newInstance().newXPath()
+                val expression = "/resources/string[@name='app_name']/text()"
+                val appName = xPath.evaluate(expression, xmlDocument, XPathConstants.STRING) as String
+
+                val output = """
+                    APPLICATION_ID=${variant.applicationId}
+                    APPLICATION_LABEL=$appName
+                    VERSION_CODE=${flavor.versionCode}
+                    VERSION_NAME=${flavor.versionName}
+                    VERSION_NAME_SUFFIX=${variant.buildType.versionNameSuffix ?: ""}
+                    FULL_VERSION_NAME=${flavor.versionName}${variant.buildType.versionNameSuffix ?: ""}
+                """.trimIndent()
+
+                println(output)
+                val githubOutput = System.getenv("GITHUB_OUTPUT")
+                if (githubOutput != null) {
+                    val outputFile = File(githubOutput)
+                    outputFile.writeText(output + "\n")
+                }
+            }
+            true
         }
     }
 }

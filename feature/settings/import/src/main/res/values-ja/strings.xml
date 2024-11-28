@@ -7,29 +7,29 @@
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">パスワードを入力してください</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">サインインしてください</string>
+    <string name="settings_import_authorization_required">ログインしてください</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_and_password_required">サインインしてパスワードを入力してください</string>
+    <string name="settings_import_authorization_and_password_required">ログインしてパスワードを入力してください</string>
     <string name="settings_import_failure">設定のインポートに失敗しました</string>
     <string name="settings_import_read_failure">設定ファイルの読み込みに失敗しました</string>
     <string name="settings_import_partial_failure">一部の設定のインポートに失敗しました</string>
     <string name="settings_import_status_success">正常にインポートしました</string>
     <string name="settings_import_status_password_required">パスワードが必要です</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
-    <string name="settings_import_status_log_in_required">サインインが必要です</string>
+    <string name="settings_import_status_log_in_required">ログインが必要です</string>
     <string name="settings_import_status_not_imported">インポートされませんでした</string>
     <string name="settings_import_status_error">インポート失敗</string>
     <string name="settings_import_later_button">後で</string>
     <string name="settings_importing">設定をインポート中…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="other">アカウント \"<xliff:g id="account">%s</xliff:g>\" を使用するために、サーバのパスワードを入力する必要があります。</item>
+        <item quantity="other">アカウント \"<xliff:g id="account">%s</xliff:g>\" を使用できるようにするには、サーバーのパスワードを入力する必要があります。</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">受信サーバーのパスワード</string>
     <string name="settings_import_outgoing_server_password_hint">送信サーバーのパスワード</string>
     <string name="settings_import_use_same_password_for_outgoing_server">送信サーバーに同じパスワードを使用する</string>
     <string name="settings_import_server_name_format">サーバー名: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_oauth_description">このメールアカウントを使用するには、ログインしてアプリにメールへのアクセスを許可する必要があります。</string>
-    <string name="settings_import_oauth_sign_in">サインイン</string>
+    <string name="settings_import_oauth_sign_in">ログイン</string>
     <string name="settings_import_oauth_sign_in_with_google">Google でログイン</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">認証がキャンセルされました</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">以下のエラーにより認証に失敗しました: <xliff:g id="error">%s</xliff:g></string>
@@ -38,4 +38,6 @@
     <string name="settings_import_general_settings_item">一般設定</string>
     <string name="settings_import_pick_app_button">アプリからインポート</string>
     <string name="settings_import_pick_app_dialog_title">アプリからインポート</string>
+    <string name="settings_import_scan_qr_code_button">QR コードをスキャン</string>
+    <string name="settings_import_app_version_not_supported">対応していないバージョンのアプリです。</string>
 </resources>

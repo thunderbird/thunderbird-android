@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_validation_error_authentication">Аутентификация қатесі</string>
+    <string name="account_server_validation_error_network">Желі қатесі</string>
+    <string name="account_server_validation_error_server">Сервер қатесі</string>
+    <string name="account_server_validation_error_unknown">Белгісіз қате</string>
+    <string name="account_server_validation_error_missing_server_capability">Сервер мүмкіндігі жоқ</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Es necessita accés a la càmera</string>
+    <string name="migration_qrcode_permission_denied_message">Aneu a la configuració d\'Android, premeu «permisos» i permeteu l\'accés a la càmera.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Vés a la configuració</string>
+    <string name="migration_qrcode_scanning_progress">S\'han escanejat %1$s de %2$s</string>
+    <string name="migration_qrcode_done_button_text">Fet</string>
+    <string name="migration_qrcode_scanning_instructions">Alineeu el codi QR proporcionat des de la versió d\'escriptori del Thunderbird</string>
+</resources>

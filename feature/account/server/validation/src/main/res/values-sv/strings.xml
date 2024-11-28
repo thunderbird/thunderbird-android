@@ -11,10 +11,9 @@
     <string name="account_server_validation_sign_in">Var god logga in</string>
     <string name="account_server_validation_outgoing_loading_error">Misslyckades att kontrollera inställningarna för utgående server</string>
     <string name="account_server_validation_incoming_success">Inkommande serverinställningar verifierade</string>
-    <string name="account_server_validation_error_missing_server_capability">Saknar serverkapabilitet</string>
+    <string name="account_server_validation_error_missing_server_capability">Serverkapacitet saknas</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Klientcertifikatet kunde inte nås</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Servern saknar denna kapabilitet:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Servern saknar denna kapacitet:\n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">Klientcertifikatet är inte längre giltigt</string>
     <string name="account_server_validation_error_details">Detaljer:
 \n%s</string>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Start</string>
+    <string name="onboarding_welcome_start_button">Începeți</string>
     <string name="onboarding_welcome_import_button">Importă setările</string>
-    <string name="onboarding_welcome_message">Bun venit în <xliff:g id="app_name">%s</xliff:g>, clientul de e-mail Android conceput pentru securitate sporită, personalizare ușoară și gestionarea fără probleme a tuturor conturilor de e-mail.</string>
+    <string name="onboarding_welcome_text">O aplicație de poștă electronică cu cod-sursă deschis, axată pe confidențialitate și fără reclame pentru Android.</string>
+    <string name="onboarding_welcome_developed_by">Dezvoltat de o echipă dedicată de la MZLA Technologies și de o comunitate globală de voluntari. Face parte din familia Mozilla.</string>
 </resources>

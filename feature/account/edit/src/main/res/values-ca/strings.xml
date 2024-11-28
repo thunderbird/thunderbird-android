@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">S\'està desant la configuració del servidor…</string>
+    <string name="account_edit_save_server_settings_error_message">No s\'ha pogut desar la configuració del servidor</string>
+    <string name="account_edit_save_server_settings_success_message">S\'ha desat la configuració del servidor</string>
+</resources>

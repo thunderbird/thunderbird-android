@@ -1,0 +1,37 @@
+Ajudeu a fer que la propera versió del Thunderbird sigui tan increïble com sigui possible baixant-vos el Thunderbird Beta i obtenint accés anticipat a les últimes funcionalitats i correccions d'errors abans que es publiquin oficialment. Les vostres proves i els vostres comentaris són importants, així que si us plau, informeu-nos d'errors, dels detalls poc polits i compartiu les vostres opinions amb nosaltres.
+
+Trobareu el nostre rastrejador d'errors, el codi font i la nostra wiki a <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+
+Sempre ens complau donar la benvinguda a nous desenvolupadors, dissenyadors, documentalistes, traductors, triadors d'errors i amics. Visiteu-nos a <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> per començar.
+
+El Thunderbird és una potent aplicació de correu electrònic centrada en la privadesa. Gestioneu sense esforç diversos comptes de correu electrònic des d'una aplicació, amb una opció de «Safata d'entrada unificada» per obtenir la màxima productivitat. Basat en tecnologia de codi obert i recolzat per un equip dedicat de desenvolupadors juntament amb una comunitat global de voluntaris, el Thunderbird mai tracta les vostres dades privades com un producte. Està totalment finançat per les contribucions econòmiques dels nostres usuaris, de manera que no haureu de tornar a veure anuncis barrejats amb els vostres correus electrònics.
+
+<b>Què podeu fer</b>
+<ul>
+  <li>Deixeu enrere múltiples aplicacions i correu web. Utilitzeu una única aplicació, amb una safata d'entrada unificada opcional, per continuar el vostre dia.</li>
+  <li>Gaudiu d'un client de correu electrònic respectuós amb la privadesa que mai recopila ni ven les vostres dades personals. Us connectem directament amb el vostre proveïdor de correu electrònic. Això és tot!</li>
+  <li>Porteu la vostra privadesa al següent nivell utilitzant l'encriptació de correu electrònic OpenPGP (PGP/MIME) amb l'aplicació «OpenKeychain» per xifrar i desxifrar els vostres missatges.</li>
+  <li>Trieu sincronitzar el vostre correu electrònic a l'instant, a intervals determinats o a demanda. Sigui com sigui que vulgueu consultar el vostre correu electrònic, depèn de vós!</li>
+  <li>Cerqueu els vostres missatges importants mitjançant tant la cerca local i com la cerca al servidor.</li>
+</ul>
+
+<b>Compatibilitat</b>
+<ul>
+  <li>El Thunderbird funciona amb els protocols IMAP i POP3, admetent una àmplia gamma de proveïdors de correu electrònic, com ara Gmail, Outlook, Yahoo Mail, iCloud i més.</li>
+</ul>
+
+<b>Per què utilitzar el Thunderbird</b>
+<ul>
+  <li>El nom de confiança en correu electrònic des de fa més de 20 anys, ara a l'Android.</li>
+  <li>El Thunderbird està totalment finançat amb contribucions voluntàries dels nostres usuaris. No utilitzem les vostres dades personals. Mai sou el producte.</li>
+  <li>Elaborat per un equip tan eficaç com vós. Volem que dediqueu un temps mínim a utilitzar l'aplicació i que en obtingueu el màxim a canvi.</li>
+  <li>Amb col·laboradors d'arreu del món, el Thunderbird per a l'Android s'ha traduït a més de 20 idiomes.</li>
+  <li>Recolzat per la corporació MZLA Technologies, una filial de propietat total de la Fundació Mozilla.</li>
+</ul>
+
+<b>Codi obert i comunitat</b>
+<ul>
+  <li>El Thunderbird és lliure i de codi obert, la qual cosa significa que el seu codi està disponible per veure, modificar, utilitzar i compartir lliurement. La seva llicència també garanteix que serà gratuït per sempre. Podeu pensar en el Thunderbird com un regal de milers de col·laboradors.</li>
+  <li>Desenvolupem en obert amb actualitzacions regulars i transparents al nostre bloc i llistes de correu.</li>
+  <li>El nostre servei d'assistència als usuaris està impulsat per la nostra comunitat global. Trobeu les respostes que necessiteu o feu el paper de col·laborador, ja sigui per respondre preguntes, traduir l'aplicació o parlar del Thunderbird als vostres amics i familiars.</li>
+</ul>

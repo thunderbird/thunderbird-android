@@ -10,6 +10,7 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
         return mapOf(
             createAolConfiguration(),
             createGmailConfiguration(),
+            createFastmailConfiguration(),
             createMicrosoftConfiguration(),
             createYahooConfiguration(),
         )
@@ -28,6 +29,20 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
         )
     }
 
+    private fun createFastmailConfiguration(): Pair<List<String>, OAuthConfiguration> {
+        return listOf(
+            "imap.fastmail.com",
+            "smtp.fastmail.com",
+        ) to OAuthConfiguration(
+            clientId = "353e41ae",
+            scopes = listOf("https://www.fastmail.com/dev/protocol-imap", "https://www.fastmail.com/dev/protocol-smtp"),
+            authorizationEndpoint = "https://api.fastmail.com/oauth/authorize",
+            tokenEndpoint = "https://api.fastmail.com/oauth/refresh",
+            redirectUri = "${BuildConfig.APPLICATION_ID}://oauth2redirect",
+        )
+    }
+
+    // TODO: Update clientId and redirectUri once new client ID is available
     private fun createGmailConfiguration(): Pair<List<String>, OAuthConfiguration> {
         return listOf(
             "imap.gmail.com",
@@ -35,11 +50,11 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
             "smtp.gmail.com",
             "smtp.googlemail.com",
         ) to OAuthConfiguration(
-            clientId = "406964657835-7e8ersi8i85g742ksqdh0mtgpps3rvoq.apps.googleusercontent.com",
+            clientId = "406964657835-pq5dckrt5j6ijkicfp2jf4vdhesncql6.apps.googleusercontent.com",
             scopes = listOf("https://mail.google.com/"),
             authorizationEndpoint = "https://accounts.google.com/o/oauth2/v2/auth",
             tokenEndpoint = "https://oauth2.googleapis.com/token",
-            redirectUri = "${BuildConfig.APPLICATION_ID}:/oauth2redirect",
+            redirectUri = "${BuildConfig.APPLICATION_ID}.desktop:/oauth2redirect",
         )
     }
 

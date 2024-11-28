@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_widget_list_item_loading">Á lódáil…</string>
+    <string name="message_list_widget_label">Liosta Teachtaireachtaí</string>
+    <string name="message_list_widget_compose_action">Cum</string>
+    <string name="message_list_widget_initializing">Á lódáil…</string>
+    <string name="message_list_widget_inbox_title">Bosca Isteach Aontaithe</string>
+</resources>

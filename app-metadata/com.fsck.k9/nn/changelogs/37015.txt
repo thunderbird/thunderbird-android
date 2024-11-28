@@ -1,0 +1,10 @@
+- La til bilete-handtering i konteksmenyen for hyperlenkjer
+- La til moglegheit for å vidaresende opna vedlegg til nye e-postar
+- Forbetra sertifikat-handtering under konto-oppsett
+- Forbetra importering av innstillingar under konto-oppsett
+- Forbetra UI/UX under konto-oppsett
+- Forbetra vising av konto-oppsett på små skjermar
+- Forbetra UI/UX for tenarinnstillingar for kontoen
+- Fiksa AlarmManager krasj på Android 14
+- Interne endringar
+- Oppdaterte omsetjingar

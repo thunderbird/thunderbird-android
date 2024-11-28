@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="okay_action">OK</string>
+    <string name="cancel_action">Бас тарту</string>
+    <string name="star_button_description">Жұлдызша</string>
+</resources>

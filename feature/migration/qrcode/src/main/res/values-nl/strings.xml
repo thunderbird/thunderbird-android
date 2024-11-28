@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Cameratoegang vereist</string>
+    <string name="migration_qrcode_permission_denied_message">Ga naar Android-instellingen, tik op toestemmingen, en sta toegang tot de camera toe.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Ga naar instellingen</string>
+    <string name="migration_qrcode_scanning_progress">%1$s van %2$s gescand</string>
+    <string name="migration_qrcode_done_button_text">Gereed</string>
+    <string name="migration_qrcode_scanning_instructions">De QR-code van Thunderbird desktop uitlijnen</string>
+</resources>

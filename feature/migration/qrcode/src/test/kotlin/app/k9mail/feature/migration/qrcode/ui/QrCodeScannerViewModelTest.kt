@@ -2,10 +2,18 @@ package app.k9mail.feature.migration.qrcode.ui
 
 import android.app.Application
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
+import app.k9mail.core.ui.compose.testing.mvi.MviContext
 import app.k9mail.core.ui.compose.testing.mvi.MviTurbines
+import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.migration.qrcode.domain.QrCodeDomainContract.UseCase
 import app.k9mail.feature.migration.qrcode.domain.usecase.QrCodePayloadReader
+import app.k9mail.feature.migration.qrcode.payload.FakeDeletePolicyProvider
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadAdapter
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadMapper
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadParser
+import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadValidator
+import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.DisplayText
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.State
@@ -17,8 +25,6 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -33,8 +39,8 @@ class QrCodeScannerViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `user grants camera permission`() = runTest {
-        with(QrCodeScannerScreenRobot(testScope = this)) {
+    fun `user grants camera permission`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
             startScreen()
             userGrantsCameraPermission()
 
@@ -43,8 +49,8 @@ class QrCodeScannerViewModelTest {
     }
 
     @Test
-    fun `user denies camera permission`() = runTest {
-        with(QrCodeScannerScreenRobot(testScope = this)) {
+    fun `user denies camera permission`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
             startScreen()
             userDeniesCameraPermission()
 
@@ -53,8 +59,8 @@ class QrCodeScannerViewModelTest {
     }
 
     @Test
-    fun `user grants camera permission via android app settings`() = runTest {
-        with(QrCodeScannerScreenRobot(testScope = this)) {
+    fun `user grants camera permission via android app settings`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
             startScreen()
             systemDeniesCameraPermission()
 
@@ -67,8 +73,8 @@ class QrCodeScannerViewModelTest {
     }
 
     @Test
-    fun `user successfully scans one QR code`() = runTest {
-        with(QrCodeScannerScreenRobot(testScope = this)) {
+    fun `user successfully scans one QR code`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
             startScreen()
             systemGrantsCameraPermission()
 
@@ -82,8 +88,8 @@ class QrCodeScannerViewModelTest {
     }
 
     @Test
-    fun `user successfully scans two QR codes`() = runTest {
-        with(QrCodeScannerScreenRobot(testScope = this)) {
+    fun `user successfully scans two QR codes`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
             startScreen()
             systemGrantsCameraPermission()
 
@@ -100,8 +106,8 @@ class QrCodeScannerViewModelTest {
     }
 
     @Test
-    fun `user clicks Done button after one of two QR codes was scanned`() = runTest {
-        with(QrCodeScannerScreenRobot(testScope = this)) {
+    fun `user clicks Done button after one of two QR codes was scanned`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
             startScreen()
             systemGrantsCameraPermission()
 
@@ -116,8 +122,8 @@ class QrCodeScannerViewModelTest {
     }
 
     @Test
-    fun `user clicks Done button without any QR codes having been successfully scanned`() = runTest {
-        with(QrCodeScannerScreenRobot(testScope = this)) {
+    fun `user clicks Done button without any QR codes having been successfully scanned`() = runMviTest {
+        with(QrCodeScannerScreenRobot(mviContext = this)) {
             startScreen()
             systemGrantsCameraPermission()
 
@@ -130,11 +136,17 @@ class QrCodeScannerViewModelTest {
 }
 
 private class QrCodeScannerScreenRobot(
-    private val testScope: TestScope,
+    private val mviContext: MviContext,
 ) {
     private val qrCodeSettingsWriter = FakeQrCodeSettingsWriter()
     private val viewModel = QrCodeScannerViewModel(
-        qrCodePayloadReader = QrCodePayloadReader(),
+        qrCodePayloadReader = QrCodePayloadReader(
+            parser = QrCodePayloadParser(QrCodePayloadAdapter()),
+            mapper = QrCodePayloadMapper(
+                qrCodePayloadValidator = QrCodePayloadValidator(),
+                deletePolicyProvider = FakeDeletePolicyProvider(),
+            ),
+        ),
         qrCodeSettingsWriter = qrCodeSettingsWriter,
         createCameraUseCaseProvider = { listener ->
             qrCodeListener = listener
@@ -148,7 +160,7 @@ private class QrCodeScannerScreenRobot(
     private val initialState = State()
 
     suspend fun startScreen() {
-        turbines = testScope.turbinesWithInitialStateCheck(viewModel, initialState)
+        turbines = mviContext.turbinesWithInitialStateCheck(viewModel, initialState)
 
         viewModel.event(Event.StartScreen)
 
@@ -214,8 +226,10 @@ private class QrCodeScannerScreenRobot(
         assertThat(turbines.awaitStateItem()).isEqualTo(
             State(
                 cameraPermissionState = UiPermissionState.Granted,
-                scannedCount = expectedScannedCount,
-                totalCount = expectedScannedTotal,
+                displayText = DisplayText.ProgressText(
+                    scannedCount = expectedScannedCount,
+                    totalCount = expectedScannedTotal,
+                ),
             ),
         )
     }

@@ -12,25 +12,30 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerActivityContract
+import app.k9mail.feature.migration.launcher.api.MigrationManager
 import app.k9mail.feature.settings.importing.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.fsck.k9.ui.base.R as BaseR
 
 class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
+    private val migrationManager: MigrationManager by inject()
 
     private lateinit var settingsImportAdapter: FastAdapter<ImportListItem<*>>
     private lateinit var itemAdapter: ItemAdapter<ImportListItem<*>>
 
-    private val qrCodeScannerResultContract = registerForActivityResult(QrCodeScannerActivityContract()) { contentUri ->
+    private val qrCodeScannerResultContract = registerForActivityResult(
+        migrationManager.getQrCodeActivityResultContract(),
+    ) { contentUri ->
         if (contentUri != null) {
             viewModel.onDocumentPicked(contentUri)
         } else {
@@ -38,11 +43,11 @@ class SettingsImportFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        parentFragmentManager.setFragmentResultListener(
-            PickAppDialogFragment.FRAGMENT_RESULT_KEY,
-            viewLifecycleOwner,
-        ) { _, result: Bundle ->
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.initialize()
+
+        setFragmentResultListener(PickAppDialogFragment.FRAGMENT_RESULT_KEY) { _, result: Bundle ->
             val packageName = result.getString(PickAppDialogFragment.FRAGMENT_RESULT_APP)
             if (packageName != null) {
                 viewModel.onAppPicked(packageName)
@@ -50,7 +55,9 @@ class SettingsImportFragment : Fragment() {
                 viewModel.onAppPickCanceled()
             }
         }
+    }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_import, container, false)
     }
 
@@ -70,6 +77,11 @@ class SettingsImportFragment : Fragment() {
 
         viewModel.getUiModel().observeNotNull(this) { viewHolder.updateUi(it) }
         viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
+
+        arguments?.let { arguments ->
+            val action = SettingsImportAction.fromBundle(arguments)
+            viewModel.setAction(action)
+        }
     }
 
     private fun initializeSettingsImportList(recyclerView: RecyclerView) {

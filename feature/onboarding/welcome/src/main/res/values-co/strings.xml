@@ -2,5 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Principià</string>
     <string name="onboarding_welcome_import_button">Impurtà i parametri</string>
-    <string name="onboarding_welcome_message">Benvenuta in <xliff:g id="app_name">%s</xliff:g>, l’appiecazione di messaghjeria per Android, cuncepita per una sicurità aumentata, una persunalizazione faciule è una ghjestione senza straziu di tutti i vostri conti di messaghjeria.</string>
+    <string name="onboarding_welcome_text">Un’appiecazione di messaghjeria elettronica per Android, à codice di fonte apertu, rispettosa di a vita privata è senza publicità.</string>
+    <string name="onboarding_welcome_developed_by">Sviluppata da una squadra dedicata ind’è MZLA Technologies è una cumunità glubale di vuluntarii. Parte di a famiglia Mozilla.</string>
 </resources>

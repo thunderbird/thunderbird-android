@@ -37,4 +37,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 aktualisht nuk mbulohet me këtë furnizues shërbimi.</string>
     <string name="settings_import_oauth_error_browser_not_found">Aplikacioni sgjeti dot një shfletues për ta përdorur për ti akorduar hyrje te llogaria juaj.</string>
     <string name="settings_import_general_settings_item">Rregullime të përgjithshme</string>
+    <string name="settings_import_pick_app_button">Importo prej aplikacioni</string>
+    <string name="settings_import_pick_app_dialog_title">Importo prej aplikacioni</string>
+    <string name="settings_import_scan_qr_code_button">Skanoni kodin QR</string>
+    <string name="settings_import_app_version_not_supported">Version aplikacione që s’mbulohet.</string>
 </resources>

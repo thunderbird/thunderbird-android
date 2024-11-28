@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_import_title">Баптауларды импорттау</string>
+    <string name="settings_import_pick_document_button">Файлды таңдау</string>
+    <string name="settings_import_scan_qr_code_button">QR кодын сканерлеу</string>
+    <string name="settings_import_button">Импорттау</string>
+</resources>

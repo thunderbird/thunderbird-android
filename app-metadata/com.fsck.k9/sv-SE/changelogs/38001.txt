@@ -1,0 +1,7 @@
+- Lagt till DNSSEC-stöd när du letar efter serverinställningar under installationen
+- Gjorde en ändring för att förhindra att vissa mjukvarutangentbord aktiverar/automatiskt korrigerar e-postadresser i kontoinställningarna
+– Fixade en krasch när ett väldigt långt ämne användes
+- Fixat visning av OAuth 2.0-felmeddelanden
+- Fixade en sällsynt krasch vid nedladdning av en bilaga
+- Lagt till kod för att inte tillåta radbrytningar i en rad textinmatningar
+- Uppdaterade översättningar

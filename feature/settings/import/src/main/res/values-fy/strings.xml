@@ -39,4 +39,6 @@
     <string name="settings_import_general_settings_item">Algemiene ynstellingen</string>
     <string name="settings_import_pick_app_button">Ymportearje fan app út</string>
     <string name="settings_import_pick_app_dialog_title">Ymportearje fan app út</string>
+    <string name="settings_import_scan_qr_code_button">QR-koade scanne</string>
+    <string name="settings_import_app_version_not_supported">App-ferzje net stipe.</string>
 </resources>

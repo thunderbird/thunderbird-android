@@ -1,3 +1,7 @@
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.xpath.XPathConstants
+import javax.xml.xpath.XPathFactory
+
 plugins {
     id(ThunderbirdPlugins.App.androidCompose)
     alias(libs.plugins.dependency.guard)
@@ -9,36 +13,6 @@ if (testCoverageEnabled) {
     apply(plugin = "jacoco")
 }
 
-dependencies {
-    implementation(projects.appCommon)
-    implementation(projects.core.ui.compose.theme2.k9mail)
-    implementation(projects.core.ui.legacy.theme2.k9mail)
-    implementation(projects.feature.launcher)
-
-    implementation(projects.legacy.core)
-    implementation(projects.legacy.ui.legacy)
-
-    implementation(projects.core.featureflags)
-
-    implementation(projects.feature.widget.messageList)
-    implementation(projects.feature.widget.shortcut)
-    implementation(projects.feature.widget.unread)
-    implementation(projects.feature.telemetry.noop)
-    implementation(projects.feature.funding.noop)
-
-    implementation(libs.androidx.work.runtime)
-
-    implementation(projects.feature.autodiscovery.api)
-    debugImplementation(projects.backend.demo)
-    debugImplementation(projects.feature.autodiscovery.demo)
-
-    testImplementation(libs.robolectric)
-
-    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
-    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
-    testImplementation(projects.feature.account.setup)
-}
-
 android {
     namespace = "com.fsck.k9"
 
@@ -47,7 +21,8 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39004
-        versionName = "6.905-SNAPSHOT"
+        versionName = "10.0"
+        versionNameSuffix = "a1"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -55,7 +30,6 @@ android {
                 "ar",
                 "be",
                 "bg",
-                "br",
                 "ca",
                 "co",
                 "cs",
@@ -73,7 +47,7 @@ android {
                 "fi",
                 "fr",
                 "fy",
-                "gd",
+                "ga",
                 "gl",
                 "hr",
                 "hu",
@@ -85,15 +59,14 @@ android {
                 "ko",
                 "lt",
                 "lv",
-                "ml",
                 "nb",
                 "nl",
+                "nn",
                 "pl",
                 "pt_BR",
                 "pt_PT",
                 "ro",
                 "ru",
-                "sk",
                 "sl",
                 "sq",
                 "sr",
@@ -133,6 +106,19 @@ android {
         }
     }
 
+    flavorDimensions += listOf("app")
+    productFlavors {
+        create("foss") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"foss\"")
+        }
+
+        create("full") {
+            dimension = "app"
+            buildConfigField("String", "PRODUCT_FLAVOR_APP", "\"full\"")
+        }
+    }
+
     packaging {
         jniLibs {
             excludes += listOf("kotlin/**")
@@ -149,6 +135,81 @@ android {
     }
 }
 
+dependencies {
+    implementation(projects.appCommon)
+    implementation(projects.core.ui.compose.theme2.k9mail)
+    implementation(projects.core.ui.legacy.theme2.k9mail)
+    implementation(projects.feature.launcher)
+
+    implementation(projects.legacy.core)
+    implementation(projects.legacy.ui.legacy)
+
+    implementation(projects.core.featureflags)
+
+    "fossImplementation"(projects.feature.funding.noop)
+    "fullImplementation"(projects.feature.funding.googleplay)
+    implementation(projects.feature.migration.launcher.noop)
+    implementation(projects.feature.onboarding.migration.noop)
+    implementation(projects.feature.telemetry.noop)
+    implementation(projects.feature.widget.messageList)
+    implementation(projects.feature.widget.shortcut)
+    implementation(projects.feature.widget.unread)
+
+    implementation(libs.androidx.work.runtime)
+
+    implementation(projects.feature.autodiscovery.api)
+    debugImplementation(projects.backend.demo)
+    debugImplementation(projects.feature.autodiscovery.demo)
+
+    testImplementation(libs.robolectric)
+
+    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
+    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
+    testImplementation(projects.feature.account.setup)
+}
+
 dependencyGuard {
-    configuration("releaseRuntimeClasspath")
+    configuration("fossReleaseRuntimeClasspath")
+    configuration("fullReleaseRuntimeClasspath")
+}
+
+tasks.create("printVersionInfo") {
+    val targetBuildType = project.findProperty("buildType") ?: "debug"
+
+    doLast {
+        android.applicationVariants.all { variant ->
+            if (variant.buildType.name == targetBuildType) {
+                val flavor = variant.mergedFlavor
+
+                var buildTypeSource = android.sourceSets.getByName(targetBuildType).res.srcDirs.first()
+                var stringsXmlFile = File(buildTypeSource, "values/strings.xml")
+                if (!stringsXmlFile.exists()) {
+                    buildTypeSource = android.sourceSets.getByName("main").res.srcDirs.first()
+                    stringsXmlFile = File(buildTypeSource, "values/strings.xml")
+                }
+
+                val xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(stringsXmlFile)
+                val xPath = XPathFactory.newInstance().newXPath()
+                val expression = "/resources/string[@name='app_name']/text()"
+                val appName = xPath.evaluate(expression, xmlDocument, XPathConstants.STRING) as String
+
+                val output = """
+                    APPLICATION_ID=${variant.applicationId}
+                    APPLICATION_LABEL=$appName
+                    VERSION_CODE=${flavor.versionCode}
+                    VERSION_NAME=${flavor.versionName}
+                    VERSION_NAME_SUFFIX=${flavor.versionNameSuffix ?: ""}
+                    FULL_VERSION_NAME=${flavor.versionName}${flavor.versionNameSuffix ?: ""}
+                """.trimIndent()
+
+                println(output)
+                val githubOutput = System.getenv("GITHUB_OUTPUT")
+                if (githubOutput != null) {
+                    val outputFile = File(githubOutput)
+                    outputFile.writeText(output + "\n")
+                }
+            }
+            true
+        }
+    }
 }

@@ -1,0 +1,31 @@
+Thunderbird er ein kraftfull, personvernfokusert e-postapp. Uanstrengt handering av fleire e-postkontoar frå ein app, med samla innboks-moglegheit for maksimal produktivitet. Bygd på open kjeldekode teknologi og støtta av eit dedikert team av utviklarar, på sida av eit globalt samfunn av frivillige. Thunderbird behandlar aldri den private dataen din som eit produkt. Utelukkande støtta av økonomiske bidrag frå brukarane våre, så du aldri treng å sjå annonsar blanda med e-postane dine igjen.
+
+<b>Kva du kan gjere</b>
+<ul>
+  <li>Dropp fleire appar og webmail. Bruk ein app, med ein valfri samla innboks, for å få deg gjennom dagen.</li>
+  <li>Nyt ein personversvennleg e-postklient som aldri samlar eller sel dine personlege data. Me koplar deg direkte til din e-posttenar. Det er det!</li>
+  <li>Ta ditt personvern til neste nivå med å bruke OpenPGP e-postkryptering (PGP/MIME) med “OpenKeychain”-appen, for å kryptere og dekryptere meldingane dine.</li>
+  <li>Vel å synkronisere dine e-postar umiddelbart, med faste intervall, eller etter førespurnad. Korleis du vil sjekke e-posten din er opp til deg!</li>
+  <li>Finn dine viktige meldingar med å bruke både lokalt og tenar-side søk.</li>
+</ul>
+
+<b>Kompatibilitet</b>
+<ul>
+  <li>Thunderbird fungerer med IMAP- og POP3-protokollar, og støtter eit vidt spenn e-post-tilbydarar som inkluderer Gmail, Outlook, Yahoo Mail, iCloud, og meir.</li>
+</ul>
+
+<b>Korfor bruke Thunderbird</b>
+<ul>
+  <li>Det pålitelege namnet innan e-post i over 20 år – no på Android</li>
+  <li>Thunderbird er fullstendig finansiert av frivillige bidrag frå brukarane våre. Me høstar ikkje din personlege data. Du er aldri produktet.</li>
+  <li>Laga av eit like effektivitetsfokusert team som deg sjølv. Me ønskjer at du bruker minimal tid på appen og får maksimal verdi i retur.</li>
+  <li>Med bidragsytarar frå heile verda, har Thunderbird for Android blitt omset til meir enn 20 språk.</li>
+  <li>Støtta av MZLA Technologies Corporation, eit dotterselskap fullstendig eigd av Mozilla Foundation.</li>
+</ul>
+
+<b>Open kjeldekode og samfunn</b>
+<ul>
+  <li>Thunderbird har fri og open kjeldekode, som betyr at koden er tilgjengeleg for å sjå, endre, bruke og dele fritt. Lisensen sikrar at den vil vere fri for alltid. Du kan tenkje på Thunderbird som ei gåve frå tusenar av bidragsytarar til deg.</li>
+  <li>Me utviklar i det opne, med regelmessige, transparante oppdateringar i vår blogg og våre e-postlister.</li>
+  <li>Vår brukarstønad er dreven av vårt globale samfunn. Finn svara du treng, og tre inn i rolla som bidragsytar - anten det er for å svare på spørsmål, omsetje appen, eller fortelje dine vennar og familie om Thunderbird.</li>
+</ul>

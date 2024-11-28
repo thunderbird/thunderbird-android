@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.theme2
 
+import android.content.Context
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -113,4 +114,21 @@ private fun ColorScheme.toDynamicThemeColorScheme(
     )
 }
 
+data class ColorRoles(
+    val accent: Color,
+    val onAccent: Color,
+    val accentContainer: Color,
+    val onAccentContainer: Color,
+)
+
 fun Color.toHarmonizedColor(target: Color) = Color(MaterialColors.harmonize(toArgb(), target.toArgb()))
+
+fun Color.toColorRoles(context: Context): ColorRoles {
+    val colorRoles = MaterialColors.getColorRoles(context, this.toArgb())
+    return ColorRoles(
+        accent = Color(colorRoles.accent),
+        onAccent = Color(colorRoles.onAccent),
+        accentContainer = Color(colorRoles.accentContainer),
+        onAccentContainer = Color(colorRoles.onAccentContainer),
+    )
+}

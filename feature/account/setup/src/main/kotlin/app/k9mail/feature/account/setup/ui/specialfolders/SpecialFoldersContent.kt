@@ -15,7 +15,6 @@ import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
-import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.Event
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
@@ -26,7 +25,7 @@ fun SpecialFoldersContent(
     state: State,
     onEvent: (Event) -> Unit,
     contentPadding: PaddingValues,
-    appName: String,
+    brandName: String,
     modifier: Modifier = Modifier,
 ) {
     ResponsiveWidthContainer(
@@ -37,25 +36,25 @@ fun SpecialFoldersContent(
     ) {
         Column {
             AppTitleTopHeader(
-                title = appName,
+                title = brandName,
             )
 
             ContentLoadingErrorView(
-                state = rememberContentLoadingErrorViewState(state = state),
+                state = state,
                 loading = {
                     LoadingView(
                         message = stringResource(id = R.string.account_setup_special_folders_loading_message),
                         modifier = Modifier.fillMaxWidth(),
                     )
                 },
-                error = {
+                error = { error ->
                     SpecialFoldersErrorView(
-                        failure = state.error!!,
+                        failure = error,
                         onRetry = { onEvent(Event.OnRetryClicked) },
                     )
                 },
                 modifier = Modifier.fillMaxSize(),
-            ) {
+            ) { state ->
                 if (state.isSuccess) {
                     LoadingView(
                         message = stringResource(id = R.string.account_setup_special_folders_success_message),

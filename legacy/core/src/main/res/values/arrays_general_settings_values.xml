@@ -6,7 +6,6 @@
         <item>ar</item>
         <item>be</item>
         <item>bg</item>
-        <item>br</item>
         <item>ca</item>
         <item>co</item>
         <item>cs</item>
@@ -24,7 +23,7 @@
         <item>fi</item>
         <item>fr</item>
         <item>fy</item>
-        <item>gd</item>
+        <item>ga</item>
         <item>gl</item>
         <item>hr</item>
         <item>hu</item>
@@ -36,15 +35,14 @@
         <item>ko</item>
         <item>lt</item>
         <item>lv</item>
-        <item>ml</item>
         <item>nb</item>
         <item>nl</item>
+        <item>nn</item>
         <item>pl</item>
         <item>pt_BR</item>
         <item>pt_PT</item>
         <item>ro</item>
         <item>ru</item>
-        <item>sk</item>
         <item>sl</item>
         <item>sq</item>
         <item>sr</item>
@@ -100,6 +98,7 @@
         <item>nl</item>
         <item>no</item>
         <item>nb</item>
+        <item>nn</item>
         <item>uz</item>
         <item>pl</item>
         <item>pt_PT</item>

@@ -2,6 +2,7 @@ package app.k9mail.feature.account.edit.ui.server.settings.modify
 
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
+import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
 import app.k9mail.feature.account.common.domain.entity.AccountState
@@ -16,7 +17,6 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -26,7 +26,7 @@ class ModifyOutgoingServerSettingsViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `should load account state from use case`() = runTest {
+    fun `should load account state from use case`() = runMviTest {
         val accountUuid = "accountUuid"
         val accountState = AccountState(
             uuid = "accountUuid",
@@ -69,8 +69,6 @@ class ModifyOutgoingServerSettingsViewModelTest {
                     authenticationType = AuthenticationType.PasswordCleartext,
                     username = StringInputField(value = "username"),
                     password = StringInputField(value = "password"),
-
-                    isLoading = false,
                 ),
             )
         }

@@ -1,13 +1,13 @@
-Courriel K-9 Mail est un client de courriel à code source ouvert qui fonctionne avec pratiquement tous les services de courriel.
+Courriel K-9 Mail est un client de courriel à code source ouvert qui fonctionne essentiellement avec tous les services de courriel.
 
 <b>Caractéristiques</b>
 
-* Prend en charge plusieurs comptes
+* Prise en charge de plusieurs comptes
 * Boîte de réception unifiée
-* Protège vos données personnelles (aucun suivi, il ne se connecte qu’à votre service de courriel)
-* Synchronisation automatique en arrière-plan ou notifications pousser
+* Protection de vos données personnelles (aucun suivi, il ne se connecte qu’à votre service de courriel)
+* Synchronisation automatique en arrière-plan ou notifications poussées
 * Recherche locale et côté serveur
-* Chiffrement des courriels OpenPGP (PGP/MIME)
+* Chiffrement OpenPGP (PGP/MIME) des courriels
 
 Pour chiffrer et déchiffrer vos courriels à l’aide d’OpenPGP, installez l’appli <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain</a>.
 

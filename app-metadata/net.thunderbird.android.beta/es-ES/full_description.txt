@@ -1,0 +1,37 @@
+Ayude a que la próxima versión de Thunderbird sea lo mejor posible descargando la versión beta de Thunderbird y obteniendo acceso anticipado a las últimas funciones y correcciones de errores antes de que se publiquen oficialmente. Sus pruebas y comentarios son importantes, así que informe errores, problemas y comparta sus opiniones con nosotros.
+
+Encuentre nuestro rastreador de errores, código fuente y wiki en <a href="https://github.com/thunderbird/thunderbird-android"> https://github.com/thunderbird/thunderbird-android </a> .
+
+Siempre nos complace dar la bienvenida a nuevos desarrolladores, diseñadores, traductores, evaluadores de errores y amigos. Visítenos en <a href="https://thunderbird.net/participate"> https://thunderbird.net/participate </a> para comenzar.
+
+Thunderbird es una potente aplicación de correo electrónico centrada en la privacidad. Administra fácilmente varias cuentas de correo electrónico desde una sola aplicación, con una opción de Bandeja de entrada unificada para una máxima productividad. Desarrollada con tecnología de código abierto y respaldada por un equipo dedicado de desarrolladores junto con una comunidad global de voluntarios, Thunderbird nunca trata tus datos privados como un producto. Se sustenta únicamente con contribuciones financieras de nuestros usuarios, por lo que nunca volverás a ver anuncios mezclados con tus correos electrónicos.
+
+<b> ¿Qué puedes hacer? </b>
+<ul>
+  <li> Olvídate de las múltiples aplicaciones y del correo web. Utiliza una sola aplicación, con una bandeja de entrada unificada opcional, para afrontar tu día. </li>
+  <li> Disfruta de un cliente de correo electrónico que respeta la privacidad y que nunca recopila ni vende tus datos personales. Te conectamos directamente con tu proveedor de correo electrónico. ¡Eso es todo! </li>
+  <li> Lleve su privacidad al siguiente nivel utilizando el cifrado de correo electrónico OpenPGP (PGP/MIME) con la aplicación “OpenKeychain”, para cifrar y descifrar sus mensajes. </li>
+  <li> Elige sincronizar tu correo electrónico al instante, a intervalos establecidos o cuando lo necesites. ¡Tú decides cómo quieres consultar tu correo electrónico! </li>
+  <li> Encuentre sus mensajes importantes utilizando la búsqueda local y del lado del servidor. </li>
+</ul>
+
+<b> Compatibilidad </b>
+<ul>
+  <li> Thunderbird funciona con los protocolos IMAP y POP3 y es compatible con una amplia gama de proveedores de correo electrónico, incluidos Gmail, Outlook, Yahoo Mail, iCloud y más. </li>
+</ul>
+
+¿ Por qué utilizar Thunderbird ?
+<ul>
+  <li> El nombre de confianza en correo electrónico durante más de 20 años: ahora en Android. </li>
+  <li> Thunderbird se financia en su totalidad con contribuciones voluntarias de nuestros usuarios. No extraemos sus datos personales. Usted nunca es el producto. </li>
+  <li> Hecho por un equipo que se preocupa tanto por la eficiencia como tú. Queremos que utilices la aplicación lo menos posible y obtengas el máximo beneficio. </li>
+  <li> Con colaboradores de todo el mundo, Thunderbird para Android ha sido traducido a más de 20 idiomas. </li>
+  <li> Con el apoyo de MZLA Technologies Corporation, una subsidiaria de propiedad absoluta de la Fundación Mozilla. </li>
+</ul>
+
+Código abierto y comunidad
+<ul>
+  <li> Thunderbird es gratuito y de código abierto, lo que significa que su código está disponible para verlo, modificarlo, usarlo y compartirlo libremente. Su licencia también garantiza que será gratuito para siempre. Puedes pensar en Thunderbird como un regalo de miles de colaboradores para ti. </li>
+  <li> Nos desarrollamos de forma abierta con actualizaciones periódicas y transparentes en nuestro blog y listas de correo. </li>
+  <li> Nuestro servicio de asistencia al usuario está a cargo de nuestra comunidad global. Encuentra las respuestas que necesitas o asume el rol de colaborador, ya sea respondiendo preguntas, traduciendo la aplicación o contándoles a tus amigos y familiares sobre Thunderbird. </li>
+</ul>

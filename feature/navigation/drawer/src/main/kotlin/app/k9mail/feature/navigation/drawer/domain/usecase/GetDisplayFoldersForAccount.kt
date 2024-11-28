@@ -17,11 +17,11 @@ internal class GetDisplayFoldersForAccount(
     private val repository: DisplayFolderRepository,
     private val messageCountsProvider: MessageCountsProvider,
 ) : UseCase.GetDisplayFoldersForAccount {
-    override fun invoke(accountUuid: String, includeUnifiedFolders: Boolean): Flow<List<DisplayFolder>> {
-        return repository.getDisplayFoldersFlow(accountUuid).map { displayFolders ->
+    override fun invoke(accountId: String, includeUnifiedFolders: Boolean): Flow<List<DisplayFolder>> {
+        return repository.getDisplayFoldersFlow(accountId).map { displayFolders ->
             displayFolders.map { displayFolder ->
                 DisplayAccountFolder(
-                    accountUuid = accountUuid,
+                    accountId = accountId,
                     folder = displayFolder.folder,
                     isInTopGroup = displayFolder.isInTopGroup,
                     unreadMessageCount = displayFolder.unreadMessageCount,

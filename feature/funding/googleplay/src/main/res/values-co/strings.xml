@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Sustene Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_title">Cuntribuzione assicurata</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Dà una volta</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Ogni mese</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Nisuna dispunibule</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Cuntinuà u pagamentu</string>
+    <string name="funding_googleplay_contribution_title">Sustene Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Ora, e cuntribuzioni ùn sò micca dispunibule via l’appiecazione.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visitate u situ www.thunderbird.net per cunnosce parechje manere di sustene Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Pruvà torna</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Pagamentu indispunibule attualmente</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Mudificà u pagamentu misincu</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Aiutà à cunservà Thunderbird sempre vivu</string>
+    <string name="funding_googleplay_contribution_error_show_more">Affissà più d’infurmazioni</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Righjittà u sbagliu</string>
+    <string name="funding_googleplay_contribution_error_unknown">Sbagliu scunnisciutu</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Fiascu di a comprera.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Ora, e cuntribuzioni ùn sò micca dispunibule.</string>
+    <string name="funding_googleplay_contribution_header_description">Ùn affissemu alcuna publicità è un vindemu mai i vostri dati. Simu finanziati sanu sanu grazia à e cuntribuzioni da i nostri utilizatori. S’è Thunderbird vi piace, aiutateci à sustenelu. Ùn pudemu fà què senza voi !</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">E cuntribuzioni ùn ponu micca esse scuntate da l’impositi cum’è e dunazioni.</string>
+</resources>

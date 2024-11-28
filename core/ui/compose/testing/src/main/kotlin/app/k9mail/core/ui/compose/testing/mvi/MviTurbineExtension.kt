@@ -1,31 +1,73 @@
 package app.k9mail.core.ui.compose.testing.mvi
 
 import app.cash.turbine.ReceiveTurbine
-import app.cash.turbine.testIn
+import app.cash.turbine.TurbineContext
+import app.cash.turbine.turbineScope
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+
+/**
+ * The `runMviTest` function is a wrapper around `runTest` and `turbineScope`
+ * that provides a MviContext to the test body.
+ */
+fun runMviTest(
+    testBody: suspend MviContext.() -> Unit,
+) {
+    runTest {
+        val testScope = this
+        turbineScope {
+            val turbineContext = this
+            testBody(
+                DefaultMviContext(
+                    testScope = testScope,
+                    turbineContext = turbineContext,
+                ),
+            )
+        }
+    }
+}
+
+interface MviContext {
+    val testScope: TestScope
+    val turbineContext: TurbineContext
+}
+
+class DefaultMviContext(
+    override val testScope: TestScope,
+    override val turbineContext: TurbineContext,
+) : MviContext
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun MviContext.advanceUntilIdle() {
+    testScope.advanceUntilIdle()
+}
 
 /**
  * The `turbines` extension function creates a MviTurbines instance for the given MVI ViewModel.
  */
-inline fun <reified STATE, EVENT, EFFECT> TestScope.turbines(
+inline fun <reified STATE, EVENT, EFFECT> MviContext.turbines(
     viewModel: UnidirectionalViewModel<STATE, EVENT, EFFECT>,
 ): MviTurbines<STATE, EFFECT> {
-    return MviTurbines(
-        stateTurbine = viewModel.state.testIn(backgroundScope),
-        effectTurbine = viewModel.effect.testIn(backgroundScope),
-    )
+    with(turbineContext) {
+        return MviTurbines(
+            stateTurbine = viewModel.state.testIn(testScope.backgroundScope),
+            effectTurbine = viewModel.effect.testIn(testScope.backgroundScope),
+        )
+    }
 }
 
 /**
  * The `turbinesWithInitialStateCheck` extension function creates a MviTurbines instance for the given MVI ViewModel
  * and ensures that the initial state is emitted.
  */
-suspend inline fun <reified STATE, EVENT, EFFECT> TestScope.turbinesWithInitialStateCheck(
+suspend inline fun <reified STATE, EVENT, EFFECT> MviContext.turbinesWithInitialStateCheck(
     viewModel: UnidirectionalViewModel<STATE, EVENT, EFFECT>,
     initialState: STATE,
 ): MviTurbines<STATE, EFFECT> {

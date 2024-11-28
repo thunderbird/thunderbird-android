@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Starta</string>
-    <string name="onboarding_welcome_import_button">Importera inställningar</string>
-    <string name="onboarding_welcome_message">Tere tulemast kasutama Androidi e-postiklienti <xliff:g id="app_name">%s</xliff:g>, mis on loodud parema turvalisuse, lihtsa kohandatavuse ja kõikide sinu e-postikontode sujuva halduse nimel.</string>
+    <string name="onboarding_welcome_start_button">Alusta</string>
+    <string name="onboarding_welcome_import_button">Impordi seadistused</string>
+    <string name="onboarding_welcome_text">Avatud lähtekoodil põhinev, privaatsuskeskne ja reklaamivaba e-posti klient Androidi jaoks.</string>
+    <string name="onboarding_welcome_developed_by">Arendajateks on pühendunud tiim firmast MZLA Technologies ja globaalne vabatahtlike kogukond. Osa Mozilla tooteperekonnast.</string>
 </resources>

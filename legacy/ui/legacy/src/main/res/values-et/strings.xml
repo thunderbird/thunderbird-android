@@ -49,7 +49,7 @@
     <string name="move_action">Teisalda</string>
     <string name="move_to_drafts_action">Teisalda mustanditesse</string>
     <string name="refile_action">Paiguta ümber…</string>
-    <string name="done_action">Tehtud</string>
+    <string name="done_action">Valmis</string>
     <string name="discard_action">Loobu</string>
     <string name="save_draft_action">Salvesta mustandina</string>
     <string name="check_mail_action">Kontrolli e-kirju</string>
@@ -197,7 +197,7 @@
     <string name="global_settings_registered_name_color_changed">Näita kontakte nimekirjas värvilisena</string>
     <string name="general_settings_contact_name_color_label">Kontakti nime värv</string>
     <string name="global_settings_messageview_fixedwidth_label">Fikseeritud laiusega fondid</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Kasuta lihtteksti kirjades fikseeritud laiusega fonti</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Kasuta lihttekstiga koostatud kirjades fikseeritud laiusega fonti</string>
     <string name="global_settings_messageview_autofit_width_label">Sobita kirjad automaatselt</string>
     <string name="global_settings_messageview_autofit_width_summary">Kahanda kirju ekraanile mahutamiseks</string>
     <string name="global_settings_confirm_actions_title">Kinnita toiming</string>
@@ -304,12 +304,6 @@
     <string name="account_settings_push_advanced_title">Täpsemalt</string>
     <string name="account_settings_title_fmt">Konto sätted</string>
     <string name="account_settings_notify_label">Uue sõnumi teated</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Teadete kaust</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Kõik</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Ainult 1. klassi kaustad</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Kõik, v.a 2. klassi kaustad</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Mitte ükski</string>
     <string name="account_settings_notify_sync_label">Sünkroniseerimise teated</string>
     <string name="account_settings_email_label">Sinu e-posti aadress</string>
     <string name="account_settings_notify_summary">Teata uue sõnumi saabumisest olekuribal</string>
@@ -398,27 +392,12 @@
     <string name="account_settings_message_age_3_months">viimased 3 kuud</string>
     <string name="account_settings_message_age_6_months">viimased 6 kuud</string>
     <string name="account_settings_message_age_1_year">viimane aasta</string>
-    <string name="account_settings_folder_display_mode_label">Kuvatavad kaustad</string>
-    <string name="account_settings_folder_display_mode_all">Kõik</string>
-    <string name="account_settings_folder_display_mode_first_class">Ainult 1. klassi kaustad</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Kõik, v.a 2. klassi kaustad</string>
-    <string name="account_settings_folder_sync_mode_label">Kontrolli kaustu</string>
-    <string name="account_settings_folder_sync_mode_all">Kõik</string>
-    <string name="account_settings_folder_sync_mode_first_class">Ainult 1. klassi kaustad</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Kõik, v.a 2. klassi kaustad</string>
-    <string name="account_settings_folder_sync_mode_none">Mitte ükski</string>
     <string name="account_settings_sync_remote_deletetions_label">Süngi serveris kustutamised</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eemalda kirjad kui need serveris kustutatud</string>
     <string name="account_settings_openpgp_missing">OpenPGP rakendus puudub - kas see on eemaldatud?</string>
     <string name="folder_settings_title">Kausta sätted</string>
     <string name="folder_settings_in_top_group_label">Näita tipp grupis</string>
     <string name="folder_settings_in_top_group_summary">Näita kaustade loendi tippu lähedal</string>
-    <string name="folder_settings_folder_display_mode_label">Kausta kuvamise klass</string>
-    <string name="folder_settings_folder_display_mode_normal">Klassita</string>
-    <string name="folder_settings_folder_display_mode_first_class">1. klass</string>
-    <string name="folder_settings_folder_display_mode_second_class">2. klass</string>
     <string name="folder_settings_clear_local_folder_action">Puhasta kohalikud kirjad</string>
     <string name="account_settings_incoming_label">Sissetuleva meili server</string>
     <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>
@@ -546,7 +525,6 @@
     <string name="account_setup_push_limit_1000">1000 kausta</string>
     <string name="animations_title">Animatsioon</string>
     <string name="animations_summary">Kasuta erinevaid visuaalseid efekte</string>
-    <string name="volume_navigation_title">Kasuta kirjavaates liikumiseks helivaljuse nuppe</string>
     <string name="show_unified_inbox_title">Näita koondsisendkausta</string>
     <string name="show_starred_count_title">Näita tärniga tähistatud kirjade arvu</string>
     <string name="integrated_inbox_title">Koondsisendkaust</string>
@@ -902,7 +880,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="push_notification_state_alarm_permission_missing">Puuduvad õigused alarmide seadistamiseks</string>
     <string name="push_notification_grant_alarm_permission">Õiguste jagamiseks klõpsi.</string>
     <string name="account_delete_dlg_instructions_fmt">Kasutajakonto \"<xliff:g id="account">%s</xliff:g>\" kustutatakse <xliff:g id="app_name">%s</xliff:g>ist.</string>
-    <string name="push_info_notification_explanation_text">Tõuketeenuste kasutamisel xliff:g id=\"app_name\"&gt;%1$s&lt;/xliff:g&gt; hoiab töös ühendust e-posti serveriga. Kui rakendus on taustal pidevalt aktiivne, siis Android eeldab, et selle kohta kuvatakse pidevat teavitust. Lisateave: &lt;xliff:g id=\"optional_extended_explanation\"&gt;%2$s&lt;/xliff:g&gt;</string>
+    <string name="push_info_notification_explanation_text">Tõuketeenuste kasutamisel <xliff:g id="app_name">%1$s</xliff:g> hoiab töös ühendust e-posti serveriga. Kui rakendus on taustal pidevalt aktiivne, siis Android eeldab, et selle kohta kuvatakse pidevat teavitust. Lisateave: <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_title">Teave <xliff:g id="app_name">%s</xliff:g>i kohta</string>
     <string name="dialog_openkeychain_info_text">Läbiva krüptimise kasutamiseks on vajalik OpenKeychaini rakendus.</string>
     <string name="about_app_authors_thunderbird">Thunderbirdi mobiilirakenduse arendustiim</string>
@@ -913,4 +891,9 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="folder_settings_push_label">Kasuta tõuketeenuseid</string>
     <string name="folder_settings_sync_label">Kasuta sünkroniseerimist</string>
     <string name="folder_list_show_hidden_folders">Näita peidetud kaustu</string>
+    <string name="folder_settings_visible_label">Näita kausta</string>
+    <string name="settings_list_action_support">Toeta <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">Salvesta manus</string>
+    <string name="volume_navigation_title_short">Helivaljuse nupu kasutamine liikumiseks</string>
+    <string name="volume_navigation_summary">Sõnumite vaates liigu helivaljuse nuppudega eri sõnumite vahel</string>
 </resources>

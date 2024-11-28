@@ -51,4 +51,12 @@
         <item quantity="one">1 melding</item>
         <item quantity="other">%d meldingar</item>
     </plurals>
+    <string name="account_setup_error_network">Nettverksfeil. Sjekk nettverkstatus, og prøv igjen.</string>
+    <string name="account_setup_special_folders_form_description">Spesifiser spesialmapper for kontoen din.</string>
+    <string name="account_setup_special_folders_loading_message">Hentar liste over mapper…</string>
+    <string name="account_setup_special_folders_error_message">Kunne ikkje hente liste over mapper frå tenaren</string>
+    <string name="account_setup_special_folders_success_message">Alle spesialmapper har vorte konfigurert automatisk av tenaren.</string>
+    <string name="account_setup_options_account_check_frequency_label">Sjekk frekvens</string>
+    <string name="account_setup_special_folders_form_description_automatic">\"Automatisk\"-oppføringa vil følgje endringar frå tenaren automatisk. Den gjeldande tenar-verdien er vist i parantes.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Me mottok konfigurasjonen for e-post-tenaren din over ein tilkopling som ikkje var så sikker som med hadde likt. Det betyr at det er ein liten sjanse nokon kan ha tukla med den. Kan du dobbelsjekke at den mottekne konfigurasjonen er rett?</string>
 </resources>

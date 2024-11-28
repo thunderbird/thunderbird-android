@@ -1,6 +1,6 @@
-– Début de la conversion de l’interface utilisateur vers Material 3
-– Prise en charge de l’URI mailto: URI des étiquettes CCP
-– Ajout d’un palliatif au plantage de l’appli en arrière-plan
-– Optimisation de certaines interactions avec le protocole IMAP
-– Ne pas retarder l’affichage de la notification si le Pousser est actif
-– Mise à jour des traductions
+– Début de la conversion de l’interface utilisateur vers Material 3.
+– Prise en charge de l’URI mailto: URI des étiquettes CCP.
+– Ajout d’un palliatif au plantage de l’appli en arrière-plan.
+– Optimisation de certaines interactions avec le protocole IMAP.
+– Ne pas retarder l’affichage de la notification si le poussé est actif.
+– Mise à jour des traductions.

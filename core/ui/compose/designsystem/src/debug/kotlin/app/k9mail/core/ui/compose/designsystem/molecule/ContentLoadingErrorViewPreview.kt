@@ -12,13 +12,43 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 
 @Composable
 @Preview(showBackground = true)
-internal fun ContentLoadingErrorViewPreview() {
+internal fun ContentLoadingErrorViewContentPreview() {
+    PreviewWithThemes {
+        DefaultContentLoadingErrorView(
+            state = ContentLoadingErrorState.Content,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingErrorViewLoadingPreview() {
+    PreviewWithThemes {
+        DefaultContentLoadingErrorView(
+            state = ContentLoadingErrorState.Loading,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingErrorViewErrorPreview() {
+    PreviewWithThemes {
+        DefaultContentLoadingErrorView(
+            state = ContentLoadingErrorState.Error,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun ContentLoadingErrorViewInteractivePreview() {
     PreviewWithThemes {
         val state = remember {
-            mutableStateOf(ContentLoadingErrorState.Loading)
+            mutableStateOf<ContentLoadingErrorState>(ContentLoadingErrorState.Loading)
         }
 
-        ContentLoadingErrorView(
+        DefaultContentLoadingErrorView(
             state = state.value,
             modifier = Modifier
                 .clickable {
@@ -35,17 +65,27 @@ internal fun ContentLoadingErrorViewPreview() {
                             state.value = ContentLoadingErrorState.Loading
                         }
                     }
-                }
-                .fillMaxSize(),
-            error = {
-                TextTitleMedium(text = "Error")
-            },
-            loading = {
-                TextTitleMedium(text = "Loading...")
-            },
-            content = {
-                TextTitleMedium(text = "Content")
-            },
+                },
         )
     }
+}
+
+@Composable
+private fun DefaultContentLoadingErrorView(
+    state: ContentLoadingErrorState,
+    modifier: Modifier = Modifier,
+) {
+    ContentLoadingErrorView(
+        state = state,
+        error = {
+            TextTitleMedium(text = "Error")
+        },
+        loading = {
+            TextTitleMedium(text = "Loading...")
+        },
+        content = {
+            TextTitleMedium(text = "Content")
+        },
+        modifier = modifier.fillMaxSize(),
+    )
 }

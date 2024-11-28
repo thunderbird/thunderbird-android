@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_welcome_start_button">Розпочати</string>
+    <string name="onboarding_welcome_import_button">Імпорт налаштувань</string>
+    <string name="onboarding_welcome_developed_by">Розроблений спеціальною командою MZLA Technologies і глобальною спільнотою волонтерів. Частина родини Mozilla.</string>
+    <string name="onboarding_welcome_text">Відкритий, приватний та безрекламний поштовий застосунок для Android.</string>
+</resources>

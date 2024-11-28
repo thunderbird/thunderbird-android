@@ -25,7 +25,6 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
-import app.k9mail.feature.account.common.ui.loadingerror.rememberContentLoadingErrorViewState
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
 import app.k9mail.feature.account.oauth.ui.AccountOAuthView
 import app.k9mail.feature.account.setup.R
@@ -39,7 +38,7 @@ internal fun AccountAutoDiscoveryContent(
     state: State,
     onEvent: (Event) -> Unit,
     oAuthViewModel: AccountOAuthContract.ViewModel,
-    appName: String,
+    brandName: String,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
@@ -60,7 +59,7 @@ internal fun AccountAutoDiscoveryContent(
                     .imePadding(),
             ) {
                 AppTitleTopHeader(
-                    title = appName,
+                    title = brandName,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 AutoDiscoveryContent(
@@ -90,24 +89,25 @@ internal fun AutoDiscoveryContent(
     val resources = LocalContext.current.resources
 
     ContentLoadingErrorView(
-        state = rememberContentLoadingErrorViewState(state),
+        state = state,
         loading = {
             LoadingView(
                 message = stringResource(id = R.string.account_setup_auto_discovery_loading_message),
                 modifier = Modifier.fillMaxSize(),
             )
         },
-        error = {
+        error = { error ->
             ErrorView(
                 title = stringResource(id = R.string.account_setup_auto_discovery_loading_error),
-                message = state.error?.toAutoDiscoveryErrorString(resources),
+                message = error.toAutoDiscoveryErrorString(resources),
                 onRetry = { onEvent(Event.OnRetryClicked) },
                 modifier = Modifier.fillMaxSize(),
             )
         },
-        content = {
+        content = { contentState ->
+            @Suppress("ViewModelForwarding")
             ContentView(
-                state = state,
+                state = contentState,
                 onEvent = onEvent,
                 oAuthViewModel = oAuthViewModel,
                 resources = resources,

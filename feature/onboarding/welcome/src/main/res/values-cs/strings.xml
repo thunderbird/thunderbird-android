@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Začít</string>
+    <string name="onboarding_welcome_start_button">Začínáme</string>
     <string name="onboarding_welcome_import_button">Importovat nastavení</string>
-    <string name="onboarding_welcome_message">Vítejte v <xliff:g id="app_name">%s</xliff:g>, e-mailovém klientu pro Android navrženém pro bezpečnost, snadné přizpůsobení a jednotnou správu všech vašich e-mailových účtů.</string>
+    <string name="onboarding_welcome_text">E-mailová aplikace pro Android bez reklam s otevřeným zdrojovým kódem, zaměřená na ochranu soukromí.</string>
+    <string name="onboarding_welcome_developed_by">Thunderbird je vyvíjen týmem v MZLA Technologies a globální komunitou dobrovolníků. Je součástí rodiny Mozilla.</string>
 </resources>

@@ -5,4 +5,6 @@
     <string name="account_oauth_loading_message">Saluti per OAuth</string>
     <string name="account_oauth_loading_error">Malsukcesis saluti per OAuth</string>
     <string name="account_oauth_error_failed">Saluto malsukcesis pro la jena eraro: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 estas nun ne subtenata kun tiu provizanto.</string>
+    <string name="account_oauth_error_canceled">Saluto nuligita</string>
 </resources>

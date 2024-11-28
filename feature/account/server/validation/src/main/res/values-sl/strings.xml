@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_client_certificate_expired">Potrdilo odjemalca ni več veljavno.</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Dostop do potrdila odjemalca ni bil mogoč.</string>
+    <string name="account_server_validation_error_missing_server_capability">Manjka zmogljivost strežnika.</string>
+    <string name="account_server_validation_incoming_loading_message">Preverjanje nastavitev dohodnega strežnika …</string>
+    <string name="account_server_validation_incoming_success">Nastavitve dohodnega strežnika so bile preverjene.</string>
+    <string name="account_server_validation_outgoing_loading_message">Preverjanje nastavitev odhodnega strežnika …</string>
+    <string name="account_server_validation_error_details">Podrobnosti:\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Strežniku manjka naslednja zmogljivost:\n%s</string>
+    <string name="account_server_validation_sign_in">Pred nadaljevanjem se je treba vpisati.</string>
+    <string name="account_server_validation_outgoing_loading_error">Preverjanje nastavitev odhodnega strežnika je spodletelo.</string>
+    <string name="account_server_validation_outgoing_success">Nastavitve odhodnega strežnika so bile preverjene.</string>
+    <string name="account_server_validation_error_authentication">Napaka overitve</string>
+    <string name="account_server_validation_error_network">Napaka omrežja</string>
+    <string name="account_server_validation_error_server">Napaka strežnika</string>
+    <string name="account_server_validation_error_unknown">Neznana napaka</string>
+    <string name="account_server_validation_incoming_loading_error">Preverjanje nastavitev dohodnega strežnika je spodletelo.</string>
+</resources>

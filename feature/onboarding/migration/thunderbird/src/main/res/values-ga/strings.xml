@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">An bhfuil Thunderbird in úsáid agat ar an deasc cheana féin?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Socruithe a allmhairiú</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Nua do Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Cuir cuntas ríomhphoist leis anois</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Iompórtáil do shocruithe cuntais go héasca trí chód QR a scanadh.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">I deasc Thunderbird, téigh chuig:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Socruithe’ sa Bharra Uirlisí Spáis (bun ar chlé)</string>
+    <string name="onboarding_migration_thunderbird_import_title">Ag bogadh ó aip nó gléas eile?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Iompórtáil do shocruithe cuntais anois</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Roghnaigh ‘Easpórtáil go Soghluaiste’</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Teastaíonn an leagan is déanaí de Thunderbird Desktop 128 le hiompórtáil. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Foghlaim conas Thunderbird a nuashonrú.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Níor aimsíodh aon aip chun an nasc a oscailt.</string>
+</resources>

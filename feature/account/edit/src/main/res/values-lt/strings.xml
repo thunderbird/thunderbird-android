@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_success_message">Įrašyti serverio nustatymai</string>
+    <string name="account_edit_save_server_settings_loading_message">Įrašoma serverio nustatymai…</string>
+    <string name="account_edit_save_server_settings_error_message">Nepavyko įrašyti serverio nustatymų.</string>
+</resources>

@@ -43,7 +43,6 @@ dependencies {
     implementation(libs.ckchangelog.core)
     implementation(libs.tokenautocomplete)
     implementation(libs.safeContentResolver)
-    implementation(libs.materialdrawer)
     implementation(libs.searchPreference)
     implementation(libs.fastadapter)
     implementation(libs.fastadapter.extensions.drag)

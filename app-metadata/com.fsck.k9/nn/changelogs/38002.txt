@@ -1,0 +1,5 @@
+- Dytting Opplys brukaren om løyve for å planleggje eksakte alarmar manglar
+- Endra innstilinga "Send klient-ID" til "Send klient-informasjon"
+- IMAP: La til stønad for \NonExistent LIST respons-attributen
+- IMAP: Send EXPUNGE-kommando etter flytting utan MOVE utviding
+- Oppdaterte omsetjingar; la til hebraisk omsetjing

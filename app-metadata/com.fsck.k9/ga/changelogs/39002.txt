@@ -1,0 +1,8 @@
+- Athraíodh go leor inmheánach chun aistriú go Ábhar 3. Tabhair faoi deara go bhfuil an Chomhéadain Ábhar 3 fós i staid luath.
+- D'athraigh ord gníomhartha an bharra uirlisí san amharc teachtaireachta chun an t-ordú a mheaitseáil i mód ilroghnaithe
+- Athraíodh an luach réamhshocraithe le haghaidh "Faigh teachtaireachtaí suas go dtí" go 128KiB
+- Fabht seasta nuair a taispeánadh deilbhíní an bharra uirlisí sa dath mícheart tar éis gníomh swipe a dhéanamh
+- Tuairteála seasta nuair a gearradh seoltaí ríomhphoist ó réimse faighteora agus teachtaireacht á chumadh
+- Méid seasta an bharra uirlisí agus clómhéid córais neamh-réamhshocraithe á úsáid
+- Cuireadh aistriúcháin Chorsaicis, Cóiréis agus Vítneaimis leis
+- Aistriúcháin nuashonraithe

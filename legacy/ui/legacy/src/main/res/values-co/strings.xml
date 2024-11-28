@@ -284,12 +284,6 @@
     <string name="account_setup_options_mail_display_count_all">tutti i messaghji</string>
     <string name="move_copy_cannot_copy_unsynced_message">Ùn si pò micca cupià o dispiazzà un messaghju chì ùn hè micca sincrunizatu cù u servitore</string>
     <string name="account_settings_push_advanced_title">Espertu</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Cartulari di e nutificazioni</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Tutti</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Solu i cartulari di 1a classa</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Tutti i cartulari fora di a 2a classa</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Nisunu</string>
     <string name="account_settings_notify_sync_label">Nutificazioni di sincrunizazione</string>
     <string name="account_settings_email_label">U vostru indirizzu elettronicu</string>
     <string name="account_settings_notify_summary">Nutificazione in a barra di statu à ricezzione d’un messaghju novu</string>
@@ -358,19 +352,7 @@
     <string name="account_settings_message_age_3_months">i 3 ultimi mesi</string>
     <string name="account_settings_message_age_6_months">i 6 ultimi mesi</string>
     <string name="account_settings_message_age_1_year">l’ultimu annu</string>
-    <string name="account_settings_folder_display_mode_label">Cartulari à affissà</string>
-    <string name="account_settings_folder_display_mode_all">Tutti</string>
-    <string name="account_settings_folder_display_mode_first_class">Solu i cartulari di 1a classa</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Tutti i cartulari fora di a 2a classa</string>
-    <string name="account_settings_folder_sync_mode_label">Cartulari à sullicità</string>
-    <string name="account_settings_folder_sync_mode_all">Tutti</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Tutti i cartulari fora di a 2a classa</string>
-    <string name="account_settings_folder_sync_mode_none">Nisunu</string>
     <string name="folder_settings_in_top_group_summary">Affissà in a parte superiore di a lista di i cartulari</string>
-    <string name="folder_settings_folder_display_mode_label">Classa d’affissera di u cartulare</string>
-    <string name="folder_settings_folder_display_mode_normal">Nisuna classa</string>
-    <string name="folder_settings_folder_display_mode_second_class">2a classa</string>
     <string name="folder_settings_clear_local_folder_action">Squassà i messaghji lucale</string>
     <string name="account_settings_outgoing_summary">Cunfigurà u servitore d’esciuta (SMTP) di i messaghji</string>
     <string name="account_settings_vibration">Vibrazione</string>
@@ -408,8 +390,6 @@
     <string name="account_settings_autodownload_message_size_10240">10 Mio</string>
     <string name="account_settings_message_age_1">i 2 ultimi ghjorni</string>
     <string name="account_settings_message_age_21">e 3 ultime settimane</string>
-    <string name="account_settings_folder_sync_mode_first_class">Solu i cartulari di 1a classa</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Cartulari di 1a è 2a classa</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincrunizà e squassature di u servitore</string>
     <string name="account_settings_sync_remote_deletetions_summary">Caccià i messaghji quand’elli sò squassati nant’à u servitore</string>
     <string name="account_settings_openpgp_missing">L’appiecazione OpenPGP hè assente ; seria desinstallata ?</string>
@@ -421,7 +401,6 @@
     <string name="account_settings_vibrate_pattern_4">Mudellu 4</string>
     <string name="account_settings_vibrate_pattern_2">Mudellu 2</string>
     <string name="account_settings_vibrate_pattern_5">Mudellu 5</string>
-    <string name="folder_settings_folder_display_mode_first_class">1a classa</string>
     <string name="account_settings_incoming_label">Servitore d’entrata</string>
     <string name="account_settings_incoming_summary">Cunfigurà u servitore d’entrata di i messaghji</string>
     <string name="account_settings_outgoing_label">Servitore d’esciuta</string>
@@ -517,7 +496,6 @@
     <string name="account_setup_push_limit_1000">1000 cartulari</string>
     <string name="animations_title">Animazione</string>
     <string name="animations_summary">Impiegà l’effetti visuali esagerati</string>
-    <string name="volume_navigation_title">Navigà cù vulume in a vista di messaghji</string>
     <string name="show_unified_inbox_title">Affissà a scatula di ricezzione cuncolta</string>
     <string name="show_starred_count_title">Affissà u numaru di stellati</string>
     <string name="integrated_inbox_detail">Tutti i messaghji in i cartulari cuncolti</string>
@@ -842,4 +820,16 @@
     <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l’altru.</string>
     <string name="about_title">Apprupositu di <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">A squadra Thunderbird Mobile</string>
+    <string name="folder_settings_push_label">Attivà a catapughjata</string>
+    <string name="folder_settings_sync_label">Attivà a sincrunizazione</string>
+    <string name="folder_settings_notifications_label">Nutificazioni</string>
+    <string name="settings_ui_telemetry_description">Sparte cù Mozilla i dati di perfurmenza, d’impiegu, di materiale è di persunalizazione di st’appiecazione per aiutacci à amendà Thunderbird</string>
+    <string name="settings_ui_data_collection">Culletta di dati</string>
+    <string name="settings_ui_telemetry_title">Dati d’impiegu è tecnichi</string>
+    <string name="folder_settings_visible_label">Affissà u cartulare</string>
+    <string name="folder_list_show_hidden_folders">Affissà i cartulari piattati</string>
+    <string name="settings_list_action_support">Sustene <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Navigà cù i tasti di vulume in a vista di messaghji</string>
+    <string name="volume_navigation_summary">Navigà d’un messaghju à l’altru cù i tasti di vulume nant’à a vista di i messaghji</string>
+    <string name="save_attachment_action">Arregistrà a pezza aghjunta</string>
 </resources>

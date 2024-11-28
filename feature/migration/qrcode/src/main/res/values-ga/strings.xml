@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Rochtain ceamara ag teastáil</string>
+    <string name="migration_qrcode_scanning_progress">Scanadh %1$s de %2$s</string>
+    <string name="migration_qrcode_done_button_text">Déanta</string>
+    <string name="migration_qrcode_permission_denied_message">Téigh chuig socruithe Android, tapáil ceadanna, agus ceadaigh rochtain ar an gceamara.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Téigh go dtí socruithe</string>
+    <string name="migration_qrcode_scanning_instructions">Ailínigh an cód QR a cuireadh ar fáil ó Thunderbird Desktop</string>
+</resources>

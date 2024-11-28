@@ -1,0 +1,7 @@
+- Ujdisje e re dhe e përmirësuar e llogarive
+- U shtua mundësia për t’u kthyer te lista e mesazheve, pas vënies shenjë një mesazhi si i palexuar, te pama mesazhe
+- U bë në e vështirë të shkaktohen aksidentalisht veprime fshirjeje, te skena e listës së mesazheve
+- U përmirësua funksionimi i lexuesit të ekranit në vende të ndryshme
+- IMAP: U shtua mbulim për dërgim të urdhrit ID (që është i domosdoshëm për disa shërbime email-i)
+- Ndreqje të metash dhe përmirësime të tjera të ndryshme; shihni ndryshimet për versionet 6.7xx
+- U hoqën përkthimet në hebraishte dhe koreane, për shkak se qenë shumë të paplotë; përkthyesit vullnetarë janë të mirëpritur!

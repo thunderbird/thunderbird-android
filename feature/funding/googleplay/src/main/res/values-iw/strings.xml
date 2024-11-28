@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">תמוך בת\'אנדרבירד</string>
+    <string name="funding_googleplay_contribution_header_description">אנחנו לעולם לא נראה פרסומות או נמכור את הנתונים שלך. אנחנו ממומנים ע\"י תרומות מהמשתמשים שלנו. אם אתה נהנה מת\'אנדרבירד, אנא עזור לתמוך ביישום. אנחנו לא יכולים לעשות זאת בלעדיך!</string>
+    <string name="funding_googleplay_contribution_list_title">תרומה מאובטחת</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">תן פעם אחת</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">חודשי</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">לא זמין</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">תרומות אינן קבילות להחזר מס.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">המשך לתשלום</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">שנה תשלום חודשי</string>
+    <string name="funding_googleplay_contribution_title">תמוך בת\'אנדרבירד</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">בצעו תרומה משמעותית נוספת</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">תרומה רצינית</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">התרומה שלך ממש זוהרת! אתה משחק תפקיד גדול בקידום המשימה שלנו, ועוזר לנו להגיע לאבני דרך חשובות ולהצליח לייצר השפעה גדולה יותר.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">תרומה בלתי רגילה</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">תרומה בסיסית</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">התמיכה שלך עוזרת לנו להמשיך קדימה! גם התרומות הקטנות ביותר יוצרות אדוות של שינוי, ואנחנו אסירי תודה שאתה איתנו.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">אתה עוזר לנו לגרום לדברים גדולים לקרות! תרומה בגובה כזה עוזרת לנו לקחת צעדים משמעותיים קדימה ומאפשרת לנו להמשיך לגדול.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">בזכותך אנחנו יכולים לעשות את מה שאנחנו עושים! תודות לנדיבותך, אנחנו יכולים לקחת פרוייקטים גדולים יותר ולהגיע לאבני דרך חדשות ביחד.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">תרומות מתוך היישום לא זמינות כרגע.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">בקר ב: www.thunderbird.net לדרכים נוספות בהן תוכל לתמוך בת\'אנדרבירד</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">נסה שוב</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">תשלום לא זמין כרגע</string>
+    <string name="funding_googleplay_contribution_error_show_more">הצג פרטים נוספים</string>
+    <string name="funding_googleplay_contribution_error_unknown">שגיאה לא מוכרת</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">רכישה נכשלה.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">תרומות לא זמינות כרגע.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">תרומה ערכית</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">תרומה משמעותית</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">תרומה ניכרת</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">תודה לכם על תרומתכם הנדיבה! התרומה שלכם מחזרת באופן ישיר את ת\'אנדרבירד, ואנחנו מלאי הכרת תודה על זה שאתם לצידנו במסע הזה.</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">לדחות את השגיאה</string>
+</resources>

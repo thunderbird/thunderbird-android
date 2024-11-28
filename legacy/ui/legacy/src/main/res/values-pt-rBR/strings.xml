@@ -124,9 +124,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Notificação de erro</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Ocorreu um erro ao tentar criar uma notificação de sistema para uma nova mensagem. O provável motivo é a ausência de um som de notificação.
-\n
-\nToque para abrir as configurações de notificação.</string>
+    <string name="notification_notify_error_text">Ocorreu um erro ao tentar criar uma notificação de sistema para uma nova mensagem. O provável motivo é a ausência de um som de notificação.\n\nToque para abrir as configurações de notificação.</string>
     <string name="notification_bg_sync_ticker">Verificando e-mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Verificando e-mail</string>
     <string name="notification_bg_send_ticker">Enviando mensagem: <xliff:g id="account">%s</xliff:g></string>
@@ -200,7 +198,7 @@
     <string name="global_settings_registered_name_color_changed">Colorir nomes em sua lista de contatos</string>
     <string name="general_settings_contact_name_color_label">Cor do nome do contato</string>
     <string name="global_settings_messageview_fixedwidth_label">Fontes de largura fixa</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte de largura fixa ao exibir mensagens que contenham somente texto</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte de largura fixa ao exibir mensagens de texto simples</string>
     <string name="global_settings_messageview_autofit_width_label">Ajustar mensagens automaticamente</string>
     <string name="global_settings_messageview_autofit_width_summary">Ajusta as mensagens para que caibam na tela</string>
     <string name="global_settings_confirm_actions_title">Confirmar ações</string>
@@ -307,12 +305,6 @@
     <string name="account_settings_push_advanced_title">Avançado</string>
     <string name="account_settings_title_fmt">Configurações da conta</string>
     <string name="account_settings_notify_label">Notificações de novas mensagens</string>
-    <string name="account_settings_folder_notify_new_mail_mode_label">Notificações de pastas</string>
-    <string name="account_settings_folder_notify_new_mail_mode_all">Todas</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_class">Apenas pastas de 1ª classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
-    <string name="account_settings_folder_notify_new_mail_mode_none">Nenhuma</string>
     <string name="account_settings_notify_sync_label">Notificações de sincronização</string>
     <string name="account_settings_email_label">Seu endereço de e-mail</string>
     <string name="account_settings_notify_summary">Notifica, na barra de status, quando chegarem novas mensagens</string>
@@ -401,27 +393,12 @@
     <string name="account_settings_message_age_3_months">dos últimos 3 meses</string>
     <string name="account_settings_message_age_6_months">dos últimos 6 meses</string>
     <string name="account_settings_message_age_1_year">do último ano</string>
-    <string name="account_settings_folder_display_mode_label">Pastas a serem exibidas</string>
-    <string name="account_settings_folder_display_mode_all">Todas</string>
-    <string name="account_settings_folder_display_mode_first_class">Apenas pastas de 1ª classe</string>
-    <string name="account_settings_folder_display_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
-    <string name="account_settings_folder_display_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
-    <string name="account_settings_folder_sync_mode_label">Verificar pastas</string>
-    <string name="account_settings_folder_sync_mode_all">Todas</string>
-    <string name="account_settings_folder_sync_mode_first_class">Apenas pastas de 1ª classe</string>
-    <string name="account_settings_folder_sync_mode_first_and_second_class">Pastas de 1ª e 2ª classe</string>
-    <string name="account_settings_folder_sync_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
-    <string name="account_settings_folder_sync_mode_none">Nenhuma</string>
     <string name="account_settings_sync_remote_deletetions_label">Sincronizar exclusões no servidor</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove mensagens quando excluídas no servidor</string>
     <string name="account_settings_openpgp_missing">O aplicativo de OpenPGP não foi encontrado - ele foi desinstalado?</string>
     <string name="folder_settings_title">Configurações da pasta</string>
     <string name="folder_settings_in_top_group_label">Exibir no grupo superior</string>
     <string name="folder_settings_in_top_group_summary">Exibe perto do topo da lista de pastas</string>
-    <string name="folder_settings_folder_display_mode_label">Classe de exibição da pasta</string>
-    <string name="folder_settings_folder_display_mode_normal">Nenhuma classe</string>
-    <string name="folder_settings_folder_display_mode_first_class">1ª classe</string>
-    <string name="folder_settings_folder_display_mode_second_class">2ª classe</string>
     <string name="folder_settings_clear_local_folder_action">Limpar mensagens locais</string>
     <string name="account_settings_incoming_label">Servidor de recebimento</string>
     <string name="account_settings_incoming_summary">Configure o servidor recebimento de mensagens</string>
@@ -549,7 +526,6 @@
     <string name="account_setup_push_limit_1000">1000 pastas</string>
     <string name="animations_title">Animação</string>
     <string name="animations_summary">Utilizar efeitos visuais extravagantes</string>
-    <string name="volume_navigation_title">Navegação com os botões de volume na visualização da mensagem</string>
     <string name="show_unified_inbox_title">Exibir a caixa de entrada unificada</string>
     <string name="show_starred_count_title">Mostrar a contagem de sinalizadas</string>
     <string name="integrated_inbox_title">Caixa de Entrada Unificada</string>
@@ -917,7 +893,12 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="settings_ui_data_collection">Coleta de dados</string>
     <string name="settings_ui_telemetry_title">Dados de uso e técnicos</string>
     <string name="settings_ui_telemetry_description">Compartilha dados sobre performance, uso, hardware, e customização deste app com a Mozilla para nos ajudar a fazer o Thunderbird melhor</string>
-    <string name="folder_settings_push_label">Ativar Pusg</string>
+    <string name="folder_settings_push_label">Ativar Push</string>
     <string name="folder_settings_sync_label">Ativar sincronização</string>
     <string name="folder_list_show_hidden_folders">Mostrar pastas escondidas</string>
+    <string name="folder_settings_visible_label">Mostrar pasta</string>
+    <string name="settings_list_action_support">Apoie o <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_summary">Navegue entre as mensagens usando os botões de volume</string>
+    <string name="save_attachment_action">Salvar anexo</string>
+    <string name="volume_navigation_title_short">Navegação com o botão de volume</string>
 </resources>

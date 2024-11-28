@@ -1,0 +1,7 @@
+- Cuireadh tacaíocht DNSSEC leis agus socruithe freastalaí á lorg le linn an tsocraithe
+- Rinneadh athrú chun cosc a chur ar roinnt méarchláir bogearraí seoltaí ríomhphoist a chaipitliú/uathcheartú i socrú cuntais
+- Socraíodh timpiste nuair a úsáideadh ábhar an-fhada
+- Seasta ag taispeáint teachtaireachtaí earráide OAuth 2.0
+- Tuairte annamh seasta nuair a bhíonn ceangaltán á íoslódáil
+- Cód curtha leis chun sosanna líne a dhícheadú in ionchuir téacs aon líne
+- Aistriúcháin nuashonraithe

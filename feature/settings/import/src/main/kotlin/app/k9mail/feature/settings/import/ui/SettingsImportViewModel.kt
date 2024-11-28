@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.k9mail.feature.migration.launcher.api.MigrationManager
 import app.k9mail.feature.settings.import.SettingsImportExternalContract.AccountActivator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillisWithResult
@@ -36,12 +37,17 @@ internal class SettingsImportViewModel(
     private val contentResolver: ContentResolver,
     private val settingsImporter: SettingsImporter,
     private val accountActivator: AccountActivator,
+    private val migrationManager: MigrationManager,
     private val importAppFetcher: ImportAppFetcher,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     viewModelScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()),
 ) : ViewModel(viewModelScope) {
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
+
+    private var isInitialized = false
+    private var action = SettingsImportAction.Overview
+    private var wasActionHandled = false
 
     private val uiModel = SettingsImportUiModel()
     private var accountsMap: MutableMap<AccountNumber, AccountUuid> = mutableMapOf()
@@ -69,8 +75,18 @@ internal class SettingsImportViewModel(
                 .toSet()
         }
 
-    init {
-        checkForImportApps()
+    fun initialize() {
+        if (isInitialized) return
+
+        if (migrationManager.isFeatureIncluded()) {
+            updateUiModel {
+                showMigrationActions()
+            }
+
+            checkForImportApps()
+        }
+
+        isInitialized = true
     }
 
     private fun checkForImportApps() {
@@ -98,7 +114,9 @@ internal class SettingsImportViewModel(
         return uiModelLiveData
     }
 
+    @Suppress("LongMethod")
     fun initializeFromSavedState(savedInstanceState: Bundle) {
+        wasActionHandled = true
         contentUri = BundleCompat.getParcelable(savedInstanceState, STATE_CONTENT_URI, Uri::class.java)
         currentlyAuthorizingAccountUuid = savedInstanceState.getString(STATE_CURRENTLY_AUTHORIZING_ACCOUNT_UUID)
 
@@ -197,6 +215,19 @@ internal class SettingsImportViewModel(
         outState.putParcelable(STATE_CONTENT_URI, contentUri)
     }
 
+    fun setAction(action: SettingsImportAction) {
+        this.action = action
+
+        if (!wasActionHandled) {
+            wasActionHandled = true
+
+            when (action) {
+                SettingsImportAction.Overview -> Unit
+                SettingsImportAction.ScanQrCode -> onScanQrCodeButtonClicked()
+            }
+        }
+    }
+
     fun onPickDocumentButtonClicked() {
         updateUiModel {
             disablePickButtons()
@@ -222,8 +253,12 @@ internal class SettingsImportViewModel(
     }
 
     fun onDocumentPickCanceled() {
-        updateUiModel {
-            enablePickButtons()
+        if (action == SettingsImportAction.ScanQrCode) {
+            sendActionEvent(Action.Close(importSuccess = false))
+        } else {
+            updateUiModel {
+                enablePickButtons()
+            }
         }
     }
 

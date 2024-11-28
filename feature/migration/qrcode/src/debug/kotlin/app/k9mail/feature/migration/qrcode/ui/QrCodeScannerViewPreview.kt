@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.DisplayText
 
 @Preview
 @Composable
@@ -12,8 +13,7 @@ fun QrCodeScannerViewPreview_initial() {
         Surface {
             QrCodeScannerView(
                 cameraUseCasesProvider = { emptyList() },
-                scannedCount = 0,
-                totalCount = 0,
+                displayText = DisplayText.HelpText,
                 onDoneClick = {},
             )
         }
@@ -27,8 +27,7 @@ fun QrCodeScannerViewPreview_one_qr_code_scanned() {
         Surface {
             QrCodeScannerView(
                 cameraUseCasesProvider = { emptyList() },
-                scannedCount = 1,
-                totalCount = 2,
+                DisplayText.ProgressText(scannedCount = 1, totalCount = 2),
                 onDoneClick = {},
             )
         }

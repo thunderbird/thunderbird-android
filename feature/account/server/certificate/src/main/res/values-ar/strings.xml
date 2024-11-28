@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">تحذير</string>
+    <string name="account_server_certificate_unknown_error_subtitle">خطأ في الشهادة</string>
+    <string name="account_server_certificate_button_back">العودة إلى الوراء (يستحسن)</string>
+    <string name="account_server_certificate_button_advanced">متقدم</string>
+    <string name="account_server_certificate_button_continue">قبول المخاطرة والمتابعة</string>
+    <string name="account_server_certificate_section_title">شهادة الخادم</string>
+    <string name="account_server_certificate_not_valid_before">ليست صالحة قبل</string>
+    <string name="account_server_certificate_not_valid_after">ليست صالحة بعد</string>
+    <string name="account_server_certificate_subject">اسم الموضوع</string>
+    <string name="account_server_certificate_issuer">اسم المُصدر</string>
+    <string name="account_server_certificate_subject_alternative_names">الأسماء البديلة للموضوع (Subject Alternative Names)</string>
+    <string name="account_server_certificate_unknown_error_description_format">اكتشف التطبيق تهديدًا أمنيًا محتملاً وأوقف الاتصال بـ <xliff:g id="serverName">1%s</xliff:g>.\nإذا قمت بمتابعة الاتصال، فقد يحاول المهاجمون سرقة معلومات مثل كلمة المرور أو رسائل البريد الإلكتروني الخاصة بك.</string>
+    <string name="account_server_certificate_fingerprints_section">بصمات رقمية</string>
+</resources>

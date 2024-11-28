@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Menyimpan pengaturan peladen…</string>
+    <string name="account_edit_save_server_settings_error_message">Gagal menyimpan pengaturan peladen</string>
+    <string name="account_edit_save_server_settings_success_message">Pengaturan peladen disimpan</string>
+</resources>

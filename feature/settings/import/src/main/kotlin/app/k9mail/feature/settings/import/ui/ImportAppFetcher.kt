@@ -14,7 +14,7 @@ internal class ImportAppFetcher(
      */
     @WorkerThread
     fun isAtLeastOneAppInstalled(): Boolean {
-        return supportedApps.any { packageName -> packageManager.isAppInstalled(packageName) }
+        return supportedApps.any { app -> packageManager.isAppInstalled(app.packageName) }
     }
 
     @Suppress("SwallowedException")
@@ -33,17 +33,20 @@ internal class ImportAppFetcher(
     @WorkerThread
     fun getAppInfoList(): List<AppInfo> {
         return supportedApps
-            .mapNotNull { packageName -> packageManager.loadAppInfo(packageName) }
+            .mapNotNull { app -> packageManager.loadAppInfo(app) }
             .toList()
     }
 
     @Suppress("SwallowedException")
-    private fun PackageManager.loadAppInfo(packageName: String): AppInfo? {
+    private fun PackageManager.loadAppInfo(app: AppVersion): AppInfo? {
         return try {
-            val applicationInfo = getApplicationInfo(packageName, 0)
+            val packageInfo = getPackageInfo(app.packageName, 0)
+            val isImportSupported = packageInfo.versionCode >= app.minVersionCode
+
+            val applicationInfo = getApplicationInfo(app.packageName, 0)
             val appName = packageManager.getApplicationLabel(applicationInfo).toString()
 
-            AppInfo(packageName, appName)
+            AppInfo(app.packageName, appName, isImportSupported)
         } catch (e: PackageManager.NameNotFoundException) {
             null
         }
@@ -52,29 +55,32 @@ internal class ImportAppFetcher(
     /**
      * Get the list of application IDs of supported apps excluding our own app.
      */
-    private val supportedApps: Sequence<String>
+    private val supportedApps: Sequence<AppVersion>
         get() {
             val myPackageName = context.packageName
             return SUPPORTED_APPS
                 .asSequence()
-                .filterNot { packageName -> packageName == myPackageName }
+                .filterNot { app -> app.packageName == myPackageName }
         }
 
     companion object {
         private val SUPPORTED_APPS = listOf(
             // K-9 Mail
-            "com.fsck.k9",
+            AppVersion("com.fsck.k9", 39005),
             // Thunderbird for Android (release)
-            "net.thunderbird.android",
+            AppVersion("net.thunderbird.android", 1),
             // Thunderbird for Android (beta)
-            "net.thunderbird.android.beta",
+            AppVersion("net.thunderbird.android.beta", 4),
             // Thunderbird for Android (daily)
-            "net.thunderbird.android.daily",
+            AppVersion("net.thunderbird.android.daily", 1),
         )
     }
 }
 
-internal data class AppInfo(val packageName: String, private val appName: String) {
-    // ArrayAdapter is using `toString()` when rendering list items. See PickAppDialogFragment.
-    override fun toString() = appName
-}
+private data class AppVersion(val packageName: String, val minVersionCode: Int)
+
+internal data class AppInfo(
+    val packageName: String,
+    val appName: String,
+    val isImportSupported: Boolean,
+)
