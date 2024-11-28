@@ -886,4 +886,10 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="settings_ui_data_collection">Datumojn kolekto</string>
     <string name="message_details_toolbar_title">Mesaĝon detaloj</string>
     <string name="push_info_notification_explanation_text">Dum la uzo de puŝ-sciigoj, <xliff:g id="app_name">%1$s</xliff:g> daŭrigas konekton al la retpoŝta servilo. Android postulas montri daŭran sciigon kiam la apo estas fone aktiva. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="account_settings_vibrate_pattern_5">Ritmo 5</string>
+    <string name="account_settings_vibrate_pattern_1">Ritmo 1</string>
+    <string name="account_settings_vibrate_pattern_3">Ritmo 3</string>
+    <string name="account_settings_vibrate_pattern_4">Ritmo 4</string>
+    <string name="account_settings_vibrate_pattern_label">Ritmo de vibrado</string>
+    <string name="account_settings_vibrate_pattern_2">Ritmo 2</string>
 </resources>
