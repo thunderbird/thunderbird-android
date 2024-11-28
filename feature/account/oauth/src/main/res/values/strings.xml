@@ -11,4 +11,8 @@
     <string name="account_oauth_error_not_supported">OAuth 2.0 is currently not supported with this provider.</string>
     <string name="account_oauth_error_browser_not_available">The app couldn\'t find a browser to use for granting access to your account.</string>
 
+    <!-- This is displayed below the "Sign in with Google" button. {placeHolder} will be replaced with the text from account_oauth_google_sign_in_support_text_link_text. -->
+    <string name="account_oauth_google_sign_in_support_text">"If you're experiencing problems when signing in with Google, please consult our {placeHolder}."</string>
+    <!-- The {placeHolder} in account_oauth_google_sign_in_support_text will be replaced by this text (that, in the user interface, will be a link to the support article). -->
+    <string name="account_oauth_google_sign_in_support_text_link_text">support article</string>
 </resources>
