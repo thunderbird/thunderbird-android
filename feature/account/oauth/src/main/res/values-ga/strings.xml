@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_error">Theip ar shíniú isteach OAuth</string>
     <string name="account_oauth_error_failed">Theip ar údarú leis an earráid seo a leanas: <xliff:g id="error"> %s</xliff:g></string>
     <string name="account_oauth_error_not_supported">Ní thacaítear le OAuth 2.0 leis an soláthraí seo faoi láthair.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">alt tacaíochta</string>
+    <string name="account_oauth_google_sign_in_support_text">Má tá fadhbanna agat agus tú ag síniú isteach le Google, téigh i gcomhairle lenár {placeHolder}.</string>
 </resources>

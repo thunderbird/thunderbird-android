@@ -95,7 +95,7 @@
     <string name="status_network_error">连接错误</string>
     <string name="status_invalid_id_error">邮件未找到</string>
     <string name="status_loading_error">邮件加载错误</string>
-    <string name="load_more_messages_fmt">最多加载 <xliff:g id="messages_to_load">%d</xliff:g> 封邮件</string>
+    <string name="load_more_messages_fmt">最多再加载 <xliff:g id="messages_to_load">%d</xliff:g> 封邮件</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>

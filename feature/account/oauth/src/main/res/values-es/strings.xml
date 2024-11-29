@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Iniciar sesión mediante OAuth</string>
     <string name="account_oauth_sign_in_description">Te redirigiremos a la web de tu proveedor de correo para que escribas tus credenciales. Tienes que dar acceso a la aplicación para poder acceder a tus datos.</string>
     <string name="account_oauth_sign_in_button">Iniciar sesión</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">artículo de soporte</string>
+    <string name="account_oauth_google_sign_in_support_text">Si estás experimentando problemas iniciando sesión con Google, consulta nuestro {placeHolder}.</string>
 </resources>

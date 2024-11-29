@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Přihlašování pomocí OAuth</string>
     <string name="account_oauth_sign_in_description">Pro přihlášení budete přesměrování k poskytovateli vaší e-mailové schránky. Budete muset aplikaci udělit oprávnění pro přístup ke svému e-mailovému účtu.</string>
     <string name="account_oauth_sign_in_button">Přihlásit se</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">článek podpory</string>
+    <string name="account_oauth_google_sign_in_support_text">Pokud máte problémy s přihlášením přes Google, podívejte se na náš {placeHolder}.</string>
 </resources>
