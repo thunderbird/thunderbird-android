@@ -292,7 +292,7 @@ class ChooseFolderActivity : K9Activity() {
 
     companion object {
         private const val STATE_SCROLL_TO_FOLDER_ID = "scrollToFolderId"
-        private const val STATE_SCROLL_TO_ACCOUNT_ID = "scrollToAccountId" // MBAL
+        private const val STATE_SCROLL_TO_ACCOUNT_ID = "scrollToAccountId"
         private const val STATE_SHOW_HIDDEN_FOLDERS = "showHiddenFolders"
         private const val EXTRA_ACCOUNT = "accountUuid"
         private const val EXTRA_CURRENT_FOLDER_ID = "currentFolderId"

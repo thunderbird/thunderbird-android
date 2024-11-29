@@ -1893,8 +1893,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         if (account.equals(destAccount)) {
             moveOrCopyMessageSynchronousSameAccount(account, srcFolderId, inMessages, destFolderId, operation);
         }
-        else { // MBAL
-            Timber.d("MBAL: moveOrCopyMessageSynchronous(%s, %s, %s, %s, %s, size=%s)", account, srcFolderId, inMessages,
+        else {
+            Timber.d("moveOrCopyMessageSynchronous(%s, %s, %s, %s, %s, size=%s)", account, srcFolderId, inMessages,
                 destFolderId, operation, inMessages.size());
             try {
                 LocalStore localStore = localStoreProvider.getInstance(account);
