@@ -20,7 +20,7 @@ fi
 
 # Default values
 dry_run=true
-repo="thunderbird/thunderbird-android"
+repo=${GITHUB_REPOSITORY:-thunderbird/thunderbird-android}
 label="task: uplift to beta"
 branch="beta"
 
