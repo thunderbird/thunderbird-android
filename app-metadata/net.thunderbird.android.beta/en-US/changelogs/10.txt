@@ -1,3 +1,0 @@
-Thunderbird for Android version 9.0b2, based on K-9 Mail. Changes include:
-- Help text linking to support page added for Gmail login issues
-- Funding text updated to be more engaging and appealing
