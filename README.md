@@ -52,6 +52,7 @@ We welcome contributions from everyone.
 - Translations: Do you speak a language aside from English? [Translating is easy](https://hosted.weblate.org/projects/tb-android/) and just takes a few minutes for your first success.
 - We have [a number of other contribution opportunities](https://blog.thunderbird.net/2024/09/contribute-to-thunderbird-for-android/) available.
 - Thunderbird is supported solely by financial contributions from users like you.[Make a financial contribution today](https://www.thunderbird.net/donate/mobile/?form=tfa)!
+- Make sure to check out the [Mozilla Community Participation Guidelines](https://www.mozilla.org/about/governance/policies/participation/).
 
 ### Architecture Decision Records (ADR)
 
@@ -74,10 +75,17 @@ You can report a security vulnerability [through the respective issues form](htt
 
 ## K-9 Mail
 
-Thunderbird for Android is continuing the precious work the K-9 Dog Walkers have started. If you'd like to try K-9 Mail as well, you can find it at:
+In June 2022, [K-9 Mail joined the Thunderbird family](https://k9mail.app/2022/06/13/K-9-Mail-and-Thunderbird.html)
+as the foundation for Thunderbird on Android. Since then, we’ve been updating both apps to give
+users the same solid experience, so it’s normal to notice that K-9 Mail and Thunderbird look and
+feel nearly identical. They’re built on the same code, and that’s intentional. You'll notice some
+features are selectively enabled for Thunderbird as opposed to K-9 Mail, usually when they are
+simply a better fit for Thunderbird (like the import from K-9 functionality).
+
+If you prefer the robot dog and would like to keep K-9 Mail around, you can find it here:
 
 - [K-9 Mail on Google Play](https://play.google.com/store/apps/details?id=com.fsck.k9&utm_source=thunderbird-android-github&utm_campaign=download-section)
-- [K-9 Mail on F-Droid](https://f-droid.org/repository/browse/?fdid=com.fsck.k9)
+- [K-9 Mail on F-Droid](https://f-droid.org/packages/com.fsck.k9/)
 
 ## Forking
 
