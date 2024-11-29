@@ -5,7 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="8.0b5" versioncode="39010" date="2024-10-28">
+    <release version="9.0b1" versioncode="39016" date="2024-11-19">
+        <change>Account initials now use the display name, improving customizability</change>
+        <change>Account icons remain in the same position when selected</change>
+        <change>Unified inbox enabled only when multiple accounts are configured</change>
+        <change>Push service now starts reliably when expected</change>
+        <change>Correct default delete message action for QR-imported accounts. Please check your fetch mail settings!</change>
+        <change>Folder drawer updates properly on account configuration changes</change>
+    </release>    <release version="8.0b5" versioncode="39010" date="2024-10-28">
         <change>Unread message colors are updated for better visibility</change>
         <change>Irish translation included and 100% complete</change>
         <change>Folder drawer is no longer too wide on some devices</change>
