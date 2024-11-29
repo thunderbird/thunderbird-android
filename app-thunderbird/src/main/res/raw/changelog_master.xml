@@ -5,7 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="9.0b1" versioncode="9" date="2024-11-19">
+    <release version="9.0b2" versioncode="10" date="2024-11-28">
+        <change>Help text linking to support page added for Gmail login issues</change>
+        <change>Funding text updated to be more engaging and appealing</change>
+    </release>    <release version="9.0b1" versioncode="9" date="2024-11-19">
         <change>Account initials now use the display name, improving customizability</change>
         <change>Account icons remain in the same position when selected</change>
         <change>Unified inbox enabled only when multiple accounts are configured</change>
