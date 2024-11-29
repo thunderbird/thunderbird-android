@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Oanmelde mei OAuth</string>
     <string name="account_oauth_sign_in_description">Wy stjoere jo troch nei jo e-mailprovider om oan te melden. Jo moatte de app tagong jaan ta jo e-mailaccount.</string>
     <string name="account_oauth_sign_in_button">Oanmelde</string>
+    <string name="account_oauth_google_sign_in_support_text">As jo problemen hawwe mei oanmelden by Google, lês dan ús {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">stipe-artikel</string>
 </resources>

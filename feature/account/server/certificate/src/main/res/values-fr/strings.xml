@@ -12,6 +12,5 @@
     <string name="account_server_certificate_subject">Sujet</string>
     <string name="account_server_certificate_issuer">Émetteur</string>
     <string name="account_server_certificate_fingerprints_section">Empreintes</string>
-    <string name="account_server_certificate_unknown_error_description_format">L’appli a détecté une menace de sécurité potentielle et a cessé de se connecter à <xliff:g id="serverName">%s</xliff:g>.
-\nSi vous poursuivez, des assaillants pourraient tenter de voler des données telles que votre mot de passe ou vos courriels.</string>
+    <string name="account_server_certificate_unknown_error_description_format">L’appli a détecté une menace de sécurité potentielle et a cessé de se connecter à <xliff:g id="serverName">%s</xliff:g>.\nSi vous poursuivez, des assaillants pourraient tenter de voler des renseignements tels que votre mot de passe ou vos courriels.</string>
 </resources>
