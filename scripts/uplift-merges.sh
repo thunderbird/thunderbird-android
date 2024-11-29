@@ -1,28 +1,21 @@
 #!/bin/bash
 
-# Check if gh is installed
-if ! command -v gh &> /dev/null; then
-    echo "Error: gh (GitHub CLI) is not installed."
-    exit 1
-fi
+function fail() {
+  echo "Error: $*"
+  exit 1
+}
 
-# Check if jq is installed
-if ! command -v jq &> /dev/null; then
-    echo "Error: jq is not installed."
-    exit 1
-fi
-
-# Check if git is installed
-if ! command -v git &> /dev/null; then
-    echo "Error: git is not installed."
-    exit 1
-fi
+# Check if tools are installed
+command -v gh &> /dev/null || fail "gh (GitHub CLI) is not installed"
+command -v jq &> /dev/null || fail "jq is not installed"
+command -v git &> /dev/null || fail "git is not installed"
 
 # Default values
 dry_run=true
 repo=${GITHUB_REPOSITORY:-thunderbird/thunderbird-android}
 label="task: uplift to beta"
 branch="beta"
+push=false
 
 # Parse command-line arguments
 for arg in "$@"; do
@@ -41,9 +34,12 @@ for arg in "$@"; do
       branch="beta"
       shift
       ;;
+    --push)
+      push=true
+      shift
+      ;;
     *)
-      echo "Unknown argument: $arg"
-      exit 1
+      fail "Unknown argument: $arg"
       ;;
   esac
 done
@@ -51,16 +47,19 @@ done
 # Check if on the correct branch
 current_branch=$(git branch --show-current)
 if [ "$current_branch" != "$branch" ]; then
-    echo "Error: You are not on the $branch branch. Please switch to the $branch branch."
-    exit 1
+    fail "You are not on the $branch branch. Please switch to the $branch branch."
 fi
 
-echo "Dry run: $dry_run, to disable dry run pass --no-dry-run"
+if [ "$dry_run" = true ]
+then
+  echo "Dry run in progress, to disable pass --no-dry-run"
+fi
+
 echo "Label: \"$label\""
 echo ""
 
 # Fetch the uplift commits from the GitHub repository
-json_data=$(gh pr list --repo "$repo" --label "$label" --state closed --json "mergedAt,mergeCommit,number,url")
+json_data=$(gh pr list --repo "$repo" --label "$label" --state merged --json "mergedAt,mergeCommit,number,url,title" | jq -c .)
 
 # Sort by mergedAt
 sorted_commits=$(echo "$json_data" | jq -c '. | sort_by(.mergedAt) | .[]')
@@ -72,22 +71,25 @@ if [ -z "$sorted_commits" ]; then
 fi
 
 # Generate git cherry-pick commands
-for commit in $sorted_commits; do
+while IFS= read -r commit
+do
     oid=$(echo "$commit" | jq -r '.mergeCommit.oid')
     pr_number=$(echo "$commit" | jq -r '.number')
     pr_url=$(echo "$commit" | jq -r '.url')
-    echo "Cherry-picking $oid from $pr_url"
+    pr_title=$(echo "$commit" | jq -r '.title')
+    echo "Cherry-picking $oid from $pr_url ($pr_title)"
 
     if [ "$dry_run" = false ]; then
-        if git cherry-pick -m 1 "$oid"; then
-          gh pr edit "$pr_number" --remove-label "$label"
-        else
-          echo "Failed to cherry-pick $oid"
-          exit 1
+        git cherry-pick -m 1 "$oid" || fail "Failed to cherry-pick $oid"
+        if [ "$push" = true ]; then
+          git push || fail "Failed to push $oid"
         fi
+
+        gh pr edit "$pr_number" --repo "$repo" --remove-label "$label" || fail "Failed to remove label from $pr_number"
     else
         echo "git cherry-pick -m 1 $oid"
-        echo "gh pr edit $pr_number --remove-label \"$label\""
+        [ "$push" = true ] && echo git push
+        echo "gh pr edit $pr_number --repo \"$repo\" --remove-label \"$label\""
     fi
     echo ""
-done
+done <<< "$sorted_commits"
