@@ -49,4 +49,8 @@
     <string name="funding_googleplay_contribution_reminder_message">Nuestra misión es ofrecer una aplicación de correo electrónico de código abierto que sea segura, privada y gratuita para usuarios de todo el mundo. Tu contribución económica apoya este trabajo. ¿Quieres colaborar ahora?</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Sí</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Ahora no</string>
+    <string name="funding_googleplay_contribution_header_thank_you">¡Un gracias sincero de parte de todos nosotros!</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">No vendemos tus datos.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird es gratuito y de código abierto.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">No mostramos anuncios.</string>
 </resources>

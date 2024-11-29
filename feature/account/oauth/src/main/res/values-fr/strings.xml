@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Me connecter avec OAuth</string>
     <string name="account_oauth_sign_in_description">Nous vous redirigerons vers votre fournisseur de courriel pour vous connecter. Vous devez accorder à l’appli l’accès à votre compte de courriel.</string>
     <string name="account_oauth_sign_in_button">Me connecter</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">article d’assistance</string>
+    <string name="account_oauth_google_sign_in_support_text">Si vous rencontrez des problèmes lors de la connexion avec Google, consultez notre {placeHolder}.</string>
 </resources>
