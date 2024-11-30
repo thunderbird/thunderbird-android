@@ -52,6 +52,10 @@ internal class DrawerViewModel(
         viewModelScope.launch {
             loadFolders()
         }
+
+        viewModelScope.launch {
+            onSyncAllAccounts()
+        }
     }
 
     private suspend fun loadAccounts() {
