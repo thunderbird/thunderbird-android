@@ -9,6 +9,7 @@ import java.util.Set;
 import android.content.Context;
 
 import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.mailstore.ListenableMessageStore;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
@@ -36,6 +37,7 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import app.k9mail.core.common.mail.Protocols;
+import com.fsck.k9.storage.messages.K9MessageStore;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,6 +54,7 @@ import static java.util.Collections.emptyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
@@ -68,13 +71,17 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private static final String FOLDER_NAME = "Folder";
     private static final long SENT_FOLDER_ID = 10;
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
+    private static final long SECOND_FOLDER_ID = 34;
+    private static final String SECOND_FOLDER_NAME = "SecondFolder";
 
     private MessagingController controller;
     private Account account;
+    private Account secondAccount;
     @Mock
     private BackendManager backendManager;
     @Mock
     private Backend backend;
+    private Backend secondBackend;
     @Mock
     private LocalStoreProvider localStoreProvider;
     @Mock
@@ -88,9 +95,17 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private LocalFolder localFolder;
     @Mock
+    private LocalFolder secondLocalFolder;
+    @Mock
     private LocalFolder sentFolder;
     @Mock
+    private LocalFolder secondSentFolder;
+    @Mock
     private LocalStore localStore;
+    //private LocalStore secondLocalStore; // MBAL
+    private K9MessageStore secondK9MessageStore; // MBAL
+    @Mock
+    private ListenableMessageStore secondMessageStore; // MBAL =new ListenableMessageStore(secondK9MessageStore);
     @Mock
     private NotificationController notificationController;
     @Mock
@@ -108,9 +123,12 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private LocalMessage localMessageToSend1;
     private volatile boolean hasFetchedMessage = false;
+    @Mock
+    private LocalMessage localMessageToMove1;
 
     private Preferences preferences;
     private String accountUuid;
+    private String secondAccountUuid;
 
 
     @Before
@@ -129,6 +147,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
         configureAccount();
         configureBackendManager();
         configureLocalStore();
+        configureSecondAccount();
+        //configureSecondLocalStore(); // MBAL
+        configureSecondMessageStore();
     }
 
     @After
@@ -367,6 +388,27 @@ public class MessagingControllerTest extends K9RobolectricTest {
         verify(notificationController).showCertificateErrorNotification(account, false);
     }
 
+    @Test
+    public void moveOrCopyMessageSynchronous_shouldMoveMessageBetweenAccounts() throws MessagingException {
+        setupAccountWithMessage();
+
+        controller.moveOrCopyMessageSynchronous(account, FOLDER_ID, localFolder.getMessages(), secondAccount, SECOND_FOLDER_ID, MessagingController.MoveOrCopyFlavor.COPY);
+
+        verify(secondMessageStore).saveLocalMessage(eq(SECOND_FOLDER_ID), any(), eq(null));
+    }
+
+    private void setupAccountWithMessage() throws MessagingException {
+        when(localFolder.exists()).thenReturn(true);
+        when(localFolder.getMessages()).thenReturn(Collections.singletonList(localMessageToMove1));
+        when(localFolder.getMessage("localMessageToMove1")).thenReturn(localMessageToMove1);
+        when(localMessageToMove1.getUid()).thenReturn("localMessageToMove1");
+        when(localMessageToMove1.getDatabaseId()).thenReturn(42L);
+        when(localMessageToMove1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});
+        when(localMessageToMove1.getFolder()).thenReturn(localFolder);
+
+        controller.addListener(listener); // MBAL: remove?
+    }
+
     private void setupAccountWithMessageToSend() throws MessagingException {
         account.setOutboxFolderId(FOLDER_ID);
         account.setSentFolderId(SENT_FOLDER_ID);
@@ -388,6 +430,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     private void configureBackendManager() {
         when(backendManager.getBackend(account)).thenReturn(backend);
+        when(backendManager.getBackend(secondAccount)).thenReturn(secondBackend);
     }
 
     private void configureAccount() {
@@ -402,6 +445,18 @@ public class MessagingControllerTest extends K9RobolectricTest {
         account.setEmail("user@host.com");
     }
 
+    private void configureSecondAccount() {
+        secondAccount = preferences.newAccount();
+        secondAccountUuid = secondAccount.getUuid();
+
+        secondAccount.setIncomingServerSettings(new ServerSettings(Protocols.IMAP, "secondHost", 993,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "secondUsername", "secondPassword", null));
+        secondAccount.setOutgoingServerSettings(new ServerSettings(Protocols.SMTP, "secondHost", 465,
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "secondUsername", "secondPassword", null));
+        secondAccount.setMaximumAutoDownloadMessageSize(MAXIMUM_SMALL_MESSAGE_SIZE);
+        secondAccount.setEmail("secondUser@host.com");
+    }
+
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localStore.getFolder(FOLDER_ID)).thenReturn(localFolder);
@@ -410,6 +465,21 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
         when(localStoreProvider.getInstance(account)).thenReturn(localStore);
+    }
+
+//    private void configureSecondLocalStore() throws MessagingException {
+//        when(secondLocalStore.getFolder(SECOND_FOLDER_NAME)).thenReturn(secondLocalFolder);
+//        when(secondLocalStore.getFolder(SECOND_FOLDER_ID)).thenReturn(secondLocalFolder);
+//        when(secondLocalFolder.exists()).thenReturn(true);
+//        when(secondLocalFolder.getDatabaseId()).thenReturn(SECOND_FOLDER_ID);
+//        when(secondLocalFolder.getServerId()).thenReturn(SECOND_FOLDER_NAME);
+//        when(secondLocalStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(secondLocalFolder));
+//        when(localStoreProvider.getInstance(secondAccount)).thenReturn(secondLocalStore);
+//        when(messageStoreManager.getMessageStore(secondAccount)).thenReturn(secondMessageStore);
+//    }
+
+    private void configureSecondMessageStore() throws MessagingException {
+        when(messageStoreManager.getMessageStore(secondAccount)).thenReturn(secondMessageStore);
     }
 
     private void removeAccountsFromPreferences() {

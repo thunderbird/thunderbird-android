@@ -1781,10 +1781,6 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         copyMessages(srcAccount, srcFolderId, Collections.singletonList(message), destAccount, destFolderId);
     }
 
-    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
-        long destFolderId, MoveOrCopyFlavor operation) {
-        moveOrCopyMessageSynchronous(account, srcFolderId, inMessages, account, destFolderId, operation);
-    }
     private void moveOrCopyMessageSynchronousSameAccount(Account account, long srcFolderId, List<LocalMessage> inMessages,
         long destFolderId, MoveOrCopyFlavor operation) {
 
@@ -1883,7 +1879,14 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
+//    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
+//        long destFolderId, MoveOrCopyFlavor operation) {
+//        moveOrCopyMessageSynchronous(account, srcFolderId, inMessages, account, destFolderId, operation);
+//    }
+
+    @VisibleForTesting
+    // protected for testing
+    protected void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
             Account destAccount, long destFolderId, MoveOrCopyFlavor operation) {
 
         if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
@@ -1908,17 +1911,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     }
                 }
                 MessageStore messageStoreDest = messageStoreManager.getMessageStore(destAccount);
-//            List<LocalMessage> loadedMessages = new ArrayList<>();
                 for (LocalMessage m : inMessages) {
                     try {
                         // for copying/moving between accounts, we need to load the messages first
                         LocalMessage message = loadMessage(account, srcFolderId, m.getUid());
-    //                    loadedMessages.add(loadedMessage);
                         Timber.d("MBAL: moveOrCopyMessageSynchronous: message subject="+message.getSubject());
                         Timber.d("MBAL: moveOrCopyMessageSynchronous: message body="+message.getBody());
                         Timber.d("MBAL: moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
                         SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, MessageDownloadState.FULL, null);
-// TODO alternatively, try to use SaveMessageOperations::getMessage(folderId: Long, messageServerId: String) to retrieve the message ID
+// TODO MBAL alternatively, try to use SaveMessageOperations::getMessage(folderId: Long, messageServerId: String) to retrieve the message ID
                         // TODO text for search is not getting set
                         long messageId = messageStoreDest.saveLocalMessage(destFolderId, messageData, null);
                         // update destination account and folder
@@ -2790,7 +2791,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    private enum MoveOrCopyFlavor {
+    @VisibleForTesting
+    // protected for testing
+    protected enum MoveOrCopyFlavor {
         MOVE, COPY, MOVE_AND_MARK_AS_READ
     }
 }
