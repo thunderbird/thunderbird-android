@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Toeta Thunderbirdi</string>
     <string name="funding_googleplay_contribution_list_title">Turvaline rahaline toetus</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Iga kuu</string>
@@ -12,7 +12,7 @@
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Anna veel üks mõjus panus</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Muuda igakuist makset</string>
     <string name="funding_googleplay_contribution_list_empty_title">Rakenduse-sisene annetamise võimalus hetkel puudub.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Meie saidist www.thunderbird.net leiad veel võimalusi Thunderbirdi toetamiseks</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Meie saidist <xliff:g id="link_text">%s</xliff:g> leiad veel võimalusi Thunderbirdi toetamiseks.</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Proovi uuesti</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Maksmisvõimalus pole hetkel saadaval</string>
     <string name="funding_googleplay_contribution_error_show_more">Näita lisateavet</string>

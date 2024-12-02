@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_list_type_one_time">捐款一次</string>
     <string name="funding_googleplay_contribution_list_disclaimer">捐款不能作为慈善捐款免税。</string>
     <string name="funding_googleplay_contribution_footer_payment_button">继续捐款</string>
@@ -11,7 +11,7 @@
     <string name="funding_googleplay_contribution_footer_manage_button">修改每月捐款</string>
     <string name="funding_googleplay_contribution_list_type_none_available">不可用</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">做出另一项有影响力的贡献</string>
-    <string name="funding_googleplay_contribution_list_empty_message">访问 www.thunderbird.net 了解更多支持 Thunderbird 的方法</string>
+    <string name="funding_googleplay_contribution_list_empty_message">访问 <xliff:g id="link_text">%s</xliff:g> 了解更多支持 Thunderbird 的方法。</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">重试</string>
     <string name="funding_googleplay_contribution_error_show_more">显示更多详情</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">当前无法捐款</string>

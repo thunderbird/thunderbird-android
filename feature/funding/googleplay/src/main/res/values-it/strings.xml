@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_list_type_recurring">Mensile</string>
     <string name="funding_googleplay_contribution_header_description">Non mostriamo mai pubblicità né vendiamo i tuoi dati. Siamo finanziati dalle donazioni dei nostri utenti. Se Thunderbird ti piace, allora supportaci. Non potremmo farlo senza di te!</string>
     <string name="funding_googleplay_contribution_list_title">Donazione sicura</string>
@@ -9,7 +9,7 @@
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Dai un altro contributo significativo</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Pagamento al momento non disponibile</string>
     <string name="funding_googleplay_contribution_error_show_more">Mostra maggiori dettagli</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Visita www.thunderbird.net per altre modalità di supporto a Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visita <xliff:g id="link_text">%s</xliff:g> per altre modalità di supporto a Thunderbird.</string>
     <string name="funding_googleplay_contribution_error_purchase_failed">Acquisto non andato a buon fine</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Riprova</string>
     <string name="funding_googleplay_contribution_error_unknown">Errore sconosciuto</string>

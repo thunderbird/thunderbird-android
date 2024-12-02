@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Stöd Thunderbird</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Månadsvis</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Bidrag är inte avdragsgilla som donationer till välgörande ändamål.</string>
@@ -14,7 +14,7 @@
     <string name="funding_googleplay_contribution_list_error_retry_button">Försök igen</string>
     <string name="funding_googleplay_contribution_error_purchase_failed">Köpet misslyckades.</string>
     <string name="funding_googleplay_contribution_list_empty_title">Bidrag i appen är för närvarande inte tillgängliga.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Besök www.thunderbird.net för fler sätt att stödja Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Besök <xliff:g id="link_text">%s</xliff:g> för fler sätt att stödja Thunderbird.</string>
     <string name="funding_googleplay_contribution_error_show_more">Visa fler detaljer</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Betalning är inte tillgänglig för närvarande</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Ignorera felet</string>

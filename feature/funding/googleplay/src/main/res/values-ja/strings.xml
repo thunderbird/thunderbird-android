@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Thunderbird を支援する</string>
     <string name="funding_googleplay_contribution_list_type_one_time">一度だけ</string>
     <string name="funding_googleplay_contribution_list_type_recurring">毎月</string>
@@ -11,7 +11,7 @@
     <string name="funding_googleplay_contribution_title">Thunderbird を支援する</string>
     <string name="funding_googleplay_contribution_list_type_none_available">利用できません</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">更なる進化に向けてもう一度貢献する</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Thunderbird を支援するさまざまな方法は www.thunderbird.net で確認できます</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Thunderbird を支援するさまざまな方法は <xliff:g id="link_text">%s</xliff:g> で確認できます。</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">再試行</string>
     <string name="funding_googleplay_contribution_list_empty_title">現在、アプリ内寄付ができません。</string>
     <string name="funding_googleplay_contribution_error_show_more">詳細を表示</string>
