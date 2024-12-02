@@ -1149,7 +1149,8 @@ class MessageListFragment :
         return checkCopyOrMovePossible(messages,null,operation)
     }
 
-    private fun checkCopyOrMovePossible(messages: List<MessageReference>, destAccountUuID: String?, operation: FolderOperation): Boolean {
+    private fun checkCopyOrMovePossible(messages: List<MessageReference>, destAccountUuID: String?,
+        operation: FolderOperation): Boolean {
         if (messages.isEmpty()) return false
 
         val account = if (destAccountUuID==null) {
