@@ -200,7 +200,7 @@
     <string name="global_settings_registered_name_color_changed">Забарвлювати імена з вашого списку контактів</string>
     <string name="general_settings_contact_name_color_label">Колір імені контакту</string>
     <string name="global_settings_messageview_fixedwidth_label">Моноширинні шрифти</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Використовувати моноширинний шрифт для показу звичайних текстових повідомлень</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Використовуйте шрифт фіксованої ширини під час показу простих текстових повідомлень</string>
     <string name="global_settings_messageview_autofit_width_label">Допасовувати текст повідомлень до ширини екрана</string>
     <string name="global_settings_messageview_autofit_width_summary">Стискати текст повідомлень до ширини екрана</string>
     <string name="global_settings_confirm_actions_title">Підтвердження дій</string>
