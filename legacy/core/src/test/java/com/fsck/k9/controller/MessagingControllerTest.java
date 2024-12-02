@@ -102,10 +102,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private LocalFolder secondSentFolder;
     @Mock
     private LocalStore localStore;
-    //private LocalStore secondLocalStore; // MBAL
-    private K9MessageStore secondK9MessageStore; // MBAL
     @Mock
-    private ListenableMessageStore secondMessageStore; // MBAL =new ListenableMessageStore(secondK9MessageStore);
+    private ListenableMessageStore secondMessageStore;
     @Mock
     private NotificationController notificationController;
     @Mock
@@ -148,7 +146,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         configureBackendManager();
         configureLocalStore();
         configureSecondAccount();
-        //configureSecondLocalStore(); // MBAL
         configureSecondMessageStore();
     }
 
@@ -405,8 +402,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localMessageToMove1.getDatabaseId()).thenReturn(42L);
         when(localMessageToMove1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});
         when(localMessageToMove1.getFolder()).thenReturn(localFolder);
-
-        controller.addListener(listener); // MBAL: remove?
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
@@ -466,17 +461,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
         when(localStoreProvider.getInstance(account)).thenReturn(localStore);
     }
-
-//    private void configureSecondLocalStore() throws MessagingException {
-//        when(secondLocalStore.getFolder(SECOND_FOLDER_NAME)).thenReturn(secondLocalFolder);
-//        when(secondLocalStore.getFolder(SECOND_FOLDER_ID)).thenReturn(secondLocalFolder);
-//        when(secondLocalFolder.exists()).thenReturn(true);
-//        when(secondLocalFolder.getDatabaseId()).thenReturn(SECOND_FOLDER_ID);
-//        when(secondLocalFolder.getServerId()).thenReturn(SECOND_FOLDER_NAME);
-//        when(secondLocalStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(secondLocalFolder));
-//        when(localStoreProvider.getInstance(secondAccount)).thenReturn(secondLocalStore);
-//        when(messageStoreManager.getMessageStore(secondAccount)).thenReturn(secondMessageStore);
-//    }
 
     private void configureSecondMessageStore() throws MessagingException {
         when(messageStoreManager.getMessageStore(secondAccount)).thenReturn(secondMessageStore);

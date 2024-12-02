@@ -44,7 +44,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
-import com.fsck.k9.logging.Timber.d
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.search.getAccounts
@@ -519,7 +518,6 @@ class MessageListFragment :
             return
         }
 
-        d("MBAL: onMessageClicked: %s", messageListItem.messageReference)
         val clickTime = SystemClock.elapsedRealtime()
         if (clickTime - lastMessageClick < MINIMUM_CLICK_INTERVAL) return
 

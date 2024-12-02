@@ -616,16 +616,13 @@ class MessageViewFragment :
 
         fragmentListener.performNavigationAfterMessageRemoval()
 
-        Timber.d("MBAL: onChooseFolderCopyResult: calling moveMessageToAccount instead of moveMessage")
         val destAccountUuID = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_ACCOUNT_ID)
         if (destAccountUuID==null) {
-            Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID is null")
+            Timber.d("onChooseFolderCopyResult: destAccountUuID is null")
             return;
         }
-        Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID: "+destAccountUuID)
-        Timber.d("MBAL: onChooseFolderCopyResult: using moveMessageToAccount instead of moveMessage!!!")
+        Timber.d("onChooseFolderCopyResult: destAccountUuID: "+destAccountUuID)
         moveMessage(messageReference, messageReference.folderId, destAccountUuID, destinationFolderId)
-// TODO remove        moveMessage(messageReference, destinationFolderId)
     }
 
     private fun onChooseFolderCopyResult(data: Intent?) {
@@ -635,19 +632,15 @@ class MessageViewFragment :
         val messageReferenceString = data.getStringExtra(ChooseFolderActivity.RESULT_MESSAGE_REFERENCE)
         val messageReference = MessageReference.parse(messageReferenceString)
         if (this.messageReference != messageReference) return
-        Timber.d("MBAL: onChooseFolderCopyResult: "+messageReference+"; message body: "+ (message?.body ?: "---UNDEFINED---"))
 
         account.setLastSelectedFolderId(destinationFolderId)
 
-        Timber.d("MBAL: onChooseFolderCopyResult: calling copyMessageToAccount instead of copyMessage")
         val destAccountUuID = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_ACCOUNT_ID)
         if (destAccountUuID==null) {
-            Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID is null")
+            Timber.d("onChooseFolderCopyResult: destAccountUuID is null")
             return;
         }
-        Timber.d("MBAL: onChooseFolderCopyResult: destAccountUuID: "+destAccountUuID)
-        Timber.d("MBAL: onChooseFolderCopyResult: using copyMessageToAccount instead of copyMessage!!!")
-        // MBAL remove messagingController.copyMessageToAccount(account, messageReference.folderId, messageReference, accountManager.getAccount(destAccountUuID), destinationFolderId)
+        Timber.d("onChooseFolderCopyResult: destAccountUuID: "+destAccountUuID)
         copyMessage(messageReference, messageReference.folderId, destAccountUuID, destinationFolderId)
     }
 
@@ -689,12 +682,10 @@ class MessageViewFragment :
     }
 
     private fun moveMessage(reference: MessageReference?, folderId: Long, destAccountUuID: String, destinationFolderId: Long) {
-        // MBAL remove messagingController.moveMessage(account, messageReference.folderId, reference, folderId)
         messagingController.moveMessageToAccount(account, folderId, reference, accountManager.getAccount(destAccountUuID), destinationFolderId)
     }
 
     private fun copyMessage(reference: MessageReference?, folderId: Long, destAccountUuID: String, destinationFolderId: Long) {
-        // MBAL remove messagingController.copyMessage(account, messageReference.folderId, reference, folderId)
         messagingController.copyMessageToAccount(account, folderId, reference, accountManager.getAccount(destAccountUuID), destinationFolderId)
     }
 

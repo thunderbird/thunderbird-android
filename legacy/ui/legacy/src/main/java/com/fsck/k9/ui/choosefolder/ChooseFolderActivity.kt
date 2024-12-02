@@ -302,7 +302,7 @@ class ChooseFolderActivity : K9Activity() {
         const val RESULT_SELECTED_FOLDER_ID = "selectedFolderId"
         const val RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName"
         const val RESULT_MESSAGE_REFERENCE = "messageReference"
-        const val RESULT_SELECTED_ACCOUNT_ID = "selectedAccountId" // MBAL
+        const val RESULT_SELECTED_ACCOUNT_ID = "selectedAccountId"
 
         @JvmStatic
         fun buildLaunchIntent(

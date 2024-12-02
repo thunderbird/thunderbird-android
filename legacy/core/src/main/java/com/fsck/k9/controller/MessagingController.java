@@ -1879,11 +1879,6 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-//    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
-//        long destFolderId, MoveOrCopyFlavor operation) {
-//        moveOrCopyMessageSynchronous(account, srcFolderId, inMessages, account, destFolderId, operation);
-//    }
-
     @VisibleForTesting
     // protected for testing
     protected void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
@@ -1915,12 +1910,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     try {
                         // for copying/moving between accounts, we need to load the messages first
                         LocalMessage message = loadMessage(account, srcFolderId, m.getUid());
-                        Timber.d("MBAL: moveOrCopyMessageSynchronous: message subject="+message.getSubject());
-                        Timber.d("MBAL: moveOrCopyMessageSynchronous: message body="+message.getBody());
-                        Timber.d("MBAL: moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
+                        Timber.d("moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
                         SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, MessageDownloadState.FULL, null);
-// TODO MBAL alternatively, try to use SaveMessageOperations::getMessage(folderId: Long, messageServerId: String) to retrieve the message ID
-                        // TODO text for search is not getting set
                         long messageId = messageStoreDest.saveLocalMessage(destFolderId, messageData, null);
                         // update destination account and folder
                         String fakeMessageServerId = messageStoreDest.getMessageServerId(messageId);

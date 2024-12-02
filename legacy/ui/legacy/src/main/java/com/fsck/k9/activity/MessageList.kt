@@ -51,7 +51,6 @@ import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.ParcelableUtil
-import com.fsck.k9.logging.Timber.d
 import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
@@ -1029,14 +1028,11 @@ open class MessageList :
         val account = accountManager.getAccount(messageReference.accountUuid) ?: error("Account not found")
         val folderId = messageReference.folderId
 
-        d("MBAL: MessageList.openMessage; messageReference: $messageReference; account name: ${account.name}; folderId: $folderId")
         val draftsFolderId = account.draftsFolderId
         if (draftsFolderId != null && folderId == draftsFolderId) {
-            d("MBAL: MessageList.openMessage; message is a draft")
             displayMode = DisplayMode.MESSAGE_LIST
             MessageActions.actionEditDraft(this, messageReference)
         } else {
-            d("MBAL: MessageList.openMessage; message is not a draft")
             val fragment = MessageViewContainerFragment.newInstance(messageReference, isShowAccountChip)
             supportFragmentManager.commitNow {
                 replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)

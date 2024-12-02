@@ -18,11 +18,10 @@
         android:orientation="horizontal"
         android:layout_margin="16dp">
 
-        <!-- TODO consider using a dedicated string instead of reusing @string/account_settings_description_label -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_settings_description_label"
+            android:text="@+string/account_settings_description_label"
             android:layout_marginEnd="8dp" />
 
         <Spinner

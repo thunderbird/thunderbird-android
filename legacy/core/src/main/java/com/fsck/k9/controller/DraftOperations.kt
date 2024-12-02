@@ -33,10 +33,8 @@ internal class DraftOperations(
             val draftsFolderId = account.draftsFolderId ?: error("No Drafts folder configured")
 
             val messageId = if (messagingController.supportsUpload(account)) {
-                Timber.d("MBAL: saveAndUploadDraft")
                 saveAndUploadDraft(account, message, draftsFolderId, existingDraftId, plaintextSubject)
             } else {
-                Timber.d("MBAL: saveDraftLocally")
                 saveDraftLocally(account, message, draftsFolderId, existingDraftId, plaintextSubject)
             }
 

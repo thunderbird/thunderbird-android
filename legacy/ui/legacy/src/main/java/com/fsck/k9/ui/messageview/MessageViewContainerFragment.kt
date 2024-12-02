@@ -11,7 +11,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import app.k9mail.legacy.message.controller.MessageReference
-import com.fsck.k9.logging.Timber.d
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.messagelist.MessageListItem
@@ -57,8 +56,6 @@ class MessageViewContainerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        d("MBAL: MessageViewContainerFragment.onCreate")
-
         setHasOptionsMenu(true)
 
         messageReference = if (savedInstanceState == null) {
@@ -71,7 +68,6 @@ class MessageViewContainerFragment : Fragment() {
 
         showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
 
-        d("MBAL: MessageViewContainerFragment.onCreate creating MessageViewContainerAdapter: messageReference = $messageReference")
         adapter = MessageViewContainerAdapter(this, showAccountChip)
     }
 
