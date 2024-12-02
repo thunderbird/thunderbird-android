@@ -1,6 +1,7 @@
 package com.fsck.k9.controller;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -65,6 +66,8 @@ import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
 import app.k9mail.legacy.mailstore.FolderDetailsAccessor;
@@ -91,8 +94,10 @@ import timber.log.Timber;
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.controller.Preconditions.requireNotNull;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
+import static com.fsck.k9.logging.Timber.d;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
-
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 
 /**
  * Starts a long running (application) Thread that will run through commands
@@ -1690,25 +1695,35 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     public void moveMessages(Account srcAccount, long srcFolderId,
-            List<MessageReference> messageReferences, long destFolderId) {
+        List<MessageReference> messageReferences, long destFolderId) {
+        moveMessages(srcAccount,srcFolderId,messageReferences,srcAccount,destFolderId);
+    }
+
+    public void moveMessages(Account srcAccount, long srcFolderId,
+            List<MessageReference> messageReferences, Account destAccount, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             suppressMessages(account, messages);
 
             putBackground("moveMessages", null, () ->
-                    moveOrCopyMessageSynchronous(account, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.MOVE)
+                    moveOrCopyMessageSynchronous(account, srcFolderId, messages, destAccount, destFolderId, MoveOrCopyFlavor.MOVE)
             );
         });
     }
 
     public void moveMessagesInThread(Account srcAccount, long srcFolderId,
-            List<MessageReference> messageReferences, long destFolderId) {
+        List<MessageReference> messageReferences, long destFolderId) {
+        moveMessagesInThread(srcAccount,srcFolderId,messageReferences,srcAccount,destFolderId);
+    }
+
+    public void moveMessagesInThread(Account srcAccount, long srcFolderId,
+            List<MessageReference> messageReferences, Account destAccount, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             suppressMessages(account, messages);
 
             putBackground("moveMessagesInThread", null, () -> {
                 try {
                     List<LocalMessage> messagesInThreads = collectMessagesInThreads(account, messages);
-                    moveOrCopyMessageSynchronous(account, srcFolderId, messagesInThreads, destFolderId,
+                    moveOrCopyMessageSynchronous(account, srcFolderId, messagesInThreads, destAccount, destFolderId,
                             MoveOrCopyFlavor.MOVE);
                 } catch (MessagingException e) {
                     Timber.e(e, "Exception while moving messages");
@@ -1720,23 +1735,36 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     public void moveMessage(Account account, long srcFolderId, MessageReference message, long destFolderId) {
         moveMessages(account, srcFolderId, Collections.singletonList(message), destFolderId);
     }
+    public void moveMessageToAccount(Account account, long srcFolderId, MessageReference message, Account destAccount, long destFolderId) {
+        moveMessages(account, srcFolderId, Collections.singletonList(message), destAccount, destFolderId);
+    }
 
     public void copyMessages(Account srcAccount, long srcFolderId,
-            List<MessageReference> messageReferences, long destFolderId) {
+        List<MessageReference> messageReferences, long destFolderId) {
+        copyMessages(srcAccount,srcFolderId,messageReferences,srcAccount,destFolderId);
+    }
+
+    public void copyMessages(Account srcAccount, long srcFolderId,
+            List<MessageReference> messageReferences, Account destAccount, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             putBackground("copyMessages", null, () ->
-                    moveOrCopyMessageSynchronous(srcAccount, srcFolderId, messages, destFolderId, MoveOrCopyFlavor.COPY)
+                    moveOrCopyMessageSynchronous(srcAccount, srcFolderId, messages, destAccount, destFolderId, MoveOrCopyFlavor.COPY)
             );
         });
     }
 
     public void copyMessagesInThread(Account srcAccount, long srcFolderId,
-            final List<MessageReference> messageReferences, long destFolderId) {
+        final List<MessageReference> messageReferences, long destFolderId) {
+        copyMessagesInThread(srcAccount,srcFolderId,messageReferences,srcAccount,destFolderId);
+    }
+
+    public void copyMessagesInThread(Account srcAccount, long srcFolderId,
+            final List<MessageReference> messageReferences, Account destAccount, long destFolderId) {
         actOnMessageGroup(srcAccount, srcFolderId, messageReferences, (account, messageFolder, messages) -> {
             putBackground("copyMessagesInThread", null, () -> {
                 try {
                     List<LocalMessage> messagesInThreads = collectMessagesInThreads(account, messages);
-                    moveOrCopyMessageSynchronous(account, srcFolderId, messagesInThreads, destFolderId,
+                    moveOrCopyMessageSynchronous(account, srcFolderId, messagesInThreads, destAccount, destFolderId,
                             MoveOrCopyFlavor.COPY);
                 } catch (MessagingException e) {
                     Timber.e(e, "Exception while copying messages");
@@ -1749,8 +1777,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         copyMessages(account, srcFolderId, Collections.singletonList(message), destFolderId);
     }
 
-    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
-            long destFolderId, MoveOrCopyFlavor operation) {
+    public void copyMessageToAccount(Account srcAccount, long srcFolderId, MessageReference message, Account destAccount, long destFolderId) {
+        copyMessages(srcAccount, srcFolderId, Collections.singletonList(message), destAccount, destFolderId);
+    }
+
+    private void moveOrCopyMessageSynchronousSameAccount(Account account, long srcFolderId, List<LocalMessage> inMessages,
+        long destFolderId, MoveOrCopyFlavor operation) {
 
         if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
             throw new UnsupportedOperationException("MOVE_AND_MARK_AS_READ unsupported");
@@ -1786,8 +1818,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             List<LocalMessage> messages = localSrcFolder.getMessagesByUids(uids);
             if (messages.size() > 0) {
-                Timber.i("moveOrCopyMessageSynchronous: source folder = %s, %d messages, destination folder = %s, " +
-                        "operation = %s", srcFolderId, messages.size(), destFolderId, operation.name());
+                Timber.i("moveOrCopyMessageSynchronousSameAccount: source folder = %s, %d messages, destination folder = %s, " +
+                    "operation = %s", srcFolderId, messages.size(), destFolderId, operation.name());
 
                 MessageStore messageStore = messageStoreManager.getMessageStore(account);
 
@@ -1838,12 +1870,86 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 }
 
                 queueMoveOrCopy(account, localSrcFolder.getDatabaseId(), localDestFolder.getDatabaseId(),
-                        operation, uidMap);
+                    operation, uidMap);
             }
 
             processPendingCommands(account);
         } catch (MessagingException me) {
             throw new RuntimeException("Error moving message", me);
+        }
+    }
+
+    @VisibleForTesting
+    // protected for testing
+    protected void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
+            Account destAccount, long destFolderId, MoveOrCopyFlavor operation) {
+
+        if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
+            throw new UnsupportedOperationException("MOVE_AND_MARK_AS_READ unsupported");
+        }
+
+        if (account.equals(destAccount)) {
+            moveOrCopyMessageSynchronousSameAccount(account, srcFolderId, inMessages, destFolderId, operation);
+        }
+        else {
+            Timber.d("moveOrCopyMessageSynchronous(%s, %s, %s, %s, %s, size=%s)", account, srcFolderId, inMessages,
+                destFolderId, operation, inMessages.size());
+            try {
+                LocalStore localStore = localStoreProvider.getInstance(account);
+                LocalFolder localSrcFolder = localStore.getFolder(srcFolderId);
+                localSrcFolder.open();
+                boolean unreadCountAffected = false;
+                for (Message message : inMessages) {
+                    if (!message.isSet(Flag.SEEN)) {
+                        unreadCountAffected = true;
+                        break;
+                    }
+                }
+                MessageStore messageStoreDest = messageStoreManager.getMessageStore(destAccount);
+                for (LocalMessage m : inMessages) {
+                    try {
+                        // for copying/moving between accounts, we need to load the messages first
+                        LocalMessage message = loadMessage(account, srcFolderId, m.getUid());
+                        Timber.d("moveOrCopyMessageSynchronous: destAccount.name="+destAccount.getName()+"; srcAccount.name="+account.getName());
+                        SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, MessageDownloadState.FULL, null);
+                        long messageId = messageStoreDest.saveLocalMessage(destFolderId, messageData, null);
+                        // update destination account and folder
+                        String fakeMessageServerId = messageStoreDest.getMessageServerId(messageId);
+                        if (fakeMessageServerId != null) {
+                            PendingAppend command = PendingAppend.create(destFolderId, fakeMessageServerId);
+                            queuePendingCommand(destAccount, command);
+                        }
+
+                        if (operation == MoveOrCopyFlavor.MOVE) {
+                            MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                            long srcMessageId = getId(message);
+                            String messageServerId = messageStore.getMessageServerId(srcMessageId);
+                            if (messageServerId != null) {
+                                MessageReference messageReference = new MessageReference(account.getUuid(), srcFolderId, messageServerId);
+                                deleteMessages(Collections.singletonList(messageReference));
+                            }
+                        }
+                    }
+                    catch (MessagingException e) {
+                        Timber.e(e, "Exception while loading message");
+                    }
+                }
+
+                if (unreadCountAffected) {
+                    // If this copy operation changes the unread count in the destination
+                    // folder, notify the listeners.
+                    // If this move operation changes the unread count, notify the listeners
+                    // that the unread count changed in both the source and destination folder.
+                    for (MessagingListener l : getListeners()) {
+                        if (operation == MoveOrCopyFlavor.MOVE)
+                            l.folderStatusChanged(account, srcFolderId);
+                        l.folderStatusChanged(destAccount, destFolderId);
+                    }
+                }
+                processPendingCommands(destAccount);
+            } catch (MessagingException me) {
+                throw new RuntimeException("Error moving message", me);
+            }
         }
     }
 
@@ -2676,7 +2782,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    private enum MoveOrCopyFlavor {
+    @VisibleForTesting
+    // protected for testing
+    protected enum MoveOrCopyFlavor {
         MOVE, COPY, MOVE_AND_MARK_AS_READ
     }
 }
