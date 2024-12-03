@@ -54,7 +54,7 @@ class AutoDiscoveryCli : CliktCommand(
         try {
             val providerDiscovery = createProviderAutoconfigDiscovery(okHttpClient, config)
             val ispDbDiscovery = createIspDbAutoconfigDiscovery(okHttpClient)
-            val mxDiscovery = createMxLookupAutoconfigDiscovery(okHttpClient)
+            val mxDiscovery = createMxLookupAutoconfigDiscovery(okHttpClient, config)
 
             val runnables = listOf(providerDiscovery, ispDbDiscovery, mxDiscovery)
                 .flatMap { it.initDiscovery(emailAddress.toUserEmailAddress()) }
