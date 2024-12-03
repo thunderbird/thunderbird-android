@@ -237,7 +237,7 @@
     <string name="general_settings_ui_density_default">Normal</string>
     <string name="general_settings_ui_density_relaxed">Espacioso</string>
     <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de K-9 de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
     <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
     <string name="global_settings_privacy_hide_timezone_detail">Usar UTC («tiempo universal coordinado») en lugar de la zona horaria local en las cabeceras de mensaje y cabeceras de respuesta</string>
     <string name="global_settings_notification_quick_delete_title">Mostrar el botón «Borrar»</string>

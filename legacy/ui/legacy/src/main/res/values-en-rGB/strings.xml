@@ -596,7 +596,6 @@
     <string name="account_settings_message_age_any">any time (no limit)</string>
     <string name="account_settings_crypto_app">Enable OpenPGP support</string>
     <string name="sort_unread_last">Read messages first</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
     <string name="edit_identity_title">Edit identity</string>
     <string name="message_compose_show_quoted_text_action">Include quoted message</string>
     <string name="sort_sender_alpha">Sender alphabetical</string>

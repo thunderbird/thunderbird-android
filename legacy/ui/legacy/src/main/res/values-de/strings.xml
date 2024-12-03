@@ -195,7 +195,7 @@
     <string name="global_settings_registered_name_color_changed">Namen in deiner Kontaktliste einfärben</string>
     <string name="general_settings_contact_name_color_label">Farbe des Kontaktnamens</string>
     <string name="global_settings_messageview_fixedwidth_label">Monotype-Schriftart</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit fester Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
     <string name="global_settings_messageview_autofit_width_label">Nachrichtendarstellung</string>
     <string name="global_settings_messageview_autofit_width_summary">Nachrichten auf Displaygröße verkleinern</string>
     <string name="global_settings_confirm_actions_title">Bestätigungsdialog</string>
