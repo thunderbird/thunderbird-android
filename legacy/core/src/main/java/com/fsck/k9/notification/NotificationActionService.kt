@@ -54,7 +54,7 @@ class NotificationActionService : Service() {
         when (intent.action) {
             ACTION_MARK_AS_READ -> markMessagesAsRead(intent, account)
             ACTION_DELETE -> deleteMessages(intent)
-            ACTION_ARCHIVE -> archiveMessages(intent, account)
+            ACTION_ARCHIVE -> archiveMessages(intent)
             ACTION_SPAM -> markMessageAsSpam(intent, account)
             ACTION_DISMISS -> Timber.i("Notification dismissed")
         }
@@ -88,24 +88,13 @@ class NotificationActionService : Service() {
         messagingController.deleteMessages(messageReferences)
     }
 
-    private fun archiveMessages(intent: Intent, account: Account) {
+    private fun archiveMessages(intent: Intent) {
         Timber.i("NotificationActionService archiving messages")
-
-        val archiveFolderId = account.archiveFolderId
-        if (archiveFolderId == null || !messagingController.isMoveCapable(account)) {
-            Timber.w("Cannot archive messages")
-            return
-        }
 
         val messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES)
         val messageReferences = MessageReferenceHelper.toMessageReferenceList(messageReferenceStrings)
 
-        for (messageReference in messageReferences) {
-            if (messagingController.isMoveCapable(messageReference)) {
-                val sourceFolderId = messageReference.folderId
-                messagingController.moveMessage(account, sourceFolderId, messageReference, archiveFolderId)
-            }
-        }
+        messagingController.archiveMessages(messageReferences)
     }
 
     private fun markMessageAsSpam(intent: Intent, account: Account) {

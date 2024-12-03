@@ -130,6 +130,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final DraftOperations draftOperations;
     private final NotificationOperations notificationOperations;
+    private final ArchiveOperations archiveOperations;
 
 
     private volatile boolean stopped = false;
@@ -170,6 +171,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
+        archiveOperations = new ArchiveOperations(this);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -232,7 +234,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         putCommand(queuedCommands, description, listener, runnable, true);
     }
 
-    private void putBackground(String description, MessagingListener listener, Runnable runnable) {
+    void putBackground(String description, MessagingListener listener, Runnable runnable) {
         putCommand(queuedCommands, description, listener, runnable, false);
     }
 
@@ -319,7 +321,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
 
-    private void suppressMessages(Account account, List<LocalMessage> messages) {
+    void suppressMessages(Account account, List<LocalMessage> messages) {
         MessageListCache cache = MessageListCache.getCache(account.getUuid());
         cache.hideMessages(messages);
     }
@@ -1749,7 +1751,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         copyMessages(account, srcFolderId, Collections.singletonList(message), destFolderId);
     }
 
-    private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
+    void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
             long destFolderId, MoveOrCopyFlavor operation) {
 
         if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
@@ -1871,6 +1873,18 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
+    public void archiveThreads(List<MessageReference> messages) {
+        archiveOperations.archiveThreads(messages);
+    }
+
+    public void archiveMessages(List<MessageReference> messages) {
+        archiveOperations.archiveMessages(messages);
+    }
+
+    public void archiveMessage(MessageReference message) {
+        archiveOperations.archiveMessage(message);
+    }
+
     public void expunge(Account account, long folderId) {
         putBackground("expunge", null, () -> {
             queueExpunge(account, folderId);
@@ -1919,7 +1933,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    private List<LocalMessage> collectMessagesInThreads(Account account, List<LocalMessage> messages)
+    List<LocalMessage> collectMessagesInThreads(Account account, List<LocalMessage> messages)
             throws MessagingException {
 
         LocalStore localStore = localStoreProvider.getInstance(account);
@@ -2457,7 +2471,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 serverSettings.authenticationType == AuthType.XOAUTH2 && account.getOAuthState() == null;
     }
 
-    private void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
+    void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
         Map<String, Map<Long, List<MessageReference>>> accountMap = groupMessagesByAccountAndFolder(messages);
 
         for (Map.Entry<String, Map<Long, List<MessageReference>>> entry : accountMap.entrySet()) {
@@ -2513,7 +2527,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
     }
 
-    private interface MessageActor {
+    interface MessageActor {
         void act(Account account, LocalFolder messageFolder, List<LocalMessage> messages);
     }
 
@@ -2676,7 +2690,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    private enum MoveOrCopyFlavor {
+    enum MoveOrCopyFlavor {
         MOVE, COPY, MOVE_AND_MARK_AS_READ
     }
 }
