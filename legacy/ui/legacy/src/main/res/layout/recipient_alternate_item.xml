@@ -109,39 +109,12 @@
             tools:text="address@example.com"
             />
 
-        <FrameLayout
-            android:id="@+id/alternate_crypto_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="13dp"
-            tools:visibility="gone"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                app:srcCompat="@drawable/status_dots"
-                app:tint="?attr/openpgp_grey"
-                />
-
-            <ImageView
-                android:id="@+id/alternate_crypto_status_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                tools:src="@drawable/status_lock_dots_2"
-                tools:tint="?attr/openpgp_grey"
-                />
-
-        </FrameLayout>
-
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_gravity="center_vertical"
             android:layout_margin="13dp"
-            android:id="@+id/alternate_crypto_status_simple"
+            android:id="@+id/alternate_crypto_status"
             app:srcCompat="@drawable/ic_lock"
             app:tint="?attr/openpgp_black"
             android:visibility="gone"

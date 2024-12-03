@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -17,13 +16,10 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
-import com.fsck.k9.view.ThemeUtils;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -31,7 +27,6 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
     private final Context context;
     private List<Recipient> recipients;
     private String highlight;
-    private boolean showAdvancedInfo;
 
 
     public RecipientAdapter(Context context) {
@@ -94,59 +89,19 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
         setContactPhotoOrPlaceholder(context, holder.photo, recipient);
 
-        if (showAdvancedInfo) {
-            bindCryptoAdvanced(recipient, holder);
-        } else {
-            bindCryptoSimple(recipient, holder);
-        }
+        bindCryptoStatus(recipient, holder);
     }
 
-    private void bindCryptoAdvanced(Recipient recipient, RecipientTokenHolder holder) {
-        holder.cryptoStatusSimple.setVisibility(View.GONE);
-
-        Integer cryptoStatusRes = null, cryptoStatusColor = null;
-        RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
-        switch (cryptoStatus) {
-            case AVAILABLE_TRUSTED: {
-                cryptoStatusRes = R.drawable.status_lock_dots_3;
-                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_green);
-                break;
-            }
-            case AVAILABLE_UNTRUSTED: {
-                cryptoStatusRes = R.drawable.status_lock_dots_2;
-                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_orange);
-                break;
-            }
-            case UNAVAILABLE: {
-                cryptoStatusRes = R.drawable.status_lock_disabled_dots_1;
-                cryptoStatusColor = ThemeUtils.getStyledColor(context, R.attr.openpgp_red);
-                break;
-            }
-        }
-
-        if (cryptoStatusRes != null) {
-            Drawable drawable = ContextCompat.getDrawable(context, cryptoStatusRes);
-            DrawableCompat.wrap(drawable);
-            DrawableCompat.setTint(drawable.mutate(), cryptoStatusColor);
-            holder.cryptoStatusIcon.setImageDrawable(drawable);
-            holder.cryptoStatus.setVisibility(View.VISIBLE);
-        } else {
-            holder.cryptoStatus.setVisibility(View.GONE);
-        }
-    }
-
-    private void bindCryptoSimple(Recipient recipient, RecipientTokenHolder holder) {
-        holder.cryptoStatus.setVisibility(View.GONE);
-
+    private void bindCryptoStatus(Recipient recipient, RecipientTokenHolder holder) {
         RecipientCryptoStatus cryptoStatus = recipient.getCryptoStatus();
         switch (cryptoStatus) {
             case AVAILABLE_TRUSTED:
             case AVAILABLE_UNTRUSTED: {
-                holder.cryptoStatusSimple.setVisibility(View.VISIBLE);
+                holder.cryptoStatus.setVisibility(View.VISIBLE);
                 break;
             }
             case UNAVAILABLE: {
-                holder.cryptoStatusSimple.setVisibility(View.GONE);
+                holder.cryptoStatus.setVisibility(View.GONE);
                 break;
             }
         }
@@ -179,27 +134,19 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
         };
     }
 
-    public void setShowAdvancedInfo(boolean showAdvancedInfo) {
-        this.showAdvancedInfo = showAdvancedInfo;
-    }
-
 
     private static class RecipientTokenHolder {
         public final MaterialTextView name;
         public final MaterialTextView email;
         final ImageView photo;
-        final View cryptoStatus;
-        final ImageView cryptoStatusIcon;
-        final ImageView cryptoStatusSimple;
+        final ImageView cryptoStatus;
 
 
         RecipientTokenHolder(View view) {
             name = view.findViewById(R.id.text1);
             email = view.findViewById(R.id.text2);
             photo = view.findViewById(R.id.contact_photo);
-            cryptoStatus = view.findViewById(R.id.contact_crypto_status);
-            cryptoStatusIcon = view.findViewById(R.id.contact_crypto_status_icon);
-            cryptoStatusSimple = view.findViewById(R.id.contact_crypto_status_icon_simple);
+            cryptoStatus = view.findViewById(R.id.contact_crypto_status_icon);
         }
     }
 

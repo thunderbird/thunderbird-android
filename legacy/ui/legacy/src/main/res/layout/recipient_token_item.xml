@@ -61,7 +61,7 @@
         />
 
     <ImageView
-        android:id="@+id/contact_crypto_status_icon_simple"
+        android:id="@+id/contact_crypto_status_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
@@ -74,7 +74,7 @@
         />
 
     <ImageView
-        android:id="@+id/contact_crypto_status_icon_simple_enabled"
+        android:id="@+id/contact_crypto_status_icon_enabled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
@@ -87,7 +87,7 @@
         />
 
     <ImageView
-        android:id="@+id/contact_crypto_status_icon_simple_error"
+        android:id="@+id/contact_crypto_status_icon_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@null"
@@ -97,52 +97,6 @@
         app:srcCompat="@drawable/ic_status_corner"
         app:tint="?openpgp_red"
         tools:visibility="gone"
-        />
-
-    <ImageView
-        android:id="@+id/contact_crypto_status_red"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@android:id/text1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/status_dots_1"
-        app:tint="?attr/openpgp_red"
-        tools:visibility="gone"
-        />
-
-    <ImageView
-        android:id="@+id/contact_crypto_status_orange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="6dp"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@android:id/text1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/status_dots_2"
-        app:tint="?attr/openpgp_orange"
-        tools:visibility="gone"
-        />
-
-    <ImageView
-        android:id="@+id/contact_crypto_status_green"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@android:id/text1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/status_dots_3"
-        app:tint="?attr/openpgp_green"
         />
 
 </com.fsck.k9.ui.compose.RecipientTokenConstraintLayout>
