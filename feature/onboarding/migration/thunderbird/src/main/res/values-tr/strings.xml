@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Bilgisayarınızda Thunderbird\'ü zaten kullanıyor musunuz?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Ayarları içe aktar</string>
     <string name="onboarding_migration_thunderbird_new_account_title">Thunderbird\'de yeni misiniz?</string>
@@ -9,4 +9,8 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Bilgisayarınızdaki Thunderbird\'de şunları yapın:</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Bir QR kodu okutarak hesap ayarlarınızı kolayca içe aktarabilirsiniz.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">Sekme araç çubuğundaki ‘Ayarlar’ simgesine tıklayın (sol alt köşede)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Thunderbird\'ü nasıl güncelleyebileceğinizi öğrenin.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Bağlantıyı açacak uygulama bulunamadı.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">‘Mobil için Dışa Aktar’ı seçin</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">İçe aktarma için Thunderbird Masaüstü 128\'in son sürümünü kullanmanız gerekir. <xliff:g id="link_text">%s</xliff:g></string>
 </resources>

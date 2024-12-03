@@ -6,7 +6,7 @@
     <string name="funding_googleplay_contribution_footer_payment_button">Jätka maksega</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Pole saadaval</string>
     <string name="funding_googleplay_contribution_title">Toeta Thunderbirdi</string>
-    <string name="funding_googleplay_contribution_header_description">Me kunagi ei näita reklaame ega müü sinu andmeid. Meie rahastamine põhineb terves mahus vaid kasutajate toetustel. Kui sulle Thunderbird meeldib, siis palun aita meid. Me ei saaks jätkata ilma sinuta!</string>
+    <string name="funding_googleplay_contribution_header_description">Meie rahastamine põhineb terves mahus vaid kasutajate toetustel. Me kunagi ei näita reklaame ega müü sinu andmeid. Kui sulle Thunderbird meeldib, siis palun aita meid. Me ei saaks jätkata ilma sinuta!</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Anneta üks kord</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Toetustel puudub maksuvabastus.</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Anna veel üks mõjus panus</string>
@@ -47,6 +47,11 @@
     <string name="funding_googleplay_contribution_reminder_positive_button">Jah</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Mitte praegu</string>
     <string name="funding_googleplay_contribution_reminder_title">Toeta Thunderbirdi</string>
-    <string name="funding_googleplay_contribution_reminder_message">Meie eesmärgiks on pakkuda avatud lähtekoodil põhinevat e-postiklienti, mis on turvaline, privaatne ja vaba kõikidele kasutajatele üle maailma. Sinu rahaline toetus aitab seda tööd korraldada. Mis summaga sina täna lööd kaasa?</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Täname sind suuremeelse annetuse eest! Sinu toetus tugevdab otseselt Thunderbirdi ja me oleme tänulikud, et oled meie kõrval sellel teekonnal.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Liitu meie missiooniga parima võimaliku privaatsustaustava ja kohandatava e-postikliendi loomisel.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Sinu toetus otseselt edendab Thunderbirdi arendust ja me oleme tänulikud sinu toe eest.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Siiras tänu sulle meie kõigi poolt!</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Me ei näita reklaame.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird on tasuta ja põhineb avatud lähtekoodil.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Me ei müü sinu andmeid.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Meid rahastavad vaid sellised kasutajad, nagu sinagi.</string>
 </resources>

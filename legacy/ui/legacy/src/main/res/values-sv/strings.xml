@@ -236,7 +236,7 @@
     <string name="general_settings_ui_density_default">Standard</string>
     <string name="general_settings_ui_density_relaxed">Avslappnad</string>
     <string name="global_settings_privacy_hide_useragent">Dölj e-postklient</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Ta bort K-9-användaragent från meddelanderubriker</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Ta bort användaragent från meddelanderubriker</string>
     <string name="global_settings_privacy_hide_timezone">Dölj tidszon</string>
     <string name="global_settings_privacy_hide_timezone_detail">Använd UTC istället för lokal tidszon i postrubriker och svarsrubrik</string>
     <string name="global_settings_notification_quick_delete_title">Visa knappen \"Ta bort\"</string>

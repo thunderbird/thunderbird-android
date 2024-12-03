@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="funding_googleplay_contribution_header_title">Thunderbird\'ü Destekleyin</string>
-    <string name="funding_googleplay_contribution_header_description">Reklam göstermiyoruz veya verilerinizi satmıyoruz. Tamamen kullanıcılarımızın bağışlarıyla finanse ediliyoruz. Thunderbird\'ü beğeniyorsanız lütfen siz de bağış yapın. Siz olmadan başaramayız!</string>
+    <string name="funding_googleplay_contribution_header_title">Thunderbird’ü Destekleyin</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird tamamen kullanıcılarımızın bağışlarıyla finanse ediliyor. Reklam göstermiyoruz ve verilerinizi satmıyoruz. Thunderbird’ü beğeniyorsanız lütfen siz de bağış yapın. Siz olmadan başaramayız!</string>
     <string name="funding_googleplay_contribution_list_title">Güvenli bağış</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Tek seferlik</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Her ay</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Mevcut değil</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Ödemeye geç</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Aylık ödemeyi değiştir</string>
-    <string name="funding_googleplay_contribution_title">Thunderbird\'ü Destekleyin</string>
+    <string name="funding_googleplay_contribution_title">Thunderbird’ü Destekleyin</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Thunderbird’ü yaşatmamıza yardım edin</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Bağışlarınız vergiden düşülemez.</string>
     <string name="funding_googleplay_contribution_list_empty_title">Şu anda uygulama içi bağış yapılamıyor.</string>

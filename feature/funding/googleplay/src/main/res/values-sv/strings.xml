@@ -4,7 +4,7 @@
     <string name="funding_googleplay_contribution_list_type_recurring">Månadsvis</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Bidrag är inte avdragsgilla som donationer till välgörande ändamål.</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Fortsätt till betalning</string>
-    <string name="funding_googleplay_contribution_header_description">Vi visar aldrig annonser eller säljer din data. Vi är helt finansierade av ekonomiska bidrag från våra användare. Om du gillar Thunderbird, vänligen hjälp till att stödja det. Vi kan inte göra detta utan dig!</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird finansieras helt av bidrag från användare som du. Vi visar aldrig annonser eller säljer din data. Om du gillar Thunderbird, vänligen hjälp till att stödja det. Vi kan inte göra detta utan dig!</string>
     <string name="funding_googleplay_contribution_list_title">Säkert bidrag</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Donera en gång</string>
     <string name="funding_googleplay_contribution_title">Stöd Thunderbird</string>
@@ -47,6 +47,11 @@
     <string name="funding_googleplay_contribution_reminder_title">Stöd Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Inte nu</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Ja</string>
-    <string name="funding_googleplay_contribution_reminder_message">Vårt uppdrag är att tillhandahålla en e-postapp med öppen källkod som är säker, privat och gratis för användare över hela världen. Ditt ekonomiska bidrag stödjer detta arbete. Kommer du att ge idag?</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Tack för din generösa donation! Ditt stöd stärker Thunderbird och vi är tacksamma över att ha dig vid vår sida på denna resa.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Gå med i vårt uppdrag att skapa den bästa möjliga e-postupplevelsen som respekterar integritet och kan anpassas.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Ditt bidrag främjar utvecklingen av Thunderbird och vi är verkligen tacksamma för ditt stöd.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Ett uppriktigt tack från oss alla!</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird är fritt och öppen källkod.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Vi visar inga annonser.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Vi säljer inte din data.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Vi finansieras enbart av användare som du.</string>
 </resources>

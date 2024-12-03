@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Logi sisse kasutades OAuth\'i</string>
     <string name="account_oauth_sign_in_description">Me suuname nüüd sind sisselogimisele sinu e-postiteenusepakkuja juurde. Seal pead sa lubama meie rakendusele ligipääsu sinu e-posti kontole.</string>
     <string name="account_oauth_sign_in_button">Logi sisse</string>
+    <string name="account_oauth_google_sign_in_support_text">Kui sul tekib vigu Google\'i kontoga sisselogimisel, siis lisateavet {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">leiad meie kasutajatoe artiklist</string>
 </resources>

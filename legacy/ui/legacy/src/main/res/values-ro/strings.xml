@@ -237,7 +237,7 @@
     <string name="general_settings_ui_density_default">Implicit</string>
     <string name="general_settings_ui_density_relaxed">Relaxat</string>
     <string name="global_settings_privacy_hide_useragent">Ascunde clientul de mail</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Elimină K-9 User-Agent din anteturile mesajelor</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Elimină agentul utilizatorului (User-Agent) din anteturile mesajelor</string>
     <string name="global_settings_privacy_hide_timezone">Ascunde fusul orar</string>
     <string name="global_settings_privacy_hide_timezone_detail">Folosește UTC în locul fusului orar local în antetul mesajelor și al răspunsurilor</string>
     <string name="global_settings_notification_quick_delete_title">Arată butonul \'Ştergere\'</string>
