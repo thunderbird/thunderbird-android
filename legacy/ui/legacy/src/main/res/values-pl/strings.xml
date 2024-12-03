@@ -897,7 +897,7 @@
     <string name="folder_settings_sync_label">Włącz synchronizację</string>
     <string name="folder_list_show_hidden_folders">Pokaż ukryte foldery</string>
     <string name="folder_settings_visible_label">Pokaż folder</string>
-    <string name="settings_list_action_support">Wesprzyj <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="settings_list_action_support">Wesprzyj aplikację <xliff:g id="app_name">%s</xliff:g></string>
     <string name="volume_navigation_title_short">Nawigacja przyciskami głośności</string>
     <string name="volume_navigation_summary">Poruszaj się między wiadomościami za pomocą przycisków głośności w widoku wiadomości</string>
     <string name="save_attachment_action">Zapisz załącznik</string>
