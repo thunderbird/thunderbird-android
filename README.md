@@ -73,6 +73,9 @@ our [blog post](https://blog.thunderbird.net/2023/07/k-9-mail-collaborates-with-
 
 You can report a security vulnerability [through the respective issues form](https://github.com/thunderbird/thunderbird-android/security/advisories/new).
 
+Users can verify the downloaded apk from Github and F-Droid against following SHA-256 hash to ensure the app was properly signed with our signing key:
+`B6:52:47:79:B3:DB:BC:5A:C1:7A:5A:C2:71:DD:B2:9D:CF:BF:72:35:78:C2:38:E0:3C:3C:21:78:11:35:6D:D1`
+
 ## K-9 Mail
 
 In June 2022, [K-9 Mail joined the Thunderbird family](https://k9mail.app/2022/06/13/K-9-Mail-and-Thunderbird.html)
