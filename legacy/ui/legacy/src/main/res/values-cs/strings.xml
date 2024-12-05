@@ -889,7 +889,7 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="general_settings_post_mark_as_unread_action_stay">Zůstat na současné zprávě</string>
     <string name="general_settings_post_mark_as_unread_action_title">Po označení zprávy jako nepřečtené</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Vrátit se na seznam zpráv</string>
-    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstraněn z <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%1$s</xliff:g>\" bude odstraněn z <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="push_notification_state_alarm_permission_missing">Chybí oprávnění pro nastavování alarmů</string>
     <string name="dialog_openkeychain_info_text">Pro šifrování mezi odesílatelem a příjemcem je potřeba aplikace OpenKeychain.</string>
     <string name="about_title">O aplikaci <xliff:g id="app_name">%s</xliff:g></string>

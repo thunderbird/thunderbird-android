@@ -23,7 +23,7 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Wyświetl</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%1$s</xliff:g>\" zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autorzy</string>
     <string name="about_title">O aplikacji <xliff:g id="app_name">%s</xliff:g></string>

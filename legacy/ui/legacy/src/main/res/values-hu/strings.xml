@@ -874,7 +874,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="general_settings_post_remove_action_show_next_message">Következő üzenet megjelenítése</string>
     <string name="general_settings_post_remove_action_title">Üzenet törlése vagy áthelyezése után</string>
     <string name="about_app_authors_thunderbird">A Thunderbird Mobile csapata</string>
-    <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók eltávolításra kerül a <xliff:g id="app_name">%s</xliff:g> alkalmazásból.</string>
+    <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%1$s</xliff:g>” fiók eltávolításra kerül a <xliff:g id="app_name">%2$s</xliff:g> alkalmazásból.</string>
     <string name="push_notification_state_alarm_permission_missing">Hiányzó engedély a riasztások ütemezéséhez</string>
     <string name="push_notification_grant_alarm_permission">Koppintson az engedély megadásához.</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Vissza az üzenetekhez</string>
