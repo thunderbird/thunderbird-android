@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Accedi tramite OAuth</string>
     <string name="account_oauth_sign_in_description">Sarai reindirizzato al tuo provider di posta elettronica per accedere. Autorizza l\'app ad accedere al tuo account di posta elettronica.</string>
     <string name="account_oauth_sign_in_button">Accedi</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">Articolo di supporto</string>
+    <string name="account_oauth_google_sign_in_support_text">Se riscontri problemi durante l\'accesso con Google, consulta il nostro {placeHolder}.</string>
 </resources>

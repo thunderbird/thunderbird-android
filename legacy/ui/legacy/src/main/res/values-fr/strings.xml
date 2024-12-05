@@ -88,7 +88,7 @@
     <string name="add_attachment_action">Ajouter un fichier joint</string>
     <string name="empty_trash_action">Vider la corbeille</string>
     <string name="expunge_action">Supprimer</string>
-    <string name="about_action">À propos de Courriel K-9 Mail</string>
+    <string name="about_action">À propos</string>
     <string name="prefs_title">Paramètres</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(Aucun objet)</string>
