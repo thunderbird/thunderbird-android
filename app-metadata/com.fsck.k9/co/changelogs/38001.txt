@@ -2,6 +2,6 @@
 - Cambiu per impedisce certe tastere d’appiecazione di mette in maiuscule o di currege autumaticamente l’indirizzi elettronichi durante a cunfigurazione di u contu
 - Currezzione d’un accidente quandu un sughjettu longu longu era impiegatu
 - Currezzione di l’affissera di i messaghji di sbagliu OAuth 2.0
-- Currezzione d’un accidente scarsu durante u scaricamentu d’una pezza aghjunta
+- Currezzione d’un accidente scarsu durante u scaricamentu d’una pezza ghjunta
 - Aghjuntu di codice per impedisce salti di linea in i campi d’una linea unica
 - Messa à livellu di e traduzzioni

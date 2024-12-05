@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_with_google_button">Entrar com o Google</string>
+    <string name="account_oauth_sign_in_with_google_button">Entrar com Google</string>
     <string name="account_oauth_loading_error">Acesso com OAuth falhou</string>
     <string name="account_oauth_error_failed">Autorização falhou com o erro: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_error_browser_not_available">O aplicativo não conseguiu encontrar um navegador web para dar acesso à sua conta.</string>
-    <string name="account_oauth_error_not_supported">OAuth 2.0 não é compatível com esse provedor.</string>
+    <string name="account_oauth_error_browser_not_available">O aplicativo não conseguiu encontrar um navegador para conceder acesso à sua conta.</string>
+    <string name="account_oauth_error_not_supported">No momento não há suporte para OAuth 2.0 neste provedor.</string>
     <string name="account_oauth_error_canceled">Autorização cancelada</string>
     <string name="account_oauth_loading_message">Entrar com OAuth</string>
-    <string name="account_oauth_sign_in_description">Iremos lhe redirecionar para seu provedor de email. Você deve habilitar o acesso do aplicativo à sua conta.</string>
+    <string name="account_oauth_sign_in_description">Iremos lhe redirecionar ao provedor de email para entrar na sua conta. Você precisa conceder ao aplicativo acesso à sua conta de email.</string>
     <string name="account_oauth_sign_in_button">Entrar</string>
+    <string name="account_oauth_google_sign_in_support_text">Se estiver com problemas ao entrar com Google, consulte nosso {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">artigo de suporte</string>
 </resources>

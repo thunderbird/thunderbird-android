@@ -491,7 +491,7 @@
     <string name="setting_theme_dark">Mörkt</string>
     <string name="setting_theme_light">Ljust</string>
     <string name="setting_theme_follow_system">Använd systemstandard</string>
-    <string name="display_preferences">Utseende</string>
+    <string name="display_preferences">Visning</string>
     <string name="global_preferences">Globala</string>
     <string name="debug_preferences">Felsökning</string>
     <string name="privacy_preferences">Integritet</string>
