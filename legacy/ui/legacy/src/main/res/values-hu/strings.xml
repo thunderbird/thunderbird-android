@@ -235,7 +235,7 @@
     <string name="general_settings_ui_density_default">Alapértelmezett</string>
     <string name="general_settings_ui_density_relaxed">Tágas</string>
     <string name="global_settings_privacy_hide_useragent">Levelező alkalmazás elrejtése</string>
-    <string name="global_settings_privacy_hide_useragent_detail">A K-9 azonosító eltávolítása a levél fejlécéből</string>
+    <string name="global_settings_privacy_hide_useragent_detail">A User-Agent eltávolítása a levél fejlécei közül</string>
     <string name="global_settings_privacy_hide_timezone">Időzóna elrejtése</string>
     <string name="global_settings_privacy_hide_timezone_detail">UTC használata a helyi időzóna helyett a levelek fejlécében és a válasz fejlécében</string>
     <string name="global_settings_notification_quick_delete_title">„Törlés” gomb megjelenítése</string>
@@ -362,7 +362,7 @@
     <string name="account_settings_color_label">Fiókszín</string>
     <string name="account_settings_color_summary">A fiókban és a fióklistában használt fiók kiemelt színe</string>
     <string name="account_settings_mail_display_count_label">Helyi mappa mérete</string>
-    <string name="account_settings_autodownload_message_size_label">Legfeljebb ennyi üzenet beolvasása</string>
+    <string name="account_settings_autodownload_message_size_label">Legfeljebb ekkora levelek lekérése</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
@@ -513,7 +513,7 @@
     <string name="background_ops_always">Mindig</string>
     <string name="background_ops_auto_sync_only">Amikor az „Automatikus szinkronizálás” be van jelölve</string>
     <string name="batch_select_all">Összes kijelölése</string>
-    <string name="account_setup_push_limit_label">Küldéssel ellenőrzendő mappák legnagyobb száma</string>
+    <string name="account_setup_push_limit_label">Leküldéssel ellenőrzendő mappák legnagyobb száma</string>
     <string name="account_setup_push_limit_5">5 mappa</string>
     <string name="account_setup_push_limit_10">10 mappa</string>
     <string name="account_setup_push_limit_25">25 mappa</string>
@@ -858,7 +858,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_compose_message_to">Üzenet írása, címzett</string>
     <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_copy_email_address">E-mail cím másolása</string>
+    <string name="action_copy_email_address">E-mail-cím másolása</string>
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_copy_name_and_email_address">Név és e-mail-cím másolása</string>
     <!--A user visible label for the email address copied to the clipboard-->
@@ -887,7 +887,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="settings_ui_telemetry_description">Megosztja az alkalmazás teljesítmény-, használati-, hardver- és testreszabási adatait a Mozillával, hogy segítsen nekünk a Thunderbird jobbá tételében</string>
     <string name="about_title">A <xliff:g id="app_name">%s</xliff:g> névjegye</string>
     <string name="dialog_openkeychain_info_text">A végpontok közötti titkosítás támogatásához az OpenKeychain alkalmazás szükséges.</string>
-    <string name="push_info_notification_explanation_text">Lekérdezések használatakor a <xliff:g id="app_name">%1$s</xliff:g> kapcsolatot tart fenn a levelezőkiszolgálóval. Az Android megköveteli a folyamatos értesítés megjelenítését, amíg az alkalmazás aktív a háttérben. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Leküldés használatakor a <xliff:g id="app_name">%1$s</xliff:g> kapcsolatot tart fenn a levelezőkiszolgálóval. Az Android megköveteli a folyamatos értesítés megjelenítését, amíg az alkalmazás aktív a háttérben. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="folder_settings_sync_label">Szinkronizálás engedélyezése</string>
     <string name="folder_list_show_hidden_folders">Rejtett mappák megjelenítése</string>
     <string name="folder_settings_visible_label">Mappa megjelenítése</string>

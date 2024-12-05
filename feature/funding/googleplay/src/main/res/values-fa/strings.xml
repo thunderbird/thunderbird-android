@@ -6,7 +6,7 @@
     <string name="funding_googleplay_contribution_list_type_recurring">ماهانه</string>
     <string name="funding_googleplay_contribution_list_disclaimer">مشارکت‌ها به عنوان اعانه‌های خیریه شامل مالیات نمی‌شوند.</string>
     <string name="funding_googleplay_contribution_footer_payment_button">ادامه به پرداخت</string>
-    <string name="funding_googleplay_contribution_header_description">ما هرگز تبلیغات نشان نداده یا داده‌هایتان را نمی‌فروشیم و کاملاً به دست مشارکت‌های مالی کاربرانمان تأمین می‌شویم. اگر از تاندربرد لذت می برید، لطفاُ در حمایت از آن کمک کنید. ما نمی توانیم این کار را بدون شما انجام دهیم!</string>
+    <string name="funding_googleplay_contribution_header_description">تاندربرد کاملاً به دست مشارکت‌های مالی کاربرانمان مثل شما، تأمین می‌شود. ما هرگز تبلیغات نشان نداده یا داده‌هایتان را نمی‌فروشیم. لطفاً در حمایت از آن کمک کنید. ما نمی توانیم این کار را بدون شما انجام دهیم!</string>
     <string name="funding_googleplay_contribution_title">پشتیبانی تاندربرد</string>
     <string name="funding_googleplay_contribution_list_type_none_available">هیچ کدام موجود نیست</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">یک کمک موثر دیگر داشته باشید</string>
@@ -47,6 +47,11 @@
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">حمایت شما الهام بخش است! مشارکت شما به ما کمک می کند تا مرزها را پشت سر بگذاریم و به اهداف خود برسیم.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">شما به ما کمک می کنید رویای بزرگ داشته باشیم! حمایت شما ما را قادر می‌سازد تا به چیزهای خارق العاده‌ای دست یابیم.</string>
     <string name="funding_googleplay_contribution_reminder_title">حمایت از تاندربرد</string>
-    <string name="funding_googleplay_contribution_reminder_message">ماموریت ما ارائه یک برنامه رایانامه متن‌باز است که امن، خصوصی و آزاد برای کاربران در سراسر جهان است. کمک مالی شما از این کار حمایت می‌کند. امروز کمک می‌کنی؟</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">از کمک سخاوتمندانه شما متشکریم! حمایت شما به طور مستقیم، تاندربرد را تقویت می‌کند و ما از اینکه در این ماجراجویی در کنارمان هستید سپاسگزاریم.</string>
+    <string name="funding_googleplay_contribution_reminder_message">به ماموریت ما بپیوندید تا بهترین تجربه رایانامه با احترام به حریم خصوصی و قابل شخصی‌سازی را ایجاد کنید.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">حمایت شما به طور مستقیم، تاندربرد را تقویت می‌کند و ما واقعا از حمایت شما سپاسگزاریم.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">یک تشکر صمیمانه از طرف همه ما!</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">ما آگهی نمایش نمی‌دهیم.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">ما داده‌های شما را نمی‌فروشیم.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">ما فقط توسط کاربرانی مانند شما تأمین مالی می‌شویم.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">تاندربرد آزاد و متن‌باز است.</string>
 </resources>

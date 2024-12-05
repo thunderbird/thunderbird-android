@@ -7,7 +7,7 @@
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_authentication_none">Nenhum</string>
     <string name="account_server_settings_authentication_password_encrypted">Senha criptografada</string>
-    <string name="account_server_settings_incoming_imap_namespace_label">Detectar espaço de nomes IMAP automaticamente</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Detectar namespace IMAP automaticamente</string>
     <string name="account_server_settings_incoming_top_bar_title">Configuração do servidor de entrada</string>
     <string name="account_server_settings_authentication_password_cleartext">Senha normal</string>
     <string name="account_server_settings_password_authentication_title">Verifique sua identidade</string>
@@ -15,21 +15,21 @@
     <string name="account_server_settings_connection_security_none">Nenhum</string>
     <string name="account_server_settings_port_label">Porta</string>
     <string name="account_server_settings_incoming_imap_compression_label">Usar compressão</string>
-    <string name="account_server_settings_validation_error_port_required">Porta é obrigatório.</string>
+    <string name="account_server_settings_validation_error_port_required">Porta é obrigatória.</string>
     <string name="account_server_settings_authentication_client_certificate">Certificado de usuário</string>
-    <string name="account_server_settings_incoming_imap_prefix_label">Prefixo do Caminho IMAP</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Prefixo do caminho de IMAP</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protocolo</string>
     <string name="account_server_settings_password_authentication_subtitle">Desbloqueie para ver sua senha</string>
     <string name="account_server_settings_username_label">Nome de usuário</string>
-    <string name="account_server_settings_validation_error_port_invalid">Porta é inválida (deve estar entre 1–65535).</string>
+    <string name="account_server_settings_validation_error_port_invalid">Porta inválida (deve ser de 1 a 65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
-    <string name="account_server_settings_client_certificate_label">Certificado de usuário</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">O prefixo IMAP não pode estar vazio.</string>
+    <string name="account_server_settings_client_certificate_label">Certificado de cliente</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Prefixo de IMAP não pode estar vazio.</string>
     <string name="account_server_settings_client_certificate_none_selected">Nenhum</string>
-    <string name="account_server_settings_password_authentication_screen_lock_required">Para visualizar sua senha, habilite o bloqueio de tela neste aparelho.</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Para ver sua senha aqui, ative bloqueio de tela neste dispositivo.</string>
     <string name="account_server_settings_server_label">Servidor</string>
     <string name="account_server_settings_security_label">Segurança</string>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Endereço IP ou nome do servidor invalidos</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Endereço IP ou nome de servidor inválido</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Enviar informações do cliente</string>
 </resources>
