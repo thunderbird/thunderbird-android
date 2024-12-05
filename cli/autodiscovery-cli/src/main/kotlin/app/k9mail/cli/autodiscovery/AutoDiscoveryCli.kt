@@ -8,6 +8,7 @@ import app.k9mail.autodiscovery.autoconfig.createMxLookupAutoconfigDiscovery
 import app.k9mail.autodiscovery.autoconfig.createProviderAutoconfigDiscovery
 import app.k9mail.core.common.mail.toUserEmailAddress
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
@@ -17,13 +18,14 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient.Builder
 import org.koin.core.time.measureDurationForResult
 
-class AutoDiscoveryCli : CliktCommand(
-    help = "Performs the auto-discovery steps used by Thunderbird for Android to find mail server settings",
-) {
+class AutoDiscoveryCli : CliktCommand() {
     private val httpsOnly by option(help = "Only perform Autoconfig lookups using HTTPS").flag()
     private val includeEmailAddress by option(help = "Include email address in Autoconfig lookups").flag()
 
     private val emailAddress by argument(name = "email", help = "Email address")
+
+    override fun help(context: Context) =
+        "Performs the auto-discovery steps used by Thunderbird for Android to find mail server settings"
 
     override fun run() {
         echo("Attempting to find mail server settings for <$emailAddress>…")
