@@ -49,6 +49,7 @@ include(
 )
 
 include(
+    ":feature:account:avatar",
     ":feature:account:common",
     ":feature:account:edit",
     ":feature:account:oauth",
