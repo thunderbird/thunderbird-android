@@ -160,7 +160,7 @@
     <string name="status_loading_error">Mesaj yükləmə xətası</string>
     <string name="about_title"><xliff:g id="app_name">%s</xliff:g> haqqında</string>
     <string name="search_action">Axtar</string>
-    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%s</xliff:g>\" hesabı <xliff:g id="app_name">%s</xliff:g>-dan silinəcək.</string>
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%1$s</xliff:g>\" hesabı <xliff:g id="app_name">%2$s</xliff:g>-dan silinəcək.</string>
     <string name="done_action">Bitir</string>
     <string name="check_mail_action">Poçtu yoxla</string>
     <string name="send_messages_action">Mesajları göndər</string>

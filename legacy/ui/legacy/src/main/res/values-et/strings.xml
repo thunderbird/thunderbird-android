@@ -879,7 +879,7 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="general_settings_post_mark_as_unread_action_return_to_list">mine tagasi sõnumite loendivaatesse</string>
     <string name="push_notification_state_alarm_permission_missing">Puuduvad õigused alarmide seadistamiseks</string>
     <string name="push_notification_grant_alarm_permission">Õiguste jagamiseks klõpsi.</string>
-    <string name="account_delete_dlg_instructions_fmt">Kasutajakonto \"<xliff:g id="account">%s</xliff:g>\" kustutatakse <xliff:g id="app_name">%s</xliff:g>ist.</string>
+    <string name="account_delete_dlg_instructions_fmt">Kasutajakonto \"<xliff:g id="account">%1$s</xliff:g>\" kustutatakse <xliff:g id="app_name">%2$s</xliff:g>ist.</string>
     <string name="push_info_notification_explanation_text">Tõuketeenuste kasutamisel <xliff:g id="app_name">%1$s</xliff:g> hoiab töös ühendust e-posti serveriga. Kui rakendus on taustal pidevalt aktiivne, siis Android eeldab, et selle kohta kuvatakse pidevat teavitust. Lisateave: <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_title">Teave <xliff:g id="app_name">%s</xliff:g>i kohta</string>
     <string name="dialog_openkeychain_info_text">Läbiva krüptimise kasutamiseks on vajalik OpenKeychaini rakendus.</string>

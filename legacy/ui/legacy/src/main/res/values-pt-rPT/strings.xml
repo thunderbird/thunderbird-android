@@ -884,7 +884,7 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="general_settings_post_remove_action_title">Depois de apagar ou mover mensagem</string>
     <string name="background_work_notification_remove_account">A remover conta…</string>
     <string name="about_app_authors_thunderbird">Equipa do Thunderbird Mobile</string>
-    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\"será removida de <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%1$s</xliff:g>\"será removida de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="push_notification_state_alarm_permission_missing">Falta a permissão para agendar alarmes</string>
     <string name="push_notification_grant_alarm_permission">Toque para conceder a permissão.</string>
     <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>

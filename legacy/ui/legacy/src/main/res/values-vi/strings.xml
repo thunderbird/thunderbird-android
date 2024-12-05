@@ -873,7 +873,7 @@
     <string name="generic_loading_error">Có lỗi xảy ra khi đang tải dữ liệu</string>
     <string name="push_info_disable_push_text">Nếu bạn không cần thông báo tức thì về tin nhắn mới, bạn nên tắt tính năng Đẩy và sử dụng Thăm dò. Thăm dò kiểm tra thư mới theo định kỳ và không cần thông báo.</string>
     <string name="push_info_disable_push_action">Vô hiệu hóa Đẩy</string>
-    <string name="account_delete_dlg_instructions_fmt">Tài khoản \"<xliff:g id="account">%s</xliff:g>\" sẽ bị loại khỏi <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Tài khoản \"<xliff:g id="account">%1$s</xliff:g>\" sẽ bị loại khỏi <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="dialog_openkeychain_info_text">Cần có ứng dụng OpenKeychain để hỗ trợ mã hóa đầu cuối.</string>
     <string name="push_info_notification_explanation_text">Khi sử dụng Push, <xliff:g id="app_name">%1$s</xliff:g> duy trì kết nối với máy chủ thư. Android yêu cầu hiển thị thông báo liên tục trong khi ứng dụng đang hoạt động ở chế độ nền. <xliff:g id="Optional_extends_explanation">%2$s</xliff:g></string>
     <string name="about_title">Giới thiệu về <xliff:g id="app_name">%s</xliff:g></string>

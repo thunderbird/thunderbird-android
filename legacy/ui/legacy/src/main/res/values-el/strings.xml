@@ -887,7 +887,7 @@
     <string name="folder_settings_push_label">Ενεργοποίηση ειδοποίησεων push</string>
     <string name="folder_list_show_hidden_folders">Εμφάνιση κρυφών φακέλων</string>
     <string name="about_title">Σχετικά με το <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \"<xliff:g id="account">%s</xliff:g>\" θα αφαιρεθεί από το <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \"<xliff:g id="account">%1$s</xliff:g>\" θα αφαιρεθεί από το <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="folder_settings_visible_label">Εμφάνιση φακέλου</string>
     <string name="save_attachment_action">Αποθήκευση συνημμένου</string>
     <string name="volume_navigation_summary">Πλοήγηση στα μηνύματα με τα πλήκτρα έντασης στην προβολή μηνυμάτων</string>
