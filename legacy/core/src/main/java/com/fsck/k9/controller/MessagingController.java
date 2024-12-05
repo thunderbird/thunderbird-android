@@ -27,6 +27,7 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import app.k9mail.core.featureflag.FeatureFlagProvider;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.account.Account.DeletePolicy;
 import app.k9mail.legacy.di.DI;
@@ -142,10 +143,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
 
     MessagingController(Context context, NotificationController notificationController,
-            NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
-            BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
-            SaveMessageDataCreator saveMessageDataCreator, SpecialLocalFoldersCreator specialLocalFoldersCreator,
-            LocalDeleteOperationDecider localDeleteOperationDecider, List<ControllerExtension> controllerExtensions) {
+        NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
+        BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
+        SaveMessageDataCreator saveMessageDataCreator, SpecialLocalFoldersCreator specialLocalFoldersCreator,
+        LocalDeleteOperationDecider localDeleteOperationDecider, List<ControllerExtension> controllerExtensions,
+        FeatureFlagProvider featureFlagProvider
+    ) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
@@ -171,7 +174,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
-        archiveOperations = new ArchiveOperations(this);
+        archiveOperations = new ArchiveOperations(this, featureFlagProvider);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -1754,10 +1757,6 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
             long destFolderId, MoveOrCopyFlavor operation) {
 
-        if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
-            throw new UnsupportedOperationException("MOVE_AND_MARK_AS_READ unsupported");
-        }
-
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             if (operation == MoveOrCopyFlavor.MOVE && !isMoveCapable(account)) {
@@ -1781,8 +1780,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     uids.add(uid);
                 }
 
-                if (!unreadCountAffected && !message.isSet(Flag.SEEN)) {
-                    unreadCountAffected = true;
+                if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
+                    if (!message.isSet(Flag.SEEN)) {
+                        unreadCountAffected = true;
+                        message.setFlag(Flag.SEEN, true);
+                    }
+                } else {
+                    if (!unreadCountAffected && !message.isSet(Flag.SEEN)) {
+                        unreadCountAffected = true;
+                    }
                 }
             }
 

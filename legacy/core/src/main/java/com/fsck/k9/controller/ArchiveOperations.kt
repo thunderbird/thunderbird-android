@@ -1,5 +1,8 @@
 package com.fsck.k9.controller
 
+import app.k9mail.core.featureflag.FeatureFlagProvider
+import app.k9mail.core.featureflag.FeatureFlagResult
+import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.controller.MessagingController.MessageActor
@@ -10,6 +13,7 @@ import timber.log.Timber
 
 internal class ArchiveOperations(
     private val messagingController: MessagingController,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) {
     fun archiveThreads(messages: List<MessageReference>) {
         archiveByFolder("archiveThreads", messages) { account, folderId, messagesInFolder, archiveFolderId ->
@@ -69,12 +73,17 @@ internal class ArchiveOperations(
         messages: List<LocalMessage>,
         archiveFolderId: Long,
     ) {
+        val operation = when (featureFlagProvider.provide("archive_marks_as_read".toFeatureFlagKey())) {
+            FeatureFlagResult.Enabled -> MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ
+            FeatureFlagResult.Disabled -> MoveOrCopyFlavor.MOVE
+            FeatureFlagResult.Unavailable -> MoveOrCopyFlavor.MOVE
+        }
         messagingController.moveOrCopyMessageSynchronous(
             account,
             sourceFolderId,
             messages,
             archiveFolderId,
-            MoveOrCopyFlavor.MOVE,
+            operation,
         )
     }
 
