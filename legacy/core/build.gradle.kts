@@ -21,6 +21,7 @@ dependencies {
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
     implementation(projects.feature.telemetry.api)
+    implementation(projects.core.featureflags)
 
     api(libs.androidx.annotation)
 
@@ -35,7 +36,6 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.mime4j.core)
     implementation(libs.mime4j.dom)
-    implementation(projects.core.featureflags)
 
     testApi(projects.core.testing)
     testApi(projects.core.android.testing)

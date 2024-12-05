@@ -73,7 +73,7 @@ internal class ArchiveOperations(
         messages: List<LocalMessage>,
         archiveFolderId: Long,
     ) {
-        val operation = when (featureFlagProvider.provide("move_and_mark_as_read".toFeatureFlagKey())) {
+        val operation = when (featureFlagProvider.provide("archive_marks_as_read".toFeatureFlagKey())) {
             FeatureFlagResult.Enabled -> MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ
             FeatureFlagResult.Disabled -> MoveOrCopyFlavor.MOVE
             FeatureFlagResult.Unavailable -> MoveOrCopyFlavor.MOVE

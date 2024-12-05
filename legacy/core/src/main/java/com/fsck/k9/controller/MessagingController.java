@@ -132,7 +132,6 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final DraftOperations draftOperations;
     private final NotificationOperations notificationOperations;
     private final ArchiveOperations archiveOperations;
-    private final FeatureFlagProvider featureFlagProvider;
 
 
     private volatile boolean stopped = false;
@@ -160,7 +159,6 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.saveMessageDataCreator = saveMessageDataCreator;
         this.specialLocalFoldersCreator = specialLocalFoldersCreator;
         this.localDeleteOperationDecider = localDeleteOperationDecider;
-        this.featureFlagProvider = featureFlagProvider;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -176,7 +174,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
-        archiveOperations = new ArchiveOperations(this, this.featureFlagProvider);
+        archiveOperations = new ArchiveOperations(this, featureFlagProvider);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -1787,8 +1785,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                         unreadCountAffected = true;
                         message.setFlag(Flag.SEEN, true);
                     }
-                }
-                else {
+                } else {
                     if (!unreadCountAffected && !message.isSet(Flag.SEEN)) {
                         unreadCountAffected = true;
                     }
