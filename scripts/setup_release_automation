@@ -24,7 +24,7 @@ CHANNEL_ENVIRONMENTS = {
             "MATRIX_INCLUDE": [
                 {
                     "appName": "thunderbird",
-                    "releaseTarget": "github",
+                    "releaseTarget": "ftp|github",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
@@ -37,7 +37,7 @@ CHANNEL_ENVIRONMENTS = {
                 },
                 {
                     "appName": "k9mail",
-                    "releaseTarget": "github",
+                    "releaseTarget": "ftp|github",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
@@ -58,7 +58,7 @@ CHANNEL_ENVIRONMENTS = {
             "MATRIX_INCLUDE": [
                 {
                     "appName": "thunderbird",
-                    "releaseTarget": "github",
+                    "releaseTarget": "ftp|github",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
@@ -71,7 +71,7 @@ CHANNEL_ENVIRONMENTS = {
                 },
                 {
                     "appName": "k9mail",
-                    "releaseTarget": "github",
+                    "releaseTarget": "ftp|github",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
@@ -92,6 +92,7 @@ CHANNEL_ENVIRONMENTS = {
             "MATRIX_INCLUDE": [
                 {
                     "appName": "thunderbird",
+                    "releaseTarget": "ftp",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
