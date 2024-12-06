@@ -19,9 +19,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          sparse-checkout: |
-            scripts/uplift-merges.sh
-          sparse-checkout-cone-mode: false
+          fetch-depth: 0
 
       - name: Configure for push
         if: ${{ !inputs.dryRun }}
