@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Почетак</string>
+    <string name="onboarding_welcome_start_button">Започните</string>
     <string name="onboarding_welcome_import_button">Увези подешавања</string>
+    <string name="onboarding_welcome_text">Апликација за е-пошту отвореног кода, фокусирана на приватност и без огласа за Андроид.</string>
+    <string name="onboarding_welcome_developed_by">Развијен од стране наменског тима MZLA Technologies и глобалне заједнице волонтера. Део породице Mozilla.</string>
 </resources>

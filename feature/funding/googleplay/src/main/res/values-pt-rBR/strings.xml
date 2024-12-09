@@ -36,4 +36,22 @@
     <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Seu apoio é realmente inspirador! Graças à sua contribuição substancial, podemos avançar novas barreiras, inovar, e promover grandes passos em direção aos nossos objetivos.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_m_description">Sua contribuição realmente brilha! Você desempenha uma grande parte na nossa missão, nos ajudando a chegar a passos importantes e causar um grande impacto.</string>
     <string name="funding_googleplay_contribution_header_thank_you">Um agradecimento sincero de todos nós!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Contribuição Mensal Essencial</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Contribuição Mensal Importante</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Contribuição Mensal Significante</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Você realmente está nos ajudando ter grande sonhos! O seu apoio incrível nos capacita para atingir o extraordinário, tendo um impacto duradouro em todo o que fazemos.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Sua contribuição nos ajuda crescer and dar paços significativos para frente—obrigado!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Contribuição Mensal Valorizado</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Contribuição Mensal Excepcional</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Sua contribuição brilha! Você é essential para o avanço da nossa missão e ter um impacto.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">O seu apoio nos leva adiante! Cada contribuição gera mudança—obrigado!</string>
+    <string name="funding_googleplay_contribution_reminder_statement">O Thunderbird é gratuito e de código aberto.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Não exibimos anúncios.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Não vendemos seus dados.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Somos financiados apenas por usuários como você.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Contribuição Mensal Extraordinária</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">Você é grande razão pela qual podemos fazer o que fazemos! Sua generosidade nos ajuda a atingir novos marcos.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Seu apoio é inspirador! Sua contribuição nos ajuda a ultrapassar limites e atingir nossos objetivos.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Você está nos ajudando a sonhar alto! Seu apoio nos capacita a alcançar coisas extraordinárias.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Junte-se à nossa missão de criar a melhor experiência de e-mail personalizável, respeitando ao máximo a sua privacidade.</string>
 </resources>

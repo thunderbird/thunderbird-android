@@ -2,6 +2,5 @@
 <resources>
     <string name="account_common_button_next">Pasuesi</string>
     <string name="account_common_button_back">Mbrapsht</string>
-    <string name="account_common_error_server_message">Shërbyesi ktheu mesazhin vijues:
-\n%s</string>
+    <string name="account_common_error_server_message">Shërbyesi ktheu mesazhin vijues: \n%s</string>
 </resources>
