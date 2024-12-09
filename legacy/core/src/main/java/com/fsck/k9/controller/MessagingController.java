@@ -974,8 +974,18 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private void queueSetFlag(Account account, long folderId, boolean newState, Flag flag, List<String> uids) {
-        PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
-        queuePendingCommand(account, command);
+        //PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
+        String commandDescription = null;
+        try{
+            PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
+            if (command != null) {
+                commandDescription = command.getCommandName();
+            }
+            queuePendingCommand(account, command);
+        } catch (Exception e){
+
+            Timber.e(e, "Error running command '%s'", commandDescription);
+        }
     }
 
     /**
