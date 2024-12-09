@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
@@ -46,6 +47,7 @@ import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.network.ConnectivityManager
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
@@ -82,6 +84,7 @@ class MessageListFragment :
     private val messagingController: MessagingController by inject()
     private val accountManager: AccountManager by inject()
     private val clock: Clock by inject()
+    private val connectivityManager: ConnectivityManager by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -1035,11 +1038,47 @@ class MessageListFragment :
         computeBatchDirection()
     }
 
-    private fun onMove(message: MessageReference) {
-        onMove(listOf(message))
+    private interface ConnectivityDialogCallback {
+        fun onDialogResult(result: Int)
     }
 
-    private fun onMove(messages: List<MessageReference>) {
+    private fun showConnectivityDialog(callback: ConnectivityDialogCallback) { // added
+        val sharedPreferences = context?.getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
+        val dontShowAgain = sharedPreferences?.getBoolean("dont_show_connectivity_warning", false) ?: false;
+        //sharedPreferences?.edit()?.putBoolean("dont_show_connectivity_warning", false)?.apply()
+
+        //callback.onDialogResult(0);
+        if (dontShowAgain) {
+            // Proceed directly if "Don't show again" is checked
+            callback.onDialogResult(1);
+            return;
+        }
+        //callback.onDialogResult(0);
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("No Internet Connection")
+            .setMessage("ThunderBird is not connected to the Internet. Any changes you make now may not be synced properly.")
+            .setPositiveButton("Proceed") { _, _ ->
+                callback.onDialogResult(1);
+
+                //Log.d("onMove", "User chose to proceed")
+            }
+            .setNegativeButton("Cancel") { _, _ ->
+                callback.onDialogResult(-1);
+
+                //Log.d("onMove", "User chose to cancel")
+            }
+            .setNeutralButton("Don't show again") { _, _ ->
+                // Save the preference to not show the dialog again
+                callback.onDialogResult(1);
+                sharedPreferences?.edit()?.putBoolean("dont_show_connectivity_warning", true)?.apply()
+                //Log.d("onMove", "User chose 'Don't show again'")
+            }
+            .show()
+
+        //return;
+    }
+
+    private fun proceedWithMove(messages: List<MessageReference>) {
         if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) return
 
         val folderId = when {
@@ -1058,11 +1097,32 @@ class MessageListFragment :
         )
     }
 
-    private fun onCopy(message: MessageReference) {
-        onCopy(listOf(message))
+    private fun onMove(message: MessageReference) {
+        onMove(listOf(message))
     }
 
-    private fun onCopy(messages: List<MessageReference>) {
+    private fun onMove(messages: List<MessageReference>) {
+
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            proceedWithMove(messages);
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            proceedWithMove(messages);
+            return;
+        }
+    }
+
+    private fun proceedWithCopy(messages: List<MessageReference>) {
         if (!checkCopyOrMovePossible(messages, FolderOperation.COPY)) return
 
         val folderId = when {
@@ -1079,6 +1139,30 @@ class MessageListFragment :
             lastSelectedFolderId = null,
             messages = messages,
         )
+    }
+
+    private fun onCopy(message: MessageReference) {
+        onCopy(listOf(message))
+    }
+
+    private fun onCopy(messages: List<MessageReference>) {
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            proceedWithCopy(messages);
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            proceedWithCopy(messages);
+            return;
+        }
     }
 
     private fun displayFolderChoice(
@@ -1172,11 +1256,43 @@ class MessageListFragment :
     }
 
     private fun copy(messages: List<MessageReference>, folderId: Long) {
-        copyOrMove(messages, folderId, FolderOperation.COPY)
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            copyOrMove(messages, folderId, FolderOperation.COPY)
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            copyOrMove(messages, folderId, FolderOperation.COPY);
+            return;
+        }
     }
 
     private fun move(messages: List<MessageReference>, folderId: Long) {
-        copyOrMove(messages, folderId, FolderOperation.MOVE)
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            copyOrMove(messages, folderId, FolderOperation.MOVE)
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            copyOrMove(messages, folderId, FolderOperation.MOVE);
+            return;
+        }
     }
 
     private fun copyOrMove(messages: List<MessageReference>, destinationFolderId: Long, operation: FolderOperation) {
@@ -1206,8 +1322,25 @@ class MessageListFragment :
     }
 
     private fun onMoveToDraftsFolder(messages: List<MessageReference>) {
-        messagingController.moveToDraftsFolder(account, currentFolder!!.databaseId, messages)
-        activeMessages = null
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            messagingController.moveToDraftsFolder(account, currentFolder!!.databaseId, messages)
+                            activeMessages = null
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            messagingController.moveToDraftsFolder(account, currentFolder!!.databaseId, messages)
+            activeMessages = null
+            return;
+        }
     }
 
     override fun doPositiveClick(dialogId: Int) {
@@ -1354,8 +1487,26 @@ class MessageListFragment :
     }
 
     fun onMove() {
-        selectedMessage?.let { message ->
-            onMove(message)
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            selectedMessage?.let { message ->
+                                onMove(message)
+                            }
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            selectedMessage?.let { message ->
+                onMove(message)
+            }
+            return;
         }
     }
 
@@ -1366,8 +1517,26 @@ class MessageListFragment :
     }
 
     fun onCopy() {
-        selectedMessage?.let { message ->
-            onCopy(message)
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            selectedMessage?.let { message ->
+                                onCopy(message)
+                            }
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            selectedMessage?.let { message ->
+                onCopy(message)
+            }
+            return;
         }
     }
 
