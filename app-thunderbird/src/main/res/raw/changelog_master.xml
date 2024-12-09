@@ -5,7 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="8.1" versioncode="5" date="2024-11-06">
+    <release version="8.2" versioncode="6" date="2024-12-09">
+        <change>Account initials now use the display name</change>
+        <change>Account icons remain in the same position when selected</change>
+        <change>Help text linking to support page added for Gmail login issues</change>
+        <change>Unified inbox enabled only when multiple accounts are configured</change>
+        <change>Push service now starts reliably when expected</change>
+        <change>Correct default delete message action for QR-imported accounts.</change>
+        <change>Folder drawer updates properly on account configuration changes</change>
+    </release>    <release version="8.1" versioncode="5" date="2024-11-06">
         <change>Thunderbird's active development is fully funded by financial contributions from our users. If you're enjoying Thunderbird or believe in our mission, please help support it. In this version we will ask you for your support once you've had the chance to actively use Thunderbird for a while.</change>
         <change>We've fixed one of our top crashes to give you a more stable experience</change>
     </release>    <release version="8.0b5" versioncode="8" date="2024-10-28">
