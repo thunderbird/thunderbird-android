@@ -4,7 +4,6 @@ import argparse
 import os
 import requests
 import yaml
-import time
 import sys
 
 from jinja2 import Template
@@ -40,16 +39,16 @@ def render_notes(
     else:
         tb_notes_url = (
             os.path.join(
-                f"https://raw.githubusercontent.com/{notesrepo}/",
-                f"refs/heads/{notesbranch}",
-                tb_notes_directory,
-                tb_notes_filename,
+                f"https://api.github.com/repos/{notesrepo}/",
+                f"contents/{tb_notes_directory}/{tb_notes_filename}?ref={notesbranch}",
             )
-            + "?token="
-            + str(int(time.time()))
         )
 
-        response = requests.get(tb_notes_url)
+        headers = {
+            "Accept": "application/vnd.github.v3.raw"
+        }
+
+        response = requests.get(tb_notes_url, headers=headers)
         response.raise_for_status()
         yaml_content = yaml.safe_load(response.text)
 

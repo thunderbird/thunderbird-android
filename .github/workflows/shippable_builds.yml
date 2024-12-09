@@ -786,7 +786,7 @@ jobs:
           mkdir whatsnew
           if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
             FILEPATH=app-metadata/${APPLICATION_ID}/en-US/changelogs/${VERSION_CODE}.txt
-            wget -O whatsnew/whatsnew-en-US https://raw.githubusercontent.com/${REPO}/${APP_SHA}/${FILEPATH}?token=$(date +%s)
+            wget --header="Accept: application/vnd.github.v3.raw" -O whatsnew/whatsnew-en-US https://api.github.com/repos/${REPO}/contents/${FILEPATH}?ref=${APP_SHA}
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
             COMMIT_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
             WORKFLOW_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"

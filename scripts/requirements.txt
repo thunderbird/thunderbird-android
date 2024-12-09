@@ -1,0 +1,4 @@
+PyNaCl
+PyYAML
+Jinja2
+requests
