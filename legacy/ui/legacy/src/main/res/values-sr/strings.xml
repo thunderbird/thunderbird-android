@@ -175,7 +175,7 @@
     <string name="global_settings_registered_name_color_label">Обоји контакте</string>
     <string name="global_settings_registered_name_color_changed">Обоји имена на вашем списку контаката</string>
     <string name="global_settings_messageview_fixedwidth_label">Фонтови фиксне ширине</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Користи фонт фиксне ширине за приказ обичних текстуалних порука</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Користите фонт фиксне ширине када приказујете обичне текстуалне поруке</string>
     <string name="global_settings_messageview_autofit_width_label">Уклопи поруке</string>
     <string name="global_settings_messageview_autofit_width_summary">Скупи поруке да стану на екран</string>
     <string name="global_settings_confirm_actions_title">Потврде за радње</string>
@@ -205,7 +205,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">подразумеван</string>
     <string name="global_settings_privacy_hide_useragent">Сакриј клијента</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Уклања К-9 идентификацију из заглавља поруке</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Уклоните Усер-Агент из заглавља поште</string>
     <string name="global_settings_privacy_hide_timezone">Сакриј временску зону</string>
     <string name="global_settings_privacy_hide_timezone_detail">Коришћење УТЦ уместо локалне зоне у заглављима</string>
     <string name="global_settings_notification_quick_delete_title">Прикажи дугме за брисање</string>
@@ -896,4 +896,12 @@
     <string name="settings_ui_telemetry_title">Употреба и технички подаци</string>
     <string name="settings_ui_data_collection">Прикупљање података</string>
     <string name="settings_ui_telemetry_description">Дели податке о перформансама, коришћењу, хардверу и прилагођавању ове апликације са Мозилом како би нам помогла да побољшамо Тхундербирд</string>
+    <string name="volume_navigation_title_short">Навигација тастером за јачину звука</string>
+    <string name="volume_navigation_summary">Крећите се између порука користећи тастере за јачину звука у приказу порука</string>
+    <string name="settings_list_action_support">Подржите <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="folder_list_show_hidden_folders">Прикажи скривене фасцикле</string>
+    <string name="folder_settings_sync_label">Омогући синхронизацију</string>
+    <string name="folder_settings_visible_label">Прикажи фасциклу</string>
+    <string name="folder_settings_push_label">Омогући Пусх</string>
+    <string name="save_attachment_action">Сачувај прилог</string>
 </resources>

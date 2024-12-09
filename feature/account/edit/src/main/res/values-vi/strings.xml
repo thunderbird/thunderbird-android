@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Đang lưu các cài đặt của máy chủ…</string>
+    <string name="account_edit_save_server_settings_error_message">Lưu các cài đặt của máy chủ thất bại</string>
+    <string name="account_edit_save_server_settings_success_message">Đã lưu các cài đặt của máy chủ</string>
+</resources>
