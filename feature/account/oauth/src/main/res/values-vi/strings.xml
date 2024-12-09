@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Đăng nhập bằng OAuth</string>
     <string name="account_oauth_sign_in_description">Chúng tôi sẽ chuyển hướng bạn đến nhà cung cấp email của bạn để đăng nhập. Bạn cần cấp cho ứng dụng quyền truy cập vào tài khoản email của mình.</string>
     <string name="account_oauth_sign_in_button">Đăng nhập</string>
+    <string name="account_oauth_google_sign_in_support_text">Nếu bạn đang gặp vấn đề khi đăng nhập với Google, hãy xem qua {placeHolder} của chúng tôi.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">bài viết hỗ trợ</string>
 </resources>

@@ -9,4 +9,6 @@
     <string name="account_oauth_error_failed">Овлашћење није успело са следећом грешком: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 тренутно није подржан са овим добављачем.</string>
     <string name="account_oauth_error_browser_not_available">Апликација није могла да пронађе прегледач за коришћење у давању приступа вашем налогу.</string>
+    <string name="account_oauth_google_sign_in_support_text">Ако имате проблема при пријављивању на Google, консултујте наш {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">чланак подршке</string>
 </resources>

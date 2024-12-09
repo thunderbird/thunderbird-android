@@ -40,4 +40,6 @@
     <string name="settings_import_oauth_error_browser_not_found">Апликација није могла да пронађе прегледач за коришћење у процесу давања приступа вашем налогу.</string>
     <string name="settings_import_pick_app_button">Увези из апликације</string>
     <string name="settings_import_pick_app_dialog_title">Увези из апликације</string>
+    <string name="settings_import_scan_qr_code_button">Скенирајте QR код</string>
+    <string name="settings_import_app_version_not_supported">Верзија апликације није подржана.</string>
 </resources>

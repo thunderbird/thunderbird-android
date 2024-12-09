@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="migration_qrcode_scanning_instructions">Căn chỉnh mã QR được cung cấp từ Thunderbird cho Máy tính</string>
+    <string name="migration_qrcode_permission_denied_title">Cần quyền truy cập vào máy ảnh</string>
+    <string name="migration_qrcode_permission_denied_message">Vào trong cài đặt của Android, bấm chọn phần Quyền truy cập, và cho phép truy cập vào máy ảnh.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Đi tới cài đặt</string>
+    <string name="migration_qrcode_done_button_text">Hoàn thành</string>
+    <string name="migration_qrcode_scanning_progress">Đã quét %1$s trên tổng số %2$s</string>
+</resources>
