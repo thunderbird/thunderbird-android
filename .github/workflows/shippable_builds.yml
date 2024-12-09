@@ -925,6 +925,8 @@ jobs:
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
           ftpUrlPath: ${{ steps.ftp_destination.outputs.FTP_URL_PATH }}
           ftpUrlPathNightlyLatest: ${{ steps.ftp_destination.outputs.FTP_URL_PATH_NIGHTLY_LATEST }}
+          skipFtp: ${{ inputs.skipFtp }}
+          packageFormat: ${{ matrix.packageFormat }}
         with:
           script: |
             await core.summary
@@ -955,7 +957,7 @@ jobs:
               await core.summary.addRaw(`Released to the <b>${process.env.playTargetTrack}</b> track on Google Play`, true).write();
             }
 
-            if (process.env.skipFtp != "true" && process.env.releaseTarget.includes("ftp") && matrix.packageFormat == 'apk') {
+            if (process.env.skipFtp != "true" && process.env.releaseTarget.includes("ftp") && process.env.packageFormat == 'apk') {
               await core.summary
                 .addRaw(`Published to FTP at`)
                 .addLink(process.env.ftpUrlPath, process.env.ftpUrlPath)
