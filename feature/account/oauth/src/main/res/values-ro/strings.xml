@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Conectare folosind OAuth</string>
     <string name="account_oauth_sign_in_description">Te vom redirecționa către furnizorul de e-mail pentru a te conecta. Trebuie să acorzi aplicației acces la contul de e-mail.</string>
     <string name="account_oauth_sign_in_button">Conectează-te</string>
+    <string name="account_oauth_google_sign_in_support_text">Dacă întâmpini probleme când te conectezi cu Google, consultă {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">articol de suport</string>
 </resources>
