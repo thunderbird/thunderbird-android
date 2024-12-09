@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_list_title">Bezpieczna wpłata</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Wpłaty nie podlegają odliczeniu od podatku jako darowizny na cele charytatywne.</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Przekaż raz</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Miesięcznie</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Przejdź do płatności</string>
     <string name="funding_googleplay_contribution_header_title">Wesprzyj Thunderbirda</string>
-    <string name="funding_googleplay_contribution_header_description">Nigdy nie pokazujemy reklam ani nie sprzedajemy Twoich danych. Jesteśmy w pełni finansowani z wpłat od naszych użytkowników. Jeśli podoba Ci się Thunderbird, pomóż nam go wesprzeć. Nie możemy tego zrobić bez Ciebie!</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird jest finansowany w całości ze składek użytkowników takich jak Ty. Nigdy nie wyświetlamy reklam ani nie sprzedajemy Twoich danych. Jeśli podoba Ci się Thunderbird, pomóż nam go wesprzeć. Nie możemy tego zrobić bez Ciebie!</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Zmodyfikuj płatność miesięczną</string>
     <string name="funding_googleplay_contribution_title">Wesprzyj Thunderbirda</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Brak dostępnych</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Dokonaj kolejnego znaczącego wkładu</string>
     <string name="funding_googleplay_contribution_list_empty_title">Możliwość dokonywania wpłat w aplikacji jest obecnie niedostępna.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Odwiedź www.thunderbird.net, aby poznać więcej sposobów na wsparcie Thunderbirda</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Odwiedź <xliff:g id="link_text">%s</xliff:g>, aby poznać więcej sposobów na wsparcie Thunderbirda.</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Spróbuj ponownie</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Płatność obecnie niedostępna</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Odrzuć błąd</string>
@@ -45,8 +45,13 @@
     <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Naprawdę pomagasz nam marzyć na wielką skalę! Twoje niesamowite wsparcie daje nam siłę do osiągania czegoś niezwykłego, pozostawiając trwały wpływ na wszystko, co robimy.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_title">Główna wpłata miesięczna</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Tak</string>
-    <string name="funding_googleplay_contribution_reminder_message">Naszą misją jest zapewnienie bezpiecznej, prywatnej i bezpłatnej aplikacji e -mail typu open source dla użytkowników na całym świecie. Twój wkład finansowy wspiera tę pracę. Czy wpłacisz dzisiaj?</string>
+    <string name="funding_googleplay_contribution_reminder_message">Dołącz do naszej misji tworzenia możliwie najlepszego, szanującego prywatność, konfigurowalnego sposobu korzystania z poczty elektronicznej.</string>
     <string name="funding_googleplay_contribution_reminder_title">Wesprzyj Thunderbirda</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Nie teraz</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Dziękujemy za hojną darowiznę! Twoje wsparcie bezpośrednio wzmacnia Thunderbirda, a my jesteśmy wdzięczni za to, że jesteś po naszej stronie w tej podróży.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Twoja wpłata przyczynia się do dalszego rozwoju Thunderbirda, a my jesteśmy szczerze wdzięczni za Twoje wsparcie.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Serdeczne podziękowania od nas wszystkich!</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird jest darmowym i otwartym oprogramowaniem.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Nie wyświetlamy reklam.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Nie sprzedajemy Twoich danych.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Jesteśmy finansowani wyłącznie przez użytkowników takich jak Ty.</string>
 </resources>

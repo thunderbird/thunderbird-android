@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_list_title">Contribució segura</string>
     <string name="funding_googleplay_contribution_title">Dóna suport a Thunderbird</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Donació única</string>
@@ -11,7 +11,7 @@
     <string name="funding_googleplay_contribution_list_type_none_available">Cap disponible</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Les contribucions no són deduïbles fiscalment com a donacions benèfiques.</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Modifica el pagament mensual</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Visiteu www.thunderbird.net per obtenir més maneres de donar suport al Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visiteu <xliff:g id="link_text">%s</xliff:g> per obtenir més maneres de donar suport al Thunderbird.</string>
     <string name="funding_googleplay_contribution_list_empty_title">Actualment, les contribucions des de l\'aplicació no estan disponibles.</string>
     <string name="funding_googleplay_contribution_error_show_more">Mostra més detalls</string>
     <string name="funding_googleplay_contribution_error_unknown">Error desconegut</string>

@@ -2,6 +2,5 @@
 <resources>
     <string name="account_common_button_next">Suivant</string>
     <string name="account_common_button_back">Précédent</string>
-    <string name="account_common_error_server_message">Le message suivant a été retourné par le serveur :
-\n%s</string>
+    <string name="account_common_error_server_message">Le message suivant a été retourné par le serveur :\n%s</string>
 </resources>

@@ -883,7 +883,7 @@
     <string name="about_app_authors_thunderbird">Team di Thunderbird mobile</string>
     <string name="about_title">Informazioni su <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Quando si utilizza Push, <xliff:g id="app_name">%1$s</xliff:g> mantiene una connessione al server di posta. Android richiede la visualizzazione di una notifica in corso mentre l\'app è attiva in background. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" verrà rimosso da <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%1$s</xliff:g>\" verrà rimosso da <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="folder_settings_notifications_label">Notifiche</string>
     <string name="settings_ui_telemetry_title">Utilizzo e dati tecnici</string>
     <string name="settings_ui_telemetry_description">Condividi dati su prestazioni, utilizzo, hardware e personalizzazioni di questa app con Mozilla per aiutarci a migliorare Thunderbird</string>

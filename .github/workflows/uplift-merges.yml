@@ -1,0 +1,39 @@
+---
+name: Uplift Merges
+on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        type: boolean
+        description: Dry run
+        default: true
+
+jobs:
+  uplift:
+    name: Uplift
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            scripts/uplift-merges.sh
+          sparse-checkout-cone-mode: false
+
+      - name: Configure for push
+        if: ${{ !inputs.dryRun }}
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run uplift script
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DRYRUN: ${{ !inputs.dryRun && '--no-dry-run' || '' }}
+          BRANCH: ${{ github.ref_name }}
+          PUSH: ${{ !inputs.dryRun && '--push' || '' }}
+        run: |
+          bash scripts/uplift-merges.sh $DRYRUN --$BRANCH $PUSH | tee $GITHUB_STEP_SUMMARY

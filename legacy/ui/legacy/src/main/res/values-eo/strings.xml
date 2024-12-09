@@ -811,7 +811,7 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="save_attachment_action">Savi kunsendaĵon</string>
+    <string name="save_attachment_action">Savi kunsendaĵon</string>
     <string name="new_messages_title">Novaj mesaĝoj</string>
     <string name="notification_certificate_error_public">Atestilon eraro</string>
     <string name="debug_export_logs_failure">Elportado malsukcesis.</string>
@@ -821,7 +821,7 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="message_view_show_remote_images_action">Montri forajn bildojn</string>
     <string name="changelog_snackbar_button_text">Vidi</string>
     <string name="about_title">Pri <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">La konto \"<xliff:g id="account">%s</xliff:g>\" estos forigita el <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">La konto \"<xliff:g id="account">%1$s</xliff:g>\" estos forigita el <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="get_help_title">Ricevi helpon</string>
     <string name="message_view_recipients_format">al <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>

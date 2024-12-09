@@ -826,7 +826,7 @@
     <string name="settings_ui_data_collection">Bailiú sonraí</string>
     <string name="settings_ui_telemetry_title">Úsáid agus sonraí teicniúla</string>
     <string name="settings_ui_telemetry_description">Scaireanna feidhmíocht, úsáid, crua-earraí agus sonraí saincheaptha faoin app seo le Mozilla chun cabhrú linn a dhéanamh Thunderbird níos fearr</string>
-    <string name="account_delete_dlg_instructions_fmt">Bainfear an cuntas \"<xliff:g id="account">%s</xliff:g>\" de <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Bainfear an cuntas \"<xliff:g id="account">%1$s</xliff:g>\" de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="message_compose_reply_header_fmt_with_date">Ar <xliff:g id="sent_date">%1$s</xliff:g>, scríobh <xliff:g id="sender">%2$s</xliff:g>:</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Ar mhaith leat an teachtaireacht seo a bhogadh go dtí an fillteán turscair?</item>

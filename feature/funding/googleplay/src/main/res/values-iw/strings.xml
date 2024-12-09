@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">תמוך בת\'אנדרבירד</string>
     <string name="funding_googleplay_contribution_header_description">אנחנו לעולם לא נראה פרסומות או נמכור את הנתונים שלך. אנחנו ממומנים ע\"י תרומות מהמשתמשים שלנו. אם אתה נהנה מת\'אנדרבירד, אנא עזור לתמוך ביישום. אנחנו לא יכולים לעשות זאת בלעדיך!</string>
     <string name="funding_googleplay_contribution_list_title">תרומה מאובטחת</string>
@@ -19,7 +19,7 @@
     <string name="funding_googleplay_contribution_tfa_onetime_s_description">אתה עוזר לנו לגרום לדברים גדולים לקרות! תרומה בגובה כזה עוזרת לנו לקחת צעדים משמעותיים קדימה ומאפשרת לנו להמשיך לגדול.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_l_description">בזכותך אנחנו יכולים לעשות את מה שאנחנו עושים! תודות לנדיבותך, אנחנו יכולים לקחת פרוייקטים גדולים יותר ולהגיע לאבני דרך חדשות ביחד.</string>
     <string name="funding_googleplay_contribution_list_empty_title">תרומות מתוך היישום לא זמינות כרגע.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">בקר ב: www.thunderbird.net לדרכים נוספות בהן תוכל לתמוך בת\'אנדרבירד</string>
+    <string name="funding_googleplay_contribution_list_empty_message">בקר ב: <xliff:g id="link_text">%s</xliff:g> לדרכים נוספות בהן תוכל לתמוך בת\'אנדרבירד</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">נסה שוב</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">תשלום לא זמין כרגע</string>
     <string name="funding_googleplay_contribution_error_show_more">הצג פרטים נוספים</string>

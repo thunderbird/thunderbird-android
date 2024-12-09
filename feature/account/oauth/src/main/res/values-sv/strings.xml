@@ -9,4 +9,6 @@
     <string name="account_oauth_error_failed">Auktoriseringen misslyckades med följande fel: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_canceled">Auktoriseringen avbröts</string>
     <string name="account_oauth_loading_message">Logga in med OAuth</string>
+    <string name="account_oauth_google_sign_in_support_text">Om du upplever problem när du loggar in med Google, vänligen uppsök vår {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">support artikel</string>
 </resources>

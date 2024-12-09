@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_title">Tacaigh le Thunderbird</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Athraigh íocaíocht mhíosúil</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Déan cion tairbhe eile</string>
     <string name="funding_googleplay_contribution_header_title">Tacaigh le Thunderbird</string>
     <string name="funding_googleplay_contribution_list_title">Ranníocaíocht slán</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Go míosúil</string>
-    <string name="funding_googleplay_contribution_header_description">Ní thaispeánaimid fógraí ná ní dhíolaimid do shonraí riamh. Táimid maoinithe go hiomlán ag ranníocaíochtaí airgeadais ónár n-úsáideoirí. Má tá tú ag baint sult as Thunderbird, le do thoil cabhrú leis. Ní féidir linn é seo a dhéanamh gan tú!</string>
+    <string name="funding_googleplay_contribution_header_description">Tá Thunderbird maoinithe go hiomlán ag ranníocaíochtaí ó úsáideoirí cosúil leatsa. Ní thaispeánaimid fógraí ná ní dhíolaimid do shonraí riamh. Má tá tú ag baint sult as Thunderbird, le do thoil cabhrú leis. Ní féidir linn é seo a dhéanamh gan tú!</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Níl aon cheann ar fáil</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Tabhair uair amháin</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Níl ranníocaíochtaí inasbhainte ó thaobh cánach mar thabhartais charthanachta.</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Lean ar aghaidh chuig an íocaíocht</string>
     <string name="funding_googleplay_contribution_list_empty_title">Níl ranníocaíochtaí in-aip ar fáil faoi láthair.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Tabhair cuairt ar www.thunderbird.net le haghaidh tuilleadh bealaí chun tacaíocht a thabhairt do Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Tabhair cuairt ar <xliff:g id="link_text">%s</xliff:g> le haghaidh tuilleadh bealaí chun tacaíocht a thabhairt do Thunderbird.</string>
     <string name="funding_googleplay_contribution_error_unknown">Earráid anaithnid</string>
     <string name="funding_googleplay_contribution_tfa_recurring_m_title">Ranníocaíocht Mhíosúil Suntasach</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Bain triail eile as</string>
@@ -46,7 +46,13 @@
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Tá do thacaíocht spreagúil! Cuidíonn do ranníocaíocht linn teorainneacha a bhrú agus ár spriocanna a bhaint amach.</string>
     <string name="funding_googleplay_contribution_reminder_title">Tacaigh le Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Tá</string>
-    <string name="funding_googleplay_contribution_reminder_message">Is é ár misean aip ríomhphoist foinse oscailte a sholáthar atá slán, príobháideach agus saor in aisce d’úsáideoirí ar fud an domhain. Tacaíonn do ranníocaíocht airgeadais leis an obair seo. An dtabharfaidh tú inniu?</string>
+    <string name="funding_googleplay_contribution_reminder_message">Bí inár misean chun an t-eispéireas ríomhphoist saincheaptha is fearr agus is féidir a urramú do phríobháideacht.</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Ní anois</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Go raibh maith agat as do síntiús flaithiúil! Treisíonn do thacaíocht go díreach le Thunderbird, agus táimid buíoch as tú a bheith lenár taobh ar an turas seo.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Cuireann bhur gcuid oibre le forbairt Thunderbird agus táimid fíor bhuíoch as bhur dtacaíocht.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Míle buíochas ó chroí libh go léir!</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Tá Thunderbird saor in aisce agus foinse oscailte.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Ní thaispeánaimid fógraí.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Ní dhíolaimid do shonraí.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Tá muid maoinithe ag úsáideoirí cosúil leatsa amháin.</string>
 </resources>
+

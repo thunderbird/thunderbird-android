@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_list_type_one_time">Don unique</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Tous les mois</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Les contributions ne sont pas déductibles fiscalement en tant que dons de bienfaisance.</string>
@@ -9,7 +9,7 @@
     <string name="funding_googleplay_contribution_footer_payment_button">Poursuivre vers le paiement</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Modifier les mensualités</string>
     <string name="funding_googleplay_contribution_title">Soutenir Thunderbird</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Rendez-vous sur www.thunderbird.net pour découvrir d’autres façons de soutenir Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Rendez-vous sur <xliff:g id="link_text">%s</xliff:g> pour découvrir d’autres façons de soutenir Thunderbird.</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Réessayer</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Le paiement n’est pas accessible actuellement</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Faites un autre don remarqué</string>
@@ -24,7 +24,7 @@
     <string name="funding_googleplay_contribution_tfa_onetime_m_description">Votre contribution se démarque. Vous jouez un rôle important dans l’avancement de notre mission en nous aidant à franchir des étapes importantes, pour un impact croissant.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">C’est en grande partie grâce à vous que nous pouvons faire ce que nous faisons. Votre générosité nous aide à franchir de nouvelles étapes.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Vous nous aidez vraiment à rêver grand. Votre soutien nous permet de réaliser l’extraordinaire.</string>
-    <string name="funding_googleplay_contribution_header_description">Nous n’affichons jamais de publicité ni ne vendons vos données. Nous sommes entièrement financés par les contributions financières de nos utilisateurs. Si vous aimez Thunderbird, aidez-nous en le finançant. Nous avons besoin de votre soutien.</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird est entièrement financée par les contributions de nos utilisateurs. Nous n’affichons aucune publicité ni ne vendons vos données. Si vous aimez Thunderbird, aidez-nous en la finançant. Votre soutien est essentiel.</string>
     <string name="funding_googleplay_contribution_list_empty_title">Les contributions ne sont actuellement pas proposées dans l’appli.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_s_title">Contribution appréciable</string>
     <string name="funding_googleplay_contribution_tfa_onetime_m_title">Contribution substantielle</string>
@@ -45,8 +45,13 @@
     <string name="funding_googleplay_contribution_tfa_recurring_m_description">Votre contribution se démarque. Vous jouez un rôle essentiel dans la poursuite de notre mission, pour un impact croissant.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Votre soutien est une source d’inspiration. Votre contribution nous aide à repousser les limites et à atteindre nos objectifs.</string>
     <string name="funding_googleplay_contribution_reminder_title">Soutenir Thunderbird</string>
-    <string name="funding_googleplay_contribution_reminder_message">Notre mission est de fournir aux utilisateurs du monde entier une appli de courriel à code source ouvert, sécurisée, gratuite et qui respecte leurs données personnelles. Votre contribution financière soutien cette mission. Ferez-vous un don aujourd’hui ?</string>
+    <string name="funding_googleplay_contribution_reminder_message">Participez à notre mission de créer la meilleure expérience de courriel possible, qui respecte vos données personnelles.</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Oui</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Pas maintenant</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Merci pour votre don généreux. Votre soutien renforce Thunderbird directement et nous sommes reconnaissants de vous avoir à nos côtés dans cette aventure.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Votre contribution financière alimente le développement de Thunderbird et nous sommes sincèrement reconnaissants de votre soutien.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Nous vous remercions tous sincèrement.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird est gratuite est code source ouvert.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Nous n’affichons pas de publicités.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Nous ne vendons pas vos données.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Nous sommes entièrement financés par des utilisatrices et des utilisateurs tels que vous.</string>
 </resources>

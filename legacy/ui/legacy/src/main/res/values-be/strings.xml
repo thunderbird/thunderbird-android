@@ -881,11 +881,11 @@
     <string name="clipboard_label_name_and_email_address">Імя і адрас электроннай пошты</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="general_settings_post_remove_action_title">Пасля выдалення або перамяшчэння ліста</string>
+    <string name="general_settings_post_remove_action_title">Пасля выдалення або перамяшчэння ліста</string>
     <string name="general_settings_post_remove_action_return_to_list">Вярнуцца да спіса лістоў</string>
     <string name="about_app_authors_thunderbird">Каманда Thunderbird Mobile</string>
     <string name="about_title">Аб дадатке <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">Уліковый запіс \"<xliff:g id="account">%s</xliff:g>\" будзе выдален з дадатка <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Уліковый запіс \"<xliff:g id="account">%1$s</xliff:g>\" будзе выдален з дадатка <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="volume_navigation_summary">Перамяшчэнне паміж лістамі з дапамогай клавіш гучнасці падчас прагляду</string>
     <string name="general_settings_post_remove_action_show_next_message">Паказаць наступны ліст</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Заставацца на бягучым лісце</string>

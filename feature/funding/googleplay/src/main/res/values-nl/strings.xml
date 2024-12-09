@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Steun Thunderbird</string>
     <string name="funding_googleplay_contribution_list_title">Veilige bijdrage</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Doneer eenmalig</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Maandelijks</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Bijdragen zijn niet aftrekbaar als charitatieve donaties.</string>
-    <string name="funding_googleplay_contribution_header_description">We tonen u nooit advertenties en verkopen nooit uw gegevens. We worden volledig gefinancierd door financiële bijdragen van onze gebruikers. Als u geniet van Thunderbird, ondersteun het dan. We kunnen dit niet zonder u!</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird wordt volledig gefinancierd door bijdragen van gebruikers als u. We tonen nooit advertenties en verkopen nooit uw gegevens. Als u geniet van Thunderbird, ondersteun het dan. We kunnen dit niet zonder u!</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Doorgaan naar afrekenen</string>
     <string name="funding_googleplay_contribution_title">Steun Thunderbird</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Niets beschikbaar</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Maandelijkse betaling aanpassen</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Doe nog een bijdrage met impact</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Bezoek www.thunderbird.net voor meer manieren om Thunderbird te steunen</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Bezoek <xliff:g id="link_text">%s</xliff:g> voor meer manieren om Thunderbird te steunen.</string>
     <string name="funding_googleplay_contribution_error_show_more">Meer details tonen</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Foutmelding sluiten</string>
     <string name="funding_googleplay_contribution_error_unknown">Onbekende fout</string>
@@ -44,9 +44,14 @@
     <string name="funding_googleplay_contribution_tfa_onetime_m_description">Uw bijdrage geeft glans! U speelt een grote rol in de realisatie van onze missie, door te helpen belangrijke mijlpalen te bereiken en grotere impact te krijgen.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_l_description">U bent een grote reden waardoor we kunnen we doen wat we doen! Dankzij uw generositeit kunnen we grotere projecten starten en samen nieuwe mijlpalen bereiken.</string>
     <string name="funding_googleplay_contribution_error_purchase_failed">Bijdrage mislukt.</string>
-    <string name="funding_googleplay_contribution_reminder_message">Onze missie is om een opensource e-mailapp te bieden die veilig, privé en gratis is voor gebruikers over de hele wereld. Uw financiële bijdrage kan dit werk ondersteunen. Wilt u vandaag bijdragen?</string>
+    <string name="funding_googleplay_contribution_reminder_message">Doe mee met onze missie om de beste privacy-respecterende, aanpasbare e-mailervaring mogelijk te maken.</string>
     <string name="funding_googleplay_contribution_reminder_title">Steun Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Ja</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Nu niet</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Dank voor uw genereuze donatie! Uw steun versterkt Thunderbird direct en we zijn dankbaar u aan onze zijde te hebben bij deze reis.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Uw steun brengt de ontwikkeling van Thunderbird verder en we zijn heel dankbaar u voor uw steun.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Onze oprechte dank aan u!</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird is gratis en open source.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">We verkopen uw gegevens niet.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">We worden alleen gefinancierd door gebruikers zoals u.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">We tonen geen advertenties.</string>
 </resources>

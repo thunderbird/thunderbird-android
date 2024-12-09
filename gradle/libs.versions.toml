@@ -15,8 +15,8 @@ androidBilling = "7.1.1"
 androidDesugar = "2.1.3"
 androidMaterial = "1.12.0"
 # AGP and tools should be updated together
-androidGradlePlugin = "8.7.2"
-androidTools = "31.7.2"
+androidGradlePlugin = "8.7.3"
+androidTools = "31.7.3"
 androidxActivity = "1.9.3"
 androidxAnnotation = "1.9.1"
 androidxAppCompat = "1.7.0"
@@ -47,7 +47,7 @@ appAuth = "0.11.1"
 assertk = "0.28.1"
 circleImageView = "3.1.0"
 ckchangelog = "2.0.0-beta02"
-clikt = "4.4.0"
+clikt = "5.0.2"
 commonsIo = "2.16.1"
 dependencyCheckPlugin = "0.51.0"
 dependencyGuardPlugin = "0.5.0"
@@ -56,7 +56,7 @@ detektPluginCompose = "0.4.18"
 fastAdapter = "5.7.0"
 forkhandlesBom = "2.20.0.0"
 glide = "4.16.0"
-gradle = "8.11"
+gradle = "8.11.1"
 http4kBom = "5.35.2.0"
 icu4j = "72.1"
 javaDiffUtils = "4.12"
@@ -69,10 +69,10 @@ junit = "4.13.2"
 jutf7 = "1.0.0"
 jzlib = "1.0.7"
 koinBom = "3.5.6"
-kotlinBom = "2.0.21"
+kotlinBom = "2.1.0"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "2.0.20"
-kotlinKsp = "2.0.21-1.0.28"
+kotlinKsp = "2.1.0-1.0.29"
 kotlinxCoroutines = "1.9.0"
 kotlinxCollectionsImmutable = "0.3.8"
 kotlinxDateTime = "0.6.1"
@@ -105,7 +105,7 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 android-lint = { id = "com.android.lint", version.ref = "androidGradlePlugin" }
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
+compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom" }
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }

@@ -876,4 +876,5 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
     <string name="general_settings_post_mark_as_unread_action_stay">Pysy nykyisessä viestissä</string>
     <string name="general_settings_post_mark_as_unread_action_title">Kun viesti on merkitty lukemattomaksi</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Palaa viestiluetteloon</string>
+    <string name="about_app_authors_thunderbird">Sovelluksen mobiilitiimi</string>
 </resources>

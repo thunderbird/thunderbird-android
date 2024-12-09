@@ -816,7 +816,7 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="new_messages_title">Novas mensaxes</string>
+    <string name="new_messages_title">Novas mensaxes</string>
     <string name="unsubscribe_action">Cancelar a subscrición</string>
     <string name="message_view_me_text">eu</string>
     <string name="message_view_show_remote_images_action">Mostra imaxes remotas</string>
@@ -885,5 +885,5 @@ Podes conservar esta mensaxe e usala como copia de seguridade da túa chave secr
     <string name="folder_settings_notifications_label">Notificacións</string>
     <string name="folder_settings_push_label">Activar Push</string>
     <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" eliminarase de <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%1$s</xliff:g>\" eliminarase de <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>

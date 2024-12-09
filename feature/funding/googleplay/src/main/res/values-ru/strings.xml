@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Поддержка Thunderbird</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Разово</string>
     <string name="funding_googleplay_contribution_title">Поддержка Thunderbird</string>
-    <string name="funding_googleplay_contribution_header_description">Мы никогда не показываем рекламу и не продаём ваши данные. Мы полностью финансируемся за счёт пожертвований наших пользователей. Если вам нравится Thunderbird, поддержите его. Мы не можем обойтись без вас!</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird полностью финансируется за счёт пожертвований таких же пользователей, как вы. Мы никогда не показываем рекламу и не продаём ваши данные. Если вам нравится Thunderbird, поддержите его. Мы не можем обойтись без вас!</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Ежемесячно</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Перейти к платежу</string>
     <string name="funding_googleplay_contribution_list_title">Безопасное пожертвование</string>
@@ -11,7 +11,7 @@
     <string name="funding_googleplay_contribution_list_disclaimer">Пожертвования не подлежат налогообложению как благотворительность.</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Изменить ежемесячный платёж</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Сделать ещё один важный вклад</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Посетите www.thunderbird.net, чтобы узнать о других способах поддержки Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Посетите <xliff:g id="link_text">%s</xliff:g>, чтобы узнать о других способах поддержки Thunderbird.</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Повторить</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Платёж временно недоступен</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Игнорировать ошибку</string>
@@ -47,6 +47,11 @@
     <string name="funding_googleplay_contribution_reminder_positive_button">Да</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Позже</string>
     <string name="funding_googleplay_contribution_reminder_title">Поддержка Thunderbird</string>
-    <string name="funding_googleplay_contribution_reminder_message">Наша миссия — создать приложение для электронной почты с открытым исходным кодом, безопасное, конфиденциальное и бесплатное для пользователей по всему миру. Ваше пожертвование поддержит нашу работу. Вы сделаете его?</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Спасибо за ваше щедрое пожертвование! Ваша поддержка напрямую укрепляет Thunderbird и мы благодарны, что вы рядом с нами в этом путешествии.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Присоединяйтесь к нашей миссии по созданию максимально удобной и настраиваемой электронной почты, соблюдающей конфиденциальность.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Ваше пожертвование поспособствует развитию Thunderbird и мы искренне благодарны за поддержку.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird бесплатен и имеет открытый исходный код.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Мы не продаём ваши данные.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Мы финансируемся исключительно такими же пользователями, как вы.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Искренняя благодарность от всех нас!</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Мы не показываем рекламу.</string>
 </resources>

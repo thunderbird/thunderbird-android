@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Serverfout</string>
     <string name="account_server_validation_error_missing_server_capability">Ontbrekende serverfunctionaliteit</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Het clientcertificaat kon niet worden geraadpleegd</string>
-    <string name="account_server_validation_error_missing_server_capability_details">De server mist deze functionaliteit:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">De server mist deze functionaliteit:\n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">Het clientcertificaat is niet langer geldig</string>
-    <string name="account_server_validation_error_details">Details:
-\n%s</string>
+    <string name="account_server_validation_error_details">Details:\n%s</string>
 </resources>

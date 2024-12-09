@@ -1116,10 +1116,12 @@ class MessageListFragment :
     }
 
     private fun onArchive(messages: List<MessageReference>) {
-        for ((account, messagesInAccount) in groupMessagesByAccount(messages)) {
-            account.archiveFolderId?.let { archiveFolderId ->
-                move(messagesInAccount, account.uuid, archiveFolderId)
-            }
+        if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) return
+
+        if (showingThreadedList) {
+            messagingController.archiveThreads(messages)
+        } else {
+            messagingController.archiveMessages(messages)
         }
     }
 

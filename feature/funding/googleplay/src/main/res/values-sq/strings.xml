@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Përkrahni Thunderbird-in</string>
     <string name="funding_googleplay_contribution_title">Përkrahni Thunderbird-in</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Mujor</string>
@@ -10,10 +10,10 @@
     <string name="funding_googleplay_contribution_list_disclaimer">Kontributet s’janë të zbritshëm nga taksat, si dhurime për bamirësi.</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Bëni një tjetër kontribut plot ndikim</string>
     <string name="funding_googleplay_contribution_list_title">Kontribut i siguruar</string>
-    <string name="funding_googleplay_contribution_header_description">S’shfaqim kurrë reklama, apo të shesim të dhëna. Jemi tërësisht të financuar nga kontribute financiare nga përdoruesit tanë. Nëse ju pëlqen Thunderbird-i, ju lutemi, ndihmoni të përkrahet. Këtë s’e bëjmë dot pa ju!</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird-i financohet tërësisht nga kontribute prej përdoruesish si ju. S’shfaqim kurrë reklama, apo të shesim të dhënat tuaja. Nëse ju pëlqen Thunderbird-i, ju lutemi, ndihmoni të përkrahet. Këtë s’e bëjmë dot pa ju!</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Riprovoni</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Përkrahja juaj është frymëzuese! Kontributi juaj na ndihmon të shtyhemi më tej dhe të arrijmë synimet tona.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Për më tepër rrugë se si të përkrahet Thunderbird-i, vizitoni www.thunderbird.net</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Për më tepër rrugë se si të përkrahet Thunderbird-i, vizitoni <xliff:g id="link_text">%s</xliff:g>.</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Aktualisht s’mund të bëhet pagesa</string>
     <string name="funding_googleplay_contribution_error_show_more">Shfaq më shumë hollësi</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Hidhe tej gabimin</string>
@@ -46,7 +46,12 @@
     <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Përkrahja juaj na shpie përpara! Çdo kontribut krijon ndryshim—faleminderit!</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">Jeni një arsye e fortë për të bërë atë çka bëjmë! Bujaria juaj na ndihmon të arrijmë piketa të reja.</string>
     <string name="funding_googleplay_contribution_reminder_title">Përkrahni Thunderbird-in</string>
-    <string name="funding_googleplay_contribution_reminder_message">Misioni ynë është të japim një aplikacion email me burim të hapët i cili është i siguruar, priva dhe falas për përdorues anembanë botës. Kjo vepër mbështetet te kontributi juaj financiar. A do të jepni sot?</string>
+    <string name="funding_googleplay_contribution_reminder_message">Përkrahni misionin tonë për të krijuar punimin më të mirë të mundshëm me email-et, që respekton privatësinë dhe mund të përshtatet.</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Jo tani</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Faleminderit për dhurimin tuaj bujar! Përkrahja juaj fuqizon drejtpërsëdrejti Thunderbird-in dhe ju jemi mirënjohës që ju kemi në krah gjatë këtij udhëtimi.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Kontributi juaj shpie më tej zhvillimin e Thunderbird-it dhe ju jemi vërtet mirënjohës për përkrahjen tuaj.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Një falënderim të sinqertë prej krejt nesh!</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">S’shfaqim reklama.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Financohemi vetëm nga përdorues si ju.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">S’shesim të dhëna tuajat.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird është i lirë dhe me burim të hapët.</string>
 </resources>

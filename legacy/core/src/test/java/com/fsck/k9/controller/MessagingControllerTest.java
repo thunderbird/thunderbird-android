@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
-
+import app.k9mail.core.featureflag.FeatureFlagProvider;
+import app.k9mail.core.featureflag.FeatureFlagResult.Disabled;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.mailstore.ListenableMessageStore;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
@@ -127,6 +128,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private Preferences preferences;
     private String accountUuid;
     private String secondAccountUuid;
+    private FeatureFlagProvider featureFlagProvider;
 
 
     @Before
@@ -136,11 +138,14 @@ public class MessagingControllerTest extends K9RobolectricTest {
         appContext = RuntimeEnvironment.getApplication();
 
         preferences = Preferences.getPreferences();
+        featureFlagProvider = key -> Disabled.INSTANCE;
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
                 localStoreProvider, backendManager, preferences, messageStoreManager,
                 saveMessageDataCreator, specialLocalFoldersCreator, new LocalDeleteOperationDecider(),
-                Collections.<ControllerExtension>emptyList());
+                Collections.<ControllerExtension>emptyList(),
+                featureFlagProvider
+            );
 
         configureAccount();
         configureBackendManager();

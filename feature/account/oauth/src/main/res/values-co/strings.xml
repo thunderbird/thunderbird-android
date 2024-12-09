@@ -9,4 +9,6 @@
     <string name="account_oauth_error_canceled">Autorizazione abbandunata</string>
     <string name="account_oauth_error_not_supported">Attualmente, OAuth 2.0 ùn hè micca accettatu cù stu furnidore.</string>
     <string name="account_oauth_error_browser_not_available">L’appiecazione ùn pò micca truvà un navigatore à impiegà per cuncede l’accessu à u vostru contu.</string>
+    <string name="account_oauth_google_sign_in_support_text">S’è vo scuntrate prublemi durante a cunnessione à Google, fighjate puru u nostru {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">articulu d’assistenza</string>
 </resources>

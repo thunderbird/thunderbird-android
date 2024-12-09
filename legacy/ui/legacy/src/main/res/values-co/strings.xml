@@ -23,7 +23,7 @@
     <string name="archive_action">Archiviu</string>
     <string name="spam_action">Merzaghju</string>
     <string name="forward_action">Trasferisce</string>
-    <string name="forward_as_attachment_action">Trasferisce cum’è pezza aghjunta</string>
+    <string name="forward_as_attachment_action">Trasferisce cum’è pezza ghjunta</string>
     <string name="edit_as_new_message_action">Mudificà cum’è un messaghju novu</string>
     <string name="refile_action">Riclassificà…</string>
     <string name="done_action">Fattu</string>
@@ -49,7 +49,7 @@
     <string name="changelog_snackbar_text">Scuprite ciò chì hè novu in sta versione</string>
     <string name="accounts_title">Conti</string>
     <string name="compose_title_reply">Risponde</string>
-    <string name="compose_title_forward_as_attachment">Trasferisce cum’è pezza aghjunta</string>
+    <string name="compose_title_forward_as_attachment">Trasferisce cum’è pezza ghjunta</string>
     <string name="send_action">Mandà</string>
     <string name="move_action">Dispiazzà</string>
     <string name="move_to_drafts_action">Dispiazzà versu Bruttacopie</string>
@@ -68,7 +68,7 @@
     <string name="read_receipt_enabled">Una cunferma di lettura serà richiesta</string>
     <string name="read_receipt_disabled">Una cunferma di lettura ùn serà micca richiesta</string>
     <string name="empty_trash_action">Viutà a curbella</string>
-    <string name="add_attachment_action">Aghjunghje una pezza aghjunta</string>
+    <string name="add_attachment_action">Aghjunghje una pezza ghjunta</string>
     <string name="expunge_action">Squassà</string>
     <string name="about_action">Apprupositu</string>
     <string name="prefs_title">Parametri</string>
@@ -135,11 +135,11 @@
     <string name="message_compose_attachments_forward_toast">U messaghju ùn pò micca esse trasferitu perchè certe pezze aghjunte ùn sò state scaricate.</string>
     <string name="message_compose_description_delete_quoted_text">Caccià u testu menziunatu</string>
     <string name="message_compose_description_edit_quoted_text">Mudificà u testu menziunatu</string>
-    <string name="remove_attachment_action">Caccià a pezza aghjunta</string>
+    <string name="remove_attachment_action">Caccià a pezza ghjunta</string>
     <string name="message_to_label">À :</string>
     <string name="message_view_cc_label">Cc :</string>
     <string name="message_view_bcc_label">Cci :</string>
-    <string name="message_view_status_attachment_not_saved">Impussibule d’arregistrà a pezza aghjunta.</string>
+    <string name="message_view_status_attachment_not_saved">Impussibule d’arregistrà a pezza ghjunta.</string>
     <string name="message_view_me_text">eiu</string>
     <string name="message_view_no_viewer">Ùn si pò truvà un affissadore per <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Scaricà u messaghju cumpletu</string>
@@ -210,10 +210,10 @@
     <string name="archive_folder_label">Cartulare di l’archivii</string>
     <string name="spam_folder_label">Cartulare di i merzaghji</string>
     <string name="sort_attach_first">Messaghji cù pezze aghjunte in primu</string>
-    <string name="sort_unattached_first">Messaghji senza pezza aghjunta in primu</string>
+    <string name="sort_unattached_first">Messaghji senza pezza ghjunta in primu</string>
     <string name="sort_by_attach">Pezze aghjunte</string>
-    <string name="loading_attachment">Caricamentu di a pezza aghjunta…</string>
-    <string name="fetching_attachment_dialog_message">Riguarera di a pezza aghjunta…</string>
+    <string name="loading_attachment">Caricamentu di a pezza ghjunta…</string>
+    <string name="fetching_attachment_dialog_message">Riguarera di a pezza ghjunta…</string>
     <string name="error_crypto_inline_attach">U modu PGP/INLINE ùn accetteghja micca e pezze aghjunte !</string>
     <string name="account_settings_action">Parametri di u contu</string>
     <string name="remove_account_action">Caccià u contu</string>
@@ -234,10 +234,10 @@
     <string name="message_compose_quote_header_from">Da :</string>
     <string name="message_compose_reply_header_fmt_with_date">U <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> hà scrittu :</string>
     <string name="message_compose_attachments_skipped_toast">Certe pezze aghjunte ùn ponu micca esse trasferite perchè ùn sò state scaricate.</string>
-    <string name="dialog_attachment_progress_title">Scaricamentu di a pezza aghjunta</string>
+    <string name="dialog_attachment_progress_title">Scaricamentu di a pezza ghjunta</string>
     <string name="openpgp_inline_minus_attach">E pezza aghjunte ùn sò micca accettate</string>
     <string name="openpgp_dialog_sign_only_minus_attach">E segnature puderianu esse affissate cum’è pezze aghjunte « signature.asc » in certe messaghjerie elettroniche.</string>
-    <string name="locked_attach_title">Pezza aghjunta nonprutetta</string>
+    <string name="locked_attach_title">Pezza ghjunta nonprutetta</string>
     <string name="message_view_recipients_format">à <xliff:g id="recipients">%s</xliff:g></string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="message_view_show_remote_images_action">Affissà e fiure alluntanate</string>
@@ -815,7 +815,7 @@
     <string name="clipboard_label_name_and_email_address">Nome è indirizzu elettronicu</string>
     <string name="message_list_content_description_unread_prefix">à leghje, %s</string>
     <string name="background_work_notification_remove_account">Cacciatura di u contu…</string>
-    <string name="account_delete_dlg_instructions_fmt">U contu \"<xliff:g id="account">%s</xliff:g>\" serà cacciatu da <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">U contu \"<xliff:g id="account">%1$s</xliff:g>\" serà cacciatu da <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Quandu s’impiegheghja a catapughjata, <xliff:g id="app_name">%1$s</xliff:g> mantene una cunnessione à u servitore di messaghjeria. Android richiede l’affissera d’una nutificazione quandu l’appiecazione hè attiva in tacca di sfondulu. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">L’appiecazione OpenKeychain hè richiesta per permette l’adopru di a cifratura da un capu à l’altru.</string>
     <string name="about_title">Apprupositu di <xliff:g id="app_name">%s</xliff:g></string>
@@ -829,7 +829,7 @@
     <string name="folder_settings_visible_label">Affissà u cartulare</string>
     <string name="folder_list_show_hidden_folders">Affissà i cartulari piattati</string>
     <string name="settings_list_action_support">Sustene <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="volume_navigation_title_short">Navigà cù i tasti di vulume in a vista di messaghji</string>
+    <string name="volume_navigation_title_short">Navigà cù i tasti di vulume</string>
     <string name="volume_navigation_summary">Navigà d’un messaghju à l’altru cù i tasti di vulume nant’à a vista di i messaghji</string>
-    <string name="save_attachment_action">Arregistrà a pezza aghjunta</string>
+    <string name="save_attachment_action">Arregistrà a pezza ghjunta</string>
 </resources>

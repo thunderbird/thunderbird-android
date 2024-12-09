@@ -1,6 +1,7 @@
 package net.thunderbird.cli.translation
 
 import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
@@ -15,7 +16,6 @@ class TranslationCli(
     private val supportedLanguagesFormatter: SupportedLanguagesFormatter = SupportedLanguagesFormatter(),
 ) : CliktCommand(
     name = "translation",
-    help = "Translation CLI",
 ) {
     private val token: String by option(
         help = "Weblate API token",
@@ -28,6 +28,8 @@ class TranslationCli(
     private val printAll: Boolean by option(
         help = "Print code example",
     ).flag()
+
+    override fun help(context: Context): String = "Translation CLI"
 
     override fun run() {
         val languageCodes = languageCodeLoader.loadCurrentAndroidLanguageCodes(token, threshold)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_footer_payment_button">Jatka maksuun</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Hylkää virhe</string>
     <string name="funding_googleplay_contribution_error_unknown">Tuntematon virhe</string>
@@ -12,7 +12,7 @@
     <string name="funding_googleplay_contribution_list_error_retry_button">Yritä uudelleen</string>
     <string name="funding_googleplay_contribution_error_show_more">Näytä enemmän tietoja</string>
     <string name="funding_googleplay_contribution_list_empty_title">Sovelluksen sisäiset lahjoitukset eivät ole tällä hetkellä saatavilla.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Käy osoitteessa www.thunderbird.net nähdäksesi lisää tapoja tukea Thunderbirdiä</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Käy osoitteessa <xliff:g id="link_text">%s</xliff:g> nähdäksesi lisää tapoja tukea Thunderbirdiä.</string>
     <string name="funding_googleplay_contribution_reminder_title">Tue Thunderbirdiä</string>
     <string name="funding_googleplay_contribution_reminder_message">Tavoitteemme on tarjota avoimen lähdekoodin sähköpostisovellus, joka on turvallinen, yksityinen ja ilmainen kaikille. Taloudellinen tukesi auttaa työtämme. Lahjoitatko tänään?</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Kyllä</string>

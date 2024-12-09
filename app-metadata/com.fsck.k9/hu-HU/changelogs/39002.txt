@@ -1,0 +1,8 @@
+- Számos belső módosítás a Material 3-ra történő áttéréshez. Vegye figyelembe, hogy a Material 3 felület még korai állapotban van.
+- Az üzenetnézetben látható eszköztárműveletek sorrendjének módosítása, hogy egyezzen a többszörös kiválasztási módban láthatóakkal.
+- A „Legfeljebb ekkora levelek lekérése” alapértelmezett értéke 128 KiB-ra lett állítva
+- A csúsztatási művelet után hibás színnel megjelenített eszköztárikonok hibájának javítása
+- A címzett mezőben szereplő e-mail-címek kivágása során fellépő összeomlás javítása
+- Az eszköztár méretének javítása nem alapértelmezett rendszerbetűméret használata esetén
+- Korzikai, koreai és vietnámi fordítások hozzáadása
+- Frissített fordítások

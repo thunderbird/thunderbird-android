@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_footer_payment_button">Trochgean nei ôfrekkenjen</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Moanliks</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Bydragen binne net ôflûkber as donaasjes foar goede doelen.</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Moanlikse betelling oanpasse</string>
     <string name="funding_googleplay_contribution_title">Stypje Thunderbird</string>
     <string name="funding_googleplay_contribution_header_title">Stypje Thunderbird</string>
-    <string name="funding_googleplay_contribution_header_description">Wy toane jo nea advertinsjes en ferkeapje nea jo gegevens. Wy wurde folslein finansiere troch finansjele bydragen fan ús brûkers. As jo genietsje fan Thunderbird, stypje it dan. Wy kinne dit net sûnder jo!</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird wurdt folslein finansiere troch bydragen fan ús brûkers as jo. Wy toane jo nea advertinsjes en ferkeapje nea jo gegevens. As jo genietsje fan Thunderbird, stypje it dan. Wy kinne dit net sûnder jo!</string>
     <string name="funding_googleplay_contribution_list_title">Feilige bydrage</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Donearje ien kear</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Neat beskikber</string>
@@ -19,7 +19,7 @@
     <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Bûtengewoane moanlikse bydrage</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Betelling op dit stuit beskikber</string>
     <string name="funding_googleplay_contribution_list_empty_title">Bydragen yn de app binne op dit stuit net beskikber.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Besykje www.thunderbird.net foar mear manieren om Thunderbird te stypjen</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Besykje <xliff:g id="link_text">%s</xliff:g> foar mear manieren om Thunderbird te stypjen.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_title">Grutte moanlikse bydrage</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Opnij probearje</string>
     <string name="funding_googleplay_contribution_error_service_disconnected">Bydragen binne op dit stuit beskikber.</string>
@@ -44,9 +44,14 @@
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">Jo binne in grutte reden wêrtroch wy dwaan kinne wat wy dogge! Mei tank oan jo goederjouskens kinne wy nije mylpeallen berikje.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_s_description">Jo bydrage helpt ús te groeien en wichtige stappen foarút te nimmen – tige tank!</string>
     <string name="funding_googleplay_contribution_error_purchase_failed">Bydrage mislearre.</string>
-    <string name="funding_googleplay_contribution_reminder_message">Us misje is om in iepenboarne e-mailapp te bieden dy’t feilich, privee en fergees is foar brûkers fan oer de hiele wrâld. Jo finansjele bydrage kin dit wurk stypje. Wolle jo hjoed bydrage?</string>
+    <string name="funding_googleplay_contribution_reminder_message">Doch mei oan ús misje om de beste privacy-respektearjende, oanpasbere e-mailûnderfinng mooglik te meitsjen.</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Ja</string>
     <string name="funding_googleplay_contribution_reminder_title">Stypje Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">No net</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Tank foar jo grutte donaasje! Jo stipe fersterket Thunderbird daliks en wy binne tankber jo oan ús side te hawwen by dizze reis.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Jo stipe bringt de ûntwikkeling fan Thunderbird fierder en wy binne tankber foar jo stipe.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Wy toane gjin advertinsjes.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Wy ferkeapje jo gegevens net.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Wy wurde allinnich finansiere troch brûkers lykas jo.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Us oprjochte tank oan jo!</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird is fergees en iepen boarne.</string>
 </resources>

@@ -1,0 +1,1 @@
+- Az üzenetírási képernyő megnyitása során történő összeomlása javítása

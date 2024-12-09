@@ -236,7 +236,7 @@
     <string name="general_settings_ui_density_default">Standard</string>
     <string name="general_settings_ui_density_relaxed">Avslappnad</string>
     <string name="global_settings_privacy_hide_useragent">Dölj e-postklient</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Ta bort K-9-användaragent från meddelanderubriker</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Ta bort användaragent från meddelanderubriker</string>
     <string name="global_settings_privacy_hide_timezone">Dölj tidszon</string>
     <string name="global_settings_privacy_hide_timezone_detail">Använd UTC istället för lokal tidszon i postrubriker och svarsrubrik</string>
     <string name="global_settings_notification_quick_delete_title">Visa knappen \"Ta bort\"</string>
@@ -491,7 +491,7 @@
     <string name="setting_theme_dark">Mörkt</string>
     <string name="setting_theme_light">Ljust</string>
     <string name="setting_theme_follow_system">Använd systemstandard</string>
-    <string name="display_preferences">Utseende</string>
+    <string name="display_preferences">Visning</string>
     <string name="global_preferences">Globala</string>
     <string name="debug_preferences">Felsökning</string>
     <string name="privacy_preferences">Integritet</string>
@@ -880,7 +880,7 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="push_notification_state_alarm_permission_missing">Saknar behörigheter för att schemalägga larm</string>
     <string name="push_notification_grant_alarm_permission">Tryck för att ge behörigheter.</string>
     <string name="dialog_openkeychain_info_text">Appen OpenKeychain krävs för att möjliggöra stöd för end-to-end-kryptering.</string>
-    <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%s</xliff:g>\" kommer att tas bort ifrån <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Kontot \"<xliff:g id="account">%1$s</xliff:g>\" kommer att tas bort ifrån <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Thunderbird mobilteam</string>
     <string name="folder_settings_push_label">Aktivera pushnotiser</string>

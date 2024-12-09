@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_list_type_one_time">捐款一次</string>
     <string name="funding_googleplay_contribution_list_disclaimer">捐款不能作为慈善捐款免税。</string>
     <string name="funding_googleplay_contribution_footer_payment_button">继续捐款</string>
     <string name="funding_googleplay_contribution_header_title">支持 Thunderbird</string>
-    <string name="funding_googleplay_contribution_header_description">我们永远不会显示广告或出售您的数据。我们的资金完全来自用户的捐款。如果您喜欢 Thunderbird，请考虑支持它。我们需要您的支持！</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird 的资金完全来自用户的捐款。我们永远不会显示广告或出售您的数据。如果您喜欢 Thunderbird，请考虑支持它。我们需要您的支持！</string>
     <string name="funding_googleplay_contribution_list_title">安全捐款</string>
     <string name="funding_googleplay_contribution_list_type_recurring">每月捐款</string>
     <string name="funding_googleplay_contribution_title">支持 Thunderbird</string>
     <string name="funding_googleplay_contribution_footer_manage_button">修改每月捐款</string>
     <string name="funding_googleplay_contribution_list_type_none_available">不可用</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">做出另一项有影响力的贡献</string>
-    <string name="funding_googleplay_contribution_list_empty_message">访问 www.thunderbird.net 了解更多支持 Thunderbird 的方法</string>
+    <string name="funding_googleplay_contribution_list_empty_message">访问 <xliff:g id="link_text">%s</xliff:g> 了解更多支持 Thunderbird 的方法。</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">重试</string>
     <string name="funding_googleplay_contribution_error_show_more">显示更多详情</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">当前无法捐款</string>
@@ -47,6 +47,11 @@
     <string name="funding_googleplay_contribution_reminder_title">支持 Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">是</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">现在不</string>
-    <string name="funding_googleplay_contribution_reminder_message">我们的使命是为全球用户提供安全、私密且自由的开源电子邮件应用。您的捐款将支持我们的工作。您今天愿意捐款吗？</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">感谢您慷慨捐助！有了您的支持，Thunderbird 定会愈加强大。长路漫漫，幸得您相伴。</string>
+    <string name="funding_googleplay_contribution_reminder_message">加入我们的使命，共同创造尊重隐私、可定制的最佳电子邮件体验。</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">您的支持促进了 Thunderbird 的发展，我们衷心感谢您的支持。</string>
+    <string name="funding_googleplay_contribution_header_thank_you">我们向您表示衷心的感谢！</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird 是自由和开源的。</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">我们不会显示广告。</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">我们不会出售您的数据。</string>
+    <string name="funding_googleplay_contribution_reminder_claim">我们的资金完全来自像您这样的用户。</string>
 </resources>

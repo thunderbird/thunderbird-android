@@ -237,7 +237,7 @@
     <string name="general_settings_ui_density_default">Normal</string>
     <string name="general_settings_ui_density_relaxed">Espacioso</string>
     <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de K-9 de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
     <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
     <string name="global_settings_privacy_hide_timezone_detail">Usar UTC («tiempo universal coordinado») en lugar de la zona horaria local en las cabeceras de mensaje y cabeceras de respuesta</string>
     <string name="global_settings_notification_quick_delete_title">Mostrar el botón «Borrar»</string>
@@ -888,7 +888,7 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">La aplicación OpenKeychain es necesaria para permitir el cifrado de extremo a extremo.</string>
     <string name="push_info_notification_explanation_text">Cuando se utiliza Push, <xliff:g id="app_name">%1$s</xliff:g> mantiene una conexión con el servidor de correo. Android requiere mostrar una notificación continua mientras la aplicación está activa en segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%s</xliff:g>\" se eliminará de <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">La cuenta \"<xliff:g id="account">%1$s</xliff:g>\" se eliminará de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="folder_settings_notifications_label">Notificaciones</string>
     <string name="settings_ui_telemetry_title">Datos técnicos y de uso</string>
     <string name="settings_ui_data_collection">Recopilación de datos</string>

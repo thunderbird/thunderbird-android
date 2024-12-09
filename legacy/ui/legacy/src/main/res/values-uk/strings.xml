@@ -200,7 +200,7 @@
     <string name="global_settings_registered_name_color_changed">Забарвлювати імена з вашого списку контактів</string>
     <string name="general_settings_contact_name_color_label">Колір імені контакту</string>
     <string name="global_settings_messageview_fixedwidth_label">Моноширинні шрифти</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Використовувати моноширинний шрифт для показу звичайних текстових повідомлень</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Використовуйте шрифт фіксованої ширини під час показу простих текстових повідомлень</string>
     <string name="global_settings_messageview_autofit_width_label">Допасовувати текст повідомлень до ширини екрана</string>
     <string name="global_settings_messageview_autofit_width_summary">Стискати текст повідомлень до ширини екрана</string>
     <string name="global_settings_confirm_actions_title">Підтвердження дій</string>
@@ -897,7 +897,7 @@
     <string name="folder_list_show_hidden_folders">Показати приховані теки</string>
     <string name="folder_settings_visible_label">Показати теку</string>
     <string name="settings_list_action_support">Підтримка <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">Обліковий запис\"<xliff:g id="account">%s</xliff:g>\" буде вилучено з <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Обліковий запис\"<xliff:g id="account">%1$s</xliff:g>\" буде вилучено з <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="dialog_openkeychain_info_text">Застосунок OpenKeychain необхідний для підтримки наскрізного шифрування.</string>
     <string name="push_notification_state_alarm_permission_missing">Відсутній дозвіл на планування оповіщень</string>
     <string name="push_notification_grant_alarm_permission">Торкніться, щоб надати дозвіл.</string>

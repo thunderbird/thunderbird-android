@@ -536,7 +536,15 @@ class MessageViewFragment :
     }
 
     fun onArchive() {
-        onRefile(account.archiveFolderId)
+        if (!account.hasArchiveFolder()) return
+
+        if (!messagingController.isMoveCapable(messageReference)) {
+            Toast.makeText(activity, R.string.move_copy_cannot_copy_unsynced_message, Toast.LENGTH_LONG).show()
+            return
+        }
+
+        fragmentListener.performNavigationAfterMessageRemoval()
+        messagingController.archiveMessage(messageReference)
     }
 
     private fun onSpam() {
