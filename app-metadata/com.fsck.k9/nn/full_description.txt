@@ -4,8 +4,8 @@ K-9 Mail er ein e-post klient med 100% open kjeldekode, som verker med omtrent k
 
 * Støttar fleire kontoar
 * Samla innboks
-* Personvern-vennleg (ingen sporing i det heile, kontaktar kun e-post-tilbydaren din)
-* Automatisk bakkgrunnssynkronisering eller dytte-notifikasjonar
+* Personvern-vennleg (ingen sporing i det heile, kontaktar kun e-posttilbydaren din)
+* Automatisk bakkgrunnssynkronisering eller dyttenotifikasjonar
 * Lokal og tenar-side søk
 * OpenPGP e-post kryptering (PGP/MIME)
 

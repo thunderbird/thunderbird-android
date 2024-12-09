@@ -57,6 +57,8 @@ val preferencesModule = module {
         )
     }
 
+    factory { UnifiedInboxConfigurator(accountManager = get()) }
+
     factory {
         SettingsImporter(
             settingsFileParser = get(),
@@ -66,6 +68,7 @@ val preferencesModule = module {
             accountSettingsUpgrader = get(),
             generalSettingsWriter = get(),
             accountSettingsWriter = get(),
+            unifiedInboxConfigurator = get(),
         )
     }
 }

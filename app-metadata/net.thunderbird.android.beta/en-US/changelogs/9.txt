@@ -1,0 +1,7 @@
+Thunderbird for Android version 9.0b1, based on K-9 Mail. Changes include:
+- Account initials now use the display name, improving customizability
+- Account icons remain in the same position when selected
+- Unified inbox enabled only when multiple accounts are configured
+- Push service now starts reliably when expected
+- Correct default delete message action for QR-imported accounts. Please check your fetch mail settings!
+- Folder drawer updates properly on account configuration changes

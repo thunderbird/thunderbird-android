@@ -30,7 +30,7 @@ class FundingReminder(
 
         dialogFragmentManager.setFragmentResultListener(
             FundingReminderContract.Dialog.FRAGMENT_REQUEST_KEY,
-            activity
+            activity,
         ) { _, result ->
             if (result.getBoolean(FundingReminderContract.Dialog.FRAGMENT_RESULT_SHOW_FUNDING, false)) {
                 onOpenFunding()

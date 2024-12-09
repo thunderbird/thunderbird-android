@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_server_validation_incoming_loading_message">Checando configurações do servidor de entrada…</string>
+    <string name="account_server_validation_incoming_loading_message">Verificando configurações do servidor de recebimento…</string>
     <string name="account_server_validation_error_authentication">Erro de autenticação</string>
-    <string name="account_server_validation_outgoing_loading_message">Checando configurações do servidor de saída…</string>
+    <string name="account_server_validation_outgoing_loading_message">Verificando configurações do servidor de envio…</string>
     <string name="account_server_validation_error_network">Erro de rede</string>
-    <string name="account_server_validation_outgoing_success">Configurações do servidor de saída verificadas</string>
+    <string name="account_server_validation_outgoing_success">Configurações do servidor de envio verificadas</string>
     <string name="account_server_validation_error_unknown">Erro desconhecido</string>
-    <string name="account_server_validation_sign_in">Por favor, entre</string>
-    <string name="account_server_validation_outgoing_loading_error">Erro ao checar configurações do servidor de saída</string>
-    <string name="account_server_validation_incoming_success">Configurações do servidor de entrada verificadas</string>
-    <string name="account_server_validation_incoming_loading_error">Erro ao checar configurações do servidor de entrada</string>
+    <string name="account_server_validation_sign_in">Entre na sua conta</string>
+    <string name="account_server_validation_outgoing_loading_error">Falha ao verificar configurações do servidor de envio</string>
+    <string name="account_server_validation_incoming_success">Configurações do servidor de recebimento verificadas</string>
+    <string name="account_server_validation_incoming_loading_error">Falha ao verificar configurações do servidor de recebimento</string>
     <string name="account_server_validation_error_server">Erro do servidor</string>
-    <string name="account_server_validation_error_client_certificate_expired">O certificado do cliente não está mais válido</string>
+    <string name="account_server_validation_error_client_certificate_expired">O certificado do cliente não é mais válido</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">O certificado do cliente não pode ser acessado</string>
-    <string name="account_server_validation_error_missing_server_capability">Falha de suporte no servidor</string>
+    <string name="account_server_validation_error_missing_server_capability">Falta capacidade no servidor</string>
     <string name="account_server_validation_error_details">Detalhes:
 \n%s</string>
-    <string name="account_server_validation_error_missing_server_capability_details">O servidor não tem suporte para isso:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">O servidor não tem esta capacidade: \n%s</string>
 </resources>

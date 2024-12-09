@@ -14,7 +14,7 @@ Thunderbird est une appli de courriel puissante qui protège vos renseignements 
   <li>Thunderbird fonctionne avec les protocoles IMAP et POP3, compatible avec un large éventail de services de courriel dont Gmail, Outlook, Yahoo Mail, iCloud, et d’autres.</li>
 </ul>
 
-<b>Pourquoi utiliser Thunderbird ?</b>
+<b>Raisons d’utiliser Thunderbird</b>
 <ul>
   <li>La marque de confiance en matière de courriel depuis plus de 20 ans, maintenant sur Android.</li>
   <li>Thunderbird est entièrement financée par les dons de nos utilisateurs. Nous n’exploitons pas vos données personnelles. Vous n’êtes jamais le produit.</li>

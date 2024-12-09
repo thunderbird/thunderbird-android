@@ -95,7 +95,7 @@
     <string name="status_network_error">Lỗi kết nối</string>
     <string name="status_invalid_id_error">Không tìm thấy thư nào</string>
     <string name="status_loading_error">Lỗi tải thư</string>
-    <string name="load_more_messages_fmt">Tải thêm <xliff:g id="messages_to_load">%d</xliff:g> thư nữa</string>
+    <string name="load_more_messages_fmt">Tải thêm tới <xliff:g id="messages_to_load">%d</xliff:g> thư nữa</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1fMB</string>
     <string name="size_format_kilobytes">%.1fkB</string>
@@ -233,7 +233,7 @@
     <string name="general_settings_ui_density_compact">Gọn nhẹ</string>
     <string name="general_settings_ui_density_default">Mặc định</string>
     <string name="global_settings_privacy_hide_useragent">Ẩn hiển thị</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Xóa Tác nhân người dùng K-9 khỏi tiêu đề thư</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Xóa User-Agent khỏi tiêu đề thư</string>
     <string name="global_settings_privacy_hide_timezone">Ẩn múi giờ</string>
     <string name="global_settings_privacy_hide_timezone_detail">Dùng UTC thay múi giờ địa phương trong tiêu đề thư và tiêu đề thư trả lời</string>
     <string name="global_settings_notification_quick_delete_title">Hiển thị nút \'Xóa\'</string>
@@ -877,4 +877,17 @@
     <string name="dialog_openkeychain_info_text">Cần có ứng dụng OpenKeychain để hỗ trợ mã hóa đầu cuối.</string>
     <string name="push_info_notification_explanation_text">Khi sử dụng Push, <xliff:g id="app_name">%1$s</xliff:g> duy trì kết nối với máy chủ thư. Android yêu cầu hiển thị thông báo liên tục trong khi ứng dụng đang hoạt động ở chế độ nền. <xliff:g id="Optional_extends_explanation">%2$s</xliff:g></string>
     <string name="about_title">Giới thiệu về <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="save_attachment_action">Lưu đính kèm</string>
+    <string name="volume_navigation_title_short">Điều hướng bằng nút âm lượng</string>
+    <string name="volume_navigation_summary">Điều hướng giữa các tin nhắn bằng cách sử dụng các nút âm lượng trong phần xem tin nhắn</string>
+    <string name="about_app_authors_thunderbird">Đội ngũ Thunderbird cho Di Động</string>
+    <string name="settings_ui_telemetry_description">Chia sẻ hiệu suất, việc sử dụng, phần cứng và dữ liệu tinh chỉnh về ứng dụng này với Mozilla để giúp chúng tôi cải thiện Thunderbird</string>
+    <string name="folder_settings_sync_label">Bật đồng bộ</string>
+    <string name="folder_settings_push_label">Bật đẩy</string>
+    <string name="folder_list_show_hidden_folders">Hiện những thư mục ẩn</string>
+    <string name="folder_settings_visible_label">Hiện thư mục</string>
+    <string name="settings_list_action_support">Hỗ trợ <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="folder_settings_notifications_label">Thông báo</string>
+    <string name="settings_ui_telemetry_title">Mục đích sử dụng và dữ liệu chuyên sâu</string>
+    <string name="settings_ui_data_collection">Thu thập dữ liệu</string>
 </resources>

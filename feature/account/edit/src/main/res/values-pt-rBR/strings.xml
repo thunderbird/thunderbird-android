@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_edit_save_server_settings_loading_message">Salvando configurações do servidor…</string>
-    <string name="account_edit_save_server_settings_error_message">Falhou ao salvar configurações do servidor</string>
+    <string name="account_edit_save_server_settings_error_message">Falha ao salvar configurações do servidor</string>
     <string name="account_edit_save_server_settings_success_message">Configurações do servidor salvas</string>
 </resources>

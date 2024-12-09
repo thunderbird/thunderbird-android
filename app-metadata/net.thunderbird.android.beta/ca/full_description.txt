@@ -4,7 +4,7 @@ Trobareu el nostre rastrejador d'errors, el codi font i la nostra wiki a <a href
 
 Sempre ens complau donar la benvinguda a nous desenvolupadors, dissenyadors, documentalistes, traductors, triadors d'errors i amics. Visiteu-nos a <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> per començar.
 
-Thunderbird és una potent aplicació de correu electrònic centrada en la privadesa. Gestioneu sense esforç diversos comptes de correu electrònic des d'una aplicació, amb una opció de «Safata d'entrada unificada» per obtenir la màxima productivitat. Basat en tecnologia de codi obert i recolzat per un equip dedicat de desenvolupadors juntament amb una comunitat global de voluntaris, el Thunderbird mai tracta les vostres dades privades com un producte. Totalment finançat per les contribucions econòmiques dels nostres usuaris, de manera que no haureu de tornar a veure anuncis barrejats amb els vostres correus electrònics.
+El Thunderbird és una potent aplicació de correu electrònic centrada en la privadesa. Gestioneu sense esforç diversos comptes de correu electrònic des d'una aplicació, amb una opció de «Safata d'entrada unificada» per obtenir la màxima productivitat. Basat en tecnologia de codi obert i recolzat per un equip dedicat de desenvolupadors juntament amb una comunitat global de voluntaris, el Thunderbird mai tracta les vostres dades privades com un producte. Està totalment finançat per les contribucions econòmiques dels nostres usuaris, de manera que no haureu de tornar a veure anuncis barrejats amb els vostres correus electrònics.
 
 <b>Què podeu fer</b>
 <ul>
@@ -17,7 +17,7 @@ Thunderbird és una potent aplicació de correu electrònic centrada en la priva
 
 <b>Compatibilitat</b>
 <ul>
-  <li>El Thunderbird funciona amb protocols IMAP i POP3, admetent una àmplia gamma de proveïdors de correu electrònic, com ara Gmail, Outlook, Yahoo Mail, iCloud i més.</li>
+  <li>El Thunderbird funciona amb els protocols IMAP i POP3, admetent una àmplia gamma de proveïdors de correu electrònic, com ara Gmail, Outlook, Yahoo Mail, iCloud i més.</li>
 </ul>
 
 <b>Per què utilitzar el Thunderbird</b>
@@ -31,7 +31,7 @@ Thunderbird és una potent aplicació de correu electrònic centrada en la priva
 
 <b>Codi obert i comunitat</b>
 <ul>
-  <li>El Thunderbird és gratuït i de codi obert, la qual cosa significa que el seu codi està disponible per veure, modificar, utilitzar i compartir lliurement. La seva llicència també garanteix que serà gratuït per sempre. Podeu pensar en el Thunderbird com un regal de milers de col·laboradors.</li>
+  <li>El Thunderbird és lliure i de codi obert, la qual cosa significa que el seu codi està disponible per veure, modificar, utilitzar i compartir lliurement. La seva llicència també garanteix que serà gratuït per sempre. Podeu pensar en el Thunderbird com un regal de milers de col·laboradors.</li>
   <li>Desenvolupem en obert amb actualitzacions regulars i transparents al nostre bloc i llistes de correu.</li>
   <li>El nostre servei d'assistència als usuaris està impulsat per la nostra comunitat global. Trobeu les respostes que necessiteu o feu el paper de col·laborador, ja sigui per respondre preguntes, traduir l'aplicació o parlar del Thunderbird als vostres amics i familiars.</li>
 </ul>

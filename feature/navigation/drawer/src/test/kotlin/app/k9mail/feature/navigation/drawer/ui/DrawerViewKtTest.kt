@@ -40,7 +40,7 @@ internal class DrawerViewKtTest : ComposeTest() {
 
         assertThat(counter).isEqualTo(verifyCounter)
 
-        viewModel.effect(Effect.OpenAccount(FakeData.ACCOUNT))
+        viewModel.effect(Effect.OpenAccount(FakeData.DISPLAY_ACCOUNT.id))
 
         verifyCounter.openAccountCount++
         assertThat(counter).isEqualTo(verifyCounter)

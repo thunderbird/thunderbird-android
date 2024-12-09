@@ -332,7 +332,7 @@
         <item quantity="other">Vil du verkeleg sletta <xliff:g id="message_count">%1$d</xliff:g> meldingar?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Ja</string>
-    <string name="dialog_confirm_delete_cancel_button">NEI!!!!!1</string>
+    <string name="dialog_confirm_delete_cancel_button">Nei</string>
     <string name="dialog_confirm_mark_all_as_read_title">Stadfest lesemarkering</string>
     <string name="dialog_confirm_mark_all_as_read_message">Vil du merkja alle meldingane som lesne?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Ja</string>
@@ -505,7 +505,7 @@
     <string name="search_everywhere_action">Søk overalt</string>
     <string name="get_help_title">Få hjelp</string>
     <string name="user_forum_title">Brukarforum</string>
-    <string name="source_code">kjeldekode</string>
+    <string name="source_code">Kjeldekode</string>
     <string name="app_license">Apache-lisens, versjon 2.0</string>
     <string name="about_project_title">Open kjeldekode-prosjekt</string>
     <string name="about_website_title">Nettstad</string>
@@ -538,7 +538,7 @@
     <string name="load_more_messages_fmt">Last opp til <xliff:g id="messages_to_load">%d</xliff:g> fleire</string>
     <string name="global_settings_confirm_menu_discard">Forkast meldinga</string>
     <string name="general_settings_swipe_action_toggle_star">Legg til/fjern stjerne</string>
-    <string name="global_settings_show_contact_name_summary">Bruk mottakarnamn frå Kontakter når det er tilgjengeleg</string>
+    <string name="global_settings_show_contact_name_summary">Bruk mottakarnamn frå kontaktar når det er tilgjengeleg</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> ny melding</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meldingar</item>
@@ -597,7 +597,7 @@
     <string name="quiet_time_starts">Stillemodus startar</string>
     <string name="spam_folder_label">Søppelpost-mappe</string>
     <string name="global_settings_privacy_hide_timezone">Skjul tidssone</string>
-    <string name="global_settings_privacy_hide_timezone_detail">Bruk UTC i staden for lokal tidssone i e-posthovud og svar-hovud</string>
+    <string name="global_settings_privacy_hide_timezone_detail">Bruk UTC i staden for lokal tidssone i e-posthovud og svarhovud</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Antal nye meldingar</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">Antal meldingar og avsendarar</string>
     <string name="quiet_time_ends">Stillemodus ender</string>
@@ -839,7 +839,7 @@
     <string name="dialog_autocrypt_mutual_description_2">Om både avsendar og mottakar aktiverer gjensidig modus, vil kryptering blir slådd på som standard.</string>
     <string name="ac_transfer_intro">Ein Autocrypt oppsett-melding deler ditt ende-til-ende oppsett med andre einingar på ein sikker måte.</string>
     <string name="ac_transfer_error_send">Ein feil oppstod under sending av meldinga. Ver vennleg og sjekk nettverkstilkopling og utgåande tenar-konfigurasjon.</string>
-    <string name="push_info_notification_explanation_text">Under bruk av Push, held <xliff:g id="app_name">%1$s</xliff:g> ei forbindelse med e-post-tenaren. Android påkrevjer visning av ein pågåande notifikasjon medan appen er aktiv i bakgrunnen. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Under bruk av dytting, held <xliff:g id="app_name">%1$s</xliff:g> ein forbindelse med e-posttenaren. Android påkrev vising av ein pågåande notifikasjon medan appen er aktiv i bakgrunnen. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="message_details_loading_error">Feil under lasting av meldingsdetaljar.</string>
     <string name="openpgp_enabled_error_gotit">Eg forstår</string>
     <string name="dialog_openkeychain_info_text">Appen OpenKeychain er påkravd for å aktivere stønad for ende-til-ende kryptering.</string>

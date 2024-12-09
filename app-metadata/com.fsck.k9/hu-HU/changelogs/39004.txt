@@ -1,0 +1,2 @@
+- Az osztott képernyős mód bekapcsolásakor történő összeomlás javítása
+- Frissített fordítások

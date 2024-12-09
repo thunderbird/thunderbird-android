@@ -1,0 +1,24 @@
+K-9 Mail është një klient email-esh, me burim të hapët, që funksionin praktikisht me çdo shërbim email-esh.
+
+<b>Veçori</b>
+
+* Mbulon llogari të shumta
+* Të marrë të Unifikuar
+* Miqësor ndaj privatësisë (pa ndjekje të çfarëdo lloji, lidhet vetëm me shërbimin tuaj email)
+* Njëkohësim, ose njoftime “push” të automatizuar, në prapaskenë
+* Kërkim vendor dhe më anë shërbyesi
+* Fshehtëzim OpenPGP email-esh (PGP/MIME)
+
+Që të fshehtëzoni/shfshehtëzoni email-et tuaj duke përdorur OpenPGP, instaloni aplikacionin <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> .
+
+
+<b>Asistencë</b>
+
+Nëse keni problem me K-9 Mail, kërkoni ndihmë te <a href="https://forum.k9mail.app">forumi ynë i asistencës</a>.
+
+
+<b>Dëshironi të ndihmoni?</b>
+
+K-9 Mail është një projekt i zhvilluar nga bashkësia. Nëse interesoheni të ndihmoni në përmirësimin e aplikacionit, ju lutemi, ejani te ne!
+Ndjekësin tonë të të metave, kodin burim dhe wiki-n mund t’i gjeni te <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Jemi përherë të gëzuar të mirëpresim zhvillues, hartues grafikë, dokumentues, përkthyes, trajtues të metash dhe shokë të rinj.

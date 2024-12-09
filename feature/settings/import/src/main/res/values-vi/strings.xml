@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="settings_import_oauth_description">Để sử dụng tài khoản email này với Thư K-9, bạn cần đăng nhập và cấp cho ứng dụng quyền truy cập vào email của mình.</string>
+    <string name="settings_import_oauth_description">Để sử dụng tài khoản email này, bạn cần đăng nhập và cấp cho ứng dụng quyền truy cập vào email của mình.</string>
     <string name="settings_import_oauth_sign_in">Đăng nhập</string>
     <string name="settings_import_oauth_sign_in_with_google">Đăng nhập với Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Đã hủy ủy quyền</string>
@@ -32,4 +32,8 @@
     <string name="settings_import_pick_document_button">Chọn tệp tin</string>
     <string name="settings_import_password_required">Hãy nhập mật khẩu</string>
     <string name="settings_import_server_name_format">Tên máy chủ: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_scan_qr_code_button">Quét mã QR</string>
+    <string name="settings_import_pick_app_button">Nhập từ ứng dụng</string>
+    <string name="settings_import_pick_app_dialog_title">Nhập từ ứng dụng</string>
+    <string name="settings_import_app_version_not_supported">Phiên bản ứng dụng không được hỗ trợ.</string>
 </resources>

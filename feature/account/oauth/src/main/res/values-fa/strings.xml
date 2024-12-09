@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">ورود با استفاده از OAuth</string>
     <string name="account_oauth_sign_in_description">برای ورود به‌فراهم‌کنندهٔ رایانامه‌تان هدایتتان می‌کنیم. باید دسترسی حساب رایانامه‌تان را به کاره بدهید.</string>
     <string name="account_oauth_sign_in_button">ثبت نام</string>
+    <string name="account_oauth_google_sign_in_support_text">اگر هنگام ورود به سیستم با Google با مشکل مواجه شدید، لطفاً با {placeHolder} ما مشورت کنید.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">بند پشتیبانی</string>
 </resources>

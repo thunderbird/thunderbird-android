@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Már használja az asztali Thunderbirdöt?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Beállítások importálása</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Új Thunderbird-felhasználó?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Válassza az „Exportálás mobilra” lehetőséget</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importálja a fiókjait könnyedén egy QR-kód leolvasásával.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Az asztali Thunderbirdben ugorjon ide:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">„Beállítások” a Helyek eszköztárban (bal lent)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Az importáláshoz az asztali Thunderbird 128-as verziója szükséges. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Tudja meg hogyan frissítse a Thunderbirdöt.</string>
+    <string name="onboarding_migration_thunderbird_import_title">Egy másik alkalmazásból vagy eszközről költözik át?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">E-mail-fiók hozzáadása most</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">A fiókbeállítások importálása most</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Nem található alkalmazás a hivatkozás megnyitásához.</string>
+</resources>

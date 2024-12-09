@@ -199,7 +199,7 @@
     <string name="global_settings_registered_name_color_changed">Obarvaj imena na seznamu stikov</string>
     <string name="general_settings_contact_name_color_label">Barva imena stika</string>
     <string name="global_settings_messageview_fixedwidth_label">Pisava s stalno širino</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Pri prikazu neoblikovanih besedilnih sporočil se uporabi pisava s črkami stalne širine</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Pri prikazu sporočil v golem besedilu uporabi pisavo s stalno širino</string>
     <string name="global_settings_messageview_autofit_width_label">Samodejno prilagodi prikaz sporočil</string>
     <string name="global_settings_messageview_autofit_width_summary">Prikaz sporočila se skrči, da se po širini prilagodi zaslonu</string>
     <string name="global_settings_confirm_actions_title">Zahtevaj potrditev dejanj</string>
@@ -902,4 +902,9 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="volume_navigation_title_short">Navigacija s tipko za glasnost</string>
     <string name="push_notification_grant_alarm_permission">Tapnite za odobritev dovoljenja.</string>
     <string name="dialog_openkeychain_info_text">Aplikacija OpenKeychain je potrebna za omogočanje podpore za šifriranje od konca do konca.</string>
+    <string name="settings_ui_telemetry_description">Z Mozillo deli podatke o zmogljivosti, uporabi, strojni opremi in prilagajanju tega programa z namenom izboljšanja Thunderbirda</string>
+    <string name="volume_navigation_summary">V pogledu sporočil se med sporočili pomikajte z gumboma za glasnost</string>
+    <string name="settings_list_action_support">Podprite <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Ko uporabljate potisna sporočila, <xliff:g id="app_name">%1$s</xliff:g> vzdržuje povezavo s poštnim strežnikom. Android zahteva prikaz obvestila, ko je aplikacija aktivna v ozadju. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="about_app_authors_thunderbird">Thunderbirdova mobilna ekipa</string>
 </resources>

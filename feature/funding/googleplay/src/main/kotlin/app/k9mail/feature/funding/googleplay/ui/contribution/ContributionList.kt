@@ -15,6 +15,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.withStyle
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
@@ -23,7 +27,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
-import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorState
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -44,14 +47,6 @@ internal fun ContributionList(
     onRetryClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val contentState = remember(key1 = state.isLoading, key2 = state.error) {
-        when {
-            state.isLoading -> ContentLoadingErrorState.Loading
-            state.error != null -> ContentLoadingErrorState.Error
-            else -> ContentLoadingErrorState.Content
-        }
-    }
-
     Surface(
         color = MainTheme.colors.surfaceContainerLowest,
         shape = MainTheme.shapes.small,
@@ -67,17 +62,17 @@ internal fun ContributionList(
             )
 
             ContentLoadingErrorView(
-                state = contentState,
+                state = state,
                 loading = {
                     LoadingView()
                 },
-                error = {
+                error = { error ->
                     ListErrorView(
-                        error = state.error!!,
+                        error = error,
                         onRetryClick = onRetryClick,
                     )
                 },
-                content = {
+                content = { state ->
                     if (state.oneTimeContributions.isEmpty() && state.recurringContributions.isEmpty()) {
                         ListEmptyView()
                     } else {
@@ -92,7 +87,11 @@ internal fun ContributionList(
             )
 
             TextBodyMedium(
-                text = stringResource(R.string.funding_googleplay_contribution_list_disclaimer),
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
+                        append(stringResource(R.string.funding_googleplay_contribution_list_disclaimer))
+                    }
+                },
                 modifier = Modifier.padding(top = MainTheme.spacings.default),
             )
         }

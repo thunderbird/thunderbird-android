@@ -1,5 +1,7 @@
 package app.k9mail.feature.navigation.drawer.ui
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
@@ -35,7 +37,10 @@ internal object FakeData {
     }
 
     val DISPLAY_ACCOUNT = DisplayAccount(
-        account = ACCOUNT,
+        id = ACCOUNT_UUID,
+        name = DISPLAY_NAME,
+        email = EMAIL_ADDRESS,
+        color = Color.Red.toArgb(),
         unreadMessageCount = 0,
         starredMessageCount = 0,
     )
@@ -48,7 +53,7 @@ internal object FakeData {
     )
 
     val DISPLAY_FOLDER = DisplayAccountFolder(
-        accountUuid = ACCOUNT_UUID,
+        accountId = ACCOUNT_UUID,
         folder = FOLDER,
         isInTopGroup = false,
         unreadMessageCount = 14,

@@ -41,4 +41,5 @@
     <string name="settings_import_pick_app_button">Importar des de l\'aplicació</string>
     <string name="settings_import_pick_app_dialog_title">Importar des de l\'aplicació</string>
     <string name="settings_import_scan_qr_code_button">Escaneja el codi QR</string>
+    <string name="settings_import_app_version_not_supported">La versió de l\'aplicació no és compatible.</string>
 </resources>

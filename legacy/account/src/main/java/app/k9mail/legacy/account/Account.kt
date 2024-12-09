@@ -46,13 +46,6 @@ class Account(
     @set:Synchronized
     var oAuthState: String? = null
 
-    /**
-     * Storage provider ID, used to locate and manage the underlying DB/file storage.
-     */
-    @get:Synchronized
-    @set:Synchronized
-    var localStorageProviderId: String? = null
-
     @get:Synchronized
     @set:Synchronized
     override var name: String? = null

@@ -124,9 +124,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Notifica errore</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Errore nella generazione di una notifica di ricezione di un nuovo messaggio. Errore probabilmente dovuto alla mancanza di un suono di notifica.
-\n
-\nTocca per le impostazioni di notifica.</string>
+    <string name="notification_notify_error_text">Errore nella generazione di una notifica di ricezione di un nuovo messaggio. Errore probabilmente dovuto alla mancanza di un suono di notifica. \n \nTocca per le impostazioni di notifica.</string>
     <string name="notification_bg_sync_ticker">Controllo posta: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Controllo posta</string>
     <string name="notification_bg_send_ticker">Invio posta: <xliff:g id="account">%s</xliff:g></string>
@@ -696,8 +694,7 @@
     <string name="enable_sign_only">Abilita PGP solo firma</string>
     <string name="disable_sign_only">Disabilita PGP solo firma</string>
     <string name="openpgp_inline_title">Modalità PGP/INLINE</string>
-    <string name="openpgp_inline_text">Messaggio inviato nel formato PGP/INLINE.
-\nFormato da utilizzare solo per compatibilità:</string>
+    <string name="openpgp_inline_text">Messaggio inviato nel formato PGP/INLINE. \nFormato da utilizzare solo per compatibilità:</string>
     <string name="openpgp_inline_plus_compat">Alcuni client supportano solo questo formato</string>
     <string name="openpgp_inline_minus_transit">Le firme potrebbero danneggiarsi nel transito</string>
     <string name="openpgp_inline_minus_attach">Gli allegati non sono supportati</string>
@@ -759,8 +756,7 @@
     <string name="error_sign_only_no_encryption">Crittografia non disponibile in modalità solo firma!</string>
     <string name="unsigned_text_divider_label">Testo non firmato</string>
     <string name="crypto_no_provider_title">Questo messaggio è criptato</string>
-    <string name="crypto_no_provider_message">Questo messaggio è stato criptato con OpenPGP.
-\nPer leggerlo, devi installare e configurare un\'applicazione compatibile con OpenPGP.</string>
+    <string name="crypto_no_provider_message">Questo messaggio è stato criptato con OpenPGP. \nPer leggerlo, devi installare e configurare un\'applicazione compatibile con OpenPGP.</string>
     <string name="crypto_no_provider_button">Vai alle impostazioni</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -896,4 +892,8 @@
     <string name="folder_list_show_hidden_folders">Mostra cartelle nascoste</string>
     <string name="folder_settings_sync_label">Attiva sincronizzazione</string>
     <string name="folder_settings_visible_label">Mostra cartella</string>
+    <string name="save_attachment_action">Salva l\'allegato</string>
+    <string name="volume_navigation_summary">In visualizzazione messaggi naviga con i tasti volume</string>
+    <string name="settings_list_action_support">Supporta <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_title_short">Naviga con i tasti del volume</string>
 </resources>

@@ -22,6 +22,12 @@ on:
       draftGooglePlay:
         type: boolean
         description: Leave Play Store version in draft state
+      skipFtp:
+        type: boolean
+        description: Skip FTP upload
+      uploadFtpStage:
+        type: boolean
+        description: Upload to FTP stage instead of prod
 
 jobs:
   get_environment:
@@ -70,6 +76,8 @@ jobs:
           skipBetaBump: ${{ inputs.skipBetaBump }}
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
           draftGooglePlay: ${{ inputs.draftGooglePlay }}
+          skipFtp: ${{ inputs.skipFtp }}
+          uploadFtpStage: ${{ inputs.uploadFtpStage }}
         with:
           script: |
             const NOW = new Date();
@@ -106,7 +114,7 @@ jobs:
                 ],
                 ...matrixFull.map(item => [
                   { data: item.appName },
-                  { data: item.packageFlavor || "default" },
+                  { data: item.packageFlavor },
                   { data: item.packageFormat },
                   { data: item.releaseTarget?.replace(/\|/g, ", ") || "artifact only" },
                   { data: item.playTargetTrack || "none" },
@@ -132,6 +140,14 @@ jobs:
               if (process.env.skipGooglePlay != "true" && process.env.draftGooglePlay == "true") {
                 await core.summary.addList(["Play Store upload is being kept in the draft state"]).write();
               }
+              if (process.env.skipFtp == "true") {
+                await core.summary.addList(["FTP upload is being skipped"]).write();
+              } else if (process.env.uploadFtpStage == "true") {
+                await core.summary.addList(["FTP upload destination is stage (ftp.stage.mozaws.net)"]).write();
+              } else if (process.env.uploadFtpStage == "false") {
+                await core.summary.addList(["FTP upload destination is prod (ftp.mozilla.org)"]).write();
+              }
+
 
   notify_build_start:
     name: Notify Build Start
@@ -477,7 +493,7 @@ jobs:
           elif [[ "$APP_NAME" = "thunderbird" && "${PACKAGE_FORMAT}" = "aab" ]]; then
             BUILD_COMMAND="bundle${PACKAGE_FLAVOR^}${RELEASE_TYPE^}"
           elif [[ "$APP_NAME" = "k9mail" ]]; then
-            BUILD_COMMAND="assembleRelease"
+            BUILD_COMMAND="assemble${PACKAGE_FLAVOR^}Release"
           fi
 
           echo "BUILDING: :app-${APP_NAME}:${BUILD_COMMAND}"
@@ -509,9 +525,9 @@ jobs:
             OUT_FILE="app-${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
             UPLOAD_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.aab"
           elif [[ "$APP_NAME" = "k9mail" ]]; then
-            OUT_PATH="${OUT_BASE}/apk/release"
-            OUT_FILE="app-${APP_NAME}-release-unsigned.apk"
-            UPLOAD_FILE="${APP_NAME}-default-${RELEASE_TYPE}.apk"
+            OUT_PATH="${OUT_BASE}/apk/${PACKAGE_FLAVOR}/release"
+            OUT_FILE="app-${APP_NAME}-${PACKAGE_FLAVOR}-release-unsigned.apk"
+            UPLOAD_FILE="${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.apk"
           else
             echo "PACKAGE_FORMAT $PACKAGE_FORMAT is unknown. Exiting."
             exit 23
@@ -534,7 +550,7 @@ jobs:
         env:
           UPLOAD_PATH: "uploads"
         with:
-          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: ${{ env.UPLOAD_PATH }}/
           if-no-files-found: error
 
@@ -546,13 +562,13 @@ jobs:
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
-    environment: ${{ matrix.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor || 'default' }}
+    environment: ${{ matrix.appName }}_${{ needs.dump_config.outputs.releaseType }}_${{ matrix.packageFlavor }}
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: uploads/
 
       - uses: noriban/sign-android-release@5f144321d3c7c2233266e78b42360345d8bbe403   # v5.1
@@ -568,7 +584,7 @@ jobs:
         if: ${{ matrix.packageFormat == 'apk' }}
         env:
           APP_NAME: ${{ matrix.appName }}
-          PACKAGE_FLAVOR: ${{ matrix.packageFlavor || 'default' }}
+          PACKAGE_FLAVOR: ${{ matrix.packageFlavor }}
         run: |
           mv uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}-signed.apk uploads/${APP_NAME}-${PACKAGE_FLAVOR}-${RELEASE_TYPE}.apk
           rm uploads/*-aligned.apk
@@ -581,7 +597,7 @@ jobs:
       - name: Upload signed
         uses: actions/upload-artifact@v4
         with:
-          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           if-no-files-found: error
           path: |
             uploads/*.apk
@@ -633,14 +649,47 @@ jobs:
       thunderbird_full_version_name: ${{ steps.summary.outputs.thunderbird_full_version_name }}
       k9mail_full_version_name: ${{ steps.summary.outputs.k9mail_full_version_name }}
     env:
+      RELEASE_DATE: ${{ needs.dump_config.outputs.releaseDate }}
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
       APP_NAME: ${{ matrix.appName }}
-      PACKAGE_FLAVOR: ${{ matrix.packageFlavor || 'default' }}
+      PACKAGE_FLAVOR: ${{ matrix.packageFlavor}}
       PACKAGE_FORMAT: ${{ matrix.packageFormat }}
+    permissions:
+      id-token: 'write'  # For GCS publishing (ftp.mo)
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Get release sha and notes
+        id: shanotes
+        shell: bash
+        env:
+          THUNDERBIRD_GITHUB_NOTES: ${{ needs.release_commit.outputs.thunderbird_github_notes }}
+          K9MAIL_GITHUB_NOTES: ${{ needs.release_commit.outputs.k9mail_github_notes }}
+          THUNDERBIRD_SHA: ${{ needs.release_commit.outputs.thunderbird_sha }}
+          K9MAIL_SHA: ${{ needs.release_commit.outputs.k9mail_sha }}
+          APP_NAME: ${{ matrix.appName }}
+          RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
+        run: |
+          app_sha_name=${APP_NAME^^}_SHA
+          app_sha="${!app_sha_name:-$GITHUB_SHA}"
+          echo "app_sha=${app_sha}" >> $GITHUB_OUTPUT
+
+          if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
+            app_relnotes_name=${APP_NAME^^}_GITHUB_NOTES
+            echo "app_github_notes<<EOF" >> $GITHUB_OUTPUT
+            echo "${!app_relnotes_name}" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
+          cat $GITHUB_OUTPUT
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor || 'default' }}
+          ref: ${{ steps.shanotes.outputs.app_sha }}
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: "uploads/"
 
       - name: Get Package Info
@@ -706,34 +755,10 @@ jobs:
           app-id: ${{ vars.RELEASER_APP_CLIENT_ID }}
           private-key: ${{ secrets.RELEASER_APP_PRIVATE_KEY }}
 
-      - name: Get release sha and notes
-        id: shanotes
-        shell: bash
-        env:
-          THUNDERBIRD_GITHUB_NOTES: ${{ needs.release_commit.outputs.thunderbird_github_notes }}
-          K9MAIL_GITHUB_NOTES: ${{ needs.release_commit.outputs.k9mail_github_notes }}
-          THUNDERBIRD_SHA: ${{ needs.release_commit.outputs.thunderbird_sha }}
-          K9MAIL_SHA: ${{ needs.release_commit.outputs.k9mail_sha }}
-          APP_NAME: ${{ matrix.appName }}
-          RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
-        run: |
-          app_sha_name=${APP_NAME^^}_SHA
-          app_sha="${!app_sha_name:-$GITHUB_SHA}"
-          echo "app_sha=${app_sha}" >> $GITHUB_OUTPUT
-
-          if [[ "$RELEASE_TYPE" = "beta" || "$RELEASE_TYPE" = "release" ]]; then
-            app_relnotes_name=${APP_NAME^^}_GITHUB_NOTES
-            echo "app_github_notes<<EOF" >> $GITHUB_OUTPUT
-            echo "${!app_relnotes_name}" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-          fi
-
-          cat $GITHUB_OUTPUT
-
       - name: Publish to GitHub Releases
         id: publish_gh
         if: ${{ contains(matrix.releaseTarget, 'github') }}
-        uses: softprops/action-gh-release@e7a8f85e1c67a31e6ed99a94b41bd0b71bbee6b8  # v2.0.9
+        uses: softprops/action-gh-release@01570a1f39cb168c169c802c3bceb9e93fb10974  # v2.1.0
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
           target_commitish: ${{ steps.shanotes.outputs.app_sha }}
@@ -792,6 +817,99 @@ jobs:
           releaseFiles: |
             uploads/${{ steps.rename.outputs.PKG_FILE }}
 
+      - name: Determine FTP Destination
+        id: ftp_destination
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
+        shell: bash
+        env:
+          RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
+          TAG_NAME: ${{ steps.pkginfo.outputs.TAG_NAME }}
+          VERSION_NAME: ${{ steps.pkginfo.outputs.VERSION_NAME }}
+          UPLOAD_FTP_STAGE: ${{ inputs.uploadFtpStage }}
+        run: |
+          GCP_ENV=prod
+          GCP_PROJECT=moz-fx-productdelivery-pr-38b5
+          FTP_URL_PREFIX="https://ftp.mozilla.org/pub/thunderbird-mobile/android"
+          if [[ "$UPLOAD_FTP_STAGE" = "true" ]]; then
+            GCP_ENV=stage
+            GCP_PROJECT=moz-fx-productdelivery-no-7d6a
+            FTP_URL_PREFIX="https://ftp.stage.mozaws.net/pub/thunderbird-mobile/android"
+          fi
+          SERVICE_ACCOUNT="thunderbird-team-${GCP_ENV}@${GCP_PROJECT}.iam.gserviceaccount.com"
+          WORKLOAD_IDENTITY_PROVIDER="projects/324168772199/locations/global/workloadIdentityPools/github-actions/providers/github-actions"
+
+          FTP_SUBDIR="releases"
+          FTP_DESTINATION="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/${VERSION_NAME}/"
+          FTP_URL_PATH="${FTP_URL_PREFIX}/${FTP_SUBDIR}/${VERSION_NAME}/"
+          FTP_TAR_FILENAME=$(echo "${TAG_NAME,,}.tar.gz" | sed 's/_/-/g')
+          if [[ "${RELEASE_TYPE}" = "daily" ]]; then
+            YEAR=$(date -d "${RELEASE_DATE}" +"%Y")
+            MONTH=$(date -d "${RELEASE_DATE}" +%m)
+            DAY=$(date -d "${RELEASE_DATE}" +"%d")
+            HOUR=$(date -d "${RELEASE_DATE}" +"%H")
+            MIN=$(date -d "${RELEASE_DATE}" +"%M")
+            SEC=$(date -d "${RELEASE_DATE}" +"%S")
+            DATETIME_SUBDIR="${YEAR}/${MONTH}/${YEAR}-${MONTH}-${DAY}-${HOUR}-${MIN}-${SEC}-main"
+            FTP_SUBDIR="nightly"
+            FTP_DESTINATION="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/${DATETIME_SUBDIR}/"
+            FTP_URL_PATH="${FTP_URL_PREFIX}/${FTP_SUBDIR}/${DATETIME_SUBDIR}/"
+            FTP_DESTINATION_NIGHTLY_LATEST="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/latest-main/"
+            FTP_URL_PATH_NIGHTLY_LATEST="${FTP_URL_PREFIX}/${FTP_SUBDIR}/latest-main/"
+          fi
+          echo "SERVICE_ACCOUNT=${SERVICE_ACCOUNT}" | tee -a $GITHUB_OUTPUT
+          echo "WORKLOAD_IDENTITY_PROVIDER=${WORKLOAD_IDENTITY_PROVIDER}" | tee -a $GITHUB_OUTPUT
+          echo "FTP_DESTINATION=${FTP_DESTINATION}" | tee -a $GITHUB_OUTPUT
+          echo "FTP_DESTINATION_NIGHTLY_LATEST=${FTP_DESTINATION_NIGHTLY_LATEST}" | tee -a $GITHUB_OUTPUT
+          echo "FTP_URL_PATH=${FTP_URL_PATH}" | tee -a $GITHUB_OUTPUT
+          echo "FTP_URL_PATH_NIGHTLY_LATEST=${FTP_URL_PATH_NIGHTLY_LATEST}" | tee -a $GITHUB_OUTPUT
+          echo "FTP_TAR_FILENAME=${FTP_TAR_FILENAME}" | tee -a $GITHUB_OUTPUT
+
+      - name: Generate source tar
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
+        shell: bash
+        env:
+          APP_SHA: ${{ steps.shanotes.outputs.app_sha }}
+          FTP_TAR_FILENAME: ${{ steps.ftp_destination.outputs.FTP_TAR_FILENAME }}
+        run: |
+          git archive --format=tar.gz --output=uploads/${FTP_TAR_FILENAME} ${APP_SHA}
+          ls -l uploads
+
+      - name: Auth to GCS for FTP
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: 'access_token'
+          service_account: ${{ steps.ftp_destination.outputs.SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ steps.ftp_destination.outputs.WORKLOAD_IDENTITY_PROVIDER }}
+
+      - name: GCS Upload of APK Package to FTP
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: uploads/${{ steps.rename.outputs.PKG_FILE }}
+          destination: ${{ steps.ftp_destination.outputs.FTP_DESTINATION }}
+
+      - name: GCS Upload of APK Package to FTP Nightly Latest
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: uploads/${{ steps.rename.outputs.PKG_FILE }}
+          destination: ${{ steps.ftp_destination.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+
+      - name: GCS Upload of Source Tar to FTP
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: uploads/${{ steps.ftp_destination.outputs.FTP_TAR_FILENAME }}
+          destination: ${{ steps.ftp_destination.outputs.FTP_DESTINATION }}
+
+      - name: GCS Upload of Source Tar to FTP Nightly Latest
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
+        uses: google-github-actions/upload-cloud-storage@v2
+        with:
+          path: uploads/${{ steps.ftp_destination.outputs.FTP_TAR_FILENAME }}
+          destination: ${{ steps.ftp_destination.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+
       - name: Summary
         uses: actions/github-script@v7
         id: summary
@@ -805,6 +923,8 @@ jobs:
           appSha: ${{ steps.shanotes.outputs.app_sha }}
           appName: ${{ matrix.appName }}
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
+          ftpUrlPath: ${{ steps.ftp_destination.outputs.FTP_URL_PATH }}
+          ftpUrlPathNightlyLatest: ${{ steps.ftp_destination.outputs.FTP_URL_PATH_NIGHTLY_LATEST }}
         with:
           script: |
             await core.summary
@@ -833,6 +953,20 @@ jobs:
 
             if (process.env.skipGooglePlay != "true" && process.env.playTargetTrack && process.env.releaseTarget.includes("play")) {
               await core.summary.addRaw(`Released to the <b>${process.env.playTargetTrack}</b> track on Google Play`, true).write();
+            }
+
+            if (process.env.skipFtp != "true" && process.env.releaseTarget.includes("ftp") && matrix.packageFormat == 'apk') {
+              await core.summary
+                .addRaw(`Published to FTP at`)
+                .addLink(process.env.ftpUrlPath, process.env.ftpUrlPath)
+                .addEOL();
+
+              if (needs.dump_config.outputs.releaseType === 'daily') {
+                await core.summary
+                  .addLink(process.env.ftpUrlPathNightlyLatest, process.env.ftpUrlPathNightlyLatest)
+                  .addEOL();
+              }
+              await core.summary.write();
             }
 
   notify_build_result:

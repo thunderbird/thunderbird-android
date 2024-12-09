@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Aanmelden met OAuth</string>
     <string name="account_oauth_sign_in_description">We sturen u door naar uw e-mailprovider om aan te melden. U moet de app toegang geven tot uw e-mailaccount.</string>
     <string name="account_oauth_sign_in_button">Aanmelden</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">ondersteuningsartikel</string>
+    <string name="account_oauth_google_sign_in_support_text">Als u problemen hebt met aanmelden bij Google, lees dan onze {placeHolder}.</string>
 </resources>

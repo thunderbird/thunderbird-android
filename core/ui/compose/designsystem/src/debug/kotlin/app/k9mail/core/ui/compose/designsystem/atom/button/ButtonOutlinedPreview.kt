@@ -26,3 +26,14 @@ internal fun ButtonOutlinedDisabledPreview() {
         )
     }
 }
+
+@Composable
+@Preview(showBackground = true)
+internal fun ButtonOutlinedMultiLinePreview() {
+    PreviewWithThemes {
+        ButtonOutlined(
+            text = "First\nSecond line",
+            onClick = {},
+        )
+    }
+}

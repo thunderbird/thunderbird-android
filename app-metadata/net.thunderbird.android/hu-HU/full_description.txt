@@ -1,0 +1,31 @@
+A Thunderbird egy sokoldalú, adatvédelem-központú levelezőalkalmazás. Kezeljen erőfeszítés nélkül több levelezőfiókot egyetlen alkalmazásból, egységes beérkezett üzenetek mappával a maximális hatékonyságért. Nyílt forráskódú technológiára építve, elkötelezett fejlesztőcsapat és egy globális önkéntes közösség által támogatva. A Thunderbird sosem kezeli termékként a személyes adatait. Csak és kizárólag a felhasználóink pénzügyi adományából finanszírozzuk, így többé sosem kell reklámokat látnia a levelei közé keveredve.
+
+<b>Mit tehet</b>
+<ul>
+  <li>Szabaduljon meg több alkalmazástól és a webes levelezőktől. Használjon egyetlen alkalmazást, a választható egységes beérkezett üzenetek mappával, hogy átvészelje a napját.</li>
+  <li>Élvezze az adatvédelem-barát levelezőklienst, amely sosem gyűjt és ad el személyes adatokat. Közvetlenül a levelezőszolgáltatójához kapcsoljuk. Ennyi az egész!</li>
+  <li>Lépjen szintet az adatvédelemben az OpenPGP levéltitkosítással (PGP/MIME), az „OpenKeychain” alkalmazás segítségével: titkosítsa és fejtse vissza a leveleit.</li>
+  <li>Válasszon, hogy azonnal, időközönként vagy kérésre szinkronizálja a leveleit. Bárhogy is szeretné ellenőrizni a leveleit, csak Önön múlik!</li>
+  <li>Találja meg a fontos leveleit a helyi és a kiszolgálóoldali kereséssel.</li>
+</ul>
+
+<b>Kompatibilitás</b>
+<ul>
+  <li>A Thunderbird az IMAP és a POP3 protokollokkal működik, számos e-mail-szolgáltatót támogatva, köztük a Gmailt, az Outlookot, a Yahoo Mailt, az iCloudot és még sok mást.</li>
+</ul>
+
+<b>Miért a Thunderbird?</b>
+<ul>
+  <li>Több mint 20 éve a levelezés megbízható neve – most Androidon.</li>
+  <li>A Thunderbirdöt teljesen a felhasználóink önkéntes adománya finanszírozza. Nem kutakodunk a személyes adataiban. Sosem Ön a termék.</li>
+  <li>Egy olyan csapat fejlesztésében, akik épp úgy szeretik a hatékonyságot, mint Ön. Azt szeretnénk, hogy a legkevesebb időt töltse el az alkalmazással, de cserébe a legtöbbet hozza ki belőle.</li>
+  <li>Az egész világról származó közreműködőknek köszönhetően, a Thunderbird for Android több mint 20 nyelvre le lett fordítva.</li>
+  <li>A MZLA Technologies Corporation támogatásával, amely a Mozilla Alapítvány kizárólagos tulajdonú leányvállalata.</li>
+</ul>
+
+<b>Nyílt forráskód és közösség</b>
+<ul>
+  <li>A Thunderbird szabad és nyílt forráskódú szoftver, amely azt jelenti, hogy a forráskódja mindenki számára látható, módosítható, használható és szabadon megosztható. A licence biztosítja, hogy örökké szabad legyen. Úgy is gondolhat a Thunderbirdre, mint ezernyi közreműködő közös ajándékára.</li>
+  <li>Nyilvánosan fejlesztünk, rendszeres és átlátható frissítési összefoglalókat osztunk meg a blogunkon és a levelezőlistáinkon.</li>
+  <li>A felhasználói támogatásunkat a globális közösségünk végzi. Találja meg a válaszokat, vagy lépjen Ön is közreműködői szerepbe – válaszoljon a kérdésekre, segítsen az alkalmazás fordításában, vagy csak ossza meg a Thunderbird hírét a barátaival és családjával.</li>
+</ul>

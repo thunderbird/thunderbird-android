@@ -1,0 +1,6 @@
+- Elkezdődöt a felhasználói felület Material 3-ra történő áttérése
+- A mailto: URI támogatásának hozzáadása az NFC-címkék esetén
+- Kísérleti kerülőmegoldás hozzáadása a háttérben futás során történő összeomlása ellen
+- Egyes IMAP protokollt érintő interakciók optimalizálása
+- Már nem késik az értesítések megjelenítése, ha a leküldéses értesítések aktívak
+- Frissített fordítások

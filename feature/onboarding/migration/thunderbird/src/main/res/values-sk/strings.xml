@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Používate Thunderbird na PC?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importovať nastavenia</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Jednoducho importujte nastavenia konta naskenovaním QR kódu.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">‘Nastavenia’ v paneli schránok (naľavo dole)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Naučte sa ako aktualizovať Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Pridať teraz e-mailové konto</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Nenašla sa aplikácia na otvorenie odkazu.</string>
+</resources>

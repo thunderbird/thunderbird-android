@@ -27,9 +27,21 @@
         <item quantity="other">%d mesaĝoj</item>
     </plurals>
     <string name="account_setup_options_show_notifications_label">Montri sciigojn</string>
-    <string name="account_setup_special_folders_archive_folder_label">Arĥivo</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arĥivujo</string>
     <string name="account_setup_special_folders_trash_folder_label">Rubujo</string>
     <string name="account_setup_options_account_check_frequency_label">Ofto de kontrolado</string>
     <string name="account_setup_options_email_check_frequency_never">Neniam</string>
     <string name="account_setup_special_folders_folder_none">Nenio</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Tiu retpoŝtadreso estas ne subtenata.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Tio ne estas rekonata kiel valida retpoŝtadreso.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Tiu retpoŝtadreso estas ne permesata.</string>
+    <string name="account_setup_options_email_display_count_label">Nombro da vidigendaj mesaĝoj</string>
+    <string name="account_setup_options_section_display_options">Vidigan opcioj</string>
+    <string name="account_setup_create_account_error">Eraro okazis dum provo krei la konton</string>
+    <string name="account_setup_options_account_name_error_blank">La nomo konton ne povas esti malplena.</string>
+    <string name="account_setup_options_display_name_error_required">Via nomo necesas.</string>
+    <string name="account_setup_options_email_signature_label">Retletera subskribo</string>
+    <string name="account_setup_options_email_signature_error_blank">La retletera subskribo ne povas esti malplena.</string>
+    <string name="account_setup_create_account_created">Konto sukcese kreita</string>
+    <string name="account_setup_special_folders_form_description">Bonvolu specifi la specialajn dosierujojn por via konto.</string>
 </resources>

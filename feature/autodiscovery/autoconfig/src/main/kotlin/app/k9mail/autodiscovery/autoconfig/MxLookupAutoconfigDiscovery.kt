@@ -11,6 +11,7 @@ import app.k9mail.core.common.net.Domain
 import com.fsck.k9.logging.Timber
 import java.io.IOException
 import okhttp3.OkHttpClient
+import org.minidns.dnsname.InvalidDnsNameException
 
 class MxLookupAutoconfigDiscovery internal constructor(
     private val mxResolver: SuspendableMxResolver,
@@ -68,6 +69,9 @@ class MxLookupAutoconfigDiscovery internal constructor(
             mxResolver.lookup(domain).takeIf { it.mxNames.isNotEmpty() }
         } catch (e: IOException) {
             Timber.d(e, "Failed to get MX record for domain: %s", domain.value)
+            null
+        } catch (e: InvalidDnsNameException) {
+            Timber.d(e, "Invalid DNS name for domain: %s", domain.value)
             null
         }
     }

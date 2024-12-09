@@ -2,13 +2,12 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">Aviso</string>
     <string name="account_server_certificate_unknown_error_subtitle">Erro de certificado</string>
-    <string name="account_server_certificate_unknown_error_description_format">O aplicativo detectou um possível risco de segurança e não conectou-se ao <xliff:g id="serverName">%s</xliff:g>.
-\nSe você continuar, agressores podem tentar interceptar informações como sua senha ou emails.</string>
+    <string name="account_server_certificate_unknown_error_description_format">O aplicativo detectou um potencial risco de segurança e não conectou com <xliff:g id="serverName">%s</xliff:g>. \nSe você continuar, invasores podem tentar roubar informações como sua senha ou emails.</string>
     <string name="account_server_certificate_button_back">Voltar (recomendado)</string>
     <string name="account_server_certificate_button_advanced">Avançado</string>
-    <string name="account_server_certificate_button_continue">Aceitar risco e continuar</string>
+    <string name="account_server_certificate_button_continue">Aceitar o risco e continuar</string>
     <string name="account_server_certificate_section_title">Certificado do servidor</string>
-    <string name="account_server_certificate_subject_alternative_names">Subject alternative names (nomes alternativos)</string>
+    <string name="account_server_certificate_subject_alternative_names">Nomes alternativos do sujeito</string>
     <string name="account_server_certificate_not_valid_before">Inválido antes de</string>
     <string name="account_server_certificate_not_valid_after">Inválido após</string>
     <string name="account_server_certificate_subject">Sujeito</string>

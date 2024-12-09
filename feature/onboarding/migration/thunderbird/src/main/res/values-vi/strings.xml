@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Đang sử dụng Thunderbird trên máy tính?</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Mới sử dụng Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Thêm một tài khoản thư điện tử ngay bây giờ</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Nhập các cài đặt</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Dễ dàng nhập các cài đặt tài khoản của bạn chỉ bằng việc quét mã QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Trong Thunderbird cho máy tính, vào tới:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Chọn \"Xuất ra Di Động\"</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Nhập vào cần phiên bản mới nhất của Thunderbird Máy tính bản 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Học cách cập nhất Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_import_title">Chuyển từ một ứng dụng hay thiết bị khác?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Nhập các cài đặt của tài khoản bạn ngay</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Không ứng dụng nào được tìm thấy để mở đường dẫn.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\"Cài đặt\" trong phần Thanh công cụ Không gian (góc dưới bên trái)</string>
+</resources>

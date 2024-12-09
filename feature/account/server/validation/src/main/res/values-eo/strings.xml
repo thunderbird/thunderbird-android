@@ -6,4 +6,9 @@
     <string name="account_server_validation_error_server">Servila eraro</string>
     <string name="account_server_validation_error_network">Reta eraro</string>
     <string name="account_server_validation_error_unknown">Nekonata eraro</string>
+    <string name="account_server_validation_error_authentication">Aŭtentokontrola eraro</string>
+    <string name="account_server_validation_error_missing_server_capability">Mankata servila kapablo</string>
+    <string name="account_server_validation_error_client_certificate_expired">La klienta atestilo ne plu estas valida</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">La klienta atestilo ne povis esti atingata</string>
+    <string name="account_server_validation_error_missing_server_capability_details">La servilo ne havas tiun kapablon:\n%s</string>
 </resources>

@@ -1,2 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_error_network">Napaka omrežja. Preverite stanja omrežja in poizkusite znova.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-poštni naslov je zahtevan podatek.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Nastavitve za vaš e-.poštni strežnik smo prejeli preko povezave, ki tako varna, kot bi si želeli. To pomeni, da obstaja zelo majhna možnost, da jo je lahko nekdo spremenil. Preverite dobljene nastavitve, da se prepričate o njihovi ustreznosti.</string>
+    <string name="account_setup_special_folders_loading_message">Pridobivanje seznama map …</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Vsako uro</item>
+        <item quantity="two">Vsaki %d uri</item>
+        <item quantity="few">Vsake %d ure</item>
+        <item quantity="other">Vsakih %d ur</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">%d sporočilo</item>
+        <item quantity="two">%d sporočili</item>
+        <item quantity="few">%d sporočila</item>
+        <item quantity="other">%d sporočil</item>
+    </plurals>
+    <string name="account_setup_error_unknown">Neznana napaka</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Ta e-poštni naslov ni dovoljen.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Ta e-poštni naslov ni podprt.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Vneseno ni prepoznano kot veljaven e-poštni naslov.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Geslo je zahtevan podatek.</string>
+    <string name="account_setup_auto_discovery_loading_message">Iskanje nastavitev …</string>
+    <string name="account_setup_auto_discovery_loading_error">Nalaganje e-poštnih nastavitev je spodletelo</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Nastavitve so bile najdene</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Nastavitev ni bilo mogoče najti</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Samodejno nastavi</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Tem nastavitvam ni mogoče zaupati.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Ročno nastavi</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Uredi nastavitve</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tem nastavitvam zaupam</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Odobritev teh nastavitev je zahtevana.</string>
+    <string name="account_setup_special_folders_form_description">Navedite posebne mape za vaš račun.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Vnos \"Samodejno\" bo samodejno sledil spremembam na strežniku. Trenutna vrednost strežnika je prikazana v oklepajih.</string>
+    <string name="account_setup_special_folders_error_message">Pridobivanje seznama map s strežnika je spodletelo.</string>
+    <string name="account_setup_special_folders_success_message">Vse posebne mape je strežnik samodejno nastavil.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Mapa za arhivirano pošto</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Mapa za osnutke</string>
+    <string name="account_setup_special_folders_sent_folder_label">Mapa za poslano pošto</string>
+    <string name="account_setup_special_folders_spam_folder_label">Mapa za neželeno pošto</string>
+    <string name="account_setup_special_folders_trash_folder_label">Mapa za smeti</string>
+    <string name="account_setup_special_folders_folder_none">Brez</string>
+    <string name="account_setup_special_folders_folder_automatic">Samodejno (%s)</string>
+    <string name="account_setup_options_section_display_options">Možnosti prikaza</string>
+    <string name="account_setup_options_account_name_label">Ime računa</string>
+    <string name="account_setup_options_account_name_error_blank">Ime računa ne sme biti prazno.</string>
+    <string name="account_setup_options_display_name_label">Vaše ime</string>
+    <string name="account_setup_options_display_name_error_required">Vaše ime je zahtevan podatek.</string>
+    <string name="account_setup_options_email_signature_label">E-poštni podpis</string>
+    <string name="account_setup_options_email_signature_error_blank">Ime podpisa ne sme biti prazno.</string>
+    <string name="account_setup_options_section_sync_options">Možnosti uskaljevanja</string>
+    <string name="account_setup_options_account_check_frequency_label">Pogostost preverjanja</string>
+    <string name="account_setup_options_email_check_frequency_never">Nikoli</string>
+    <string name="account_setup_options_email_display_count_label">Število prikazanih sporočil</string>
+    <string name="account_setup_options_show_notifications_label">Prikaži obvestila</string>
+    <string name="account_setup_create_account_creating">Ustvarjanje računa …</string>
+    <string name="account_setup_create_account_error">Med poizkusom ustvarjanja računa je prišlo do napake.</string>
+    <string name="account_setup_create_account_created">Račun je bil uspešno ustvarjen.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Vsako minuto</item>
+        <item quantity="two">Vsaki %d minuti</item>
+        <item quantity="few">Vsake %d minute</item>
+        <item quantity="other">Vsakih %d minut</item>
+    </plurals>
+</resources>

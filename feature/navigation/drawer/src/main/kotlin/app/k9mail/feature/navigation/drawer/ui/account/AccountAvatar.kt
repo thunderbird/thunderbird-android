@@ -1,5 +1,6 @@
 package app.k9mail.feature.navigation.drawer.ui.account
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,40 +23,57 @@ import app.k9mail.core.ui.compose.theme2.toColorRoles
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.ui.common.labelForCount
 
+val selectedAvatarSize = 40.dp
+
 @Composable
 internal fun AccountAvatar(
     account: DisplayAccount,
-    onClick: (DisplayAccount) -> Unit,
+    selected: Boolean,
     modifier: Modifier = Modifier,
+    onClick: ((DisplayAccount) -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val accountColor = calculateAccountColor(account.account.chipColor)
+    val accountColor = calculateAccountColor(account.color)
     val accountColorRoles = accountColor.toColorRoles(context)
+
+    val avatarSize by animateDpAsState(
+        targetValue = if (selected) selectedAvatarSize else MainTheme.sizes.iconAvatar,
+        label = "Avatar size",
+    )
 
     Box(
         modifier = modifier,
         contentAlignment = Alignment.BottomEnd,
     ) {
-        Surface(
+        val clickableModifier = if (onClick != null && !selected) Modifier.clickable { onClick(account) } else Modifier
+
+        Box(
             modifier = Modifier
-                .size(MainTheme.sizes.iconAvatar)
-                .border(2.dp, accountColor, CircleShape)
-                .clip(CircleShape)
-                .padding(2.dp)
-                .clickable(onClick = { onClick(account) }),
-            color = accountColor.copy(alpha = 0.3f),
+                .size(MainTheme.sizes.iconAvatar),
+            contentAlignment = Alignment.Center,
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
+            Surface(
                 modifier = Modifier
-                    .border(2.dp, MainTheme.colors.surfaceContainerLowest, CircleShape),
+                    .size(avatarSize)
+                    .clip(CircleShape)
+                    .border(2.dp, accountColor, CircleShape)
+                    .padding(2.dp)
+                    .then(clickableModifier),
+                color = accountColor.copy(alpha = 0.3f),
             ) {
-                Placeholder(
-                    email = account.account.email,
-                )
-                // TODO: Add image loading
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .border(2.dp, MainTheme.colors.surfaceContainerLowest, CircleShape),
+                ) {
+                    Placeholder(
+                        displayName = account.name,
+                    )
+                    // TODO: Add image loading
+                }
             }
         }
+
         UnreadBadge(
             unreadCount = account.unreadMessageCount,
             accountColorRoles = accountColorRoles,
@@ -64,11 +83,11 @@ internal fun AccountAvatar(
 
 @Composable
 private fun Placeholder(
-    email: String,
+    displayName: String,
     modifier: Modifier = Modifier,
 ) {
     TextTitleMedium(
-        text = extractDomainInitials(email).uppercase(),
+        text = extractNameInitials(displayName).uppercase(),
         modifier = modifier,
     )
 }
@@ -102,6 +121,6 @@ private fun UnreadBadge(
     }
 }
 
-private fun extractDomainInitials(email: String): String {
-    return email.split("@")[1].take(2)
+private fun extractNameInitials(displayName: String): String {
+    return displayName.take(2)
 }

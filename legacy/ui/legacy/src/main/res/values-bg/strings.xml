@@ -54,7 +54,7 @@
     <string name="send_messages_action">Изпрати съобщения</string>
     <string name="refresh_folders_action">Обнови списъка с папки</string>
     <string name="filter_folders_action">Намери папка</string>
-    <string name="add_account_action">Добави профил</string>
+    <string name="add_account_action">Добавяне на профил</string>
     <string name="compose_action">Състави</string>
     <string name="search_action">Търси</string>
     <string name="search_everywhere_action">Търси навсякъде</string>
@@ -62,7 +62,7 @@
     <string name="new_messages_title">Нови съобщения</string>
     <string name="folders_action">Управление на папки</string>
     <string name="account_settings_action">Настройки на профила</string>
-    <string name="remove_account_action">Премахни профил</string>
+    <string name="remove_account_action">Премахване на профил</string>
     <string name="mark_as_read_action">Маркирай като прочетено</string>
     <string name="send_alternate_action">Сподели</string>
     <string name="send_alternate_chooser_title">Избери изпращащ</string>
@@ -183,7 +183,7 @@
     <string name="global_settings_registered_name_color_label">Оцвети контактите</string>
     <string name="global_settings_registered_name_color_changed">Оцветявай имената в контакт листа</string>
     <string name="global_settings_messageview_fixedwidth_label">Шрифт с фиксирана широчина</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Използва шрифт с фиксирана широчина за показване на съобщения съдържащи само текст</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Използване на равноширок шрифт при показване на съобщения само от текст</string>
     <string name="global_settings_messageview_autofit_width_label">Автоматично мащабиране</string>
     <string name="global_settings_messageview_autofit_width_summary">Смалява съобщението за да се събере на екрана</string>
     <string name="global_settings_confirm_actions_title">Потвърди операциите</string>
@@ -426,7 +426,7 @@
     <string name="sort_by_flag">Звезда</string>
     <string name="sort_by_unread">Прочетено/непрочетено</string>
     <string name="sort_by_attach">Файлове</string>
-    <string name="account_delete_dlg_title">Премахни профила</string>
+    <string name="account_delete_dlg_title">Премахване на профил</string>
     <string name="folder_list_filter_hint">Името на папката съдържа</string>
     <string name="account_settings_signature__location_label">Позиция на подписа</string>
     <string name="account_settings_signature__location_before_quoted_text">Преди цитираното съобщение</string>
@@ -607,7 +607,7 @@
     <string name="fetching_attachment_dialog_title_save">Запазване в чернови</string>
     <string name="fetching_attachment_dialog_message">Изтегляне на прикачен файл…</string>
     <!--Note: This references message_view_download_remainder-->
-    <string name="preview_encrypted">*Шифрован*</string>
+    <string name="preview_encrypted">*Шифровано*</string>
     <string name="add_from_contacts">Добавяне в контакти</string>
     <string name="recipient_cc">Cc</string>
     <string name="recipient_bcc">Bcc</string>
@@ -875,4 +875,16 @@
     <string name="debug_export_logs_failure">Експортирането беше неуспешно.</string>
     <string name="message_view_show_remote_images_action">Зареди изображения</string>
     <string name="account_settings_autodownload_message_size_256">256 КБ</string>
+    <string name="save_attachment_action">Запазване на прикачени</string>
+    <string name="about_app_authors_thunderbird">Екип на Thunderbird Mobile</string>
+    <string name="about_title">Относно <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="settings_ui_data_collection">Събиране на данни</string>
+    <string name="push_notification_state_alarm_permission_missing">Липсва разрешение за настройка на будилник</string>
+    <string name="folder_settings_visible_label">Показване на папка</string>
+    <string name="folder_settings_sync_label">Включване синхронизиране</string>
+    <string name="folder_settings_notifications_label">Известия</string>
+    <string name="folder_list_show_hidden_folders">Показване на скрити папки</string>
+    <string name="settings_ui_telemetry_title">Използване и технически данни</string>
+    <string name="push_notification_grant_alarm_permission">Докоснете, за да дадете разрешение.</string>
+    <string name="account_delete_dlg_instructions_fmt">Профилът „<xliff:g id="account">%s</xliff:g>“ ще бъде премахнат от <xliff:g id="app_name">%s</xliff:g>.</string>
 </resources>

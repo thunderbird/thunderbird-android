@@ -1,0 +1,5 @@
+- U ndreq radha e hapave të zbulimit te formësimi i automatizuar
+- U ndryshua në 100 numri parazgjedhje i shfaqjes në ekran
+- U aktivizuan njoftime për llogari të reja, si parazgjedhje
+- U prapakthye ndryshimi për trajtim URI-sh mailto: sjellë në K-9 Mail 6.716, për shkak efektesh anësore jo të paramenduar
+- U ndreq një e metë për ta bërë “ngjyrosni kontakte” të funksionojë sërish te pamja mesazh

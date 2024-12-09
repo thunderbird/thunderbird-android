@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_webpage_url" translatable="false">https://k9mail.app/</string>
+    <string name="user_forum_url" translatable="false">https://forum.k9mail.app/</string>
+    <string name="funding_url" translatable="false">https://www.thunderbird.net/donate/mobile/?form=k9mail&amp;utm_source=%s&amp;utm_medium=android_app&amp;utm_campaign=inapp_appeal_v2</string>
+    <string name="message_header_mua" translatable="false">K-9 Mail for Android</string>
+</resources>

@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">OAuth ile oturum aç</string>
     <string name="account_oauth_sign_in_description">Oturum açmanız için sizi e-posta sağlayıcınıza yönlendireceğiz. Uygulamanın e-posta hesabınıza erişmesine izin vermelisiniz.</string>
     <string name="account_oauth_sign_in_button">Oturum aç</string>
+    <string name="account_oauth_google_sign_in_support_text">Google ile oturum açarken sorun yaşıyorsanız lütfen {placeHolder} bakın.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">destek makalemize</string>
 </resources>

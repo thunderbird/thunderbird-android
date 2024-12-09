@@ -1,2 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Dukung Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Berikan sekali saja</string>
+    <string name="funding_googleplay_contribution_list_title">Kontribusi aman</string>
+    <string name="funding_googleplay_contribution_title">Dukung Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Bulanan</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Tidak tersedia</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Terima kasih atas donasi Anda yang murah hati! Dukungan Anda secara langsung memperkuat Thunderbird, dan kami bersyukur Anda mendampingi kami dalam perjalanan ini.</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Kontribusi tidak dapat dikurangkan dari pajak sebagai sumbangan amal.</string>
+    <string name="funding_googleplay_contribution_header_description">Kami tidak pernah menayangkan iklan atau menjual data Anda. Kami sepenuhnya didanai oleh kontribusi finansial dari para pengguna kami. Jika Anda menyukai Thunderbird, mohon bantu dukung. Kami tidak dapat melakukan ini tanpa Anda!</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Ulangi</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Kontribusi dalam aplikasi saat ini tidak tersedia.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Kunjungi www.thunderbird.net untuk mengetahui lebih banyak cara mendukung Thunderbird</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Lanjutkan ke pembayaran</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Pembayaran saat ini tidak tersedia</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Ubah pembayaran bulanan</string>
+    <string name="funding_googleplay_contribution_error_unknown">Kesalahan tidak diketahui</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Kontribusi saat ini tidak tersedia.</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Pembelian gagal.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Kontribusi Penting</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Kontribusi yang Berharga</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Dukungan Anda membuat kami terus maju! Bahkan kontribusi terkecil pun dapat menciptakan riak perubahan, dan kami sangat bersyukur Anda ikut serta.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Kontribusi Signifikan</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Kontribusi Besar</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Kontribusi Luar Biasa</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">Anda membantu kami mewujudkan hal-hal hebat! Dengan berkontribusi pada tingkat ini, Anda membantu kami mengambil langkah maju yang berarti sehingga kami dapat terus berkembang.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Kontribusi Anda sungguh cemerlang! Anda memainkan peran utama dalam memajukan misi kami, membantu kami mencapai pencapaian penting dan mencapai dampak yang lebih besar.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Anda benar-benar membantu kami bermimpi besar! Dukungan luar biasa Anda memberdayakan kami untuk mencapai hal luar biasa, meninggalkan dampak abadi pada semua yang kami lakukan.</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Berikan kontribusi lain yang berdampak</string>
+    <string name="funding_googleplay_contribution_error_show_more">Tampilkan lebih detail</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Singkirkan kesalahan</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Dukungan Anda sungguh menginspirasi! Berkat kontribusi besar Anda, kami mampu mendobrak batasan, berinovasi, dan membuat langkah signifikan menuju tujuan kami.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Kontribusi Luar Biasa</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">Anda adalah alasan utama kami dapat melakukan apa yang kami lakukan! Berkat kemurahan hati Anda, kita dapat mengerjakan proyek yang lebih besar dan mencapai pencapaian baru bersama-sama.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Kontribusi Bulanan Penting</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Dukungan Andalah yang membuat kami untuk tetap terus maju. Tiap-tiap kontribusi akan menuai hasilnya—terima kasih, ya!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Kontribusi Andalah yang membantu kami untuk tetap tumbuh dan meniti tiap-tiap langkah—terima kasih, ya!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Sungguh Anda telah membantu kami untuk tetap mengimpikan hal-hal besar. Dukungan Anda meyakinkan kami untuk mencapai hal-hal yang tidak pernah kami sangka sebelumnya.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Kontribusi Utama Bulanan</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">Andalah alasan kami hingga dapat melakukan semua ini sekarang. Kedermawanan Anda membantu kami mencapai segala pencapai baru.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Sungguh menginspirasi dukungan Anda! Kontribusi Anda sangat membantu kami mendorong segala pembatas dan mencapai impian kami.</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Ya</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Tidak dulu, ya</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Kontribusi Bulanan Berharga</string>
+    <string name="funding_googleplay_contribution_reminder_title">Mari dukung Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_message">Misi kami adalah untuk menyediakan aplikask surel bersumber terbuka yang aman, privat, sekaligus gratis untuk semua pengguna di seantero dunia. Dukungan dana dari Anda sungguh dapat menyokong proyek ini. Maukah Anda berdonasi sekarang?</string>
+</resources>

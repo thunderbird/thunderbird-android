@@ -197,7 +197,7 @@
     <string name="global_settings_registered_name_color_changed">Färglägg namn i din kontaktlista</string>
     <string name="general_settings_contact_name_color_label">Färg på kontaktnamn</string>
     <string name="global_settings_messageview_fixedwidth_label">Teckensnitt med fast bredd</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd när meddelanden med enbart oformaterad text visas</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd när du visar oformaterade textmeddelanden</string>
     <string name="global_settings_messageview_autofit_width_label">Anpassa automatiskt meddelanden</string>
     <string name="global_settings_messageview_autofit_width_summary">Krymp meddelanden så att de får plats på skärmen</string>
     <string name="global_settings_confirm_actions_title">Bekräfta åtgärder</string>
@@ -236,7 +236,7 @@
     <string name="general_settings_ui_density_default">Standard</string>
     <string name="general_settings_ui_density_relaxed">Avslappnad</string>
     <string name="global_settings_privacy_hide_useragent">Dölj e-postklient</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Ta bort K-9-användaragent från meddelanderubriker</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Ta bort användaragent från meddelanderubriker</string>
     <string name="global_settings_privacy_hide_timezone">Dölj tidszon</string>
     <string name="global_settings_privacy_hide_timezone_detail">Använd UTC istället för lokal tidszon i postrubriker och svarsrubrik</string>
     <string name="global_settings_notification_quick_delete_title">Visa knappen \"Ta bort\"</string>
@@ -491,7 +491,7 @@
     <string name="setting_theme_dark">Mörkt</string>
     <string name="setting_theme_light">Ljust</string>
     <string name="setting_theme_follow_system">Använd systemstandard</string>
-    <string name="display_preferences">Utseende</string>
+    <string name="display_preferences">Visning</string>
     <string name="global_preferences">Globala</string>
     <string name="debug_preferences">Felsökning</string>
     <string name="privacy_preferences">Integritet</string>

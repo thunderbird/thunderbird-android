@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Akses kamera diperlukan</string>
+    <string name="migration_qrcode_permission_denied_message">Buka pengaturan Android, ketuk izin, dan izinkan akses kamera.</string>
+    <string name="migration_qrcode_scanning_instructions">Sejajarkan kode Respons Cepat (QR) yang disediakan Thunderbird Desktop</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Buka pengaturan</string>
+    <string name="migration_qrcode_scanning_progress">Memindai %1$s dari %2$s</string>
+    <string name="migration_qrcode_done_button_text">Selesai</string>
+</resources>

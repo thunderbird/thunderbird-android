@@ -124,9 +124,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Notificação de erro</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Ocorreu um erro ao tentar criar uma notificação de sistema para uma nova mensagem. O provável motivo é a ausência de um som de notificação.
-\n
-\nToque para abrir as configurações de notificação.</string>
+    <string name="notification_notify_error_text">Ocorreu um erro ao tentar criar uma notificação de sistema para uma nova mensagem. O provável motivo é a ausência de um som de notificação.\n\nToque para abrir as configurações de notificação.</string>
     <string name="notification_bg_sync_ticker">Verificando e-mail: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">Verificando e-mail</string>
     <string name="notification_bg_send_ticker">Enviando mensagem: <xliff:g id="account">%s</xliff:g></string>
@@ -200,7 +198,7 @@
     <string name="global_settings_registered_name_color_changed">Colorir nomes em sua lista de contatos</string>
     <string name="general_settings_contact_name_color_label">Cor do nome do contato</string>
     <string name="global_settings_messageview_fixedwidth_label">Fontes de largura fixa</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte de largura fixa ao exibir mensagens que contenham somente texto</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte de largura fixa ao exibir mensagens de texto simples</string>
     <string name="global_settings_messageview_autofit_width_label">Ajustar mensagens automaticamente</string>
     <string name="global_settings_messageview_autofit_width_summary">Ajusta as mensagens para que caibam na tela</string>
     <string name="global_settings_confirm_actions_title">Confirmar ações</string>

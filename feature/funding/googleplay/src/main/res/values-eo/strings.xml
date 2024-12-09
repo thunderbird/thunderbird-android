@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Subteni Thunderbird</string>
+    <string name="funding_googleplay_contribution_title">Subteni Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Ne nun</string>
+    <string name="funding_googleplay_contribution_reminder_title">Subteni Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Jes</string>
+</resources>

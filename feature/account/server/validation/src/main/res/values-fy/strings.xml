@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Serverflater</string>
     <string name="account_server_validation_error_missing_server_capability">Untbrekkende serverfunksjonaliteit</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">It clientsertifikaat koe net rieplachte wurde</string>
-    <string name="account_server_validation_error_missing_server_capability_details">De server mist dizze funksjonaliteit:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">De server mist dizze funksjonaliteit:\n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">It clientsertifikaat is net langer jildich</string>
-    <string name="account_server_validation_error_details">Details:
-\n%s</string>
+    <string name="account_server_validation_error_details">Details:\n%s</string>
 </resources>

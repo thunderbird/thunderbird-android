@@ -3,8 +3,8 @@
     <string name="navigation_drawer_action_settings">Stillingar</string>
     <string name="navigation_drawer_action_manage_folders">Sýsla með möppur</string>
     <string name="navigation_drawer_unified_inbox_title">Sameinað innhólf</string>
-    <string name="navigation_drawer_folder_item_badge_count_greater_than_99">Meira en 99</string>
-    <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">Meira en 1.000</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_99">&gt;99</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">&gt;1.000</string>
     <string name="navigation_drawer_action_sync_all_accounts">Samstilla alla reikninga</string>
     <string name="navigation_drawer_action_show_accounts">Sýna reikninga</string>
     <string name="navigation_drawer_action_hide_accounts">Fela reikninga</string>

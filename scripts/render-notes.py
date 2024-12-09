@@ -5,6 +5,7 @@ import os
 import requests
 import yaml
 import time
+import sys
 
 from jinja2 import Template
 
@@ -29,16 +30,28 @@ def render_notes(
     if "0b" in version:
         tb_notes_filename = f"{version[0:-1]}eta.yml"
         tb_notes_directory = "android_beta"
-    tb_notes_url = os.path.join(
-        f"https://raw.githubusercontent.com/{notesrepo}/",
-        f"refs/heads/{notesbranch}",
-        tb_notes_directory,
-        tb_notes_filename,
-    ) + "?token=" + str(int(time.time()))
 
-    response = requests.get(tb_notes_url)
-    response.raise_for_status()
-    yaml_content = yaml.safe_load(response.text)
+    if os.path.isdir(os.path.expanduser(notesrepo)):
+        notes_path = os.path.join(
+            os.path.expanduser(notesrepo), tb_notes_directory, tb_notes_filename
+        )
+        with open(notes_path) as fp:
+            yaml_content = yaml.safe_load(fp.read())
+    else:
+        tb_notes_url = (
+            os.path.join(
+                f"https://raw.githubusercontent.com/{notesrepo}/",
+                f"refs/heads/{notesbranch}",
+                tb_notes_directory,
+                tb_notes_filename,
+            )
+            + "?token="
+            + str(int(time.time()))
+        )
+
+        response = requests.get(tb_notes_url)
+        response.raise_for_status()
+        yaml_content = yaml.safe_load(response.text)
 
     render_data = {"releases": {}}
     for release in reversed(yaml_content["release"]["releases"]):
@@ -62,7 +75,9 @@ def render_notes(
                     tag = note["tag"].lower().capitalize()
                     if tag not in render_data["releases"][vers]["notes"]:
                         render_data["releases"][vers]["notes"][tag] = []
-                    render_data["releases"][vers]["notes"][tag].append(note["note"].strip())
+                    render_data["releases"][vers]["notes"][tag].append(
+                        note["note"].strip()
+                    )
                 if "short_note" in note:
                     render_data["releases"][vers]["short_notes"].append(
                         note["short_note"].strip()
@@ -70,46 +85,56 @@ def render_notes(
 
     render_files = {
         "changelog_master": {
-            "template": "./scripts/templates/changelog_master.xml",
+            "template": "changelog_master.xml",
             "outfile": f"./app-{application}/src/main/res/raw/changelog_master.xml",
             "render_data": render_data["releases"][version],
         },
         "changelog": {
-            "template": "./scripts/templates/changelog.txt",
+            "template": "changelog.txt",
             "outfile": f"./app-metadata/{applicationid}/en-US/changelogs/{versioncode}.txt",
             "render_data": render_data["releases"][version],
+            "max_length": 500,
         },
         "changelog_long": {
-            "template": "./scripts/templates/changelog_long.txt",
+            "template": "changelog_long.txt",
             "outfile": longform_file,
             "render_data": render_data["releases"][version],
         },
     }
 
+    template_base = os.path.join(os.path.dirname(sys.argv[0]), "templates")
+
     for render_file in render_files:
-        with open(render_files[render_file]["template"], "r") as file:
+        with open(os.path.join(template_base, render_files[render_file]["template"]), "r") as file:
             template = file.read()
         template = Template(template)
         rendered = template.render(render_files[render_file]["render_data"])
         if render_file == "changelog_master":
-            with open(render_files[render_file]["outfile"], "r") as file:
-                lines = file.readlines()
-                for index, line in enumerate(lines):
-                    if "<changelog>" in line:
-                        if version in lines[index + 1]:
-                            break
-                        lines.insert(index + 1, rendered)
-                        break
             if print_only:
                 print(f"\n==={render_files[render_file]['outfile']}===")
                 print("...")
                 print(rendered)
                 print("...")
             else:
+                with open(render_files[render_file]["outfile"], "r") as file:
+                    lines = file.readlines()
+                    for index, line in enumerate(lines):
+                        if "<changelog>" in line:
+                            if version in lines[index + 1]:
+                                break
+                            lines.insert(index + 1, rendered)
+                            break
                 with open(render_files[render_file]["outfile"], "w") as file:
                     file.writelines(lines)
         elif render_file == "changelog" or render_file == "changelog_long":
             stripped = rendered.lstrip()
+            maxlen = render_files[render_file].get("max_length", float("inf"))
+            if len(stripped) > maxlen:
+                print(
+                    f"Error: Maximum length of {maxlen} exceeded, {render_file} is {len(stripped)} characters"
+                )
+                sys.exit(1)
+
             if print_only:
                 print(f"\n==={render_files[render_file]['outfile']}===")
                 print(stripped)
@@ -130,7 +155,7 @@ def main():
         "--repository",
         "-r",
         default="thunderbird/thunderbird-notes",
-        help="Repository to retrieve thunderbird-notes from",
+        help="Repository or directory to retrieve thunderbird-notes from",
     )
     parser.add_argument(
         "--branch",
@@ -149,9 +174,19 @@ def main():
         help="thunderbird or k9mail",
     )
     parser.add_argument("version", type=str, help="Version name for this release")
-    parser.add_argument("versioncode", type=str, help="Version code for this release")
     parser.add_argument(
-        "longform_file", type=str, help="File to render long-form notes to"
+        "versioncode",
+        nargs="?",
+        default="0",
+        type=str,
+        help="Version code for this release",
+    )
+    parser.add_argument(
+        "longform_file",
+        type=str,
+        nargs="?",
+        default="github_notes",
+        help="File to render long-form notes to",
     )
     args = parser.parse_args()
 

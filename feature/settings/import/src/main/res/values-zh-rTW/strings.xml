@@ -38,4 +38,6 @@
     <string name="settings_import_general_settings_item">一般設定</string>
     <string name="settings_import_pick_app_button">從應用程式匯入</string>
     <string name="settings_import_pick_app_dialog_title">從應用程式匯入</string>
+    <string name="settings_import_scan_qr_code_button">掃描 QR Code</string>
+    <string name="settings_import_app_version_not_supported">應用程式不支援。</string>
 </resources>

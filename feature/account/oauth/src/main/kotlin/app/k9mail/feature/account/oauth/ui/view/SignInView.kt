@@ -34,6 +34,8 @@ internal fun SignInView(
                 onClick = onSignInClick,
                 enabled = isEnabled,
             )
+
+            GoogleSignInSupportText()
         } else {
             ButtonFilled(
                 text = stringResource(id = R.string.account_oauth_sign_in_button),

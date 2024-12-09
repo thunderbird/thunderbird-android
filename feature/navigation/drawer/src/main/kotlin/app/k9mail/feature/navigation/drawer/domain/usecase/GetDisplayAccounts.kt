@@ -37,7 +37,10 @@ internal class GetDisplayAccounts(
                 combine(messageCountsFlows) { messageCountsList ->
                     messageCountsList.mapIndexed { index, messageCounts ->
                         DisplayAccount(
-                            account = accounts[index],
+                            id = accounts[index].uuid,
+                            name = accounts[index].displayName,
+                            email = accounts[index].email,
+                            color = accounts[index].chipColor,
                             unreadMessageCount = messageCounts.unread,
                             starredMessageCount = messageCounts.starred,
                         )

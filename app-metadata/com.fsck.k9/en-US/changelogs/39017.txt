@@ -1,0 +1,3 @@
+- K-9 Mail Needs Your Support! You can now support development with financial contributions via in-app purchases (Google Play variant) or through our fundraising page (FOSS variant).
+- Help text linking to support page added for Gmail login issues
+- Funding text updated to be more engaging and appealing

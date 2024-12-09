@@ -5,7 +5,6 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
-import app.k9mail.legacy.account.Account
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -20,7 +19,7 @@ internal interface DrawerContract {
             showStarredCount = false,
         ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
-        val selectedAccountUuid: String? = null,
+        val selectedAccountId: String? = null,
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
         val selectedFolderId: String? = null,
         val showAccountSelector: Boolean = true,
@@ -28,7 +27,7 @@ internal interface DrawerContract {
     )
 
     sealed interface Event {
-        data class SelectAccount(val accountUuid: String?) : Event
+        data class SelectAccount(val accountId: String?) : Event
         data class SelectFolder(val folderId: String?) : Event
         data class OnAccountClick(val account: DisplayAccount) : Event
         data class OnAccountViewClick(val account: DisplayAccount) : Event
@@ -41,7 +40,7 @@ internal interface DrawerContract {
     }
 
     sealed interface Effect {
-        data class OpenAccount(val account: Account) : Effect
+        data class OpenAccount(val accountId: String) : Effect
         data class OpenFolder(val folderId: Long) : Effect
         data object OpenUnifiedFolder : Effect
         data object OpenManageFolders : Effect

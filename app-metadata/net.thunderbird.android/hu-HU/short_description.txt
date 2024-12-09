@@ -1,0 +1,1 @@
+A Thunderbird egy 100%-ban nyílt forráskódú, privát levelezőprogram.

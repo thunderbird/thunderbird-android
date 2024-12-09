@@ -17,7 +17,7 @@ internal interface DomainContract {
         }
 
         fun interface GetDisplayFoldersForAccount {
-            operator fun invoke(accountUuid: String, includeUnifiedFolders: Boolean): Flow<List<DisplayFolder>>
+            operator fun invoke(accountId: String, includeUnifiedFolders: Boolean): Flow<List<DisplayFolder>>
         }
 
         /**

@@ -2,4 +2,6 @@
 <resources>
     <string name="onboarding_welcome_start_button">Bắt đầu</string>
     <string name="onboarding_welcome_import_button">Nhập thiết đặt</string>
+    <string name="onboarding_welcome_text">Một ứng dụng thư điện tử mã nguồn mở, tập trung vào sự riêng tư và không có quảng cáo cho Android.</string>
+    <string name="onboarding_welcome_developed_by">Được phát triển bởi một đội ngũ chuyên biệt tại MZLA Technologies và một cộng đồng tình nguyện viên trên toàn cầu. Một phần của đại gia đình Mozilla.</string>
 </resources>

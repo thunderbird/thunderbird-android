@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Thunderbird を支援する</string>
     <string name="funding_googleplay_contribution_list_type_one_time">一度だけ</string>
     <string name="funding_googleplay_contribution_list_type_recurring">毎月</string>
     <string name="funding_googleplay_contribution_list_title">寄付する</string>
     <string name="funding_googleplay_contribution_list_disclaimer">税控除の対象となる慈善活動への寄付ではありません。</string>
     <string name="funding_googleplay_contribution_footer_payment_button">支払いへ進む</string>
-    <string name="funding_googleplay_contribution_header_description">私たちは広告を表示したりあなたのデータを販売したりしません。資金はすべてユーザーから寄付されています。もし Thunderbird に満足していただけたら、支援にご協力ください。あなたの支援が必要です！</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird の資金はすべてユーザーから寄付されています。私たちは広告を表示したりあなたのデータを販売したりしません。もし Thunderbird に満足していただけたら、支援にご協力ください。あなたの支援が必要です！</string>
     <string name="funding_googleplay_contribution_footer_manage_button">毎月の支払いを変更</string>
     <string name="funding_googleplay_contribution_title">Thunderbird を支援する</string>
     <string name="funding_googleplay_contribution_list_type_none_available">利用できません</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">更なる進化に向けてもう一度貢献する</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Thunderbird を支援するさまざまな方法は www.thunderbird.net で確認できます</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Thunderbird を支援するさまざまな方法は <xliff:g id="link_text">%s</xliff:g> で確認できます。</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">再試行</string>
     <string name="funding_googleplay_contribution_list_empty_title">現在、アプリ内寄付ができません。</string>
     <string name="funding_googleplay_contribution_error_show_more">詳細を表示</string>
@@ -24,10 +24,10 @@
     <string name="funding_googleplay_contribution_tfa_onetime_s_description">良い変化を起こす支援をありがとうございます！あなたの貢献は成長への確かな一歩を支えています。</string>
     <string name="funding_googleplay_contribution_tfa_onetime_m_description">私たちがミッションに向け前進し、重要なマイルストーンを達成して変化を生み出すために、あなたの目覚ましい貢献は重要な役割を果たします。</string>
     <string name="funding_googleplay_contribution_reminder_title">Thunderbird を支援する</string>
-    <string name="funding_googleplay_contribution_reminder_message">私たちのミッションは、世界中のユーザーに無料で安全、プライベートなオープンソースのメールアプリを提供することです。あなたの寄付がミッション達成への支援となります。寄付にご協力いただけますか？</string>
+    <string name="funding_googleplay_contribution_reminder_message">プライバシーを尊重し、メール体験をカスタマイズできるようにするという、私たちのミッションに参加しませんか？</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">はい</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">あとで</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">あなたの惜しみない貢献に感謝します！あなたの支援はそのまま Thunderbird の力となります。長旅をあなたとともにできることをうれしく思います。</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">あなたの貢献が Thunderbird の開発をさらに進めます。あなたの支援に心から感謝します。</string>
     <string name="funding_googleplay_contribution_tfa_onetime_l_description">あなたの支援は私たちが活動できる大きな理由です！惜しみない援助により、更なるプロジェクトと新たな目標に向けて進めることを心から感謝します。</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">私たちの夢への大きな貢献をありがとうございます！あなたの素晴らしい支援は果てしない夢に向かう力を与え、私たちの行動すべてに大きな影響を与えました。</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xl_description">あなたの支援に心から感激しています！あなたの重要な貢献により私たちは可能性を広げ、イノベーションを起こし、目標に向けて進めるようになりました。</string>
@@ -49,4 +49,9 @@
     <string name="funding_googleplay_contribution_tfa_onetime_m_title">Significant Contribution</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Essential Monthly Contribution</string>
     <string name="funding_googleplay_contribution_tfa_recurring_s_title">Valued Monthly Contribution</string>
+    <string name="funding_googleplay_contribution_header_thank_you">あなたに心から感謝します！</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">広告を表示しません。</string>
+    <string name="funding_googleplay_contribution_reminder_claim">私たちの資金はあなたのようなユーザーからの寄付のみです。</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird は無料でオープンソースです。</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">あなたのデータを販売しません。</string>
 </resources>

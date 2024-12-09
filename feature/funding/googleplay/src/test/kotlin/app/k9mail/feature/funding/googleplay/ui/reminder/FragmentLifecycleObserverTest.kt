@@ -66,7 +66,7 @@ class FragmentLifecycleObserverTest {
         val fragment = mock<Fragment> {
             on { tag } doReturn targetFragmentTag
         }
-        val onShow = {  }
+        val onShow = { }
         val observer = FragmentLifecycleObserver(targetFragmentTag)
 
         observer.register(fragmentManager, onShow)

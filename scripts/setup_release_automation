@@ -3,7 +3,7 @@
 # See docs/CI/Release_Automation.md for more details
 # Run this from the .signing directory with all the keys and properties files in it.
 
-# python -m venv venv; source venv/bin/activate; pip install requests, pynacl
+# python -m venv venv; source venv/bin/activate; pip install requests pynacl
 
 import os
 import json
@@ -12,6 +12,7 @@ import argparse
 import requests
 import nacl.encoding
 import nacl.public
+import textwrap
 
 PUBLISH_APPROVERS = ["kewisch", "cketti", "wmontwe"]
 
@@ -23,7 +24,7 @@ CHANNEL_ENVIRONMENTS = {
             "MATRIX_INCLUDE": [
                 {
                     "appName": "thunderbird",
-                    "releaseTarget": "github",
+                    "releaseTarget": "ftp|github",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
@@ -36,9 +37,16 @@ CHANNEL_ENVIRONMENTS = {
                 },
                 {
                     "appName": "k9mail",
-                    "releaseTarget": "github|play",
+                    "releaseTarget": "ftp|github",
+                    "packageFormat": "apk",
+                    "packageFlavor": "foss",
+                },
+                {
+                    "appName": "k9mail",
+                    "releaseTarget": "play",
                     "playTargetTrack": "internal",
                     "packageFormat": "apk",
+                    "packageFlavor": "full",
                 },
             ],
         },
@@ -50,7 +58,7 @@ CHANNEL_ENVIRONMENTS = {
             "MATRIX_INCLUDE": [
                 {
                     "appName": "thunderbird",
-                    "releaseTarget": "github",
+                    "releaseTarget": "ftp|github",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
@@ -63,9 +71,16 @@ CHANNEL_ENVIRONMENTS = {
                 },
                 {
                     "appName": "k9mail",
-                    "releaseTarget": "github|play",
+                    "releaseTarget": "ftp|github",
+                    "packageFormat": "apk",
+                    "packageFlavor": "foss",
+                },
+                {
+                    "appName": "k9mail",
+                    "releaseTarget": "play",
                     "playTargetTrack": "internal",
                     "packageFormat": "apk",
+                    "packageFlavor": "full",
                 },
             ],
         },
@@ -77,6 +92,7 @@ CHANNEL_ENVIRONMENTS = {
             "MATRIX_INCLUDE": [
                 {
                     "appName": "thunderbird",
+                    "releaseTarget": "ftp",
                     "packageFormat": "apk",
                     "packageFlavor": "foss",
                 },
@@ -94,11 +110,19 @@ CHANNEL_ENVIRONMENTS = {
 
 
 SIGNING_ENVIRONMENTS = {
-    "k9mail_release_default": {
+    "k9mail_release_foss": {
         "props": "k9.release.signing.properties",
         "branch": "release",
     },
-    "k9mail_beta_default": {
+    "k9mail_release_full": {
+        "props": "k9.release.signing.properties",
+        "branch": "release",
+    },
+    "k9mail_beta_foss": {
+        "props": "k9.release.signing.properties",
+        "branch": "beta",
+    },
+    "k9mail_beta_full": {
         "props": "k9.release.signing.properties",
         "branch": "beta",
     },
@@ -193,6 +217,35 @@ def set_github_environment_secret(
         )
 
 
+def print_github_environment_variable(repo, environment_name):
+    url = (
+        f"https://api.github.com/repos/{repo}/environments/{environment_name}/variables"
+    )
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    if response.status_code == 200:
+        for variable in data["variables"]:
+            value = variable["value"]
+            if value[0] in "{[":
+                try:
+                    value = textwrap.indent(
+                        json.dumps(json.loads(value), indent=2), "\t\t"
+                    ).lstrip()
+                except:
+                    pass
+
+            print(f"\t{variable['name']}={value}")
+    else:
+        raise Exception(
+            f"Unexpected response getting variables from {environment_name}: {response.status_code} {response.text}"
+        )
+
+
 def set_github_environment_variable(repo, name, value, environment_name):
     url = (
         f"https://api.github.com/repos/{repo}/environments/{environment_name}/variables"
@@ -217,6 +270,52 @@ def set_github_environment_variable(repo, name, value, environment_name):
     else:
         raise Exception(
             f"Failed to create variable {name} in {environment_name}. Response: {response.status_code}, {response.text}"
+        )
+
+
+def print_github_environment(repo, environment_name):
+    url = f"https://api.github.com/repos/{repo}/environments/{environment_name}"
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        print(f"Environment {environment_name}")
+        print("\tProtection rules")
+        needs_branch_policies = False
+        for rule in data["protection_rules"]:
+            if rule["type"] == "branch_policy":
+                continue
+
+            print(f"\t\tType: {rule['type']}")
+            if rule["type"] == "required_reviewers":
+                reviewers = ", ".join(
+                    map(
+                        lambda reviewer: reviewer["reviewer"]["login"],
+                        rule["reviewers"],
+                    )
+                )
+                print(f"\t\t\tReviewers: {reviewers}")
+
+        print(f"\t\tBranch policy: {data['deployment_branch_policy']}")
+        if (
+            data["deployment_branch_policy"]
+            and data["deployment_branch_policy"]["custom_branch_policies"]
+        ):
+            url += "/deployment-branch-policies"
+            response = requests.get(url, headers=headers)
+            if response.status_code == 200:
+                policies = map(
+                    lambda policy: policy["name"], response.json()["branch_policies"]
+                )
+                print("\t\tBranches: " + ", ".join(policies))
+
+    else:
+        raise Exception(
+            f"Unexpected response getting variables from {environment_name}: {response.status_code} {response.text}"
         )
 
 
@@ -391,6 +490,7 @@ def create_release_environment(repo, branches):
         repo, "RELEASER_APP_CLIENT_ID", releaser_client_id, environment
     )
 
+
 def create_matrix_environment(repo, branches):
     environment = "notify_matrix"
 
@@ -431,6 +531,9 @@ def main():
         help="GitHub repository in the format 'owner/repo'.",
     )
     parser.add_argument(
+        "--print", "-p", action="store_true", help="Print instead of set"
+    )
+    parser.add_argument(
         "--skip", "-s", action="append", help="Skip this named environment"
     )
     parser.add_argument(
@@ -453,10 +556,7 @@ def main():
     includeset = set(
         list(CHANNEL_ENVIRONMENTS.keys())
         + list(SIGNING_ENVIRONMENTS.keys())
-        + [
-            "publish_hold",
-            "publish_release",
-        ]
+        + ["publish_hold", "publish_release", "notify_matrix"]
     )
     if args.skip:
         for skip in args.skip:
@@ -467,44 +567,63 @@ def main():
 
     # Publish hold environment
     if "publish_hold" in includeset:
-        create_github_environment(
-            args.repo, "publish_hold", approvers=PUBLISH_APPROVERS
-        )
+        if args.print:
+            print_github_environment(args.repo, "publish_hold")
+        else:
+            create_github_environment(
+                args.repo, "publish_hold", approvers=PUBLISH_APPROVERS
+            )
 
     # Channel environments
     for environment_name, data in CHANNEL_ENVIRONMENTS.items():
         if environment_name not in includeset:
             continue
 
-        create_github_environment(
-            args.repo, environment_name, branches=[data["branch"]]
-        )
+        if args.print:
+            print(f"Environment {environment_name}")
+            print_github_environment_variable(args.repo, environment_name)
+        else:
+            create_github_environment(
+                args.repo, environment_name, branches=[data["branch"]]
+            )
 
-        for name, value in data["variables"].items():
-            if isinstance(value, dict) or isinstance(value, list):
-                value = json.dumps(value)
-            set_github_environment_variable(args.repo, name, value, environment_name)
+            for name, value in data["variables"].items():
+                if isinstance(value, dict) or isinstance(value, list):
+                    value = json.dumps(value)
+
+                set_github_environment_variable(
+                    args.repo, name, value, environment_name
+                )
 
     # Signing environments
     for environment_name, data in SIGNING_ENVIRONMENTS.items():
         if environment_name not in includeset:
             continue
 
-        if not os.path.exists(data["props"]):
-            print(f"Skipping {environment_name}: Missing key .properties file")
-            continue
+        if args.print:
+            print_github_environment(args.repo, environment_name)
+        else:
+            if not os.path.exists(data["props"]):
+                print(f"Skipping {environment_name}: Missing key .properties file")
+                continue
 
-        create_signing_environment(
-            args.repo, environment_name, data["branch"], data["props"]
-        )
+            create_signing_environment(
+                args.repo, environment_name, data["branch"], data["props"]
+            )
 
     # Publish environment
     if "publish_release" in includeset:
-        create_release_environment(args.repo, ["main", "beta", "release"])
+        if args.print:
+            print_github_environment(args.repo, "publish_release")
+        else:
+            create_release_environment(args.repo, ["main", "beta", "release"])
 
     # Notify
     if "notify_matrix" in includeset:
-        create_matrix_environment(args.repo, ["main", "beta", "release"])
+        if args.print:
+            print_github_environment(args.repo, "notify_matrix")
+        else:
+            create_matrix_environment(args.repo, ["main", "beta", "release"])
 
 
 if __name__ == "__main__":
