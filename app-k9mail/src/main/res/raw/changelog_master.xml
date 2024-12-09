@@ -5,7 +5,16 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="8.1" versioncode="39012" date="2024-11-06">
+    <release version="8.2" versioncode="39018" date="2024-12-09">
+        <change>You can now support K-9 Mail development with financial contributions.</change>
+        <change>Account initials now use the display name</change>
+        <change>Account icons remain in the same position when selected</change>
+        <change>Help text linking to support page added for Gmail login issues</change>
+        <change>Unified inbox enabled only when multiple accounts are configured</change>
+        <change>Push service now starts reliably when expected</change>
+        <change>Correct default delete message action for QR-imported accounts.</change>
+        <change>Folder drawer updates properly on account configuration changes</change>
+    </release>    <release version="8.1" versioncode="39012" date="2024-11-06">
         <change>We've fixed one of our top crashes to give you a more stable experience</change>
     </release>    <release version="8.0b5" versioncode="39010" date="2024-10-28">
         <change>Unread message colors are updated for better visibility</change>

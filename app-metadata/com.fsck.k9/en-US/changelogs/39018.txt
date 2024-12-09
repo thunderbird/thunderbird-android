@@ -1,0 +1,8 @@
+- You can now support K-9 Mail development with financial contributions.
+- Account initials now use the display name
+- Account icons remain in the same position when selected
+- Help text linking to support page added for Gmail login issues
+- Unified inbox enabled only when multiple accounts are configured
+- Push service now starts reliably when expected
+- Correct default delete message action for QR-imported accounts.
+- Folder drawer updates properly on account configuration changes
