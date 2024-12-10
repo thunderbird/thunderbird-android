@@ -11,7 +11,7 @@ Failing cases: starring/unstarring messages moved anywhere offline, but the acti
 Task 2:
 No working cases
 Failing cases: any "ghost folders" existing in the app but NOT on the IMAP server will allow a user to move a message into the folder but not out of the folder (both online and offline)
-Test cases:
+Test cases (for move, copy, archive, spam, move to drafts, move to outbox, move to arbitrary folder):
 
 -- ONLINE --
 - Move/copy message into a ghost folder from List View
