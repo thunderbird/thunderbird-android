@@ -67,7 +67,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private RecipientAdapter adapter;
     @Nullable
     private String cryptoProvider;
-    private boolean showAdvancedInfo;
     private boolean showCryptoEnabled;
     @Nullable
     private LoaderManager loaderManager;
@@ -164,12 +163,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         boolean isAvailable = recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED ||
                 recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED;
-        if (!showAdvancedInfo) {
-            holder.showSimpleCryptoState(isAvailable, showCryptoEnabled);
-        } else {
-            boolean isVerified = recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED;
-            holder.showAdvancedCryptoState(isAvailable, isVerified);
-        }
+
+        holder.showCryptoState(isAvailable, showCryptoEnabled);
     }
 
     @Override
@@ -276,11 +271,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         loaderManager.restartLoader(LOADER_ID_FILTERING, args, this);
     }
 
-    public void setCryptoProvider(@Nullable String cryptoProvider, boolean showAdvancedInfo) {
+    public void setCryptoProvider(@Nullable String cryptoProvider) {
         this.cryptoProvider = cryptoProvider;
-        this.showAdvancedInfo = showAdvancedInfo;
-        adapter.setShowAdvancedInfo(showAdvancedInfo);
-        alternatesAdapter.setShowAdvancedInfo(showAdvancedInfo);
     }
 
     public void setShowCryptoEnabled(boolean showCryptoEnabled) {
@@ -595,54 +587,30 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private static class RecipientTokenViewHolder {
         final MaterialTextView vName;
         final CircleImageView vContactPhoto;
-        final View cryptoStatusRed;
-        final View cryptoStatusOrange;
-        final View cryptoStatusGreen;
-        final View cryptoStatusSimple;
-        final View cryptoStatusSimpleEnabled;
-        final View cryptoStatusSimpleError;
+        final View cryptoStatus;
+        final View cryptoStatusEnabled;
+        final View cryptoStatusError;
 
 
         RecipientTokenViewHolder(View view) {
             vName = view.findViewById(android.R.id.text1);
             vContactPhoto = view.findViewById(R.id.contact_photo);
-            cryptoStatusRed = view.findViewById(R.id.contact_crypto_status_red);
-            cryptoStatusOrange = view.findViewById(R.id.contact_crypto_status_orange);
-            cryptoStatusGreen = view.findViewById(R.id.contact_crypto_status_green);
 
-            cryptoStatusSimple = view.findViewById(R.id.contact_crypto_status_icon_simple);
-            cryptoStatusSimpleEnabled = view.findViewById(R.id.contact_crypto_status_icon_simple_enabled);
-            cryptoStatusSimpleError = view.findViewById(R.id.contact_crypto_status_icon_simple_error);
+            cryptoStatus = view.findViewById(R.id.contact_crypto_status_icon);
+            cryptoStatusEnabled = view.findViewById(R.id.contact_crypto_status_icon_enabled);
+            cryptoStatusError = view.findViewById(R.id.contact_crypto_status_icon_error);
         }
 
-        void showSimpleCryptoState(boolean isAvailable, boolean isShowEnabled) {
-            cryptoStatusRed.setVisibility(View.GONE);
-            cryptoStatusOrange.setVisibility(View.GONE);
-            cryptoStatusGreen.setVisibility(View.GONE);
-
-            cryptoStatusSimple.setVisibility(!isShowEnabled && isAvailable ? View.VISIBLE : View.GONE);
-            cryptoStatusSimpleEnabled.setVisibility(isShowEnabled && isAvailable ? View.VISIBLE : View.GONE);
-            cryptoStatusSimpleError.setVisibility(isShowEnabled && !isAvailable ? View.VISIBLE : View.GONE);
-        }
-
-        void showAdvancedCryptoState(boolean isAvailable, boolean isVerified) {
-            cryptoStatusRed.setVisibility(!isAvailable ? View.VISIBLE : View.GONE);
-            cryptoStatusOrange.setVisibility(isAvailable && !isVerified ? View.VISIBLE : View.GONE);
-            cryptoStatusGreen.setVisibility(isAvailable && isVerified ? View.VISIBLE : View.GONE);
-
-            cryptoStatusSimple.setVisibility(View.GONE);
-            cryptoStatusSimpleEnabled.setVisibility(View.GONE);
-            cryptoStatusSimpleError.setVisibility(View.GONE);
+        void showCryptoState(boolean isAvailable, boolean isShowEnabled) {
+            cryptoStatus.setVisibility(!isShowEnabled && isAvailable ? View.VISIBLE : View.GONE);
+            cryptoStatusEnabled.setVisibility(isShowEnabled && isAvailable ? View.VISIBLE : View.GONE);
+            cryptoStatusError.setVisibility(isShowEnabled && !isAvailable ? View.VISIBLE : View.GONE);
         }
 
         void hideCryptoState() {
-            cryptoStatusRed.setVisibility(View.GONE);
-            cryptoStatusOrange.setVisibility(View.GONE);
-            cryptoStatusGreen.setVisibility(View.GONE);
-
-            cryptoStatusSimple.setVisibility(View.GONE);
-            cryptoStatusSimpleEnabled.setVisibility(View.GONE);
-            cryptoStatusSimpleError.setVisibility(View.GONE);
+            cryptoStatus.setVisibility(View.GONE);
+            cryptoStatusEnabled.setVisibility(View.GONE);
+            cryptoStatusError.setVisibility(View.GONE);
         }
     }
 

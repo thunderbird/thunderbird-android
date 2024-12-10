@@ -864,7 +864,7 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="clipboard_label_name_and_email_address">Vardas ir el. pašto adresas</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="message_details_loading_error">Bandant įkelti laiško savybes, įvyko klaida.</string>
+    <string name="message_details_loading_error">Bandant įkelti laiško savybes, įvyko klaida.</string>
     <string name="general_settings_post_remove_action_return_to_list">Grįžti į laiškų sąrašą</string>
     <string name="general_settings_post_remove_action_show_previous_message">Rodyti ankstesnį laišką</string>
     <string name="general_settings_ui_density_relaxed">Mažesnis</string>
@@ -891,6 +891,6 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="changelog_snackbar_button_text">Peržiūrėti</string>
     <string name="about_app_authors_thunderbird">„Thunderbird Mobile“ komanda</string>
     <string name="settings_ui_telemetry_description">Bendrina su „Mozilla“ šios programos veikimo, naudojimo, aparatinės įrangos ir tinkinimo duomenis, kad padėtų mums tobulinti „Thunderbird“</string>
-    <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „<xliff:g id="app_name">%s</xliff:g>“.</string>
+    <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%1$s</xliff:g>\" bus pašalinta iš „<xliff:g id="app_name">%2$s</xliff:g>“.</string>
     <string name="about_title">Apie „<xliff:g id="app_name">%s</xliff:g>“</string>
 </resources>

@@ -469,7 +469,7 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="spam_action">Spam</string>
+    <string name="spam_action">Spam</string>
     <string name="account_settings_vibrate_pattern_default">Standard</string>
     <string name="swipe_action_spam">Spam</string>
     <string name="choose_folder_move_title">Flytt til…</string>
@@ -559,7 +559,7 @@
     <string name="debug_export_logs_success">Vellykka eksport. Loggar kan innehalde sensitiv informasjon. Ver forsiktig med kven du sender dei til.</string>
     <string name="message_view_no_viewer">Finn ikkje framvisar for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="general_settings_post_remove_action_show_previous_message">Vis førre melding</string>
-    <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%s</xliff:g>\" vil bli fjerna frå <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Kontoen \"<xliff:g id="account">%1$s</xliff:g>\" vil bli fjerna frå <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="global_settings_messageview_fixedwidth_summary">Bruk skifttype med fast breidd under visning av rein tekst</string>
     <string name="message_view_sender_label">via %1$s</string>
     <string name="debug_export_logs_failure">Eksport feila.</string>

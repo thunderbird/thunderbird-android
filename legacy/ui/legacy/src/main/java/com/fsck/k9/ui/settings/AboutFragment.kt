@@ -34,7 +34,7 @@ class AboutFragment : Fragment() {
         titleTextView.text = getString(R.string.about_title, appNameProvider.appName)
 
         val versionTextView = view.findViewById<MaterialTextView>(R.id.version)
-        versionTextView.text = getVersionNumber()
+        versionTextView.text = getVersionNumber() ?: "?"
 
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
@@ -78,14 +78,14 @@ class AboutFragment : Fragment() {
         findNavController().navigate(R.id.action_aboutScreen_to_changelogScreen)
     }
 
-    private fun getVersionNumber(): String {
+    private fun getVersionNumber(): String? {
         return try {
             val context = requireContext()
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             packageInfo.versionName
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.e(e, "Error getting PackageInfo")
-            "?"
+            null
         }
     }
 

@@ -16,7 +16,7 @@ Thunderbird for Android can be downloaded from a couple of sources:
 - Thunderbird on [Google Play](https://play.google.com/store/apps/details?id=net.thunderbird.android&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dlink) or [F-Droid](https://f-droid.org/packages/net.thunderbird.android)
 - Thunderbird Beta on [Google Play](https://play.google.com/store/apps/details?id=net.thunderbird.android.beta&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dlink) or [F-Droid](https://f-droid.org/packages/net.thunderbird.android.beta)
 - [Github Releases](https://github.com/thunderbird/thunderbird-android/releases)
-- FFUpdater coming soon
+- [FFUpdater](https://f-droid.org/packages/de.marmaro.krt.ffupdater/) allows installing the latest versions from ftp.mozilla.org
 
 By using Thunderbird for Android Beta, you have early access to current development and are able to try new features earlier.
 
@@ -26,7 +26,7 @@ Check out the [Release Notes](https://github.com/thunderbird/thunderbird-android
 
 If the app is not behaving like it should, or you are not sure if you've encountered a bug:
 
-- Check out our [knowledge base and frequently asked questions](https://support.mozilla.org/products/thunderbird-android)
+- Check out our [knowledge base](https://support.mozilla.org/products/thunderbird-android) and [frequently asked questions](https://support.mozilla.org/kb/thunderbird-android-8-faq)
 - Ask a question on our [support forum](https://support.mozilla.org/en-US/questions/new/thunderbird-android)
 
 If you are certain you've identified a bug in Thunderbird for Android and would like to help fix it:
@@ -52,6 +52,7 @@ We welcome contributions from everyone.
 - Translations: Do you speak a language aside from English? [Translating is easy](https://hosted.weblate.org/projects/tb-android/) and just takes a few minutes for your first success.
 - We have [a number of other contribution opportunities](https://blog.thunderbird.net/2024/09/contribute-to-thunderbird-for-android/) available.
 - Thunderbird is supported solely by financial contributions from users like you.[Make a financial contribution today](https://www.thunderbird.net/donate/mobile/?form=tfa)!
+- Make sure to check out the [Mozilla Community Participation Guidelines](https://www.mozilla.org/about/governance/policies/participation/).
 
 ### Architecture Decision Records (ADR)
 
@@ -72,12 +73,32 @@ our [blog post](https://blog.thunderbird.net/2023/07/k-9-mail-collaborates-with-
 
 You can report a security vulnerability [through the respective issues form](https://github.com/thunderbird/thunderbird-android/security/advisories/new).
 
+These are the SHA-256 fingerprints for our signing certificates:
+
+- Thunderbird: `B6:52:47:79:B3:DB:BC:5A:C1:7A:5A:C2:71:DD:B2:9D:CF:BF:72:35:78:C2:38:E0:3C:3C:21:78:11:35:6D:D1`
+- Thunderbird Beta: `05:6B:FA:FB:45:02:49:50:2F:D9:22:62:28:70:4C:25:29:E1:B8:22:DA:06:76:0D:47:A8:5C:95:57:74:1F:BD`
+- K-9 Mail: `55:C8:A5:23:B9:73:35:F5:BF:60:DF:E8:A9:F3:E1:DD:E7:44:51:6D:93:57:E8:0A:92:5B:7B:22:E4:F5:55:24`
+
+You can use the following command to retrieve and [verify](https://developer.android.com/tools/apksigner#usage-verify)
+the certificate before installation:
+
+```bash
+apksigner verify -v --print-certs <path-to-apk>
+```
+
 ## K-9 Mail
 
-Thunderbird for Android is continuing the precious work the K-9 Dog Walkers have started. If you'd like to try K-9 Mail as well, you can find it at:
+In June 2022, [K-9 Mail joined the Thunderbird family](https://k9mail.app/2022/06/13/K-9-Mail-and-Thunderbird.html)
+as the foundation for Thunderbird on Android. Since then, we’ve been updating both apps to give
+users the same solid experience, so it’s normal to notice that K-9 Mail and Thunderbird look and
+feel nearly identical. They’re built on the same code, and that’s intentional. You'll notice some
+features are selectively enabled for Thunderbird as opposed to K-9 Mail, usually when they are
+simply a better fit for Thunderbird (like the import from K-9 functionality).
+
+If you prefer the robot dog and would like to keep K-9 Mail around, you can find it here:
 
 - [K-9 Mail on Google Play](https://play.google.com/store/apps/details?id=com.fsck.k9&utm_source=thunderbird-android-github&utm_campaign=download-section)
-- [K-9 Mail on F-Droid](https://f-droid.org/repository/browse/?fdid=com.fsck.k9)
+- [K-9 Mail on F-Droid](https://f-droid.org/packages/com.fsck.k9/)
 
 ## Forking
 

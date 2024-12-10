@@ -29,9 +29,9 @@ fun SpotlessExtension.configureKotlinGradleCheck(
             .editorConfigOverride(
                 mapOf(
                     "ktlint_standard_function-signature" to "disabled",
-                )
+                ),
             )
-        target(targets)
+        target(*targets.toTypedArray())
         targetExclude("**/build/")
     }
 }
@@ -45,9 +45,9 @@ fun SpotlessExtension.configureMarkdownCheck(
         prettier("3.3.3").config(
             mapOf(
                 "parser" to "markdown",
-            )
+            ),
         )
-        target(targets)
+        target(*targets.toTypedArray())
         targetExclude(
             "**/build/",
         )

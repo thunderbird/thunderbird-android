@@ -6,17 +6,20 @@ import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.containsExactly
-import assertk.assertions.extracting
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
-import okhttp3.HttpUrl.Companion.toHttpUrl
 
 class MxLookupAutoconfigDiscoveryTest {
     private val mxResolver = MockMxResolver()
     private val baseDomainExtractor = OkHttpBaseDomainExtractor()
-    private val urlProvider = MockAutoconfigUrlProvider()
+    private val urlProvider = createPostMxLookupAutoconfigUrlProvider(
+        AutoconfigUrlConfig(
+            httpsOnly = true,
+            includeEmailAddress = true,
+        ),
+    )
     private val autoconfigFetcher = MockAutoconfigFetcher()
     private val discovery = MxLookupAutoconfigDiscovery(
         mxResolver = SuspendableMxResolver(mxResolver),
@@ -27,11 +30,12 @@ class MxLookupAutoconfigDiscoveryTest {
     )
 
     @Test
-    fun `AutoconfigUrlProvider should be called with MX base domain`() = runTest {
+    fun `result from email provider should be used if available`() = runTest {
         val emailAddress = "user@company.example".toUserEmailAddress()
         mxResolver.addResult("mx.emailprovider.example".toDomain())
-        urlProvider.addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
-        autoconfigFetcher.addResult(RESULT_ONE)
+        autoconfigFetcher.apply {
+            addResult(RESULT_ONE)
+        }
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
 
@@ -41,22 +45,43 @@ class MxLookupAutoconfigDiscoveryTest {
 
         val discoveryResult = autoDiscoveryRunnables.first().run()
 
-        assertThat(mxResolver.callArguments).containsExactly("company.example".toDomain())
-        assertThat(urlProvider.callArguments).extracting { it.first }
-            .containsExactly("emailprovider.example".toDomain())
-        assertThat(autoconfigFetcher.callCount).isEqualTo(1)
+        assertThat(autoconfigFetcher.urls).containsExactly(
+            "https://autoconfig.emailprovider.example/mail/config-v1.1.xml?emailaddress=user%40company.example",
+        )
         assertThat(discoveryResult).isEqualTo(RESULT_ONE)
     }
 
     @Test
-    fun `AutoconfigUrlProvider should be called with MX base domain and subdomain`() = runTest {
+    fun `result from ISPDB should be used if config is not available at email provider`() = runTest {
+        val emailAddress = "user@company.example".toUserEmailAddress()
+        mxResolver.addResult("mx.emailprovider.example".toDomain())
+        autoconfigFetcher.apply {
+            addResult(NoUsableSettingsFound)
+            addResult(RESULT_ONE)
+        }
+
+        val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
+
+        assertThat(autoDiscoveryRunnables).hasSize(1)
+        assertThat(mxResolver.callCount).isEqualTo(0)
+        assertThat(autoconfigFetcher.callCount).isEqualTo(0)
+
+        val discoveryResult = autoDiscoveryRunnables.first().run()
+
+        assertThat(autoconfigFetcher.urls).containsExactly(
+            "https://autoconfig.emailprovider.example/mail/config-v1.1.xml?emailaddress=user%40company.example",
+            "https://autoconfig.thunderbird.net/v1.1/emailprovider.example",
+        )
+        assertThat(discoveryResult).isEqualTo(RESULT_ONE)
+    }
+
+    @Test
+    fun `base domain and subdomain should be extracted from MX host if possible`() = runTest {
         val emailAddress = "user@company.example".toUserEmailAddress()
         mxResolver.addResult("mx.something.emailprovider.example".toDomain())
-        urlProvider.apply {
-            addResult(listOf("https://ispdb.invalid/something.emailprovider.example".toHttpUrl()))
-            addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
-        }
         autoconfigFetcher.apply {
+            addResult(NoUsableSettingsFound)
+            addResult(NoUsableSettingsFound)
             addResult(NoUsableSettingsFound)
             addResult(NoUsableSettingsFound)
         }
@@ -64,11 +89,13 @@ class MxLookupAutoconfigDiscoveryTest {
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
         val discoveryResult = autoDiscoveryRunnables.first().run()
 
-        assertThat(urlProvider.callArguments).extracting { it.first }.containsExactly(
-            "something.emailprovider.example".toDomain(),
-            "emailprovider.example".toDomain(),
+        assertThat(autoconfigFetcher.urls).containsExactly(
+            "https://autoconfig.something.emailprovider.example/mail/config-v1.1.xml" +
+                "?emailaddress=user%40company.example",
+            "https://autoconfig.thunderbird.net/v1.1/something.emailprovider.example",
+            "https://autoconfig.emailprovider.example/mail/config-v1.1.xml?emailaddress=user%40company.example",
+            "https://autoconfig.thunderbird.net/v1.1/emailprovider.example",
         )
-        assertThat(autoconfigFetcher.callCount).isEqualTo(2)
         assertThat(discoveryResult).isEqualTo(NoUsableSettingsFound)
     }
 
@@ -81,7 +108,6 @@ class MxLookupAutoconfigDiscoveryTest {
         val discoveryResult = autoDiscoveryRunnables.first().run()
 
         assertThat(mxResolver.callCount).isEqualTo(1)
-        assertThat(urlProvider.callCount).isEqualTo(0)
         assertThat(autoconfigFetcher.callCount).isEqualTo(0)
         assertThat(discoveryResult).isEqualTo(NoUsableSettingsFound)
     }
@@ -95,7 +121,6 @@ class MxLookupAutoconfigDiscoveryTest {
         val discoveryResult = autoDiscoveryRunnables.first().run()
 
         assertThat(mxResolver.callCount).isEqualTo(1)
-        assertThat(urlProvider.callCount).isEqualTo(0)
         assertThat(autoconfigFetcher.callCount).isEqualTo(0)
         assertThat(discoveryResult).isEqualTo(NoUsableSettingsFound)
     }
@@ -104,7 +129,6 @@ class MxLookupAutoconfigDiscoveryTest {
     fun `isTrusted should be false when MxLookupResult_isTrusted is false`() = runTest {
         val emailAddress = "user@company.example".toUserEmailAddress()
         mxResolver.addResult("mx.emailprovider.example".toDomain(), isTrusted = false)
-        urlProvider.addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
         autoconfigFetcher.addResult(RESULT_ONE.copy(isTrusted = true))
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)
@@ -117,7 +141,6 @@ class MxLookupAutoconfigDiscoveryTest {
     fun `isTrusted should be false when AutoDiscoveryResult_isTrusted from AutoconfigFetcher is false`() = runTest {
         val emailAddress = "user@company.example".toUserEmailAddress()
         mxResolver.addResult("mx.emailprovider.example".toDomain(), isTrusted = true)
-        urlProvider.addResult(listOf("https://ispdb.invalid/emailprovider.example".toHttpUrl()))
         autoconfigFetcher.addResult(RESULT_ONE.copy(isTrusted = false))
 
         val autoDiscoveryRunnables = discovery.initDiscovery(emailAddress)

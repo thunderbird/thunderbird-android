@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Përkrahni Thunderbird-in</string>
     <string name="funding_googleplay_contribution_title">Përkrahni Thunderbird-in</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Mujor</string>
@@ -13,7 +13,7 @@
     <string name="funding_googleplay_contribution_header_description">Thunderbird-i financohet tërësisht nga kontribute prej përdoruesish si ju. S’shfaqim kurrë reklama, apo të shesim të dhënat tuaja. Nëse ju pëlqen Thunderbird-i, ju lutemi, ndihmoni të përkrahet. Këtë s’e bëjmë dot pa ju!</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Riprovoni</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Përkrahja juaj është frymëzuese! Kontributi juaj na ndihmon të shtyhemi më tej dhe të arrijmë synimet tona.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Për më tepër rrugë se si të përkrahet Thunderbird-i, vizitoni www.thunderbird.net</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Për më tepër rrugë se si të përkrahet Thunderbird-i, vizitoni <xliff:g id="link_text">%s</xliff:g>.</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Aktualisht s’mund të bëhet pagesa</string>
     <string name="funding_googleplay_contribution_error_show_more">Shfaq më shumë hollësi</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Hidhe tej gabimin</string>

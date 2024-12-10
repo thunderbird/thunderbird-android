@@ -36,7 +36,7 @@ class QuoteDateFormatterTest {
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
 
-        assertThat(formattedDate).isEqualTo("September 19, 2020 at 8:00:00 PM UTC")
+        assertThat(formattedDate.normalizeDate()).isEqualTo("September 19, 2020, 8:00:00 PM UTC")
     }
 
     @Test
@@ -46,7 +46,7 @@ class QuoteDateFormatterTest {
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
 
-        assertThat(formattedDate).isEqualTo("19. September 2020 um 20:00:00 UTC")
+        assertThat(formattedDate.normalizeDate()).isEqualTo("19. September 2020, 20:00:00 UTC")
     }
 
     @Test
@@ -56,7 +56,7 @@ class QuoteDateFormatterTest {
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
 
-        assertThat(formattedDate).isEqualTo("September 19, 2020 at 10:00:00 PM GMT+02:00")
+        assertThat(formattedDate.normalizeDate()).isEqualTo("September 19, 2020, 10:00:00 PM GMT+02:00")
     }
 
     @Test
@@ -66,8 +66,17 @@ class QuoteDateFormatterTest {
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
 
-        assertThat(formattedDate).isEqualTo("19. September 2020 um 22:00:00 GMT+02:00")
+        assertThat(formattedDate.normalizeDate()).isEqualTo("19. September 2020, 22:00:00 GMT+02:00")
     }
 
     private fun String.toDate() = Date(ZonedDateTime.parse(this).toEpochSecond() * 1000L)
+
+    // QuoteDateFormatter uses java.text.DateFormat internally. Depending on the JDK/JRE version the output is
+    // different. We normalize the output here so the tests don't depend on a specific JDK version.
+    private fun String.normalizeDate(): String {
+        return this
+            .replace(" at", ",")
+            .replace(" um", ",")
+            .replace("\u202F", " ")
+    }
 }

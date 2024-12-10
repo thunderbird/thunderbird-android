@@ -542,7 +542,7 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="about_app_authors_k9">מוליכי הכלבים של K-9</string>
+    <string name="about_app_authors_k9">מוליכי הכלבים של K-9</string>
     <string name="about_website_title">אתר אינטרנט</string>
     <string name="get_help_title">קבל עזרה</string>
     <string name="user_forum_title">פורום משתמשים</string>
@@ -893,7 +893,7 @@
     <string name="push_notification_grant_alarm_permission">לחצו למתן הרשאות.</string>
     <string name="about_app_authors_thunderbird">קבוצת המובייל של Thunderbird</string>
     <string name="dialog_openkeychain_info_text">האפליקציה OpenKeychain נחוצה על מנת לאפשר תמיכה בהצפנת קצה אל קצה.</string>
-    <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" יוסר מ <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%1$s</xliff:g>\" יוסר מ <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">כאשר משתמשים בדחיפה, <xliff:g id="app_name">%1$s</xliff:g> שומר על קשר עם שרת הדואר. אנדרואיד צורך הצגת התראה מתמשכת בזמן שהאפליקציה פועלת ברקע. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_title">אודות <xliff:g id="app_name">%s</xliff:g></string>
     <string name="save_attachment_action">שמור קובץ מצורף</string>

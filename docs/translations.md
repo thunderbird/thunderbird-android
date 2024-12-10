@@ -1,3 +1,53 @@
+# Managing strings
+
+We use Android's [resource system](https://developer.android.com/guide/topics/resources/localization) to localize
+user-visible strings in our apps.
+
+Our source language is English (American English to be more precise, but simply "English" (en) on Weblate).
+
+Translations of source strings happen exclusively in our
+[Weblate project](https://hosted.weblate.org/projects/tb-android/). This means the source language is only modified by
+changes to this repository, i.e. via pull requests. Translations are only updated on Weblate and then merged into this
+repository by the Thunderbird team. This is to avoid overlapping changes in both repositories that will lead to merge
+conflicts.
+
+## Adding a string
+
+Add a new string to the appropriate `res/values/strings.xml` file.
+
+Please don't add any translations for this new string to this repository. If you can also provide a translation for the
+new string, wait until the change is merged into this repository and propagated to Weblate. Then translate the new
+string on Weblate.
+
+## Changing a string
+
+Changing a string should be avoided. Weblate doesn't automatically invalidate translations when a source string is
+changed. This can be worked around by removing the old string and adding a new one. Make sure to only modify the source
+language. It's fine for the translations to then contain unused strings. The next merge with Weblate will remove those.
+
+## Removing a string
+
+Remove the source string from `res/values/strings.xml`. Don't modify translations under `res/values-<lang>/strings.xml`.
+The next merge from Weblate will automatically get rid of the translated strings.
+
+## Changing translations in this repository
+
+This should be avoided whenever possible, as it can create merge conflicts between Weblate and this repository. If you
+need to change individual strings, please translate them on Weblate instead. If a mechanical change is necessary across
+all languages, this should be discussed with the core team who will use this procedure:
+
+1. Lock all components on Weblate by clicking the "Lock" button in the
+   [repository maintenance](https://hosted.weblate.org/projects/tb-android/#repository) screen.
+2. Commit all outstanding changes by clicking the "Commit" button in the same screen.
+3. Trigger creating a pull request containing translation updates from Weblate by clicking the "Push" button in the
+   repository maintenance screen.
+4. Merge that pull request containing updates from Weblate into this repository.
+5. Create a pull request to change the translated files, following the established procedures to get it merged. Make
+   sure you've rebased against the latest changes.
+6. Wait for the changes in this repository to be automatically propagated to and processed by Weblate.
+7. Unlock components on Weblate by clicking the "Unlock" button in the
+   [repository maintenance](https://hosted.weblate.org/projects/tb-android/#repository) screen.
+
 # Managing translations
 
 Right now we're using the `resourceConfigurations` mechanism provided by the Android Gradle Plugin to limit which

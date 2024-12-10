@@ -3,3 +3,4 @@
         <change>{{ note }}</change>
 {%- endfor %}
     </release>
+
