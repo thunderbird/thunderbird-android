@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
@@ -45,6 +46,7 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
+import com.fsck.k9.network.ConnectivityManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
@@ -70,6 +72,8 @@ class MessageViewFragment :
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
 
+    private val connectivityManager: ConnectivityManager by inject()
+    
     private lateinit var messageTopView: MessageTopView
 
     private var message: LocalMessage? = null
@@ -435,7 +439,47 @@ class MessageViewFragment :
         invalidateMenu()
     }
 
-    private fun onRefile(destinationFolderId: Long?) {
+        private interface ConnectivityDialogCallback {
+        fun onDialogResult(result: Int)
+    }
+
+    private fun showConnectivityDialog(callback: ConnectivityDialogCallback) { // added
+        val sharedPreferences = context?.getSharedPreferences("app_preferences", Context.MODE_PRIVATE);
+        val dontShowAgain = sharedPreferences?.getBoolean("dont_show_connectivity_warning", false) ?: false;
+        //sharedPreferences?.edit()?.putBoolean("dont_show_connectivity_warning", false)?.apply()
+
+        //callback.onDialogResult(0);
+        if (dontShowAgain) {
+            // Proceed directly if "Don't show again" is checked
+            callback.onDialogResult(1);
+            return;
+        }
+        //callback.onDialogResult(0);
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("No Internet Connection")
+            .setMessage("ThunderBird is not connected to the Internet. Any changes you make now may not be synced properly.")
+            .setPositiveButton("Proceed") { _, _ ->
+                callback.onDialogResult(1);
+
+                //Log.d("onMove", "User chose to proceed")
+            }
+            .setNegativeButton("Cancel") { _, _ ->
+                callback.onDialogResult(-1);
+
+                //Log.d("onMove", "User chose to cancel")
+            }
+            .setNeutralButton("Don't show again") { _, _ ->
+                // Save the preference to not show the dialog again
+                callback.onDialogResult(1);
+                sharedPreferences?.edit()?.putBoolean("dont_show_connectivity_warning", true)?.apply()
+                //Log.d("onMove", "User chose 'Don't show again'")
+            }
+            .show()
+
+        //return;
+    }
+
+    private fun proceedWithRefile(destinationFolderId: Long?) {
         if (destinationFolderId == null || !messagingController.isMoveCapable(account)) {
             return
         }
@@ -450,6 +494,26 @@ class MessageViewFragment :
             showDialog(R.id.dialog_confirm_spam)
         } else {
             refileMessage(destinationFolderId)
+        }
+    }
+
+    private fun onRefile(destinationFolderId: Long?) {
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            proceedWithRefile(destinationFolderId);
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            proceedWithRefile(destinationFolderId);
+            return;
         }
     }
 
@@ -502,7 +566,7 @@ class MessageViewFragment :
         fragmentListener.onEditAsNewMessage(message.makeMessageReference())
     }
 
-    fun onMove() {
+    private fun proceedWithMove() {
         check(messagingController.isMoveCapable(account))
         checkNotNull(message)
 
@@ -514,7 +578,27 @@ class MessageViewFragment :
         startRefileActivity(FolderOperation.MOVE, ACTIVITY_CHOOSE_FOLDER_MOVE)
     }
 
-    fun onCopy() {
+    fun onMove() {
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            proceedWithMove();
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            proceedWithMove();
+            return;
+        }
+    }
+
+    private fun proceedWithCopy() {
         check(messagingController.isCopyCapable(account))
         checkNotNull(message)
 
@@ -526,7 +610,27 @@ class MessageViewFragment :
         startRefileActivity(FolderOperation.COPY, ACTIVITY_CHOOSE_FOLDER_COPY)
     }
 
-    private fun onMoveToDrafts() {
+    fun onCopy() {
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            proceedWithCopy();
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            proceedWithCopy();
+            return;
+        }
+    }
+
+    private fun proceedWithDraft() {
         fragmentListener.performNavigationAfterMessageRemoval()
 
         val account = account
@@ -535,6 +639,27 @@ class MessageViewFragment :
         messagingController.moveToDraftsFolder(account, folderId, messages)
     }
 
+    private fun onMoveToDrafts() {
+
+        if (!preMove()) {
+            showConnectivityDialog(
+                object : ConnectivityDialogCallback {
+                    override fun onDialogResult(result: Int) {
+                        if (result == -1) {
+                            return
+                        } else if (result == 1) {
+                            proceedWithDraft();
+                            return;
+                        }
+                    }
+                },
+            )
+        } else {
+            proceedWithDraft();
+            return;
+        }
+    }
+    
     fun onArchive() {
         if (!account.hasArchiveFolder()) return
 
