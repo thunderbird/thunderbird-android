@@ -6,6 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.mail.folder.api.FolderType
@@ -35,11 +39,13 @@ class ChooseFolderActivity : K9Activity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
-    private lateinit var account: Account
+    private lateinit var account: Account // initial account
     private lateinit var action: Action
     private var currentFolderId: Long? = null
     private var scrollToFolderId: Long? = null
     private var messageReference: String? = null
+    private var accountChooserEnabled: Boolean = false
+    private var currentAccount: Account? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +63,7 @@ class ChooseFolderActivity : K9Activity() {
         }
 
         initializeActionBar()
+        if (accountChooserEnabled) initializeAccountSpinner()
         initializeFolderList()
 
         viewModel.getFolders().observe(this) { folders ->
@@ -75,8 +82,17 @@ class ChooseFolderActivity : K9Activity() {
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: return false
         account = preferences.getAccount(accountUuid) ?: return false
 
+        val currentAccountUuid = if (savedInstanceState != null) {
+            intent.getStringExtra(STATE_SCROLL_TO_ACCOUNT_ID)
+        }
+        else {
+            accountUuid
+        } ?: return false
+        currentAccount = preferences.getAccount(currentAccountUuid) ?: return false
+
         messageReference = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
         currentFolderId = intent.getLongExtraOrNull(EXTRA_CURRENT_FOLDER_ID)
+        accountChooserEnabled = intent.getBooleanExtra(EXTRA_ACCOUNT_CHOOSER_ENABLED, false)
 
         scrollToFolderId = if (savedInstanceState != null) {
             savedInstanceState.getLongOrNull(STATE_SCROLL_TO_FOLDER_ID)
@@ -85,6 +101,43 @@ class ChooseFolderActivity : K9Activity() {
         }
 
         return true
+    }
+
+    private fun initializeAccountSpinner() {
+        val spinner: Spinner = findViewById(R.id.accountSpinner)
+        val accounts = preferences.getAccounts()
+        val options = accounts.map { it.name + " (" + it.email + ")"}
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            options
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+
+        // Set the initial item
+        val initialPosition = accounts.indexOf(currentAccount)
+        if (initialPosition != -1) {
+            spinner.setSelection(initialPosition)
+        }
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedAccount = accounts[position]
+                val accountChanged = selectedAccount != currentAccount
+                // TODO combine with previous statement
+                currentAccount = selectedAccount
+                val showHiddenFolders = viewModel.isShowHiddenFolders
+                viewModel.setDisplayMode(currentAccount!!, showHiddenFolders)
+                if (accountChanged) {
+                    recyclerView.scrollToPosition(0)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Do nothing
+            }
+        }
     }
 
     private fun initializeActionBar() {
@@ -112,7 +165,7 @@ class ChooseFolderActivity : K9Activity() {
     private fun updateFolderList(displayFolders: List<DisplayFolder>) {
         val folderListItems = displayFolders.asSequence()
             .filterNot { it.folder.type == FolderType.OUTBOX }
-            .filterNot { it.folder.id == currentFolderId }
+            .filterNot { currentAccount==account && it.folder.id == currentFolderId }
             .map { displayFolder ->
                 val databaseId = displayFolder.folder.id
                 val folderIconResource = folderIconProvider.getFolderIcon(displayFolder.folder.type)
@@ -129,6 +182,7 @@ class ChooseFolderActivity : K9Activity() {
 
     private fun scrollToFolder(folders: List<FolderListItem>) {
         if (scrollToFolderId == null) return
+        if (currentAccount!=account) return
 
         val index = folders.indexOfFirst { it.databaseId == scrollToFolderId }
         if (index != -1) {
@@ -141,6 +195,7 @@ class ChooseFolderActivity : K9Activity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         scrollToFolderId?.let { folderId -> outState.putLong(STATE_SCROLL_TO_FOLDER_ID, folderId) }
+        currentAccount?.let { account -> outState.putString(STATE_SCROLL_TO_ACCOUNT_ID, account.uuid) }
         outState.putBoolean(STATE_SHOW_HIDDEN_FOLDERS, viewModel.isShowHiddenFolders)
     }
 
@@ -186,11 +241,11 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun refreshFolderList() {
-        messagingController.refreshFolderList(account)
+        messagingController.refreshFolderList(currentAccount)
     }
 
     private fun setShowHiddenFolders(enabled: Boolean) {
-        viewModel.setDisplayMode(account, enabled)
+        viewModel.setDisplayMode(currentAccount!!, enabled)
     }
 
     private fun returnResult(folderId: Long, displayName: String) {
@@ -198,6 +253,7 @@ class ChooseFolderActivity : K9Activity() {
             putExtra(RESULT_SELECTED_FOLDER_ID, folderId)
             putExtra(RESULT_FOLDER_DISPLAY_NAME, displayName)
             putExtra(RESULT_MESSAGE_REFERENCE, messageReference)
+            putExtra(RESULT_SELECTED_ACCOUNT_ID, currentAccount!!.uuid)
         }
 
         setResult(Activity.RESULT_OK, result)
@@ -236,14 +292,17 @@ class ChooseFolderActivity : K9Activity() {
 
     companion object {
         private const val STATE_SCROLL_TO_FOLDER_ID = "scrollToFolderId"
+        private const val STATE_SCROLL_TO_ACCOUNT_ID = "scrollToAccountId"
         private const val STATE_SHOW_HIDDEN_FOLDERS = "showHiddenFolders"
         private const val EXTRA_ACCOUNT = "accountUuid"
         private const val EXTRA_CURRENT_FOLDER_ID = "currentFolderId"
         private const val EXTRA_SCROLL_TO_FOLDER_ID = "scrollToFolderId"
         private const val EXTRA_MESSAGE_REFERENCE = "messageReference"
+        private const val EXTRA_ACCOUNT_CHOOSER_ENABLED = "accountChooserEnabled"
         const val RESULT_SELECTED_FOLDER_ID = "selectedFolderId"
         const val RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName"
         const val RESULT_MESSAGE_REFERENCE = "messageReference"
+        const val RESULT_SELECTED_ACCOUNT_ID = "selectedAccountId"
 
         @JvmStatic
         fun buildLaunchIntent(
@@ -253,6 +312,7 @@ class ChooseFolderActivity : K9Activity() {
             currentFolderId: Long? = null,
             scrollToFolderId: Long? = null,
             messageReference: MessageReference? = null,
+            accountChooserEnabled: Boolean = false,
         ): Intent {
             return Intent(context, ChooseFolderActivity::class.java).apply {
                 this.action = action.toString()
@@ -260,6 +320,7 @@ class ChooseFolderActivity : K9Activity() {
                 currentFolderId?.let { putExtra(EXTRA_CURRENT_FOLDER_ID, currentFolderId) }
                 scrollToFolderId?.let { putExtra(EXTRA_SCROLL_TO_FOLDER_ID, scrollToFolderId) }
                 messageReference?.let { putExtra(EXTRA_MESSAGE_REFERENCE, it.toIdentityString()) }
+                putExtra(EXTRA_ACCOUNT_CHOOSER_ENABLED,accountChooserEnabled)
             }
         }
     }
