@@ -67,6 +67,7 @@ android {
                 "pt_PT",
                 "ro",
                 "ru",
+                "sk",
                 "sl",
                 "sq",
                 "sr",
