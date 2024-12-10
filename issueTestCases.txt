@@ -1,0 +1,25 @@
+Task 1:
+Working cases: starring/unstarring messages moved anywhere offline so long as it happens in the LIST VIEW
+Failing cases: starring/unstarring messages moved anywhere offline, but the action is performed in MESSAGE VIEW
+- Move to spam, then star/unstar
+- Move to drafts, then star/unstar
+- Move to outbox, then star/unstar
+- Move to archive, then star/unstar
+- Move to arbitrary folder (e.g. "Important"), then star/unstar
+
+
+Task 2:
+No working cases
+Failing cases: any "ghost folders" existing in the app but NOT on the IMAP server will allow a user to move a message into the folder but not out of the folder (both online and offline)
+Test cases:
+
+-- ONLINE --
+- Move/copy message into a ghost folder from List View
+- Move/copy message into a ghost folder from Message View
+  - In both cases, message list should get refreshed before prompting user for target folder, and the app will not allow the user to complete the operation (folder no longer exists)
+
+-- OFFLINE --
+- Move/copy message into ghost folder from List View
+- Move/copy message into ghost folder from Message View
+  - In each case, pop-up should appear prompting user to cancel the operation, proceed anyways, or to not show the pop-up again and to proceed
+    - If "don't show again" is selected, the pop-up should not appear if a user closes, reopens the app and repeats behavior (i.e. memory between sessions)
