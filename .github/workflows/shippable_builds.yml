@@ -893,7 +893,6 @@ jobs:
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
         uses: google-github-actions/auth@v2
         with:
-          token_format: 'access_token'
           service_account: ${{ steps.ftp_destination.outputs.SERVICE_ACCOUNT }}
           workload_identity_provider: ${{ steps.ftp_destination.outputs.WORKLOAD_IDENTITY_PROVIDER }}
 
