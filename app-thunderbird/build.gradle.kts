@@ -67,6 +67,7 @@ android {
                 "ro",
                 "ru",
                 "sl",
+                "sk",
                 "sq",
                 "sr",
                 "sv",
