@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 10 * * 1'
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   codeql-scan:
 

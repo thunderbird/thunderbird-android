@@ -8,6 +8,9 @@ on:
         description: Dry run
         default: true
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   uplift:
     name: Uplift
