@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="9.0b3" versioncode="39020" date="2024-12-11">
+        <change>Hyperlink added to Thunderbird website on funding page</change>
+        <change>Use autoconfig server after MX lookup for email providers</change>
+    </release>
     <release version="9.0b2" versioncode="39017" date="2024-11-28">
         <change>K-9 Mail Needs Your Support! You can now support development with financial contributions via in-app purchases (Google Play variant) or through our fundraising page (FOSS variant).</change>
         <change>Help text linking to support page added for Gmail login issues</change>

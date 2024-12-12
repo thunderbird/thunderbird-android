@@ -1,0 +1,2 @@
+- Hyperlink added to Thunderbird website on funding page
+- Use autoconfig server after MX lookup for email providers
