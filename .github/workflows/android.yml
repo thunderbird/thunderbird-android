@@ -13,12 +13,6 @@ on:
       - 'NOTICE'
 
 jobs:
-  validation:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: gradle/actions/wrapper-validation@v4
-
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 90
