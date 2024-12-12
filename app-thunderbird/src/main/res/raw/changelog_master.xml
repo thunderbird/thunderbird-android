@@ -5,6 +5,11 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="9.0b3" versioncode="11" date="2024-12-11">
+        <change>Hyperlink added to Thunderbird website on funding page</change>
+        <change>Use autoconfig server after MX lookup for email providers</change>
+        <change>Messages are now always marked as read during archiving</change>
+    </release>
     <release version="9.0b2" versioncode="10" date="2024-11-28">
         <change>Help text linking to support page added for Gmail login issues</change>
         <change>Funding text updated to be more engaging and appealing</change>

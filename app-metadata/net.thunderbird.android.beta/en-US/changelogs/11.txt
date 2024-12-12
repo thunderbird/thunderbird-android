@@ -1,0 +1,4 @@
+Thunderbird for Android version 9.0b3, based on K-9 Mail. Changes include:
+- Hyperlink added to Thunderbird website on funding page
+- Use autoconfig server after MX lookup for email providers
+- Messages are now always marked as read during archiving
