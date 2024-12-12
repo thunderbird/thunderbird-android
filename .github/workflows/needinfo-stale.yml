@@ -14,7 +14,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Close old issues with the needinfo tag
-        uses: dwieeb/needs-reply@v2
+        uses: imhoffd/needs-reply@71e8d5144caa0d4a1e292348bfafa3866d08c855 # v2.0.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-label: "status: needs information"
