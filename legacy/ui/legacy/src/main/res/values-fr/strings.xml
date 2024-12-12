@@ -130,7 +130,7 @@
     <string name="notification_bg_send_ticker">Envoi du courriel : <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_bg_send_title">Envoi du courriel</string>
     <string name="notification_bg_title_separator">:</string>
-    <string name="notification_channel_push_title">Synchroniser (poussé)</string>
+    <string name="notification_channel_push_title">Notifications instantanées (Push)</string>
     <string name="notification_channel_push_description">Affiché lors de l’attente de nouveaux courriels</string>
     <string name="notification_channel_messages_title">Courriels</string>
     <string name="notification_channel_messages_description">Notifications relatives aux courriels</string>
@@ -263,7 +263,7 @@
     <string name="account_setup_incoming_delete_policy_markread_label">Marquer comme lu sur le serveur</string>
     <string name="account_setup_expunge_policy_label">Supprimer aussi les courriels sur le serveur</string>
     <string name="account_setup_expunge_policy_immediately">Immédiatement</string>
-    <string name="account_setup_expunge_policy_on_poll">Lors de la scrutation</string>
+    <string name="account_setup_expunge_policy_on_poll">Lors de la synchronisation</string>
     <string name="account_setup_expunge_policy_manual">Manuellement</string>
     <string name="drafts_folder_label">Dossier des brouillons</string>
     <string name="sent_folder_label">Dossier des envoyés</string>
@@ -360,7 +360,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Enregistrer les brouillons chiffrés</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Les brouillons seront enregistrés chiffrés</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Ne chiffrer les brouillons que si le chiffrement est activé</string>
-    <string name="account_settings_mail_check_frequency_label">Fréquence de scrutation des dossiers</string>
+    <string name="account_settings_mail_check_frequency_label">Fréquence de synchronisation des dossiers</string>
     <string name="account_settings_color_label">Couleur du compte</string>
     <string name="account_settings_color_summary">La note de couleur du compte utilisée dans la liste des dossiers et des comptes</string>
     <string name="account_settings_mail_display_count_label">Taille du dossier local</string>
@@ -515,7 +515,7 @@
     <string name="background_ops_always">Toujours</string>
     <string name="background_ops_auto_sync_only">Quand la synchronisation automatique est activée</string>
     <string name="batch_select_all">Tout sélectionner</string>
-    <string name="account_setup_push_limit_label">Maximum de dossiers à vérifier avec le poussé</string>
+    <string name="account_setup_push_limit_label">Nombre maximal de dossiers à surveiller avec les notifications instantanées (Push)</string>
     <string name="account_setup_push_limit_5">5 dossiers</string>
     <string name="account_setup_push_limit_10">10 dossiers</string>
     <string name="account_setup_push_limit_25">25 dossiers</string>
@@ -804,12 +804,12 @@
     <string name="push_notification_state_wait_background_sync">Inactif tant que la synchronisation en arrière-plan n’est pas autorisée</string>
     <string name="push_notification_state_wait_network">Inactif tant que le réseau n’est pas connecté</string>
     <string name="push_notification_info">Touchez pour en apprendre davantage.</string>
-    <string name="push_info_title">Renseignements sur le poussé</string>
+    <string name="push_info_title">Notifications instantanées (Push)</string>
     <string name="push_info_configure_notification_text">Cependant, Android vous permet aussi de cacher la notification.</string>
     <string name="push_info_learn_more_text">En apprendre davantage</string>
     <string name="push_info_configure_notification_action">Configurer la notification</string>
-    <string name="push_info_disable_push_text">Si vous n’avez pas besoin de notifications instantanées pour les nouveaux courriels, vous devriez désactiver le poussé et utiliser la scrutation. La scrutation vérifie la présence de nouveaux courriels à intervalles réguliers et n’a pas besoin de notification.</string>
-    <string name="push_info_disable_push_action">Désactiver le poussé</string>
+    <string name="push_info_disable_push_text">Si vous n’avez pas besoin de notifications instantanées (Push) pour les nouveaux courriels, vous pouvez les désactiver et utiliser la synchronisation. La synchronisation vérifie la présence de nouveaux courriels à intervalles réguliers et n’a pas besoin de cette notification permanente.</string>
+    <string name="push_info_disable_push_action">Désactiver les notifications instantanées</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Sélectionner</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -882,13 +882,13 @@
     <string name="about_title">À propos de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">L’équipe Thunderbird pour appareils mobiles</string>
     <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
-    <string name="push_info_notification_explanation_text">Si le poussé est utilisé, <xliff:g id="app_name">%1$s</xliff:g> maintient une connexion vers le serveur de courriel. Android exige d’afficher une notification continue quand l’appli est active en arrière-plan. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Si les notifications instantanées (Push) sont utilisées, <xliff:g id="app_name">%1$s</xliff:g> maintient une connexion vers le serveur de courriel. Android exige d’afficher une notification permanente quand l’appli est active en arrière-plan. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">L’appli OpenKeychain est nécessaire pour prendre en charge le chiffrement de bout en bout.</string>
     <string name="folder_settings_notifications_label">Notifications</string>
     <string name="settings_ui_data_collection">Collecte de données</string>
     <string name="settings_ui_telemetry_title">Données d’utilisation et techniques</string>
     <string name="settings_ui_telemetry_description">Partage les données de performance, d’utilisation, de matériel et de personnalisation de cette appli avec Mozilla pour nous aider à améliorer Thunderbird</string>
-    <string name="folder_settings_push_label">Activer le poussé</string>
+    <string name="folder_settings_push_label">Notifications instantanées (Push)</string>
     <string name="folder_list_show_hidden_folders">Afficher les dossiers cachés</string>
     <string name="folder_settings_sync_label">Activer la synchronisation</string>
     <string name="folder_settings_visible_label">Afficher le dossier</string>
