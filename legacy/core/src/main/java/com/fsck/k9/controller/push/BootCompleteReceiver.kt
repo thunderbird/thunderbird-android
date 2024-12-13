@@ -15,7 +15,7 @@ class BootCompleteReceiver : BroadcastReceiver(), KoinComponent {
     private val pushController: PushController by inject()
 
     override fun onReceive(context: Context, intent: Intent?) {
-        Timber.v("BootCompleteReceiver.onReceive()")
+        Timber.v("BootCompleteReceiver.onReceive() - %s", intent?.action)
 
         pushController.init()
     }
