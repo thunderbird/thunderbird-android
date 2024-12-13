@@ -817,15 +817,29 @@ jobs:
           releaseFiles: |
             uploads/${{ steps.rename.outputs.PKG_FILE }}
 
-      - name: Determine FTP Destination
-        id: ftp_destination
+      - name: Generate source tar
+        id: generate_tar
+        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
+        shell: bash
+        env:
+          APP_SHA: ${{ steps.shanotes.outputs.app_sha }}
+          TAG_NAME: ${{ steps.pkginfo.outputs.TAG_NAME }}
+        run: |
+          FTP_TAR_FILENAME=$(echo "${TAG_NAME,,}.tar.gz" | sed 's/_/-/g')
+          git archive --format=tar.gz --output=uploads/${FTP_TAR_FILENAME} ${APP_SHA}
+          ls -l uploads
+          echo "FTP_TAR_FILENAME=${FTP_TAR_FILENAME}" | tee -a $GITHUB_OUTPUT
+
+      - name: Prepare for FTP Uploads
+        id: prepare_ftp
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
         shell: bash
         env:
           RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
-          TAG_NAME: ${{ steps.pkginfo.outputs.TAG_NAME }}
           VERSION_NAME: ${{ steps.pkginfo.outputs.VERSION_NAME }}
           UPLOAD_FTP_STAGE: ${{ inputs.uploadFtpStage }}
+          PKG_FILE: ${{ steps.rename.outputs.PKG_FILE }}
+          FTP_TAR_FILENAME: ${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
         run: |
           GCP_ENV=prod
           GCP_PROJECT=moz-fx-productdelivery-pr-38b5
@@ -839,10 +853,10 @@ jobs:
           WORKLOAD_IDENTITY_PROVIDER="projects/324168772199/locations/global/workloadIdentityPools/github-actions/providers/github-actions"
 
           FTP_SUBDIR="releases"
-          FTP_DESTINATION="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/${VERSION_NAME}/"
+          FTP_LOCAL_PATH="ftp/${FTP_SUBDIR}/${VERSION_NAME}"
+          FTP_DESTINATION="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/${VERSION_NAME}"
           FTP_URL_PATH="${FTP_URL_PREFIX}/${FTP_SUBDIR}/${VERSION_NAME}/"
-          FTP_TAR_FILENAME=$(echo "${TAG_NAME,,}.tar.gz" | sed 's/_/-/g')
-          if [[ "${RELEASE_TYPE}" = "daily" ]]; then
+          if [[ "$RELEASE_TYPE" = "daily" ]]; then
             YEAR=$(date -d "${RELEASE_DATE}" +"%Y")
             MONTH=$(date -d "${RELEASE_DATE}" +%m)
             DAY=$(date -d "${RELEASE_DATE}" +"%d")
@@ -851,63 +865,66 @@ jobs:
             SEC=$(date -d "${RELEASE_DATE}" +"%S")
             DATETIME_SUBDIR="${YEAR}/${MONTH}/${YEAR}-${MONTH}-${DAY}-${HOUR}-${MIN}-${SEC}-main"
             FTP_SUBDIR="nightly"
-            FTP_DESTINATION="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/${DATETIME_SUBDIR}/"
+            FTP_LOCAL_PATH="ftp/${FTP_SUBDIR}/${DATETIME_SUBDIR}"
+            FTP_LOCAL_PATH_NIGHTLY_LATEST="ftp/${FTP_SUBDIR}/latest-main"
+            FTP_DESTINATION="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/${DATETIME_SUBDIR}"
+            FTP_DESTINATION_NIGHTLY_LATEST="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/latest-main"
             FTP_URL_PATH="${FTP_URL_PREFIX}/${FTP_SUBDIR}/${DATETIME_SUBDIR}/"
-            FTP_DESTINATION_NIGHTLY_LATEST="${GCP_PROJECT}-productdelivery/pub/thunderbird-mobile/android/${FTP_SUBDIR}/latest-main/"
             FTP_URL_PATH_NIGHTLY_LATEST="${FTP_URL_PREFIX}/${FTP_SUBDIR}/latest-main/"
           fi
+
+          mkdir -p "${FTP_LOCAL_PATH}"
+          cp "uploads/${PKG_FILE}" "${FTP_LOCAL_PATH}"
+          cp "uploads/${FTP_TAR_FILENAME}" "${FTP_LOCAL_PATH}"
+          if [[ "$RELEASE_TYPE" = "daily" ]]; then
+            mkdir -p "${FTP_LOCAL_PATH_NIGHTLY_LATEST}"
+            cp "uploads/${PKG_FILE}" "${FTP_LOCAL_PATH_NIGHTLY_LATEST}"
+            cp "uploads/${FTP_TAR_FILENAME}" "${FTP_LOCAL_PATH_NIGHTLY_LATEST}"
+          fi
+
           echo "SERVICE_ACCOUNT=${SERVICE_ACCOUNT}" | tee -a $GITHUB_OUTPUT
           echo "WORKLOAD_IDENTITY_PROVIDER=${WORKLOAD_IDENTITY_PROVIDER}" | tee -a $GITHUB_OUTPUT
+          echo "FTP_LOCAL_PATH=${FTP_LOCAL_PATH}" | tee -a $GITHUB_OUTPUT
+          echo "FTP_LOCAL_PATH_NIGHTLY_LATEST=${FTP_LOCAL_PATH_NIGHTLY_LATEST}" | tee -a $GITHUB_OUTPUT
           echo "FTP_DESTINATION=${FTP_DESTINATION}" | tee -a $GITHUB_OUTPUT
           echo "FTP_DESTINATION_NIGHTLY_LATEST=${FTP_DESTINATION_NIGHTLY_LATEST}" | tee -a $GITHUB_OUTPUT
           echo "FTP_URL_PATH=${FTP_URL_PATH}" | tee -a $GITHUB_OUTPUT
           echo "FTP_URL_PATH_NIGHTLY_LATEST=${FTP_URL_PATH_NIGHTLY_LATEST}" | tee -a $GITHUB_OUTPUT
-          echo "FTP_TAR_FILENAME=${FTP_TAR_FILENAME}" | tee -a $GITHUB_OUTPUT
-
-      - name: Generate source tar
-        if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
-        shell: bash
-        env:
-          APP_SHA: ${{ steps.shanotes.outputs.app_sha }}
-          FTP_TAR_FILENAME: ${{ steps.ftp_destination.outputs.FTP_TAR_FILENAME }}
-        run: |
-          git archive --format=tar.gz --output=uploads/${FTP_TAR_FILENAME} ${APP_SHA}
-          ls -l uploads
 
       - name: Auth to GCS for FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
         uses: google-github-actions/auth@6fc4af4b145ae7821d527454aa9bd537d1f2dc5f # v2.1.7
         with:
-          service_account: ${{ steps.ftp_destination.outputs.SERVICE_ACCOUNT }}
-          workload_identity_provider: ${{ steps.ftp_destination.outputs.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ steps.prepare_ftp.outputs.SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ steps.prepare_ftp.outputs.WORKLOAD_IDENTITY_PROVIDER }}
 
       - name: GCS Upload of APK Package to FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
         uses: google-github-actions/upload-cloud-storage@386ab77f37fdf51c0e38b3d229fad286861cc0d0 # v2.2.1
         with:
-          path: uploads/${{ steps.rename.outputs.PKG_FILE }}
-          destination: ${{ steps.ftp_destination.outputs.FTP_DESTINATION }}
+          path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH }}/${{ steps.rename.outputs.PKG_FILE }}
+          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}/${{ steps.rename.outputs.PKG_FILE }}
 
       - name: GCS Upload of APK Package to FTP Nightly Latest
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
         uses: google-github-actions/upload-cloud-storage@386ab77f37fdf51c0e38b3d229fad286861cc0d0 # v2.2.1
         with:
-          path: uploads/${{ steps.rename.outputs.PKG_FILE }}
-          destination: ${{ steps.ftp_destination.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+          path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.rename.outputs.PKG_FILE }}
+          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}/${{ steps.rename.outputs.PKG_FILE }}
 
       - name: GCS Upload of Source Tar to FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
         uses: google-github-actions/upload-cloud-storage@386ab77f37fdf51c0e38b3d229fad286861cc0d0 # v2.2.1
         with:
-          path: uploads/${{ steps.ftp_destination.outputs.FTP_TAR_FILENAME }}
-          destination: ${{ steps.ftp_destination.outputs.FTP_DESTINATION }}
+          path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
+          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
 
       - name: GCS Upload of Source Tar to FTP Nightly Latest
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
         uses: google-github-actions/upload-cloud-storage@386ab77f37fdf51c0e38b3d229fad286861cc0d0 # v2.2.1
         with:
-          path: uploads/${{ steps.ftp_destination.outputs.FTP_TAR_FILENAME }}
-          destination: ${{ steps.ftp_destination.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+          path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
+          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
 
       - name: Summary
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
@@ -922,8 +939,8 @@ jobs:
           appSha: ${{ steps.shanotes.outputs.app_sha }}
           appName: ${{ matrix.appName }}
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
-          ftpUrlPath: ${{ steps.ftp_destination.outputs.FTP_URL_PATH }}
-          ftpUrlPathNightlyLatest: ${{ steps.ftp_destination.outputs.FTP_URL_PATH_NIGHTLY_LATEST }}
+          ftpUrlPath: ${{ steps.prepare_ftp.outputs.FTP_URL_PATH }}
+          ftpUrlPathNightlyLatest: ${{ steps.prepare_ftp.outputs.FTP_URL_PATH_NIGHTLY_LATEST }}
           skipFtp: ${{ inputs.skipFtp }}
           packageFormat: ${{ matrix.packageFormat }}
         with:
@@ -958,7 +975,7 @@ jobs:
 
             if (process.env.skipFtp != "true" && process.env.releaseTarget.includes("ftp") && process.env.packageFormat == 'apk') {
               await core.summary
-                .addRaw(`Published to FTP at`)
+                .addRaw(`Published to FTP at `)
                 .addLink(process.env.ftpUrlPath, process.env.ftpUrlPath)
                 .addEOL();
 
