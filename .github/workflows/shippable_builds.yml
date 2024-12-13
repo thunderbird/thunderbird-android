@@ -891,10 +891,14 @@ jobs:
           mkdir -p "${FTP_LOCAL_PATH}"
           cp "uploads/${PKG_FILE}" "${FTP_LOCAL_PATH}"
           cp "uploads/${FTP_TAR_FILENAME}" "${FTP_LOCAL_PATH}"
+          echo "$(pwd)/${FTP_LOCAL_PATH}/" | sed -e "s/\.\///"
+          ls "${FTP_LOCAL_PATH}"
           if [[ "$RELEASE_TYPE" = "daily" ]]; then
             mkdir -p "${FTP_LOCAL_PATH_NIGHTLY_LATEST}"
             cp "uploads/${PKG_FILE}" "${FTP_LOCAL_PATH_NIGHTLY_LATEST}"
             cp "uploads/${FTP_TAR_FILENAME}" "${FTP_LOCAL_PATH_NIGHTLY_LATEST}"
+            echo "$(pwd)/${FTP_LOCAL_PATH}/" | sed -e "s/\.\///"
+            ls "${FTP_LOCAL_PATH}"
           fi
 
           echo "SERVICE_ACCOUNT=${SERVICE_ACCOUNT}" | tee -a $GITHUB_OUTPUT
@@ -918,28 +922,28 @@ jobs:
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH }}/${{ steps.rename.outputs.PKG_FILE }}
-          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}/${{ steps.rename.outputs.PKG_FILE }}
+          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}
 
       - name: GCS Upload of APK Package to FTP Nightly Latest
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.rename.outputs.PKG_FILE }}
-          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}/${{ steps.rename.outputs.PKG_FILE }}
+          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
 
       - name: GCS Upload of Source Tar to FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
-          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
+          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}
 
       - name: GCS Upload of Source Tar to FTP Nightly Latest
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
         uses: google-github-actions/upload-cloud-storage@v2
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
-          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
+          destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
 
       - name: Summary
         uses: actions/github-script@v7
