@@ -14,9 +14,6 @@ on:
         description: Debug mode
         default: false
 
-# Declare default permissions as read only.
-permissions: read-all
-
 jobs:
   validate-workflows:
     runs-on: ubuntu-latest

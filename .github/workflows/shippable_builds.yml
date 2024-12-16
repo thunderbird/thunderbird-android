@@ -29,9 +29,6 @@ on:
         type: boolean
         description: Upload to FTP stage instead of prod
 
-# Declare default permissions as read only.
-permissions: read-all
-
 jobs:
   get_environment:
     name: Determine Release Environment
@@ -155,7 +152,7 @@ jobs:
   notify_build_start:
     name: Notify Build Start
     runs-on: ubuntu-latest
-    needs: [dump_config]
+    needs: [ dump_config ]
     if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
     environment: notify_matrix
     outputs:
@@ -191,7 +188,7 @@ jobs:
   release_commit:
     name: Release Bumps
     runs-on: ubuntu-latest
-    needs: [dump_config, get_environment]
+    needs: [ dump_config, get_environment ]
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     strategy:
       max-parallel: 1
@@ -431,7 +428,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: ${{ !failure() && !cancelled() }} # Run if release_commit is skipped
-    needs: [dump_config, get_environment, release_commit]
+    needs: [ dump_config, get_environment, release_commit ]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
@@ -561,7 +558,7 @@ jobs:
     name: Sign Packages
     runs-on: ubuntu-latest
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
-    needs: [build_unsigned, dump_config]
+    needs: [ build_unsigned, dump_config ]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
@@ -608,7 +605,7 @@ jobs:
 
   notify_pre_publish:
     name: Notify Publish Approval
-    needs: [dump_config, sign_mobile, notify_build_start]
+    needs: [ dump_config, sign_mobile, notify_build_start ]
     if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     runs-on: ubuntu-latest
     environment: notify_matrix
@@ -627,7 +624,7 @@ jobs:
     # The environment has a deployment protection rule requiring approval from a set of named reviewers
     # before proceeding.
     name: Wait for Approval
-    needs: [dump_config, sign_mobile]
+    needs: [ dump_config, sign_mobile ]
     if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     environment: publish_hold
     runs-on: ubuntu-latest
@@ -639,7 +636,7 @@ jobs:
 
   publish_release:
     name: Publish Release
-    needs: [pre_publish, dump_config, release_commit]
+    needs: [ pre_publish, dump_config, release_commit ]
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
     runs-on: ubuntu-latest
     strategy:
@@ -998,7 +995,7 @@ jobs:
   notify_build_result:
     name: Notify Build Result
     if: ${{ always() }}
-    needs: [dump_config, release_commit, build_unsigned, sign_mobile, publish_release, notify_build_start]
+    needs: [ dump_config, release_commit, build_unsigned, sign_mobile, publish_release, notify_build_start ]
     runs-on: ubuntu-latest
     environment: notify_matrix
     steps:
