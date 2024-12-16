@@ -6,9 +6,6 @@ on:
       - '**.md'
       - '.github/workflows/markdown.yml'
 
-# Declare default permissions as read only.
-permissions: read-all
-
 jobs:
   markdown_quality:
     runs-on: ubuntu-latest
