@@ -3,6 +3,7 @@ name: CodeQL - Code scanning
 on:
   schedule:
     - cron: '0 10 * * 1'
+  workflow_dispatch:
 
 jobs:
   codeql-scan:
