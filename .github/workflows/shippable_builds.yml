@@ -29,6 +29,9 @@ on:
         type: boolean
         description: Upload to FTP stage instead of prod
 
+# Declare default permissions as read only.
+permissions: read-all
+
 jobs:
   get_environment:
     name: Determine Release Environment
