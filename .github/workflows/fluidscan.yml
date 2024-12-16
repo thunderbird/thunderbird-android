@@ -1,0 +1,37 @@
+name: Fluidattacks - Code scanning
+on:
+  schedule:
+    - cron: '0 10 * * 1'
+  workflow_dispatch:
+
+jobs:
+  fluidattacks-scan:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Needed to upload the results to code-scanning dashboard.
+      security-events: write
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@f095bcc56b7c2baf48f3ac70d6d6782f4f553222
+        with:
+          persist-credentials: false
+
+      - name: "Run Fluidattacks scanner"
+        run: |
+          bash scripts/run-fluidattacks-scanner.sh
+
+      - name: "Upload scan results"
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+          name: SARIF scan results
+          path: fluidscan-results.sarif
+          retention-days: 5
+
+      # Upload the results to GitHub's code scanning dashboard.
+      - name: "Upload to code-scanning"
+        uses: github/codeql-action/upload-sarif@babb554ede22fd5605947329c4d04d8e7a0b8155 # v3.27.7
+        with:
+          sarif_file: fluidscan-results.sarif
