@@ -13,6 +13,7 @@ on:
     - cron: '19 22 * * 3'
   push:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   analysis:
@@ -38,11 +39,6 @@ jobs:
         with:
           results_file: results.sarif
           results_format: sarif
-          # (Optional) "write" PAT token. Uncomment the `repo_token` line below if:
-          # - you want to enable the Branch-Protection check on a *public* repository, or
-          # - you are installing Scorecard on a *private* repository
-          # To create the PAT, follow the steps in https://github.com/ossf/scorecard-action?tab=readme-ov-file#authentication-with-fine-grained-pat-optional.
-          # repo_token: ${{ secrets.SCORECARD_TOKEN }}
 
           # Public repositories:
           #   - Publish results to OpenSSF REST API for easy access by consumers
@@ -53,17 +49,15 @@ jobs:
           #     of the value entered here.
           publish_results: true
 
-      # Upload the results as artifacts (optional). Commenting out will disable uploads of run results in SARIF
-      # format to the repository Actions tab.
+      # Upload the results as artifacts.
       - name: "Upload artifact"
-        uses: actions/upload-artifact@97a0fba1372883ab732affbe8f94b823f91727db # v3.pre.node20
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: SARIF file
           path: results.sarif
           retention-days: 5
 
-      # Upload the results to GitHub's code scanning dashboard (optional).
-      # Commenting out will disable upload of results to your repo's Code Scanning dashboard
+      # Upload the results to GitHub's code scanning dashboard.
       - name: "Upload to code-scanning"
         uses: github/codeql-action/upload-sarif@df409f7d9260372bd5f19e5b04e83cb3c43714ae # v3.27.9
         with:
