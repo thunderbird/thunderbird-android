@@ -943,6 +943,7 @@ jobs:
           playTargetTrack: ${{ matrix.playTargetTrack }}
           applicationId: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           releaseTarget: ${{ matrix.releaseTarget }}
+          releaseType: ${{ env.RELEASE_TYPE }}
           appSha: ${{ steps.shanotes.outputs.app_sha }}
           appName: ${{ matrix.appName }}
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
@@ -986,7 +987,7 @@ jobs:
                 .addLink(process.env.ftpUrlPath, process.env.ftpUrlPath)
                 .addEOL();
 
-              if (needs.dump_config.outputs.releaseType === 'daily') {
+              if (process.env.releaseType == 'daily') {
                 await core.summary
                   .addLink(process.env.ftpUrlPathNightlyLatest, process.env.ftpUrlPathNightlyLatest)
                   .addEOL();
