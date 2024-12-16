@@ -996,7 +996,7 @@ jobs:
             if (process.env.skipFtp != "true" && process.env.releaseTarget.includes("ftp") && process.env.packageFormat == 'apk') {
               await core.summary
                 .addRaw(`Published to FTP at`)
-                .addEOL();
+                .addEOL()
                 .addLink(process.env.ftpUrlPath, process.env.ftpUrlPath)
                 .addEOL();
 
