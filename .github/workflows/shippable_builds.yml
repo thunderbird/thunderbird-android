@@ -794,8 +794,7 @@ jobs:
               ${APP_NAME^} ${VERSION_NAME} (${VERSION_CODE}) Daily Build
 
               The Daily version is an unstable testing and development platform, make sure you back up important data regularly!
-              If you find any issues, get in touch at https://github.com/thunderbird/thunderbird-android/issues/ and find us on Matrix at https://matrix.to/#/#tb-android-dev:mozilla.org
-              Be prepared to debug the code in Android Studio :-)
+              If you find any issues, get in touch at https://github.com/thunderbird/thunderbird-android/issues/
 
               - Built from GitHub commit: ${COMMIT_URL}
               - Built with GitHub workflow: ${WORKFLOW_URL}
@@ -980,7 +979,8 @@ jobs:
 
             if (process.env.skipFtp != "true" && process.env.releaseTarget.includes("ftp") && process.env.packageFormat == 'apk') {
               await core.summary
-                .addRaw(`Published to FTP at `)
+                .addRaw(`Published to FTP at`)
+                .addEOL();
                 .addLink(process.env.ftpUrlPath, process.env.ftpUrlPath)
                 .addEOL();
 
