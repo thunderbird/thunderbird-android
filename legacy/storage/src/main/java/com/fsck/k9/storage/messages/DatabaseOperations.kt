@@ -1,17 +1,15 @@
 package com.fsck.k9.storage.messages
 
+import com.fsck.k9.mailstore.DatabaseFilesProvider
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.mailstore.StorageManager
 import timber.log.Timber
 
 internal class DatabaseOperations(
     private val lockableDatabase: LockableDatabase,
-    val storageManager: StorageManager,
-    val accountUuid: String,
+    private val databaseFilesProvider: DatabaseFilesProvider,
 ) {
     fun getSize(): Long {
-        val storageProviderId = lockableDatabase.storageProviderId
-        val attachmentDirectory = storageManager.getAttachmentDirectory(accountUuid, storageProviderId)
+        val attachmentDirectory = databaseFilesProvider.getAttachmentDirectory()
 
         return lockableDatabase.execute(false) {
             val attachmentFiles = attachmentDirectory.listFiles() ?: emptyArray()
@@ -21,7 +19,7 @@ internal class DatabaseOperations(
                     accumulatedSize + file.length()
                 }
 
-            val databaseFile = storageManager.getDatabase(accountUuid, storageProviderId)
+            val databaseFile = databaseFilesProvider.getDatabaseFile()
             val databaseSize = databaseFile.length()
 
             databaseSize + attachmentsSize

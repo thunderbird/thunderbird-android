@@ -11,18 +11,17 @@ import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
+import com.fsck.k9.mailstore.DatabaseFilesProvider
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import java.util.Date
 
 class K9MessageStore(
     database: LockableDatabase,
-    storageManager: StorageManager,
+    databaseFilesProvider: DatabaseFilesProvider,
     basicPartInfoExtractor: BasicPartInfoExtractor,
-    accountUuid: String,
 ) : MessageStore {
-    private val attachmentFileManager = AttachmentFileManager(storageManager, accountUuid)
+    private val attachmentFileManager = AttachmentFileManager(databaseFilesProvider)
     private val threadMessageOperations = ThreadMessageOperations()
     private val saveMessageOperations = SaveMessageOperations(
         database,
@@ -43,7 +42,7 @@ class K9MessageStore(
     private val updateFolderOperations = UpdateFolderOperations(database)
     private val deleteFolderOperations = DeleteFolderOperations(database, attachmentFileManager)
     private val keyValueStoreOperations = KeyValueStoreOperations(database)
-    private val databaseOperations = DatabaseOperations(database, storageManager, accountUuid)
+    private val databaseOperations = DatabaseOperations(database, databaseFilesProvider)
 
     override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
         saveMessageOperations.saveRemoteMessage(folderId, messageServerId, messageData)

@@ -15,7 +15,7 @@ val mailStoreModule = module {
         )
     }
     single { MessageViewInfoExtractorFactory(get(), get(), get()) }
-    single { StorageManager.getInstance(get()) }
+    single<DatabaseFilesProviderFactory> { AndroidDatabaseFilesProviderFactory(context = get()) }
     single { SpecialFolderSelectionStrategy() }
     single {
         K9BackendStorageFactory(
