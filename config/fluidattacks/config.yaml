@@ -1,0 +1,28 @@
+# Taken from: https://appdefensealliance.dev/casa/tier-2/ast-guide/static-scan
+# as that is out of date, updated to the latest version of the scanner, see below
+# https://help.fluidattacks.com/portal/en/kb/articles/validate-casa-tier-2-requirements
+namespace: thunderbird-android
+working_dir: /repo
+language: EN
+output:
+  file_path: /repo/fluidscan-results.sarif
+  format: SARIF
+#apk:
+#  include:
+#    - ./app-k9mail/build/outputs/apk/foss/release/app-k9mail-foss-release.apk
+#    - ./app-k9mail/build/outputs/apk/full/release/app-k9mail-full-release.apk
+#    - ./app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-full-release.apk
+#    - ./app-thunderbird/build/outputs/apk/foss/release/app-thunderbird-full-release.apk
+sast:
+  include:
+    - .
+  exclude:
+    - glob(**/build/**)
+    - glob(**/test/**)
+sca:
+  include:
+    - .
+  exclude:
+    - glob(**/test/**)
+file_size_limit: false
+tracing_opt_out: true

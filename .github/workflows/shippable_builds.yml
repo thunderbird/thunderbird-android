@@ -152,7 +152,7 @@ jobs:
   notify_build_start:
     name: Notify Build Start
     runs-on: ubuntu-latest
-    needs: [dump_config]
+    needs: [ dump_config ]
     if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
     environment: notify_matrix
     outputs:
@@ -188,7 +188,7 @@ jobs:
   release_commit:
     name: Release Bumps
     runs-on: ubuntu-latest
-    needs: [dump_config, get_environment]
+    needs: [ dump_config, get_environment ]
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     strategy:
       max-parallel: 1
@@ -428,7 +428,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: ${{ !failure() && !cancelled() }} # Run if release_commit is skipped
-    needs: [dump_config, get_environment, release_commit]
+    needs: [ dump_config, get_environment, release_commit ]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
@@ -558,7 +558,7 @@ jobs:
     name: Sign Packages
     runs-on: ubuntu-latest
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
-    needs: [build_unsigned, dump_config]
+    needs: [ build_unsigned, dump_config ]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
@@ -605,7 +605,7 @@ jobs:
 
   notify_pre_publish:
     name: Notify Publish Approval
-    needs: [dump_config, sign_mobile, notify_build_start]
+    needs: [ dump_config, sign_mobile, notify_build_start ]
     if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     runs-on: ubuntu-latest
     environment: notify_matrix
@@ -624,7 +624,7 @@ jobs:
     # The environment has a deployment protection rule requiring approval from a set of named reviewers
     # before proceeding.
     name: Wait for Approval
-    needs: [dump_config, sign_mobile]
+    needs: [ dump_config, sign_mobile ]
     if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     environment: publish_hold
     runs-on: ubuntu-latest
@@ -636,7 +636,7 @@ jobs:
 
   publish_release:
     name: Publish Release
-    needs: [pre_publish, dump_config, release_commit]
+    needs: [ pre_publish, dump_config, release_commit ]
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
     runs-on: ubuntu-latest
     strategy:
@@ -794,8 +794,7 @@ jobs:
               ${APP_NAME^} ${VERSION_NAME} (${VERSION_CODE}) Daily Build
 
               The Daily version is an unstable testing and development platform, make sure you back up important data regularly!
-              If you find any issues, get in touch at https://github.com/thunderbird/thunderbird-android/issues/ and find us on Matrix at https://matrix.to/#/#tb-android-dev:mozilla.org
-              Be prepared to debug the code in Android Studio :-)
+              If you find any issues, get in touch at https://github.com/thunderbird/thunderbird-android/issues/
 
               - Built from GitHub commit: ${COMMIT_URL}
               - Built with GitHub workflow: ${WORKFLOW_URL}
@@ -940,6 +939,7 @@ jobs:
           playTargetTrack: ${{ matrix.playTargetTrack }}
           applicationId: ${{ steps.pkginfo.outputs.APPLICATION_ID }}
           releaseTarget: ${{ matrix.releaseTarget }}
+          releaseType: ${{ env.RELEASE_TYPE }}
           appSha: ${{ steps.shanotes.outputs.app_sha }}
           appName: ${{ matrix.appName }}
           skipGooglePlay: ${{ inputs.skipGooglePlay }}
@@ -979,11 +979,12 @@ jobs:
 
             if (process.env.skipFtp != "true" && process.env.releaseTarget.includes("ftp") && process.env.packageFormat == 'apk') {
               await core.summary
-                .addRaw(`Published to FTP at `)
+                .addRaw(`Published to FTP at`)
+                .addEOL()
                 .addLink(process.env.ftpUrlPath, process.env.ftpUrlPath)
                 .addEOL();
 
-              if (needs.dump_config.outputs.releaseType === 'daily') {
+              if (process.env.releaseType == 'daily') {
                 await core.summary
                   .addLink(process.env.ftpUrlPathNightlyLatest, process.env.ftpUrlPathNightlyLatest)
                   .addEOL();
@@ -994,7 +995,7 @@ jobs:
   notify_build_result:
     name: Notify Build Result
     if: ${{ always() }}
-    needs: [dump_config, release_commit, build_unsigned, sign_mobile, publish_release, notify_build_start]
+    needs: [ dump_config, release_commit, build_unsigned, sign_mobile, publish_release, notify_build_start ]
     runs-on: ubuntu-latest
     environment: notify_matrix
     steps:
