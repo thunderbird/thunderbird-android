@@ -51,7 +51,7 @@ We welcome contributions from everyone.
 - Development: Have you done a little bit of Kotlin? The [CONTRIBUTING](docs/CONTRIBUTING.md) guide will help you get started
 - Translations: Do you speak a language aside from English? [Translating is easy](https://hosted.weblate.org/projects/tb-android/) and just takes a few minutes for your first success.
 - We have [a number of other contribution opportunities](https://blog.thunderbird.net/2024/09/contribute-to-thunderbird-for-android/) available.
-- Thunderbird is supported solely by financial contributions from users like you.[Make a financial contribution today](https://www.thunderbird.net/donate/mobile/?form=tfa)!
+- Thunderbird is supported solely by financial contributions from users like you. [Make a financial contribution today](https://www.thunderbird.net/donate/mobile/?form=tfa)!
 - Make sure to check out the [Mozilla Community Participation Guidelines](https://www.mozilla.org/about/governance/policies/participation/).
 
 ### Architecture Decision Records (ADR)
