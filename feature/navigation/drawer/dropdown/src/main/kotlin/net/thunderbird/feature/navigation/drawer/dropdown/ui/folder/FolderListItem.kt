@@ -1,6 +1,11 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.folder
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -8,12 +13,14 @@ import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.TreeFolder
 
 @Composable
 internal fun FolderListItem(
@@ -23,7 +30,10 @@ internal fun FolderListItem(
     showStarredCount: Boolean,
     folderNameFormatter: FolderNameFormatter,
     modifier: Modifier = Modifier,
+    treeFolder: TreeFolder? = null,
 ) {
+    var isExpanded = remember { mutableStateOf(false) }
+
     NavigationDrawerItem(
         label = mapFolderName(displayFolder, folderNameFormatter),
         selected = selected,
@@ -36,12 +46,32 @@ internal fun FolderListItem(
         },
         badge = {
             FolderListItemBadge(
-                unreadCount = displayFolder.unreadMessageCount,
-                starredCount = displayFolder.starredMessageCount,
+                unreadCount = if (treeFolder !== null && !isExpanded.value) treeFolder.getAllUnreadMessageCount() else displayFolder.unreadMessageCount,
+                starredCount = if (treeFolder !== null && !isExpanded.value) treeFolder.getAllStarredMessageCount() else displayFolder.starredMessageCount,
                 showStarredCount = showStarredCount,
+                expandableState = if (treeFolder !== null && treeFolder.children.isNotEmpty()) isExpanded else null
             )
         },
     )
+
+    // Managing children
+    Column (modifier = Modifier.animateContentSize()) {
+        if (!isExpanded.value) return
+        if (treeFolder === null) return
+        for (child in treeFolder.children) {
+            var displayChild = child.value
+            if (displayChild === null) continue
+            FolderListItem(
+                displayFolder = displayChild,
+                selected = false,
+                showStarredCount = showStarredCount,
+                onClick = { onClick(displayChild) },
+                folderNameFormatter = folderNameFormatter,
+                modifier = modifier.then(Modifier.padding(horizontal = MainTheme.spacings.triple)),
+                treeFolder = child,
+            )
+        }
+    }
 }
 
 @Composable
