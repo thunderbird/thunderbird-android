@@ -1,7 +1,7 @@
 package app.k9mail.feature.navigation.drawer.domain.entity
 
 internal data class TreeFolder(
-    var value: DisplayFolder
+    var value: DisplayFolder? = null
 ) {
     val children: ArrayList<TreeFolder> = ArrayList()
 
@@ -10,7 +10,7 @@ internal data class TreeFolder(
         for (child in children) {
             allUnreadMessageCount += child.getAllUnreadMessageCount()
         }
-        return allUnreadMessageCount + value.unreadMessageCount
+        return allUnreadMessageCount + (value?.unreadMessageCount ?: 0)
     }
 
     fun getAllStarredMessageCount(): Int {
@@ -18,7 +18,7 @@ internal data class TreeFolder(
         for (child in children) {
             allStarredMessageCount += child.getAllStarredMessageCount()
         }
-        return allStarredMessageCount + value.starredMessageCount
+        return allStarredMessageCount + (value?.starredMessageCount ?: 0)
     }
 }
 
