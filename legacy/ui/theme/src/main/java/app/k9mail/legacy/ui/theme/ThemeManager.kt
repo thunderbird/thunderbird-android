@@ -2,7 +2,6 @@ package app.k9mail.legacy.ui.theme
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import app.k9mail.core.ui.theme.api.Theme
@@ -34,11 +33,7 @@ class ThemeManager(
         get() = when (generalSettings.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
-            AppTheme.FOLLOW_SYSTEM -> if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                Theme.LIGHT
-            } else {
-                getSystemTheme()
-            }
+            AppTheme.FOLLOW_SYSTEM -> getSystemTheme()
         }
 
     override val messageViewTheme: Theme
@@ -78,13 +73,7 @@ class ThemeManager(
         val defaultNightMode = when (appTheme) {
             AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
             AppTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-            AppTheme.FOLLOW_SYSTEM -> {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                }
-            }
+            AppTheme.FOLLOW_SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
         AppCompatDelegate.setDefaultNightMode(defaultNightMode)
     }

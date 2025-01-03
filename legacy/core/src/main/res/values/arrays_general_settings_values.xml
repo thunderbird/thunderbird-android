@@ -143,11 +143,6 @@
         <item>ja</item>
     </string-array>
 
-    <string-array name="theme_values_legacy" translatable="false">
-        <item>follow_system</item>
-        <item>dark</item>
-    </string-array>
-
     <string-array name="theme_values" translatable="false">
         <item>light</item>
         <item>dark</item>
