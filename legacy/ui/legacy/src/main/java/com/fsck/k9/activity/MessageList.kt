@@ -47,6 +47,7 @@ import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation
 import com.fsck.k9.K9.SplitViewMode
 import com.fsck.k9.Preferences
+import com.fsck.k9.Preferences.Companion.getPreferences
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
@@ -1407,6 +1408,7 @@ open class MessageList :
         return SearchAccount.createUnifiedInboxAccount(
             unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
             unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+            accounts = getPreferences().getAccounts()
         )
     }
 
@@ -1491,6 +1493,7 @@ open class MessageList :
                 val search = SearchAccount.createUnifiedInboxAccount(
                     unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
                     unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+                    accounts = getPreferences().getAccounts(),
                 ).relatedSearch
 
                 putExtra(EXTRA_ACCOUNT, account.uuid)
@@ -1558,6 +1561,7 @@ open class MessageList :
                     val search = SearchAccount.createUnifiedInboxAccount(
                         unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
                         unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+                        accounts = getPreferences().getAccounts(),
                     ).relatedSearch
                     putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
                 }

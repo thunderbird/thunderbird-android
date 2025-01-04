@@ -27,6 +27,13 @@
             app:pref_colors="@array/account_colors"
             />
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_in_unified_inbox"
+            android:summary="@string/account_settings_show_in_unified_inbox_summary"
+            android:title="@string/account_settings_show_in_unified_inbox_label"
+        />
+
     </PreferenceScreen>
 
     <PreferenceScreen

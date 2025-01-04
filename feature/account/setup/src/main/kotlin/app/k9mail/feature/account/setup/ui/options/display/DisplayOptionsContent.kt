@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
+import app.k9mail.core.ui.compose.designsystem.molecule.input.SwitchInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -26,6 +27,7 @@ import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
+import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract
 
 @Suppress("LongMethod")
 @Composable
@@ -96,6 +98,15 @@ internal fun DisplayOptionsContent(
                     label = stringResource(id = R.string.account_setup_options_email_signature_label),
                     contentPadding = defaultItemPadding(),
                     isSingleLine = false,
+                )
+            }
+
+            item {
+                SwitchInput(
+                    text = stringResource(id = R.string.account_setup_options_show_in_unified_inbox_label),
+                    checked = state.showInUnifiedInbox,
+                    onCheckedChange = { onEvent(Event.OnShowInUnifiedInboxChanged(it)) },
+                    contentPadding = defaultItemPadding(),
                 )
             }
 

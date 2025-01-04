@@ -182,6 +182,7 @@ class InMemoryAccountStateRepositoryTest {
             accountName = "accountName",
             displayName = "displayName",
             emailSignature = "emailSignature",
+            showInUnifiedInbox = true,
         )
 
         val SYNC_OPTIONS = AccountSyncOptions(

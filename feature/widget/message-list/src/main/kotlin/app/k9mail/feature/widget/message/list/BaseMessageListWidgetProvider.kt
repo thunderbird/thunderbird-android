@@ -9,6 +9,7 @@ import android.widget.RemoteViews
 import androidx.core.app.PendingIntentCompat
 import app.k9mail.legacy.search.SearchAccount.Companion.createUnifiedInboxAccount
 import com.fsck.k9.CoreResourceProvider
+import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
@@ -66,6 +67,7 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
         val unifiedInboxAccount = createUnifiedInboxAccount(
             unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
             unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+            accounts = Preferences.getPreferences().getAccounts(),
         )
         val intent = intentDisplaySearch(
             context = context,

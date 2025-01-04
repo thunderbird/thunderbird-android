@@ -4,4 +4,5 @@ data class AccountDisplayOptions(
     val accountName: String,
     val displayName: String,
     val emailSignature: String?,
+    val showInUnifiedInbox: Boolean,
 )

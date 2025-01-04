@@ -65,6 +65,7 @@ class AccountCreator(
             newAccount.signatureUse = true
             newAccount.signature = account.options.emailSignature
         }
+        newAccount.isShowInUnifiedInbox = account.options.showInUnifiedInbox
         newAccount.isNotifyNewMail = account.options.showNotification
         newAccount.automaticCheckIntervalMinutes = account.options.checkFrequencyInMinutes
         newAccount.displayCount = account.options.messageDisplayCount

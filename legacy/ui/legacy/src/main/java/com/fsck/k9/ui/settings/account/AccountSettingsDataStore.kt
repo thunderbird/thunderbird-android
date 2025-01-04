@@ -33,6 +33,7 @@ class AccountSettingsDataStore(
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown
             "reply_after_quote" -> account.isReplyAfterQuote
             "strip_signature" -> account.isStripSignature
+            "show_in_unified_inbox" -> account.isShowInUnifiedInbox
             "account_notify" -> account.isNotifyNewMail
             "account_notify_self" -> account.isNotifySelfNewMail
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly
@@ -58,6 +59,7 @@ class AccountSettingsDataStore(
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown = value
             "reply_after_quote" -> account.isReplyAfterQuote = value
             "strip_signature" -> account.isStripSignature = value
+            "show_in_unified_inbox" -> account.isShowInUnifiedInbox = value
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value

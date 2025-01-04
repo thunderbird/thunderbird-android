@@ -80,6 +80,10 @@ class Account(
 
     @get:Synchronized
     @set:Synchronized
+    var isShowInUnifiedInbox = true
+
+    @get:Synchronized
+    @set:Synchronized
     var isNotifyNewMail = false
 
     @get:Synchronized

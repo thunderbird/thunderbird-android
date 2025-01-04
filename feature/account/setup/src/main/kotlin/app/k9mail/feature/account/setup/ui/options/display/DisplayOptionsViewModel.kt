@@ -45,6 +45,12 @@ internal class DisplayOptionsViewModel(
                 )
             }
 
+            is Event.OnShowInUnifiedInboxChanged -> updateState { state ->
+                state.copy(
+                    showInUnifiedInbox = event.showInUnifiedInbox,
+                )
+            }
+
             Event.OnNextClicked -> submit()
             Event.OnBackClicked -> navigateBack()
         }

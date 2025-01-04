@@ -13,6 +13,7 @@ import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.SearchAccount
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
+import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -33,6 +34,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
         unifiedInboxSearch = SearchAccount.createUnifiedInboxAccount(
             unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
             unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+            accounts = Preferences.getPreferences().getAccounts(),
         ).relatedSearch
 
         senderAboveSubject = K9.isMessageListSenderAboveSubject

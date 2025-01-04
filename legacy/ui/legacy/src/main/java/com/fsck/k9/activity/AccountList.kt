@@ -78,6 +78,7 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
             val unifiedInboxAccount: BaseAccount = createUnifiedInboxAccount(
                 unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
                 unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+                accounts = getPreferences().getAccounts(),
             )
             accounts.add(unifiedInboxAccount)
         }

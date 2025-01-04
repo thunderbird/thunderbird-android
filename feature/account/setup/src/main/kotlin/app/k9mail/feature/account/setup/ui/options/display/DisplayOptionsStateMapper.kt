@@ -18,6 +18,7 @@ internal fun AccountState.toDisplayOptionsState(): State {
             accountName = StringInputField(options.accountName),
             displayName = StringInputField(options.displayName),
             emailSignature = StringInputField(options.emailSignature ?: ""),
+            showInUnifiedInbox = options.showInUnifiedInbox,
         )
     }
 }
@@ -27,5 +28,6 @@ internal fun State.toAccountDisplayOptions(): AccountDisplayOptions {
         accountName = accountName.value,
         displayName = displayName.value,
         emailSignature = emailSignature.value.takeIf { it.isNotEmpty() },
+        showInUnifiedInbox =showInUnifiedInbox,
     )
 }

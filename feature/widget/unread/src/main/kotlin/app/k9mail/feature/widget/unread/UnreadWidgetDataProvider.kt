@@ -46,6 +46,7 @@ class UnreadWidgetDataProvider(
         SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount(
             unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
             unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+            accounts = Preferences.getPreferences().getAccounts(),
         )
         else -> throw AssertionError("SearchAccount expected")
     }

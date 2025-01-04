@@ -449,6 +449,9 @@
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>
 
+    <string name="account_settings_show_in_unified_inbox_label">Show in unified inbox</string>
+    <string name="account_settings_show_in_unified_inbox_summary">Display messages of this account in the unified inbox</string>
+
     <string name="account_settings_mail_display_count_label">Local folder size</string>
 
     <string name="account_settings_autodownload_message_size_label">Fetch messages up to</string>

@@ -77,12 +77,14 @@ class GetAccountStateTest {
             checkFrequencyInMinutes = 15,
             messageDisplayCount = 25,
             showNotification = true,
+            showInUnifiedInbox = true,
         )
 
         val DISPLAY_OPTIONS = AccountDisplayOptions(
             accountName = "accountName",
             displayName = "displayName",
             emailSignature = null,
+            showInUnifiedInbox = true,
         )
 
         val SYNC_OPTIONS = AccountSyncOptions(

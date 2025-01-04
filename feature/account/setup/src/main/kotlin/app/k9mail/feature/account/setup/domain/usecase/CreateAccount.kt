@@ -39,6 +39,7 @@ class CreateAccount(
             checkFrequencyInMinutes = syncOptions.checkFrequencyInMinutes,
             messageDisplayCount = syncOptions.messageDisplayCount,
             showNotification = syncOptions.showNotification,
+            showInUnifiedInbox = displayOptions.showInUnifiedInbox,
         )
     }
 }

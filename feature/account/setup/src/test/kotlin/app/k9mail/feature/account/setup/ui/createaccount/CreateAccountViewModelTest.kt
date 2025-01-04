@@ -193,6 +193,7 @@ class CreateAccountViewModelTest {
             accountName = "account name",
             displayName = "display name",
             emailSignature = null,
+            showInUnifiedInbox = true,
         )
 
         val ACCOUNT_SYNC_OPTIONS = AccountSyncOptions(

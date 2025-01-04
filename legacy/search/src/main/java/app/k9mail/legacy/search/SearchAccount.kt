@@ -1,5 +1,6 @@
 package app.k9mail.legacy.search
 
+import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.BaseAccount
 import app.k9mail.legacy.search.api.SearchAttribute
 import app.k9mail.legacy.search.api.SearchField
@@ -35,9 +36,11 @@ class SearchAccount(
         fun createUnifiedInboxAccount(
             unifiedInboxTitle: String,
             unifiedInboxDetail: String,
+            accounts: List<Account>,
         ): SearchAccount {
             val tmpSearch = LocalSearch().apply {
                 id = UNIFIED_INBOX
+                addAccountUuids(accounts.filter { it.isShowInUnifiedInbox }.map { it.uuid }.toTypedArray())
                 and(SearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
             }
 

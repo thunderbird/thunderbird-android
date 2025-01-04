@@ -15,6 +15,7 @@ class DisplayOptionsStateMapperKtTest {
             accountName = StringInputField("accountName"),
             displayName = StringInputField("displayName"),
             emailSignature = StringInputField("emailSignature"),
+            showInUnifiedInbox = true,
         )
 
         val result = state.toAccountDisplayOptions()
@@ -24,6 +25,7 @@ class DisplayOptionsStateMapperKtTest {
                 accountName = "accountName",
                 displayName = "displayName",
                 emailSignature = "emailSignature",
+                showInUnifiedInbox = true,
             ),
         )
     }

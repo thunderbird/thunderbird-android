@@ -7,4 +7,5 @@ data class AccountOptions(
     val checkFrequencyInMinutes: Int,
     val messageDisplayCount: Int,
     val showNotification: Boolean,
+    val showInUnifiedInbox: Boolean,
 )

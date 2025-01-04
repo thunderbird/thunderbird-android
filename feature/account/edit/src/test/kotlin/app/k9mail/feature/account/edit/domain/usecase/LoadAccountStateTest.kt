@@ -77,6 +77,7 @@ class LoadAccountStateTest {
             accountName = "accountName",
             displayName = "displayName",
             emailSignature = null,
+            showInUnifiedInbox = true,
         )
 
         val SYNC_OPTIONS = AccountSyncOptions(

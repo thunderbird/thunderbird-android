@@ -61,6 +61,7 @@
     </plurals>
     <string name="account_setup_options_email_display_count_label">Number of messages to display</string>
     <string name="account_setup_options_show_notifications_label">Show notifications</string>
+    <string name="account_setup_options_show_in_unified_inbox_label">Show in unfied Inbox</string>
 
     <string name="account_setup_create_account_creating">Creating account…</string>
     <string name="account_setup_create_account_error">An error occurred while trying to create the account</string>
