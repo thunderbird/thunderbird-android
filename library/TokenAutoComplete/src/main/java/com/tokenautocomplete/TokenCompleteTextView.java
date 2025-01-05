@@ -60,24 +60,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     //Logging
     public static final String TAG = "TokenAutoComplete";
 
-    //When the user clicks on a token...
-    public enum TokenClickStyle {
-        None(false), //...do nothing, but make sure the cursor is not in the token
-        Delete(false),//...delete the token
-        Select(true),//...select the token. A second click will delete it.
-        SelectDeselect(true);
-
-        private boolean mIsSelectable;
-
-        TokenClickStyle(final boolean selectable) {
-            mIsSelectable = selectable;
-        }
-
-        public boolean isSelectable() {
-            return mIsSelectable;
-        }
-    }
-
     private Tokenizer tokenizer;
     private T selectedObject;
     private TokenListener<T> listener;
@@ -85,7 +67,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     private TokenTextWatcher textWatcher;
     private CountSpan countSpan;
     private @Nullable SpannableStringBuilder hiddenContent;
-    private TokenClickStyle tokenClickStyle = TokenClickStyle.None;
     private CharSequence prefix = "";
     private boolean hintVisible = false;
     private Layout lastLayout = null;
@@ -228,15 +209,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
     public void setTokenizer(Tokenizer t) {
         tokenizer = t;
-    }
-
-    /**
-     * Set the action to be taken when a Token is clicked
-     *
-     * @param cStyle The TokenClickStyle
-     */
-    public void setTokenClickStyle(TokenClickStyle cStyle) {
-        tokenClickStyle = cStyle;
     }
 
     /**
@@ -652,27 +624,11 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                 }
                 break;
             case KeyEvent.KEYCODE_DEL:
-                handled = !canDeleteSelection(1) || deleteSelectedObject();
+                handled = !canDeleteSelection(1);
                 break;
         }
 
         return handled || super.onKeyDown(keyCode, event);
-    }
-
-    private boolean deleteSelectedObject() {
-        if (tokenClickStyle != null && tokenClickStyle.isSelectable()) {
-            Editable text = getText();
-            if (text == null) return false;
-
-            TokenImageSpan[] spans = text.getSpans(0, text.length(), TokenImageSpan.class);
-            for (TokenImageSpan span : spans) {
-                if (span.view.isSelected()) {
-                    removeSpan(text, span);
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     @Override
@@ -688,11 +644,8 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         int action = event.getActionMasked();
         Editable text = getText();
-        boolean handled = false;
 
-        if (tokenClickStyle == TokenClickStyle.None) {
-            handled = super.onTouchEvent(event);
-        }
+        boolean handled = super.onTouchEvent(event);
 
         if (isFocused() && text != null && lastLayout != null && action == MotionEvent.ACTION_UP) {
 
@@ -704,16 +657,10 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                 if (links.length > 0) {
                     links[0].onClick();
                     handled = true;
-                } else {
-                    //We didn't click on a token, so if any are selected, we should clear that
-                    clearSelections();
                 }
             }
         }
 
-        if (!handled && tokenClickStyle != TokenClickStyle.None) {
-            handled = super.onTouchEvent(event);
-        }
         return handled;
 
     }
@@ -726,14 +673,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         }
         //Never let users select text
         selEnd = selStart;
-
-        if (tokenClickStyle != null && tokenClickStyle.isSelectable()) {
-            Editable text = getText();
-            if (text != null) {
-                clearSelections();
-            }
-        }
-
 
         if (prefix != null && (selStart < prefix.length() || selEnd < prefix.length())) {
             //Don't let users select the prefix
@@ -829,9 +768,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
     @Override
     public void onFocusChanged(boolean hasFocus, int direction, Rect previous) {
         super.onFocusChanged(hasFocus, direction, previous);
-
-        // Clear sections when focus changes to avoid a token remaining selected
-        clearSelections();
 
         // Collapse the view to a single line
         if (allowCollapse) performCollapse(hasFocus);
@@ -1144,25 +1080,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         }
     }
 
-    private void clearSelections() {
-        if (tokenClickStyle == null || !tokenClickStyle.isSelectable()) return;
-
-        Editable text = getText();
-        if (text == null) return;
-
-        TokenImageSpan[] tokens = text.getSpans(0, text.length(), TokenImageSpan.class);
-        boolean shouldRedrawTokens = false;
-        for (TokenImageSpan token : tokens) {
-            if (token.view.isSelected()) {
-                token.view.setSelected(false);
-                shouldRedrawTokens = true;
-            }
-        }
-        if (shouldRedrawTokens) {
-            redrawTokens();
-        }
-    }
-
     protected class TokenImageSpan extends ViewSpan implements NoCopySpan {
         private T token;
 
@@ -1182,34 +1099,9 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             Editable text = getText();
             if (text == null) return;
 
-            switch (tokenClickStyle) {
-                case Select:
-                case SelectDeselect:
-
-                    if (!view.isSelected()) {
-                        clearSelections();
-                        view.setSelected(true);
-                        redrawTokens();
-                        break;
-                    }
-
-                    if (tokenClickStyle == TokenClickStyle.SelectDeselect || !isTokenRemovable(token)) {
-                        view.setSelected(false);
-                        redrawTokens();
-                        break;
-                    }
-                    //If the view is already selected, we want to delete it
-                case Delete:
-                    if (isTokenRemovable(token)) {
-                        removeSpan(text, this);
-                    }
-                    break;
-                case None:
-                default:
-                    if (getSelectionStart() != text.getSpanEnd(this)) {
-                        //Make sure the selection is not in the middle of the span
-                        setSelection(text.getSpanEnd(this));
-                    }
+            if (getSelectionStart() != text.getSpanEnd(this)) {
+                //Make sure the selection is not in the middle of the span
+                setSelection(text.getSpanEnd(this));
             }
         }
     }
@@ -1290,7 +1182,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
             }
 
-            clearSelections();
             updateHint();
         }
 
@@ -1356,7 +1247,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         state.allowCollapse = allowCollapse;
         state.performBestGuess = performBestGuess;
         state.preventFreeFormText = preventFreeFormText;
-        state.tokenClickStyle = tokenClickStyle;
         Class parameterizedClass = reifyParameterizedTypeClass();
         //Our core array is Parcelable, so use that interface
         if (Parcelable.class.isAssignableFrom(parameterizedClass)) {
@@ -1399,7 +1289,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         allowCollapse = ss.allowCollapse;
         performBestGuess = ss.performBestGuess;
         preventFreeFormText = ss.preventFreeFormText;
-        tokenClickStyle = ss.tokenClickStyle;
         tokenizer = ss.tokenizer;
         addListeners();
 
@@ -1437,7 +1326,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         boolean allowCollapse;
         boolean performBestGuess;
         boolean preventFreeFormText;
-        TokenClickStyle tokenClickStyle;
         String parcelableClassName;
         List<?> baseObjects;
         String tokenizerClassName;
@@ -1450,7 +1338,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             allowCollapse = in.readInt() != 0;
             performBestGuess = in.readInt() != 0;
             preventFreeFormText = in.readInt() != 0;
-            tokenClickStyle = TokenClickStyle.values()[in.readInt()];
             parcelableClassName = in.readString();
             if (SERIALIZABLE_PLACEHOLDER.equals(parcelableClassName)) {
                 baseObjects = (ArrayList)in.readSerializable();
@@ -1484,7 +1371,6 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             out.writeInt(allowCollapse ? 1 : 0);
             out.writeInt(performBestGuess ? 1 : 0);
             out.writeInt(preventFreeFormText ? 1 : 0);
-            out.writeInt(tokenClickStyle.ordinal());
             if (SERIALIZABLE_PLACEHOLDER.equals(parcelableClassName)) {
                 out.writeString(SERIALIZABLE_PLACEHOLDER);
                 out.writeSerializable((Serializable)baseObjects);
@@ -1577,7 +1463,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
             //Shouldn't be able to delete prefix, so don't do anything
             if (getSelectionStart() <= prefix.length()) {
                 beforeLength = 0;
-                return deleteSelectedObject() || super.deleteSurroundingText(beforeLength, afterLength);
+                return super.deleteSurroundingText(beforeLength, afterLength);
             }
 
             return super.deleteSurroundingText(beforeLength, afterLength);
