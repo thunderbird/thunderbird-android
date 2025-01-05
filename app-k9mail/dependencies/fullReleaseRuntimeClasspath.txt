@@ -180,7 +180,6 @@ com.takisoft.preferencex:preferencex:1.1.0
 commons-io:commons-io:2.16.1
 de.cketti.library.changelog:ckchangelog-core:2.0.0-beta02
 de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0
-de.cketti.temp:tokenautocomplete:4.0.0-beta01-k9mail02
 de.hdodenhof:circleimageview:3.1.0
 io.coil-kt.coil3:coil-android:3.0.4
 io.coil-kt.coil3:coil-core-android:3.0.4
