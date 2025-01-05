@@ -21,7 +21,7 @@ public class SpanUtils {
     }
 
     @Nullable
-    public static Spanned ellipsizeWithSpans(@Nullable CharSequence prefix, @Nullable CountSpan countSpan,
+    public static Spanned ellipsizeWithSpans(@Nullable CountSpan countSpan,
                                            int tokenCount, @NonNull TextPaint paint,
                                            @NonNull CharSequence originalText, float maxWidth) {
 
@@ -38,13 +38,6 @@ public class SpanUtils {
         SpannableStringBuilder ellipsized = new SpannableStringBuilder(tempEllipsized);
         if (tempEllipsized instanceof Spanned) {
             TextUtils.copySpansFrom((Spanned)tempEllipsized, 0, tempEllipsized.length(), Object.class, ellipsized, 0);
-        }
-
-        if (prefix != null && prefix.length() > ellipsizeCallback.start) {
-            //We ellipsized part of the prefix, so put it back
-            ellipsized.replace(0, ellipsizeCallback.start, prefix);
-            ellipsizeCallback.end = ellipsizeCallback.end + prefix.length() - ellipsizeCallback.start;
-            ellipsizeCallback.start = prefix.length();
         }
 
         if (ellipsizeCallback.start != ellipsizeCallback.end) {
