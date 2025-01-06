@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <application tools:ignore="MissingApplicationIcon">
+
+        <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
+        <!-- IMPORTANT: The component name must be -->
+        <!-- `net.thunderbird.feature.widget.message.list.MessageListWidgetReceiver` and can't be changed. -->
+        <receiver
+            android:name="net.thunderbird.feature.widget.message.list.MessageListWidgetReceiver"
+            android:exported="true"
+            android:label="@string/message_list_glance_widget_label"
+            >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/message_list_glance_widget_info"
+                />
+        </receiver>
+
+    </application>
+</manifest>

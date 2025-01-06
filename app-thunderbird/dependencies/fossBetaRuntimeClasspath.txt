@@ -61,12 +61,17 @@ androidx.constraintlayout:constraintlayout-core:1.1.1
 androidx.constraintlayout:constraintlayout:2.2.1
 androidx.coordinatorlayout:coordinatorlayout:1.3.0
 androidx.core:core-ktx:1.15.0
+androidx.core:core-remoteviews:1.1.0
 androidx.core:core-splashscreen:1.0.1
 androidx.core:core-viewtree:1.0.0
 androidx.core:core:1.15.0
 androidx.cursoradapter:cursoradapter:1.0.0
 androidx.customview:customview-poolingcontainer:1.0.0
 androidx.customview:customview:1.1.0
+androidx.datastore:datastore-core:1.0.0
+androidx.datastore:datastore-preferences-core:1.0.0
+androidx.datastore:datastore-preferences:1.0.0
+androidx.datastore:datastore:1.0.0
 androidx.documentfile:documentfile:1.0.0
 androidx.drawerlayout:drawerlayout:1.1.1
 androidx.dynamicanimation:dynamicanimation:1.0.0
@@ -76,6 +81,11 @@ androidx.exifinterface:exifinterface:1.3.7
 androidx.fragment:fragment-compose:1.8.6
 androidx.fragment:fragment-ktx:1.8.6
 androidx.fragment:fragment:1.8.6
+androidx.glance:glance-appwidget-external-protobuf:1.1.1
+androidx.glance:glance-appwidget-proto:1.1.1
+androidx.glance:glance-appwidget:1.1.1
+androidx.glance:glance-material3:1.1.1
+androidx.glance:glance:1.1.1
 androidx.graphics:graphics-path:1.0.1
 androidx.interpolator:interpolator:1.0.0
 androidx.legacy:legacy-support-core-utils:1.0.0
@@ -133,6 +143,7 @@ androidx.versionedparcelable:versionedparcelable:1.1.1
 androidx.viewpager2:viewpager2:1.1.0-beta02
 androidx.viewpager:viewpager:1.0.0
 androidx.window:window:1.0.0
+androidx.work:work-runtime-ktx:2.10.0
 androidx.work:work-runtime:2.10.0
 co.touchlab:stately-concurrency-jvm:2.0.6
 co.touchlab:stately-concurrency:2.0.6
