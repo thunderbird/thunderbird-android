@@ -174,7 +174,7 @@ dependencyGuard {
     configuration("fullReleaseRuntimeClasspath")
 }
 
-tasks.create("printVersionInfo") {
+tasks.register("printVersionInfo") {
     val targetBuildType = project.findProperty("buildType") ?: "debug"
 
     doLast {
