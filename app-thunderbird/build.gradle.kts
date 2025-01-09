@@ -260,7 +260,7 @@ dependencyGuard {
     configuration("fullReleaseRuntimeClasspath")
 }
 
-tasks.create("printConfigurations") {
+tasks.register("printConfigurations") {
     doLast {
         configurations.forEach { configuration ->
             println("Configuration: ${configuration.name}")
@@ -271,7 +271,7 @@ tasks.create("printConfigurations") {
     }
 }
 
-tasks.create("printVersionInfo") {
+tasks.register("printVersionInfo") {
     val targetBuildType = project.findProperty("buildType") ?: "debug"
     val targetFlavorName = project.findProperty("flavorName") ?: "full"
 
