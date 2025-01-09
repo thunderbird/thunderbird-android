@@ -29,6 +29,9 @@ on:
         type: boolean
         description: Upload to FTP stage instead of prod
 
+permissions:
+  contents: read
+
 jobs:
   get_environment:
     name: Determine Release Environment

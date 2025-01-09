@@ -6,6 +6,9 @@ on:
       - '**.md'
       - '.github/workflows/markdown.yml'
 
+permissions:
+  contents: read
+
 jobs:
   markdown_quality:
     runs-on: ubuntu-latest

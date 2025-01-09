@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '8 20 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   trigger_daily_build:
     if: ${{ github.repository_owner == 'thunderbird' }}
