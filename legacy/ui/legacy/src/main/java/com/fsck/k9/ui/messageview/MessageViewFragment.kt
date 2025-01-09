@@ -2,6 +2,7 @@ package com.fsck.k9.ui.messageview
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -606,9 +607,10 @@ class MessageViewFragment :
     }
 
     private fun onCreateDocumentResult(data: Intent?) {
-        if (data != null && data.data != null) {
-            createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(data.data)
-        }
+        val documentUri = data?.data ?: return
+        require(documentUri.scheme == ContentResolver.SCHEME_CONTENT) { "content: URI required" }
+
+        createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(documentUri)
     }
 
     private fun onChooseFolderMoveResult(data: Intent?) {
