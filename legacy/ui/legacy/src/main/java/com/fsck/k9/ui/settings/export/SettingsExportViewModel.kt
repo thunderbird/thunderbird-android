@@ -1,6 +1,5 @@
 package com.fsck.k9.ui.settings.export
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.BundleCompat
@@ -22,7 +21,6 @@ private typealias AccountUuid = String
 private typealias AccountNumber = Int
 
 class SettingsExportViewModel(
-    val context: Context,
     val accountManager: AccountManager,
     val settingsExporter: SettingsExporter,
 ) : ViewModel() {

@@ -43,7 +43,6 @@ val settingsUiModule = module {
 
     viewModel {
         SettingsExportViewModel(
-            context = get(),
             accountManager = get(),
             settingsExporter = get(),
         )
