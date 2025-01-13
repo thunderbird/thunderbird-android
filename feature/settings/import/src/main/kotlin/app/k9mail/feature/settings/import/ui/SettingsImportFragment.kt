@@ -2,10 +2,13 @@ package app.k9mail.feature.settings.import.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
@@ -33,15 +36,22 @@ class SettingsImportFragment : Fragment() {
     private lateinit var settingsImportAdapter: FastAdapter<ImportListItem<*>>
     private lateinit var itemAdapter: ItemAdapter<ImportListItem<*>>
 
-    private val qrCodeScannerResultContract = registerForActivityResult(
-        migrationManager.getQrCodeActivityResultContract(),
-    ) { contentUri ->
+    private val pickDocumentCallback = ActivityResultCallback<Uri?> { contentUri ->
         if (contentUri != null) {
             viewModel.onDocumentPicked(contentUri)
         } else {
             viewModel.onDocumentPickCanceled()
         }
     }
+
+    private val pickDocumentResultLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent(),
+        pickDocumentCallback,
+    )
+    private val qrCodeScannerResultContract = registerForActivityResult(
+        migrationManager.getQrCodeActivityResultContract(),
+        pickDocumentCallback,
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -216,11 +226,7 @@ class SettingsImportFragment : Fragment() {
     }
 
     private fun pickDocument() {
-        val createDocumentIntent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "*/*"
-            addCategory(Intent.CATEGORY_OPENABLE)
-        }
-        startActivityForResult(createDocumentIntent, REQUEST_PICK_DOCUMENT)
+        pickDocumentResultLauncher.launch("*/*")
     }
 
     private fun scanQrCode() {
@@ -261,18 +267,8 @@ class SettingsImportFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            REQUEST_PICK_DOCUMENT -> handlePickDocumentResult(resultCode, data)
             REQUEST_PASSWORD_PROMPT -> handlePasswordPromptResult(resultCode, data)
             REQUEST_AUTHORIZATION -> handleAuthorizationResult(resultCode)
-        }
-    }
-
-    private fun handlePickDocumentResult(resultCode: Int, data: Intent?) {
-        val contentUri = data?.data
-        if (resultCode == Activity.RESULT_OK && contentUri != null) {
-            viewModel.onDocumentPicked(contentUri)
-        } else {
-            viewModel.onDocumentPickCanceled()
         }
     }
 
@@ -300,9 +296,8 @@ class SettingsImportFragment : Fragment() {
     }
 
     companion object {
-        private const val REQUEST_PICK_DOCUMENT = Activity.RESULT_FIRST_USER
-        private const val REQUEST_PASSWORD_PROMPT = Activity.RESULT_FIRST_USER + 1
-        private const val REQUEST_AUTHORIZATION = Activity.RESULT_FIRST_USER + 2
+        private const val REQUEST_PASSWORD_PROMPT = Activity.RESULT_FIRST_USER
+        private const val REQUEST_AUTHORIZATION = Activity.RESULT_FIRST_USER + 1
 
         const val FRAGMENT_RESULT_KEY = "settings_import"
         const val FRAGMENT_RESULT_ACCOUNT_IMPORTED = "accountImported"
