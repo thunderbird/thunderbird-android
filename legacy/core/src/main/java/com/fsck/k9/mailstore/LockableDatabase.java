@@ -13,7 +13,6 @@ import android.database.sqlite.SQLiteException;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
 import timber.log.Timber;
 
 import static java.lang.System.currentTimeMillis;
@@ -65,6 +64,7 @@ public class LockableDatabase {
     }
 
     private Context context;
+    private final StorageFilesProvider storageFilesProvider;
 
     /**
      * {@link ThreadLocal} to check whether a DB transaction is occurring in the
@@ -76,28 +76,11 @@ public class LockableDatabase {
 
     private SchemaDefinition mSchemaDefinition;
 
-    private String uUid;
-
-    /**
-     * @param context
-     *            Never <code>null</code>.
-     * @param uUid
-     *            Never <code>null</code>.
-     * @param schemaDefinition
-     *            Never <code>null</code>.
-     */
-    public LockableDatabase(final Context context, final String uUid, final SchemaDefinition schemaDefinition) {
+    public LockableDatabase(Context context, StorageFilesProvider storageFilesProvider,
+            SchemaDefinition schemaDefinition) {
         this.context = context;
-        this.uUid = uUid;
+        this.storageFilesProvider = storageFilesProvider;
         this.mSchemaDefinition = schemaDefinition;
-    }
-
-    public String getStorageProviderId() {
-        return InternalStorageProvider.ID;
-    }
-
-    private StorageManager getStorageManager() {
-        return StorageManager.getInstance(context);
     }
 
     /**
@@ -230,10 +213,7 @@ public class LockableDatabase {
     }
 
     protected File prepareStorage() {
-        String providerId = getStorageProviderId();
-        final StorageManager storageManager = getStorageManager();
-
-        final File databaseFile = storageManager.getDatabase(uUid, providerId);
+        final File databaseFile = storageFilesProvider.getDatabaseFile();
         final File databaseParentDir = databaseFile.getParentFile();
         if (databaseParentDir.isFile()) {
             // should be safe to unconditionally delete clashing file: user is not supposed to mess with our directory
@@ -247,7 +227,7 @@ public class LockableDatabase {
             FileHelper.touchFile(databaseParentDir, ".nomedia");
         }
 
-        final File attachmentDir = storageManager.getAttachmentDirectory(uUid, providerId);
+        final File attachmentDir = storageFilesProvider.getAttachmentDirectory();
         final File attachmentParentDir = attachmentDir.getParentFile();
         if (!attachmentParentDir.exists()) {
             // noinspection ResultOfMethodCallIgnored, TODO maybe throw UnavailableStorageException?
@@ -275,15 +255,13 @@ public class LockableDatabase {
     private void delete(final boolean recreate) {
         lockWrite();
         try {
-            String storageProviderId = getStorageProviderId();
             try {
                 mDb.close();
             } catch (Exception e) {
                 Timber.d("Exception caught in DB close: %s", e.getMessage());
             }
-            final StorageManager storageManager = getStorageManager();
             try {
-                final File attachmentDirectory = storageManager.getAttachmentDirectory(uUid, storageProviderId);
+                final File attachmentDirectory = storageFilesProvider.getAttachmentDirectory();
                 final File[] attachments = attachmentDirectory.listFiles();
                 for (File attachment : attachments) {
                     if (attachment.exists()) {
@@ -303,7 +281,7 @@ public class LockableDatabase {
                 Timber.d("Exception caught in clearing attachments: %s", e.getMessage());
             }
             try {
-                deleteDatabase(storageManager.getDatabase(uUid, storageProviderId));
+                deleteDatabase(storageFilesProvider.getDatabaseFile());
             } catch (Exception e) {
                 Timber.i(e, "LockableDatabase: delete(): Unable to delete backing DB file");
             }
