@@ -146,10 +146,8 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
 
                 //Detect split characters, remove them and complete the current token instead
                 if (tokenizer.containsTokenTerminator(source)) {
-                    if (currentCompletionText().length() > 0) {
-                        performCompletion();
-                        return "";
-                    }
+                    performCompletion();
+                    return "";
                 }
 
                 return null;
