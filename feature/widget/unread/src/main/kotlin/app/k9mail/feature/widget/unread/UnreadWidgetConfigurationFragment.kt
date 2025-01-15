@@ -15,6 +15,7 @@ import androidx.preference.Preference
 import app.k9mail.legacy.search.SearchAccount
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 
@@ -27,6 +28,15 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     private val chooseAccountResultLauncher: ActivityResultLauncher<Unit> =
         registerForActivityResult(UnreadWidgetChooseAccountResultContract()) { accountUuid ->
             handleChooseAccount(accountUuid)
+        }
+    private val chooseFolderResultLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
+        registerForActivityResult(ChooseFolderResultContract(action = ChooseFolderActivity.Action.CHOOSE)) { result ->
+            if (result != null) {
+                handleChooseFolder(
+                    folderId = result.folderId,
+                    folderDisplayName = result.folderDisplayName,
+                )
+            }
         }
 
     private var appWidgetId: Int = AppWidgetManager.INVALID_APPWIDGET_ID
@@ -60,12 +70,11 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
         unreadFolder = findPreference(PREFERENCE_UNREAD_FOLDER)!!
         unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = ChooseFolderActivity.buildLaunchIntent(
-                context = requireContext(),
-                action = ChooseFolderActivity.Action.CHOOSE,
-                accountUuid = selectedAccountUuid!!,
+            chooseFolderResultLauncher.launch(
+                input = ChooseFolderResultContract.Input(
+                    accountUuid = selectedAccountUuid!!,
+                ),
             )
-            startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
             false
         }
 
@@ -91,19 +100,6 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
                 handleChooseFolder(folderId, folderSummary)
             }
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            when (requestCode) {
-                REQUEST_CHOOSE_FOLDER -> {
-                    val folderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
-                    val folderDisplayName = data.getStringExtra(ChooseFolderActivity.RESULT_FOLDER_DISPLAY_NAME)!!
-                    handleChooseFolder(folderId, folderDisplayName)
-                }
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun handleChooseAccount(accountUuid: String?) {
@@ -209,8 +205,6 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_UNREAD_ACCOUNT = "unread_account"
         private const val PREFERENCE_UNREAD_FOLDER_ENABLED = "unread_folder_enabled"
         private const val PREFERENCE_UNREAD_FOLDER = "unread_folder"
-
-        private const val REQUEST_CHOOSE_FOLDER = 1
 
         private const val STATE_SELECTED_ACCOUNT_UUID = "com.fsck.k9.widget.unread.selectedAccountUuid"
         private const val STATE_SELECTED_FOLDER_ID = "com.fsck.k9.widget.unread.selectedFolderId"
