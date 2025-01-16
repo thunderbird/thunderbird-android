@@ -1,15 +1,16 @@
 package com.fsck.k9.ui.settings.export
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.google.android.material.textview.MaterialTextView
@@ -22,6 +23,17 @@ class SettingsExportFragment : Fragment() {
 
     private lateinit var settingsExportAdapter: FastAdapter<CheckBoxItem<*>>
     private lateinit var itemAdapter: ItemAdapter<CheckBoxItem<*>>
+
+    private val createDocumentResultLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
+        registerForActivityResult(
+            CreateDocumentResultContract(),
+        ) { contentUri ->
+            if (contentUri != null) {
+                viewModel.onDocumentPicked(contentUri)
+            } else {
+                viewModel.onDocumentPickCanceled()
+            }
+        }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_export, container, false)
@@ -127,12 +139,12 @@ class SettingsExportFragment : Fragment() {
     }
 
     private fun pickDocument(fileNameSuggestion: String, mimeType: String) {
-        val createDocumentIntent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            type = mimeType
-            putExtra(Intent.EXTRA_TITLE, fileNameSuggestion)
-            addCategory(Intent.CATEGORY_OPENABLE)
-        }
-        startActivityForResult(createDocumentIntent, RESULT_PICK_DOCUMENT)
+        createDocumentResultLauncher.launch(
+            input = CreateDocumentResultContract.Input(
+                title = fileNameSuggestion,
+                mimeType = mimeType,
+            ),
+        )
     }
 
     private fun shareDocument(contentUri: Uri, mimeType: String) {
@@ -148,21 +160,6 @@ class SettingsExportFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewModel.saveInstanceState(outState)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RESULT_PICK_DOCUMENT) {
-            val contentUri = data?.data
-            if (resultCode == Activity.RESULT_OK && contentUri != null) {
-                viewModel.onDocumentPicked(contentUri)
-            } else {
-                viewModel.onDocumentPickCanceled()
-            }
-        }
-    }
-
-    companion object {
-        private const val RESULT_PICK_DOCUMENT = Activity.RESULT_FIRST_USER
     }
 }
 
