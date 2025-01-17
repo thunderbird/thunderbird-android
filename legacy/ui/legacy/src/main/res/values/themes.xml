@@ -9,6 +9,14 @@
         <item name="messageListRegularItemBackgroundColor">?android:attr/windowBackground</item>
         <item name="messageListReadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
         <item name="messageListUnreadItemBackgroundColor">?attr/messageListRegularItemBackgroundColor</item>
+        <item name="contactTokenBackgroundColor">#ccc</item>
+        <item name="openpgp_black">#000</item>
+        <item name="openpgp_orange">#FF8800</item>
+        <item name="openpgp_red">#CC0000</item>
+        <item name="openpgp_green">#669900</item>
+        <item name="openpgp_blue">#336699</item>
+        <item name="openpgp_grey">#bbb</item>
+        <item name="openpgp_dark_grey">#888</item>
     </style>
 
 </resources>
