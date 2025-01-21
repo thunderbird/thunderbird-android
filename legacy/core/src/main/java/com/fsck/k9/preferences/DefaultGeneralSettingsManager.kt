@@ -3,10 +3,12 @@ package com.fsck.k9.preferences
 import app.k9mail.legacy.preferences.AppTheme
 import app.k9mail.legacy.preferences.BackgroundSync
 import app.k9mail.legacy.preferences.GeneralSettings
+import app.k9mail.legacy.preferences.GeneralSettingsChangeListener
 import app.k9mail.legacy.preferences.GeneralSettingsManager
 import app.k9mail.legacy.preferences.SubTheme
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
+import java.util.concurrent.CopyOnWriteArraySet
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +35,8 @@ internal class DefaultGeneralSettingsManager(
 ) : GeneralSettingsManager {
     private val settingsFlow = MutableSharedFlow<GeneralSettings>(replay = 1)
     private var generalSettings: GeneralSettings? = null
+
+    private val listeners = CopyOnWriteArraySet<GeneralSettingsChangeListener>()
 
     @Deprecated("This only exists for collaboration with the K9 class")
     val storage: Storage
@@ -87,6 +91,8 @@ internal class DefaultGeneralSettingsManager(
         K9.save(editor)
         writeSettings(editor, settings)
         editor.commit()
+
+        notifyListeners()
     }
 
     @Synchronized
@@ -150,6 +156,20 @@ internal class DefaultGeneralSettingsManager(
         updateSettingsFlow(settings)
 
         return settings
+    }
+
+    override fun addListener(listener: GeneralSettingsChangeListener) {
+        listeners.add(listener)
+    }
+
+    override fun removeListener(listener: GeneralSettingsChangeListener) {
+        listeners.remove(listener)
+    }
+
+    private fun notifyListeners() {
+        for (listener in listeners) {
+            listener.onGeneralSettingsChanged()
+        }
     }
 }
 

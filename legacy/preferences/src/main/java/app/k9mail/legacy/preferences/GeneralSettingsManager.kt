@@ -16,4 +16,7 @@ interface GeneralSettingsManager {
     fun setMessageViewTheme(subTheme: SubTheme)
     fun setMessageComposeTheme(subTheme: SubTheme)
     fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean)
+
+    fun addListener(listener: GeneralSettingsChangeListener)
+    fun removeListener(listener: GeneralSettingsChangeListener)
 }
