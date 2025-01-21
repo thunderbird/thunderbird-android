@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.fsck.k9.preferences
 
 import app.k9mail.legacy.preferences.AppTheme
@@ -27,6 +25,7 @@ import timber.log.Timber
  * The [GeneralSettings] instance managed by this class is updated with state from [K9] when [K9.saveSettingsAsync] is
  * called.
  */
+@Suppress("TooManyFunctions")
 internal class DefaultGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
@@ -162,6 +161,7 @@ private fun K9.BACKGROUND_OPS.toBackgroundSync(): BackgroundSync {
     }
 }
 
+@Suppress("TooGenericExceptionCaught")
 private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
     return try {
         val value = getString(key, null)

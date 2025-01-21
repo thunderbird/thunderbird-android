@@ -12,7 +12,6 @@
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun loadAccount(account: Account, storage: Storage)</ID>
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun save(editor: StorageEditor, storage: Storage, account: Account)</ID>
     <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$fun loadDefaults(account: Account)</ID>
-    <ID>LongMethod:K9.kt$K9$@JvmStatic fun loadPrefs(storage: Storage)</ID>
     <ID>LongMethod:MessageListRepositoryTest.kt$MessageListRepositoryTest$@Test fun `getThread() should use flag values from the cache`()</ID>
     <ID>LongMethod:NotificationDataStore.kt$NotificationDataStore$@Synchronized fun removeNotifications( account: Account, selector: (List&lt;MessageReference&gt;) -&gt; List&lt;MessageReference&gt;, ): RemoveNotificationsResult?</ID>
     <ID>LongMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount( serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;, includePasswords: Boolean, )</ID>
@@ -47,7 +46,6 @@
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFF00FF</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFFFF00</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFFFFFF</ID>
-    <ID>MagicNumber:PushService.kt$PushService$29</ID>
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$3</ID>
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$4</ID>
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$5</ID>
@@ -91,7 +89,6 @@
     <ID>TooGenericExceptionCaught:MessageRepository.kt$MessageRepository$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PushServiceManager.kt$PushServiceManager$e: Exception</ID>
     <ID>TooGenericExceptionCaught:QuoteDateFormatter.kt$QuoteDateFormatter$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:RealGeneralSettingsManager.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:SettingsExporter.kt$SettingsExporter$e: Exception</ID>
     <ID>TooManyFunctions:CoreResourceProvider.kt$CoreResourceProvider</ID>
     <ID>TooManyFunctions:HttpUriParser.kt$HttpUriParser : UriParser</ID>
@@ -105,7 +102,6 @@
     <ID>TooManyFunctions:NotifierMessageStore.kt$NotifierMessageStore : MessageStore</ID>
     <ID>TooManyFunctions:Preferences.kt$Preferences : AccountManager</ID>
     <ID>TooManyFunctions:PushController.kt$PushController</ID>
-    <ID>TooManyFunctions:RealGeneralSettingsManager.kt$RealGeneralSettingsManager : GeneralSettingsManager</ID>
     <ID>TooManyFunctions:SettingsExporter.kt$SettingsExporter</ID>
     <ID>TooManyFunctions:SingleMessageNotificationCreator.kt$SingleMessageNotificationCreator</ID>
     <ID>TooManyFunctions:SummaryNotificationCreator.kt$SummaryNotificationCreator</ID>
