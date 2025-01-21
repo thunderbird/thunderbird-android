@@ -21,7 +21,7 @@ val preferencesModule = module {
     factory { FolderSettingsProvider(folderRepository = get()) }
     factory<AccountManager> { get<Preferences>() }
     single {
-        RealGeneralSettingsManager(
+        DefaultGeneralSettingsManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
         )

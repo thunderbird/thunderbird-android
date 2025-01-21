@@ -27,7 +27,7 @@ import timber.log.Timber
  * The [GeneralSettings] instance managed by this class is updated with state from [K9] when [K9.saveSettingsAsync] is
  * called.
  */
-internal class RealGeneralSettingsManager(
+internal class DefaultGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
