@@ -62,8 +62,8 @@ public class AddressTest {
         for(String testEmail: testEmails) {
             Address[] addresses = Address.parse("Anonymous <"+testEmail+">");
 
-            assertEquals(1, addresses.length);
-            assertEquals(testEmail, addresses[0].getAddress());
+            assertEquals(testEmail, 1, addresses.length);
+            assertEquals(testEmail, testEmail, addresses[0].getAddress());
         }
     }
 
