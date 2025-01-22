@@ -17,6 +17,7 @@
 package com.fsck.k9.mail.helper;
 
 
+import java.net.IDN;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -34,7 +35,7 @@ public class Rfc822Token {
      */
     public Rfc822Token(@Nullable String name, @Nullable String address, @Nullable String comment) {
         mName = name;
-        mAddress = address;
+        mAddress = withULabelDomain(address);
         mComment = comment;
     }
 
@@ -73,7 +74,7 @@ public class Rfc822Token {
      * Changes the address to the specified address.
      */
     public void setAddress(@Nullable String address) {
-        mAddress = address;
+        mAddress = withULabelDomain(address);
     }
 
     /**
@@ -201,5 +202,13 @@ public class Rfc822Token {
         return (stringEquals(mName, other.mName) &&
                 stringEquals(mAddress, other.mAddress) &&
                 stringEquals(mComment, other.mComment));
+    }
+
+    public static String withULabelDomain(final String address) {
+        int at = address.lastIndexOf('@');
+        if (at < 0 || at == address.length()-1)
+            return address;
+        return address.substring(0, at+1) +
+            IDN.toUnicode(address.substring(at+1), IDN.ALLOW_UNASSIGNED);
     }
 }

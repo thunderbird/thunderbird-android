@@ -88,13 +88,30 @@ public class AddressTest {
     }
 
     @Test
+    public void construction_withALabel_shouldDecode() {
+        // Mutt and Exchange do this, and maybe Plesk too. Best fix it
+        // at the earliest opportinity.
+        Address a = new Address("grå@xn--gr-zia.org", "Grå katt");
+
+        assertEquals("Grå katt", a.getPersonal());
+        assertEquals("grå@grå.org", a.getAddress());
+    }
+
+    @Test
     public void parse_withQuotedEncodedPersonal_shouldDecode() {
         Address[] addresses = Address.parse(
                 "\"=?UTF-8?B?WWFob28h44OA44Kk44Os44Kv44OI44Kq44OV44Kh44O8?= \"<directoffer-master@mail.yahoo.co.jp>");
 
         assertEquals("Yahoo!ダイレクトオファー ", addresses[0].getPersonal());
         assertEquals("directoffer-master@mail.yahoo.co.jp", addresses[0].getAddress());
+    }
 
+
+    @Test
+    public void parse_withALabel_shouldDecode() {
+        Address[] addresses = Address.parse("info@xn--gr-zia.org");
+        assertEquals(1, addresses.length);
+        assertEquals("info@grå.org", addresses[0].getAddress());
     }
 
     /**
