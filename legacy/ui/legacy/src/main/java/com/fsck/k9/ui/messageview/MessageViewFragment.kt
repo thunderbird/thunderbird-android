@@ -1,6 +1,5 @@
 package com.fsck.k9.ui.messageview
 
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ContentResolver
 import android.content.Context
@@ -76,6 +75,10 @@ class MessageViewFragment :
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
 
+    private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
+        registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
+            onCreateDocumentResult(documentUri)
+        }
     private val chooseFolderForCopyLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
         registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.COPY)) { result ->
             onChooseFolderCopyResult(result)
@@ -589,12 +592,6 @@ class MessageViewFragment :
             val maskedRequestCode = requestCode xor REQUEST_MASK_CRYPTO_PRESENTER
             messageCryptoPresenter.onActivityResult(maskedRequestCode, resultCode, data)
         }
-
-        if (resultCode != Activity.RESULT_OK) return
-
-        when (requestCode) {
-            REQUEST_CODE_CREATE_DOCUMENT -> onCreateDocumentResult(data)
-        }
     }
 
     private fun onMessageDetailsResult(requestKey: String, result: Bundle) {
@@ -613,11 +610,11 @@ class MessageViewFragment :
         }
     }
 
-    private fun onCreateDocumentResult(data: Intent?) {
-        val documentUri = data?.data ?: return
-        require(documentUri.scheme == ContentResolver.SCHEME_CONTENT) { "content: URI required" }
+    private fun onCreateDocumentResult(uri: Uri?) {
+        if (uri == null) return
+        require(uri.scheme == ContentResolver.SCHEME_CONTENT) { "content: URI required" }
 
-        createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(documentUri)
+        createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(uri)
     }
 
     private fun onChooseFolderMoveResult(result: ChooseFolderResultContract.Result?) {
@@ -957,14 +954,13 @@ class MessageViewFragment :
     override fun onSaveAttachment(attachment: AttachmentViewInfo) {
         currentAttachmentViewInfo = attachment
 
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            type = attachment.mimeType
-            putExtra(Intent.EXTRA_TITLE, attachment.displayName)
-            addCategory(Intent.CATEGORY_OPENABLE)
-        }
-
         try {
-            startActivityForResult(intent, REQUEST_CODE_CREATE_DOCUMENT)
+            createDocumentLauncher.launch(
+                input = CreateDocumentResultContract.Input(
+                    title = attachment.displayName,
+                    mimeType = attachment.mimeType,
+                ),
+            )
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
         }
@@ -988,8 +984,6 @@ class MessageViewFragment :
 
         private const val STATE_WAS_MESSAGE_MARKED_AS_OPENED = "wasMessageMarkedAsOpened"
         private const val STATE_IS_ACTIVE = "isActive"
-
-        private const val REQUEST_CODE_CREATE_DOCUMENT = 1
 
         fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewFragment {
             return MessageViewFragment().withArguments(
