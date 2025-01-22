@@ -258,13 +258,13 @@ internal class RealImapConnection(
 
     private fun enableCapabilitiesIfSupported() {
         if (!hasCapability(Capabilities.ENABLE)) {
-	    return;
-	}
+            return
+        }
 
         try {
             val responses = executeSimpleCommand(Commands.ENABLE)
-	    val enabledResponse = EnabledResponse.parse(responses) ?: return
-	    enabled = enabledResponse.capabilities
+            val enabledResponse = EnabledResponse.parse(responses) ?: return
+            enabled = enabledResponse.capabilities
         } catch (e: NegativeImapResponseException) {
             Timber.d(e, "Ignoring negative response to ENABLE command")
         }

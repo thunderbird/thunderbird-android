@@ -64,6 +64,7 @@ class SmtpTransport(
     private var outputStream: OutputStream? = null
     private var responseParser: SmtpResponseParser? = null
     private var is8bitEncodingAllowed = false
+    private var areUnicodeAddressesAllowed = false
     private var isEnhancedStatusCodesProvided = false
     private var largestAcceptableMessage = 0
     private var retryOAuthWithNewToken = false
@@ -104,6 +105,7 @@ class SmtpTransport(
             var extensions = sendHello(helloName)
 
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME")
+            areUnicodeAddressesAllowed = extensions.containsKey("SMTPUTF8")
             isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES")
             isPipeliningSupported = extensions.containsKey("PIPELINING")
 
@@ -355,7 +357,12 @@ class SmtpTransport(
 
         var entireMessageSent = false
         try {
-            val mailFrom = constructSmtpMailFromCommand(message.from, is8bitEncodingAllowed)
+            val mailFrom =
+                constructSmtpMailFromCommand(
+                    message.from,
+                    is8bitEncodingAllowed,
+                    areUnicodeAddressesAllowed && message.usesAnyUnicodeAddresses(),
+                )
             if (isPipeliningSupported) {
                 val pipelinedCommands = buildList {
                     add(mailFrom)
@@ -404,13 +411,18 @@ class SmtpTransport(
         }
     }
 
-    private fun constructSmtpMailFromCommand(from: Array<Address>, is8bitEncodingAllowed: Boolean): String {
+    private fun constructSmtpMailFromCommand(
+        from: Array<Address>,
+        is8bitEncodingAllowed: Boolean,
+        canUseSmtputf8: Boolean,
+    ): String {
         val fromAddress = from.first().address
+        val smtputf8 = if (canUseSmtputf8) " SMTPUTF8" else ""
         return if (is8bitEncodingAllowed) {
-            String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress)
+            String.format("MAIL FROM:<%s>%s BODY=8BITMIME", fromAddress, smtputf8)
         } else {
             Timber.d("Server does not support 8-bit transfer encoding")
-            String.format("MAIL FROM:<%s>", fromAddress)
+            String.format("MAIL FROM:<%s>%s", fromAddress, smtputf8)
         }
     }
 
