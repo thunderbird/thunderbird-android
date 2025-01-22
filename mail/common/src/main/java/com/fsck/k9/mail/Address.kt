@@ -1,5 +1,6 @@
 package com.fsck.k9.mail
 
+import com.fsck.k9.mail.helper.Rfc822Token
 import com.fsck.k9.mail.helper.Rfc822Tokenizer
 import com.fsck.k9.mail.helper.TextUtils.isEmpty
 import java.io.Serializable
@@ -51,6 +52,8 @@ class Address @JvmOverloads constructor(
             } else {
                 Log.e(TAG, "Invalid address: %s", address)
             }
+        } else {
+            this.address = Rfc822Token.withULabelDomain(address) ?: address
         }
     }
 
