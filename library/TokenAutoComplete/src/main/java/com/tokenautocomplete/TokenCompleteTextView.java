@@ -612,7 +612,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
      */
     public void performCollapse(boolean hasFocus) {
         internalEditInProgress = true;
-        if (!hasFocus) {
+        if (!hasFocus  && getObjects().size() > 1) {
             // Display +x thingy/ellipse if appropriate
             final Editable text = getText();
             if (text != null && hiddenContent == null && lastLayout != null) {
