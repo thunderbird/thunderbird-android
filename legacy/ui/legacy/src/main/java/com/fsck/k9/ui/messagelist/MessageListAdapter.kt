@@ -395,6 +395,11 @@ class MessageListAdapter internal constructor(
 
             if (appearance.stars) {
                 holder.star.isSelected = isStarred
+                if (isStarred) {
+                    holder.star.clearColorFilter()
+                } else {
+                    holder.star.setColorFilter(foregroundColor)
+                }
                 holder.starClickArea.contentDescription = if (isStarred) {
                     res.getString(R.string.unflag_action)
                 } else {
@@ -436,6 +441,7 @@ class MessageListAdapter internal constructor(
             holder.date.setTextColor(foregroundColor)
             holder.date.text = displayDate
             holder.attachment.isVisible = hasAttachments
+            holder.attachment.setColorFilter(foregroundColor)
 
             val statusHolder = buildStatusHolder(isForwarded, isAnswered)
             if (statusHolder != null) {
