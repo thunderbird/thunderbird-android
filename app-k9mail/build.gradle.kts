@@ -38,7 +38,7 @@ android {
             "de",
             "el",
             "en",
-            "en_GB",
+            "en-rGB",
             "eo",
             "es",
             "et",
@@ -63,8 +63,8 @@ android {
             "nl",
             "nn",
             "pl",
-            "pt_BR",
-            "pt_PT",
+            "pt-rBR",
+            "pt-rPT",
             "ro",
             "ru",
             "sk",
@@ -75,8 +75,8 @@ android {
             "tr",
             "uk",
             "vi",
-            "zh_CN",
-            "zh_TW",
+            "zh-rCN",
+            "zh-rTW",
         )
     }
 
