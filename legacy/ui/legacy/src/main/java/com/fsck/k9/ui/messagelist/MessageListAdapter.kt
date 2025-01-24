@@ -512,8 +512,8 @@ class MessageListAdapter internal constructor(
     private fun selectBackgroundColor(selected: Boolean, read: Boolean, active: Boolean): Int {
         val backGroundAsReadIndicator = appearance.backGroundAsReadIndicator
         return when {
-            active -> activeItemBackgroundColor
             selected -> selectedItemBackgroundColor
+            active -> activeItemBackgroundColor
             backGroundAsReadIndicator && read -> readItemBackgroundColor
             backGroundAsReadIndicator && !read -> unreadItemBackgroundColor
             else -> regularItemBackgroundColor
@@ -523,8 +523,8 @@ class MessageListAdapter internal constructor(
     private fun selectForegroundColor(selected: Boolean, read: Boolean, active: Boolean): Int {
         val backGroundAsReadIndicator = appearance.backGroundAsReadIndicator
         return when {
-            active -> activeItemColor
             selected -> selectedItemColor
+            active -> activeItemColor
             backGroundAsReadIndicator && read -> readItemColor
             backGroundAsReadIndicator && !read -> unreadItemColor
             else -> regularItemColor
