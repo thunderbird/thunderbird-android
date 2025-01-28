@@ -40,7 +40,7 @@ internal fun FolderListItemBadge(
     if (expandableState !== null) {
         FolderExpandableBadge(
             isExpanded = expandableState.value,
-            onClick = { expandableState.value = !expandableState.value }
+            onClick = { expandableState.value = !expandableState.value },
         )
     }
 }
@@ -48,14 +48,14 @@ internal fun FolderListItemBadge(
 @Composable
 private fun FolderExpandableBadge(
     isExpanded: Boolean = false,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Icon(
         imageVector = if (isExpanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
         modifier = Modifier
             .size(MainTheme.sizes.iconLarge)
             .padding(end = MainTheme.spacings.quarter)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
     )
 }
 

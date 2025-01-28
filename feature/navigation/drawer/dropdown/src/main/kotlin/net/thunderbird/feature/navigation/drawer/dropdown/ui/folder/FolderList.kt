@@ -47,7 +47,7 @@ internal fun FolderList(
         var subFolderEntireName = ""
         for (subFolderName in splittedFolderName) {
             subFolderEntireName += subFolderName
-            var foundInChildren = false;
+            var foundInChildren = false
             for (children in currentTree.children) {
                 var childDisplayFolder = children.value
                 if (childDisplayFolder !is DisplayAccountFolder) continue
@@ -62,7 +62,15 @@ internal fun FolderList(
                 if (subFolderEntireName == displayFolder.folder.name) {
                     newChildren = TreeFolder(displayFolder)
                 } else {
-                    newChildren = TreeFolder(DisplayAccountFolder(displayFolder.accountId, Folder(0, subFolderEntireName, FolderType.REGULAR, displayFolder.folder.isLocalOnly), displayFolder.isInTopGroup, 0, 0))
+                    newChildren = TreeFolder(
+                        DisplayAccountFolder(
+                            displayFolder.accountId,
+                            Folder(0, subFolderEntireName, FolderType.REGULAR, displayFolder.folder.isLocalOnly),
+                            displayFolder.isInTopGroup,
+                            0,
+                            0,
+                        ),
+                    )
                 }
                 currentTree.children.add(newChildren)
                 currentTree = newChildren
@@ -84,7 +92,7 @@ internal fun FolderList(
     ) {
         items(
             items = rootFolder.children,
-            key = { it.value?.id ?: '0' }
+            key = { it.value?.id ?: '0' },
         ) { folder ->
             val currentDisplayFolder = folder.value
             if (currentDisplayFolder is DisplayAccountFolder) {
