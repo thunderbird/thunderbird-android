@@ -751,7 +751,7 @@ jobs:
           ls -l uploads/${PKG_FILE_PRETTY}
 
       - name: App Token Generate
-        uses: actions/create-github-app-token@c1a285145b9d317df6ced56c09f525b5c2b6f755 # v1.11.1
+        uses: actions/create-github-app-token@136412a57a7081aa63c935a2cc2918f76c34f514 # v1.11.2
         if: ${{ contains(matrix.releaseTarget, 'github') && vars.RELEASER_APP_CLIENT_ID }}
         id: app-token
         with:
