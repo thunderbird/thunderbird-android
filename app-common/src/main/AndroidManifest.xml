@@ -11,4 +11,12 @@
         android:usesCleartextTraffic="true"
         />
 
+    <queries>
+        <!-- Allow access to external text processing actions so they can be displayed in the text selection toolbar -->
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT" />
+            <data android:mimeType="text/plain" />
+        </intent>
+    </queries>
+
 </manifest>
