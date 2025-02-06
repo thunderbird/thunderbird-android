@@ -116,15 +116,9 @@ internal class DrawerViewModel(
 
             Event.OnAccountSelectorClick -> {
                 viewModelScope.launch {
-                    saveDrawerConfig.invoke(
+                    saveDrawerConfig(
                         state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
-                    ).collect {
-                        updateState {
-                            it.copy(
-                                config = it.config.copy(showAccountSelector = it.config.showAccountSelector.not()),
-                            )
-                        }
-                    }
+                    )
                 }
             }
             Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
