@@ -8,6 +8,7 @@ import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
+import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
@@ -26,10 +27,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class DrawerViewModelTest {
@@ -359,20 +367,54 @@ internal class DrawerViewModelTest {
             }
         }
 
+    @Suppress("MaxLineLength")
     @Test
-    fun `should change state when OnAccountSelectorClick event is received`() = runMviTest {
-        val testSubject = createTestSubject()
-        val turbines = turbinesWithInitialStateCheck(testSubject, State())
+    fun `when initial state has drawerConfigWithAccountSelectorDisabled saveDrawerConfig should receive drawerConfigWithAccountSelectorEnabled  when OnAccountSelectorClick event is received`() = runTest {
         val drawerConfigWithAccountSelectorEnabled = createDrawerConfig(showAccountSelector = true)
         val drawerConfigWithAccountSelectorDisabled = createDrawerConfig(showAccountSelector = false)
 
+        val saveDrawerConfig: UseCase.SaveDrawerConfig = mock()
+        whenever(
+            saveDrawerConfig.invoke(any<DrawerConfig>()),
+        ).thenReturn(flowOf(Unit))
+
+        val testSubject = createTestSubject(
+            initialState = State(config = drawerConfigWithAccountSelectorDisabled),
+            saveDrawerConfig = saveDrawerConfig,
+            drawerConfigFlow = flowOf(drawerConfigWithAccountSelectorDisabled),
+        )
+
+        val captor = argumentCaptor<DrawerConfig>()
+
         testSubject.event(Event.OnAccountSelectorClick)
+        advanceUntilIdle()
+        verify(saveDrawerConfig, times(1)).invoke(captor.capture())
+        assertThat(captor.firstValue).isEqualTo(drawerConfigWithAccountSelectorEnabled)
+    }
 
-        assertThat(turbines.awaitStateItem()).isEqualTo(State(config = drawerConfigWithAccountSelectorDisabled))
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when initial state has drawerConfigWithAccountSelectorEnabled saveDrawerConfig should receive drawerConfigWithAccountSelectorDisabled  when OnAccountSelectorClick event is received`() = runTest {
+        val drawerConfigWithAccountSelectorEnabled = createDrawerConfig(showAccountSelector = true)
+        val drawerConfigWithAccountSelectorDisabled = createDrawerConfig(showAccountSelector = false)
+
+        val saveDrawerConfig: UseCase.SaveDrawerConfig = mock()
+        whenever(
+            saveDrawerConfig.invoke(any<DrawerConfig>()),
+        ).thenReturn(flowOf(Unit))
+
+        val testSubject = createTestSubject(
+            initialState = State(config = drawerConfigWithAccountSelectorEnabled),
+            saveDrawerConfig = saveDrawerConfig,
+            drawerConfigFlow = flowOf(drawerConfigWithAccountSelectorEnabled),
+        )
+
+        val captor = argumentCaptor<DrawerConfig>()
 
         testSubject.event(Event.OnAccountSelectorClick)
-
-        assertThat(turbines.awaitStateItem()).isEqualTo(State(config = drawerConfigWithAccountSelectorEnabled))
+        advanceUntilIdle()
+        verify(saveDrawerConfig, times(1)).invoke(captor.capture())
+        assertThat(captor.firstValue).isEqualTo(drawerConfigWithAccountSelectorDisabled)
     }
 
     @Test
@@ -406,6 +448,7 @@ internal class DrawerViewModelTest {
         displayFoldersFlow: Flow<Map<String, List<DisplayFolder>>> = flow { emit(emptyMap()) },
         syncAccountFlow: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
         syncAllAccounts: Flow<Result<Unit>> = flow { emit(Result.success(Unit)) },
+        saveDrawerConfig: UseCase.SaveDrawerConfig = mock(),
     ): DrawerViewModel {
         return DrawerViewModel(
             initialState = initialState,
@@ -416,7 +459,7 @@ internal class DrawerViewModelTest {
             },
             syncAccount = { syncAccountFlow },
             syncAllAccounts = { syncAllAccounts },
-            saveDrawerConfig = { flow { emit(Unit) } },
+            saveDrawerConfig = saveDrawerConfig,
         )
     }
 
