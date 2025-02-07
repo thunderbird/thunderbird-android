@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences
 
 import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
-import app.k9mail.legacy.preferences.DrawerConfigManager
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineScope
@@ -41,12 +40,12 @@ internal class RealDrawerConfigManager(
     }
 
     @Synchronized
-    override fun getDrawerConfig(): DrawerConfig {
+    override fun getConfig(): DrawerConfig {
         return drawerConfig ?: loadDrawerConfig().also { drawerConfig = it }
     }
 
-    override fun getDrawerConfigFlow(): Flow<DrawerConfig> {
-        getDrawerConfig()
+    override fun getConfigFlow(): Flow<DrawerConfig> {
+        getConfig()
         return drawerConfigFlow.distinctUntilChanged()
     }
 

@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences
 
 import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.preferences.DrawerConfigManager
 import app.k9mail.legacy.preferences.GeneralSettingsManager
 import com.fsck.k9.Preferences
 import org.koin.core.qualifier.named

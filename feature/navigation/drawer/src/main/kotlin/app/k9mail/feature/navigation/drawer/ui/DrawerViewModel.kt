@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -115,11 +116,9 @@ internal class DrawerViewModel(
             }
 
             Event.OnAccountSelectorClick -> {
-                viewModelScope.launch {
-                    saveDrawerConfig(
-                        state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
-                    )
-                }
+                saveDrawerConfig(
+                    state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
+                ).launchIn(viewModelScope)
             }
             Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
             Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
