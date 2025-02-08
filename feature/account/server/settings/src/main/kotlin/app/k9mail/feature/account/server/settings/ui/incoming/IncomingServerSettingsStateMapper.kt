@@ -19,7 +19,10 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toIncomingServerSettingsState()
     ?: State(
         username = StringInputField(value = emailAddress ?: ""),
+        server = StringInputField(value = emailAddress?.toInvalidEmailDomain() ?: ""),
     )
+
+private fun String.toInvalidEmailDomain() = ".${this.substringAfter("@")}"
 
 private fun ServerSettings.toIncomingServerSettingsState(): State {
     return State(
