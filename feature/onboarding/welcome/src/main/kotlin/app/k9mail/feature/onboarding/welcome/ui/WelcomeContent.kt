@@ -1,7 +1,5 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
-
-import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,7 +19,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -39,19 +35,15 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
@@ -78,7 +70,7 @@ internal fun WelcomeContent(
 
     Surface(modifier = modifier) {
         Box(Modifier.fillMaxSize()) {
-        ResponsiveContent {
+            ResponsiveContent {
                 LazyColumnWithHeaderFooter(
                     state = lazyListState,
                     verticalArrangement = Arrangement.SpaceEvenly,
@@ -93,7 +85,7 @@ internal fun WelcomeContent(
                                         put(0, coordinates.size.height)
                                     }
                                 },
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             WelcomeLogo()
                         }
@@ -107,7 +99,7 @@ internal fun WelcomeContent(
                                     itemHeights.value = itemHeights.value.toMutableMap().apply {
                                         put(totalItemsCount - 1, coordinates.size.height)
                                     }
-                                }
+                                },
                         ) {
                             WelcomeFooter(
                                 showImportButton = showImportButton,
@@ -115,7 +107,7 @@ internal fun WelcomeContent(
                                 onImportClick = onImportClick,
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = MainTheme.spacings.quadruple)
+                                    .padding(top = MainTheme.spacings.quadruple),
                             )
                         }
                     },
@@ -127,9 +119,8 @@ internal fun WelcomeContent(
                                     .onGloballyPositioned { coordinates ->
                                         itemHeights.value = itemHeights.value.toMutableMap().apply {
                                             put(1, coordinates.size.height)
-
                                         }
-                                    }
+                                    },
                             ) {
                                 WelcomeTitle(
                                     title = appName,
@@ -145,8 +136,7 @@ internal fun WelcomeContent(
                                         itemHeights.value = itemHeights.value.toMutableMap().apply {
                                             put(2, coordinates.size.height)
                                         }
-
-                                    }
+                                    },
                             ) {
                                 WelcomeMessage(
                                     modifier = Modifier.defaultItemModifier(),
@@ -162,13 +152,11 @@ internal fun WelcomeContent(
                                         itemHeights.value = itemHeights.value.toMutableMap().apply {
                                             put(3, coords.size.height)
                                         }
-                                    }
+                                    },
                             )
                         }
-
-                    }
+                    },
                 )
-
             }
             VerticalScrollIndicator(
                 listState = lazyListState,
@@ -176,16 +164,12 @@ internal fun WelcomeContent(
                 itemHeights = itemHeights.value,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
-                    .padding(end = MainTheme.spacings.quarter)
+                    .padding(end = MainTheme.spacings.quarter),
 
             )
         }
-
     }
 }
-
-
-
 
 @Composable
 fun VerticalScrollIndicator(
@@ -198,7 +182,7 @@ fun VerticalScrollIndicator(
 
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.TopEnd
+        contentAlignment = Alignment.TopEnd,
     ) {
         val density = LocalDensity.current
         val viewportHeightPx = with(density) { maxHeight.toPx() }
@@ -260,43 +244,15 @@ fun VerticalScrollIndicator(
                 .alpha(animatedAlpha)
                 .draggable(
                     orientation = Orientation.Vertical,
-                    state = draggableState
+                    state = draggableState,
                 )
                 .background(
                     color = MainTheme.colors.onSurfaceVariant,
-                    shape = MainTheme.shapes.extraSmall
-                )
+                    shape = MainTheme.shapes.extraSmall,
+                ),
         )
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @Composable
 private fun WelcomeLogo(
