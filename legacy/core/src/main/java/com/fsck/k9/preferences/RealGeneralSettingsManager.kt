@@ -6,6 +6,7 @@ import app.k9mail.legacy.preferences.AppTheme
 import app.k9mail.legacy.preferences.BackgroundSync
 import app.k9mail.legacy.preferences.GeneralSettings
 import app.k9mail.legacy.preferences.GeneralSettingsManager
+import app.k9mail.legacy.preferences.SettingsChangePublisher
 import app.k9mail.legacy.preferences.SubTheme
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
@@ -30,6 +31,7 @@ import timber.log.Timber
 internal class RealGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
+    private val changePublisher: SettingsChangePublisher,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GeneralSettingsManager {
     private val settingsFlow = MutableSharedFlow<GeneralSettings>(replay = 1)
@@ -88,6 +90,8 @@ internal class RealGeneralSettingsManager(
         K9.save(editor)
         writeSettings(editor, settings)
         editor.commit()
+
+        changePublisher.publish()
     }
 
     @Synchronized
