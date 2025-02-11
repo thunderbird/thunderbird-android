@@ -35,6 +35,7 @@ val preferencesModule = module {
         RealDrawerConfigManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
+            changeBroker = get(),
         )
     } bind DrawerConfigManager::class
 

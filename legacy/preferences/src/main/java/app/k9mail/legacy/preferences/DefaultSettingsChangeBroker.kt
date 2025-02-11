@@ -19,7 +19,9 @@ class DefaultSettingsChangeBroker(
     }
 
     override fun publish() {
-        for (subscriber in subscribers) {
+        val currentSubscribers = synchronized(lock) { HashSet(subscribers) }
+
+        for (subscriber in currentSubscribers) {
             subscriber.receive()
         }
     }
