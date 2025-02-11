@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
-<!--
-     The master change log is kept in res/raw/changelog_master.xml.
-     Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
--->
 <changelog>
     <release version="9.0b3" versioncode="11" date="2024-12-11">
         <change>Hyperlink added to Thunderbird website on funding page</change>
