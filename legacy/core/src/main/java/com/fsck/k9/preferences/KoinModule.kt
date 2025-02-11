@@ -26,6 +26,12 @@ val preferencesModule = module {
             coroutineScope = get(named("AppCoroutineScope")),
         )
     } bind GeneralSettingsManager::class
+    single {
+        RealDrawerConfigManager(
+            preferences = get(),
+            coroutineScope = get(named("AppCoroutineScope")),
+        )
+    } bind DrawerConfigManager::class
 
     factory { SettingsFileParser() }
 
