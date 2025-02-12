@@ -12,7 +12,7 @@ The documentation is written using standard Markdown syntax, including GitHub fl
 
 For creating diagrams, we use the [mermaid](https://mermaid-js.github.io/mermaid/#/) syntax. You can include mermaid diagrams in your markdown files by using the following syntax:
 
-````
+````markdown
 ```mermaid
 graph TD;
     A-->B;
