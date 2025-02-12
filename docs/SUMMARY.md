@@ -23,4 +23,4 @@
 
 ---
 
-[How to Document](add-documentation.md)
+[How to Document](how-to-document.md)
