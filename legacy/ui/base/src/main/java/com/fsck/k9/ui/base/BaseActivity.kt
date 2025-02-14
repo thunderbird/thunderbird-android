@@ -11,12 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.lifecycle.asLiveData
 import com.fsck.k9.controller.push.PushController
 import java.util.Locale
+import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
 
@@ -44,7 +46,12 @@ abstract class BaseActivity(
     override fun onCreate(savedInstanceState: Bundle?) {
         initializeTheme()
         initializePushController()
+
         enableEdgeToEdge()
+
+        WindowCompat.getInsetsController(window, window.decorView).apply {
+            isAppearanceLightStatusBars = themeManager.appTheme == Theme.LIGHT
+        }
 
         super.onCreate(savedInstanceState)
 
@@ -86,6 +93,7 @@ abstract class BaseActivity(
             ?: error("K9 layouts must provide a toolbar with id='toolbar'.")
 
         setSupportActionBar(toolbar)
+
         ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
             val insets = windowsInsets.getInsets(systemBars() or displayCutout())
             v.setPadding(insets.left, insets.top, insets.right, 0)
