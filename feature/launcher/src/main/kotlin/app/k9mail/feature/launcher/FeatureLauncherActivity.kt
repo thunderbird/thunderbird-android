@@ -12,6 +12,7 @@ import app.k9mail.feature.account.edit.navigation.withAccountUuid
 import app.k9mail.feature.account.setup.navigation.NAVIGATION_ROUTE_ACCOUNT_SETUP
 import app.k9mail.feature.launcher.ui.FeatureLauncherApp
 import app.k9mail.feature.onboarding.main.navigation.NAVIGATION_ROUTE_ONBOARDING
+import net.discdd.k9.onboarding.navigation.NAVIGATION_ROUTE_DDD_ONBOARDING
 import com.fsck.k9.ui.base.K9Activity
 
 class FeatureLauncherActivity : K9Activity() {
@@ -27,8 +28,15 @@ class FeatureLauncherActivity : K9Activity() {
     }
 
     companion object {
-        @JvmStatic
-        fun launchOnboarding(context: Context) {
+        @JvmStatic fun launchDddOnboarding(context: Context) {
+            val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
+                data = NAVIGATION_ROUTE_DDD_ONBOARDING.toDeepLinkUri()
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            context.startActivity(intent)
+        }
+
+        @JvmStatic fun launchOnboarding(context: Context) {
             val intent = Intent(context, FeatureLauncherActivity::class.java).apply {
                 data = NAVIGATION_ROUTE_ONBOARDING.toDeepLinkUri()
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -141,7 +141,7 @@ open class MessageList :
         deleteIncompleteAccounts(accounts)
         val hasAccountSetup = accounts.any { it.isFinishedSetup }
         if (!hasAccountSetup) {
-            FeatureLauncherActivity.launchOnboarding(this)
+            FeatureLauncherActivity.launchDddOnboarding(this)
             finish()
             return
         }

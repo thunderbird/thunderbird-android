@@ -10,6 +10,7 @@ import app.k9mail.feature.account.setup.navigation.accountSetupRoute
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.AccountSetupFinishedLauncher
 import app.k9mail.feature.onboarding.main.navigation.NAVIGATION_ROUTE_ONBOARDING
 import app.k9mail.feature.onboarding.main.navigation.onboardingRoute
+import net.discdd.k9.onboarding.navigation.dddOnboardingRoute
 import org.koin.compose.koinInject
 
 @Composable
@@ -26,6 +27,12 @@ fun FeatureLauncherNavHost(
         startDestination = NAVIGATION_ROUTE_ONBOARDING,
         modifier = modifier,
     ) {
+        dddOnboardingRoute(
+            onFinish = { accountUuid ->
+                accountSetupFinishedLauncher.launch(accountUuid)
+                activity.finish()
+            }
+        )
         onboardingRoute(
             onFinish = { accountUuid ->
                 accountSetupFinishedLauncher.launch(accountUuid)

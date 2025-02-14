@@ -133,3 +133,4 @@ include(
     ":library:html-cleaner",
 )
 include(":backend:ddd")
+include(":feature:dddonboarding")

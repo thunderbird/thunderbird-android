@@ -17,6 +17,9 @@ out/
 *.ap_
 *.class
 *.dex
+*.classpath
+*.project
+*.settings/
 
 # Keystore files
 *.jks

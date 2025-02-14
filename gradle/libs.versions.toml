@@ -94,6 +94,9 @@ tokenautocomplete = "4.0.0-beta01-k9mail02"
 turbine = "0.13.0"
 xmlpull = "1.0"
 junitVersion = "1.1.5"
+navigationCommonKtx = "2.8.3"
+navigationRuntimeKtx = "2.8.3"
+navigationCompose = "2.8.3"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -229,6 +232,11 @@ tokenautocomplete = { module = "de.cketti.temp:tokenautocomplete", version.ref =
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version.ref = "xmlpull" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version.ref = "navigationCommonKtx" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 
 [bundles]
 shared-jvm-main = [
