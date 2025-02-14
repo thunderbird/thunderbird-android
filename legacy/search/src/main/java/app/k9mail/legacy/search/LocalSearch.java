@@ -30,7 +30,6 @@ import app.k9mail.legacy.search.api.SearchSpecification;
 public class LocalSearch implements SearchSpecification {
 
     private String id;
-    private boolean mPredefined;
     private boolean mManualSearch = false;
 
     // since the uuid isn't in the message table it's not in the tree neither
@@ -47,43 +46,6 @@ public class LocalSearch implements SearchSpecification {
      * a name!
      */
     public LocalSearch() {}
-
-    /**
-     * Use this constructor when you know what you're doing. Normally it's only used
-     * when restoring these search objects from the database.
-     *
-     * @param searchConditions SearchConditions, may contains flags and folders
-     * @param accounts Relative Account's uuid's
-     * @param predefined Is this a predefined search or a user created one?
-     */
-    protected LocalSearch(ConditionsTreeNode searchConditions, String accounts, boolean predefined) {
-        mConditions = searchConditions;
-        mPredefined = predefined;
-        mLeafSet = new HashSet<>();
-        if (mConditions != null) {
-            mLeafSet.addAll(mConditions.getLeafSet());
-        }
-
-        // initialize accounts
-        if (accounts != null) {
-            for (String account : accounts.split(",")) {
-                mAccountUuids.add(account);
-            }
-        } else {
-            // impossible but still not unrecoverable
-        }
-    }
-
-    @Override
-    public LocalSearch clone() {
-        ConditionsTreeNode conditions = (mConditions == null) ? null : mConditions.cloneTree();
-
-        LocalSearch copy = new LocalSearch(conditions, null, mPredefined);
-        copy.mManualSearch = mManualSearch;
-        copy.mAccountUuids = new HashSet<>(mAccountUuids);
-
-        return copy;
-    }
 
     ///////////////////////////////////////////////////////////////
     // Public manipulation methods
@@ -106,28 +68,6 @@ public class LocalSearch implements SearchSpecification {
      */
     public void addAccountUuid(String uuid) {
         mAccountUuids.add(uuid);
-    }
-
-    /**
-     * Adds all the account uuids in the provided array to
-     * be matched by the search.
-     *
-     * @param accountUuids
-     */
-    public void addAccountUuids(String[] accountUuids) {
-        for (String acc : accountUuids) {
-            addAccountUuid(acc);
-        }
-    }
-
-    /**
-     * Removes an account UUID from the current search.
-     *
-     * @param uuid Account UUID to remove.
-     * @return True if removed, false otherwise.
-     */
-    public boolean removeAccountUuid(String uuid) {
-        return mAccountUuids.remove(uuid);
     }
 
     /**
@@ -277,15 +217,6 @@ public class LocalSearch implements SearchSpecification {
         return (id == null) ? "" : id;
     }
 
-    /**
-     * Checks if this search was hard coded and shipped with K-9
-     *
-     * @return True is search was shipped with K-9
-     */
-    public boolean isPredefined() {
-        return mPredefined;
-    }
-
     public boolean isManualSearch() {
         return mManualSearch;
     }
@@ -335,7 +266,6 @@ public class LocalSearch implements SearchSpecification {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeByte((byte) (mPredefined ? 1 : 0));
         dest.writeByte((byte) (mManualSearch ? 1 : 0));
         dest.writeStringList(new ArrayList<>(mAccountUuids));
         dest.writeParcelable(mConditions, flags);
@@ -357,7 +287,6 @@ public class LocalSearch implements SearchSpecification {
 
     public LocalSearch(Parcel in) {
         id = in.readString();
-        mPredefined = (in.readByte() == 1);
         mManualSearch = (in.readByte() == 1);
         mAccountUuids.addAll(in.createStringArrayList());
         mConditions = in.readParcelable(LocalSearch.class.getClassLoader());

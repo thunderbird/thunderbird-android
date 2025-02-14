@@ -1,18 +1,12 @@
 package app.k9mail.legacy.search;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Stack;
 import java.util.Set;
 
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import app.k9mail.legacy.search.api.SearchAttribute;
 import app.k9mail.legacy.search.api.SearchCondition;
-import app.k9mail.legacy.search.api.SearchField;
 
 
 /**
@@ -39,75 +33,10 @@ public class ConditionsTreeNode implements Parcelable {
     public Operator mValue;
     public SearchCondition mCondition;
 
-    /*
-     * Used for storing and retrieving the tree to/from the database.
-     * The algorithm is called "modified preorder tree traversal".
-     */
-    public int mLeftMPTTMarker;
-    public int mRightMPTTMarker;
-
 
     ///////////////////////////////////////////////////////////////
     // Static Helpers to restore a tree from a database cursor
     ///////////////////////////////////////////////////////////////
-    /**
-     * Builds a condition tree starting from a database cursor. The cursor
-     * should point to rows representing the nodes of the tree.
-     *
-     * @param cursor Cursor pointing to the first of a bunch or rows. Each rows
-     *  should contains 1 tree node.
-     * @return A condition tree.
-     */
-    public static ConditionsTreeNode buildTreeFromDB(Cursor cursor) {
-        Stack<ConditionsTreeNode> stack = new Stack<>();
-        ConditionsTreeNode tmp = null;
-
-        // root node
-        if (cursor.moveToFirst()) {
-            tmp = buildNodeFromRow(cursor);
-            stack.push(tmp);
-        }
-
-        // other nodes
-        while (cursor.moveToNext()) {
-            tmp = buildNodeFromRow(cursor);
-            if (tmp.mRightMPTTMarker < stack.peek().mRightMPTTMarker) {
-                stack.peek().mLeft = tmp;
-                stack.push(tmp);
-            } else {
-                while (stack.peek().mRightMPTTMarker < tmp.mRightMPTTMarker) {
-                    stack.pop();
-                }
-                stack.peek().mRight = tmp;
-            }
-        }
-        return tmp;
-    }
-
-    /**
-     * Converts a single database row to a single condition node.
-     *
-     * @param cursor Cursor pointing to the row we want to convert.
-     * @return A single ConditionsTreeNode
-     */
-    private static ConditionsTreeNode buildNodeFromRow(Cursor cursor) {
-        ConditionsTreeNode result = null;
-        SearchCondition condition = null;
-
-        Operator tmpValue = ConditionsTreeNode.Operator.valueOf(cursor.getString(5));
-
-        if (tmpValue == Operator.CONDITION) {
-            condition = new SearchCondition(SearchField.valueOf(cursor.getString(0)),
-                    SearchAttribute.valueOf(cursor.getString(2)), cursor.getString(1));
-        }
-
-        result = new ConditionsTreeNode(condition);
-        result.mValue = tmpValue;
-        result.mLeftMPTTMarker = cursor.getInt(3);
-        result.mRightMPTTMarker = cursor.getInt(4);
-
-        return result;
-    }
 
 
     ///////////////////////////////////////////////////////////////
@@ -125,35 +54,6 @@ public class ConditionsTreeNode implements Parcelable {
         mCondition = null;
     }
 
-
-    /* package */ ConditionsTreeNode cloneTree() {
-        if (mParent != null) {
-            throw new IllegalStateException("Can't call cloneTree() for a non-root node");
-        }
-
-        ConditionsTreeNode copy = new ConditionsTreeNode(mCondition.clone());
-
-        copy.mLeftMPTTMarker = mLeftMPTTMarker;
-        copy.mRightMPTTMarker = mRightMPTTMarker;
-
-        copy.mLeft = (mLeft == null) ? null : mLeft.cloneNode(copy);
-        copy.mRight = (mRight == null) ? null : mRight.cloneNode(copy);
-
-        return copy;
-    }
-
-    private ConditionsTreeNode cloneNode(ConditionsTreeNode parent) {
-        ConditionsTreeNode copy = new ConditionsTreeNode(parent, mValue);
-
-        copy.mCondition = mCondition.clone();
-        copy.mLeftMPTTMarker = mLeftMPTTMarker;
-        copy.mRightMPTTMarker = mRightMPTTMarker;
-
-        copy.mLeft = (mLeft == null) ? null : mLeft.cloneNode(copy);
-        copy.mRight = (mRight == null) ? null : mRight.cloneNode(copy);
-
-        return copy;
-    }
 
     ///////////////////////////////////////////////////////////////
     // Public modifiers
@@ -206,17 +106,6 @@ public class ConditionsTreeNode implements Parcelable {
         return or(tmp);
     }
 
-    /**
-     * This applies the MPTT labeling to the subtree of which this node
-     * is the root node.
-     *
-     * For a description on MPTT see:
-     * http://www.sitepoint.com/hierarchical-data-database-2/
-     */
-    public void applyMPTTLabel() {
-        applyMPTTLabel(1);
-    }
-
 
     ///////////////////////////////////////////////////////////////
     // Public accessors
@@ -236,34 +125,6 @@ public class ConditionsTreeNode implements Parcelable {
     public Set<ConditionsTreeNode> getLeafSet() {
         Set<ConditionsTreeNode> leafSet = new HashSet<>();
         return getLeafSet(leafSet);
-    }
-
-    /**
-     * Returns a list of all the nodes in the subtree of which this node
-     * is the root. The list contains the nodes in a pre traversal order.
-     *
-     * @return List of all nodes in subtree in preorder.
-     */
-    public List<ConditionsTreeNode> preorder() {
-        List<ConditionsTreeNode> result = new ArrayList<>();
-        Stack<ConditionsTreeNode> stack = new Stack<>();
-        stack.push(this);
-
-        while (!stack.isEmpty()) {
-            ConditionsTreeNode current = stack.pop();
-
-            if (current.mLeft != null) {
-                stack.push(current.mLeft);
-            }
-
-            if (current.mRight != null) {
-                stack.push(current.mRight);
-            }
-
-            result.add(current);
-        }
-
-        return result;
     }
 
 
@@ -344,29 +205,6 @@ public class ConditionsTreeNode implements Parcelable {
             mRight.getLeafSet(leafSet);
         }
         return leafSet;
-    }
-
-    /**
-     * This applies the MPTT labeling to the subtree of which this node
-     * is the root node.
-     *
-     * For a description on MPTT see:
-     * http://www.sitepoint.com/hierarchical-data-database-2/
-     */
-    private int applyMPTTLabel(int label) {
-        mLeftMPTTMarker = label;
-
-        if (mLeft != null) {
-            label = mLeft.applyMPTTLabel(label += 1);
-        }
-
-        if (mRight != null) {
-            label = mRight.applyMPTTLabel(label += 1);
-        }
-
-        ++label;
-        mRightMPTTMarker = label;
-        return label;
     }
 
 
