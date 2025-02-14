@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
@@ -21,6 +22,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
@@ -484,6 +486,19 @@ class MessageListFragment :
 
     private fun enableFloatingActionButton(view: View) {
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
+
+        ViewCompat.setOnApplyWindowInsetsListener(floatingActionButton) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val margin = resources.getDimensionPixelSize(R.dimen.floatingActionButtonMargin)
+
+            view.updateLayoutParams<MarginLayoutParams> {
+                leftMargin = margin + insets.left
+                bottomMargin = margin + insets.bottom
+                rightMargin = margin + insets.right
+            }
+
+            WindowInsetsCompat.CONSUMED
+        }
 
         floatingActionButton.setOnClickListener {
             onCompose()
