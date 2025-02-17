@@ -1,6 +1,6 @@
-package com.fsck.k9.mail;
+package com.fsck.k9.mail
 
-public enum FolderType {
+enum class FolderType {
     REGULAR,
     INBOX,
     OUTBOX,
