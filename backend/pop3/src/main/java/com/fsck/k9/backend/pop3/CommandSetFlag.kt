@@ -2,40 +2,33 @@ package com.fsck.k9.backend.pop3
 
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
-import com.fsck.k9.mail.store.pop3.Pop3Message
 import com.fsck.k9.mail.store.pop3.Pop3Store
-import java.util.ArrayList
 
-internal class CommandSetFlag(pop3Store: Pop3Store) {
-    private val pop3Store: Pop3Store
-
-    init {
-        this.pop3Store = pop3Store
-    }
+internal class CommandSetFlag(private val pop3Store: Pop3Store) {
 
     @Throws(MessagingException::class)
     fun setFlag(
-        folderServerId: String, messageServerIds: MutableList<String?>, flag: Flag,
-        newState: Boolean
+        folderServerId: String,
+        messageServerIds: List<String>,
+        flag: Flag,
+        newState: Boolean,
     ) {
-        val remoteFolder = pop3Store.getFolder(folderServerId)
-        if (!remoteFolder.isFlagSupported(flag)) {
+        val folder = pop3Store.getFolder(folderServerId)
+        if (!folder.isFlagSupported(flag)) {
             return
         }
 
         try {
-            remoteFolder.open()
-            val messages: MutableList<Pop3Message?> = ArrayList<Pop3Message?>()
-            for (uid in messageServerIds) {
-                messages.add(remoteFolder.getMessage(uid))
-            }
+            folder.open()
 
+            val messages = messageServerIds.map { folder.getMessage(it) }
             if (messages.isEmpty()) {
                 return
             }
-            remoteFolder.setFlags(messages, mutableSetOf<Flag?>(flag), newState)
+
+            folder.setFlags(messages, setOf(flag), newState)
         } finally {
-            remoteFolder.close()
+            folder.close()
         }
     }
 }
