@@ -1,6 +1,6 @@
-package com.fsck.k9.mail;
+package com.fsck.k9.mail
 
-public enum AuthType {
+enum class AuthType {
     /*
      * The names of these authentication types are saved as strings when
      * settings are exported and are also saved as part of the Server URI stored

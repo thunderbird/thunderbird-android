@@ -8,5 +8,5 @@ enum class FolderType {
     SENT,
     TRASH,
     SPAM,
-    ARCHIVE
+    ARCHIVE,
 }
