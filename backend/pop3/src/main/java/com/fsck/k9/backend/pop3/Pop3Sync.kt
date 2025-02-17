@@ -22,16 +22,11 @@ import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
 
-internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop3Store: Pop3Store) {
-    private val accountName: String
-    private val backendStorage: BackendStorage
-    private val remoteStore: Pop3Store
-
-    init {
-        this.accountName = accountName
-        this.backendStorage = backendStorage
-        this.remoteStore = pop3Store
-    }
+internal class Pop3Sync(
+    private val accountName: String,
+    private val backendStorage: BackendStorage,
+    private val remoteStore: Pop3Store,
+) {
 
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         synchronizeMailboxSynchronous(folder, syncConfig, listener)
@@ -117,7 +112,9 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
 
                 Timber.v(
                     "SYNC: About to get messages %d through %d for folder %s",
-                    remoteStart, remoteMessageCount, folder
+                    remoteStart,
+                    remoteMessageCount,
+                    folder,
                 )
 
                 val headerProgress = AtomicInteger(0)
@@ -178,8 +175,11 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
              * Now we download the actual content of messages.
              */
             val newMessages = downloadMessages(
-                syncConfig, remoteFolder, backendFolder, remoteMessages,
-                listener
+                syncConfig,
+                remoteFolder,
+                backendFolder,
+                remoteMessages,
+                listener,
             )
 
             listener.folderStatusChanged(folder)
@@ -193,7 +193,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
                 accountName,
                 folder,
                 System.currentTimeMillis(),
-                newMessages
+                newMessages,
             )
 
             listener.syncFinished(folder)
@@ -231,8 +231,9 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
     }
 
     private fun updateMoreMessages(
-        remoteFolder: Pop3Folder, backendFolder: BackendFolder,
-        remoteStart: Int
+        remoteFolder: Pop3Folder,
+        backendFolder: BackendFolder,
+        remoteStart: Int,
     ) {
         if (remoteStart == 1) {
             backendFolder.setMoreMessages(BackendFolder.MoreMessages.FALSE)
@@ -247,9 +248,11 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
 
     @Throws(MessagingException::class)
     private fun downloadMessages(
-        syncConfig: SyncConfig, remoteFolder: Pop3Folder,
-        backendFolder: BackendFolder, inputMessages: MutableList<Pop3Message?>,
-        listener: SyncListener
+        syncConfig: SyncConfig,
+        remoteFolder: Pop3Folder,
+        backendFolder: BackendFolder,
+        inputMessages: MutableList<Pop3Message?>,
+        listener: SyncListener,
     ): Int {
         val earliestDate = syncConfig.earliestPollDate
         val downloadStarted = Date() // now
@@ -293,7 +296,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
 
             fetchUnsyncedMessages(
                 syncConfig, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress,
-                todo, fp, listener
+                todo, fp, listener,
             )
 
             Timber.d("SYNC: Synced unsynced messages for folder %s", folder)
@@ -301,7 +304,9 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
 
         Timber.d(
             "SYNC: Have %d large messages and %d small messages out of %d unsynced messages",
-            largeMessages.size, smallMessages.size, unsyncedMessages.size
+            largeMessages.size,
+            smallMessages.size,
+            unsyncedMessages.size,
         )
 
         unsyncedMessages.clear()
@@ -311,7 +316,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
          * download of 625k.
          */
         var fp = FetchProfile()
-        //TODO: Only fetch small and large messages if we have some
+        // TODO: Only fetch small and large messages if we have some
         fp.add(FetchProfile.Item.BODY)
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
@@ -331,7 +336,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
             newMessages,
             todo,
             fp,
-            listener
+            listener,
         )
         largeMessages.clear()
 
@@ -367,7 +372,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
         backendFolder: BackendFolder,
         unsyncedMessages: MutableList<Pop3Message>,
         syncFlagMessages: MutableList<Pop3Message?>,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val messageServerId = message.getUid()
         if (message.isSet(Flag.DELETED)) {
@@ -419,20 +424,22 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
 
     @Throws(MessagingException::class)
     private fun fetchUnsyncedMessages(
-        syncConfig: SyncConfig, remoteFolder: Pop3Folder,
+        syncConfig: SyncConfig,
+        remoteFolder: Pop3Folder,
         unsyncedMessages: MutableList<Pop3Message>?,
         smallMessages: MutableList<Pop3Message>,
         largeMessages: MutableList<Pop3Message>,
         progress: AtomicInteger,
         todo: Int,
         fp: FetchProfile?,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val folder = remoteFolder.getServerId()
 
         val earliestDate = syncConfig.earliestPollDate
         remoteFolder.fetch(
-            unsyncedMessages, fp,
+            unsyncedMessages,
+            fp,
             object : MessageRetrievalListener<Pop3Message> {
                 override fun messageFinished(message: Pop3Message) {
                     try {
@@ -440,18 +447,23 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
                             if (message.isSet(Flag.DELETED)) {
                                 Timber.v(
                                     "Newly downloaded message %s:%s:%s was marked deleted on server, " +
-                                        "skipping", accountName, folder, message.getUid()
+                                        "skipping",
+                                    accountName,
+                                    folder,
+                                    message.getUid(),
                                 )
                             } else {
                                 Timber.d(
                                     "Newly downloaded message %s is older than %s, skipping",
-                                    message.getUid(), earliestDate
+                                    message.getUid(),
+                                    earliestDate,
                                 )
                             }
 
                             progress.incrementAndGet()
 
-                            //TODO: This might be the source of poll count errors in the UI. Is todo always the same as ofTotal
+                            // TODO: This might be the source of poll count errors in the UI.
+                            // Is todo always the same as ofTotal
                             listener.syncProgress(folder, progress.get(), todo)
                             return
                         }
@@ -468,7 +480,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
                     }
                 }
             },
-            syncConfig.maximumAutoDownloadMessageSize
+            syncConfig.maximumAutoDownloadMessageSize,
         )
     }
 
@@ -481,7 +493,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
         newMessages: AtomicInteger,
         todo: Int,
         fp: FetchProfile?,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val folder = remoteFolder.getServerId()
 
@@ -489,7 +501,8 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
 
         remoteFolder.fetch(
             smallMessages,
-            fp, object : MessageRetrievalListener<Pop3Message> {
+            fp,
+            object : MessageRetrievalListener<Pop3Message> {
                 override fun messageFinished(message: Pop3Message) {
                     try {
                         // Store the updated message locally
@@ -506,7 +519,9 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
                         val messageServerId = message.getUid()
                         Timber.v(
                             "About to notify listeners that we got a new small message %s:%s:%s",
-                            accountName, folder, messageServerId
+                            accountName,
+                            folder,
+                            messageServerId,
                         )
 
                         // Update the listener with what we've found
@@ -519,7 +534,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
                     }
                 }
             },
-            -1
+            -1,
         )
 
         Timber.d("SYNC: Done fetching small messages for folder %s", folder)
@@ -539,7 +554,7 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
         newMessages: AtomicInteger,
         todo: Int,
         fp: FetchProfile?,
-        listener: SyncListener
+        listener: SyncListener,
     ) {
         val folder = remoteFolder.getServerId()
 
@@ -553,7 +568,9 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
             val messageServerId = message.getUid()
             Timber.v(
                 "About to notify listeners that we got a new large message %s:%s:%s",
-                accountName, folder, messageServerId
+                accountName,
+                folder,
+                messageServerId,
             )
 
             // Update the listener with what we've found
@@ -578,8 +595,10 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
 
     @Throws(MessagingException::class)
     private fun downloadSaneBody(
-        syncConfig: SyncConfig, remoteFolder: Pop3Folder, backendFolder: BackendFolder,
-        message: Pop3Message
+        syncConfig: SyncConfig,
+        remoteFolder: Pop3Folder,
+        backendFolder: BackendFolder,
+        message: Pop3Message,
     ) {
         /*
          * The provider was unable to get the structure of the message, so
@@ -610,8 +629,8 @@ internal class Pop3Sync(accountName: String, backendStorage: BackendStorage, pop
              * If there is no limit on autodownload size, that's the same as the message
              * being smaller than the max size
              */
-            if (syncConfig.maximumAutoDownloadMessageSize == 0
-                || message.getSize() < syncConfig.maximumAutoDownloadMessageSize
+            if (syncConfig.maximumAutoDownloadMessageSize == 0 ||
+                message.getSize() < syncConfig.maximumAutoDownloadMessageSize
             ) {
                 completeMessage = true
             }
