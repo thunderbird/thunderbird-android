@@ -16,6 +16,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
+import org.jetbrains.annotations.NotNull;
 
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
 import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
@@ -101,6 +102,7 @@ public class Pop3Folder {
         return messageCount;
     }
 
+    @NotNull
     public Pop3Message getMessage(String uid) {
         Pop3Message message = uidToMsgMap.get(uid);
         if (message == null) {
