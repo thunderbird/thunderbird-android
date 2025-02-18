@@ -15,15 +15,15 @@ internal class GetDrawerConfigTest {
 
     @Test
     fun `should get drawer config`() = runTest {
-        val configProver: DrawerConfigLoader = mock()
+        val configLoader: DrawerConfigLoader = mock()
         val drawerConfig = DrawerConfig(
             showUnifiedFolders = true,
             showStarredCount = true,
             showAccountSelector = true,
         )
 
-        val testSubject = GetDrawerConfig(configProver = configProver)
-        whenever(configProver.loadDrawerConfigFlow()).thenReturn(flowOf(drawerConfig))
+        val testSubject = GetDrawerConfig(configLoader = configLoader)
+        whenever(configLoader.loadDrawerConfigFlow()).thenReturn(flowOf(drawerConfig))
 
         val result = testSubject().first()
 

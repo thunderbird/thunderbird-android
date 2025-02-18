@@ -6,9 +6,9 @@ import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import kotlinx.coroutines.flow.Flow
 
 internal class GetDrawerConfig(
-    private val configProver: DrawerConfigLoader,
+    private val configLoader: DrawerConfigLoader,
 ) : UseCase.GetDrawerConfig {
     override operator fun invoke(): Flow<DrawerConfig> {
-        return configProver.loadDrawerConfigFlow()
+        return configLoader.loadDrawerConfigFlow()
     }
 }
