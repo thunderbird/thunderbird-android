@@ -18,11 +18,12 @@ import org.junit.Test
 
 class IncomingServerSettingsStateMapperKtTest {
 
+    @Suppress("MaxLineLength")
     @Test
     fun `should map to state with email as username and emailDomain With dot prefix as server name when server settings are null`() {
         val email = "test@example.com"
         val accountState = AccountState(
-            emailAddress = "test@example.com",
+            emailAddress = email,
             incomingServerSettings = null,
         )
 
