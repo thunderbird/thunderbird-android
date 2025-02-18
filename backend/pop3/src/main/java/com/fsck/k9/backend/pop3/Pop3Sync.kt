@@ -20,8 +20,8 @@ import java.util.ArrayList
 import java.util.Date
 import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
-import kotlin.math.max
 
+@Suppress("TooManyFunctions")
 internal class Pop3Sync(
     private val accountName: String,
     private val backendStorage: BackendStorage,
@@ -32,6 +32,13 @@ internal class Pop3Sync(
         synchronizeMailboxSynchronous(folder, syncConfig, listener)
     }
 
+    @Suppress(
+        "TooGenericExceptionCaught",
+        "TooGenericExceptionThrown",
+        "LongMethod",
+        "CyclomaticComplexMethod",
+        "NestedBlockDepth",
+    )
     fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         var remoteFolder: Pop3Folder? = null
 
@@ -50,7 +57,7 @@ internal class Pop3Sync(
              * Get the message list from the local store and create an index of
              * the uids within the list.
              */
-            var localUidMap: Map<String, Long?>? = backendFolder.getAllMessagesAndEffectiveDates()
+            var localUidMap: Map<String, Long?> = backendFolder.getAllMessagesAndEffectiveDates()
 
             Timber.v("SYNC: About to get remote folder %s", folder)
             remoteFolder = remoteStore.getFolder(folder)
@@ -85,7 +92,7 @@ internal class Pop3Sync(
             /*
              * Get the remote message count.
              */
-            val remoteMessageCount = remoteFolder.getMessageCount()
+            val remoteMessageCount = remoteFolder.messageCount
 
             var visibleLimit = backendFolder.visibleLimit
 
@@ -99,15 +106,14 @@ internal class Pop3Sync(
             Timber.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount)
 
             val earliestDate = syncConfig.earliestPollDate
-            val earliestTimestamp = if (earliestDate != null) earliestDate.getTime() else 0L
+            val earliestTimestamp = if (earliestDate != null) earliestDate.time else 0L
 
+            /* Message numbers start at 1. */
             var remoteStart = 1
             if (remoteMessageCount > 0) {
-                /* Message numbers start at 1.  */
+                // Adjust the starting message number based on the visible limit
                 if (visibleLimit > 0) {
-                    remoteStart = max(0, remoteMessageCount - visibleLimit) + 1
-                } else {
-                    remoteStart = 1
+                    remoteStart += (remoteMessageCount - visibleLimit).coerceAtLeast(0)
                 }
 
                 Timber.v(
@@ -120,8 +126,7 @@ internal class Pop3Sync(
                 val headerProgress = AtomicInteger(0)
                 listener.syncHeadersStarted(folder)
 
-                val remoteMessageArray =
-                    remoteFolder.getMessages(remoteStart, remoteMessageCount, null)
+                val remoteMessageArray = remoteFolder.getMessages(remoteStart, remoteMessageCount, null)
 
                 val messageCount = remoteMessageArray.size
 
@@ -129,10 +134,10 @@ internal class Pop3Sync(
                     headerProgress.incrementAndGet()
                     listener.syncHeadersProgress(folder, headerProgress.get(), messageCount)
 
-                    val localMessageTimestamp = localUidMap!!.get(thisMess.getUid())
+                    val localMessageTimestamp = localUidMap[thisMess.uid]
                     if (localMessageTimestamp == null || localMessageTimestamp >= earliestTimestamp) {
                         remoteMessages.add(thisMess)
-                        remoteUidMap.put(thisMess.getUid(), thisMess)
+                        remoteUidMap.put(thisMess.uid, thisMess)
                     }
                 }
 
@@ -140,7 +145,7 @@ internal class Pop3Sync(
 
                 listener.syncHeadersFinished(folder, headerProgress.get(), remoteUidMap.size)
             } else if (remoteMessageCount < 0) {
-                throw Exception("Message count " + remoteMessageCount + " for folder " + folder)
+                throw Exception("Message count $remoteMessageCount for folder $folder")
             }
 
             /*
@@ -149,9 +154,9 @@ internal class Pop3Sync(
             var moreMessages = backendFolder.getMoreMessages()
             if (syncConfig.syncRemoteDeletions) {
                 val destroyMessageUids: MutableList<String> = ArrayList<String>()
-                for (localMessageUid in localUidMap!!.keys) {
-                    if (remoteUidMap.get(localMessageUid) == null) {
-                        destroyMessageUids.add(localMessageUid!!)
+                for (localMessageUid in localUidMap.keys) {
+                    if (remoteUidMap[localMessageUid] == null) {
+                        destroyMessageUids.add(localMessageUid)
                     }
                 }
 
@@ -164,8 +169,6 @@ internal class Pop3Sync(
                     }
                 }
             }
-            // noinspection UnusedAssignment, free memory early? (better break up the method!)
-            localUidMap = null
 
             if (moreMessages == BackendFolder.MoreMessages.UNKNOWN) {
                 updateMoreMessages(remoteFolder, backendFolder, remoteStart)
@@ -224,9 +227,7 @@ internal class Pop3Sync(
                 System.currentTimeMillis(),
             )
         } finally {
-            if (remoteFolder != null) {
-                remoteFolder.close()
-            }
+            remoteFolder?.close()
         }
     }
 
@@ -246,6 +247,7 @@ internal class Pop3Sync(
         }
     }
 
+    @Suppress("TooGenericExceptionCaught", "LongMethod")
     @Throws(MessagingException::class)
     private fun downloadMessages(
         syncConfig: SyncConfig,
@@ -260,7 +262,7 @@ internal class Pop3Sync(
         if (earliestDate != null) {
             Timber.d("Only syncing messages after %s", earliestDate)
         }
-        val folder = remoteFolder.getServerId()
+        val folder = remoteFolder.serverId
 
         val syncFlagMessages: MutableList<Pop3Message?> = ArrayList<Pop3Message?>()
         var unsyncedMessages: MutableList<Pop3Message> = ArrayList<Pop3Message>()
@@ -363,7 +365,7 @@ internal class Pop3Sync(
     }
 
     private fun setLatestOldMessageSeenTime(backendFolder: BackendFolder, oldestMessageTime: Date) {
-        backendFolder.setFolderExtraNumber(EXTRA_LATEST_OLD_MESSAGE_SEEN_TIME, oldestMessageTime.getTime())
+        backendFolder.setFolderExtraNumber(EXTRA_LATEST_OLD_MESSAGE_SEEN_TIME, oldestMessageTime.time)
     }
 
     private fun evaluateMessageForDownload(
@@ -374,7 +376,7 @@ internal class Pop3Sync(
         syncFlagMessages: MutableList<Pop3Message?>,
         listener: SyncListener,
     ) {
-        val messageServerId = message.getUid()
+        val messageServerId = message.uid
         if (message.isSet(Flag.DELETED)) {
             Timber.v("Message with uid %s is marked as deleted", messageServerId)
 
@@ -422,6 +424,7 @@ internal class Pop3Sync(
         }
     }
 
+    @Suppress("LongParameterList")
     @Throws(MessagingException::class)
     private fun fetchUnsyncedMessages(
         syncConfig: SyncConfig,
@@ -434,13 +437,15 @@ internal class Pop3Sync(
         fp: FetchProfile?,
         listener: SyncListener,
     ) {
-        val folder = remoteFolder.getServerId()
+        val folder = remoteFolder.serverId
 
         val earliestDate = syncConfig.earliestPollDate
         remoteFolder.fetch(
             unsyncedMessages,
             fp,
             object : MessageRetrievalListener<Pop3Message> {
+
+                @Suppress("TooGenericExceptionCaught")
                 override fun messageFinished(message: Pop3Message) {
                     try {
                         if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
@@ -450,12 +455,12 @@ internal class Pop3Sync(
                                         "skipping",
                                     accountName,
                                     folder,
-                                    message.getUid(),
+                                    message.uid,
                                 )
                             } else {
                                 Timber.d(
                                     "Newly downloaded message %s is older than %s, skipping",
-                                    message.getUid(),
+                                    message.uid,
                                     earliestDate,
                                 )
                             }
@@ -469,7 +474,7 @@ internal class Pop3Sync(
                         }
 
                         if (syncConfig.maximumAutoDownloadMessageSize > 0 &&
-                            message.getSize() > syncConfig.maximumAutoDownloadMessageSize
+                            message.size > syncConfig.maximumAutoDownloadMessageSize
                         ) {
                             largeMessages.add(message)
                         } else {
@@ -484,6 +489,7 @@ internal class Pop3Sync(
         )
     }
 
+    @Suppress("LongParameterList")
     @Throws(MessagingException::class)
     private fun downloadSmallMessages(
         remoteFolder: Pop3Folder,
@@ -495,7 +501,7 @@ internal class Pop3Sync(
         fp: FetchProfile?,
         listener: SyncListener,
     ) {
-        val folder = remoteFolder.getServerId()
+        val folder = remoteFolder.serverId
 
         Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
 
@@ -503,6 +509,8 @@ internal class Pop3Sync(
             smallMessages,
             fp,
             object : MessageRetrievalListener<Pop3Message> {
+
+                @Suppress("TooGenericExceptionCaught")
                 override fun messageFinished(message: Pop3Message) {
                     try {
                         // Store the updated message locally
@@ -516,7 +524,7 @@ internal class Pop3Sync(
                             newMessages.incrementAndGet()
                         }
 
-                        val messageServerId = message.getUid()
+                        val messageServerId = message.uid
                         Timber.v(
                             "About to notify listeners that we got a new small message %s:%s:%s",
                             accountName,
@@ -544,6 +552,7 @@ internal class Pop3Sync(
         return message.olderThan(getLatestOldMessageSeenTime(backendFolder))
     }
 
+    @Suppress("LongParameterList")
     @Throws(MessagingException::class)
     private fun downloadLargeMessages(
         syncConfig: SyncConfig,
@@ -556,7 +565,7 @@ internal class Pop3Sync(
         fp: FetchProfile?,
         listener: SyncListener,
     ) {
-        val folder = remoteFolder.getServerId()
+        val folder = remoteFolder.serverId
 
         Timber.d("SYNC: Fetching large messages for folder %s", folder)
 
@@ -565,7 +574,7 @@ internal class Pop3Sync(
         for (message in largeMessages) {
             downloadSaneBody(syncConfig, remoteFolder, backendFolder, message)
 
-            val messageServerId = message.getUid()
+            val messageServerId = message.uid
             Timber.v(
                 "About to notify listeners that we got a new large message %s:%s:%s",
                 accountName,
@@ -630,7 +639,7 @@ internal class Pop3Sync(
              * being smaller than the max size
              */
             if (syncConfig.maximumAutoDownloadMessageSize == 0 ||
-                message.getSize() < syncConfig.maximumAutoDownloadMessageSize
+                message.size < syncConfig.maximumAutoDownloadMessageSize
             ) {
                 completeMessage = true
             }
