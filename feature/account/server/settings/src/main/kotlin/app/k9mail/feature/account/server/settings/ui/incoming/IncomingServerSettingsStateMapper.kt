@@ -22,7 +22,7 @@ fun AccountState.toIncomingServerSettingsState() = incomingServerSettings?.toInc
         server = StringInputField(value = emailAddress?.toInvalidEmailDomain() ?: ""),
     )
 
-private fun String.toInvalidEmailDomain() = ".${this.substringAfter("@")}"
+fun String.toInvalidEmailDomain() = ".${this.substringAfter("@")}"
 
 private fun ServerSettings.toIncomingServerSettingsState(): State {
     return State(

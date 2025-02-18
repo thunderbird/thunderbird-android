@@ -18,7 +18,8 @@ import org.junit.Test
 class IncomingServerSettingsStateMapperKtTest {
 
     @Test
-    fun `should map to state with email as username when server settings are null`() {
+    fun `should map to state with email as username and emailDomain With dot prefix as server name when server settings are null`() {
+        val email = "test@example.com"
         val accountState = AccountState(
             emailAddress = "test@example.com",
             incomingServerSettings = null,
@@ -28,7 +29,8 @@ class IncomingServerSettingsStateMapperKtTest {
 
         assertThat(result).isEqualTo(
             State(
-                username = StringInputField(value = "test@example.com"),
+                username = StringInputField(value = email),
+                server = StringInputField(value = email.toInvalidEmailDomain()),
             ),
         )
     }
