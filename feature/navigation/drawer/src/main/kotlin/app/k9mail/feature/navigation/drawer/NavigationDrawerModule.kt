@@ -43,8 +43,8 @@ val navigationDrawerModule: Module = module {
 
     single<UseCase.GetDisplayFoldersForAccount> {
         GetDisplayFoldersForAccount(
-            repository = get(),
-            messageCountsProvider = get(),
+            displayFolderRepository = get(),
+            unifiedFolderRepository = get(),
         )
     }
 
