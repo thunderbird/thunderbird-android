@@ -19,7 +19,8 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "k-9"
+// Thunderbird for Android
+rootProject.name = "tfa"
 
 include(
     ":app-k9mail",
