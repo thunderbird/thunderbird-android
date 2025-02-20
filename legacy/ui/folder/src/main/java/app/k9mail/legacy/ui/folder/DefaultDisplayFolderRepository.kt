@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 
-class DisplayFolderRepository(
+class DefaultDisplayFolderRepository(
     private val accountManager: AccountManager,
     private val messagingController: MessagingControllerRegistry,
     private val messageStoreManager: MessageStoreManager,
