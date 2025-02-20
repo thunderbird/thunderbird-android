@@ -25,7 +25,7 @@ class DefaultDisplayFolderRepository(
     private val messagingController: MessagingControllerRegistry,
     private val messageStoreManager: MessageStoreManager,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
-) {
+) : DisplayFolderRepository {
     private val sortForDisplay =
         compareByDescending<DisplayFolder> { it.folder.type == FolderType.INBOX }
             .thenByDescending { it.folder.type == FolderType.OUTBOX }
@@ -53,7 +53,7 @@ class DefaultDisplayFolderRepository(
         }.sortedWith(sortForDisplay)
     }
 
-    fun getDisplayFoldersFlow(account: Account, includeHiddenFolders: Boolean): Flow<List<DisplayFolder>> {
+    override fun getDisplayFoldersFlow(account: Account, includeHiddenFolders: Boolean): Flow<List<DisplayFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
 
         return callbackFlow {
@@ -82,7 +82,7 @@ class DefaultDisplayFolderRepository(
             .flowOn(coroutineContext)
     }
 
-    fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
+    override fun getDisplayFoldersFlow(accountUuid: String): Flow<List<DisplayFolder>> {
         val account = accountManager.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
         return getDisplayFoldersFlow(account, includeHiddenFolders = false)
     }
