@@ -11,8 +11,8 @@ Daily builds are used for initial testing of new features and changes. Feature f
 - **Branch:** `main`
 - **Purpose:** Active development of new features and improvements
 - **Release Cadence:** Daily
-- **Audience:** Developers and highly technical users who want to test the bleeding edge of Thunderbird. Nightly builds are unstable and not recommended for daily use.
-- **Availability:** Daily builds are available on the Play Store internal channel. APKs are available on ftp.mozilla.org.
+- **Audience:** Developers and highly technical users who want to test the bleeding edge of Thunderbird. Daily builds are unstable and not recommended for production use.
+- **Availability:** Daily builds are available on the Play Store internal channel. APKs are available on [ftp.mozilla.org](https://ftp.mozilla.org/pub/thunderbird-mobile/).
 
 ### Beta
 
@@ -166,10 +166,10 @@ Release uplifts should additionally:
 
 ### Uplift Process
 
-1. The requestor creates a pull request to the respective target branch with the cherry-picked commits they intend to uplift.
-2. The requestor makes a comment in the bug with the Approval Request Comment template filled out.
-3. The requestor includes a link to the pull request in the approval request comment and sets the `uplift-approval?` label.
-4. The release driver reviews pull requests with the `uplift-approval?` label, and will merge any pull requests that are approved, or close any pull requests that are declined.
+1. The requestor adds the "task: uplift to beta" or "task: uplift to release" label to a merged pull request.
+2. The requestor makes a comment in the associated issue with the Approval Request Comment template filled out.
+3. The release driver reviews all uplift requests and, retaining the label for approved uplifts and removing the label for rejected uplifts.
+4. The release driver runs the Uplift Merges action for the specified target branch, which will remove the label, cherry-pick the commits, and push to the target branch.
 
 Uplift patches are generated with:
 
