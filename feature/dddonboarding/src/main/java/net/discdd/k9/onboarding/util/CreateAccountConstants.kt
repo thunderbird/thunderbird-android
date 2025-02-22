@@ -13,7 +13,7 @@ import com.fsck.k9.mail.folders.RemoteFolder
 
 object CreateAccountConstants {
     val INCOMING_SERVER_SETTINGS = ServerSettings(
-        "imap",
+        "ddd",
         "imap.example.org",
         993,
         ConnectionSecurity.SSL_TLS_REQUIRED,
@@ -24,7 +24,7 @@ object CreateAccountConstants {
     )
 
     val OUTGOING_SERVER_SETTINGS = ServerSettings(
-        "smtp",
+        "ddd",
         "smtp.example.org",
         465,
         ConnectionSecurity.SSL_TLS_REQUIRED,
