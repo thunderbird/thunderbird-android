@@ -1,45 +1,36 @@
-# This config was automatically generated from your source code
-# Stacks detected: cicd:github-actions:.github/workflows,deps:java:.,tool:gradle:
 version: 2.1
+
+orbs:
+  android: circleci/android@3.1.0
+  auto_ci: nowsecure/ci-auto-orb@1.2.1
+  node: circleci/node@4.7.0
+
 jobs:
-  test-java:
+  build:
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/android:2021.08.1
+
     steps:
       - checkout
-      - run:
-          name: Calculate cache key
-          command: |-
-            find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
-                    sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
-      - restore_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
-      - run:
-          command: ./gradlew check
-      - store_test_results:
-          path: build/test-results
-      - save_cache:
-          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
-          paths:
-            - ~/.gradle/caches
-      - store_artifacts:
-          path: build/reports
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
+      - run: ./gradlew androidDependencies
+      - run: ./gradlew assembleDebug --stacktrace --no-daemon
+      - auto_ci/mobile_security_test:
+          auto_file: ./app/k9mail/build/outputs/apk/debug/k9mail-debug.apk
+          auto_wait: "90"
+          auto_score: "50"
+          auto_show_status_messages: "true"
+
+  lint:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:18.17
     steps:
-      # Replace this with steps to deploy to users
-      - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
-      - run:
-          name: found github actions config
-          command: ':'
+      - checkout
+      - run: npm install
+      - run: npm test
+
 workflows:
-  build-and-test:
+  version: 2
+  build_and_test:
     jobs:
-      - test-java
-    # - deploy:
-    #     requires:
-    #       - test-java
+      - build
+      - lint
