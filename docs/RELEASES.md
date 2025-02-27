@@ -171,12 +171,6 @@ Release uplifts should additionally:
 3. The release driver reviews all uplift requests and, retaining the label for approved uplifts and removing the label for rejected uplifts.
 4. The release driver runs the Uplift Merges action for the specified target branch, which will remove the label, cherry-pick the commits, and push to the target branch.
 
-Uplift patches are generated with:
-
-```sh
-git cherry-pick -x <commit-hash>
-```
-
 Template for uplift requests:
 
 ```sh
