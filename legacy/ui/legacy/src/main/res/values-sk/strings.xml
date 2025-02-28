@@ -851,7 +851,7 @@
     <string name="toast_openpgp_provider_error">Chyba pripojenia k %s!</string>
     <string name="message_list_error_title">Chyba</string>
     <string name="message_list_content_description_unread_prefix">neprečítaných, %s</string>
-    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" bude zmazané z <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%1$s</xliff:g>\" bude zmazané z <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Zostať na aktuálnej správe</string>
     <string name="account_settings_open_notification_settings_messages_summary">Nastaviť notifikácie pre nové správy</string>
     <string name="crypto_msg_title_plaintext">Čistý text</string>

@@ -34,6 +34,7 @@ class RealAutoDiscoveryRegistry(
                 ),
                 createMxLookupAutoconfigDiscovery(
                     okHttpClient = okHttpClient,
+                    config = autoconfigUrlConfig,
                 ),
             )
         }

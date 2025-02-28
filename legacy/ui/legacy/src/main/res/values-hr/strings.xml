@@ -749,7 +749,7 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="search_everywhere_action">Pretraži svugdje</string>
+    <string name="search_everywhere_action">Pretraži svugdje</string>
     <string name="new_messages_title">Nove poruke</string>
     <string name="notification_channel_push_title">Sinkroniziraj (Slanje)</string>
     <string name="debug_export_logs_title">Izvezi zapise</string>
@@ -788,7 +788,7 @@
     <string name="about_title">O aplikaciji <xliff:g id="app_name">%s</xliff:g></string>
     <string name="changelog_recent_changes_title">Što je novo</string>
     <string name="changelog_show_recent_changes">Prikaži nedavne promjene kada je aplikacija ažurirana</string>
-    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" biti će uklonjen iz <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%1$s</xliff:g>\" biti će uklonjen iz <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="choose_folder_move_title">Premjesti u…</string>
     <string name="notification_notify_error_text">Došlo je do greške prilikom pokušaja stvaranja sistemske obavijesti za novu poruku. Razlog je najvjerojatnije nedostatak zvuka obavijesti.\n\nDodirnite za otvaranje postavki obavijesti.</string>
     <string name="notification_channel_push_description">Prikazano dok čekate nove poruke</string>

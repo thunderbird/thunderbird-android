@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_list_title">Bezpieczna wpłata</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Wpłaty nie podlegają odliczeniu od podatku jako darowizny na cele charytatywne.</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Przekaż raz</string>
@@ -12,7 +12,7 @@
     <string name="funding_googleplay_contribution_list_type_none_available">Brak dostępnych</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Dokonaj kolejnego znaczącego wkładu</string>
     <string name="funding_googleplay_contribution_list_empty_title">Możliwość dokonywania wpłat w aplikacji jest obecnie niedostępna.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Odwiedź www.thunderbird.net, aby poznać więcej sposobów na wsparcie Thunderbirda</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Odwiedź <xliff:g id="link_text">%s</xliff:g>, aby poznać więcej sposobów na wsparcie Thunderbirda.</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Spróbuj ponownie</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Płatność obecnie niedostępna</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Odrzuć błąd</string>

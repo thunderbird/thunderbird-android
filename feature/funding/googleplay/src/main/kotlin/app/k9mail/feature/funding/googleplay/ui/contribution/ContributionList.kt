@@ -15,10 +15,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
+import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
@@ -205,13 +209,32 @@ private fun ListEmptyView(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
         modifier = modifier.padding(vertical = MainTheme.spacings.double),
     ) {
+        val annotatedString = annotatedStringResource(
+            id = R.string.funding_googleplay_contribution_list_empty_message,
+            argument = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = MainTheme.colors.primary,
+                        textDecoration = TextDecoration.Underline,
+                    ),
+                ) {
+                    withLink(
+                        LinkAnnotation.Url(
+                            url = stringResource(R.string.funding_googleplay_thunderbird_website_url),
+                        ),
+                    ) {
+                        append(stringResource(R.string.funding_googleplay_thunderbird_website_domain))
+                    }
+                }
+            },
+        )
+
         TextBodyMedium(
             text = stringResource(R.string.funding_googleplay_contribution_list_empty_title),
         )
 
-        // TODO The link needs to be clickable
         TextBodyMedium(
-            text = stringResource(R.string.funding_googleplay_contribution_list_empty_message),
+            text = annotatedString,
         )
     }
 }

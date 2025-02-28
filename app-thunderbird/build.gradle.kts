@@ -21,7 +21,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 8
-        versionName = "8.2"
+        versionName = "9.0"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -120,7 +120,6 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b2"
 
             isMinifyEnabled = true
             isShrinkResources = true

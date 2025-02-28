@@ -4,10 +4,7 @@ package com.fsck.k9.activity;
 import java.util.List;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +13,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import androidx.annotation.AttrRes;
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.widget.TooltipCompat;
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
-import com.fsck.k9.view.ThemeUtils;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -37,7 +31,6 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     private final AlternateRecipientListener listener;
     private List<Recipient> recipients;
     private Recipient currentRecipient;
-    private boolean showAdvancedInfo;
 
 
     public AlternateRecipientAdapter(Context context, AlternateRecipientListener listener) {
@@ -171,67 +164,18 @@ public class AlternateRecipientAdapter extends BaseAdapter {
     }
 
     private void configureCryptoStatusView(RecipientTokenHolder holder, Recipient recipient) {
-        if (showAdvancedInfo) {
-            configureCryptoStatusViewAdvanced(holder, recipient);
-        } else {
-            bindCryptoSimple(holder, recipient);
-        }
-    }
-
-    private void configureCryptoStatusViewAdvanced(RecipientTokenHolder holder, Recipient recipient) {
         switch (recipient.getCryptoStatus()) {
-            case AVAILABLE_TRUSTED: {
-                setCryptoStatusView(holder, R.drawable.status_lock_dots_3, R.attr.openpgp_green);
-                break;
-            }
+            case AVAILABLE_TRUSTED:
             case AVAILABLE_UNTRUSTED: {
-                setCryptoStatusView(holder, R.drawable.status_lock_dots_2, R.attr.openpgp_orange);
+                holder.itemCryptoStatus.setVisibility(View.VISIBLE);
                 break;
             }
-            case UNAVAILABLE: {
-                setCryptoStatusView(holder, R.drawable.status_lock_disabled_dots_1, R.attr.openpgp_red);
-                break;
-            }
+            case UNAVAILABLE:
             case UNDEFINED: {
                 holder.itemCryptoStatus.setVisibility(View.GONE);
                 break;
             }
         }
-    }
-
-    private void setCryptoStatusView(RecipientTokenHolder holder, @DrawableRes int cryptoStatusRes,
-            @AttrRes int cryptoStatusColorAttr) {
-        Resources resources = context.getResources();
-
-        Drawable drawable = resources.getDrawable(cryptoStatusRes);
-        // noinspection ConstantConditions, we know the resource exists!
-        drawable.mutate();
-
-        int cryptoStatusColor = ThemeUtils.getStyledColor(context, cryptoStatusColorAttr);
-        drawable.setColorFilter(cryptoStatusColor, Mode.SRC_ATOP);
-
-        holder.itemCryptoStatusIcon.setImageDrawable(drawable);
-        holder.itemCryptoStatus.setVisibility(View.VISIBLE);
-    }
-
-    private void bindCryptoSimple(RecipientTokenHolder holder, Recipient recipient) {
-        holder.itemCryptoStatus.setVisibility(View.GONE);
-        switch (recipient.getCryptoStatus()) {
-            case AVAILABLE_TRUSTED:
-            case AVAILABLE_UNTRUSTED: {
-                holder.itemCryptoStatusSimple.setVisibility(View.VISIBLE);
-                break;
-            }
-            case UNAVAILABLE:
-            case UNDEFINED: {
-                holder.itemCryptoStatusSimple.setVisibility(View.GONE);
-                break;
-            }
-        }
-    }
-
-    public void setShowAdvancedInfo(boolean showAdvancedInfo) {
-        this.showAdvancedInfo = showAdvancedInfo;
     }
 
     private static class RecipientTokenHolder {
@@ -243,9 +187,7 @@ public class AlternateRecipientAdapter extends BaseAdapter {
         public final View copyEmailAddress;
         public final MaterialTextView itemAddress;
         public final MaterialTextView itemAddressLabel;
-        public final View itemCryptoStatus;
-        public final ImageView itemCryptoStatusIcon;
-        public final ImageView itemCryptoStatusSimple;
+        public final ImageView itemCryptoStatus;
 
 
         public RecipientTokenHolder(View view) {
@@ -261,10 +203,8 @@ public class AlternateRecipientAdapter extends BaseAdapter {
             TooltipCompat.setTooltipText(copyEmailAddress, copyEmailAddress.getContext().getString(R.string.copy_action));
             itemAddress = view.findViewById(R.id.alternate_address);
             itemAddressLabel = view.findViewById(R.id.alternate_address_label);
-            itemCryptoStatus = view.findViewById(R.id.alternate_crypto_status);
-            itemCryptoStatusIcon = view.findViewById(R.id.alternate_crypto_status_icon);
 
-            itemCryptoStatusSimple = view.findViewById(R.id.alternate_crypto_status_simple);
+            itemCryptoStatus = view.findViewById(R.id.alternate_crypto_status);
         }
 
         public void setShowAsHeader(boolean isHeader) {

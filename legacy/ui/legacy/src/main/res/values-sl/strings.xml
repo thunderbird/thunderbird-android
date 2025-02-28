@@ -888,7 +888,7 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="general_settings_post_mark_as_unread_action_stay">Ostani na trenutnem sporočilu</string>
     <string name="general_settings_post_mark_as_unread_action_title">Ko označite sporočilo kot neprebrano</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Vrni se na seznam sporočil</string>
-    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%s</xliff:g>\" bo odstranjen iz <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Račun \"<xliff:g id="account">%1$s</xliff:g>\" bo odstranjen iz <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="settings_ui_telemetry_title">Uporaba in tehnični podatki</string>
     <string name="settings_ui_data_collection">Zbiranje podatkov</string>
     <string name="push_notification_state_alarm_permission_missing">Manjka dovoljenje za nastavitev alarma.</string>

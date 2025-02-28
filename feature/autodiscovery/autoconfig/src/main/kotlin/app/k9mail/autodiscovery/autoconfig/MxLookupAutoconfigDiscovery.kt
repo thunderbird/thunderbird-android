@@ -48,7 +48,7 @@ class MxLookupAutoconfigDiscovery internal constructor(
 
         var latestResult: AutoDiscoveryResult = NoUsableSettingsFound
         for (domainToCheck in listOfNotNull(mxSubDomain, mxBaseDomain)) {
-            for (autoconfigUrl in urlProvider.getAutoconfigUrls(domainToCheck)) {
+            for (autoconfigUrl in urlProvider.getAutoconfigUrls(domainToCheck, email)) {
                 val discoveryResult = autoconfigFetcher.fetchAutoconfig(autoconfigUrl, email)
                 if (discoveryResult is Settings) {
                     return discoveryResult.copy(
@@ -85,7 +85,10 @@ class MxLookupAutoconfigDiscovery internal constructor(
     }
 }
 
-fun createMxLookupAutoconfigDiscovery(okHttpClient: OkHttpClient): MxLookupAutoconfigDiscovery {
+fun createMxLookupAutoconfigDiscovery(
+    okHttpClient: OkHttpClient,
+    config: AutoconfigUrlConfig,
+): MxLookupAutoconfigDiscovery {
     val baseDomainExtractor = OkHttpBaseDomainExtractor()
     val autoconfigFetcher = RealAutoconfigFetcher(
         fetcher = OkHttpFetcher(okHttpClient),
@@ -95,7 +98,7 @@ fun createMxLookupAutoconfigDiscovery(okHttpClient: OkHttpClient): MxLookupAutoc
         mxResolver = SuspendableMxResolver(MiniDnsMxResolver()),
         baseDomainExtractor = baseDomainExtractor,
         subDomainExtractor = RealSubDomainExtractor(baseDomainExtractor),
-        urlProvider = IspDbAutoconfigUrlProvider(),
+        urlProvider = createPostMxLookupAutoconfigUrlProvider(config),
         autoconfigFetcher = autoconfigFetcher,
     )
 }

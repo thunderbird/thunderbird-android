@@ -886,5 +886,5 @@
     <string name="folder_list_show_hidden_folders">Показване на скрити папки</string>
     <string name="settings_ui_telemetry_title">Използване и технически данни</string>
     <string name="push_notification_grant_alarm_permission">Докоснете, за да дадете разрешение.</string>
-    <string name="account_delete_dlg_instructions_fmt">Профилът „<xliff:g id="account">%s</xliff:g>“ ще бъде премахнат от <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Профилът „<xliff:g id="account">%1$s</xliff:g>“ ще бъде премахнат от <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>

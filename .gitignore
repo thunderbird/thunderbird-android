@@ -40,3 +40,6 @@ captures/
 
 # Mac thumbnail db
 .DS_Store
+
+# Screenshots
+adb-screenshots/
