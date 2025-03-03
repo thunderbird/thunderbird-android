@@ -12,5 +12,5 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Для імпорту потрібна остання версія Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Виберіть «Експортувати на мобільний»</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Дізнайтеся, як оновити Thunderbird.</string>
-    <string name="onboarding_migration_thunderbird_link_open_error">Не знайдено програми для відкриття посилання.</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Застосунку для відкриття посилання не знайдено.</string>
 </resources>

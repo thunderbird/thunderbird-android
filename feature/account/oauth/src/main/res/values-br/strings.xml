@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_google_sign_in_support_text">M\'ho peus kudennoù o kennaskañ gant Google, lennit hor {placeHolder}.</string>
+    <string name="account_oauth_sign_in_description">Adheñchañ a raimp ac\'hanoc\'h etrezek ho pourchaser posteloù evit kennaskañ. Dav vo deoc\'h aotren an arload da haeziñ ho kont posteloù.</string>
+    <string name="account_oauth_sign_in_button">Kennsakañ</string>
+    <string name="account_oauth_sign_in_with_google_button">Kennaskañ gant Google</string>
+    <string name="account_oauth_loading_message">Kennaskañ gant OAuth</string>
+    <string name="account_oauth_loading_error">Fazi en ur gennaskañ ouzh OAuth</string>
+    <string name="account_oauth_error_canceled">Nullet eo bet an aotre</string>
+    <string name="account_oauth_error_failed">C\'hwitet war an aotre gant ar fazi da-heul: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_not_supported">OAuth n\'eo ket skoret gant ar pourchaser-mañ.</string>
+    <string name="account_oauth_error_browser_not_available">An arload-mañ n\'hall ket kavout ar merdeer evit aotren an haeziñ war ho kont.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">pennad skoazell</string>
+</resources>

@@ -31,7 +31,7 @@
     <string name="settings_import_outgoing_server_password_hint">Geslo odhodnega strežnika</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Uporabi isto geslo za odhodni strežnik</string>
     <string name="settings_import_server_name_format">Ime strežnika: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Za uporabo poštnega računa s v programu K-9 Mail, je zahtevana prijava v programu in odobritev dostopa do sporočil.</string>
+    <string name="settings_import_oauth_description">Za uporabo poštnega računa je zahtevana prijava v programu in odobritev dostopa do sporočil.</string>
     <string name="settings_import_oauth_sign_in">Prijava</string>
     <string name="settings_import_oauth_sign_in_with_google">Prijava z računom Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Overitev je preklicana</string>
@@ -41,4 +41,6 @@
     <string name="settings_import_general_settings_item">Splošne nastavitve</string>
     <string name="settings_import_pick_app_button">Uvoz iz aplikacije</string>
     <string name="settings_import_pick_app_dialog_title">Uvoz iz aplikacije</string>
+    <string name="settings_import_app_version_not_supported">Ta različica programa ni podprta.</string>
+    <string name="settings_import_scan_qr_code_button">Preberi QR-kodo</string>
 </resources>

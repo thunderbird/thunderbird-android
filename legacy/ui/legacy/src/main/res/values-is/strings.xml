@@ -576,13 +576,13 @@
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Já</string>
     <string name="dialog_confirm_delete_cancel_button">Nei</string>
-    <string name="dialog_confirm_mark_all_as_read_title">Staðfestu að merkja allt sem lesið</string>
+    <string name="dialog_confirm_mark_all_as_read_title">Staðfesta að merkja allt sem lesið</string>
     <string name="dialog_confirm_mark_all_as_read_message">Viltu merkja öll skilaboð sem lesin?</string>
     <string name="dialog_confirm_empty_trash_title">Staðfesta tæmingu úr rusli</string>
     <string name="dialog_confirm_empty_trash_message">Viltu tæma ruslmöppuna?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Já</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Nei</string>
-    <string name="dialog_confirm_spam_title">Staðfestu færslu í ruslpóstmöppu</string>
+    <string name="dialog_confirm_spam_title">Staðfesta færslu í ruslpóstmöppu</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Viltu í alvörunni flytja þessi skilaboð í ruslpóstmöppuna?</item>
         <item quantity="other">Viltu í alvörunni flytja <xliff:g id="message_count">%1$d</xliff:g> skilaboð í ruslpóstmöppuna?</item>
@@ -896,4 +896,8 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="volume_navigation_summary">Fara á milli skilaboða með hljóðstyrkshnöppum í skilaboðasýn</string>
     <string name="save_attachment_action">Vista viðhengi</string>
     <string name="volume_navigation_title_short">Flakk með hljóðstyrkshnöppum</string>
+    <string name="expand_content_description">Fletta út</string>
+    <string name="dialog_confirm_empty_spam_message">Viltu tæma ruslpóstmöppuna?</string>
+    <string name="empty_spam_action">Tæma ruslpóst</string>
+    <string name="dialog_confirm_empty_spam_title">Staðfesta eyðingu ruslpósts</string>
 </resources>

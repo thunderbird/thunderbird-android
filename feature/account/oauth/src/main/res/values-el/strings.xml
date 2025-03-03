@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Είσοδος χρησιμοποιώντας OAuth</string>
     <string name="account_oauth_sign_in_description">Θα σας ανακατευθύνουμε στον πάροχο email σας για να συνδεθείτε. Θα πρέπει να παραχωρήσετε στην εφαρμογή πρόσβαση στον λογαριασμό email σας.</string>
     <string name="account_oauth_sign_in_button">Είσοδος</string>
+    <string name="account_oauth_google_sign_in_support_text">Αν αντιμετωπίζετε προβλήματα ενώ προσπαθείτε να συνδεθείτε με την Google, συμβουλευτείτε το {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">άρθρο προβλημάτων</string>
 </resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">Permitir acesso para que seja capaz de fornecer sugestões de contato e exibir nomes de contato e fotos.</string>
+    <string name="onboarding_permissions_contacts_description">Permitir o acesso para poder fornecer sugestões de contatos e exibir nomes e fotos de contatos.</string>
     <string name="onboarding_permissions_notifications_description">Ligar as notificações para que não perca qualquer mensagem.</string>
     <string name="onboarding_permissions_notifications_title">Notificações</string>
-    <string name="onboarding_permissions_screen_title">Melhorar a experiência</string>
+    <string name="onboarding_permissions_screen_title">Melhore sua experiência de uso</string>
     <string name="onboarding_permissions_contacts_title">Contatos</string>
     <string name="onboarding_permissions_allow_button">Permitir</string>
     <string name="onboarding_permissions_skip_button">Pular</string>

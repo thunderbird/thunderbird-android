@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_screen_title">Thoir piseach air an àrainneachd</string>
+    <string name="onboarding_permissions_contacts_description">Thoir seachad cead-inntrigidh ma tha thu airson ’s gum mol sinn luchd-aithne dhut agus airson ainmean is dealbhan luchd-aithne fhaicinn.</string>
+    <string name="onboarding_permissions_notifications_description">Cuir na brathan air is chan fhairtlich post-d eile ort.</string>
+    <string name="onboarding_permissions_allow_button">Ceadaich</string>
+    <string name="onboarding_permissions_skip_button">Leum seachad air</string>
+    <string name="onboarding_permissions_contacts_title">Luchd-aithne</string>
+    <string name="onboarding_permissions_notifications_title">Brathan</string>
+</resources>

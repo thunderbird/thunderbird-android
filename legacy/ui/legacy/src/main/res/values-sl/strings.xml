@@ -235,7 +235,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">Privzeto</string>
     <string name="global_settings_privacy_hide_useragent">Skrij program</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Odstrani podatke programa K-9 iz glave pošte</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Odstrani uporabniškega posrednika iz glave pošte</string>
     <string name="global_settings_privacy_hide_timezone">Skrij časovni pas</string>
     <string name="global_settings_privacy_hide_timezone_detail">V glavah poštnih sporočil se uporabi čas UTC in ne krajevni čas</string>
     <string name="global_settings_notification_quick_delete_title">Prikaz gumba za brisanje sporočil</string>
@@ -907,4 +907,5 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="settings_list_action_support">Podprite <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Ko uporabljate potisna sporočila, <xliff:g id="app_name">%1$s</xliff:g> vzdržuje povezavo s poštnim strežnikom. Android zahteva prikaz obvestila, ko je aplikacija aktivna v ozadju. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Thunderbirdova mobilna ekipa</string>
+    <string name="expand_content_description">Razširi</string>
 </resources>

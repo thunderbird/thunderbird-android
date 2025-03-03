@@ -200,7 +200,7 @@
     <string name="global_settings_registered_name_color_changed">Забарвлювати імена з вашого списку контактів</string>
     <string name="general_settings_contact_name_color_label">Колір імені контакту</string>
     <string name="global_settings_messageview_fixedwidth_label">Моноширинні шрифти</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Використовуйте шрифт фіксованої ширини під час показу простих текстових повідомлень</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Використовувати шрифт фіксованої ширини під час показу простих текстових повідомлень</string>
     <string name="global_settings_messageview_autofit_width_label">Допасовувати текст повідомлень до ширини екрана</string>
     <string name="global_settings_messageview_autofit_width_summary">Стискати текст повідомлень до ширини екрана</string>
     <string name="global_settings_confirm_actions_title">Підтвердження дій</string>
@@ -907,4 +907,8 @@
     <string name="save_attachment_action">Зберегти вкладення</string>
     <string name="volume_navigation_title_short">Навігація кнопками гучності</string>
     <string name="volume_navigation_summary">Перехід між повідомленнями за допомогою клавіш гучності у вікні перегляду повідомлень</string>
+    <string name="expand_content_description">Розгорнути</string>
+    <string name="dialog_confirm_empty_spam_message">Очистити теку зі спамом?</string>
+    <string name="empty_spam_action">Очистити спам</string>
+    <string name="dialog_confirm_empty_spam_title">Підтвердити очищення спаму</string>
 </resources>

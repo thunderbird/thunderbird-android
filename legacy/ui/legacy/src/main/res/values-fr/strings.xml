@@ -4,9 +4,9 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">Les auteurs de Courriel K-9 Mail</string>
+    <string name="about_app_authors_k9">Les auteurs de Courriel K-9 Mail</string>
     <string name="source_code">Code source</string>
-    <string name="app_license">Licence Apache, Version 2.0</string>
+    <string name="app_license">Licence Apache, Version 2.0</string>
     <string name="about_project_title">Projet à code source ouvert</string>
     <string name="about_website_title">Site Web</string>
     <string name="get_help_title">Obtenir de l’aide</string>
@@ -180,7 +180,7 @@
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_show_remote_images_action">Afficher les images distantes</string>
     <string name="message_view_no_viewer">Impossible de trouver un visualiseur pour <xliff:g id="mimetype">%s</xliff:g>.</string>
-    <string name="message_view_download_remainder">Télécharger le courriel intégral</string>
+    <string name="message_view_download_remainder">Télécharger le courriel entier</string>
     <string name="message_view_sender_label">par %1$s</string>
     <string name="from_same_sender">Davantage de cet expéditeur</string>
     <string name="message_discarded_toast">Le courriel a été abandonné</string>
@@ -263,7 +263,7 @@
     <string name="account_setup_incoming_delete_policy_markread_label">Marquer comme lu sur le serveur</string>
     <string name="account_setup_expunge_policy_label">Supprimer aussi les courriels sur le serveur</string>
     <string name="account_setup_expunge_policy_immediately">Immédiatement</string>
-    <string name="account_setup_expunge_policy_on_poll">Lors de la scrutation</string>
+    <string name="account_setup_expunge_policy_on_poll">Lors de la synchronisation</string>
     <string name="account_setup_expunge_policy_manual">Manuellement</string>
     <string name="drafts_folder_label">Dossier des brouillons</string>
     <string name="sent_folder_label">Dossier des envoyés</string>
@@ -296,10 +296,10 @@
     <string name="account_setup_options_mail_display_count_100">100 courriels</string>
     <string name="account_setup_options_mail_display_count_250">250 courriels</string>
     <string name="account_setup_options_mail_display_count_500">500 courriels</string>
-    <string name="account_setup_options_mail_display_count_1000">1 000 courriels</string>
-    <string name="account_setup_options_mail_display_count_2500">2 500 courriels</string>
-    <string name="account_setup_options_mail_display_count_5000">5 000 courriels</string>
-    <string name="account_setup_options_mail_display_count_10000">10 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_1000">1 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_2500">2 500 courriels</string>
+    <string name="account_setup_options_mail_display_count_5000">5 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_10000">10 000 courriels</string>
     <string name="account_setup_options_mail_display_count_all">tous les courriels</string>
     <string name="move_copy_cannot_copy_unsynced_message">Impossible de copier ou déplacer un courriel qui n’est pas synchronisé avec le serveur</string>
     <string name="account_settings_push_advanced_title">Avancé</string>
@@ -360,7 +360,7 @@
     <string name="account_settings_crypto_encrypt_all_drafts">Enregistrer les brouillons chiffrés</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Les brouillons seront enregistrés chiffrés</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Ne chiffrer les brouillons que si le chiffrement est activé</string>
-    <string name="account_settings_mail_check_frequency_label">Fréquence de scrutation des dossiers</string>
+    <string name="account_settings_mail_check_frequency_label">Fréquence de synchronisation des dossiers</string>
     <string name="account_settings_color_label">Couleur du compte</string>
     <string name="account_settings_color_summary">La note de couleur du compte utilisée dans la liste des dossiers et des comptes</string>
     <string name="account_settings_mail_display_count_label">Taille du dossier local</string>
@@ -434,7 +434,7 @@
     <string name="account_settings_composition_label">Valeurs de rédaction par défaut</string>
     <string name="account_settings_composition_summary">Définir les valeurs par défaut pour De, Cci et pour la signature</string>
     <string name="account_settings_identities_label">Gérer les identités</string>
-    <string name="account_settings_identities_summary">Définir d’autres adresses « De » et d’autres signatures</string>
+    <string name="account_settings_identities_summary">Définir des adresses « De » et signatures de substitution</string>
     <string name="manage_identities_title">Gérer les identités</string>
     <string name="manage_identities_context_menu_title">Gérer l’identité</string>
     <string name="edit_identity_title">Modifier l’identité</string>
@@ -444,7 +444,7 @@
     <string name="manage_identities_edit_action">Modifier</string>
     <string name="manage_identities_move_up_action">Déplacer cer le haut</string>
     <string name="manage_identities_move_down_action">Déplacer vers les bas</string>
-    <string name="manage_identities_move_top_action">En 1re position / définir par défaut</string>
+    <string name="manage_identities_move_top_action">Déplacer en haut. Définir par défaut</string>
     <string name="manage_identities_remove_action">Supprimer</string>
     <string name="edit_identity_description_label">Description de l’identité</string>
     <string name="edit_identity_description_hint">(Facultative)</string>
@@ -565,16 +565,16 @@
     <string name="save_or_discard_draft_message_instructions_fmt">Enregistrer ou abandonner ce courriel ?</string>
     <string name="save_or_discard_draft_message_changes">Enregistrer ou abandonner les changements ?</string>
     <string name="confirm_discard_draft_message_title">Abandonner le courriel ?</string>
-    <string name="confirm_discard_draft_message">Voulez-vous vraiment abandonner ce courriel ?</string>
+    <string name="confirm_discard_draft_message">Voulez-vous abandonner ce courriel ?</string>
     <string name="dialog_confirm_clear_local_folder_title">Effacer les courriels locaux ?</string>
     <string name="dialog_confirm_clear_local_folder_message">Tous les courriels locaux seront supprimés du dossier, mais pas sur le serveur.</string>
     <string name="dialog_confirm_clear_local_folder_action">Effacer les courriels</string>
     <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce courriel ?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Voulez-vous vraiment supprimer ce courriel ?</item>
-        <item quantity="many">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
-        <item quantity="other">Voulez-vous vraiment supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
+        <item quantity="one">Voulez-vous supprimer ce courriel ?</item>
+        <item quantity="many">Voulez-vous supprimer les <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
+        <item quantity="other">Voulez-vous supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Oui</string>
     <string name="dialog_confirm_delete_cancel_button">Non</string>
@@ -586,9 +586,9 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
     <string name="dialog_confirm_spam_title">Confirmer le déplacement vers le dossier des pourriels (indésirables)</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Voulez-vous déplacer ce courriel vers le dossiers des pourriels (indésirables) ?</item>
-        <item quantity="many">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossiers des pourriels (indésirables) ?</item>
-        <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossiers des pourriels (indésirables) ?</item>
+        <item quantity="one">Voulez-vous déplacer ce courriel vers le dossier des pourriels ?</item>
+        <item quantity="many">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossier des pourriels ?</item>
+        <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossier des pourriels ?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Oui</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
@@ -629,7 +629,7 @@
     <string name="account_settings_remote_search_num_results_entries_100">100</string>
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
-    <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
     <string name="account_settings_remote_search_num_label">Limite de recherche sur le serveur</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
     <plurals name="remote_search_downloading">
@@ -694,7 +694,7 @@
     <string name="enable_sign_only">Activer PGP signer-seulement</string>
     <string name="disable_sign_only">Désactiver PGP signer-seulement</string>
     <string name="openpgp_inline_title">Mode PGP/INTÉGRÉ</string>
-    <string name="openpgp_inline_text">Ce courriel est envoyé au format PGP/INTÉGRÉ.\nCe format ne devrait être utilisé que pour des raisons de compatibilité :</string>
+    <string name="openpgp_inline_text">Ce courriel est envoyé au format PGP/INTÉGRÉ.\nIl ne devrait être utilisé que pour des raisons de compatibilité :</string>
     <string name="openpgp_inline_plus_compat">Certains clients ne prennent que ce format en charge</string>
     <string name="openpgp_inline_minus_transit">Les signatures pourraient se briser pendant le transit</string>
     <string name="openpgp_inline_minus_attach">Les fichiers joints ne sont pas pris en charge</string>
@@ -708,7 +708,7 @@
     <string name="openpgp_dialog_sign_only_text">Dans ce mode, votre clé PGP est utilisée pour signer cryptographiquement un courriel non chiffré.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Ce mode ne chiffre pas le courriel, mais le certifie avec votre clé.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Les signatures pourraient se briser si elles sont envoyées à des listes de diffusion.</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Dans certaines applis de courriel, les signatures pourraient être affichées en tant que fichiers joints « signature.asc ».</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Dans certaines applis de courriel, les signatures pourraient être affichées en tant que fichiers joints « signature.asc ».</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Les courriels chiffrés comprennent toujours une signature.</string>
     <string name="crypto_msg_title_plaintext">Texte brut</string>
     <string name="crypto_msg_unencrypted_sign_error">la signature de bout en bout comportait une erreur</string>
@@ -808,7 +808,7 @@
     <string name="push_info_configure_notification_text">Cependant, Android vous permet aussi de cacher la notification.</string>
     <string name="push_info_learn_more_text">En apprendre davantage</string>
     <string name="push_info_configure_notification_action">Configurer la notification</string>
-    <string name="push_info_disable_push_text">Si vous n’avez pas besoin de notifications instantanées pour les nouveaux courriels, vous devriez désactiver le poussé et utiliser la scrutation. La scrutation vérifie la présence de nouveaux courriels à intervalles réguliers et n’a pas besoin de notification.</string>
+    <string name="push_info_disable_push_text">Si vous n’avez pas besoin de notifications instantanées pour les nouveaux courriels, vous devriez désactiver le poussé et utiliser la synchronisation. La synchronisation vérifie la présence de nouveaux courriels à intervalles réguliers et n’a pas besoin de notification.</string>
     <string name="push_info_disable_push_action">Désactiver le poussé</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Sélectionner</string>
@@ -839,7 +839,7 @@
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">Détails du courriel</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-    <string name="message_details_missing_date">L’en-tête « Date » est manquante</string>
+    <string name="message_details_missing_date">L’en-tête « Date » manque</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">De</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -875,13 +875,13 @@
     <string name="general_settings_post_remove_action_show_next_message">Afficher le courriel suivant</string>
     <string name="general_settings_post_remove_action_title">Après avoir supprimé ou déplacé un courriel</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Rester sur le courriel affiché</string>
-    <string name="general_settings_post_mark_as_unread_action_title">Après avoir marqué un courriel comme indésirable</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Après avoir marqué un courriel comme non lu</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Retourner sur la liste des courriels</string>
     <string name="push_notification_state_alarm_permission_missing">Il manque une autorisation pour programmer des alarmes</string>
     <string name="push_notification_grant_alarm_permission">Touchez pour accorder l’autorisation.</string>
     <string name="about_title">À propos de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">L’équipe Thunderbird pour appareils mobiles</string>
-    <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Si le poussé est utilisé, <xliff:g id="app_name">%1$s</xliff:g> maintient une connexion vers le serveur de courriel. Android exige d’afficher une notification continue quand l’appli est active en arrière-plan. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">L’appli OpenKeychain est nécessaire pour prendre en charge le chiffrement de bout en bout.</string>
     <string name="folder_settings_notifications_label">Notifications</string>
@@ -896,4 +896,8 @@
     <string name="save_attachment_action">Enregistrer le fichier joint</string>
     <string name="volume_navigation_title_short">Se déplacer avec les boutons de volume</string>
     <string name="volume_navigation_summary">Dans la vue des courriels, passez d’un courriel à l’autre grâce aux boutons de volume</string>
+    <string name="expand_content_description">Développer</string>
+    <string name="empty_spam_action">Supprimer les pourriels/indésirables</string>
+    <string name="dialog_confirm_empty_spam_title">Confirmer la suppression des pourriels</string>
+    <string name="dialog_confirm_empty_spam_message">Voulez-vous vider le dossier des pourriels ?</string>
 </resources>

@@ -4,7 +4,7 @@
     <string name="account_oauth_loading_error">Hyrja me OAuth dështoi</string>
     <string name="account_oauth_error_failed">Autorizimi dështoi me gabimin vijues: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Aplikacioni s’gjeti dot një shfletues për ta përdorur për akordim hyrjeje te llogaria juaj.</string>
-    <string name="account_oauth_error_not_supported">OAuth 2.0 aktualisht nuk mbulohet me këtë shërbim.</string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 aktualisht s’mbulohet me këtë shërbim.</string>
     <string name="account_oauth_error_canceled">Autorizimi u anulua</string>
     <string name="account_oauth_loading_message">Po hyhet duke përdorur OAuth</string>
     <string name="account_oauth_sign_in_description">Do t’ju ridrejtojmë te shërbimi juaj email, që të bëni hyrjen. Lypset t’i akordoni aplikacionit hyrje në llogarinë tuaj email.</string>

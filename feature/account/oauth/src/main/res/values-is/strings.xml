@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Skrái inn með OAuth</string>
     <string name="account_oauth_sign_in_description">Við munum endurbeina þér til póstþjónustunnar þinnar til að skrá þig inn. Þú þarft að veita forritinu aðgang að tölvupóstreikningnum þínum.</string>
     <string name="account_oauth_sign_in_button">Skrá inn</string>
+    <string name="account_oauth_google_sign_in_support_text">Ef þú átt í vandræðum með að skrá inn með Google ættirðu að skoða {placeHolder} hjá okkur.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">leiðbeiningarnar</string>
 </resources>
