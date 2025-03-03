@@ -234,9 +234,9 @@
     <string name="general_settings_ui_density_compact">Kompakte</string>
     <string name="general_settings_ui_density_default">Parazgjedhje</string>
     <string name="global_settings_privacy_hide_useragent">Fshihe klientin e postës</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Hiqni User-Agent nga kryet e email-it</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Hiq User-Agent nga kryet e email-it</string>
     <string name="global_settings_privacy_hide_timezone">Fshihe zonën kohore</string>
-    <string name="global_settings_privacy_hide_timezone_detail">Përdorni UTC, në vend se zonën kohore vendore, te krye email-esh dhe krye përgjigjesh</string>
+    <string name="global_settings_privacy_hide_timezone_detail">Te krye email-esh dhe krye përgjigjesh përdor UTC, në vend se zonën kohore vendore</string>
     <string name="global_settings_notification_quick_delete_title">Shfaq butonin \'Fshije\'</string>
     <string name="global_settings_notification_quick_delete_never">Kurrë</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Për njoftim mesazhi njësh</string>
@@ -248,7 +248,7 @@
     <string name="global_settings_lock_screen_notification_visibility_senders">Numër mesazhesh dhe dërgues</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">Njësoj si kur ekrani është i kyçur</string>
     <string name="quiet_time">Qetësi</string>
-    <string name="quiet_time_description">Çaktivizoni zilet, dridhjet dhe xixëllimet natën</string>
+    <string name="quiet_time_description">Çaktivizo zilet, dridhjet dhe xixëllimet natën</string>
     <string name="quiet_time_notification">Çaktivizo njoftime</string>
     <string name="quiet_time_notification_description">Çaktivizoji plotësisht njoftimet gjatë Qetësisë</string>
     <string name="quiet_time_starts">Qetësia fillon më</string>
@@ -304,14 +304,14 @@
     <string name="account_settings_notify_label">Njoftime email-i të ri</string>
     <string name="account_settings_notify_sync_label">Njoftime njëkohësimesh</string>
     <string name="account_settings_email_label">Adresa juaj email</string>
-    <string name="account_settings_notify_summary">Njofto në shtyllë gjendjeje kur mbërrin postë</string>
+    <string name="account_settings_notify_summary">Njofto në shtyllë gjendjeje, kur mbërrin postë</string>
     <string name="account_settings_notify_sync_summary">Njofto te shtylla e gjendjes, kur kontrollohet për email</string>
     <string name="account_settings_notify_self_label">Përfshi email që dërgohet</string>
     <string name="account_settings_notify_self_summary">Shfaq një njoftim për mesazhet që dërgoj</string>
     <string name="account_notify_contacts_mail_only_label">Vetëm kontaktet</string>
     <string name="account_notify_contacts_mail_only_summary">Shfaq njoftime vetëm për mesazhe nga kontakte të njohur</string>
     <string name="account_settings_ignore_chat_messages_label">Shpërfill mesazhe fjalosjesh</string>
-    <string name="account_settings_ignore_chat_messages_summary">Mos shfaq njoftime për mesazhe që u përkasin një fjalosjeje me email</string>
+    <string name="account_settings_ignore_chat_messages_summary">Mos shfaq njoftime për mesazhe që i përkasin një fjalosjeje me email</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Vëri shenjë si të lexuar, kur hapet</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Vëri shenjë një mesazhi të lexuar, kur hapet për parje</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Vëri shenjë si i lexuar, kur fshihet</string>
@@ -323,7 +323,7 @@
     <string name="account_settings_show_pictures_never">Jo</string>
     <string name="account_settings_show_pictures_only_from_contacts">Prej kontaktesh</string>
     <string name="account_settings_show_pictures_always">Prej cilitdo</string>
-    <string name="account_settings_composition">Po dërgohet postë</string>
+    <string name="account_settings_composition">Dërgim poste</string>
     <string name="account_settings_default_quoted_text_shown_label">Citoje mesazhin tek përgjigja</string>
     <string name="account_settings_default_quoted_text_shown_summary">Përfshini te përgjigja juaj mesazhin origjinal.</string>
     <string name="account_settings_reply_after_quote_label">Përgjigju nën tekstin e cituar</string>
@@ -335,7 +335,7 @@
     <string name="account_settings_message_format_html">HTML (mbaj figura dhe formatim teksti)</string>
     <string name="account_settings_message_format_auto">Automatik</string>
     <string name="account_settings_always_show_cc_bcc_label">Shfaq përherë Cc/Bcc</string>
-    <string name="account_settings_message_read_receipt_label">Lexoni dëftesën</string>
+    <string name="account_settings_message_read_receipt_label">Dëftesë leximi</string>
     <string name="account_settings_message_read_receipt_summary">Kërko përherë dëftesë leximi</string>
     <string name="account_settings_quote_style_label">Stil citimesh në përgjigje</string>
     <string name="account_settings_quote_style_prefix">Prefiks (si në Gmail)</string>
@@ -348,7 +348,7 @@
     <string name="account_settings_folders">Dosje</string>
     <string name="account_settings_quote_prefix_label">Parashtesë teksti të cituar</string>
     <string name="account_settings_crypto">Fshehtëzim skaj-më-skaj</string>
-    <string name="account_settings_crypto_app">Aktivizo mbulim OpenPGP</string>
+    <string name="account_settings_crypto_app">Aktivizo mbulim OpenPGP-je</string>
     <string name="account_settings_crypto_app_select_title">Përzgjidhni aplikacion OpenPGP</string>
     <string name="account_settings_crypto_key">Formësoni kyç skaj-më-skaj</string>
     <string name="account_settings_crypto_summary_off">Ska aplikacion OpenPGP të formësuar</string>
@@ -391,7 +391,7 @@
     <string name="account_settings_message_age_6_months">6 muajt e shkuar</string>
     <string name="account_settings_message_age_1_year">vitin e shkuar</string>
     <string name="account_settings_sync_remote_deletetions_label">Njëkohëso fshirje në shërbyes</string>
-    <string name="account_settings_sync_remote_deletetions_summary">Hiqi mesazhet kur janë fshirë në shërbyes</string>
+    <string name="account_settings_sync_remote_deletetions_summary">Hiqi mesazhet, kur janë fshirë në shërbyes</string>
     <string name="account_settings_openpgp_missing">Mungon aplikacioni OpenPGP - mos është çinstaluar?</string>
     <string name="folder_settings_title">Rregullime dosjeje</string>
     <string name="folder_settings_in_top_group_label">Shfaqe në grupin e epërm</string>
@@ -406,13 +406,13 @@
     <string name="notifications_title">Njoftime</string>
     <string name="account_settings_vibration">Dridhje</string>
     <string name="account_settings_vibrate_enable">Dridhu</string>
-    <string name="account_settings_vibrate_pattern_label">Rregullsi dridhjeje</string>
+    <string name="account_settings_vibrate_pattern_label">Lloj dridhjeje</string>
     <string name="account_settings_vibrate_pattern_default">Parazgjedhje</string>
-    <string name="account_settings_vibrate_pattern_1">Rregullsi 1</string>
-    <string name="account_settings_vibrate_pattern_2">Rregullsi 2</string>
-    <string name="account_settings_vibrate_pattern_3">Rregullsi 3</string>
-    <string name="account_settings_vibrate_pattern_4">Rregullsi 4</string>
-    <string name="account_settings_vibrate_pattern_5">Rregullsi 5</string>
+    <string name="account_settings_vibrate_pattern_1">Lloji 1</string>
+    <string name="account_settings_vibrate_pattern_2">Lloji 2</string>
+    <string name="account_settings_vibrate_pattern_3">Lloji 3</string>
+    <string name="account_settings_vibrate_pattern_4">Lloji 4</string>
+    <string name="account_settings_vibrate_pattern_5">Lloji 5</string>
     <string name="account_settings_vibrate_times">Përsërite dridhjen</string>
     <string name="account_settings_vibrate_summary_disabled">Çaktivizuar</string>
     <string name="account_settings_ringtone">Zile për postë të re</string>
@@ -504,7 +504,7 @@
     <string name="settings_language_label">Gjuhë</string>
     <string name="preference_search_no_results">S’u gjetën rregullime</string>
     <string name="settings_message_theme_selection_label">Temë e fiksuar mesazhesh</string>
-    <string name="settings_message_theme_selection_summary_off">Përzgjidhni temë parjeje të përdoret kur shihet mesazhi</string>
+    <string name="settings_message_theme_selection_summary_off">Përzgjidhni temën për parje mesazhesh, që përdoret kur shihet mesazhi</string>
     <string name="settings_message_theme_selection_summary_on">Përdor një temë të fiksuar mesazhesh</string>
     <string name="setting_language_system">Parazgjedhje sistemi</string>
     <string name="background_ops_label">Njëkohësim në prapaskenë</string>
@@ -590,7 +590,7 @@
     <string name="dialog_attachment_progress_title">Po shkarkohet bashkëngjitje</string>
     <string name="settings_list_backup_category">Kopjeruajtje</string>
     <string name="settings_list_miscellaneous_category">Të ndryshme</string>
-    <string name="settings_export_title">Rregullime eksportimi</string>
+    <string name="settings_export_title">Eksportoi rregullime</string>
     <string name="settings_export_button">Eksportoje</string>
     <string name="settings_export_share_button">Ndajeni me të tjerë</string>
     <string name="settings_export_progress_text">Po eksportohen rregullimet…</string>
@@ -625,7 +625,7 @@
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
-    <string name="account_settings_remote_search_num_label">Kufi kërkimesh në shërbyesi</string>
+    <string name="account_settings_remote_search_num_label">Kufi kërkimesh në shërbyes</string>
     <string name="remote_search_sending_query">Po dërgohet kërkesa te shërbyesi</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Po sillet %d përfundim</item>
@@ -640,12 +640,12 @@
     <string name="action_remote_search">Kërko mesazhe në shërbyes</string>
     <string name="remote_search_unavailable_no_network">Për kërkime në shërbyes lypset lidhje në rrjet.</string>
     <string name="global_settings_background_as_unread_indicator_label">Ndryshoji ngjyrën, pasi lexohet</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Një sfond i ndryshëm do të tregojë që mesazhi është lexuar</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Që mesazhi është lexuar, do të tregohet me një sfond të ndryshëm</string>
     <string name="global_settings_threaded_view_label">Pamje rrjedhë</string>
     <string name="global_settings_threaded_view_summary">Grupoji mesazhet sipas bisedash</string>
     <string name="upgrade_databases_title">Përditësim bazash të dhënash</string>
     <string name="upgrade_databases_unspecified">Po përditësohen baza të dhënash…</string>
-    <string name="upgrade_database_format">Po përditësohet baza e të dhënave për <xliff:g id="account">%s</xliff:g></string>
+    <string name="upgrade_database_format">Po përditësohet baza e të dhënave për llogarinë \\<xliff:g id="account">%s</xliff:g>\\</string>
     <string name="global_settings_splitview_mode_label">Shfaqe me ekranin të ndarë</string>
     <string name="global_settings_splitview_always">Përherë</string>
     <string name="global_settings_splitview_never">Kurrë</string>
@@ -700,7 +700,7 @@
     <string name="openpgp_dialog_sign_only_title">Mënyra PGP Vetëm-Nënshkrim</string>
     <string name="openpgp_dialog_sign_only_text">Nën këtë mënyrë, kyçi juaj PGP do të përdoret për të krijuar një nënshkrim kriptografik të një email-i të pafshehtëzuar.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Kjo nuk e fshehtëzon email-in, por verifikon që qe dërguar nga kyçi juaj.</string>
-    <string name="openpgp_dialog_sign_only_minus_break">Nënshkrimet mund të cenohen kur dërgohen te lista postimesh.</string>
+    <string name="openpgp_dialog_sign_only_minus_break">Nënshkrimet mund të prishen, kur dërgohen te lista postimesh.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">Në disa klientë, nënshkrimet mund të shfaqen si bashkëngjitje \'signature.asc\'.</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Mesazhet e fshehtëzuar gjithmonë përmbajnë një nënshkrim.</string>
     <string name="crypto_msg_title_plaintext">Tekst i thjeshtë</string>
@@ -764,8 +764,8 @@
     <string name="openpgp_enabled_error_back">Mbrapsht</string>
     <string name="openpgp_enabled_error_disable">Çaktivizo Fshehtëzimin</string>
     <string name="openpgp_encryption">Fshehtëzim OpenPGP</string>
-    <string name="account_settings_crypto_prefer_encrypt">Mënyra Autocrypt e përbashkët</string>
-    <string name="dialog_autocrypt_mutual_title">Mënyra Autocrypt e përbashkët</string>
+    <string name="account_settings_crypto_prefer_encrypt">Mënyra “Autocrypt reciprok”</string>
+    <string name="dialog_autocrypt_mutual_title">Mënyra “Autocrypt reciprok”</string>
     <string name="dialog_autocrypt_mutual_description_1">Mesazhet normalisht do të fshehtëzohen sipas zgjedhjes tuaj, ose kur i përgjigjeni një mesazhi të fshehtëzuar.</string>
     <string name="dialog_autocrypt_mutual_description_2">Nëse si dërguesi, ashtu edhe marrësit aktivizojnë mënyrën e përbashkët, fshehtëzimi do të aktivizohet si parazgjedhje.</string>
     <string name="dialog_autocrypt_mutual_learn_more">Mund <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">të klikoni këtu</a> që të mësoni më tepër.</string>
@@ -875,7 +875,7 @@
     <string name="push_notification_state_alarm_permission_missing">Mungojnë leje për të planifikuar alarme</string>
     <string name="dialog_openkeychain_info_text">Aplikacioni OpenKeychain është i domosdoshëm për të aktivizuar mbulim fshehtëzimi skaj-më-skaj.</string>
     <string name="about_title">Mbi <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%1$s</xliff:g>\" do të hiqet nga <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Llogaria \\<xliff:g id="account">%1$s</xliff:g>\" do të hiqet nga <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Kur përdoret Push, <xliff:g id="app_name">%1$s</xliff:g> mban një lidhje me shërbyesin e postës. Android-i lyp shfaqjen e vazhdueshme të një njoftimi, teksa aplikacioni është aktiv në prapaskenë. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Ekipi i Thunderbird-it Për Celular</string>
     <string name="settings_ui_data_collection">Grumbullim të dhënash</string>
@@ -890,4 +890,8 @@
     <string name="volume_navigation_title_short">Lëvizje me tastet e volumit</string>
     <string name="save_attachment_action">Ruaje bashkëngjitjen</string>
     <string name="folder_settings_push_label">Aktivizo Push</string>
+    <string name="expand_content_description">Zgjeroje</string>
+    <string name="dialog_confirm_empty_spam_title">Ripohoni zbrazje të padëshiruarish</string>
+    <string name="dialog_confirm_empty_spam_message">Doni të zbrazet dosja e të padëshiruarve?</string>
+    <string name="empty_spam_action">Zbraz të Padëshiruarit</string>
 </resources>

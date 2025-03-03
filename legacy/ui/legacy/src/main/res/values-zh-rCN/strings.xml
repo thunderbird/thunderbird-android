@@ -6,13 +6,13 @@
     <!--Used in the about dialog-->
     <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="source_code">源代码</string>
-    <string name="app_license">Apache 许可证，2.0 版</string>
+    <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">开源项目</string>
     <string name="about_website_title">网站</string>
     <string name="get_help_title">获取帮助</string>
     <string name="user_forum_title">用户论坛</string>
     <string name="about_libraries">库</string>
-    <string name="license">许可证</string>
+    <string name="license">许可</string>
     <string name="changelog_title">更新日志</string>
     <string name="changelog_loading_error">无法加载更新日志。</string>
     <string name="changelog_version_title">版本 %s</string>
@@ -37,11 +37,11 @@
     <string name="choose_folder_copy_title">复制到…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> 已选择</string>
     <string name="send_action">发送</string>
-    <string name="empty_subject">主题为空，请再次单击以继续发送</string>
+    <string name="empty_subject">主题为空，请再次点击以继续发送</string>
     <string name="reply_action">回复</string>
     <string name="reply_all_action">回复全部</string>
     <string name="delete_action">删除</string>
-    <string name="archive_action">存档</string>
+    <string name="archive_action">归档</string>
     <string name="spam_action">标记为垃圾邮件</string>
     <string name="forward_action">转发</string>
     <string name="forward_as_attachment_action">作为附件转发</string>
@@ -50,7 +50,7 @@
     <string name="move_to_drafts_action">移动到草稿</string>
     <string name="refile_action">重新归档…</string>
     <string name="done_action">完成</string>
-    <string name="discard_action">丢弃</string>
+    <string name="discard_action">舍弃</string>
     <string name="save_draft_action">保存为草稿</string>
     <string name="check_mail_action">检查邮件</string>
     <string name="send_messages_action">发送邮件</string>
@@ -93,7 +93,7 @@
     <string name="general_no_sender">无发件人</string>
     <string name="status_loading_more">正在加载邮件\u2026</string>
     <string name="status_network_error">连接错误</string>
-    <string name="status_invalid_id_error">邮件未找到</string>
+    <string name="status_invalid_id_error">未找到邮件</string>
     <string name="status_loading_error">邮件加载错误</string>
     <string name="load_more_messages_fmt">最多再加载 <xliff:g id="messages_to_load">%d</xliff:g> 封邮件</string>
     <string name="size_format_gigabytes">%.1f GB</string>
@@ -106,11 +106,11 @@
     <string name="notification_additional_messages">加载 <xliff:g id="account">%2$s</xliff:g> 上的另外 <xliff:g id="additional_messages">%1$d</xliff:g> 封邮件</string>
     <string name="notification_action_reply">回复</string>
     <string name="notification_action_mark_as_read">标记为已读</string>
-    <string name="notification_action_mark_all_as_read">标记全部为已读</string>
+    <string name="notification_action_mark_all_as_read">全部标记为已读</string>
     <string name="notification_action_delete">删除</string>
     <string name="notification_action_delete_all">删除全部</string>
-    <string name="notification_action_archive">存档</string>
-    <string name="notification_action_archive_all">存档全部</string>
+    <string name="notification_action_archive">归档</string>
+    <string name="notification_action_archive_all">归档全部</string>
     <string name="notification_action_spam">垃圾邮件</string>
     <string name="notification_certificate_error_public">证书错误</string>
     <string name="notification_certificate_error_title"><xliff:g id="account">%s</xliff:g> 的证书错误</string>
@@ -120,7 +120,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">通知错误</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">尝试为新邮件创建系统通知时出错。原因很可能是缺少通知声音。\n\n轻击打开通知设置。</string>
+    <string name="notification_notify_error_text">尝试为新邮件创建系统通知时出错。原因很可能是缺少通知提示音。\n\n请点按以打开通知设置。</string>
     <string name="notification_bg_sync_ticker">正在检查邮件：<xliff:g id="account">%1$s</xliff:g>：<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">正在检查邮件</string>
     <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
@@ -154,7 +154,7 @@
     <string name="message_compose_quote_header_cc">抄送：</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> 写道：</string>
     <string name="message_compose_reply_header_fmt_with_date">于 <xliff:g id="sent_date">%1$s</xliff:g>，<xliff:g id="sender">%2$s</xliff:g> 写道：</string>
-    <string name="message_compose_error_no_recipients">您必须至少添加一个收件人。</string>
+    <string name="message_compose_error_no_recipients">您必须至少添加一位收件人。</string>
     <string name="compose_error_incomplete_recipient">收件人字段输入不完整！</string>
     <string name="error_contact_address_not_found">找不到此联系人的电子邮件地址。</string>
     <string name="message_compose_attachments_skipped_toast">某些附件因尚未下载而无法转发。</string>
@@ -179,7 +179,7 @@
     <string name="message_view_download_remainder">下载完整邮件</string>
     <string name="message_view_sender_label">通过  %1$s</string>
     <string name="from_same_sender">来自此发件人的更多邮件</string>
-    <string name="message_discarded_toast">邮件已丢弃</string>
+    <string name="message_discarded_toast">邮件已舍弃</string>
     <string name="message_saved_toast">邮件已保存为草稿</string>
     <string name="global_settings_flag_label">显示星标</string>
     <string name="global_settings_flag_summary">星标指示标记过的邮件</string>
@@ -198,11 +198,11 @@
     <string name="global_settings_messageview_autofit_width_label">自适应邮件</string>
     <string name="global_settings_messageview_autofit_width_summary">缩小邮件以适应屏幕</string>
     <string name="global_settings_confirm_actions_title">确认操作</string>
-    <string name="global_settings_confirm_actions_summary">执行选定操作时显示对话框</string>
+    <string name="global_settings_confirm_actions_summary">执行所选操作时显示对话框</string>
     <string name="global_settings_confirm_action_delete">删除</string>
-    <string name="global_settings_confirm_action_delete_starred">删除星标（在邮件视图中）</string>
+    <string name="global_settings_confirm_action_delete_starred">删除星标邮件（在邮件视图中）</string>
     <string name="global_settings_confirm_action_spam">标记为垃圾邮件</string>
-    <string name="global_settings_confirm_menu_discard">丢弃邮件</string>
+    <string name="global_settings_confirm_menu_discard">舍弃邮件</string>
     <string name="global_settings_confirm_menu_mark_all_read">标记全部邮件为已读</string>
     <string name="global_settings_confirm_action_delete_notif">删除（来自通知）</string>
     <!--Title of the screen to configure swipe actions-->
@@ -220,7 +220,7 @@
     <!--Name of the swipe action to add/remove a star-->
     <string name="general_settings_swipe_action_toggle_star">添加/移除星标</string>
     <!--Name of the swipe action to archive a message-->
-    <string name="general_settings_swipe_action_archive">存档</string>
+    <string name="general_settings_swipe_action_archive">归档</string>
     <!--Name of the swipe action to delete a message-->
     <string name="general_settings_swipe_action_delete">删除</string>
     <!--Name of the swipe action to move a message to the spam folder-->
@@ -246,25 +246,25 @@
     <string name="global_settings_lock_screen_notification_visibility_message_count">新邮件计数</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">邮件计数和发件人</string>
     <string name="global_settings_lock_screen_notification_visibility_everything">与屏幕解锁时相同</string>
-    <string name="quiet_time">免打扰时间</string>
+    <string name="quiet_time">勿扰时段</string>
     <string name="quiet_time_description">夜间禁用铃声、振动和闪光灯</string>
     <string name="quiet_time_notification">禁用通知</string>
-    <string name="quiet_time_notification_description">在免打扰时间完全禁用通知</string>
-    <string name="quiet_time_starts">免打扰时间开始</string>
-    <string name="quiet_time_ends">免打扰时间结束</string>
+    <string name="quiet_time_notification_description">在勿扰时段完全禁用通知</string>
+    <string name="quiet_time_starts">勿扰时段开始</string>
+    <string name="quiet_time_ends">勿扰时段结束</string>
     <string name="account_setup_basics_title">设置新账号</string>
     <string name="account_setup_incoming_delete_policy_label">当我删除邮件时</string>
     <string name="account_setup_incoming_delete_policy_never_label">不要在服务器上删除</string>
     <string name="account_setup_incoming_delete_policy_delete_label">从服务器删除</string>
     <string name="account_setup_incoming_delete_policy_markread_label">在服务器上标记为已读</string>
-    <string name="account_setup_expunge_policy_label">擦除服务器上已删除的邮件</string>
+    <string name="account_setup_expunge_policy_label">清除服务器上已删除的邮件</string>
     <string name="account_setup_expunge_policy_immediately">立即</string>
     <string name="account_setup_expunge_policy_on_poll">轮询时</string>
     <string name="account_setup_expunge_policy_manual">手动</string>
     <string name="drafts_folder_label">草稿文件夹</string>
     <string name="sent_folder_label">已发送邮件文件夹</string>
     <string name="trash_folder_label">已删除邮件文件夹</string>
-    <string name="archive_folder_label">存档文件夹</string>
+    <string name="archive_folder_label">归档文件夹</string>
     <string name="spam_folder_label">垃圾邮件文件夹</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
     <string name="account_setup_auto_expand_folder">自动展开文件夹</string>
@@ -493,7 +493,7 @@
     <string name="debug_preferences">调试</string>
     <string name="privacy_preferences">隐私</string>
     <string name="network_preferences">网络</string>
-    <string name="interaction_preferences">交互</string>
+    <string name="interaction_preferences">互动</string>
     <string name="accountlist_preferences">账号列表</string>
     <string name="messagelist_preferences">邮件列表</string>
     <string name="messageview_preferences">邮件</string>
@@ -510,7 +510,7 @@
     <string name="background_ops_never">从不</string>
     <string name="background_ops_always">始终</string>
     <string name="background_ops_auto_sync_only">当选中“自动同步”时</string>
-    <string name="batch_select_all">选择全部</string>
+    <string name="batch_select_all">全选</string>
     <string name="account_setup_push_limit_label">推送检查的最大文件夹数</string>
     <string name="account_setup_push_limit_5">5 个文件夹</string>
     <string name="account_setup_push_limit_10">10 个文件夹 </string>
@@ -555,13 +555,13 @@
     <string name="font_size_medium">中</string>
     <string name="font_size_large">大</string>
     <string name="font_size_larger">较大</string>
-    <string name="error_activity_not_found">未找到适合此操作的应用。</string>
+    <string name="error_activity_not_found">未找到适合执行此操作的应用。</string>
     <string name="send_failed_reason">发送失败：%s</string>
     <string name="save_or_discard_draft_message_dlg_title">保存草稿邮件？</string>
-    <string name="save_or_discard_draft_message_instructions_fmt">保存还是丢弃此邮件？</string>
-    <string name="save_or_discard_draft_message_changes">保存或放弃更改？</string>
-    <string name="confirm_discard_draft_message_title">丢弃邮件？</string>
-    <string name="confirm_discard_draft_message">是否确定要丢弃此邮件？</string>
+    <string name="save_or_discard_draft_message_instructions_fmt">保存还是舍弃此邮件？</string>
+    <string name="save_or_discard_draft_message_changes">保存或舍弃更改？</string>
+    <string name="confirm_discard_draft_message_title">舍弃邮件？</string>
+    <string name="confirm_discard_draft_message">是否确定要舍弃此邮件？</string>
     <string name="dialog_confirm_clear_local_folder_title">清空本地邮件？</string>
     <string name="dialog_confirm_clear_local_folder_message">这将从文件夹中移除所有本地邮件。不会从服务器中删除任何邮件。</string>
     <string name="dialog_confirm_clear_local_folder_action">清空邮件</string>
@@ -572,7 +572,7 @@
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">是</string>
     <string name="dialog_confirm_delete_cancel_button">否</string>
-    <string name="dialog_confirm_mark_all_as_read_title">确认标记全部为已读</string>
+    <string name="dialog_confirm_mark_all_as_read_title">确认全部标记为已读</string>
     <string name="dialog_confirm_mark_all_as_read_message">是否要标记全部邮件为已读？</string>
     <string name="dialog_confirm_empty_trash_title">确认清空已删除邮件</string>
     <string name="dialog_confirm_empty_trash_message">是否要清空已删除邮件文件夹？</string>
@@ -648,7 +648,7 @@
     <string name="message_view_empty">请在左侧选择邮件</string>
     <string name="global_settings_show_contact_picture_label">显示联系人图片</string>
     <string name="global_settings_show_contact_picture_summary">在邮件列表中显示联系人图片</string>
-    <string name="mark_all_as_read">标记全部为已读</string>
+    <string name="mark_all_as_read">全部标记为已读</string>
     <string name="global_settings_colorize_missing_contact_pictures_label">为联系人图片着色</string>
     <string name="global_settings_colorize_missing_contact_pictures_summary">为缺少的联系人图片着色</string>
     <string name="global_settings_messageview_visible_refile_actions_title">可见的邮件操作</string>
@@ -674,7 +674,7 @@
     <string name="compose_error_no_draft_folder">此账号未配置草稿文件夹！</string>
     <string name="compose_error_no_key_configured">此账号未配置密钥！请检查您的设置。</string>
     <string name="error_crypto_provider_incompatible">加密提供程序使用不兼容的版本。请检查您的设置！</string>
-    <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或单击加密图标重试！</string>
+    <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或点击加密图标重试！</string>
     <string name="error_crypto_provider_ui_required">端到端加密初始化失败，请检查您的设置</string>
     <string name="error_crypto_inline_attach">PGP/INLINE 模式不支持附件！</string>
     <string name="enable_inline_pgp">启用 PGP/INLINE</string>
@@ -754,7 +754,7 @@
     <string name="disable_encryption">禁用加密</string>
     <string name="openpgp_description_text1">对邮件进行加密可确保只有收件人才能阅读，其他人无法阅读。</string>
     <string name="openpgp_description_text3">加密功能只有在所有收件人都支持的情况下才会显示，而且收件人必须曾经给您发送过电子邮件。</string>
-    <string name="openpgp_description_text2">单击此图标切换加密。</string>
+    <string name="openpgp_description_text2">点击此图标切换加密。</string>
     <string name="openpgp_enabled_error_gotit">知道了</string>
     <string name="openpgp_enabled_error_back">返回</string>
     <string name="openpgp_enabled_error_disable">禁用加密</string>
@@ -763,7 +763,7 @@
     <string name="dialog_autocrypt_mutual_title">Autocrypt 相互模式</string>
     <string name="dialog_autocrypt_mutual_description_1">邮件通常会根据选择进行加密，或者在回复加密邮件时进行加密。</string>
     <string name="dialog_autocrypt_mutual_description_2">如果发件人和收件人均启用了相互模式，加密默认会被启用。</string>
-    <string name="dialog_autocrypt_mutual_learn_more">您可以<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">单击此处</a>了解更多信息。</string>
+    <string name="dialog_autocrypt_mutual_learn_more">您可以<a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">点击此处</a>了解详情。</string>
     <string name="general_settings_title">常规设置</string>
     <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
     <string name="dialog_openkeychain_info_install">安装</string>
@@ -791,10 +791,10 @@
     <string name="push_notification_state_listening">正在等待新电子邮件</string>
     <string name="push_notification_state_wait_background_sync">在允许后台同步之前一直处于睡眠状态</string>
     <string name="push_notification_state_wait_network">在网络可用之前一直处于睡眠状态</string>
-    <string name="push_notification_info">轻击以了解更多信息。</string>
+    <string name="push_notification_info">点按即可了解详情。</string>
     <string name="push_info_title">推送信息</string>
     <string name="push_info_configure_notification_text">然而，Android 也允许您隐藏通知。</string>
-    <string name="push_info_learn_more_text">了解更多</string>
+    <string name="push_info_learn_more_text">了解详情</string>
     <string name="push_info_configure_notification_action">配置通知</string>
     <string name="push_info_disable_push_text">如果您不需要新邮件的即时通知，则应禁用推送并使用轮询。轮询会定期检查新邮件，不需要通知。</string>
     <string name="push_info_disable_push_action">禁用推送</string>
@@ -811,7 +811,7 @@
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
     <string name="swipe_action_remove_star">移除星标</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">存档</string>
+    <string name="swipe_action_archive">归档</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
     <string name="swipe_action_delete">删除</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
@@ -823,7 +823,7 @@
     <!--Displayed in the toolbar when there was an error loading the message list, e.g. because the folder no longer exists.-->
     <string name="message_list_error_title">错误</string>
     <!--Displayed instead of the message list when a folder couldn't be found, e.g. due to an outdated home screen shortcut.-->
-    <string name="message_list_error_folder_not_found">文件夹未找到</string>
+    <string name="message_list_error_folder_not_found">未找到文件夹</string>
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">邮件详情</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
@@ -866,7 +866,7 @@
     <string name="general_settings_post_mark_as_unread_action_title">标记邮件为未读后</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">返回邮件列表</string>
     <string name="push_notification_state_alarm_permission_missing">缺少设置闹钟的权限</string>
-    <string name="push_notification_grant_alarm_permission">轻击以授予权限。</string>
+    <string name="push_notification_grant_alarm_permission">点按即可授予权限。</string>
     <string name="account_delete_dlg_instructions_fmt">账号“<xliff:g id="account">%1$s</xliff:g>”将从 <xliff:g id="app_name">%2$s</xliff:g> 中移除。</string>
     <string name="about_title">关于 <xliff:g id="app_name">%s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">启用对端到端加密的支持需要使用 OpenKeychain。</string>
@@ -884,4 +884,8 @@
     <string name="save_attachment_action">保存附件</string>
     <string name="volume_navigation_title_short">音量键导航</string>
     <string name="volume_navigation_summary">在邮件视图中使用音量键在邮件之间导航</string>
+    <string name="expand_content_description">展开</string>
+    <string name="dialog_confirm_empty_spam_title">确认清空垃圾邮件</string>
+    <string name="empty_spam_action">清空垃圾邮件</string>
+    <string name="dialog_confirm_empty_spam_message">是否要清空垃圾邮件文件夹？</string>
 </resources>

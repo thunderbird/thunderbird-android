@@ -896,4 +896,8 @@
     <string name="volume_navigation_summary">In visualizzazione messaggi naviga con i tasti volume</string>
     <string name="settings_list_action_support">Supporta <xliff:g id="app_name">%s</xliff:g></string>
     <string name="volume_navigation_title_short">Naviga con i tasti del volume</string>
+    <string name="expand_content_description">Espandi</string>
+    <string name="empty_spam_action">Spam vuota</string>
+    <string name="dialog_confirm_empty_spam_title">Conferma spam vuota</string>
+    <string name="dialog_confirm_empty_spam_message">Vuoi svuotare la cartella spam?</string>
 </resources>

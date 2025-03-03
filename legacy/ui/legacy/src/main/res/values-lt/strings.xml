@@ -5,7 +5,7 @@
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
     <string name="about_app_authors_k9">„K-9“ šunų vedžiotojai</string>
-    <string name="source_code">Šaltinio kodas</string>
+    <string name="source_code">Pirminiai tekstai</string>
     <string name="app_license">Apache licencija, versija 2.0</string>
     <string name="about_project_title">Atvirojo kodo projektas</string>
     <string name="about_website_title">Svetainė</string>
@@ -228,7 +228,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">Numatytas</string>
     <string name="global_settings_privacy_hide_useragent">Slėpti pašto klientą</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Pašalinti K-9 User-Agent iš pašto antraščių</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Pašalinti „User-Agent“ antraštę iš siunčiamų laiškų</string>
     <string name="global_settings_privacy_hide_timezone">Slėpti laiko juostą</string>
     <string name="global_settings_privacy_hide_timezone_detail">Naudoti UTC laiko juostą laiško antraštėse ir atsakymo antraštėje vietoj vietinės laiko juostos</string>
     <string name="global_settings_notification_quick_delete_title">Rodyti mygtuką „Šalinti“</string>
@@ -563,9 +563,8 @@
     <string name="dialog_confirm_delete_title">Patvirtinti šalinimą</string>
     <string name="dialog_confirm_delete_message">Ar tikrai norite pašalinti laišką?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Ar tikrai norite ištrinti šį laišką?</item>
+        <item quantity="one">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laišką?</item>
         <item quantity="few">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
-        <item quantity="many">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškų?</item>
         <item quantity="other">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Taip</string>
@@ -578,9 +577,8 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Ne</string>
     <string name="dialog_confirm_spam_title">Patvirtinti perkėlimą į brukalo aplanką</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Ar tikrai norite perkelti šį laišką į brukalo aplanką?</item>
+        <item quantity="one">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laišką į brukalo aplanką?</item>
         <item quantity="few">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškus į brukalo aplanką?</item>
-        <item quantity="many">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
         <item quantity="other">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Taip</string>
@@ -893,4 +891,14 @@ Norėdami nustatyti automatinį šifravimą naujajame prietaise, vadovaukitės i
     <string name="settings_ui_telemetry_description">Bendrina su „Mozilla“ šios programos veikimo, naudojimo, aparatinės įrangos ir tinkinimo duomenis, kad padėtų mums tobulinti „Thunderbird“</string>
     <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%1$s</xliff:g>\" bus pašalinta iš „<xliff:g id="app_name">%2$s</xliff:g>“.</string>
     <string name="about_title">Apie „<xliff:g id="app_name">%s</xliff:g>“</string>
+    <string name="folder_list_show_hidden_folders">Rodyti paslėptus aplankus</string>
+    <string name="empty_spam_action">Valyti brukalo aplanką</string>
+    <string name="save_attachment_action">Įrašyti priedą</string>
+    <string name="folder_settings_notifications_label">Pranešimai</string>
+    <string name="volume_navigation_summary">Laiško rodinyje leisti pereiti tarp laiškų naudojantis garsumo mygtukais</string>
+    <string name="volume_navigation_title_short">Perėjimas garsumo mygtukais</string>
+    <string name="dialog_confirm_empty_spam_title">Patvirtinkite brukalo aplanko išvalymą</string>
+    <string name="dialog_confirm_empty_spam_message">Ar tikrai norite išvalyti brukalo aplanką?</string>
+    <string name="folder_settings_visible_label">Rodyti aplanką</string>
+    <string name="folder_settings_sync_label">Sinchronizuoti</string>
 </resources>

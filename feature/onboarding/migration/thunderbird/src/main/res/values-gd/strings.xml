@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">An cleachd thu Thunderbird air an desktop agad mu thràth?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Ann an Thunderbird desktop, tadhail air:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">“Roghainnean” air bàr-inneal Spaces (air an taobh chlì aig a’ bhonn)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Cha leig thu leas ach còd QR a sganadh airson roghainnean a’ chunntais agad ion-phortadh.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Tagh “Às-phortaich gu uidheam mobile”</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Ion-phortaichidh seo an tionndadh as ùire dhe Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Fiosraich mar a dh’ùraicheas tu Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Air ùr-thighinn gu Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Cuir cunntas puist-d ris an-dràsta</string>
+    <string name="onboarding_migration_thunderbird_import_title">Airson a ghluasad o aplacaid no uidheam eile?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Ion-phortaich roghainnean a’ chunntais agad an-dràsta</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Cha d’fhuair sinn lorg air aplacaid a dh’fhosgladh an ceangal.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Ion-phortaich na roghainnean</string>
+</resources>

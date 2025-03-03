@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_common_button_next">Далей</string>
+    <string name="account_common_button_back">Назад</string>
+    <string name="account_common_error_server_message">Сервер вярнуў наступнае паведамленне:\n%s</string>
+</resources>

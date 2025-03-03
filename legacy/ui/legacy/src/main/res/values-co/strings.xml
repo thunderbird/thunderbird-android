@@ -832,4 +832,8 @@
     <string name="volume_navigation_title_short">Navigà cù i tasti di vulume</string>
     <string name="volume_navigation_summary">Navigà d’un messaghju à l’altru cù i tasti di vulume nant’à a vista di i messaghji</string>
     <string name="save_attachment_action">Arregistrà a pezza ghjunta</string>
+    <string name="expand_content_description">Spiegà</string>
+    <string name="dialog_confirm_empty_spam_message">Vulete viutà u cartulare di i merzaghji ?</string>
+    <string name="empty_spam_action">Squassà i merzaghji</string>
+    <string name="dialog_confirm_empty_spam_title">Cunfirmà à squassatura di i merzaghji</string>
 </resources>

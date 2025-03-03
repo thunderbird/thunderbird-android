@@ -4,9 +4,9 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">Google, luchd-coiseachd nan con K-9.</string>
+    <string name="about_app_authors_k9">Luchd-coiseachd nan con K-9</string>
     <string name="source_code">An còd tùsail</string>
-    <string name="app_license">Fo cheadachas Apache, tionndadh 2.0.</string>
+    <string name="app_license">Ceadachas Apache, tionndadh 2.0</string>
     <string name="about_project_title">Pròiseact le tùs fosgailte</string>
     <string name="about_website_title">Làrach-lìn</string>
     <string name="user_forum_title">Fòram an luchd-chleachdaidh</string>
@@ -577,7 +577,7 @@
     <string name="global_settings_threaded_view_summary">Buidhnich teachdaireachdan ann an còmhraidhean</string>
     <string name="upgrade_databases_title">Ag àrdachadh nan stòr-dàta</string>
     <string name="upgrade_databases_unspecified">Ag àrdachadh nan stòr-dàta…</string>
-    <string name="upgrade_database_format">Ag àrdachadh stòr-dàta a’ chunntais “<xliff:g id="account">%s</xliff:g>”</string>
+    <string name="upgrade_database_format">Ag àrdachadh stòr-dàta a’ chunntais \\<xliff:g id="account">%s</xliff:g>\\</string>
     <string name="global_settings_splitview_mode_label">Seall air sgrìn sgoilte</string>
     <string name="global_settings_splitview_always">An-còmhnaidh</string>
     <string name="global_settings_splitview_never">Chan ann idir</string>
@@ -610,7 +610,7 @@
     <string name="compose_error_no_key_configured">Cha deach iuchair a rèiteachadh dhan chunntas seo! Thoir sùil air na roghainnean agad.</string>
     <string name="error_crypto_provider_incompatible">Tha solaraiche a’ chrioptachaidh a’ cleachdadh tionndadh nach eil co-chòrdail. Thoir sùil air na roghainnean agad!</string>
     <string name="error_crypto_provider_connect">Chan urrainn dhuinn ceangal ri solaraiche a’ chrioptachaidh, thoir sùil air na roghainnean no thoir gnogag air ìomhaigheag a’ chrioptachaidh airson feuchainn ris a-rithist!</string>
-    <string name="error_crypto_provider_ui_required">Chaidh inntrigeadh do sholaraiche a’ chrioptachaidh a dhiùltadh, thoir gnogag air ìomhaigheag a’ chrioptachaidh airson feuchainn ris a-rithist!</string>
+    <string name="error_crypto_provider_ui_required">Chaidh inntrigeadh do sholaraiche a’ chrioptachaidh a dhiùltadh, thoir gnogag air ìomhaigheag a’ chrioptachaidh airson feuchainn ris a-rithist</string>
     <string name="error_crypto_inline_attach">Chan eil taic ri ceanglachain sa mhodh PGP/INLINE!</string>
     <string name="enable_inline_pgp">Cuir PGP/INLINE an comas</string>
     <string name="disable_inline_pgp">Cuir PGP/INLINE à comas</string>
@@ -748,4 +748,30 @@
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
 <string name="about_app_authors_thunderbird">Sgioba mobile Thunderbird</string>
     <string name="get_help_title">Faigh cobhair</string>
+    <string name="save_attachment_action">Sàbhail an ceanglachan</string>
+    <string name="unsubscribe_action">Crìoch air an fho-sgrìobhadh</string>
+    <string name="general_settings_post_remove_action_title">An dèidh dhut teachdaireachd a sguabadh às no a ghluasad</string>
+    <string name="notification_notify_error_title">Mearachd bratha</string>
+    <string name="notification_channel_messages_description">Brathan co-cheangailte ri teachdaireachdan</string>
+    <string name="choose_folder_move_title">Gluais dha…</string>
+    <string name="choose_folder_copy_title">Lethbhreac gu…</string>
+    <string name="new_messages_title">Teachdaireachdan ùra</string>
+    <string name="notification_certificate_error_public">Mearachd an teisteanais</string>
+    <string name="notification_channel_push_description">Ga shealltainn fhad ’s a thathar a’ feitheamh ri teachdaireachdan ùra</string>
+    <string name="debug_export_logs_title">Às-phortaich na logaichean</string>
+    <string name="debug_export_logs_success">Chaidh an às-phortadh. Bidh fiosrachadh dìomhair ann an logaichean uaireannan. Bi air d’ fhaiceall a thaobh cò dha a bheir thu iad.</string>
+    <string name="debug_export_logs_failure">Dh’fhàillig an t-às-phortadh.</string>
+    <string name="empty_spam_action">Falamhaich an spama</string>
+    <string name="message_view_show_remote_images_action">Seall na dealbhan cèin</string>
+    <string name="message_view_recipients_format">gu <xliff:g id="recipients">%s</xliff:g></string>
+    <string name="notification_channel_miscellaneous_description">Measgachadh de bhrathan, mar mhearachdan is msaa.</string>
+    <string name="version">Tionndadh</string>
+    <string name="changelog_snackbar_text">Faic na tha ùr san sgaoileadh seo</string>
+    <string name="changelog_show_recent_changes">Seall na chaidh atharrachadh an cois ùrachadh na h-aplacaid</string>
+    <string name="changelog_snackbar_button_text">Seall</string>
+    <string name="about_title">Mu dhèidhinn <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="notification_notify_error_text">Dh’èirich mearachd fhad ’s a bha sinn airson brath siostaim a chruthachadh airson teachdaireachd ùr. Mar is trice, tachraidh sin ma tha fuaim bratha a dhìth.\n\nThoir gnogag a dh’fhosgladh roghainnean nam fuaimean.</string>
+    <string name="message_view_additional_recipient_prefix">⁊</string>
+    <string name="general_settings_contact_name_color_label">Dath ainm an neach-aithne</string>
+    <string name="account_delete_dlg_instructions_fmt">Thèid an cunntas \\<xliff:g id="account">%1$s</xliff:g>\" a thoirt air falbh o <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>

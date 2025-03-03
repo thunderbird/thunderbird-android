@@ -575,10 +575,10 @@
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Igen</string>
     <string name="dialog_confirm_delete_cancel_button">Nem</string>
-    <string name="dialog_confirm_mark_all_as_read_title">Megerősítés, hogy az összeset olvasottként jelölje</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Szeretné megjelölni az összes üzenetet olvasottként?</string>
+    <string name="dialog_confirm_mark_all_as_read_title">Erősítse meg az összes olvasottnak jelölését</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Olvasottnak jelöli az összes üzenetet?</string>
     <string name="dialog_confirm_empty_trash_title">Kuka ürítésének megerősítése</string>
-    <string name="dialog_confirm_empty_trash_message">Ki szeretné üríteni a kuka mappát?</string>
+    <string name="dialog_confirm_empty_trash_message">Üríti a kuka mappát?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Igen</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Nem</string>
     <string name="dialog_confirm_spam_title">Megerősítés, hogy áthelyezze a levélszemét mappába</string>
@@ -895,4 +895,8 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="save_attachment_action">Melléklet mentése</string>
     <string name="volume_navigation_title_short">Hangerőszabályzó gombos navigáció</string>
     <string name="volume_navigation_summary">Az üzenetnézetben a hangerőszabályzó gombokkal navigálhat az üzenetek között</string>
+    <string name="empty_spam_action">Levélszemét ürítése</string>
+    <string name="dialog_confirm_empty_spam_title">Levélszemét ürítésének megerősítése</string>
+    <string name="dialog_confirm_empty_spam_message">Üríti a levélszemét mappát?</string>
+    <string name="expand_content_description">Kibontás</string>
 </resources>

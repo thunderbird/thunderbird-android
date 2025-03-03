@@ -307,12 +307,12 @@
     <string name="move_copy_cannot_copy_unsynced_message">Немагчыма скапіяваць ці перамясціць ліст, які не сінхранізаваны з серверам</string>
     <string name="account_settings_push_advanced_title">Дадаткова</string>
     <string name="account_settings_title_fmt">Налады акаўнта</string>
-    <string name="account_settings_notify_label">Апавяшчэнне пра новую пошту</string>
+    <string name="account_settings_notify_label">Атрыманне пошты</string>
     <string name="account_settings_notify_sync_label">Апавяшчэнне пра сінхранізацыю</string>
     <string name="account_settings_email_label">Ваш адрас электроннай пошты</string>
     <string name="account_settings_notify_summary">Паказваць на панэлі стану апавяшчэнні пра новую пошту</string>
     <string name="account_settings_notify_sync_summary">Паказваць на панэлі стану апавяшчэнні пра правяранне пошты</string>
-    <string name="account_settings_notify_self_label">Уключаючы адпраўленую пошту</string>
+    <string name="account_settings_notify_self_label">Адпраўленне пошты</string>
     <string name="account_settings_notify_self_summary">Паказваць апавяшчэнні пры атрыманні пошты</string>
     <string name="account_notify_contacts_mail_only_label">Толькі кантакты</string>
     <string name="account_notify_contacts_mail_only_summary">Апавяшчаць толькі пра лісты ад кантактаў</string>

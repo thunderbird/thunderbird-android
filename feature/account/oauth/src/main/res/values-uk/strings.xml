@@ -9,6 +9,6 @@
     <string name="account_oauth_error_failed">Не вдалося авторизувати через цю помилку: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">Цей постачальник наразі не підтримує OAuth 2.0.</string>
     <string name="account_oauth_error_browser_not_available">Застосунок не може знайти браузер для надання доступу до вашого облікового запису.</string>
-    <string name="account_oauth_google_sign_in_support_text">Якщо у вас виникли проблеми під час входу в Google, зверніться до нашого {placeHolder}.</string>
-    <string name="account_oauth_google_sign_in_support_text_link_text">стаття підтримки</string>
+    <string name="account_oauth_google_sign_in_support_text">Якщо у вас виникли проблеми під час входу в Google, зверніться до нашої {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">довідкової статті</string>
 </resources>

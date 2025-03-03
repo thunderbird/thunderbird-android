@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">使用 OAuth 登入</string>
     <string name="account_oauth_sign_in_description">我們會將您重新導向至您的電子郵件提供者頁面進行登入。您需要授予此應用程式存取您的電子郵件帳號的權限。</string>
     <string name="account_oauth_sign_in_button">登入</string>
+    <string name="account_oauth_google_sign_in_support_text">如果您在使用 Google 登入時遇到問題，請諮詢我們的 {placeHolder}。</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">支援指南</string>
 </resources>

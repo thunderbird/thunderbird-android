@@ -2,4 +2,6 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_welcome_start_button">Start</string>
     <string name="onboarding_welcome_import_button">Ynstellingen ymportearje</string>
+    <string name="onboarding_welcome_developed_by">Φτιαγμένο από μια ειδική ομάδα στην MZLA Technologies και μια παγκόσμια κοινότητα εθελοντών. Μέλος της οικογένειας Mozilla.</string>
+    <string name="onboarding_welcome_text">Ανοιχτού κώδικα, με έμφαση στην ιδιωτικότητα και χωρίς διαφημίσεις εφαρμογή ηλ. ταχυδρομείου</string>
 </resources>

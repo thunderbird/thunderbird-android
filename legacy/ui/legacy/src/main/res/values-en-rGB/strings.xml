@@ -880,4 +880,8 @@
     <string name="error_crypto_provider_incompatible">Crypto provider uses incompatible version. Please check your settings!</string>
     <string name="openpgp_enabled_error_gotit">Got it</string>
     <string name="crypto_msg_encrypted_error">but there was a decryption error</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="empty_spam_action">Empty Spam</string>
+    <string name="about_title">About <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="account_delete_dlg_instructions_fmt">The account \\<xliff:g id="account">%1$s</xliff:g>\" will be removed from <xliff:g id="app_name">%2$s</xliff:g>.</string>
 </resources>
