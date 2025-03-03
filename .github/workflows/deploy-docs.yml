@@ -10,9 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: "pages"
@@ -20,6 +18,7 @@ concurrency:
 
 jobs:
   build-docs:
+    if: ${{ github.repository_owner == 'thunderbird' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,28 +38,41 @@ jobs:
       - name: Install mdbook and extensions
         run: ./docs/install.sh
 
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
-
       - name: Build docs
-        run: mdbook build docs --dest-dir=book/docs/latest
+        run: mdbook build docs --dest-dir=./../book/docs/latest
 
       - name: Test docs
         run: mdbook test docs
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3.0.1
-        with:
-          path: ./book/docs
+      - name: Clean docs
+        run: |
+          rm -rf book/docs/latest/assets/draw.io
+          rm book/docs/latest/.gitignore
+          rm book/docs/latest/install.sh
 
-  deploy-docs:
-    environment:
-      name: pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build-docs
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4.0.5
+      - name: Deploy docs to gh-pages
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Fetch the gh-pages branch
+          git fetch origin gh-pages || git checkout --orphan gh-pages
+          git checkout gh-pages
+
+           # Get the short commit hash
+          COMMIT_HASH=$(git rev-parse --short "$GITHUB_SHA")
+
+          # Keep necessary files and clean `docs/latest/`
+          mkdir -p docs/latest  # Ensure the folder exists
+          find docs/latest -mindepth 1 -delete  # Delete old files inside docs/latest
+
+          # Copy new docs to gh-pages branch
+          cp -r book/docs/latest/* docs/latest/
+
+          # Remove
+          rm -rf book
+
+          # Add, commit, and push changes
+          git add .
+          git commit -m "Deploy docs update from [${COMMIT_HASH}]" || echo "No changes to commit"
+          git push --force-with-lease origin gh-pages
