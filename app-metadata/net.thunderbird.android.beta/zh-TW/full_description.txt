@@ -1,0 +1,37 @@
+透過下載 Thunderbird Beta 並在正式發布之前搶先使用最新功能和錯誤修復，幫助使下一個 Thunderbird 版本盡可能出色。您的測試和回饋非常重要，因此請報告錯誤和瑕疵，並與我們分享您的想法！
+
+您可以在 <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>  找到我們的錯誤追蹤器、原始碼和wiki。
+
+我們始終樂於歡迎新的開發人員、設計師、文件編寫員、翻譯員、錯誤分類員和朋友。請造訪 <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> 開始使用。
+
+Thunderbird 是一款功能強大、注重隱私的電子郵件應用程式。輕鬆透過一個應用程式管理多個電子郵件帳戶，並使用統一收件匣選項實現最高工作效率。 Thunderbird 基於開源技術構建，並由專門的開發團隊和全球志工社群提供支持，它絕對不會將您的私人資料視為產品。全部由我們使用者的財務捐贈來支持，因此您再也不會在電子郵件中看到廣告。
+
+<b>您可以做什麼</b>
+<ul>
+ <li>放棄多個應用程式和網路郵件。使用一個應用程式和可選的統一收件匣來度過您的一天。
+ <li>享受隱私友善的電子郵件使用者端，它絕不會收集或出售您的個人資料。我們將直接將您連接到您的電子郵件提供者。就是這麼簡單！
+ <li>透過使用「OpenKeychain」應用程式的 OpenPGP 電子郵件加密 (PGP/MIME) 來加密和解密您的郵件，將您的隱私提升到一個新的水平。
+ <li>選擇立即、按設定的時間間隔或按需同步您的電子郵件。不管您想如何檢查電子郵件，都由您決定！
+ <li>使用本機和伺服器端搜尋尋找重要訊息。
+</ul>
+
+<b>相容性</b>
+<ul>
+ <li>Thunderbird 可與 IMAP 和 POP3 協定搭配使用，支援多種電子郵件供應商，包括 Gmail、Outlook、Yahoo Mail、iCloud 等。
+</ul>
+
+<b>為何使用 Thunderbird</b>
+<ul>
+ <li>20 多年來電子郵件領域值得信賴的品牌 - 現在登陸 Android。
+ <li>Thunderbird 的資金完全來自使用者自願捐助。我們不會挖掘您的個人資料。你永遠不是產品。
+ <li>由一支和您一樣注重效率的團隊製作。我們希望您花最少的時間使用應用，同時獲得最大的回報。
+ <li>由於來自世界各地的貢獻者，Android 版 Thunderbird 已被翻譯成 20 多種語言。
+ <li>由 Mozilla 基金會的全資子公司 MZLA Technologies Corporation 提供支援。
+</ul>
+
+<b>開源與社群</b>
+<ul>
+ <li>Thunderbird 是免費且開源的，這意味著它的程式碼可以自由被查看、修改、使用和分享。它的自由軟體授權也確保它將永遠免費。您可以將 Thunderbird 視為數千名貢獻者給您的禮物。
+ <li>我們透過部落格和電子郵件清單定期、透明地更新訊息，公開發展。
+ <li>我們的使用者支援由我們的全球社群提供支援。找到您需要的答案，或擔任貢獻者的角色 - 無論是回答問題、翻譯應用程序，還是向您的朋友和家人介紹 Thunderbird。
+</ul>

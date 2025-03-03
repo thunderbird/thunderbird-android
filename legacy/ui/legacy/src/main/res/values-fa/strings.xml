@@ -648,7 +648,7 @@
     <string name="global_settings_threaded_view_summary">گروه‌بندی پیام‌ها بر اساس گفتگو</string>
     <string name="upgrade_databases_title">ارتقای پایگاه‌داده</string>
     <string name="upgrade_databases_unspecified">ارتقای پایگاه‌داده…</string>
-    <string name="upgrade_database_format">ارتقای پایگاه‌دادهٔ حساب «<xliff:g id="account">%s</xliff:g>»</string>
+    <string name="upgrade_database_format">ارتقای پایگاه‌دادهٔ حساب \\<xliff:g id="account">%s</xliff:g>\\</string>
     <string name="global_settings_splitview_mode_label">صفحهٔ دوبخشی</string>
     <string name="global_settings_splitview_always">همیشه</string>
     <string name="global_settings_splitview_never">هرگز</string>
@@ -897,4 +897,8 @@
     <string name="save_attachment_action">ذخیره پیوست</string>
     <string name="volume_navigation_title_short">پیمایش با دکمه تنظیم صدا</string>
     <string name="volume_navigation_summary">با استفاده از کلیدهای تنظیم صدا در صفحه نمایش پیام، بین پیام‌ها پیمایش کنید</string>
+    <string name="expand_content_description">گسترش</string>
+    <string name="empty_spam_action">خالی‌کردن هرزنامه</string>
+    <string name="dialog_confirm_empty_spam_title">تایید خالی‌کردن هرزنامه</string>
+    <string name="dialog_confirm_empty_spam_message">آیا می‌خواهید پوشه هرزنامه را خالی کنید؟</string>
 </resources>

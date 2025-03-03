@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="special_mailbox_name_outbox">Одлазне</string>
-    <string name="special_mailbox_name_drafts">Нацрти</string>
-    <string name="special_mailbox_name_sent">Послате</string>
-    <string name="special_mailbox_name_trash">Смеће</string>
-    <string name="special_mailbox_name_inbox">Долазне</string>
+    <string name="special_mailbox_name_outbox">За слање</string>
+    <string name="special_mailbox_name_drafts">Недовршено</string>
+    <string name="special_mailbox_name_sent">Послато</string>
+    <string name="special_mailbox_name_trash">Отпад</string>
+    <string name="special_mailbox_name_inbox">Сандуче</string>
 </resources>

@@ -3,10 +3,14 @@ name: Daily Builds
 on:
   workflow_dispatch:
   schedule:
-    - cron: '8 20 * * *'
+    - cron: '8 13 * * *'
+
+permissions:
+  contents: read
 
 jobs:
   trigger_daily_build:
+    if: ${{ github.repository_owner == 'thunderbird' }}
     uses: ./.github/workflows/shippable_builds.yml
     secrets: inherit
     permissions:

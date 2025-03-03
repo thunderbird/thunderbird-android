@@ -9,16 +9,16 @@
     <string name="account_server_settings_authentication_none">Нема</string>
     <string name="account_server_settings_authentication_password_cleartext">Нормална лозинка</string>
     <string name="account_server_settings_authentication_password_encrypted">Шифрована лозинка</string>
-    <string name="account_server_settings_incoming_imap_namespace_label">Аутоматско откривање IMAP namespace</string>
-    <string name="account_server_settings_incoming_imap_prefix_label">IMAP пут префикс</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Аутоматско откривање простора назива IMAP-а</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Путања префикса IMAP-а</string>
     <string name="account_server_settings_incoming_imap_compression_label">Користи компресију</string>
-    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP префикс не може бити празан.</string>
-    <string name="account_server_settings_validation_error_server_required">Име сервера је обавезно.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Префикс IMAP-а не може бити празан.</string>
+    <string name="account_server_settings_validation_error_server_required">Назив сервера је обавезан.</string>
     <string name="account_server_settings_validation_error_port_required">Порт је обавезан.</string>
     <string name="account_server_settings_validation_error_username_required">Корисничко име је обавезно.</string>
     <string name="account_server_settings_validation_error_password_required">Лозинка је обавезна.</string>
-    <string name="account_server_settings_password_authentication_title">Потврдите свој идентитет</string>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Неважећа IP адреса или име хоста</string>
+    <string name="account_server_settings_password_authentication_title">Потврда идентитета</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Неважећа IP адреса или назив хоста</string>
     <string name="account_server_settings_password_authentication_subtitle">Откључајте да бисте видели своју лозинку</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Да бисте овде видели своју лозинку, омогућите закључавање екрана на овом уређају.</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Пошаљи информације о клијенту</string>
@@ -28,8 +28,8 @@
     <string name="account_server_settings_port_label">Порт</string>
     <string name="account_server_settings_authentication_label">Аутентификација</string>
     <string name="account_server_settings_username_label">Корисничко име</string>
-    <string name="account_server_settings_authentication_client_certificate">Клијентски сертификат</string>
+    <string name="account_server_settings_authentication_client_certificate">Сертификат клијента</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_client_certificate_none_selected">Нема</string>
-    <string name="account_server_settings_client_certificate_label">Клијентски сертификат</string>
+    <string name="account_server_settings_client_certificate_label">Сертификат клијента</string>
 </resources>

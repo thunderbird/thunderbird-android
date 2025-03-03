@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_error_message">無法儲存伺服器設定</string>
+    <string name="account_edit_save_server_settings_success_message">已儲存伺服器設定</string>
+    <string name="account_edit_save_server_settings_loading_message">正在儲存伺服器設定…</string>
+</resources>

@@ -31,7 +31,7 @@
     <string name="settings_import_outgoing_server_password_hint">Пароль для сервера выходнай пошты</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Выкарыстоўваць той жа пароль для сервера выходнай пошты</string>
     <string name="settings_import_server_name_format">Назва сервера: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Каб выкарыстоўваць гэты акаўнт электроннай пошты ў K-9 Mail, вам трэба ўвайсці і даць праграме доступ да вашай электроннай пошты.</string>
+    <string name="settings_import_oauth_description">Каб выкарыстоўваць гэты акаўнт электроннай пошты, вам трэба ўвайсці і даць праграме доступ да вашай электроннай пошты.</string>
     <string name="settings_import_oauth_sign_in">Увайсці</string>
     <string name="settings_import_oauth_sign_in_with_google">Увайсці з дапамогай Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Аўтарызацыя скасаваная</string>
@@ -39,4 +39,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">На дадзены момант OAuth 2.0 не падтрымліваецца гэтай службай.</string>
     <string name="settings_import_oauth_error_browser_not_found">Праграме не ўдалося знайсці браўзер, каб даць доступ да вашага акаўнта.</string>
     <string name="settings_import_general_settings_item">Асноўныя налады</string>
+    <string name="settings_import_pick_app_button">Імпартаваць з праграмы</string>
+    <string name="settings_import_pick_app_dialog_title">Імпартаваць з праграмы</string>
+    <string name="settings_import_scan_qr_code_button">Сканаваць QR-код</string>
+    <string name="settings_import_app_version_not_supported">Версія праграмы не падтрымліваецца.</string>
 </resources>

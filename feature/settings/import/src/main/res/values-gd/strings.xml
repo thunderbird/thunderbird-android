@@ -5,4 +5,39 @@
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_importing">Ag ion-phortadh nan roghainnean…</string>
     <string name="settings_import_general_settings_item">Roghainnean coitcheann</string>
+    <string name="settings_import_success_generic">Chaidh na roghainnean ion-phortadh</string>
+    <string name="settings_import_failure">Cha b’ urrainn dhuinn na roghainnean ion-phortadh</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Cleachd an aon fhacal-faire dhan fhrithealaiche a-mach</string>
+    <string name="settings_import_server_name_format">Ainm an fhrithealaiche: <xliff:g id="hostname">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Sguireadh dhen ùghdarrachadh</string>
+    <string name="settings_import_oauth_sign_in_with_google">Clàraich a-steach le Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Dh’fhàillig an t-ùghdarrachadh leis a’ mhearachd a leanas: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_pick_app_dialog_title">Ion-phortaich io aplacaid</string>
+    <string name="settings_import_authorization_and_password_required">Clàraich a-steach is cuir a-steach na faclan-faire</string>
+    <string name="settings_import_pick_document_button">Tagh faidhle</string>
+    <string name="settings_import_status_log_in_required">Feumaidh tu clàradh a-steach</string>
+    <string name="settings_import_later_button">Uaireigin eile</string>
+    <string name="settings_import_oauth_description">Feumaidh tu clàradh a-steach is cead-inntrigidh dhan phost-d agad a thoirt dhan aplacaid mus urrainn dhut an cunntas puist-d seo a chleachdadh.</string>
+    <string name="settings_import_app_version_not_supported">Chan eil taic ri tionndadh na h-aplacaid.</string>
+    <string name="settings_import_status_error">Dh’fhàillig an t-ion-phortadh</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">Chan eil an solaraiche seo a’ cur taic ri OAuth 2.0 aig an àm seo.</string>
+    <string name="settings_import_scan_qr_code_button">Sganaich an còd QR</string>
+    <string name="settings_import_pick_app_button">Ion-phortaich io aplacaid</string>
+    <string name="settings_import_password_required">Cuir a-steach na faclan-faire</string>
+    <string name="settings_import_authorization_required">Clàraich a-steach</string>
+    <string name="settings_import_read_failure">Cha b’ urrainn dhuinn faidhle nan roghainnean a leughadh</string>
+    <string name="settings_import_partial_failure">Cha b’ urrainn dhuinn cuid dhe na roghainnean ion-phortadh</string>
+    <string name="settings_import_status_success">Chaidh an ion-phortadh</string>
+    <string name="settings_import_status_password_required">Tha feum air facal-faire</string>
+    <string name="settings_import_status_not_imported">Cha deach ion-phortadh</string>
+    <string name="settings_import_incoming_server_password_hint">Facal-faire an fhrithealaiche a-steach</string>
+    <string name="settings_import_outgoing_server_password_hint">Facal-faire an fhrithealaiche a-mach</string>
+    <string name="settings_import_oauth_sign_in">Clàraich a-steach</string>
+    <string name="settings_import_oauth_error_browser_not_found">Cha d’fhuair an aplacaid lorg air brabhsair sam bith a chleachadh e airson cead-inntrigidh dhan chunntas agad a thoirt seachad.</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">Feumaidh tu facal-faire an fhrithealaiche a thoirt seachad mus urrainn dhut an cunntas “<xliff:g id="account">%s</xliff:g>” a chleachdadh.</item>
+        <item quantity="two">Feumaidh tu facal-faire an fhrithealaiche a thoirt seachad mus urrainn dhut an cunntas “<xliff:g id="account">%s</xliff:g>” a chleachdadh.</item>
+        <item quantity="few">Feumaidh tu facal-faire an fhrithealaiche a thoirt seachad mus urrainn dhut an cunntas “<xliff:g id="account">%s</xliff:g>” a chleachdadh.</item>
+        <item quantity="other">Feumaidh tu facal-faire an fhrithealaiche a thoirt seachad mus urrainn dhut an cunntas “<xliff:g id="account">%s</xliff:g>” a chleachdadh.</item>
+    </plurals>
 </resources>

@@ -6,6 +6,9 @@ on:
     types:
       - created
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest

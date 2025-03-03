@@ -896,4 +896,8 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="save_attachment_action">Salvesta manus</string>
     <string name="volume_navigation_title_short">Helivaljuse nupu kasutamine liikumiseks</string>
     <string name="volume_navigation_summary">Sõnumite vaates liigu helivaljuse nuppudega eri sõnumite vahel</string>
+    <string name="expand_content_description">Laienda vaadet</string>
+    <string name="dialog_confirm_empty_spam_title">Kinnita rämpsposti kausta tühjendamine</string>
+    <string name="dialog_confirm_empty_spam_message">Kas kindlasti soovid rämpsposti kausta tühjendada?</string>
+    <string name="empty_spam_action">Tühjenda rämpsposti kaust</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Støtt Thunderbird</string>
-    <string name="funding_googleplay_contribution_header_description">Me viser aldri reklamar eller sel dataen din. Me er fullstendig finansiert av økonomiske bidrag frå brukarane våre. Om du likar Thunderbird, ver vennleg og støtt det. Me kan ikkje gjere dette utan deg!</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird er fullstendig finansiert av bidrag frå brukarar som deg. Me viser aldri reklame eller sel dataen din. Om du likar Thunderbird, ver vennleg og støtt det. Me kan ikkje gjere dette utan deg!</string>
     <string name="funding_googleplay_contribution_footer_payment_button">Gå vidare til betaling</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Bidrag er ikkje skattefrie som velgjerdsdonasjonar.</string>
     <string name="funding_googleplay_contribution_list_title">Sikkert bidrag</string>
@@ -44,9 +44,14 @@
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">Du er ein stor grunn til at me kan gjere som me gjer! Din generøsitet hjelper oss å nye milepålar.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Din stønad er verkeleg inspirerande! Takka vere dit substansielle bidrag, er me i stand til å flytte grenser, innovere, og gjere vesentlege framskritt mot måla våre.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_m_description">Ditt bidrag skin! Du er ein nøkkel til å avansere oppdraget vårt, og gjere ein innverknad.</string>
-    <string name="funding_googleplay_contribution_reminder_message">Oppdraget vårt er å tilby ein e-postapp med open kjeldekode, som er sikker, privat og fri for brukarar rundt om i verda. Ditt finansielle bidrag støttar dette arbeidet. Vil du gje idag?</string>
+    <string name="funding_googleplay_contribution_reminder_message">Bli med på oppdraget vårt til å skape den best moglege e-postopplevinga som respekterer personvernet, og som kan tilpassast.</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Ja</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Ikkje no</string>
     <string name="funding_googleplay_contribution_reminder_title">Støtt Thunderbird</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Takk for din generøse donasjon! Din stønad er direkte med på å styrke Thunderbird, og me er glade for å ha deg på sida vår, på denne reisa.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Ditt bidrag frammer utviklinga av Thunderbird og me er verkeleg tekknemlege for din stønad.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Ein oppriktig takk frå oss alle!</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Me sel ikkje dataen din.</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird er fri og med open kjeldekode.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Me viser ikkje reklame.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Me er fullstendig finansiert av brukarar som deg.</string>
 </resources>

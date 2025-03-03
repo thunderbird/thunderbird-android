@@ -7,6 +7,7 @@ import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.server.settings.ui.common.toInvalidEmailDomain
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -17,10 +18,12 @@ import org.junit.Test
 
 class IncomingServerSettingsStateMapperKtTest {
 
+    @Suppress("MaxLineLength")
     @Test
-    fun `should map to state with email as username when server settings are null`() {
+    fun `should map to state with email as username and emailDomain With dot prefix as server name when server settings are null`() {
+        val email = "test@example.com"
         val accountState = AccountState(
-            emailAddress = "test@example.com",
+            emailAddress = email,
             incomingServerSettings = null,
         )
 
@@ -28,7 +31,8 @@ class IncomingServerSettingsStateMapperKtTest {
 
         assertThat(result).isEqualTo(
             State(
-                username = StringInputField(value = "test@example.com"),
+                username = StringInputField(value = email),
+                server = StringInputField(value = email.toInvalidEmailDomain()),
             ),
         )
     }

@@ -195,6 +195,7 @@
                 android:padding="6dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_expand_more"
+                android:contentDescription="@string/expand_content_description"
                 />
 
             <Space
@@ -322,6 +323,7 @@
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_expand_more"
                 android:id="@+id/recipient_expander"
+                android:contentDescription="@string/expand_content_description"
                 />
 
             <Space

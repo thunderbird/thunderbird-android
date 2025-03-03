@@ -21,8 +21,8 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39020
-        versionName = "9.0"
-        versionNameSuffix = "b3"
+        versionName = "10.0"
+        versionNameSuffix = "b1"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -67,6 +67,7 @@ android {
                 "pt_PT",
                 "ro",
                 "ru",
+                "sk",
                 "sl",
                 "sq",
                 "sr",
@@ -173,7 +174,7 @@ dependencyGuard {
     configuration("fullReleaseRuntimeClasspath")
 }
 
-tasks.create("printVersionInfo") {
+tasks.register("printVersionInfo") {
     val targetBuildType = project.findProperty("buildType") ?: "debug"
 
     doLast {

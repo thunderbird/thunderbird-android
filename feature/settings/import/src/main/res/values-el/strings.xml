@@ -37,4 +37,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">Το πρωτόκολο OAuth 2.0 αυτή τη στιγμή δεν υποστηρίζεται από τον συγκεκριμένο πάροχο.</string>
     <string name="settings_import_oauth_error_browser_not_found">Η εφαρμογή δεν βρήκε περιηγητή ιστού για να παράσχει πρόσβαση στον λογαριασμό σας.</string>
     <string name="settings_import_general_settings_item">Γενικές ρυθμίσεις</string>
+    <string name="settings_import_scan_qr_code_button">Σαρώστε τον κωδικό QR</string>
+    <string name="settings_import_pick_app_dialog_title">Εισαγωγή από εφαρμογή</string>
+    <string name="settings_import_pick_app_button">Εισαγωγή από εφαρμογή</string>
+    <string name="settings_import_app_version_not_supported">Η έκδοση την εφαρμογής δεν υποστηρίζεται.</string>
 </resources>

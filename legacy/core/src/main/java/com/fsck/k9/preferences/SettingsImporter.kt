@@ -30,7 +30,7 @@ class SettingsImporter internal constructor(
      *
      * @throws SettingsImportExportException In case of an error.
      */
-    @Suppress("TooGenericExceptionCaught")
+    @Suppress("TooGenericExceptionCaught", "ThrowsCount")
     @Throws(SettingsImportExportException::class)
     fun getImportStreamContents(inputStream: InputStream): ImportContents {
         try {
@@ -46,7 +46,10 @@ class SettingsImporter internal constructor(
                 )
             }
 
-            // TODO: throw exception if neither global settings nor account settings could be found
+            if (!globalSettings && accounts.isEmpty()) {
+                throw SettingsImportExportException("Neither global settings nor account settings could be found")
+            }
+
             return ImportContents(globalSettings, accounts)
         } catch (e: SettingsImportExportException) {
             throw e

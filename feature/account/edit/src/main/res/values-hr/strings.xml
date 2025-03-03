@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_error_message">Nije uspjelo spremanje postavki poslužitelja</string>
+    <string name="account_edit_save_server_settings_success_message">Postavke poslužitelja spremljene</string>
+    <string name="account_edit_save_server_settings_loading_message">Spremanje postavki poslužitelja…</string>
+</resources>

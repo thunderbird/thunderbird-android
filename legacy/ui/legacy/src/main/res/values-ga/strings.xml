@@ -846,4 +846,8 @@
     <string name="volume_navigation_title_short">Nascleanúint eochair toirte</string>
     <string name="save_attachment_action">Sábháil ceangaltán</string>
     <string name="volume_navigation_summary">Déan nascleanúint idir teachtaireachtaí ag baint úsáide as na heochracha toirte i radharc na teachtaireachta</string>
+    <string name="expand_content_description">Leathnaigh</string>
+    <string name="empty_spam_action">Spam Folamh</string>
+    <string name="dialog_confirm_empty_spam_title">Deimhnigh turscar folamh</string>
+    <string name="dialog_confirm_empty_spam_message">Ar mhaith leat an fillteán turscair a fholmhú?</string>
 </resources>

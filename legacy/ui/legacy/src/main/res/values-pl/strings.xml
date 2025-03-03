@@ -901,4 +901,8 @@
     <string name="volume_navigation_title_short">Nawigacja przyciskami głośności</string>
     <string name="volume_navigation_summary">Poruszaj się między wiadomościami za pomocą przycisków głośności w widoku wiadomości</string>
     <string name="save_attachment_action">Zapisz załącznik</string>
+    <string name="expand_content_description">Rozwiń</string>
+    <string name="empty_spam_action">Opróżnij spam</string>
+    <string name="dialog_confirm_empty_spam_title">Potwierdź opróżnienie spamu</string>
+    <string name="dialog_confirm_empty_spam_message">Czy chcesz opróżnić folder spamu?</string>
 </resources>

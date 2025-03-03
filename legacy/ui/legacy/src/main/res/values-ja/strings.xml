@@ -130,7 +130,7 @@
     <string name="notification_bg_send_title">メール送信中</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_title">同期 (プッシュ)</string>
-    <string name="notification_channel_push_description">新着メッセージの待機中に表示</string>
+    <string name="notification_channel_push_description">新着メッセージの待機中に表示します</string>
     <string name="notification_channel_messages_title">メッセージ</string>
     <string name="notification_channel_messages_description">メッセージに関連した通知</string>
     <string name="notification_channel_miscellaneous_title">その他</string>
@@ -300,7 +300,7 @@
     <string name="account_setup_options_mail_display_count_10000">10000 通</string>
     <string name="account_setup_options_mail_display_count_all">すべて</string>
     <string name="move_copy_cannot_copy_unsynced_message">サーバーと同期されていないメッセージをコピーまたは移動できません</string>
-    <string name="account_settings_push_advanced_title">プッシュ接続の拡張設定</string>
+    <string name="account_settings_push_advanced_title">プッシュ同期の詳細設定</string>
     <string name="account_settings_title_fmt">アカウント設定</string>
     <string name="account_settings_notify_label">新着メール通知</string>
     <string name="account_settings_notify_sync_label">同期通知</string>
@@ -513,7 +513,7 @@
     <string name="background_ops_always">常に同期</string>
     <string name="background_ops_auto_sync_only">自動同期にチェックしたとき</string>
     <string name="batch_select_all">すべて選択</string>
-    <string name="account_setup_push_limit_label">プッシュ受信する最大フォルダー数</string>
+    <string name="account_setup_push_limit_label">プッシュ同期するフォルダーの最大個数</string>
     <string name="account_setup_push_limit_5">フォルダー 5 件</string>
     <string name="account_setup_push_limit_10">フォルダー 10 件</string>
     <string name="account_setup_push_limit_25">フォルダー 25 件</string>
@@ -577,7 +577,7 @@
     <string name="dialog_confirm_mark_all_as_read_title">すべて既読にするか確認してください</string>
     <string name="dialog_confirm_mark_all_as_read_message">本当にすべてのメッセージを既読にしますか？</string>
     <string name="dialog_confirm_empty_trash_title">ごみ箱を空にするか確認してください</string>
-    <string name="dialog_confirm_empty_trash_message">ごみ箱フォルダーを空にしますか？</string>
+    <string name="dialog_confirm_empty_trash_message">本当にごみ箱フォルダーを空にしますか？</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">はい</string>
     <string name="dialog_confirm_mark_all_as_read_cancel_button">いいえ</string>
     <string name="dialog_confirm_spam_title">迷惑メールフォルダーに移動するか確認してください</string>
@@ -793,17 +793,17 @@
     <string name="switch_off">オフ</string>
     <string name="generic_loading_error">データの読み込み中にエラーが発生しました</string>
     <string name="push_notification_state_initializing">初期化中…</string>
-    <string name="push_notification_state_listening">新着メッセージ待機中</string>
+    <string name="push_notification_state_listening">新着メール待機中</string>
     <string name="push_notification_state_wait_background_sync">バックグラウンド同期が許可されるまでスリープ中</string>
     <string name="push_notification_state_wait_network">ネットワークが利用できるようになるまでスリープ中</string>
     <string name="push_notification_info">タップすると詳細を表示します。</string>
-    <string name="push_info_title">プッシュ情報</string>
-    <string name="push_info_notification_explanation_text">プッシュを使用する場合、<xliff:g id="app_name">%1$s</xliff:g> はメールサーバへの接続を維持します。Android では、アプリがバックグラウンドで動作している間、継続して通知を表示する必要があります。<xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_title">プッシュ同期情報</string>
+    <string name="push_info_notification_explanation_text">プッシュ同期すると、<xliff:g id="app_name">%1$s</xliff:g> はメールサーバへの接続を維持します。Android では、アプリがバックグラウンドで動作している間、継続して通知を表示する必要があります。<xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="push_info_configure_notification_text">しかし、Android では、通知を隠すこともできます。</string>
     <string name="push_info_learn_more_text">詳細を表示</string>
     <string name="push_info_configure_notification_action">通知設定</string>
-    <string name="push_info_disable_push_text">新着メッセージの即時通知が不要な場合は、プッシュを無効にして同期を使用してください。同期は一定の間隔で新着メールを確認するので、通知は不要です。</string>
-    <string name="push_info_disable_push_action">プッシュを無効にする</string>
+    <string name="push_info_disable_push_text">新着メッセージの即時通知が不要な場合は、プッシュ同期を無効にして一定間隔で同期してください。一定間隔で新着メールを確認する場合は、通知は不要です。</string>
+    <string name="push_info_disable_push_action">プッシュ同期を無効化</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">選択</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -879,12 +879,16 @@
     <string name="settings_ui_data_collection">データ収集</string>
     <string name="settings_ui_telemetry_title">使用状況と技術データ</string>
     <string name="settings_ui_telemetry_description">このアプリのパフォーマンス情報、使用状況、ハードウェア情報、設定を Mozilla に共有して Thunderbird の改善に協力します</string>
-    <string name="folder_settings_push_label">プッシュを有効にする</string>
+    <string name="folder_settings_push_label">プッシュ同期する</string>
     <string name="folder_list_show_hidden_folders">隠しフォルダーを表示</string>
-    <string name="folder_settings_sync_label">同期を有効にする</string>
+    <string name="folder_settings_sync_label">同期する</string>
     <string name="folder_settings_visible_label">フォルダーを表示する</string>
     <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> を支援する</string>
     <string name="volume_navigation_title_short">音量キー操作</string>
     <string name="save_attachment_action">添付ファイルを保存</string>
     <string name="volume_navigation_summary">メッセージビューで音量キーを使用してメッセージを移動します</string>
+    <string name="expand_content_description">展開</string>
+    <string name="dialog_confirm_empty_spam_message">本当に迷惑メールフォルダーを空にしますか？</string>
+    <string name="empty_spam_action">迷惑メールフォルダーを空にする</string>
+    <string name="dialog_confirm_empty_spam_title">迷惑メールフォルダーを空にするか確認してください</string>
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="funding_googleplay_contribution_header_title">Подржите Thunderbird</string>
-    <string name="funding_googleplay_contribution_title">Подржите Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_title">Подржи Thunderbird</string>
+    <string name="funding_googleplay_contribution_title">Подржи Thunderbird</string>
     <string name="funding_googleplay_contribution_header_thank_you">Искрено хвала од свих нас!</string>
     <string name="funding_googleplay_contribution_list_title">Сигуран допринос</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Дај једном</string>

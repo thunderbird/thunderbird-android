@@ -468,6 +468,11 @@ class HtmlSanitizerTest {
     }
 
     @Test
+    fun `should keep 's' element`() {
+        assertTagsNotStripped("s")
+    }
+
+    @Test
     fun `should keep 'base' element`() {
         val html =
             """

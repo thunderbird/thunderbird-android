@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="settings_import_title">Увези поставке</string>
-    <string name="settings_import_pick_document_button">Изаберите фајл</string>
+    <string name="settings_import_title">Увези подешавања</string>
+    <string name="settings_import_pick_document_button">Изабери фајл</string>
     <string name="settings_import_button">Увоз</string>
-    <string name="settings_import_success_generic">Поставке успешно увезене</string>
+    <string name="settings_import_success_generic">Подешавања успешно увезена</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Унесите лозинке</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
-    <string name="settings_import_failure">Не могу да увезем поставке</string>
+    <string name="settings_import_failure">Увоз подешавања неуспешан</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_read_failure">Не могу да читам фајл поставки</string>
-    <string name="settings_import_partial_failure">Не могу да увезем неке поставке</string>
+    <string name="settings_import_read_failure">Читање фајла подешавања неуспешно</string>
+    <string name="settings_import_partial_failure">Увоз неких подешавања неуспешан</string>
     <string name="settings_import_status_success">Успешно увезено</string>
     <string name="settings_import_status_password_required">Неопходна је лозинка</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_import_status_not_imported">Није увезено </string>
     <string name="settings_import_status_error">Увоз неуспешан</string>
     <string name="settings_import_later_button">Касније</string>
-    <string name="settings_importing">Увозим поставке…</string>
+    <string name="settings_importing">Увоз подешавања…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинку.</item>
-        <item quantity="few">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинке.</item>
-        <item quantity="other">Да би користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинке.</item>
+        <item quantity="one">Да бисте користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинку сервера.</item>
+        <item quantity="few">Да бисте користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинке сервера.</item>
+        <item quantity="other">Да бисте користили налог „<xliff:g id="account">%s</xliff:g>“, морате унети лозинке сервера.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Лозинка долазног сервера</string>
     <string name="settings_import_outgoing_server_password_hint">Лозинка одлазног сервера</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Користи исту лозинку за одлазни сервер </string>
     <string name="settings_import_server_name_format">Назив сервера: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_general_settings_item">Опште поставке</string>
-    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 тренутно није подржан код овог провајдера.</string>
-    <string name="settings_import_authorization_required">Молимо вас да се пријавите</string>
-    <string name="settings_import_authorization_and_password_required">Молимо вас да се пријавите и унесете лозинке</string>
-    <string name="settings_import_status_log_in_required">Потребна је пријава</string>
+    <string name="settings_import_general_settings_item">Општа подешавања</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 тренутно није подржан код овог пружаоца.</string>
+    <string name="settings_import_authorization_required">Молимо, пријавите се</string>
+    <string name="settings_import_authorization_and_password_required">Молимо, пријавите се и унесите лозинке</string>
+    <string name="settings_import_status_log_in_required">Неопходна је пријава</string>
     <string name="settings_import_oauth_description">Да бисте користили овај имејл налог, потребно је да се пријавите и дате апликацији приступ вашим имејловима.</string>
-    <string name="settings_import_oauth_sign_in">Пријавите се</string>
-    <string name="settings_import_oauth_sign_in_with_google">Пријавите се преко Google-а</string>
+    <string name="settings_import_oauth_sign_in">Пријава</string>
+    <string name="settings_import_oauth_sign_in_with_google">Пријава преко Google-а</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Овлашћење је отказано</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Овлашћење није успело са следећом грешком: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Овлашћење није успело, са следећом грешком: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_browser_not_found">Апликација није могла да пронађе прегледач за коришћење у процесу давања приступа вашем налогу.</string>
     <string name="settings_import_pick_app_button">Увези из апликације</string>
     <string name="settings_import_pick_app_dialog_title">Увези из апликације</string>
-    <string name="settings_import_scan_qr_code_button">Скенирајте QR код</string>
+    <string name="settings_import_scan_qr_code_button">Скенирај QR кôд</string>
     <string name="settings_import_app_version_not_supported">Верзија апликације није подржана.</string>
 </resources>
