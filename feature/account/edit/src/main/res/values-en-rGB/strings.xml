@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Saving server settings…</string>
+    <string name="account_edit_save_server_settings_error_message">Failed to save server settings</string>
+    <string name="account_edit_save_server_settings_success_message">Server settings saved</string>
+</resources>

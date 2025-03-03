@@ -884,4 +884,24 @@
     <string name="empty_spam_action">Empty Spam</string>
     <string name="about_title">About <xliff:g id="app_name">%s</xliff:g></string>
     <string name="account_delete_dlg_instructions_fmt">The account \\<xliff:g id="account">%1$s</xliff:g>\" will be removed from <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="save_attachment_action">Save attachment</string>
+    <string name="dialog_openkeychain_info_text">The app OpenKeychain is required to enable support for end-to-end encryption.</string>
+    <string name="push_notification_state_alarm_permission_missing">Missing permission to schedule alarms</string>
+    <string name="folder_list_show_hidden_folders">Show hidden folders</string>
+    <string name="settings_ui_telemetry_description">Shares performance, usage, hardware and customisation data about this app with Mozilla to help us make Thunderbird better</string>
+    <string name="volume_navigation_title_short">Volume key navigation</string>
+    <string name="volume_navigation_summary">Navigate between messages using the volume keys in message view</string>
+    <string name="dialog_confirm_empty_spam_title">Confirm empty spam</string>
+    <string name="dialog_confirm_empty_spam_message">Do you want to empty the spam folder?</string>
+    <string name="settings_list_action_support">Support <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="expand_content_description">Expand</string>
+    <string name="settings_ui_telemetry_title">Usage and technical data</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Remove User-Agent from mail headers</string>
+    <string name="folder_settings_push_label">Enable Push</string>
+    <string name="folder_settings_notifications_label">Notifications</string>
+    <string name="settings_ui_data_collection">Data collection</string>
+    <string name="push_notification_grant_alarm_permission">Tap to grant permission.</string>
+    <string name="push_info_notification_explanation_text">When using Push, <xliff:g id="app_name">%1$s</xliff:g> maintains a connection to the mail server. Android requires displaying an ongoing notification while the app is active in the background. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="folder_settings_sync_label">Enable sync</string>
+    <string name="folder_settings_visible_label">Show folder</string>
 </resources>
