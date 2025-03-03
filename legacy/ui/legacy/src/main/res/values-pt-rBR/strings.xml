@@ -351,7 +351,7 @@
     <string name="account_settings_folders">Pastas</string>
     <string name="account_settings_quote_prefix_label">Prefixo do texto citado</string>
     <string name="account_settings_crypto">Criptografia de ponta a ponta</string>
-    <string name="account_settings_crypto_app">Habilitar o suporte a OpenPGP</string>
+    <string name="account_settings_crypto_app">Ativar suporte a OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Selecionar o aplicativo de OpenPGP</string>
     <string name="account_settings_crypto_key">Configurar a chave de criptografia de ponta a ponta</string>
     <string name="account_settings_crypto_summary_off">Nenhum aplicativo de OpenPGP configurado</string>
@@ -359,7 +359,7 @@
     <string name="account_settings_crypto_summary_config">Configurando…</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Criptografar todos os rascunhos ao armazenar</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Todos os rascunhos serão armazenados criptografados</string>
-    <string name="account_settings_crypto_encrypt_all_drafts_off">Criptografar rascunhos apenas se a criptografia estiver habilitada</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">Só criptografar rascunhos se a criptografia estiver ativada</string>
     <string name="account_settings_mail_check_frequency_label">Frequência de verificação da pasta</string>
     <string name="account_settings_color_label">Cor da conta</string>
     <string name="account_settings_color_summary">A cor desta conta é usada na pasta e na lista de contas</string>
@@ -398,7 +398,7 @@
     <string name="account_settings_openpgp_missing">O aplicativo de OpenPGP não foi encontrado - ele foi desinstalado?</string>
     <string name="folder_settings_title">Configurações da pasta</string>
     <string name="folder_settings_in_top_group_label">Exibir no grupo superior</string>
-    <string name="folder_settings_in_top_group_summary">Exibe perto do topo da lista de pastas</string>
+    <string name="folder_settings_in_top_group_summary">Exibir perto do alto da lista de pastas</string>
     <string name="folder_settings_clear_local_folder_action">Limpar mensagens locais</string>
     <string name="account_settings_incoming_label">Servidor de recebimento</string>
     <string name="account_settings_incoming_summary">Configure o servidor recebimento de mensagens</string>
@@ -417,10 +417,10 @@
     <string name="account_settings_vibrate_pattern_4">Padrão 4</string>
     <string name="account_settings_vibrate_pattern_5">Padrão 5</string>
     <string name="account_settings_vibrate_times">Repetir a vibração</string>
-    <string name="account_settings_vibrate_summary_disabled">Desabilitado</string>
+    <string name="account_settings_vibrate_summary_disabled">Desativado</string>
     <string name="account_settings_ringtone">Som de toque para novas mensagens</string>
     <string name="account_settings_notification_light_label">Luz de notificação</string>
-    <string name="account_settings_notification_light_disabled">Desabilitada</string>
+    <string name="account_settings_notification_light_disabled">Desativada</string>
     <string name="account_settings_notification_light_account_color">Cor da conta</string>
     <string name="account_settings_notification_light_default_color">Cor padrão do sistema</string>
     <string name="account_settings_notification_light_white">Branca</string>
@@ -502,18 +502,18 @@
     <string name="messagelist_preferences">Listas de mensagens</string>
     <string name="messageview_preferences">Mensagens</string>
     <string name="settings_theme_label">Tema</string>
-    <string name="settings_message_theme_label">Tema da visualização de mensagens</string>
+    <string name="settings_message_theme_label">Tema da exibição de mensagens</string>
     <string name="settings_compose_theme_label">Tema do editor</string>
     <string name="settings_language_label">Idioma</string>
     <string name="preference_search_no_results">Não foi encontrada nenhuma configuração</string>
     <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>
-    <string name="settings_message_theme_selection_summary_off">Seleciona o tema de visualização ao ver a mensagem</string>
+    <string name="settings_message_theme_selection_summary_off">Selecionar o tema de exibição de mensagens ao ver a mensagem</string>
     <string name="settings_message_theme_selection_summary_on">Usa um tema fixo para visualizar mensagens</string>
     <string name="setting_language_system">Padrão do sistema</string>
     <string name="background_ops_label">Sincronização em segundo plano</string>
     <string name="background_ops_never">Nunca</string>
     <string name="background_ops_always">Sempre</string>
-    <string name="background_ops_auto_sync_only">Quando a sincronização automática estiver habilitada</string>
+    <string name="background_ops_auto_sync_only">Quando a sincronização automática estiver ativada</string>
     <string name="batch_select_all">Selecionar todas</string>
     <string name="account_setup_push_limit_label">Máximo de pastas para verificar ao sincronizar via push</string>
     <string name="account_setup_push_limit_5">5 pastas</string>
@@ -527,7 +527,7 @@
     <string name="animations_title">Animação</string>
     <string name="animations_summary">Utilizar efeitos visuais extravagantes</string>
     <string name="show_unified_inbox_title">Exibir a caixa de entrada unificada</string>
-    <string name="show_starred_count_title">Mostrar a contagem de sinalizadas</string>
+    <string name="show_starred_count_title">Mostrar contagem de sinalizadas</string>
     <string name="integrated_inbox_title">Caixa de Entrada Unificada</string>
     <string name="integrated_inbox_detail">Todas as mensagens nas pastas unificadas</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unificar</string>
@@ -540,7 +540,7 @@
     <string name="font_size_message_list_subject">Assunto</string>
     <string name="font_size_message_list_sender">Remetente</string>
     <string name="font_size_message_list_date">Data</string>
-    <string name="font_size_message_list_preview">Visualização</string>
+    <string name="font_size_message_list_preview">Exibição</string>
     <string name="font_size_message_view">Mensagens</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
     <string name="font_size_message_view_account">Nome da conta</string>
@@ -657,14 +657,14 @@
     <string name="global_settings_splitview_always">Sempre</string>
     <string name="global_settings_splitview_never">Nunca</string>
     <string name="global_settings_splitview_when_in_landscape">Quando em modo paisagem</string>
-    <string name="message_view_empty">Por favor, selecione uma mensagem à esquerda</string>
+    <string name="message_view_empty">Selecione uma mensagem à esquerda</string>
     <string name="global_settings_show_contact_picture_label">Exibir imagens dos contatos</string>
-    <string name="global_settings_show_contact_picture_summary">Exibe imagens dos contatos na lista de mensagens</string>
+    <string name="global_settings_show_contact_picture_summary">Exibir imagens de contatos na lista de mensagens</string>
     <string name="mark_all_as_read">Marcar todas como lidas</string>
     <string name="global_settings_colorize_missing_contact_pictures_label">Colorir contatos sem imagem</string>
     <string name="global_settings_colorize_missing_contact_pictures_summary">Usa cores em contatos que não tiverem imagem</string>
     <string name="global_settings_messageview_visible_refile_actions_title">Ações de mensagem visíveis</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">Exibe as ações selecionadas no menu de visualização da mensagem</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Exibir as ações selecionadas no menu de exibição de mensagens</string>
     <string name="loading_attachment">Carregando anexo…</string>
     <string name="fetching_attachment_dialog_title_send">Enviando mensagem</string>
     <string name="fetching_attachment_dialog_title_save">Salvando rascunho</string>
@@ -677,35 +677,35 @@
     <string name="recipient_to">Para</string>
     <string name="recipient_from">De</string>
     <string name="reply_to_label">Responder para</string>
-    <string name="unknown_recipient">&lt;Destinatário desconhecido&gt;</string>
-    <string name="unknown_sender">&lt;Remetente desconhecido&gt;</string>
+    <string name="unknown_recipient">&lt;destinatário desconhecido&gt;</string>
+    <string name="unknown_sender">&lt;remetente desconhecido&gt;</string>
     <string name="address_type_home">Casa</string>
     <string name="address_type_work">Trabalho</string>
     <string name="address_type_other">Outro</string>
     <string name="address_type_mobile">Celular</string>
     <string name="compose_error_no_draft_folder">A pasta Rascunhos não foi configurada para esta conta!</string>
     <string name="compose_error_no_key_configured">Não foi configurada nenhuma chave para essa conta! Verifique suas configurações.</string>
-    <string name="error_crypto_provider_incompatible">O provedor de criptografia usa uma versão incompatível. Por favor, verifique suas configurações!</string>
+    <string name="error_crypto_provider_incompatible">O provedor de criptografia usa uma versão incompatível. Verifique suas configurações!</string>
     <string name="error_crypto_provider_connect">Não foi possível conectar ao provedor de criptografia. Verifique suas configurações ou clique no ícone de criptografia para tentar novamente!</string>
-    <string name="error_crypto_provider_ui_required">Não foi possível iniciar a criptografia de ponta a ponta, por favor verifique suas configurações</string>
+    <string name="error_crypto_provider_ui_required">Falha ao iniciar a criptografia de ponta a ponta, verifique suas configurações</string>
     <string name="error_crypto_inline_attach">O modo PGP/INLINE não tem suporte para anexos!</string>
-    <string name="enable_inline_pgp">Habilitar PGP/INLINE</string>
-    <string name="disable_inline_pgp">Desabilitar PGP/INLINE</string>
-    <string name="enable_sign_only">Habilitar PGP Somente Assinatura</string>
-    <string name="disable_sign_only">Desabilitar PGP Somente Assinatura</string>
+    <string name="enable_inline_pgp">Ativar PGP/INLINE</string>
+    <string name="disable_inline_pgp">Desativar PGP/INLINE</string>
+    <string name="enable_sign_only">Ativar PGP somente assinatura</string>
+    <string name="disable_sign_only">Desativar PGP somente assinatura</string>
     <string name="openpgp_inline_title">Modo PGP/INLINE</string>
     <string name="openpgp_inline_text">A mensagem foi enviada no formato PGP/INLINE.\nIsso só deve ser usado por questões de compatibilidade:</string>
     <string name="openpgp_inline_plus_compat">Alguns clientes suportam apenas este formato</string>
     <string name="openpgp_inline_minus_transit">As assinaturas podem apresentar problema durante o trânsito</string>
     <string name="openpgp_inline_minus_attach">Não há suporte para anexos</string>
     <string name="openpgp_inline_ok">Entendi!</string>
-    <string name="openpgp_inline_disable">Desabilitar</string>
-    <string name="openpgp_inline_keep_enabled">Manter habilitado</string>
+    <string name="openpgp_inline_disable">Desativar</string>
+    <string name="openpgp_inline_keep_enabled">Manter ativado</string>
     <string name="openpgp_sign_only_ok">Entendi!</string>
-    <string name="openpgp_sign_only_disable">Desabilitar</string>
-    <string name="openpgp_sign_only_keep_enabled">Manter habilitado</string>
+    <string name="openpgp_sign_only_disable">Desativar</string>
+    <string name="openpgp_sign_only_keep_enabled">Manter ativado</string>
     <string name="openpgp_dialog_sign_only_title">Modo PGP Somente Assinatura</string>
-    <string name="openpgp_dialog_sign_only_text">Neste modo a sua chave PGP será usada para criar uma assinatura criptografada de uma mensagem não criptografada.</string>
+    <string name="openpgp_dialog_sign_only_text">Neste modo, sua chave PGP será usada para criar uma assinatura criptografada de uma mensagem não criptografada.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Isto não criptografa a mensagem, mas confirma que ela foi enviada com a sua chave.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Assinaturas podem apresentar problema quando enviadas para listas de discussão.</string>
     <string name="openpgp_dialog_sign_only_minus_attach">A assinatura pode ser exibida como um anexo \'signature.asc\' em alguns clientes.</string>
@@ -762,19 +762,19 @@
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Não foi possível criptografar</string>
     <string name="openpgp_enabled_error_msg">Alguns dos destinatários selecionados não têm suporte a este recurso!</string>
-    <string name="enable_encryption">Habilitar a criptografia</string>
-    <string name="disable_encryption">Desabilitar a criptografia</string>
+    <string name="enable_encryption">Ativar criptografia</string>
+    <string name="disable_encryption">Desativar criptografia</string>
     <string name="openpgp_description_text1">Criptografar mensagens garante que elas sejam lidas somente pelo destinatário e mais ninguém.</string>
-    <string name="openpgp_description_text3">A criptografia será apresentada somente se for suportada por todos os destinatários, e eles tem que ter enviado um e-mail antes.</string>
+    <string name="openpgp_description_text3">A criptografia só será oferecida se houver suporte por todos os destinatários e eles têm que ter enviado um email antes.</string>
     <string name="openpgp_description_text2">Alterne a criptografia clicando neste ícone.</string>
     <string name="openpgp_enabled_error_gotit">Entendi</string>
     <string name="openpgp_enabled_error_back">Voltar</string>
-    <string name="openpgp_enabled_error_disable">Desabilitar a criptografia</string>
+    <string name="openpgp_enabled_error_disable">Desativar criptografia</string>
     <string name="openpgp_encryption">Criptografia OpenPGP</string>
     <string name="account_settings_crypto_prefer_encrypt">Modo de criptografia automática mútua</string>
     <string name="dialog_autocrypt_mutual_title">Modo de criptografia automática mútua</string>
     <string name="dialog_autocrypt_mutual_description_1">As mensagens serão criptografadas normalmente, por opção ou ao responder a uma mensagem criptografada.</string>
-    <string name="dialog_autocrypt_mutual_description_2">Se tanto o remetente quanto o destinatário habilitarem o modo mútuo, a criptografia será habilitada por padrão.</string>
+    <string name="dialog_autocrypt_mutual_description_2">Se tanto o remetente quanto os destinatários ativarem o modo mútuo, a criptografia é ativada por padrão.</string>
     <string name="dialog_autocrypt_mutual_learn_more">Você pode <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clicar aqui</a> para saber mais.</string>
     <string name="general_settings_title">Configurações gerais</string>
     <string name="dialog_openkeychain_info_title">Nenhum app OpenPGP instalado</string>
@@ -788,19 +788,14 @@
     <string name="ac_transfer_title">Mensagem de configuração de criptografia automática</string>
     <string name="ac_transfer_intro">Uma mensagem de configuração de criptografia automática compartilha sua configuração de ponta a ponta com outros dispositivos, de forma segura.</string>
     <string name="ac_transfer_button_send">Enviar mensagem de configuração</string>
-    <string name="ac_transfer_will_be_sent">A mensagem será enviada para o seu endereço:</string>
+    <string name="ac_transfer_will_be_sent">A mensagem será enviada para seu endereço:</string>
     <string name="ac_transfer_generating">Gerando a mensagem de configuração…</string>
     <string name="ac_transfer_sending_to">Enviando a mensagem para:</string>
     <string name="ac_transfer_finish">Para finalizar, abra a mensagem em seu outro dispositivo e digite o código de configuração.</string>
     <string name="ac_transfer_show_code">Exibir o código de configuração</string>
     <string name="ac_transfer_msg_subject">Mensagem de configuração de criptografia automática</string>
-    <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir suas configurações de criptografia automática, juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original.
-
-Para configurar o seu novo dispositivo para usar a criptografia automática, por favor siga as instruções que devem aparecer em seu novo dispositivo.
-
-Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. Caso queira fazer isso, você deve anotar a senha e armazená-la em um local seguro.
-</string>
-    <string name="ac_transfer_error_send">Ocorreu um erro durante o envio da mensagem. Por favor, verifique a conectividade da sua rede e as configurações de seu servidor de envio.</string>
+    <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir suas configurações de criptografia automática, juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original. Para configurar seu novo dispositivo para usar criptografia automática, siga as instruções que devem aparecer em seu novo dispositivo. Você pode salvar esta mensagem e usar como backup da sua chave secreta. Se quiser fazer isso, deve anotar a senha e guardar em local seguro.</string>
+    <string name="ac_transfer_error_send">Ocorreu um erro ao enviar a mensagem. Verifique a conectividade de rede e as configurações do servidor de envio.</string>
     <string name="switch_on">On</string>
     <string name="switch_off">Desativado</string>
     <string name="generic_loading_error">Ocorreu um erro durante o carregamento dos dados</string>
@@ -813,8 +808,8 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="push_info_configure_notification_text">Entretanto, o Android também permite que você oculte a notificação.</string>
     <string name="push_info_learn_more_text">Saiba mais</string>
     <string name="push_info_configure_notification_action">Configurar notificação</string>
-    <string name="push_info_disable_push_text">Caso você não precise de notificações instantâneas sobre novas mensagens, você deve desabilitar o push e usar somente o polling. A consulta procura por novas mensagens em intervalos regulares e não necessita da notificação.</string>
-    <string name="push_info_disable_push_action">Desabilitar o Push</string>
+    <string name="push_info_disable_push_text">Caso você não precise de notificações instantâneas sobre novas mensagens, deve desativar o Push e usar Polling. O Polling verifica se há novas mensagens em intervalos regulares e não necessita de notificação.</string>
+    <string name="push_info_disable_push_action">Desativar Push</string>
     <!--Name of the swipe action to select a message. Try to keep it short.-->
     <string name="swipe_action_select">Marcar</string>
     <!--Name of the swipe action to deselect a message. Try to keep it short.-->
@@ -864,13 +859,13 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_compose_message_to">Escrever mensagem para</string>
     <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_copy_email_address">Copiar o endereço de e-mail</string>
+    <string name="action_copy_email_address">Copiar endereço de email</string>
     <!--Name of the action to copy a name and email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_copy_name_and_email_address">Copiar o nome e o endereço de e-mail</string>
+    <string name="action_copy_name_and_email_address">Copiar nome e endereço de email</string>
     <!--A user visible label for the email address copied to the clipboard-->
-    <string name="clipboard_label_email_address">Endereço de e-mail</string>
+    <string name="clipboard_label_email_address">Endereço de email</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
-    <string name="clipboard_label_name_and_email_address">Nome e endereço de e-mail</string>
+    <string name="clipboard_label_name_and_email_address">Nome e endereço de email</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <string name="background_work_notification_remove_account">Removendo a conta…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
@@ -885,14 +880,14 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="push_notification_state_alarm_permission_missing">Falta permissão para agendar alarmes</string>
     <string name="push_notification_grant_alarm_permission">Toque para conceder a permissão.</string>
     <string name="about_title">Sobre <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="push_info_notification_explanation_text">Ao usar o Push, <xliff:g id="app_name">%1$s</xliff:g> mantém uma conexão ao servidor de e-mail. O Android requer que uma notificação seja mostrada enquanto o app está rodando em segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Ao usar Push, o <xliff:g id="app_name">%1$s</xliff:g> mantém uma conexão com o servidor de email. O Android requer que uma notificação seja mostrada enquanto o aplicativo está ativo em segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">O app OpenKeychain é necessário para ativar o suporte à criptografia de ponta a ponta.</string>
-    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%1$s</xliff:g>\"será removida de <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%1$s</xliff:g>\" será removida de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="about_app_authors_thunderbird">Equipe do Thunderbird Mobile</string>
     <string name="folder_settings_notifications_label">Notificações</string>
     <string name="settings_ui_data_collection">Coleta de dados</string>
     <string name="settings_ui_telemetry_title">Dados de uso e técnicos</string>
-    <string name="settings_ui_telemetry_description">Compartilha dados sobre performance, uso, hardware, e customização deste app com a Mozilla para nos ajudar a fazer o Thunderbird melhor</string>
+    <string name="settings_ui_telemetry_description">Compartilha dados de desempenho, uso, hardware e personalização deste aplicativo com a Mozilla, para nos ajudar a melhorar o Thunderbird</string>
     <string name="folder_settings_push_label">Ativar Push</string>
     <string name="folder_settings_sync_label">Ativar sincronização</string>
     <string name="folder_list_show_hidden_folders">Mostrar pastas escondidas</string>
@@ -901,4 +896,8 @@ Você pode guardar esta mensagem e usá-la como um backup da sua chave secreta. 
     <string name="volume_navigation_summary">Navegue entre as mensagens usando os botões de volume</string>
     <string name="save_attachment_action">Salvar anexo</string>
     <string name="volume_navigation_title_short">Navegação com o botão de volume</string>
+    <string name="expand_content_description">Expandir</string>
+    <string name="empty_spam_action">Spam Vazio</string>
+    <string name="dialog_confirm_empty_spam_title">Confirmar esvaziamento do spam</string>
+    <string name="dialog_confirm_empty_spam_message">Você deseja esvaziar a pasta de spam?</string>
 </resources>

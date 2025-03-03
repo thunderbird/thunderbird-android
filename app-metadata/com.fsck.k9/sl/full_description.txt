@@ -1,0 +1,24 @@
+Pošta K-9 je odprtokodni e-poštni odjemalec, ki praktično deluje z vsemi ponudniki e-pošte.
+
+<b>Značilnosti</b>
+
+* Podpira več računov
+* Poenotena mapa Prejeto
+* Prijazen do zasebnosti (absolutno brez sledenja, povezuje se samo z vašim ponudnikom e-pošte)
+* Samodejna sinhronizacija v ozadju ali potisna obvestila
+* Iskanje na napravi in strežniku
+* E-poštno šifriranje OpenPGP (PGP/MIME)
+
+Za šifriranje pošte z OpenPGP-jem namestite <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a>.
+
+
+<b>Podpora</b>
+
+Če imate s Pošto K-9 težave, lahko za pomoč vprašate na našem <a href="https://forum.k9mail.app">forumu za podporo</a>.
+
+
+<b>Želite pomagati?</b>
+
+Pošta K-9 je projekt, ki ga razvija skupnost. Če bi radi pomagali pri izboljševanju programa, se nam prosimo pridružite!
+Naš sledilec hroščev, izvorno kodo in wiki najdete na <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Novi razvijalci, oblikovalci, pisalci dokumentov, prevajalci, sledilci hroščev in prijatelji so vedno dobrodošli.

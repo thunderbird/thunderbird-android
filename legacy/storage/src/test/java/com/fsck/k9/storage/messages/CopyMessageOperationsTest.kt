@@ -6,28 +6,23 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotIn
 import assertk.assertions.isNull
 import com.fsck.k9.mail.crlf
-import com.fsck.k9.mailstore.StorageManager
+import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.storage.RobolectricTest
 import okio.buffer
 import okio.sink
 import okio.source
 import org.junit.After
 import org.junit.Test
-import org.mockito.kotlin.anyOrNull
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
-
-private const val ACCOUNT_UUID = "00000000-0000-4000-0000-000000000000"
 
 class CopyMessageOperationsTest : RobolectricTest() {
     private val messagePartDirectory = createRandomTempDirectory()
     private val sqliteDatabase = createDatabase()
-    private val storageManager = mock<StorageManager> {
-        on { getAttachmentDirectory(eq(ACCOUNT_UUID), anyOrNull()) } doReturn messagePartDirectory
+    private val storageFilesProvider = object : StorageFilesProvider {
+        override fun getDatabaseFile() = error("Not implemented")
+        override fun getAttachmentDirectory() = messagePartDirectory
     }
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val attachmentFileManager = AttachmentFileManager(storageManager, ACCOUNT_UUID)
+    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider)
     private val threadMessageOperations = ThreadMessageOperations()
     private val copyMessageOperations = CopyMessageOperations(
         lockableDatabase,

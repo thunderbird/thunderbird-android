@@ -2,14 +2,12 @@ package com.fsck.k9.storage.messages
 
 import com.fsck.k9.K9
 import com.fsck.k9.helper.FileHelper
-import com.fsck.k9.mailstore.StorageManager
-import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider
+import com.fsck.k9.mailstore.StorageFilesProvider
 import java.io.File
 import timber.log.Timber
 
 internal class AttachmentFileManager(
-    private val storageManager: StorageManager,
-    private val accountUuid: String,
+    private val storageFilesProvider: StorageFilesProvider,
 ) {
     fun deleteFile(messagePartId: Long) {
         val file = getAttachmentFile(messagePartId)
@@ -30,7 +28,7 @@ internal class AttachmentFileManager(
     }
 
     fun getAttachmentFile(messagePartId: Long): File {
-        val attachmentDirectory = storageManager.getAttachmentDirectory(accountUuid, InternalStorageProvider.ID)
+        val attachmentDirectory = storageFilesProvider.getAttachmentDirectory()
         return File(attachmentDirectory, messagePartId.toString())
     }
 }

@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_password_authentication_title">Potvrdite svoj identitet</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Za prikaz lozinke ovdje, omogućite zaključavanje zaslona na ovom uređaju.</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Pošalji informacije o klijentu</string>
+    <string name="account_server_settings_protocol_type_label">Protokol</string>
+    <string name="account_server_settings_server_label">Poslužitelj</string>
+    <string name="account_server_settings_authentication_label">Provjera autentičnosti</string>
+    <string name="account_server_settings_security_label">Sigurnost</string>
+    <string name="account_server_settings_port_label">Priključak</string>
+    <string name="account_server_settings_username_label">Korisničko ime</string>
+    <string name="account_server_settings_connection_security_none">Ništa</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">Ništa</string>
+    <string name="account_server_settings_authentication_password_cleartext">Obična lozinka</string>
+    <string name="account_server_settings_authentication_password_encrypted">Šifrirana lozinka</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP prefiks ne može biti prazan.</string>
+    <string name="account_server_settings_authentication_client_certificate">Klijentski certifikat</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_client_certificate_none_selected">Ništa</string>
+    <string name="account_server_settings_client_certificate_label">Klijentski certifikat</string>
+    <string name="account_server_settings_incoming_top_bar_title">Postavke dolaznog poslužitelja</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Automatsko otkrivanje IMAP imenskog prostora</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP putni prefiks</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Koristi kompresiju</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Postavke odlaznog poslužitelja</string>
+    <string name="account_server_settings_validation_error_server_required">Naziv poslužitelja je obavezan.</string>
+    <string name="account_server_settings_validation_error_port_required">Priključak je obavezan.</string>
+    <string name="account_server_settings_validation_error_port_invalid">Neispravan priključak (mora biti između 1–65535).</string>
+    <string name="account_server_settings_validation_error_password_required">Lozinka je obavezna.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Neispravna IP adresa ili naziv hosta</string>
+    <string name="account_server_settings_validation_error_username_required">Korisničko ime je obavezno.</string>
+    <string name="account_server_settings_password_authentication_subtitle">Otključajte za prikaz lozinke</string>
+</resources>

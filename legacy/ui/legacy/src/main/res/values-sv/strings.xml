@@ -239,7 +239,7 @@
     <string name="global_settings_privacy_hide_useragent_detail">Ta bort användaragent från meddelanderubriker</string>
     <string name="global_settings_privacy_hide_timezone">Dölj tidszon</string>
     <string name="global_settings_privacy_hide_timezone_detail">Använd UTC istället för lokal tidszon i postrubriker och svarsrubrik</string>
-    <string name="global_settings_notification_quick_delete_title">Visa knappen \"Ta bort\"</string>
+    <string name="global_settings_notification_quick_delete_title">Visa knappen \'Ta bort\'</string>
     <string name="global_settings_notification_quick_delete_never">Aldrig</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">För enstaka meddelandeavisering</string>
     <string name="global_settings_notification_quick_delete_always">Alltid</string>
@@ -896,4 +896,8 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="volume_navigation_summary">Navigera mellan meddelanden med volymknapparna i meddelandevyn</string>
     <string name="volume_navigation_title_short">Volymknappsnavigering</string>
     <string name="save_attachment_action">Spara bilaga</string>
+    <string name="expand_content_description">Expandera</string>
+    <string name="dialog_confirm_empty_spam_message">Vill du tömma skräppostmappen?</string>
+    <string name="empty_spam_action">Töm skräppost</string>
+    <string name="dialog_confirm_empty_spam_title">Bekräfta töm skräppost</string>
 </resources>

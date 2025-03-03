@@ -894,4 +894,8 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="volume_navigation_summary">In der Nachrichtenübersicht mit den Lautstärketasten zwischen den Nachrichten navigieren</string>
     <string name="save_attachment_action">Anhang speichern</string>
     <string name="volume_navigation_title_short">Navigation mit Lautstärketasten</string>
+    <string name="expand_content_description">Erweitern</string>
+    <string name="empty_spam_action">Spam leeren</string>
+    <string name="dialog_confirm_empty_spam_title">Leeren des Spams bestätigen</string>
+    <string name="dialog_confirm_empty_spam_message">Möchtest du den Spam leeren?</string>
 </resources>

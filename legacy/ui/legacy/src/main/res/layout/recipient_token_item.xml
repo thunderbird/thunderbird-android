@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.ui.compose.RecipientTokenConstraintLayout
+<com.fsck.k9.ui.compose.RecipientTokenLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:minHeight="32dp"
     >
 
     <View
@@ -12,91 +13,69 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/contactTokenBackgroundColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/background_position_helper"
-        app:layout_constraintTop_toTopOf="parent"
         />
 
     <com.fsck.k9.ui.compose.RecipientCircleImageView
         android:id="@+id/contact_photo"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:contentDescription="@null"
-        android:minHeight="32dp"
-        app:layout_constraintBottom_toBottomOf="@android:id/text1"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@android:id/text1"
         tools:src="@drawable/ic_account_circle"
-        />
-
-    <View
-        android:id="@+id/background_position_helper"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/contact_photo"
-        app:layout_constraintEnd_toEndOf="@+id/contact_photo"
-        app:layout_constraintStart_toStartOf="@+id/contact_photo"
-        app:layout_constraintTop_toTopOf="@+id/contact_photo"
         />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@android:id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:paddingTop="4dp"
-        android:paddingStart="0dp"
-        android:paddingEnd="14dp"
-        android:paddingBottom="4dp"
+        android:padding="4sp"
         android:textAppearance="?attr/textAppearanceBodyMedium"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/contact_photo"
-        app:layout_constraintTop_toTopOf="parent"
         tools:text="Jane Doe"
         />
 
-    <ImageView
-        android:id="@+id/contact_crypto_status_icon"
+    <FrameLayout
+        android:id="@+id/crypto_status_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_status_corner"
-        app:tint="?openpgp_black"
-        tools:visibility="gone"
-        />
+        >
 
-    <ImageView
-        android:id="@+id/contact_crypto_status_icon_enabled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_status_corner"
-        app:tint="?openpgp_green"
-        tools:visibility="gone"
-        />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/contact_crypto_status_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_status_corner"
+            app:tint="?openpgp_black"
+            tools:visibility="visible"
+            />
 
-    <ImageView
-        android:id="@+id/contact_crypto_status_icon_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_status_corner"
-        app:tint="?openpgp_red"
-        tools:visibility="gone"
-        />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/contact_crypto_status_icon_enabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_status_corner"
+            app:tint="?openpgp_green"
+            tools:visibility="gone"
+            />
 
-</com.fsck.k9.ui.compose.RecipientTokenConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/contact_crypto_status_icon_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_status_corner"
+            app:tint="?openpgp_red"
+            tools:visibility="gone"
+            />
+
+    </FrameLayout>
+
+</com.fsck.k9.ui.compose.RecipientTokenLayout>

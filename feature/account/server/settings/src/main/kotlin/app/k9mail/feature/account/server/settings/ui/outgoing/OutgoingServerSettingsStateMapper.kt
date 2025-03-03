@@ -7,6 +7,7 @@ import app.k9mail.feature.account.common.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toMailConnectionSecurity
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.server.settings.ui.common.toInvalidEmailDomain
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import com.fsck.k9.mail.ServerSettings
 
@@ -17,6 +18,7 @@ fun AccountState.toOutgoingServerSettingsState(): State {
         ?: State(
             username = StringInputField(value = emailAddress ?: ""),
             password = StringInputField(value = password),
+            server = StringInputField(value = emailAddress?.toInvalidEmailDomain() ?: ""),
         )
 }
 

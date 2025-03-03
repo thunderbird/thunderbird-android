@@ -9,4 +9,6 @@
     <string name="account_oauth_error_failed">Mislykka godkjenning med følgjande feil: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 er ikkje støtta med denne tilbydaren.</string>
     <string name="account_oauth_error_browser_not_available">Appen klarte ikkje å finne nokon nettlesar å bruke for å innvilge tilgang til kontoen din.</string>
+    <string name="account_oauth_google_sign_in_support_text">Om du opplever problemer med å logge inn med Google, konsulter {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">artikkelen i brukarstønaden vår</string>
 </resources>

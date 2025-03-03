@@ -16,28 +16,23 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Multipart
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.buildMessage
-import com.fsck.k9.mailstore.StorageManager
+import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import com.fsck.k9.storage.RobolectricTest
 import java.io.ByteArrayOutputStream
 import java.util.Stack
 import org.junit.After
 import org.junit.Test
-import org.mockito.kotlin.anyOrNull
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
-
-private const val ACCOUNT_UUID = "00000000-0000-4000-0000-000000000000"
 
 class SaveMessageOperationsTest : RobolectricTest() {
     private val messagePartDirectory = createRandomTempDirectory()
     private val sqliteDatabase = createDatabase()
-    private val storageManager = mock<StorageManager> {
-        on { getAttachmentDirectory(eq(ACCOUNT_UUID), anyOrNull()) } doReturn messagePartDirectory
+    private val storageFilesProvider = object : StorageFilesProvider {
+        override fun getDatabaseFile() = error("Not implemented")
+        override fun getAttachmentDirectory() = messagePartDirectory
     }
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val attachmentFileManager = AttachmentFileManager(storageManager, ACCOUNT_UUID)
+    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider)
     private val basicPartInfoExtractor = BasicPartInfoExtractor()
     private val threadMessageOperations = ThreadMessageOperations()
     private val saveMessageOperations = SaveMessageOperations(

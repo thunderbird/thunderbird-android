@@ -26,7 +26,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" android:maxSdkVersion="33" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
         tools:ignore="ProtectedPermissions"
         />
@@ -228,6 +229,7 @@
             >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
 
@@ -241,8 +243,13 @@
         <service
             android:name="com.fsck.k9.controller.push.PushService"
             android:exported="false"
-            android:foregroundServiceType="dataSync"
-            />
+            android:foregroundServiceType="dataSync|specialUse"
+            >
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="This service is used to maintain a continuous connection to an IMAP server to be able to provide instant notifications to the user when a new email arrives. Firebase Cloud Messaging is not suitable for this task, neither are mechanisms like AndroidX WorkManager. Other foreground service types aren't a good fit for this use case."
+                />
+        </service>
 
         <provider
             android:name="com.fsck.k9.provider.AttachmentProvider"

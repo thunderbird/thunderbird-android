@@ -1,12 +1,10 @@
 package com.fsck.k9.ui.settings.general
 
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.ui.R
@@ -17,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.fsck.k9.core.R as CoreR
 
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: GeneralSettingsViewModel by viewModel()
@@ -40,7 +37,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         setHasOptionsMenu(true)
         setPreferencesFromResource(R.xml.general_settings, rootKey)
 
-        initializeTheme()
         initializeDataCollection()
 
         viewModel.uiState.observe(this) { uiState ->
@@ -74,15 +70,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun initializeTheme() {
-        (findPreference(PREFERENCE_THEME) as? ListPreference)?.apply {
-            if (Build.VERSION.SDK_INT < 28) {
-                setEntries(R.array.theme_entries_legacy)
-                setEntryValues(CoreR.array.theme_values_legacy)
-            }
-        }
     }
 
     private fun initializeDataCollection() {
@@ -128,7 +115,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
-        private const val PREFERENCE_THEME = "theme"
         private const val PREFERENCE_SCREEN_DEBUGGING = "debug_preferences"
         private const val PREFERENCE_DATA_COLLECTION = "data_collection"
 

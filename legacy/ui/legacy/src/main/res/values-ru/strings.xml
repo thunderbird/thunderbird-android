@@ -660,7 +660,7 @@
     <string name="global_settings_threaded_view_summary">Объединить сообщения, показав счётчик</string>
     <string name="upgrade_databases_title">Обновление данных</string>
     <string name="upgrade_databases_unspecified">Обновление данных…</string>
-    <string name="upgrade_database_format">Обновление учётной записи \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="upgrade_database_format">Обновление учётной записи \\<xliff:g id="account">%s</xliff:g>\\</string>
     <string name="global_settings_splitview_mode_label">Разделить экран</string>
     <string name="global_settings_splitview_always">Всегда</string>
     <string name="global_settings_splitview_never">Никогда</string>
@@ -910,4 +910,8 @@
     <string name="volume_navigation_summary">Перемещение между сообщениями с помощью кнопок громкости во время просмотра</string>
     <string name="volume_navigation_title_short">Навигация кнопками громкости</string>
     <string name="save_attachment_action">Сохранить вложение</string>
+    <string name="expand_content_description">Развернуть</string>
+    <string name="empty_spam_action">Очистить спам</string>
+    <string name="dialog_confirm_empty_spam_message">Вы хотите очистить папку спама?</string>
+    <string name="dialog_confirm_empty_spam_title">Подтвердите удаление спама</string>
 </resources>

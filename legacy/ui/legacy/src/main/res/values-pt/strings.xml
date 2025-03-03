@@ -1,2 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="expand_content_description">Expandir</string>
+    <string name="license">Licença</string>
+    <string name="app_license">Licença Apache, Versão 2.0</string>
+    <string name="get_help_title">Obter ajuda</string>
+    <string name="source_code">Código fonte</string>
+    <string name="about_libraries">Bibliotecas</string>
+    <string name="changelog_snackbar_button_text">Ver</string>
+    <string name="authors">Autores</string>
+    <string name="choose_folder_title">Escolher Pasta</string>
+    <string name="changelog_version_title">Versão %s</string>
+    <string name="accounts_title">Contas</string>
+    <string name="reply_action">Responder</string>
+    <string name="compose_title_reply_all">Responder a todos</string>
+    <string name="about_title">Acerca <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="compose_title_forward_as_attachment">Encaminhar como anexo</string>
+    <string name="reply_all_action">Responder a todos</string>
+    <string name="save_draft_action">Guardar como rascunho</string>
+    <string name="send_messages_action">Enviar mensagem</string>
+    <string name="delete_action">Apagar</string>
+    <string name="compose_title_compose">Compor</string>
+    <string name="compose_title_reply">Responder</string>
+    <string name="compose_title_forward">Encaminhar</string>
+    <string name="choose_folder_move_title">Mover para…</string>
+    <string name="compose_action">Compor</string>
+    <string name="new_messages_title">Mensagens novas</string>
+    <string name="send_alternate_action">Partilhar</string>
+    <string name="remove_account_action">Remover conta</string>
+    <string name="move_to_drafts_action">Mover para Rascunhos</string>
+    <string name="done_action">Concluído</string>
+    <string name="discard_action">Descartar</string>
+    <string name="search_action">Pesquisar</string>
+    <string name="filter_folders_action">Encontrar pasta</string>
+    <string name="add_account_action">Adicionar conta</string>
+    <string name="search_results">Pesquisar resultados</string>
+    <string name="folders_action">Organizar pastas</string>
+    <string name="account_settings_action">Configurações da conta</string>
+    <string name="mark_as_read_action">Marcar como lido</string>
+    <string name="copy_action">Copiar</string>
+    <string name="notification_action_delete">Apagar</string>
+    <string name="notification_action_delete_all">Apagar tudo</string>
+    <string name="notification_action_archive">Arquivar</string>
+    <string name="notification_action_archive_all">Arquivar Todos</string>
+    <string name="notification_certificate_error_text">Verifique as suas definições do servidor</string>
+    <string name="notification_authentication_error_title">Falha na autenticação</string>
+    <string name="notification_authentication_error_text">Falha na autenticação para <xliff:g id="account">%s</xliff:g>. Atualize as suas definições do servidor.</string>
+    <string name="notification_notify_error_title">Erro de notificação</string>
+</resources>

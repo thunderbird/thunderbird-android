@@ -46,4 +46,17 @@
     <string name="account_setup_special_folders_loading_message">Φόρτωση της λίστας των φακέλων…</string>
     <string name="account_setup_special_folders_error_message">Αποτυχία φόρτωσης της λίστας των φακέλων από τον σερβερ</string>
     <string name="account_setup_options_email_signature_error_blank">Το εμφανιζόμενο όνομα δε μπορεί να μείνει κενό.</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Κάθε ώρα</item>
+        <item quantity="other">Κάθε %d ώρες</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 μήνυμα</item>
+        <item quantity="other">%d μηνύματα</item>
+    </plurals>
+    <string name="account_setup_special_folders_form_description_automatic">Η \"Αυτόματη\" επιλογή θα ακολουθήσει τις αλλαγές που θα γίνουν από τον διακομιστή. Η τωρινή μεταβλητή του διακομιστή φαίνεται στην παρένθεση.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Κάθε λεπτό</item>
+        <item quantity="other">Κάθε %d λεπτά</item>
+    </plurals>
 </resources>

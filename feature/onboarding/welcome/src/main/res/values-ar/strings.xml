@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_welcome_start_button">Začít</string>
+    <string name="onboarding_welcome_start_button">ابدأ</string>
     <string name="onboarding_welcome_import_button">Importovat nastavení</string>
+    <string name="onboarding_welcome_text">تطبيقُ أندرويد مفتوحُ المصدر، يركّز على الخصوصيّة وخالٍ من الإعلانات.</string>
 </resources>

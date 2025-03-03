@@ -18,7 +18,7 @@ fun NavigationDrawerItem(
     badge: (@Composable () -> Unit)? = null,
 ) {
     Material3NavigationDrawerItem(
-        label = { TextLabelLarge(text = label) },
+        label = { TextLabelLarge(text = label, maxLines = 2) },
         selected = selected,
         onClick = onClick,
         modifier = Modifier
@@ -39,7 +39,7 @@ fun NavigationDrawerItem(
     badge: (@Composable () -> Unit)? = null,
 ) {
     Material3NavigationDrawerItem(
-        label = { TextLabelLarge(text = label) },
+        label = { TextLabelLarge(text = label, maxLines = 2) },
         selected = selected,
         onClick = onClick,
         modifier = Modifier

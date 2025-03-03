@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_description">Преусмерићемо вас на вашег добављача е-поште да се пријавите. Потребно је да апликацији дате приступ вашем налогу е-поште.</string>
-    <string name="account_oauth_sign_in_button">Пријавите се</string>
-    <string name="account_oauth_sign_in_with_google_button">Пријавите се преко Google-а</string>
-    <string name="account_oauth_loading_message">Пријављивање користећи OAuth</string>
-    <string name="account_oauth_loading_error">Пријављивање преко OAuth није успело</string>
+    <string name="account_oauth_sign_in_description">Преусмерићемо вас на вашег пружаоца имејла да бисте се пријавили. Потребно је да апликацији дате приступ за ваш имејл налог.</string>
+    <string name="account_oauth_sign_in_button">Пријава</string>
+    <string name="account_oauth_sign_in_with_google_button">Пријава преко Google-а</string>
+    <string name="account_oauth_loading_message">Пријављивање преко OAuth-а</string>
+    <string name="account_oauth_loading_error">Пријављивање преко OAuth-а није успело</string>
     <string name="account_oauth_error_canceled">Овлашћење је отказано</string>
-    <string name="account_oauth_error_failed">Овлашћење није успело са следећом грешком: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_error_not_supported">OAuth 2.0 тренутно није подржан са овим добављачем.</string>
+    <string name="account_oauth_error_failed">Неуспешно овлашћење, са следећом грешком: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_not_supported">OAuth 2.0 тренутно није подржан са овим пружаоцем.</string>
     <string name="account_oauth_error_browser_not_available">Апликација није могла да пронађе прегледач за коришћење у давању приступа вашем налогу.</string>
-    <string name="account_oauth_google_sign_in_support_text">Ако имате проблема при пријављивању на Google, консултујте наш {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text">Ако имате проблема при пријављивању преко Google-а, консултујте наш {placeHolder}.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">чланак подршке</string>
 </resources>

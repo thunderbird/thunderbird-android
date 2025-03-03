@@ -1,2 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Este não é reconhecido como um endereço de e-mail válido.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Recebemos a configuração do seu servidor de e-mail por uma conexão que não é tão segura quanto gostaríamos. Isso significa que há uma pequena chance de que alguém possa tê-la alterado. Você poderia verificar a configuração fornecida para garantir que está correta?</string>
+    <string name="account_setup_error_network">Erro de rede. Verifique o status da sua conexão e tente novamente.</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuração encontrada</string>
+    <string name="account_setup_special_folders_folder_none">Nenhum</string>
+    <string name="account_setup_options_display_name_label">Seu nome</string>
+    <string name="account_setup_options_email_signature_error_blank">A assinatura de e-mail não pode estar em branco.</string>
+    <string name="account_setup_create_account_created">Conta criada com sucesso</string>
+    <string name="account_setup_error_unknown">Erro desconhecido</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Endereço de e-mail é obrigatório.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Esse endereço de e-mail não é permitido.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Esse endereço de e-mail não é suportado.</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">A senha é obrigatória.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">Inicialização de TLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">Buscando configuração…</string>
+    <string name="account_setup_auto_discovery_loading_error">Falha ao carregar configuração de e-mail</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Configuração não encontrada</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Configure automaticamente</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Esta configuração não é confiável</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Configure manualmente</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editar configuração</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">I confio nesta configuração</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">É necessário aprovar a configuração.</string>
+    <string name="account_setup_special_folders_form_description">Por favor, especifique a pasta especial para sua conta.</string>
+    <string name="account_setup_special_folders_form_description_automatic">A entrada \'Automática\' seguirá as alterações feitas pelo servidor automaticamente. O valor atual do servidor é exibido entre parênteses.</string>
+    <string name="account_setup_special_folders_loading_message">Buscando lista de pastas…</string>
+    <string name="account_setup_special_folders_error_message">Falha ao buscar a lista de pastas do servidor</string>
+    <string name="account_setup_special_folders_success_message">Todas as pastas especiais foram configuradas automaticamente pelo servidor.</string>
+    <string name="account_setup_special_folders_archive_folder_label">Arquivar pasta</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Pasta de rascunhos</string>
+    <string name="account_setup_special_folders_sent_folder_label">Pasta de enviados</string>
+    <string name="account_setup_special_folders_spam_folder_label">Pasta de spam</string>
+    <string name="account_setup_special_folders_trash_folder_label">Pasta de lixeira</string>
+    <string name="account_setup_special_folders_folder_automatic">Automático (%s)</string>
+    <string name="account_setup_options_section_display_options">Opções de exibição</string>
+    <string name="account_setup_options_account_name_label">Nome da conta</string>
+    <string name="account_setup_options_account_name_error_blank">O nome da conta não pode estar em branco.</string>
+    <string name="account_setup_options_display_name_error_required">Seu nome é obrigatório.</string>
+    <string name="account_setup_options_email_signature_label">Assinatura de e-mail</string>
+    <string name="account_setup_options_section_sync_options">Opções de sincronização</string>
+    <string name="account_setup_options_account_check_frequency_label">Frequência de verificação</string>
+    <string name="account_setup_options_email_check_frequency_never">Nunca</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">A cada minuto</item>
+        <item quantity="many">A cada %d minutos</item>
+        <item quantity="other">A cada %d minutos</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 mensagem</item>
+        <item quantity="many">%d mensagens</item>
+        <item quantity="other">%d mensagens</item>
+    </plurals>
+    <string name="account_setup_options_email_display_count_label">Número de mensagens a exibir</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">A cada hora</item>
+        <item quantity="many">A cada %d horas</item>
+        <item quantity="other">A cada %d horas</item>
+    </plurals>
+    <string name="account_setup_options_show_notifications_label">Mostrar notificações</string>
+    <string name="account_setup_create_account_creating">Criando conta…</string>
+    <string name="account_setup_create_account_error">Ocorreu um erro ao tentar criar a conta</string>
+</resources>

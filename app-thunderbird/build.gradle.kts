@@ -21,7 +21,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 11
-        versionName = "9.0"
+        versionName = "10.0"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -67,6 +67,7 @@ android {
                 "ro",
                 "ru",
                 "sl",
+                "sk",
                 "sq",
                 "sr",
                 "sv",
@@ -120,7 +121,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b3"
+            versionNameSuffix = "b1"
 
             isMinifyEnabled = true
             isShrinkResources = true
@@ -259,7 +260,7 @@ dependencyGuard {
     configuration("fullReleaseRuntimeClasspath")
 }
 
-tasks.create("printConfigurations") {
+tasks.register("printConfigurations") {
     doLast {
         configurations.forEach { configuration ->
             println("Configuration: ${configuration.name}")
@@ -270,7 +271,7 @@ tasks.create("printConfigurations") {
     }
 }
 
-tasks.create("printVersionInfo") {
+tasks.register("printVersionInfo") {
     val targetBuildType = project.findProperty("buildType") ?: "debug"
     val targetFlavorName = project.findProperty("flavorName") ?: "full"
 

@@ -1,12 +1,13 @@
 package app.k9mail.feature.funding.googleplay.ui.contribution
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -25,9 +26,10 @@ internal fun ContributionListItem(
                 color = if (isSelected) MainTheme.colors.primary else MainTheme.colors.outlineVariant,
                 shape = MainTheme.shapes.small,
             )
-            .clickable(
+            .selectable(
+                selected = isSelected,
+                role = Role.RadioButton,
                 onClick = onClick,
-                enabled = !isSelected,
             ),
         contentAlignment = Alignment.Center,
     ) {

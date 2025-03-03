@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">是否已在使用 Thunderbird 電腦版？</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">新增電子郵件</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">匯入設定</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">New to Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">前往 Thunderbird 電腦版的：</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">設定（在畫面左下角）</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">透過掃描 QR Code 輕鬆匯入帳戶設定。</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">查看如何更新 Thunderbird。</string>
+    <string name="onboarding_migration_thunderbird_import_title">從其他應用程式或裝置轉移？</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">立即匯入您的帳戶設定</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">找不到可以打開連結的應用程式。</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">匯入需要最新的電腦版 Thunderbird。 <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">選擇「匯出至行動版」</string>
+</resources>

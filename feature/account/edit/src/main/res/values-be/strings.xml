@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Захаванне налад сервера…</string>
+    <string name="account_edit_save_server_settings_error_message">Не ўдалося захаваць налады сервера</string>
+    <string name="account_edit_save_server_settings_success_message">Налады сервера захаваныя</string>
+</resources>

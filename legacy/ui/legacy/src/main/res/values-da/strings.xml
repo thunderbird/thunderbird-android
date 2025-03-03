@@ -103,7 +103,7 @@
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g>nyt brev</item>
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nyt brev</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nye meddelelser</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> mere på <xliff:g id="account">%2$s</xliff:g></string>

@@ -6,6 +6,7 @@ import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
+import app.k9mail.feature.account.server.settings.ui.common.toInvalidEmailDomain
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -15,10 +16,12 @@ import org.junit.Test
 
 class OutgoingServerSettingsStateMapperKtTest {
 
+    @Suppress("MaxLineLength")
     @Test
-    fun `should map to state with email as username when server settings are null`() {
+    fun `should map to state with email as username and emailDomain With dot prefix as server name when server settings are null`() {
+        val email = "test@example.com"
         val accountState = AccountState(
-            emailAddress = "test@example.com",
+            emailAddress = email,
             outgoingServerSettings = null,
         )
 
@@ -26,15 +29,18 @@ class OutgoingServerSettingsStateMapperKtTest {
 
         assertThat(result).isEqualTo(
             State(
-                username = StringInputField(value = "test@example.com"),
+                username = StringInputField(value = email),
+                server = StringInputField(value = email.toInvalidEmailDomain()),
             ),
         )
     }
 
+    @Suppress("MaxLineLength")
     @Test
-    fun `should map to state with password from incomingServerSettings when outgoingServerSettings is null`() {
+    fun `should map to state with password from incomingServerSettings and emailDomain With dot prefix as server name when outgoingServerSettings is null`() {
+        val email = "test@domain.example"
         val accountState = AccountState(
-            emailAddress = "test@domain.example",
+            emailAddress = email,
             incomingServerSettings = IMAP_SERVER_SETTINGS,
             outgoingServerSettings = null,
         )
@@ -43,8 +49,9 @@ class OutgoingServerSettingsStateMapperKtTest {
 
         assertThat(result).isEqualTo(
             State(
-                username = StringInputField(value = "test@domain.example"),
+                username = StringInputField(value = email),
                 password = StringInputField(value = INCOMING_SERVER_PASSWORD),
+                server = StringInputField(value = email.toInvalidEmailDomain()),
             ),
         )
     }
