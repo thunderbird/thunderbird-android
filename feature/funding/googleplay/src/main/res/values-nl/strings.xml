@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Steun Thunderbird</string>
     <string name="funding_googleplay_contribution_list_title">Veilige bijdrage</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Doneer eenmalig</string>
@@ -11,7 +11,7 @@
     <string name="funding_googleplay_contribution_list_type_none_available">Niets beschikbaar</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Maandelijkse betaling aanpassen</string>
     <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Doe nog een bijdrage met impact</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Bezoek www.thunderbird.net voor meer manieren om Thunderbird te steunen</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Bezoek <xliff:g id="link_text">%s</xliff:g> voor meer manieren om Thunderbird te steunen.</string>
     <string name="funding_googleplay_contribution_error_show_more">Meer details tonen</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Foutmelding sluiten</string>
     <string name="funding_googleplay_contribution_error_unknown">Onbekende fout</string>

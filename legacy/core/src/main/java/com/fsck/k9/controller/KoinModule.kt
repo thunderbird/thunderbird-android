@@ -1,6 +1,7 @@
 package com.fsck.k9.controller
 
 import android.content.Context
+import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
@@ -28,6 +29,7 @@ val controllerModule = module {
             get<SpecialLocalFoldersCreator>(),
             get<LocalDeleteOperationDecider>(),
             get(named("controllerExtensions")),
+            get<FeatureFlagProvider>(),
         )
     }
 

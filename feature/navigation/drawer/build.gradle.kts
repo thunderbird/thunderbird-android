@@ -13,6 +13,8 @@ dependencies {
     implementation(projects.core.ui.theme.api)
     implementation(projects.core.ui.compose.designsystem)
 
+    implementation(projects.feature.account.avatar)
+
     implementation(projects.legacy.account)
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)

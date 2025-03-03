@@ -787,7 +787,7 @@
     <!--A user visible label for the name and email address copied to the clipboard-->
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="about_app_authors_thunderbird">Тхундербирд Мобиле Теам</string>
+    <string name="about_app_authors_thunderbird">Тхундербирд Мобиле Теам</string>
     <string name="changelog_show_recent_changes">Прикажи недавне промене када је апликација ажурирана</string>
     <string name="changelog_recent_changes_title">Шта има ново</string>
     <string name="get_help_title">Потражите помоћ</string>
@@ -815,7 +815,7 @@
     <string name="global_settings_lock_screen_notification_visibility_message_count">Број нових порука</string>
     <string name="account_settings_open_notification_settings_messages_summary">Конфигуриши обавештења за нове поруке</string>
     <string name="swipe_action_move">Премести…</string>
-    <string name="account_delete_dlg_instructions_fmt">Налог \"<xliff:g id="account">%s</xliff:g>\" ће бити уклоњен из <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Налог \"<xliff:g id="account">%1$s</xliff:g>\" ће бити уклоњен из <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="search_everywhere_action">Претражи свуда</string>
     <string name="new_messages_title">Нове поруке</string>
     <string name="copy_subject_to_clipboard">Текст теме је копиран у клипборд</string>

@@ -892,7 +892,7 @@
     <string name="folder_settings_sync_label">Iespējot sinhronizāciju</string>
     <string name="folder_list_show_hidden_folders">Rādīt slēptās mapes</string>
     <string name="settings_ui_telemetry_description">Kopīgo šīs lietotnes veiktspējas, lietojuma, aparatūras un pielāgošanas datus ar Mozilla, lai palīdzētu mums uzlabot Thunderbird</string>
-    <string name="account_delete_dlg_instructions_fmt">Konts <xliff:g id="account">%s</xliff:g> tiks noņemts no <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Konts <xliff:g id="account">%1$s</xliff:g> tiks noņemts no <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="about_title">Par <xliff:g id="app_name">%s</xliff:g></string>
     <string name="folder_settings_visible_label">Rādīt mapi</string>
     <string name="settings_list_action_support">Atbalstiet <xliff:g id="app_name">%s</xliff:g></string>

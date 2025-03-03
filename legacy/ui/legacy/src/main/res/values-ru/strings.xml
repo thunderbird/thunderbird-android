@@ -882,7 +882,7 @@
     <string name="clipboard_label_name_and_email_address">Имя и адрес эл. почты</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="general_settings_post_mark_as_unread_action_title">После пометки сообщения как непрочитанного</string>
+    <string name="general_settings_post_mark_as_unread_action_title">После пометки сообщения как непрочитанного</string>
     <string name="background_work_notification_remove_account">Удаление учётной записи…</string>
     <string name="message_list_content_description_unread_prefix">не прочитано, %s</string>
     <string name="general_settings_post_remove_action_title">После удаления или перемещения сообщения</string>
@@ -895,7 +895,7 @@
     <string name="push_notification_state_alarm_permission_missing">Отсутствует разрешение на установку будильников</string>
     <string name="dialog_openkeychain_info_text">Для сквозного шифрования в требуется приложение OpenKeychain.</string>
     <string name="push_info_notification_explanation_text">При использовании push <xliff:g id="app_name">%1$s</xliff:g> поддерживает соединение с почтовым сервером. Android требует отображения постоянного уведомления, пока приложение активно в фоновом режиме. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%s</xliff:g>\" будет удалена из приложения <xliff:g id="app_name">%s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Учётная запись \"<xliff:g id="account">%1$s</xliff:g>\" будет удалена из приложения <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="about_title">О приложении <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Команда Thunderbird Mobile</string>
     <string name="folder_settings_notifications_label">Уведомления</string>

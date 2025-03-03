@@ -3,6 +3,7 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:key="main"
     android:title="@string/account_settings_title_fmt"
     >
@@ -370,12 +371,14 @@
                 android:key="open_notification_settings_messages"
                 android:summary="@string/account_settings_open_notification_settings_messages_summary"
                 android:title="@string/notification_channel_messages_title"
+                tools:targetApi="o"
                 />
 
             <com.fsck.k9.ui.settings.account.NotificationsPreference
                 android:key="open_notification_settings_miscellaneous"
                 android:summary="@string/account_settings_open_notification_settings_miscellaneous_summary"
                 android:title="@string/notification_channel_miscellaneous_title"
+                tools:targetApi="o"
                 />
 
         </PreferenceCategory>

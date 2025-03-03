@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_footer_payment_button">Trochgean nei ôfrekkenjen</string>
     <string name="funding_googleplay_contribution_list_type_recurring">Moanliks</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Bydragen binne net ôflûkber as donaasjes foar goede doelen.</string>
@@ -19,7 +19,7 @@
     <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Bûtengewoane moanlikse bydrage</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Betelling op dit stuit beskikber</string>
     <string name="funding_googleplay_contribution_list_empty_title">Bydragen yn de app binne op dit stuit net beskikber.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Besykje www.thunderbird.net foar mear manieren om Thunderbird te stypjen</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Besykje <xliff:g id="link_text">%s</xliff:g> foar mear manieren om Thunderbird te stypjen.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_title">Grutte moanlikse bydrage</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Opnij probearje</string>
     <string name="funding_googleplay_contribution_error_service_disconnected">Bydragen binne op dit stuit beskikber.</string>
