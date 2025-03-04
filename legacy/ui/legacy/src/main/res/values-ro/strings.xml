@@ -398,7 +398,6 @@
     <string name="account_settings_openpgp_missing">Aplicație OpenPGP lipsă - a fost dezinstalată?</string>
     <string name="folder_settings_title">Setări dosar</string>
     <string name="folder_settings_in_top_group_label">Arată în grupul de sus</string>
-    <string name="folder_settings_in_top_group_summary">Arată aproape de partea de sus a listei de dosare</string>
     <string name="folder_settings_clear_local_folder_action">Curăță mesajele locale</string>
     <string name="account_settings_incoming_label">Server primire</string>
     <string name="account_settings_incoming_summary">Configurare server primire</string>
@@ -531,7 +530,6 @@
     <string name="integrated_inbox_title">Căsuță poștală unificată</string>
     <string name="integrated_inbox_detail">Toate mesajele în dosare unificate</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unifică</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Toate mesajele sunt în Căsuța poștală unificată</string>
     <string name="account_settings_no_folder_selected">Nimic</string>
     <string name="account_settings_automatic_special_folder">Automat (%s)</string>
     <string name="font_size_settings_title">Mărime font</string>

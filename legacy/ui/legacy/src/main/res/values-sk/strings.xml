@@ -360,7 +360,6 @@
     <string name="account_settings_openpgp_missing">Aplikácia pre OpenPGP chýba - bola odinštalovaná?</string>
     <string name="folder_settings_title">Nastavenia priečinku</string>
     <string name="folder_settings_in_top_group_label">Zobraziť v najvyššej skupine</string>
-    <string name="folder_settings_in_top_group_summary">Zobraziť v hornej časti zoznamu priečinkov</string>
     <string name="folder_settings_clear_local_folder_action">Vymazať správy</string>
     <string name="account_settings_incoming_label">Server prichádzajúcej pošty</string>
     <string name="account_settings_incoming_summary">Nastaviť server prichádzajúcej pošty</string>
@@ -474,7 +473,6 @@
     <string name="integrated_inbox_title">Jednotná schránka</string>
     <string name="integrated_inbox_detail">Všetky správy v zjednotených priečinkoch</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Zjednotiť</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Všetky správy budú zobrazené v Jednotnej schránke</string>
     <string name="account_settings_no_folder_selected">Žiadna</string>
     <string name="account_settings_automatic_special_folder">Automaticky (%s)</string>
     <string name="font_size_settings_title">Veľkosť písma</string>

@@ -605,7 +605,6 @@
     <string name="account_settings_sync_remote_deletetions_label">Synkroniser serversletting</string>
     <string name="account_settings_openpgp_missing">Manglande OpenPGP app - var den avinstallert?</string>
     <string name="folder_settings_in_top_group_label">Vis i toppgruppe</string>
-    <string name="folder_settings_in_top_group_summary">Vi nær toppen av mappelista</string>
     <string name="account_settings_strip_signature_label">Fjern signaturar under svar</string>
     <string name="account_settings_reading_mail">Lesing av e-post</string>
     <string name="account_settings_autodownload_message_size_64">64 KiB</string>
@@ -726,7 +725,6 @@
     <string name="font_size_message_view_recipients">Mottakarar</string>
     <string name="dialog_confirm_clear_local_folder_title">Fjern lokale meldingar?</string>
     <string name="dialog_confirm_clear_local_folder_action">Fjern meldingar</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Alle meldingar er vist i samla innboks</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Samle</string>
     <string name="font_size_message_compose_input">Tekstinndatafelter</string>
     <string name="dialog_confirm_clear_local_folder_message">Dette vil fjerne alle lokale meldingar frå mappa. Ingen meldingar vil bli sletta frå tenaren.</string>

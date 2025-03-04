@@ -395,7 +395,6 @@
     <string name="account_settings_openpgp_missing">Mungon aplikacioni OpenPGP - mos është çinstaluar?</string>
     <string name="folder_settings_title">Rregullime dosjeje</string>
     <string name="folder_settings_in_top_group_label">Shfaqe në grupin e epërm</string>
-    <string name="folder_settings_in_top_group_summary">Shfaqe pranë kreut të listës së dosjeve</string>
     <string name="folder_settings_clear_local_folder_action">Pastro mesazhet vendore</string>
     <string name="account_settings_incoming_label">Shërbyes për marrje</string>
     <string name="account_settings_incoming_summary">Formësoni shërbyesin për marrje</string>
@@ -528,7 +527,6 @@
     <string name="integrated_inbox_title">Kuti Poste e Njësuar</string>
     <string name="integrated_inbox_detail">Krejt mesazhet në dosje të njësuara</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Njësoji</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Krejt mesazhet shfaqen në Kuti Poste të Njësuar</string>
     <string name="account_settings_no_folder_selected">Asnjë</string>
     <string name="account_settings_automatic_special_folder">Automatik (%s)</string>
     <string name="font_size_settings_title">Madhësi shkronjash</string>

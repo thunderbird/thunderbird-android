@@ -258,7 +258,6 @@
     <string name="account_settings_message_age_label">Sync messages from</string>
     <string name="folder_settings_title">Folder settings</string>
     <string name="idle_refresh_period_60min">Every 60 minutes</string>
-    <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
     <string name="sort_by_flag">Star</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
@@ -415,7 +414,6 @@
     <string name="font_size_message_list_sender">Sender</string>
     <string name="account_settings_crypto_app_select_title">Select OpenPGP app</string>
     <string name="account_settings_upload_sent_messages_label">Upload sent messages</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
     <string name="account_settings_vibrate_pattern_2">Pattern 2</string>
     <string name="account_settings_vibrate_pattern_default">Default</string>
     <string name="account_settings_vibrate_pattern_1">Pattern 1</string>

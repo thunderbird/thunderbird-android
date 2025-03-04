@@ -396,7 +396,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP-sovellus puuttuu - poistettiinko se?</string>
     <string name="folder_settings_title">Kansioiden asetukset</string>
     <string name="folder_settings_in_top_group_label">Näytä yläryhmässä</string>
-    <string name="folder_settings_in_top_group_summary">Näytä yläosassa lähellä kansiolistaa</string>
     <string name="folder_settings_clear_local_folder_action">Poista paikalliset viestit</string>
     <string name="account_settings_incoming_label">Saapuvan postin palvelin</string>
     <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>
@@ -529,7 +528,6 @@
     <string name="integrated_inbox_title">Yhdistetty saapuneet</string>
     <string name="integrated_inbox_detail">Kaikki viestit Yhdistetty saapuneet -kansiossa</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Yhdistä</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Kaikki viestit näytetään Yhdistetty saapuneet -kansiossa</string>
     <string name="account_settings_no_folder_selected">Ei mitään</string>
     <string name="account_settings_automatic_special_folder">Automaattinen (%s)</string>
     <string name="font_size_settings_title">Kirjasinkoko</string>

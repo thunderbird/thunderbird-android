@@ -396,7 +396,6 @@
     <string name="account_settings_openpgp_missing">Ni programa OpenPGP – ali je bila namestitev odstranjena?</string>
     <string name="folder_settings_title">Nastavitve mape</string>
     <string name="folder_settings_in_top_group_label">Pokaži mapo v zgornji skupini</string>
-    <string name="folder_settings_in_top_group_summary">Razvrsti mapo v zgornjo skupino map na seznamu</string>
     <string name="folder_settings_clear_local_folder_action">Počisti krajevna sporočila</string>
     <string name="account_settings_incoming_label">Dohodni strežnik</string>
     <string name="account_settings_incoming_summary">Nastavitev strežnika dohodne pošte</string>
@@ -529,7 +528,6 @@
     <string name="integrated_inbox_title">Skupna mapa prejetih sporočil</string>
     <string name="integrated_inbox_detail">Vsa sporočila v skupnih mapah</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Združi</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Vsa sporočila so prikazana v skupni mapi prejetih sporočil</string>
     <string name="account_settings_no_folder_selected">Brez usklajevanja</string>
     <string name="account_settings_automatic_special_folder">Samodejno (%s)</string>
     <string name="font_size_settings_title">Velikost pisave</string>
