@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="9.0" versioncode="9" date="2025-03-03">
+    </release>
     <release version="8.2" versioncode="8" date="2024-12-09">
         <change>Account initials now use the display name</change>
         <change>Account icons remain in the same position when selected</change>
