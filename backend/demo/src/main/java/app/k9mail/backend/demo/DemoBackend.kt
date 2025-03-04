@@ -1,5 +1,6 @@
 package app.k9mail.backend.demo
 
+import app.k9mail.backend.demo.DemoHelper.createNewServerId
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
@@ -9,12 +10,7 @@ import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
-import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Part
-import com.fsck.k9.mail.internet.MimeMessage
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.util.UUID
 
 class DemoBackend(
     private val backendStorage: BackendStorage,
@@ -23,6 +19,7 @@ class DemoBackend(
 
     private val commandSync by lazy { CommandSync(backendStorage, demoStore) }
     private val commandRefreshFolderList by lazy { CommandRefreshFolderList(backendStorage, demoStore) }
+    private val commandSendMessage by lazy { CommandSendMessage(backendStorage, demoStore) }
 
     override val supportsFlags: Boolean = true
     override val supportsExpunge: Boolean = false
@@ -116,25 +113,10 @@ class DemoBackend(
     }
 
     override fun sendMessage(message: Message) {
-        val inboxServerId = demoStore.getInboxFolderId()
-        val backendFolder = backendStorage.getFolder(inboxServerId)
-
-        val newMessage = message.copy(uid = createNewServerId())
-        backendFolder.saveMessage(newMessage, MessageDownloadState.FULL)
+        commandSendMessage.sendMessage(message)
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {
         throw UnsupportedOperationException("not implemented")
-    }
-
-    private fun createNewServerId() = UUID.randomUUID().toString()
-
-    private fun Message.copy(uid: String): MimeMessage {
-        val outputStream = ByteArrayOutputStream()
-        writeTo(outputStream)
-        val inputStream = ByteArrayInputStream(outputStream.toByteArray())
-        return MimeMessage.parseMimeMessage(inputStream, false).apply {
-            this.uid = uid
-        }
     }
 }
