@@ -5,6 +5,8 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="9.0" versioncode="39021" date="2025-03-03">
+    </release>
     <release version="8.2" versioncode="39019" date="2024-12-09">
         <change>You can now support K-9 Mail development with financial contributions.</change>
         <change>Account initials now use the display name</change>
