@@ -4,10 +4,8 @@ import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
-import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
-import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
@@ -24,6 +22,7 @@ class DemoBackend(
     private val demoStore by lazy { DemoStore() }
 
     private val commandSync by lazy { CommandSync(backendStorage, demoStore) }
+    private val commandRefreshFolderList by lazy { CommandRefreshFolderList(backendStorage, demoStore) }
 
     override val supportsFlags: Boolean = true
     override val supportsExpunge: Boolean = false
@@ -36,21 +35,7 @@ class DemoBackend(
     override val isPushCapable: Boolean = false
 
     override fun refreshFolderList() {
-        val localFolderServerIds = backendStorage.getFolderServerIds().toSet()
-
-        backendStorage.updateFolders {
-            val remoteFolderServerIds = demoStore.getFolderIds()
-            val foldersServerIdsToCreate = remoteFolderServerIds - localFolderServerIds
-            val foldersToCreate = foldersServerIdsToCreate.mapNotNull { folderServerId ->
-                demoStore.getFolder(folderServerId)?.let { folderData ->
-                    FolderInfo(folderServerId, folderData.name, folderData.type)
-                }
-            }
-            createFolders(foldersToCreate)
-
-            val folderServerIdsToRemove = (localFolderServerIds - remoteFolderServerIds).toList()
-            deleteFolders(folderServerIdsToRemove)
-        }
+        commandRefreshFolderList.refreshFolderList()
     }
 
     override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
