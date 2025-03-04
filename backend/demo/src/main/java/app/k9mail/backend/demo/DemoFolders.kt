@@ -1,3 +1,3 @@
 package app.k9mail.backend.demo
 
-internal typealias DemoFolders = Map<String, DemoFolderData>
+internal typealias DemoFolders = Map<String, DemoFolder>
