@@ -530,7 +530,6 @@
     <string name="integrated_inbox_title">Boîte de réception unifiée</string>
     <string name="integrated_inbox_detail">Tous les courriels dans les dossiers unifiés</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unifier</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Tous les courriels sont affichés dans la boîte de réception unifiée</string>
     <string name="account_settings_no_folder_selected">Aucun</string>
     <string name="account_settings_automatic_special_folder">Automatique (%s)</string>
     <string name="font_size_settings_title">Taille des polices</string>

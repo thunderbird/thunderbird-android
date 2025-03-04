@@ -805,7 +805,6 @@
     <string name="sort_earliest_first">Tin nhắn sớm nhất trước</string>
     <string name="sort_latest_first">Tin nhắn muộn nhất trước</string>
     <string name="account_setup_push_limit_10">10 thư mục</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Tất cả tin nhắn đã được hiển thị trong Hộp thư đồng nhất</string>
     <string name="font_size_message_list">Danh sách tin nhắn</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="other">Bạn có thực sự muốn xóa <xliff:g id="message_count">%1$d</xliff:g> tin nhắn?</item>

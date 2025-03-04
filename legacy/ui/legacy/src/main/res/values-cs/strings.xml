@@ -533,7 +533,6 @@
     <string name="integrated_inbox_title">Jednotná schránka</string>
     <string name="integrated_inbox_detail">Všechny zprávy v integrovaných složkách</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Integrovat</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Všechny zprávy jsou zobrazeny v Integrované doručené poště</string>
     <string name="account_settings_no_folder_selected">Žádné</string>
     <string name="account_settings_automatic_special_folder">Automaticky (%s)</string>
     <string name="font_size_settings_title">Velikost písma</string>

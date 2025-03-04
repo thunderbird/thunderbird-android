@@ -414,7 +414,6 @@
     <string name="font_size_message_list_sender">Sender</string>
     <string name="account_settings_crypto_app_select_title">Select OpenPGP app</string>
     <string name="account_settings_upload_sent_messages_label">Upload sent messages</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
     <string name="account_settings_vibrate_pattern_2">Pattern 2</string>
     <string name="account_settings_vibrate_pattern_default">Default</string>
     <string name="account_settings_vibrate_pattern_1">Pattern 1</string>

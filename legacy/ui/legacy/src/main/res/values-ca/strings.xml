@@ -532,7 +532,6 @@
     <string name="integrated_inbox_title">Bústia d\'entrada unificada</string>
     <string name="integrated_inbox_detail">Tots els missatges en carpetes unificades</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unifica</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Tots els missatges es mostren a la bústia d\'entrada unificada</string>
     <string name="account_settings_no_folder_selected">Cap</string>
     <string name="account_settings_automatic_special_folder">Automàtic (%s)</string>
     <string name="font_size_settings_title">Mida de la lletra</string>

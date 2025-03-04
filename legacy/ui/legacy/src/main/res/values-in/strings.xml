@@ -471,7 +471,6 @@
     <string name="integrated_inbox_title">Kotak Masuk Terpadu</string>
     <string name="integrated_inbox_detail">Semua pesan dalam folder terpadu</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Satukan</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Semua pesan ditampilkan di Kotak Masuk Terpadu</string>
     <string name="account_settings_no_folder_selected">Tidak ada</string>
     <string name="account_settings_automatic_special_folder">Otomatis (%s)</string>
     <string name="font_size_settings_title">Ukuran fon</string>

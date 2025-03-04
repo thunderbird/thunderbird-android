@@ -493,7 +493,6 @@
     <string name="integrated_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
     <string name="integrated_inbox_detail">ഏകീകൃത ഫോൾഡറുകളിലെ എല്ലാ സന്ദേശങ്ങളും</string>
     <string name="folder_settings_include_in_integrated_inbox_label">ഏകീകരിക്കുക</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">എല്ലാ സന്ദേശങ്ങളും ഏകീകൃത ഇൻ‌ബോക്സിൽ കാണിച്ചിരിക്കുന്നു</string>
     <string name="account_settings_no_folder_selected">ഒന്നുമില്ല</string>
     <string name="account_settings_automatic_special_folder">യാന്ത്രിക (%s)</string>
     <string name="font_size_settings_title">അക്ഷര വലിപ്പം</string>
