@@ -16,17 +16,18 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.MimeMessage
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapter
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.util.UUID
-import okio.buffer
-import okio.source
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 
-class DemoBackend(private val backendStorage: BackendStorage) : Backend {
-    private val messageStoreInfo by lazy { readMessageStoreInfo() }
+class DemoBackend(
+    private val backendStorage: BackendStorage,
+) : Backend {
+    private val demoFolders by lazy { readDemoFolders() }
 
     override val supportsFlags: Boolean = true
     override val supportsExpunge: Boolean = false
@@ -42,10 +43,10 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
         val localFolderServerIds = backendStorage.getFolderServerIds().toSet()
 
         backendStorage.updateFolders {
-            val remoteFolderServerIds = messageStoreInfo.keys
+            val remoteFolderServerIds = demoFolders.keys
             val foldersServerIdsToCreate = remoteFolderServerIds - localFolderServerIds
             val foldersToCreate = foldersServerIdsToCreate.mapNotNull { folderServerId ->
-                messageStoreInfo[folderServerId]?.let { folderData ->
+                demoFolders[folderServerId]?.let { folderData ->
                     FolderInfo(folderServerId, folderData.name, folderData.type)
                 }
             }
@@ -59,7 +60,7 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
         listener.syncStarted(folderServerId)
 
-        val folderData = messageStoreInfo[folderServerId]
+        val folderData = demoFolders[folderServerId]
         if (folderData == null) {
             listener.syncFailed(folderServerId, "Folder $folderServerId doesn't exist", null)
             return
@@ -158,7 +159,7 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     }
 
     override fun sendMessage(message: Message) {
-        val inboxServerId = messageStoreInfo.filterValues { it.type == FolderType.INBOX }.keys.first()
+        val inboxServerId = demoFolders.filterValues { it.type == FolderType.INBOX }.keys.first()
         val backendFolder = backendStorage.getFolder(inboxServerId)
 
         val newMessage = message.copy(uid = createNewServerId())
@@ -180,13 +181,12 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
         }
     }
 
-    @OptIn(ExperimentalStdlibApi::class)
-    private fun readMessageStoreInfo(): MessageStoreInfo {
-        return getResourceAsStream("/contents.json").source().buffer().use { bufferedSource ->
-            val moshi = Moshi.Builder().build()
-            val adapter = moshi.adapter<MessageStoreInfo>()
-            adapter.fromJson(bufferedSource)
-        } ?: error("Couldn't read message store info")
+
+    @OptIn(ExperimentalSerializationApi::class)
+    private fun readDemoFolders(): DemoFolders {
+        return getResourceAsStream("/contents.json").use { inputStream ->
+            Json.decodeFromStream<DemoFolders>(inputStream)
+        }
     }
 
     private fun loadMessage(folderServerId: String, messageServerId: String): Message {
