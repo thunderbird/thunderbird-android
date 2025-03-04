@@ -18,16 +18,13 @@ import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.MimeMessage
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
 import java.util.UUID
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromStream
 
 class DemoBackend(
     private val backendStorage: BackendStorage,
 ) : Backend {
-    private val demoFolders by lazy { readDemoFolders() }
+    private val dataReader: DemoDataLoader = DemoDataLoader()
+    private val demoFolders by lazy { dataReader.loadFolders() }
 
     override val supportsFlags: Boolean = true
     override val supportsExpunge: Boolean = false
@@ -75,7 +72,7 @@ class DemoBackend(
         }
 
         for (messageServerId in folderData.messageServerIds) {
-            val message = loadMessage(folderServerId, messageServerId)
+            val message = dataReader.loadMessage(folderServerId, messageServerId)
             backendFolder.saveMessage(message, MessageDownloadState.FULL)
             listener.syncNewMessage(folderServerId, messageServerId, isOldMessage = false)
         }
@@ -179,25 +176,5 @@ class DemoBackend(
         return MimeMessage.parseMimeMessage(inputStream, false).apply {
             this.uid = uid
         }
-    }
-
-
-    @OptIn(ExperimentalSerializationApi::class)
-    private fun readDemoFolders(): DemoFolders {
-        return getResourceAsStream("/contents.json").use { inputStream ->
-            Json.decodeFromStream<DemoFolders>(inputStream)
-        }
-    }
-
-    private fun loadMessage(folderServerId: String, messageServerId: String): Message {
-        return getResourceAsStream("/$folderServerId/$messageServerId.eml").use { inputStream ->
-            MimeMessage.parseMimeMessage(inputStream, false).apply {
-                uid = messageServerId
-            }
-        }
-    }
-
-    private fun getResourceAsStream(name: String): InputStream {
-        return DemoBackend::class.java.getResourceAsStream(name) ?: error("Resource '$name' not found")
     }
 }
