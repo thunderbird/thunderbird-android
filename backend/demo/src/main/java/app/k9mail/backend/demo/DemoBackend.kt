@@ -23,8 +23,7 @@ import java.util.UUID
 class DemoBackend(
     private val backendStorage: BackendStorage,
 ) : Backend {
-    private val dataReader: DemoDataLoader = DemoDataLoader()
-    private val demoFolders by lazy { dataReader.loadFolders() }
+    private val demoStore by lazy { DemoStore() }
 
     override val supportsFlags: Boolean = true
     override val supportsExpunge: Boolean = false
@@ -40,10 +39,10 @@ class DemoBackend(
         val localFolderServerIds = backendStorage.getFolderServerIds().toSet()
 
         backendStorage.updateFolders {
-            val remoteFolderServerIds = demoFolders.keys
+            val remoteFolderServerIds = demoStore.getFolderIds()
             val foldersServerIdsToCreate = remoteFolderServerIds - localFolderServerIds
             val foldersToCreate = foldersServerIdsToCreate.mapNotNull { folderServerId ->
-                demoFolders[folderServerId]?.let { folderData ->
+                demoStore.getFolder(folderServerId)?.let { folderData ->
                     FolderInfo(folderServerId, folderData.name, folderData.type)
                 }
             }
@@ -156,7 +155,7 @@ class DemoBackend(
     }
 
     override fun sendMessage(message: Message) {
-        val inboxServerId = demoFolders.filterValues { it.type == FolderType.INBOX }.keys.first()
+        val inboxServerId = demoStore.getInboxFolderId()
         val backendFolder = backendStorage.getFolder(inboxServerId)
 
         val newMessage = message.copy(uid = createNewServerId())
