@@ -396,7 +396,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP-sovellus puuttuu - poistettiinko se?</string>
     <string name="folder_settings_title">Kansioiden asetukset</string>
     <string name="folder_settings_in_top_group_label">Näytä yläryhmässä</string>
-    <string name="folder_settings_in_top_group_summary">Näytä yläosassa lähellä kansiolistaa</string>
     <string name="folder_settings_clear_local_folder_action">Poista paikalliset viestit</string>
     <string name="account_settings_incoming_label">Saapuvan postin palvelin</string>
     <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>

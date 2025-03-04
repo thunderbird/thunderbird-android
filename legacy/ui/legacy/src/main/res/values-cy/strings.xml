@@ -387,7 +387,6 @@
     <string name="account_settings_openpgp_missing">Map OpenPGP ar goll. A chafodd ei osod?</string>
     <string name="folder_settings_title">Gosodiadau ffolder</string>
     <string name="folder_settings_in_top_group_label">Dangos yn y grŵp uchaf</string>
-    <string name="folder_settings_in_top_group_summary">Dangos yn agos at frig y rhestr ffolderi</string>
     <string name="folder_settings_clear_local_folder_action">Clirio negeseuon lleol</string>
     <string name="account_settings_incoming_label">Gweinydd</string>
     <string name="account_settings_incoming_summary">Ffurfweddu\'r gweinydd derbyn</string>

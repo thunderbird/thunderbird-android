@@ -400,7 +400,6 @@
     <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat\?</string>
     <string name="folder_settings_title">Configuració de les carpetes</string>
     <string name="folder_settings_in_top_group_label">Mostra al grup superior</string>
-    <string name="folder_settings_in_top_group_summary">Mostra a prop del capdamunt de la llista de carpetes</string>
     <string name="folder_settings_clear_local_folder_action">Neteja els missatges locals</string>
     <string name="account_settings_incoming_label">Servidor d\'entrada</string>
     <string name="account_settings_incoming_summary">Configura el servidor d\'entrada</string>

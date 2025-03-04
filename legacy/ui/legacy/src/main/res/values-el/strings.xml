@@ -397,7 +397,6 @@
     <string name="account_settings_openpgp_missing">Λείπει η εφαρμογή OpenPGP - απεγκαταστήθηκε;</string>
     <string name="folder_settings_title">Ρυθμίσεις φακέλων</string>
     <string name="folder_settings_in_top_group_label">Προβολή στην ομάδα κορυφής</string>
-    <string name="folder_settings_in_top_group_summary">Προβολή κοντά στην κορυφή της λίστας των φακέλων</string>
     <string name="folder_settings_clear_local_folder_action">Καθαρισμός τοπικών μηνυμάτων</string>
     <string name="account_settings_incoming_label">Ρυθμίσεις εισερχομένων</string>
     <string name="account_settings_incoming_summary">Ρύθμιση εξυπηρετητή εισερχόμενης αλληλογραφίας</string>

@@ -405,7 +405,6 @@
     <string name="account_settings_openpgp_missing">تطبيق OpenPGP مفقود - هل تم إلغاء تثبيته؟ </string>
     <string name="folder_settings_title">إعدادات المجلد</string>
     <string name="folder_settings_in_top_group_label">العرض في قمة المجموعة</string>
-    <string name="folder_settings_in_top_group_summary">اعرض بالقرب من أعلى قائمة المجلدات </string>
     <string name="folder_settings_clear_local_folder_action">امحوا الرسائل المحلية</string>
     <string name="account_settings_incoming_label">خادم الوارد</string>
     <string name="account_settings_incoming_summary">إعداد خادم البريد الوارد</string>

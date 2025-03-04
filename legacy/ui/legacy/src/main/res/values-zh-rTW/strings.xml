@@ -394,7 +394,6 @@
     <string name="account_settings_openpgp_missing">未發現 OpenPGP 應用程式 - 它已被解除安裝了嗎？</string>
     <string name="folder_settings_title">信件匣設定</string>
     <string name="folder_settings_in_top_group_label">顯示在置頂的組中</string>
-    <string name="folder_settings_in_top_group_summary">顯示在置頂的組之後</string>
     <string name="folder_settings_clear_local_folder_action">清除本地郵件</string>
     <string name="account_settings_incoming_label">內送伺服器</string>
     <string name="account_settings_incoming_summary">設定內送伺服器</string>

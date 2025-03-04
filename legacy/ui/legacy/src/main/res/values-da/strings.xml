@@ -394,7 +394,6 @@
     <string name="account_settings_openpgp_missing">Mangler OpenPGP program - er det afinstalleret?</string>
     <string name="folder_settings_title">Mappe opsætning</string>
     <string name="folder_settings_in_top_group_label">Vis i topgruppen</string>
-    <string name="folder_settings_in_top_group_summary">Vis nær toppen af mappelisten</string>
     <string name="folder_settings_clear_local_folder_action">Fjern lokalt lagrede mails</string>
     <string name="account_settings_incoming_label">Indgående server</string>
     <string name="account_settings_incoming_summary">Konfigurer indgående mail server</string>

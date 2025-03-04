@@ -313,7 +313,6 @@
     <string name="account_settings_sync_remote_deletetions_summary">הסר הודעות כאשר נמחק בשרת</string>
     <string name="folder_settings_title">הגדרות תיקייה</string>
     <string name="folder_settings_in_top_group_label">הצג בקבוצה העליונה</string>
-    <string name="folder_settings_in_top_group_summary">הצג בחלק העליון של רשימת התיקיות</string>
     <string name="folder_settings_clear_local_folder_action">נקה הודעות מקומיות</string>
     <string name="account_settings_incoming_label">שרת הודעות נכנסות</string>
     <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>

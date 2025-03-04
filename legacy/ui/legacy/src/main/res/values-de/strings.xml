@@ -395,7 +395,6 @@
     <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App – wurde sie deinstalliert?</string>
     <string name="folder_settings_title">Ordnereinstellungen</string>
     <string name="folder_settings_in_top_group_label">Oben anzeigen</string>
-    <string name="folder_settings_in_top_group_summary">Ordner am Anfang der Ordnerliste anzeigen</string>
     <string name="folder_settings_clear_local_folder_action">Lokale Nachrichten löschen</string>
     <string name="account_settings_incoming_label">Posteingangsserver</string>
     <string name="account_settings_incoming_summary">Einstellungen des Posteingangsservers bearbeiten</string>

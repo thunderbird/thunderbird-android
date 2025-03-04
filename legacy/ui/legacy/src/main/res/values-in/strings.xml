@@ -358,7 +358,6 @@
     <string name="account_settings_openpgp_missing">Aplikasi OpenPGP tidak ada - apakah sudah dihapus?</string>
     <string name="folder_settings_title">Pengaturan folder</string>
     <string name="folder_settings_in_top_group_label">Perlihatkan di grup teratas</string>
-    <string name="folder_settings_in_top_group_summary">Tunjukkan di dekat bagian atas daftar folder</string>
     <string name="folder_settings_clear_local_folder_action">Bersihkan pesan lokal</string>
     <string name="account_settings_incoming_label">Server masuk</string>
     <string name="account_settings_incoming_summary">Konfigurasikan server surat masuk</string>

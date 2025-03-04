@@ -397,7 +397,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP-forrit vantar - var það fjarlægt?</string>
     <string name="folder_settings_title">Stillingar möppu</string>
     <string name="folder_settings_in_top_group_label">Birta í efsta hópi</string>
-    <string name="folder_settings_in_top_group_summary">Sýna nálægt efri enda möppulista</string>
     <string name="folder_settings_clear_local_folder_action">Hreinsa staðvær skilaboð</string>
     <string name="account_settings_incoming_label">Inn-póstþjónn</string>
     <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>

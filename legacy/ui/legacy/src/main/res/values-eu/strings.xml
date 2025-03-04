@@ -396,7 +396,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP aplikazioa falta da, desinstalatu da?</string>
     <string name="folder_settings_title">Karpeta ezarpenak</string>
     <string name="folder_settings_in_top_group_label">Erakutsi goiko taldean</string>
-    <string name="folder_settings_in_top_group_summary">Erakutsi karpeta zerrendaren goialdetik hurbil</string>
     <string name="folder_settings_clear_local_folder_action">Garbitu mezu lokalak</string>
     <string name="account_settings_incoming_label">Sarrerako zerbitzaria</string>
     <string name="account_settings_incoming_summary">Konfiguratu sarrerako posta zerbitzaria</string>

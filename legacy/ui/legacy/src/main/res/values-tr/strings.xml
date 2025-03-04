@@ -385,7 +385,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP uygulaması eksik. Kaldırılmış olabilir mi?</string>
     <string name="folder_settings_title">Klasör ayarları</string>
     <string name="folder_settings_in_top_group_label">Üst grupta göster</string>
-    <string name="folder_settings_in_top_group_summary">Klasör listesinin üstüne yakın göster</string>
     <string name="folder_settings_clear_local_folder_action">Yerel iletileri temizle</string>
     <string name="account_settings_incoming_label">Gelen sunucusu</string>
     <string name="account_settings_incoming_summary">Gelen posta sunucusunu yapılandır</string>

@@ -394,7 +394,6 @@
     <string name="account_settings_openpgp_missing">缺少 OpenPGP 应用 - 是否已卸载？</string>
     <string name="folder_settings_title">文件夹设置</string>
     <string name="folder_settings_in_top_group_label">显示在置顶的组中</string>
-    <string name="folder_settings_in_top_group_summary">显示在文件夹列表的顶部附近</string>
     <string name="folder_settings_clear_local_folder_action">清空本地邮件</string>
     <string name="account_settings_incoming_label">收件服务器</string>
     <string name="account_settings_incoming_summary">配置收件服务器</string>

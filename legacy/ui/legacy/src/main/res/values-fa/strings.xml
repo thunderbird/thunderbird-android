@@ -398,7 +398,6 @@
     <string name="account_settings_openpgp_missing">برنامهٔ OpenPGP نیست - حذف شده؟</string>
     <string name="folder_settings_title">تنظیمات پوشه</string>
     <string name="folder_settings_in_top_group_label">نمایش در بالا</string>
-    <string name="folder_settings_in_top_group_summary">نمایش در بالای سیاههٔ پوشه‌ها</string>
     <string name="folder_settings_clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
     <string name="account_settings_incoming_label">کارساز ورودی</string>
     <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>

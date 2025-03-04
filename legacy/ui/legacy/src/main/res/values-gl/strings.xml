@@ -376,7 +376,6 @@
     <string name="account_settings_openpgp_missing">Falta o aplicativo OpenPGP - foi desinstalado?</string>
     <string name="folder_settings_title">Configuración de carpeta</string>
     <string name="folder_settings_in_top_group_label">Amosar ao principio</string>
-    <string name="folder_settings_in_top_group_summary">Amosar cerca do principio da lista</string>
     <string name="folder_settings_clear_local_folder_action">Borrar mensaxes locais</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>

@@ -397,7 +397,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP rakendus puudub - kas see on eemaldatud?</string>
     <string name="folder_settings_title">Kausta sätted</string>
     <string name="folder_settings_in_top_group_label">Näita tipp grupis</string>
-    <string name="folder_settings_in_top_group_summary">Näita kaustade loendi tippu lähedal</string>
     <string name="folder_settings_clear_local_folder_action">Puhasta kohalikud kirjad</string>
     <string name="account_settings_incoming_label">Sissetuleva meili server</string>
     <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>

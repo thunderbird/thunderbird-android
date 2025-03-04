@@ -389,7 +389,6 @@
     <string name="account_settings_openpgp_missing">Trūksta OpenPGP programos - ar ji buvo pašalinta?</string>
     <string name="folder_settings_title">Aplanko nustatymai</string>
     <string name="folder_settings_in_top_group_label">Rodyti viršutinėje grupėje</string>
-    <string name="folder_settings_in_top_group_summary">Rodyti aplankų sąrašo viršuje</string>
     <string name="folder_settings_clear_local_folder_action">Išvalyti vietinius laiškus</string>
     <string name="account_settings_incoming_label">Laiškų gavimo serveris</string>
     <string name="account_settings_incoming_summary">Konfigūruoti gaunamųjų laiškų serverį</string>

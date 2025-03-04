@@ -372,7 +372,6 @@
     <string name="account_settings_openpgp_missing">Mankas OpenPGP-aplikaĵo - eble malinstalita?</string>
     <string name="folder_settings_title">Agordoj de mesaĝujo</string>
     <string name="folder_settings_in_top_group_label">Montri supre</string>
-    <string name="folder_settings_in_top_group_summary">Montras ĉe supro de mesaĝuj-listo</string>
     <string name="folder_settings_clear_local_folder_action">Forviŝi lokajn mesaĝojn</string>
     <string name="account_settings_incoming_label">Enira servilo</string>
     <string name="account_settings_incoming_summary">Agordoj de enira retpoŝta servilo</string>

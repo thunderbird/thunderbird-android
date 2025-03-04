@@ -352,7 +352,6 @@
     <string name="account_settings_message_age_3_months">i 3 ultimi mesi</string>
     <string name="account_settings_message_age_6_months">i 6 ultimi mesi</string>
     <string name="account_settings_message_age_1_year">l’ultimu annu</string>
-    <string name="folder_settings_in_top_group_summary">Affissà in a parte superiore di a lista di i cartulari</string>
     <string name="folder_settings_clear_local_folder_action">Squassà i messaghji lucale</string>
     <string name="account_settings_outgoing_summary">Cunfigurà u servitore d’esciuta (SMTP) di i messaghji</string>
     <string name="account_settings_vibration">Vibrazione</string>

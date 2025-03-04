@@ -400,7 +400,6 @@
     <string name="account_settings_openpgp_missing">Немає OpenPGP-застосунку — чи був він видалений?</string>
     <string name="folder_settings_title">Налаштування тек</string>
     <string name="folder_settings_in_top_group_label">Показувати у верхній групі</string>
-    <string name="folder_settings_in_top_group_summary">Показувати у верхній частині списку тек</string>
     <string name="folder_settings_clear_local_folder_action">Очистити локальні повідомлення</string>
     <string name="account_settings_incoming_label">Сервер вхідної пошти</string>
     <string name="account_settings_incoming_summary">Налаштувати сервер вхідної пошти</string>

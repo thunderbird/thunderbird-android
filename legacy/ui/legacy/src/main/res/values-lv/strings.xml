@@ -400,7 +400,6 @@
     <string name="account_settings_openpgp_missing">Trūkst OpenPGP lietotnes - vai tā noinstalēta\?</string>
     <string name="folder_settings_title">Mapes iestatījumi</string>
     <string name="folder_settings_in_top_group_label">Parādīt augšējā grupā</string>
-    <string name="folder_settings_in_top_group_summary">Rādīt līdzās mapju saraksta augšgalam</string>
     <string name="folder_settings_clear_local_folder_action">Dzēst ierīcē atrodošās ziņas</string>
     <string name="account_settings_incoming_label">Ienākošais serveris</string>
     <string name="account_settings_incoming_summary">Iestatīt ienākošā pasta serveri</string>

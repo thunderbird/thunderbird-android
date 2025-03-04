@@ -398,7 +398,6 @@
     <string name="account_settings_openpgp_missing">Applicazione OpenPGP non trovata, è stata disinstallata\?</string>
     <string name="folder_settings_title">Impostazioni cartella</string>
     <string name="folder_settings_in_top_group_label">Mostra in alto</string>
-    <string name="folder_settings_in_top_group_summary">Mostra nella parte superiore dell\'elenco delle cartelle</string>
     <string name="folder_settings_clear_local_folder_action">Pulisci messaggi locali</string>
     <string name="account_settings_incoming_label">Server posta in arrivo</string>
     <string name="account_settings_incoming_summary">Configura server della posta in arrivo</string>

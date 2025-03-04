@@ -359,7 +359,6 @@
     <string name="account_settings_openpgp_missing">Нема апликације за OpenPGP. Можда је деинсталирана?</string>
     <string name="folder_settings_title">Подешавање фолдера</string>
     <string name="folder_settings_in_top_group_label">Прикажи на врху у групи</string>
-    <string name="folder_settings_in_top_group_summary">Прикажи при врху на листи фолдера</string>
     <string name="folder_settings_clear_local_folder_action">Очисти локалне поруке</string>
     <string name="account_settings_incoming_label">Долазни сервер</string>
     <string name="account_settings_incoming_summary">Конфигуришите долазни сервер мејла</string>

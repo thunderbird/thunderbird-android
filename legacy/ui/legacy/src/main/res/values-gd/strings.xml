@@ -350,7 +350,6 @@
     <string name="account_settings_sync_remote_deletetions_summary">Thoir air falbh teachdaireachdan a chaidh a sguabadh às an fhrithealaiche</string>
     <string name="folder_settings_title">Roghainnean a’ phasgain</string>
     <string name="folder_settings_in_top_group_label">Seall aig a’ bhàrr sa bhuidheann</string>
-    <string name="folder_settings_in_top_group_summary">Seall faisg air bàrr liosta nam pasganan</string>
     <string name="folder_settings_clear_local_folder_action">Falamhaich na teachdaireachdan ionadail</string>
     <string name="account_settings_incoming_label">Am frithealaiche a-steach</string>
     <string name="account_settings_incoming_summary">Rèitich frithealaiche a’ phuist a-steach</string>

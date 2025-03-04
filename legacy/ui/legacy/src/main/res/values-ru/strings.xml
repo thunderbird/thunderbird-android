@@ -402,7 +402,6 @@
     <string name="account_settings_openpgp_missing">Отсутствует OpenPGP-приложение – было удалено?</string>
     <string name="folder_settings_title">Настройки папки</string>
     <string name="folder_settings_in_top_group_label">Начало списка</string>
-    <string name="folder_settings_in_top_group_summary">Отображать ближе к началу списка папок</string>
     <string name="folder_settings_clear_local_folder_action">Стереть локальные</string>
     <string name="account_settings_incoming_label">Сервер входящих</string>
     <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>

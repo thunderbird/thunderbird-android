@@ -359,7 +359,6 @@
     <string name="account_settings_openpgp_missing">Липсва OpenPGP приложение - да не сте го деинсталирали?</string>
     <string name="folder_settings_title">Настройки на папка</string>
     <string name="folder_settings_in_top_group_label">Показвай в основната група</string>
-    <string name="folder_settings_in_top_group_summary">Показвай в началото на списъка с папки</string>
     <string name="folder_settings_clear_local_folder_action">Изчисти локалните съобщения</string>
     <string name="account_settings_incoming_label">Сървър за входяща поща</string>
     <string name="account_settings_incoming_summary">Конфигуриране на сървър за входяща поща</string>

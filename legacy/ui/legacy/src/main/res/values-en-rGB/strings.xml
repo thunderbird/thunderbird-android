@@ -258,7 +258,6 @@
     <string name="account_settings_message_age_label">Sync messages from</string>
     <string name="folder_settings_title">Folder settings</string>
     <string name="idle_refresh_period_60min">Every 60 minutes</string>
-    <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
     <string name="sort_by_flag">Star</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> wrote:</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>

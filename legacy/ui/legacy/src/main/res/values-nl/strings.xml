@@ -396,7 +396,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP-app niet aanwezig – is de app verwijderd?</string>
     <string name="folder_settings_title">Mapinstellingen</string>
     <string name="folder_settings_in_top_group_label">In topgroep tonen</string>
-    <string name="folder_settings_in_top_group_summary">Bij de top van de maplijst tonen</string>
     <string name="folder_settings_clear_local_folder_action">Lokale berichten wissen</string>
     <string name="account_settings_incoming_label">Inkomende server</string>
     <string name="account_settings_incoming_summary">Inkomende mailserver instellen</string>

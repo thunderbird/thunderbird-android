@@ -491,7 +491,6 @@
     <string name="folder_settings_title">Folder settings</string>
 
     <string name="folder_settings_in_top_group_label">Show in top group</string>
-    <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
 
     <string name="folder_settings_visible_label">Show folder</string>
     <string name="folder_settings_sync_label">Enable sync</string>

@@ -398,7 +398,6 @@
     <string name="account_settings_openpgp_missing">Aplicație OpenPGP lipsă - a fost dezinstalată?</string>
     <string name="folder_settings_title">Setări dosar</string>
     <string name="folder_settings_in_top_group_label">Arată în grupul de sus</string>
-    <string name="folder_settings_in_top_group_summary">Arată aproape de partea de sus a listei de dosare</string>
     <string name="folder_settings_clear_local_folder_action">Curăță mesajele locale</string>
     <string name="account_settings_incoming_label">Server primire</string>
     <string name="account_settings_incoming_summary">Configurare server primire</string>

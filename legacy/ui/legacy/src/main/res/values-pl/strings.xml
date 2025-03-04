@@ -401,7 +401,6 @@
     <string name="account_settings_openpgp_missing">Brakuje aplikacji OpenPGP. Czy została odinstalowana\?</string>
     <string name="folder_settings_title">Ustawienia folderu</string>
     <string name="folder_settings_in_top_group_label">Umieść na początku</string>
-    <string name="folder_settings_in_top_group_summary">Umieść na początku wyświetlanej listy folderów</string>
     <string name="folder_settings_clear_local_folder_action">Wyczyść wiadomości lokalne</string>
     <string name="account_settings_incoming_label">Serwer poczty przychodzącej</string>
     <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>

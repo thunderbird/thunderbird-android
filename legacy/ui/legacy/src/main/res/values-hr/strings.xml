@@ -352,7 +352,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP aplikacija nedostaje - da li je deinstalirana?</string>
     <string name="folder_settings_title">Postavke mape</string>
     <string name="folder_settings_in_top_group_label">Prikaži na vrhu grupe</string>
-    <string name="folder_settings_in_top_group_summary">Prikaži blizu vrha na popisu mapa</string>
     <string name="folder_settings_clear_local_folder_action">Očistiti lokalne poruke</string>
     <string name="account_settings_incoming_label">Dolazni poslužitelj</string>
     <string name="account_settings_incoming_summary">Postavite dolazni poslužitelj e-pošte</string>

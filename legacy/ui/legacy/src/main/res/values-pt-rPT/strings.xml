@@ -399,7 +399,6 @@
     <string name="account_settings_openpgp_missing">Falta uma aplicação OpenPGP; foi desinstalada? </string>
     <string name="folder_settings_title">Configurações da pasta</string>
     <string name="folder_settings_in_top_group_label">Mostrar no grupo do topo</string>
-    <string name="folder_settings_in_top_group_summary">Mostrar junto ao topo da lista de pastas</string>
     <string name="folder_settings_clear_local_folder_action">Apagar mensagens locais</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configure o servidor de email de entrada</string>

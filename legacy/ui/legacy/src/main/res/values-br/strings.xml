@@ -333,7 +333,6 @@
     <string name="account_settings_openpgp_missing">Diouer a arload OpenPGP - ha staliet eo bet?</string>
     <string name="folder_settings_title">Arventennoù an teuliad</string>
     <string name="folder_settings_in_top_group_label">Diskouez er strollad uhelañ</string>
-    <string name="folder_settings_in_top_group_summary">Diskouez e-kichen krec’h roll an teuliadoù</string>
     <string name="folder_settings_clear_local_folder_action">Skarzhañ ar c’hemennadennoù lec’hel</string>
     <string name="account_settings_incoming_label">Dafariad degemer</string>
     <string name="account_settings_incoming_summary">Kefluniañ an dafariad postel degemer</string>

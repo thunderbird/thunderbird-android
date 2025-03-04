@@ -457,7 +457,6 @@
     <string name="account_settings_sync_remote_deletetions_label">Sioncronaigh scriosadh an fhreastalaí</string>
     <string name="account_settings_sync_remote_deletetions_summary">Bain teachtaireachtaí nuair a scriostar iad ar an bhfreastalaí</string>
     <string name="folder_settings_in_top_group_label">Taispeáin sa ghrúpa is fearr</string>
-    <string name="folder_settings_in_top_group_summary">Taispeáin gar do bharr liosta na bhfillteán</string>
     <string name="folder_settings_visible_label">Taispeáin fillteán</string>
     <string name="folder_settings_sync_label">Cumasaigh sioncronú</string>
     <string name="folder_settings_push_label">Cumasaigh Brúigh</string>

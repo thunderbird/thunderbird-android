@@ -398,7 +398,6 @@
     <string name="account_settings_openpgp_missing">Falta la aplicación OpenPGP, ¿se ha desinstalado?</string>
     <string name="folder_settings_title">Ajustes de carpetas</string>
     <string name="folder_settings_in_top_group_label">Mostrar al principio</string>
-    <string name="folder_settings_in_top_group_summary">Mostrar cerca del principio de la lista</string>
     <string name="folder_settings_clear_local_folder_action">Borrar correos locales</string>
     <string name="account_settings_incoming_label">Servidor de entrada</string>
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>

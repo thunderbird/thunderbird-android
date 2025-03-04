@@ -355,7 +355,6 @@
     <string name="account_settings_openpgp_missing">Manglende OpenPGP-program - ble det avinstallert?</string>
     <string name="folder_settings_title">Mappeinnstillinger</string>
     <string name="folder_settings_in_top_group_label">Vis i toppgruppe</string>
-    <string name="folder_settings_in_top_group_summary">Vis nær toppen av mappelisten</string>
     <string name="folder_settings_clear_local_folder_action">Fjern lokale meldinger</string>
     <string name="account_settings_incoming_label">Innkommende tjener</string>
     <string name="account_settings_incoming_summary">Sett opp innkommende e-posttjener</string>
