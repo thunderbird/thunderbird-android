@@ -1,7 +1,6 @@
 package app.k9mail.backend.demo
 
 import com.fsck.k9.backend.api.Backend
-import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
@@ -11,7 +10,6 @@ import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Part
@@ -24,6 +22,8 @@ class DemoBackend(
     private val backendStorage: BackendStorage,
 ) : Backend {
     private val demoStore by lazy { DemoStore() }
+
+    private val commandSync by lazy { CommandSync(backendStorage, demoStore) }
 
     override val supportsFlags: Boolean = true
     override val supportsExpunge: Boolean = false
@@ -54,31 +54,7 @@ class DemoBackend(
     }
 
     override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
-        listener.syncStarted(folderServerId)
-
-        val folderData = demoFolders[folderServerId]
-        if (folderData == null) {
-            listener.syncFailed(folderServerId, "Folder $folderServerId doesn't exist", null)
-            return
-        }
-
-        val backendFolder = backendStorage.getFolder(folderServerId)
-
-        val localMessageServerIds = backendFolder.getMessageServerIds()
-        if (localMessageServerIds.isNotEmpty()) {
-            listener.syncFinished(folderServerId)
-            return
-        }
-
-        for (messageServerId in folderData.messageServerIds) {
-            val message = dataReader.loadMessage(folderServerId, messageServerId)
-            backendFolder.saveMessage(message, MessageDownloadState.FULL)
-            listener.syncNewMessage(folderServerId, messageServerId, isOldMessage = false)
-        }
-
-        backendFolder.setMoreMessages(MoreMessages.FALSE)
-
-        listener.syncFinished(folderServerId)
+        commandSync.sync(folderServerId, listener)
     }
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
