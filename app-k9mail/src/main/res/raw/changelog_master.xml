@@ -5,6 +5,16 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="10.0b1" versioncode="39021" date="2025-03-19">
+        <change>Account setup prefills server field automatically</change>
+        <change>Add a menu enty to empty the Spam folder</change>
+        <change>Provide Slovak translation</change>
+        <change>Update Gmail OAuth client IDs to Thunderbird for Android</change>
+        <change>Preserve the <s> tag when sanitizing HTML content</change>
+        <change>Messages and star counts in the drawer update instantly</change>
+        <change>The drawer remembers the state of hide accounts</change>
+        <change>Restart PushService after app update</change>
+    </release>
     <release version="9.0b3" versioncode="39020" date="2024-12-11">
         <change>Hyperlink added to Thunderbird website on funding page</change>
         <change>Use autoconfig server after MX lookup for email providers</change>
