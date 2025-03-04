@@ -365,6 +365,7 @@ jobs:
           APPLICATION_ID: ${{ steps.appinfo.outputs.APPLICATION_ID }}
           APP_NAME: ${{ matrix.appName }}
           FULL_VERSION_NAME: ${{ steps.appinfo.outputs.VERSION_NAME }}${{ steps.bump_version_suffix.outputs.SUFFIX || steps.appinfo.outputs.VERSION_NAME_SUFFIX }}
+          RELEASE_TYPE: ${{ vars.RELEASE_TYPE }}
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -379,7 +380,21 @@ jobs:
 
           # Add changelogs, build version changes and metadata symlink
           git add ./app-metadata/${APPLICATION_ID}/en-US/changelogs/*
-          git add ./app-${APP_NAME}/src/main/res/raw/changelog_master.xml
+          if [[ "$APP_NAME" = "k9mail" ]]; then
+            git add ./app-${APP_NAME}/src/main/res/raw/changelog_master.xml
+          elif [[ "$APP_NAME" = "thunderbird" ]]; then
+            case "$RELEASE_TYPE" in
+              "daily")
+                git add ./app-${APP_NAME}/src/daily/res/raw/changelog_master.xml
+                ;;
+              "beta")
+                git add ./app-${APP_NAME}/src/beta/res/raw/changelog_master.xml
+                ;;
+              "release")
+                git add ./app-${APP_NAME}/src/release/res/raw/changelog_master.xml
+                ;;
+            esac
+          fi
           git add ./app-${APP_NAME}/build.gradle.kts
           git add metadata
 
