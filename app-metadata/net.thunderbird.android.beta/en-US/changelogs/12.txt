@@ -1,0 +1,9 @@
+Thunderbird for Android version 10.0b1, based on K-9 Mail. Changes include:
+- Account setup prefills server field automatically
+- Add a menu enty to empty the Spam folder
+- Provide Slovak translation
+- Update Gmail OAuth client IDs to Thunderbird for Android
+- Preserve the <s> tag when sanitizing HTML content
+- Messages and star counts in the drawer update instantly
+- The drawer remembers the state of hide accounts
+- Restart PushService after app update
