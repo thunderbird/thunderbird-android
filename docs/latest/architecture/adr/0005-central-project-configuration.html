@@ -1,0 +1,249 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>0005 - Central Project Configuration - Thunderbird for Android - Developer Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Developer Documentation for the Thunderbird for Android project.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../assets/theme/last-changed.css">
+        <link rel="stylesheet" href="../../assets/theme/navigation.css">
+        <link rel="stylesheet" href="../../assets/theme/pagetoc.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./architecture/adr/0005-central-project-configuration.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
+<ul>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7803" title="" target="_blank">#7803</a></li>
+</ul>
+<h2 id="status"><a class="header" href="#status">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context"><a class="header" href="#context">Context</a></h2>
+<p>In our Android project, managing dependencies and configurations directly within each module’s <code>build.gradle.kts</code> file has historically led to inconsistencies, duplication, and difficulty in updates. This challenge was particularly noticeable when maintaining the project configuration. By centralizing this setup in a <code>build-plugin</code> module, we can encapsulate and reuse Gradle logic, streamline the build process, and ensure consistency across all project modules and ease maintainability of our codebase.</p>
+<h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
+<p>To address these challenges, we have decided to establish a <code>build-plugin</code> module within our project. This module will serve as the foundation for all common Gradle configurations, dependency management, and custom plugins, allowing for simplified configuration across various project modules and plugins. Key components of this module include:</p>
+<ul>
+<li><strong>Custom Plugins:</strong> A suite of custom plugins that configure Gradle for different project aspects, ensuring each project type has tailored and streamlined build processes. These plugins should cover Android application, Android library, Jetpack Compose and Java modules.</li>
+<li><strong>Dependency Management:</strong> Utilizing the <a href="https://docs.gradle.org/current/userguide/platforms.html" title="" target="_blank">Gradle Version Catalog</a> to centrally manage and update all dependencies and plugins, ensuring that every module uses the same versions and reduces the risk of conflicts.</li>
+<li><strong>Common Configuration Settings:</strong> Establishing common configurations for Java, Kotlin, and Android to reduce the complexity and variability in setup across different modules.</li>
+</ul>
+<h2 id="consequences"><a class="header" href="#consequences">Consequences</a></h2>
+<h3 id="positive-consequences"><a class="header" href="#positive-consequences">Positive Consequences</a></h3>
+<ol>
+<li><strong>Consistency Across Modules:</strong> All project modules will use the same versions of dependencies and plugins, reducing the risk of conflicts and enhancing uniformity. They will also share common configurations, ensuring consistency in the build process.</li>
+<li><strong>Ease of Maintenance:</strong> Centralizing dependency versions in the Gradle Version Catalog allows for simple and quick updates to libraries and tools across all project modules from a single source.</li>
+<li><strong>Simplified Configuration Process:</strong> The custom plugins within the <code>build-plugin</code> module provides a streamlined way to apply settings and dependencies uniformly, enhancing productivity and reducing setup complexity.</li>
+</ol>
+<h3 id="negative-consequences"><a class="header" href="#negative-consequences">Negative Consequences</a></h3>
+<ol>
+<li><strong>Initial Overhead:</strong> The setup of the build-plugin module with a Gradle Version Catalog and the migration of existing configurations required an initial investment of time and resources, but this has been completed.</li>
+<li><strong>Complexity for New Developers:</strong> The centralized build architecture, particularly with the use of a Gradle Version Catalog, may initially seem daunting to new team members who are unfamiliar with this level of abstraction.</li>
+<li><strong>Dependency on the Build-Plugin Module:</strong> The entire project becomes reliant on the stability and accuracy of the <code>build-plugin</code> module. Errors within this module or the catalog could impact the build process across all modules.</li>
+</ol>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../architecture/adr/0004-naming-conventions-for-interfaces-and-their-implementations.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../architecture/adr/0006-white-label-architecture.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../architecture/adr/0004-naming-conventions-for-interfaces-and-their-implementations.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../architecture/adr/0006-white-label-architecture.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../assets/theme/mermaid.min.js"></script>
+        <script src="../../assets/theme/mermaid-init.js"></script>
+        <script src="../../assets/theme/navigation.js"></script>
+        <script src="../../assets/theme/pagetoc.js"></script>
+
+
+    </div>
+    </body>
+</html>

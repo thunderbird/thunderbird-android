@@ -1,0 +1,1433 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Thunderbird for Android - Developer Documentation</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Developer Documentation for the Thunderbird for Android project.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="assets/theme/last-changed.css">
+        <link rel="stylesheet" href="assets/theme/navigation.css">
+        <link rel="stylesheet" href="assets/theme/pagetoc.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="about-thunderbird-for-android"><a class="header" href="#about-thunderbird-for-android">About Thunderbird for Android</a></h1>
+<p>This document provides an overview of the Thunderbird for Android project.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contributing-to-thunderbird-for-android"><a class="header" href="#contributing-to-thunderbird-for-android">Contributing to Thunderbird for Android</a></h1>
+<p>Welcome to the Thunderbird for Android project! We’re excited to have you here and welcome your contributions.</p>
+<h2 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h2>
+<p>Before you start contributing, please take a moment to familiarize yourself with the following:</p>
+<ul>
+<li><strong>Mozilla Community Participation Guidelines:</strong> <a href="https://www.mozilla.org/en-US/about/governance/policies/participation/" title="" target="_blank">https://www.mozilla.org/en-US/about/governance/policies/participation/</a></li>
+<li><strong>Frequently Asked Questions:</strong> <a href="https://forum.k9mail.app/c/faq" title="" target="_blank">https://forum.k9mail.app/c/faq</a></li>
+<li><strong>Support Forum:</strong> <a href="https://forum.k9mail.app/" title="" target="_blank">https://forum.k9mail.app/</a></li>
+</ul>
+<h2 id="bug-reports-and-feature-requests"><a class="header" href="#bug-reports-and-feature-requests">Bug Reports and Feature Requests</a></h2>
+<p>If you encounter a bug or have a feature request, please follow these steps:</p>
+<ul>
+<li>Search the <a href="https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue" title="" target="_blank">existing issues</a> to see if your issue or feature has already been reported.</li>
+<li>If you can’t find an existing issue, please <a href="https://github.com/thunderbird/thunderbird-android/issues/new/choose" title="" target="_blank">open a new issue</a> on GitHub.</li>
+</ul>
+<h2 id="translations"><a class="header" href="#translations">Translations</a></h2>
+<p>If you’d like to help to translate K-9 Mail / Thunderbird for Android, please visit the <a href="https://hosted.weblate.org/projects/tb-android/" title="" target="_blank">Weblate - K-9 Mail/Thunderbird project</a>.</p>
+<h2 id="contributing-code"><a class="header" href="#contributing-code">Contributing Code</a></h2>
+<p>Thank you for your willingness to contribute code! Here’s how you can get started:</p>
+<p><strong>1. Find an issue:</strong></p>
+<ul>
+<li>Check the issue tracker for <a href="https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue+is%3Aopen+-label%3Aunconfirmed+-label%3Atb-team" title="" target="_blank">open issues</a>.</li>
+<li>Look for issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue" title="" target="_blank">good first issue</a> for a good starting point.</li>
+<li>Propose a new feature by <a href="https://github.com/thunderbird/thunderbird-android/issues/new/choose" title="" target="_blank">opening a new issue</a></li>
+<li>Avoid issues labeled <a href="https://github.com/thunderbird/thunderbird-android/labels/unconfirmed" title="" target="_blank">unconfirmed</a> or <a href="https://github.com/thunderbird/thunderbird-android/labels/tb-team" title="" target="_blank">tb-team</a> as they are not yet ready for contributions.</li>
+</ul>
+<p><strong>2. Discuss your plan:</strong></p>
+<ul>
+<li>Leave a comment on the issue you want to work on, explaining what you plan to do. This helps avoid duplicate work and gets you feedback from the team.</li>
+</ul>
+<p><strong>3. Fork the repository:</strong></p>
+<ul>
+<li>Create your own <a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo" title="" target="_blank">fork</a> of the Thunderbird for Android repository on GitHub.</li>
+</ul>
+<p><strong>4. Create a branch:</strong></p>
+<ul>
+<li>Start a new branch from the <code>main</code> branch to keep your changes separate.</li>
+<li>Name your branch descriptively (e.g., <code>fix-issue-123</code> or <code>add-feature-xyz</code>).</li>
+</ul>
+<p><strong>5. Make your changes:</strong></p>
+<ul>
+<li>Write your code and commit it to your branch.</li>
+<li>Follow our <a href="https://github.com/thunderbird/thunderbird-android/wiki/CodeStyle" title="" target="_blank">Code Style Guidelines</a></li>
+</ul>
+<p><strong>6. Test your changes:</strong></p>
+<ul>
+<li>Run the project’s tests to make sure everything works and that your changes don’t introduce any regressions.</li>
+<li>If applicable, write new tests to cover your changes.</li>
+</ul>
+<p><strong>7. Push your changes:</strong></p>
+<ul>
+<li>Upload your branch to your forked repository.</li>
+</ul>
+<p><strong>8. Open a pull request:</strong></p>
+<ul>
+<li>Create a pull request to merge your changes into the main project.</li>
+<li>Provide a clear and concise description of your changes, including:
+<ul>
+<li>A reference to the issue you’re addressing.</li>
+<li>A summary of the changes you made.</li>
+<li>Any relevant screenshots or testing results.</li>
+</ul>
+</li>
+</ul>
+<h2 id="thank-you"><a class="header" href="#thank-you">Thank You!</a></h2>
+<p>Thank you for taking the time to contribute to Thunderbird for Android! We appreciate your help in making the project better and more useful for everyone.</p>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="repository-structure"><a class="header" href="#repository-structure">Repository structure</a></h1>
+<p>The project is divided into several directories below which are nested gradle projects.</p>
+<h2 id="app"><a class="header" href="#app">app</a></h2>
+<p>This contains the highest level code such as UI and core logic.</p>
+<h2 id="backend"><a class="header" href="#backend">backend</a></h2>
+<p>APIs for sending and receiving messages</p>
+<h2 id="mail"><a class="header" href="#mail">mail</a></h2>
+<p>Low level code for dealing with internet mail protocols</p>
+<h2 id="plugins"><a class="header" href="#plugins">plugins</a></h2>
+<p>Additional, standalone, libraries used by Thunderbird for Android</p>
+<p><img src="Modules.png" alt="modules" /></p>
+<h1 id="walkthrough"><a class="header" href="#walkthrough">Walkthrough</a></h1>
+<p>To help you understand the design, the following sequence diagrams show typical flows through the
+classes. Each class is colour-coded by its top-level project.</p>
+<h2 id="reading-email"><a class="header" href="#reading-email">Reading email</a></h2>
+<p><img src="ReadEmail.png" alt="read email sequence" /></p>
+<p><img src="ReadEmailClasses.png" alt="read email classes" /></p>
+<h2 id="sending-email"><a class="header" href="#sending-email">Sending email</a></h2>
+<p><img src="SendEmail.png" alt="send email sequence" /></p>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="releases"><a class="header" href="#releases">Releases</a></h1>
+<p>Thunderbird for Android follows a release train model to ensure timely and predictable releases. This model allows for regular feature rollouts, stability improvements, and bug fixes.</p>
+<h2 id="branches-in-the-release-train-model"><a class="header" href="#branches-in-the-release-train-model">Branches in the Release Train Model</a></h2>
+<h3 id="daily"><a class="header" href="#daily">Daily</a></h3>
+<p>Daily builds are used for initial testing of new features and changes. Feature flags are additionally used to work on features that are not yet ready for consumption.</p>
+<ul>
+<li><strong>Branch:</strong> <code>main</code></li>
+<li><strong>Purpose:</strong> Active development of new features and improvements</li>
+<li><strong>Release Cadence:</strong> Daily</li>
+<li><strong>Audience:</strong> Developers and highly technical users who want to test the bleeding edge of Thunderbird. Daily builds are unstable and not recommended for production use.</li>
+<li><strong>Availability:</strong> Daily builds are available on the Play Store internal channel. APKs are available on <a href="https://ftp.mozilla.org/pub/thunderbird-mobile/" title="" target="_blank">ftp.mozilla.org</a>.</li>
+</ul>
+<h3 id="beta"><a class="header" href="#beta">Beta</a></h3>
+<p>After features are stabilized in Daily, they are merged into the Beta branch for broader testing. Uplifts are limited to bug/security fixes only. The Beta branch serves as a preview of what will be included in the next stable release, allowing for user feedback and final adjustments before general availability.</p>
+<ul>
+<li><strong>Branch:</strong> <code>beta</code></li>
+<li><strong>Purpose:</strong> Pre-release testing</li>
+<li><strong>Release Cadence:</strong> Weekly with the option to skip if not needed</li>
+<li><strong>Merge Cadence:</strong> Every 2 Months</li>
+<li><strong>Audience:</strong> Early adopters and testers. Testers are encouraged to provide error logs and help reproduce issues filed.</li>
+<li><strong>Availability:</strong> Beta builds are available from the <a href="https://play.google.com/store/apps/details?id=net.thunderbird.android.beta" title="" target="_blank">Play Store</a> and <a href="https://f-droid.org/packages/net.thunderbird.android.beta" title="" target="_blank">F-Droid</a>.</li>
+</ul>
+<h3 id="release"><a class="header" href="#release">Release</a></h3>
+<p>This branch represents the stable version of Thunderbird, which is released to the public. It is tested and suitable for general use. Bug fixes and minor updates are periodically applied between major releases. Uplifts to Release are limited to stability/security fixes only.</p>
+<ul>
+<li><strong>Branch:</strong> <code>release</code></li>
+<li><strong>Purpose:</strong> Stable releases</li>
+<li><strong>Release Cadence:</strong> Major releases every 2 months. Minor releases every 2 weeks with the option to skip if not needed.</li>
+<li><strong>Merge Cadence:</strong> Every 2 months</li>
+<li><strong>Audience:</strong> General users. Users may be filing bug reports or leaving reviews to express their level of satisfaction.</li>
+<li><strong>Availability:</strong> Release builds are available from the <a href="https://play.google.com/store/apps/details?id=net.thunderbird.android" title="" target="_blank">Play Store</a> and <a href="https://f-droid.org/packages/net.thunderbird.android" title="" target="_blank">F-Droid</a>.</li>
+</ul>
+<h2 id="example-feature-release-flow"><a class="header" href="#example-feature-release-flow">Example Feature Release Flow</a></h2>
+<ol>
+<li>A new feature is developed and merged via pull requests into the <code>main</code> branch.</li>
+<li>Every 2 months, <code>main</code> is merged into the <code>beta</code> branch for external testing and feedback.</li>
+<li>Every 2 months, <code>beta</code> is merged into the <code>release</code> branch, and a release is made available to all users.</li>
+</ol>
+<h2 id="example-bug-release-flow"><a class="header" href="#example-bug-release-flow">Example Bug Release Flow</a></h2>
+<ol>
+<li>A high-impact bug is fixed and merged via pull request into the <code>main</code> branch.</li>
+<li>After it has received adequate testing on <code>daily</code>, the fix is cherry-picked (uplifted) to the <code>beta</code> branch and released in the next scheduled beta.</li>
+<li>After it has received adequate testing on <code>beta</code>, the fix is cherry-picked (uplifted) to the <code>release</code> branch and released in the next stable minor release.</li>
+</ol>
+<h2 id="sample-release-timeline"><a class="header" href="#sample-release-timeline">Sample Release Timeline</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Milestone</th><th>Details</th><th>Date</th></tr></thead><tbody>
+<tr><td>TfA 11.0a1 starts</td><td></td><td>Feb 28</td></tr>
+<tr><td>TfA merge 11.0a1 main-&gt;beta</td><td></td><td>May 2</td></tr>
+<tr><td>TfA 11.0b1</td><td></td><td>May 5</td></tr>
+<tr><td>TfA 11.0bX</td><td>If needed</td><td>May 12</td></tr>
+<tr><td>TfA 11.0bX</td><td>If needed</td><td>May 19</td></tr>
+<tr><td>TfA 11.0bX</td><td>If needed</td><td>May 26</td></tr>
+<tr><td>TfA 11.0bX</td><td>If needed</td><td>Jun 2</td></tr>
+<tr><td>TfA 11.0bX</td><td>If needed</td><td>Jun 9</td></tr>
+<tr><td>TfA 11.0bX</td><td>If needed</td><td>Jun 16</td></tr>
+<tr><td>TfA 11.0bX</td><td>If needed</td><td>Jun 23</td></tr>
+<tr><td>TfA 11.0bX</td><td>If needed</td><td>Jun 30</td></tr>
+<tr><td>TfA merge 11.0bX beta-&gt;release</td><td></td><td>Jun 30</td></tr>
+<tr><td>TfA 11.0</td><td></td><td>Jul 7</td></tr>
+<tr><td>TfA 11.X</td><td>If needed</td><td>Jul 21</td></tr>
+<tr><td>TfA 11.X</td><td>If needed</td><td>Aug 4</td></tr>
+<tr><td>TfA 11.X</td><td>If needed</td><td>Aug 18</td></tr>
+<tr><td>TfA 11.X</td><td>If needed</td><td>Sep 1</td></tr>
+</tbody></table>
+</div>
+<h2 id="feature-flags"><a class="header" href="#feature-flags">Feature Flags</a></h2>
+<p>Thunderbird for Android uses Feature Flags to disable features not yet ready for consumption.</p>
+<ul>
+<li>On <code>main</code>, feature flags are enabled as soon as developers have completed all pull requests related to the feature.</li>
+<li>On <code>beta</code>, feature flags remain enabled unless the feature has not been fully completed and the developers would like to pause the feature.</li>
+<li>On <code>release</code>, feature flags are disabled until an explicit decision has been made to enable the feature for all users.</li>
+</ul>
+<h2 id="versioning-system"><a class="header" href="#versioning-system">Versioning System</a></h2>
+<h3 id="version-names"><a class="header" href="#version-names">Version Names</a></h3>
+<p>Thunderbird for Android stable release versions follow the <code>X.Y</code> format, where:</p>
+<ul>
+<li><strong>X (Major version):</strong> Incremented for each new release cycle.</li>
+<li><strong>Y (Patch version):</strong> Incremented when changes are added to an existing major version.</li>
+</ul>
+<p>For beta builds, the suffix <code>b1</code> is appended, where the number increments for each beta. For daily builds, the suffix <code>a1</code> is appended, which remains constant.</p>
+<h3 id="version-codes"><a class="header" href="#version-codes">Version Codes</a></h3>
+<p>The version code is an internal version number for Android that helps determine whether one version is more recent than another.</p>
+<p>The version code for beta and release is an integer value that increments for each new release.</p>
+<p>The version code for daily is calculated based on the date and has the format <code>yDDDHHmm</code>:</p>
+<ul>
+<li><strong>y</strong>: The number of years since a base year, with 2023 as the starting point (e.g., 2024 is 1)</li>
+<li><strong>DDD</strong>: The day of the year in 3 digits, zero-padded</li>
+<li><strong>HH</strong>: The hour of the day in 2 digits (00–23)</li>
+<li><strong>mm</strong>: The minute of the hour in 2 digits</li>
+</ul>
+<p>For example:</p>
+<ul>
+<li><code>2024-02-09 16:45</code> → <code>1 | 040 | 16 | 45</code> → <code>10401645</code></li>
+<li><code>2025-10-12 09:23</code> → <code>2 | 285 | 09 | 23</code> → <code>22850923</code></li>
+<li><code>2122-02-09 16:45</code> → <code>99 | 040 | 16 | 45</code> → <code>990401645</code></li>
+</ul>
+<h2 id="merge-days"><a class="header" href="#merge-days">Merge Days</a></h2>
+<p>Active development occurs on the <code>main</code> branch and becomes part of daily. Every 2 months:</p>
+<ol>
+<li><code>main</code> is merged into <code>beta</code>, for testing.</li>
+<li><code>beta</code> is merged into <code>release</code>, making it publicly available.</li>
+</ol>
+<p>On the former, <code>main</code> carries over to <code>beta</code>, where the community can test the changes as part of “Thunderbird Beta for Testers” (<code>net.thunderbird.android.beta</code>) until the next merge day.
+On the latter, code that was in beta goes to release, where the general population receives product updates (<code>net.thunderbird.android</code>).</p>
+<p>When a merge occurs, the version name is carried forward to the next branch. However, the alpha and beta suffixes are removed/reset accordingly. For example, let’s say we are shortly before the Thunderbird 9.0 release. The latest releases were Thunderbird 8.2, Thunderbird Beta 9.0b4, and Thunderbird Daily 10.0a1. Here is what happens:</p>
+<ul>
+<li>The <code>beta</code> branch is merged to <code>release</code>. The resulting version on release changes from 8.2 to 9.0.</li>
+<li>The <code>main</code> branch is merged to <code>beta</code>. The resulting version on beta changes from 9.0b4 to 10.0b1</li>
+<li>The <code>main</code> branch version number is changed from 10.0a1 to 11.0a1</li>
+</ul>
+<p>While the version name changes, it must be ensured that the version code stays the same for each branch. Our application IDs are specific to the branch they are on. For example:</p>
+<ul>
+<li>Beta always uses <code>net.thunderbird.android.beta</code> as the app ID. Let’s say the version code is 20 at 9.0b4, it will be 21 at 10.0b1.</li>
+<li>Likewise, when 9.0b4 becomes 9.0, if the version code on beta is 20 and on release it is 12, then 9.0 becomes 13 and not 21.</li>
+</ul>
+<h2 id="merge-process"><a class="header" href="#merge-process">Merge Process</a></h2>
+<p>Merges are performed with the <code>git merge</code> command:</p>
+<pre><code class="language-sh"> git checkout beta
+ git merge main
+</code></pre>
+<p>This approach enables various benefits, including:</p>
+<ul>
+<li>Carrying forward main branch history to beta, and beta branch history to release.</li>
+<li>No branch history is lost.</li>
+<li>Git tags are retained in git log.</li>
+<li>Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).</li>
+</ul>
+<h2 id="branch-uplifts"><a class="header" href="#branch-uplifts">Branch Uplifts</a></h2>
+<p>If the urgency of a fix requires it to be included in the Beta or Release channel before the next merge, the uplift process is followed. If possible, uplifts should be avoided and patches should “ride the train” instead, following the merge day cycle.</p>
+<h3 id="uplift-criteria"><a class="header" href="#uplift-criteria">Uplift Criteria</a></h3>
+<p>Beta uplifts should:</p>
+<ul>
+<li>Be limited to bug/security fixes only (features ride the train).</li>
+<li>Not change any localizable strings</li>
+<li>Have tests, or a strong statement of what can be done in the absence of tests.</li>
+<li>Have landed in main and stabilized on the daily channel.</li>
+<li>Have a comment in the GitHub issue assessing performance impact, risk, and reasons the patch is needed on beta.</li>
+</ul>
+<p>Release uplifts should additionally:</p>
+<ul>
+<li>Be limited to stability/security fixes only (features ride the train).</li>
+<li>Have landed in beta and stabilized on the beta channel.</li>
+</ul>
+<h3 id="uplift-process"><a class="header" href="#uplift-process">Uplift Process</a></h3>
+<ol>
+<li>The requestor adds the “task: uplift to beta” or “task: uplift to release” label to a merged pull request.</li>
+<li>The requestor makes a comment in the associated issue with the Approval Request Comment template filled out.</li>
+<li>The release driver reviews all uplift requests and, retaining the label for approved uplifts and removing the label for rejected uplifts.</li>
+<li>The release driver runs the Uplift Merges action for the specified target branch, which will remove the label, cherry-pick the commits, and push to the target branch.</li>
+</ol>
+<p>Template for uplift requests:</p>
+<pre><code class="language-sh">[Approval Request Comment]
+Original Issue/Pull request:
+Regression caused by (issue #):
+User impact if declined:
+Testing completed (on daily, etc.):
+Risk to taking this patch (and alternatives if risky):
+</code></pre>
+<h2 id="releases-1"><a class="header" href="#releases-1">Releases</a></h2>
+<p>Releases for both K-9 and Thunderbird for Android are automated with github actions.
+Daily builds are scheduled with the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/daily_builds.yml" title="" target="_blank">Daily Builds</a> action and all builds are performed by the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml" title="" target="_blank">Shippable Build &amp; Signing</a> action.</p>
+<p>For the historical manual release process, see <a href="RELEASING.html">Releasing</a>.</p>
+<h3 id="release-process"><a class="header" href="#release-process">Release Process</a></h3>
+<p>These are the general steps for a release:</p>
+<ol>
+<li>Perform merge or uplifts. Each release is the result of either a merge or uplift.</li>
+<li>Draft release notes at <a href="https://github.com/thunderbird/thunderbird-notes" title="" target="_blank">thunderbird-notes</a>.</li>
+<li>Trigger build via the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml" title="" target="_blank">Shippable Build &amp; Signing</a> action.</li>
+<li>Review the build results by reviewing the action summary and the git commits resulting from the build.</li>
+<li>Smoke test the build.</li>
+<li>Promote TfA and K-9 releases in Play Store.</li>
+<li>Wait for Play Store review to complete.</li>
+<li>Update F-Droid to new TfA and K-9 releases.</li>
+<li>Send notification to Matrix channels, and beta or planning mailing lists.</li>
+</ol>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="create-k-9-mail-releases"><a class="header" href="#create-k-9-mail-releases">Create K-9 Mail releases</a></h1>
+<p>This document contains the historical manual release process for K-9 Mail.</p>
+<p>For current steps that are taken for the automated process, see <a href="RELEASES.html">Releases</a>.</p>
+<h2 id="one-time-setup"><a class="header" href="#one-time-setup">One-time setup</a></h2>
+<ol>
+<li>Create a <code>.signing</code> folder in the root of the Git repository, if it doesn’t exist yet.</li>
+<li>Download the <code>k9-release-signing.jks</code> and <code>k9.release.signing.properties</code> files from 1Password and place them in the <code>.signing</code> folder.</li>
+</ol>
+<p>Example <code>&lt;app&gt;.&lt;releaseType&gt;.signing.properties</code> file:</p>
+<pre><code class="language-properties">&lt;app&gt;.&lt;releaseType&gt;.storeFile=&lt;path to keystore "../.signing/k9mail.jks"&gt;
+&lt;app&gt;.&lt;releaseType&gt;.storePassword=&lt;storePassword&gt;
+&lt;app&gt;.&lt;releaseType&gt;.keyAlias=&lt;keyAlias&gt;
+&lt;app&gt;.&lt;releaseType&gt;.keyPassword=&lt;keyPassword&gt;
+</code></pre>
+<ul>
+<li><code>&lt;app&gt;</code> is the short name of the app, e.g. <code>k9</code></li>
+<li><code>&lt;releaseType&gt;</code> is the type of release, e.g. <code>release</code></li>
+</ul>
+<h3 id="one-time-setup-for-f-droid-builds"><a class="header" href="#one-time-setup-for-f-droid-builds">One-time setup for F-Droid builds</a></h3>
+<ol>
+<li>
+<p>Install <em>fdroidserver</em> by following
+the <a href="https://f-droid.org/docs/Installing_the_Server_and_Repo_Tools" title="" target="_blank">installation instructions</a>.</p>
+<ol>
+<li>On MacOS, it’s best to install the latest version from source, because the version in Homebrew has some issues.
+<ol>
+<li>
+<p>Install the android command line tools if not available already.</p>
+<pre><code class="language-shell">brew install --cask android-commandlinetools
+</code></pre>
+</li>
+<li>
+<p>Install latest <em>fdroidserver</em> from source:</p>
+<pre><code class="language-shell">python -m venv fdroidserver-env
+source fdroidserver-env/bin/activate
+pip install git+https://gitlab.com/fdroid/fdroidserver.git
+</code></pre>
+</li>
+<li>
+<p>To use <em>fdroidserver</em> from the command line, you need to activate the virtual environment before each use:</p>
+<pre><code class="language-shell">source fdroidserver-env/bin/activate
+</code></pre>
+</li>
+<li>
+<p>To deactivate the virtual environment:</p>
+<pre><code class="language-shell">deactivate
+</code></pre>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p><a href="https://gitlab.com/users/sign_up" title="" target="_blank">Sign up for a Gitlab account</a> and fork
+the <a href="https://gitlab.com/fdroid/fdroiddata" title="" target="_blank">fdroiddata</a> repository.</p>
+</li>
+<li>
+<p>Clone your fork of the <em>fdroiddata</em> repository.</p>
+</li>
+</ol>
+<h2 id="release-a-beta-version"><a class="header" href="#release-a-beta-version">Release a beta version</a></h2>
+<ol>
+<li>
+<p>Update versionCode and versionName in <code>app-k9mail/build.gradle.kts</code></p>
+</li>
+<li>
+<p>Create change log entries in</p>
+<ul>
+<li><code>app-k9mail/src/main/res/raw/changelog_master.xml</code></li>
+<li><code>app-metadata/com.fsck.k9/en-US/changelogs/${versionCode}.txt</code>
+Use past tense. Try to keep them high level. Focus on the user (experience).</li>
+</ul>
+</li>
+<li>
+<p>Update the metadata link to point to K-9 Mail’s data:
+<code>ln --symbolic --no-dereference --force app-metadata/com.fsck.k9 metadata</code></p>
+</li>
+<li>
+<p>Commit the changes. Message: “Version $versionName”</p>
+</li>
+<li>
+<p>Run <code>./gradlew clean :app-k9mail:assembleRelease --no-build-cache --no-configuration-cache</code></p>
+</li>
+<li>
+<p>Update an existing installation to make sure the app is signed with the proper key and runs on a real device.</p>
+<pre><code class="language-shell">adb install -r app-k9mail/build/outputs/apk/release/app-k9mail-release.apk
+</code></pre>
+</li>
+<li>
+<p>Tag as $versionName, e.g. <code>6.508</code></p>
+</li>
+<li>
+<p>Copy <code>app-k9mail/build/outputs/apk/release/app-k9mail-release.apk</code> as <code>k9-${versionName}.apk</code> to Google Drive (MZLA
+Team &gt; K9 &gt; APKs)</p>
+</li>
+<li>
+<p>Change versionName in <code>app-k9mail/build.gradle.kts</code> to next version name followed by <code>-SNAPSHOT</code></p>
+</li>
+<li>
+<p>Commit the changes. Message: “Prepare for version $newVersionName”</p>
+</li>
+<li>
+<p>Update <code>gh-pages</code> branch with the new change log</p>
+</li>
+<li>
+<p>Push <code>main</code> branch</p>
+</li>
+<li>
+<p>Push tags</p>
+</li>
+<li>
+<p>Push <code>gh-pages</code> branch</p>
+</li>
+</ol>
+<h3 id="create-release-on-github"><a class="header" href="#create-release-on-github">Create release on GitHub</a></h3>
+<ol>
+<li>Go to https://github.com/thunderbird/thunderbird-android/tags and select the appropriate tag</li>
+<li>Click “Create release from tag”</li>
+<li>Fill out the form
+<ul>
+<li>Click “Generate release notes”</li>
+<li>Replace contents under “What’s changed” with change log entries</li>
+<li>Add GitHub handles in parentheses to change log entries</li>
+<li>If necessary, add another entry “Internal changes” (or similar) so people who contributed changes outside of the
+entries mentioned in the change log can be mentioned via GitHub handle.</li>
+<li>Attach the APK</li>
+<li>Select “Set as a pre-release”</li>
+<li>Click “Publish release”</li>
+</ul>
+</li>
+</ol>
+<h3 id="create-release-on-f-droid"><a class="header" href="#create-release-on-f-droid">Create release on F-Droid</a></h3>
+<ol>
+<li>
+<p>Fetch the latest changes from the <em>fdroiddata</em> repository.</p>
+</li>
+<li>
+<p>Switch to a new branch in your copy of the <em>fdroiddata</em> repository.</p>
+</li>
+<li>
+<p>Edit <code>metadata/com.fsck.k9.yml</code> to create a new entry for the version you want to release. Usually it’s copy &amp; paste
+of the previous entry and adjusting <code>versionName</code>, <code>versionCode</code>, and <code>commit</code> (use the tag name).
+Leave <code>CurrentVersion</code> and <code>CurrentVersionCode</code> unchanged. Those specify which version is the stable/recommended
+build.</p>
+<p>Example:</p>
+<pre><code class="language-yaml">- versionName: "${versionName}"
+  versionCode: ${versionCode}
+  commit: "${tagName}"
+  subdir: app-k9mail
+  gradle:
+    - yes
+  scandelete:
+    - build-plugin/build
+</code></pre>
+</li>
+<li>
+<p>Commit the changes. Message: “Update K-9 Mail to $newVersionName (beta)”</p>
+</li>
+<li>
+<p>Run <code>fdroid build --latest com.fsck.k9</code> to build the project using F-Droid’s toolchain.</p>
+</li>
+<li>
+<p>Push the changes to your fork of the <em>fdroiddata</em> repository.</p>
+</li>
+<li>
+<p>Open a merge request on Gitlab. (The message from the server after the push in the previous step should contain a
+URL)</p>
+</li>
+<li>
+<p>Select the <em>App update</em> template and fill it out.</p>
+</li>
+<li>
+<p>Create merge request and the F-Droid team will do the rest.</p>
+</li>
+</ol>
+<h3 id="create-release-on-google-play"><a class="header" href="#create-release-on-google-play">Create release on Google Play</a></h3>
+<ol>
+<li>Go to the <a href="https://play.google.com/console/" title="" target="_blank">Google Play Console</a></li>
+<li>Select the <em>K-9 Mail</em> app</li>
+<li>Click on <em>Open testing</em> in the left sidebar</li>
+<li>Click on <em>Create new release</em></li>
+<li>Upload the APK to <em>App bundles</em></li>
+<li>Fill out Release name (e.g. “$versionCode ($versionName)”)</li>
+<li>Fill out Release notes (copy from <code>app-metadata/com.fsck.k9/en-US/changelogs/${versionCode}.txt</code>)</li>
+<li>Click <em>Next</em></li>
+<li>Review the release</li>
+<li>Configure a full rollout for beta versions</li>
+<li>On the Publishing overview page, click <em>Send change for review</em></li>
+<li>Wait for the review to complete</li>
+<li>In case of a rejection, fix the issues and repeat the process</li>
+</ol>
+<h2 id="release-a-stable-version"><a class="header" href="#release-a-stable-version">Release a stable version</a></h2>
+<p>When the team decides the <code>main</code> branch is stable enough and it’s time to release a new stable version, create a new
+maintenance branch (off <code>main</code>) using the desired version number with the last two digits dropped followed by <code>-MAINT</code>.
+Example: <code>6.8-MAINT</code> when the first stable release is K-9 Mail 6.800.</p>
+<p>Ideally the first stable release contains no code changes when compared to the last beta version built from <code>main</code>.
+That way the new release won’t contain any changes that weren’t exposed to user testing in a beta version before.</p>
+<ol>
+<li>
+<p>Switch to the appropriate maintenance branch, e.g. <code>6.8-MAINT</code></p>
+</li>
+<li>
+<p>Update versionCode and versionName in <code>app-k9mail/build.gradle.kts</code> (stable releases use an even digit after the
+dot, e.g. <code>5.400</code>, <code>6.603</code>)</p>
+</li>
+<li>
+<p>Create change log entries in</p>
+<ul>
+<li><code>app-k9mail/src/main/res/raw/changelog_master.xml</code></li>
+<li><code>app-k9mail/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt</code>
+Use past tense. Try to keep them high level. Focus on the user (experience).</li>
+</ul>
+</li>
+<li>
+<p>Update the metadata link to point to K-9 Mail’s data:
+<code>ln --symbolic --no-dereference --force app-metadata/com.fsck.k9 metadata</code></p>
+</li>
+<li>
+<p>Commit the changes. Message: “Version $versionName”</p>
+</li>
+<li>
+<p>Run <code>./gradlew clean :app-k9mail:assembleRelease --no-build-cache --no-configuration-cache</code></p>
+</li>
+<li>
+<p>Update an existing installation to make sure the app is signed with the proper key and runs on a real device.</p>
+<pre><code class="language-shell">adb install -r app-k9mail/build/outputs/apk/release/app-k9mail-release.apk
+</code></pre>
+</li>
+<li>
+<p>Tag as $versionName, e.g. <code>6.800</code></p>
+</li>
+<li>
+<p>Copy <code>app-k9mail/build/outputs/apk/release/app-k9mail-release.apk</code> as <code>k9-${versionName}.apk</code> to Google Drive (MZLA
+Team &gt; K9 &gt; APKs)</p>
+</li>
+<li>
+<p>Update <code>gh-pages</code> branch with the new change log. Create a new file if it’s the first stable release in a series.</p>
+</li>
+<li>
+<p>Push maintenance branch</p>
+</li>
+<li>
+<p>Push tags</p>
+</li>
+<li>
+<p>Push <code>gh-pages</code> branch</p>
+</li>
+</ol>
+<h3 id="create-release-on-github-1"><a class="header" href="#create-release-on-github-1">Create release on GitHub</a></h3>
+<ol>
+<li>Go to https://github.com/thunderbird/thunderbird-android/tags and select the appropriate tag</li>
+<li>Click “Create release from tag”</li>
+<li>Fill out the form
+<ul>
+<li>Click “Generate release notes”</li>
+<li>Replace contents under “What’s changed” with change log entries</li>
+<li>Add GitHub handles in parentheses to change log entries</li>
+<li>If necessary, add another entry “Internal changes” (or similar) so people who contributed changes outside of the
+entries mentioned in the change log can be mentioned via GitHub handle.</li>
+<li>Attach the APK</li>
+<li>Select “Set as the latest release”</li>
+<li>Click “Publish release”</li>
+</ul>
+</li>
+</ol>
+<h3 id="create-release-on-f-droid-1"><a class="header" href="#create-release-on-f-droid-1">Create release on F-Droid</a></h3>
+<ol>
+<li>
+<p>Fetch the latest changes from the <em>fdroiddata</em> repository.</p>
+</li>
+<li>
+<p>Switch to a new branch in your copy of the <em>fdroiddata</em> repository.</p>
+</li>
+<li>
+<p>Edit <code>metadata/com.fsck.k9.yml</code> to create a new entry for the version you want to release. Usually it’s copy &amp; paste
+of the previous entry and adjusting <code>versionName</code>, <code>versionCode</code>, and <code>commit</code> (use the tag name).
+Change <code>CurrentVersion</code> and <code>CurrentVersionCode</code> to the new values, making this the new stable/recommended build.</p>
+<p>Example:</p>
+<pre><code class="language-yaml">- versionName: "${versionName}"
+  versionCode: ${versionCode}
+  commit: "${tagName}"
+  subdir: app-k9mail
+  gradle:
+    - yes
+  scandelete:
+    - build-plugin/build
+</code></pre>
+</li>
+<li>
+<p>Commit the changes. Message: “Update K-9 Mail to $newVersionName”</p>
+</li>
+<li>
+<p>Run <code>fdroid build --latest com.fsck.k9</code> to build the project using F-Droid’s toolchain.</p>
+</li>
+<li>
+<p>Push the changes to your fork of the <em>fdroiddata</em> repository.</p>
+</li>
+<li>
+<p>Open a merge request on Gitlab. (The message from the server after the push in the previous step should contain a
+URL)</p>
+</li>
+<li>
+<p>Select the <em>App update</em> template and fill it out.</p>
+</li>
+<li>
+<p>Create merge request and the F-Droid team will do the rest.</p>
+</li>
+</ol>
+<h3 id="create-release-on-google-play-1"><a class="header" href="#create-release-on-google-play-1">Create release on Google Play</a></h3>
+<ol>
+<li>Go to the <a href="https://play.google.com/console/" title="" target="_blank">Google Play Console</a></li>
+<li>Select the <em>K-9 Mail</em> app</li>
+<li>Click on <em>Production</em> in the left sidebar</li>
+<li>Click on <em>Create new release</em></li>
+<li>Upload the APK to <em>App bundles</em></li>
+<li>Fill out Release name (e.g. “$versionCode ($versionName)”)</li>
+<li>Fill out Release notes (copy from <code>app-k9mail/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt</code>)</li>
+<li>Click <em>Next</em></li>
+<li>Review the release</li>
+<li>Start with a staged rollout (usually 20%)</li>
+<li>On the Publishing overview page, click <em>Send change for review</em></li>
+<li>Wait for the review to complete</li>
+<li>In case of a rejection, fix the issues and repeat the process</li>
+<li>Once the review is complete, monitor the staged rollout for issues and increase the rollout percentage as necessary</li>
+</ol>
+<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
+<h3 id="f-droid"><a class="header" href="#f-droid">F-Droid</a></h3>
+<p>If the app doesn’t show up in the F-Droid client:</p>
+<ul>
+<li>Check the build cycle, maybe you just missed it and it will be available in the next cycle. (The cycle is usually every 5 days.)</li>
+<li>Check <a href="https://fdroidstatus.org/status/fdroid" title="" target="_blank">F-Droid Status</a> for any issues.</li>
+<li>Check <a href="https://monitor.f-droid.org/builds" title="" target="_blank">F-Droid Monitor</a> for any errors mentioning <code>com.fsck.k9</code>.</li>
+</ul>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="managing-strings"><a class="header" href="#managing-strings">Managing strings</a></h1>
+<p>We use Android’s <a href="https://developer.android.com/guide/topics/resources/localization" title="" target="_blank">resource system</a> to localize
+user-visible strings in our apps.</p>
+<p>Our source language is English (American English to be more precise, but simply “English” (en) on Weblate).</p>
+<p>Translations of source strings happen exclusively in our
+<a href="https://hosted.weblate.org/projects/tb-android/" title="" target="_blank">Weblate project</a>. This means the source language is only modified by
+changes to this repository, i.e. via pull requests. Translations are only updated on Weblate and then merged into this
+repository by the Thunderbird team. This is to avoid overlapping changes in both repositories that will lead to merge
+conflicts.</p>
+<h2 id="adding-a-string"><a class="header" href="#adding-a-string">Adding a string</a></h2>
+<p>Add a new string to the appropriate <code>res/values/strings.xml</code> file.</p>
+<p>Please don’t add any translations for this new string to this repository. If you can also provide a translation for the
+new string, wait until the change is merged into this repository and propagated to Weblate. Then translate the new
+string on Weblate.</p>
+<h2 id="changing-a-string"><a class="header" href="#changing-a-string">Changing a string</a></h2>
+<p>Changing a string should be avoided. Weblate doesn’t automatically invalidate translations when a source string is
+changed. This can be worked around by removing the old string and adding a new one. Make sure to only modify the source
+language. It’s fine for the translations to then contain unused strings. The next merge with Weblate will remove those.</p>
+<h2 id="removing-a-string"><a class="header" href="#removing-a-string">Removing a string</a></h2>
+<p>Remove the source string from <code>res/values/strings.xml</code>. Don’t modify translations under <code>res/values-&lt;lang&gt;/strings.xml</code>.
+The next merge from Weblate will automatically get rid of the translated strings.</p>
+<h2 id="changing-translations-in-this-repository"><a class="header" href="#changing-translations-in-this-repository">Changing translations in this repository</a></h2>
+<p>This should be avoided whenever possible, as it can create merge conflicts between Weblate and this repository. If you
+need to change individual strings, please translate them on Weblate instead. If a mechanical change is necessary across
+all languages, this should be discussed with the core team who will use this procedure:</p>
+<ol>
+<li>Lock all components on Weblate by clicking the “Lock” button in the
+<a href="https://hosted.weblate.org/projects/tb-android/#repository" title="" target="_blank">repository maintenance</a> screen.</li>
+<li>Commit all outstanding changes by clicking the “Commit” button in the same screen.</li>
+<li>Trigger creating a pull request containing translation updates from Weblate by clicking the “Push” button in the
+repository maintenance screen.</li>
+<li>Merge that pull request containing updates from Weblate into this repository.</li>
+<li>Create a pull request to change the translated files, following the established procedures to get it merged. Make
+sure you’ve rebased against the latest changes.</li>
+<li>Wait for the changes in this repository to be automatically propagated to and processed by Weblate.</li>
+<li>Unlock components on Weblate by clicking the “Unlock” button in the
+<a href="https://hosted.weblate.org/projects/tb-android/#repository" title="" target="_blank">repository maintenance</a> screen.</li>
+</ol>
+<h1 id="managing-translations"><a class="header" href="#managing-translations">Managing translations</a></h1>
+<p>Right now we’re using the <code>resourceConfigurations</code> mechanism provided by the Android Gradle Plugin to limit which
+languages are included in builds of the app.
+See e.g. https://github.com/thunderbird/thunderbird-android/blob/176a520e86bfe6875ad409a7565d122406dc7550/app-k9mail/build.gradle.kts#L40-L48</p>
+<p>This list needs to be kept in sync with the string array <code>supported_languages</code>, so the in-app language picker offers
+exactly the languages that are included in the app.</p>
+<h2 id="removing-a-language"><a class="header" href="#removing-a-language">Removing a language</a></h2>
+<ol>
+<li>Remove the language code from the <code>resourceConfigurations</code> list in <code>app-k9mail/build.gradle.kts</code>.</li>
+<li>Remove the entry from <code>supported_languages</code> in <code>app/core/src/main/res/values/arrays_general_settings_values.xml</code>.</li>
+</ol>
+<h2 id="adding-a-language"><a class="header" href="#adding-a-language">Adding a language</a></h2>
+<ol>
+<li>Add the language code to the <code>resourceConfigurations</code> list in <code>app-k9mail/build.gradle.kts</code>.</li>
+<li>Add an entry to <code>supported_languages</code> in <code>app/core/src/main/res/values/arrays_general_settings_values.xml</code>.</li>
+<li>Make sure that <code>language_values</code> in <code>app/core/src/main/res/values/arrays_general_settings_values.xml</code> contains an
+entry for the language code you just added. If not:
+<ol>
+<li>Add the language name (in its native script) to <code>language_entries</code> in
+<code>app/ui/legacy/src/main/res/values/arrays_general_settings_strings.xml</code>. Please note that this list should be
+ordered using the Unicode default collation order.</li>
+<li>Add the language code to <code>language_values</code> in <code>app/core/src/main/res/values/arrays_general_settings_values.xml</code>
+so that the index in the list matches that of the newly added entry in <code>language_entries</code>.</li>
+</ol>
+</li>
+</ol>
+<h2 id="adding-a-component-on-weblate"><a class="header" href="#adding-a-component-on-weblate">Adding a component on Weblate</a></h2>
+<p>When adding a new code module that is including translatable strings, a new components needs to be added to Weblate.</p>
+<ol>
+<li>Go the the Weblate page to <a href="https://hosted.weblate.org/create/component/?project=3696" title="" target="_blank">add a component</a>.</li>
+<li>Switch to the “From existing component” tab.</li>
+<li>Enter a name for the component.</li>
+<li>For “Component”, select “K-9 Mail/Thunderbird/ui-legacy”.</li>
+<li>Press the “Continue” button.</li>
+<li>Under “Choose translation files to import”, select “Specify configuration manually”.</li>
+<li>Press the “Continue” button.</li>
+<li>For “File format”, select “Android String Resource”.</li>
+<li>Under “File mask”, enter the path to the string resource files with a wildcard,
+e.g. <code>feature/account/common/src/main/res/values-*/strings.xml</code>.</li>
+<li>Under “Monolingual base language file”, enter the path to the string source file,
+e.g. <code>feature/account/common/src/main/res/values/strings.xml</code>.</li>
+<li>Uncheck “Edit base file”.</li>
+<li>For “Translation license”, select “Apache License 2.0”.</li>
+<li>Press the “Save” button.</li>
+</ol>
+<h2 id="things-to-note"><a class="header" href="#things-to-note">Things to note</a></h2>
+<p>For some languages Android uses different language codes than typical translation tools, e.g. Hebrew’s code is <em>he</em> on
+Weblate, but <em>iw</em> on Android. When writing automation tools, there needs to be a mapping step involved.</p>
+<p>See <a href="https://github.com/thunderbird/thunderbird-android/blob/ed07da8be5513ac74aabb1c934a4545aaae4f5a3/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13" title="" target="_blank">translation-cli</a>
+for an example.</p>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="java-to-kotlin-conversion-guide"><a class="header" href="#java-to-kotlin-conversion-guide">Java to Kotlin Conversion Guide</a></h1>
+<p>This guide describes our process for converting Java code to Kotlin.</p>
+<h2 id="why-convert-to-kotlin"><a class="header" href="#why-convert-to-kotlin">Why Convert to Kotlin?</a></h2>
+<p>Java and Kotlin are compatible languages, but we decided to convert our codebase to Kotlin for the following reasons:</p>
+<ul>
+<li>Kotlin is more concise and expressive than Java.</li>
+<li>Kotlin has better support for null safety.</li>
+<li>Kotlin has a number of modern language features that make it easier to write maintainable code.</li>
+</ul>
+<p>See our <a href="contributing/../architecture/adr/0001-switch-from-java-to-kotlin.html">ADR-0001</a> for more information.</p>
+<h2 id="how-to-convert-java-code-to-kotlin"><a class="header" href="#how-to-convert-java-code-to-kotlin">How to Convert Java Code to Kotlin</a></h2>
+<ol>
+<li>Write tests for any code that is not adequately covered by tests.</li>
+<li>Use the “Convert Java File to Kotlin File” action in IntelliJ or Android Studio to convert the Java code.</li>
+<li>Fix any issues that prevent the code from compiling after the automatic conversion.</li>
+<li>Commit the changes as separate commits:
+<ol>
+<li>The change of file extension (e.g. <code>example.java</code> -&gt; <code>example.kt</code>).</li>
+<li>The conversion of the Java file to Kotlin.</li>
+</ol>
+<ul>
+<li>This can be automated by IntelliJ/Android Studio if you use their VCS integration and enable the option to commit changes separately.</li>
+</ul>
+</li>
+<li>Refactor the code to improve readability and maintainability. This includes:
+<ol>
+<li>Removing unnecessary code.</li>
+<li>Using Kotlin’s standard library functions, language features, null safety and coding conventions.</li>
+</ol>
+</li>
+</ol>
+<h2 id="additional-tips"><a class="header" href="#additional-tips">Additional Tips</a></h2>
+<ul>
+<li>Use <code>when</code> expressions instead of <code>if-else</code> statements.</li>
+<li>Use <code>apply</code> and <code>also</code> to perform side effects on objects.</li>
+<li>Use <code>@JvmField</code> to expose a Kotlin property as a field in Java.</li>
+</ul>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<ul>
+<li><a href="https://kotlinlang.org/docs/coding-conventions.html" title="" target="_blank">Kotlin Coding Conventions</a></li>
+<li><a href="https://kotlinlang.org/docs/java-to-kotlin-interop.html" title="" target="_blank">Calling Kotlin from Java</a></li>
+<li><a href="https://kotlinlang.org/docs/java-interop.html" title="" target="_blank">Calling Java from Kotlin</a></li>
+<li><a href="https://developer.android.com/kotlin?hl=en" title="" target="_blank">Kotlin and Android | Android Developers</a></li>
+</ul>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
+<p>The <a href="architecture/adr//docs/architecture/adr">docs/architecture/adr</a> folder contains the architecture decision records (ADRs) for our project.</p>
+<p>ADRs are short text documents that serve as a historical context for the architecture decisions we make over the
+course of the project.</p>
+<h2 id="what-is-an-adr"><a class="header" href="#what-is-an-adr">What is an ADR?</a></h2>
+<p>An Architecture Decision Record (ADR) is a document that captures an important architectural decision made along
+with its context and consequences. ADRs record the decision making process and allow others to understand the
+rationale behind decisions, providing insight and facilitating future decision-making processes.</p>
+<h2 id="format-of-an-adr"><a class="header" href="#format-of-an-adr">Format of an ADR</a></h2>
+<p>We adhere to Michael Nygard’s <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" title="" target="_blank">ADR format proposal</a>,
+where each ADR document should contain:</p>
+<ol>
+<li><strong>Title</strong>: A short descriptive name for the decision.
+<ol>
+<li><strong>Link to Issue</strong>: A link to the issue that prompted the decision.</li>
+<li><strong>Link to Pull Request</strong>: A link to the pull request that implements the ADR.</li>
+<li><strong>Link to Tracking Issue</strong>: A link to the tracking issue, if applicable.</li>
+</ol>
+</li>
+<li><strong>Status</strong>: The current status of the decision (proposed, accepted, rejected, deprecated, superseded)</li>
+<li><strong>Context</strong>: The context that motivates this decision.</li>
+<li><strong>Decision</strong>: The change that we’re proposing and/or doing.</li>
+<li><strong>Consequences</strong>: What becomes easier or more difficult to do and any risks introduced as a result of the decision.</li>
+</ol>
+<h2 id="creating-a-new-adr"><a class="header" href="#creating-a-new-adr">Creating a new ADR</a></h2>
+<p>When creating a new ADR, please follow the provided <a href="architecture/adr/0000-adr-template.html">ADR template file</a> and ensure that your
+document is clear and concise.</p>
+<h2 id="directory-structure"><a class="header" href="#directory-structure">Directory Structure</a></h2>
+<p>The ADRs will be stored in a directory named <code>docs/adr</code>, and each ADR will be a file named <code>NNNN-title-with-dashes.md</code>
+where <code>NNNN</code> is a four-digit number that is increased by 1 for every new adr.</p>
+<h2 id="adr-life-cycle"><a class="header" href="#adr-life-cycle">ADR Life Cycle</a></h2>
+<p>The life cycle of an ADR is as follows:</p>
+<ol>
+<li><strong>Proposed</strong>: The ADR is under consideration.</li>
+<li><strong>Accepted</strong>: The decision described in the ADR has been accepted and should be adhered to, unless it is superseded by another ADR.</li>
+<li><strong>Rejected</strong>: The decision described in the ADR has been rejected.</li>
+<li><strong>Deprecated</strong>: The decision described in the ADR is no longer relevant due to changes in system context.</li>
+<li><strong>Superseded</strong>: The decision described in the ADR has been replaced by another decision.</li>
+</ol>
+<p>Each ADR will have a status indicating its current life-cycle stage. An ADR can be updated over time, either to change
+the status or to add more information.</p>
+<h2 id="contributions"><a class="header" href="#contributions">Contributions</a></h2>
+<p>We welcome contributions in the form of new ADRs or updates to existing ones. Please ensure all contributions follow
+the standard format and provide clear and concise information.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="switch-from-java-to-kotlin"><a class="header" href="#switch-from-java-to-kotlin">Switch from Java to Kotlin</a></h1>
+<ul>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7221" title="" target="_blank">#7221</a></li>
+</ul>
+<h2 id="status"><a class="header" href="#status">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context"><a class="header" href="#context">Context</a></h2>
+<p>We’ve been using Java as our primary language for Android development. While Java has served us well, it has certain
+limitations in terms of null safety, verbosity, functional programming, and more. Kotlin, officially supported by
+Google for Android development, offers solutions to many of these issues and provides more modern language features
+that can improve productivity, maintainability, and overall code quality.</p>
+<h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
+<p>Switch our primary programming language for Android development from Java to Kotlin. This will involve rewriting our
+existing Java codebase in Kotlin and writing all new code in Kotlin. To facilitate the transition, we will gradually
+refactor our existing Java codebase to Kotlin.</p>
+<h2 id="consequences"><a class="header" href="#consequences">Consequences</a></h2>
+<ul>
+<li>
+<p><strong>Positive Consequences</strong></p>
+<ul>
+<li>Improved null safety, reducing potential for null pointer exceptions.</li>
+<li>Increased code readability and maintainability due to less verbose syntax.</li>
+<li>Availability of modern language features such as coroutines for asynchronous programming, and extension functions.</li>
+<li>Officially supported by Google for Android development, ensuring future-proof development.</li>
+</ul>
+</li>
+<li>
+<p><strong>Negative Consequences</strong></p>
+<ul>
+<li>The process of refactoring existing Java code to Kotlin can be time-consuming.</li>
+<li>Potential for introduction of new bugs during refactoring.</li>
+</ul>
+</li>
+</ul>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="ui---wrap-material-components-in-atomic-design-system"><a class="header" href="#ui---wrap-material-components-in-atomic-design-system">UI - Wrap Material Components in Atomic Design System</a></h1>
+<ul>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7221" title="" target="_blank">#7221</a></li>
+</ul>
+<h2 id="status-1"><a class="header" href="#status-1">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context-1"><a class="header" href="#context-1">Context</a></h2>
+<p>As we continued developing our Jetpack Compose application, we found a need to increase the consistency, reusability,
+and maintainability of our user interface (UI) components. We have been using Material components directly throughout our
+application. This lead to a lack of uniformity and increases the complexity of changes as the same modifications had to
+be implemented multiple times across different screens.</p>
+<h2 id="decision-1"><a class="header" href="#decision-1">Decision</a></h2>
+<p>To address these challenges, we’ve decided to adopt an
+<a href="architecture/adr/../../../core/ui/compose/designsystem/README.html">Atomic Design System</a> as a foundation for our application UI.
+This system encapsulates Material components within our <a href="architecture/adr/../../../core/ui/compose/designsystem/">own components</a>,
+organized into categories of <em>atoms</em>, <em>molecules</em>, and <em>organisms</em>. We also defined <em>templates</em> as layout structures
+that can be flexibly combined to construct <em>pages</em>. These components collectively form the building blocks that we are
+using to construct our application’s UI.</p>
+<h2 id="consequences-1"><a class="header" href="#consequences-1">Consequences</a></h2>
+<ul>
+<li>
+<p><strong>Positive Consequences</strong></p>
+<ul>
+<li>Increased reusability of components across the application, reducing code duplication.</li>
+<li>More consistent UI and uniform styling across the entire application.</li>
+<li>Improved maintainability, as changes to a component only need to be made in one place.</li>
+</ul>
+</li>
+<li>
+<p><strong>Negative Consequences</strong></p>
+<ul>
+<li>Initial effort and time investment needed to implement the atomic design system.</li>
+<li>Developers need to adapt to the new system and learn how to use it effectively.</li>
+<li>Potential for over-complication if simple components are excessively broken down into atomic parts.</li>
+</ul>
+</li>
+</ul>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="switch-test-assertions-from-truth-to-assertk"><a class="header" href="#switch-test-assertions-from-truth-to-assertk">Switch Test Assertions from Truth to assertk</a></h1>
+<ul>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7242" title="" target="_blank">#7242</a></li>
+</ul>
+<h2 id="status-2"><a class="header" href="#status-2">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context-2"><a class="header" href="#context-2">Context</a></h2>
+<p>Our project has been using the Truth testing library for writing tests. While Truth has served us well, it is primarily
+designed for Java and lacks some features that make our Kotlin tests more idiomatic and expressive. As our codebase is
+<a href="architecture/adr/0001-switch-from-java-to-kotlin.html">primarily Kotlin</a>, we have been looking for a testing library that is more aligned
+with Kotlin’s features and idioms.</p>
+<h2 id="decision-2"><a class="header" href="#decision-2">Decision</a></h2>
+<p>We have decided to use <a href="https://github.com/willowtreeapps/assertk" title="" target="_blank">assertk</a> as the default assertions framework for
+writing tests in our project. assertk provides a fluent API that is very similar to Truth, making the transition easier.
+Moreover, it is designed to work well with Kotlin, enabling us to leverage Kotlin-specific features in our tests.</p>
+<p>We’ve further committed to converting all pre-existing tests from Truth to assertk.</p>
+<h2 id="consequences-2"><a class="header" href="#consequences-2">Consequences</a></h2>
+<p><strong>Note</strong>: The migration of all Truth tests to assertk has already been completed.</p>
+<ul>
+<li>
+<p><strong>Positive Consequences</strong></p>
+<ul>
+<li><strong>Ease of Transition</strong>: The syntax of assertk is very similar to Truth, which makes the migration process smoother.</li>
+<li><strong>Kotlin-Friendly</strong>: assertk is designed specifically for Kotlin, allowing us to write more idiomatic and
+expressive Kotlin tests.</li>
+</ul>
+</li>
+<li>
+<p><strong>Negative Consequences</strong></p>
+<ul>
+<li><strong>Dependency</strong>: While we are replacing one library with another, introducing a new library always carries the risk
+of bugs or future deprecation.</li>
+<li><strong>Migration Effort</strong>: Existing tests written using Truth will need to be migrated to use assertk, requiring some
+effort, although mitigated by the similar syntax.</li>
+</ul>
+</li>
+</ul>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
+<ul>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7794" title="" target="_blank">#7794</a></li>
+</ul>
+<h2 id="status-3"><a class="header" href="#status-3">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context-3"><a class="header" href="#context-3">Context</a></h2>
+<p>When there’s an interface that has multiple implementations it’s often easy enough to give meaningful names to both the
+interface and the implementations (e.g. the interface <code>Backend</code> with the implementations <code>ImapBackend</code> and
+<code>Pop3Backend</code>). Naming becomes harder when the interface mainly exists to allow having isolated unit tests and the
+production code contains exactly one implementation of the interface.
+Prior to this ADR we didn’t have any naming guidelines and the names varied widely. Often when there was only one
+(production) implementation, the class name used one of the prefixes <code>Default</code>, <code>Real</code>, or <code>K9</code>. None of these had any
+special meaning and it wasn’t clear which one to pick when creating a new interface/class pair.</p>
+<h2 id="decision-3"><a class="header" href="#decision-3">Decision</a></h2>
+<p>We’ll be using the following guidelines for naming interfaces and their implementation classes:</p>
+<ol>
+<li><strong>Interface Naming:</strong> Name interfaces as if they were classes, using a clear and descriptive name. Avoid using the
+“IInterface” pattern.</li>
+<li><strong>Implementation Naming:</strong> Use a prefix that clearly indicates the relationship between the interface and
+implementation, such as <code>DatabaseMessageStore</code> or <code>InMemoryMessageStore</code> for the <code>MessageStore</code> interface.</li>
+<li><strong>Descriptive Names:</strong> Use descriptive names for interfaces and implementing classes that accurately reflect their
+purpose and functionality.</li>
+<li><strong>Platform-specific Implementations:</strong> Use the platform name as a prefix for interface implementations specific to
+that platform, e.g. <code>AndroidPowerManager</code>.</li>
+<li><strong>App-specific Implementations:</strong> Use the prefix <code>K9</code> for K-9 Mail and <code>Tb</code> for Thunderbird when app-specific
+implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppNameProvider</code>.</li>
+<li><strong>Flexibility:</strong> If no brief descriptive name fits and there is only one production implementation, use the prefix
+<code>Default</code>, like <code>DefaultImapFolder</code>.</li>
+</ol>
+<h2 id="consequences-3"><a class="header" href="#consequences-3">Consequences</a></h2>
+<ul>
+<li>
+<p><strong>Positive Consequences</strong></p>
+<ul>
+<li>Improved code readability and maintainability through consistent naming.</li>
+<li>Reduced confusion and misunderstandings by using clear and descriptive names.</li>
+</ul>
+</li>
+<li>
+<p><strong>Negative Consequences</strong></p>
+<ul>
+<li>Initial effort is required to rename existing classes that do not follow these naming conventions.</li>
+</ul>
+</li>
+</ul>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
+<ul>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7803" title="" target="_blank">#7803</a></li>
+</ul>
+<h2 id="status-4"><a class="header" href="#status-4">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context-4"><a class="header" href="#context-4">Context</a></h2>
+<p>In our Android project, managing dependencies and configurations directly within each module’s <code>build.gradle.kts</code> file has historically led to inconsistencies, duplication, and difficulty in updates. This challenge was particularly noticeable when maintaining the project configuration. By centralizing this setup in a <code>build-plugin</code> module, we can encapsulate and reuse Gradle logic, streamline the build process, and ensure consistency across all project modules and ease maintainability of our codebase.</p>
+<h2 id="decision-4"><a class="header" href="#decision-4">Decision</a></h2>
+<p>To address these challenges, we have decided to establish a <code>build-plugin</code> module within our project. This module will serve as the foundation for all common Gradle configurations, dependency management, and custom plugins, allowing for simplified configuration across various project modules and plugins. Key components of this module include:</p>
+<ul>
+<li><strong>Custom Plugins:</strong> A suite of custom plugins that configure Gradle for different project aspects, ensuring each project type has tailored and streamlined build processes. These plugins should cover Android application, Android library, Jetpack Compose and Java modules.</li>
+<li><strong>Dependency Management:</strong> Utilizing the <a href="https://docs.gradle.org/current/userguide/platforms.html" title="" target="_blank">Gradle Version Catalog</a> to centrally manage and update all dependencies and plugins, ensuring that every module uses the same versions and reduces the risk of conflicts.</li>
+<li><strong>Common Configuration Settings:</strong> Establishing common configurations for Java, Kotlin, and Android to reduce the complexity and variability in setup across different modules.</li>
+</ul>
+<h2 id="consequences-4"><a class="header" href="#consequences-4">Consequences</a></h2>
+<h3 id="positive-consequences"><a class="header" href="#positive-consequences">Positive Consequences</a></h3>
+<ol>
+<li><strong>Consistency Across Modules:</strong> All project modules will use the same versions of dependencies and plugins, reducing the risk of conflicts and enhancing uniformity. They will also share common configurations, ensuring consistency in the build process.</li>
+<li><strong>Ease of Maintenance:</strong> Centralizing dependency versions in the Gradle Version Catalog allows for simple and quick updates to libraries and tools across all project modules from a single source.</li>
+<li><strong>Simplified Configuration Process:</strong> The custom plugins within the <code>build-plugin</code> module provides a streamlined way to apply settings and dependencies uniformly, enhancing productivity and reducing setup complexity.</li>
+</ol>
+<h3 id="negative-consequences"><a class="header" href="#negative-consequences">Negative Consequences</a></h3>
+<ol>
+<li><strong>Initial Overhead:</strong> The setup of the build-plugin module with a Gradle Version Catalog and the migration of existing configurations required an initial investment of time and resources, but this has been completed.</li>
+<li><strong>Complexity for New Developers:</strong> The centralized build architecture, particularly with the use of a Gradle Version Catalog, may initially seem daunting to new team members who are unfamiliar with this level of abstraction.</li>
+<li><strong>Dependency on the Build-Plugin Module:</strong> The entire project becomes reliant on the stability and accuracy of the <code>build-plugin</code> module. Errors within this module or the catalog could impact the build process across all modules.</li>
+</ol>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="white-label-architecture"><a class="header" href="#white-label-architecture">White Label Architecture</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7807" title="" target="_blank">#7807</a></li>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7805" title="" target="_blank">#7805</a></li>
+</ul>
+<h2 id="status-5"><a class="header" href="#status-5">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context-5"><a class="header" href="#context-5">Context</a></h2>
+<p>Our project hosts two separate applications, K-9 Mail and Thunderbird for Android, which share a significant amount of functionality. Despite their common features, each app requires distinct branding elements such as app names, themes, and specific strings.</p>
+<h2 id="decision-5"><a class="header" href="#decision-5">Decision</a></h2>
+<p>We have decided to adopt a modular white-label architecture, where each application is developed as a separate module that relies on a shared codebase. This structure allows us to streamline configuration details specific to each brand either during build or at runtime. This is how we structure the modules:</p>
+<h3 id="application-modules"><a class="header" href="#application-modules">Application Modules</a></h3>
+<p>There will be 2 separate modules for each of the two applications: <strong>Thunderbird for Android</strong> will be located in <code>app-thunderbird</code> and <strong>K-9 Mail</strong> in <code>app-k9mail</code>. These modules will contain app-specific implementations, configurations, resources, and startup logic. They should solely depend on the <code>app-common</code> module for shared functionalities and may selectively integrate other modules when needed to configure app-specific functionality.</p>
+<h3 id="app-common-module"><a class="header" href="#app-common-module">App Common Module</a></h3>
+<p>A central module named <code>app-common</code> acts as the central integration point for shared code among the applications. This module contains the core functionality, shared resources, and configurations that are common to both apps. It should be kept as lean as possible to avoid unnecessary dependencies and ensure that it remains focused on shared functionality.</p>
+<h2 id="consequences-5"><a class="header" href="#consequences-5">Consequences</a></h2>
+<h3 id="positive-consequences-1"><a class="header" href="#positive-consequences-1">Positive Consequences</a></h3>
+<ul>
+<li>Enhanced maintainability due to a shared codebase for common functionalities, reducing code duplication.</li>
+<li>Increased agility in developing and deploying new features across both applications, as common enhancements need to be implemented only once.</li>
+</ul>
+<h2 id="negative-consequences-1"><a class="header" href="#negative-consequences-1">Negative Consequences</a></h2>
+<ul>
+<li>Potential for configuration complexities as differentiations increase between the two applications.</li>
+<li>Higher initial setup time and learning curve for new developers due to the modular and decoupled architecture.</li>
+</ul>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7852" title="" target="_blank">#7852</a></li>
+<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7829" title="" target="_blank">#7829</a></li>
+</ul>
+<h2 id="status-6"><a class="header" href="#status-6">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context-6"><a class="header" href="#context-6">Context</a></h2>
+<p>The project consists of two distinct applications. To improve maintainability and streamline development, we propose a modular structure using Gradle. This structure is designed to enable clear separation of concerns, facilitate scalable growth, and ensure efficient dependency management. It consists of various module types such as <code>app</code>, <code>app-common</code>, <code>feature</code>, <code>core</code>, and <code>library</code> modules, promoting enhanced modular reusability.</p>
+<h2 id="decision-6"><a class="header" href="#decision-6">Decision</a></h2>
+<p>To achieve the goals outlined in the context, we have decided to adopt the following modular structure:</p>
+<ol>
+<li>
+<p><strong>App Modules</strong>:</p>
+<ul>
+<li><code>app-thunderbird</code> and <code>app-k9mail</code> are the modules for the two applications, Thunderbird for Android and K-9 Mail respectively. These modules will contain app-specific implementations, configurations, resources, and startup logic. They should solely depend on the <code>app-common</code> module for shared functionalities and may selectively integrate <code>feature</code> and <code>core</code> to setup app-specific needs.</li>
+</ul>
+</li>
+<li>
+<p><strong>App Common Module</strong>:</p>
+<ul>
+<li><code>app-common</code>: Acts as the central hub for shared code between both applications. This module serves as the primary “glue” that binds various <code>feature</code> modules together, providing a seamless integration point. While it can depend on <code>library</code> modules for additional functionalities, its main purpose is to orchestrate the interactions among the <code>feature</code> and <code>core</code> modules, ensuring similar functionality across both applications. This module should be kept lean to avoid unnecessary dependencies and ensure it remains focused on shared functionality.</li>
+</ul>
+</li>
+<li>
+<p><strong>Feature Modules</strong>:</p>
+<ul>
+<li><code>feature:*</code>: These are independent feature modules, that encapsulate distinct user-facing features. They are designed to be reusable and can be integrated into any application module as needed. They maintain dependencies on <code>core</code> modules and may interact with other <code>feature</code> or <code>library</code> modules.</li>
+</ul>
+</li>
+<li>
+<p><strong>Core Module</strong>:</p>
+<ul>
+<li><code>core:*</code>: The core modules contain essential utilities and base classes used across the entire project. These modules are grouped by their functionality (e.g., networking, database management, theming, common utilities). This segmentation allows for cleaner dependency management and specialization within foundational aspects.</li>
+</ul>
+</li>
+<li>
+<p><strong>Library Modules</strong>:</p>
+<ul>
+<li><code>library:*</code> These modules are for specific implementations that might be used across various features or applications. They could be third-party integrations or complex utilities and eventually shared across multiple projects.</li>
+</ul>
+</li>
+</ol>
+<pre class="mermaid">graph TD
+    subgraph APP[App]
+        APP_K9[&quot;`
+            **:app-k9mail**
+            K-9 Mail
+        `&quot;]
+        APP_TB[&quot;`
+            **:app-thunderbird**
+            Thunderbird for Android
+        `&quot;]
+    end
+
+    subgraph COMMON[App Common]
+        APP_COMMON[&quot;`
+            **:app-common**
+            Integration Code
+        `&quot;]
+    end
+
+    subgraph FEATURE[Feature]
+        FEATURE1[Feature 1]
+        FEATURE2[Feature 2]
+    end
+
+    subgraph CORE[Core]
+        CORE1[Core 1]
+        CORE2[Core 2]
+    end
+
+    subgraph LIBRARY[Library]
+        LIB1[Library 1]
+        LIB2[Library 2]
+    end
+
+    APP --&gt; |depends on| COMMON
+    COMMON --&gt; |integrates| FEATURE
+    FEATURE --&gt; |uses| CORE
+    FEATURE --&gt; |uses| LIBRARY
+
+    classDef module fill:yellow
+    classDef app fill:azure
+    classDef app_common fill:#ddd
+    class APP_K9 app
+    class APP_TB app
+    class APP_COMMON app_common
+</pre>
+<h3 id="legacy-modules"><a class="header" href="#legacy-modules">Legacy Modules</a></h3>
+<p>Modules that are still required for the project to function, but don’t follow the new project structure.</p>
+<p>These modules should not be used for new development.</p>
+<p>The goal is to migrate the functionality of these modules to the new structure over time. By placing them under the <code>legacy</code> module, we can easily identify and manage them.</p>
+<pre class="mermaid">graph TD
+    subgraph APP[App]
+        APP_K9[&quot;`
+            **:app-k9mail**
+            K-9 Mail
+        `&quot;]
+        APP_TB[&quot;`
+            **:app-thunderbird**
+            Thunderbird for Android
+        `&quot;]
+    end
+
+    subgraph COMMON[App Common]
+        APP_COMMON[&quot;`
+            **:app-common**
+            Integration Code
+        `&quot;]
+    end
+
+    subgraph FEATURE[Feature]
+        FEATURE1[Feature 1]
+        FEATURE2[Feature 2]
+        FEATURE3[Feature from Legacy]
+    end
+
+    subgraph CORE[Core]
+        CORE1[Core 1]
+        CORE2[Core 2]
+        CORE3[Core from Legacy]
+    end
+
+    subgraph LIBRARY[Library]
+        LIB1[Library 1]
+        LIB2[Library 2]
+    end
+
+    APP --&gt; |depends on| COMMON
+    COMMON --&gt; |integrates| FEATURE
+    FEATURE --&gt; |uses| CORE
+    FEATURE --&gt; |uses| LIBRARY
+
+    subgraph LEGACY[Legacy]
+        LEG[Legacy Code]
+    end
+
+    COMMON -.-&gt; |integrates| LEGACY
+    LEG -.-&gt; |migrate to| FEATURE3
+    LEG -.-&gt; |migrate to| CORE3
+
+    classDef module fill:yellow
+    classDef app fill:azure
+    classDef app_common fill:#ddd
+    classDef legacy fill:#F99
+    class APP_K9 app
+    class APP_TB app
+    class APP_COMMON app_common
+    class LEGACY legacy
+</pre>
+<h2 id="consequences-6"><a class="header" href="#consequences-6">Consequences</a></h2>
+<h3 id="positive-consequences-2"><a class="header" href="#positive-consequences-2">Positive Consequences</a></h3>
+<ul>
+<li>Improved modularity facilitates easier code maintenance and scaling.</li>
+<li>Clear separation of concerns reduces dependencies and potential conflicts between modules.</li>
+<li>Enhanced reusability of the <code>feature</code>, <code>core</code> and <code>library</code> modules across different parts of the application or even in different projects.</li>
+</ul>
+<h3 id="negative-consequences-2"><a class="header" href="#negative-consequences-2">Negative Consequences</a></h3>
+<ul>
+<li>Initial complexity in setting up and managing multiple modules may increase the learning curve and setup time for new developers.</li>
+<li>Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.</li>
+<li>Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.</li>
+</ul>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-document"><a class="header" href="#how-to-document">How to Document</a></h1>
+<p>This guide provides detailed instructions for contributing to and maintaining the documentation for the Thunderbird for Android project. It explains the tools used, the structure of the documentation, and guidelines for creating and editing content.</p>
+<p>We use <a href="https://rust-lang.github.io/mdBook/" title="" target="_blank">mdbook</a> to generate the documentation. The source files for the documentation are located in the <code>docs/</code> directory.</p>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>If you’d like to contribute to this project, please familiarize yourself with our <a href="CONTRIBUTING.html">Contribution Guide</a>.</p>
+<p>To add or modify the documentation, please edit the markdown files located in the <code>docs/</code> directory using standard Markdown syntax, including <a href="https://github.github.com/gfm/" title="" target="_blank">GitHub flavored Markdown</a>. You can use <code>headers</code>, <code>lists</code>, <code>links</code>, <code>code blocks</code>, and other Markdown features to structure your content.</p>
+<p>For creating diagrams, we use the <a href="https://mermaid-js.github.io/mermaid/#/" title="" target="_blank">mermaid</a> syntax. To include mermaid diagrams in your Markdown files, use the following syntax:</p>
+<pre><code class="language-markdown">```mermaid
+graph TD;
+    A--&gt;B;
+    A--&gt;C;
+    B--&gt;D;
+    C--&gt;D;
+```
+</code></pre>
+<p>Result:</p>
+<pre class="mermaid">graph TD;
+    A--&gt;B;
+    A--&gt;C;
+    B--&gt;D;
+    C--&gt;D;
+</pre>
+<h3 id="adding-a-new-page"><a class="header" href="#adding-a-new-page">Adding a New Page</a></h3>
+<p>To add a new page, create a markdown file in the <code>docs/</code> directory or within a suitable subfolder. For example:</p>
+<ul>
+<li>To create a new top-level page: <code>docs/new-page.md</code>.</li>
+<li>To create a page within a subfolder: <code>docs/subfolder/new-subpage.md</code>.</li>
+</ul>
+<p>To include the new page in the table of contents, add a link to the <code>SUMMARY.md</code> file pointing to newly created page.</p>
+<h3 id="organizing-with-subfolders"><a class="header" href="#organizing-with-subfolders">Organizing with Subfolders</a></h3>
+<p>Subfolders in the <code>docs/</code> folder can be used to organize related documentation. This can be useful if related topics should be grouped together. For example, we have a subfolder named <code>architecture/</code> for all documentation related to our application’s architecture.</p>
+<h3 id="linking-new-pages-in-the-summary"><a class="header" href="#linking-new-pages-in-the-summary">Linking New Pages in the Summary</a></h3>
+<p>The <code>SUMMARY.md</code> file serves as the table of contents (TOC) for the documentation. To include the new page in the TOC, a link needs to be added in the <code>SUMMARY.md</code> file, like so:</p>
+<pre><code class="language-markdown">- [Page Title](relative/path/to/file.md)
+</code></pre>
+<p>Indentation is used to create hierarchy in the TOC:</p>
+<pre><code class="language-markdown">- [Page Title](relative/path/to/file.md)
+  - [Subpage Title](relative/path/to/subfolder/file.md)
+</code></pre>
+<h2 id="documentation-toolchain"><a class="header" href="#documentation-toolchain">Documentation Toolchain</a></h2>
+<p>The documentation is built using mdbook and several extensions. Follow these steps to set up the required tools.</p>
+<h3 id="install-mdbook-and-extensions"><a class="header" href="#install-mdbook-and-extensions">Install mdbook and extensions</a></h3>
+<p>Ensure you have <a href="https://doc.rust-lang.org/cargo/" title="" target="_blank">Cargo</a> installed, then run:</p>
+<pre><code class="language-shell">./docs/install.sh
+</code></pre>
+<p>This script installs <code>mdbook</code> and the required extensions and other dependencies.</p>
+<p>Use –force to update the dependencies, recommended when mdbook was updated:</p>
+<pre><code class="language-shell">./docs/install.sh --force
+</code></pre>
+<h3 id="extensions"><a class="header" href="#extensions">Extensions</a></h3>
+<p>We use the following mdbook extensions:</p>
+<ul>
+<li><a href="https://github.com/jonahgoldwastaken/mdbook-external-links" title="" target="_blank">mdbook-external-links</a> for opening external links in a new tab.</li>
+<li><a href="https://github.com/badboy/mdbook-last-changed" title="" target="_blank">mdbook-last-changed</a> for last change date inclusion.</li>
+<li><a href="https://github.com/badboy/mdbook-mermaid" title="" target="_blank">mdbook-mermaid</a> for diagram generation.</li>
+<li><a href="https://github.com/slowsage/mdbook-pagetoc" title="" target="_blank">mdbook-pagetoc</a> for automatic page table of contents.</li>
+</ul>
+<h2 id="building-the-documentation"><a class="header" href="#building-the-documentation">Building the Documentation</a></h2>
+<p>Once you have <code>mdbook</code> and its extensions installed, you can build the documentation by running this command:</p>
+<pre><code class="language-shell">mdbook build docs
+</code></pre>
+<p>The generated documentation will be available in the <code>book/docs/latest/</code> folder.</p>
+<p>To preview the documentation, run the following command:</p>
+<pre><code class="language-shell">mdbook serve docs --open
+</code></pre>
+<p>The <code>mdbook serve docs</code> command will serve the book at <a href="http://localhost:3000" title="" target="_blank">http://localhost:3000</a> and rebuild the documentation on changes. The <code>--open</code> option will open the book in your web browser and is optional.</p>
+<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="assets/theme/mermaid.min.js"></script>
+        <script src="assets/theme/mermaid-init.js"></script>
+        <script src="assets/theme/navigation.js"></script>
+        <script src="assets/theme/pagetoc.js"></script>
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
