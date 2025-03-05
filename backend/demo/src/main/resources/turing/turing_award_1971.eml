@@ -1,9 +1,9 @@
 MIME-Version: 1.0
 From: John McCarthy <john.mccarthy@example.com>
 Date: Fri, 01 Jan 1971 12:00:00 -0400
-Message-ID: <turing1971@cketti.de>
+Message-ID: <turing1971@example.com>
 Subject: Generality in Artificial Intelligence
-To: Alan Turing <alan@turing.example>
+To: Alan Turing <alan.turing@example.com>
 Content-Type: multipart/alternative; boundary=089e01030106b6942904d85ad870
 
 --089e01030106b6942904d85ad870
