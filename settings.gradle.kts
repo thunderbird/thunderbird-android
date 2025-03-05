@@ -1,6 +1,6 @@
 pluginManagement {
+    includeBuild("build-plugin")
     repositories {
-        includeBuild("build-plugin")
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -23,9 +23,19 @@ dependencyResolutionManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        maven(url = "https://maven.mozilla.org/maven2") {
+            content {
+                includeGroup("org.mozilla.components")
+                includeGroup("org.mozilla.telemetry")
+            }
+        }
+        maven(url = "https://jitpack.io") {
+            content {
+                includeGroup("com.github.ByteHamster")
+                includeGroup("com.github.cketti")
+            }
+        }
         mavenCentral()
-        maven(url = "https://maven.mozilla.org/maven2")
-        maven(url = "https://jitpack.io")
     }
 }
 
