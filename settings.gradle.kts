@@ -192,3 +192,15 @@ include(
     ":library:html-cleaner",
     ":library:TokenAutoComplete",
 )
+
+check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
+    """
+        Java 17+ is required to build Thunderbird for Android.
+        But it found an incompatible Java version ${{JavaVersion.current()}}.
+
+        Java Home: [${System.getProperty("java.home")}]
+
+        Please install Java 17+ and set JAVA_HOME to the directory containing the Java 17+ installation.
+        https://developer.android.com/build/jdks#jdk-config-in-studio
+    """.trimIndent()
+}
