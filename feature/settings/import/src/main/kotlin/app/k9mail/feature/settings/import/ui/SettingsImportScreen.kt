@@ -1,6 +1,7 @@
 package app.k9mail.feature.settings.import.ui
 
 import android.os.Bundle
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.compose.AndroidFragment
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar

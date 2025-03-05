@@ -2,12 +2,13 @@ package app.k9mail.feature.funding.googleplay.ui.contribution
 
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
@@ -21,7 +22,7 @@ internal fun ContributionScreen(
     modifier: Modifier = Modifier,
     viewModel: ViewModel = koinViewModel<ContributionViewModel>(),
 ) {
-    val activity = LocalActivity.current
+    val activity = LocalActivity.current as ComponentActivity
     val context = LocalContext.current
 
     val (state, dispatch) = viewModel.observe { effect ->

@@ -1,6 +1,7 @@
 package app.k9mail.feature.account.server.settings.ui.common
 
 import android.view.WindowManager
+import androidx.activity.compose.LocalActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
@@ -11,7 +12,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.fragment.app.FragmentActivity
-import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
 
 /**
