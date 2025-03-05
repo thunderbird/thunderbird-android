@@ -34,3 +34,4 @@ A central module named `app-common` acts as the central integration point for sh
 
 - Potential for configuration complexities as differentiations increase between the two applications.
 - Higher initial setup time and learning curve for new developers due to the modular and decoupled architecture.
+

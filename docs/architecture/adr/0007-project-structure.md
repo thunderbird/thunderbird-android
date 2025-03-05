@@ -16,23 +16,14 @@ The project consists of two distinct applications. To improve maintainability an
 To achieve the goals outlined in the context, we have decided to adopt the following modular structure:
 
 1. **App Modules**:
-
    - `app-thunderbird` and `app-k9mail` are the modules for the two applications, Thunderbird for Android and K-9 Mail respectively. These modules will contain app-specific implementations, configurations, resources, and startup logic. They should solely depend on the `app-common` module for shared functionalities and may selectively integrate `feature` and `core` to setup app-specific needs.
-
 2. **App Common Module**:
-
    - `app-common`: Acts as the central hub for shared code between both applications. This module serves as the primary "glue" that binds various `feature` modules together, providing a seamless integration point. While it can depend on `library` modules for additional functionalities, its main purpose is to orchestrate the interactions among the `feature` and `core` modules, ensuring similar functionality across both applications. This module should be kept lean to avoid unnecessary dependencies and ensure it remains focused on shared functionality.
-
 3. **Feature Modules**:
-
    - `feature:*`: These are independent feature modules, that encapsulate distinct user-facing features. They are designed to be reusable and can be integrated into any application module as needed. They maintain dependencies on `core` modules and may interact with other `feature` or `library` modules.
-
 4. **Core Module**:
-
    - `core:*`: The core modules contain essential utilities and base classes used across the entire project. These modules are grouped by their functionality (e.g., networking, database management, theming, common utilities). This segmentation allows for cleaner dependency management and specialization within foundational aspects.
-
 5. **Library Modules**:
-
    - `library:*` These modules are for specific implementations that might be used across various features or applications. They could be third-party integrations or complex utilities and eventually shared across multiple projects.
 
 ```mermaid
@@ -164,3 +155,4 @@ graph TD
 - Initial complexity in setting up and managing multiple modules may increase the learning curve and setup time for new developers.
 - Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.
 - Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.
+

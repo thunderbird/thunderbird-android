@@ -7,5 +7,8 @@ The modules in this section are dedicated to the legacy UI implementation based 
 >
 > This is only maintained for the purpose of supporting the existing implementation.
 
+---
+
 > [!IMPORTANT]
 > Use the Composable UI along our [theme 2](../compose/theme2) and [design system](../compose/designsystem) design system instead.
+

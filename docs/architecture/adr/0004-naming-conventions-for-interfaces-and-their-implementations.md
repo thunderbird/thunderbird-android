@@ -36,10 +36,8 @@ We'll be using the following guidelines for naming interfaces and their implemen
 ## Consequences
 
 - **Positive Consequences**
-
   - Improved code readability and maintainability through consistent naming.
   - Reduced confusion and misunderstandings by using clear and descriptive names.
-
 - **Negative Consequences**
-
   - Initial effort is required to rename existing classes that do not follow these naming conventions.
+

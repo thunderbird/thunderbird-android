@@ -37,3 +37,4 @@ See our [ADR-0001](../architecture/adr/0001-switch-from-java-to-kotlin.md) for m
 - [Calling Kotlin from Java](https://kotlinlang.org/docs/java-to-kotlin-interop.html)
 - [Calling Java from Kotlin](https://kotlinlang.org/docs/java-interop.html)
 - [Kotlin and Android | Android Developers](https://developer.android.com/kotlin?hl=en)
+

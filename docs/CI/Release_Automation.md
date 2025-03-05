@@ -74,10 +74,10 @@ The environments are locked to the respective branch they belong to.
 
 These environments contain the secrets for signing. Their names follow this pattern:
 
-    <appName>_<releaseType>_<packageFlavor>
-    thunderbird_beta_full
-    thunderbird_beta_foss
-    k9mail_beta_foss
+        <appName>_<releaseType>_<packageFlavor>
+        thunderbird_beta_full
+        thunderbird_beta_foss
+        k9mail_beta_foss
 
 The following secrets are needed:
 

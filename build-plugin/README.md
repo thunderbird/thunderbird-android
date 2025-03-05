@@ -30,7 +30,7 @@ module's `build.gradle.kts`.
 
 - `thunderbird.dependency.check` - [Gradle Versions: Gradle plugin to discover dependency updates](https://github.com/ben-manes/gradle-versions-plugin)
   - Use `./gradlew dependencyUpdates` to generate a dependency update report
-- `thunderbird.quality.detekt` - [Detekt - Static code analysis for Kotlin ](https://detekt.dev/)
+- `thunderbird.quality.detekt` - [Detekt - Static code analysis for Kotlin](https://detekt.dev/)
   - Use `./gradlew detekt` to check for any issue and `./gradlew detektBaseline` in case you can't fix the reported
     issue.
 - `thunderbird.quality.spotless` - [Spotless - Code formatter](https://github.com/diffplug/spotless)
@@ -75,3 +75,4 @@ plugins {
 
 - [Herding Elephants | Square Corner Blog](https://developer.squareup.com/blog/herding-elephants/)
 - [Idiomatic Gradle: How do I idiomatically structure a large build with Gradle](https://github.com/jjohannes/idiomatic-gradle#idiomatic-build-logic-structure)
+

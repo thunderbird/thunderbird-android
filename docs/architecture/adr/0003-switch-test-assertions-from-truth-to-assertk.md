@@ -26,14 +26,12 @@ We've further committed to converting all pre-existing tests from Truth to asser
 **Note**: The migration of all Truth tests to assertk has already been completed.
 
 - **Positive Consequences**
-
   - **Ease of Transition**: The syntax of assertk is very similar to Truth, which makes the migration process smoother.
   - **Kotlin-Friendly**: assertk is designed specifically for Kotlin, allowing us to write more idiomatic and
     expressive Kotlin tests.
-
 - **Negative Consequences**
-
   - **Dependency**: While we are replacing one library with another, introducing a new library always carries the risk
     of bugs or future deprecation.
   - **Migration Effort**: Existing tests written using Truth will need to be migrated to use assertk, requiring some
     effort, although mitigated by the similar syntax.
+
