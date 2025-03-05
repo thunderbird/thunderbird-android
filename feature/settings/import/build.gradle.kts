@@ -23,6 +23,7 @@ dependencies {
     implementation(projects.feature.account.oauth)
     implementation(libs.appauth)
 
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.fragment.compose)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.fastadapter)

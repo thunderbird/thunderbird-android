@@ -17,7 +17,7 @@ androidMaterial = "1.12.0"
 # AGP and tools should be updated together
 androidGradlePlugin = "8.7.3"
 androidTools = "31.7.3"
-androidxActivity = "1.9.3"
+androidxActivity = "1.10.1"
 androidxAnnotation = "1.9.1"
 androidxAppCompat = "1.7.0"
 androidxBiometric = "1.1.0"

@@ -1,6 +1,8 @@
 package app.k9mail.feature.account.server.settings.ui.common
 
+import android.app.Activity
 import android.security.KeyChain
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedFakeSelect
 import app.k9mail.core.ui.compose.designsystem.molecule.input.inputContentPadding
 import app.k9mail.feature.account.server.settings.R
@@ -27,7 +28,7 @@ fun ClientCertificateInput(
             .fillMaxWidth()
             .then(modifier),
     ) {
-        val activity = LocalActivity.current
+        val activity = LocalActivity.current as Activity
         TextFieldOutlinedFakeSelect(
             text = alias ?: stringResource(R.string.account_server_settings_client_certificate_none_selected),
             onClick = {

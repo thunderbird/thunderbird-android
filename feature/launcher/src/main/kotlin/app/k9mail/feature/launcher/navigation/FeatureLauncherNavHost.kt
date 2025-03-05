@@ -1,10 +1,11 @@
 package app.k9mail.feature.launcher.navigation
 
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import app.k9mail.core.ui.compose.common.activity.LocalActivity
 import app.k9mail.feature.account.edit.navigation.accountEditRoute
 import app.k9mail.feature.account.setup.navigation.accountSetupRoute
 import app.k9mail.feature.funding.api.FundingNavigation
@@ -21,7 +22,7 @@ fun FeatureLauncherNavHost(
     accountSetupFinishedLauncher: AccountSetupFinishedLauncher = koinInject(),
     fundingNavigation: FundingNavigation = koinInject(),
 ) {
-    val activity = LocalActivity.current
+    val activity = LocalActivity.current as ComponentActivity
 
     NavHost(
         navController = navController,
