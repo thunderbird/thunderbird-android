@@ -1,13 +1,12 @@
 package app.k9mail.backend.demo
 
 import com.fsck.k9.mail.FolderType
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.Serializable
 
-typealias MessageStoreInfo = Map<String, FolderData>
-
-@JsonClass(generateAdapter = true)
-data class FolderData(
+@Serializable
+internal data class DemoFolder(
     val name: String,
     val type: FolderType,
     val messageServerIds: List<String>,
+    val subFolders: DemoFolders? = null,
 )
