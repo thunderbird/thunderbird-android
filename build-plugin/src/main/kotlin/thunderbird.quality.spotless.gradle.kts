@@ -21,11 +21,5 @@ configure<SpotlessExtension> {
         libs = libs,
     )
 
-    configureMarkdownCheck(
-        listOf(
-            "*.md",
-        ),
-    )
-
     configureMiscCheck()
 }

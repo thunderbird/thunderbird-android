@@ -50,8 +50,8 @@ This branch represents the stable version of Thunderbird, which is released to t
 
 ## Sample Release Timeline
 
-| Milestone                      | Details   | Date   |
-| ------------------------------ | --------- | ------ |
+|           Milestone            |  Details  |  Date  |
+|--------------------------------|-----------|--------|
 | TfA 11.0a1 starts              |           | Feb 28 |
 | TfA merge 11.0a1 main->beta    |           | May 2  |
 | TfA 11.0b1                     |           | May 5  |
@@ -134,8 +134,8 @@ While the version name changes, it must be ensured that the version code stays t
 Merges are performed with the `git merge` command:
 
 ```sh
- git checkout beta
- git merge main
+git checkout beta
+git merge main
 ```
 
 This approach enables various benefits, including:
@@ -202,3 +202,4 @@ These are the general steps for a release:
 7. Wait for Play Store review to complete.
 8. Update F-Droid to new TfA and K-9 releases.
 9. Send notification to Matrix channels, and beta or planning mailing lists.
+

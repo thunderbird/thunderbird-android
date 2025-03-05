@@ -36,24 +36,6 @@ fun SpotlessExtension.configureKotlinGradleCheck(
     }
 }
 
-fun SpotlessExtension.configureMarkdownCheck(
-    targets: List<String>,
-) {
-    format("markdown") {
-        // Set the prettier version explicitly, as the default version set in Spotless is outdated.
-        // Check https://github.com/prettier/prettier for the latest version and update the version here.
-        prettier("3.3.3").config(
-            mapOf(
-                "parser" to "markdown",
-            ),
-        )
-        target(*targets.toTypedArray())
-        targetExclude(
-            "**/build/",
-        )
-    }
-}
-
 fun SpotlessExtension.configureMiscCheck() {
     format("misc") {
         target(
