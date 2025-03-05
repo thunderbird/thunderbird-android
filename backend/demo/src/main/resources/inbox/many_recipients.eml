@@ -1,36 +1,36 @@
 MIME-Version: 1.0
-From: "Alice" <from1@k9mail.example>, "Bob" <from2@k9mail.example>
-Sender: "Bernd" <sender@k9mail.example>
-Reply-To: <reply-to@k9mail.example>
+From: "Alice" <from1@example.com>, "Bob" <from2@example.com>
+Sender: "Bernd" <sender@example.com>
+Reply-To: <reply-to@example.com>
 Date: Mon, 23 Jan 2023 12:00:00 +0100
-Message-ID: <inbox-2@k9mail.example>
+Message-ID: <inbox-2@example.com>
 Subject: Message details demo
-To: "User 1" <to1@k9mail.example>,
- "User 2" <to2@k9mail.example>,
- "User 3" <to3@k9mail.example>,
- "User 4" <to4@k9mail.example>,
- "User 5" <to5@k9mail.example>,
- "User 6" <to6@k9mail.example>,
- "User 7" <to7@k9mail.example>,
- "User 8" <to8@k9mail.example>,
- "User 9" <to9@k9mail.example>,
- "User 10" <to10@k9mail.example>,
- "User 11" <to11@k9mail.example>,
- "User 12" <to12@k9mail.example>,
- "User 13" <to13@k9mail.example>,
- "User 14" <to14@k9mail.example>,
- "User 15" <to15@k9mail.example>,
- "User 16" <to16@k9mail.example>,
- "User 17" <to17@k9mail.example>,
- "User 18" <to18@k10mail.example>,
- "User 19" <to19@k11mail.example>,
- "User 20" <to20@k12mail.example>
-Cc: "Copy 1" <cc1@k9mail.example>,
- "Copy 2" <cc2@k9mail.example>,
- "Copy 3" <cc3@k9mail.example>
-Bcc: "Blind 1" <bcc1@k9mail.example>,
- "Blind 2" <bcc2@k9mail.example>,
- "Blind 3" <bcc3@k9mail.example>
+To: "User 1" <to1@example.com>,
+ "User 2" <to2@example.com>,
+ "User 3" <to3@example.com>,
+ "User 4" <to4@example.com>,
+ "User 5" <to5@example.com>,
+ "User 6" <to6@example.com>,
+ "User 7" <to7@example.com>,
+ "User 8" <to8@example.com>,
+ "User 9" <to9@example.com>,
+ "User 10" <to10@example.com>,
+ "User 11" <to11@example.com>,
+ "User 12" <to12@example.com>,
+ "User 13" <to13@example.com>,
+ "User 14" <to14@example.com>,
+ "User 15" <to15@example.com>,
+ "User 16" <to16@example.com>,
+ "User 17" <to17@example.com>,
+ "User 18" <to18@e10.example.com>,
+ "User 19" <to19@e11.example.com>,
+ "User 20" <to20@e12.example.com>
+Cc: "Copy 1" <cc1@example.com>,
+ "Copy 2" <cc2@example.com>,
+ "Copy 3" <cc3@example.com>
+Bcc: "Blind 1" <bcc1@example.com>,
+ "Blind 2" <bcc2@example.com>,
+ "Blind 3" <bcc3@example.com>
 Content-Type: text/plain; charset=UTF-8
 
 This message contains…

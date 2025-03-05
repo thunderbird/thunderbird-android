@@ -1,11 +1,11 @@
 MIME-Version: 1.0
-From: Bob <bob@k9mail.example>
+From: Bob <bob@example.com>
 Date: Fri, 10 Feb 2023 10:05:00 +0100
-Message-ID: <thread-2@k9mail.example>
+Message-ID: <thread-2@example.com>
 Subject: Re: Thread
-To: Alice <alice@k9mail.example>
-In-Reply-To: <thread-1@k9mail.example>
-References: <thread-2@k9mail.example>
+To: Alice <alice@example.com>
+In-Reply-To: <thread-1@example.com>
+References: <thread-2@example.com>
 Content-Type: text/plain; charset=UTF-8
 
 This is the second message in this thread.
