@@ -175,32 +175,27 @@
 <h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
 <p>To achieve the goals outlined in the context, we have decided to adopt the following modular structure:</p>
 <ol>
-<li>
-<p><strong>App Modules</strong>:</p>
+<li><strong>App Modules</strong>:
 <ul>
 <li><code>app-thunderbird</code> and <code>app-k9mail</code> are the modules for the two applications, Thunderbird for Android and K-9 Mail respectively. These modules will contain app-specific implementations, configurations, resources, and startup logic. They should solely depend on the <code>app-common</code> module for shared functionalities and may selectively integrate <code>feature</code> and <code>core</code> to setup app-specific needs.</li>
 </ul>
 </li>
-<li>
-<p><strong>App Common Module</strong>:</p>
+<li><strong>App Common Module</strong>:
 <ul>
 <li><code>app-common</code>: Acts as the central hub for shared code between both applications. This module serves as the primary “glue” that binds various <code>feature</code> modules together, providing a seamless integration point. While it can depend on <code>library</code> modules for additional functionalities, its main purpose is to orchestrate the interactions among the <code>feature</code> and <code>core</code> modules, ensuring similar functionality across both applications. This module should be kept lean to avoid unnecessary dependencies and ensure it remains focused on shared functionality.</li>
 </ul>
 </li>
-<li>
-<p><strong>Feature Modules</strong>:</p>
+<li><strong>Feature Modules</strong>:
 <ul>
 <li><code>feature:*</code>: These are independent feature modules, that encapsulate distinct user-facing features. They are designed to be reusable and can be integrated into any application module as needed. They maintain dependencies on <code>core</code> modules and may interact with other <code>feature</code> or <code>library</code> modules.</li>
 </ul>
 </li>
-<li>
-<p><strong>Core Module</strong>:</p>
+<li><strong>Core Module</strong>:
 <ul>
 <li><code>core:*</code>: The core modules contain essential utilities and base classes used across the entire project. These modules are grouped by their functionality (e.g., networking, database management, theming, common utilities). This segmentation allows for cleaner dependency management and specialization within foundational aspects.</li>
 </ul>
 </li>
-<li>
-<p><strong>Library Modules</strong>:</p>
+<li><strong>Library Modules</strong>:
 <ul>
 <li><code>library:*</code> These modules are for specific implementations that might be used across various features or applications. They could be third-party integrations or complex utilities and eventually shared across multiple projects.</li>
 </ul>
@@ -327,7 +322,7 @@
 <li>Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.</li>
 <li>Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.</li>
 </ul>
-<footer id="last-change">Last change: 2025-03-03, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/de455ec">de455ec</a></footer>
+<footer id="last-change">Last change: 2025-03-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/9a15a96">9a15a96</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
