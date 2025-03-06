@@ -1,0 +1,8 @@
+Thunderbird for Android version 9.0, based on K-9 Mail. Changes include:
+- Basic support for Android 15
+- Add a link to the support article when signing in with Google
+- Account setup attempts email provider's autoconfig first, then falls back to ISPDB
+- Updated translations for multiple languages
+- The changelog now properly displays release versions
+- A wrong translation of the app name has been fixed
+- Dependencies have been updated to fix a couple of bugs
