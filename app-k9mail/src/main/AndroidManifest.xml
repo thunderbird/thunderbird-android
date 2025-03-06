@@ -81,7 +81,8 @@
 
 
         <receiver android:name="app.k9mail.feature.widget.message.glance.MessageListWidgetReciever"
-            android:label="Message List (Beta)"
+            android:label="@string/message_list_glance_widget_label"
+            android:enabled="@bool/home_screen_widgets_enabled"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

@@ -12,7 +12,6 @@ import timber.log.Timber
 class MessageListWidgetManager(
     private val context: Context,
     private val messageListRepository: MessageListRepository,
-    private val config: MessageListWidgetConfig,
 ) {
     private var appWidgetManager: AppWidgetManager? = null
 
@@ -94,7 +93,7 @@ class MessageListWidgetManager(
     private fun resetMessageListWidget() {
         val appWidgetIds = getAppWidgetIds()
         if (appWidgetIds.isNotEmpty()) {
-            val intent = Intent(context, config.providerClass).apply {
+            val intent = Intent(context, BaseMessageListWidgetProvider::class.java).apply {
                 action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
                 putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
             }
@@ -104,7 +103,7 @@ class MessageListWidgetManager(
     }
 
     private fun getAppWidgetIds(): IntArray {
-        val componentName = ComponentName(context, config.providerClass)
+        val componentName = ComponentName(context, BaseMessageListWidgetProvider::class.java)
         return appWidgetManager?.getAppWidgetIds(componentName) ?: intArrayOf()
     }
 }

@@ -109,11 +109,11 @@ class MessageListWidget : GlanceAppWidget(), KoinComponent {
                             openApp(context)
                         },
                 ) {
-                    Text("Unified Inbox", style = TextStyle(color = GlanceTheme.colors.primary, fontSize = 20.sp))
+                    Text(context.getString(R.string.message_list_widget_inbox_title), style = TextStyle(color = GlanceTheme.colors.primary, fontSize = 20.sp))
                     Spacer(GlanceModifier.defaultWeight())
                     Image(
                         ImageProvider(Icons.Outlined.Edit),
-                        "",//context.getString(R.string.message_list_widget_compose_action),
+                        context.getString(R.string.message_list_widget_compose_action),
                         GlanceModifier.padding(2.dp).padding(end = 6.dp).clickable {
                             val intent = Intent(context, MessageCompose::class.java).apply {
                                 action = MessageCompose.ACTION_COMPOSE
