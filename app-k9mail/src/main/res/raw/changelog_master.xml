@@ -5,15 +5,6 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
-    <release version="9.0" versioncode="39022" date="2025-03-03">
-        <change>Basic support for Android 15</change>
-        <change>Add a link to the support article when signing in with Google</change>
-        <change>Account setup attempts email provider's autoconfig first, then falls back to ISPDB</change>
-        <change>Updated translations for multiple languages</change>
-        <change>The changelog now properly displays release versions</change>
-        <change>A wrong translation of the app name has been fixed</change>
-        <change>Dependencies have been updated to fix a couple of bugs</change>
-    </release>
     <release version="8.2" versioncode="39019" date="2024-12-09">
         <change>You can now support K-9 Mail development with financial contributions.</change>
         <change>Account initials now use the display name</change>
