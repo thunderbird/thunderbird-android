@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
-    <release version="9.0" versioncode="9" date="2025-03-03">
-        <change>Basic support for Android 15</change>
-        <change>Add a link to the support article when signing in with Google</change>
-        <change>Account setup attempts email provider's autoconfig first, then falls back to ISPDB</change>
-        <change>Updated translations for multiple languages</change>
-        <change>The changelog now properly displays release versions</change>
-        <change>A wrong translation of the app name has been fixed</change>
-        <change>Dependencies have been updated to fix a couple of bugs</change>
-    </release>
     <release version="8.2" versioncode="8" date="2024-12-09">
         <change>Account initials now use the display name</change>
         <change>Account icons remain in the same position when selected</change>
