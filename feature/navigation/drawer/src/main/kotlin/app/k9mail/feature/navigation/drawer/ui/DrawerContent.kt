@@ -4,6 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBars
@@ -11,7 +12,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -32,11 +36,13 @@ internal fun DrawerContent(
     onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val leftInset = getLeftInset()
+
     Surface(
         modifier = modifier
-            .width(DRAWER_WIDTH)
-            .fillMaxHeight()
             .windowInsetsPadding(WindowInsets.statusBars)
+            .width(DRAWER_WIDTH + leftInset)
+            .fillMaxHeight()
             .testTag("DrawerContent"),
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
@@ -87,3 +93,14 @@ internal fun DrawerContent(
         }
     }
 }
+
+@Composable
+fun getLeftInset(): Dp {
+    return WindowInsets.displayCutout.getLeft(
+        density = LocalDensity.current,
+        layoutDirection = LocalLayoutDirection.current,
+    ).pxToDp()
+}
+
+@Composable
+fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }
