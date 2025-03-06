@@ -3,9 +3,12 @@ package app.k9mail.feature.navigation.drawer.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -33,6 +36,7 @@ internal fun DrawerContent(
         modifier = modifier
             .width(DRAWER_WIDTH)
             .fillMaxHeight()
+            .windowInsetsPadding(WindowInsets.statusBars)
             .testTag("DrawerContent"),
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
