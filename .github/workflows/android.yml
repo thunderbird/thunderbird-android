@@ -46,8 +46,5 @@ jobs:
       - name: Quality - Dependency Guard
         run: ./gradlew dependencyGuard
 
-      - name: Build
-        run: ./gradlew assembleDebug
-
-      - name: Test
-        run: ./gradlew testsOnCi
+      - name: Build (run full build and tests)
+        run: ./gradlew build
