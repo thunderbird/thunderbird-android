@@ -916,6 +916,7 @@ jobs:
         with:
           service_account: ${{ steps.prepare_ftp.outputs.SERVICE_ACCOUNT }}
           workload_identity_provider: ${{ steps.prepare_ftp.outputs.WORKLOAD_IDENTITY_PROVIDER }}
+          gzip: false
 
       - name: GCS Upload of APK Package to FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
@@ -923,6 +924,7 @@ jobs:
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH }}/${{ steps.rename.outputs.PKG_FILE }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}
+          gzip: false
 
       - name: GCS Upload of APK Package to FTP Nightly Latest
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
@@ -930,6 +932,7 @@ jobs:
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.rename.outputs.PKG_FILE }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+          gzip: false
 
       - name: GCS Upload of Source Tar to FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
@@ -937,6 +940,7 @@ jobs:
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}
+          gzip: false
 
       - name: GCS Upload of Source Tar to FTP Nightly Latest
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
@@ -944,6 +948,7 @@ jobs:
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
+          gzip: false
 
       - name: Summary
         uses: actions/github-script@v7
