@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.appauth)
 
     implementation(libs.glide)
+    implementation(project(":feature:widget:message-list-glance"))
     annotationProcessor(libs.glide.compiler)
 
     if (project.hasProperty("k9mail.enableLeakCanary") && project.property("k9mail.enableLeakCanary") == "true") {

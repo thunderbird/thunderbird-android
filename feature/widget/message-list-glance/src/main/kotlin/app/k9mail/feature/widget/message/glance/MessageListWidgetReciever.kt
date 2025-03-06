@@ -1,4 +1,4 @@
-package app.k9mail.feature.widget.message.list
+package app.k9mail.feature.widget.message.glance
 
 import android.app.PendingIntent
 import android.content.Context
@@ -56,12 +56,12 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class MyAppWidgetReceiver : GlanceAppWidgetReceiver() {
-    override val glanceAppWidget: GlanceAppWidget = MyAppWidget()
+class MessageListWidgetReciever : GlanceAppWidgetReceiver() {
+    override val glanceAppWidget: GlanceAppWidget = MessageListWidget()
 }
 
 
-class MyAppWidget : GlanceAppWidget(), KoinComponent {
+class MessageListWidget : GlanceAppWidget(), KoinComponent {
 
     private val messageListLoader: MessageListLoader by inject()
     private val coreResourceProvider: CoreResourceProvider by inject()
@@ -71,9 +71,6 @@ class MyAppWidget : GlanceAppWidget(), KoinComponent {
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
-        // In this method, load data needed to render the AppWidget.
-        // Use `withContext` to switch to another thread for long running
-        // operations.
         provideContent {
             var mails by remember { mutableStateOf(lastMailList) }
 
@@ -116,7 +113,7 @@ class MyAppWidget : GlanceAppWidget(), KoinComponent {
                     Spacer(GlanceModifier.defaultWeight())
                     Image(
                         ImageProvider(Icons.Outlined.Edit),
-                        context.getString(R.string.message_list_widget_compose_action),
+                        "",//context.getString(R.string.message_list_widget_compose_action),
                         GlanceModifier.padding(2.dp).padding(end = 6.dp).clickable {
                             val intent = Intent(context, MessageCompose::class.java).apply {
                                 action = MessageCompose.ACTION_COMPOSE
