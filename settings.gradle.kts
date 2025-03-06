@@ -1,7 +1,13 @@
 pluginManagement {
+    includeBuild("build-plugin")
     repositories {
-        includeBuild("build-plugin")
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
@@ -10,10 +16,26 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        maven(url = "https://maven.mozilla.org/maven2") {
+            content {
+                includeGroup("org.mozilla.components")
+                includeGroup("org.mozilla.telemetry")
+            }
+        }
+        maven(url = "https://jitpack.io") {
+            content {
+                includeGroup("com.github.ByteHamster")
+                includeGroup("com.github.cketti")
+            }
+        }
         mavenCentral()
-        maven(url = "https://maven.mozilla.org/maven2")
-        maven(url = "https://jitpack.io")
     }
 }
 
@@ -180,3 +202,15 @@ include(
     ":library:html-cleaner",
     ":library:TokenAutoComplete",
 )
+
+check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
+    """
+        Java 17+ is required to build Thunderbird for Android.
+        But it found an incompatible Java version ${{JavaVersion.current()}}.
+
+        Java Home: [${System.getProperty("java.home")}]
+
+        Please install Java 17+ and set JAVA_HOME to the directory containing the Java 17+ installation.
+        https://developer.android.com/build/jdks#jdk-config-in-studio
+    """.trimIndent()
+}
