@@ -3,6 +3,7 @@ package com.fsck.k9
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.AccountDefaultsProvider
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.AccountRemovedListener
 import app.k9mail.legacy.account.AccountsChangeListener
@@ -27,11 +28,13 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
 
+@Suppress("MaxLineLength")
 class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
     private val accountPreferenceSerializer: AccountPreferenceSerializer,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : AccountManager {
     private val accountLock = Any()
     private val storageLock = Any()
@@ -87,6 +90,7 @@ class Preferences internal constructor(
 
                     accounts[uuid] = account
                     accountsInOrder.add(account)
+                    accountDefaultsProvider.applyDefaults(account)
                 }
             }
 

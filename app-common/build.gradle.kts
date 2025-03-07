@@ -11,5 +11,7 @@ dependencies {
 
     implementation(projects.legacy.account)
 
+    implementation(projects.core.featureflags)
+
     implementation(projects.feature.migration.provider)
 }

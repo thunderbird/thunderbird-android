@@ -6,6 +6,7 @@ import app.k9mail.core.featureflag.FeatureFlag
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
 import app.k9mail.feature.telemetry.telemetryModule
+import app.k9mail.legacy.account.AccountDefaultsProvider
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.ControllerExtension
@@ -46,6 +47,7 @@ val testModule = module {
     single { mock<NotificationActionCreator>() }
     single { mock<NotificationStrategy>() }
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
+    single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
     single { mock<WorkManager>() }
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
