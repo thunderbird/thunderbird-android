@@ -88,7 +88,7 @@ class Account(
 
     @get:Synchronized
     @set:Synchronized
-    var isNotifySelfNewMail = false
+    var isNotifySelfNewMail = true
 
     @get:Synchronized
     @set:Synchronized
