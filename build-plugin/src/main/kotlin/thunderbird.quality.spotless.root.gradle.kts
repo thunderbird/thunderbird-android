@@ -10,11 +10,6 @@ configure<SpotlessExtension> {
             "build-plugin/src/*/kotlin/*.kt",
             "build-plugin/src/*/kotlin/**/*.kt",
         )
-        targetExclude(
-            "build/",
-            "build-plugin/build/",
-        )
-
         ktlint(libs.versions.ktlint.get())
             .setEditorConfigPath("${project.rootProject.projectDir}/.editorconfig")
             .editorConfigOverride(kotlinEditorConfigOverride)
@@ -26,10 +21,6 @@ configure<SpotlessExtension> {
             "build-plugin/*.gradle.kts",
             "build-plugin/src/*/kotlin/*.kts",
             "build-plugin/src/*/kotlin/**/*.kts",
-        )
-        targetExclude(
-            "build/",
-            "build-plugin/build/",
         )
 
         ktlint(libs.versions.ktlint.get())
@@ -47,9 +38,6 @@ configure<SpotlessExtension> {
             "*.md",
             "docs/*.md",
             "docs/**/*.md",
-        )
-        targetExclude(
-            "build/",
         )
         flexmark()
     }
