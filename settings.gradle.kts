@@ -95,6 +95,7 @@ include(
 
 include(
     ":feature:widget:message-list",
+    ":feature:widget:message-list-glance",
     ":feature:widget:shortcut",
     ":feature:widget:unread",
 )
