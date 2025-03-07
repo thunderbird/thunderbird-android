@@ -73,8 +73,10 @@
     <string name="unsubscribe_action">Dad-tanysgrifio</string>
     <string name="show_headers_action">Dangos penynnau</string>
     <plurals name="copy_address_to_clipboard">
+        <item quantity="zero">Copïwyd y cyfeiriad i\'r clipfwrdd</item>
         <item quantity="one">Copïwyd y cyfeiriad i\'r clipfwrdd</item>
         <item quantity="two">Copïwyd y cyfeiriadau i\'r clipfwrdd</item>
+        <item quantity="few">Copïwyd y cyfeiriadau i\'r clipfwrdd</item>
         <item quantity="many">Copïwyd y cyfeiriadau i\'r clipfwrdd</item>
         <item quantity="other">Copïwyd y cyfeiriadau i\'r clipfwrdd</item>
     </plurals>
@@ -104,8 +106,10 @@
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
+        <item quantity="zero"><xliff:g id="new_message_count">%d</xliff:g> neges newydd</item>
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> neges newydd</item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> neges newydd</item>
+        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> neges newydd</item>
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> neges newydd</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> neges newydd</item>
     </plurals>
@@ -558,8 +562,10 @@
     <string name="dialog_confirm_delete_title">Cadarnhau dileu</string>
     <string name="dialog_confirm_delete_message">Wyt ti wir eisiau dileu\'r neges hon?</string>
     <plurals name="dialog_confirm_delete_messages">
+        <item quantity="zero">Wyt ti wir eisiau dileu\'r neges hon?</item>
         <item quantity="one">Wyt ti wir eisiau dileu\'r neges hon?</item>
         <item quantity="two">Wyt ti wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
+        <item quantity="few">Wyt ti wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
         <item quantity="many">Wyt ti wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
         <item quantity="other">Wyt ti wir eisiau dileu <xliff:g id="message_count">%1$d</xliff:g> neges?</item>
     </plurals>
@@ -573,8 +579,10 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Nac ydw</string>
     <string name="dialog_confirm_spam_title">Cadarnhau symud i\'r ffolder sbam</string>
     <plurals name="dialog_confirm_spam_message">
+        <item quantity="zero">Wyt ti wir eisiau symud y neges hon i\'r ffolder sbam?</item>
         <item quantity="one">Wyt ti wir eisiau symud y neges hon i\'r ffolder sbam?</item>
         <item quantity="two">Wyt ti wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
+        <item quantity="few">Wyt ti wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
         <item quantity="many">Wyt ti wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
         <item quantity="other">Wyt ti wir eisiau symud <xliff:g id="message_count">%1$d</xliff:g> neges i\'r ffolder sbam?</item>
     </plurals>
@@ -621,14 +629,18 @@
     <string name="account_settings_remote_search_num_label">Terfyn chwiliad gweinydd</string>
     <string name="remote_search_sending_query">Yn anfon gwiriad i\'r gweinydd</string>
     <plurals name="remote_search_downloading">
+        <item quantity="zero">Yn nôl %d canlyniad</item>
         <item quantity="one">Yn nôl %d canlyniad</item>
         <item quantity="two">Yn nôl %d ganlyniad</item>
+        <item quantity="few">Yn nôl %d ganlyniad</item>
         <item quantity="many">Yn nôl %d canlyniad</item>
         <item quantity="other">Yn nôl %d canlyniad</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
+        <item quantity="zero">Yn nôl %1$d o %2$d canlyniad</item>
         <item quantity="one">Yn nôl %1$d o %2$d canlyniad</item>
         <item quantity="two">Yn nôl %1$d o %2$d ganlyniad</item>
+        <item quantity="few">Yn nôl %1$d o %2$d ganlyniad</item>
         <item quantity="many">Yn nôl %1$d o %2$d canlyniad</item>
         <item quantity="other">Yn nôl %1$d o %2$d canlyniad</item>
     </plurals>

@@ -7,10 +7,6 @@ android {
     // Using "importing" because "import" is not allowed in Java package names (it's fine with Kotlin, though)
     namespace = "app.k9mail.feature.settings.importing"
     resourcePrefix = "settings_import_"
-
-    lint {
-        baseline = file("lint-baseline.xml")
-    }
 }
 
 dependencies {

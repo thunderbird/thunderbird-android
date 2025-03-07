@@ -22,10 +22,10 @@
     <string name="settings_import_later_button">Yn hwyrach</string>
     <string name="settings_importing">Yn mewnforio gosodiadau…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="zero"></item>
+        <item quantity="zero">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrinair y gweinydd.</item>
         <item quantity="one">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrinair y gweinydd.</item>
         <item quantity="two">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrineiriau\'r gweinydd.</item>
-        <item quantity="few"></item>
+        <item quantity="few">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrineiriau\'r gweinydd.</item>
         <item quantity="many">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrineiriau\'r gweinydd.</item>
         <item quantity="other">I fedru defnyddio\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" mae\'n rhaid rhoi cyfrineiriau\'r gweinydd.</item>
     </plurals>
