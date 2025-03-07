@@ -384,7 +384,7 @@
     <string name="global_settings_threaded_view_summary">Grupper meldingar i samtalar</string>
     <string name="upgrade_databases_title">Oppgraderer databasar</string>
     <string name="upgrade_databases_unspecified">Oppgraderer databasar …</string>
-    <string name="upgrade_database_format">Oppgraderer databasen til kontoen \\<xliff:g id="account">%s</xliff:g>\\</string>
+    <string name="upgrade_database_format">Oppgraderer databasen til kontoen \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="global_settings_splitview_mode_label">Splitt skjermen</string>
     <string name="global_settings_splitview_always">Alltid</string>
     <string name="global_settings_splitview_never">Aldri</string>

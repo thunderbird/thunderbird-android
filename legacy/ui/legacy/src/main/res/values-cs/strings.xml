@@ -71,7 +71,7 @@
     <string name="flag_action">Přidat \u2605</string>
     <string name="unflag_action">Odebrat \u2606</string>
     <string name="copy_action">Kopírovat</string>
-    <string name="unsubscribe_action">Zrušit přihlášení se k odběru</string>
+    <string name="unsubscribe_action">Odhlásit odběr</string>
     <string name="show_headers_action">Zobrazit hlavičku</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adresa zkopírována do schránky</item>
@@ -353,7 +353,7 @@
     <string name="account_settings_sync">Stahování pošty</string>
     <string name="account_settings_folders">Složky</string>
     <string name="account_settings_quote_prefix_label">Předpona citovaného textu</string>
-    <string name="account_settings_crypto">Šifrování mezi odesilatelem a příjemcem</string>
+    <string name="account_settings_crypto">Koncové šifrování</string>
     <string name="account_settings_crypto_app">Zapnout podporu OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Vybrat OpenPGP aplikaci</string>
     <string name="account_settings_crypto_key">Nastavit klíč pro šifrování mezi odesilatelem a příjemcem</string>
@@ -656,7 +656,7 @@
     <string name="global_settings_threaded_view_summary">Sjednotit zprávy patřící ke stejnému vláknu</string>
     <string name="upgrade_databases_title">Aktualizace databází</string>
     <string name="upgrade_databases_unspecified">Aktualizuji databáze…</string>
-    <string name="upgrade_database_format">Přechod na novější verzi databáze účtu \\<xliff:g id="account">%s</xliff:g>\\</string>
+    <string name="upgrade_database_format">Přechod na novější verzi databáze účtu „<xliff:g id="account">%s</xliff:g>“</string>
     <string name="global_settings_splitview_mode_label">Zobraz rozdělení obrazovky</string>
     <string name="global_settings_splitview_always">Vždy</string>
     <string name="global_settings_splitview_never">Nikdy</string>
@@ -789,7 +789,7 @@
     <string name="account_settings_crypto_encrypt_subject_subtitle">Nemusí být podporováno některými příjemci</string>
     <string name="toast_account_not_found">Vnitřní chyba: neplatný účet!</string>
     <string name="toast_openpgp_provider_error">Chyba při připojování k %s!</string>
-    <string name="ac_transfer_setting_title">Poslat Autocrypt nastavovací zprávu</string>
+    <string name="ac_transfer_setting_title">Poslat nastavovací zprávu Autocrypt</string>
     <string name="ac_transfer_setting_summary">Zabezpečeně sdílet nastavení s ostatními zařízeními</string>
     <string name="ac_transfer_title">Autocrypt nastavovací zpráva</string>
     <string name="ac_transfer_intro">Autocrypt nastavovací zpráva zabezpečeně sdílí vaše nastavení s ostatními zařízeními.</string>
