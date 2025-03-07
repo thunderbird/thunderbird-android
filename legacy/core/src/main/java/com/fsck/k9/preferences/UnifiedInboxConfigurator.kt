@@ -10,7 +10,7 @@ class UnifiedInboxConfigurator(
     private val accountManager: AccountManager,
 ) {
     fun configureUnifiedInbox() {
-        if (accountManager.getAccounts().size > 1) {
+        if (accountManager.getAccounts().size == 2) {
             K9.isShowUnifiedInbox = true
             K9.saveSettingsAsync()
         }
