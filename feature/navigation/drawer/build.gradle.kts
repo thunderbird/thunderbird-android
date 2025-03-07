@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.legacy.message)
     implementation(projects.legacy.search)
     implementation(projects.legacy.ui.folder)
+    implementation(projects.core.featureflags)
 
     testImplementation(projects.core.ui.compose.testing)
 }
