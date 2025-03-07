@@ -658,7 +658,7 @@
     <string name="global_settings_threaded_view_summary">Объединить сообщения, показав счётчик</string>
     <string name="upgrade_databases_title">Обновление данных</string>
     <string name="upgrade_databases_unspecified">Обновление данных…</string>
-    <string name="upgrade_database_format">Обновление учётной записи \\<xliff:g id="account">%s</xliff:g>\\</string>
+    <string name="upgrade_database_format">Обновление учётной записи \"<xliff:g id="account">%s</xliff:g>\"</string>
     <string name="global_settings_splitview_mode_label">Разделить экран</string>
     <string name="global_settings_splitview_always">Всегда</string>
     <string name="global_settings_splitview_never">Никогда</string>
