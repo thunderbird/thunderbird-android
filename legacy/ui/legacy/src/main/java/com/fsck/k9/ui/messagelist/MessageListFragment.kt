@@ -16,9 +16,13 @@ import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type.navigationBars
+import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -296,6 +300,19 @@ class MessageListFragment :
         initializeSortSettings()
 
         loadMessageList()
+
+        initializeInsets(view)
+    }
+
+    private fun initializeInsets(view: View) {
+        val messageList = view.findViewById<View>(R.id.message_list)
+
+        ViewCompat.setOnApplyWindowInsetsListener(messageList) { v, windowsInsets ->
+            val insets = windowsInsets.getInsets(navigationBars())
+            v.setPadding(0, 0, 0, insets.bottom)
+
+            windowsInsets
+        }
     }
 
     private fun initializeSwipeRefreshLayout(view: View) {
@@ -319,6 +336,25 @@ class MessageListFragment :
             enableFloatingActionButton(view)
         } else {
             disableFloatingActionButton(view)
+        }
+
+        initializeFloatingActionButtonInsets(view)
+    }
+
+    private fun initializeFloatingActionButtonInsets(view: View) {
+        val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
+
+        ViewCompat.setOnApplyWindowInsetsListener(floatingActionButton) { v, windowInsets ->
+            val insets = windowInsets.getInsets(systemBars())
+
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                val fabMargin = view.resources.getDimensionPixelSize(R.dimen.floatingActionButtonMargin)
+
+                bottomMargin = fabMargin + insets.bottom
+                rightMargin = fabMargin + insets.right
+            }
+
+            windowInsets
         }
     }
 
