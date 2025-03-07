@@ -80,7 +80,7 @@ class Account(
 
     @get:Synchronized
     @set:Synchronized
-    var isNotifyNewMail = false
+    var isNotifyNewMail = true
 
     @get:Synchronized
     @set:Synchronized
