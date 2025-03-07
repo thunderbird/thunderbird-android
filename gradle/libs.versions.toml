@@ -57,7 +57,6 @@ fastAdapter = "5.7.0"
 forkhandlesBom = "2.20.0.0"
 glide = "4.16.0"
 gradle = "8.13"
-http4kBom = "5.35.2.0"
 icu4j = "72.1"
 javaDiffUtils = "4.12"
 jcipAnnotations = "1.0"
@@ -78,9 +77,11 @@ kotlinxCollectionsImmutable = "0.3.8"
 kotlinxDateTime = "0.6.2"
 kotlinxSerialization = "1.8.0"
 ktlint = "1.2.1"
+ktor = "3.1.1"
 kxml2 = "1.0"
 landscapist = "2.4.7"
 leakcanary = "2.13"
+logbackClassic = "1.3.14"
 mime4j = "0.8.12"
 minidns = "1.0.5"
 mockito = "5.16.0"
@@ -188,10 +189,6 @@ forkhandles-bom = { module = "dev.forkhandles:forkhandles-bom", version.ref = "f
 forkhandles-fabrikate4k = { module = "dev.forkhandles:fabrikate4k" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
-http4k-bom = { module = "org.http4k:http4k-bom", version.ref = "http4kBom" }
-http4k-core = { module = "org.http4k:http4k-core" }
-http4k-client-okhttp = { module = "org.http4k:http4k-client-okhttp" }
-http4k-format-moshi = { module = "org.http4k:http4k-format-moshi" }
 icu4j-charset = { module = "com.ibm.icu:icu4j-charset", version.ref = "icu4j" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
 jcip-annotations = { module = "net.jcip:jcip-annotations", version.ref = "jcipAnnotations" }
@@ -218,9 +215,15 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 kxml2 = { module = "com.github.cketti:kxml2-extracted-from-android", version.ref = "kxml2" }
 lanscapist-coil = { module = "com.github.skydoves:landscapist-coil3", version.ref = "landscapist" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 mime4j-core = { module = "org.apache.james:apache-mime4j-core", version.ref = "mime4j" }
 mime4j-dom = { module = "org.apache.james:apache-mime4j-dom", version.ref = "mime4j" }
 minidns-hla = { module = "org.minidns:minidns-hla", version.ref = "minidns" }

@@ -1,9 +1,11 @@
 package net.thunderbird.cli.translation.net
 
-import com.squareup.moshi.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Language(
     val code: String,
-    @Json(name = "translated_percent")
+    @SerialName("translated_percent")
     val translatedPercent: Double,
 )
