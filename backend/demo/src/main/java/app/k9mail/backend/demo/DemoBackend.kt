@@ -1,32 +1,25 @@
 package app.k9mail.backend.demo
 
+import app.k9mail.backend.demo.DemoHelper.createNewServerId
 import com.fsck.k9.backend.api.Backend
-import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
-import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
-import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
-import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Part
-import com.fsck.k9.mail.internet.MimeMessage
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapter
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.util.UUID
-import okio.buffer
-import okio.source
 
-class DemoBackend(private val backendStorage: BackendStorage) : Backend {
-    private val messageStoreInfo by lazy { readMessageStoreInfo() }
+class DemoBackend(
+    private val backendStorage: BackendStorage,
+) : Backend {
+    private val demoStore by lazy { DemoStore() }
+
+    private val commandSync by lazy { CommandSync(backendStorage, demoStore) }
+    private val commandRefreshFolderList by lazy { CommandRefreshFolderList(backendStorage, demoStore) }
+    private val commandSendMessage by lazy { CommandSendMessage(backendStorage, demoStore) }
 
     override val supportsFlags: Boolean = true
     override val supportsExpunge: Boolean = false
@@ -39,49 +32,11 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     override val isPushCapable: Boolean = false
 
     override fun refreshFolderList() {
-        val localFolderServerIds = backendStorage.getFolderServerIds().toSet()
-
-        backendStorage.updateFolders {
-            val remoteFolderServerIds = messageStoreInfo.keys
-            val foldersServerIdsToCreate = remoteFolderServerIds - localFolderServerIds
-            val foldersToCreate = foldersServerIdsToCreate.mapNotNull { folderServerId ->
-                messageStoreInfo[folderServerId]?.let { folderData ->
-                    FolderInfo(folderServerId, folderData.name, folderData.type)
-                }
-            }
-            createFolders(foldersToCreate)
-
-            val folderServerIdsToRemove = (localFolderServerIds - remoteFolderServerIds).toList()
-            deleteFolders(folderServerIdsToRemove)
-        }
+        commandRefreshFolderList.refreshFolderList()
     }
 
     override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
-        listener.syncStarted(folderServerId)
-
-        val folderData = messageStoreInfo[folderServerId]
-        if (folderData == null) {
-            listener.syncFailed(folderServerId, "Folder $folderServerId doesn't exist", null)
-            return
-        }
-
-        val backendFolder = backendStorage.getFolder(folderServerId)
-
-        val localMessageServerIds = backendFolder.getMessageServerIds()
-        if (localMessageServerIds.isNotEmpty()) {
-            listener.syncFinished(folderServerId)
-            return
-        }
-
-        for (messageServerId in folderData.messageServerIds) {
-            val message = loadMessage(folderServerId, messageServerId)
-            backendFolder.saveMessage(message, MessageDownloadState.FULL)
-            listener.syncNewMessage(folderServerId, messageServerId, isOldMessage = false)
-        }
-
-        backendFolder.setMoreMessages(MoreMessages.FALSE)
-
-        listener.syncFinished(folderServerId)
+        commandSync.sync(folderServerId, listener)
     }
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
@@ -158,46 +113,10 @@ class DemoBackend(private val backendStorage: BackendStorage) : Backend {
     }
 
     override fun sendMessage(message: Message) {
-        val inboxServerId = messageStoreInfo.filterValues { it.type == FolderType.INBOX }.keys.first()
-        val backendFolder = backendStorage.getFolder(inboxServerId)
-
-        val newMessage = message.copy(uid = createNewServerId())
-        backendFolder.saveMessage(newMessage, MessageDownloadState.FULL)
+        commandSendMessage.sendMessage(message)
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {
         throw UnsupportedOperationException("not implemented")
-    }
-
-    private fun createNewServerId() = UUID.randomUUID().toString()
-
-    private fun Message.copy(uid: String): MimeMessage {
-        val outputStream = ByteArrayOutputStream()
-        writeTo(outputStream)
-        val inputStream = ByteArrayInputStream(outputStream.toByteArray())
-        return MimeMessage.parseMimeMessage(inputStream, false).apply {
-            this.uid = uid
-        }
-    }
-
-    @OptIn(ExperimentalStdlibApi::class)
-    private fun readMessageStoreInfo(): MessageStoreInfo {
-        return getResourceAsStream("/contents.json").source().buffer().use { bufferedSource ->
-            val moshi = Moshi.Builder().build()
-            val adapter = moshi.adapter<MessageStoreInfo>()
-            adapter.fromJson(bufferedSource)
-        } ?: error("Couldn't read message store info")
-    }
-
-    private fun loadMessage(folderServerId: String, messageServerId: String): Message {
-        return getResourceAsStream("/$folderServerId/$messageServerId.eml").use { inputStream ->
-            MimeMessage.parseMimeMessage(inputStream, false).apply {
-                uid = messageServerId
-            }
-        }
-    }
-
-    private fun getResourceAsStream(name: String): InputStream {
-        return DemoBackend::class.java.getResourceAsStream(name) ?: error("Resource '$name' not found")
     }
 }
