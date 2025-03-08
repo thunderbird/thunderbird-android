@@ -99,6 +99,11 @@ class ManageFoldersFragment : Fragment() {
         configureFolderSearchView(menu)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        val folderMenuItem = menu.findItem(R.id.filter_folders)
+        folderMenuItem.isVisible = !folderMenuItem.isActionViewExpanded
+    }
+
     private fun configureFolderSearchView(menu: Menu) {
         val folderMenuItem = menu.findItem(R.id.filter_folders)
         val folderSearchView = folderMenuItem.actionView as SearchView
@@ -116,6 +121,16 @@ class ManageFoldersFragment : Fragment() {
                 }
             },
         )
+        folderMenuItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
+                requireActivity().invalidateOptionsMenu()
+                return true
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
