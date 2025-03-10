@@ -6,6 +6,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBar
+import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBarWithBackButton
+import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBarWithMenuButton
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithBackButton
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBarWithMenuButton
@@ -15,13 +18,31 @@ import app.k9mail.ui.catalog.ui.common.list.sectionHeaderItem
 import app.k9mail.ui.catalog.ui.common.list.sectionSubtitleItem
 
 fun LazyGridScope.appBarItems() {
+    topAppBarItems()
+    subtitleTopAppBarItems()
+}
+
+private fun LazyGridScope.topAppBarItems() {
     sectionHeaderItem(text = "TopAppBar")
     sectionSubtitleItem(text = "With menu icon")
     fullSpanItem {
         ItemOutlinedView {
-            TopAppBarItem(
+            TopAppBar(
                 title = "Title",
-                actionIcon = Icons.Outlined.Info,
+                actions = {
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Info,
+                    )
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Check,
+                    )
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Visibility,
+                    )
+                },
             )
         }
     }
@@ -45,29 +66,49 @@ fun LazyGridScope.appBarItems() {
     }
 }
 
-@Composable
-fun TopAppBarItem(
-    title: String,
-    actionIcon: ImageVector,
-    modifier: Modifier = Modifier,
-    navIcon: ImageVector? = null,
-) {
-    TopAppBar(
-        title = title,
-        navigationIcon = {
-            navIcon?.let {
-                ButtonIcon(
-                    onClick = {},
-                    imageVector = Icons.Outlined.Menu,
-                )
-            }
-        },
-        actions = {
-            ButtonIcon(
-                onClick = {},
-                imageVector = actionIcon,
+private fun LazyGridScope.subtitleTopAppBarItems() {
+    sectionHeaderItem(text = "SubtitleTopAppBar")
+    sectionSubtitleItem(text = "With menu icon")
+    fullSpanItem {
+        ItemOutlinedView {
+            SubtitleTopAppBar(
+                title = "Title",
+                subtitle = "Subtitle",
+                actions = {
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Info,
+                    )
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Check,
+                    )
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Visibility,
+                    )
+                },
             )
-        },
-        modifier = modifier,
-    )
+        }
+    }
+    sectionSubtitleItem(text = "With back menu icon")
+    fullSpanItem {
+        ItemOutlinedView {
+            SubtitleTopAppBarWithMenuButton(
+                title = "Title",
+                subtitle = "Subtitle",
+                onMenuClick = {},
+            )
+        }
+    }
+    sectionSubtitleItem(text = "With back icon")
+    fullSpanItem {
+        ItemOutlinedView {
+            SubtitleTopAppBarWithBackButton(
+                title = "Title",
+                subtitle = "Subtitle",
+                onBackClick = {},
+            )
+        }
+    }
 }
