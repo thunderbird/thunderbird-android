@@ -212,6 +212,7 @@ dependencies {
     implementation(projects.core.featureflags)
 
     implementation(projects.feature.widget.messageList)
+    implementation(projects.feature.widget.messageListGlance)
     implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)
 

@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
+import app.k9mail.feature.widget.message.glance.messageListGlanceWidgetModule
 import app.k9mail.feature.widget.message.list.messageListWidgetModule
 import app.k9mail.feature.widget.unread.UnreadWidgetUpdateListener
 import app.k9mail.feature.widget.unread.unreadWidgetModule
@@ -40,6 +41,7 @@ val commonAppModule = module {
 val commonAppModules = listOf(
     commonAppModule,
     messageListWidgetModule,
+    messageListGlanceWidgetModule,
     unreadWidgetModule,
     notificationModule,
     resourcesModule,
