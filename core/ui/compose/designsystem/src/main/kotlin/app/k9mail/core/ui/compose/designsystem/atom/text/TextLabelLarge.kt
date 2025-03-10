@@ -23,8 +23,8 @@ fun TextLabelLarge(
         modifier = modifier,
         color = color,
         textAlign = textAlign,
-        maxLines = maxLines,
         overflow = overflow,
+        maxLines = maxLines,
         style = MainTheme.typography.labelLarge,
     )
 }
@@ -43,8 +43,8 @@ fun TextLabelLarge(
         modifier = modifier,
         color = color,
         textAlign = textAlign,
-        maxLines = maxLines,
         overflow = overflow,
+        maxLines = maxLines,
         style = MainTheme.typography.labelLarge,
     )
 }
