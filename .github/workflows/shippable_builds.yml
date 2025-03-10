@@ -246,7 +246,7 @@ jobs:
             RELEASE_TYPE=release
           fi
 
-          ./gradlew :app-${APP_NAME}:printVersionInfo -PbuildType=${RELEASE_TYPE} -PflavorName=${PACKAGE_FLAVOR} --configure-on-demand
+          ./gradlew :app-${APP_NAME}:printVersionInfo${PACKAGE_FLAVOR^}${RELEASE_TYPE^} -PoutputFile=${GITHUB_OUTPUT}
 
       - name: Determine new version code
         id: new_version_code
