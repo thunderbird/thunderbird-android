@@ -15,7 +15,7 @@ fun TextLabelLarge(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     textAlign: TextAlign? = null,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
+    overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
 ) {
     Material3Text(
@@ -35,7 +35,7 @@ fun TextLabelLarge(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified,
     textAlign: TextAlign? = null,
-    overflow: TextOverflow = TextOverflow.Ellipsis,
+    overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
 ) {
     Material3Text(
