@@ -1,9 +1,6 @@
 package app.k9mail.ui.catalog.ui.organism.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBar
@@ -66,6 +63,7 @@ private fun LazyGridScope.topAppBarItems() {
     }
 }
 
+@Suppress("LongMethod")
 private fun LazyGridScope.subtitleTopAppBarItems() {
     sectionHeaderItem(text = "SubtitleTopAppBar")
     sectionSubtitleItem(text = "With menu icon")
@@ -74,6 +72,30 @@ private fun LazyGridScope.subtitleTopAppBarItems() {
             SubtitleTopAppBar(
                 title = "Title",
                 subtitle = "Subtitle",
+                actions = {
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Info,
+                    )
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Check,
+                    )
+                    ButtonIcon(
+                        onClick = {},
+                        imageVector = Icons.Outlined.Visibility,
+                    )
+                },
+            )
+        }
+    }
+    sectionSubtitleItem(text = "With long subtitle")
+    fullSpanItem {
+        ItemOutlinedView {
+            SubtitleTopAppBar(
+                title = "Title",
+                subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                    "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 actions = {
                     ButtonIcon(
                         onClick = {},

@@ -19,6 +19,18 @@ internal fun SubtitleTopAppBarPreview() {
 
 @Composable
 @Preview(showBackground = true)
+internal fun SubtitleTopAppBarWithLongSubtitlePreview() {
+    PreviewWithThemes {
+        SubtitleTopAppBar(
+            title = "Title",
+            subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+                "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
 internal fun SubtitleTopAppBarWithActionsPreview() {
     PreviewWithThemes {
         SubtitleTopAppBar(

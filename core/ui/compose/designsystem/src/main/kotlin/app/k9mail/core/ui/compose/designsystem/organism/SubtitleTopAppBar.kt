@@ -2,11 +2,13 @@ package app.k9mail.core.ui.compose.designsystem.organism
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
@@ -34,9 +36,15 @@ fun SubtitleTopAppBar(
 ) {
     Material3TopAppBar(
         title = {
-            Column {
+            Column(
+                modifier = Modifier.padding(end = MainTheme.spacings.double),
+            ) {
                 TextTitleMedium(text = title)
-                TextBodyMedium(text = subtitle)
+                TextBodyMedium(
+                    text = subtitle,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
             }
         },
         modifier = modifier,
