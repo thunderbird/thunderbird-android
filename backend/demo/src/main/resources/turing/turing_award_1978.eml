@@ -1,9 +1,9 @@
 MIME-Version: 1.0
 From: Robert Floyd <robert.floyd@example.com>
 Date: Mon, 04 Dec 1978 12:00:00 -0500
-Message-ID: <turing1978@cketti.de>
+Message-ID: <turing1978@example.com>
 Subject: The Paradigms of Programming
-To: Alan Turing <alan@turing.example>
+To: Alan Turing <alan.turing@example.com>
 Content-Type: multipart/alternative; boundary=089e0118419206e64304d85af860
 
 --089e0118419206e64304d85af860
