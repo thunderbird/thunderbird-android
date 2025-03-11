@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import app.k9mail.feature.account.edit.navigation.accountEditRoute
+import app.k9mail.feature.account.edit.navigation.AccountEditNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.funding.api.FundingNavigation
@@ -21,6 +21,7 @@ fun FeatureLauncherNavHost(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     accountSetupFinishedLauncher: AccountSetupFinishedLauncher = koinInject(),
+    accountEditNavigation: AccountEditNavigation = koinInject(),
     accountSetupNavigation: AccountSetupNavigation = koinInject(),
     onboardingNavigation: OnboardingNavigation = koinInject(),
     fundingNavigation: FundingNavigation = koinInject(),
@@ -56,7 +57,9 @@ fun FeatureLauncherNavHost(
                 }
             },
         )
-        accountEditRoute(
+
+        accountEditNavigation.registerRoutes(
+            navGraphBuilder = this,
             onBack = onBack,
             onFinish = { activity.finish() },
         )
