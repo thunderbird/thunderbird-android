@@ -11,6 +11,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
     override fun createFeatureCatalog(): List<FeatureFlag> {
         return listOf(
             FeatureFlag("archive_marks_as_read".toFeatureFlagKey(), enabled = true),
+            FeatureFlag("new_account_settings".toFeatureFlagKey(), enabled = true),
         )
     }
 }
