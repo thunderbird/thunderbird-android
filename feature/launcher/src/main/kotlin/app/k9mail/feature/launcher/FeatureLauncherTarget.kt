@@ -7,7 +7,7 @@ import app.k9mail.core.ui.compose.common.navigation.toDeepLinkUri
 import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING
 import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_OUTGOING
 import app.k9mail.feature.account.edit.navigation.withAccountUuid
-import app.k9mail.feature.account.setup.navigation.NAVIGATION_ROUTE_ACCOUNT_SETUP
+import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.funding.api.FundingRoute
 import app.k9mail.feature.onboarding.main.navigation.NAVIGATION_ROUTE_ONBOARDING
 
@@ -21,7 +21,7 @@ sealed class FeatureLauncherTarget(
     )
 
     data object AccountSetup : FeatureLauncherTarget(
-        deepLinkUri = NAVIGATION_ROUTE_ACCOUNT_SETUP.toDeepLinkUri(),
+        deepLinkUri = AccountSetupRoute.AccountSetup().route().toUri(),
     )
 
     data class AccountEditIncomingSettings(val accountUuid: String) : FeatureLauncherTarget(

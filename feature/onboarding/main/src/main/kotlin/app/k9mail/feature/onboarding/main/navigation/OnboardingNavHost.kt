@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavHost
+import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.onboarding.migration.api.OnboardingMigrationManager
 import app.k9mail.feature.onboarding.permissions.domain.PermissionsDomainContract.UseCase.HasRuntimePermissions
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsScreen
@@ -101,12 +102,17 @@ fun OnboardingNavHost(
         composable(route = NESTED_NAVIGATION_ROUTE_ACCOUNT_SETUP) {
             AccountSetupNavHost(
                 onBack = { navController.popBackStack() },
-                onFinish = { createdAccountUuid: String ->
-                    accountUuid = createdAccountUuid
-                    if (hasRuntimePermissions()) {
-                        navController.navigateToPermissions()
-                    } else {
-                        onFinish(createdAccountUuid)
+                onFinish = { route: AccountSetupRoute ->
+                    when (route) {
+                        is AccountSetupRoute.AccountSetup -> {
+                            val createdAccountUuid = route.accountId
+                            accountUuid = createdAccountUuid
+                            if (hasRuntimePermissions()) {
+                                navController.navigateToPermissions()
+                            } else {
+                                onFinish(createdAccountUuid)
+                            }
+                        }
                     }
                 },
             )

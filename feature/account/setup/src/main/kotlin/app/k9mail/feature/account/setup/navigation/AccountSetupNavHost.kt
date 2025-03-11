@@ -43,7 +43,7 @@ private const val NESTED_NAVIGATION_CREATE_ACCOUNT = "create-account"
 @Composable
 fun AccountSetupNavHost(
     onBack: () -> Unit,
-    onFinish: (String) -> Unit,
+    onFinish: (AccountSetupRoute) -> Unit,
 ) {
     val navController = rememberNavController()
     var isAutomaticConfig by rememberSaveable { mutableStateOf(false) }
@@ -172,7 +172,7 @@ fun AccountSetupNavHost(
 
         composable(route = NESTED_NAVIGATION_CREATE_ACCOUNT) {
             CreateAccountScreen(
-                onNext = { accountUuid -> onFinish(accountUuid.value) },
+                onNext = { accountUuid -> onFinish(AccountSetupRoute.AccountSetup(accountUuid.value)) },
                 onBack = { navController.popBackStack() },
                 viewModel = koinViewModel<CreateAccountViewModel>(),
                 brandNameProvider = koinInject(),
