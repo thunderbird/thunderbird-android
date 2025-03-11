@@ -9,14 +9,14 @@ import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_
 import app.k9mail.feature.account.edit.navigation.withAccountUuid
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.funding.api.FundingRoute
-import app.k9mail.feature.onboarding.main.navigation.NAVIGATION_ROUTE_ONBOARDING
+import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 
 sealed class FeatureLauncherTarget(
     val deepLinkUri: Uri,
     val flags: Int? = null,
 ) {
     data object Onboarding : FeatureLauncherTarget(
-        deepLinkUri = NAVIGATION_ROUTE_ONBOARDING.toDeepLinkUri(),
+        deepLinkUri = OnboardingRoute.Onboarding().route().toUri(),
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK,
     )
 

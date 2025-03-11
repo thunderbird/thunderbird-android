@@ -11,8 +11,8 @@ import app.k9mail.feature.account.setup.navigation.AccountSetupNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.funding.api.FundingNavigation
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract.AccountSetupFinishedLauncher
-import app.k9mail.feature.onboarding.main.navigation.NAVIGATION_ROUTE_ONBOARDING
-import app.k9mail.feature.onboarding.main.navigation.onboardingRoute
+import app.k9mail.feature.onboarding.main.navigation.OnboardingNavigation
+import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 import org.koin.compose.koinInject
 
 @Composable
@@ -22,19 +22,26 @@ fun FeatureLauncherNavHost(
     modifier: Modifier = Modifier,
     accountSetupFinishedLauncher: AccountSetupFinishedLauncher = koinInject(),
     accountSetupNavigation: AccountSetupNavigation = koinInject(),
+    onboardingNavigation: OnboardingNavigation = koinInject(),
     fundingNavigation: FundingNavigation = koinInject(),
 ) {
     val activity = LocalActivity.current as ComponentActivity
 
     NavHost(
         navController = navController,
-        startDestination = NAVIGATION_ROUTE_ONBOARDING,
+        startDestination = OnboardingRoute.Onboarding(),
         modifier = modifier,
     ) {
-        onboardingRoute(
-            onFinish = { accountUuid ->
-                accountSetupFinishedLauncher.launch(accountUuid)
-                activity.finish()
+        onboardingNavigation.registerRoutes(
+            navGraphBuilder = this,
+            onBack = onBack,
+            onFinish = {
+                when (it) {
+                    is OnboardingRoute.Onboarding -> {
+                        accountSetupFinishedLauncher.launch(it.accountId)
+                        activity.finish()
+                    }
+                }
             },
         )
 
