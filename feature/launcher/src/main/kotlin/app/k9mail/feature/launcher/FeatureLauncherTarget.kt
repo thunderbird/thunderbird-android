@@ -7,6 +7,7 @@ import app.k9mail.feature.account.edit.navigation.AccountEditRoute
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.funding.api.FundingRoute
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
+import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
 
 sealed class FeatureLauncherTarget(
     val deepLinkUri: Uri,
@@ -31,5 +32,9 @@ sealed class FeatureLauncherTarget(
 
     data object Funding : FeatureLauncherTarget(
         deepLinkUri = FundingRoute.Contribution.route().toUri(),
+    )
+
+    data class AccountSettings(val accountUuid: String) : FeatureLauncherTarget(
+        deepLinkUri = AccountSettingsRoute.GeneralSettings(accountUuid).route().toUri(),
     )
 }

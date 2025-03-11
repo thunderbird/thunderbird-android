@@ -12,8 +12,10 @@ dependencies {
     implementation(projects.legacy.ui.base)
     implementation(projects.feature.onboarding.main)
     implementation(projects.feature.settings.import)
-    implementation(projects.feature.account.setup)
+
     implementation(projects.feature.account.edit)
+    implementation(projects.feature.account.settings.api)
+    implementation(projects.feature.account.setup)
 
     implementation(projects.feature.funding.api)
 
