@@ -211,6 +211,8 @@ dependencies {
 
     implementation(projects.core.featureflags)
 
+    implementation(projects.feature.account.settings.impl)
+
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)

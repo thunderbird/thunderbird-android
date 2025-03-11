@@ -14,6 +14,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.core.common.provider.AppNameProvider
+import app.k9mail.core.featureflag.FeatureFlagKey
+import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
@@ -55,6 +57,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val notificationSettingsUpdater: NotificationSettingsUpdater by inject()
     private val vibrator: Vibrator by inject()
     private val appNameProvider: AppNameProvider by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var dataStore: AccountSettingsDataStore
 
@@ -76,6 +79,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         title = preferenceScreen.title
         setHasOptionsMenu(true)
 
+        initializeGeneralSettings()
         initializeIncomingServer()
         initializeComposition()
         initializeManageIdentities()
@@ -91,6 +95,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeNotifications(account)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         requireActivity().title = title
@@ -115,11 +120,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.account_settings_option, menu)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_account -> {
@@ -129,6 +136,22 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun initializeGeneralSettings() {
+        featureFlagProvider.provide(FeatureFlagKey("new_account_settings"))
+            .onEnabled {
+                findPreference<Preference>(PREFERENCE_GENERAL_LEGACY)?.remove()
+
+                findPreference<Preference>(PREFERENCE_GENERAL)?.onClick {
+                    FeatureLauncherActivity.launch(
+                        context = requireActivity(),
+                        target = FeatureLauncherTarget.AccountSettings(accountUuid),
+                    )
+                }
+            }.onDisabledOrUnavailable {
+                findPreference<Preference>(PREFERENCE_GENERAL)?.remove()
+            }
     }
 
     private fun initializeIncomingServer() {
@@ -442,6 +465,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     companion object {
         internal const val PREFERENCE_OPENPGP = "openpgp"
         private const val ARG_ACCOUNT_UUID = "accountUuid"
+        private const val PREFERENCE_GENERAL = "general"
+        private const val PREFERENCE_GENERAL_LEGACY = "account_settings"
         private const val PREFERENCE_INCOMING_SERVER = "incoming"
         private const val PREFERENCE_COMPOSITION = "composition"
         private const val PREFERENCE_MANAGE_IDENTITIES = "manage_identities"

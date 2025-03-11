@@ -144,6 +144,8 @@ dependencies {
 
     implementation(projects.core.featureflags)
 
+    implementation(projects.feature.account.settings.impl)
+
     "fossImplementation"(projects.feature.funding.noop)
     "fullImplementation"(projects.feature.funding.googleplay)
     implementation(projects.feature.migration.launcher.noop)
