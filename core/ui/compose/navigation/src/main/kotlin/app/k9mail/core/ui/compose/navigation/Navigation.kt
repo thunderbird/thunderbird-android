@@ -12,6 +12,7 @@ interface Navigation<T : Route> {
     /**
      * Register all routes for this navigation.
      *
+     * @param navGraphBuilder the navigation graph builder
      * @param onBack the action to perform when the back button is pressed
      * @param onFinish the action to perform when a route is finished
      */

@@ -2,6 +2,7 @@ package app.k9mail.feature.launcher
 
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import app.k9mail.core.ui.compose.common.navigation.toDeepLinkUri
 import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_INCOMING
 import app.k9mail.feature.account.edit.navigation.NAVIGATION_ROUTE_ACCOUNT_EDIT_SERVER_SETTINGS_OUTGOING
@@ -34,6 +35,6 @@ sealed class FeatureLauncherTarget(
     )
 
     data object Funding : FeatureLauncherTarget(
-        deepLinkUri = FundingRoute.Contribution.toDeepLinkUri(),
+        deepLinkUri = FundingRoute.Contribution.route().toUri(),
     )
 }
