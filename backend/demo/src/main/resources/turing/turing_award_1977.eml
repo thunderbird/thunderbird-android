@@ -1,10 +1,10 @@
 MIME-Version: 1.0
 From: "John W. Backus" <john.backus@example.com>
 Date: Mon, 17 Oct 1977 12:00:00 -0700
-Message-ID: <turing1977@cketti.de>
+Message-ID: <turing1977@example.com>
 Subject: Can Programming Be Liberated from the von Neumann Style? A Functional
  Style and Its Algebra of Programs
-To: Alan Turing <alan@turing.example>
+To: Alan Turing <alan.turing@example.com>
 Content-Type: multipart/alternative; boundary=047d7b5d9bdd8a36e804d85ade47
 
 --047d7b5d9bdd8a36e804d85ade47
