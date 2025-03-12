@@ -12,10 +12,8 @@ import java.io.IOException
 import java.net.Socket
 import java.security.KeyManagementException
 import java.security.NoSuchAlgorithmException
-import java.util.Collections
 import javax.net.ssl.KeyManager
 import javax.net.ssl.SNIHostName
-import javax.net.ssl.SNIServerName
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
@@ -62,11 +60,14 @@ class DefaultTrustedSocketFactory(
         return trustedSocket
     }
 
-    companion object {
-        private val ENABLED_CIPHERS: Array<String?>?
-        private val ENABLED_PROTOCOLS: Array<String?>?
+    private fun hardenSocket(sock: SSLSocket) {
+        ENABLED_CIPHERS?.let { sock.enabledCipherSuites = it }
+        ENABLED_PROTOCOLS?.let { sock.enabledProtocols = it }
+    }
 
-        private val DISALLOWED_CIPHERS = arrayOf<String?>(
+    @Suppress("TooGenericExceptionCaught")
+    companion object {
+        private val DISALLOWED_CIPHERS = arrayOf<String>(
             "SSL_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_DSS_WITH_DES_CBC_SHA",
@@ -90,69 +91,52 @@ class DefaultTrustedSocketFactory(
             "TLS_RSA_WITH_NULL_SHA256",
         )
 
-        private val DISALLOWED_PROTOCOLS = arrayOf<String?>(
+        private val DISALLOWED_PROTOCOLS = arrayOf<String>(
             "SSLv3",
         )
 
+        private val ENABLED_CIPHERS: Array<String>?
+        private val ENABLED_PROTOCOLS: Array<String>?
+
         init {
-            var enabledCiphers: Array<String?>? = null
-            var supportedProtocols: Array<String?>? = null
+            var enabledCiphers: Array<String>? = null
+            var supportedProtocols: Array<String>? = null
 
             try {
-                val sslContext = SSLContext.getInstance("TLS")
-                sslContext.init(null, null, null)
-                val sf = sslContext.socketFactory
-                val sock = sf.createSocket() as SSLSocket
-                enabledCiphers = sock.enabledCipherSuites
+                val sslContext = SSLContext.getInstance("TLS").apply {
+                    init(null, null, null)
+                }
+                val socket = sslContext.socketFactory.createSocket() as SSLSocket
+                enabledCiphers = socket.enabledCipherSuites
 
                 /*
                  * Retrieve all supported protocols, not just the (default) enabled
                  * ones. TLSv1.1 & TLSv1.2 are supported on API levels 16+, but are
                  * only enabled by default on API levels 20+.
                  */
-                supportedProtocols = sock.supportedProtocols
+                supportedProtocols = socket.supportedProtocols
             } catch (e: Exception) {
                 Timber.e(e, "Error getting information about available SSL/TLS ciphers and protocols")
             }
 
-            ENABLED_CIPHERS = if (enabledCiphers == null) null else remove(enabledCiphers, DISALLOWED_CIPHERS)
-            ENABLED_PROTOCOLS =
-                if (supportedProtocols == null) null else remove(supportedProtocols, DISALLOWED_PROTOCOLS)
+            ENABLED_CIPHERS = enabledCiphers?.let { remove(it, DISALLOWED_CIPHERS) }
+            ENABLED_PROTOCOLS = supportedProtocols?.let { remove(it, DISALLOWED_PROTOCOLS) }
         }
 
-        private fun remove(enabled: Array<String?>, disallowed: Array<String?>?): Array<String?> {
-            val items: MutableList<String?> = ArrayList<String?>()
-            Collections.addAll<String?>(items, *enabled)
+        private fun remove(enabled: Array<String>, disallowed: Array<String>): Array<String> {
+            return enabled.filterNot { it in disallowed }.toTypedArray()
+        }
 
-            if (disallowed != null) {
-                for (item in disallowed) {
-                    items.remove(item)
+        private fun setSniHost(factory: SSLSocketFactory, socket: SSLSocket, hostname: String) {
+            when {
+                factory is SSLCertificateSocketFactory -> factory.setHostname(socket, hostname)
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> {
+                    val sslParameters = socket.sslParameters
+                    sslParameters.serverNames = listOf(SNIHostName(hostname))
+                    socket.sslParameters = sslParameters
                 }
-            }
 
-            return items.toTypedArray<String?>()
-        }
-
-        private fun hardenSocket(sock: SSLSocket) {
-            if (ENABLED_CIPHERS != null) {
-                sock.enabledCipherSuites = ENABLED_CIPHERS
-            }
-            if (ENABLED_PROTOCOLS != null) {
-                sock.enabledProtocols = ENABLED_PROTOCOLS
-            }
-        }
-
-        private fun setSniHost(factory: SSLSocketFactory?, socket: SSLSocket, hostname: String?) {
-            if (factory is SSLCertificateSocketFactory) {
-                val sslCertificateSocketFactory = factory
-                sslCertificateSocketFactory.setHostname(socket, hostname)
-            } else if (Build.VERSION.SDK_INT >= 24) {
-                val sslParameters = socket.getSSLParameters()
-                val sniServerNames = mutableListOf<SNIServerName?>(SNIHostName(hostname))
-                sslParameters.serverNames = sniServerNames
-                socket.setSSLParameters(sslParameters)
-            } else {
-                setHostnameViaReflection(socket, hostname)
+                else -> setHostnameViaReflection(socket, hostname)
             }
         }
 
