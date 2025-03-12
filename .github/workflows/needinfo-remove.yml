@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   build:
@@ -21,16 +22,9 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      # https://github.com/octokit/request-action/issues/118
-      - name: Remove needinfo label
+      - name: Remove needinfo label and add answered label
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl --request DELETE \
-            --url 'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/status%3A%20needs%20information' \
-            --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}'
-      - name: Add answered label
-        run: |
-          curl --request POST \
-            --url 'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels' \
-            --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
-            --header 'Content-Type: application/json' \
-            --data '{"labels": ["status: answered"]}'
+          gh issue edit $ISSUE_NUMBER --repo "$GITHUB_REPOSITORY" --remove-label "status: needs information" --add-label "status: answered"
