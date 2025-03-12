@@ -17,6 +17,9 @@ label="task: uplift to beta"
 branch="beta"
 push=false
 
+milestones=$(gh api repos/${repo}/milestones --jq 'map(select(.state == "open" and .due_on != null)) | sort_by(.due_on)' | jq -c)
+
+
 # Parse command-line arguments
 for arg in "$@"; do
   case $arg in
@@ -27,11 +30,15 @@ for arg in "$@"; do
     --release)
       label="task: uplift to release"
       branch="release"
+      expected_milestone=$(echo $milestones | jq -r '.[1].title')
+      target_milestone=$(echo $milestones | jq -r '.[0].title')
       shift
       ;;
     --beta)
       label="task: uplift to beta"
       branch="beta"
+      expected_milestone=$(echo $milestones | jq -r '.[2].title')
+      target_milestone=$(echo $milestones | jq -r '.[1].title')
       shift
       ;;
     --push)
@@ -48,8 +55,16 @@ done
 current_branch=$(git branch --show-current)
 if [ "$current_branch" != "$branch" ]; then
     fail "You are not on the $branch branch. Please switch to the $branch branch."
+    true
 fi
 
+# Check correct number of milestones
+milestone_count=$(echo "$milestones" | jq 'length')
+if [ "$milestone_count" != 3 ]; then
+    fail "Expected 3 open milestones with due date on https://github.com/${repo}/milestones but found $milestone_count"
+fi
+
+# Status Info
 if [ "$dry_run" = true ]
 then
   echo "Dry run in progress, to disable pass --no-dry-run"
@@ -59,7 +74,7 @@ echo "Label: \"$label\""
 echo ""
 
 # Fetch the uplift commits from the GitHub repository
-json_data=$(gh pr list --repo "$repo" --label "$label" --state merged --json "mergedAt,mergeCommit,number,url,title" | jq -c .)
+json_data=$(gh pr list --repo "$repo" --label "$label" --state merged --json "mergedAt,mergeCommit,number,url,title,milestone" | jq -c .)
 
 # Sort by mergedAt
 sorted_commits=$(echo "$json_data" | jq -c '. | sort_by(.mergedAt) | .[]')
@@ -77,7 +92,12 @@ do
     pr_number=$(echo "$commit" | jq -r '.number')
     pr_url=$(echo "$commit" | jq -r '.url')
     pr_title=$(echo "$commit" | jq -r '.title')
+    pr_milestone=$(echo "$commit" | jq -r '.milestone.title')
     echo "Cherry-picking $oid from $pr_url ($pr_title)"
+
+    if [ "$pr_milestone" != "$expected_milestone" ]; then
+        fail "PR https://github.com/$repo/pull/$pr_number is on milestone $pr_milestone but expected $expected_milestone"
+    fi
 
     if [ "$dry_run" = false ]; then
         git cherry-pick -m 1 "$oid" || fail "Failed to cherry-pick $oid"
@@ -85,11 +105,11 @@ do
           git push || fail "Failed to push $oid"
         fi
 
-        gh pr edit "$pr_number" --repo "$repo" --remove-label "$label" || fail "Failed to remove label from $pr_number"
+        gh pr edit "$pr_number" --repo "$repo" --remove-label "$label" --milestone "$target_milestone" || fail "Failed to remove label from $pr_number"
     else
         echo "git cherry-pick -m 1 $oid"
         [ "$push" = true ] && echo git push
-        echo "gh pr edit $pr_number --repo \"$repo\" --remove-label \"$label\""
+        echo "gh pr edit $pr_number --repo \"$repo\" --remove-label \"$label\" --milestone \"$target_milestone\""
     fi
     echo ""
 done <<< "$sorted_commits"
