@@ -14,6 +14,7 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import java.net.Socket
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
@@ -36,7 +37,16 @@ class AccountEditModuleKtTest : KoinTest {
         single<AccountCommonExternalContract.AccountStateLoader> { Mockito.mock() }
         single<LocalKeyStore> { Mockito.mock() }
         single<TrustedSocketFactory> {
-            TrustedSocketFactory { _, _, _, _ -> null }
+            object : TrustedSocketFactory {
+                override fun createSocket(
+                    socket: Socket?,
+                    host: String,
+                    port: Int,
+                    clientCertificateAlias: String?,
+                ): Socket {
+                    return Mockito.mock()
+                }
+            }
         }
         single<OAuthConfigurationFactory> { OAuthConfigurationFactory { emptyMap() } }
         single<OAuth2TokenProviderFactory> {

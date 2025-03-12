@@ -25,6 +25,7 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import java.net.Socket
 import okhttp3.OkHttpClient
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -48,7 +49,16 @@ class AccountSetupModuleKtTest : KoinTest {
     private val externalModule: Module = module {
         single<OkHttpClient> { OkHttpClient() }
         single<TrustedSocketFactory> {
-            TrustedSocketFactory { _, _, _, _ -> null }
+            object : TrustedSocketFactory {
+                override fun createSocket(
+                    socket: Socket?,
+                    host: String,
+                    port: Int,
+                    clientCertificateAlias: String?,
+                ): Socket {
+                    return mock()
+                }
+            }
         }
         single<AccountCreator> {
             AccountCreator { _ -> AccountCreatorResult.Success("accountUuid") }
