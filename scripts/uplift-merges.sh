@@ -4,6 +4,13 @@ function fail() {
   echo "Error: $*"
   exit 1
 }
+function drydo() {
+  if [ "$dry_run" = true ]; then
+    echo "$@"
+  else
+    eval "$@"
+  fi
+}
 
 # Check if tools are installed
 command -v gh &> /dev/null || fail "gh (GitHub CLI) is not installed"
@@ -18,7 +25,6 @@ branch="beta"
 push=false
 
 milestones=$(gh api repos/${repo}/milestones --jq 'map(select(.state == "open" and .due_on != null)) | sort_by(.due_on)' | jq -c)
-
 
 # Parse command-line arguments
 for arg in "$@"; do
@@ -99,17 +105,11 @@ do
         fail "PR https://github.com/$repo/pull/$pr_number is on milestone $pr_milestone but expected $expected_milestone"
     fi
 
-    if [ "$dry_run" = false ]; then
-        git cherry-pick -m 1 "$oid" || fail "Failed to cherry-pick $oid"
-        if [ "$push" = true ]; then
-          git push || fail "Failed to push $oid"
-        fi
-
-        gh pr edit "$pr_number" --repo "$repo" --remove-label "$label" --milestone "$target_milestone" || fail "Failed to remove label from $pr_number"
-    else
-        echo "git cherry-pick -m 1 $oid"
-        [ "$push" = true ] && echo git push
-        echo "gh pr edit $pr_number --repo \"$repo\" --remove-label \"$label\" --milestone \"$target_milestone\""
+    drydo git cherry-pick -m 1 "$oid" || fail "Failed to cherry-pick $oid"
+    if [ "$push" = true ]; then
+      drydo git push || fail "Failed to push $oid"
     fi
+
+    drydo gh pr edit "$pr_number" --repo "$repo" --remove-label "$label" --milestone "$target_milestone" || fail "Failed to remove label from $pr_number"
     echo ""
 done <<< "$sorted_commits"
