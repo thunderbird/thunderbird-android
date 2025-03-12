@@ -1,40 +1,37 @@
-package com.fsck.k9.network
+package net.thunderbird.core.android.network
 
 import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
-import android.net.NetworkCapabilities
 import android.net.NetworkRequest
-import android.os.Build
-import androidx.annotation.RequiresApi
 import timber.log.Timber
 import android.net.ConnectivityManager as SystemConnectivityManager
 
-@RequiresApi(Build.VERSION_CODES.M)
-internal class ConnectivityManagerApi23(
+@Suppress("DEPRECATION")
+internal class ConnectivityManagerApi21(
     private val systemConnectivityManager: SystemConnectivityManager,
 ) : ConnectivityManagerBase() {
     private var isRunning = false
-    private var lastActiveNetwork: Network? = null
+    private var lastNetworkType: Int? = null
     private var wasConnected: Boolean? = null
 
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
             Timber.v("Network available: $network")
-            notifyIfActiveNetworkOrConnectivityHasChanged()
+            notifyIfConnectivityHasChanged()
         }
 
         override fun onLost(network: Network) {
             Timber.v("Network lost: $network")
-            notifyIfActiveNetworkOrConnectivityHasChanged()
+            notifyIfConnectivityHasChanged()
         }
 
-        private fun notifyIfActiveNetworkOrConnectivityHasChanged() {
-            val activeNetwork = systemConnectivityManager.activeNetwork
+        private fun notifyIfConnectivityHasChanged() {
+            val networkType = systemConnectivityManager.activeNetworkInfo?.type
             val isConnected = isNetworkAvailable()
 
-            synchronized(this@ConnectivityManagerApi23) {
-                if (activeNetwork != lastActiveNetwork || isConnected != wasConnected) {
-                    lastActiveNetwork = activeNetwork
+            synchronized(this@ConnectivityManagerApi21) {
+                if (networkType != lastNetworkType || isConnected != wasConnected) {
+                    lastNetworkType = networkType
                     wasConnected = isConnected
                     if (isConnected) {
                         notifyOnConnectivityChanged()
@@ -65,9 +62,5 @@ internal class ConnectivityManagerApi23(
         }
     }
 
-    override fun isNetworkAvailable(): Boolean {
-        val activeNetwork = systemConnectivityManager.activeNetwork ?: return false
-        val networkCapabilities = systemConnectivityManager.getNetworkCapabilities(activeNetwork)
-        return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
-    }
+    override fun isNetworkAvailable(): Boolean = systemConnectivityManager.activeNetworkInfo?.isConnected == true
 }

@@ -1,4 +1,4 @@
-package com.fsck.k9.network
+package net.thunderbird.core.android.network
 
 import android.os.Build
 import android.net.ConnectivityManager as SystemConnectivityManager
