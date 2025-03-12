@@ -1,40 +1,72 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
 
+import android.content.Context
+import android.net.SSLCertificateSocketFactory
+import android.os.Build
+import android.text.TextUtils
+import app.k9mail.core.common.net.HostNameUtils.isLegalIPAddress
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.ssl.TrustManagerFactory
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import java.io.IOException
+import java.net.Socket
+import java.security.KeyManagementException
+import java.security.NoSuchAlgorithmException
+import java.util.Collections
+import javax.net.ssl.KeyManager
+import javax.net.ssl.SNIHostName
+import javax.net.ssl.SNIServerName
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocket
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManager
+import timber.log.Timber
 
-import java.io.IOException;
-import java.net.Socket;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+class DefaultTrustedSocketFactory(
+    private val context: Context?,
+    private val trustManagerFactory: TrustManagerFactory,
+) : TrustedSocketFactory {
 
-import android.content.Context;
-import android.net.SSLCertificateSocketFactory;
-import android.os.Build;
-import android.text.TextUtils;
+    @Throws(
+        NoSuchAlgorithmException::class,
+        KeyManagementException::class,
+        MessagingException::class,
+        IOException::class,
+    )
+    override fun createSocket(socket: Socket?, host: String, port: Int, clientCertificateAlias: String?): Socket {
+        val trustManagers = arrayOf<TrustManager?>(trustManagerFactory.getTrustManagerForDomain(host, port))
+        var keyManagers: Array<KeyManager?>? = null
+        if (!TextUtils.isEmpty(clientCertificateAlias)) {
+            keyManagers = arrayOf<KeyManager?>(KeyChainKeyManager(context, clientCertificateAlias))
+        }
 
-import androidx.annotation.NonNull;
-import app.k9mail.core.common.net.HostNameUtils;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ssl.TrustManagerFactory;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.SNIHostName;
-import javax.net.ssl.SNIServerName;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLParameters;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import timber.log.Timber;
+        val sslContext = SSLContext.getInstance("TLS")
+        sslContext.init(keyManagers, trustManagers, null)
+        val socketFactory = sslContext.socketFactory
+        val trustedSocket: Socket?
+        if (socket == null) {
+            trustedSocket = socketFactory.createSocket()
+        } else {
+            trustedSocket = socketFactory.createSocket(socket, host, port, true)
+        }
 
+        val sslSocket = trustedSocket as SSLSocket
 
-public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
-    private static final String[] ENABLED_CIPHERS;
-    private static final String[] ENABLED_PROTOCOLS;
+        hardenSocket(sslSocket)
 
-    private static final String[] DISALLOWED_CIPHERS = {
+        // RFC 6066 does not permit the use of literal IPv4 or IPv6 addresses as SNI hostnames.
+        if (isLegalIPAddress(host) == null) {
+            setSniHost(socketFactory, sslSocket, host)
+        }
+
+        return trustedSocket
+    }
+
+    companion object {
+        private val ENABLED_CIPHERS: Array<String?>?
+        private val ENABLED_PROTOCOLS: Array<String?>?
+
+        private val DISALLOWED_CIPHERS = arrayOf<String?>(
             "SSL_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_DSS_WITH_DES_CBC_SHA",
@@ -55,119 +87,81 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_ECDH_anon_WITH_3DES_EDE_CBC_SHA",
             "TLS_ECDH_anon_WITH_NULL_SHA",
             "TLS_ECDH_anon_WITH_RC4_128_SHA",
-            "TLS_RSA_WITH_NULL_SHA256"
-    };
+            "TLS_RSA_WITH_NULL_SHA256",
+        )
 
-    private static final String[] DISALLOWED_PROTOCOLS = {
-            "SSLv3"
-    };
+        private val DISALLOWED_PROTOCOLS = arrayOf<String?>(
+            "SSLv3",
+        )
 
-    static {
-        String[] enabledCiphers = null;
-        String[] supportedProtocols = null;
+        init {
+            var enabledCiphers: Array<String?>? = null
+            var supportedProtocols: Array<String?>? = null
 
-        try {
-            SSLContext sslContext = SSLContext.getInstance("TLS");
-            sslContext.init(null, null, null);
-            SSLSocketFactory sf = sslContext.getSocketFactory();
-            SSLSocket sock = (SSLSocket) sf.createSocket();
-            enabledCiphers = sock.getEnabledCipherSuites();
+            try {
+                val sslContext = SSLContext.getInstance("TLS")
+                sslContext.init(null, null, null)
+                val sf = sslContext.socketFactory
+                val sock = sf.createSocket() as SSLSocket
+                enabledCiphers = sock.enabledCipherSuites
 
-            /*
-             * Retrieve all supported protocols, not just the (default) enabled
-             * ones. TLSv1.1 & TLSv1.2 are supported on API levels 16+, but are
-             * only enabled by default on API levels 20+.
-             */
-            supportedProtocols = sock.getSupportedProtocols();
-        } catch (Exception e) {
-            Timber.e(e, "Error getting information about available SSL/TLS ciphers and protocols");
+                /*
+                 * Retrieve all supported protocols, not just the (default) enabled
+                 * ones. TLSv1.1 & TLSv1.2 are supported on API levels 16+, but are
+                 * only enabled by default on API levels 20+.
+                 */
+                supportedProtocols = sock.supportedProtocols
+            } catch (e: Exception) {
+                Timber.e(e, "Error getting information about available SSL/TLS ciphers and protocols")
+            }
+
+            ENABLED_CIPHERS = if (enabledCiphers == null) null else remove(enabledCiphers, DISALLOWED_CIPHERS)
+            ENABLED_PROTOCOLS =
+                if (supportedProtocols == null) null else remove(supportedProtocols, DISALLOWED_PROTOCOLS)
         }
 
-        ENABLED_CIPHERS = (enabledCiphers == null) ? null : remove(enabledCiphers, DISALLOWED_CIPHERS);
-        ENABLED_PROTOCOLS = (supportedProtocols == null) ? null : remove(supportedProtocols, DISALLOWED_PROTOCOLS);
-    }
+        private fun remove(enabled: Array<String?>, disallowed: Array<String?>?): Array<String?> {
+            val items: MutableList<String?> = ArrayList<String?>()
+            Collections.addAll<String?>(items, *enabled)
 
-    private final Context context;
-    private final TrustManagerFactory trustManagerFactory;
+            if (disallowed != null) {
+                for (item in disallowed) {
+                    items.remove(item)
+                }
+            }
 
-    public DefaultTrustedSocketFactory(Context context, TrustManagerFactory trustManagerFactory) {
-        this.context = context;
-        this.trustManagerFactory = trustManagerFactory;
-    }
+            return items.toTypedArray<String?>()
+        }
 
-    protected static String[] remove(String[] enabled, String[] disallowed) {
-        List<String> items = new ArrayList<>();
-        Collections.addAll(items, enabled);
-
-        if (disallowed != null) {
-            for (String item : disallowed) {
-                items.remove(item);
+        private fun hardenSocket(sock: SSLSocket) {
+            if (ENABLED_CIPHERS != null) {
+                sock.enabledCipherSuites = ENABLED_CIPHERS
+            }
+            if (ENABLED_PROTOCOLS != null) {
+                sock.enabledProtocols = ENABLED_PROTOCOLS
             }
         }
 
-        return items.toArray(new String[0]);
-    }
-
-    @NonNull
-    public Socket createSocket(Socket socket, @NonNull String host, int port, String clientCertificateAlias)
-            throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
-
-        TrustManager[] trustManagers = new TrustManager[] { trustManagerFactory.getTrustManagerForDomain(host, port) };
-        KeyManager[] keyManagers = null;
-        if (!TextUtils.isEmpty(clientCertificateAlias)) {
-            keyManagers = new KeyManager[] { new KeyChainKeyManager(context, clientCertificateAlias) };
+        private fun setSniHost(factory: SSLSocketFactory?, socket: SSLSocket, hostname: String?) {
+            if (factory is SSLCertificateSocketFactory) {
+                val sslCertificateSocketFactory = factory
+                sslCertificateSocketFactory.setHostname(socket, hostname)
+            } else if (Build.VERSION.SDK_INT >= 24) {
+                val sslParameters = socket.getSSLParameters()
+                val sniServerNames = mutableListOf<SNIServerName?>(SNIHostName(hostname))
+                sslParameters.serverNames = sniServerNames
+                socket.setSSLParameters(sslParameters)
+            } else {
+                setHostnameViaReflection(socket, hostname)
+            }
         }
 
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(keyManagers, trustManagers, null);
-        SSLSocketFactory socketFactory = sslContext.getSocketFactory();
-        Socket trustedSocket;
-        if (socket == null) {
-            trustedSocket = socketFactory.createSocket();
-        } else {
-            trustedSocket = socketFactory.createSocket(socket, host, port, true);
-        }
-
-        SSLSocket sslSocket = (SSLSocket) trustedSocket;
-
-        hardenSocket(sslSocket);
-
-        // RFC 6066 does not permit the use of literal IPv4 or IPv6 addresses as SNI hostnames.
-        if (HostNameUtils.INSTANCE.isLegalIPAddress(host) == null) {
-            setSniHost(socketFactory, sslSocket, host);
-        }
-
-        return trustedSocket;
-    }
-
-    private static void hardenSocket(SSLSocket sock) {
-        if (ENABLED_CIPHERS != null) {
-            sock.setEnabledCipherSuites(ENABLED_CIPHERS);
-        }
-        if (ENABLED_PROTOCOLS != null) {
-            sock.setEnabledProtocols(ENABLED_PROTOCOLS);
-        }
-    }
-
-    public static void setSniHost(SSLSocketFactory factory, SSLSocket socket, String hostname) {
-        if (factory instanceof android.net.SSLCertificateSocketFactory) {
-            SSLCertificateSocketFactory sslCertificateSocketFactory = (SSLCertificateSocketFactory) factory;
-            sslCertificateSocketFactory.setHostname(socket, hostname);
-        } else if (Build.VERSION.SDK_INT >= 24) {
-            SSLParameters sslParameters = socket.getSSLParameters();
-            List<SNIServerName> sniServerNames = Collections.singletonList(new SNIHostName(hostname));
-            sslParameters.setServerNames(sniServerNames);
-            socket.setSSLParameters(sslParameters);
-        } else {
-            setHostnameViaReflection(socket, hostname);
-        }
-    }
-
-    private static void setHostnameViaReflection(SSLSocket socket, String hostname) {
-        try {
-            socket.getClass().getMethod("setHostname", String.class).invoke(socket, hostname);
-        } catch (Throwable e) {
-            Timber.e(e, "Could not call SSLSocket#setHostname(String) method ");
+        private fun setHostnameViaReflection(socket: SSLSocket, hostname: String?) {
+            try {
+                socket.javaClass.getMethod("setHostname", String::class.java).invoke(socket, hostname)
+            } catch (e: Throwable) {
+                Timber.e(e, "Could not call SSLSocket#setHostname(String) method ")
+            }
         }
     }
 }
