@@ -14,6 +14,7 @@ import android.net.SSLCertificateSocketFactory;
 import android.os.Build;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import app.k9mail.core.common.net.HostNameUtils;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
@@ -107,7 +108,8 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         return items.toArray(new String[0]);
     }
 
-    public Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
+    @NonNull
+    public Socket createSocket(Socket socket, @NonNull String host, int port, String clientCertificateAlias)
             throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
 
         TrustManager[] trustManagers = new TrustManager[] { trustManagerFactory.getTrustManagerForDomain(host, port) };
