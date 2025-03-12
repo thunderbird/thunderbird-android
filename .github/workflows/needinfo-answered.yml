@@ -1,0 +1,28 @@
+
+---
+name: Remove answered label
+
+on:
+  issues:
+    types:
+      - labeled
+
+permissions:
+  issues: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: |
+      contains(github.event.issue.labels.*.name, 'status: needs information') &&
+      contains(github.event.issue.labels.*.name, 'status: answered')
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Remove answered label if both exist
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue edit $ISSUE_NUMBER --repo "$GITHUB_REPOSITORY" --remove-label "status: answered"
