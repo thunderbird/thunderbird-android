@@ -31,7 +31,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verifyNoInteractions
 
 class Pop3ConnectionTest {
-    private val socketFactory = TestTrustedSocketFactory.newInstance()
+    private val socketFactory = TestTrustedSocketFactory
 
     @Test
     fun `when TrustedSocketFactory throws wrapped CertificateChainException, open() should throw`() {

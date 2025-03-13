@@ -46,7 +46,7 @@ private val XOAUTH_STRING_RETRY = "user=$USERNAME\u0001auth=Bearer $XOAUTH_TOKEN
 private val OAUTHBEARER_STRING = "n,a=$USERNAME,\u0001auth=Bearer $XOAUTH_TOKEN\u0001\u0001".base64()
 
 class RealImapConnectionTest {
-    private var socketFactory = TestTrustedSocketFactory.newInstance()
+    private var socketFactory = TestTrustedSocketFactory
     private var oAuth2TokenProvider = TestTokenProvider()
 
     @Before

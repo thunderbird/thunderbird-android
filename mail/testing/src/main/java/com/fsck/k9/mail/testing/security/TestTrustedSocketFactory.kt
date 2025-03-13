@@ -10,9 +10,14 @@ import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 
-class TestTrustedSocketFactory private constructor(
-    private val serverCertificate: X509Certificate?
-) : TrustedSocketFactory {
+/**
+ * A test trusted socket factory that creates sockets that trust only a predefined server certificate
+ */
+object TestTrustedSocketFactory : TrustedSocketFactory {
+
+    private val serverCertificate: X509Certificate by lazy {
+        KeyStoreProvider.getInstance().serverCertificate
+    }
 
     @Throws(
         NoSuchAlgorithmException::class,
@@ -20,7 +25,12 @@ class TestTrustedSocketFactory private constructor(
         MessagingException::class,
         IOException::class,
     )
-    override fun createSocket(socket: Socket?, host: String, port: Int, clientCertificateAlias: String?): Socket {
+    override fun createSocket(
+        socket: Socket?,
+        host: String,
+        port: Int,
+        clientCertificateAlias: String?,
+    ): Socket {
         val trustManagers: Array<TrustManager> = arrayOf(VeryTrustingTrustManager(serverCertificate))
 
         val sslContext = SSLContext.getInstance("TLS").apply {
@@ -29,22 +39,15 @@ class TestTrustedSocketFactory private constructor(
 
         val sslSocketFactory = sslContext.socketFactory
 
-        return if (socket != null) {
+        return if (socket == null) {
+            sslSocketFactory.createSocket(host, port)
+        } else {
             sslSocketFactory.createSocket(
                 socket,
                 socket.inetAddress.hostAddress,
                 socket.port,
                 true,
             )
-        } else {
-            sslSocketFactory.createSocket(host, port)
-        }
-    }
-
-    companion object {
-        fun newInstance(): TestTrustedSocketFactory {
-            val serverCertificate = KeyStoreProvider.getInstance().serverCertificate
-            return TestTrustedSocketFactory(serverCertificate)
         }
     }
 }

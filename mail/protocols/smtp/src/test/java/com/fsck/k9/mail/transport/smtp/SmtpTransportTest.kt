@@ -35,7 +35,7 @@ private const val PASSWORD = "password"
 private val CLIENT_CERTIFICATE_ALIAS: String? = null
 
 class SmtpTransportTest {
-    private val socketFactory = TestTrustedSocketFactory.newInstance()
+    private val socketFactory = TestTrustedSocketFactory
     private val oAuth2TokenProvider = createMockOAuth2TokenProvider()
 
     @Test
