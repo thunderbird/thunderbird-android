@@ -76,10 +76,12 @@ include(
     ":feature:account:common",
     ":feature:account:edit",
     ":feature:account:oauth",
-    ":feature:account:setup",
+    ":feature:account:settings:api",
+    ":feature:account:settings:impl",
     ":feature:account:server:certificate",
     ":feature:account:server:settings",
     ":feature:account:server:validation",
+    ":feature:account:setup",
 )
 
 include(
