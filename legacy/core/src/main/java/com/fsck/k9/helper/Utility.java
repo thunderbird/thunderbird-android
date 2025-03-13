@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.database.Cursor;
-import android.os.Handler;
 import android.text.TextUtils;
 
 import timber.log.Timber;
@@ -28,8 +27,6 @@ public class Utility {
      */
     private static final Pattern TAG_PATTERN = Pattern.compile("\\[[-_a-z0-9]+\\] ",
             Pattern.CASE_INSENSITIVE);
-
-    private static Handler sMainThreadHandler;
 
     public static boolean arrayContains(Object[] a, Object o) {
         for (Object element : a) {
