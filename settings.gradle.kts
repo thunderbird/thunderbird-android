@@ -125,6 +125,7 @@ include(
     ":core:featureflags",
     ":core:testing",
     ":core:android:common",
+    ":core:android:network",
     ":core:android:permissions",
     ":core:android:testing",
     ":core:ui:compose:common",

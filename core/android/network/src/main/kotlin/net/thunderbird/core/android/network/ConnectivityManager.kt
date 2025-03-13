@@ -1,4 +1,4 @@
-package com.fsck.k9.network
+package net.thunderbird.core.android.network
 
 import android.os.Build
 import android.net.ConnectivityManager as SystemConnectivityManager
@@ -18,8 +18,8 @@ interface ConnectivityChangeListener {
 
 internal fun ConnectivityManager(systemConnectivityManager: SystemConnectivityManager): ConnectivityManager {
     return when {
-        Build.VERSION.SDK_INT >= 24 -> ConnectivityManagerApi24(systemConnectivityManager)
-        Build.VERSION.SDK_INT >= 23 -> ConnectivityManagerApi23(systemConnectivityManager)
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> ConnectivityManagerApi24(systemConnectivityManager)
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> ConnectivityManagerApi23(systemConnectivityManager)
         else -> ConnectivityManagerApi21(systemConnectivityManager)
     }
 }

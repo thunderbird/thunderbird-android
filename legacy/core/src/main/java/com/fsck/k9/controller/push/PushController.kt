@@ -7,8 +7,6 @@ import app.k9mail.legacy.preferences.BackgroundSync
 import app.k9mail.legacy.preferences.GeneralSettingsManager
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.mapToSet
-import com.fsck.k9.network.ConnectivityChangeListener
-import com.fsck.k9.network.ConnectivityManager
 import com.fsck.k9.notification.PushNotificationManager
 import com.fsck.k9.notification.PushNotificationState
 import com.fsck.k9.notification.PushNotificationState.ALARM_PERMISSION_MISSING
@@ -26,6 +24,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.network.ConnectivityChangeListener
+import net.thunderbird.core.android.network.ConnectivityManager
 import timber.log.Timber
 
 /**
