@@ -1,6 +1,8 @@
 package app.k9mail.ui.catalog.ui.organism.items
 
 import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.SubtitleTopAppBar
@@ -73,16 +75,13 @@ private fun LazyGridScope.subtitleTopAppBarItems() {
                 title = "Title",
                 subtitle = "Subtitle",
                 actions = {
-                    ButtonIcon(
-                        onClick = {},
+                    DemoActionButton(
                         imageVector = Icons.Outlined.Info,
                     )
-                    ButtonIcon(
-                        onClick = {},
+                    DemoActionButton(
                         imageVector = Icons.Outlined.Check,
                     )
-                    ButtonIcon(
-                        onClick = {},
+                    DemoActionButton(
                         imageVector = Icons.Outlined.Visibility,
                     )
                 },
@@ -97,16 +96,13 @@ private fun LazyGridScope.subtitleTopAppBarItems() {
                 subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
                     "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 actions = {
-                    ButtonIcon(
-                        onClick = {},
+                    DemoActionButton(
                         imageVector = Icons.Outlined.Info,
                     )
-                    ButtonIcon(
-                        onClick = {},
+                    DemoActionButton(
                         imageVector = Icons.Outlined.Check,
                     )
-                    ButtonIcon(
-                        onClick = {},
+                    DemoActionButton(
                         imageVector = Icons.Outlined.Visibility,
                     )
                 },
@@ -133,4 +129,17 @@ private fun LazyGridScope.subtitleTopAppBarItems() {
             )
         }
     }
+}
+
+/**
+ * Demo action button that does nothing on click.
+ */
+@Composable
+private fun DemoActionButton(
+    imageVector: ImageVector,
+) {
+    ButtonIcon(
+        onClick = {},
+        imageVector = imageVector,
+    )
 }
