@@ -1,46 +1,50 @@
-package com.fsck.k9.mail.testing.security;
+package com.fsck.k9.mail.testing.security
 
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import java.io.IOException
+import java.net.Socket
+import java.security.KeyManagementException
+import java.security.NoSuchAlgorithmException
+import java.security.cert.X509Certificate
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
 
-import java.io.IOException;
-import java.net.Socket;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
+class TestTrustedSocketFactory private constructor(
+    private val serverCertificate: X509Certificate?
+) : TrustedSocketFactory {
 
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
+    @Throws(
+        NoSuchAlgorithmException::class,
+        KeyManagementException::class,
+        MessagingException::class,
+        IOException::class,
+    )
+    override fun createSocket(socket: Socket?, host: String, port: Int, clientCertificateAlias: String?): Socket {
+        val trustManagers: Array<TrustManager> = arrayOf(VeryTrustingTrustManager(serverCertificate))
 
+        val sslContext = SSLContext.getInstance("TLS").apply {
+            init(null, trustManagers, null)
+        }
 
-public class TestTrustedSocketFactory implements TrustedSocketFactory {
-    private final X509Certificate serverCertificate;
+        val sslSocketFactory = sslContext.socketFactory
 
-
-    public static TestTrustedSocketFactory newInstance() {
-        X509Certificate serverCertificate = KeyStoreProvider.getInstance().getServerCertificate();
-        return new TestTrustedSocketFactory(serverCertificate);
-    }
-
-    private TestTrustedSocketFactory(X509Certificate serverCertificate) {
-        this.serverCertificate = serverCertificate;
-    }
-
-    @Override
-    public Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
-            throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
-
-        TrustManager[] trustManagers = new TrustManager[] { new VeryTrustingTrustManager(serverCertificate) };
-
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, trustManagers, null);
-
-        SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
-        return sslSocketFactory.createSocket(
+        return if (socket != null) {
+            sslSocketFactory.createSocket(
                 socket,
-                socket.getInetAddress().getHostAddress(),
-                socket.getPort(),
-                true);
+                socket.inetAddress.hostAddress,
+                socket.port,
+                true,
+            )
+        } else {
+            sslSocketFactory.createSocket(host, port)
+        }
+    }
+
+    companion object {
+        fun newInstance(): TestTrustedSocketFactory {
+            val serverCertificate = KeyStoreProvider.getInstance().serverCertificate
+            return TestTrustedSocketFactory(serverCertificate)
+        }
     }
 }
