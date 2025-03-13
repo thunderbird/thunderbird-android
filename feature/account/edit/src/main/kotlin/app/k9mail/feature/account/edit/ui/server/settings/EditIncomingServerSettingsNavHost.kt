@@ -6,6 +6,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import app.k9mail.feature.account.edit.navigation.AccountEditRoute
 import app.k9mail.feature.account.edit.ui.server.settings.modify.ModifyIncomingServerSettingsViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveIncomingServerSettingsViewModel
 import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSettingsScreen
@@ -32,7 +33,7 @@ private fun NavController.navigateToSave() {
 @Composable
 fun EditIncomingServerSettingsNavHost(
     accountUuid: String,
-    onFinish: () -> Unit,
+    onFinish: (AccountEditRoute) -> Unit,
     onBack: () -> Unit,
 ) {
     val navController = rememberNavController()
@@ -64,7 +65,7 @@ fun EditIncomingServerSettingsNavHost(
         composable(route = NESTED_NAVIGATION_ROUTE_SAVE) {
             SaveServerSettingsScreen(
                 title = stringResource(id = R.string.account_server_settings_incoming_top_bar_title),
-                onNext = onFinish,
+                onNext = { onFinish(AccountEditRoute.IncomingServerSettings(accountUuid)) },
                 onBack = { navController.popBackStack(route = NESTED_NAVIGATION_ROUTE_MODIFY, inclusive = false) },
                 viewModel = koinViewModel<SaveIncomingServerSettingsViewModel> {
                     parametersOf(accountUuid)

@@ -14,6 +14,8 @@ import app.k9mail.feature.account.setup.domain.usecase.CreateAccount
 import app.k9mail.feature.account.setup.domain.usecase.GetAutoDiscovery
 import app.k9mail.feature.account.setup.domain.usecase.GetSpecialFolderOptions
 import app.k9mail.feature.account.setup.domain.usecase.ValidateSpecialFolderOptions
+import app.k9mail.feature.account.setup.navigation.AccountSetupNavigation
+import app.k9mail.feature.account.setup.navigation.DefaultAccountSetupNavigation
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryContract
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryValidator
 import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryViewModel
@@ -40,6 +42,8 @@ val featureAccountSetupModule: Module = module {
         featureAccountServerValidationModule,
         featureAccountServerSettingsModule,
     )
+
+    single<AccountSetupNavigation> { DefaultAccountSetupNavigation() }
 
     single<OkHttpClient> {
         OkHttpClient()
