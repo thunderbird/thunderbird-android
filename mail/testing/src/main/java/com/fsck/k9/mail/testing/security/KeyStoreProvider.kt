@@ -1,61 +1,50 @@
-package com.fsck.k9.mail.testing.security;
+package com.fsck.k9.mail.testing.security
 
+import java.security.KeyStore
+import java.security.KeyStoreException
+import java.security.cert.X509Certificate
 
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.cert.X509Certificate;
+class KeyStoreProvider private constructor(@JvmField val keyStore: KeyStore?) {
+    val password: CharArray?
+        get() = KEYSTORE_PASSWORD.toCharArray()
 
-
-public class KeyStoreProvider {
-    private static final String KEYSTORE_PASSWORD = "password";
-    private static final String KEYSTORE_RESOURCE = "/keystore.jks";
-    private static final String SERVER_CERTIFICATE_ALIAS = "mockimapserver";
-
-
-    private final KeyStore keyStore;
-
-
-    public static KeyStoreProvider getInstance() {
-        KeyStore keyStore = loadKeyStore();
-        return new KeyStoreProvider(keyStore);
-    }
-
-    private static KeyStore loadKeyStore() {
-        try {
-            KeyStore keyStore = KeyStore.getInstance("JKS");
-
-            InputStream keyStoreInputStream = KeyStoreProvider.class.getResourceAsStream(KEYSTORE_RESOURCE);
+    val serverCertificate: X509Certificate
+        get() {
             try {
-                keyStore.load(keyStoreInputStream, KEYSTORE_PASSWORD.toCharArray());
-            } finally {
-                keyStoreInputStream.close();
+                val keyStore: KeyStore = loadKeyStore()
+                return keyStore.getCertificate(SERVER_CERTIFICATE_ALIAS) as X509Certificate
+            } catch (e: KeyStoreException) {
+                throw RuntimeException(e)
+            }
+        }
+
+    companion object {
+        private const val KEYSTORE_PASSWORD = "password"
+        private const val KEYSTORE_RESOURCE = "/keystore.jks"
+        private const val SERVER_CERTIFICATE_ALIAS = "mockimapserver"
+
+        @JvmStatic
+        val instance: KeyStoreProvider
+            get() {
+                val keyStore: KeyStore = loadKeyStore()
+                return KeyStoreProvider(keyStore)
             }
 
-            return keyStore;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+        private fun loadKeyStore(): KeyStore {
+            try {
+                val keyStore = KeyStore.getInstance("JKS")
 
-    private KeyStoreProvider(KeyStore keyStore) {
-        this.keyStore = keyStore;
-    }
+                val keyStoreInputStream = KeyStoreProvider::class.java.getResourceAsStream(KEYSTORE_RESOURCE)
+                try {
+                    keyStore.load(keyStoreInputStream, KEYSTORE_PASSWORD.toCharArray())
+                } finally {
+                    keyStoreInputStream!!.close()
+                }
 
-    public KeyStore getKeyStore() {
-        return keyStore;
-    }
-
-    public char[] getPassword() {
-        return KEYSTORE_PASSWORD.toCharArray();
-    }
-
-    public X509Certificate getServerCertificate() {
-        try {
-            KeyStore keyStore = loadKeyStore();
-            return (X509Certificate) keyStore.getCertificate(SERVER_CERTIFICATE_ALIAS);
-        } catch (KeyStoreException e) {
-            throw new RuntimeException(e);
+                return keyStore
+            } catch (e: Exception) {
+                throw RuntimeException(e)
+            }
         }
     }
 }

@@ -357,7 +357,7 @@ public class MockSmtpServer {
         private void upgradeToTls(Socket socket) throws KeyStoreException, IOException, NoSuchAlgorithmException,
                 CertificateException, UnrecoverableKeyException, KeyManagementException {
 
-            KeyStore keyStore = keyStoreProvider.getKeyStore();
+            KeyStore keyStore = keyStoreProvider.keyStore;
 
             String defaultAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(defaultAlgorithm);
