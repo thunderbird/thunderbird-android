@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.content.Context;
 import android.database.Cursor;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Handler;
 import android.text.TextUtils;
 
@@ -202,23 +199,6 @@ public class Utility {
     public static void closeQuietly(final Cursor cursor) {
         if (cursor != null) {
             cursor.close();
-        }
-    }
-
-    /**
-     * Check to see if we have network connectivity.
-     */
-    public static boolean hasConnectivity(final Context context) {
-        final ConnectivityManager connectivityManager =
-            (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager == null) {
-            return false;
-        }
-        final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
-            return true;
-        } else {
-            return false;
         }
     }
 

@@ -61,6 +61,7 @@ import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
 import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
+import net.thunderbird.core.android.network.ConnectivityManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -82,6 +83,7 @@ class MessageListFragment :
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingController by inject()
     private val accountManager: AccountManager by inject()
+    private val connectivityManager: ConnectivityManager by inject()
     private val clock: Clock by inject()
 
     private val handler = MessageListHandler(this)
@@ -597,7 +599,7 @@ class MessageListFragment :
         super.onResume()
 
         if (hasConnectivity == null) {
-            hasConnectivity = Utility.hasConnectivity(requireActivity().application)
+            hasConnectivity = connectivityManager.isNetworkAvailable()
         }
 
         messagingController.addListener(activityListener)
