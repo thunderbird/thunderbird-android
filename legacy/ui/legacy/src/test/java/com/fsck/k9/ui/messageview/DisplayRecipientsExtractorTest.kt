@@ -5,7 +5,7 @@ import app.k9mail.legacy.account.Identity
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.buildMessage
+import com.fsck.k9.mail.testing.message.buildMessage
 import org.junit.Test
 
 private const val IDENTITY_ADDRESS = "me@domain.example"

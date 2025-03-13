@@ -1,6 +1,6 @@
 @file:Suppress("TooManyFunctions")
 
-package com.fsck.k9.mail.assertk
+package com.fsck.k9.mail.testing.assertk
 
 import assertk.Assert
 import assertk.assertions.prop

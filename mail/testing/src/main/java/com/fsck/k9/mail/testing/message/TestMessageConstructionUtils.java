@@ -1,6 +1,9 @@
-package com.fsck.k9.mail;
+package com.fsck.k9.mail.testing.message;
 
 
+import com.fsck.k9.mail.Body;
+import com.fsck.k9.mail.BodyPart;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;

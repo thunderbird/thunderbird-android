@@ -15,7 +15,7 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Multipart
 import com.fsck.k9.mail.Part
-import com.fsck.k9.mail.buildMessage
+import com.fsck.k9.mail.testing.message.buildMessage
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import com.fsck.k9.storage.RobolectricTest

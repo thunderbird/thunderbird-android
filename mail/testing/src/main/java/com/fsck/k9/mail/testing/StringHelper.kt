@@ -1,4 +1,4 @@
-package com.fsck.k9.mail
+package com.fsck.k9.mail.testing
 
 fun String.crlf() = replace("\n", "\r\n")
 

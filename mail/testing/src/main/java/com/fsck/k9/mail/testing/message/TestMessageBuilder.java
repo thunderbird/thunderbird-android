@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.helpers;
+package com.fsck.k9.mail.testing.message;
 
 
 import com.fsck.k9.mail.Message;
@@ -30,7 +30,7 @@ public class TestMessageBuilder {
         this.messageSize = messageSize;
         return this;
     }
-    
+
     public Message build() {
         return new TestMessage(this);
     }

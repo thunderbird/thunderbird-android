@@ -10,9 +10,9 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ClientCertificateError
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.mail.helpers.FakeTrustManager
-import com.fsck.k9.mail.helpers.SimpleTrustedSocketFactory
 import com.fsck.k9.mail.server.ServerSettingsValidationResult
+import com.fsck.k9.mail.testing.security.FakeTrustManager
+import com.fsck.k9.mail.testing.security.SimpleTrustedSocketFactory
 import java.net.UnknownHostException
 import kotlin.test.Test
 

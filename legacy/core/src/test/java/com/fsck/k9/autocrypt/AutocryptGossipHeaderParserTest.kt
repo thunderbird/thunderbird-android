@@ -8,8 +8,8 @@ import assertk.assertions.index
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.filter.Base64
+import com.fsck.k9.mail.testing.crlf
 import com.fsck.k9.mailstore.MimePartStreamParser
 import org.junit.Test
 
