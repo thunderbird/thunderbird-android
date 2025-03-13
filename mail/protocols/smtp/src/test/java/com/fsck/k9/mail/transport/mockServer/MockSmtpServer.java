@@ -50,7 +50,7 @@ public class MockSmtpServer {
 
 
     public MockSmtpServer() {
-        this(KeyStoreProvider.getInstance(), new DefaultLogger());
+        this(TestKeyStoreProvider.INSTANCE, new DefaultLogger());
     }
 
     public MockSmtpServer(KeyStoreProvider keyStoreProvider, Logger logger) {
@@ -357,7 +357,7 @@ public class MockSmtpServer {
         private void upgradeToTls(Socket socket) throws KeyStoreException, IOException, NoSuchAlgorithmException,
                 CertificateException, UnrecoverableKeyException, KeyManagementException {
 
-            KeyStore keyStore = keyStoreProvider.keyStore;
+            KeyStore keyStore = keyStoreProvider.getKeyStore();
 
             String defaultAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(defaultAlgorithm);

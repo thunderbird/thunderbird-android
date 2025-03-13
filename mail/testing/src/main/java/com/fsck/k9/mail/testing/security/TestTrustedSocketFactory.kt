@@ -16,7 +16,7 @@ import javax.net.ssl.TrustManager
 object TestTrustedSocketFactory : TrustedSocketFactory {
 
     private val serverCertificate: X509Certificate by lazy {
-        KeyStoreProvider.instance.serverCertificate
+        KeyStoreProvider.serverCertificate
     }
 
     @Throws(

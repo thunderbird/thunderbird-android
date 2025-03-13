@@ -50,7 +50,7 @@ public class MockPop3Server {
 
 
     public MockPop3Server() {
-        this(KeyStoreProvider.getInstance(), new DefaultLogger());
+        this(TestKeyStoreProvider.INSTANCE, new DefaultLogger());
     }
 
     public MockPop3Server(KeyStoreProvider keyStoreProvider, Logger logger) {
@@ -356,7 +356,7 @@ public class MockPop3Server {
         private void upgradeToTls(Socket socket) throws KeyStoreException, IOException, NoSuchAlgorithmException,
                 CertificateException, UnrecoverableKeyException, KeyManagementException {
 
-            KeyStore keyStore = keyStoreProvider.keyStore;
+            KeyStore keyStore = keyStoreProvider.getKeyStore();
 
             String defaultAlgorithm = KeyManagerFactory.getDefaultAlgorithm();
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(defaultAlgorithm);
