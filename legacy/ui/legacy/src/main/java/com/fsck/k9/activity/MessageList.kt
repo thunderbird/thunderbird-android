@@ -12,9 +12,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type.displayCutout
+import androidx.core.view.WindowInsetsCompat.Type.navigationBars
+import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -134,6 +139,8 @@ open class MessageList :
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        enableEdgeToEdge()
+
         // If the app's main task was not created using the default launch intent (e.g. from a notification, a widget,
         // or a shortcut), using the app icon to "launch" the app will create a new MessageList instance instead of only
         // bringing the app's task to the foreground. We catch this situation here and simply finish the activity. This
@@ -189,6 +196,46 @@ open class MessageList :
         initializeFragments()
         displayViews()
         initializeFunding()
+        initializeInsets()
+    }
+
+    private fun initializeInsets() {
+        initializeDrawerContentInsets()
+        initializeToolbarInsets()
+        initializeContainerInsets()
+    }
+
+    private fun initializeToolbarInsets() {
+        val toolbar = findViewById<View>(R.id.toolbar)
+
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
+            val insets = windowsInsets.getInsets(systemBars() or displayCutout())
+            v.setPadding(insets.left, 0, insets.right, 0)
+
+            windowsInsets
+        }
+    }
+
+    private fun initializeContainerInsets() {
+        val container = findViewById<View>(R.id.container)
+
+        ViewCompat.setOnApplyWindowInsetsListener(container) { v, windowsInsets ->
+            val insets = windowsInsets.getInsets(displayCutout() or navigationBars())
+            v.setPadding(insets.left, 0, insets.right, 0)
+
+            windowsInsets
+        }
+    }
+
+    private fun initializeDrawerContentInsets() {
+        val toolbar = findViewById<View>(R.id.drawer_content)
+
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
+            val insets = windowsInsets.getInsets(systemBars() or displayCutout())
+            v.setPadding(0, insets.top, 0, 0)
+
+            windowsInsets
+        }
     }
 
     private fun initializeFunding() {
