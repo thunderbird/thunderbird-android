@@ -14,9 +14,9 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 import org.junit.Test;
 
-import static com.fsck.k9.mail.TestMessageConstructionUtils.bodypart;
-import static com.fsck.k9.mail.TestMessageConstructionUtils.messageFromBody;
-import static com.fsck.k9.mail.TestMessageConstructionUtils.multipart;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.bodypart;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.messageFromBody;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.multipart;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;

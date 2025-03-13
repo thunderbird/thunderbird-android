@@ -5,13 +5,13 @@ import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import com.fsck.k9.mail.assertk.body
-import com.fsck.k9.mail.assertk.bodyPart
-import com.fsck.k9.mail.assertk.bodyParts
-import com.fsck.k9.mail.assertk.mimeType
-import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMultipart
+import com.fsck.k9.mail.testing.assertk.body
+import com.fsck.k9.mail.testing.assertk.bodyPart
+import com.fsck.k9.mail.testing.assertk.bodyParts
+import com.fsck.k9.mail.testing.assertk.mimeType
+import com.fsck.k9.mail.testing.crlf
 import java.io.ByteArrayInputStream
 import org.junit.Test
 

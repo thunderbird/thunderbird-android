@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import com.fsck.k9.mail.helpers.KeyStoreProvider;
+import com.fsck.k9.mail.testing.security.KeyStoreProvider;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import javax.net.ssl.KeyManagerFactory;

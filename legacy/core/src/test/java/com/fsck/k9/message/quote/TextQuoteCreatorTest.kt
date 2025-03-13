@@ -8,7 +8,7 @@ import com.fsck.k9.TestCoreResourceProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
-import com.fsck.k9.mail.crlf
+import com.fsck.k9.mail.testing.crlf
 import java.util.Date
 import org.junit.Test
 import org.mockito.kotlin.doReturn

@@ -8,7 +8,7 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.helper.ReplyToParser
-import com.fsck.k9.mail.buildMessage
+import com.fsck.k9.mail.testing.message.buildMessage
 import org.junit.Test
 
 private const val IDENTITY_EMAIL_ADDRESS = "myself@domain.example"

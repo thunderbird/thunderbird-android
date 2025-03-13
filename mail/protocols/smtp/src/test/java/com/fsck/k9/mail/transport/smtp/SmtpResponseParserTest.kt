@@ -16,8 +16,8 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import assertk.assertions.key
 import assertk.assertions.prop
-import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.filter.PeekableInputStream
+import com.fsck.k9.mail.testing.crlf
 import org.junit.Test
 
 class SmtpResponseParserTest {

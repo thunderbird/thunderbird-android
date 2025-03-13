@@ -17,8 +17,8 @@ import com.fsck.k9.mail.ConnectionSecurity.SSL_TLS_REQUIRED
 import com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.MissingCapabilityException
-import com.fsck.k9.mail.helpers.TestTrustedSocketFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import com.fsck.k9.mail.testing.security.TestTrustedSocketFactory
 import java.io.IOException
 import java.security.NoSuchAlgorithmException
 import javax.net.ssl.SSLException

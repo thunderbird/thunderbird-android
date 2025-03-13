@@ -5,7 +5,7 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotIn
 import assertk.assertions.isNull
-import com.fsck.k9.mail.crlf
+import com.fsck.k9.mail.testing.crlf
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.storage.RobolectricTest
 import okio.buffer

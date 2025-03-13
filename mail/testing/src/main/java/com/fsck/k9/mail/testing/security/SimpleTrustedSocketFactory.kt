@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.helpers
+package com.fsck.k9.mail.testing.security
 
 import com.fsck.k9.mail.ClientCertificateError
 import com.fsck.k9.mail.ClientCertificateException

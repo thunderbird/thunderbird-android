@@ -1,5 +1,8 @@
-package com.fsck.k9.mail
+package com.fsck.k9.mail.testing.message
 
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Multipart
+import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper

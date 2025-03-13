@@ -16,9 +16,9 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
-import com.fsck.k9.mail.buildMessage
 import com.fsck.k9.mail.store.imap.FetchListener
 import com.fsck.k9.mail.store.imap.ImapMessage
+import com.fsck.k9.mail.testing.message.buildMessage
 import java.util.Date
 import org.apache.james.mime4j.dom.field.DateTimeField
 import org.apache.james.mime4j.field.DefaultFieldParser

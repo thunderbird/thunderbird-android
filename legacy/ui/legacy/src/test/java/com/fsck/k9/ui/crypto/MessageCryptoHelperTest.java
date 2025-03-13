@@ -34,9 +34,9 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.LooperMode;
 
-import static com.fsck.k9.mail.TestMessageConstructionUtils.bodypart;
-import static com.fsck.k9.mail.TestMessageConstructionUtils.messageFromBody;
-import static com.fsck.k9.mail.TestMessageConstructionUtils.multipart;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.bodypart;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.messageFromBody;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.multipart;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.assertTrue;
