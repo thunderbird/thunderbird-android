@@ -1,10 +1,9 @@
 package com.fsck.k9.mail.testing.security
 
 import java.security.KeyStore
-import java.security.KeyStoreException
 import java.security.cert.X509Certificate
 
-object KeyStoreProvider {
+object TestKeyStoreProvider {
 
     private const val KEYSTORE_PASSWORD = "password"
     private const val KEYSTORE_RESOURCE = "/keystore.jks"
@@ -18,7 +17,7 @@ object KeyStoreProvider {
 
     private fun loadKeyStore(): KeyStore {
         val keyStore = KeyStore.getInstance("JKS")
-        val keyStoreInputStream = KeyStoreProvider::class.java.getResourceAsStream(KEYSTORE_RESOURCE)
+        val keyStoreInputStream = TestKeyStoreProvider::class.java.getResourceAsStream(KEYSTORE_RESOURCE)
         keyStoreInputStream.use { inputStream ->
             keyStore.load(inputStream, KEYSTORE_PASSWORD.toCharArray())
         }
