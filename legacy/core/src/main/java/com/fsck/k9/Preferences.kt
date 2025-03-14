@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
+import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.AccountRemovedListener
@@ -32,6 +33,7 @@ class Preferences internal constructor(
     private val localStoreProvider: LocalStoreProvider,
     private val accountPreferenceSerializer: AccountPreferenceSerializer,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) : AccountManager {
     private val accountLock = Any()
     private val storageLock = Any()
@@ -82,7 +84,7 @@ class Preferences internal constructor(
             if (!accountUuids.isNullOrEmpty()) {
                 accountUuids.split(",").forEach { uuid ->
                     val existingAccount = accountsMap?.get(uuid)
-                    val account = existingAccount ?: Account(uuid, K9::isSensitiveDebugLoggingEnabled)
+                    val account = existingAccount ?: Account(uuid, K9::isSensitiveDebugLoggingEnabled, featureFlagProvider)
                     accountPreferenceSerializer.loadAccount(account, storage)
 
                     accounts[uuid] = account
@@ -176,7 +178,7 @@ class Preferences internal constructor(
     }
 
     fun newAccount(accountUuid: String): Account {
-        val account = Account(accountUuid, K9::isSensitiveDebugLoggingEnabled)
+        val account = Account(accountUuid, K9::isSensitiveDebugLoggingEnabled,featureFlagProvider)
         accountPreferenceSerializer.loadDefaults(account)
 
         synchronized(accountLock) {
