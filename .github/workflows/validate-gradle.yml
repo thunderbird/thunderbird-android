@@ -1,7 +1,6 @@
 name: "Validate Gradle Wrapper"
 
 on:
-  push:
   pull_request:
 
 permissions:
