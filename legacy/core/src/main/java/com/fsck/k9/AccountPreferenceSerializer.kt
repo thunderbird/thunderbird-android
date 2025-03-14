@@ -1,5 +1,8 @@
 package com.fsck.k9
 
+import app.k9mail.core.featureflag.FeatureFlagProvider
+import app.k9mail.core.featureflag.FeatureFlagResult
+import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.Companion.DEFAULT_SORT_ASCENDING
 import app.k9mail.legacy.account.Account.Companion.DEFAULT_SORT_TYPE
@@ -24,9 +27,11 @@ import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import timber.log.Timber
 
+@Suppress("MaxLineLength")
 class AccountPreferenceSerializer(
     private val resourceProvider: CoreResourceProvider,
     private val serverSettingsSerializer: ServerSettingsSerializer,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) {
 
     @Synchronized
@@ -52,7 +57,17 @@ class AccountPreferenceSerializer(
             if (displayCount < 0) {
                 displayCount = K9.DEFAULT_VISIBLE_LIMIT
             }
-            isNotifyNewMail = storage.getBoolean("$accountUuid.notifyNewMail", false)
+
+            val isNotifyNewMailDefaultValue = when (
+                featureFlagProvider.provide(
+                    "email_notification_default".toFeatureFlagKey(),
+                )
+            ) {
+                FeatureFlagResult.Enabled -> true
+                FeatureFlagResult.Disabled -> false
+                FeatureFlagResult.Unavailable -> false
+            }
+            isNotifyNewMail = storage.getBoolean("$accountUuid.notifyNewMail", isNotifyNewMailDefaultValue)
 
             folderNotifyNewMailMode = getEnumStringPref<FolderMode>(
                 storage,
