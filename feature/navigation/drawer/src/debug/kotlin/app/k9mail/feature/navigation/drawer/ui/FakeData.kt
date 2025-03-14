@@ -2,6 +2,9 @@ package app.k9mail.feature.navigation.drawer.ui
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import app.k9mail.core.featureflag.FeatureFlagKey
+import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
+import app.k9mail.core.featureflag.FeatureFlag
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
@@ -11,6 +14,7 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderType
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import java.util.ArrayList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -26,6 +30,13 @@ internal object FakeData {
 
     val ACCOUNT = Account(
         uuid = ACCOUNT_UUID,
+        featureFlagProvider = InMemoryFeatureFlagProvider(
+            featureFlagFactory = {
+                listOf(
+                    FeatureFlag(key = FeatureFlagKey("fakeFeature"), enabled = false),
+                )
+            },
+        )
     ).apply {
         identities = ArrayList()
 
