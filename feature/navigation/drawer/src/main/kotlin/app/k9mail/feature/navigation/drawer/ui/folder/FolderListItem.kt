@@ -32,9 +32,17 @@ internal fun FolderListItem(
     folderNameFormatter: FolderNameFormatter,
     modifier: Modifier = Modifier,
     treeFolder: TreeFolder? = null,
-    parentPrefix: String? = ""
+    parentPrefix: String? = "",
 ) {
     var isExpanded = remember { mutableStateOf(false) }
+
+    var unreadCount = displayFolder.unreadMessageCount
+    var starredCount = displayFolder.starredMessageCount
+
+    if (treeFolder !== null && !isExpanded.value) {
+        unreadCount = treeFolder.getAllUnreadMessageCount()
+        starredCount = treeFolder.getAllStarredMessageCount()
+    }
 
     NavigationDrawerItem(
         label = mapFolderName(displayFolder, folderNameFormatter, parentPrefix),
@@ -48,16 +56,16 @@ internal fun FolderListItem(
         },
         badge = {
             FolderListItemBadge(
-                unreadCount = if (treeFolder !== null && !isExpanded.value) treeFolder.getAllUnreadMessageCount() else displayFolder.unreadMessageCount,
-                starredCount = if (treeFolder !== null && !isExpanded.value) treeFolder.getAllStarredMessageCount() else displayFolder.starredMessageCount,
+                unreadCount = unreadCount,
+                starredCount = starredCount,
                 showStarredCount = showStarredCount,
-                expandableState = if (treeFolder !== null && treeFolder.children.isNotEmpty()) isExpanded else null
+                expandableState = if (treeFolder !== null && treeFolder.children.isNotEmpty()) isExpanded else null,
             )
         },
     )
 
     // Managing children
-    Column (modifier = Modifier.fillMaxWidth().animateContentSize()) {
+    Column(modifier = Modifier.fillMaxWidth().animateContentSize()) {
         if (!isExpanded.value) return
         if (treeFolder === null) return
         for (child in treeFolder.children) {
@@ -72,7 +80,7 @@ internal fun FolderListItem(
                 folderNameFormatter = folderNameFormatter,
                 modifier = modifier.then(Modifier.padding(start = MainTheme.spacings.triple)),
                 treeFolder = child,
-                parentPrefix = if (displayParent is DisplayAccountFolder) displayParent.folder.name else null
+                parentPrefix = if (displayParent is DisplayAccountFolder) displayParent.folder.name else null,
             )
         }
     }
@@ -82,7 +90,7 @@ internal fun FolderListItem(
 private fun mapFolderName(
     displayFolder: DisplayFolder,
     folderNameFormatter: FolderNameFormatter,
-    parentPrefix: String? = ""
+    parentPrefix: String? = "",
 ): String {
     return when (displayFolder) {
         is DisplayAccountFolder -> folderNameFormatter.displayName(displayFolder.folder).removePrefix("$parentPrefix/")
