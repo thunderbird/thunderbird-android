@@ -84,7 +84,7 @@ class Account(
 
     @get:Synchronized
     @set:Synchronized
-    var isNotifyNewMail =  when (featureFlagProvider.provide("email_notification_default".toFeatureFlagKey())) {
+    var isNotifyNewMail = when (featureFlagProvider.provide("email_notification_default".toFeatureFlagKey())) {
         FeatureFlagResult.Enabled -> true
         FeatureFlagResult.Disabled -> false
         FeatureFlagResult.Unavailable -> false

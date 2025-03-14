@@ -27,6 +27,7 @@ import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import timber.log.Timber
 
+@Suppress("MaxLineLength")
 class AccountPreferenceSerializer(
     private val resourceProvider: CoreResourceProvider,
     private val serverSettingsSerializer: ServerSettingsSerializer,
@@ -57,7 +58,11 @@ class AccountPreferenceSerializer(
                 displayCount = K9.DEFAULT_VISIBLE_LIMIT
             }
 
-            val isNotifyNewMailDefaultValue = when (featureFlagProvider.provide("email_notification_default".toFeatureFlagKey())) {
+            val isNotifyNewMailDefaultValue = when (
+                featureFlagProvider.provide(
+                    "email_notification_default".toFeatureFlagKey(),
+                )
+            ) {
                 FeatureFlagResult.Enabled -> true
                 FeatureFlagResult.Disabled -> false
                 FeatureFlagResult.Unavailable -> false

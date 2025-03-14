@@ -21,7 +21,7 @@ val mainModule = module {
             storagePersister = get(),
             localStoreProvider = get(),
             accountPreferenceSerializer = get(),
-            featureFlagProvider = get()
+            featureFlagProvider = get(),
         )
     }
     single { get<Context>().resources }

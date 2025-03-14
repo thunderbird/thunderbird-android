@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
 
+@Suppress("MaxLineLength")
 class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
@@ -84,7 +85,11 @@ class Preferences internal constructor(
             if (!accountUuids.isNullOrEmpty()) {
                 accountUuids.split(",").forEach { uuid ->
                     val existingAccount = accountsMap?.get(uuid)
-                    val account = existingAccount ?: Account(uuid, K9::isSensitiveDebugLoggingEnabled, featureFlagProvider)
+                    val account = existingAccount ?: Account(
+                        uuid,
+                        K9::isSensitiveDebugLoggingEnabled,
+                        featureFlagProvider,
+                    )
                     accountPreferenceSerializer.loadAccount(account, storage)
 
                     accounts[uuid] = account
@@ -178,7 +183,7 @@ class Preferences internal constructor(
     }
 
     fun newAccount(accountUuid: String): Account {
-        val account = Account(accountUuid, K9::isSensitiveDebugLoggingEnabled,featureFlagProvider)
+        val account = Account(accountUuid, K9::isSensitiveDebugLoggingEnabled, featureFlagProvider)
         accountPreferenceSerializer.loadDefaults(account)
 
         synchronized(accountLock) {

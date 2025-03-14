@@ -2,9 +2,9 @@ package app.k9mail.feature.navigation.drawer.ui
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import app.k9mail.core.featureflag.FeatureFlag
 import app.k9mail.core.featureflag.FeatureFlagKey
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
-import app.k9mail.core.featureflag.FeatureFlag
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
@@ -36,7 +36,7 @@ internal object FakeData {
                     FeatureFlag(key = FeatureFlagKey("fakeFeature"), enabled = false),
                 )
             },
-        )
+        ),
     ).apply {
         identities = ArrayList()
 
