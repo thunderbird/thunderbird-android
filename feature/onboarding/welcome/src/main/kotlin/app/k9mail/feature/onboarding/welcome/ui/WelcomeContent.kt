@@ -1,5 +1,6 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,9 +32,11 @@ import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.onboarding.welcome.R
 
+
 private const val CIRCLE_COLOR = 0xFFEEEEEE
-private const val CIRCLE_SIZE_DP = 300
-private const val LOGO_SIZE_DP = 200
+private const val CIRCLE_SIZE_DP = 200
+private const val LOGO_SIZE_DP = 125
+
 
 @Composable
 internal fun WelcomeContent(
@@ -43,45 +46,55 @@ internal fun WelcomeContent(
     showImportButton: Boolean,
     modifier: Modifier = Modifier,
 ) {
+
     Surface(
         modifier = modifier,
     ) {
         ResponsiveContent {
             LazyColumnWithHeaderFooter(
                 modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                header = {
+                    WelcomeHeaderSection(title = appName)
+                },
                 footer = {
-                    WelcomeFooter(
+                    WelcomeFooterSection(
                         showImportButton = showImportButton,
                         onStartClick = onStartClick,
                         onImportClick = onImportClick,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = MainTheme.spacings.quadruple),
                     )
                 },
-                verticalArrangement = Arrangement.SpaceEvenly,
-            ) {
-                item {
-                    WelcomeLogo(
-                        modifier = Modifier
-                            .defaultItemModifier()
-                            .padding(top = MainTheme.spacings.double),
-                    )
-                }
-                item {
-                    WelcomeTitle(
-                        title = appName,
-                        modifier = Modifier.defaultItemModifier(),
-                    )
-                }
-                item {
-                    WelcomeMessage(
-                        modifier = Modifier.defaultItemModifier(),
-                    )
-                }
+                content = {
+                    item { WelcomeMessageItem() }
+                },
+            )
             }
+
+
+
         }
     }
+}
+
+@Composable
+private fun WelcomeHeaderSection(
+    title: String,
+    modifier: Modifier = Modifier,
+){
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .defaultItemModifier()
+            .padding(top = MainTheme.spacings.double),
+            contentAlignment = Alignment.Center,
+            .padding(top = MainTheme.spacings.quadruple),
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        WelcomeLogo()
+        WelcomeTitleItem(title = title)
+    }
+
 }
 
 @Composable
@@ -109,6 +122,24 @@ private fun WelcomeLogo(
     }
 }
 
+
+@Composable
+private fun WelcomeTitleItem(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .defaultItemModifier()
+    ) {
+        WelcomeTitle(
+            title = title,
+            modifier = Modifier.defaultItemModifier(),
+        )
+    }
+
+}
+
 @Composable
 private fun WelcomeTitle(
     title: String,
@@ -126,6 +157,21 @@ private fun WelcomeTitle(
 }
 
 @Composable
+private fun WelcomeMessageItem(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .defaultItemModifier()
+    ) {
+        WelcomeMessage(
+            modifier = Modifier.defaultItemModifier(),
+        )
+    }
+
+}
+
+@Composable
 private fun WelcomeMessage(
     modifier: Modifier = Modifier,
 ) {
@@ -138,6 +184,29 @@ private fun WelcomeMessage(
         TextBodyLarge(
             text = stringResource(id = R.string.onboarding_welcome_text),
             textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+private fun WelcomeFooterSection(
+    showImportButton: Boolean,
+    onStartClick: () -> Unit,
+    onImportClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = MainTheme.spacings.quadruple)
+    ) {
+        WelcomeFooter(
+            showImportButton = showImportButton,
+            onStartClick = onStartClick,
+            onImportClick = onImportClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = MainTheme.spacings.quadruple)
         )
     }
 }
