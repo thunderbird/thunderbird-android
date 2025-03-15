@@ -47,26 +47,27 @@ internal fun WelcomeContent(
     modifier: Modifier = Modifier,
 ) {
 
-    Surface(modifier = modifier) {
-        Box(Modifier.fillMaxSize()) {
-            ResponsiveContent {
-                LazyColumnWithHeaderFooter(
-                    verticalArrangement = Arrangement.SpaceEvenly,
-                    header = {
-                        WelcomeHeaderSection()
-                    },
-                    footer = {
-                        WelcomeFooterSection(
-                            showImportButton = showImportButton,
-                            onStartClick = onStartClick,
-                            onImportClick = onImportClick,
-                        )
-                    },
-                    content = {
-                        item {WelcomeTitleItem(title = appName)}
-                        item {WelcomeMessageItem()}
-                    },
-                )
+    Surface(
+        modifier = modifier,
+    ) {
+        ResponsiveContent {
+            LazyColumnWithHeaderFooter(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                header = {
+                    WelcomeHeaderSection(title = appName)
+                },
+                footer = {
+                    WelcomeFooterSection(
+                        showImportButton = showImportButton,
+                        onStartClick = onStartClick,
+                        onImportClick = onImportClick,
+                    )
+                },
+                content = {
+                    item { WelcomeMessageItem() }
+                },
+            )
             }
 
 
@@ -77,16 +78,21 @@ internal fun WelcomeContent(
 
 @Composable
 private fun WelcomeHeaderSection(
-
+    title: String,
+    modifier: Modifier = Modifier,
 ){
-    Box(
-        modifier = Modifier
+    Column(
+        modifier = modifier
             .fillMaxWidth()
             .defaultItemModifier()
             .padding(top = MainTheme.spacings.double),
             contentAlignment = Alignment.Center,
+            .padding(top = MainTheme.spacings.quadruple),
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.double),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WelcomeLogo()
+        WelcomeTitleItem(title = title)
     }
 
 }
@@ -120,9 +126,10 @@ private fun WelcomeLogo(
 @Composable
 private fun WelcomeTitleItem(
     title: String,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .defaultItemModifier()
     ) {
         WelcomeTitle(
@@ -151,9 +158,10 @@ private fun WelcomeTitle(
 
 @Composable
 private fun WelcomeMessageItem(
-){
+    modifier: Modifier = Modifier,
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .defaultItemModifier()
     ) {
         WelcomeMessage(
@@ -184,10 +192,11 @@ private fun WelcomeMessage(
 private fun WelcomeFooterSection(
     showImportButton: Boolean,
     onStartClick: () -> Unit,
-    onImportClick: () -> Unit
+    onImportClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = MainTheme.spacings.quadruple)
     ) {
