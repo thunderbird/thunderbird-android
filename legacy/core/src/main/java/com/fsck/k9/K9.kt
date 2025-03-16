@@ -2,6 +2,9 @@ package com.fsck.k9
 
 import android.content.Context
 import android.content.SharedPreferences
+import app.k9mail.core.featureflag.FeatureFlagProvider
+import app.k9mail.core.featureflag.FeatureFlagResult
+import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.SortType
@@ -13,6 +16,7 @@ import com.fsck.k9.preferences.RealGeneralSettingsManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
+import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -22,6 +26,7 @@ import timber.log.Timber.DebugTree
 object K9 : KoinComponent {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -383,7 +388,11 @@ object K9 : KoinComponent {
         isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", false)
         isShowComposeButtonOnMessageList = storage.getBoolean("showComposeButtonOnMessageList", true)
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
-        fontSizes.load(storage)
+
+        featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
+            .onDisabledOrUnavailable {
+                fontSizes.load(storage)
+            }
 
         backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
 
