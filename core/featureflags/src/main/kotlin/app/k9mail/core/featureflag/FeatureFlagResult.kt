@@ -5,6 +5,14 @@ sealed interface FeatureFlagResult {
     data object Disabled : FeatureFlagResult
     data object Unavailable : FeatureFlagResult
 
+    fun <T> whenEnabledOrNot(
+        onEnabled: () -> T,
+        onDisabledOrUnavailable: () -> T,
+    ): T = when (this) {
+        is Enabled -> onEnabled()
+        is Disabled, Unavailable -> onDisabledOrUnavailable()
+    }
+
     fun onEnabled(action: () -> Unit): FeatureFlagResult {
         if (this is Enabled) {
             action()
