@@ -1,3 +1,7 @@
+# General module owners
 * @kewisch @wmontwe
-/.github/ @coreycb @jfx2006 @dandarnell
 
+# Release Engineering
+/.github/ @coreycb @jfx2006 @dandarnell
+/docs/ci/ @coreycb @jfx2006 @dandarnell
+/scripts/ci/ @coreycb @jfx2006 @dandarnell
