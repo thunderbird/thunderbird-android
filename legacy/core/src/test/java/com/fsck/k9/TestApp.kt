@@ -3,7 +3,6 @@ package com.fsck.k9
 import android.app.Application
 import androidx.work.WorkManager
 import app.k9mail.core.featureflag.FeatureFlag
-import app.k9mail.core.featureflag.FeatureFlagKey
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
 import app.k9mail.feature.telemetry.telemetryModule

@@ -3,7 +3,6 @@ package com.fsck.k9
 import android.content.Context
 import android.content.SharedPreferences
 import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.FeatureFlagResult
 import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import app.k9mail.legacy.account.Account
@@ -16,7 +15,6 @@ import com.fsck.k9.preferences.RealGeneralSettingsManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
-import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -551,11 +549,8 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-    const val PUSH_WAKE_LOCK_TIMEOUT = K9MailLib.PUSH_WAKE_LOCK_TIMEOUT
-    const val MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000
-    const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
 
-    @Suppress("ktlint:standard:class-naming")
+    @Suppress("ClassName")
     enum class BACKGROUND_OPS {
         ALWAYS,
         NEVER,

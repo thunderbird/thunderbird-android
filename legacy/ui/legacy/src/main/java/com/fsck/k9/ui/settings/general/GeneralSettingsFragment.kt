@@ -9,7 +9,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
 import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.FeatureFlagResult
 import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.ui.R
