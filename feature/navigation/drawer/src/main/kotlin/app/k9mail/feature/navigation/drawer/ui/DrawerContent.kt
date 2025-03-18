@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -36,12 +37,12 @@ internal fun DrawerContent(
     onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val leftInset = getLeftInset()
+    val additionalWidth = getAdditionalWidth()
 
     Surface(
         modifier = modifier
             .windowInsetsPadding(WindowInsets.statusBars)
-            .width(DRAWER_WIDTH + leftInset)
+            .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
             .testTag("DrawerContent"),
     ) {
@@ -95,11 +96,16 @@ internal fun DrawerContent(
 }
 
 @Composable
-fun getLeftInset(): Dp {
-    return WindowInsets.displayCutout.getLeft(
-        density = LocalDensity.current,
-        layoutDirection = LocalLayoutDirection.current,
-    ).pxToDp()
+fun getAdditionalWidth(): Dp {
+    val density = LocalDensity.current
+    val layoutDirection = LocalLayoutDirection.current
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+
+    return if (isRtl) {
+        WindowInsets.displayCutout.getRight(density = density, layoutDirection = layoutDirection)
+    } else {
+        WindowInsets.displayCutout.getLeft(density = density, layoutDirection = layoutDirection)
+    }.pxToDp()
 }
 
 @Composable

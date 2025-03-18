@@ -21,6 +21,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
@@ -45,9 +47,11 @@ internal fun AccountView(
                 color = MainTheme.colors.surfaceContainer,
                 modifier = Modifier.fillMaxHeight(),
             ) {
+                val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
+
                 Box(
                     modifier = Modifier
-                        .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Left))
+                        .windowInsetsPadding(horizontalInsetPadding)
                         .width(MainTheme.sizes.large),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -95,4 +99,10 @@ internal fun AccountView(
             }
         }
     }
+}
+
+@Composable
+fun getDisplayCutOutHorizontalInsetPadding(): WindowInsets {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    return WindowInsets.displayCutout.only(if (isRtl) WindowInsetsSides.Right else WindowInsetsSides.Left)
 }

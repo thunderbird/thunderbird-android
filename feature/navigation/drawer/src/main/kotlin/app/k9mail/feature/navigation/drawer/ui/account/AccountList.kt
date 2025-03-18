@@ -4,12 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -40,11 +37,13 @@ internal fun AccountList(
         modifier = modifier,
         color = MainTheme.colors.surfaceContainer,
     ) {
+        val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
+
         Column(
             modifier = Modifier
                 .fillMaxHeight()
                 .windowInsetsPadding(WindowInsets.navigationBars)
-                .windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Left))
+                .windowInsetsPadding(horizontalInsetPadding)
                 .width(MainTheme.sizes.large),
         ) {
             LazyColumn(

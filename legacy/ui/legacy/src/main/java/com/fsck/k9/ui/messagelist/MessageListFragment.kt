@@ -352,6 +352,7 @@ class MessageListFragment :
 
                 bottomMargin = fabMargin + insets.bottom
                 rightMargin = fabMargin + insets.right
+                leftMargin = fabMargin + insets.left
             }
 
             windowInsets
