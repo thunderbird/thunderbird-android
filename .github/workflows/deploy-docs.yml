@@ -50,10 +50,30 @@ jobs:
           rm book/docs/latest/.gitignore
           rm book/docs/latest/install.sh
 
-      - name: Deploy docs to gh-pages
+      - name: App token generate
+        uses: actions/create-github-app-token@21cfef2b496dd8ef5b904c159339626a10ad380e # v1.11.6
+        if: ${{ vars.APP_CLIENT_ID }}
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Get GitHub app user id
+        id: get-user-id
+        if: ${{ steps.app-token.outputs.token }}
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          echo "user-id=$(gh api "/users/${APP_SLUG}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy docs to gh-pages
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug || 'github-actions'}}
+          APP_USER_ID: ${{ steps.get-user-id.outputs.user-id || '41898282' }}
+        run: |
+          git config --global user.name "${APP_SLUG}"
+          git config --global user.email "${APP_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
 
           # Fetch the gh-pages branch
           git fetch origin gh-pages || git checkout --orphan gh-pages
