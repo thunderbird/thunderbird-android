@@ -95,7 +95,7 @@ It has no secrets or variables, but "Required Reviewers" is set to trusted team 
 effect is that after package signing completes, the publishing jobs that depend on it will not run until released
 manually.
 
-![publish hold](publish_hold.png)
+![publish hold](assets/publish_hold.png)
 
 ## Github Releases Environment
 

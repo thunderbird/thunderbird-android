@@ -18,7 +18,7 @@ Low level code for dealing with internet mail protocols
 
 Additional, standalone, libraries used by Thunderbird for Android
 
-![modules](Modules.png)
+![modules](assets/Modules.png)
 
 # Walkthrough
 
@@ -27,10 +27,10 @@ classes. Each class is colour-coded by its top-level project.
 
 ## Reading email
 
-![read email sequence](ReadEmail.png)
+![read email sequence](assets/ReadEmail.png)
 
-![read email classes](ReadEmailClasses.png)
+![read email classes](assets/ReadEmailClasses.png)
 
 ## Sending email
 
-![send email sequence](SendEmail.png)
+![send email sequence](assets/SendEmail.png)
