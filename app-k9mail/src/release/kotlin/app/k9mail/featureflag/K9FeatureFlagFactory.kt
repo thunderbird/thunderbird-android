@@ -9,6 +9,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
         return listOf(
             FeatureFlag("archive_marks_as_read".toFeatureFlagKey(), enabled = false),
             FeatureFlag("new_account_settings".toFeatureFlagKey(), enabled = false),
+            FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = false),
         )
     }
 }
