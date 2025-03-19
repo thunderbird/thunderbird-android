@@ -30,6 +30,8 @@ androidxCore = "1.15.0"
 androidxCoreSplashscreen = "1.0.1"
 androidxDrawerLayout = "1.1.1"
 androidxFragment = "1.8.6"
+androidxGlance = "1.1.1"
+androidxGlanceMaterial3 = "1.1.1"
 androidxLifecycle = "2.8.7"
 androidxLocalBroadcastManager = "1.1.0"
 androidxNavigation = "2.8.8"
@@ -150,6 +152,10 @@ androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", versi
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidxFragment" }
 androidx-fragment-compose = { module = "androidx.fragment:fragment-compose", version.ref = "androidxFragment" }
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "androidxFragment" }
+androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "androidxGlance" }
+androidx-glance-appwidget-preview = { module = "androidx.glance:glance-appwidget-preview", version.ref = "androidxGlance" }
+androidx-glance-preview = { module = "androidx.glance:glance-preview", version.ref = "androidxGlance" }
+androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "androidxGlanceMaterial3" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
