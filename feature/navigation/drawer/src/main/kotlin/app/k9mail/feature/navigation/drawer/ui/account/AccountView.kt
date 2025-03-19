@@ -7,15 +7,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.unit.LayoutDirection
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
@@ -40,8 +47,12 @@ internal fun AccountView(
                 color = MainTheme.colors.surfaceContainer,
                 modifier = Modifier.fillMaxHeight(),
             ) {
+                val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
+
                 Box(
-                    modifier = Modifier.width(MainTheme.sizes.large),
+                    modifier = Modifier
+                        .windowInsetsPadding(horizontalInsetPadding)
+                        .width(MainTheme.sizes.large),
                     contentAlignment = Alignment.Center,
                 ) {
                     AccountAvatar(
@@ -88,4 +99,10 @@ internal fun AccountView(
             }
         }
     }
+}
+
+@Composable
+fun getDisplayCutOutHorizontalInsetPadding(): WindowInsets {
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+    return WindowInsets.displayCutout.only(if (isRtl) WindowInsetsSides.Right else WindowInsetsSides.Left)
 }

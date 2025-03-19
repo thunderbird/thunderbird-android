@@ -3,12 +3,20 @@ package app.k9mail.feature.navigation.drawer.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -29,9 +37,12 @@ internal fun DrawerContent(
     onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val additionalWidth = getAdditionalWidth()
+
     Surface(
         modifier = modifier
-            .width(DRAWER_WIDTH)
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
             .testTag("DrawerContent"),
     ) {
@@ -83,3 +94,19 @@ internal fun DrawerContent(
         }
     }
 }
+
+@Composable
+fun getAdditionalWidth(): Dp {
+    val density = LocalDensity.current
+    val layoutDirection = LocalLayoutDirection.current
+    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+
+    return if (isRtl) {
+        WindowInsets.displayCutout.getRight(density = density, layoutDirection = layoutDirection)
+    } else {
+        WindowInsets.displayCutout.getLeft(density = density, layoutDirection = layoutDirection)
+    }.pxToDp()
+}
+
+@Composable
+fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }

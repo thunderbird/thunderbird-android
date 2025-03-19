@@ -3,10 +3,13 @@ package app.k9mail.feature.navigation.drawer.ui.account
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -34,9 +37,13 @@ internal fun AccountList(
         modifier = modifier,
         color = MainTheme.colors.surfaceContainer,
     ) {
+        val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
+
         Column(
             modifier = Modifier
                 .fillMaxHeight()
+                .windowInsetsPadding(WindowInsets.navigationBars)
+                .windowInsetsPadding(horizontalInsetPadding)
                 .width(MainTheme.sizes.large),
         ) {
             LazyColumn(
