@@ -7,8 +7,8 @@ interface CatalogContract {
     enum class Theme(
         val displayName: String,
     ) {
-        THEME_2_K9("K-9 Theme2"),
-        THEME_2_THUNDERBIRD("Thunderbird Theme2"),
+        THEME_2_K9("K-9 UI"),
+        THEME_2_THUNDERBIRD("Thunderbird UI"),
     }
 
     enum class ThemeVariant(
@@ -21,7 +21,7 @@ interface CatalogContract {
     interface ViewModel : UnidirectionalViewModel<State, Event, Nothing>
 
     data class State(
-        val theme: Theme = Theme.THEME_2_K9,
+        val theme: Theme = Theme.THEME_2_THUNDERBIRD,
         val themeVariant: ThemeVariant = ThemeVariant.LIGHT,
     )
 
