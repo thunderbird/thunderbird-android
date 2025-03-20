@@ -3,10 +3,10 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.ui.catalog"
+    namespace = "net.thunderbird.ui.catalog"
 
     defaultConfig {
-        applicationId = "app.k9mail.ui.catalog"
+        applicationId = "net.thunderbird.ui.catalog"
         versionCode = 1
         versionName = "1.0"
     }
