@@ -17,5 +17,15 @@ internal fun PreferenceDialog(
         "Unsupported preference type: ${preference::class.java.simpleName}"
     }
 
-    // add dialogs
+    when (preference) {
+        is PreferenceSetting.Text -> {
+            PreferenceDialogTextView(
+                preference = preference,
+                onConfirmClick = onConfirmClick,
+                onDismissClick = onDismissClick,
+                onDismissRequest = onDismissRequest,
+                modifier = modifier,
+            )
+        }
+    }
 }
