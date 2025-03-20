@@ -36,10 +36,14 @@ graph TD;
 
 To add a new page, create a markdown file in the `docs/` directory or within a suitable subfolder. For example:
 
-- To create a new top-level page: `docs/new-page.md`.
+- To create a new top-level page: `docs/NEW_PAGE.md`.
 - To create a page within a subfolder: `docs/subfolder/new-subpage.md`.
 
 To include the new page in the table of contents, add a link to the `SUMMARY.md` file pointing to newly created page.
+
+For consistency with GitHub conventions and other mandatory files, markdown files in the top level
+`docs/` directory shall be written in uppercase, as well the README.md file within subfolders.
+Further markdown files in subdirectories shall use a lowercase filename.
 
 ### Organizing with Subfolders
 
@@ -59,6 +63,12 @@ Indentation is used to create hierarchy in the TOC:
 - [Page Title](relative/path/to/file.md)
   - [Subpage Title](relative/path/to/subfolder/file.md)
 ```
+
+### Assets
+
+If you need to embed images, put them in the assets folder closest to the file they are being used
+in. This can either be the top-level assets folder, or a (potentially new) assets subfolder in the
+respective section.
 
 ## Documentation Toolchain
 

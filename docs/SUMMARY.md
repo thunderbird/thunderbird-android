@@ -1,13 +1,13 @@
 # Summary
 
-[Thunderbird for Android](README.md)
-
 ---
 
 - [Contributing](CONTRIBUTING.md)
 - [Design](DESIGN.md)
-- [Releases](RELEASES.md)
-- [Releasing](RELEASING.md)
+- [Release](ci/README.md)
+  - [Release Process](ci/RELEASE.md)
+  - [Release Automation](ci/AUTOMATION.md)
+  - [Manual Release (historical)](ci/HISTORICAL_RELEASE.md)
 - [Translations](translations.md)
 - [Java to Kotlin Conversion Guide](contributing/java-to-kotlin-conversion-guide.md)
 - [Architecture Decision Records](architecture/adr/README.md)
@@ -24,4 +24,4 @@
 
 ---
 
-[How to Document](how-to-document.md)
+[How to Document](HOW-TO-DOCUMENT.md)

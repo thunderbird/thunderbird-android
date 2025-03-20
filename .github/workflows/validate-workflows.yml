@@ -27,4 +27,4 @@ jobs:
           DRY_RUN: ${{ !inputs.dryRun && '--no-dry-run' || '' }}
           DEBUG: ${{ inputs.debug && '--debug' || '' }}
         run: |
-          bash scripts/validate-github-actions-pinned.sh $DRY_RUN $DEBUG
+          bash scripts/ci/validate-github-actions-pinned.sh $DRY_RUN $DEBUG

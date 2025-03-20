@@ -37,4 +37,4 @@ jobs:
           BRANCH: ${{ github.ref_name }}
           PUSH: ${{ !inputs.dryRun && '--push' || '' }}
         run: |
-          bash scripts/uplift-merges.sh $DRYRUN --$BRANCH $PUSH | tee $GITHUB_STEP_SUMMARY
+          bash scripts/ci/uplift-merges.sh $DRYRUN --$BRANCH $PUSH | tee $GITHUB_STEP_SUMMARY

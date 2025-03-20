@@ -7,7 +7,7 @@ application and release type.
 ## Automatic setup
 
 There is a script available for automatic setup, which is helpful if you want to replicate this on
-your own repository for devlopment. Please see /scripts/setup_release_automation.
+your own repository for devlopment. Please see /scripts/ci/setup_release_automation.
 
 You can run it using:
 
@@ -16,7 +16,7 @@ python -m venv venv
 source venv/bin/activate
 pip install requests pynacl
 cd .signing
-python ../scripts/setup_release_automation -r yourfork/thunderbird-android
+python ../scripts/ci/setup_release_automation -r yourfork/thunderbird-android
 ```
 
 You will need the following files:
@@ -95,7 +95,7 @@ It has no secrets or variables, but "Required Reviewers" is set to trusted team 
 effect is that after package signing completes, the publishing jobs that depend on it will not run until released
 manually.
 
-![publish hold](publish_hold.png)
+![publish hold](assets/publish_hold.png)
 
 ## Github Releases Environment
 

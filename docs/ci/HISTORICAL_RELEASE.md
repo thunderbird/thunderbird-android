@@ -1,8 +1,9 @@
 # Create K-9 Mail releases
 
-This document contains the historical manual release process for K-9 Mail.
-
-For current steps that are taken for the automated process, see [Releases](RELEASES.md).
+<div class="warning">
+This document contains the historical manual release process for K-9 Mail. Please use the <a href="AUTOMATION.md">automated process</a> instead.
+We're keeping this around in case we need to do a manual release.
+</div>
 
 ## One-time setup
 
