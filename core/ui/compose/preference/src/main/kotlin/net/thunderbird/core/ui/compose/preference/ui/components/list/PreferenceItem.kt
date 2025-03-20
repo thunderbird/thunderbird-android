@@ -12,6 +12,12 @@ internal fun PreferenceItem(
     modifier: Modifier = Modifier,
 ) {
     when (preference) {
-        // add items
+        is PreferenceSetting.Text -> {
+            PreferenceItemTextView(
+                preference = preference,
+                onClick = onClick,
+                modifier = modifier,
+            )
+        }
     }
 }

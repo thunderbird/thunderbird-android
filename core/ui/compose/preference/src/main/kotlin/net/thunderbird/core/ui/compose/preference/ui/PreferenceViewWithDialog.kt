@@ -56,11 +56,11 @@ internal fun PreferenceViewWithDialog(
 
         PreferenceDialog(
             preference = preference,
-            onConfirm = { preference ->
+            onConfirmClick = { preference ->
                 onPreferenceChange(preference)
                 showDialog = false
             },
-            onDismiss = { showDialog = false },
+            onDismissClick = { showDialog = false },
             onDismissRequest = { showDialog = false },
         )
     }

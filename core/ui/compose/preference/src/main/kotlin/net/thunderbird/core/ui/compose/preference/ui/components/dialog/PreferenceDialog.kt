@@ -8,8 +8,8 @@ import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 @Composable
 internal fun PreferenceDialog(
     preference: Preference,
-    onConfirm: (PreferenceSetting<*>) -> Unit,
-    onDismiss: () -> Unit,
+    onConfirmClick: (PreferenceSetting<*>) -> Unit,
+    onDismissClick: () -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -17,7 +17,5 @@ internal fun PreferenceDialog(
         "Unsupported preference type: ${preference::class.java.simpleName}"
     }
 
-    when (preference) {
-        // add dialogs
-    }
+    // add dialogs
 }

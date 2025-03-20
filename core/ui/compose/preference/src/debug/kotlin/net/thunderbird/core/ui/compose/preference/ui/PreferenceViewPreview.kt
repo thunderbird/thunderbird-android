@@ -3,7 +3,7 @@ package net.thunderbird.core.ui.compose.preference.ui
 import androidx.compose.runtime.Composable
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevicesWithBackground
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.preference.ui.fake.FakePreferenceData
 
 @Composable
 @PreviewDevicesWithBackground
@@ -12,7 +12,7 @@ fun PreferenceViewPreview() {
         PreferenceView(
             title = "Title",
             subtitle = "Subtitle",
-            preferences = persistentListOf(),
+            preferences = FakePreferenceData.preferences,
             onPreferenceChange = {},
             onBack = {},
         )
