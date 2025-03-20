@@ -25,6 +25,7 @@ fun DrawerContent(
     onNavigateToAtoms: () -> Unit,
     onNavigateToMolecules: () -> Unit,
     onNavigateToOrganisms: () -> Unit,
+    onNavigateToTemplates: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ModalDrawerSheet(
@@ -55,6 +56,14 @@ fun DrawerContent(
             onClick = {
                 closeDrawer()
                 onNavigateToOrganisms()
+            },
+        )
+        NavigationDrawerItem(
+            label = "Templates",
+            selected = false,
+            onClick = {
+                closeDrawer()
+                onNavigateToTemplates()
             },
         )
 

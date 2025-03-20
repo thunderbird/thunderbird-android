@@ -5,6 +5,7 @@ import app.k9mail.core.ui.compose.navigation.deepLinkComposable
 import net.thunderbird.ui.catalog.ui.atom.CatalogAtomScreen
 import net.thunderbird.ui.catalog.ui.molecule.CatalogMoleculeScreen
 import net.thunderbird.ui.catalog.ui.organism.CatalogOrganismScreen
+import net.thunderbird.ui.catalog.ui.template.CatalogTemplateScreen
 
 class DefaultCatalogNavigation : CatalogNavigation {
 
@@ -30,6 +31,12 @@ class DefaultCatalogNavigation : CatalogNavigation {
                 basePath = CatalogRoute.Organism.BASE_PATH,
             ) { backStackEntry ->
                 CatalogOrganismScreen()
+            }
+
+            deepLinkComposable<CatalogRoute.Template>(
+                basePath = CatalogRoute.Template.BASE_PATH,
+            ) { backStackEntry ->
+                CatalogTemplateScreen()
             }
         }
     }
