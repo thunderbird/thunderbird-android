@@ -12,6 +12,7 @@ import net.thunderbird.ui.catalog.ui.common.drawer.DrawerContent
 import net.thunderbird.ui.catalog.ui.navigation.CatalogNavHost
 import net.thunderbird.ui.catalog.ui.navigation.CatalogRoute
 
+@Suppress("LongMethod")
 @Composable
 fun CatalogContent(
     state: State,
@@ -48,6 +49,14 @@ fun CatalogContent(
                 onNavigateToOrganisms = {
                     navController.navigate(
                         route = CatalogRoute.Organism,
+                        navOptions = NavOptions.Builder()
+                            .setLaunchSingleTop(true)
+                            .build(),
+                    )
+                },
+                onNavigateToTemplates = {
+                    navController.navigate(
+                        route = CatalogRoute.Template,
                         navOptions = NavOptions.Builder()
                             .setLaunchSingleTop(true)
                             .build(),
