@@ -14,7 +14,7 @@ import nacl.encoding
 import nacl.public
 import textwrap
 
-PUBLISH_APPROVERS = ["kewisch", "cketti", "wmontwe"]
+PUBLISH_APPROVERS = ["kewisch", "coreycb", "wmontwe"]
 
 CHANNEL_ENVIRONMENTS = {
     "thunderbird_release": {

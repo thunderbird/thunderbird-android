@@ -187,7 +187,7 @@ Risk to taking this patch (and alternatives if risky):
 Releases for both K-9 and Thunderbird for Android are automated with github actions.
 Daily builds are scheduled with the [Daily Builds](https://github.com/thunderbird/thunderbird-android/actions/workflows/daily_builds.yml) action and all builds are performed by the [Shippable Build & Signing](https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml) action.
 
-For the historical manual release process, see [Releasing](RELEASING.md).
+For the historical manual release process, see [Releasing](HISTORICAL_RELEASE.md).
 
 ### Release Process
 

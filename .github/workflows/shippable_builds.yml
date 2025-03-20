@@ -331,7 +331,7 @@ jobs:
         run: |
           mkdir -p ./app-metadata/${APPLICATION_ID}/en-US/changelogs
           GITHUB_NOTES_FILE="$(mktemp -d)/long-notes.txt"
-          python ./scripts/render-notes.py ${APPLICATION_ID} ${FULL_VERSION_NAME} ${VERSION_CODE} ${GITHUB_NOTES_FILE}
+          python ./scripts/ci/render-notes.py ${APPLICATION_ID} ${FULL_VERSION_NAME} ${VERSION_CODE} ${GITHUB_NOTES_FILE}
 
           echo "${APP_NAME}_github_notes<<EOF" >> $GITHUB_OUTPUT
           cat $GITHUB_NOTES_FILE >> $GITHUB_OUTPUT
