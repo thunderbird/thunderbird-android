@@ -17,6 +17,7 @@ fun NavigationDrawerHeadline(
     ) {
         TextTitleSmall(
             text = title,
+            color = MainTheme.colors.primary,
             modifier = Modifier
                 .padding(NavigationDrawerItemDefaults.ItemPadding)
                 .padding(
