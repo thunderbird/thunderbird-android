@@ -211,11 +211,14 @@ These are the general steps for a release:
 5. Test the build in the internal testing track
    - Release versions should be thoroughly tested with the test plan in Testrail
    - Beta versions only require a basic smoke test to ensure it installs
-6. Promote TfA and K-9 releases in Play Store.
+6. Promote TfA and K-9 releases to production track in Play Store.
+   - Set rollout to a low rate (generally 10-30%).
    - Betas are only released for TfA. K-9 beta users are advised to use Thunderbird.
 7. Wait for Play Store review to complete.
    - Release versions of TfA and K-9 have managed publishing enabled. Once the review has completed you need to publish the release
    - Beta versions of TfA do not have managed publishing enabled. It will be available once Google has reviewed, even on a weekend.
 8. Update F-Droid to new TfA and K-9 releases by sending a pull request to [fdroiddata](https://gitlab.com/fdroid/fdroiddata)
 9. Send community updates to Matrix channels, and beta or planning mailing lists as needed.
+10. Approximately 24 hours after initial release to production, assess the following before updating rollout to a higher rate:
+    - Crash rates, GitHub issues, install base, and reviews.
 
