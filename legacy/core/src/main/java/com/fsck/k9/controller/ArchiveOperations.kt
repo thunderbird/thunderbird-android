@@ -1,7 +1,6 @@
 package com.fsck.k9.controller
 
 import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.FeatureFlagResult
 import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.message.controller.MessageReference
@@ -73,11 +72,11 @@ internal class ArchiveOperations(
         messages: List<LocalMessage>,
         archiveFolderId: Long,
     ) {
-        val operation = when (featureFlagProvider.provide("archive_marks_as_read".toFeatureFlagKey())) {
-            FeatureFlagResult.Enabled -> MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ
-            FeatureFlagResult.Disabled -> MoveOrCopyFlavor.MOVE
-            FeatureFlagResult.Unavailable -> MoveOrCopyFlavor.MOVE
-        }
+        val operation = featureFlagProvider.provide("archive_marks_as_read".toFeatureFlagKey())
+            .whenEnabledOrNot(
+                onEnabled = { MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ },
+                onDisabledOrUnavailable = { MoveOrCopyFlavor.MOVE },
+            )
         messagingController.moveOrCopyMessageSynchronous(
             account,
             sourceFolderId,
