@@ -1,12 +1,13 @@
 plugins {
     id(ThunderbirdPlugins.App.androidCompose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "app.k9mail.ui.catalog"
+    namespace = "net.thunderbird.ui.catalog"
 
     defaultConfig {
-        applicationId = "app.k9mail.ui.catalog"
+        applicationId = "net.thunderbird.ui.catalog"
         versionCode = 1
         versionName = "1.0"
     }
@@ -24,6 +25,8 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.ui.compose.navigation)
+
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.legacy.designsystem)
 
