@@ -8,6 +8,7 @@ enum class CatalogOrganismPage(
     override val isFullScreen: Boolean = false,
 ) : CatalogPage {
     APP_BAR("App Bars"),
+    DIALOG("Dialogs"),
     ;
 
     override fun toString(): String {

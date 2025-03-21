@@ -5,7 +5,9 @@ import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.ui.catalog.ui.common.PagedContent
 import net.thunderbird.ui.catalog.ui.organism.CatalogOrganismPage.APP_BAR
+import net.thunderbird.ui.catalog.ui.organism.CatalogOrganismPage.DIALOG
 import net.thunderbird.ui.catalog.ui.organism.items.appBarItems
+import net.thunderbird.ui.catalog.ui.organism.items.dialogItems
 
 @Composable
 fun CatalogOrganismContent(
@@ -20,6 +22,7 @@ fun CatalogOrganismContent(
         onRenderPage = {
             when (it) {
                 APP_BAR -> appBarItems()
+                DIALOG -> dialogItems()
             }
         },
         onRenderFullScreenPage = {},
