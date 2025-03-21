@@ -6,7 +6,7 @@
     </style>
 
     <style name="Theme.Thunderbird.Splashscreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_startup_logo</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.Thunderbird</item>
     </style>

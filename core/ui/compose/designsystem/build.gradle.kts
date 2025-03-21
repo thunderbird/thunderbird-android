@@ -1,5 +1,6 @@
 plugins {
     id(ThunderbirdPlugins.Library.androidCompose)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -14,6 +15,9 @@ dependencies {
     debugApi(projects.core.ui.compose.theme2.thunderbird)
 
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.adaptive)
+    implementation(libs.androidx.compose.material3.adaptive.layout)
+    implementation(libs.androidx.compose.material3.adaptive.navigation)
     implementation(libs.androidx.compose.material.icons.extended)
 
     // Landscapist imports a lot of dependencies that we don't need. We exclude them here.
