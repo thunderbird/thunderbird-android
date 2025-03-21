@@ -93,6 +93,16 @@ internal class RealImapFolder(
             return prefixedName
         }
 
+    @get:Throws(MessagingException::class)
+    private val encodedName: String
+        get() {
+            return if (connection?.isUtf8AcceptCapable == true) {
+                prefixedName
+            } else {
+                folderNameCodec.encode(prefixedName)
+            }
+        }
+
     @Throws(MessagingException::class, IOException::class)
     private fun executeSimpleCommand(command: String): List<ImapResponse> {
         return handleUntaggedResponses(connection!!.executeSimpleCommand(command))
@@ -133,8 +143,7 @@ internal class RealImapFolder(
 
         try {
             val openCommand = if (mode == OpenMode.READ_WRITE) "SELECT" else "EXAMINE"
-            val encodedFolderName = folderNameCodec.encode(prefixedName)
-            val escapedFolderName = ImapUtility.encodeString(encodedFolderName)
+            val escapedFolderName = ImapUtility.encodeString(encodedName)
             val command = String.format("%s %s", openCommand, escapedFolderName)
             val responses = executeSimpleCommand(command)
 
@@ -216,8 +225,7 @@ internal class RealImapFolder(
         }
 
         return try {
-            val encodedFolderName = folderNameCodec.encode(prefixedName)
-            val escapedFolderName = ImapUtility.encodeString(encodedFolderName)
+            val escapedFolderName = ImapUtility.encodeString(encodedName)
             connection.executeSimpleCommand(String.format("STATUS %s (UIDVALIDITY)", escapedFolderName))
 
             exists = true
@@ -246,8 +254,7 @@ internal class RealImapFolder(
         }
 
         return try {
-            val encodedFolderName = folderNameCodec.encode(prefixedName)
-            val escapedFolderName = ImapUtility.encodeString(encodedFolderName)
+            val escapedFolderName = ImapUtility.encodeString(encodedName)
             connection.executeSimpleCommand(String.format("CREATE %s", escapedFolderName))
 
             true
@@ -285,7 +292,7 @@ internal class RealImapFolder(
         checkOpen() // only need READ access
 
         val uids = messages.map { it.uid.toLong() }.toSet()
-        val encodedDestinationFolderName = folderNameCodec.encode(folder.prefixedName)
+        val encodedDestinationFolderName = if (connection!!.isUtf8AcceptCapable) folder.prefixedName else folderNameCodec.encode(folder.prefixedName)
         val escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName)
 
         return try {
@@ -320,7 +327,7 @@ internal class RealImapFolder(
         require(folder is RealImapFolder) { "'folder' needs to be a RealImapFolder instance" }
 
         val uids = messages.map { it.uid.toLong() }.toSet()
-        val encodedDestinationFolderName = folderNameCodec.encode(folder.prefixedName)
+        val encodedDestinationFolderName = if (connection!!.isUtf8AcceptCapable) folder.prefixedName else folderNameCodec.encode(folder.prefixedName)
         val escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName)
 
         return try {
@@ -987,8 +994,7 @@ internal class RealImapFolder(
             for (message in messages) {
                 val messageSize = message.calculateSize()
 
-                val encodeFolderName = folderNameCodec.encode(prefixedName)
-                val escapedFolderName = ImapUtility.encodeString(encodeFolderName)
+                val escapedFolderName = ImapUtility.encodeString(encodedName)
                 val canCreateForwardedFlag = canCreateKeywords ||
                     internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
 
