@@ -13,6 +13,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("archive_marks_as_read".toFeatureFlagKey(), enabled = true),
             FeatureFlag("new_account_settings".toFeatureFlagKey(), enabled = true),
             FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
+            FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
         )
     }
 }
