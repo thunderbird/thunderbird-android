@@ -2,8 +2,8 @@ package net.thunderbird.ui.catalog.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
-import androidx.navigation.compose.rememberNavController
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.ModalNavigationDrawer
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import net.thunderbird.ui.catalog.ui.CatalogContract.State
@@ -15,13 +15,12 @@ import net.thunderbird.ui.catalog.ui.navigation.CatalogRoute
 @Suppress("LongMethod")
 @Composable
 fun CatalogContent(
+    navController: NavHostController,
     state: State,
     onThemeChanged: () -> Unit,
     onThemeVariantChanged: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val navController = rememberNavController()
-
     ModalNavigationDrawer(
         drawerContent = { closeDrawer ->
             DrawerContent(
