@@ -2,10 +2,10 @@ package net.thunderbird.ui.catalog.ui.navigation
 
 import androidx.navigation.NavGraphBuilder
 import app.k9mail.core.ui.compose.navigation.deepLinkComposable
-import net.thunderbird.ui.catalog.ui.atom.CatalogAtomScreen
-import net.thunderbird.ui.catalog.ui.molecule.CatalogMoleculeScreen
-import net.thunderbird.ui.catalog.ui.organism.CatalogOrganismScreen
-import net.thunderbird.ui.catalog.ui.template.CatalogTemplateScreen
+import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomScreen
+import net.thunderbird.ui.catalog.ui.page.molecule.CatalogMoleculeScreen
+import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismScreen
+import net.thunderbird.ui.catalog.ui.page.template.CatalogTemplateScreen
 
 class DefaultCatalogNavigation : CatalogNavigation {
 
