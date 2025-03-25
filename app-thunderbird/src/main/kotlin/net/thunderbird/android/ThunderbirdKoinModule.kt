@@ -20,12 +20,14 @@ import net.thunderbird.android.provider.TbThemeProvider
 import net.thunderbird.android.widget.appWidgetModule
 import net.thunderbird.android.widget.provider.MessageListWidgetProvider
 import net.thunderbird.android.widget.provider.UnreadWidgetProvider
+import net.thunderbird.app.common.appCommonModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val appModule = module {
+    includes(appCommonModule)
     includes(appWidgetModule)
     includes(featureModule)
 
