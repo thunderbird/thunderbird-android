@@ -1008,7 +1008,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (draftMessageId == null) {
                 onDiscard();
             } else {
-                if (navigateUp) {
+                if (navigateUp && this.action != action.EDIT_DRAFT) {
                     openDefaultFolder();
                 } else {
                     super.onBackPressed();
