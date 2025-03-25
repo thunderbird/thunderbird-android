@@ -2,11 +2,14 @@ plugins {
     id(ThunderbirdPlugins.Library.android)
 }
 
-dependencies {
-    api(projects.legacy.common)
-    implementation(projects.feature.migration.provider)
+android {
+    namespace = "net.thunderbird.app.common"
 }
 
-android {
-    namespace = "app.k9mail.common"
+dependencies {
+    api(projects.legacy.common)
+
+    implementation(projects.legacy.account)
+
+    implementation(projects.feature.migration.provider)
 }
