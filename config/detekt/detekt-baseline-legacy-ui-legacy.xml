@@ -33,12 +33,10 @@
     <ID>LongMethod:MessageViewFragment.kt$MessageViewFragment$override fun onPrepareOptionsMenu(menu: Menu)</ID>
     <ID>LongMethod:RecipientNamesView.kt$RecipientNamesView$override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int)</ID>
     <ID>LongParameterList:MessageDetailsViewModel.kt$MessageDetailsViewModel$( private val resources: Resources, private val messageRepository: MessageRepository, private val folderRepository: FolderRepository, private val contactSettingsProvider: ContactSettingsProvider, private val contactRepository: ContactRepository, private val contactPermissionResolver: ContactPermissionResolver, private val clipboardManager: ClipboardManager, private val accountManager: AccountManager, private val participantFormatter: MessageDetailsParticipantFormatter, private val folderNameFormatter: FolderNameFormatter, )</ID>
-    <ID>LongParameterList:RecipientPresenter.kt$RecipientPresenter$( private val context: Context, loaderManager: LoaderManager, private val openPgpApiManager: OpenPgpApiManager, private val recipientMvpView: RecipientMvpView, account: Account, private val composePgpInlineDecider: ComposePgpInlineDecider, private val composePgpEnableByDefaultDecider: ComposePgpEnableByDefaultDecider, private val autocryptStatusInteractor: AutocryptStatusInteractor, private val replyToParser: ReplyToParser, private val draftStateHeaderParser: AutocryptDraftStateHeaderParser, )</ID>
     <ID>MagicNumber:AccountItem.kt$AccountItem$200L</ID>
     <ID>MagicNumber:AutocryptSetupTransferLiveEvent.kt$AutocryptSetupTransferLiveEvent$2000</ID>
     <ID>MagicNumber:ContactLetterBitmapCreator.kt$ContactLetterBitmapCreator$0.65f</ID>
     <ID>MagicNumber:ContactLetterBitmapCreator.kt$ContactLetterBitmapCreator$255</ID>
-    <ID>MagicNumber:GeneralSettingsFragment.kt$GeneralSettingsFragment$28</ID>
     <ID>MagicNumber:MessageContainerView.kt$MessageContainerView$29</ID>
     <ID>MagicNumber:MessageListItemAnimator.kt$MessageListItemAnimator$120</ID>
     <ID>MagicNumber:MessageListItemMapper.kt$MessageListItemMapper$52</ID>
