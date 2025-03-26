@@ -3,7 +3,7 @@ package com.fsck.k9.mailstore
 import app.k9mail.core.common.mail.Protocols
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.SpecialFolderSelection
+import app.k9mail.legacy.account.SpecialFolderSelection
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import net.thunderbird.feature.folder.api.RemoteFolder

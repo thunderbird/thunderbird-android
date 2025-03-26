@@ -600,11 +600,6 @@ open class Account(
         return uuid.hashCode()
     }
 
-    enum class SpecialFolderSelection {
-        AUTOMATIC,
-        MANUAL,
-    }
-
     enum class ShowPictures {
         NEVER,
         ALWAYS,
