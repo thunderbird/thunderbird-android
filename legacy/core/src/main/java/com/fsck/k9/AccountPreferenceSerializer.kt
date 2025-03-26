@@ -3,7 +3,6 @@ package com.fsck.k9
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.MessageFormat
 import app.k9mail.legacy.account.Account.QuoteStyle
-import app.k9mail.legacy.account.Account.ShowPictures
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
@@ -22,6 +21,7 @@ import app.k9mail.legacy.account.DeletePolicy
 import app.k9mail.legacy.account.Expunge
 import app.k9mail.legacy.account.FolderMode
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.ShowPictures
 import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.account.SpecialFolderSelection
 import app.k9mail.legacy.notification.NotificationLight

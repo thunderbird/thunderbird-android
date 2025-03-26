@@ -4,6 +4,7 @@ import androidx.preference.PreferenceDataStore
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.DeletePolicy
 import app.k9mail.legacy.account.Expunge
+import app.k9mail.legacy.account.ShowPictures
 import app.k9mail.legacy.account.SpecialFolderSelection
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationVibration
@@ -145,7 +146,7 @@ class AccountSettingsDataStore(
 
         when (key) {
             "account_description" -> account.name = value
-            "show_pictures_enum" -> account.showPictures = Account.ShowPictures.valueOf(value)
+            "show_pictures_enum" -> account.showPictures = ShowPictures.valueOf(value)
             "account_display_count" -> account.displayCount = value.toInt()
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize = value.toInt()
