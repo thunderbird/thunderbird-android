@@ -10,11 +10,10 @@ permissions:
   contents: read
   issues: write
 
-environment: botmobile
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: botmobile
     permissions:
       issues: write
       pull-requests: write

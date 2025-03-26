@@ -11,12 +11,11 @@ on:
 permissions:
   contents: read
 
-environment: botmobile
-
 jobs:
   uplift:
     name: Uplift
     runs-on: ubuntu-latest
+    environment: botmobile
     permissions:
       pull-requests: write
     steps:
