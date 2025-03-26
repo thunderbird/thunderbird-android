@@ -48,7 +48,7 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import app.k9mail.legacy.account.Account;
-import app.k9mail.legacy.account.Account.MessageFormat;
+import app.k9mail.legacy.account.MessageFormat;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.K9;
