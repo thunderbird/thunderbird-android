@@ -14,10 +14,11 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
+@Deprecated("Use LegacyAccountWrapper instead")
 @Suppress("TooManyFunctions")
-class Account(
+open class Account(
     override val uuid: String,
-    private val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
+    internal val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
 ) : BaseAccount {
     @get:Synchronized
     @set:Synchronized
@@ -198,7 +199,7 @@ class Account(
     @set:Synchronized
     var sortType: SortType = SortType.SORT_DATE
 
-    private val sortAscending: MutableMap<SortType, Boolean> = mutableMapOf()
+    internal var sortAscending: MutableMap<SortType, Boolean> = mutableMapOf()
 
     @get:Synchronized
     @set:Synchronized
@@ -343,7 +344,7 @@ class Account(
 
     @get:Synchronized
     var isFinishedSetup = false
-        private set
+        internal set
 
     @get:Synchronized
     @set:Synchronized
@@ -352,7 +353,7 @@ class Account(
     @get:Synchronized
     @set:Synchronized
     var isChangedVisibleLimits = false
-        private set
+        internal set
 
     /**
      * Database ID of the folder that was last selected for a copy or move operation.
@@ -361,7 +362,7 @@ class Account(
      */
     @get:Synchronized
     var lastSelectedFolderId: Long? = null
-        private set
+        internal set
 
     @get:Synchronized
     @set:Synchronized
@@ -372,7 +373,7 @@ class Account(
 
     @get:Synchronized
     var notificationSettings = NotificationSettings()
-        private set
+        internal set
 
     val displayName: String
         get() = name ?: email
@@ -435,6 +436,7 @@ class Account(
         draftsFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasDraftsFolder(): Boolean {
         return draftsFolderId != null
@@ -446,6 +448,7 @@ class Account(
         sentFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasSentFolder(): Boolean {
         return sentFolderId != null
@@ -457,6 +460,7 @@ class Account(
         trashFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasTrashFolder(): Boolean {
         return trashFolderId != null
@@ -468,6 +472,7 @@ class Account(
         archiveFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasArchiveFolder(): Boolean {
         return archiveFolderId != null
@@ -479,6 +484,7 @@ class Account(
         spamFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasSpamFolder(): Boolean {
         return spamFolderId != null
@@ -549,9 +555,11 @@ class Account(
             return now.time
         }
 
+    @Deprecated("use AccountWrapper instead")
     val isOpenPgpProviderConfigured: Boolean
         get() = openPgpProvider != null
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasOpenPgpKey(): Boolean {
         return openPgpKey != NO_OPENPGP_KEY
