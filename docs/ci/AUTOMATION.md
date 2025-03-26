@@ -24,7 +24,7 @@ You will need the following files:
 - The signing keys with their default filenames
 - A matrix-account.json with the following keys:
 
-```
+```json
 {
   "homeserver": "matrix-client.matrix.org",
   "room": "room id here",
@@ -33,7 +33,6 @@ You will need the following files:
     "github_username": "@matrix_id:mozilla.org"
   }
 }
-
 ```
 
 - `play-store-account.json` with the service account json that will do the uploads
@@ -74,10 +73,12 @@ The environments are locked to the respective branch they belong to.
 
 These environments contain the secrets for signing. Their names follow this pattern:
 
-    <appName>_<releaseType>_<packageFlavor>
-    thunderbird_beta_full
-    thunderbird_beta_foss
-    k9mail_beta_foss
+```text
+<appName>_<releaseType>_<packageFlavor>
+thunderbird_beta_full
+thunderbird_beta_foss
+k9mail_beta_foss
+```
 
 The following secrets are needed:
 
