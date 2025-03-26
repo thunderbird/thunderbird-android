@@ -1,10 +1,8 @@
 package com.fsck.k9.ui.settings.account
 
 import androidx.preference.PreferenceDataStore
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.DeletePolicy
 import app.k9mail.legacy.account.Expunge
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.MessageFormat
 import app.k9mail.legacy.account.QuoteStyle
 import app.k9mail.legacy.account.ShowPictures
@@ -163,7 +161,7 @@ class AccountSettingsDataStore(
             "max_push_folders" -> account.maxPushFolders = value.toInt()
             "idle_refresh_period" -> account.idleRefreshMinutes = value.toInt()
             "message_format" -> account.messageFormat = MessageFormat.valueOf(value)
-            "quote_style" -> account.quoteStyle = Account.QuoteStyle.valueOf(value)
+            "quote_style" -> account.quoteStyle = QuoteStyle.valueOf(value)
             "account_quote_prefix" -> account.quotePrefix = value
             "account_setup_auto_expand_folder" -> account.autoExpandFolderId = extractFolderId(value)
             "archive_folder" -> saveSpecialFolderSelection(value, account::setArchiveFolderId)

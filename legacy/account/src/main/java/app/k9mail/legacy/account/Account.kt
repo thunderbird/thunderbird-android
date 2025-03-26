@@ -600,11 +600,6 @@ open class Account(
         return uuid.hashCode()
     }
 
-    enum class QuoteStyle {
-        PREFIX,
-        HEADER,
-    }
-
     companion object {
         /**
          * Fixed name of outbox - not actually displayed.

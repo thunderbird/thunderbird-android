@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import app.k9mail.core.android.common.compat.BundleCompat;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.account.MessageFormat;
-import app.k9mail.legacy.account.Account.QuoteStyle;
+import app.k9mail.legacy.account.QuoteStyle;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;

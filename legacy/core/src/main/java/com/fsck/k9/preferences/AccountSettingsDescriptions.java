@@ -16,7 +16,7 @@ import app.k9mail.legacy.account.DeletePolicy;
 import app.k9mail.legacy.account.Expunge;
 import app.k9mail.legacy.account.FolderMode;
 import app.k9mail.legacy.account.MessageFormat;
-import app.k9mail.legacy.account.Account.QuoteStyle;
+import app.k9mail.legacy.account.QuoteStyle;
 import app.k9mail.legacy.account.ShowPictures;
 import app.k9mail.legacy.account.SortType;
 import app.k9mail.legacy.account.SpecialFolderSelection;
