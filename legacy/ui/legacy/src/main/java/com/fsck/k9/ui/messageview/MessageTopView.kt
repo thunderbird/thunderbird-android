@@ -19,7 +19,7 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.mail.toEmailAddressOrNull
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.ShowPictures
+import app.k9mail.legacy.account.ShowPictures
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.MessageViewInfo

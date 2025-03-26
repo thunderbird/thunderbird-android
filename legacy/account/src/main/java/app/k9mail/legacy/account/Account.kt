@@ -599,12 +599,6 @@ open class Account(
         return uuid.hashCode()
     }
 
-    enum class ShowPictures {
-        NEVER,
-        ALWAYS,
-        ONLY_FROM_CONTACTS,
-    }
-
     enum class QuoteStyle {
         PREFIX,
         HEADER,

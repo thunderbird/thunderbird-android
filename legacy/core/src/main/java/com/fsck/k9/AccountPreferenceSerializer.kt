@@ -8,11 +8,11 @@ import app.k9mail.legacy.account.Account.Companion.NO_OPENPGP_KEY
 import app.k9mail.legacy.account.Account.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import app.k9mail.legacy.account.Account.MessageFormat
 import app.k9mail.legacy.account.Account.QuoteStyle
-import app.k9mail.legacy.account.Account.ShowPictures
 import app.k9mail.legacy.account.DeletePolicy
 import app.k9mail.legacy.account.Expunge
 import app.k9mail.legacy.account.FolderMode
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.ShowPictures
 import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.account.SpecialFolderSelection
 import app.k9mail.legacy.notification.NotificationLight
