@@ -605,12 +605,6 @@ open class Account(
         HEADER,
     }
 
-    enum class MessageFormat {
-        TEXT,
-        HTML,
-        AUTO,
-    }
-
     companion object {
         /**
          * Fixed name of outbox - not actually displayed.
