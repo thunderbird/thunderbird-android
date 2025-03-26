@@ -9,6 +9,8 @@ android {
 dependencies {
     api(projects.legacy.common)
 
+    implementation(projects.feature.account.core)
+
     implementation(projects.legacy.account)
 
     implementation(projects.core.featureflags)
