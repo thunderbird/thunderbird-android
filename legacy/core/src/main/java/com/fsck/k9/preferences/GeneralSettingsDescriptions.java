@@ -11,7 +11,7 @@ import android.content.Context;
 
 import app.k9mail.feature.telemetry.api.TelemetryManager;
 import app.k9mail.legacy.account.Account;
-import app.k9mail.legacy.account.Account.SortType;
+import app.k9mail.legacy.account.SortType;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.preferences.AppTheme;
 import app.k9mail.legacy.preferences.SubTheme;

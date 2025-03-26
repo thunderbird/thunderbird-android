@@ -1,7 +1,7 @@
 package net.thunderbird.feature.widget.message.list
 
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper

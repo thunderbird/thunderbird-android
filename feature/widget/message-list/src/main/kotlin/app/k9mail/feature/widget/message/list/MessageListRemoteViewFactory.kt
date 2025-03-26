@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
-import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.SearchAccount
 import com.fsck.k9.CoreResourceProvider
