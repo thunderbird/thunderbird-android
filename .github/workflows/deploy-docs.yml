@@ -51,6 +51,10 @@ jobs:
           rm book/docs/latest/.gitignore
           rm book/docs/latest/install.sh
 
+          # Restore mermaid.min.js, it has already been copied over to book/docs/latest
+          git restore .
+
+
       - name: Deploy docs to gh-pages
         env:
           APP_SLUG: ${{ steps.app-token.outputs.app-slug || 'github-actions'}}
