@@ -10,8 +10,6 @@ permissions:
   contents: read
   issues: write
 
-environment: botmobile
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,6 +18,7 @@ jobs:
       github.event.comment.author_association != 'OWNER' &&
       github.event.comment.author_association != 'MEMBER' &&
       github.event.comment.author_association != 'COLLABORATOR'
+    environment: botmobile
     permissions:
       issues: write
       pull-requests: write

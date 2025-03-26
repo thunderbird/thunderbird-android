@@ -10,14 +10,13 @@ on:
 permissions:
   issues: write
 
-environment: botmobile
-
 jobs:
   build:
     runs-on: ubuntu-latest
     if: |
       contains(github.event.issue.labels.*.name, 'status: needs information') &&
       contains(github.event.issue.labels.*.name, 'status: answered')
+    environment: botmobile
     permissions:
       issues: write
       pull-requests: write
