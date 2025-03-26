@@ -3,7 +3,7 @@ package com.fsck.k9.storage.migrations
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.DeletePolicy
+import app.k9mail.legacy.account.DeletePolicy
 
 /**
  * Remove all placeholder entries in 'messages' table
