@@ -18,7 +18,7 @@ import app.k9mail.legacy.account.Account.MessageFormat;
 import app.k9mail.legacy.account.Account.QuoteStyle;
 import app.k9mail.legacy.account.Account.ShowPictures;
 import app.k9mail.legacy.account.SortType;
-import app.k9mail.legacy.account.Account.SpecialFolderSelection;
+import app.k9mail.legacy.account.SpecialFolderSelection;
 import com.fsck.k9.AccountPreferenceSerializer;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;

@@ -7,7 +7,7 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
-import app.k9mail.legacy.account.Account.SpecialFolderSelection
+import app.k9mail.legacy.account.SpecialFolderSelection
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController

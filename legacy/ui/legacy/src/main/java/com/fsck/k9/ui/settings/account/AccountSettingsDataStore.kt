@@ -2,9 +2,9 @@ package com.fsck.k9.ui.settings.account
 
 import androidx.preference.PreferenceDataStore
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.SpecialFolderSelection
 import app.k9mail.legacy.account.DeletePolicy
 import app.k9mail.legacy.account.Expunge
+import app.k9mail.legacy.account.SpecialFolderSelection
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationVibration
 import com.fsck.k9.Preferences
