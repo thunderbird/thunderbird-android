@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.api.SearchField
