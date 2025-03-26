@@ -11,28 +11,41 @@ on:
 permissions:
   contents: read
 
+environment: botmobile
+
 jobs:
   uplift:
     name: Uplift
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
-      contents: write
     steps:
+      - name: App token generate
+        uses: actions/create-github-app-token@21cfef2b496dd8ef5b904c159339626a10ad380e # v1.11.6
+        if: ${{ !inputs.dryRun && vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Configure for push
         if: ${{ !inputs.dryRun }}
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug || 'github-actions'}}
+          APP_USER_ID: ${{ vars.BOT_USER_ID || '41898282' }}
         run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "${APP_SLUG}"
+          git config --global user.email "${APP_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
 
       - name: Run uplift script
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
           DRYRUN: ${{ !inputs.dryRun && '--no-dry-run' || '' }}
           BRANCH: ${{ github.ref_name }}
           PUSH: ${{ !inputs.dryRun && '--push' || '' }}
