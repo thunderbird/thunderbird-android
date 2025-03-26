@@ -4,6 +4,7 @@ import androidx.preference.PreferenceDataStore
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.SpecialFolderSelection
 import app.k9mail.legacy.account.DeletePolicy
+import app.k9mail.legacy.account.Expunge
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationVibration
 import com.fsck.k9.Preferences
@@ -154,7 +155,7 @@ class AccountSettingsDataStore(
                 }
             }
             "delete_policy" -> account.deletePolicy = DeletePolicy.valueOf(value)
-            "expunge_policy" -> account.expungePolicy = Account.Expunge.valueOf(value)
+            "expunge_policy" -> account.expungePolicy = Expunge.valueOf(value)
             "max_push_folders" -> account.maxPushFolders = value.toInt()
             "idle_refresh_period" -> account.idleRefreshMinutes = value.toInt()
             "message_format" -> account.messageFormat = Account.MessageFormat.valueOf(value)
