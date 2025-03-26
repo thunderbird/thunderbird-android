@@ -1,12 +1,12 @@
 package com.fsck.k9.backends
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mail.oauth.AuthStateStorage
 
 class AccountAuthStateStorage(
     private val accountManager: AccountManager,
-    private val account: Account,
+    private val account: LegacyAccount,
 ) : AuthStateStorage {
     override fun getAuthorizationState(): String? {
         return account.oAuthState

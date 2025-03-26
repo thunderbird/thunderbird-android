@@ -3,7 +3,7 @@ package com.fsck.k9.notification
 import androidx.core.app.NotificationCompat
 import androidx.test.core.app.ApplicationProvider
 import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.testing.MockHelper.mockBuilder
 import org.junit.Test
 import org.mockito.Mockito.verify
@@ -12,7 +12,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 class LockScreenNotificationCreatorTest : RobolectricTest() {
-    private val account = Account("00000000-0000-0000-0000-000000000000")
+    private val account = LegacyAccount("00000000-0000-0000-0000-000000000000")
     private val resourceProvider = TestNotificationResourceProvider()
     private val builder = createFakeNotificationBuilder()
     private val publicBuilder = createFakeNotificationBuilder()

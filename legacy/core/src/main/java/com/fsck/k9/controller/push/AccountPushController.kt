@@ -1,6 +1,6 @@
 package com.fsck.k9.controller.push
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.BackendPusher
@@ -18,7 +18,7 @@ internal class AccountPushController(
     private val messagingController: MessagingController,
     private val folderRepository: FolderRepository,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val account: Account,
+    private val account: LegacyAccount,
 ) {
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
 

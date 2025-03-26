@@ -3,7 +3,7 @@ package com.fsck.k9.ui.endtoend
 import android.app.PendingIntent
 import android.content.Intent
 import androidx.core.content.IntentCompat
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.autocrypt.AutocryptTransferMessageCreator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.mail.Address
@@ -22,7 +22,7 @@ class AutocryptSetupMessageLiveEvent(
     private val eventScope: CoroutineScope = MainScope(),
 ) : SingleLiveEvent<AutocryptSetupMessage>() {
 
-    fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: Account) {
+    fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: LegacyAccount) {
         eventScope.launch {
             val result = withContext(Dispatchers.IO) {
                 loadAutocryptSetupMessage(openPgpApi, account)
@@ -32,7 +32,7 @@ class AutocryptSetupMessageLiveEvent(
         }
     }
 
-    private fun loadAutocryptSetupMessage(openPgpApi: OpenPgpApi, account: Account): AutocryptSetupMessage {
+    private fun loadAutocryptSetupMessage(openPgpApi: OpenPgpApi, account: LegacyAccount): AutocryptSetupMessage {
         val keyIds = longArrayOf(account.openPgpKey)
         val address = Address.parse(account.getIdentity(0).email)[0]
 

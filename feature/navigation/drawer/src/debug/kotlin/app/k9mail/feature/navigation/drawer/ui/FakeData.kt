@@ -9,8 +9,8 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderType
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.LegacyAccount
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
@@ -24,7 +24,7 @@ internal object FakeData {
     const val LONG_TEXT = "loremipsumdolorsitametconsetetursadipscingelitr" +
         "seddiamnonumyeirmodtemporinviduntutlaboreetdoloremagnaaliquyameratseddiamvoluptua"
 
-    val ACCOUNT = Account(
+    val ACCOUNT = LegacyAccount(
         uuid = ACCOUNT_UUID,
     ).apply {
         identities = ArrayList()

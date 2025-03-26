@@ -1,6 +1,6 @@
 package app.k9mail.feature.navigation.drawer.domain.usecase
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import app.k9mail.legacy.message.controller.MessagingListener
 
@@ -9,7 +9,7 @@ internal class FakeMessagingControllerMailChecker(
     private val listenerExecutor: (MessagingListener?) -> Unit = {},
 ) : MessagingControllerMailChecker {
     override fun checkMail(
-        account: Account?,
+        account: LegacyAccount?,
         ignoreLastCheckedTime: Boolean,
         useManualWakeLock: Boolean,
         notify: Boolean,
@@ -22,7 +22,7 @@ internal class FakeMessagingControllerMailChecker(
 }
 
 internal data class CheckMailParameters(
-    val account: Account?,
+    val account: LegacyAccount?,
     val ignoreLastCheckedTime: Boolean,
     val useManualWakeLock: Boolean,
     val notify: Boolean,

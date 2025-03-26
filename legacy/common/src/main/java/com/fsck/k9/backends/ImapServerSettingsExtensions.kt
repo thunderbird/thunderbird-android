@@ -1,12 +1,12 @@
 package com.fsck.k9.backends
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 
-fun Account.toImapServerSettings(): ServerSettings {
+fun LegacyAccount.toImapServerSettings(): ServerSettings {
     val serverSettings = incomingServerSettings
     return serverSettings.copy(
         extra = ImapStoreSettings.createExtra(

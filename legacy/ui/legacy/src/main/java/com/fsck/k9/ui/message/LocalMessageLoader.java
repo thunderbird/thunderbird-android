@@ -6,7 +6,7 @@ import androidx.loader.content.AsyncTaskLoader;
 
 import timber.log.Timber;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.MessagingException;
@@ -15,12 +15,12 @@ import com.fsck.k9.mailstore.LocalMessage;
 
 public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
     private final MessagingController controller;
-    private final Account account;
+    private final LegacyAccount account;
     private final MessageReference messageReference;
     private final boolean onlyLoadMetadata;
     private LocalMessage message;
 
-    public LocalMessageLoader(Context context, MessagingController controller, Account account,
+    public LocalMessageLoader(Context context, MessagingController controller, LegacyAccount account,
             MessageReference messageReference, boolean onlyLoadMetaData) {
         super(context);
         this.controller = controller;

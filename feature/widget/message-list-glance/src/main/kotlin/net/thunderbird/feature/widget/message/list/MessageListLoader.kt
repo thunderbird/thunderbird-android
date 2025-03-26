@@ -1,6 +1,6 @@
 package net.thunderbird.feature.widget.message.list
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.Preferences
@@ -39,7 +39,7 @@ internal class MessageListLoader(
         return messageListItems
     }
 
-    private fun loadMessageListForAccount(account: Account, config: MessageListConfig): List<MessageListItem> {
+    private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
         val accountUuid = account.uuid
         val sortOrder = buildSortOrder(config)
         val mapper = MessageListItemMapper(messageHelper, account)

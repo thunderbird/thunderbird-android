@@ -1,6 +1,6 @@
 package com.fsck.k9.search
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.api.SearchAttribute
 import app.k9mail.legacy.search.api.SearchCondition
@@ -25,7 +25,7 @@ fun LocalSearch.limitToDisplayableFolders() {
  *
  * The Inbox will always be included even if one of the special folders is configured to point to the Inbox.
  */
-fun LocalSearch.excludeSpecialFolders(account: Account) {
+fun LocalSearch.excludeSpecialFolders(account: LegacyAccount) {
     this.excludeSpecialFolder(account.trashFolderId)
     this.excludeSpecialFolder(account.draftsFolderId)
     this.excludeSpecialFolder(account.spamFolderId)

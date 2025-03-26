@@ -1,19 +1,22 @@
 package com.fsck.k9.notification
 
 import android.app.PendingIntent
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 
 interface NotificationActionCreator {
     fun createViewMessagePendingIntent(messageReference: MessageReference): PendingIntent
 
-    fun createViewFolderPendingIntent(account: Account, folderId: Long): PendingIntent
+    fun createViewFolderPendingIntent(account: LegacyAccount, folderId: Long): PendingIntent
 
-    fun createViewMessagesPendingIntent(account: Account, messageReferences: List<MessageReference>): PendingIntent
+    fun createViewMessagesPendingIntent(
+        account: LegacyAccount,
+        messageReferences: List<MessageReference>,
+    ): PendingIntent
 
-    fun createViewFolderListPendingIntent(account: Account): PendingIntent
+    fun createViewFolderListPendingIntent(account: LegacyAccount): PendingIntent
 
-    fun createDismissAllMessagesPendingIntent(account: Account): PendingIntent
+    fun createDismissAllMessagesPendingIntent(account: LegacyAccount): PendingIntent
 
     fun createDismissMessagePendingIntent(messageReference: MessageReference): PendingIntent
 
@@ -21,19 +24,22 @@ interface NotificationActionCreator {
 
     fun createMarkMessageAsReadPendingIntent(messageReference: MessageReference): PendingIntent
 
-    fun createMarkAllAsReadPendingIntent(account: Account, messageReferences: List<MessageReference>): PendingIntent
+    fun createMarkAllAsReadPendingIntent(
+        account: LegacyAccount,
+        messageReferences: List<MessageReference>,
+    ): PendingIntent
 
-    fun getEditIncomingServerSettingsIntent(account: Account): PendingIntent
+    fun getEditIncomingServerSettingsIntent(account: LegacyAccount): PendingIntent
 
-    fun getEditOutgoingServerSettingsIntent(account: Account): PendingIntent
+    fun getEditOutgoingServerSettingsIntent(account: LegacyAccount): PendingIntent
 
     fun createDeleteMessagePendingIntent(messageReference: MessageReference): PendingIntent
 
-    fun createDeleteAllPendingIntent(account: Account, messageReferences: List<MessageReference>): PendingIntent
+    fun createDeleteAllPendingIntent(account: LegacyAccount, messageReferences: List<MessageReference>): PendingIntent
 
     fun createArchiveMessagePendingIntent(messageReference: MessageReference): PendingIntent
 
-    fun createArchiveAllPendingIntent(account: Account, messageReferences: List<MessageReference>): PendingIntent
+    fun createArchiveAllPendingIntent(account: LegacyAccount, messageReferences: List<MessageReference>): PendingIntent
 
     fun createMarkMessageAsSpamPendingIntent(messageReference: MessageReference): PendingIntent
 }

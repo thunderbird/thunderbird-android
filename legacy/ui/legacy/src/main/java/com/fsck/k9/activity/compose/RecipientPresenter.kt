@@ -11,7 +11,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
@@ -52,12 +52,13 @@ private const val REQUEST_CODE_AUTOCRYPT = 5
 
 private const val PGP_DIALOG_DISPLAY_THRESHOLD = 2
 
+@Suppress("LongParameterList")
 class RecipientPresenter(
     private val context: Context,
     loaderManager: LoaderManager,
     private val openPgpApiManager: OpenPgpApiManager,
     private val recipientMvpView: RecipientMvpView,
-    account: Account,
+    account: LegacyAccount,
     private val composePgpInlineDecider: ComposePgpInlineDecider,
     private val composePgpEnableByDefaultDecider: ComposePgpEnableByDefaultDecider,
     private val autocryptStatusInteractor: AutocryptStatusInteractor,
@@ -65,7 +66,7 @@ class RecipientPresenter(
     private val draftStateHeaderParser: AutocryptDraftStateHeaderParser,
 ) {
     private var isToAddressAdded: Boolean = false
-    private lateinit var account: Account
+    private lateinit var account: LegacyAccount
     private var alwaysBccAddresses: Array<Address>? = null
     private var hasContactPicker: Boolean? = null
     private var isReplyToEncryptedMessage = false
@@ -327,7 +328,7 @@ class RecipientPresenter(
         menu.findItem(R.id.add_from_contacts).isVisible = hasContactPermission() && hasContactPicker()
     }
 
-    fun onSwitchAccount(account: Account) {
+    fun onSwitchAccount(account: LegacyAccount) {
         this.account = account
 
         if (account.isAlwaysShowCcBcc) {
@@ -395,7 +396,7 @@ class RecipientPresenter(
 
         val openPgpProviderState = openPgpApiManager.openPgpProviderState
         var accountCryptoKey: Long? = account.openPgpKey
-        if (accountCryptoKey == Account.NO_OPENPGP_KEY) {
+        if (accountCryptoKey == LegacyAccount.NO_OPENPGP_KEY) {
             accountCryptoKey = null
         }
 

@@ -1,7 +1,7 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTINGS_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY
@@ -140,7 +140,7 @@ internal class AccountSettingsWriter(
         error("Unexpected exit")
     }
 
-    private fun isAccountNameUsed(name: String?, accounts: List<Account>): Boolean {
+    private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccount>): Boolean {
         return accounts.any { it.displayName == name }
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 import androidx.annotation.VisibleForTesting;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -16,7 +16,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 
 public class ReplyToParser {
 
-    public ReplyToAddresses getRecipientsToReplyTo(Message message, Account account) {
+    public ReplyToAddresses getRecipientsToReplyTo(Message message, LegacyAccount account) {
         Address[] candidateAddress;
 
         Address[] replyToAddresses = message.getReplyTo();
@@ -39,7 +39,7 @@ public class ReplyToParser {
         return new ReplyToAddresses(candidateAddress);
     }
 
-    public ReplyToAddresses getRecipientsToReplyAllTo(Message message, Account account) {
+    public ReplyToAddresses getRecipientsToReplyAllTo(Message message, LegacyAccount account) {
         List<Address> replyToAddresses = Arrays.asList(getRecipientsToReplyTo(message, account).to);
 
         HashSet<Address> alreadyAddedAddresses = new HashSet<>(replyToAddresses);

@@ -28,6 +28,7 @@
       <option name="INSERT_INNER_CLASS_IMPORTS" value="true" />
       <option name="IMPORT_LAYOUT_TABLE">
         <value>
+          <package name="" withSubpackages="true" static="false" module="true" />
           <package name="java" withSubpackages="true" static="false" />
           <emptyLine />
           <package name="android" withSubpackages="true" static="false" />

@@ -2,8 +2,8 @@ package app.k9mail.legacy.ui.folder
 
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderSettingsChangedListener
 import app.k9mail.legacy.mailstore.FolderTypeMapper
 import app.k9mail.legacy.mailstore.MessageStoreManager
@@ -33,7 +33,7 @@ class DefaultDisplayFolderRepository(
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
-    private fun getDisplayFolders(account: Account, includeHiddenFolders: Boolean): List<DisplayFolder> {
+    private fun getDisplayFolders(account: LegacyAccount, includeHiddenFolders: Boolean): List<DisplayFolder> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
         return messageStore.getDisplayFolders(
             includeHiddenFolders = includeHiddenFolders,
@@ -53,14 +53,17 @@ class DefaultDisplayFolderRepository(
         }.sortedWith(sortForDisplay)
     }
 
-    override fun getDisplayFoldersFlow(account: Account, includeHiddenFolders: Boolean): Flow<List<DisplayFolder>> {
+    override fun getDisplayFoldersFlow(
+        account: LegacyAccount,
+        includeHiddenFolders: Boolean,
+    ): Flow<List<DisplayFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
 
         return callbackFlow {
             send(getDisplayFolders(account, includeHiddenFolders))
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
-                override fun folderStatusChanged(statusChangedAccount: Account, folderId: Long) {
+                override fun folderStatusChanged(statusChangedAccount: LegacyAccount, folderId: Long) {
                     if (statusChangedAccount.uuid == account.uuid) {
                         trySendBlocking(getDisplayFolders(account, includeHiddenFolders))
                     }

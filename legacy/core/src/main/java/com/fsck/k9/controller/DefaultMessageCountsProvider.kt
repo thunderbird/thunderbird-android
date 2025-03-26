@@ -1,7 +1,7 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
@@ -31,7 +31,7 @@ internal class DefaultMessageCountsProvider(
     private val messagingControllerRegistry: MessagingControllerRegistry,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : MessageCountsProvider {
-    override fun getMessageCounts(account: Account): MessageCounts {
+    override fun getMessageCounts(account: LegacyAccount): MessageCounts {
         val search = LocalSearch().apply {
             excludeSpecialFolders(account)
             limitToDisplayableFolders()
@@ -59,7 +59,7 @@ internal class DefaultMessageCountsProvider(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getUnreadMessageCount(account: Account, folderId: Long): Int {
+    override fun getUnreadMessageCount(account: LegacyAccount, folderId: Long): Int {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
             return if (folderId == account.outboxFolderId) {
@@ -78,7 +78,7 @@ internal class DefaultMessageCountsProvider(
             send(getMessageCounts(search))
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
-                override fun folderStatusChanged(account: Account, folderId: Long) {
+                override fun folderStatusChanged(account: LegacyAccount, folderId: Long) {
                     trySendBlocking(getMessageCounts(search))
                 }
             }
@@ -93,7 +93,7 @@ internal class DefaultMessageCountsProvider(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun getMessageCounts(account: Account, conditions: ConditionsTreeNode?): MessageCounts {
+    private fun getMessageCounts(account: LegacyAccount, conditions: ConditionsTreeNode?): MessageCounts {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
             return MessageCounts(

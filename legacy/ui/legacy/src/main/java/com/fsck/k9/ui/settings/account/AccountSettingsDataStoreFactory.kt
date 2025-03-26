@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.settings.account
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager
@@ -16,7 +16,7 @@ class AccountSettingsDataStoreFactory(
     private val notificationController: NotificationController,
     private val messagingController: MessagingController,
 ) {
-    fun create(account: Account): AccountSettingsDataStore {
+    fun create(account: LegacyAccount): AccountSettingsDataStore {
         return AccountSettingsDataStore(
             preferences,
             executorService,

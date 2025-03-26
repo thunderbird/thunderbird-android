@@ -1,6 +1,6 @@
 package com.fsck.k9.account
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.Core
 import com.fsck.k9.LocalKeyStoreManager
 import com.fsck.k9.Preferences
@@ -42,7 +42,7 @@ class AccountRemover(
         Timber.v("Finished removing account '%s'.", accountName)
     }
 
-    private fun removeLocalStore(account: Account) {
+    private fun removeLocalStore(account: LegacyAccount) {
         try {
             val localStore = localStoreProvider.getInstance(account)
             localStore.delete()
@@ -55,7 +55,7 @@ class AccountRemover(
         localStoreProvider.removeInstance(account)
     }
 
-    private fun removeBackend(account: Account) {
+    private fun removeBackend(account: LegacyAccount) {
         try {
             backendManager.removeBackend(account)
         } catch (e: Exception) {
@@ -63,7 +63,7 @@ class AccountRemover(
         }
     }
 
-    private fun removeCertificates(account: Account) {
+    private fun removeCertificates(account: LegacyAccount) {
         try {
             localKeyStoreManager.deleteCertificates(account)
         } catch (e: Exception) {

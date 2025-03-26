@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import android.content.Context;
 
 import app.k9mail.legacy.notification.NotificationLight;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.account.DeletePolicy;
 import app.k9mail.legacy.account.Expunge;
 import app.k9mail.legacy.account.FolderMode;
@@ -176,10 +176,10 @@ class AccountSettingsDescriptions {
                 new V(53, new StringSetting(null))
         ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(9, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(9, new EnumSetting<>(SortType.class, LegacyAccount.DEFAULT_SORT_TYPE))
         ));
         s.put("sortAscending", Settings.versions(
-                new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+                new V(9, new BooleanSetting(LegacyAccount.DEFAULT_SORT_ASCENDING))
         ));
         s.put("showPicturesEnum", Settings.versions(
                 new V(1, new EnumSetting<>(ShowPictures.class, ShowPictures.NEVER))

@@ -10,8 +10,8 @@ import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.toEmailAddressOrNull
 import app.k9mail.core.mail.folder.api.Folder
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
@@ -124,7 +124,7 @@ internal class MessageDetailsViewModel(
         )
     }
 
-    private fun List<Address>.toParticipants(account: Account): List<Participant> {
+    private fun List<Address>.toParticipants(account: LegacyAccount): List<Participant> {
         return this.map { address ->
             val displayName = participantFormatter.getDisplayName(address, account)
             val emailAddress = address.address

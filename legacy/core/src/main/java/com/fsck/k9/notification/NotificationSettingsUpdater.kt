@@ -2,7 +2,7 @@ package com.fsck.k9.notification
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.Preferences
 
 /**
@@ -25,7 +25,7 @@ class NotificationSettingsUpdater(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun updateNotificationSettings(account: Account) {
+    fun updateNotificationSettings(account: LegacyAccount) {
         val notificationConfiguration = notificationChannelManager.getNotificationConfiguration(account)
         val notificationSettings = notificationConfigurationConverter.convert(account, notificationConfiguration)
 

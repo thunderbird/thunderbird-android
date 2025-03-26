@@ -1,12 +1,12 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 
 internal class SingleMessageNotificationDataCreator {
 
     fun createSingleNotificationData(
-        account: Account,
+        account: LegacyAccount,
         notificationId: Int,
         content: NotificationContent,
         timestamp: Long,
@@ -52,7 +52,7 @@ internal class SingleMessageNotificationDataCreator {
         }
     }
 
-    private fun createSingleNotificationWearActions(account: Account): List<WearNotificationAction> {
+    private fun createSingleNotificationWearActions(account: LegacyAccount): List<WearNotificationAction> {
         return buildList {
             add(WearNotificationAction.Reply)
             add(WearNotificationAction.MarkAsRead)
@@ -81,7 +81,7 @@ internal class SingleMessageNotificationDataCreator {
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
-    private fun isSpamActionAvailableForWear(account: Account): Boolean {
+    private fun isSpamActionAvailableForWear(account: LegacyAccount): Boolean {
         return account.hasSpamFolder() && !K9.isConfirmSpam
     }
 }

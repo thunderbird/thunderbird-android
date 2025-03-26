@@ -6,7 +6,7 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderDetails
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
@@ -25,7 +25,7 @@ class FolderSettingsViewModel(
     private val actionLiveData = SingleLiveEvent<Action>()
     private var folderSettingsLiveData: LiveData<FolderSettingsResult>? = null
 
-    private lateinit var account: Account
+    private lateinit var account: LegacyAccount
     private var folderId: Long = NO_FOLDER_ID
 
     val showClearFolderInMenu: Boolean
@@ -61,13 +61,13 @@ class FolderSettingsViewModel(
         }
     }
 
-    private suspend fun loadAccount(accountUuid: String): Account {
+    private suspend fun loadAccount(accountUuid: String): LegacyAccount {
         return withContext(Dispatchers.IO) {
             preferences.getAccount(accountUuid) ?: error("Missing account: $accountUuid")
         }
     }
 
-    private suspend fun FolderRepository.loadFolderDetails(account: Account, folderId: Long): FolderDetails? {
+    private suspend fun FolderRepository.loadFolderDetails(account: LegacyAccount, folderId: Long): FolderDetails? {
         return withContext(Dispatchers.IO) {
             getFolderDetails(account, folderId)
         }

@@ -9,7 +9,7 @@ import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolderType
 import app.k9mail.feature.navigation.drawer.domain.entity.createDisplayAccountFolderId
 import app.k9mail.feature.navigation.drawer.ui.DrawerView
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
@@ -60,7 +60,7 @@ class FolderDrawer(
     override val isOpen: Boolean
         get() = drawer.isOpen
 
-    override fun updateUserAccountsAndFolders(account: Account?) {
+    override fun updateUserAccountsAndFolders(account: LegacyAccount?) {
         // no-op
     }
 

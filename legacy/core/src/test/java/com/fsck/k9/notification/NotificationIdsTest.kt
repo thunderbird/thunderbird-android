@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.containsNoDuplicates
@@ -99,7 +99,7 @@ class NotificationIdsTest {
         return listOf(NotificationIds.PUSH_NOTIFICATION_ID, NotificationIds.BACKGROUND_WORK_NOTIFICATION_ID)
     }
 
-    private fun getAccountNotificationIds(account: Account): List<Int> {
+    private fun getAccountNotificationIds(account: LegacyAccount): List<Int> {
         return listOf(
             NotificationIds.getSendFailedNotificationId(account),
             NotificationIds.getCertificateErrorNotificationId(account, true),
@@ -111,14 +111,14 @@ class NotificationIdsTest {
         ) + getNewMessageNotificationIds(account)
     }
 
-    private fun getNewMessageNotificationIds(account: Account): Array<Int> {
+    private fun getNewMessageNotificationIds(account: LegacyAccount): Array<Int> {
         return (0 until MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS).map { index ->
             NotificationIds.getSingleMessageNotificationId(account, index)
         }.toTypedArray()
     }
 
-    private fun createAccount(accountNumber: Int): Account {
-        return Account("uuid").apply {
+    private fun createAccount(accountNumber: Int): LegacyAccount {
+        return LegacyAccount("uuid").apply {
             this.accountNumber = accountNumber
         }
     }

@@ -6,7 +6,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
 import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.testing.MockHelper.mockBuilder
 import org.junit.Test
 import org.mockito.Mockito.verify
@@ -104,7 +104,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
         }
     }
 
-    private fun createFakeAccount(): Account {
+    private fun createFakeAccount(): LegacyAccount {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { displayName } doReturn ACCOUNT_NAME
@@ -117,7 +117,7 @@ class CertificateErrorNotificationControllerTest : RobolectricTest() {
         mock(),
         resourceProvider,
     ) {
-        override fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
+        override fun createContentIntent(account: LegacyAccount, incoming: Boolean): PendingIntent {
             return contentIntent
         }
     }

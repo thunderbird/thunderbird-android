@@ -6,7 +6,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
 import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.testing.MockHelper.mockBuilder
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
@@ -78,7 +78,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
         }
     }
 
-    private fun createFakeAccount(): Account {
+    private fun createFakeAccount(): LegacyAccount {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { name } doReturn ACCOUNT_NAME

@@ -1,6 +1,6 @@
 package net.thunderbird.feature.widget.message.list
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageDetailsAccessor
 import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.message.controller.MessageReference
@@ -11,7 +11,7 @@ import java.util.Locale
 
 internal class MessageListItemMapper(
     private val messageHelper: MessageHelper,
-    private val account: Account,
+    private val account: LegacyAccount,
 ) : MessageMapper<MessageListItem> {
     private val calendar: Calendar = Calendar.getInstance()
 
@@ -57,7 +57,7 @@ internal class MessageListItemMapper(
         return String.format("%d %s", dayOfMonth, month)
     }
 
-    private fun createUniqueId(account: Account, messageId: Long): Long {
+    private fun createUniqueId(account: LegacyAccount, messageId: Long): Long {
         return ((account.accountNumber + 1).toLong() shl ACCOUNT_NUMBER_BIT_SHIFT) + messageId
     }
 

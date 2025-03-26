@@ -27,9 +27,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.Expunge
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
@@ -118,7 +118,7 @@ class MessageListFragment :
     private lateinit var adapter: MessageListAdapter
 
     private lateinit var accountUuids: Array<String>
-    private var account: Account? = null
+    private var account: LegacyAccount? = null
     private var currentFolder: FolderInfoHolder? = null
     private var remoteSearchFuture: Future<*>? = null
     private var extraSearchResults: List<String>? = null
@@ -627,7 +627,7 @@ class MessageListFragment :
             density = K9.messageListDensity,
         )
 
-    private fun getFolderInfoHolder(folderId: Long, account: Account): FolderInfoHolder {
+    private fun getFolderInfoHolder(folderId: Long, account: LegacyAccount): FolderInfoHolder {
         val localFolder = MlfUtils.getOpenFolder(folderId, account)
         return FolderInfoHolder(folderNameFormatter, localFolder, account)
     }
@@ -1054,9 +1054,9 @@ class MessageListFragment :
     private fun setFlagForSelected(flag: Flag, newState: Boolean) {
         if (adapter.selected.isEmpty()) return
 
-        val messageMap = mutableMapOf<Account, MutableList<Long>>()
-        val threadMap = mutableMapOf<Account, MutableList<Long>>()
-        val accounts = mutableSetOf<Account>()
+        val messageMap = mutableMapOf<LegacyAccount, MutableList<Long>>()
+        val threadMap = mutableMapOf<LegacyAccount, MutableList<Long>>()
+        val accounts = mutableSetOf<LegacyAccount>()
 
         for (messageListItem in adapter.selectedMessages) {
             val account = messageListItem.account
@@ -1183,7 +1183,7 @@ class MessageListFragment :
         }
     }
 
-    private fun groupMessagesByAccount(messages: List<MessageReference>): Map<Account, List<MessageReference>> {
+    private fun groupMessagesByAccount(messages: List<MessageReference>): Map<LegacyAccount, List<MessageReference>> {
         return messages.groupBy { accountManager.getAccount(it.accountUuid)!! }
     }
 
@@ -1824,7 +1824,7 @@ class MessageListFragment :
             handler.refreshTitle()
         }
 
-        override fun synchronizeMailboxStarted(account: Account, folderId: Long) {
+        override fun synchronizeMailboxStarted(account: LegacyAccount, folderId: Long) {
             if (updateForMe(account, folderId)) {
                 handler.progress(true)
                 handler.folderLoading(folderId, true)
@@ -1839,7 +1839,7 @@ class MessageListFragment :
         }
 
         override fun synchronizeMailboxHeadersProgress(
-            account: Account,
+            account: LegacyAccount,
             folderServerId: String,
             completed: Int,
             total: Int,
@@ -1853,7 +1853,7 @@ class MessageListFragment :
         }
 
         override fun synchronizeMailboxHeadersFinished(
-            account: Account,
+            account: LegacyAccount,
             folderServerId: String,
             total: Int,
             completed: Int,
@@ -1866,7 +1866,7 @@ class MessageListFragment :
             informUserOfStatus()
         }
 
-        override fun synchronizeMailboxProgress(account: Account, folderId: Long, completed: Int, total: Int) {
+        override fun synchronizeMailboxProgress(account: LegacyAccount, folderId: Long, completed: Int, total: Int) {
             synchronized(lock) {
                 folderCompleted = completed
                 folderTotal = total
@@ -1875,25 +1875,25 @@ class MessageListFragment :
             informUserOfStatus()
         }
 
-        override fun synchronizeMailboxFinished(account: Account, folderId: Long) {
+        override fun synchronizeMailboxFinished(account: LegacyAccount, folderId: Long) {
             if (updateForMe(account, folderId)) {
                 handler.progress(false)
                 handler.folderLoading(folderId, false)
             }
         }
 
-        override fun synchronizeMailboxFailed(account: Account, folderId: Long, message: String) {
+        override fun synchronizeMailboxFailed(account: LegacyAccount, folderId: Long, message: String) {
             if (updateForMe(account, folderId)) {
                 handler.progress(false)
                 handler.folderLoading(folderId, false)
             }
         }
 
-        override fun checkMailFinished(context: Context?, account: Account?) {
+        override fun checkMailFinished(context: Context?, account: LegacyAccount?) {
             handler.progress(false)
         }
 
-        private fun updateForMe(account: Account?, folderId: Long): Boolean {
+        private fun updateForMe(account: LegacyAccount?, folderId: Long): Boolean {
             if (account == null || account.uuid !in accountUuids) return false
 
             val folderIds = localSearch.folderIds
@@ -1971,7 +1971,7 @@ class MessageListFragment :
             return true
         }
 
-        private fun setContextCapabilities(account: Account?, menu: Menu) {
+        private fun setContextCapabilities(account: LegacyAccount?, menu: Menu) {
             if (!isSingleAccountMode || account == null) {
                 // We don't support cross-account copy/move operations right now
                 menu.findItem(R.id.move).isVisible = false
@@ -2124,11 +2124,11 @@ class MessageListFragment :
     interface MessageListFragmentListener {
         fun setMessageListProgressEnabled(enable: Boolean)
         fun setMessageListProgress(level: Int)
-        fun showThread(account: Account, threadRootId: Long)
+        fun showThread(account: LegacyAccount, threadRootId: Long)
         fun openMessage(messageReference: MessageReference)
         fun setMessageListTitle(title: String, subtitle: String? = null)
-        fun onCompose(account: Account?)
-        fun startSearch(query: String, account: Account?, folderId: Long?): Boolean
+        fun onCompose(account: LegacyAccount?)
+        fun startSearch(query: String, account: LegacyAccount?, folderId: Long?): Boolean
         fun startSupportActionMode(callback: ActionMode.Callback): ActionMode?
         fun goBack()
 
