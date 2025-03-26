@@ -1,6 +1,5 @@
 package app.k9mail.legacy.account
 
-import app.k9mail.legacy.account.Account.DeletePolicy
 import app.k9mail.legacy.account.Account.Expunge
 import app.k9mail.legacy.account.Account.MessageFormat
 import app.k9mail.legacy.account.Account.QuoteStyle

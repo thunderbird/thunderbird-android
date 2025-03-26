@@ -1,6 +1,6 @@
 package app.k9mail.feature.migration.qrcode.payload
 
-import app.k9mail.legacy.account.Account.DeletePolicy
+import app.k9mail.legacy.account.DeletePolicy
 import com.fsck.k9.account.DeletePolicyProvider
 
 class FakeDeletePolicyProvider : DeletePolicyProvider {
