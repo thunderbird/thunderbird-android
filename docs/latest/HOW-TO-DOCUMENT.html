@@ -24,9 +24,9 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="assets/theme/last-changed.css">
@@ -132,7 +132,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./how-to-document.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./HOW-TO-DOCUMENT.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -186,10 +186,13 @@ graph TD;
 <h3 id="adding-a-new-page"><a class="header" href="#adding-a-new-page">Adding a New Page</a></h3>
 <p>To add a new page, create a markdown file in the <code>docs/</code> directory or within a suitable subfolder. For example:</p>
 <ul>
-<li>To create a new top-level page: <code>docs/new-page.md</code>.</li>
+<li>To create a new top-level page: <code>docs/NEW_PAGE.md</code>.</li>
 <li>To create a page within a subfolder: <code>docs/subfolder/new-subpage.md</code>.</li>
 </ul>
 <p>To include the new page in the table of contents, add a link to the <code>SUMMARY.md</code> file pointing to newly created page.</p>
+<p>For consistency with GitHub conventions and other mandatory files, markdown files in the top level
+<code>docs/</code> directory shall be written in uppercase, as well the README.md file within subfolders.
+Further markdown files in subdirectories shall use a lowercase filename.</p>
 <h3 id="organizing-with-subfolders"><a class="header" href="#organizing-with-subfolders">Organizing with Subfolders</a></h3>
 <p>Subfolders in the <code>docs/</code> folder can be used to organize related documentation. This can be useful if related topics should be grouped together. For example, we have a subfolder named <code>architecture/</code> for all documentation related to our application’s architecture.</p>
 <h3 id="linking-new-pages-in-the-summary"><a class="header" href="#linking-new-pages-in-the-summary">Linking New Pages in the Summary</a></h3>
@@ -200,6 +203,10 @@ graph TD;
 <pre><code class="language-markdown">- [Page Title](relative/path/to/file.md)
   - [Subpage Title](relative/path/to/subfolder/file.md)
 </code></pre>
+<h3 id="assets"><a class="header" href="#assets">Assets</a></h3>
+<p>If you need to embed images, put them in the assets folder closest to the file they are being used
+in. This can either be the top-level assets folder, or a (potentially new) assets subfolder in the
+respective section.</p>
 <h2 id="documentation-toolchain"><a class="header" href="#documentation-toolchain">Documentation Toolchain</a></h2>
 <p>The documentation is built using mdbook and several extensions. Follow these steps to set up the required tools.</p>
 <h3 id="install-mdbook-and-extensions"><a class="header" href="#install-mdbook-and-extensions">Install mdbook and extensions</a></h3>
@@ -227,7 +234,7 @@ graph TD;
 <pre><code class="language-shell">mdbook serve docs --open
 </code></pre>
 <p>The <code>mdbook serve docs</code> command will serve the book at <a href="http://localhost:3000" title="" target="_blank">http://localhost:3000</a> and rebuild the documentation on changes. The <code>--open</code> option will open the book in your web browser and is optional.</p>
-<footer id="last-change">Last change: 2025-03-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/9a15a96">9a15a96</a></footer>
+<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

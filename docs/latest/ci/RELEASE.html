@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Releases - Thunderbird for Android - Developer Documentation</title>
+        <title>Release Process - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,35 +12,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="assets/theme/last-changed.css">
-        <link rel="stylesheet" href="assets/theme/navigation.css">
-        <link rel="stylesheet" href="assets/theme/pagetoc.css">
+        <link rel="stylesheet" href="../assets/theme/last-changed.css">
+        <link rel="stylesheet" href="../assets/theme/navigation.css">
+        <link rel="stylesheet" href="../assets/theme/pagetoc.css">
 
 
         <!-- Provide site root to javascript -->
         <script>
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="body-container">
@@ -92,7 +92,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -126,13 +126,13 @@
                     <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./RELEASES.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./ci/RELEASE.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -276,6 +276,10 @@ On the latter, code that was in beta goes to release, where the general populati
 <li>Beta always uses <code>net.thunderbird.android.beta</code> as the app ID. Let’s say the version code is 20 at 9.0b4, it will be 21 at 10.0b1.</li>
 <li>Likewise, when 9.0b4 becomes 9.0, if the version code on beta is 20 and on release it is 12, then 9.0 becomes 13 and not 21.</li>
 </ul>
+<h2 id="milestones"><a class="header" href="#milestones">Milestones</a></h2>
+<p>We’re using GitHub Milestones to track work for each major release. There is only one milestone for the whole major release, so work going into 9.0 and 9.1 would both be in the “Thunderbird 9” milestone. Each milestone has the due date set to the anticipated release date.</p>
+<p>There are exactly three open milestones at any given time, some of our automation depends on this being the case. The milestone with the date furthest into the future is the target for the <code>main</code> branch, the one closest is the target for the <code>release</code> branch. When an uplift occurs, the milestone is changed to the respective next target.</p>
+<p>Learn more on the <a href="https://github.com/thunderbird/thunderbird-android/milestones" title="" target="_blank">milestones page</a></p>
 <h2 id="merge-process"><a class="header" href="#merge-process">Merge Process</a></h2>
 <p>Merges are performed with the <code>git merge</code> command:</p>
 <pre><code class="language-sh">git checkout beta
@@ -309,7 +313,7 @@ git merge main
 <li>The requestor adds the “task: uplift to beta” or “task: uplift to release” label to a merged pull request.</li>
 <li>The requestor makes a comment in the associated issue with the Approval Request Comment template filled out.</li>
 <li>The release driver reviews all uplift requests and, retaining the label for approved uplifts and removing the label for rejected uplifts.</li>
-<li>The release driver runs the Uplift Merges action for the specified target branch, which will remove the label, cherry-pick the commits, and push to the target branch.</li>
+<li>The release driver runs the Uplift Merges action for the specified target branch, which will remove the label, adjust the milestone, cherry-pick the commits, and push to the target branch.</li>
 </ol>
 <p>Template for uplift requests:</p>
 <pre><code class="language-sh">[Approval Request Comment]
@@ -322,30 +326,56 @@ Risk to taking this patch (and alternatives if risky):
 <h2 id="releases-1"><a class="header" href="#releases-1">Releases</a></h2>
 <p>Releases for both K-9 and Thunderbird for Android are automated with github actions.
 Daily builds are scheduled with the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/daily_builds.yml" title="" target="_blank">Daily Builds</a> action and all builds are performed by the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml" title="" target="_blank">Shippable Build &amp; Signing</a> action.</p>
-<p>For the historical manual release process, see <a href="RELEASING.html">Releasing</a>.</p>
+<p>For the historical manual release process, see <a href="HISTORICAL_RELEASE.html">Releasing</a>.</p>
 <h3 id="release-process"><a class="header" href="#release-process">Release Process</a></h3>
 <p>These are the general steps for a release:</p>
 <ol>
 <li>Perform merge or uplifts. Each release is the result of either a merge or uplift.</li>
 <li>Draft release notes at <a href="https://github.com/thunderbird/thunderbird-notes" title="" target="_blank">thunderbird-notes</a>.</li>
 <li>Trigger build via the <a href="https://github.com/thunderbird/thunderbird-android/actions/workflows/shippable_builds.yml" title="" target="_blank">Shippable Build &amp; Signing</a> action.</li>
-<li>Review the build results by reviewing the action summary and the git commits resulting from the build.</li>
-<li>Smoke test the build.</li>
-<li>Promote TfA and K-9 releases in Play Store.</li>
-<li>Wait for Play Store review to complete.</li>
-<li>Update F-Droid to new TfA and K-9 releases.</li>
-<li>Send notification to Matrix channels, and beta or planning mailing lists.</li>
+<li>Review the build results by reviewing the action summary and the git commits resulting from the build.
+<ul>
+<li>Make sure the version code is incremented properly and not wildly off</li>
+<li>Ensure the commits are correct</li>
+<li>Ensure the symlink <code>app-metadata</code> points to the right product at this commit</li>
+</ul>
+</li>
+<li>Test the build in the internal testing track
+<ul>
+<li>Release versions should be thoroughly tested with the test plan in Testrail</li>
+<li>Beta versions only require a basic smoke test to ensure it installs</li>
+</ul>
+</li>
+<li>Promote TfA and K-9 releases to production track in Play Store.
+<ul>
+<li>Set rollout to a low rate (generally 10-30%).</li>
+<li>Betas are only released for TfA. K-9 beta users are advised to use Thunderbird.</li>
+</ul>
+</li>
+<li>Wait for Play Store review to complete.
+<ul>
+<li>Release versions of TfA and K-9 have managed publishing enabled. Once the review has completed you need to publish the release</li>
+<li>Beta versions of TfA do not have managed publishing enabled. It will be available once Google has reviewed, even on a weekend.</li>
+</ul>
+</li>
+<li>Update F-Droid to new TfA and K-9 releases by sending a pull request to <a href="https://gitlab.com/fdroid/fdroiddata" title="" target="_blank">fdroiddata</a></li>
+<li>Send community updates to Matrix channels, and beta or planning mailing lists as needed.</li>
+<li>Approximately 24 hours after initial release to production, assess the following before updating rollout to a higher rate:
+<ul>
+<li>Crash rates, GitHub issues, install base, and reviews.</li>
+</ul>
+</li>
 </ol>
-<footer id="last-change">Last change: 2025-03-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/9a15a96">9a15a96</a></footer>
+<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="DESIGN.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../ci/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="RELEASING.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../ci/AUTOMATION.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -355,11 +385,11 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="DESIGN.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../ci/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="RELEASING.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../ci/AUTOMATION.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -374,19 +404,19 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="assets/theme/mermaid.min.js"></script>
-        <script src="assets/theme/mermaid-init.js"></script>
-        <script src="assets/theme/navigation.js"></script>
-        <script src="assets/theme/pagetoc.js"></script>
+        <script src="../assets/theme/mermaid.min.js"></script>
+        <script src="../assets/theme/mermaid-init.js"></script>
+        <script src="../assets/theme/navigation.js"></script>
+        <script src="../assets/theme/pagetoc.js"></script>
 
 
     </div>
