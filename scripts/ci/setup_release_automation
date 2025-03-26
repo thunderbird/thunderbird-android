@@ -168,7 +168,8 @@ def get_github_public_key(repo, environment_name):
     }
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        return response.json()
+        data = response.json()
+        return [data["key_id"], data["key"]]
     else:
         raise Exception(
             f"Failed to fetch public key from GitHub. Response: {response.status_code}, {response.text}"
@@ -424,9 +425,7 @@ def create_signing_environment(repo, environment, branch, props_file):
     create_github_environment(repo, environment, branches=[branch])
 
     # Fetch the public key from GitHub for the specific environment
-    public_key_data = get_github_public_key(repo, environment)
-    public_key = public_key_data["key"]
-    key_id = public_key_data["key_id"]
+    key_id, public_key = get_github_public_key(repo, environment)
 
     # Encrypt the secrets using the public key
     encrypted_signing_key = encrypt_secret(public_key, SIGNING_KEY)
@@ -448,14 +447,41 @@ def create_signing_environment(repo, environment, branch, props_file):
         )
 
 
+def make_bot_environment(repo, environment):
+    key_id, public_key = get_github_public_key(repo, environment)
+
+    with open("botmobile.key.pem") as fp:
+        encrypted_bot_key = encrypt_secret(public_key, fp.read())
+    with open("botmobile.clientid.txt") as fp:
+        bot_client_id = fp.read().strip()
+    with open("botmobile.userid.txt") as fp:
+        bot_user_id = fp.read().strip()
+
+
+    set_github_environment_secret(
+        repo, "BOT_PRIVATE_KEY", encrypted_bot_key, key_id, environment
+    )
+
+    set_github_environment_variable(repo, "BOT_CLIENT_ID", bot_client_id, environment)
+    set_github_environment_variable(repo, "BOT_USER_ID", bot_user_id, environment)
+
+
+def create_channel_environment(repo, environment, branch, variables):
+    create_github_environment(repo, environment, branches=[branch])
+
+    for name, value in variables.items():
+        if isinstance(value, dict) or isinstance(value, list):
+            value = json.dumps(value)
+
+        set_github_environment_variable(repo, name, value, environment)
+
+
 def create_release_environment(repo, branches):
     environment = "publish_release"
 
     create_github_environment(repo, environment, branches=branches)
 
-    public_key_data = get_github_public_key(repo, environment)
-    public_key = public_key_data["key"]
-    key_id = public_key_data["key_id"]
+    key_id, public_key = get_github_public_key(repo, environment)
 
     with open("play-store-account.json") as fp:
         encrypted_play_account = encrypt_secret(public_key, fp.read())
@@ -464,28 +490,13 @@ def create_release_environment(repo, branches):
         repo, "PLAY_STORE_ACCOUNT", encrypted_play_account, key_id, environment
     )
 
-    with open("thunderbird-mobile-gh-releaser-bot.pem") as fp:
-        encrypted_releaser_key = encrypt_secret(public_key, fp.read())
-    with open("thunderbird-mobile-gh-releaser-bot.clientid.txt") as fp:
-        releaser_client_id = fp.read().strip()
-
-    set_github_environment_secret(
-        repo, "RELEASER_APP_PRIVATE_KEY", encrypted_releaser_key, key_id, environment
-    )
-
-    set_github_environment_variable(
-        repo, "RELEASER_APP_CLIENT_ID", releaser_client_id, environment
-    )
-
 
 def create_matrix_environment(repo, branches):
     environment = "notify_matrix"
 
     create_github_environment(repo, environment, branches=branches)
 
-    public_key_data = get_github_public_key(repo, environment)
-    public_key = public_key_data["key"]
-    key_id = public_key_data["key_id"]
+    key_id, public_key = get_github_public_key(repo, environment)
 
     with open("matrix-account.json") as fp:
         mxdata = json.load(fp)
@@ -543,7 +554,7 @@ def main():
     includeset = set(
         list(CHANNEL_ENVIRONMENTS.keys())
         + list(SIGNING_ENVIRONMENTS.keys())
-        + ["publish_hold", "publish_release", "notify_matrix"]
+        + ["publish_hold", "publish_release", "notify_matrix", "botmobile"]
     )
     if args.skip:
         for skip in args.skip:
@@ -570,17 +581,8 @@ def main():
             print(f"Environment {environment_name}")
             print_github_environment_variable(args.repo, environment_name)
         else:
-            create_github_environment(
-                args.repo, environment_name, branches=[data["branch"]]
-            )
-
-            for name, value in data["variables"].items():
-                if isinstance(value, dict) or isinstance(value, list):
-                    value = json.dumps(value)
-
-                set_github_environment_variable(
-                    args.repo, name, value, environment_name
-                )
+            create_channel_environment(args.repo, environment_name, **data)
+            make_bot_environment(args.repo, environment_name)
 
     # Signing environments
     for environment_name, data in SIGNING_ENVIRONMENTS.items():
@@ -604,6 +606,15 @@ def main():
             print_github_environment(args.repo, "publish_release")
         else:
             create_release_environment(args.repo, ["main", "beta", "release"])
+            make_bot_environment(args.repo, "publish_release")
+
+    # Botmobile environment
+    if "botmobile" in includeset:
+        if args.print:
+            print_github_environment(args.repo, "botmobile")
+        else:
+            create_github_environment(args.repo, "botmobile", branches=["main"])
+            make_bot_environment(args.repo, "botmobile")
 
     # Notify
     if "notify_matrix" in includeset:

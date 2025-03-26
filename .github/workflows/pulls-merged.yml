@@ -12,16 +12,26 @@ permissions:
   pull-requests: write
   issues: write
 
+environment: botmobile
+
 jobs:
   pull-request-merged:
     runs-on: ubuntu-latest
 
     steps:
+      - name: App token generate
+        uses: actions/create-github-app-token@21cfef2b496dd8ef5b904c159339626a10ad380e  # v1.11.6
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
       - name: Get active milestone
         id: milestone
         env:
           PR_NUMBER: ${{  github.event.pull_request.number  }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: |
           # The furthest open milestone in the future should be current main
           gh api repos/$GITHUB_REPOSITORY/milestones --jq '
@@ -39,7 +49,7 @@ jobs:
           github.event.pull_request.author_association != 'COLLABORATOR'
         env:
           PR_NUMBER: ${{  github.event.pull_request.number  }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
           MILESTONE: ${{ steps.milestone.outputs.title }}
           MESSAGE: >-
             Thanks for your contribution! Your pull request has been merged and will be part of
@@ -55,7 +65,7 @@ jobs:
       - name: Set active milestone on PR
         env:
           PR_NUMBER: ${{  github.event.pull_request.number  }}
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
           MILESTONE: ${{ steps.milestone.outputs.number }}
         run: |
           gh api --method PATCH /repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER -f milestone=$MILESTONE
