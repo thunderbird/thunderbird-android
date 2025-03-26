@@ -3,7 +3,7 @@ package com.fsck.k9.storage.migrations
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.FolderMode
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
 import com.fsck.k9.mailstore.MigrationsHelper

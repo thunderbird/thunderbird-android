@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import app.k9mail.core.android.common.database.map
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.FolderMode
 import assertk.Assert
 import assertk.assertFailure
 import assertk.assertThat
