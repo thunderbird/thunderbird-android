@@ -19,6 +19,7 @@ import com.fsck.k9.mail.transport.smtp.SmtpTransport
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 @Suppress("LongParameterList")
@@ -100,11 +101,13 @@ class ImapBackendFactory(
     private fun createPushConfigProvider(account: Account) = object : ImapPushConfigProvider {
         override val maxPushFoldersFlow: Flow<Int>
             get() = accountManager.getAccountFlow(account.uuid)
+                .filterNotNull()
                 .map { it.maxPushFolders }
                 .distinctUntilChanged()
 
         override val idleRefreshMinutesFlow: Flow<Int>
             get() = accountManager.getAccountFlow(account.uuid)
+                .filterNotNull()
                 .map { it.idleRefreshMinutes }
                 .distinctUntilChanged()
     }
