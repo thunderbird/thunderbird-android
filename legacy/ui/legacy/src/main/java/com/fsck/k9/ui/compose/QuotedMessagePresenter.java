@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import app.k9mail.core.android.common.compat.BundleCompat;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.account.MessageFormat;
 import app.k9mail.legacy.account.QuoteStyle;
 import app.k9mail.legacy.di.DI;
@@ -52,11 +52,11 @@ public class QuotedMessagePresenter {
 
     private SimpleMessageFormat quotedTextFormat;
     private InsertableHtmlContent quotedHtmlContent;
-    private Account account;
+    private LegacyAccount account;
 
 
     public QuotedMessagePresenter(
-            MessageCompose messageCompose, QuotedMessageMvpView quotedMessageMvpView, Account account) {
+            MessageCompose messageCompose, QuotedMessageMvpView quotedMessageMvpView, LegacyAccount account) {
         this.messageCompose = messageCompose;
         this.view = quotedMessageMvpView;
         onSwitchAccount(account);
@@ -67,7 +67,7 @@ public class QuotedMessagePresenter {
         quotedMessageMvpView.setOnClickPresenter(this);
     }
 
-    public void onSwitchAccount(Account account) {
+    public void onSwitchAccount(LegacyAccount account) {
         this.account = account;
     }
 

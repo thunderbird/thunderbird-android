@@ -1,9 +1,9 @@
 package com.fsck.k9.backends
 
 import android.content.Context
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.Expunge
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
@@ -33,7 +33,7 @@ class ImapBackendFactory(
     private val clientInfoAppName: String,
     private val clientInfoAppVersion: String,
 ) : BackendFactory {
-    override fun createBackend(account: Account): Backend {
+    override fun createBackend(account: LegacyAccount): Backend {
         val accountName = account.displayName
         val backendStorage = backendStorageFactory.createBackendStorage(account)
         val imapStore = createImapStore(account)
@@ -51,7 +51,7 @@ class ImapBackendFactory(
         )
     }
 
-    private fun createImapStore(account: Account): ImapStore {
+    private fun createImapStore(account: LegacyAccount): ImapStore {
         val serverSettings = account.toImapServerSettings()
 
         val oAuth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
@@ -69,7 +69,7 @@ class ImapBackendFactory(
         )
     }
 
-    private fun createImapStoreConfig(account: Account): ImapStoreConfig {
+    private fun createImapStoreConfig(account: LegacyAccount): ImapStoreConfig {
         return object : ImapStoreConfig {
             override val logLabel
                 get() = account.uuid
@@ -82,7 +82,7 @@ class ImapBackendFactory(
         }
     }
 
-    private fun createSmtpTransport(account: Account): SmtpTransport {
+    private fun createSmtpTransport(account: LegacyAccount): SmtpTransport {
         val serverSettings = account.outgoingServerSettings
         val oauth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
             createOAuth2TokenProvider(account)
@@ -93,12 +93,12 @@ class ImapBackendFactory(
         return SmtpTransport(serverSettings, trustedSocketFactory, oauth2TokenProvider)
     }
 
-    private fun createOAuth2TokenProvider(account: Account): RealOAuth2TokenProvider {
+    private fun createOAuth2TokenProvider(account: LegacyAccount): RealOAuth2TokenProvider {
         val authStateStorage = AccountAuthStateStorage(accountManager, account)
         return RealOAuth2TokenProvider(context, authStateStorage)
     }
 
-    private fun createPushConfigProvider(account: Account) = object : ImapPushConfigProvider {
+    private fun createPushConfigProvider(account: LegacyAccount) = object : ImapPushConfigProvider {
         override val maxPushFoldersFlow: Flow<Int>
             get() = accountManager.getAccountFlow(account.uuid)
                 .filterNotNull()

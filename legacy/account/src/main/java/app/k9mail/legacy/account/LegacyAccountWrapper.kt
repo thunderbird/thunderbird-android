@@ -1,17 +1,18 @@
 package app.k9mail.legacy.account
 
-import app.k9mail.legacy.account.Account.Companion.NO_OPENPGP_KEY
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import app.k9mail.legacy.notification.NotificationSettings
 import com.fsck.k9.mail.ServerSettings
 
 /**
- * A immutable wrapper for the [Account] class.
+ * A immutable wrapper for the [LegacyAccount] class.
  *
  * This class is used to store the account data in a way that is safe to pass between threads.
  *
  * Use LegacyAccountWrapper.from(account) to create a wrapper from an account.
  * Use LegacyAccountWrapper.to(wrapper) to create an account from a wrapper.
  */
+@Suppress("LongMethod")
 data class LegacyAccountWrapper(
     override val uuid: String,
     override val name: String?,
@@ -132,7 +133,8 @@ data class LegacyAccountWrapper(
     }
 
     companion object {
-        fun from(account: Account): LegacyAccountWrapper {
+        @Suppress("LongMethod")
+        fun from(account: LegacyAccount): LegacyAccountWrapper {
             return LegacyAccountWrapper(
                 uuid = account.uuid,
                 isSensitiveDebugLoggingEnabled = account.isSensitiveDebugLoggingEnabled,
@@ -225,8 +227,9 @@ data class LegacyAccountWrapper(
             )
         }
 
-        fun to(wrapper: LegacyAccountWrapper): Account {
-            return Account(
+        @Suppress("LongMethod")
+        fun to(wrapper: LegacyAccountWrapper): LegacyAccount {
+            return LegacyAccount(
                 uuid = wrapper.uuid,
                 isSensitiveDebugLoggingEnabled = wrapper.isSensitiveDebugLoggingEnabled,
             ).apply {

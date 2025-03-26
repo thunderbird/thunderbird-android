@@ -3,8 +3,8 @@ package com.fsck.k9.storage.migrations
 import android.database.sqlite.SQLiteDatabase
 import android.os.Build
 import androidx.core.content.contentValuesOf
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.FolderMode
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mailstore.MigrationsHelper
 
 internal class MigrationTo85(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {
@@ -93,7 +93,7 @@ internal class MigrationTo85(private val db: SQLiteDatabase, private val migrati
         db.update("folders", contentValuesOf("notifications_enabled" to true), whereClause, ignoreFolders)
     }
 
-    private fun getNotificationIgnoredFolders(account: Account): Array<String> {
+    private fun getNotificationIgnoredFolders(account: LegacyAccount): Array<String> {
         val inboxFolderId = account.inboxFolderId
 
         // These special folders were ignored via K9NotificationStrategy unless they were pointing to the inbox.

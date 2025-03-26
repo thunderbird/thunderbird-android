@@ -4,14 +4,14 @@ import android.app.Notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 
 internal open class CertificateErrorNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
 ) {
-    fun showCertificateErrorNotification(account: Account, incoming: Boolean) {
+    fun showCertificateErrorNotification(account: LegacyAccount, incoming: Boolean) {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)
         val editServerSettingsPendingIntent = createContentIntent(account, incoming)
         val title = resourceProvider.certificateErrorTitle(account.displayName)
@@ -35,12 +35,12 @@ internal open class CertificateErrorNotificationController(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    fun clearCertificateErrorNotifications(account: Account, incoming: Boolean) {
+    fun clearCertificateErrorNotifications(account: LegacyAccount, incoming: Boolean) {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)
         notificationManager.cancel(notificationId)
     }
 
-    protected open fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
+    protected open fun createContentIntent(account: LegacyAccount, incoming: Boolean): PendingIntent {
         return if (incoming) {
             actionCreator.getEditIncomingServerSettingsIntent(account)
         } else {
@@ -48,7 +48,7 @@ internal open class CertificateErrorNotificationController(
         }
     }
 
-    private fun createLockScreenNotification(account: Account): Notification {
+    private fun createLockScreenNotification(account: LegacyAccount): Notification {
         return notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconWarning)

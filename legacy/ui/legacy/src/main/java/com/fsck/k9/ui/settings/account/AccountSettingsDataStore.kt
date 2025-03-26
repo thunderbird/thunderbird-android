@@ -3,6 +3,7 @@ package com.fsck.k9.ui.settings.account
 import androidx.preference.PreferenceDataStore
 import app.k9mail.legacy.account.DeletePolicy
 import app.k9mail.legacy.account.Expunge
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.MessageFormat
 import app.k9mail.legacy.account.QuoteStyle
 import app.k9mail.legacy.account.ShowPictures
@@ -19,7 +20,7 @@ import java.util.concurrent.ExecutorService
 class AccountSettingsDataStore(
     private val preferences: Preferences,
     private val executorService: ExecutorService,
-    private val account: Account,
+    private val account: LegacyAccount,
     private val jobManager: K9JobManager,
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationController: NotificationController,

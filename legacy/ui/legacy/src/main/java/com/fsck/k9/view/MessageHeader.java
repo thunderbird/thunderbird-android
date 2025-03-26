@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.TooltipCompat;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
@@ -194,7 +194,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         starView.setOnClickListener(listener);
     }
 
-    public void populate(final Message message, final Account account, boolean showStar, boolean showAccountChip) {
+    public void populate(final Message message, final LegacyAccount account, boolean showStar, boolean showAccountChip) {
         if (showAccountChip) {
             accountNameView.setVisibility(View.VISIBLE);
             accountNameView.setText(account.getDisplayName());
@@ -244,7 +244,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         setVisibility(View.VISIBLE);
     }
 
-    private void setRecipientNames(Message message, Account account) {
+    private void setRecipientNames(Message message, LegacyAccount account) {
         DisplayRecipientsExtractor displayRecipientsExtractor = new DisplayRecipientsExtractor(recipientFormatter,
                 recipientNamesView.getMaxNumberOfRecipientNames());
 
@@ -254,7 +254,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 displayRecipients.getNumberOfRecipients());
     }
 
-    private void setReplyActions(Message message, Account account) {
+    private void setReplyActions(Message message, LegacyAccount account) {
         ReplyActions replyActions = replyActionStrategy.getReplyActions(account, message);
         this.replyActions = replyActions;
 

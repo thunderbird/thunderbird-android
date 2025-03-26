@@ -2,7 +2,7 @@ package app.k9mail.feature.navigation.drawer.domain.usecase
 
 import android.content.Context
 import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import kotlin.coroutines.CoroutineContext
@@ -18,7 +18,7 @@ class SyncAllAccounts(
 ) : UseCase.SyncAllAccounts {
     override fun invoke(): Flow<Result<Unit>> = callbackFlow {
         val listener = object : SimpleMessagingListener() {
-            override fun checkMailFinished(context: Context?, account: Account?) {
+            override fun checkMailFinished(context: Context?, account: LegacyAccount?) {
                 trySend(Result.success(Unit))
                 close()
             }

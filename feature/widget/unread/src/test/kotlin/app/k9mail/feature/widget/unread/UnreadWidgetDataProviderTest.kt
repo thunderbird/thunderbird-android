@@ -3,7 +3,7 @@ package app.k9mail.feature.widget.unread
 import android.content.Context
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
@@ -120,7 +120,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         assertThat(widgetData).isNull()
     }
 
-    private fun createAccount(): Account = mock {
+    private fun createAccount(): LegacyAccount = mock {
         on { uuid } doReturn ACCOUNT_UUID
         on { displayName } doReturn ACCOUNT_NAME
     }
@@ -130,7 +130,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     private fun createMessageCountsProvider() = object : MessageCountsProvider {
-        override fun getMessageCounts(account: Account): MessageCounts {
+        override fun getMessageCounts(account: LegacyAccount): MessageCounts {
             return MessageCounts(unread = ACCOUNT_UNREAD_COUNT, starred = 0)
         }
 
@@ -146,7 +146,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
             throw UnsupportedOperationException()
         }
 
-        override fun getUnreadMessageCount(account: Account, folderId: Long): Int {
+        override fun getUnreadMessageCount(account: LegacyAccount, folderId: Long): Int {
             return FOLDER_UNREAD_COUNT
         }
     }

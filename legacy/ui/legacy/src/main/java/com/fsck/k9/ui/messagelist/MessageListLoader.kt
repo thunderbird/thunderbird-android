@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.search.LocalSearch
@@ -44,7 +44,7 @@ class MessageListLoader(
         return MessageListInfo(messageListItems, hasMoreMessages)
     }
 
-    private fun loadMessageListForAccount(account: Account, config: MessageListConfig): List<MessageListItem> {
+    private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
         val accountUuid = account.uuid
         val threadId = getThreadId(config.search)
         val sortOrder = buildSortOrder(config)
@@ -65,7 +65,7 @@ class MessageListLoader(
         }
     }
 
-    private fun buildSelection(account: Account, config: MessageListConfig): Pair<String, Array<String>> {
+    private fun buildSelection(account: LegacyAccount, config: MessageListConfig): Pair<String, Array<String>> {
         val query = StringBuilder()
         val queryArgs = mutableListOf<String>()
 
@@ -154,7 +154,7 @@ class MessageListLoader(
         return this.sortedWith(comparator)
     }
 
-    private fun loadHasMoreMessages(accounts: List<Account>, folderIds: List<Long>): Boolean {
+    private fun loadHasMoreMessages(accounts: List<LegacyAccount>, folderIds: List<Long>): Boolean {
         return if (accounts.size == 1 && folderIds.size == 1) {
             val account = accounts[0]
             val folderId = folderIds[0]

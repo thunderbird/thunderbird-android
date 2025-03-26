@@ -163,8 +163,9 @@ class LegacyAccountWrapperTest {
 
         val defaultNotificationSettings = NotificationSettings()
 
-        fun createAccount(): Account {
-            return Account(
+        @Suppress("LongMethod")
+        fun createAccount(): LegacyAccount {
+            return LegacyAccount(
                 uuid = "uuid",
                 isSensitiveDebugLoggingEnabled = defaultIsSensitiveDebugLoggingEnabled,
             ).apply {
@@ -258,6 +259,7 @@ class LegacyAccountWrapperTest {
             }
         }
 
+        @Suppress("LongMethod")
         fun createAccountWrapper(): LegacyAccountWrapper {
             return LegacyAccountWrapper(
                 uuid = "uuid",

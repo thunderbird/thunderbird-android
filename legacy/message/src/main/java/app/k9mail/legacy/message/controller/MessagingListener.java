@@ -6,35 +6,35 @@ import java.util.List;
 
 import android.content.Context;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 
 
 public interface MessagingListener {
-    void synchronizeMailboxStarted(Account account, long folderId);
-    void synchronizeMailboxHeadersStarted(Account account, String folderServerId);
-    void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total);
-    void synchronizeMailboxHeadersFinished(Account account, String folderServerId, int totalMessagesInMailbox,
+    void synchronizeMailboxStarted(LegacyAccount account, long folderId);
+    void synchronizeMailboxHeadersStarted(LegacyAccount account, String folderServerId);
+    void synchronizeMailboxHeadersProgress(LegacyAccount account, String folderServerId, int completed, int total);
+    void synchronizeMailboxHeadersFinished(LegacyAccount account, String folderServerId, int totalMessagesInMailbox,
             int numNewMessages);
-    void synchronizeMailboxProgress(Account account, long folderId, int completed, int total);
-    void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message);
-    void synchronizeMailboxRemovedMessage(Account account, String folderServerId, String messageServerId);
-    void synchronizeMailboxFinished(Account account, long folderId);
-    void synchronizeMailboxFailed(Account account, long folderId, String message);
+    void synchronizeMailboxProgress(LegacyAccount account, long folderId, int completed, int total);
+    void synchronizeMailboxNewMessage(LegacyAccount account, String folderServerId, Message message);
+    void synchronizeMailboxRemovedMessage(LegacyAccount account, String folderServerId, String messageServerId);
+    void synchronizeMailboxFinished(LegacyAccount account, long folderId);
+    void synchronizeMailboxFailed(LegacyAccount account, long folderId, String message);
 
-    void loadMessageRemoteFinished(Account account, long folderId, String uid);
-    void loadMessageRemoteFailed(Account account, long folderId, String uid, Throwable t);
+    void loadMessageRemoteFinished(LegacyAccount account, long folderId, String uid);
+    void loadMessageRemoteFailed(LegacyAccount account, long folderId, String uid, Throwable t);
 
-    void checkMailStarted(Context context, Account account);
-    void checkMailFinished(Context context, Account account);
+    void checkMailStarted(Context context, LegacyAccount account);
+    void checkMailFinished(Context context, LegacyAccount account);
 
-    void folderStatusChanged(Account account, long folderId);
+    void folderStatusChanged(LegacyAccount account, long folderId);
 
-    void messageUidChanged(Account account, long folderId, String oldUid, String newUid);
+    void messageUidChanged(LegacyAccount account, long folderId, String oldUid, String newUid);
 
-    void loadAttachmentFinished(Account account, Message message, Part part);
-    void loadAttachmentFailed(Account account, Message message, Part part, String reason);
+    void loadAttachmentFinished(LegacyAccount account, Message message, Part part);
+    void loadAttachmentFailed(LegacyAccount account, Message message, Part part, String reason);
 
     void remoteSearchStarted(long folderId);
     void remoteSearchServerQueryComplete(long folderId, int numResults, int maxResults);

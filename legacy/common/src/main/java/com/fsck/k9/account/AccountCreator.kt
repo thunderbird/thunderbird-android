@@ -24,7 +24,7 @@ import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import app.k9mail.legacy.account.Account as K9Account
+import app.k9mail.legacy.account.LegacyAccount as K9Account
 
 // TODO Move to feature/account/setup
 class AccountCreator(

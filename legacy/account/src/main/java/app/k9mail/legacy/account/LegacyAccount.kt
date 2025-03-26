@@ -15,7 +15,7 @@ const val DEFAULT_VISIBLE_LIMIT = 25
  */
 @Deprecated("Use LegacyAccountWrapper instead")
 @Suppress("TooManyFunctions")
-open class Account(
+open class LegacyAccount(
     override val uuid: String,
     internal val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
 ) : BaseAccount {
@@ -589,7 +589,7 @@ open class Account(
     }
 
     override fun equals(other: Any?): Boolean {
-        return if (other is Account) {
+        return if (other is LegacyAccount) {
             other.uuid == uuid
         } else {
             super.equals(other)
