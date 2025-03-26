@@ -28,9 +28,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.Expunge
 import app.k9mail.legacy.account.Account.SortType
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.Expunge
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import app.k9mail.legacy.search.LocalSearch

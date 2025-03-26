@@ -13,7 +13,7 @@ import app.k9mail.legacy.account.AccountDefaultsProvider;
 import app.k9mail.legacy.notification.NotificationLight;
 import app.k9mail.legacy.account.Account;
 import app.k9mail.legacy.account.DeletePolicy;
-import app.k9mail.legacy.account.Account.Expunge;
+import app.k9mail.legacy.account.Expunge;
 import app.k9mail.legacy.account.FolderMode;
 import app.k9mail.legacy.account.Account.MessageFormat;
 import app.k9mail.legacy.account.Account.QuoteStyle;

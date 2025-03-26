@@ -2,7 +2,6 @@ package app.k9mail.legacy.account
 
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import app.k9mail.legacy.notification.NotificationSettings
-import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
@@ -621,19 +620,6 @@ open class Account(
         TEXT,
         HTML,
         AUTO,
-    }
-
-    enum class Expunge {
-        EXPUNGE_IMMEDIATELY,
-        EXPUNGE_MANUALLY,
-        EXPUNGE_ON_POLL,
-        ;
-
-        fun toBackendExpungePolicy(): ExpungePolicy = when (this) {
-            EXPUNGE_IMMEDIATELY -> ExpungePolicy.IMMEDIATELY
-            EXPUNGE_MANUALLY -> ExpungePolicy.MANUALLY
-            EXPUNGE_ON_POLL -> ExpungePolicy.ON_POLL
-        }
     }
 
     enum class SortType(val isDefaultAscending: Boolean) {
