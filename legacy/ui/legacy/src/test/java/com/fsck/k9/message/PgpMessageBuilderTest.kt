@@ -4,8 +4,8 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Parcelable
-import app.k9mail.legacy.account.Account.QuoteStyle
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.QuoteStyle
 import assertk.Assert
 import assertk.all
 import assertk.assertThat

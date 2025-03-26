@@ -8,7 +8,7 @@ import com.fsck.k9.CoreResourceProvider;
 import app.k9mail.legacy.di.DI;
 import timber.log.Timber;
 
-import app.k9mail.legacy.account.Account.QuoteStyle;
+import app.k9mail.legacy.account.QuoteStyle;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;

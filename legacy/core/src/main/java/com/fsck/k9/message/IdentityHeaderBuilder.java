@@ -6,7 +6,7 @@ import java.util.Objects;
 import android.net.Uri;
 import android.net.Uri.Builder;
 
-import app.k9mail.legacy.account.Account.QuoteStyle;
+import app.k9mail.legacy.account.QuoteStyle;
 import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;

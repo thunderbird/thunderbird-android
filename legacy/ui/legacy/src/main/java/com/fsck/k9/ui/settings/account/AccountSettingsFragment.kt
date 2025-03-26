@@ -20,6 +20,7 @@ import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.QuoteStyle
 import app.k9mail.legacy.folder.RemoteFolder
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
@@ -195,8 +196,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private fun initializeQuoteStyle() {
         findPreference<Preference>(PREFERENCE_QUOTE_STYLE)?.apply {
             setOnPreferenceChangeListener { _, newValue ->
-                val quoteStyle = Account.QuoteStyle.valueOf(newValue.toString())
-                notifyDependencyChange(quoteStyle == Account.QuoteStyle.HEADER)
+                val quoteStyle = QuoteStyle.valueOf(newValue.toString())
+                notifyDependencyChange(quoteStyle == QuoteStyle.HEADER)
                 true
             }
         }
