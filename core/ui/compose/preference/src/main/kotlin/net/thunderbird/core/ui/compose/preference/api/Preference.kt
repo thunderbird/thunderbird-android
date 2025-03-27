@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 /**
  * A preference that can be displayed in a preference screen.
@@ -22,9 +21,9 @@ sealed interface PreferenceSetting<T> : Preference {
     @Parcelize
     data class Text(
         override val id: String,
-        val title: String,
-        val description: String? = null,
-        val icon: @RawValue ImageVector? = null,
+        val title: () -> String,
+        val description: () -> String? = { null },
+        val icon: () -> ImageVector? = { null },
         override val value: String,
     ) : PreferenceSetting<String> {
         @IgnoredOnParcel

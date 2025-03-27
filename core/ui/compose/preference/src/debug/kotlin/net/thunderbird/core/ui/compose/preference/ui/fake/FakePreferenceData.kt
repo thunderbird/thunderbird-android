@@ -8,9 +8,9 @@ object FakePreferenceData {
 
     val textPreference = PreferenceSetting.Text(
         id = "text",
-        icon = Icons.Outlined.Delete,
-        title = "Title",
-        description = "Description",
+        icon = { Icons.Outlined.Delete },
+        title = { "Title" },
+        description = { "Description" },
         value = "Value",
     )
 
