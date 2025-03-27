@@ -1,4 +1,4 @@
-package com.fsck.k9.logging
+package net.thunderbird.core.android.logging
 
 import org.koin.dsl.module
 
