@@ -9,6 +9,9 @@ android {
 
 dependencies {
     api(projects.feature.account.settings.api)
+    implementation(projects.feature.account.core)
+
+    implementation(projects.core.outcome)
 
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.compose.navigation)
