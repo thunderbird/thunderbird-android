@@ -23,6 +23,7 @@ class PreferencesTest {
                 on { deserialize(any()) } doReturn SERVER_SETTINGS
             },
         ),
+        accountDefaultsProvider = mock(),
     )
 
     @Before

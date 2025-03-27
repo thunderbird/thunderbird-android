@@ -53,7 +53,6 @@ class AccountPreferenceSerializer(
                 displayCount = K9.DEFAULT_VISIBLE_LIMIT
             }
             isNotifyNewMail = storage.getBoolean("$accountUuid.notifyNewMail", false)
-
             folderNotifyNewMailMode = getEnumStringPref<FolderMode>(
                 storage,
                 "$accountUuid.folderNotifyNewMailMode",
