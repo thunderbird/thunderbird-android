@@ -74,7 +74,7 @@ fun TextFieldOutlinedPassword(
     Material3OutlinedTextField(
         value = value,
         onValueChange = stripLineBreaks(onValueChange),
-        modifier = modifier.applyLegacyPasswordSemantics(),
+        modifier = modifier.applyLegacyPasswordSemantics().semantics { contentType = ContentType.Password },
         enabled = isEnabled,
         label = selectLabel(label, isRequired),
         trailingIcon = selectTrailingIcon(
