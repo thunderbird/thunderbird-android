@@ -145,7 +145,8 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                 }
 
                 //Detect split characters, remove them and complete the current token instead
-                if (tokenizer.containsTokenTerminator(source)) {
+                // We only want to handle the case where the user inputs a single split character here
+                if (source.length() == 1 && tokenizer.containsTokenTerminator(source)) {
                     performCompletion();
                     return "";
                 }
@@ -392,16 +393,10 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
                 candidateStringEnd = spanStart;
             }
         }
-
-        List<Range> tokenRanges = tokenizer.findTokenRanges(editable, candidateStringStart, candidateStringEnd);
-
-        for (Range range: tokenRanges) {
-            if (range.start <= cursorEndPosition && cursorEndPosition <= range.end) {
-                return range;
-            }
+        if (candidateStringEnd < candidateStringStart) {
+            return new Range(cursorEndPosition, cursorEndPosition);
         }
-
-        return new Range(cursorEndPosition, cursorEndPosition);
+        return new Range(candidateStringStart, candidateStringEnd);
     }
 
     /**
