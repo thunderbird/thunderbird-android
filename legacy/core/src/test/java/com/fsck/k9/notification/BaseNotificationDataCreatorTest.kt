@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationVibration
 import app.k9mail.legacy.notification.VibratePattern
@@ -202,8 +202,8 @@ class BaseNotificationDataCreatorTest {
         return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())
     }
 
-    private fun createAccount(): Account {
-        return Account("00000000-0000-4000-0000-000000000000").apply {
+    private fun createAccount(): LegacyAccount {
+        return LegacyAccount("00000000-0000-4000-0000-000000000000").apply {
             name = "account name"
             replaceIdentities(listOf(Identity()))
         }

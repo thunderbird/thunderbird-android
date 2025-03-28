@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
 import app.k9mail.core.testing.TestClock
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.contains
@@ -248,8 +248,8 @@ class SummaryNotificationDataCreatorTest {
         K9.isConfirmDeleteFromNotification = confirm
     }
 
-    private fun createAccount(): Account {
-        return Account("00000000-0000-0000-0000-000000000000").apply {
+    private fun createAccount(): LegacyAccount {
+        return LegacyAccount("00000000-0000-0000-0000-000000000000").apply {
             accountNumber = 42
         }
     }

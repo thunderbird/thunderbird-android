@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences.upgrader
 
-import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.FolderMode
 import com.fsck.k9.preferences.CombinedSettingsUpgrader
 import com.fsck.k9.preferences.InternalSettingsMap
 import com.fsck.k9.preferences.ValidatedSettings

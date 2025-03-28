@@ -2,14 +2,14 @@ package com.fsck.k9.activity
 
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.mailstore.LocalFolder
 
 class FolderInfoHolder(
     private val folderNameFormatter: FolderNameFormatter,
     localFolder: LocalFolder,
-    account: Account,
+    account: LegacyAccount,
 ) {
     @JvmField
     val databaseId = localFolder.databaseId
@@ -23,7 +23,7 @@ class FolderInfoHolder(
     @JvmField
     var moreMessages = localFolder.hasMoreMessages()
 
-    private fun getDisplayName(account: Account, localFolder: LocalFolder): String {
+    private fun getDisplayName(account: LegacyAccount, localFolder: LocalFolder): String {
         val folderId = localFolder.databaseId
         val folder = Folder(
             id = folderId,
@@ -36,7 +36,7 @@ class FolderInfoHolder(
 
     companion object {
         @JvmStatic
-        fun getFolderType(account: Account, folderId: Long): FolderType {
+        fun getFolderType(account: LegacyAccount, folderId: Long): FolderType {
             return when (folderId) {
                 account.inboxFolderId -> FolderType.INBOX
                 account.outboxFolderId -> FolderType.OUTBOX

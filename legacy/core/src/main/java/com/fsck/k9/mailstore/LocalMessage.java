@@ -12,7 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.VisibleForTesting;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.Address;
@@ -367,7 +367,7 @@ public class LocalMessage extends MimeMessage {
         return rootId;
     }
 
-    public Account getAccount() {
+    public LegacyAccount getAccount() {
         return localStore.getAccount();
     }
 

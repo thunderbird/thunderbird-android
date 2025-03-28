@@ -5,7 +5,7 @@ import java.util.List;
 
 import android.text.TextUtils;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.Utility;
@@ -18,7 +18,7 @@ import app.k9mail.legacy.account.AccountManager;
 
 public class MlfUtils {
 
-    static LocalFolder getOpenFolder(long folderId, Account account) throws MessagingException {
+    static LocalFolder getOpenFolder(long folderId, LegacyAccount account) throws MessagingException {
         LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
         LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open();
@@ -27,7 +27,7 @@ public class MlfUtils {
 
     static void setLastSelectedFolder(AccountManager accountManager, List<MessageReference> messages, long folderId) {
         MessageReference firstMsg = messages.get(0);
-        Account account = accountManager.getAccount(firstMsg.getAccountUuid());
+        LegacyAccount account = accountManager.getAccount(firstMsg.getAccountUuid());
         account.setLastSelectedFolderId(folderId);
     }
 

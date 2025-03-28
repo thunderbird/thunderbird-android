@@ -3,7 +3,7 @@ package com.fsck.k9.storage.migrations
 import android.database.sqlite.SQLiteDatabase
 import android.os.Build
 import androidx.core.content.contentValuesOf
-import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.FolderMode
 import com.fsck.k9.mailstore.MigrationsHelper
 
 internal class MigrationTo88(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {

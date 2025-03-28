@@ -1,7 +1,7 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.search.LocalSearch
 import com.fsck.k9.notification.NotificationController
@@ -51,13 +51,13 @@ internal class NotificationOperations(
         }
     }
 
-    private fun clearNotifications(account: Account, folderId: Long) {
+    private fun clearNotifications(account: LegacyAccount, folderId: Long) {
         notificationController.clearNewMailNotifications(account) { messageReferences ->
             messageReferences.filter { messageReference -> messageReference.folderId == folderId }
         }
     }
 
-    private fun LocalSearch.firstAccount(): Account? {
+    private fun LocalSearch.firstAccount(): LegacyAccount? {
         return accountManager.getAccount(accountUuids.first())
     }
 }

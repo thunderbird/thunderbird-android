@@ -4,7 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
@@ -64,7 +64,7 @@ class MailSyncWorker(
         }
     }
 
-    private val Account.isPeriodicMailSyncDisabled
+    private val LegacyAccount.isPeriodicMailSyncDisabled
         get() = automaticCheckIntervalMinutes <= 0
 
     companion object {

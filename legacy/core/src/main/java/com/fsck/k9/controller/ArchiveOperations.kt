@@ -2,7 +2,7 @@ package com.fsck.k9.controller
 
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.toFeatureFlagKey
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.controller.MessagingController.MessageActor
 import com.fsck.k9.controller.MessagingController.MoveOrCopyFlavor
@@ -33,7 +33,12 @@ internal class ArchiveOperations(
     private fun archiveByFolder(
         description: String,
         messages: List<MessageReference>,
-        action: (account: Account, folderId: Long, messagesInFolder: List<LocalMessage>, archiveFolderId: Long) -> Unit,
+        action: (
+            account: LegacyAccount,
+            folderId: Long,
+            messagesInFolder: List<LocalMessage>,
+            archiveFolderId: Long,
+        ) -> Unit,
     ) {
         actOnMessagesGroupedByAccountAndFolder(messages) { account, messageFolder, messagesInFolder ->
             val sourceFolderId = messageFolder.databaseId
@@ -57,7 +62,7 @@ internal class ArchiveOperations(
     }
 
     private fun archiveThreads(
-        account: Account,
+        account: LegacyAccount,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
         archiveFolderId: Long,
@@ -67,7 +72,7 @@ internal class ArchiveOperations(
     }
 
     private fun archiveMessages(
-        account: Account,
+        account: LegacyAccount,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
         archiveFolderId: Long,
@@ -88,7 +93,7 @@ internal class ArchiveOperations(
 
     private fun actOnMessagesGroupedByAccountAndFolder(
         messages: List<MessageReference>,
-        block: (account: Account, messageFolder: LocalFolder, messages: List<LocalMessage>) -> Unit,
+        block: (account: LegacyAccount, messageFolder: LocalFolder, messages: List<LocalMessage>) -> Unit,
     ) {
         val actor = MessageActor { account, messageFolder, messagesInFolder ->
             block(account, messageFolder, messagesInFolder)

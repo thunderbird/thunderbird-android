@@ -1,10 +1,10 @@
 package app.k9mail.legacy.message.controller
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 
 interface MessagingControllerMailChecker {
     fun checkMail(
-        account: Account?,
+        account: LegacyAccount?,
         ignoreLastCheckedTime: Boolean,
         useManualWakeLock: Boolean,
         notify: Boolean,

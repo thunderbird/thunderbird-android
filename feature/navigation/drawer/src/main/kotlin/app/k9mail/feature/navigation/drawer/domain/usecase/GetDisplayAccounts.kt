@@ -2,8 +2,8 @@ package app.k9mail.feature.navigation.drawer.domain.usecase
 
 import app.k9mail.feature.navigation.drawer.domain.DomainContract.UseCase
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageListChangedListener
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.message.controller.MessageCounts
@@ -49,7 +49,7 @@ internal class GetDisplayAccounts(
             }
     }
 
-    private fun getMessageCountsFlow(account: Account): Flow<MessageCounts> {
+    private fun getMessageCountsFlow(account: LegacyAccount): Flow<MessageCounts> {
         return callbackFlow {
             send(messageCountsProvider.getMessageCounts(account))
 

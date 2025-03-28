@@ -1,6 +1,6 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
@@ -9,7 +9,7 @@ import kotlin.test.Test
 
 class LocalDeleteOperationDeciderTest {
     private val localDeleteOperationDecider = LocalDeleteOperationDecider()
-    private val account = Account(UUID.randomUUID().toString()).apply {
+    private val account = LegacyAccount(UUID.randomUUID().toString()).apply {
         spamFolderId = SPAM_FOLDER_ID
         trashFolderId = TRASH_FOLDER_ID
     }

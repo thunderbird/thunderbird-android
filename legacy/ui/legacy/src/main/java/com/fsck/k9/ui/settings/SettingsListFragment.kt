@@ -21,7 +21,7 @@ import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.funding.api.FundingType
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
@@ -90,7 +90,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         }
     }
 
-    private fun populateSettingsList(accounts: List<Account>) {
+    private fun populateSettingsList(accounts: List<LegacyAccount>) {
         val listItems = buildSettingsList {
             addAction(
                 text = getString(R.string.general_settings_title),
@@ -188,7 +188,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         }
     }
 
-    private fun launchAccountSettings(account: Account) {
+    private fun launchAccountSettings(account: LegacyAccount) {
         AccountSettingsActivity.start(requireActivity(), account.uuid)
     }
 
@@ -216,7 +216,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             settingsList.add(UrlActionItem(itemId, text, url, icon))
         }
 
-        fun addAccount(account: Account, isDraggable: Boolean) {
+        fun addAccount(account: LegacyAccount, isDraggable: Boolean) {
             settingsList.add(AccountItem(account, isDraggable))
         }
 

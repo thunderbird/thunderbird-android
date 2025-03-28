@@ -29,8 +29,8 @@ import androidx.fragment.app.setFragmentResultListener
 import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.theme.api.Theme
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.preferences.GeneralSettingsManager
 import app.k9mail.legacy.ui.theme.ThemeManager
@@ -105,7 +105,7 @@ class MessageViewFragment :
     private var destinationFolderId: Long? = null
     private lateinit var fragmentListener: MessageViewFragmentListener
 
-    private lateinit var account: Account
+    private lateinit var account: LegacyAccount
     lateinit var messageReference: MessageReference
     private var showAccountChip: Boolean = true
 

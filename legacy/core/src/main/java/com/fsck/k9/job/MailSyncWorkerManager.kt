@@ -7,7 +7,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import java.util.concurrent.TimeUnit
 import kotlinx.datetime.Clock
@@ -18,13 +18,13 @@ class MailSyncWorkerManager(
     val clock: Clock,
 ) {
 
-    fun cancelMailSync(account: Account) {
+    fun cancelMailSync(account: LegacyAccount) {
         Timber.v("Canceling mail sync worker for %s", account)
         val uniqueWorkName = createUniqueWorkName(account.uuid)
         workManager.cancelUniqueWork(uniqueWorkName)
     }
 
-    fun scheduleMailSync(account: Account) {
+    fun scheduleMailSync(account: LegacyAccount) {
         if (isNeverSyncInBackground()) return
 
         getSyncIntervalIfEnabled(account)?.let { syncIntervalMinutes ->
@@ -59,9 +59,9 @@ class MailSyncWorkerManager(
 
     private fun isNeverSyncInBackground() = K9.backgroundOps == K9.BACKGROUND_OPS.NEVER
 
-    private fun getSyncIntervalIfEnabled(account: Account): Long? {
+    private fun getSyncIntervalIfEnabled(account: LegacyAccount): Long? {
         val intervalMinutes = account.automaticCheckIntervalMinutes
-        if (intervalMinutes <= Account.INTERVAL_MINUTES_NEVER) {
+        if (intervalMinutes <= LegacyAccount.INTERVAL_MINUTES_NEVER) {
             return null
         }
 

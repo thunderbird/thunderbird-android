@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.messageview
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.Address
@@ -11,14 +11,14 @@ import org.junit.Test
 private const val IDENTITY_ADDRESS = "me@domain.example"
 
 class DisplayRecipientsExtractorTest {
-    private val account = Account("uuid").apply {
+    private val account = LegacyAccount("uuid").apply {
         identities += Identity(
             email = IDENTITY_ADDRESS,
         )
     }
 
     private val recipientFormatter = object : MessageViewRecipientFormatter {
-        override fun getDisplayName(address: Address, account: Account): CharSequence {
+        override fun getDisplayName(address: Address, account: LegacyAccount): CharSequence {
             return if (account.isAnIdentity(address)) {
                 "me"
             } else {
@@ -172,7 +172,7 @@ class DisplayRecipientsExtractorTest {
         }
         var numberOfTimesCalled = 0
         val recipientFormatter = object : MessageViewRecipientFormatter {
-            override fun getDisplayName(address: Address, account: Account): CharSequence {
+            override fun getDisplayName(address: Address, account: LegacyAccount): CharSequence {
                 numberOfTimesCalled++
                 return address.address
             }

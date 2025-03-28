@@ -9,7 +9,7 @@ import java.util.Set;
 import android.content.Context;
 import app.k9mail.core.featureflag.FeatureFlagProvider;
 import app.k9mail.core.featureflag.FeatureFlagResult.Disabled;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
@@ -71,7 +71,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
 
     private MessagingController controller;
-    private Account account;
+    private LegacyAccount account;
     @Mock
     private BackendManager backendManager;
     @Mock

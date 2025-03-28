@@ -14,7 +14,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import androidx.annotation.WorkerThread;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
@@ -84,20 +84,20 @@ public class AttachmentController {
 
     private void downloadAttachment(LocalPart localPart, final Runnable attachmentDownloadedCallback) {
         String accountUuid = localPart.getAccountUuid();
-        Account account = Preferences.getPreferences().getAccount(accountUuid);
+        LegacyAccount account = Preferences.getPreferences().getAccount(accountUuid);
         LocalMessage message = localPart.getMessage();
 
         messageViewFragment.showAttachmentLoadingDialog();
         controller.loadAttachment(account, message, attachment.part, new SimpleMessagingListener() {
             @Override
-            public void loadAttachmentFinished(Account account, Message message, Part part) {
+            public void loadAttachmentFinished(LegacyAccount account, Message message, Part part) {
                 attachment.setContentAvailable();
                 messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
                 messageViewFragment.runOnMainThread(attachmentDownloadedCallback);
             }
 
             @Override
-            public void loadAttachmentFailed(Account account, Message message, Part part, String reason) {
+            public void loadAttachmentFailed(LegacyAccount account, Message message, Part part, String reason) {
                 messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
             }
         });

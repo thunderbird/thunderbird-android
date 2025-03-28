@@ -2,7 +2,7 @@ package app.k9mail.feature.widget.unread
 
 import android.content.Context
 import android.content.Intent
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.search.LocalSearch
@@ -59,7 +59,7 @@ class UnreadWidgetDataProvider(
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getClickIntentForAccount(account: Account): Intent {
+    private fun getClickIntentForAccount(account: LegacyAccount): Intent {
         val folderId = defaultFolderProvider.getDefaultFolder(account)
         return getClickIntentForFolder(account, folderId)
     }
@@ -81,7 +81,7 @@ class UnreadWidgetDataProvider(
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getFolderDisplayName(account: Account, folderId: Long): String {
+    private fun getFolderDisplayName(account: LegacyAccount, folderId: Long): String {
         val folder = folderRepository.getFolder(account, folderId)
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
@@ -91,7 +91,7 @@ class UnreadWidgetDataProvider(
         }
     }
 
-    private fun getClickIntentForFolder(account: Account, folderId: Long): Intent {
+    private fun getClickIntentForFolder(account: LegacyAccount, folderId: Long): Intent {
         val search = LocalSearch()
         search.addAllowedFolder(folderId)
         search.addAccountUuid(account.uuid)

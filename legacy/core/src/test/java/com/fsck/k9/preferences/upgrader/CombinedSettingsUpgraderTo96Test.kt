@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences.upgrader
 
-import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.FolderMode
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
 import com.fsck.k9.preferences.InternalSettingsMap

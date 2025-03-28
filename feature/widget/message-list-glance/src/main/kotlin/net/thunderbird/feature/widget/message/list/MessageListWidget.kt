@@ -11,7 +11,7 @@ import androidx.core.app.PendingIntentCompat
 import androidx.glance.GlanceId
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
-import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.search.SearchAccount.Companion.createUnifiedInboxAccount
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9

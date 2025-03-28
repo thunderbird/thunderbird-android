@@ -1,7 +1,7 @@
 package com.fsck.k9.account
 
 import app.k9mail.core.common.mail.Protocols
-import app.k9mail.legacy.account.Account.DeletePolicy
+import app.k9mail.legacy.account.DeletePolicy
 
 /**
  * Decides which [DeletePolicy] an account uses by default.

@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 
@@ -9,7 +9,7 @@ import com.fsck.k9.Preferences
  */
 class AutoExpandFolderBackendFoldersRefreshListener(
     private val preferences: Preferences,
-    private val account: Account,
+    private val account: LegacyAccount,
     private val folderRepository: FolderRepository,
 ) : BackendFoldersRefreshListener {
     private var isFirstSync = false

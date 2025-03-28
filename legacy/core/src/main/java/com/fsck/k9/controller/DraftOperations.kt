@@ -1,6 +1,6 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.K9
@@ -24,7 +24,7 @@ internal class DraftOperations(
 ) {
 
     fun saveDraft(
-        account: Account,
+        account: LegacyAccount,
         message: Message,
         existingDraftId: Long?,
         plaintextSubject: String?,
@@ -46,7 +46,7 @@ internal class DraftOperations(
     }
 
     private fun saveAndUploadDraft(
-        account: Account,
+        account: LegacyAccount,
         message: Message,
         folderId: Long,
         existingDraftId: Long?,
@@ -84,7 +84,7 @@ internal class DraftOperations(
     }
 
     private fun saveDraftLocally(
-        account: Account,
+        account: LegacyAccount,
         message: Message,
         folderId: Long,
         existingDraftId: Long?,
@@ -96,7 +96,7 @@ internal class DraftOperations(
         return messageStore.saveLocalMessage(folderId, messageData, existingDraftId)
     }
 
-    fun processPendingReplace(command: PendingReplace, account: Account) {
+    fun processPendingReplace(command: PendingReplace, account: LegacyAccount) {
         val localStore = messagingController.getLocalStoreOrThrow(account)
         val localFolder = localStore.getFolder(command.folderId)
         localFolder.open()
@@ -119,7 +119,7 @@ internal class DraftOperations(
 
     private fun uploadMessage(
         backend: Backend,
-        account: Account,
+        account: LegacyAccount,
         localFolder: LocalFolder,
         localMessage: LocalMessage,
     ) {

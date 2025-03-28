@@ -4,18 +4,10 @@
   <CurrentIssues>
     <ID>CastToNullableType:SettingsExporter.kt$SettingsExporter$as</ID>
     <ID>CyclomaticComplexMethod:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
-    <ID>CyclomaticComplexMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount( serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;, includePasswords: Boolean, )</ID>
     <ID>ForbiddenComment:K9BackendFolderTest.kt$K9BackendFolderTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
     <ID>ForbiddenComment:K9BackendStorageTest.kt$K9BackendStorageTest$// FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()</ID>
     <ID>FunctionOnlyReturningConstant:DisplayHtml.kt$DisplayHtml$private fun cssStyleSignature(): String</ID>
-    <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun delete(editor: StorageEditor, storage: Storage, account: Account)</ID>
-    <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun loadAccount(account: Account, storage: Storage)</ID>
-    <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$@Synchronized fun save(editor: StorageEditor, storage: Storage, account: Account)</ID>
-    <ID>LongMethod:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$fun loadDefaults(account: Account)</ID>
-    <ID>LongMethod:K9.kt$K9$@JvmStatic fun loadPrefs(storage: Storage)</ID>
     <ID>LongMethod:MessageListRepositoryTest.kt$MessageListRepositoryTest$@Test fun `getThread() should use flag values from the cache`()</ID>
-    <ID>LongMethod:NotificationDataStore.kt$NotificationDataStore$@Synchronized fun removeNotifications( account: Account, selector: (List&lt;MessageReference&gt;) -&gt; List&lt;MessageReference&gt;, ): RemoveNotificationsResult?</ID>
-    <ID>LongMethod:SettingsExporter.kt$SettingsExporter$private fun writeAccount( serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;, includePasswords: Boolean, )</ID>
     <ID>LongMethod:TextBodyBuilderTest.kt$TextBodyBuilderTest.Companion$@JvmStatic @Parameterized.Parameters(name = "{index}: {0}") fun data(): Collection&lt;TestData&gt;</ID>
     <ID>LoopWithTooManyJumpStatements:HttpUriParser.kt$HttpUriParser$while</ID>
     <ID>LoopWithTooManyJumpStatements:SettingsExporter.kt$SettingsExporter$for</ID>
@@ -24,8 +16,6 @@
     <ID>MagicNumber:AccountPreferenceSerializer.kt$AccountPreferenceSerializer$5</ID>
     <ID>MagicNumber:CollectionExtensions.kt$0.75F</ID>
     <ID>MagicNumber:CollectionExtensions.kt$3</ID>
-    <ID>MagicNumber:ConnectivityManager.kt$23</ID>
-    <ID>MagicNumber:ConnectivityManager.kt$24</ID>
     <ID>MagicNumber:EmailTextToHtml.kt$EmailTextToHtml$3</ID>
     <ID>MagicNumber:EmailTextToHtml.kt$EmailTextToHtml$4</ID>
     <ID>MagicNumber:EmailTextToHtml.kt$EmailTextToHtml$5</ID>
@@ -47,7 +37,6 @@
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFF00FF</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFFFF00</ID>
     <ID>MagicNumber:NotificationLightDecoder.kt$NotificationLightDecoder$0xFFFFFF</ID>
-    <ID>MagicNumber:PushService.kt$PushService$29</ID>
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$3</ID>
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$4</ID>
     <ID>MagicNumber:ServerSettingsSerializer.kt$ServerSettingsAdapter$5</ID>
@@ -58,10 +47,8 @@
     <ID>MayBeConst:SummaryNotificationDataCreatorTest.kt$private val TIMESTAMP = 0L</ID>
     <ID>MemberNameEqualsClassName:HtmlModification.kt$HtmlModification.Replace$abstract fun replace(textToHtml: TextToHtml)</ID>
     <ID>NestedBlockDepth:HttpUriParser.kt$HttpUriParser$private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int</ID>
-    <ID>NestedBlockDepth:SettingsExporter.kt$SettingsExporter$private fun writeAccount( serializer: XmlSerializer, account: Account, prefs: Map&lt;String, Any&gt;, includePasswords: Boolean, )</ID>
     <ID>NestedBlockDepth:SettingsExporter.kt$SettingsExporter$private fun writeIdentity( serializer: XmlSerializer, accountUuid: String, identity: String, prefs: Map&lt;String, Any&gt;, )</ID>
     <ID>NestedBlockDepth:SingleMessageNotificationCreator.kt$SingleMessageNotificationCreator$private fun NotificationBuilder.setWearActions(notificationData: SingleNotificationData)</ID>
-    <ID>NestedBlockDepth:SummaryNotificationCreator.kt$SummaryNotificationCreator$private fun NotificationBuilder.setWearActions( account: Account, notificationData: SummaryInboxNotificationData, )</ID>
     <ID>ReturnCount:AutocryptDraftStateHeaderParser.kt$AutocryptDraftStateHeaderParser$fun parseAutocryptDraftStateHeader(headerValue: String): AutocryptDraftStateHeader?</ID>
     <ID>ReturnCount:EmailSection.kt$EmailSection$override fun subSequence(startIndex: Int, endIndex: Int): CharSequence</ID>
     <ID>ReturnCount:HtmlSignatureRemover.kt$HtmlSignatureRemover.StripSignatureFilter$override fun head(node: Node, depth: Int): HeadFilterDecision</ID>
@@ -77,8 +64,6 @@
     <ID>ReturnCount:MailSyncWorker.kt$MailSyncWorker$override fun doWork(): Result</ID>
     <ID>ReturnCount:MessageHelper.kt$MessageHelper.Companion$@JvmStatic fun toFriendly( address: Address, contactRepository: ContactRepository?, showCorrespondentNames: Boolean, changeContactNameColor: Boolean, contactNameColor: Int, ): CharSequence</ID>
     <ID>ReturnCount:MessageRepository.kt$MessageRepository$private fun List&lt;Header&gt;.parseDate(headerName: String): MessageDate</ID>
-    <ID>ReturnCount:NotificationContentCreator.kt$NotificationContentCreator$private fun getMessageSender(account: Account, message: Message): String?</ID>
-    <ID>ReturnCount:NotificationDataStore.kt$NotificationDataStore$@Synchronized fun removeNotifications( account: Account, selector: (List&lt;MessageReference&gt;) -&gt; List&lt;MessageReference&gt;, ): RemoveNotificationsResult?</ID>
     <ID>ReturnCount:PreviewTextExtractor.kt$PreviewTextExtractor$private fun extractUnquotedText(text: String): String</ID>
     <ID>ReturnCount:TextPartFinder.kt$TextPartFinder$private fun findTextPartInMultipart(multipart: Multipart): Part?</ID>
     <ID>ReturnCount:TextPartFinder.kt$TextPartFinder$private fun findTextPartInMultipartAlternative(multipart: Multipart): Part?</ID>

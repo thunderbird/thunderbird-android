@@ -1,8 +1,13 @@
 package com.fsck.k9.ui.settings.account
 
 import androidx.preference.PreferenceDataStore
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.SpecialFolderSelection
+import app.k9mail.legacy.account.DeletePolicy
+import app.k9mail.legacy.account.Expunge
+import app.k9mail.legacy.account.LegacyAccount
+import app.k9mail.legacy.account.MessageFormat
+import app.k9mail.legacy.account.QuoteStyle
+import app.k9mail.legacy.account.ShowPictures
+import app.k9mail.legacy.account.SpecialFolderSelection
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationVibration
 import com.fsck.k9.Preferences
@@ -15,7 +20,7 @@ import java.util.concurrent.ExecutorService
 class AccountSettingsDataStore(
     private val preferences: Preferences,
     private val executorService: ExecutorService,
-    private val account: Account,
+    private val account: LegacyAccount,
     private val jobManager: K9JobManager,
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationController: NotificationController,
@@ -143,7 +148,7 @@ class AccountSettingsDataStore(
 
         when (key) {
             "account_description" -> account.name = value
-            "show_pictures_enum" -> account.showPictures = Account.ShowPictures.valueOf(value)
+            "show_pictures_enum" -> account.showPictures = ShowPictures.valueOf(value)
             "account_display_count" -> account.displayCount = value.toInt()
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize = value.toInt()
@@ -152,12 +157,12 @@ class AccountSettingsDataStore(
                     reschedulePoll()
                 }
             }
-            "delete_policy" -> account.deletePolicy = Account.DeletePolicy.valueOf(value)
-            "expunge_policy" -> account.expungePolicy = Account.Expunge.valueOf(value)
+            "delete_policy" -> account.deletePolicy = DeletePolicy.valueOf(value)
+            "expunge_policy" -> account.expungePolicy = Expunge.valueOf(value)
             "max_push_folders" -> account.maxPushFolders = value.toInt()
             "idle_refresh_period" -> account.idleRefreshMinutes = value.toInt()
-            "message_format" -> account.messageFormat = Account.MessageFormat.valueOf(value)
-            "quote_style" -> account.quoteStyle = Account.QuoteStyle.valueOf(value)
+            "message_format" -> account.messageFormat = MessageFormat.valueOf(value)
+            "quote_style" -> account.quoteStyle = QuoteStyle.valueOf(value)
             "account_quote_prefix" -> account.quotePrefix = value
             "account_setup_auto_expand_folder" -> account.autoExpandFolderId = extractFolderId(value)
             "archive_folder" -> saveSpecialFolderSelection(value, account::setArchiveFolderId)

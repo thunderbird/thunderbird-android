@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
 import kotlinx.coroutines.CoroutineScope
@@ -16,7 +16,7 @@ class AutocryptSetupTransferLiveEvent(
     private val eventScope: CoroutineScope = MainScope(),
 ) : SingleLiveEvent<AutocryptSetupTransferResult>() {
 
-    fun sendMessageAsync(account: Account, setupMsg: AutocryptSetupMessage) {
+    fun sendMessageAsync(account: LegacyAccount, setupMsg: AutocryptSetupMessage) {
         eventScope.launch {
             val setupMessage = async(Dispatchers.IO) {
                 messagingController.sendMessageBlocking(account, setupMsg.setupMessage)

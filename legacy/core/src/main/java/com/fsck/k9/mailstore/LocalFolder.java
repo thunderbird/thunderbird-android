@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.NonNull;
 
 import androidx.annotation.Nullable;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.mailstore.MoreMessages;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
@@ -1192,7 +1192,7 @@ public class LocalFolder {
         });
     }
 
-    private Account getAccount() {
+    private LegacyAccount getAccount() {
         return localStore.getAccount();
     }
 

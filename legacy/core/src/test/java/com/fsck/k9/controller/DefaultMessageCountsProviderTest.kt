@@ -1,8 +1,8 @@
 package com.fsck.k9.controller
 
 import app.cash.turbine.test
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageCounts
@@ -26,7 +26,7 @@ private const val STARRED_COUNT = 3
 
 class DefaultMessageCountsProviderTest {
 
-    private val account = Account(ACCOUNT_UUID)
+    private val account = LegacyAccount(ACCOUNT_UUID)
     private val accountManager = mock<AccountManager> {
         on { getAccounts() } doReturn listOf(account)
     }

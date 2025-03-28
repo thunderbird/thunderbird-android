@@ -10,15 +10,15 @@ import java.util.TreeMap;
 import android.content.Context;
 
 import app.k9mail.legacy.notification.NotificationLight;
-import app.k9mail.legacy.account.Account;
-import app.k9mail.legacy.account.Account.DeletePolicy;
-import app.k9mail.legacy.account.Account.Expunge;
-import app.k9mail.legacy.account.Account.FolderMode;
-import app.k9mail.legacy.account.Account.MessageFormat;
-import app.k9mail.legacy.account.Account.QuoteStyle;
-import app.k9mail.legacy.account.Account.ShowPictures;
-import app.k9mail.legacy.account.Account.SortType;
-import app.k9mail.legacy.account.Account.SpecialFolderSelection;
+import app.k9mail.legacy.account.LegacyAccount;
+import app.k9mail.legacy.account.DeletePolicy;
+import app.k9mail.legacy.account.Expunge;
+import app.k9mail.legacy.account.FolderMode;
+import app.k9mail.legacy.account.MessageFormat;
+import app.k9mail.legacy.account.QuoteStyle;
+import app.k9mail.legacy.account.ShowPictures;
+import app.k9mail.legacy.account.SortType;
+import app.k9mail.legacy.account.SpecialFolderSelection;
 import com.fsck.k9.AccountPreferenceSerializer;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
@@ -176,10 +176,10 @@ class AccountSettingsDescriptions {
                 new V(53, new StringSetting(null))
         ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(9, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(9, new EnumSetting<>(SortType.class, LegacyAccount.DEFAULT_SORT_TYPE))
         ));
         s.put("sortAscending", Settings.versions(
-                new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+                new V(9, new BooleanSetting(LegacyAccount.DEFAULT_SORT_ASCENDING))
         ));
         s.put("showPicturesEnum", Settings.versions(
                 new V(1, new EnumSetting<>(ShowPictures.class, ShowPictures.NEVER))
