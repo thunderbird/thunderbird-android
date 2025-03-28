@@ -7,6 +7,8 @@ import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
 import net.thunderbird.feature.account.api.profile.AccountProfileRepository
 import net.thunderbird.feature.account.settings.featureAccountSettingsModule
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
 import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -34,11 +36,18 @@ internal class AccountSettingsModuleKtTest : AutoCloseKoinTest() {
 
     @Test
     fun `should hava a valid di module`() {
-        featureAccountSettingsModule.verify()
+        featureAccountSettingsModule.verify(
+            extraTypes = listOf(
+                AccountId::class,
+                GeneralSettingsContract.State::class,
+            ),
+        )
 
         checkKoinModules(
             modules = listOf(externalModule, featureAccountSettingsModule),
             appDeclaration = { androidContext(RuntimeEnvironment.getApplication()) },
-        )
+        ) {
+            withParameter<GeneralSettingsViewModel> { AccountId.create() }
+        }
     }
 }

@@ -6,7 +6,9 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetGeneralPreferences
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralResourceProvider
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val featureAccountSettingsModule = module {
@@ -22,6 +24,13 @@ val featureAccountSettingsModule = module {
         GetGeneralPreferences(
             repository = get(),
             resourceProvider = get(),
+        )
+    }
+
+    viewModel { params ->
+        GeneralSettingsViewModel(
+            accountId = params.get(),
+            getGeneralPreferences = get(),
         )
     }
 }

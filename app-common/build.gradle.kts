@@ -9,7 +9,7 @@ android {
 dependencies {
     api(projects.legacy.common)
 
-    implementation(projects.feature.account.core)
+    api(projects.feature.account.core)
 
     implementation(projects.legacy.core)
     implementation(projects.legacy.account)

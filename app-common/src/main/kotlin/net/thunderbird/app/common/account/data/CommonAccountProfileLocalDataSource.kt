@@ -4,7 +4,6 @@ import app.k9mail.legacy.account.LegacyAccountWrapperManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
@@ -15,7 +14,6 @@ class CommonAccountProfileLocalDataSource(
 
     override fun getById(accountId: AccountId): Flow<AccountProfile?> {
         return accountManager.getById(accountId.value)
-            .onEach { println("Flow emitted account: $it") }
             .map { account ->
                 account?.let {
                     AccountProfile(
