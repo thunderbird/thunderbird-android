@@ -8,13 +8,13 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.folder.RemoteFolder
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.thunderbird.feature.folder.api.RemoteFolder
 
 class AccountSettingsViewModel(
     private val accountManager: AccountManager,
