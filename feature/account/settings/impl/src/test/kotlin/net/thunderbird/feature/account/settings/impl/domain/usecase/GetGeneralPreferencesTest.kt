@@ -50,14 +50,20 @@ internal class GetGeneralPreferencesTest {
     }
 
     @Test
-    fun `should emit NoSettingsAvailable when account profile not found`() = runTest {
+    fun `should emit NotFound when account profile not found`() = runTest {
         // Arrange
         val accountId = AccountId.create()
         val testSubject = createTestSubject()
 
         // Act & Assert
         testSubject(accountId).test {
-            assertThat(awaitItem()).isEqualTo(Outcome.failure(SettingsError.NoSettingsAvailable))
+            assertThat(awaitItem()).isEqualTo(
+                Outcome.failure(
+                    SettingsError.NotFound(
+                        message = "Account profile not found for accountId: ${accountId.value}",
+                    ),
+                ),
+            )
         }
     }
 

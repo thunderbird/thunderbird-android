@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 import net.thunderbird.core.outcome.handle
+import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
@@ -13,6 +14,7 @@ import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsC
 internal class GeneralSettingsViewModel(
     private val accountId: AccountId,
     private val getGeneralPreferences: UseCase.GetGeneralPreferences,
+    private val updateGeneralPreferences: UseCase.UpdateGeneralPreferences,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), GeneralSettingsContract.ViewModel {
 
@@ -35,7 +37,14 @@ internal class GeneralSettingsViewModel(
 
     override fun event(event: Event) {
         when (event) {
+            is Event.OnPreferenceSettingChange -> updatePreference(event.preference)
             is Event.OnBackPressed -> emitEffect(Effect.NavigateBack)
+        }
+    }
+
+    private fun updatePreference(preference: PreferenceSetting<*>) {
+        viewModelScope.launch {
+            updateGeneralPreferences(accountId, preference)
         }
     }
 }

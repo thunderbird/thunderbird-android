@@ -11,9 +11,11 @@ import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
 import net.thunderbird.feature.account.api.profile.AccountProfileRepository
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError.NoSettingsAvailable
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsOutcome
+import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
+import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
 
 internal class GetGeneralPreferences(
     private val repository: AccountProfileRepository,
@@ -24,7 +26,11 @@ internal class GetGeneralPreferences(
             if (profile != null) {
                 Outcome.success(generatePreferences(accountId, profile))
             } else {
-                Outcome.failure(NoSettingsAvailable)
+                Outcome.failure(
+                    SettingsError.NotFound(
+                        message = "Account profile not found for accountId: ${accountId.value}",
+                    ),
+                )
             }
         }
     }
@@ -32,20 +38,12 @@ internal class GetGeneralPreferences(
     private fun generatePreferences(accountId: AccountId, profile: AccountProfile): ImmutableList<Preference> {
         return persistentListOf(
             PreferenceSetting.Text(
-                id = generateId(accountId, GENERAL_NAME_ID),
+                id = GeneralPreference.NAME.generateId(accountId),
                 title = resourceProvider.nameTitle,
                 description = resourceProvider.nameDescription,
                 icon = resourceProvider.nameIcon,
                 value = profile.name,
             ),
         )
-    }
-
-    private fun generateId(accountId: AccountId, preferenceId: String): String {
-        return "${accountId.value}-$preferenceId"
-    }
-
-    private companion object {
-        const val GENERAL_NAME_ID = "general-name"
     }
 }

@@ -19,6 +19,7 @@ internal fun GeneralSettingsContent(
         subtitle = state.subtitle,
         preferences = state.preferences,
         onPreferenceChange = { preference ->
+            onEvent(Event.OnPreferenceSettingChange(preference))
         },
         onBack = { onEvent(Event.OnBackPressed) },
         modifier = modifier,

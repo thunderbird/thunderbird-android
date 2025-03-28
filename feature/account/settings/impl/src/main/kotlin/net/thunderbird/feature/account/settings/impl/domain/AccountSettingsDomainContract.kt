@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.Preference
+import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 
@@ -17,6 +18,13 @@ internal interface AccountSettingsDomainContract {
         fun interface GetGeneralPreferences {
             operator fun invoke(accountId: AccountId): Flow<AccountSettingsOutcome>
         }
+
+        fun interface UpdateGeneralPreferences {
+            suspend operator fun invoke(
+                accountId: AccountId,
+                preference: PreferenceSetting<*>,
+            ): Outcome<Unit, SettingsError>
+        }
     }
 
     interface ResourceProvider {
@@ -28,6 +36,8 @@ internal interface AccountSettingsDomainContract {
     }
 
     sealed interface SettingsError {
-        data object NoSettingsAvailable : SettingsError
+        data class NotFound(
+            val message: String,
+        ) : SettingsError
     }
 }

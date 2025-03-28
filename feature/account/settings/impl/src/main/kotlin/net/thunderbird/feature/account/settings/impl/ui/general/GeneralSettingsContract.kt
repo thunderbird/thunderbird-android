@@ -5,6 +5,7 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.ui.compose.preference.api.Preference
+import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 
 internal interface GeneralSettingsContract {
 
@@ -17,6 +18,10 @@ internal interface GeneralSettingsContract {
     )
 
     sealed interface Event {
+        data class OnPreferenceSettingChange(
+            val preference: PreferenceSetting<*>,
+        ) : Event
+
         data object OnBackPressed : Event
     }
 
