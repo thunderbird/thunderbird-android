@@ -15,4 +15,5 @@ dependencies {
 
     implementation(projects.mail.common)
     implementation(projects.core.mail.folder.api)
+    implementation(projects.feature.folder.api)
 }

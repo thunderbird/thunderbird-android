@@ -1,4 +1,4 @@
-package app.k9mail.legacy.folder
+package net.thunderbird.feature.folder.api
 
 import app.k9mail.core.mail.folder.api.FolderType
 

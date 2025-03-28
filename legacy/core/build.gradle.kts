@@ -10,6 +10,7 @@ dependencies {
     api(projects.core.android.common)
     api(projects.core.android.network)
     api(projects.core.mail.folder.api)
+    api(projects.feature.folder.api)
 
     api(projects.legacy.account)
     api(projects.legacy.di)
