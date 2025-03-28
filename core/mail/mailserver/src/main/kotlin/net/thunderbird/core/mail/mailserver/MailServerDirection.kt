@@ -1,4 +1,4 @@
-package com.fsck.k9.mail
+package net.thunderbird.core.mail.mailserver
 
 enum class MailServerDirection {
     INCOMING,

@@ -7,6 +7,7 @@ dependencies {
     api(projects.mail.common)
     api(projects.backend.api)
     api(projects.library.htmlCleaner)
+    api(projects.core.mail.mailserver)
     api(projects.core.android.common)
     api(projects.core.android.logging)
     api(projects.core.android.network)
