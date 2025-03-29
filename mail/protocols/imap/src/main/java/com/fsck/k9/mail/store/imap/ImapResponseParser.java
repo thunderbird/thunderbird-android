@@ -19,10 +19,17 @@ class ImapResponseParser {
     private PeekableInputStream inputStream;
     private ImapResponse response;
     private Exception exception;
-
+    private boolean utf8Accept;
+    private FolderNameCodec folderNameCodec;
 
     public ImapResponseParser(PeekableInputStream in) {
         this.inputStream = in;
+        this.utf8Accept = false;
+        this.folderNameCodec = new FolderNameCodec();
+    }
+
+    public void setUtf8Accepted(final boolean yes) {
+        utf8Accept = yes;
     }
 
     public ImapResponse readResponse() throws IOException {
@@ -195,6 +202,14 @@ class ImapResponseParser {
         response.add(delimiter);
         expect(' ');
         String name = parseString();
+        if (utf8Accept) {
+            // RFCs 9051 and 9755 allow UTF8 in folder names. "The
+            // "UTF8=ACCEPT" capability indicates that the server
+            // ... can provide UTF-8 responses to the "LIST" and
+            // "LSUB" commands."
+        } else {
+            name = folderNameCodec.decode(name);
+        }
         response.add(name);
         expect('\r');
         expect('\n');
