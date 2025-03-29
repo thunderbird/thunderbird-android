@@ -7,13 +7,13 @@ import app.k9mail.feature.funding.googleplay.domain.DomainContract.UseCase
 import app.k9mail.feature.funding.googleplay.domain.entity.AvailableContributions
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
-import app.k9mail.feature.funding.googleplay.domain.handle
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Effect
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.Event
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.State
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.ViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
+import net.thunderbird.core.outcome.handle
 
 @Suppress("TooManyFunctions")
 internal class ContributionViewModel(

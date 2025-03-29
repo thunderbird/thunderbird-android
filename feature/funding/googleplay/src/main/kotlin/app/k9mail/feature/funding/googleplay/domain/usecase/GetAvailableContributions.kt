@@ -3,8 +3,8 @@ package app.k9mail.feature.funding.googleplay.domain.usecase
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingManager
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.UseCase
-import app.k9mail.feature.funding.googleplay.domain.Outcome
 import app.k9mail.feature.funding.googleplay.domain.entity.AvailableContributions
+import net.thunderbird.core.outcome.Outcome
 
 class GetAvailableContributions(
     private val billingManager: BillingManager,

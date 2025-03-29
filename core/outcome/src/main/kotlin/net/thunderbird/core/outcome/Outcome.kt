@@ -1,4 +1,4 @@
-package app.k9mail.feature.funding.googleplay.domain
+package net.thunderbird.core.outcome
 
 sealed interface Outcome<out SUCCESS, out FAILURE> {
     data class Success<out SUCCESS>(val data: SUCCESS) : Outcome<SUCCESS, Nothing>

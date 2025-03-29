@@ -127,6 +127,7 @@ include(
 include(
     ":core:common",
     ":core:featureflags",
+    ":core:outcome",
     ":core:testing",
     ":core:android:common",
     ":core:android:network",

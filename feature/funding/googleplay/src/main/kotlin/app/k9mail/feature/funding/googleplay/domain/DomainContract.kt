@@ -7,6 +7,7 @@ import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.StateFlow
+import net.thunderbird.core.outcome.Outcome
 
 interface DomainContract {
 
