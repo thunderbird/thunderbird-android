@@ -157,7 +157,6 @@ include(
     ":legacy:core",
     ":legacy:crypto-openpgp",
     ":legacy:di",
-    ":legacy:folder",
     ":legacy:mailstore",
     ":legacy:message",
     ":legacy:notification",
