@@ -163,10 +163,6 @@ dependencies {
     debugImplementation(projects.feature.autodiscovery.demo)
 
     testImplementation(libs.robolectric)
-
-    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
-    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
-    testImplementation(projects.feature.account.setup)
 }
 
 dependencyGuard {
