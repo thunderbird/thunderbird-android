@@ -39,12 +39,6 @@ import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.SearchAccount
-import app.k9mail.legacy.search.api.SearchAttribute
-import app.k9mail.legacy.search.api.SearchCondition
-import app.k9mail.legacy.search.api.SearchField
-import app.k9mail.legacy.search.api.SearchSpecification
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
@@ -75,6 +69,12 @@ import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.api.SearchCondition
+import net.thunderbird.feature.search.api.SearchField
+import net.thunderbird.feature.search.api.SearchSpecification
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

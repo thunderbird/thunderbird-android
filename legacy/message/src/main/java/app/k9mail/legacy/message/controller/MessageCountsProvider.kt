@@ -1,9 +1,9 @@
 package app.k9mail.legacy.message.controller
 
 import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.SearchAccount
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.SearchAccount
 
 interface MessageCountsProvider {
     fun getMessageCounts(account: LegacyAccount): MessageCounts

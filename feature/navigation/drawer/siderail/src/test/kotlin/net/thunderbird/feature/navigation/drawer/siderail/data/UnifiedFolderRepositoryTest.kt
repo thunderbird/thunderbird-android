@@ -1,8 +1,6 @@
 package net.thunderbird.feature.navigation.drawer.siderail.data
 
 import app.k9mail.legacy.message.controller.MessageCounts
-import app.k9mail.legacy.search.api.SearchAttribute
-import app.k9mail.legacy.search.api.SearchField
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
@@ -10,6 +8,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.api.SearchField
 
 internal class UnifiedFolderRepositoryTest {
 

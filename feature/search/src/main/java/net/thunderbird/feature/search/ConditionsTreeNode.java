@@ -1,4 +1,4 @@
-package app.k9mail.legacy.search;
+package net.thunderbird.feature.search;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,7 +6,7 @@ import java.util.Set;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import app.k9mail.legacy.search.api.SearchCondition;
+import net.thunderbird.feature.search.api.SearchCondition;
 
 
 /**

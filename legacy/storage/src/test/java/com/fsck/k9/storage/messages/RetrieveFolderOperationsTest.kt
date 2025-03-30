@@ -1,9 +1,6 @@
 package com.fsck.k9.storage.messages
 
 import app.k9mail.legacy.mailstore.MoreMessages
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.api.SearchAttribute
-import app.k9mail.legacy.search.api.SearchField
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.hasSize
@@ -17,6 +14,9 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.toDatabaseFolderType
 import com.fsck.k9.storage.RobolectricTest
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.api.SearchField
 import org.junit.Test
 
 class RetrieveFolderOperationsTest : RobolectricTest() {
@@ -497,6 +497,10 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     }
 
     private val unifiedInboxConditions = LocalSearch().apply {
-        and(SearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
+        and(
+            SearchField.INTEGRATE,
+            "1",
+            SearchAttribute.EQUALS,
+        )
     }.conditions
 }

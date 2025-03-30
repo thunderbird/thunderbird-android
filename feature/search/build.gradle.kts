@@ -4,13 +4,9 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.legacy.account"
+    namespace = "net.thunderbird.feature.search"
 }
 
 dependencies {
-    api(projects.feature.notification)
-    api(projects.mail.common)
-
     implementation(projects.core.account)
-    implementation(projects.backend.api)
 }
