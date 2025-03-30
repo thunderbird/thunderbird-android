@@ -11,5 +11,5 @@ dependencies {
 
     implementation(projects.core.ui.legacy.designsystem)
 
-    implementation(projects.legacy.preferences)
+    implementation(projects.core.preferences)
 }

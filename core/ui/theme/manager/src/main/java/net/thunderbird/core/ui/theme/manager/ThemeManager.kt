@@ -7,10 +7,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import app.k9mail.core.ui.theme.api.Theme
 import app.k9mail.core.ui.theme.api.ThemeManager
 import app.k9mail.core.ui.theme.api.ThemeProvider
-import app.k9mail.legacy.preferences.AppTheme
-import app.k9mail.legacy.preferences.GeneralSettings
-import app.k9mail.legacy.preferences.GeneralSettingsManager
-import app.k9mail.legacy.preferences.SubTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -18,6 +14,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.plus
+import net.thunderbird.core.preferences.AppTheme
+import net.thunderbird.core.preferences.GeneralSettings
+import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preferences.SubTheme
 
 class ThemeManager(
     private val context: Context,

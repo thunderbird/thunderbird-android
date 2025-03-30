@@ -2,12 +2,6 @@
 
 package com.fsck.k9.preferences
 
-import app.k9mail.legacy.preferences.AppTheme
-import app.k9mail.legacy.preferences.BackgroundSync
-import app.k9mail.legacy.preferences.GeneralSettings
-import app.k9mail.legacy.preferences.GeneralSettingsManager
-import app.k9mail.legacy.preferences.SettingsChangePublisher
-import app.k9mail.legacy.preferences.SubTheme
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineDispatcher
@@ -17,6 +11,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import net.thunderbird.core.preferences.AppTheme
+import net.thunderbird.core.preferences.BackgroundSync
+import net.thunderbird.core.preferences.GeneralSettings
+import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preferences.SettingsChangePublisher
+import net.thunderbird.core.preferences.SubTheme
 import timber.log.Timber
 
 /**
@@ -147,8 +147,14 @@ internal class RealGeneralSettingsManager(
             backgroundSync = K9.backgroundOps.toBackgroundSync(),
             showRecentChanges = storage.getBoolean("showRecentChanges", true),
             appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM),
-            messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL),
-            messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL),
+            messageViewTheme = storage.getEnum(
+                "messageViewTheme",
+                SubTheme.USE_GLOBAL,
+            ),
+            messageComposeTheme = storage.getEnum(
+                "messageComposeTheme",
+                SubTheme.USE_GLOBAL,
+            ),
             fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true),
         )
 

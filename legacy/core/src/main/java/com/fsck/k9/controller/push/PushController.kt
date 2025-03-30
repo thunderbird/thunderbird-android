@@ -3,8 +3,6 @@ package com.fsck.k9.controller.push
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
-import app.k9mail.legacy.preferences.BackgroundSync
-import app.k9mail.legacy.preferences.GeneralSettingsManager
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.notification.PushNotificationManager
@@ -26,6 +24,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
+import net.thunderbird.core.preferences.BackgroundSync
+import net.thunderbird.core.preferences.GeneralSettingsManager
 import timber.log.Timber
 
 /**

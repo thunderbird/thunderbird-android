@@ -1,11 +1,11 @@
 package com.fsck.k9.activity
 
-import app.k9mail.legacy.preferences.AppTheme
-import app.k9mail.legacy.preferences.GeneralSettingsManager
-import app.k9mail.legacy.preferences.SubTheme
 import com.fsck.k9.K9
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
+import net.thunderbird.core.preferences.AppTheme
+import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preferences.SubTheme
 
 data class MessageListActivityConfig(
     val appTheme: AppTheme,
@@ -38,7 +38,9 @@ data class MessageListActivityConfig(
 ) {
 
     companion object {
-        fun create(generalSettingsManager: GeneralSettingsManager): MessageListActivityConfig {
+        fun create(
+            generalSettingsManager: GeneralSettingsManager,
+        ): MessageListActivityConfig {
             val settings = generalSettingsManager.getSettings()
             return MessageListActivityConfig(
                 appTheme = settings.appTheme,

@@ -39,7 +39,6 @@ import app.k9mail.feature.navigation.drawer.NavigationDrawer
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
-import app.k9mail.legacy.preferences.GeneralSettingsManager
 import app.k9mail.legacy.search.LocalSearch
 import app.k9mail.legacy.search.SearchAccount
 import app.k9mail.legacy.search.api.SearchAttribute
@@ -72,6 +71,7 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.core.preferences.GeneralSettingsManager
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

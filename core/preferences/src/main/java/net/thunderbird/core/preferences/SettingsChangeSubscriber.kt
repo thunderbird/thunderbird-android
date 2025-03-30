@@ -1,4 +1,4 @@
-package app.k9mail.legacy.preferences
+package net.thunderbird.core.preferences
 
 /**
  * Subscribe to be notified about changes in the settings.
