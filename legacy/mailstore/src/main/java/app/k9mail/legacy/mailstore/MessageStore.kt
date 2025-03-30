@@ -1,11 +1,11 @@
 package app.k9mail.legacy.mailstore
 
 import app.k9mail.core.mail.folder.api.FolderDetails
-import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
 import java.util.Date
+import net.thunderbird.feature.search.ConditionsTreeNode
 
 /**
  * Functions for accessing and modifying locally stored messages.

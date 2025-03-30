@@ -33,8 +33,6 @@ import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.SearchAccount
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
@@ -66,6 +64,8 @@ import java.util.concurrent.Future
 import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.network.ConnectivityManager
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.SearchAccount
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
