@@ -3,14 +3,14 @@ package com.fsck.k9.ui.messagelist
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.mailstore.MessageListRepository
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.api.SearchField
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
 import com.fsck.k9.search.SqlQueryBuilder
 import com.fsck.k9.search.getAccounts
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.api.SearchField
 import timber.log.Timber
 
 class MessageListLoader(
@@ -90,7 +90,9 @@ class MessageListLoader(
     }
 
     private fun getThreadId(search: LocalSearch): Long? {
-        return search.leafSet.firstOrNull { it.condition.field == SearchField.THREAD_ID }?.condition?.value?.toLong()
+        return search.leafSet.firstOrNull {
+            it.condition.field == SearchField.THREAD_ID
+        }?.condition?.value?.toLong()
     }
 
     private fun buildSortOrder(config: MessageListConfig): String {

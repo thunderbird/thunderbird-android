@@ -17,6 +17,8 @@ dependencies {
 
     implementation(projects.feature.account.avatar)
 
+    implementation(projects.feature.search)
+    implementation(projects.core.account)
     implementation(projects.legacy.account)
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)

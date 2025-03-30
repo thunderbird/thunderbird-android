@@ -12,6 +12,7 @@ dependencies {
 
     implementation(projects.core.mail.folder.api)
 
+    implementation(projects.core.account)
     implementation(projects.core.ui.theme.api)
     implementation(projects.core.ui.compose.designsystem)
 
@@ -20,7 +21,7 @@ dependencies {
     implementation(projects.legacy.account)
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)
-    implementation(projects.legacy.search)
+    implementation(projects.feature.search)
     implementation(projects.legacy.ui.folder)
     implementation(projects.core.featureflags)
 

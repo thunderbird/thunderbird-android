@@ -4,8 +4,8 @@ package com.fsck.k9.search
 
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.SearchAccount
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.SearchAccount
 
 val LocalSearch.isUnifiedInbox: Boolean
     get() = id == SearchAccount.UNIFIED_INBOX

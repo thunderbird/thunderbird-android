@@ -9,11 +9,11 @@ import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.MessagingListener
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
-import app.k9mail.legacy.search.ConditionsTreeNode
-import app.k9mail.legacy.search.LocalSearch
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.search.ConditionsTreeNode
+import net.thunderbird.feature.search.LocalSearch
 import org.junit.Test
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
@@ -31,7 +31,11 @@ class DefaultMessageCountsProviderTest {
         on { getAccounts() } doReturn listOf(account)
     }
     private val messageStore = mock<ListenableMessageStore> {
-        on { getUnreadMessageCount(anyOrNull<ConditionsTreeNode>()) } doReturn UNREAD_COUNT
+        on {
+            getUnreadMessageCount(
+                anyOrNull<ConditionsTreeNode>(),
+            )
+        } doReturn UNREAD_COUNT
         on { getStarredMessageCount(anyOrNull()) } doReturn STARRED_COUNT
     }
     private val messageStoreManager = mock<MessageStoreManager> {
@@ -75,7 +79,11 @@ class DefaultMessageCountsProviderTest {
         }
         var currentCount = 0
         val messageStore = mock<ListenableMessageStore> {
-            on { getUnreadMessageCount(anyOrNull<ConditionsTreeNode>()) } doAnswer { currentCount }
+            on {
+                getUnreadMessageCount(
+                    anyOrNull<ConditionsTreeNode>(),
+                )
+            } doAnswer { currentCount }
             on { getStarredMessageCount(anyOrNull()) } doAnswer { currentCount }
         }
         val messageStoreManager = mock<MessageStoreManager> {

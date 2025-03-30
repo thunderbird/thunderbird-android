@@ -2,10 +2,10 @@ package com.fsck.k9.search;
 
 import java.util.List;
 
-import app.k9mail.legacy.search.ConditionsTreeNode;
-import app.k9mail.legacy.search.api.SearchAttribute;
-import app.k9mail.legacy.search.api.SearchCondition;
-import app.k9mail.legacy.search.api.SearchField;
+import net.thunderbird.feature.search.ConditionsTreeNode;
+import net.thunderbird.feature.search.api.SearchAttribute;
+import net.thunderbird.feature.search.api.SearchCondition;
+import net.thunderbird.feature.search.api.SearchField;
 import timber.log.Timber;
 
 

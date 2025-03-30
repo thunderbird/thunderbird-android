@@ -5,6 +5,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
 import java.util.Date
+import net.thunderbird.core.account.BaseAccount
 import net.thunderbird.feature.notification.NotificationSettings
 
 // This needs to be in sync with K9.DEFAULT_VISIBLE_LIMIT

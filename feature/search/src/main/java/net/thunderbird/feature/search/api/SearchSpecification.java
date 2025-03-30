@@ -1,8 +1,8 @@
-package app.k9mail.legacy.search.api;
+package net.thunderbird.feature.search.api;
 
 import android.os.Parcelable;
 
-import app.k9mail.legacy.search.ConditionsTreeNode;
+import net.thunderbird.feature.search.ConditionsTreeNode;
 
 
 public interface SearchSpecification extends Parcelable {

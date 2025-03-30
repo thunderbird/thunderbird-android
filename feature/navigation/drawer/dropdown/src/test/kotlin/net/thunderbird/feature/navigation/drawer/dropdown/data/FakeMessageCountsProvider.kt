@@ -3,15 +3,16 @@ package net.thunderbird.feature.navigation.drawer.dropdown.data
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.SearchAccount
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.SearchAccount
 
 internal class FakeMessageCountsProvider(
     private val messageCounts: MessageCounts,
 ) : MessageCountsProvider {
-    var recordedSearch: LocalSearch = LocalSearch()
+    var recordedSearch: LocalSearch =
+        LocalSearch()
 
     override fun getMessageCounts(account: LegacyAccount): MessageCounts {
         TODO("Not yet implemented")

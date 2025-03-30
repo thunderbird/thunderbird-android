@@ -1,4 +1,4 @@
-package app.k9mail.legacy.search.api;
+package net.thunderbird.feature.search.api;
 
 
 import android.os.Parcel;
