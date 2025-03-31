@@ -2,9 +2,9 @@ package app.k9mail.feature.funding.googleplay.data.mapper
 
 import app.k9mail.feature.funding.googleplay.data.DataContract.Mapper
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
-import app.k9mail.feature.funding.googleplay.domain.Outcome
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingResult
+import net.thunderbird.core.outcome.Outcome
 
 class BillingResultMapper : Mapper.BillingResult {
 
