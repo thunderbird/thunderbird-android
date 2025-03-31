@@ -4,6 +4,7 @@ import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
 import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountDefaultsProvider
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.AccountRemovedListener
 import app.k9mail.legacy.account.AccountsChangeListener
@@ -181,7 +182,7 @@ class Preferences internal constructor(
 
     fun newAccount(accountUuid: String): Account {
         val account = Account(accountUuid, K9::isSensitiveDebugLoggingEnabled)
-        accountPreferenceSerializer.loadDefaults(account)
+        accountDefaultsProvider.applyDefaults(account)
 
         synchronized(accountLock) {
             newAccount = account
@@ -227,7 +228,7 @@ class Preferences internal constructor(
     }
 
     private fun ensureAssignedAccountNumber(account: Account) {
-        if (account.accountNumber != Account.UNASSIGNED_ACCOUNT_NUMBER) return
+        if (account.accountNumber != UNASSIGNED_ACCOUNT_NUMBER) return
 
         account.accountNumber = generateAccountNumber()
     }

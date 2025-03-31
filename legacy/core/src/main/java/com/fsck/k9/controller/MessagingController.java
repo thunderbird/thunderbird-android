@@ -143,11 +143,18 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
 
-    MessagingController(Context context, NotificationController notificationController,
-        NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
-        BackendManager backendManager, Preferences preferences, MessageStoreManager messageStoreManager,
-        SaveMessageDataCreator saveMessageDataCreator, SpecialLocalFoldersCreator specialLocalFoldersCreator,
-        LocalDeleteOperationDecider localDeleteOperationDecider, List<ControllerExtension> controllerExtensions,
+    MessagingController(
+        Context context,
+        NotificationController notificationController,
+        NotificationStrategy notificationStrategy,
+        LocalStoreProvider localStoreProvider,
+        BackendManager backendManager,
+        Preferences preferences,
+        MessageStoreManager messageStoreManager,
+        SaveMessageDataCreator saveMessageDataCreator,
+        SpecialLocalFoldersCreator specialLocalFoldersCreator,
+        LocalDeleteOperationDecider localDeleteOperationDecider,
+        List<ControllerExtension> controllerExtensions,
         FeatureFlagProvider featureFlagProvider
     ) {
         this.context = context;

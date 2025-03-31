@@ -17,6 +17,7 @@ import com.fsck.k9.notification.NotificationStrategy
 import com.fsck.k9.preferences.InMemoryStoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.storage.storageModule
+import net.thunderbird.legacy.core.FakeAccountDefaultsProvider
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.mockito.kotlin.mock
@@ -47,7 +48,7 @@ val testModule = module {
     single { mock<NotificationActionCreator>() }
     single { mock<NotificationStrategy>() }
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
-    single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
+    single<AccountDefaultsProvider> { FakeAccountDefaultsProvider() }
     single { mock<WorkManager>() }
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(

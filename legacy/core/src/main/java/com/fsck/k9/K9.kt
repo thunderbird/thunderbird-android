@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.account.AccountDefaultsProvider
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
@@ -226,7 +226,7 @@ object K9 : KoinComponent {
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
-    var sortType: SortType = Account.DEFAULT_SORT_TYPE
+    var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
     @JvmStatic
@@ -369,9 +369,9 @@ object K9 : KoinComponent {
         isConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true)
         isConfirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true)
 
-        sortType = storage.getEnum("sortTypeEnum", Account.DEFAULT_SORT_TYPE)
+        sortType = storage.getEnum("sortTypeEnum", AccountDefaultsProvider.DEFAULT_SORT_TYPE)
 
-        val sortAscendingSetting = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING)
+        val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
 
         notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)

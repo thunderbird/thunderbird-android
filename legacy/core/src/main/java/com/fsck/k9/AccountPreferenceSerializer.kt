@@ -1,11 +1,6 @@
 package com.fsck.k9
 
 import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.Companion.DEFAULT_SORT_ASCENDING
-import app.k9mail.legacy.account.Account.Companion.DEFAULT_SORT_TYPE
-import app.k9mail.legacy.account.Account.Companion.DEFAULT_SYNC_INTERVAL
-import app.k9mail.legacy.account.Account.Companion.NO_OPENPGP_KEY
-import app.k9mail.legacy.account.Account.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import app.k9mail.legacy.account.Account.DeletePolicy
 import app.k9mail.legacy.account.Account.Expunge
 import app.k9mail.legacy.account.Account.FolderMode
@@ -14,6 +9,20 @@ import app.k9mail.legacy.account.Account.QuoteStyle
 import app.k9mail.legacy.account.Account.ShowPictures
 import app.k9mail.legacy.account.Account.SortType
 import app.k9mail.legacy.account.Account.SpecialFolderSelection
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import app.k9mail.legacy.account.Identity
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationSettings
@@ -25,7 +34,6 @@ import com.fsck.k9.preferences.StorageEditor
 import timber.log.Timber
 
 class AccountPreferenceSerializer(
-    private val resourceProvider: CoreResourceProvider,
     private val serverSettingsSerializer: ServerSettingsSerializer,
 ) {
 
@@ -559,81 +567,6 @@ class AccountPreferenceSerializer(
         }
     }
 
-    fun loadDefaults(account: Account) {
-        with(account) {
-            automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
-            idleRefreshMinutes = 24
-            displayCount = K9.DEFAULT_VISIBLE_LIMIT
-            accountNumber = UNASSIGNED_ACCOUNT_NUMBER
-            isNotifyNewMail = true
-            folderNotifyNewMailMode = FolderMode.ALL
-            isNotifySync = false
-            isNotifySelfNewMail = true
-            isNotifyContactsMailOnly = false
-            isIgnoreChatMessages = false
-            messagesNotificationChannelVersion = 0
-            folderDisplayMode = FolderMode.NOT_SECOND_CLASS
-            folderSyncMode = FolderMode.FIRST_CLASS
-            folderPushMode = FolderMode.NONE
-            sortType = DEFAULT_SORT_TYPE
-            setSortAscending(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING)
-            showPictures = ShowPictures.NEVER
-            isSignatureBeforeQuotedText = false
-            expungePolicy = Expunge.EXPUNGE_IMMEDIATELY
-            importedAutoExpandFolder = null
-            legacyInboxFolder = null
-            maxPushFolders = 10
-            isSubscribedFoldersOnly = false
-            maximumPolledMessageAge = -1
-            maximumAutoDownloadMessageSize = DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
-            messageFormat = DEFAULT_MESSAGE_FORMAT
-            isMessageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO
-            isMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT
-            quoteStyle = DEFAULT_QUOTE_STYLE
-            quotePrefix = DEFAULT_QUOTE_PREFIX
-            isDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN
-            isReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE
-            isStripSignature = DEFAULT_STRIP_SIGNATURE
-            isSyncRemoteDeletions = true
-            openPgpKey = NO_OPENPGP_KEY
-            isRemoteSearchFullText = false
-            remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS
-            isUploadSentMessages = true
-            isMarkMessageAsReadOnView = true
-            isMarkMessageAsReadOnDelete = true
-            isAlwaysShowCcBcc = false
-            lastSyncTime = 0L
-            lastFolderListRefreshTime = 0L
-
-            setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
-            setDraftsFolderId(null, SpecialFolderSelection.AUTOMATIC)
-            setSentFolderId(null, SpecialFolderSelection.AUTOMATIC)
-            setSpamFolderId(null, SpecialFolderSelection.AUTOMATIC)
-            setTrashFolderId(null, SpecialFolderSelection.AUTOMATIC)
-            setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
-
-            identities = ArrayList<Identity>()
-
-            val identity = Identity(
-                signatureUse = false,
-                signature = null,
-                description = resourceProvider.defaultIdentityDescription(),
-            )
-            identities.add(identity)
-
-            updateNotificationSettings {
-                NotificationSettings(
-                    isRingEnabled = true,
-                    ringtone = DEFAULT_RINGTONE_URI,
-                    light = NotificationLight.Disabled,
-                    vibration = NotificationVibration.DEFAULT,
-                )
-            }
-
-            resetChangeMarkers()
-        }
-    }
-
     companion object {
         const val ACCOUNT_DESCRIPTION_KEY = "description"
         const val INCOMING_SERVER_SETTINGS_KEY = "incomingServerSettings"
@@ -644,20 +577,5 @@ class AccountPreferenceSerializer(
         const val IDENTITY_DESCRIPTION_KEY = "description"
 
         const val FALLBACK_ACCOUNT_COLOR = 0x0099CC
-
-        @JvmField
-        val DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML
-
-        @JvmField
-        val DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX
-        const val DEFAULT_MESSAGE_FORMAT_AUTO = false
-        const val DEFAULT_MESSAGE_READ_RECEIPT = false
-        const val DEFAULT_QUOTE_PREFIX = ">"
-        const val DEFAULT_QUOTED_TEXT_SHOWN = true
-        const val DEFAULT_REPLY_AFTER_QUOTE = false
-        const val DEFAULT_STRIP_SIGNATURE = true
-        const val DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25
-        const val DEFAULT_RINGTONE_URI = "content://settings/system/notification_sound"
-        const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072
     }
 }
