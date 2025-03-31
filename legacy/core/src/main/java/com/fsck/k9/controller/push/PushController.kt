@@ -1,7 +1,7 @@
 package com.fsck.k9.controller.push
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.preferences.BackgroundSync
 import app.k9mail.legacy.preferences.GeneralSettingsManager
@@ -137,7 +137,7 @@ class PushController internal constructor(
         launchUpdatePushers()
     }
 
-    private fun onBackendChanged(account: Account) {
+    private fun onBackendChanged(account: LegacyAccount) {
         coroutineScope.launch(coroutineDispatcher) {
             val accountPushController = synchronized(lock) {
                 pushers.remove(account.uuid)
@@ -239,14 +239,14 @@ class PushController internal constructor(
         }
     }
 
-    private fun getPushCapableAccounts(): Set<Account> {
+    private fun getPushCapableAccounts(): Set<LegacyAccount> {
         return accountManager.getAccounts()
             .asSequence()
             .filter { account -> backendManager.getBackend(account).isPushCapable }
             .toSet()
     }
 
-    private fun getPushAccounts(): Set<Account> {
+    private fun getPushAccounts(): Set<LegacyAccount> {
         return getPushCapableAccounts()
             .asSequence()
             .filter { account -> folderRepository.hasPushEnabledFolder(account) }
@@ -297,7 +297,7 @@ class PushController internal constructor(
         }
     }
 
-    private fun updatePushEnabledListeners(accounts: Set<Account>) {
+    private fun updatePushEnabledListeners(accounts: Set<LegacyAccount>) {
         synchronized(lock) {
             // Stop listening to push enabled changes in accounts we no longer monitor
             val accountUuids = accounts.mapToSet { it.uuid }

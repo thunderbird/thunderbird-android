@@ -18,8 +18,8 @@ import android.widget.ProgressBar
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.EmailAddress
 import app.k9mail.core.common.mail.toEmailAddressOrNull
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.ShowPictures
+import app.k9mail.legacy.account.LegacyAccount
+import app.k9mail.legacy.account.ShowPictures
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.MessageViewInfo
@@ -108,7 +108,7 @@ class MessageTopView(
         setShowDownloadButton(messageViewInfo)
     }
 
-    fun showMessage(account: Account, messageViewInfo: MessageViewInfo) {
+    fun showMessage(account: LegacyAccount, messageViewInfo: MessageViewInfo) {
         resetAndPrepareMessageView(messageViewInfo)
 
         val showPicturesSetting = account.showPictures
@@ -196,7 +196,7 @@ class MessageTopView(
         }
     }
 
-    fun setHeaders(message: Message?, account: Account?, showStar: Boolean) {
+    fun setHeaders(message: Message?, account: LegacyAccount?, showStar: Boolean) {
         messageHeaderView.populate(message, account, showStar, showAccountChip)
         messageHeaderView.visibility = VISIBLE
     }

@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -181,11 +181,11 @@ public class DatabaseUpgradeService extends Service {
     private void upgradeDatabases() {
         Preferences preferences = Preferences.getPreferences();
 
-        List<Account> accounts = preferences.getAccounts();
+        List<LegacyAccount> accounts = preferences.getAccounts();
         mProgressEnd = accounts.size();
         mProgress = 0;
 
-        for (Account account : accounts) {
+        for (LegacyAccount account : accounts) {
             mAccountUuid = account.getUuid();
 
             sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);

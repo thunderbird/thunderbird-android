@@ -2,8 +2,8 @@ package com.fsck.k9.message
 
 import android.net.Uri
 import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Account.QuoteStyle
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.QuoteStyle
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.contains

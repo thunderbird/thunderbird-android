@@ -9,7 +9,6 @@ import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadAdapter
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadMapper
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadParser
 import app.k9mail.feature.migration.qrcode.payload.QrCodePayloadValidator
-import app.k9mail.legacy.account.Account
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull

@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderSettings
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertThat
@@ -20,7 +20,7 @@ class K9BackendStorageTest : K9RobolectricTest() {
     val messageStoreManager: MessageStoreManager by inject()
     val saveMessageDataCreator: SaveMessageDataCreator by inject()
 
-    val account: Account = createAccount()
+    val account: LegacyAccount = createAccount()
     val backendStorage = createBackendStorage()
 
     @After
@@ -62,7 +62,7 @@ class K9BackendStorageTest : K9RobolectricTest() {
         assertThat(value).isEqualTo(23L)
     }
 
-    fun createAccount(): Account {
+    fun createAccount(): LegacyAccount {
         // FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
         preferences.clearAccounts()
 

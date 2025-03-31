@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import app.k9mail.legacy.account.Account.SortType
 import app.k9mail.legacy.account.AccountDefaultsProvider
+import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib

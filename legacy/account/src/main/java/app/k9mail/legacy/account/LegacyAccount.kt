@@ -2,7 +2,6 @@ package app.k9mail.legacy.account
 
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import app.k9mail.legacy.notification.NotificationSettings
-import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
@@ -14,10 +13,11 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
+@Deprecated("Use LegacyAccountWrapper instead")
 @Suppress("TooManyFunctions")
-class Account(
+open class LegacyAccount(
     override val uuid: String,
-    private val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
+    internal val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
 ) : BaseAccount {
     @get:Synchronized
     @set:Synchronized
@@ -198,7 +198,7 @@ class Account(
     @set:Synchronized
     var sortType: SortType = SortType.SORT_DATE
 
-    private val sortAscending: MutableMap<SortType, Boolean> = mutableMapOf()
+    internal var sortAscending: MutableMap<SortType, Boolean> = mutableMapOf()
 
     @get:Synchronized
     @set:Synchronized
@@ -343,7 +343,7 @@ class Account(
 
     @get:Synchronized
     var isFinishedSetup = false
-        private set
+        internal set
 
     @get:Synchronized
     @set:Synchronized
@@ -352,7 +352,7 @@ class Account(
     @get:Synchronized
     @set:Synchronized
     var isChangedVisibleLimits = false
-        private set
+        internal set
 
     /**
      * Database ID of the folder that was last selected for a copy or move operation.
@@ -361,7 +361,7 @@ class Account(
      */
     @get:Synchronized
     var lastSelectedFolderId: Long? = null
-        private set
+        internal set
 
     @get:Synchronized
     @set:Synchronized
@@ -372,7 +372,7 @@ class Account(
 
     @get:Synchronized
     var notificationSettings = NotificationSettings()
-        private set
+        internal set
 
     val displayName: String
         get() = name ?: email
@@ -435,6 +435,7 @@ class Account(
         draftsFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasDraftsFolder(): Boolean {
         return draftsFolderId != null
@@ -446,6 +447,7 @@ class Account(
         sentFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasSentFolder(): Boolean {
         return sentFolderId != null
@@ -457,6 +459,7 @@ class Account(
         trashFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasTrashFolder(): Boolean {
         return trashFolderId != null
@@ -468,6 +471,7 @@ class Account(
         archiveFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasArchiveFolder(): Boolean {
         return archiveFolderId != null
@@ -479,6 +483,7 @@ class Account(
         spamFolderSelection = selection
     }
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasSpamFolder(): Boolean {
         return spamFolderId != null
@@ -549,9 +554,11 @@ class Account(
             return now.time
         }
 
+    @Deprecated("use AccountWrapper instead")
     val isOpenPgpProviderConfigured: Boolean
         get() = openPgpProvider != null
 
+    @Deprecated("use AccountWrapper instead")
     @Synchronized
     fun hasOpenPgpKey(): Boolean {
         return openPgpKey != NO_OPENPGP_KEY
@@ -582,7 +589,7 @@ class Account(
     }
 
     override fun equals(other: Any?): Boolean {
-        return if (other is Account) {
+        return if (other is LegacyAccount) {
             other.uuid == uuid
         } else {
             super.equals(other)
@@ -591,74 +598,6 @@ class Account(
 
     override fun hashCode(): Int {
         return uuid.hashCode()
-    }
-
-    enum class FolderMode {
-        NONE,
-        ALL,
-        FIRST_CLASS,
-        FIRST_AND_SECOND_CLASS,
-        NOT_SECOND_CLASS,
-    }
-
-    enum class SpecialFolderSelection {
-        AUTOMATIC,
-        MANUAL,
-    }
-
-    enum class ShowPictures {
-        NEVER,
-        ALWAYS,
-        ONLY_FROM_CONTACTS,
-    }
-
-    enum class QuoteStyle {
-        PREFIX,
-        HEADER,
-    }
-
-    enum class MessageFormat {
-        TEXT,
-        HTML,
-        AUTO,
-    }
-
-    enum class Expunge {
-        EXPUNGE_IMMEDIATELY,
-        EXPUNGE_MANUALLY,
-        EXPUNGE_ON_POLL,
-        ;
-
-        fun toBackendExpungePolicy(): ExpungePolicy = when (this) {
-            EXPUNGE_IMMEDIATELY -> ExpungePolicy.IMMEDIATELY
-            EXPUNGE_MANUALLY -> ExpungePolicy.MANUALLY
-            EXPUNGE_ON_POLL -> ExpungePolicy.ON_POLL
-        }
-    }
-
-    @Suppress("MagicNumber")
-    enum class DeletePolicy(@JvmField val setting: Int) {
-        NEVER(0),
-        SEVEN_DAYS(1),
-        ON_DELETE(2),
-        MARK_AS_READ(3),
-        ;
-
-        companion object {
-            fun fromInt(initialSetting: Int): DeletePolicy {
-                return entries.find { it.setting == initialSetting } ?: error("DeletePolicy $initialSetting unknown")
-            }
-        }
-    }
-
-    enum class SortType(val isDefaultAscending: Boolean) {
-        SORT_DATE(false),
-        SORT_ARRIVAL(false),
-        SORT_SUBJECT(true),
-        SORT_SENDER(true),
-        SORT_UNREAD(true),
-        SORT_FLAGGED(true),
-        SORT_ATTACHMENT(true),
     }
 
     companion object {

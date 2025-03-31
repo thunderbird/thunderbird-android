@@ -12,7 +12,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.core.testing.TestClock
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -425,7 +425,7 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun createMessageListItem(
-        account: Account = Account(SOME_ACCOUNT_UUID),
+        account: LegacyAccount = LegacyAccount(SOME_ACCOUNT_UUID),
         subject: String? = "irrelevant",
         threadCount: Int = 0,
         messageDate: Long = 0L,

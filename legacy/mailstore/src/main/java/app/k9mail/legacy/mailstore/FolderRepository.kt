@@ -2,7 +2,7 @@ package app.k9mail.legacy.mailstore
 
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderDetails
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderTypeMapper.folderTypeOf
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,7 +22,7 @@ class FolderRepository(
     private val messageStoreManager: MessageStoreManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    fun getFolder(account: Account, folderId: Long): Folder? {
+    fun getFolder(account: LegacyAccount, folderId: Long): Folder? {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolder(folderId) { folder ->
             Folder(
@@ -34,7 +34,7 @@ class FolderRepository(
         }
     }
 
-    fun getFolderDetails(account: Account, folderId: Long): FolderDetails? {
+    fun getFolderDetails(account: LegacyAccount, folderId: Long): FolderDetails? {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolder(folderId) { folder ->
             FolderDetails(
@@ -54,7 +54,7 @@ class FolderRepository(
         }
     }
 
-    fun getRemoteFolders(account: Account): List<RemoteFolder> {
+    fun getRemoteFolders(account: LegacyAccount): List<RemoteFolder> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolders(excludeLocalOnly = true) { folder ->
             RemoteFolder(
@@ -66,7 +66,7 @@ class FolderRepository(
         }
     }
 
-    fun getRemoteFolderDetails(account: Account): List<RemoteFolderDetails> {
+    fun getRemoteFolderDetails(account: LegacyAccount): List<RemoteFolderDetails> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolders(excludeLocalOnly = true) { folder ->
             RemoteFolderDetails(
@@ -86,7 +86,7 @@ class FolderRepository(
         }
     }
 
-    fun getPushFoldersFlow(account: Account): Flow<List<RemoteFolder>> {
+    fun getPushFoldersFlow(account: LegacyAccount): Flow<List<RemoteFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return callbackFlow {
             send(getPushFolders(account))
@@ -104,7 +104,7 @@ class FolderRepository(
             .flowOn(ioDispatcher)
     }
 
-    private fun getPushFolders(account: Account): List<RemoteFolder> {
+    private fun getPushFolders(account: LegacyAccount): List<RemoteFolder> {
         return getRemoteFolderDetails(account)
             .asSequence()
             .filter { folderDetails -> folderDetails.isPushEnabled }
@@ -112,59 +112,59 @@ class FolderRepository(
             .toList()
     }
 
-    fun getFolderServerId(account: Account, folderId: Long): String? {
+    fun getFolderServerId(account: LegacyAccount, folderId: Long): String? {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolder(folderId) { folder ->
             folder.serverId
         }
     }
 
-    fun getFolderId(account: Account, folderServerId: String): Long? {
+    fun getFolderId(account: LegacyAccount, folderServerId: String): Long? {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolderId(folderServerId)
     }
 
-    fun isFolderPresent(account: Account, folderId: Long): Boolean {
+    fun isFolderPresent(account: LegacyAccount, folderId: Long): Boolean {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.getFolder(folderId) { true } ?: false
     }
 
-    fun updateFolderDetails(account: Account, folderDetails: FolderDetails) {
+    fun updateFolderDetails(account: LegacyAccount, folderDetails: FolderDetails) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.updateFolderSettings(folderDetails)
     }
 
-    fun setIncludeInUnifiedInbox(account: Account, folderId: Long, includeInUnifiedInbox: Boolean) {
+    fun setIncludeInUnifiedInbox(account: LegacyAccount, folderId: Long, includeInUnifiedInbox: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
     }
 
-    fun setVisible(account: Account, folderId: Long, visible: Boolean) {
+    fun setVisible(account: LegacyAccount, folderId: Long, visible: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setVisible(folderId, visible)
     }
 
-    fun setSyncEnabled(account: Account, folderId: Long, enable: Boolean) {
+    fun setSyncEnabled(account: LegacyAccount, folderId: Long, enable: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setSyncEnabled(folderId, enable)
     }
 
-    fun setNotificationsEnabled(account: Account, folderId: Long, enable: Boolean) {
+    fun setNotificationsEnabled(account: LegacyAccount, folderId: Long, enable: Boolean) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setNotificationsEnabled(folderId, enable)
     }
 
-    fun setPushDisabled(account: Account) {
+    fun setPushDisabled(account: LegacyAccount) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setPushDisabled()
     }
 
-    fun hasPushEnabledFolder(account: Account): Boolean {
+    fun hasPushEnabledFolder(account: LegacyAccount): Boolean {
         val messageStore = messageStoreManager.getMessageStore(account)
         return messageStore.hasPushEnabledFolder()
     }
 
-    fun hasPushEnabledFolderFlow(account: Account): Flow<Boolean> {
+    fun hasPushEnabledFolderFlow(account: LegacyAccount): Flow<Boolean> {
         val messageStore = messageStoreManager.getMessageStore(account)
         return callbackFlow {
             send(hasPushEnabledFolder(account))

@@ -36,8 +36,8 @@ import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.feature.navigation.drawer.FolderDrawer
 import app.k9mail.feature.navigation.drawer.NavigationDrawer
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.preferences.GeneralSettingsManager
 import app.k9mail.legacy.search.LocalSearch
@@ -111,7 +111,7 @@ open class MessageList :
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
     private var messageViewContainerFragment: MessageViewContainerFragment? = null
-    private var account: Account? = null
+    private var account: LegacyAccount? = null
     private var search: LocalSearch? = null
     private var singleFolderMode = false
 
@@ -288,7 +288,7 @@ open class MessageList :
         displayViews()
     }
 
-    private fun deleteIncompleteAccounts(accounts: List<Account>) {
+    private fun deleteIncompleteAccounts(accounts: List<LegacyAccount>) {
         accounts.filter { !it.isFinishedSetup }.forEach {
             accountRemover.removeAccountAsync(it.uuid)
         }
@@ -1121,7 +1121,7 @@ open class MessageList :
         MessageActions.actionReply(this, messageReference, true, decryptionResultForReply)
     }
 
-    override fun onCompose(account: Account?) {
+    override fun onCompose(account: LegacyAccount?) {
         MessageActions.actionCompose(this, account)
     }
 
@@ -1170,7 +1170,7 @@ open class MessageList :
         return true
     }
 
-    override fun startSearch(query: String, account: Account?, folderId: Long?): Boolean {
+    override fun startSearch(query: String, account: LegacyAccount?, folderId: Long?): Boolean {
         // If this search was started from a MessageList of a single folder, pass along that folder info
         // so that we can enable remote search.
         val appData = if (account != null && folderId != null) {
@@ -1197,7 +1197,7 @@ open class MessageList :
         return super.startSupportActionMode(callback)
     }
 
-    override fun showThread(account: Account, threadRootId: Long) {
+    override fun showThread(account: LegacyAccount, threadRootId: Long) {
         showMessageViewPlaceHolder()
 
         val tmpSearch = LocalSearch().apply {
@@ -1417,7 +1417,7 @@ open class MessageList :
         configureDrawer()
     }
 
-    private fun LocalSearch.firstAccount(): Account? {
+    private fun LocalSearch.firstAccount(): LegacyAccount? {
         return if (searchAllAccounts()) {
             preferences.defaultAccount
         } else {
@@ -1465,7 +1465,7 @@ open class MessageList :
 
     private class LaunchData(
         val search: LocalSearch,
-        val account: Account? = null,
+        val account: LegacyAccount? = null,
         val messageReference: MessageReference? = null,
         val noThreading: Boolean = false,
         val messageViewOnly: Boolean = false,
@@ -1532,7 +1532,7 @@ open class MessageList :
 
         fun createUnifiedInboxIntent(
             context: Context,
-            account: Account,
+            account: LegacyAccount,
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
                 val search = SearchAccount.createUnifiedInboxAccount(
@@ -1550,7 +1550,7 @@ open class MessageList :
             }
         }
 
-        fun createNewMessagesIntent(context: Context, account: Account): Intent {
+        fun createNewMessagesIntent(context: Context, account: LegacyAccount): Intent {
             val search = LocalSearch().apply {
                 id = SearchAccount.NEW_MESSAGES
                 addAccountUuid(account.uuid)
@@ -1635,7 +1635,7 @@ open class MessageList :
         }
 
         @JvmStatic
-        fun launch(context: Context, account: Account) {
+        fun launch(context: Context, account: LegacyAccount) {
             val folderId = defaultFolderProvider.getDefaultFolder(account)
 
             val search = LocalSearch().apply {

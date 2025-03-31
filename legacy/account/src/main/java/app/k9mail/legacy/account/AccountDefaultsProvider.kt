@@ -1,11 +1,7 @@
 package app.k9mail.legacy.account
 
-import app.k9mail.legacy.account.Account.MessageFormat
-import app.k9mail.legacy.account.Account.QuoteStyle
-import app.k9mail.legacy.account.Account.SortType
-
 fun interface AccountDefaultsProvider {
-    fun applyDefaults(account: Account)
+    fun applyDefaults(account: LegacyAccount)
 
     companion object {
         const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072

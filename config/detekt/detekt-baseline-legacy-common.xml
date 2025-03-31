@@ -2,7 +2,6 @@
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
   <CurrentIssues>
-    <ID>ReturnCount:K9NotificationStrategy.kt$K9NotificationStrategy$override fun shouldNotifyForMessage( account: Account, localFolder: LocalFolder, message: LocalMessage, isOldMessage: Boolean, ): Boolean</ID>
     <ID>TooManyFunctions:K9CoreResourceProvider.kt$K9CoreResourceProvider : CoreResourceProvider</ID>
     <ID>TooManyFunctions:K9NotificationActionCreator.kt$K9NotificationActionCreator : NotificationActionCreator</ID>
     <ID>TooManyFunctions:K9NotificationResourceProvider.kt$K9NotificationResourceProvider : NotificationResourceProvider</ID>

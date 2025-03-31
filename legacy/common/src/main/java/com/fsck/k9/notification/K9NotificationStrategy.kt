@@ -2,7 +2,7 @@ package com.fsck.k9.notification
 
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.toEmailAddressOrNull
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.K9MailLib
@@ -15,8 +15,9 @@ class K9NotificationStrategy(
     private val contactRepository: ContactRepository,
 ) : NotificationStrategy {
 
+    @Suppress("ReturnCount")
     override fun shouldNotifyForMessage(
-        account: Account,
+        account: LegacyAccount,
         localFolder: LocalFolder,
         message: LocalMessage,
         isOldMessage: Boolean,

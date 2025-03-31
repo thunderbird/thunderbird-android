@@ -2,11 +2,6 @@ package net.thunderbird.app.common.account
 
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.toFeatureFlagKey
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.Expunge
-import app.k9mail.legacy.account.Account.FolderMode
-import app.k9mail.legacy.account.Account.ShowPictures
-import app.k9mail.legacy.account.Account.SpecialFolderSelection
 import app.k9mail.legacy.account.AccountDefaultsProvider
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
@@ -24,7 +19,12 @@ import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
+import app.k9mail.legacy.account.Expunge
+import app.k9mail.legacy.account.FolderMode
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.LegacyAccount
+import app.k9mail.legacy.account.ShowPictures
+import app.k9mail.legacy.account.SpecialFolderSelection
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationSettings
 import app.k9mail.legacy.notification.NotificationVibration
@@ -37,13 +37,13 @@ class CommonAccountDefaultsProvider(
     private val featureFlagProvider: FeatureFlagProvider,
 ) : AccountDefaultsProvider {
 
-    override fun applyDefaults(account: Account) = with(account) {
+    override fun applyDefaults(account: LegacyAccount) = with(account) {
         applyLegacyDefaults()
         applyNotificationDefaults()
     }
 
     @Suppress("LongMethod")
-    private fun Account.applyLegacyDefaults() {
+    private fun LegacyAccount.applyLegacyDefaults() {
         automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
         idleRefreshMinutes = 24
         displayCount = K9.DEFAULT_VISIBLE_LIMIT
@@ -116,7 +116,7 @@ class CommonAccountDefaultsProvider(
         resetChangeMarkers()
     }
 
-    private fun Account.applyNotificationDefaults() {
+    private fun LegacyAccount.applyNotificationDefaults() {
         isNotifyNewMail = featureFlagProvider.provide(
             "email_notification_default".toFeatureFlagKey(),
         ).whenEnabledOrNot(

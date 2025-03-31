@@ -1,7 +1,7 @@
 package com.fsck.k9.activity.compose
 
 import androidx.test.core.app.ApplicationProvider
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -56,7 +56,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         }
     }
     private val recipientMvpView = mock<RecipientMvpView>()
-    private val account = mock<Account>()
+    private val account = mock<LegacyAccount>()
     private val composePgpInlineDecider = mock<ComposePgpInlineDecider>()
     private val composePgpEnableByDefaultDecider = mock<ComposePgpEnableByDefaultDecider>()
     private val autocryptStatusInteractor = mock<AutocryptStatusInteractor>()

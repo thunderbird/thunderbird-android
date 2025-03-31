@@ -47,8 +47,8 @@ import androidx.core.os.BundleCompat;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import app.k9mail.legacy.account.Account;
-import app.k9mail.legacy.account.Account.MessageFormat;
+import app.k9mail.legacy.account.LegacyAccount;
+import app.k9mail.legacy.account.MessageFormat;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.K9;
@@ -196,7 +196,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     /**
      * The account used for message composition.
      */
-    private Account account;
+    private LegacyAccount account;
     private Identity identity;
     private boolean identityChanged = false;
     private boolean signatureChanged = false;
@@ -801,7 +801,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void onAccountChosen(Account account, Identity identity) {
+    private void onAccountChosen(LegacyAccount account, Identity identity) {
         if (!this.account.equals(account)) {
             Timber.v("Switching account from %s to %s", this.account, account);
 
@@ -813,7 +813,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // test whether there is something to save
             if (changesMadeSinceLastSave || (draftMessageId != null)) {
                 final Long previousDraftId = draftMessageId;
-                final Account previousAccount = this.account;
+                final LegacyAccount previousAccount = this.account;
 
                 // make current message appear as new
                 draftMessageId = null;
@@ -1356,7 +1356,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             if (messageReference != null) {
                 // Check if this is a valid account in our database
-                Account account = preferences.getAccount(messageReference.getAccountUuid());
+                LegacyAccount account = preferences.getAccount(messageReference.getAccountUuid());
                 if (account != null) {
                     relatedMessageReference = messageReference;
                 }
@@ -1375,7 +1375,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
         final MessagingController messagingController;
         final Preferences preferences;
-        final Account account;
+        final LegacyAccount account;
         final Contacts contacts;
         final Message message;
         final Long draftId;
@@ -1383,7 +1383,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final MessageReference messageReference;
         final Flag flag;
 
-        SendMessageTask(MessagingController messagingController, Preferences preferences, Account account,
+        SendMessageTask(MessagingController messagingController, Preferences preferences, LegacyAccount account,
                 Contacts contacts, Message message, Long draftId, String plaintextSubject,
                 MessageReference messageReference, Flag flag) {
             this.messagingController = messagingController;
@@ -1423,7 +1423,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         private void addFlagToReferencedMessage() {
             if (messageReference != null && flag != null) {
                 String accountUuid = messageReference.getAccountUuid();
-                Account account = preferences.getAccount(accountUuid);
+                LegacyAccount account = preferences.getAccount(accountUuid);
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
 
@@ -1667,7 +1667,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public MessagingListener messagingListener = new SimpleMessagingListener() {
 
         @Override
-        public void messageUidChanged(Account account, long folderId, String oldUid, String newUid) {
+        public void messageUidChanged(LegacyAccount account, long folderId, String oldUid, String newUid) {
             if (relatedMessageReference == null) {
                 return;
             }
