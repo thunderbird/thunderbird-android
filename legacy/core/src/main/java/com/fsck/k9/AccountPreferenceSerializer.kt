@@ -12,6 +12,17 @@ import app.k9mail.legacy.account.Account.QuoteStyle
 import app.k9mail.legacy.account.Account.ShowPictures
 import app.k9mail.legacy.account.Account.SortType
 import app.k9mail.legacy.account.Account.SpecialFolderSelection
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
 import app.k9mail.legacy.account.Identity
 import app.k9mail.legacy.notification.NotificationLight
 import app.k9mail.legacy.notification.NotificationSettings
@@ -566,20 +577,5 @@ class AccountPreferenceSerializer(
         const val IDENTITY_DESCRIPTION_KEY = "description"
 
         const val FALLBACK_ACCOUNT_COLOR = 0x0099CC
-
-        @JvmField
-        val DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML
-
-        @JvmField
-        val DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX
-        const val DEFAULT_MESSAGE_FORMAT_AUTO = false
-        const val DEFAULT_MESSAGE_READ_RECEIPT = false
-        const val DEFAULT_QUOTE_PREFIX = ">"
-        const val DEFAULT_QUOTED_TEXT_SHOWN = true
-        const val DEFAULT_REPLY_AFTER_QUOTE = false
-        const val DEFAULT_STRIP_SIGNATURE = true
-        const val DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25
-        const val DEFAULT_RINGTONE_URI = "content://settings/system/notification_sound"
-        const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072
     }
 }
