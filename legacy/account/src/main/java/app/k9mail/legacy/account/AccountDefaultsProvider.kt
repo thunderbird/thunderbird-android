@@ -2,6 +2,7 @@ package app.k9mail.legacy.account
 
 import app.k9mail.legacy.account.Account.MessageFormat
 import app.k9mail.legacy.account.Account.QuoteStyle
+import app.k9mail.legacy.account.Account.SortType
 
 fun interface AccountDefaultsProvider {
     fun applyDefaults(account: Account)
@@ -23,6 +24,17 @@ fun interface AccountDefaultsProvider {
         const val DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25
         const val DEFAULT_REPLY_AFTER_QUOTE = false
         const val DEFAULT_RINGTONE_URI = "content://settings/system/notification_sound"
+        const val DEFAULT_SORT_ASCENDING = false
+
+        @JvmStatic
+        val DEFAULT_SORT_TYPE = SortType.SORT_DATE
+
         const val DEFAULT_STRIP_SIGNATURE = true
+
+        const val DEFAULT_SYNC_INTERVAL = 60
+
+        const val NO_OPENPGP_KEY: Long = 0
+
+        const val UNASSIGNED_ACCOUNT_NUMBER = -1
     }
 }

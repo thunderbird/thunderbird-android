@@ -12,6 +12,7 @@ import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import com.fsck.k9.K9
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
@@ -395,7 +396,7 @@ class RecipientPresenter(
 
         val openPgpProviderState = openPgpApiManager.openPgpProviderState
         var accountCryptoKey: Long? = account.openPgpKey
-        if (accountCryptoKey == Account.NO_OPENPGP_KEY) {
+        if (accountCryptoKey == NO_OPENPGP_KEY) {
             accountCryptoKey = null
         }
 

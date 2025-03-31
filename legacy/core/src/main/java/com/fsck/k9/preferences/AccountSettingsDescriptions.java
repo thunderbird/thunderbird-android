@@ -45,6 +45,7 @@ import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_QUOTED_T
 import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_QUOTE_PREFIX;
 import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
 import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE;
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_SORT_ASCENDING;
 import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
 
@@ -186,10 +187,10 @@ class AccountSettingsDescriptions {
                 new V(53, new StringSetting(null))
         ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(9, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(9, new EnumSetting<>(SortType.class, AccountDefaultsProvider.getDEFAULT_SORT_TYPE()))
         ));
         s.put("sortAscending", Settings.versions(
-                new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+                new V(9, new BooleanSetting(DEFAULT_SORT_ASCENDING))
         ));
         s.put("showPicturesEnum", Settings.versions(
                 new V(1, new EnumSetting<>(ShowPictures.class, ShowPictures.NEVER))

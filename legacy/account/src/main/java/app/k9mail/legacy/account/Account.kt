@@ -1,5 +1,6 @@
 package app.k9mail.legacy.account
 
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import app.k9mail.legacy.notification.NotificationSettings
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.mail.Address
@@ -666,12 +667,6 @@ class Account(
          */
         const val OUTBOX_NAME = "Outbox"
 
-        @JvmField
-        val DEFAULT_SORT_TYPE = SortType.SORT_DATE
-        const val DEFAULT_SORT_ASCENDING = false
-        const val NO_OPENPGP_KEY: Long = 0
-        const val UNASSIGNED_ACCOUNT_NUMBER = -1
         const val INTERVAL_MINUTES_NEVER = -1
-        const val DEFAULT_SYNC_INTERVAL = 60
     }
 }

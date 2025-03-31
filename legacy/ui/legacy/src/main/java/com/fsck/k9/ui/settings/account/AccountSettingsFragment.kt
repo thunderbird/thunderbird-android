@@ -20,6 +20,7 @@ import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
@@ -458,7 +459,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun removeOpenPgpProvider(account: Account) {
         account.openPgpProvider = null
-        account.openPgpKey = Account.NO_OPENPGP_KEY
+        account.openPgpKey = NO_OPENPGP_KEY
         dataStore.saveSettingsInBackground()
     }
 
