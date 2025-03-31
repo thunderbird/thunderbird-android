@@ -222,6 +222,8 @@ class Preferences internal constructor(
             val editor = createStorageEditor()
             accountPreferenceSerializer.save(editor, storage, account)
             editor.commit()
+
+            loadAccounts()
         }
 
         notifyAccountsChangeListeners()
