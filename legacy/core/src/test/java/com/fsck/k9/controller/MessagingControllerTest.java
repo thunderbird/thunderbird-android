@@ -124,12 +124,20 @@ public class MessagingControllerTest extends K9RobolectricTest {
         preferences = Preferences.getPreferences();
         featureFlagProvider = key -> Disabled.INSTANCE;
 
-        controller = new MessagingController(appContext, notificationController, notificationStrategy,
-                localStoreProvider, backendManager, preferences, messageStoreManager,
-                saveMessageDataCreator, specialLocalFoldersCreator, new LocalDeleteOperationDecider(),
+        controller = new MessagingController(
+            appContext,
+            notificationController,
+            notificationStrategy,
+            localStoreProvider,
+            backendManager,
+            preferences,
+            messageStoreManager,
+            saveMessageDataCreator,
+            specialLocalFoldersCreator,
+            new LocalDeleteOperationDecider(),
                 Collections.<ControllerExtension>emptyList(),
                 featureFlagProvider
-            );
+        );
 
         configureAccount();
         configureBackendManager();

@@ -181,7 +181,7 @@ class Preferences internal constructor(
 
     fun newAccount(accountUuid: String): Account {
         val account = Account(accountUuid, K9::isSensitiveDebugLoggingEnabled)
-        accountPreferenceSerializer.loadDefaults(account)
+        accountDefaultsProvider.applyDefaults(account)
 
         synchronized(accountLock) {
             newAccount = account
