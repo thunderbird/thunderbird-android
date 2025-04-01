@@ -43,12 +43,10 @@ internal fun FolderListPreviewSelected() {
 internal fun FolderListWithUnifiedFolderPreview() {
     PreviewWithTheme {
         FolderList(
-            rootFolder = TreeFolder.createFromFolders(
-                persistentListOf(
-                    UNIFIED_FOLDER,
-                    DISPLAY_FOLDER,
-                ),
-            ),
+            rootFolder = TreeFolder.createFromFolders(persistentListOf(
+                UNIFIED_FOLDER,
+                DISPLAY_FOLDER,
+            )),
             selectedFolder = DISPLAY_FOLDER,
             onFolderClick = {},
             showStarredCount = false,
