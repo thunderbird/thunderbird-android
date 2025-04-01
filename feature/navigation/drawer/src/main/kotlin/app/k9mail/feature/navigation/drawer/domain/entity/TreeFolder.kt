@@ -4,42 +4,51 @@ import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 
 internal data class TreeFolder(
-    var value: DisplayFolder? = null,
+    var value: DisplayFolder? = null
 ) {
     companion object {
         fun createFromFolders(folders: List<DisplayFolder>, maxDepth: Int = 3): TreeFolder {
-            // Converting folders to TreeFolder
+            // Preparing root
             val rootFolder = TreeFolder()
             var currentTree = rootFolder
 
             for (displayFolder in folders) {
+                // Managing exceptions
                 if (displayFolder is DisplayUnifiedFolder) {
                     currentTree.children.add(TreeFolder(displayFolder))
                 }
                 if (displayFolder !is DisplayAccountFolder) continue
+
                 val splittedFolderName = displayFolder.folder.name.split("/", limit = maxDepth + 1)
-                var subFolderEntireName = ""
+                var currentWorkingPath = ""
+
                 for (subFolderName in splittedFolderName) {
-                    subFolderEntireName += subFolderName
+                    currentWorkingPath += subFolderName
                     var foundInChildren = false
+
+                    // finding subFolderEntireName (current working path) into currentTree children
                     for (children in currentTree.children) {
                         var childDisplayFolder = children.value
                         if (childDisplayFolder !is DisplayAccountFolder) continue
-                        if (childDisplayFolder.folder.name == subFolderEntireName) {
+                        if (childDisplayFolder.folder.name == currentWorkingPath) {
                             currentTree = children
                             foundInChildren = true
                             break
                         }
                     }
+
+                    // if not found in children, creating a new one
                     if (!foundInChildren) {
                         var newChildren = TreeFolder()
-                        if (subFolderEntireName == displayFolder.folder.name) {
+                        if (currentWorkingPath == displayFolder.folder.name) {
+                            // if it is the final subfolder, adding displayFolder in it
                             newChildren = TreeFolder(displayFolder)
                         } else {
+                            // if just an intermediate, adding a fake subFolder
                             newChildren = TreeFolder(
                                 DisplayAccountFolder(
                                     displayFolder.accountId,
-                                    Folder(0, subFolderEntireName, FolderType.REGULAR, displayFolder.folder.isLocalOnly),
+                                    Folder(0, currentWorkingPath, FolderType.REGULAR, displayFolder.folder.isLocalOnly),
                                     displayFolder.isInTopGroup,
                                     0,
                                     0,
@@ -49,11 +58,12 @@ internal data class TreeFolder(
                         currentTree.children.add(newChildren)
                         currentTree = newChildren
                     } else {
-                        if (subFolderEntireName == displayFolder.folder.name) {
+                        // if found, association the value to manage fake created subFolders
+                        if (currentWorkingPath == displayFolder.folder.name) {
                             currentTree.value = displayFolder
                         }
                     }
-                    subFolderEntireName += "/"
+                    currentWorkingPath += "/"
                 }
                 currentTree = rootFolder
             }
