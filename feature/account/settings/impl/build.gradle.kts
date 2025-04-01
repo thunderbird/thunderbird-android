@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.compose.navigation)
     implementation(projects.core.ui.compose.preference)
+    implementation(projects.core.ui.legacy.theme2.common)
 
     testImplementation(projects.core.ui.compose.testing)
 }

@@ -4,6 +4,7 @@ import net.thunderbird.feature.account.api.AccountId
 
 internal enum class GeneralPreference {
     NAME,
+    COLOR,
 }
 
 internal fun GeneralPreference.generateId(accountId: AccountId): String {

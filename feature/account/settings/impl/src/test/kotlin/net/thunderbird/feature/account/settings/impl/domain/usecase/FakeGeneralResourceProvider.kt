@@ -7,4 +7,9 @@ internal class FakeGeneralResourceProvider : ResourceProvider.GeneralResourcePro
     override val nameTitle: () -> String = { "Name" }
     override val nameDescription: () -> String? = { null }
     override val nameIcon: () -> ImageVector? = { null }
+
+    override val colorTitle: () -> String = { "Color" }
+    override val colorDescription: () -> String? = { null }
+    override val colorIcon: () -> ImageVector? = { null }
+    override val colors: List<Int> = listOf(0xFF0000, 0x00FF00, 0x0000FF)
 }

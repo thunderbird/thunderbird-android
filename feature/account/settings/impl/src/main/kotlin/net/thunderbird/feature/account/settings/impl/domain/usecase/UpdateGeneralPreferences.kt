@@ -25,6 +25,12 @@ internal class UpdateGeneralPreferences(
                 }
             }
 
+            GeneralPreference.COLOR.generateId(accountId) -> {
+                updateAccountProfile(accountId) {
+                    copy(color = preference.value as Int)
+                }
+            }
+
             else -> Outcome.failure(
                 SettingsError.NotFound(
                     message = "Unknown preference id: ${preference.id}",
