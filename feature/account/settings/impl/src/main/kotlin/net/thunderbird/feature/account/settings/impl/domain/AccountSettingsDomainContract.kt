@@ -1,5 +1,7 @@
 package net.thunderbird.feature.account.settings.impl.domain
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +31,11 @@ internal interface AccountSettingsDomainContract {
 
     interface ResourceProvider {
         interface GeneralResourceProvider {
+            fun profileUi(
+                name: String,
+                color: Int,
+            ): @Composable (Modifier) -> Unit
+
             val nameTitle: () -> String
             val nameDescription: () -> String?
             val nameIcon: () -> ImageVector?

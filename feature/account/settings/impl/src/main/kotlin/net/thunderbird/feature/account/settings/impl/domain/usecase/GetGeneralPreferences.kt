@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.Preference
+import net.thunderbird.core.ui.compose.preference.api.PreferenceDisplay
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
@@ -37,6 +38,13 @@ internal class GetGeneralPreferences(
 
     private fun generatePreferences(accountId: AccountId, profile: AccountProfile): ImmutableList<Preference> {
         return persistentListOf(
+            PreferenceDisplay.Custom(
+                id = GeneralPreference.PROFILE.generateId(accountId),
+                customUi = resourceProvider.profileUi(
+                    name = profile.name,
+                    color = profile.color,
+                ),
+            ),
             PreferenceSetting.Text(
                 id = GeneralPreference.NAME.generateId(accountId),
                 title = resourceProvider.nameTitle,
