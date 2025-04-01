@@ -1,4 +1,4 @@
-package com.fsck.k9.account
+package net.thunderbird.app.common.account
 
 import android.content.res.Resources
 import app.k9mail.legacy.account.AccountManager

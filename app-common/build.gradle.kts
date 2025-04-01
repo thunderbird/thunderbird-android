@@ -16,5 +16,8 @@ dependencies {
 
     implementation(projects.core.featureflags)
 
+    implementation(projects.feature.account.setup)
     implementation(projects.feature.migration.provider)
+
+    implementation(projects.mail.protocols.imap)
 }

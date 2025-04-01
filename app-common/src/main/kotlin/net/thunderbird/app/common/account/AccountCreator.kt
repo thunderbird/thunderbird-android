@@ -1,4 +1,4 @@
-package com.fsck.k9.account
+package net.thunderbird.app.common.account
 
 import android.content.Context
 import app.k9mail.core.common.mail.Protocols
@@ -7,9 +7,11 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.SpecialFolderSelection
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
+import com.fsck.k9.account.DeletePolicyProvider
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
@@ -18,13 +20,11 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isSendClientInfo
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.isUseCompression
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
-import com.fsck.k9.mailstore.SpecialFolderUpdater
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import app.k9mail.legacy.account.LegacyAccount as K9Account
 
 // TODO Move to feature/account/setup
 class AccountCreator(
@@ -99,9 +99,9 @@ class AccountCreator(
      * Set special folders by name.
      *
      * Since the folder list hasn't been synced yet, we don't have database IDs for the folders. So we use the same
-     * mechanism that is used when importing settings. See [SpecialFolderUpdater] for details.
+     * mechanism that is used when importing settings. See [com.fsck.k9.mailstore.SpecialFolderUpdater] for details.
      */
-    private fun K9Account.setSpecialFolders(specialFolders: SpecialFolderSettings) {
+    private fun LegacyAccount.setSpecialFolders(specialFolders: SpecialFolderSettings) {
         importedArchiveFolder = specialFolders.archiveSpecialFolderOption.toFolderServerId()
         archiveFolderSelection = specialFolders.archiveSpecialFolderOption.toFolderSelection()
 
@@ -141,7 +141,7 @@ class AccountCreator(
     }
 }
 
-private fun K9Account.setIncomingServerSettings(serverSettings: ServerSettings) {
+private fun LegacyAccount.setIncomingServerSettings(serverSettings: ServerSettings) {
     if (serverSettings.type == Protocols.IMAP) {
         useCompression = serverSettings.isUseCompression
         isSendClientInfoEnabled = serverSettings.isSendClientInfo
