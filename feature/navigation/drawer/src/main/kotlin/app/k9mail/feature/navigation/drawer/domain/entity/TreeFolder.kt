@@ -4,7 +4,7 @@ import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
 
 internal data class TreeFolder(
-    var value: DisplayFolder? = null
+    var value: DisplayFolder? = null,
 ) {
     companion object {
         fun createFromFolders(folders: List<DisplayFolder>, maxDepth: Int = 3): TreeFolder {
