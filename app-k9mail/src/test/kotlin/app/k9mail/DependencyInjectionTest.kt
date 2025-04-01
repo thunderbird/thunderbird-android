@@ -12,6 +12,7 @@ import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferPresenter
 import com.fsck.k9.ui.helper.SizeFormatter
+import net.thunderbird.feature.account.api.AccountId
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.annotation.KoinInternalApi
@@ -52,6 +53,7 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             withInstance(authStateStorage)
             withInstance(lifecycleOwner)
             withInstance(mock<WorkerParameters>())
+            withInstance(AccountId.create())
         }
     }
 }

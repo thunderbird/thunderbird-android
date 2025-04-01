@@ -14,10 +14,10 @@ internal fun PreferenceItemTextView(
 ) {
     PreferenceItemLayout(
         onClick = onClick,
-        icon = preference.icon,
+        icon = preference.icon(),
         modifier = modifier,
     ) {
-        TextTitleMedium(text = preference.title)
+        TextTitleMedium(text = preference.title())
         TextBodyMedium(text = preference.value)
     }
 }

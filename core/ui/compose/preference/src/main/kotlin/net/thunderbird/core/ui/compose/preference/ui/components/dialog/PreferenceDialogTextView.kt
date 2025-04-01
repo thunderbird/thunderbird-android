@@ -23,8 +23,8 @@ internal fun PreferenceDialogTextView(
     val currentPreference = remember { mutableStateOf(preference) }
 
     PreferenceDialogLayout(
-        title = preference.title,
-        icon = preference.icon,
+        title = preference.title(),
+        icon = preference.icon(),
         onConfirmClick = {
             onConfirmClick(currentPreference.value)
         },
@@ -32,7 +32,7 @@ internal fun PreferenceDialogTextView(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
     ) {
-        preference.description?.let {
+        preference.description()?.let {
             TextBodyMedium(text = it)
 
             Spacer(modifier = Modifier.height(MainTheme.spacings.default))

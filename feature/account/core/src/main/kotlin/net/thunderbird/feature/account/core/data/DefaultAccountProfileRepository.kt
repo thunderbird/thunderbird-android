@@ -5,18 +5,18 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
 import net.thunderbird.feature.account.api.profile.AccountProfileRepository
-import net.thunderbird.feature.account.core.AccountCoreExternalContract
+import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 
 class DefaultAccountProfileRepository(
-    private val localStore: AccountCoreExternalContract.AccountProfileLocalDataSource,
+    private val localDataSource: AccountProfileLocalDataSource,
 ) : AccountProfileRepository {
 
     override fun getById(accountId: AccountId): Flow<AccountProfile?> {
-        return localStore.getById(accountId)
+        return localDataSource.getById(accountId)
             .distinctUntilChanged()
     }
 
     override suspend fun update(accountProfile: AccountProfile) {
-        localStore.update(accountProfile)
+        localDataSource.update(accountProfile)
     }
 }
