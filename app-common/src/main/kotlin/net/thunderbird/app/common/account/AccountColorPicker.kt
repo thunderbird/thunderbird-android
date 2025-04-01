@@ -1,8 +1,8 @@
 package net.thunderbird.app.common.account
 
 import android.content.res.Resources
+import app.k9mail.core.ui.legacy.theme2.common.R
 import app.k9mail.legacy.account.AccountManager
-import com.fsck.k9.core.R
 
 class AccountColorPicker(
     private val accountManager: AccountManager,
