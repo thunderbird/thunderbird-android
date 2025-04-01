@@ -4,7 +4,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 
-object FakePreferenceData {
+internal object FakePreferenceData {
 
     val textPreference = PreferenceSetting.Text(
         id = "text",
@@ -14,7 +14,16 @@ object FakePreferenceData {
         value = "Value",
     )
 
+    val colorPreference = PreferenceSetting.Color(
+        id = "color",
+        icon = { Icons.Outlined.Delete },
+        title = { "Title" },
+        description = { "Description" },
+        value = 0xFFFF0000.toInt(),
+    )
+
     val preferences = persistentListOf(
         textPreference,
+        colorPreference,
     )
 }

@@ -27,5 +27,7 @@ internal fun PreferenceDialog(
                 modifier = modifier,
             )
         }
+
+        is PreferenceSetting.Color -> TODO()
     }
 }

@@ -19,5 +19,13 @@ internal fun PreferenceItem(
                 modifier = modifier,
             )
         }
+
+        is PreferenceSetting.Color -> {
+            PreferenceItemColorView(
+                preference = preference,
+                onClick = onClick,
+                modifier = modifier,
+            )
+        }
     }
 }
