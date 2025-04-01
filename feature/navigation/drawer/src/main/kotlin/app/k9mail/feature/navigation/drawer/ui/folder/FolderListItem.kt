@@ -33,6 +33,7 @@ internal fun FolderListItem(
     modifier: Modifier = Modifier,
     treeFolder: TreeFolder? = null,
     parentPrefix: String? = "",
+    indentationLevel: Int = 1,
 ) {
     var isExpanded = remember { mutableStateOf(false) }
 
@@ -44,33 +45,33 @@ internal fun FolderListItem(
         starredCount = treeFolder.getAllStarredMessageCount()
     }
 
-    NavigationDrawerItem(
-        label = mapFolderName(displayFolder, folderNameFormatter, parentPrefix),
-        selected = selected,
-        onClick = { onClick(displayFolder) },
-        modifier = modifier,
-        icon = {
-            Icon(
-                imageVector = mapFolderIcon(displayFolder),
-            )
-        },
-        badge = {
-            FolderListItemBadge(
-                unreadCount = unreadCount,
-                starredCount = starredCount,
-                showStarredCount = showStarredCount,
-                expandableState = if (treeFolder !== null && treeFolder.children.isNotEmpty()) isExpanded else null,
-            )
-        },
-    )
-
-    // Managing children
     Column(modifier = Modifier.fillMaxWidth().animateContentSize()) {
+        NavigationDrawerItem(
+            label = mapFolderName(displayFolder, folderNameFormatter, parentPrefix),
+            selected = selected,
+            onClick = { onClick(displayFolder) },
+            modifier = modifier,
+            icon = {
+                Icon(
+                    imageVector = mapFolderIcon(displayFolder),
+                )
+            },
+            badge = {
+                FolderListItemBadge(
+                    unreadCount = unreadCount,
+                    starredCount = starredCount,
+                    showStarredCount = showStarredCount,
+                    expandableState = if (treeFolder !== null && treeFolder.children.isNotEmpty()) isExpanded else null,
+                )
+            },
+        )
+
+        // Managing children
         if (!isExpanded.value) return
         if (treeFolder === null) return
         for (child in treeFolder.children) {
-            var displayParent = treeFolder.value
-            var displayChild = child.value
+            var displayParent = treeFolder.displayFolder
+            var displayChild = child.displayFolder
             if (displayChild === null) continue
             FolderListItem(
                 displayFolder = displayChild,
@@ -78,9 +79,10 @@ internal fun FolderListItem(
                 showStarredCount = showStarredCount,
                 onClick = { onClick(displayChild) },
                 folderNameFormatter = folderNameFormatter,
-                modifier = modifier.then(Modifier.padding(start = MainTheme.spacings.triple)),
+                modifier = Modifier.padding(start = MainTheme.spacings.triple * indentationLevel),
                 treeFolder = child,
                 parentPrefix = if (displayParent is DisplayAccountFolder) displayParent.folder.name else null,
+                indentationLevel = indentationLevel + 1,
             )
         }
     }

@@ -38,9 +38,9 @@ internal fun FolderList(
     ) {
         items(
             items = rootFolder.children,
-            key = { it.value?.id ?: '0' },
+            key = { it.displayFolder?.id ?: '0' },
         ) { folder ->
-            val currentDisplayFolder = folder.value
+            val currentDisplayFolder = folder.displayFolder
             if (currentDisplayFolder is DisplayAccountFolder) {
                 FolderListItem(
                     displayFolder = currentDisplayFolder,
