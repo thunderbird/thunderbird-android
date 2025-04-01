@@ -19,4 +19,6 @@ class FakeAccountDefaultsProvider : AccountDefaultsProvider {
             identities.add(identity)
         }
     }
+
+    override fun applyOverwrites(account: LegacyAccount) = Unit
 }

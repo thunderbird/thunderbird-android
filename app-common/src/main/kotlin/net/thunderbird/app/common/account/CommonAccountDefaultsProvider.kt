@@ -39,7 +39,22 @@ class CommonAccountDefaultsProvider(
 
     override fun applyDefaults(account: LegacyAccount) = with(account) {
         applyLegacyDefaults()
-        applyNotificationDefaults()
+    }
+
+    override fun applyOverwrites(account: LegacyAccount) = with(account) {
+        isNotifyNewMail = featureFlagProvider.provide(
+            "email_notification_default".toFeatureFlagKey(),
+        ).whenEnabledOrNot(
+            onEnabled = { true },
+            onDisabledOrUnavailable = { false },
+        )
+
+        isNotifySelfNewMail = featureFlagProvider.provide(
+            "email_notification_default".toFeatureFlagKey(),
+        ).whenEnabledOrNot(
+            onEnabled = { true },
+            onDisabledOrUnavailable = { false },
+        )
     }
 
     @Suppress("LongMethod")
@@ -93,7 +108,6 @@ class CommonAccountDefaultsProvider(
         setSentFolderId(null, SpecialFolderSelection.AUTOMATIC)
         setSpamFolderId(null, SpecialFolderSelection.AUTOMATIC)
         setTrashFolderId(null, SpecialFolderSelection.AUTOMATIC)
-        setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
 
         identities = ArrayList<Identity>()
 
@@ -114,21 +128,5 @@ class CommonAccountDefaultsProvider(
         }
 
         resetChangeMarkers()
-    }
-
-    private fun LegacyAccount.applyNotificationDefaults() {
-        isNotifyNewMail = featureFlagProvider.provide(
-            "email_notification_default".toFeatureFlagKey(),
-        ).whenEnabledOrNot(
-            onEnabled = { true },
-            onDisabledOrUnavailable = { false },
-        )
-
-        isNotifySelfNewMail = featureFlagProvider.provide(
-            "email_notification_default".toFeatureFlagKey(),
-        ).whenEnabledOrNot(
-            onEnabled = { true },
-            onDisabledOrUnavailable = { false },
-        )
     }
 }

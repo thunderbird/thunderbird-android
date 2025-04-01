@@ -1,7 +1,19 @@
 package app.k9mail.legacy.account
 
-fun interface AccountDefaultsProvider {
+interface AccountDefaultsProvider {
+    /**
+     * Apply default values to the account.
+     *
+     * This method should only be called when creating a new account.
+     */
     fun applyDefaults(account: LegacyAccount)
+
+    /**
+     * Apply any additional default values to the account.
+     *
+     * This method should be called when updating an existing account.
+     */
+    fun applyOverwrites(account: LegacyAccount)
 
     companion object {
         const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072
