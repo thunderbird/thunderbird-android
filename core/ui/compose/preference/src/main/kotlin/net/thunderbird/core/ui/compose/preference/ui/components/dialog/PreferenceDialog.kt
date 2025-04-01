@@ -28,6 +28,14 @@ internal fun PreferenceDialog(
             )
         }
 
-        is PreferenceSetting.Color -> TODO()
+        is PreferenceSetting.Color -> {
+            PreferenceDialogColorView(
+                preference = preference,
+                onConfirmClick = onConfirmClick,
+                onDismissClick = onDismissClick,
+                onDismissRequest = onDismissRequest,
+                modifier = modifier,
+            )
+        }
     }
 }

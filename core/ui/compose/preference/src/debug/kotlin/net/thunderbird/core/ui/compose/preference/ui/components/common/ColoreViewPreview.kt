@@ -14,3 +14,15 @@ internal fun ColorViewPreview() {
         )
     }
 }
+
+@Composable
+@Preview(showBackground = true)
+internal fun ColorViewWithSelectionPreview() {
+    PreviewWithThemes {
+        ColorView(
+            color = 0xFFFF0000.toInt(),
+            onClick = null,
+            isSelected = true,
+        )
+    }
+}

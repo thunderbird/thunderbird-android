@@ -37,6 +37,7 @@ sealed interface PreferenceSetting<T> : Preference {
         val description: () -> String? = { null },
         val icon: () -> ImageVector? = { null },
         override val value: Int,
+        val colors: List<Int>,
     ) : PreferenceSetting<Int> {
         @IgnoredOnParcel
         override val requiresEditView: Boolean = true
