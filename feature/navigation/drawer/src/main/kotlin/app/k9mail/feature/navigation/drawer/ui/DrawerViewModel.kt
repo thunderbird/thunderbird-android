@@ -7,6 +7,7 @@ import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccount
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayAccountFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayFolder
 import app.k9mail.feature.navigation.drawer.domain.entity.DisplayUnifiedFolder
+import app.k9mail.feature.navigation.drawer.domain.entity.TreeFolder
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Effect
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.Event
 import app.k9mail.feature.navigation.drawer.ui.DrawerContract.State
@@ -30,6 +31,7 @@ internal class DrawerViewModel(
     private val saveDrawerConfig: UseCase.SaveDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
+    private val getTreeFolders: UseCase.GetTreeFolders,
     private val syncAccount: UseCase.SyncAccount,
     private val syncAllAccounts: UseCase.SyncAllAccounts,
     initialState: State = State(),
@@ -85,17 +87,18 @@ internal class DrawerViewModel(
             .flatMapLatest { (accountId, showUnifiedInbox) ->
                 getDisplayFoldersForAccount(accountId, showUnifiedInbox)
             }.collect { folders ->
-                updateFolders(folders)
+                updateFolders(folders, getTreeFolders(folders, 3))
             }
     }
 
-    private fun updateFolders(displayFolders: List<DisplayFolder>) {
+    private fun updateFolders(displayFolders: List<DisplayFolder>, rootFolder: TreeFolder) {
         val selectedFolder = displayFolders.find {
             it.id == state.value.selectedFolderId
         } ?: displayFolders.firstOrNull()
 
         updateState {
             it.copy(
+                rootFolder = rootFolder,
                 folders = displayFolders.toImmutableList(),
                 selectedFolderId = selectedFolder?.id,
             )
