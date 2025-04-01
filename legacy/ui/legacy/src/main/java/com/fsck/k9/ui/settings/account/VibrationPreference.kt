@@ -5,9 +5,9 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
-import app.k9mail.legacy.notification.VibratePattern
 import com.fsck.k9.ui.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import net.thunderbird.feature.notification.VibratePattern
 
 /**
  * Preference to configure the vibration pattern used for a notification (enable/disable, pattern, repeat count).

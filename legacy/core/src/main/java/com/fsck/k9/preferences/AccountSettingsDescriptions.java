@@ -10,8 +10,6 @@ import java.util.TreeMap;
 import android.content.Context;
 
 import app.k9mail.legacy.account.AccountDefaultsProvider;
-import app.k9mail.legacy.notification.NotificationLight;
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.account.DeletePolicy;
 import app.k9mail.legacy.account.Expunge;
 import app.k9mail.legacy.account.FolderMode;
@@ -38,6 +36,7 @@ import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo80;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo81;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo91;
+import net.thunderbird.feature.notification.NotificationLight;
 
 import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;
 import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_READ_RECEIPT;

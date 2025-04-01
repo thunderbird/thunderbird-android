@@ -23,9 +23,6 @@ import app.k9mail.legacy.account.Identity
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.ShowPictures
 import app.k9mail.legacy.account.SpecialFolderSelection
-import app.k9mail.legacy.notification.NotificationLight
-import app.k9mail.legacy.notification.NotificationSettings
-import app.k9mail.legacy.notification.NotificationVibration
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -33,6 +30,9 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
+import net.thunderbird.feature.notification.NotificationLight
+import net.thunderbird.feature.notification.NotificationSettings
+import net.thunderbird.feature.notification.NotificationVibration
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
