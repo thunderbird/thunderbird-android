@@ -75,7 +75,7 @@ internal fun DrawerContent(
                         .fillMaxSize(),
                 ) {
                     FolderList(
-                        folders = state.folders,
+                        rootFolder = state.rootFolder,
                         selectedFolder = state.folders.firstOrNull { it.id == state.selectedFolderId },
                         onFolderClick = { folder ->
                             onEvent(Event.OnFolderClick(folder))

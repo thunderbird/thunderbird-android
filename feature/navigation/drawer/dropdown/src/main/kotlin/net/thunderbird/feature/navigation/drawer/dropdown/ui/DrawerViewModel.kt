@@ -19,6 +19,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayA
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.TreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
@@ -36,6 +37,7 @@ internal class DrawerViewModel(
     private val saveDrawerConfig: UseCase.SaveDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
+    private val getTreeFolders: UseCase.GetTreeFolders,
     private val syncAccount: UseCase.SyncAccount,
     private val syncAllAccounts: UseCase.SyncAllAccounts,
     initialState: State = State(),
@@ -91,17 +93,18 @@ internal class DrawerViewModel(
             .flatMapLatest { (accountId, showUnifiedInbox) ->
                 getDisplayFoldersForAccount(accountId, showUnifiedInbox)
             }.collect { folders ->
-                updateFolders(folders)
+                updateFolders(folders, getTreeFolders(folders, 3))
             }
     }
 
-    private fun updateFolders(displayFolders: List<DisplayFolder>) {
+    private fun updateFolders(displayFolders: List<DisplayFolder>, rootFolder: TreeFolder) {
         val selectedFolder = displayFolders.find {
             it.id == state.value.selectedFolderId
         } ?: displayFolders.firstOrNull()
 
         updateState {
             it.copy(
+                rootFolder = rootFolder,
                 folders = displayFolders.toImmutableList(),
                 selectedFolderId = selectedFolder?.id,
             )

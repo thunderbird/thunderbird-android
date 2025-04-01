@@ -4,9 +4,10 @@ import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract
+import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.TreeFolder
 
 internal interface DrawerContract {
 
@@ -14,13 +15,14 @@ internal interface DrawerContract {
 
     @Stable
     data class State(
-        val config: NavigationDrawerExternalContract.DrawerConfig = NavigationDrawerExternalContract.DrawerConfig(
+        val config: DrawerConfig = DrawerConfig(
             showUnifiedFolders = false,
             showStarredCount = false,
             showAccountSelector = true,
         ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
         val selectedAccountId: String? = null,
+        val rootFolder: TreeFolder = TreeFolder(),
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
         val selectedFolderId: String? = null,
         val isLoading: Boolean = false,

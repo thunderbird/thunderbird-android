@@ -6,6 +6,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayA
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.TreeFolder
 
 internal interface DomainContract {
 
@@ -24,6 +25,10 @@ internal interface DomainContract {
 
         fun interface GetDisplayFoldersForAccount {
             operator fun invoke(accountId: String, includeUnifiedFolders: Boolean): Flow<List<DisplayFolder>>
+        }
+
+        fun interface GetTreeFolders {
+            operator fun invoke(folders: List<DisplayFolder>, maxDepth: Int): TreeFolder
         }
 
         /**
