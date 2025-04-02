@@ -7,4 +7,5 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Naučte sa ako aktualizovať Thunderbird.</string>
     <string name="onboarding_migration_thunderbird_new_account_button_text">Pridať teraz e-mailové konto</string>
     <string name="onboarding_migration_thunderbird_link_open_error">Nenašla sa aplikácia na otvorenie odkazu.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">V počítačovej verzií Thunderbird choďte na:</string>
 </resources>

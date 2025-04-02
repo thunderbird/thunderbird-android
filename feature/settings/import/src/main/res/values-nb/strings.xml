@@ -37,4 +37,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 støttes ikke med denne tilbyderen.</string>
     <string name="settings_import_oauth_error_browser_not_found">Fant ikke noen nettleser å bruke for å innvilge tilgang til kontoen din.</string>
     <string name="settings_import_general_settings_item">Generelle innstillinger</string>
+    <string name="settings_import_pick_app_button">Importer fra app</string>
+    <string name="settings_import_pick_app_dialog_title">Importer fra app</string>
+    <string name="settings_import_scan_qr_code_button">Skann QR-kode</string>
+    <string name="settings_import_app_version_not_supported">Appversjonen støttes ikke.</string>
 </resources>

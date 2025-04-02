@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_welcome_import_button">পছন্দসমূহ আমদানি করো</string>
+    <string name="onboarding_welcome_developed_by">MZLA Technologies এর কর্মশীল এক দল ও বৈশ্বিক অবদানকারীদের দ্বারা তৈরি। Mozilla পরিবারের অন্তর্ভুক্ত।</string>
+    <string name="onboarding_welcome_text">অ্যান্ড্রয়েডের জন্য একটি মুক্ত উৎস, গোপনীয়তা কেন্দ্রিক এবং বিজ্ঞাপন-মুক্ত ইমেইল অ্যাপ।</string>
+    <string name="onboarding_welcome_start_button">চলো শুরু করি</string>
+</resources>

@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_error_message">Cha b’ urrainn dhuinn roghainnean an fhrithealaiche a shàbhaladh</string>
+    <string name="account_edit_save_server_settings_loading_message">A’ sàbhaladh roghainnean an fhrithealaiche…</string>
+    <string name="account_edit_save_server_settings_success_message">Chaidh roghainnean an fhrithealaiche a shàbhaladh</string>
+</resources>

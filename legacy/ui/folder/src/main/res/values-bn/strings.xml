@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="special_mailbox_name_sent">পাঠানো হয়েছে</string>
+    <string name="special_mailbox_name_inbox">ইনবক্স</string>
+    <string name="special_mailbox_name_trash">ঝুড়ি</string>
+    <string name="special_mailbox_name_outbox">আউটবক্স</string>
+    <string name="special_mailbox_name_drafts">খসড়া</string>
+</resources>

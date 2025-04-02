@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_button_advanced">Adhartach</string>
+    <string name="account_server_certificate_unknown_error_description_format">Mhothaich an aplacaid do rud a dh’fhaodadh a bhith na cunnart tèarainteachd is cha do choilean e an ceangal ri <xliff:g id="serverName">%s</xliff:g>.\nMa leanas tu air adhart, dh’fhaoidte gum b’ urrainn do luchd-ionnsaigh fiosrachadh a ghoid ort, mar fhaclan-faire no post-d.</string>
+    <string name="account_server_certificate_warning_title">Rabhadh</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Mearachd an teisteanais</string>
+    <string name="account_server_certificate_button_back">Air ais (mholamaid seo)</string>
+    <string name="account_server_certificate_button_continue">Tha mi a’ tuigsinn a’ chunnairt ach air adhart leam</string>
+    <string name="account_server_certificate_section_title">Teisteanas an fhrithealaiche</string>
+    <string name="account_server_certificate_subject_alternative_names">Subject Alternative Names</string>
+    <string name="account_server_certificate_not_valid_before">Cha bhi seo dligheach ron</string>
+    <string name="account_server_certificate_not_valid_after">Cha bhi seo dligheach an dèidh</string>
+    <string name="account_server_certificate_subject">An cuspair</string>
+    <string name="account_server_certificate_fingerprints_section">Lorgan-meòir</string>
+    <string name="account_server_certificate_issuer">Am foillsichear</string>
+</resources>

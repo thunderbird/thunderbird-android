@@ -1,2 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="funding_googleplay_contribution_header_title">Støtt Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Gi én gang</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Ikke nå</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Prøv igjen</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Fortsett til betaling</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Månedlig</string>
+    <string name="funding_googleplay_contribution_error_unknown">Ukjent feil</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird er gratis og har åpen kildekode.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Vi viser ikke reklamer.</string>
+    <string name="funding_googleplay_contribution_title">Støtt Thunderbird</string>
+    <string name="funding_googleplay_contribution_error_show_more">Vis flere detaljer</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Avvis feilmeldingen</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Essensielt bidrag</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Vi selger ikke dine data.</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Endre månedlig betaling</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Betydelig bidrag</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Stort bidrag</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Eksepsjonelt bidrag</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Verdsatt bidrag</string>
+    <string name="funding_googleplay_contribution_reminder_title">Støtt Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Ja</string>
+</resources>

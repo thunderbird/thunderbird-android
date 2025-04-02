@@ -106,7 +106,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nová zpráva</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nové zprávy</item>
-        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> pro účet <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Odpovědět</string>
@@ -644,7 +644,7 @@
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Stahování %1$d z %2$d výsledku</item>
         <item quantity="few">Stahování %1$d ze %2$d výsledků</item>
-        <item quantity="many">Stahování %1$d z %2$d výsledků</item>
+        <item quantity="other">Stahování %1$d z %2$d výsledků</item>
     </plurals>
     <string name="remote_search_error">Vzdálené vyhledávání se nezdařilo</string>
     <string name="account_settings_search">Hledání</string>
