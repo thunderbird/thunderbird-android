@@ -10,9 +10,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.notification.NotificationLight
-import app.k9mail.legacy.notification.NotificationSettings
 import java.util.concurrent.Executor
+import net.thunderbird.feature.notification.NotificationLight
+import net.thunderbird.feature.notification.NotificationSettings
 import timber.log.Timber
 
 class NotificationChannelManager(

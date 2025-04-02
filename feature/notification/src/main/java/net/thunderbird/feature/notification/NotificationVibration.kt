@@ -1,4 +1,4 @@
-package app.k9mail.legacy.notification
+package net.thunderbird.feature.notification
 
 data class NotificationVibration(
     val isEnabled: Boolean,

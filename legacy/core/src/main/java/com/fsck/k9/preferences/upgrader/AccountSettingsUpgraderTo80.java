@@ -4,9 +4,9 @@ package com.fsck.k9.preferences.upgrader;
 import java.util.Map;
 
 import app.k9mail.legacy.di.DI;
-import app.k9mail.legacy.notification.NotificationLight;
 import com.fsck.k9.notification.NotificationLightDecoder;
 import com.fsck.k9.preferences.SettingsUpgrader;
+import net.thunderbird.feature.notification.NotificationLight;
 
 
 /**

@@ -1,8 +1,8 @@
 package app.k9mail.legacy.account
 
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import app.k9mail.legacy.notification.NotificationSettings
 import com.fsck.k9.mail.ServerSettings
+import net.thunderbird.feature.notification.NotificationSettings
 
 /**
  * A immutable wrapper for the [LegacyAccount] class.

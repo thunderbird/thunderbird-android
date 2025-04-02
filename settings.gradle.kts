@@ -162,7 +162,6 @@ include(
     ":legacy:di",
     ":legacy:mailstore",
     ":legacy:message",
-    ":legacy:notification",
     ":legacy:preferences",
     ":legacy:search",
     ":legacy:storage",
@@ -223,4 +222,5 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
 }
 include(":core:android:logging")
 include(":core:mail:mailserver")
+include(":feature:notification")
 include(":core:ui:theme:manager")

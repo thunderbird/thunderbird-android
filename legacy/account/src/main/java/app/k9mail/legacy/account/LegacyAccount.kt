@@ -1,11 +1,11 @@
 package app.k9mail.legacy.account
 
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import app.k9mail.legacy.notification.NotificationSettings
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
 import java.util.Date
+import net.thunderbird.feature.notification.NotificationSettings
 
 // This needs to be in sync with K9.DEFAULT_VISIBLE_LIMIT
 const val DEFAULT_VISIBLE_LIMIT = 25
@@ -580,7 +580,11 @@ open class LegacyAccount(
     }
 
     @Synchronized
-    fun updateNotificationSettings(block: (oldNotificationSettings: NotificationSettings) -> NotificationSettings) {
+    fun updateNotificationSettings(
+        block: (
+            oldNotificationSettings: NotificationSettings,
+        ) -> NotificationSettings,
+    ) {
         notificationSettings = block(notificationSettings)
     }
 

@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.legacy.notification"
+    namespace = "net.thunderbird.feature.notification"
 }

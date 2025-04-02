@@ -1,4 +1,4 @@
-package app.k9mail.legacy.notification
+package net.thunderbird.feature.notification
 
 /**
  * Describes how a notification should behave.
