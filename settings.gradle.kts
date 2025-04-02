@@ -171,7 +171,6 @@ include(
     ":legacy:ui:account",
     ":legacy:ui:folder",
     ":legacy:ui:legacy",
-    ":legacy:ui:theme",
 )
 
 include(
@@ -224,3 +223,4 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
 }
 include(":core:android:logging")
 include(":core:mail:mailserver")
+include(":core:ui:theme:manager")

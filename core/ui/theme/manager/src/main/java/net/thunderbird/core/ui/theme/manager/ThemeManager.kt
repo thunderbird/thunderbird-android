@@ -1,4 +1,4 @@
-package app.k9mail.legacy.ui.theme
+package net.thunderbird.core.ui.theme.manager
 
 import android.content.Context
 import android.content.res.Configuration
