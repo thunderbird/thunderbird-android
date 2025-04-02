@@ -571,7 +571,7 @@
     <string name="settings_export_failure">அமைப்புகளை ஏற்றுமதி செய்யத் தவறிவிட்டது</string>
     <string name="remote_search_unavailable_no_network">சேவையக தேடலுக்கு பிணைய இணைப்பு தேவை.</string>
     <string name="global_settings_threaded_view_summary">உரையாடல் மூலம் குழு செய்திகள்</string>
-    <string name="upgrade_database_format">கணக்கின் தரவுத்தளத்தை மேம்படுத்துதல்</string>
+    <string name="upgrade_database_format">கணக்கின் தரவுத்தளத்தை மேம்படுத்துதல்: <xliff:g id="account">%s</xliff:g></string>
     <string name="mark_all_as_read">அனைத்தையும் படித்தபடி குறிக்கவும்</string>
     <string name="unknown_recipient">&lt;அறியப்படாத பெறுநர்&gt;</string>
     <string name="address_type_mobile">மொபைல்</string>
