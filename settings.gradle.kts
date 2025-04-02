@@ -224,3 +224,4 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
 }
 include(":core:android:logging")
 include(":core:mail:mailserver")
+include(":core:ui:theme:manager")
