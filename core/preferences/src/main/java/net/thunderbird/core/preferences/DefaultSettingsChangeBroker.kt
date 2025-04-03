@@ -1,4 +1,4 @@
-package app.k9mail.legacy.preferences
+package net.thunderbird.core.preferences
 
 class DefaultSettingsChangeBroker(
     private val subscribers: MutableSet<SettingsChangeSubscriber> = mutableSetOf(),

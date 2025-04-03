@@ -9,6 +9,7 @@ dependencies {
     api(projects.library.htmlCleaner)
     api(projects.core.mail.mailserver)
     api(projects.core.android.common)
+    api(projects.core.preferences)
     api(projects.core.android.logging)
     api(projects.core.android.network)
     api(projects.core.mail.folder.api)
@@ -19,7 +20,6 @@ dependencies {
     api(projects.legacy.mailstore)
     api(projects.legacy.message)
     api(projects.feature.notification)
-    api(projects.legacy.preferences)
     api(projects.legacy.search)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)

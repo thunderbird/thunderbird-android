@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.legacy.preferences"
+    namespace = "net.thunderbird.core.preferences"
 }

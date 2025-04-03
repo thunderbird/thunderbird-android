@@ -1,4 +1,4 @@
-package app.k9mail.legacy.preferences
+package net.thunderbird.core.preferences
 
 /**
  * Stores a snapshot of the app's general settings.

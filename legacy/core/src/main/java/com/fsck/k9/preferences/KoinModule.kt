@@ -1,11 +1,11 @@
 package com.fsck.k9.preferences
 
 import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.preferences.DefaultSettingsChangeBroker
-import app.k9mail.legacy.preferences.GeneralSettingsManager
-import app.k9mail.legacy.preferences.SettingsChangeBroker
-import app.k9mail.legacy.preferences.SettingsChangePublisher
 import com.fsck.k9.Preferences
+import net.thunderbird.core.preferences.DefaultSettingsChangeBroker
+import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preferences.SettingsChangeBroker
+import net.thunderbird.core.preferences.SettingsChangePublisher
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.binds
@@ -85,5 +85,10 @@ val preferencesModule = module {
     }
 
     single { DefaultSettingsChangeBroker() }
-        .binds(arrayOf(SettingsChangePublisher::class, SettingsChangeBroker::class))
+        .binds(
+            arrayOf(
+                SettingsChangePublisher::class,
+                SettingsChangeBroker::class,
+            ),
+        )
 }

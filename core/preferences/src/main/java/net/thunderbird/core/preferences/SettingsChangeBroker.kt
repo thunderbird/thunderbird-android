@@ -1,4 +1,4 @@
-package app.k9mail.legacy.preferences
+package net.thunderbird.core.preferences
 
 /**
  * Broker to manage subscribers and notify them about changes in the settings, when the
