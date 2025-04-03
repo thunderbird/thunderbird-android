@@ -1,11 +1,8 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,7 +11,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 
 @Composable
-internal fun SettingList(
+internal fun FolderSettingList(
     onManageFoldersClick: () -> Unit,
     onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -22,18 +19,17 @@ internal fun SettingList(
     Column(
         modifier = modifier
             .padding(vertical = MainTheme.spacings.default)
-            .windowInsetsPadding(WindowInsets.navigationBars)
             .fillMaxWidth(),
     ) {
         SettingListItem(
             label = stringResource(R.string.navigation_drawer_dropdown_action_manage_folders),
             onClick = onManageFoldersClick,
-            imageVector = Icons.Outlined.FolderManaged,
+            icon = Icons.Outlined.FolderManaged,
         )
         SettingListItem(
             label = stringResource(id = R.string.navigation_drawer_dropdown_action_settings),
             onClick = onSettingsClick,
-            imageVector = Icons.Outlined.Settings,
+            icon = Icons.Outlined.Settings,
         )
     }
 }

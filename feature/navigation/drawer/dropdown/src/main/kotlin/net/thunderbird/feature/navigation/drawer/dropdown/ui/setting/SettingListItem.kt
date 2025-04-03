@@ -10,7 +10,7 @@ import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerI
 internal fun SettingListItem(
     label: String,
     onClick: () -> Unit,
-    imageVector: ImageVector,
+    icon: ImageVector,
     modifier: Modifier = Modifier,
 ) {
     NavigationDrawerItem(
@@ -20,7 +20,7 @@ internal fun SettingListItem(
         selected = false,
         icon = {
             Icon(
-                imageVector = imageVector,
+                imageVector = icon,
             )
         },
     )

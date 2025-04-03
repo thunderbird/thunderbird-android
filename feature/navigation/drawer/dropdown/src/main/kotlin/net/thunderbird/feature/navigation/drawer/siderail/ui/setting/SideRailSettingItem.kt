@@ -1,4 +1,4 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
+package net.thunderbird.feature.navigation.drawer.siderail.ui.setting
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,7 +14,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
-internal fun SettingItem(
+internal fun SideRailSettingItem(
     icon: ImageVector,
     label: String,
     onClick: () -> Unit,
