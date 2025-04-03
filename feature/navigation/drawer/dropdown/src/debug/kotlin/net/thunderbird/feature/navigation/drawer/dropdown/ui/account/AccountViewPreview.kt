@@ -12,43 +12,19 @@ internal fun AccountViewPreview() {
         AccountView(
             account = DISPLAY_ACCOUNT,
             onClick = {},
-            showAvatar = false,
+            showAccount = true,
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountViewWithColorPreview() {
+internal fun AccountViewWithoutAccountPreview() {
     PreviewWithThemes {
         AccountView(
             account = DISPLAY_ACCOUNT,
             onClick = {},
-            showAvatar = false,
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun AccountViewWithLongDisplayName() {
-    PreviewWithThemes {
-        AccountView(
-            account = DISPLAY_ACCOUNT,
-            onClick = {},
-            showAvatar = false,
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun AccountViewWithLongEmailPreview() {
-    PreviewWithThemes {
-        AccountView(
-            account = DISPLAY_ACCOUNT,
-            onClick = {},
-            showAvatar = false,
+            showAccount = false,
         )
     }
 }

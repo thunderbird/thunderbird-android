@@ -16,11 +16,11 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountView
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.DRAWER_WIDTH
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getAdditionalWidth
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
 import net.thunderbird.feature.navigation.drawer.siderail.ui.account.SideRailAccountList
+import net.thunderbird.feature.navigation.drawer.siderail.ui.account.SideRailAccountView
 import net.thunderbird.feature.navigation.drawer.siderail.ui.setting.SideRailSettingList
 
 @Composable
@@ -41,7 +41,7 @@ internal fun SideRailDrawerContent(
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
         Column {
             selectedAccount?.let {
-                AccountView(
+                SideRailAccountView(
                     account = selectedAccount,
                     onClick = { onEvent(Event.OnAccountViewClick(selectedAccount)) },
                     showAvatar = state.config.showAccountSelector,

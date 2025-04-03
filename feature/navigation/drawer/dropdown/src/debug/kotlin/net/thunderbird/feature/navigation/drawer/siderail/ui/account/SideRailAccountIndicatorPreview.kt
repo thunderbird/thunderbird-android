@@ -1,4 +1,4 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
+package net.thunderbird.feature.navigation.drawer.siderail.ui.account
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -11,9 +11,9 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountIndicatorPreview() {
+internal fun SideRailAccountIndicatorPreview() {
     PreviewWithThemes {
-        AccountIndicator(
+        SideRailAccountIndicator(
             accountColor = 0,
             modifier = Modifier.height(MainTheme.spacings.double),
         )
@@ -22,9 +22,9 @@ internal fun AccountIndicatorPreview() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountIndicatorPreviewWithYellowAccountColor() {
+internal fun SideRailAccountIndicatorPreviewWithYellowAccountColor() {
     PreviewWithThemes {
-        AccountIndicator(
+        SideRailAccountIndicator(
             accountColor = Color.Yellow.toArgb(),
             modifier = Modifier.height(MainTheme.spacings.double),
         )
@@ -33,9 +33,9 @@ internal fun AccountIndicatorPreviewWithYellowAccountColor() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountIndicatorPreviewWithGrayAccountColor() {
+internal fun SideRailAccountIndicatorPreviewWithGrayAccountColor() {
     PreviewWithThemes {
-        AccountIndicator(
+        SideRailAccountIndicator(
             accountColor = Color.Gray.toArgb(),
             modifier = Modifier.height(MainTheme.spacings.double),
         )
