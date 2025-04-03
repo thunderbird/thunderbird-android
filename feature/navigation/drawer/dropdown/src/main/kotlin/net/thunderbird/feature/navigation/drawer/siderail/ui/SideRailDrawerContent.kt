@@ -1,4 +1,4 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.ui
+package net.thunderbird.feature.navigation.drawer.siderail.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
@@ -16,12 +16,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountView
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.DRAWER_WIDTH
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getAdditionalWidth
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.SettingList
+import net.thunderbird.feature.navigation.drawer.siderail.ui.account.SideRailAccountList
+import net.thunderbird.feature.navigation.drawer.siderail.ui.setting.SideRailSettingList
 
 @Composable
 internal fun SideRailDrawerContent(
@@ -53,7 +53,7 @@ internal fun SideRailDrawerContent(
                 AnimatedVisibility(
                     visible = state.config.showAccountSelector,
                 ) {
-                    AccountList(
+                    SideRailAccountList(
                         accounts = state.accounts,
                         selectedAccount = selectedAccount,
                         onAccountClick = { onEvent(Event.OnAccountClick(it)) },
@@ -76,7 +76,7 @@ internal fun SideRailDrawerContent(
                         modifier = Modifier.weight(1f),
                     )
                     DividerHorizontal()
-                    SettingList(
+                    SideRailSettingList(
                         onAccountSelectorClick = { onEvent(Event.OnAccountSelectorClick) },
                         onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
                         showAccountSelector = state.config.showAccountSelector,

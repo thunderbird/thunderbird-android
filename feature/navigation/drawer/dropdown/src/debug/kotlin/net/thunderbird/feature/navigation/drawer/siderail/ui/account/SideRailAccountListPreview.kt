@@ -1,4 +1,4 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
+package net.thunderbird.feature.navigation.drawer.siderail.ui.account
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -8,14 +8,15 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_AC
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountListPreview() {
+internal fun SideRailAccountListPreview() {
     PreviewWithTheme {
-        AccountList(
+        SideRailAccountList(
             accounts = persistentListOf(
                 DISPLAY_ACCOUNT,
             ),
             selectedAccount = null,
             onAccountClick = { },
+            onSettingsClick = { },
             onSyncAllAccountsClick = { },
         )
     }
@@ -23,14 +24,15 @@ internal fun AccountListPreview() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountListWithSelectedPreview() {
+internal fun SideRailAccountListWithSelectedPreview() {
     PreviewWithTheme {
-        AccountList(
+        SideRailAccountList(
             accounts = persistentListOf(
                 DISPLAY_ACCOUNT,
             ),
             selectedAccount = DISPLAY_ACCOUNT,
             onAccountClick = { },
+            onSettingsClick = { },
             onSyncAllAccountsClick = { },
         )
     }

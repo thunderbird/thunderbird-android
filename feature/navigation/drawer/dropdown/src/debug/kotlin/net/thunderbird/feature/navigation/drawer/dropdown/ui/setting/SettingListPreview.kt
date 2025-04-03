@@ -9,21 +9,8 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 internal fun SettingListPreview() {
     PreviewWithTheme {
         SettingList(
-            onAccountSelectorClick = {},
             onManageFoldersClick = {},
-            showAccountSelector = false,
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun SettingListShowAccountSelectorPreview() {
-    PreviewWithTheme {
-        SettingList(
-            onAccountSelectorClick = {},
-            onManageFoldersClick = {},
-            showAccountSelector = true,
+            onSettingsClick = {},
         )
     }
 }
