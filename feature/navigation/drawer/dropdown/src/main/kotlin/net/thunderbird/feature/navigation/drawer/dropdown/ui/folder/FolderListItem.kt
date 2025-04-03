@@ -36,7 +36,7 @@ internal fun FolderListItem(
     selectedFolderId: String? = null,
     indentationLevel: Int = 1,
 ) {
-    var isExpanded = rememberSaveable { mutableStateOf(false) }
+    val isExpanded = rememberSaveable { mutableStateOf(false) }
 
     var unreadCount = displayFolder.unreadMessageCount
     var starredCount = displayFolder.starredMessageCount

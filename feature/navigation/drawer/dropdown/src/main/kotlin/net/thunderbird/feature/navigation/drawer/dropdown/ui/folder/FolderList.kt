@@ -31,8 +31,7 @@ internal fun FolderList(
 
     LazyColumn(
         state = listState,
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(vertical = MainTheme.spacings.default),
     ) {
         items(
