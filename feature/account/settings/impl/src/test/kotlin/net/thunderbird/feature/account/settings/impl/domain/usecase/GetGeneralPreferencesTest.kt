@@ -8,6 +8,7 @@ import kotlin.test.Test
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.ui.compose.preference.api.PreferenceDisplay
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
@@ -37,6 +38,13 @@ internal class GetGeneralPreferencesTest {
             val success = outcome as Outcome.Success
             assertThat(success.data).isEqualTo(
                 persistentListOf(
+                    PreferenceDisplay.Custom(
+                        id = "${accountId.value}-general-profile",
+                        customUi = resourceProvider.profileUi(
+                            name = accountProfile.name,
+                            color = accountProfile.color,
+                        ),
+                    ),
                     PreferenceSetting.Text(
                         id = "${accountId.value}-general-name",
                         title = resourceProvider.nameTitle,

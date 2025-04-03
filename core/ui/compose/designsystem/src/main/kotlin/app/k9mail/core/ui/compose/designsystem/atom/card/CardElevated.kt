@@ -7,15 +7,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.material3.Card as Material3Card
 
 @Composable
-fun CardFilled(
+fun CardElevated(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Material3Card(
         modifier = modifier,
-        shape = CardDefaults.shape,
-        colors = CardDefaults.cardColors(),
-        elevation = CardDefaults.cardElevation(),
+        shape = CardDefaults.elevatedShape,
+        colors = CardDefaults.elevatedCardColors(),
+        elevation = CardDefaults.elevatedCardElevation(),
         content = content,
     )
 }
