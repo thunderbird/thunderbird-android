@@ -58,7 +58,6 @@ internal fun DrawerContent(
                         selectedAccount = selectedAccount,
                         onAccountClick = { onEvent(Event.OnAccountClick(it)) },
                         onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
-                        onSettingsClick = { onEvent(Event.OnSettingsClick) },
                     )
                 }
                 Column(
@@ -77,9 +76,8 @@ internal fun DrawerContent(
                     )
                     DividerHorizontal()
                     SettingList(
-                        onAccountSelectorClick = { onEvent(Event.OnAccountSelectorClick) },
                         onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
-                        showAccountSelector = state.config.showAccountSelector,
+                        onSettingsClick = { onEvent(Event.OnSettingsClick) },
                     )
                 }
             }
