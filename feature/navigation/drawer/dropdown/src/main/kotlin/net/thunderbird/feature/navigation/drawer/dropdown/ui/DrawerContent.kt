@@ -1,11 +1,14 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -15,14 +18,17 @@ import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountView
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.getDisplayCutOutHorizontalInsetPadding
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.DRAWER_WIDTH
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getAdditionalWidth
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.SettingList
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.AccountSettingList
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.FolderSettingList
 
 @Composable
 internal fun DrawerContent(
@@ -41,48 +47,102 @@ internal fun DrawerContent(
         color = MainTheme.colors.surfaceContainerLow,
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
-        Column {
+        val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
+
+        Column(
+            modifier = Modifier
+                .windowInsetsPadding(WindowInsets.navigationBars)
+                .windowInsetsPadding(horizontalInsetPadding),
+        ) {
             selectedAccount?.let {
                 AccountView(
                     account = selectedAccount,
                     onClick = { onEvent(Event.OnAccountSelectorClick) },
-                    showAccount = state.config.showAccountSelector,
+                    showAccount = state.config.showAccountSelector.not(),
                 )
 
                 DividerHorizontal()
             }
-            Row {
-                AnimatedVisibility(
-                    visible = state.config.showAccountSelector,
-                ) {
-                    AccountList(
-                        accounts = state.accounts,
+            AnimatedContent(
+                targetState = state.config.showAccountSelector,
+                label = "AccountSelectorVisibility",
+                transitionSpec = {
+                    if (targetState) {
+                        slideInVertically { -it } togetherWith slideOutVertically { it }
+                    } else {
+                        slideInVertically { it } togetherWith slideOutVertically { -it }
+                    }
+                },
+            ) { targetState ->
+                if (targetState) {
+                    AccountContent(
+                        state = state,
+                        onEvent = onEvent,
                         selectedAccount = selectedAccount,
-                        onAccountClick = { onEvent(Event.OnAccountClick(it)) },
-                        onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
                     )
-                }
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxSize(),
-                ) {
-                    FolderList(
-                        rootFolder = state.rootFolder,
-                        selectedFolder = state.folders.firstOrNull { it.id == state.selectedFolderId },
-                        onFolderClick = { folder ->
-                            onEvent(Event.OnFolderClick(folder))
-                        },
-                        showStarredCount = state.config.showStarredCount,
-                        modifier = Modifier.weight(1f),
-                    )
-                    DividerHorizontal()
-                    SettingList(
-                        onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
-                        onSettingsClick = { onEvent(Event.OnSettingsClick) },
+                } else {
+                    FolderContent(
+                        state = state,
+                        onEvent = onEvent,
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun AccountContent(
+    state: State,
+    onEvent: (Event) -> Unit,
+    selectedAccount: DisplayAccount?,
+) {
+    Surface(
+        color = MainTheme.colors.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            AccountList(
+                accounts = state.accounts,
+                selectedAccount = selectedAccount,
+                onAccountClick = { onEvent(Event.OnAccountClick(it)) },
+                showStarredCount = state.config.showStarredCount,
+                modifier = Modifier.weight(1f),
+            )
+            DividerHorizontal()
+            AccountSettingList(
+                onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
+            )
+        }
+    }
+}
+
+@Composable
+private fun FolderContent(
+    state: State,
+    onEvent: (Event) -> Unit,
+) {
+    Surface(
+        color = MainTheme.colors.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            FolderList(
+                rootFolder = state.rootFolder,
+                selectedFolder = state.folders.firstOrNull { it.id == state.selectedFolderId },
+                onFolderClick = { folder ->
+                    onEvent(Event.OnFolderClick(folder))
+                },
+                showStarredCount = state.config.showStarredCount,
+                modifier = Modifier.weight(1f),
+            )
+            DividerHorizontal()
+            FolderSettingList(
+                onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
+                onSettingsClick = { onEvent(Event.OnSettingsClick) },
+            )
         }
     }
 }

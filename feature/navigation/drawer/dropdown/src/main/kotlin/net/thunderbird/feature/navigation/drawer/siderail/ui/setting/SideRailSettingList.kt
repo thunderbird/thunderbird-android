@@ -30,7 +30,7 @@ internal fun SideRailSettingList(
         SettingListItem(
             label = stringResource(R.string.navigation_drawer_dropdown_action_manage_folders),
             onClick = onManageFoldersClick,
-            imageVector = Icons.Outlined.FolderManaged,
+            icon = Icons.Outlined.FolderManaged,
         )
         SettingListItem(
             label = if (showAccountSelector) {
@@ -39,7 +39,7 @@ internal fun SideRailSettingList(
                 stringResource(R.string.navigation_drawer_dropdown_action_show_accounts)
             },
             onClick = onAccountSelectorClick,
-            imageVector = if (showAccountSelector) {
+            icon = if (showAccountSelector) {
                 Icons.Outlined.ChevronLeft
             } else {
                 Icons.Outlined.ChevronRight

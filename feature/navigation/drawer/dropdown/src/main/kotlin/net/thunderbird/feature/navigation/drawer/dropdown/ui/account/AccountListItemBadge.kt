@@ -1,55 +1,42 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.ui.folder
+package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItemBadge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.labelForCount
 
 @Composable
-internal fun FolderListItemBadge(
+internal fun AccountListItemBadge(
     unreadCount: Int,
     starredCount: Int,
     showStarredCount: Boolean,
     modifier: Modifier = Modifier,
-    expandableState: MutableState<Boolean>? = null,
 ) {
-    FolderCountAndStarredBadge(
+    AccountCountAndStarredBadge(
         unreadCount = unreadCount,
         starredCount = starredCount,
         showStarredCount = showStarredCount,
-        onClick = { expandableState?.value = !expandableState.value },
-        isExpanded = expandableState?.value,
         modifier = modifier,
     )
 }
 
 @Composable
-private fun FolderCountAndStarredBadge(
+private fun AccountCountAndStarredBadge(
     unreadCount: Int,
     starredCount: Int,
     showStarredCount: Boolean,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isExpanded: Boolean? = null,
 ) {
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.Companion.CenterVertically,
     ) {
         val resources = LocalContext.current.resources
 
@@ -64,7 +51,7 @@ private fun FolderCountAndStarredBadge(
         }
 
         if (showStarredCount && starredCount > 0) {
-            Spacer(modifier = Modifier.width(MainTheme.spacings.half))
+            Spacer(modifier = Modifier.Companion.width(MainTheme.spacings.half))
             NavigationDrawerItemBadge(
                 label = labelForCount(
                     count = starredCount,
@@ -72,21 +59,6 @@ private fun FolderCountAndStarredBadge(
                 ),
                 imageVector = Icons.Filled.Star,
             )
-        }
-
-        if (isExpanded != null) {
-            Box(
-                modifier = Modifier
-                    .size(MainTheme.sizes.iconAvatar)
-                    .padding(start = MainTheme.spacings.quarter)
-                    .clip(CircleShape)
-                    .clickable(onClick = onClick),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = if (isExpanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
-                )
-            }
         }
     }
 }

@@ -8,7 +8,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 @Preview(showBackground = true)
 internal fun SettingListPreview() {
     PreviewWithTheme {
-        SettingList(
+        FolderSettingList(
             onManageFoldersClick = {},
             onSettingsClick = {},
         )

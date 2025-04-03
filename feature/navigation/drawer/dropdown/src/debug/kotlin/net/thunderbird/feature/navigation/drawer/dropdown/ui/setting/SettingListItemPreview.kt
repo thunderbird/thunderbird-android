@@ -12,7 +12,7 @@ internal fun SettingListItemPreview() {
         SettingListItem(
             label = "Settings",
             onClick = {},
-            imageVector = Icons.Outlined.Settings,
+            icon = Icons.Outlined.Settings,
         )
     }
 }
