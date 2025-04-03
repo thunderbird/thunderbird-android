@@ -44,6 +44,14 @@ internal class GetGeneralPreferences(
                 icon = resourceProvider.nameIcon,
                 value = profile.name,
             ),
+            PreferenceSetting.Color(
+                id = GeneralPreference.COLOR.generateId(accountId),
+                title = resourceProvider.colorTitle,
+                description = resourceProvider.colorDescription,
+                icon = resourceProvider.colorIcon,
+                value = profile.color,
+                colors = resourceProvider.colors,
+            ),
         )
     }
 }

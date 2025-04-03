@@ -1,10 +1,10 @@
-package net.thunderbird.core.ui.compose.preference.ui.fake
+package net.thunderbird.feature.account.settings.impl.ui.fake
 
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 
-internal object FakePreferenceData {
+object FakePreferenceData {
 
     val textPreference = PreferenceSetting.Text(
         id = "text",

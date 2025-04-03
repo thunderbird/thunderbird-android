@@ -44,6 +44,14 @@ internal class GetGeneralPreferencesTest {
                         icon = resourceProvider.nameIcon,
                         value = accountProfile.name,
                     ),
+                    PreferenceSetting.Color(
+                        id = "${accountId.value}-general-color",
+                        title = resourceProvider.colorTitle,
+                        description = resourceProvider.colorDescription,
+                        icon = resourceProvider.colorIcon,
+                        value = accountProfile.color,
+                        colors = resourceProvider.colors,
+                    ),
                 ),
             )
         }

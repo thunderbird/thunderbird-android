@@ -49,6 +49,53 @@ class UpdateGeneralPreferencesTest {
     }
 
     @Test
+    fun `should update account profile for all general settings`() = runTest {
+        // Arrange
+        val accountId = AccountId.create()
+        val accountProfile = AccountProfile(
+            accountId = accountId,
+            name = "Test Account",
+            color = 0xFF0000,
+        )
+        val newName = "Updated Account Name"
+        val newColor = 0x00FF00
+        val preferences = listOf(
+            PreferenceSetting.Text(
+                id = GeneralPreference.NAME.generateId(accountId),
+                title = { "Name" },
+                description = { "Account name" },
+                icon = { null },
+                value = newName,
+            ),
+            PreferenceSetting.Color(
+                id = GeneralPreference.COLOR.generateId(accountId),
+                title = { "Color" },
+                description = { "Account color" },
+                icon = { null },
+                value = newColor,
+                colors = listOf(0xFF0000, 0x00FF00, 0x0000FF),
+            ),
+        )
+        val repository = FakeAccountProfileRepository(
+            initialAccountProfile = accountProfile,
+        )
+        val testSubject = UpdateGeneralPreferences(repository)
+
+        // Act
+        preferences.forEach { preference ->
+            testSubject(accountId, preference)
+        }
+
+        // Assert
+        assertThat(repository.getById(accountId).firstOrNull()).isEqualTo(
+            accountProfile.copy(
+                name = newName,
+                color = newColor,
+            ),
+        )
+    }
+
+    @Test
     fun `should emit NotFound when account profile not found`() = runTest {
         // Arrange
         val accountId = AccountId.create()

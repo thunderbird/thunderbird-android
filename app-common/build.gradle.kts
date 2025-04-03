@@ -15,6 +15,10 @@ dependencies {
     implementation(projects.legacy.account)
 
     implementation(projects.core.featureflags)
+    implementation(projects.core.ui.legacy.theme2.common)
 
+    implementation(projects.feature.account.setup)
     implementation(projects.feature.migration.provider)
+
+    implementation(projects.mail.protocols.imap)
 }
