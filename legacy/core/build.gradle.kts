@@ -20,7 +20,6 @@ dependencies {
     api(projects.legacy.mailstore)
     api(projects.legacy.message)
     api(projects.feature.notification)
-    api(projects.core.preferences)
     api(projects.legacy.search)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)

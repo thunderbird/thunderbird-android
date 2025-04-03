@@ -162,7 +162,6 @@ include(
     ":legacy:di",
     ":legacy:mailstore",
     ":legacy:message",
-    ":legacy:notification",
     ":legacy:preferences",
     ":legacy:search",
     ":legacy:storage",
