@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_error_failed">பின்வரும் பிழையுடன் ஏற்பு தோல்வியடைந்தது: &lt;xliff: g ஐடி = \"பிழை\"&gt;%s &lt;/xliff: g&gt;</string>
+    <string name="account_oauth_sign_in_description">உள்நுழைய உங்கள் மின்னஞ்சல் வழங்குநருக்கு நாங்கள் உங்களை திருப்பிவிடுவோம். உங்கள் மின்னஞ்சல் கணக்கிற்கான பயன்பாட்டு அணுகலை நீங்கள் வழங்க வேண்டும்.</string>
+    <string name="account_oauth_loading_message">OAuth ஐப் பயன்படுத்துவதில் கையொப்பமிடுதல்</string>
+    <string name="account_oauth_error_canceled">ஏற்பு ரத்து செய்யப்பட்டது</string>
+    <string name="account_oauth_error_not_supported">OAUTH 2.0 தற்போது இந்த வழங்குநருடன் ஆதரிக்கப்படவில்லை.</string>
+    <string name="account_oauth_error_browser_not_available">உங்கள் கணக்கிற்கு அணுகலை வழங்க பயன்படுத்த உலாவியை பயன்பாட்டால் கண்டுபிடிக்க முடியவில்லை.</string>
+    <string name="account_oauth_google_sign_in_support_text">Google உடன் உள்நுழையும்போது நீங்கள் சிக்கல்களைச் சந்திக்கிறீர்கள் என்றால், தயவுசெய்து எங்கள் {ஒதுக்கிடத்தை அணுகவும்.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">உதவி கட்டுரை</string>
+    <string name="account_oauth_sign_in_button">விடுபதிகை</string>
+    <string name="account_oauth_sign_in_with_google_button">Google உடன் உள்நுழைக</string>
+    <string name="account_oauth_loading_error">தோல்வியுற்ற OAUTH உள்நுழைவு</string>
+</resources>

@@ -1,6 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_action_settings">Innstillinger</string>
     <string name="navigation_drawer_action_manage_folders">Behandle mapper</string>
     <string name="navigation_drawer_unified_inbox_title">Samlet innboks</string>
+    <string name="navigation_drawer_action_show_accounts">Vis kontoer</string>
+    <string name="navigation_drawer_action_sync_all_accounts">Synkroniser alle kontoer</string>
+    <string name="navigation_drawer_action_hide_accounts">Skjul kontoer</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_99">99+</string>
+    <string name="navigation_drawer_folder_item_badge_count_greater_than_1_000">1T+</string>
 </resources>

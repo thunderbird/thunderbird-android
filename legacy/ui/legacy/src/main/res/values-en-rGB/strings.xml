@@ -881,7 +881,7 @@
     <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
     <string name="empty_spam_action">Empty Spam</string>
     <string name="about_title">About <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_delete_dlg_instructions_fmt">The account \\<xliff:g id="account">%1$s</xliff:g>\" will be removed from <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%1$s</xliff:g>\" will be removed from <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="save_attachment_action">Save attachment</string>
     <string name="dialog_openkeychain_info_text">The app OpenKeychain is required to enable support for end-to-end encryption.</string>
     <string name="push_notification_state_alarm_permission_missing">Missing permission to schedule alarms</string>

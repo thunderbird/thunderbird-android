@@ -290,16 +290,16 @@
     <string name="idle_refresh_period_36min">Toutes les 36 minutes</string>
     <string name="idle_refresh_period_48min">Toutes les 48 minutes</string>
     <string name="idle_refresh_period_60min">Toutes les 60 minutes</string>
-    <string name="account_setup_options_mail_display_count_10">10 courriels</string>
+    <string name="account_setup_options_mail_display_count_10">10 courriels</string>
     <string name="account_setup_options_mail_display_count_25">25 courriels</string>
-    <string name="account_setup_options_mail_display_count_50">50 courriels</string>
-    <string name="account_setup_options_mail_display_count_100">100 courriels</string>
-    <string name="account_setup_options_mail_display_count_250">250 courriels</string>
-    <string name="account_setup_options_mail_display_count_500">500 courriels</string>
-    <string name="account_setup_options_mail_display_count_1000">1 000 courriels</string>
-    <string name="account_setup_options_mail_display_count_2500">2 500 courriels</string>
-    <string name="account_setup_options_mail_display_count_5000">5 000 courriels</string>
-    <string name="account_setup_options_mail_display_count_10000">10 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_50">50 courriels</string>
+    <string name="account_setup_options_mail_display_count_100">100 courriels</string>
+    <string name="account_setup_options_mail_display_count_250">250 courriels</string>
+    <string name="account_setup_options_mail_display_count_500">500 courriels</string>
+    <string name="account_setup_options_mail_display_count_1000">1 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_2500">2 500 courriels</string>
+    <string name="account_setup_options_mail_display_count_5000">5 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_10000">10 000 courriels</string>
     <string name="account_setup_options_mail_display_count_all">tous les courriels</string>
     <string name="move_copy_cannot_copy_unsynced_message">Impossible de copier ou déplacer un courriel qui n’est pas synchronisé avec le serveur</string>
     <string name="account_settings_push_advanced_title">Avancé</string>
@@ -517,12 +517,12 @@
     <string name="account_setup_push_limit_label">Maximum de dossiers à vérifier avec le poussé</string>
     <string name="account_setup_push_limit_5">5 dossiers</string>
     <string name="account_setup_push_limit_10">10 dossiers</string>
-    <string name="account_setup_push_limit_25">25 dossiers</string>
+    <string name="account_setup_push_limit_25">25 dossiers</string>
     <string name="account_setup_push_limit_50">50 dossiers</string>
     <string name="account_setup_push_limit_100">100 dossiers</string>
     <string name="account_setup_push_limit_250">250 dossiers</string>
     <string name="account_setup_push_limit_500">500 dossiers</string>
-    <string name="account_setup_push_limit_1000">1 000 dossiers</string>
+    <string name="account_setup_push_limit_1000">1 000 dossiers</string>
     <string name="animations_title">Animation</string>
     <string name="animations_summary">Utiliser des effets visuels voyants</string>
     <string name="show_unified_inbox_title">Afficher la boîte de réception unifiée</string>
@@ -571,8 +571,8 @@
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce courriel ?</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Voulez-vous supprimer ce courriel ?</item>
-        <item quantity="many">Voulez-vous supprimer les <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
-        <item quantity="other">Voulez-vous supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
+        <item quantity="many">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
+        <item quantity="other">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Oui</string>
     <string name="dialog_confirm_delete_cancel_button">Non</string>
@@ -585,8 +585,8 @@
     <string name="dialog_confirm_spam_title">Confirmer le déplacement vers le dossier des pourriels (indésirables)</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce courriel vers le dossier des pourriels ?</item>
-        <item quantity="many">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossier des pourriels ?</item>
-        <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossier des pourriels ?</item>
+        <item quantity="many">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossier des pourriels ?</item>
+        <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossier des pourriels ?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Oui</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
@@ -627,7 +627,7 @@
     <string name="account_settings_remote_search_num_results_entries_100">100</string>
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
-    <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
     <string name="account_settings_remote_search_num_label">Limite de recherche sur le serveur</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
     <plurals name="remote_search_downloading">

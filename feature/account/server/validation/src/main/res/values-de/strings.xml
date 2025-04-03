@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Serverfehler</string>
     <string name="account_server_validation_error_missing_server_capability">Fehlende Serverfähigkeit</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Auf das Client-Zertifikat konnte nicht zugegriffen werden</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Der Server unterstützt diese Fähigkeit nicht:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Der Server unterstützt diese Fähigkeit nicht:\n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">Das Client-Zertifikat ist nicht mehr gültig</string>
-    <string name="account_server_validation_error_details">Details:
-\n%s</string>
+    <string name="account_server_validation_error_details">Details:\n%s</string>
 </resources>

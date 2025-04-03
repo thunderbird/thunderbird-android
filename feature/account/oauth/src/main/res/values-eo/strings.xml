@@ -7,4 +7,8 @@
     <string name="account_oauth_error_failed">Saluto malsukcesis pro la jena eraro: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 estas nun ne subtenata kun tiu provizanto.</string>
     <string name="account_oauth_error_canceled">Saluto nuligita</string>
+    <string name="account_oauth_google_sign_in_support_text">Se vi spertas problemoj dum ensalutado per Google, bonvolu konsulti nia {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">helpoartikolon</string>
+    <string name="account_oauth_sign_in_description">Ni alidirektos vin al via retpoŝtlivero por ensaluti. Vi bezonas permesi al la apo alireblon al via retpoŝtkonto.</string>
+    <string name="account_oauth_error_browser_not_available">La apo ne povis trovi retumilon por permesi alireblon al via konto.</string>
 </resources>

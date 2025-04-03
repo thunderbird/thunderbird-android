@@ -1,2 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Tha feum air facal-faire.</string>
+    <string name="account_setup_auto_discovery_loading_error">Cha b’ urrainn dhuinn rèiteachadh a’ phuist a luchdadh</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Chan eil an seòladh puist-d seo ceadaichte.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Chan eil taic ri seòladh puist-d d’ a leithid.</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Chan e seòladh puist-d dligheach a tha seo nar beachd.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Rèitich gu fèin-obrachail</string>
+    <string name="account_setup_error_network">Mearachd lìonraidh. Thoir sùil air a’ cheangal agad ris an eadar-lìon is feuch ris a-rithist.</string>
+    <string name="account_setup_error_unknown">Mearachd neo-aithnichte</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Tha feum air seòladh puist-d.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_loading_message">A’ lorg rèiteachadh…</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Lorg sinn rèiteachadh</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Cha do lorg sinn rèiteachadh</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Pasgan nan dreachdan</string>
+    <string name="account_setup_special_folders_sent_folder_label">Pasgan a’ phuist chuirte</string>
+    <string name="account_setup_options_account_name_error_blank">Chan fhaod ainm a’ chunntais a bhith bàn.</string>
+    <string name="account_setup_create_account_created">Chaidh an cunntas a chruthachadh</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">Chan eil earbsa san rèiteachadh seo</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Feumar seo mus gabh an rèiteachadh aontachadh.</string>
+    <string name="account_setup_options_email_signature_label">Eàrr-sgrìobhadh a’ phuist-d</string>
+    <string name="account_setup_special_folders_form_description">Sònraich na pasganan sònraichte sa chunntas agad.</string>
+    <string name="account_setup_special_folders_loading_message">A’ faighinn liosta nam pasganan…</string>
+    <string name="account_setup_options_display_name_label">D’ ainm</string>
+    <string name="account_setup_options_email_display_count_label">Co mheud teachdaireachd a thèid a shealltainn</string>
+    <string name="account_setup_create_account_creating">A’ cruthachadh a’ chunntais…</string>
+    <string name="account_setup_options_account_name_label">Ainm a’ chunntais</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tha earbsa agam san rèiteachadh seo</string>
+    <string name="account_setup_special_folders_success_message">Chaidh gach pasgan sònraichte a rèiteachadh gu fèin-obrachail leis an fhrithealaiche.</string>
+    <string name="account_setup_special_folders_trash_folder_label">Pasgan an sgudail</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Gach %d mhionaid</item>
+        <item quantity="two">Gach %d mhionaid</item>
+        <item quantity="few">Gach %d mionaidean</item>
+        <item quantity="other">Gach %d mionaid</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">%d teachdaireachd</item>
+        <item quantity="two">%d theachdaireachd</item>
+        <item quantity="few">%d teachdaireachdan</item>
+        <item quantity="other">%d teachdaireachd</item>
+    </plurals>
+    <string name="account_setup_create_account_error">Dh’èirich mearachd fhad ’s a bha sinn a’ cruthachadh a’ chunntais</string>
+    <string name="account_setup_special_folders_archive_folder_label">Pasgan na tasg-lainn</string>
+    <string name="account_setup_options_section_sync_options">Roghainnean siocronachaidh</string>
+    <string name="account_setup_special_folders_folder_none">Chan eil gin</string>
+    <string name="account_setup_options_email_check_frequency_never">Chan ann idir</string>
+    <string name="account_setup_special_folders_spam_folder_label">Pasgan an spama</string>
+    <string name="account_setup_options_section_display_options">Roghainnean taisbeanaidh</string>
+    <string name="account_setup_special_folders_folder_automatic">Fèin-obrachail (%s)</string>
+    <string name="account_setup_options_display_name_error_required">Tha feum air d’ ainm.</string>
+    <string name="account_setup_options_email_signature_error_blank">Chan fhaod eàrr-sgrìobhadh a’ phuist-d a bhith bàn.</string>
+    <string name="account_setup_options_account_check_frequency_label">Dè cho tric ’s a bheirear sùil</string>
+    <string name="account_setup_options_show_notifications_label">Seall na brathan</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Rèitich de làimh</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Deasaich an rèiteachadh</string>
+    <string name="account_setup_special_folders_error_message">Cha b’ urrainn dhuinn liosta nam pasganan fhaighinn on fhrithealaiche</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Gach %d uair a thìde</item>
+        <item quantity="two">Gach %d uair a thìde</item>
+        <item quantity="few">Gach %d uairean a thìde</item>
+        <item quantity="other">Gach %d uair a thìde</item>
+    </plurals>
+    <string name="account_setup_special_folders_form_description_automatic">Gabhaidh an t-inneart “Fèin-obrachail” ri atharraichean a rinn am frithealaiche gu fèin-obrachail. Tha luach làithreach an fhrithealaiche ann an eadar-ràdhan.</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Fhuair sinn rèiteachadh frithealaiche a’ phuist-d agad air ceangal nach eil buileach tèarainte. ’S ciall dha sin gu bheil cunnart beag ann gu bheil cuideigin air beantainn ris. Thoir sùil eile air an rèiteachadh is dèan cinnteach gu bheil gach rud mar bu chòir.</string>
+</resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">תמוך בת\'אנדרבירד</string>
-    <string name="funding_googleplay_contribution_header_description">אנחנו לעולם לא נראה פרסומות או נמכור את הנתונים שלך. אנחנו ממומנים ע\"י תרומות מהמשתמשים שלנו. אם אתה נהנה מת\'אנדרבירד, אנא עזור לתמוך ביישום. אנחנו לא יכולים לעשות זאת בלעדיך!</string>
+    <string name="funding_googleplay_contribution_header_description">אנחנו לעולם לא נציג פרסומות או נמכור את הנתונים שלך. אנחנו ממומנים ע\"י תרומות מהמשתמשים שלנו. אם אתה נהנה מת\'אנדרבירד, אנא עזור לתמוך ביישום. אנחנו לא יכולים לעשות זאת בלעדיך!</string>
     <string name="funding_googleplay_contribution_list_title">תרומה מאובטחת</string>
     <string name="funding_googleplay_contribution_list_type_one_time">תן פעם אחת</string>
     <string name="funding_googleplay_contribution_list_type_recurring">חודשי</string>
@@ -29,6 +29,19 @@
     <string name="funding_googleplay_contribution_tfa_onetime_s_title">תרומה ערכית</string>
     <string name="funding_googleplay_contribution_tfa_onetime_m_title">תרומה משמעותית</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xl_title">תרומה ניכרת</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">תודה לכם על תרומתכם הנדיבה! התרומה שלכם מחזרת באופן ישיר את ת\'אנדרבירד, ואנחנו מלאי הכרת תודה על זה שאתם לצידנו במסע הזה.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">תרומתך מעודדת את הפיתוח של Thunderbird ואנו אסירי תודה על תמיכתך.</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">לדחות את השגיאה</string>
+    <string name="funding_googleplay_contribution_header_thank_you">תודה כנה מכולנו!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">תרומה חודשית מוערכת</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">התמיכה שלכם דוחפת אותנו קדימה! כל תרומה יוצרת שינוי - תודה!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">תרומה חודשית יוצאת דופן</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">התרומה שלך עוזרת לנו לצמוח ולעשות צעדים משמעותיים קדימה - תודה לך!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">אתה סיבה גדולה שאנחנו יכולים לעשות את מה שאנחנו עושים! הנדיבות שלך עוזרת לנו להגיע לאבני דרך חדשות.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">תרומה חודשית מרכזית</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">אתה באמת עוזר לנו לחלום בגדול! התמיכה המדהימה שלך מעצימה אותנו להשיג את יוצא הדופן, ומשאירה השפעה מתמשכת על כל מה שאנחנו עושים.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">תרומה חודשית משמעותית</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">התרומה שלך זורחת! אתה המפתח לקידום המשימה שלנו ולהשגת השפעה.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">התמיכה שלך באמת מעוררת השראה! הודות לתרומתך המשמעותית, אנו מסוגלים לפרוץ גבולות, לחדש ולעשות צעדים משמעותיים לעבר המטרות שלנו.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">תרומה חודשית חיונית</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">תרומה חודשית יוצאת דופן</string>
 </resources>
