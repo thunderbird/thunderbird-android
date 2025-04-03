@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Inbox
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Report
 import androidx.compose.material.icons.outlined.Security
@@ -61,6 +62,9 @@ object Icons {
 
         val ArrowBack: ImageVector
             get() = MaterialIcons.AutoMirrored.Outlined.ArrowBack
+
+        val KeyboardArrowDown: ImageVector
+            get() = MaterialIcons.Outlined.KeyboardArrowDown
 
         val Check: ImageVector
             get() = MaterialIcons.Outlined.Check

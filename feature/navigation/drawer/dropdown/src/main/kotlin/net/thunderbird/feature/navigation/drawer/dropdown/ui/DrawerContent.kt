@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
@@ -37,14 +38,15 @@ internal fun DrawerContent(
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
             .testTag("DrawerContent"),
+        color = MainTheme.colors.surfaceContainerLow,
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
         Column {
             selectedAccount?.let {
                 AccountView(
                     account = selectedAccount,
-                    onClick = { onEvent(Event.OnAccountViewClick(selectedAccount)) },
-                    showAvatar = state.config.showAccountSelector,
+                    onClick = { onEvent(Event.OnAccountSelectorClick) },
+                    showAccount = state.config.showAccountSelector,
                 )
 
                 DividerHorizontal()
