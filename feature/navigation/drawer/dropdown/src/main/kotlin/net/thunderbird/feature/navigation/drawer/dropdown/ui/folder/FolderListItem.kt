@@ -19,9 +19,9 @@ import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.TreeFolder
 
 @Composable
 internal fun FolderListItem(
@@ -31,7 +31,7 @@ internal fun FolderListItem(
     showStarredCount: Boolean,
     folderNameFormatter: FolderNameFormatter,
     modifier: Modifier = Modifier,
-    treeFolder: TreeFolder? = null,
+    treeFolder: DisplayTreeFolder? = null,
     parentPrefix: String? = "",
     indentationLevel: Int = 1,
 ) {
@@ -41,8 +41,8 @@ internal fun FolderListItem(
     var starredCount = displayFolder.starredMessageCount
 
     if (treeFolder !== null && !isExpanded.value) {
-        unreadCount = treeFolder.getAllUnreadMessageCount()
-        starredCount = treeFolder.getAllStarredMessageCount()
+        unreadCount = treeFolder.totalUnreadCount
+        starredCount = treeFolder.totalStarredCount
     }
 
     Column(modifier = Modifier.fillMaxWidth().animateContentSize()) {

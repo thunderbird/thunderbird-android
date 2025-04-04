@@ -15,12 +15,12 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.TreeFolder
 
 @Composable
 internal fun FolderList(
-    rootFolder: TreeFolder,
+    rootFolder: DisplayTreeFolder,
     selectedFolder: DisplayFolder?,
     onFolderClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
@@ -44,11 +44,11 @@ internal fun FolderList(
             if (currentDisplayFolder is DisplayAccountFolder) {
                 FolderListItem(
                     displayFolder = currentDisplayFolder,
+                    treeFolder = folder,
                     selected = currentDisplayFolder.folder == selectedFolder,
                     showStarredCount = showStarredCount,
                     onClick = onFolderClick,
                     folderNameFormatter = folderNameFormatter,
-                    treeFolder = folder,
                 )
             }
             if (currentDisplayFolder is DisplayUnifiedFolder) {

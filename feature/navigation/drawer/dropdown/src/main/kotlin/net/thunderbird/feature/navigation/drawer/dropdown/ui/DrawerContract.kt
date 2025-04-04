@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.TreeFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 
 internal interface DrawerContract {
 
@@ -22,7 +22,13 @@ internal interface DrawerContract {
         ),
         val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
         val selectedAccountId: String? = null,
-        val rootFolder: TreeFolder = TreeFolder(),
+        val rootFolder: DisplayTreeFolder = DisplayTreeFolder(
+            displayFolder = null,
+            displayName = null,
+            totalUnreadCount = 0,
+            totalStarredCount = 0,
+            children = persistentListOf(),
+        ),
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
         val selectedFolderId: String? = null,
         val isLoading: Boolean = false,

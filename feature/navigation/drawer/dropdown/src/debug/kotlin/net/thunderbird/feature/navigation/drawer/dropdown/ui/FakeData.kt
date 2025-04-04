@@ -12,6 +12,7 @@ import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
 
@@ -64,11 +65,58 @@ internal object FakeData {
         starredMessageCount = 5,
     )
 
+    val DISPLAY_TREE_FOLDER = DisplayTreeFolder(
+        displayFolder = null,
+        displayName = null,
+        totalUnreadCount = 14,
+        totalStarredCount = 5,
+        children = persistentListOf(
+            DisplayTreeFolder(
+                displayFolder = DISPLAY_FOLDER,
+                displayName = DISPLAY_FOLDER.folder.name,
+                totalUnreadCount = 14,
+                totalStarredCount = 5,
+                children = persistentListOf(),
+            ),
+        ),
+    )
+
+    val EMPTY_DISPLAY_TREE_FOLDER = DisplayTreeFolder(
+        displayFolder = null,
+        displayName = null,
+        totalUnreadCount = 0,
+        totalStarredCount = 0,
+        children = persistentListOf(),
+    )
+
     val UNIFIED_FOLDER = DisplayUnifiedFolder(
         id = "unified_inbox",
         unifiedType = DisplayUnifiedFolderType.INBOX,
         unreadMessageCount = 123,
         starredMessageCount = 567,
+    )
+
+    val DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER = DisplayTreeFolder(
+        displayFolder = null,
+        displayName = null,
+        totalUnreadCount = 14,
+        totalStarredCount = 5,
+        children = persistentListOf(
+            DisplayTreeFolder(
+                displayFolder = UNIFIED_FOLDER,
+                displayName = null,
+                totalUnreadCount = 7,
+                totalStarredCount = 2,
+                children = persistentListOf(),
+            ),
+            DisplayTreeFolder(
+                displayFolder = DISPLAY_FOLDER,
+                displayName = DISPLAY_FOLDER.folder.name,
+                totalUnreadCount = 7,
+                totalStarredCount = 3,
+                children = persistentListOf(),
+            ),
+        ),
     )
 
     fun createAccountList(): PersistentList<DisplayAccount> {

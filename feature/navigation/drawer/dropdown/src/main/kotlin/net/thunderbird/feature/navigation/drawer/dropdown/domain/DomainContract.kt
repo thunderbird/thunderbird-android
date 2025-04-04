@@ -4,9 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.TreeFolder
 
 internal interface DomainContract {
 
@@ -27,8 +27,8 @@ internal interface DomainContract {
             operator fun invoke(accountId: String, includeUnifiedFolders: Boolean): Flow<List<DisplayFolder>>
         }
 
-        fun interface GetTreeFolders {
-            operator fun invoke(folders: List<DisplayFolder>, maxDepth: Int): TreeFolder
+        fun interface GetDisplayTreeFolder {
+            operator fun invoke(folders: List<DisplayFolder>, maxDepth: Int): DisplayTreeFolder
         }
 
         /**
