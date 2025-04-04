@@ -35,10 +35,11 @@
         <link rel="stylesheet" href="assets/theme/pagetoc.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc.js"></script>
@@ -48,8 +49,8 @@
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +64,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -76,8 +78,8 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -113,6 +115,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -225,7 +228,7 @@
 </ul>
 <h2 id="thank-you"><a class="header" href="#thank-you">Thank You!</a></h2>
 <p>Thank you for taking the time to contribute to Thunderbird for Android! We appreciate your help in making the project better and more useful for everyone.</p>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="repository-structure"><a class="header" href="#repository-structure">Repository structure</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="repository-structure"><a class="header" href="#repository-structure">Repository structure</a></h1>
 <p>The project is divided into several directories below which are nested gradle projects.</p>
 <h2 id="app"><a class="header" href="#app">app</a></h2>
 <p>This contains the highest level code such as UI and core logic.</p>
@@ -244,7 +247,7 @@ classes. Each class is colour-coded by its top-level project.</p>
 <p><img src="assets/ReadEmailClasses.png" alt="read email classes" /></p>
 <h2 id="sending-email"><a class="header" href="#sending-email">Sending email</a></h2>
 <p><img src="assets/SendEmail.png" alt="send email sequence" /></p>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="thunderbird-for-android-release-documentation"><a class="header" href="#thunderbird-for-android-release-documentation">Thunderbird for Android Release Documentation</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="thunderbird-for-android-release-documentation"><a class="header" href="#thunderbird-for-android-release-documentation">Thunderbird for Android Release Documentation</a></h1>
 <p>Please see the sub-pages for release documentation</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="releases"><a class="header" href="#releases">Releases</a></h1>
 <p>Thunderbird for Android follows a release train model to ensure timely and predictable releases. This model allows for regular feature rollouts, stability improvements, and bug fixes.</p>
@@ -451,7 +454,7 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 </ul>
 </li>
 </ol>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="release-automation-setup"><a class="header" href="#release-automation-setup">Release Automation Setup</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="release-automation-setup"><a class="header" href="#release-automation-setup">Release Automation Setup</a></h1>
 <p>Release automation is triggered by the workflow_dispatch event on the “Shippable Build &amp; Signing”
 workflow. GitHub environments are used to set configuration variables and secrets for each
 application and release type.</p>
@@ -548,7 +551,7 @@ to upload the release with limited permissions.</p>
 <li>MATRIX_NOTIFY_USER_MAP: A json object that maps github usernames to matrix ids</li>
 </ul>
 <p>If you leave out this environment, no notifications will be sent.</p>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="create-k-9-mail-releases"><a class="header" href="#create-k-9-mail-releases">Create K-9 Mail releases</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="create-k-9-mail-releases"><a class="header" href="#create-k-9-mail-releases">Create K-9 Mail releases</a></h1>
 <div class="warning">
 This document contains the historical manual release process for K-9 Mail. Please use the <a href="ci/AUTOMATION.html">automated process</a> instead.
 We're keeping this around in case we need to do a manual release.
@@ -883,7 +886,7 @@ URL)</p>
 <li>Check <a href="https://fdroidstatus.org/status/fdroid" title="" target="_blank">F-Droid Status</a> for any issues.</li>
 <li>Check <a href="https://monitor.f-droid.org/builds" title="" target="_blank">F-Droid Monitor</a> for any errors mentioning <code>com.fsck.k9</code>.</li>
 </ul>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="managing-strings"><a class="header" href="#managing-strings">Managing strings</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="managing-strings"><a class="header" href="#managing-strings">Managing strings</a></h1>
 <p>We use Android’s <a href="https://developer.android.com/guide/topics/resources/localization" title="" target="_blank">resource system</a> to localize
 user-visible strings in our apps.</p>
 <p>Our source language is English (American English to be more precise, but simply “English” (en) on Weblate).</p>
@@ -971,7 +974,7 @@ e.g. <code>feature/account/common/src/main/res/values/strings.xml</code>.</li>
 Weblate, but <em>iw</em> on Android. When writing automation tools, there needs to be a mapping step involved.</p>
 <p>See <a href="https://github.com/thunderbird/thunderbird-android/blob/ed07da8be5513ac74aabb1c934a4545aaae4f5a3/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13" title="" target="_blank">translation-cli</a>
 for an example.</p>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="java-to-kotlin-conversion-guide"><a class="header" href="#java-to-kotlin-conversion-guide">Java to Kotlin Conversion Guide</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="java-to-kotlin-conversion-guide"><a class="header" href="#java-to-kotlin-conversion-guide">Java to Kotlin Conversion Guide</a></h1>
 <p>This guide describes our process for converting Java code to Kotlin.</p>
 <h2 id="why-convert-to-kotlin"><a class="header" href="#why-convert-to-kotlin">Why Convert to Kotlin?</a></h2>
 <p>Java and Kotlin are compatible languages, but we decided to convert our codebase to Kotlin for the following reasons:</p>
@@ -1015,7 +1018,7 @@ for an example.</p>
 <li><a href="https://kotlinlang.org/docs/java-interop.html" title="" target="_blank">Calling Java from Kotlin</a></li>
 <li><a href="https://developer.android.com/kotlin?hl=en" title="" target="_blank">Kotlin and Android | Android Developers</a></li>
 </ul>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
 <p>The <a href="architecture/adr//docs/architecture/adr">docs/architecture/adr</a> folder contains the architecture decision records (ADRs) for our project.</p>
 <p>ADRs are short text documents that serve as a historical context for the architecture decisions we make over the
 course of the project.</p>
@@ -1093,7 +1096,7 @@ refactor our existing Java codebase to Kotlin.</p>
 </ul>
 </li>
 </ul>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="ui---wrap-material-components-in-atomic-design-system"><a class="header" href="#ui---wrap-material-components-in-atomic-design-system">UI - Wrap Material Components in Atomic Design System</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="ui---wrap-material-components-in-atomic-design-system"><a class="header" href="#ui---wrap-material-components-in-atomic-design-system">UI - Wrap Material Components in Atomic Design System</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7221" title="" target="_blank">#7221</a></li>
 </ul>
@@ -1130,7 +1133,7 @@ using to construct our application’s UI.</p>
 </ul>
 </li>
 </ul>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="switch-test-assertions-from-truth-to-assertk"><a class="header" href="#switch-test-assertions-from-truth-to-assertk">Switch Test Assertions from Truth to assertk</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="switch-test-assertions-from-truth-to-assertk"><a class="header" href="#switch-test-assertions-from-truth-to-assertk">Switch Test Assertions from Truth to assertk</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7242" title="" target="_blank">#7242</a></li>
 </ul>
@@ -1167,7 +1170,7 @@ effort, although mitigated by the similar syntax.</li>
 </ul>
 </li>
 </ul>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7794" title="" target="_blank">#7794</a></li>
 </ul>
@@ -1213,7 +1216,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 </ul>
 </li>
 </ul>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7803" title="" target="_blank">#7803</a></li>
 </ul>
@@ -1243,7 +1246,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <li><strong>Complexity for New Developers:</strong> The centralized build architecture, particularly with the use of a Gradle Version Catalog, may initially seem daunting to new team members who are unfamiliar with this level of abstraction.</li>
 <li><strong>Dependency on the Build-Plugin Module:</strong> The entire project becomes reliant on the stability and accuracy of the <code>build-plugin</code> module. Errors within this module or the catalog could impact the build process across all modules.</li>
 </ol>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="white-label-architecture"><a class="header" href="#white-label-architecture">White Label Architecture</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="white-label-architecture"><a class="header" href="#white-label-architecture">White Label Architecture</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7807" title="" target="_blank">#7807</a></li>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7805" title="" target="_blank">#7805</a></li>
@@ -1271,7 +1274,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <li>Potential for configuration complexities as differentiations increase between the two applications.</li>
 <li>Higher initial setup time and learning curve for new developers due to the modular and decoupled architecture.</li>
 </ul>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7852" title="" target="_blank">#7852</a></li>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7829" title="" target="_blank">#7829</a></li>
@@ -1432,7 +1435,50 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <li>Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.</li>
 <li>Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.</li>
 </ul>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-document"><a class="header" href="#how-to-document">How to Document</a></h1>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="change-shared-modules-package-to-netthunderbird"><a class="header" href="#change-shared-modules-package-to-netthunderbird">Change Shared Modules package to <code>net.thunderbird</code></a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/9012" title="" target="_blank">#9012</a></li>
+</ul>
+<h2 id="status-7"><a class="header" href="#status-7">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context-7"><a class="header" href="#context-7">Context</a></h2>
+<p>The Thunderbird Android project is a white-label version of K-9 Mail, and both apps — <code>app-thunderbird</code> and <code>app-kmail</code>
+— coexist in the same repository. They have distinct application IDs and branding, but share a significant portion of
+the code through common modules.</p>
+<p>These shared modules currently use the <code>app.k9mail</code> or <code>com.fsck</code> package name, which are legacy artifacts from
+K-9 Mail. While K-9 will remain available for some time, the project’s primary focus has shifted toward Thunderbird.</p>
+<p>To reflect this shift, establish clearer ownership, and prepare for future development (including cross-platform code
+integration), we will rename the packages in shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.
+The actual application IDs and package names of <code>app-thunderbird</code> and <code>app-k9mail</code> must remain <strong>unchanged</strong>.</p>
+<h2 id="decision-7"><a class="header" href="#decision-7">Decision</a></h2>
+<p>We decided to rename the base package in all shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.</p>
+<p>Specifically:</p>
+<ul>
+<li>All Kotlin/Java packages in shared modules will be refactored to use <code>net.thunderbird</code> as the base</li>
+<li>This must not affect the application IDs or packages of <code>app-thunderbird</code> or <code>app-kmail</code>, which will remain as-is</li>
+<li>All references, imports, and configuration references will be updated accordingly</li>
+<li>Tests, resources, and Gradle module settings will be adjusted to match the new package structure</li>
+</ul>
+<p>This change will establish a clearer identity for the shared code, align with Thunderbird’s branding, and prepare the
+project for cross-platform development.</p>
+<h2 id="consequences-7"><a class="header" href="#consequences-7">Consequences</a></h2>
+<h2 id="positive-consequences-3"><a class="header" href="#positive-consequences-3">Positive Consequences</a></h2>
+<ul>
+<li>Shared code reflects Thunderbird branding and identity</li>
+<li>Reduces confusion when navigating codebase shared by both apps</li>
+<li>Sets the foundation for cross-platform compatibility and future modularization</li>
+<li>Helps reinforce long-term direction of the project toward Thunderbird</li>
+</ul>
+<h2 id="negative-consequences-3"><a class="header" href="#negative-consequences-3">Negative Consequences</a></h2>
+<ul>
+<li>Large-scale refactoring required across multiple modules</li>
+<li>Risk of introducing regressions during package renaming</li>
+<li>Potential for disruption in local development setups (e.g., IDE caching, broken imports)</li>
+<li>Contributors familiar with the old structure may need time to adjust</li>
+</ul>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-document"><a class="header" href="#how-to-document">How to Document</a></h1>
 <p>This guide provides detailed instructions for contributing to and maintaining the documentation for the Thunderbird for Android project. It explains the tools used, the structure of the documentation, and guidelines for creating and editing content.</p>
 <p>We use <a href="https://rust-lang.github.io/mdBook/" title="" target="_blank">mdbook</a> to generate the documentation. The source files for the documentation are located in the <code>docs/</code> directory.</p>
 <h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
@@ -1505,7 +1551,7 @@ respective section.</p>
 <pre><code class="language-shell">mdbook serve docs --open
 </code></pre>
 <p>The <code>mdbook serve docs</code> command will serve the book at <a href="http://localhost:3000" title="" target="_blank">http://localhost:3000</a> and rebuild the documentation on changes. The <code>--open</code> option will open the book in your web browser and is optional.</p>
-<footer id="last-change">Last change: 2025-03-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fdc3e76">fdc3e76</a></footer>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

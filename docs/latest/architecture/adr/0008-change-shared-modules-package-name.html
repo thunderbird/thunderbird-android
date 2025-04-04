@@ -3,8 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Page not found - Thunderbird for Android - Developer Documentation</title>
-        <base href="/">
+        <title>0008 - Change Shared Module package to net.thunderbird - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -13,36 +12,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="assets/theme/last-changed.css">
-        <link rel="stylesheet" href="assets/theme/navigation.css">
-        <link rel="stylesheet" href="assets/theme/pagetoc.css">
+        <link rel="stylesheet" href="../../assets/theme/last-changed.css">
+        <link rel="stylesheet" href="../../assets/theme/navigation.css">
+        <link rel="stylesheet" href="../../assets/theme/pagetoc.css">
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "";
+            const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="../../toc.js"></script>
     </head>
     <body>
     <div id="body-container">
@@ -95,7 +94,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -130,11 +129,14 @@
                     <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./architecture/adr/0008-change-shared-modules-package-name.md" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
                     </div>
@@ -162,14 +164,61 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="document-not-found-404"><a class="header" href="#document-not-found-404">Document not found (404)</a></h1>
-<p>This URL is invalid, sorry. Please use the navigation bar or search to continue.</p>
-
+                        <h1 id="change-shared-modules-package-to-netthunderbird"><a class="header" href="#change-shared-modules-package-to-netthunderbird">Change Shared Modules package to <code>net.thunderbird</code></a></h1>
+<ul>
+<li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/9012" title="" target="_blank">#9012</a></li>
+</ul>
+<h2 id="status"><a class="header" href="#status">Status</a></h2>
+<ul>
+<li><strong>Accepted</strong></li>
+</ul>
+<h2 id="context"><a class="header" href="#context">Context</a></h2>
+<p>The Thunderbird Android project is a white-label version of K-9 Mail, and both apps — <code>app-thunderbird</code> and <code>app-kmail</code>
+— coexist in the same repository. They have distinct application IDs and branding, but share a significant portion of
+the code through common modules.</p>
+<p>These shared modules currently use the <code>app.k9mail</code> or <code>com.fsck</code> package name, which are legacy artifacts from
+K-9 Mail. While K-9 will remain available for some time, the project’s primary focus has shifted toward Thunderbird.</p>
+<p>To reflect this shift, establish clearer ownership, and prepare for future development (including cross-platform code
+integration), we will rename the packages in shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.
+The actual application IDs and package names of <code>app-thunderbird</code> and <code>app-k9mail</code> must remain <strong>unchanged</strong>.</p>
+<h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
+<p>We decided to rename the base package in all shared modules from <code>app.k9mail</code> and <code>com.fsck</code> to <code>net.thunderbird</code>.</p>
+<p>Specifically:</p>
+<ul>
+<li>All Kotlin/Java packages in shared modules will be refactored to use <code>net.thunderbird</code> as the base</li>
+<li>This must not affect the application IDs or packages of <code>app-thunderbird</code> or <code>app-kmail</code>, which will remain as-is</li>
+<li>All references, imports, and configuration references will be updated accordingly</li>
+<li>Tests, resources, and Gradle module settings will be adjusted to match the new package structure</li>
+</ul>
+<p>This change will establish a clearer identity for the shared code, align with Thunderbird’s branding, and prepare the
+project for cross-platform development.</p>
+<h2 id="consequences"><a class="header" href="#consequences">Consequences</a></h2>
+<h2 id="positive-consequences"><a class="header" href="#positive-consequences">Positive Consequences</a></h2>
+<ul>
+<li>Shared code reflects Thunderbird branding and identity</li>
+<li>Reduces confusion when navigating codebase shared by both apps</li>
+<li>Sets the foundation for cross-platform compatibility and future modularization</li>
+<li>Helps reinforce long-term direction of the project toward Thunderbird</li>
+</ul>
+<h2 id="negative-consequences"><a class="header" href="#negative-consequences">Negative Consequences</a></h2>
+<ul>
+<li>Large-scale refactoring required across multiple modules</li>
+<li>Risk of introducing regressions during package renaming</li>
+<li>Potential for disruption in local development setups (e.g., IDE caching, broken imports)</li>
+<li>Contributors familiar with the old structure may need time to adjust</li>
+</ul>
+<footer id="last-change">Last change: 2025-04-04, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/fe6a431">fe6a431</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../architecture/adr/0007-project-structure.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
+                            <a rel="next prefetch" href="../../HOW-TO-DOCUMENT.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -177,7 +226,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../architecture/adr/0007-project-structure.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
+                    <a rel="next prefetch" href="../../HOW-TO-DOCUMENT.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
@@ -190,19 +245,19 @@
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="assets/theme/mermaid.min.js"></script>
-        <script src="assets/theme/mermaid-init.js"></script>
-        <script src="assets/theme/navigation.js"></script>
-        <script src="assets/theme/pagetoc.js"></script>
+        <script src="../../assets/theme/mermaid.min.js"></script>
+        <script src="../../assets/theme/mermaid-init.js"></script>
+        <script src="../../assets/theme/navigation.js"></script>
+        <script src="../../assets/theme/pagetoc.js"></script>
 
 
     </div>
