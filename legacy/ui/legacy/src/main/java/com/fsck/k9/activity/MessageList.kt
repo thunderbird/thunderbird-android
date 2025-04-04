@@ -30,6 +30,8 @@ import androidx.fragment.app.commitNow
 import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.core.featureflag.FeatureFlagKey
+import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.launcher.FeatureLauncherActivity
@@ -71,6 +73,7 @@ import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
+import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
@@ -99,6 +102,7 @@ open class MessageList :
     private val contactRepository: ContactRepository by inject()
     private val coreResourceProvider: CoreResourceProvider by inject()
     private val fundingManager: FundingManager by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private lateinit var actionBar: ActionBar
     private var searchView: SearchView? = null
@@ -636,15 +640,29 @@ open class MessageList :
     }
 
     private fun initializeFolderDrawer() {
-        // TODO
-        navigationDrawer = SideRailDrawer(
-            parent = this,
-            openAccount = { accountId -> openRealAccount(accountId) },
-            openFolder = { folderId -> openFolder(folderId) },
-            openUnifiedFolder = { openUnifiedInbox() },
-            openManageFolders = { launchManageFoldersScreen() },
-            openSettings = { SettingsActivity.launch(this) },
-            createDrawerListener = { createDrawerListener() },
+        featureFlagProvider.provide(FeatureFlagKey("enable_dropdown_drawer")).whenEnabledOrNot(
+            onEnabled = {
+                navigationDrawer = DropDownDrawer(
+                    parent = this,
+                    openAccount = { accountId -> openRealAccount(accountId) },
+                    openFolder = { folderId -> openFolder(folderId) },
+                    openUnifiedFolder = { openUnifiedInbox() },
+                    openManageFolders = { launchManageFoldersScreen() },
+                    openSettings = { SettingsActivity.launch(this) },
+                    createDrawerListener = { createDrawerListener() },
+                )
+            },
+            onDisabledOrUnavailable = {
+                navigationDrawer = SideRailDrawer(
+                    parent = this,
+                    openAccount = { accountId -> openRealAccount(accountId) },
+                    openFolder = { folderId -> openFolder(folderId) },
+                    openUnifiedFolder = { openUnifiedInbox() },
+                    openManageFolders = { launchManageFoldersScreen() },
+                    openSettings = { SettingsActivity.launch(this) },
+                    createDrawerListener = { createDrawerListener() },
+                )
+            },
         )
     }
 
