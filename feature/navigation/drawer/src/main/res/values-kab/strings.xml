@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="navigation_drawer_action_settings">Iɣewwaren</string>
-    <string name="navigation_drawer_action_manage_folders">Sefrek ikaramen</string>
-    <string name="navigation_drawer_action_sync_all_accounts">Mtawi meṛṛa imiḍanen</string>
-    <string name="navigation_drawer_action_show_accounts">Sken imiḍanen</string>
-    <string name="navigation_drawer_action_hide_accounts">Ffer imiḍanen</string>
-</resources>

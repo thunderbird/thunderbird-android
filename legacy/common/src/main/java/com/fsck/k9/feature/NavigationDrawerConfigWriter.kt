@@ -1,8 +1,8 @@
 package com.fsck.k9.feature
 
-import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract
-import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import com.fsck.k9.preferences.DrawerConfigManager
+import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract
+import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
 class NavigationDrawerConfigWriter(
     private val drawerConfigManager: DrawerConfigManager,
