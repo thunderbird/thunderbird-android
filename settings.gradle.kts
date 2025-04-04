@@ -94,7 +94,9 @@ include(
 )
 
 include(
-    ":feature:navigation:drawer",
+    ":feature:navigation:drawer:api",
+    ":feature:navigation:drawer:dropdown",
+    ":feature:navigation:drawer:siderail",
 )
 
 include(

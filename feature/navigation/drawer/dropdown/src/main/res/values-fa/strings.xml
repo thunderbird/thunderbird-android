@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="navigation_drawer_dropdown_action_settings">تنظیمات</string>
+    <string name="navigation_drawer_dropdown_action_manage_folders">مدیریت پوشه‌ها</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">صندوق ورودی یکپارچه</string>
+    <string name="navigation_drawer_dropdown_action_hide_accounts">نهفتن حساب‌ها</string>
+    <string name="navigation_drawer_dropdown_action_sync_all_accounts">هم‌گام سازی همهٔ آشنایان</string>
+    <string name="navigation_drawer_dropdown_action_show_accounts">نمایش حساب‌ها</string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">۹۹+</string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">ه+</string>
+</resources>

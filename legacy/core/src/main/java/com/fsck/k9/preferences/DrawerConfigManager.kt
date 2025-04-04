@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import net.thunderbird.core.preferences.ConfigManager
+import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
 interface DrawerConfigManager : ConfigManager<DrawerConfig>

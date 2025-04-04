@@ -39,7 +39,7 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.mime4j.core)
     implementation(libs.mime4j.dom)
-    implementation(projects.feature.navigation.drawer)
+    implementation(projects.feature.navigation.drawer.api)
 
     testApi(projects.core.testing)
     testApi(projects.core.android.testing)

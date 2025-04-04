@@ -106,7 +106,7 @@ import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import app.k9mail.legacy.search.LocalSearch;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.base.K9Activity;;
+import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.compose.IntentData;
 import com.fsck.k9.ui.compose.IntentDataMapper;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;

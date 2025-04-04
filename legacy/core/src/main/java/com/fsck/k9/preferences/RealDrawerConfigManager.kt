@@ -1,6 +1,5 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.feature.navigation.drawer.NavigationDrawerExternalContract.DrawerConfig
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineScope
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import net.thunderbird.core.preferences.SettingsChangeBroker
 import net.thunderbird.core.preferences.SettingsChangeSubscriber
+import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
 internal class RealDrawerConfigManager(
     private val preferences: Preferences,
