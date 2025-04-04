@@ -13,13 +13,14 @@ import androidx.compose.ui.platform.LocalContext
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
-import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 
 @Composable
 internal fun FolderList(
-    folders: ImmutableList<DisplayFolder>,
+    rootFolder: DisplayTreeFolder,
     selectedFolder: DisplayFolder?,
     onFolderClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
@@ -36,17 +37,21 @@ internal fun FolderList(
         contentPadding = PaddingValues(vertical = MainTheme.spacings.default),
     ) {
         items(
-            items = folders,
-            key = { it.id },
+            items = rootFolder.children,
+            key = { it.displayFolder?.id ?: '0' },
         ) { folder ->
-            FolderListItem(
-                displayFolder = folder,
-                selected = folder == selectedFolder,
-                showStarredCount = showStarredCount,
-                onClick = onFolderClick,
-                folderNameFormatter = folderNameFormatter,
-            )
-            if (folder is DisplayUnifiedFolder) {
+            val currentDisplayFolder = folder.displayFolder
+            if (currentDisplayFolder is DisplayAccountFolder) {
+                FolderListItem(
+                    displayFolder = currentDisplayFolder,
+                    treeFolder = folder,
+                    selected = currentDisplayFolder.folder == selectedFolder,
+                    showStarredCount = showStarredCount,
+                    onClick = onFolderClick,
+                    folderNameFormatter = folderNameFormatter,
+                )
+            }
+            if (currentDisplayFolder is DisplayUnifiedFolder) {
                 DividerHorizontal(
                     modifier = Modifier
                         .fillMaxWidth()

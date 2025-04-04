@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import org.junit.Test
 
@@ -22,6 +23,13 @@ internal class DrawerStateTest {
                 ),
                 accounts = persistentListOf(),
                 selectedAccountId = null,
+                rootFolder = DisplayTreeFolder(
+                    displayFolder = null,
+                    displayName = null,
+                    totalUnreadCount = 0,
+                    totalStarredCount = 0,
+                    children = persistentListOf(),
+                ),
                 folders = persistentListOf(),
                 selectedFolderId = null,
                 isLoading = false,

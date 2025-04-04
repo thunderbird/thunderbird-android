@@ -18,6 +18,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
@@ -36,8 +37,10 @@ internal class DrawerViewModel(
     private val saveDrawerConfig: UseCase.SaveDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
+    private val getDisplayTreeFolder: UseCase.GetDisplayTreeFolder,
     private val syncAccount: UseCase.SyncAccount,
     private val syncAllAccounts: UseCase.SyncAllAccounts,
+    private val maxNestingLevel: Int = 2,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(
     initialState = initialState,
@@ -91,17 +94,18 @@ internal class DrawerViewModel(
             .flatMapLatest { (accountId, showUnifiedInbox) ->
                 getDisplayFoldersForAccount(accountId, showUnifiedInbox)
             }.collect { folders ->
-                updateFolders(folders)
+                updateFolders(folders, getDisplayTreeFolder(folders, maxNestingLevel))
             }
     }
 
-    private fun updateFolders(displayFolders: List<DisplayFolder>) {
+    private fun updateFolders(displayFolders: List<DisplayFolder>, rootFolder: DisplayTreeFolder) {
         val selectedFolder = displayFolders.find {
             it.id == state.value.selectedFolderId
         } ?: displayFolders.firstOrNull()
 
         updateState {
             it.copy(
+                rootFolder = rootFolder,
                 folders = displayFolders.toImmutableList(),
                 selectedFolderId = selectedFolder?.id,
             )
@@ -126,6 +130,7 @@ internal class DrawerViewModel(
                     state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
                 ).launchIn(viewModelScope)
             }
+
             Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
             Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
             Event.OnSyncAccount -> onSyncAccount()
