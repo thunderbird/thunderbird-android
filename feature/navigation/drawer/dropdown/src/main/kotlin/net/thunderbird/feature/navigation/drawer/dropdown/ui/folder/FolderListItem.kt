@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -35,7 +35,7 @@ internal fun FolderListItem(
     parentPrefix: String? = "",
     indentationLevel: Int = 1,
 ) {
-    var isExpanded = remember { mutableStateOf(false) }
+    var isExpanded = rememberSaveable { mutableStateOf(false) }
 
     var unreadCount = displayFolder.unreadMessageCount
     var starredCount = displayFolder.starredMessageCount
@@ -45,12 +45,16 @@ internal fun FolderListItem(
         starredCount = treeFolder.totalStarredCount
     }
 
-    Column(modifier = Modifier.fillMaxWidth().animateContentSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .animateContentSize(),
+    ) {
         NavigationDrawerItem(
             label = mapFolderName(displayFolder, folderNameFormatter, parentPrefix),
             selected = selected,
             onClick = { onClick(displayFolder) },
-            modifier = modifier,
+            modifier = Modifier.fillMaxWidth(),
             icon = {
                 Icon(
                     imageVector = mapFolderIcon(displayFolder),
@@ -79,7 +83,9 @@ internal fun FolderListItem(
                 showStarredCount = showStarredCount,
                 onClick = { onClick(displayChild) },
                 folderNameFormatter = folderNameFormatter,
-                modifier = Modifier.padding(start = MainTheme.spacings.triple * indentationLevel),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = MainTheme.spacings.double * indentationLevel),
                 treeFolder = child,
                 parentPrefix = if (displayParent is DisplayAccountFolder) displayParent.folder.name else null,
                 indentationLevel = indentationLevel + 1,

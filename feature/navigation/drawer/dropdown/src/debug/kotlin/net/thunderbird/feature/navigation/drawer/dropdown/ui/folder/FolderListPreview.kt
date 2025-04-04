@@ -5,6 +5,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_FOLDER
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_TREE_FOLDER
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_TREE_FOLDER_WITH_NESTED_FOLDERS
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.EMPTY_DISPLAY_TREE_FOLDER
 
@@ -41,6 +42,19 @@ internal fun FolderListWithUnifiedFolderPreview() {
         FolderList(
             rootFolder = DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER,
             selectedFolder = DISPLAY_FOLDER,
+            onFolderClick = {},
+            showStarredCount = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun FolderListWithUnifiedFolderPreviewSelected() {
+    PreviewWithTheme {
+        FolderList(
+            rootFolder = DISPLAY_TREE_FOLDER_WITH_NESTED_FOLDERS,
+            selectedFolder = null,
             onFolderClick = {},
             showStarredCount = false,
         )

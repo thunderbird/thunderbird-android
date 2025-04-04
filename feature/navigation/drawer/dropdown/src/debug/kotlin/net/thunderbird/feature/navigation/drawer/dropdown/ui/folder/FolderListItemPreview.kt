@@ -7,6 +7,7 @@ import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_FOLDER
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.UNIFIED_FOLDER
 
 @Composable
@@ -89,6 +90,21 @@ internal fun FolderListItemWithUnifiedFolderPreview() {
     PreviewWithThemes {
         FolderListItem(
             displayFolder = UNIFIED_FOLDER,
+            selected = false,
+            showStarredCount = false,
+            onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun FolderListItemWithUnifiedFolderSelectedPreview() {
+    PreviewWithThemes {
+        FolderListItem(
+            displayFolder = UNIFIED_FOLDER,
+            treeFolder = DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER,
             selected = false,
             showStarredCount = false,
             onClick = {},

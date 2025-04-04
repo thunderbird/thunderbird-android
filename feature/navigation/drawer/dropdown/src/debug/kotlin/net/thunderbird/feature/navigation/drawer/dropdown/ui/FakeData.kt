@@ -119,6 +119,30 @@ internal object FakeData {
         ),
     )
 
+    val DISPLAY_TREE_FOLDER_WITH_NESTED_FOLDERS = DisplayTreeFolder(
+        displayFolder = null,
+        displayName = null,
+        totalUnreadCount = 14,
+        totalStarredCount = 5,
+        children = persistentListOf(
+            DisplayTreeFolder(
+                displayFolder = DISPLAY_FOLDER,
+                displayName = DISPLAY_FOLDER.folder.name,
+                totalUnreadCount = 7,
+                totalStarredCount = 3,
+                children = persistentListOf(
+                    DisplayTreeFolder(
+                        displayFolder = null,
+                        displayName = null,
+                        totalUnreadCount = 7,
+                        totalStarredCount = 3,
+                        children = persistentListOf(),
+                    ),
+                ),
+            ),
+        ),
+    )
+
     fun createAccountList(): PersistentList<DisplayAccount> {
         return persistentListOf(
             DisplayAccount(
