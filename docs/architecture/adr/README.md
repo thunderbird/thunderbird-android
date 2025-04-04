@@ -30,6 +30,14 @@ where each ADR document should contain:
 When creating a new ADR, please follow the provided [ADR template file](0000-adr-template.md) and ensure that your
 document is clear and concise.
 
+Once you are ready to propose your ADR, you should:
+
+1. Create an issue in the repository, get consensus from at least one other project contributor.
+2. Make a post on [the mobile-planning list](https://thunderbird.topicbox.com/groups/mobile-planning)
+   to announce your ADR. You can use the below template as needed.
+3. Create a pull request in the repository linking the issue.
+4. Make a decision together with mobile module owners, the PR will be merged when accepted.
+
 ## Directory Structure
 
 The ADRs will be stored in a directory named `docs/adr`, and each ADR will be a file named `NNNN-title-with-dashes.md`
@@ -52,3 +60,24 @@ the status or to add more information.
 
 We welcome contributions in the form of new ADRs or updates to existing ones. Please ensure all contributions follow
 the standard format and provide clear and concise information.
+
+## Appendix: Intent to Adopt Template
+
+You may use this template in your Intent to Adopt email as noted above. Tweak it as you feel is useful.
+
+> Hello everyone,
+>
+> I’m writing to share an intent to adopt a new architecture decision: [ADR-[Number]] [Title of ADR]
+>
+> This change addresses [brief summary of the problem] and proposes [brief description of the approach].
+>
+> This decision is based on [briefly mention motivating factors, constraints, or technical context].
+>
+> You can read the full proposal here: [link to ADR]
+>
+> If you have feedback or concerns, please respond in the linked issue. We plan to finalize the
+> decision after [proposed date], factoring in discussion at that time.
+>
+> Thanks,
+> [Your Name]
+
