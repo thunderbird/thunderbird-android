@@ -1,8 +1,8 @@
-package app.k9mail.legacy.search
+package net.thunderbird.feature.search
 
-import app.k9mail.legacy.account.BaseAccount
-import app.k9mail.legacy.search.api.SearchAttribute
-import app.k9mail.legacy.search.api.SearchField
+import net.thunderbird.core.account.BaseAccount
+import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.api.SearchField
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as an account.

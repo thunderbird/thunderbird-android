@@ -11,6 +11,7 @@ dependencies {
 
     implementation(projects.core.mail.folder.api)
 
+    implementation(projects.core.account)
     implementation(projects.legacy.account)
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)
