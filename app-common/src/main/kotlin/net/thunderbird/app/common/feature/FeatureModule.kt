@@ -1,4 +1,4 @@
-package com.fsck.k9.feature
+package net.thunderbird.app.common.feature
 
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract
