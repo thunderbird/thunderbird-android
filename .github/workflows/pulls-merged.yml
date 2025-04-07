@@ -14,6 +14,7 @@ permissions:
 
 jobs:
   pull-request-merged:
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     environment: botmobile
     steps:
@@ -41,10 +42,10 @@ jobs:
 
       - name: Thank you
         if: |
-          github.event.pull_request.merged == true &&
           github.event.pull_request.author_association != 'OWNER' &&
           github.event.pull_request.author_association != 'MEMBER' &&
-          github.event.pull_request.author_association != 'COLLABORATOR'
+          github.event.pull_request.author_association != 'COLLABORATOR' &&
+          github.event.pull_request.author_association != 'CONTRIBUTOR'
         env:
           PR_NUMBER: ${{  github.event.pull_request.number  }}
           GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
