@@ -1,6 +1,6 @@
 package: name='com.fsck.k9' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
 install-location:'auto'
-sdkVersion:'21'
+minSdkVersion:'21'
 targetSdkVersion:'34'
 uses-permission: name='android.permission.READ_CONTACTS'
 uses-permission: name='android.permission.POST_NOTIFICATIONS'
