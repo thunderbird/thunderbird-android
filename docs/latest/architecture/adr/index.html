@@ -191,6 +191,14 @@ where each ADR document should contain:</p>
 <h2 id="creating-a-new-adr"><a class="header" href="#creating-a-new-adr">Creating a new ADR</a></h2>
 <p>When creating a new ADR, please follow the provided <a href="0000-adr-template.html">ADR template file</a> and ensure that your
 document is clear and concise.</p>
+<p>Once you are ready to propose your ADR, you should:</p>
+<ol>
+<li>Create an issue in the repository, get consensus from at least one other project contributor.</li>
+<li>Make a post on <a href="https://thunderbird.topicbox.com/groups/mobile-planning" title="" target="_blank">the mobile-planning list</a>
+to announce your ADR. You can use the below template as needed.</li>
+<li>Create a pull request in the repository linking the issue.</li>
+<li>Make a decision together with mobile module owners, the PR will be merged when accepted.</li>
+</ol>
 <h2 id="directory-structure"><a class="header" href="#directory-structure">Directory Structure</a></h2>
 <p>The ADRs will be stored in a directory named <code>docs/adr</code>, and each ADR will be a file named <code>NNNN-title-with-dashes.md</code>
 where <code>NNNN</code> is a four-digit number that is increased by 1 for every new adr.</p>
@@ -208,6 +216,19 @@ the status or to add more information.</p>
 <h2 id="contributions"><a class="header" href="#contributions">Contributions</a></h2>
 <p>We welcome contributions in the form of new ADRs or updates to existing ones. Please ensure all contributions follow
 the standard format and provide clear and concise information.</p>
+<h2 id="appendix-intent-to-adopt-template"><a class="header" href="#appendix-intent-to-adopt-template">Appendix: Intent to Adopt Template</a></h2>
+<p>You may use this template in your Intent to Adopt email as noted above. Tweak it as you feel is useful.</p>
+<blockquote>
+<p>Hello everyone,</p>
+<p>I’m writing to share an intent to adopt a new architecture decision: [ADR-[Number]] [Title of ADR]</p>
+<p>This change addresses [brief summary of the problem] and proposes [brief description of the approach].</p>
+<p>This decision is based on [briefly mention motivating factors, constraints, or technical context].</p>
+<p>You can read the full proposal here: [link to ADR]</p>
+<p>If you have feedback or concerns, please respond in the linked issue. We plan to finalize the
+decision after [proposed date], factoring in discussion at that time.</p>
+<p>Thanks,
+[Your Name]</p>
+</blockquote>
 
                     </main>
 
