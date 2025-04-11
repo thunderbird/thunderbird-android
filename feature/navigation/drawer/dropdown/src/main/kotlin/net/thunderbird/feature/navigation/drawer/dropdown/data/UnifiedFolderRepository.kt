@@ -1,14 +1,14 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.data
 
 import app.k9mail.legacy.message.controller.MessageCountsProvider
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.api.SearchAttribute
-import app.k9mail.legacy.search.api.SearchField
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.api.SearchField
 
 internal class UnifiedFolderRepository(
     private val messageCountsProvider: MessageCountsProvider,

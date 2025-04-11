@@ -9,9 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import app.k9mail.legacy.account.BaseAccount
 import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.search.SearchAccount.Companion.createUnifiedInboxAccount
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9.isShowUnifiedInbox
 import com.fsck.k9.Preferences.Companion.getPreferences
@@ -20,6 +18,8 @@ import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.account.BaseAccount
+import net.thunderbird.feature.search.SearchAccount.Companion.createUnifiedInboxAccount
 import org.koin.android.ext.android.inject
 
 /**
