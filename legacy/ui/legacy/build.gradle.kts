@@ -12,6 +12,7 @@ dependencies {
     implementation(projects.legacy.core)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
+    implementation(projects.core.contact)
 
     implementation(projects.core.featureflags)
     implementation(projects.core.ui.theme.api)
