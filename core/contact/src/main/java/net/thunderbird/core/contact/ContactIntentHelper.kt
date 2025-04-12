@@ -1,4 +1,4 @@
-package com.fsck.k9.contact
+package net.thunderbird.core.contact
 
 import android.content.Intent
 import android.net.Uri
