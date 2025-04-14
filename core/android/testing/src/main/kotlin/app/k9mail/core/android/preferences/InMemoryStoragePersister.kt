@@ -1,4 +1,9 @@
-package com.fsck.k9.preferences
+package app.k9mail.core.android.preferences
+
+import com.fsck.k9.preferences.Storage
+import com.fsck.k9.preferences.StorageEditor
+import com.fsck.k9.preferences.StoragePersister
+import com.fsck.k9.preferences.StorageUpdater
 
 class InMemoryStoragePersister : StoragePersister {
     private val values = mutableMapOf<String, Any?>()

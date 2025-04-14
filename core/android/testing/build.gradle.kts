@@ -9,4 +9,6 @@ android {
 dependencies {
     api(libs.junit)
     api(libs.robolectric)
+
+    implementation(projects.legacy.core)
 }
