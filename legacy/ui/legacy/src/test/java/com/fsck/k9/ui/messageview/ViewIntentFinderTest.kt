@@ -8,11 +8,11 @@ import android.content.pm.PackageInfo
 import android.content.pm.ProviderInfo
 import androidx.core.net.toUri
 import androidx.test.core.app.ApplicationProvider
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.prop
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.provider.AttachmentTempFileProvider
 import kotlin.test.Test
 import org.junit.Before

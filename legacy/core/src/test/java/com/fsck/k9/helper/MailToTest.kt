@@ -2,7 +2,6 @@ package com.fsck.k9.helper
 
 import android.net.Uri
 import androidx.core.net.toUri
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.containsExactly
@@ -13,6 +12,7 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 class MailToTest : RobolectricTest() {

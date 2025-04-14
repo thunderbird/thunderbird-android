@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
@@ -15,6 +14,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import kotlin.test.assertNotNull
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 private const val ACCOUNT_UUID = "1-2-3"

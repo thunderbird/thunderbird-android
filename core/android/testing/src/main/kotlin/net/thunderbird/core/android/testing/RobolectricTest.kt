@@ -1,4 +1,4 @@
-package app.k9mail.core.android.testing
+package net.thunderbird.core.android.testing
 
 import android.app.Application
 import org.junit.runner.RunWith

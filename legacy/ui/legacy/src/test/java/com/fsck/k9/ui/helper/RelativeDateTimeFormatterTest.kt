@@ -2,10 +2,10 @@ package com.fsck.k9.ui.helper
 
 import android.os.Build
 import android.os.SystemClock
-import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.core.testing.TestClock
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.RobolectricTest
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId

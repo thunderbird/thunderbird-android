@@ -1,4 +1,4 @@
-package com.fsck.k9.testing
+package net.thunderbird.core.android.testing
 
 import org.mockito.Mockito
 import org.mockito.Mockito.mock

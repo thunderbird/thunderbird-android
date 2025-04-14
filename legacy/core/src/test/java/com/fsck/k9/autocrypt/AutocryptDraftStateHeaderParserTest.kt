@@ -1,12 +1,12 @@
 package com.fsck.k9.autocrypt
 
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 class AutocryptDraftStateHeaderParserTest : RobolectricTest() {

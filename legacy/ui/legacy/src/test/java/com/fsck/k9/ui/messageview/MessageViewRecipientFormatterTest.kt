@@ -4,13 +4,13 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import androidx.core.text.getSpans
-import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.legacy.account.Identity
 import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import org.junit.Test

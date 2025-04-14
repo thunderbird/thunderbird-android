@@ -1,8 +1,8 @@
 package com.fsck.k9.contacts
 
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.Address
 import org.junit.Test
 
