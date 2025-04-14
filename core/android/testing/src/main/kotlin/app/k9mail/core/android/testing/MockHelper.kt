@@ -1,4 +1,4 @@
-package com.fsck.k9.testing
+package app.k9mail.core.android.testing
 
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
