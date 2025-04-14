@@ -20,13 +20,13 @@ import assertk.assertions.support.expected
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.Companion.FONT_DEFAULT
 import com.fsck.k9.FontSizes.Companion.LARGE
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.robolectric.Robolectric

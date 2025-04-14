@@ -9,7 +9,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
-import com.fsck.k9.RobolectricTest
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 private const val COLOR = 0xFF0000

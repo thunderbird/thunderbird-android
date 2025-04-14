@@ -3,7 +3,13 @@ plugins {
 }
 
 dependencies {
+
     implementation(projects.legacy.core)
+    api(projects.core.android.testing)
+
+    api(libs.koin.core)
+    api(libs.mockito.core)
+    api(libs.mockito.kotlin)
 }
 
 android {

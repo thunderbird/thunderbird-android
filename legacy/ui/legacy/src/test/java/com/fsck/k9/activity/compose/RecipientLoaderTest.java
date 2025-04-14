@@ -11,11 +11,10 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
-
-import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
+import net.thunderbird.core.android.testing.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
