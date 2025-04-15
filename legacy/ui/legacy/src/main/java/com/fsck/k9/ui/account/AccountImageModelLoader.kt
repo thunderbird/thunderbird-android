@@ -2,8 +2,6 @@ package com.fsck.k9.ui.account
 
 import android.graphics.Bitmap
 import androidx.core.graphics.drawable.toBitmap
-import app.k9mail.legacy.ui.account.AccountFallbackImageProvider
-import app.k9mail.legacy.ui.account.AccountImage
 import com.bumptech.glide.Priority
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.Options
@@ -12,6 +10,8 @@ import com.bumptech.glide.load.model.ModelLoader
 import com.bumptech.glide.load.model.ModelLoaderFactory
 import com.bumptech.glide.load.model.MultiModelLoaderFactory
 import com.fsck.k9.contacts.ContactPhotoLoader
+import net.thunderbird.core.ui.account.AccountFallbackImageProvider
+import net.thunderbird.core.ui.account.AccountImage
 
 /**
  * A custom [ModelLoader] so we can use [AccountImageDataFetcher] to load the account image.

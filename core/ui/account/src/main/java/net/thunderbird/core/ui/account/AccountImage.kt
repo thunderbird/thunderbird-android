@@ -1,4 +1,4 @@
-package app.k9mail.legacy.ui.account
+package net.thunderbird.core.ui.account
 
 import com.bumptech.glide.load.Key
 import java.security.MessageDigest
