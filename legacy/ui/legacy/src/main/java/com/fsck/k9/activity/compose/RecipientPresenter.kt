@@ -18,7 +18,6 @@ import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeader
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser
-import com.fsck.k9.contact.ContactIntentHelper
 import com.fsck.k9.helper.MailTo
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.Address
@@ -33,6 +32,7 @@ import com.fsck.k9.message.MessageBuilder
 import com.fsck.k9.message.PgpMessageBuilder
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView.Recipient
+import net.thunderbird.core.contact.ContactIntentHelper
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
@@ -633,7 +633,10 @@ class RecipientPresenter(
 
     private fun isContactPickerAvailable(): Boolean {
         val resolveInfoList =
-            context.packageManager.queryIntentActivities(ContactIntentHelper.getContactPickerIntent(), 0)
+            context.packageManager.queryIntentActivities(
+                ContactIntentHelper.getContactPickerIntent(),
+                0,
+            )
         return resolveInfoList.isNotEmpty()
     }
 
