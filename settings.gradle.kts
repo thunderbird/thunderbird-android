@@ -168,7 +168,6 @@ include(
     ":legacy:storage",
     ":legacy:testing",
     ":legacy:ui:base",
-    ":legacy:ui:account",
     ":legacy:ui:folder",
     ":legacy:ui:legacy",
 )
@@ -226,3 +225,4 @@ include(":core:preferences")
 include(":core:mail:mailserver")
 include(":feature:notification")
 include(":core:ui:theme:manager")
+include(":core:ui:account")

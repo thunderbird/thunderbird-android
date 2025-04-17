@@ -1,4 +1,4 @@
-package app.k9mail.legacy.ui.account
+package net.thunderbird.core.ui.account
 
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
