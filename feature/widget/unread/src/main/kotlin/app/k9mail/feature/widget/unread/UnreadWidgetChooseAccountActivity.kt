@@ -2,8 +2,8 @@ package app.k9mail.feature.widget.unread
 
 import android.content.Intent
 import android.os.Bundle
-import app.k9mail.legacy.account.BaseAccount
 import com.fsck.k9.activity.AccountList
+import net.thunderbird.core.account.BaseAccount
 
 class UnreadWidgetChooseAccountActivity : AccountList() {
     override fun onCreate(savedInstanceState: Bundle?) {
