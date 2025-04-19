@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import android.app.Application
 import androidx.work.WorkManager
+import app.k9mail.core.android.preferences.InMemoryStoragePersister
 import app.k9mail.core.featureflag.FeatureFlag
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
@@ -14,7 +15,6 @@ import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.notification.NotificationActionCreator
 import com.fsck.k9.notification.NotificationResourceProvider
 import com.fsck.k9.notification.NotificationStrategy
-import com.fsck.k9.preferences.InMemoryStoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.storage.storageModule
 import net.thunderbird.legacy.core.FakeAccountDefaultsProvider

@@ -1,5 +1,6 @@
 package com.fsck.k9
 
+import app.k9mail.core.android.preferences.InMemoryStoragePersister
 import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -7,7 +8,6 @@ import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.preferences.InMemoryStoragePersister
 import kotlin.test.Test
 import org.junit.Before
 import org.mockito.kotlin.any

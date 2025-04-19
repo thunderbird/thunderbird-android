@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.legacy.core)
 
     api(projects.core.android.testing)
 
