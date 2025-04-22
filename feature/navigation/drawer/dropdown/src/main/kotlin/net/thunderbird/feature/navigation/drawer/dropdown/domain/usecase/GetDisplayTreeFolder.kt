@@ -11,6 +11,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayT
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 
 internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
+    private var placeholderCounter = 0L
 
     override fun invoke(folders: List<DisplayFolder>, maxDepth: Int): DisplayTreeFolder {
         val unifiedFolderTreeList = folders.filterIsInstance<DisplayUnifiedFolder>().map {
@@ -49,7 +50,7 @@ internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
         }
     }
 
-    fun buildAccountFolderTree(
+    private fun buildAccountFolderTree(
         paths: List<Pair<List<String>, DisplayAccountFolder>>,
         parentPath: String = "",
     ): List<DisplayTreeFolder> {
@@ -87,10 +88,11 @@ internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
     }
 
     private fun createPlaceholderFolder(name: String): DisplayAccountFolder {
+        placeholderCounter += 1
         return DisplayAccountFolder(
-            accountId = "accountId",
+            accountId = "placeholder",
             folder = Folder(
-                id = 0L,
+                id = placeholderCounter,
                 name = name,
                 type = FolderType.REGULAR,
                 isLocalOnly = false,
