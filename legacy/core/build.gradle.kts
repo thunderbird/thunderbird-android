@@ -15,6 +15,8 @@ dependencies {
     api(projects.core.mail.folder.api)
     api(projects.feature.folder.api)
 
+    api(projects.feature.search)
+    api(projects.core.account)
     api(projects.legacy.account)
     api(projects.legacy.di)
     api(projects.legacy.mailstore)

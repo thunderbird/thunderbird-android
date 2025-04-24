@@ -1,16 +1,20 @@
 package com.fsck.k9.search
 
 import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.api.SearchAttribute
-import app.k9mail.legacy.search.api.SearchCondition
-import app.k9mail.legacy.search.api.SearchField
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.api.SearchCondition
+import net.thunderbird.feature.search.api.SearchField
 
 /**
  * Modify the supplied [LocalSearch] instance to limit the search to displayable folders.
  */
 fun LocalSearch.limitToDisplayableFolders() {
-    and(SearchField.VISIBLE, "1", SearchAttribute.EQUALS)
+    and(
+        SearchField.VISIBLE,
+        "1",
+        SearchAttribute.EQUALS,
+    )
 }
 
 /**
@@ -45,6 +49,10 @@ fun LocalSearch.excludeSpecialFolders(account: LegacyAccount) {
 
 private fun LocalSearch.excludeSpecialFolder(folderId: Long?) {
     if (folderId != null) {
-        and(SearchField.FOLDER, folderId.toString(), SearchAttribute.NOT_EQUALS)
+        and(
+            SearchField.FOLDER,
+            folderId.toString(),
+            SearchAttribute.NOT_EQUALS,
+        )
     }
 }

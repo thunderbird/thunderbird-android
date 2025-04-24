@@ -20,6 +20,8 @@ dependencies {
     implementation(projects.legacy.core)
     implementation(projects.legacy.account)
 
+    implementation(projects.core.account)
+
     implementation(projects.core.featureflags)
     implementation(projects.core.ui.legacy.theme2.common)
 

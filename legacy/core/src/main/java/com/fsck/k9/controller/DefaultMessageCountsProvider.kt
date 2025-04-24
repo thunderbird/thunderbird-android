@@ -7,9 +7,6 @@ import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
-import app.k9mail.legacy.search.ConditionsTreeNode
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.SearchAccount
 import com.fsck.k9.search.excludeSpecialFolders
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.search.limitToDisplayableFolders
@@ -23,6 +20,9 @@ import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import net.thunderbird.feature.search.ConditionsTreeNode
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.SearchAccount
 import timber.log.Timber
 
 internal class DefaultMessageCountsProvider(
