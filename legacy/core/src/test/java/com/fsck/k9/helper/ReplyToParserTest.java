@@ -3,7 +3,7 @@ package com.fsck.k9.helper;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import app.k9mail.core.android.testing.RobolectricTest;
+import net.thunderbird.core.android.testing.RobolectricTest;
 import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
 import com.fsck.k9.mail.Address;

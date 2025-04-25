@@ -10,7 +10,6 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.core.testing.TestClock
 import app.k9mail.legacy.account.LegacyAccount
 import assertk.Assert
@@ -21,6 +20,7 @@ import assertk.assertions.support.expected
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.Companion.FONT_DEFAULT
 import com.fsck.k9.FontSizes.Companion.LARGE
+import com.fsck.k9.RobolectricTest
 import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address

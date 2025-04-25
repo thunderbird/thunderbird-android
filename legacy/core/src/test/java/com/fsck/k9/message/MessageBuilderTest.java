@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import app.k9mail.core.android.testing.RobolectricTest;
+import net.thunderbird.core.android.testing.RobolectricTest;
 import app.k9mail.legacy.account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
 import app.k9mail.legacy.account.Identity;

@@ -1,3 +1,3 @@
-package com.fsck.k9.testing
+package net.thunderbird.core.android.testing
 
 fun String.removeNewlines(): String = replace("([\\r\\n])".toRegex(), "")

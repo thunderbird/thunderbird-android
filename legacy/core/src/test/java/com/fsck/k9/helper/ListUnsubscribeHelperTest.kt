@@ -1,11 +1,11 @@
 package com.fsck.k9.helper
 
 import androidx.core.net.toUri
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.mail.internet.MimeMessage
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 class ListUnsubscribeHelperTest : RobolectricTest() {

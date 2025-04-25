@@ -1,6 +1,5 @@
 package com.fsck.k9.helper
 
-import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.legacy.account.Identity
 import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
@@ -11,6 +10,7 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.internet.AddressHeaderBuilder
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.UUID
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 class IdentityHelperTest : RobolectricTest() {

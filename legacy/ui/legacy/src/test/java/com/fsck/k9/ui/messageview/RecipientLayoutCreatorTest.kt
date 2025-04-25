@@ -4,12 +4,12 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
+import com.fsck.k9.RobolectricTest
 import org.junit.Test
 
 private const val COLOR = 0xFF0000
