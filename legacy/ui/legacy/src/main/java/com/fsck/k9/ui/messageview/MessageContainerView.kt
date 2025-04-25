@@ -25,7 +25,6 @@ import android.widget.Toast
 import androidx.core.app.ShareCompat.IntentBuilder
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import com.fsck.k9.contact.ContactIntentHelper
 import com.fsck.k9.helper.ClipboardManager
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
@@ -38,6 +37,7 @@ import com.fsck.k9.view.MessageWebView
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
 import com.fsck.k9.view.WebViewConfigProvider
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.core.contact.ContactIntentHelper
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
@@ -329,7 +329,9 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
                 }
 
                 MENU_ITEM_EMAIL_SAVE -> {
-                    val intent = ContactIntentHelper.getAddEmailContactIntent(Address(email))
+                    val intent = ContactIntentHelper.getAddEmailContactIntent(
+                        Address(email),
+                    )
                     startActivityIfAvailable(context, intent)
                 }
 
