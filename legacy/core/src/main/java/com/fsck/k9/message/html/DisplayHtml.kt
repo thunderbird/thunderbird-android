@@ -6,7 +6,6 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
     override val headHtml: String
         get() {
             return """<meta name="viewport" content="width=device-width"/>""" +
-                cssStyleTheme() +
                 cssStylePre() +
                 cssStyleSignature()
         }
@@ -18,23 +17,10 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
     fun wrapMessageContent(messageContent: CharSequence): String {
         // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
         return "<html dir=\"auto\"><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
-            cssStyleTheme() +
             cssStylePre() +
             "</head><body>" +
             messageContent +
             "</body></html>"
-    }
-
-    private fun cssStyleTheme(): String {
-        return if (settings.useDarkMode) {
-            // TODO: Don't hardcode these values. Inject them via HtmlSettings.
-            "<style type=\"text/css\">" +
-                "* { background: #121212 ! important; color: #F3F3F3 !important }" +
-                ":link, :link * { color: #CCFF33 !important }" +
-                ":visited, :visited * { color: #551A8B !important }</style> "
-        } else {
-            ""
-        }
     }
 
     /**
