@@ -12,9 +12,9 @@ import assertk.all
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.prop
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.provider.AttachmentTempFileProvider
 import kotlin.test.Test
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Before
 import org.robolectric.Robolectric
 import org.robolectric.Shadows.shadowOf

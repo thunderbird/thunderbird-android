@@ -7,8 +7,8 @@ import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.preferences.InMemoryStoragePersister
 import kotlin.test.Test
+import net.thunderbird.core.android.preferences.InMemoryStoragePersister
 import org.junit.Before
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn

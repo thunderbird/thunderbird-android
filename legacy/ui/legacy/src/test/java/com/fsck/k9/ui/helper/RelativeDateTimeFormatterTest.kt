@@ -5,12 +5,12 @@ import android.os.SystemClock
 import app.k9mail.core.testing.TestClock
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.RobolectricTest
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.TimeZone
 import kotlinx.datetime.Instant
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment

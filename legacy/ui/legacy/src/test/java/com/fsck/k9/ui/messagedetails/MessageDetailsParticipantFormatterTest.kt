@@ -12,9 +12,9 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 private const val IDENTITY_NAME = "Alice"

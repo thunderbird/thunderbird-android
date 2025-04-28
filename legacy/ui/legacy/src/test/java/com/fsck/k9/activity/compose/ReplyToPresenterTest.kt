@@ -6,8 +6,8 @@ import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock

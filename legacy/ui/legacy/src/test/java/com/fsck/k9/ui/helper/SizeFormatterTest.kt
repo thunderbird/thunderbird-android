@@ -2,7 +2,7 @@ package com.fsck.k9.ui.helper
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.RobolectricTest
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config

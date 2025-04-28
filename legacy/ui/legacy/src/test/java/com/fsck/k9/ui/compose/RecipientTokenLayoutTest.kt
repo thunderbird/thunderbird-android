@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.RobolectricTest
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.Robolectric
