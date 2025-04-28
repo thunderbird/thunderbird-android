@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,6 +24,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayT
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
 
+@Suppress("LongMethod")
 @Composable
 internal fun FolderListItem(
     displayFolder: DisplayFolder,
@@ -50,10 +52,17 @@ internal fun FolderListItem(
             .fillMaxWidth()
             .animateContentSize(),
     ) {
+        val hasExpandableItems = remember { treeFolder !== null && treeFolder.children.isNotEmpty() }
         NavigationDrawerItem(
             label = mapFolderName(displayFolder, folderNameFormatter, parentPrefix),
             selected = selected,
-            onClick = { onClick(displayFolder) },
+            onClick = {
+                if (hasExpandableItems) {
+                    isExpanded.value = !isExpanded.value
+                } else {
+                    onClick(displayFolder)
+                }
+            },
             modifier = Modifier.fillMaxWidth(),
             icon = {
                 Icon(
@@ -65,7 +74,7 @@ internal fun FolderListItem(
                     unreadCount = unreadCount,
                     starredCount = starredCount,
                     showStarredCount = showStarredCount,
-                    expandableState = if (treeFolder !== null && treeFolder.children.isNotEmpty()) isExpanded else null,
+                    expandableState = if (hasExpandableItems) isExpanded else null,
                 )
             },
         )
