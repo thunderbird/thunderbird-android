@@ -12,6 +12,7 @@ import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.color.MaterialColors
+import net.thunderbird.core.android.account.LegacyAccountWrapper
 
 class SwipeResourceProvider(private val context: Context) {
 
@@ -40,20 +41,23 @@ class SwipeResourceProvider(private val context: Context) {
         }
     }
 
-    fun getActionColorRoles(action: SwipeAction): ColorRoles {
-        val harmonizedColor = MaterialColors.harmonizeWithPrimary(context, getActionColor(action))
+    fun getActionColorRoles(action: SwipeAction, account: LegacyAccountWrapper): ColorRoles {
+        val harmonizedColor = MaterialColors.harmonizeWithPrimary(context, getActionColor(action, account))
         return MaterialColors.getColorRoles(context, harmonizedColor)
     }
 
     @ColorInt
-    private fun getActionColor(action: SwipeAction): Int {
+    private fun getActionColor(action: SwipeAction, account: LegacyAccountWrapper): Int {
         return context.resolveColorAttribute(
             when (action) {
                 SwipeAction.None -> error("action == SwipeAction.None")
                 SwipeAction.ToggleSelection -> R.attr.messageListSwipeSelectColor
                 SwipeAction.ToggleRead -> R.attr.messageListSwipeToggleReadColor
                 SwipeAction.ToggleStar -> R.attr.messageListSwipeToggleStarColor
-                SwipeAction.Archive -> R.attr.messageListSwipeArchiveColor
+                SwipeAction.Archive if account.hasArchiveFolder() ->
+                    R.attr.messageListSwipeArchiveColor
+
+                SwipeAction.Archive -> com.google.android.material.R.attr.colorSurfaceContainerLowest
                 SwipeAction.Delete -> R.attr.messageListSwipeDeleteColor
                 SwipeAction.Spam -> R.attr.messageListSwipeSpamColor
                 SwipeAction.Move -> R.attr.messageListSwipeMoveColor
@@ -61,14 +65,17 @@ class SwipeResourceProvider(private val context: Context) {
         )
     }
 
-    fun getActionName(action: SwipeAction): String {
+    fun getActionName(action: SwipeAction, account: LegacyAccountWrapper): String {
         return context.loadString(
             when (action) {
                 SwipeAction.None -> error("action == SwipeAction.None")
                 SwipeAction.ToggleSelection -> R.string.swipe_action_select
                 SwipeAction.ToggleRead -> R.string.swipe_action_mark_as_read
                 SwipeAction.ToggleStar -> R.string.swipe_action_add_star
-                SwipeAction.Archive -> R.string.swipe_action_archive
+                SwipeAction.Archive if account.hasArchiveFolder() ->
+                    R.string.swipe_action_archive
+
+                SwipeAction.Archive -> R.string.swipe_action_archive_folder_not_set
                 SwipeAction.Delete -> R.string.swipe_action_delete
                 SwipeAction.Spam -> R.string.swipe_action_spam
                 SwipeAction.Move -> R.string.swipe_action_move
