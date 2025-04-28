@@ -8,6 +8,7 @@
         <attr name="messageListSwipeToggleReadColor" format="reference|color" />
         <attr name="messageListSwipeToggleStarColor" format="reference|color" />
         <attr name="messageListSwipeArchiveColor" format="reference|color" />
+        <attr name="messageListSwipeArchiveFolderNotSetColor" format="reference|color" />
         <attr name="messageListSwipeDeleteColor" format="reference|color" />
         <attr name="messageListSwipeSpamColor" format="reference|color" />
         <attr name="messageListSwipeMoveColor" format="reference|color" />

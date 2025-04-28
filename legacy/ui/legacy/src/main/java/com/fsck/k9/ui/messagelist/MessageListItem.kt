@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.account.LegacyAccount
+import app.k9mail.legacy.account.LegacyAccountWrapper
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mail.Address
 
@@ -25,6 +26,7 @@ data class MessageListItem(
     val databaseId: Long,
     val threadRoot: Long,
 ) {
+    val accountWrapper: LegacyAccountWrapper = LegacyAccountWrapper.from(account)
     val messageReference: MessageReference
         get() = MessageReference(account.uuid, folderId, messageUid)
 }
