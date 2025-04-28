@@ -3,9 +3,6 @@ contact_links:
   - name: Feature Request
     url: https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android
     about: Submit your ideas to improve Thunderbird for Android.
-  - name: Security Vulnerability
-    url: https://github.com/thunderbird/thunderbird-android/security/advisories/new
-    about: Report a security vulnerability. Many users could be harmed from this and it should be kept private until resolved.
   - name: Mozilla Support Forum (SUMO)
     url: https://support.mozilla.org/products/thunderbird-android
     about: Most issues are not bugs. Ask the community for help.
