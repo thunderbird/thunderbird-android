@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="10.0b2" versioncode="13" date="2025-04-29">
+        <change>Restrict displaying message search results to internal and system usages</change>
+    </release>
     <release version="10.0b1" versioncode="12" date="2025-03-19">
         <change>Account setup prefills server field automatically</change>
         <change>Add a menu enty to empty the Spam folder</change>
