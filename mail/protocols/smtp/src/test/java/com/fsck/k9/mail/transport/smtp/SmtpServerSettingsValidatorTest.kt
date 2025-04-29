@@ -18,6 +18,7 @@ import com.fsck.k9.mail.testing.security.SimpleTrustedSocketFactory
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
 import java.net.UnknownHostException
 import kotlin.test.Test
+import okio.ByteString.Companion.encodeUtf8
 
 private const val USERNAME = "user"
 private const val PASSWORD = "password"
@@ -99,6 +100,53 @@ class SmtpServerSettingsValidatorTest {
             clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
         )
         val authStateStorage = FakeAuthStateStorage(authorizationState = AUTHORIZATION_STATE)
+
+        val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage)
+
+        assertThat(result).isInstanceOf<ServerSettingsValidationResult.Success>()
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `valid server settings with primary email different from username on OAuth should return Success`() {
+        val expectedUser = "expected@email.com"
+        val serverSettingsValidator = SmtpServerSettingsValidator(
+            trustedSocketFactory = trustedSocketFactory,
+            oAuth2TokenProviderFactory = { authStateStorage ->
+                assertThat(authStateStorage.getAuthorizationState()).isEqualTo(AUTHORIZATION_STATE)
+                FakeOAuth2TokenProvider(primaryEmail = expectedUser)
+            },
+        )
+        val server = MockSmtpServer().apply {
+            output("220 localhost Simple Mail Transfer Service Ready")
+            expect("EHLO [127.0.0.1]")
+            output("250-localhost Hello client.localhost")
+            output("250-ENHANCEDSTATUSCODES")
+            output("250-AUTH PLAIN LOGIN XOAUTH2")
+            output("250 HELP")
+            val ouathBearer = "user=${expectedUser}\u0001auth=Bearer ${AUTHORIZATION_TOKEN}\u0001\u0001"
+                .encodeUtf8()
+                .base64()
+            expect("AUTH XOAUTH2 $ouathBearer")
+            output("235 2.7.0 Authentication successful")
+            expect("QUIT")
+            closeConnection()
+        }
+        server.start()
+        val serverSettings = ServerSettings(
+            type = "smtp",
+            host = server.host,
+            port = server.port,
+            connectionSecurity = ConnectionSecurity.NONE,
+            authenticationType = AuthType.XOAUTH2,
+            username = USERNAME,
+            password = null,
+            clientCertificateAlias = CLIENT_CERTIFICATE_ALIAS,
+        )
+        val authStateStorage = FakeAuthStateStorage(
+            authorizationState = AUTHORIZATION_STATE,
+        )
 
         val result = serverSettingsValidator.checkServerSettings(serverSettings, authStateStorage)
 
@@ -334,7 +382,7 @@ class SmtpServerSettingsValidatorTest {
     }
 }
 
-class FakeOAuth2TokenProvider : OAuth2TokenProvider {
+class FakeOAuth2TokenProvider(override val primaryEmail: String? = null) : OAuth2TokenProvider {
     override fun getToken(timeoutMillis: Long): String {
         return AUTHORIZATION_TOKEN
     }

@@ -67,6 +67,7 @@ class AccountSetupModuleKtTest : KoinTest {
         single<OAuth2TokenProviderFactory> {
             OAuth2TokenProviderFactory { _ ->
                 object : OAuth2TokenProvider {
+                    override val primaryEmail: String? get() = TODO()
                     override fun getToken(timeoutMillis: Long) = TODO()
                     override fun invalidateToken() = TODO()
                 }
