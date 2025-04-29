@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_welcome_text">Aplacaid puist-d airson Android le còd fosgailte gun sanasachd is cudrom air prìobhaideachd.</string>
+    <string name="onboarding_welcome_start_button">Dèanamaid toiseach-tòiseachaidh</string>
+    <string name="onboarding_welcome_developed_by">Air a leasachadh le sgioba shònraichte aig MZLA Technologies agus coimhearsnachd eadar-nàiseanta de shaor-thoilich. Na phàirt de theaghlach Mozilla.</string>
+    <string name="onboarding_welcome_import_button">Ion-phortaich na roghainnean</string>
+</resources>

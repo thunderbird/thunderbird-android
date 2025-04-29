@@ -151,28 +151,9 @@ public class SqlQueryBuilder {
         query.append(" ");
         String selectionArg = null;
         switch (condition.attribute) {
-            case NOT_CONTAINS:
-                query.append("NOT ");
-                //$FALL-THROUGH$
             case CONTAINS: {
                 query.append("LIKE ?");
                 selectionArg = "%" + value + "%";
-                break;
-            }
-            case NOT_STARTSWITH:
-                query.append("NOT ");
-                //$FALL-THROUGH$
-            case STARTSWITH: {
-                query.append("LIKE ?");
-                selectionArg = "%" + value;
-                break;
-            }
-            case NOT_ENDSWITH:
-                query.append("NOT ");
-                //$FALL-THROUGH$
-            case ENDSWITH: {
-                query.append("LIKE ?");
-                selectionArg = value + "%";
                 break;
             }
             case NOT_EQUALS: {

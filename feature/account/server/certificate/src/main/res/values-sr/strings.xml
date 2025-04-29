@@ -2,14 +2,14 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_button_advanced">Напредно</string>
     <string name="account_server_certificate_not_valid_before">Није важеће пре</string>
-    <string name="account_server_certificate_button_continue">Прихватите ризик и наставите</string>
+    <string name="account_server_certificate_button_continue">Прихвати ризик и настави</string>
     <string name="account_server_certificate_section_title">Сертификат сервера</string>
-    <string name="account_server_certificate_subject_alternative_names">Алтернативна имена субјекта</string>
+    <string name="account_server_certificate_subject_alternative_names">Алтернативни називи субјекта</string>
     <string name="account_server_certificate_warning_title">Упозорење</string>
     <string name="account_server_certificate_unknown_error_subtitle">Грешка сертификата</string>
     <string name="account_server_certificate_unknown_error_description_format">Апликација је открила потенцијалну безбедносну претњу и није наставила са повезивањем на <xliff:g id="serverName">%s</xliff:g>.
 \nАко наставите, нападачи би могли покушати да украду информације као што су ваша лозинка или имејлови.</string>
-    <string name="account_server_certificate_button_back">Вратите се назад (препоручено)</string>
+    <string name="account_server_certificate_button_back">Врати се назад (препоручено)</string>
     <string name="account_server_certificate_not_valid_after">Није важеће после</string>
     <string name="account_server_certificate_subject">Субјект</string>
     <string name="account_server_certificate_issuer">Издавалац</string>

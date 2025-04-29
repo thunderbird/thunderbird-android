@@ -320,4 +320,19 @@ class SettingsImporterTest : K9RobolectricTest() {
             }
         }
     }
+
+    @Test
+    fun `getImportStreamContents() should throw when no setting is present in inputStream`() {
+        val inputStream =
+            """
+            <k9settings format="1" version="1">
+              <accounts>
+              </accounts>
+            </k9settings>
+            """.trimIndent().byteInputStream()
+
+        assertFailure {
+            settingsImporter.getImportStreamContents(inputStream)
+        }.isInstanceOf<SettingsImportExportException>()
+    }
 }

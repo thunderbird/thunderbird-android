@@ -39,4 +39,6 @@
     <string name="settings_import_oauth_error_oauth_not_supported">Šiuo metu šis teikėjas nepalaiko OAuth 2.0.</string>
     <string name="settings_import_oauth_error_browser_not_found">Programai nepavyko rasti naršyklės, kurią naudoti suteikiant prieigą prie paskyros.</string>
     <string name="settings_import_general_settings_item">Bendri nustatymai</string>
+    <string name="settings_import_pick_app_button">Importuoti iš programos</string>
+    <string name="settings_import_scan_qr_code_button">Skenuoti QR kodą</string>
 </resources>

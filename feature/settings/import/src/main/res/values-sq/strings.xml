@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="settings_import_title">Importo rregullime</string>
+    <string name="settings_import_title">Importoni rregullime</string>
     <string name="settings_import_pick_document_button">Përzgjidhni kartelë</string>
     <string name="settings_import_button">Importoje</string>
     <string name="settings_import_success_generic">Rregullimet u importuan me sukses</string>
@@ -10,9 +10,9 @@
     <string name="settings_import_authorization_required">Ju lutemi, bëni hyrjen</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Ju lutemi, bëni hyrjen dhe jepni fjalëkalime</string>
-    <string name="settings_import_failure">Su arrit të importohen rregullime</string>
+    <string name="settings_import_failure">S’u arrit të importohen rregullime</string>
     <string name="settings_import_read_failure">Su arrit të lexohet kartelë rregullimesh</string>
-    <string name="settings_import_partial_failure">Su arrit të importohen disa rregullime</string>
+    <string name="settings_import_partial_failure">S’u arrit të importohen disa rregullime</string>
     <string name="settings_import_status_success">U importuan me sukses</string>
     <string name="settings_import_status_password_required">Lypset fjalëkalim</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->

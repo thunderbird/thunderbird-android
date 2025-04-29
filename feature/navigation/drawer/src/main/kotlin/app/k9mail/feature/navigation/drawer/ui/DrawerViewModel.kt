@@ -20,12 +20,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @Suppress("MagicNumber", "TooManyFunctions")
 internal class DrawerViewModel(
     private val getDrawerConfig: UseCase.GetDrawerConfig,
+    private val saveDrawerConfig: UseCase.SaveDrawerConfig,
     private val getDisplayAccounts: UseCase.GetDisplayAccounts,
     private val getDisplayFoldersForAccount: UseCase.GetDisplayFoldersForAccount,
     private val syncAccount: UseCase.SyncAccount,
@@ -82,7 +84,7 @@ internal class DrawerViewModel(
             .distinctUntilChanged()
             .flatMapLatest { (accountId, showUnifiedInbox) ->
                 getDisplayFoldersForAccount(accountId, showUnifiedInbox)
-            }.collectLatest { folders ->
+            }.collect { folders ->
                 updateFolders(folders)
             }
     }
@@ -113,7 +115,11 @@ internal class DrawerViewModel(
                 )
             }
 
-            Event.OnAccountSelectorClick -> updateState { it.copy(showAccountSelector = it.showAccountSelector.not()) }
+            Event.OnAccountSelectorClick -> {
+                saveDrawerConfig(
+                    state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
+                ).launchIn(viewModelScope)
+            }
             Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
             Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
             Event.OnSyncAccount -> onSyncAccount()

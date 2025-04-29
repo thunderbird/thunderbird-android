@@ -72,7 +72,7 @@
     <string name="unflag_action">Odebrat \u2606</string>
     <string name="copy_action">Kopírovat</string>
     <string name="unsubscribe_action">Zrušit přihlášení se k odběru</string>
-    <string name="show_headers_action">Zobraz hlavičku</string>
+    <string name="show_headers_action">Zobrazit hlavičku</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adresa zkopírována do schránky</item>
         <item quantity="few">Adresy zkopírovány do schránky</item>
@@ -658,7 +658,7 @@
     <string name="global_settings_threaded_view_summary">Sjednotit zprávy patřící ke stejnému vláknu</string>
     <string name="upgrade_databases_title">Aktualizace databází</string>
     <string name="upgrade_databases_unspecified">Aktualizuji databáze…</string>
-    <string name="upgrade_database_format">Přechod na novější verzi databáze účtu „<xliff:g id="account">%s</xliff:g>“</string>
+    <string name="upgrade_database_format">Přechod na novější verzi databáze účtu \\<xliff:g id="account">%s</xliff:g>\\</string>
     <string name="global_settings_splitview_mode_label">Zobraz rozdělení obrazovky</string>
     <string name="global_settings_splitview_always">Vždy</string>
     <string name="global_settings_splitview_never">Nikdy</string>
@@ -851,7 +851,7 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">Informace o zprávě</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-    <string name="message_details_missing_date">Neznámí datum</string>
+    <string name="message_details_missing_date">Neznámé datum</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">Odesílatel</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -908,4 +908,8 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="volume_navigation_title_short">Navigace pomocí tlačítek hlasitosti</string>
     <string name="volume_navigation_summary">Navigovat se mezi zprávami pomocí tlačítek hlasitosti v režimu zobrazení zpráv</string>
     <string name="save_attachment_action">Uložit přílohu</string>
+    <string name="expand_content_description">Rozbalit</string>
+    <string name="empty_spam_action">Vysypat nevyžádané</string>
+    <string name="dialog_confirm_empty_spam_title">Potvrdit vysypání nevyžádaných</string>
+    <string name="dialog_confirm_empty_spam_message">Opravdu chcete vyprázdnit složku Nevyžádané?</string>
 </resources>

@@ -1,0 +1,37 @@
+Pomagajte nam naslednjo izdajo Thunderbirda narediti čim bolj izvrstno tako, da prenesete Thunderbird Beta in si omogočite zgodnji dostop do najnovejših značilnosti in popravkov hroščev, preden so uradno izdani. Vaše preizkušanje in povratne informacije so pomembne , zato prosimo, da poročate o hroščih, neizpiljenih delih in o svojih idejah!
+
+Naš sledilec hroščev, izvorno kodo in wiki najdete na <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+
+Novi razvijalci, oblikovalci, pisalci dokumentov, prevajalci, sledilci hroščev in prijatelji so vedno dobrodošli. Za začetek nas obiščite na <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a>.
+
+Thunderbird je zmogljiv e-poštni program, ki se osredotoča na zasebnost. V enem program lahko brez težav upravljate z več e-poštnimi računi, za največjo produktivnost pa lahko uporabite poenoteno mapo Prejeto. Ker je  grajen na odprtokodni tehnologiji in ga poleg globalne skupnosti  prostovoljcev podpira predana ekipa razvijalcev Thunderbird vaših zasebnih podatkov nikoli ne smatra kot izdelek. Finančno ga podpirajo izključno naši uporabniki, tako da v svojih sporočilih ne boste nikoli več videli oglasov.
+
+<b>Kaj lahko storite</b>
+<ul>
+  <li>Opustite več programov in spletno pošto. Za dnevna opravila uporabite en program z izbirno poenoteno mapo Prejeto.</li>
+  <li>Uživajte v e-poštnem odjemalcu, ki nikoli ne zbira ali prodaja vaših osebnih podatkov. Neposredno vas povežemo z vašim e-poštnim ponudnikom. To je to!</li>
+  <li>Z uporabo programa “OpenKeychain” in e-poštnega šifriranja OpenPGP (PGP/MIME) za šifriranje in odšifriranje svojih sporočil lahko zasebnost povzdignete na naslednjo raven.</li>
+  <li>E-pošto lahko sinhronizirate takoj, v časovnih razmikih ali na zahtevo. Način preverjanja svoje pošte izberite po želji!</li>
+  <li>Svoja pomembna sporočila poiščite z iskanjem tako na napravi kot na strežniku.</li>
+</ul>
+
+<b>Združljivost</b>
+<ul>
+  <li>Thunderbird deluje s protokoli IMAP in POP3 in podpira širok nabor ponudnikov, vključno z Gmailom, Outlookom, Pošto Yahoo, iCloudom in več.</li>
+</ul>
+
+<b>Zakaj uporabljati Thunderbird</b>
+<ul>
+  <li>Zaupanja vredno ime v e-pošti že več kot 20 let - sedaj na Androidu.</li>
+  <li>Thunderbird v celoti financirajo prostovoljni prispevki naših uporabnikov. Ne rudarimo za vašimi osebnim i podatki. Nikoli niste izdelek.</li>
+  <li>Naredila ga je ekipa, ki se, tako kot vi, osredotoča na učinkovitost. Želimo si, da program uporabljate kar najmanj časa in nazaj dobite kar največ.</li>
+  <li>Prostovoljci iz celega sveta so Thunderbird za Android prevedli v več kot 20 jezikov.</li>
+  <li>Podpira ga hčerinsko podjetje organizacije Mozilla MZLA Technologies Corporation.</li>
+</ul>
+
+<b>Odprta koda in skupnost</b>
+<ul>
+  <li>Thunderbird je prost in odprtokoden, kar pomeni, da si njegovo kodo lahko vsi prosto ogledajo,  uporabljajo, jo spreminjajo in delijo. Njegovo dovoljenje hkrati zagotavlja, da bo vedno brezplačen. Na Thunderbird lahko gledate kot na darilo od tisočih prostovoljcev, kot ste vi.</li>
+  <li>Razvijamo ga na odprtem z rednimi, transparentnimi posodobitvami na našem blogu in dopisnimi seznami.</li>
+  <li>Naša podpora uporabnikom sestavlja globalna skupnost. Poiščite odgovore, ki jih potrebujete, ali pa si stopite v vlogo prostovoljca - naj bo to odgovarjanje na vprašanja, prevajanje programa ali pa enostavno seznanite svoje prijatelje in družino s Thunderbirdom.</li>
+</ul>

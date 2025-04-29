@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Jau naudojatės „Thunderbird“ kompiuteryje?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">Kompiuteryje paleistoje „Thunderbird“ programoje atlikite šiuos veiksmus:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Paprastai importuokite savo paskyrų nuostatas, nuskenuodami QR kodą.</string>
+</resources>

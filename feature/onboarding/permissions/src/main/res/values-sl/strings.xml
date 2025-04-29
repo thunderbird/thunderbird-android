@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_permissions_screen_title">Izboljšajte izkušnjo</string>
+    <string name="onboarding_permissions_contacts_description">Omogočite dostop, da vam bo program lahko ponudil predloge za stike in prikazal imena in fotografije stikov.</string>
+    <string name="onboarding_permissions_notifications_title">Obvestila</string>
+    <string name="onboarding_permissions_notifications_description">Vklopite obvestila, da ne zgrešite sporočil.</string>
+    <string name="onboarding_permissions_skip_button">Preskoči</string>
+    <string name="onboarding_permissions_contacts_title">Stiki</string>
+    <string name="onboarding_permissions_allow_button">Dovoli</string>
+</resources>

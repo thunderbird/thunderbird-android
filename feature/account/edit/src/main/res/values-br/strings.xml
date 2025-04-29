@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_loading_message">Oc\'h enrollañ arventennoù an dafariad…</string>
+    <string name="account_edit_save_server_settings_error_message">Fazi oc\'h enrollañ arventennoù an dafariad</string>
+    <string name="account_edit_save_server_settings_success_message">Enrollet eo bet arventennoù an dafariad</string>
+</resources>

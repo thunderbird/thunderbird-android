@@ -26,43 +26,6 @@
     </release>
     <release version="8.1" versioncode="39012" date="2024-11-06">
         <change>We've fixed one of our top crashes to give you a more stable experience</change>
-    </release>    <release version="8.0b5" versioncode="39010" date="2024-10-28">
-        <change>Unread message colors are updated for better visibility</change>
-        <change>Irish translation included and 100% complete</change>
-        <change>Folder drawer is no longer too wide on some devices</change>
-        <change>New icon clarifies how to start a server-side email search</change>
-    </release>    <release version="8.0b4" versioncode="39008" date="2024-10-21">
-        <change>Monthly financial contributions are now possible—try it today!</change>
-        <change>Accounts shown by default for better access to settings</change>
-        <change>Added Norsk Nynorsk translations</change>
-        <change>Added unread count to new folder drawer</change>
-        <change>Improved first-time user experience for importing settings</change>
-        <change>Shortened headers to prevent wrapping</change>
-        <change>Correct saving of 'Bcc all messages' setting</change>
-        <change>Cross-device import limited to Thunderbird</change>
-    </release>
-    <release version="8.0b3" versioncode="39005" date="2024-10-15">
-        <change>Support Thunderbird with our new in-app financial contribution feature (work in progress)</change>
-        <change>OAuth support now available for Fastmail</change>
-        <change>Better guidance when using the import from app feature</change>
-        <change>Fixed account update issues, crashes, and improved message list spacing</change>
-        <change>Enforced email validation for better identity management</change>
-    </release>
-    <release version="8.0b2" versioncode="39006" date="2024-10-07">
-        <change>Removed folder display classes</change>
-        <change>Always show all folders in the Manage Folders screen</change>
-        <change>Fixed top crash when removing accounts</change>
-        <change>Properly aligned welcome text</change>
-        <change>Updated support link to support.mozilla.org</change>
-        <change>Accessibility fixes</change>
-    </release>
-    <release version="8.0b1" versioncode="39005" date="2024-09-30">
-        <change>Updated subject encryption</change>
-        <change>Removed outdated folder settings</change>
-        <change>Improved maintainability</change>
-        <change>Added domain validation for email input</change>
-        <change>Fixed TalkBack and crypto dialog crashes</change>
-        <change>Updated Material 3 colors</change>
     </release>
     <release version="6.904" versioncode="39004" date="2024-06-27">
         <change>Fixed crash when split screen mode is enabled</change>

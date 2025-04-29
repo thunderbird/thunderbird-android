@@ -646,7 +646,7 @@
     <string name="global_settings_threaded_view_summary">Berichten per gesprek groeperen</string>
     <string name="upgrade_databases_title">Databases bijwerken</string>
     <string name="upgrade_databases_unspecified">Databases bijwerken…</string>
-    <string name="upgrade_database_format">Databases van account ‘<xliff:g id="account">%s</xliff:g>’ bijwerken</string>
+    <string name="upgrade_database_format">Databases van account \\<xliff:g id="account">%s</xliff:g>\\ bijwerken</string>
     <string name="global_settings_splitview_mode_label">Gesplitst scherm tonen</string>
     <string name="global_settings_splitview_always">Altijd</string>
     <string name="global_settings_splitview_never">Nooit</string>
@@ -874,7 +874,7 @@
     <string name="push_notification_state_alarm_permission_missing">Toestemming om alarmen te plannen ontbreekt</string>
     <string name="push_notification_grant_alarm_permission">Tik om toestemming te geven.</string>
     <string name="dialog_openkeychain_info_text">De app OpenKeychain is vereist om ondersteuning voor end-to-end-encryptie mogelijk te maken.</string>
-    <string name="account_delete_dlg_instructions_fmt">De account \"<xliff:g id="account">%1$s</xliff:g>\" zal uit <xliff:g id="app_name">%2$s</xliff:g> worden verwijderd.</string>
+    <string name="account_delete_dlg_instructions_fmt">De account \\<xliff:g id="account">%1$s</xliff:g>’ zal uit <xliff:g id="app_name">%2$s</xliff:g> worden verwijderd.</string>
     <string name="about_title">Over <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend tonen van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile-team</string>
@@ -890,4 +890,8 @@
     <string name="save_attachment_action">Bijlage opslaan</string>
     <string name="volume_navigation_title_short">Navigatie met volumeknoppen</string>
     <string name="volume_navigation_summary">Gebruik de volumeknoppen om te navigeren tussen berichten in het berichtenoverzicht</string>
+    <string name="expand_content_description">Uitvouwen</string>
+    <string name="dialog_confirm_empty_spam_message">Wilt u de spammap legen?</string>
+    <string name="empty_spam_action">Spam legen</string>
+    <string name="dialog_confirm_empty_spam_title">Spam legen bevestigen</string>
 </resources>

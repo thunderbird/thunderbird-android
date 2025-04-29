@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
+<changelog>
+    <release version="10.0b1" versioncode="12" date="2025-03-19">
+        <change>Account setup prefills server field automatically</change>
+        <change>Add a menu enty to empty the Spam folder</change>
+        <change>Provide Slovak translation</change>
+        <change>Update Gmail OAuth client IDs to Thunderbird for Android</change>
+        <change>Preserve the <s> tag when sanitizing HTML content</change>
+        <change>Messages and star counts in the drawer update instantly</change>
+        <change>The drawer remembers the state of hide accounts</change>
+        <change>Restart PushService after app update</change>
+    </release>
+    <release version="9.0b3" versioncode="11" date="2024-12-11">
+        <change>Hyperlink added to Thunderbird website on funding page</change>
+        <change>Use autoconfig server after MX lookup for email providers</change>
+        <change>Messages are now always marked as read during archiving</change>
+    </release>
+    <release version="9.0b2" versioncode="10" date="2024-11-28">
+        <change>Help text linking to support page added for Gmail login issues</change>
+        <change>Funding text updated to be more engaging and appealing</change>
+    </release>
+    <release version="9.0b1" versioncode="9" date="2024-11-19">
+        <change>Account initials now use the display name, improving customizability</change>
+        <change>Account icons remain in the same position when selected</change>
+        <change>Unified inbox enabled only when multiple accounts are configured</change>
+        <change>Push service now starts reliably when expected</change>
+        <change>Correct default delete message action for QR-imported accounts. Please check your fetch mail settings!</change>
+        <change>Folder drawer updates properly on account configuration changes</change>
+    </release>
+    <release version="8.0b5" versioncode="8" date="2024-10-28">
+        <change>Unread message colors are updated for better visibility</change>
+        <change>You will be asked for a financial contribution once you've used the app for a while. Help us continue developing Thunderbird for Android!</change>
+        <change>QR code import now suggests upgrading Thunderbird Desktop</change>
+        <change>Irish translation included and 100% complete</change>
+        <change>Folder drawer is no longer too wide on some devices</change>
+        <change>New icon clarifies how to start a server-side email search</change>
+    </release>
+    <release version="8.0b4" versioncode="7" date="2024-10-21">
+        <change>Monthly financial contributions are now possible—try it today!</change>
+        <change>Accounts shown by default for better access to settings</change>
+        <change>Added Norsk Nynorsk translations</change>
+        <change>Added unread count to new folder drawer</change>
+        <change>Improved first-time user experience for importing settings</change>
+        <change>Shortened headers to prevent wrapping</change>
+        <change>Correct saving of 'Bcc all messages' setting</change>
+        <change>Better QR code import instructions</change>
+    </release>
+    <release version="8.0b3" versioncode="6" date="2024-10-15">
+        <change>Support Thunderbird with our new in-app financial contribution feature (work in progress)</change>
+        <change>OAuth support now available for Fastmail</change>
+        <change>Better guidance when using the import from app feature</change>
+        <change>Fixed account update issues, crashes, and improved message list spacing</change>
+        <change>Enforced email validation for better identity management</change>
+    </release>
+    <release version="8.0b2" versioncode="5" date="2024-10-07">
+        <change>Second public beta of Thunderbird for Android 8.0, based on K-9 Mail</change>
+        <change>Import accounts from Desktop via QR codes</change>
+        <change>Removed folder display classes</change>
+        <change>Always show all folders in the Manage Folders screen</change>
+        <change>Fixed top crash when removing accounts</change>
+        <change>Properly aligned welcome text</change>
+        <change>Updated support link to support.mozilla.org</change>
+        <change>Accessibility fixes</change>
+        <change>Temporarily removed telemetry</change>
+    </release>
+    <release version="8.0b1" versioncode="4" date="2024-09-30">
+        <change>First public beta of Thunderbird for Android 8.0, based on K-9 Mail.</change>
+        <change>Updated subject encryption</change>
+        <change>Removed outdated folder settings</change>
+        <change>Improved maintainability</change>
+        <change>Added domain validation for email input</change>
+        <change>Fixed TalkBack and crypto dialog crashes</change>
+        <change>New Material 3 navigation &amp; updated colors</change>
+        <change>Migrate settings from K-9 or Thunderbird</change>
+    </release>
+</changelog>

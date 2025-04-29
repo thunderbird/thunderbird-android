@@ -2,4 +2,10 @@
 <resources>
     <string name="account_server_certificate_warning_title">Προειδοποίηση</string>
     <string name="account_server_certificate_unknown_error_subtitle">Σφάλμα πιστοποίησης</string>
+    <string name="account_server_certificate_button_back">Πηγαίνετε πίσω (προτείνεται)</string>
+    <string name="account_server_certificate_button_advanced">Προχωρημένα</string>
+    <string name="account_server_certificate_button_continue">Αποδοχή κινδύνου και συνέχεια</string>
+    <string name="account_server_certificate_section_title">Πιστοποιητικό διακομιστή</string>
+    <string name="account_server_certificate_issuer">Εκδότης</string>
+    <string name="account_server_certificate_fingerprints_section">Αποτυπώματα</string>
 </resources>

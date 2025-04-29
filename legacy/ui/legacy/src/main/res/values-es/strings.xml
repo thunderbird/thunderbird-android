@@ -237,7 +237,7 @@
     <string name="general_settings_ui_density_default">Normal</string>
     <string name="general_settings_ui_density_relaxed">Espacioso</string>
     <string name="global_settings_privacy_hide_useragent">Ocultar cliente de correo</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de las cabeceras del mensaje, el destinatario no verá qué programa de correo usas</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Eliminar la marca con el «agente de usuario» de las cabeceras del mensaje (el destinatario no verá qué programa de correo usado)</string>
     <string name="global_settings_privacy_hide_timezone">Ocultar zona horaria</string>
     <string name="global_settings_privacy_hide_timezone_detail">Usar UTC («tiempo universal coordinado») en lugar de la zona horaria local en las cabeceras de mensaje y cabeceras de respuesta</string>
     <string name="global_settings_notification_quick_delete_title">Mostrar el botón «Borrar»</string>
@@ -698,10 +698,10 @@
     <string name="openpgp_inline_plus_compat">Algunos clientes solamente soportan este formato</string>
     <string name="openpgp_inline_minus_transit">Las firmas pueden corromperse o perderse en el tránsito</string>
     <string name="openpgp_inline_minus_attach">No es posible adjuntar archivos</string>
-    <string name="openpgp_inline_ok">Vale, entendido</string>
+    <string name="openpgp_inline_ok">Vale, ¡entendido!</string>
     <string name="openpgp_inline_disable">Desactivar</string>
     <string name="openpgp_inline_keep_enabled">Mantener activado</string>
-    <string name="openpgp_sign_only_ok">Vale, entendido</string>
+    <string name="openpgp_sign_only_ok">Vale, ¡entendido!</string>
     <string name="openpgp_sign_only_disable">Desactivar</string>
     <string name="openpgp_sign_only_keep_enabled">Mantener activado</string>
     <string name="openpgp_dialog_sign_only_title">Modo de solo-firma PGP</string>
@@ -875,9 +875,9 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="background_work_notification_remove_account">Borrando cuenta…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="message_list_content_description_unread_prefix">sin leer, %s</string>
-    <string name="general_settings_post_remove_action_return_to_list">Volver al listado de correos</string>
-    <string name="general_settings_post_remove_action_show_previous_message">Ver correo anterior</string>
-    <string name="general_settings_post_remove_action_show_next_message">Ver siguiente correo</string>
+    <string name="general_settings_post_remove_action_return_to_list">Volver al listado de mensajes</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Ver mensaje anterior</string>
+    <string name="general_settings_post_remove_action_show_next_message">Ver siguiente mensaje</string>
     <string name="general_settings_post_remove_action_title">Tras borrar o mover un correo</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Seguir en el correo actual</string>
     <string name="general_settings_post_mark_as_unread_action_title">Tras marcar un correo como no leído</string>
@@ -901,4 +901,8 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="volume_navigation_title_short">Navegar con los botones de volumen</string>
     <string name="save_attachment_action">Guardar adjunto</string>
     <string name="volume_navigation_summary">Sube y baja por el listado de correos con los botones físicos de volumen</string>
+    <string name="expand_content_description">Expandir</string>
+    <string name="empty_spam_action">Vaciar Spam</string>
+    <string name="dialog_confirm_empty_spam_title">Confirmar vaciado de Spam</string>
+    <string name="dialog_confirm_empty_spam_message">¿Desea vaciar la carpeta de spam?</string>
 </resources>

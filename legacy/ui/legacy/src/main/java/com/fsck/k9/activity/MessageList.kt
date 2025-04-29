@@ -358,10 +358,15 @@ open class MessageList :
             }
         }
     }
-
     private fun decodeExtras(intent: Intent): Boolean {
-        val launchData = decodeExtrasToLaunchData(intent)
+        if (intent.action === Intent.ACTION_SEARCH && !intent.component?.className.equals(
+                Search::class.java.name,
+            )
+        ) {
+            finish()
+        }
 
+        val launchData = decodeExtrasToLaunchData(intent)
         // If Unified Inbox was disabled show default account instead
         val search = if (launchData.search.isUnifiedInbox && !K9.isShowUnifiedInbox) {
             createDefaultLocalSearch()

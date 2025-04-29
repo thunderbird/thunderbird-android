@@ -46,7 +46,6 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
-import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import app.k9mail.legacy.search.LocalSearch;
 import app.k9mail.legacy.search.api.SearchAttribute;
@@ -160,9 +159,9 @@ public class LocalStore {
      */
     private static final int THREAD_FLAG_UPDATE_BATCH_SIZE = 500;
 
-    private final Context context;
     private final PendingCommandSerializer pendingCommandSerializer;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
+    private final StorageFilesProvider storageFilesProvider;
 
     private final Account account;
     private final LockableDatabase database;
@@ -177,10 +176,10 @@ public class LocalStore {
      * This constructor is only used by {@link LocalStoreProvider#getInstance(Account)}
      */
     private LocalStore(final Account account, final Context context) throws MessagingException {
-        this.context = context;
-
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
+        StorageFilesProviderFactory storageFilesProviderFactory = DI.get(StorageFilesProviderFactory.class);
+        storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.getUuid());
 
         this.account = account;
 
@@ -188,7 +187,7 @@ public class LocalStore {
         RealMigrationsHelper migrationsHelper = new RealMigrationsHelper();
         SchemaDefinition schemaDefinition = schemaDefinitionFactory.createSchemaDefinition(migrationsHelper);
 
-        database = new LockableDatabase(context, account.getUuid(), schemaDefinition);
+        database = new LockableDatabase(context, storageFilesProvider, schemaDefinition);
         database.open();
 
         Clock clock = DI.get(Clock.class);
@@ -650,9 +649,7 @@ public class LocalStore {
     }
 
     File getAttachmentFile(String attachmentId) {
-        final StorageManager storageManager = StorageManager.getInstance(context);
-        final File attachmentDirectory = storageManager.getAttachmentDirectory(
-                account.getUuid(), database.getStorageProviderId());
+        File attachmentDirectory = storageFilesProvider.getAttachmentDirectory();
         return new File(attachmentDirectory, attachmentId);
     }
 

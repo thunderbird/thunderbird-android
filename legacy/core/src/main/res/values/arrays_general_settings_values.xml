@@ -44,6 +44,7 @@
         <item>ro</item>
         <item>ru</item>
         <item>sl</item>
+        <item>sk</item>
         <item>sq</item>
         <item>sr</item>
         <item>sv</item>
@@ -140,11 +141,6 @@
         <item>zh_CN</item>
         <item>zh_TW</item>
         <item>ja</item>
-    </string-array>
-
-    <string-array name="theme_values_legacy" translatable="false">
-        <item>follow_system</item>
-        <item>dark</item>
     </string-array>
 
     <string-array name="theme_values" translatable="false">

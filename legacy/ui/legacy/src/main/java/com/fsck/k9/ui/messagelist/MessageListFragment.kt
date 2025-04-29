@@ -1,6 +1,5 @@
 package com.fsck.k9.ui.messagelist
 
-import android.app.Activity
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -12,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.BundleCompat
@@ -51,6 +51,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -86,6 +87,19 @@ class MessageListFragment :
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
     private val actionModeCallback = ActionModeCallback()
+
+    private val chooseFolderForMoveLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
+        registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.MOVE)) { result ->
+            handleChooseFolderResult(result) { folderId, messages ->
+                move(messages, folderId)
+            }
+        }
+    private val chooseFolderForCopyLauncher: ActivityResultLauncher<ChooseFolderResultContract.Input> =
+        registerForActivityResult(ChooseFolderResultContract(ChooseFolderActivity.Action.COPY)) { result ->
+            handleChooseFolderResult(result) { folderId, messages ->
+                copy(messages, folderId)
+            }
+        }
 
     private lateinit var fragmentListener: MessageListFragmentListener
 
@@ -705,38 +719,23 @@ class MessageListFragment :
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode != Activity.RESULT_OK) return
-
-        when (requestCode) {
-            ACTIVITY_CHOOSE_FOLDER_MOVE,
-            ACTIVITY_CHOOSE_FOLDER_COPY,
-            -> {
-                if (data == null) return
-
-                val destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
-                val messages = activeMessages!!
-                if (destinationFolderId != -1L) {
-                    activeMessages = null
-
-                    if (messages.isNotEmpty()) {
-                        MlfUtils.setLastSelectedFolder(accountManager, messages, destinationFolderId)
-                    }
-
-                    when (requestCode) {
-                        ACTIVITY_CHOOSE_FOLDER_MOVE -> move(messages, destinationFolderId)
-                        ACTIVITY_CHOOSE_FOLDER_COPY -> copy(messages, destinationFolderId)
-                    }
-                }
-            }
-        }
-    }
-
     private fun onExpunge() {
         currentFolder?.let { folderInfoHolder ->
             messagingController.expunge(account, folderInfoHolder.databaseId)
         }
     }
+
+    private fun onEmptySpam() {
+        if (isShowingSpamFolder) {
+            showDialog(R.id.dialog_confirm_empty_spam)
+        }
+    }
+
+    private val isShowingSpamFolder: Boolean
+        get() {
+            if (!isSingleFolderMode) return false
+            return currentFolder!!.databaseId == account!!.spamFolderId
+        }
 
     private fun onEmptyTrash() {
         if (isShowingTrashFolder) {
@@ -786,6 +785,14 @@ class MessageListFragment :
                 ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
             }
 
+            R.id.dialog_confirm_empty_spam -> {
+                val title = getString(R.string.dialog_confirm_empty_spam_title)
+                val message = getString(R.string.dialog_confirm_empty_spam_message)
+                val confirmText = getString(R.string.dialog_confirm_delete_confirm_button)
+                val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
+                ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
+            }
+
             R.id.dialog_confirm_empty_trash -> {
                 val title = getString(R.string.dialog_confirm_empty_trash_title)
                 val message = getString(R.string.dialog_confirm_empty_trash_message)
@@ -820,6 +827,7 @@ class MessageListFragment :
         menu.findItem(R.id.set_sort).isVisible = true
         menu.findItem(R.id.select_all).isVisible = true
         menu.findItem(R.id.mark_all_as_read).isVisible = isMarkAllAsReadSupported
+        menu.findItem(R.id.empty_spam).isVisible = isShowingSpamFolder
         menu.findItem(R.id.empty_trash).isVisible = isShowingTrashFolder
 
         if (isSingleAccountMode) {
@@ -843,6 +851,7 @@ class MessageListFragment :
         menu.findItem(R.id.select_all).isVisible = false
         menu.findItem(R.id.mark_all_as_read).isVisible = false
         menu.findItem(R.id.send_messages).isVisible = false
+        menu.findItem(R.id.empty_spam).isVisible = false
         menu.findItem(R.id.empty_trash).isVisible = false
         menu.findItem(R.id.expunge).isVisible = false
         menu.findItem(R.id.search_everywhere).isVisible = false
@@ -862,6 +871,7 @@ class MessageListFragment :
             R.id.select_all -> selectAll()
             R.id.mark_all_as_read -> confirmMarkAllAsRead()
             R.id.send_messages -> onSendPendingMessages()
+            R.id.empty_spam -> onEmptySpam()
             R.id.empty_trash -> onEmptyTrash()
             R.id.expunge -> onExpunge()
             R.id.search_everywhere -> onSearchEverywhere()
@@ -1050,7 +1060,6 @@ class MessageListFragment :
 
         displayFolderChoice(
             operation = FolderOperation.MOVE,
-            requestCode = ACTIVITY_CHOOSE_FOLDER_MOVE,
             sourceFolderId = folderId,
             accountUuid = messages.first().accountUuid,
             lastSelectedFolderId = null,
@@ -1073,7 +1082,6 @@ class MessageListFragment :
 
         displayFolderChoice(
             operation = FolderOperation.COPY,
-            requestCode = ACTIVITY_CHOOSE_FOLDER_COPY,
             sourceFolderId = folderId,
             accountUuid = messages.first().accountUuid,
             lastSelectedFolderId = null,
@@ -1083,29 +1091,43 @@ class MessageListFragment :
 
     private fun displayFolderChoice(
         operation: FolderOperation,
-        requestCode: Int,
         sourceFolderId: Long?,
         accountUuid: String,
         lastSelectedFolderId: Long?,
         messages: List<MessageReference>,
     ) {
-        val action = when (operation) {
-            FolderOperation.COPY -> ChooseFolderActivity.Action.COPY
-            FolderOperation.MOVE -> ChooseFolderActivity.Action.MOVE
-        }
-        val intent = ChooseFolderActivity.buildLaunchIntent(
-            context = requireContext(),
-            action = action,
+        // Remember the selected messages so they are available in the registerForActivityResult() callbacks
+        activeMessages = messages
+
+        val input = ChooseFolderResultContract.Input(
             accountUuid = accountUuid,
             currentFolderId = sourceFolderId,
             scrollToFolderId = lastSelectedFolderId,
-            messageReference = null,
         )
+        when (operation) {
+            FolderOperation.COPY -> chooseFolderForCopyLauncher.launch(input)
+            FolderOperation.MOVE -> chooseFolderForMoveLauncher.launch(input)
+        }
+    }
 
-        // remember the selected messages for #onActivityResult
-        activeMessages = messages
+    private fun handleChooseFolderResult(
+        result: ChooseFolderResultContract.Result?,
+        action: (Long, List<MessageReference>) -> Unit,
+    ) {
+        if (result == null) return
 
-        startActivityForResult(intent, requestCode)
+        val destinationFolderId = result.folderId
+        val messages = activeMessages!!
+
+        if (destinationFolderId != -1L) {
+            activeMessages = null
+
+            if (messages.isNotEmpty()) {
+                MlfUtils.setLastSelectedFolder(accountManager, messages, destinationFolderId)
+            }
+
+            action(destinationFolderId, messages)
+        }
     }
 
     private fun onArchive(message: MessageReference) {
@@ -1225,6 +1247,10 @@ class MessageListFragment :
 
             R.id.dialog_confirm_mark_all_as_read -> {
                 markAllAsRead()
+            }
+
+            R.id.dialog_confirm_empty_spam -> {
+                messagingController.emptySpam(account, null)
             }
 
             R.id.dialog_confirm_empty_trash -> {
@@ -2073,8 +2099,6 @@ class MessageListFragment :
     }
 
     companion object {
-        private const val ACTIVITY_CHOOSE_FOLDER_MOVE = 1
-        private const val ACTIVITY_CHOOSE_FOLDER_COPY = 2
 
         private const val ARG_SEARCH = "searchObject"
         private const val ARG_THREADED_LIST = "showingThreadedList"

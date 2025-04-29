@@ -29,6 +29,9 @@ on:
         type: boolean
         description: Upload to FTP stage instead of prod
 
+permissions:
+  contents: read
+
 jobs:
   get_environment:
     name: Determine Release Environment
@@ -36,7 +39,7 @@ jobs:
     outputs:
       releaseEnv: ${{ steps.releaseEnv.outputs.result }}
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         id: releaseEnv
         with:
           result-encoding: string
@@ -65,7 +68,7 @@ jobs:
       releaseType: ${{ vars.RELEASE_TYPE }}
     steps:
       - name: Show Environment
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         id: dump
         env:
           matrixInclude: ${{ vars.MATRIX_INCLUDE }}
@@ -152,7 +155,7 @@ jobs:
   notify_build_start:
     name: Notify Build Start
     runs-on: ubuntu-latest
-    needs: [dump_config]
+    needs: [ dump_config ]
     if: ${{ needs.dump_config.outputs.releaseType == 'beta' || needs.dump_config.outputs.releaseType == 'release' }}
     environment: notify_matrix
     outputs:
@@ -160,7 +163,7 @@ jobs:
     steps:
       - name: Triggering Actor Link
         id: actorLink
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         env:
           userMap: ${{ vars.MATRIX_NOTIFY_USER_MAP }}
         with:
@@ -175,7 +178,7 @@ jobs:
 
       - name: Notify Build Start
         if: ${{ vars.MATRIX_NOTIFY_ROOM }}
-        uses: kewisch/action-matrix-notify@v1
+        uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
           matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
@@ -188,7 +191,7 @@ jobs:
   release_commit:
     name: Release Bumps
     runs-on: ubuntu-latest
-    needs: [dump_config, get_environment]
+    needs: [ dump_config, get_environment ]
     environment: ${{ needs.get_environment.outputs.releaseEnv }}
     strategy:
       max-parallel: 1
@@ -206,7 +209,7 @@ jobs:
     steps:
       - name: Checkout repository
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
@@ -215,14 +218,14 @@ jobs:
         shell: bash
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         with:
-          distribution: temurin
-          java-version: 17
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@94baf225fe0a508e581a564467443d0e2379123b # v4.3.0
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         with:
           cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
@@ -328,7 +331,7 @@ jobs:
         run: |
           mkdir -p ./app-metadata/${APPLICATION_ID}/en-US/changelogs
           GITHUB_NOTES_FILE="$(mktemp -d)/long-notes.txt"
-          python ./scripts/render-notes.py ${APPLICATION_ID} ${FULL_VERSION_NAME} ${VERSION_CODE} ${GITHUB_NOTES_FILE}
+          python ./scripts/ci/render-notes.py ${APPLICATION_ID} ${FULL_VERSION_NAME} ${VERSION_CODE} ${GITHUB_NOTES_FILE}
 
           echo "${APP_NAME}_github_notes<<EOF" >> $GITHUB_OUTPUT
           cat $GITHUB_NOTES_FILE >> $GITHUB_OUTPUT
@@ -411,7 +414,7 @@ jobs:
 
       - name: Summary
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         env:
           bump_sha: ${{ steps.commit.outputs.sha }}
           applicationId: ${{ steps.appinfo.outputs.APPLICATION_ID }}
@@ -443,7 +446,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: ${{ !failure() && !cancelled() }} # Run if release_commit is skipped
-    needs: [dump_config, get_environment, release_commit]
+    needs: [ dump_config, get_environment, release_commit ]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
@@ -464,7 +467,7 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ steps.sha.outputs.app_sha }}
 
@@ -472,13 +475,13 @@ jobs:
         shell: bash
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
         with:
-          distribution: temurin
-          java-version: 17
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@94baf225fe0a508e581a564467443d0e2379123b # v4.3.0
         with:
           cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: on-failure
@@ -561,7 +564,7 @@ jobs:
           ls -l ${UPLOAD_PATH}/
 
       - name: Upload unsigned
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
         env:
           UPLOAD_PATH: "uploads"
         with:
@@ -573,7 +576,7 @@ jobs:
     name: Sign Packages
     runs-on: ubuntu-latest
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
-    needs: [build_unsigned, dump_config]
+    needs: [ build_unsigned, dump_config ]
     strategy:
       matrix:
         include: "${{ fromJSON(needs.dump_config.outputs.matrixInclude) }}"
@@ -581,7 +584,7 @@ jobs:
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: uploads/
@@ -610,7 +613,7 @@ jobs:
           rm -f uploads/*.jks
 
       - name: Upload signed
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@65c4c4a1ddee5b72f698fdd19549f0f0fb45cf08 # v4.6.0
         with:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           if-no-files-found: error
@@ -620,12 +623,12 @@ jobs:
 
   notify_pre_publish:
     name: Notify Publish Approval
-    needs: [dump_config, sign_mobile, notify_build_start]
+    needs: [ dump_config, sign_mobile, notify_build_start ]
     if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     runs-on: ubuntu-latest
     environment: notify_matrix
     steps:
-      - uses: kewisch/action-matrix-notify@v1
+      - uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
           matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
@@ -639,7 +642,7 @@ jobs:
     # The environment has a deployment protection rule requiring approval from a set of named reviewers
     # before proceeding.
     name: Wait for Approval
-    needs: [dump_config, sign_mobile]
+    needs: [ dump_config, sign_mobile ]
     if: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
     environment: publish_hold
     runs-on: ubuntu-latest
@@ -651,7 +654,7 @@ jobs:
 
   publish_release:
     name: Publish Release
-    needs: [pre_publish, dump_config, release_commit]
+    needs: [ pre_publish, dump_config, release_commit ]
     if: ${{ !failure() && !cancelled() }} # Run if previous step is skipped
     runs-on: ubuntu-latest
     strategy:
@@ -697,12 +700,12 @@ jobs:
           cat $GITHUB_OUTPUT
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ steps.shanotes.outputs.app_sha }}
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: "uploads/"
@@ -763,7 +766,7 @@ jobs:
           ls -l uploads/${PKG_FILE_PRETTY}
 
       - name: App Token Generate
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@0d564482f06ca65fa9e77e2510873638c82206f2 # v1.11.5
         if: ${{ contains(matrix.releaseTarget, 'github') && vars.RELEASER_APP_CLIENT_ID }}
         id: app-token
         with:
@@ -773,7 +776,7 @@ jobs:
       - name: Publish to GitHub Releases
         id: publish_gh
         if: ${{ contains(matrix.releaseTarget, 'github') }}
-        uses: softprops/action-gh-release@01570a1f39cb168c169c802c3bceb9e93fb10974  # v2.1.0
+        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda  # v2.2.1
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
           target_commitish: ${{ steps.shanotes.outputs.app_sha }}
@@ -809,8 +812,7 @@ jobs:
               ${APP_NAME^} ${VERSION_NAME} (${VERSION_CODE}) Daily Build
 
               The Daily version is an unstable testing and development platform, make sure you back up important data regularly!
-              If you find any issues, get in touch at https://github.com/thunderbird/thunderbird-android/issues/ and find us on Matrix at https://matrix.to/#/#tb-android-dev:mozilla.org
-              Be prepared to debug the code in Android Studio :-)
+              If you find any issues, get in touch at https://github.com/thunderbird/thunderbird-android/issues/
 
               - Built from GitHub commit: ${COMMIT_URL}
               - Built with GitHub workflow: ${WORKFLOW_URL}
@@ -819,7 +821,7 @@ jobs:
 
       - name: Publish to Google Play
         id: publish_play
-        uses: r0adkll/upload-google-play@v1
+        uses: r0adkll/upload-google-play@935ef9c68bb393a8e6116b1575626a7f5be3a7fb # v1.1.3
         if: ${{ !inputs.skipGooglePlay && contains(matrix.releaseTarget, 'play') && matrix.playTargetTrack }}
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_ACCOUNT }}
@@ -912,7 +914,7 @@ jobs:
 
       - name: Auth to GCS for FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@71f986410dfbc7added4569d411d040a91dc6935 # v2.1.8
         with:
           service_account: ${{ steps.prepare_ftp.outputs.SERVICE_ACCOUNT }}
           workload_identity_provider: ${{ steps.prepare_ftp.outputs.WORKLOAD_IDENTITY_PROVIDER }}
@@ -920,7 +922,7 @@ jobs:
 
       - name: GCS Upload of APK Package to FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
-        uses: google-github-actions/upload-cloud-storage@v2
+        uses: google-github-actions/upload-cloud-storage@7c6e11cb7291594c5dfe0bc1dd9cd905e31e600c # v2.2.2
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH }}/${{ steps.rename.outputs.PKG_FILE }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}
@@ -928,7 +930,7 @@ jobs:
 
       - name: GCS Upload of APK Package to FTP Nightly Latest
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
-        uses: google-github-actions/upload-cloud-storage@v2
+        uses: google-github-actions/upload-cloud-storage@7c6e11cb7291594c5dfe0bc1dd9cd905e31e600c # v2.2.2
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.rename.outputs.PKG_FILE }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
@@ -936,7 +938,7 @@ jobs:
 
       - name: GCS Upload of Source Tar to FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
-        uses: google-github-actions/upload-cloud-storage@v2
+        uses: google-github-actions/upload-cloud-storage@7c6e11cb7291594c5dfe0bc1dd9cd905e31e600c # v2.2.2
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION }}
@@ -944,14 +946,14 @@ jobs:
 
       - name: GCS Upload of Source Tar to FTP Nightly Latest
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' && needs.dump_config.outputs.releaseType == 'daily'}}
-        uses: google-github-actions/upload-cloud-storage@v2
+        uses: google-github-actions/upload-cloud-storage@7c6e11cb7291594c5dfe0bc1dd9cd905e31e600c # v2.2.2
         with:
           path: ${{ steps.prepare_ftp.outputs.FTP_LOCAL_PATH_NIGHTLY_LATEST }}/${{ steps.generate_tar.outputs.FTP_TAR_FILENAME }}
           destination: ${{ steps.prepare_ftp.outputs.FTP_DESTINATION_NIGHTLY_LATEST }}
           gzip: false
 
       - name: Summary
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         id: summary
         env:
           tagName: ${{ steps.pkginfo.outputs.TAG_NAME }}
@@ -1016,7 +1018,7 @@ jobs:
   notify_build_result:
     name: Notify Build Result
     if: ${{ always() }}
-    needs: [dump_config, release_commit, build_unsigned, sign_mobile, publish_release, notify_build_start]
+    needs: [ dump_config, release_commit, build_unsigned, sign_mobile, publish_release, notify_build_start ]
     runs-on: ubuntu-latest
     environment: notify_matrix
     steps:
@@ -1027,7 +1029,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Info
-        uses: actions/github-script@v7
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         id: info
         env:
           needs: ${{ toJSON(needs) }}
@@ -1044,7 +1046,7 @@ jobs:
 
       - name: Notify Failure
         if: ${{ vars.MATRIX_NOTIFY_ROOM && contains(needs.*.result, 'failure') }}
-        uses: kewisch/action-matrix-notify@v1
+        uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
           matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
@@ -1055,7 +1057,7 @@ jobs:
 
       - name: Notify Cancelled
         if: ${{ vars.MATRIX_NOTIFY_ROOM && !contains(needs.*.result, 'failure') && contains(needs.*.result, 'cancelled')  }}
-        uses: kewisch/action-matrix-notify@v1
+        uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
           matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
@@ -1066,7 +1068,7 @@ jobs:
 
       - name: Notify Success (Beta/Release)
         if: "${{ vars.MATRIX_NOTIFY_ROOM && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
-        uses: kewisch/action-matrix-notify@v1
+        uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
           matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
@@ -1077,7 +1079,7 @@ jobs:
 
       - name: Thunderbird Publish URL (Beta/Release)
         if: ${{ vars.MATRIX_NOTIFY_ROOM && needs.publish_release.outputs.thunderbird_release_url && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
-        uses: kewisch/action-matrix-notify@v1
+        uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
           matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
@@ -1087,7 +1089,7 @@ jobs:
 
       - name: K-9 Mail Publish URL (Beta/Release)
         if: ${{ vars.MATRIX_NOTIFY_ROOM && needs.publish_release.outputs.k9mail_release_url && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') }}
-        uses: kewisch/action-matrix-notify@v1
+        uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
           matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}
@@ -1097,7 +1099,7 @@ jobs:
 
       - name: Notify Success (Daily)
         if: ${{ vars.MATRIX_NOTIFY_ROOM && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && needs.dump_config.outputs.releaseType == 'daily' && steps.last_status.outputs.last_status == 'failure' }}
-        uses: kewisch/action-matrix-notify@v1
+        uses: kewisch/action-matrix-notify@3c45d89acd032c84b955b54c8a9001833ac91d17 # v1
         with:
           matrixHomeserver: ${{ vars.MATRIX_NOTIFY_HOMESERVER }}
           matrixRoomId: ${{ vars.MATRIX_NOTIFY_ROOM }}

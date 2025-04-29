@@ -10,7 +10,7 @@
     <string name="account_setup_options_email_signature_error_blank">O nome da assinatura de email não pode estar vazio.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">É necessário aprovar a configuração.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Recebemos a configuração do servidor de seu email por meio de uma conexão que não é tão segura quanto gostaríamos. Significa que há uma pequena chance de alguém a ter alterado. Você poderia verificar novamente a configuração fornecida para ter certeza que está correta?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Recebemos a configuração do servidor de seu email por meio de uma conexão que não é tão segura quanto gostaríamos. Significa que há uma pequena chance de alguém a ter alterado. Você pode verificar novamente a configuração fornecida para ter certeza que está correta?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Editar configuração</string>
     <string name="account_setup_error_unknown">Erro desconhecido</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>

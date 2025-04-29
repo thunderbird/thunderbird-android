@@ -21,7 +21,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import org.koin.android.ext.android.inject
 
-private const val LEARN_MORE_URL = "https://k9mail.app/go/push-info"
+private const val LEARN_MORE_URL = "https://support.mozilla.org/kb/configure-push-email-thunderbird-android"
 
 class PushInfoFragment : Fragment() {
     private val notificationChannelManager: NotificationChannelManager by inject()

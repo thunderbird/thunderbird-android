@@ -141,7 +141,7 @@
     <string name="debug_enable_debug_logging_summary">Καταγραφή πρόσθετων διαγνωστικών πληροφοριών</string>
     <string name="debug_enable_sensitive_logging_title">Καταγραφή ευαίσθητων πληροφοριών</string>
     <string name="debug_enable_sensitive_logging_summary">Συνθηματικά μπορεί να εμφανιστούν στις καταγραφές.</string>
-    <string name="debug_export_logs_title">Καταγραφές εξαγωγών</string>
+    <string name="debug_export_logs_title">Εξαγωγή καταγραφών</string>
     <string name="debug_export_logs_success">Επιτυχής εξαγωγή. Οι καταγραφές ίσως περιέχουν ευαίσθητες πληροφορίες. Προσέχετε σε ποιον/ποια τις στέλνετε.</string>
     <string name="debug_export_logs_failure">Η εξαγωγή απέτυχε.</string>
     <string name="message_list_load_more_messages_action">Φόρτωση περισσότερων μηνυμάτων</string>
@@ -527,7 +527,7 @@
     <string name="animations_summary">Χρήση οπτικών εφέ gaudy</string>
     <string name="show_unified_inbox_title">Εμφάνιση Ενιαία Εισερχόμενα</string>
     <string name="show_starred_count_title">Εμφάνιση πλήθους επιλεγμένων</string>
-    <string name="integrated_inbox_title">Ενιαία εισερχόμενα</string>
+    <string name="integrated_inbox_title">Ενοποιημένα εισερχόμενα</string>
     <string name="integrated_inbox_detail">Όλα τα μηνύματα στους ενοποιημένους φακέλους</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Ενιαία Εισερχόμενα</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">Όλα τα μηνύματα προβάλλονται στα Ενιαία εισερχόμενα</string>
@@ -896,4 +896,8 @@
     <string name="settings_ui_telemetry_description">Κοινοποιεί δεδομένα επιδόσεων, χρήσης, υλικού και προσαρμογών σχετικά με αυτήν την εφαρμογή στη Mozilla για τη βελτίωση του Thunderbird</string>
     <string name="settings_ui_telemetry_title">Δεδομένα χρήσης και τεχνικά δεδομένα</string>
     <string name="dialog_openkeychain_info_text">Απαιτείται η εφαρμογή OpenKeychain για την ενεργοποίηση της υποστήριξης της διατερματικής κρυπτογράφησης.</string>
+    <string name="empty_spam_action">Κανένα ανεπιθύμητο</string>
+    <string name="dialog_confirm_empty_spam_message">Θέλετε να αδειάσετε τα ανεπιθύμητα;</string>
+    <string name="dialog_confirm_empty_spam_title">Επιβεβαιώστε το άδειασμα</string>
+    <string name="expand_content_description">Επέκταση</string>
 </resources>

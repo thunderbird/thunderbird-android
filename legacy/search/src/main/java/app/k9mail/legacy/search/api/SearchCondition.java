@@ -29,15 +29,6 @@ public class SearchCondition implements Parcelable {
     }
 
     @Override
-    public SearchCondition clone() {
-        return new SearchCondition(field, attribute, value);
-    }
-
-    public String toHumanString() {
-        return field.toString() + attribute.toString();
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (o instanceof SearchCondition) {
             SearchCondition tmp = (SearchCondition) o;

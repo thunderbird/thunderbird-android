@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Na računalniku že uporabljate Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Uvozi nastavitve</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Je Thunderbird nov za vas?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Dodaj nov e-poštni račun zdaj</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Enostavno uvozite nastavitve računa tako, da preberete QR-kodo.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">V Thunderbirdu za računalnike pojdite na:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Izberite \'Izvozi v prenosno napravo\'.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Uvoz zahteva najnovejši Thunderbird za namizja (razl. 128). <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Naučite se kako posodobiti Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_import_title">Ste se preselili z drugega programa ali naprave?</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Za odpiranje povezave ni bilo mogoče najti programa.</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Uvozi nastavitve računa zdaj</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Nastavitve\' v orodni vrstici prostorov (spodaj levo)</string>
+</resources>
