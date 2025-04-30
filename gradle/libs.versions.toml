@@ -45,6 +45,7 @@ appAuth = "0.11.1"
 assertk = "0.28.1"
 circleImageView = "3.1.0"
 ckchangelog = "2.0.0-beta02"
+clientAdapter = "0.0.1-SNAPSHOT"
 clikt = "4.4.0"
 commonsIo = "2.16.1"
 dependencyCheckPlugin = "0.51.0"
@@ -168,6 +169,7 @@ appauth = { module = "net.openid:appauth", version.ref = "appAuth" }
 assertk = { module = "com.willowtreeapps.assertk:assertk-jvm", version.ref = "assertk" }
 circleImageView = { module = "de.hdodenhof:circleimageview", version.ref = "circleImageView" }
 ckchangelog-core = { module = "de.cketti.library.changelog:ckchangelog-core", version.ref = "ckchangelog" }
+client-adapter = { module = "net.discdd:client-adapter", version.ref = "clientAdapter" }
 clikt = { module = "com.github.ajalt.clikt:clikt", version.ref = "clikt" }
 commons-io = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 detekt-plugin-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektPluginCompose" }

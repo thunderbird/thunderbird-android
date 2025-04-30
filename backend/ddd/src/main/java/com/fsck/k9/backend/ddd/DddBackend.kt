@@ -3,6 +3,7 @@ package com.fsck.k9.backend.ddd
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.Lifecycle
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendPusher
@@ -25,12 +26,15 @@ import java.io.InputStream
 import java.util.UUID
 import okio.buffer
 import okio.source
+import net.discdd.adapter.DDDClientAdapter
 
 class DddBackend(
     context: Context,
     accountName: String,
     backendStorage: BackendStorage,
+    lifecycle: Lifecycle
 ) : Backend {
+    private val dddAdapter= DDDClientAdapter(context, lifecycle, {})
     private val messageStoreInfo by lazy { readMessageStoreInfo() }
     private val RESOLVER_COLUMNS = arrayOf("data")
     private val context = context

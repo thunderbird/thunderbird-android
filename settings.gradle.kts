@@ -1,3 +1,6 @@
+import java.util.Properties
+import kotlin.system.exitProcess
+
 pluginManagement {
     repositories {
         includeBuild("build-plugin")
@@ -13,6 +16,32 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven(url = "https://jitpack.io")
+        maven {
+            url = uri("https://maven.pkg.github.com/SJSU-CS-systems-group/DDD")
+            credentials {
+                val gradleUserHome = System.getenv("GRADLE_USER_HOME") ?: "${System.getProperty("user.home")}/.gradle"
+                val userPropertiesFile = file("$gradleUserHome/gradle.properties")
+
+                val userProperties = Properties().apply {
+                    if (userPropertiesFile.exists()) {
+                        userPropertiesFile.inputStream().use { load(it) }
+                    }
+                }
+
+                val envUsername = System.getenv("USERNAME") ?: userProperties.getProperty("gpr.user")
+                val envPassword = System.getenv("TOKEN") ?: userProperties.getProperty("gpr.key")
+                if (envUsername == null) {
+                    System.err.println("Missing GitHub username for DDD. Please set gpr.user in ~/.gradle/gradle.properties.")
+                    throw IllegalStateException("Missing GitHub username for DDD. Please set gpr.user in ~/.gradle/gradle.properties.")
+                }
+                if (envPassword == null) {
+                    System.err.println("Missing GitHub password for DDD. Please set gpr.key in ~/.gradle/gradle.properties.")
+                    throw IllegalStateException("Missing GitHub password for DDD. Please set gpr.key in ~/.gradle/gradle.properties.")
+                }
+                username = envUsername
+                password = envPassword
+            }
+        }
     }
 }
 

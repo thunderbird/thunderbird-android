@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
 }
-//
+
 android {
     namespace = "net.discdd.k9"
     compileSdk = 34
@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.moshi)
+    implementation(libs.client.adapter)
     ksp(libs.moshi.kotlin.codegen)
 
     api(projects.backend.api)
