@@ -262,7 +262,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             finish();
             return;
         }
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setLayout(R.layout.message_compose);
         ViewStub contentContainer = findViewById(R.id.message_compose_content);

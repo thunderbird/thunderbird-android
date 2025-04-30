@@ -33,7 +33,6 @@ public class ChooseIdentity extends K9ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setLayout(R.layout.list_content_simple);
         setTitle(R.string.choose_identity_title);
 
