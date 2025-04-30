@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.moshi)
     implementation(libs.client.adapter)
+    implementation(libs.androidx.lifecycle.process)
     ksp(libs.moshi.kotlin.codegen)
 
     api(projects.backend.api)
