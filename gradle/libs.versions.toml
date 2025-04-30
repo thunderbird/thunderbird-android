@@ -42,6 +42,7 @@ androidxTestEspresso = "3.6.1"
 androidxTestExt = "1.2.1"
 androidxTestRules = "1.6.1"
 androidxTestRunner = "1.6.2"
+androidxWebkit = "1.13.0"
 androidxWork = "2.10.0"
 apacheHttpclient5 = "5.4.2"
 appAuth = "0.11.1"
@@ -179,6 +180,7 @@ androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core",
 androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExt" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxTestRules" }
 androidx-test-runner = { module = "androidx.test:runner", version.ref = "androidxTestRunner" }
+androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "androidxWebkit" }
 androidx-work-runtime = { module = "androidx.work:work-runtime", version.ref = "androidxWork" }
 androidx-work-testing = { module = "androidx.work:work-testing", version.ref = "androidxWork" }
 apache-httpclient5 = { module = "org.apache.httpcomponents.client5:httpclient5", version.ref = "apacheHttpclient5" }
