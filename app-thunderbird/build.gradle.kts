@@ -18,7 +18,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 4
-        versionName = "11.0"
+        versionName = "12.0"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
