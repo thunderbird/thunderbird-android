@@ -14,7 +14,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.test.espresso.Espresso
-import app.k9mail.core.ui.compose.theme2.k9mail.K9MailTheme2
+import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -42,7 +42,7 @@ fun ComposeTest.setContent(content: @Composable () -> Unit) = composeTestRule.se
  * Set the content of the test and wrap it in the default theme.
  */
 fun ComposeTest.setContentWithTheme(content: @Composable () -> Unit) = composeTestRule.setContent {
-    K9MailTheme2 {
+    ThunderbirdTheme2 {
         content()
     }
 }

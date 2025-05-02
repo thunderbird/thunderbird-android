@@ -396,7 +396,6 @@
     <string name="account_settings_openpgp_missing">OpenPGP-app niet aanwezig – is de app verwijderd?</string>
     <string name="folder_settings_title">Mapinstellingen</string>
     <string name="folder_settings_in_top_group_label">In topgroep tonen</string>
-    <string name="folder_settings_in_top_group_summary">Bij de top van de maplijst tonen</string>
     <string name="folder_settings_clear_local_folder_action">Lokale berichten wissen</string>
     <string name="account_settings_incoming_label">Inkomende server</string>
     <string name="account_settings_incoming_summary">Inkomende mailserver instellen</string>
@@ -529,7 +528,6 @@
     <string name="integrated_inbox_title">Samengevoegd Postvak IN</string>
     <string name="integrated_inbox_detail">Alle berichten in gecombineerde mappen</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Combineer</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Alle berichten worden in het samengevoegde Postvak IN getoond</string>
     <string name="account_settings_no_folder_selected">Geen</string>
     <string name="account_settings_automatic_special_folder">Automatisch (%s)</string>
     <string name="font_size_settings_title">Lettergrootte</string>
@@ -646,7 +644,7 @@
     <string name="global_settings_threaded_view_summary">Berichten per gesprek groeperen</string>
     <string name="upgrade_databases_title">Databases bijwerken</string>
     <string name="upgrade_databases_unspecified">Databases bijwerken…</string>
-    <string name="upgrade_database_format">Databases van account \\<xliff:g id="account">%s</xliff:g>\\ bijwerken</string>
+    <string name="upgrade_database_format">Databases van account ‘<xliff:g id="account">%s</xliff:g>’ bijwerken</string>
     <string name="global_settings_splitview_mode_label">Gesplitst scherm tonen</string>
     <string name="global_settings_splitview_always">Altijd</string>
     <string name="global_settings_splitview_never">Nooit</string>
@@ -874,7 +872,7 @@
     <string name="push_notification_state_alarm_permission_missing">Toestemming om alarmen te plannen ontbreekt</string>
     <string name="push_notification_grant_alarm_permission">Tik om toestemming te geven.</string>
     <string name="dialog_openkeychain_info_text">De app OpenKeychain is vereist om ondersteuning voor end-to-end-encryptie mogelijk te maken.</string>
-    <string name="account_delete_dlg_instructions_fmt">De account \\<xliff:g id="account">%1$s</xliff:g>’ zal uit <xliff:g id="app_name">%2$s</xliff:g> worden verwijderd.</string>
+    <string name="account_delete_dlg_instructions_fmt">De account ‘<xliff:g id="account">%1$s</xliff:g>’ zal uit <xliff:g id="app_name">%2$s</xliff:g> worden verwijderd.</string>
     <string name="about_title">Over <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Bij gebruik van Push onderhoudt <xliff:g id="app_name">%1$s</xliff:g> een verbinding met de mailserver. Android vereist het doorlopend tonen van een melding als de app actief is op de achtergrond. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile-team</string>

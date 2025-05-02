@@ -1,10 +1,7 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.notification.NotificationLight
-import app.k9mail.legacy.notification.NotificationVibration
-import app.k9mail.legacy.notification.VibratePattern
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -12,6 +9,9 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
+import net.thunderbird.feature.notification.NotificationLight
+import net.thunderbird.feature.notification.NotificationVibration
+import net.thunderbird.feature.notification.VibratePattern
 import org.junit.Test
 import org.mockito.kotlin.mock
 
@@ -168,12 +168,21 @@ class BaseNotificationDataCreatorTest {
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
 
         assertThat(result.appearance.vibrationPattern).isNotNull()
-            .isEqualTo(NotificationVibration.getSystemPattern(VibratePattern.Pattern3, 2))
+            .isEqualTo(
+                NotificationVibration.getSystemPattern(
+                    VibratePattern.Pattern3,
+                    2,
+                ),
+            )
     }
 
     @Test
     fun `led color`() {
-        account.updateNotificationSettings { it.copy(light = NotificationLight.Green) }
+        account.updateNotificationSettings {
+            it.copy(
+                light = NotificationLight.Green,
+            )
+        }
         val notificationData = createNotificationData()
 
         val result = notificationDataCreator.createBaseNotificationData(notificationData)
@@ -202,8 +211,8 @@ class BaseNotificationDataCreatorTest {
         return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())
     }
 
-    private fun createAccount(): Account {
-        return Account("00000000-0000-4000-0000-000000000000").apply {
+    private fun createAccount(): LegacyAccount {
+        return LegacyAccount("00000000-0000-4000-0000-000000000000").apply {
             name = "account name"
             replaceIdentities(listOf(Identity()))
         }

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="navigation_drawer_action_settings">സജ്ജീകരണങ്ങൾ</string>
-    <string name="navigation_drawer_action_manage_folders">ഫോൾഡറുകൾ നിയന്ത്രിക്കുക</string>
-    <string name="navigation_drawer_unified_inbox_title">ഏകീകൃത ഇൻ‌ബോക്സ്</string>
-</resources>

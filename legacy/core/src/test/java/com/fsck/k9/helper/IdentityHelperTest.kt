@@ -1,8 +1,7 @@
 package com.fsck.k9.helper
 
-import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.Address
@@ -11,6 +10,7 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.internet.AddressHeaderBuilder
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.UUID
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 class IdentityHelperTest : RobolectricTest() {
@@ -115,7 +115,7 @@ class IdentityHelperTest : RobolectricTest() {
         assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
     }
 
-    private fun createDummyAccount() = Account(UUID.randomUUID().toString()).apply {
+    private fun createDummyAccount() = LegacyAccount(UUID.randomUUID().toString()).apply {
         replaceIdentities(
             listOf(
                 newIdentity("Default", DEFAULT_ADDRESS),

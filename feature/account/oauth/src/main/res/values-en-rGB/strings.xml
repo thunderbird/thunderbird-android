@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Signing in using OAuth</string>
     <string name="account_oauth_sign_in_description">We\'ll redirect you to your email provider to sign in. You need to grant the app access to your email account.</string>
     <string name="account_oauth_sign_in_button">Sign in</string>
+    <string name="account_oauth_google_sign_in_support_text">If you\'re experiencing problems when signing in with Google, please consult our {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">support article</string>
 </resources>

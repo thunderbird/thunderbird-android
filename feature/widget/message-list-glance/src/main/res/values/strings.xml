@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="message_list_glance_widget_compose_action">Compose</string>
+    <string name="message_list_glance_widget_inbox_title">Unified Inbox</string>
+    <string name="message_list_glance_widget_label">Message List</string>
+</resources>

@@ -10,7 +10,6 @@
 ## Status
 
 <!-- [Status from the options: proposed, accepted, rejected, deprecated, superseded] -->
-
 - **Status**
 
 ## Context
@@ -34,3 +33,4 @@
 
 - consequence 1
 - consequence 2
+

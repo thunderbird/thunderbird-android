@@ -2,8 +2,8 @@ package com.fsck.k9.account
 
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
@@ -28,7 +28,7 @@ class AccountStateLoaderTest {
     @Test
     fun `loadAccountState() SHOULD return account when present in accountManager`() = runTest {
         val accounts = mutableMapOf(
-            "accountUuid" to Account(uuid = "accountUuid").apply {
+            "accountUuid" to LegacyAccount(uuid = "accountUuid").apply {
                 identities = mutableListOf(Identity())
                 email = "emailAddress"
                 incomingServerSettings = INCOMING_SERVER_SETTINGS

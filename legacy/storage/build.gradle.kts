@@ -17,6 +17,7 @@ dependencies {
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(libs.robolectric)
     testImplementation(libs.commons.io)
+    testImplementation(projects.core.featureflags)
 }
 
 android {

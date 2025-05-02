@@ -6,7 +6,7 @@ import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.Identity
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.IncomingServer
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.OutgoingServer
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.OutgoingServerGroup
-import app.k9mail.legacy.account.Account.DeletePolicy
+import app.k9mail.legacy.account.DeletePolicy
 import java.io.OutputStream
 import org.xmlpull.v1.XmlSerializer
 

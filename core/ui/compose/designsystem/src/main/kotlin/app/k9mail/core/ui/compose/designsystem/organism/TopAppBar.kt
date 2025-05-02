@@ -12,6 +12,14 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import androidx.compose.material3.TopAppBar as Material3TopAppBar
 
+/**
+ * A top app bar with a title, subtitle, navigation icon, and actions.
+ *
+ * @param title The title of the top app bar.
+ * @param navigationIcon The icon to use for the navigation icon.
+ * @param actions The actions to display in the top app bar.
+ * @param modifier The modifier to apply to the top app bar.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(

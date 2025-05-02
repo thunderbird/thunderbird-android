@@ -1,5 +1,6 @@
 plugins {
     id(ThunderbirdPlugins.App.jvm)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 version = "unspecified"
@@ -10,8 +11,10 @@ application {
 
 dependencies {
     implementation(libs.clikt)
-    implementation(platform(libs.http4k.bom))
-    implementation(libs.http4k.core)
-    implementation(libs.http4k.client.okhttp)
-    implementation(libs.http4k.format.moshi)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.serialization.json)
+    implementation(libs.logback.classic)
 }

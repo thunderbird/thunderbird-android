@@ -1,16 +1,20 @@
 package com.fsck.k9.search
 
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.api.SearchAttribute
-import app.k9mail.legacy.search.api.SearchCondition
-import app.k9mail.legacy.search.api.SearchField
+import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.api.SearchCondition
+import net.thunderbird.feature.search.api.SearchField
 
 /**
  * Modify the supplied [LocalSearch] instance to limit the search to displayable folders.
  */
 fun LocalSearch.limitToDisplayableFolders() {
-    and(SearchField.VISIBLE, "1", SearchAttribute.EQUALS)
+    and(
+        SearchField.VISIBLE,
+        "1",
+        SearchAttribute.EQUALS,
+    )
 }
 
 /**
@@ -25,7 +29,7 @@ fun LocalSearch.limitToDisplayableFolders() {
  *
  * The Inbox will always be included even if one of the special folders is configured to point to the Inbox.
  */
-fun LocalSearch.excludeSpecialFolders(account: Account) {
+fun LocalSearch.excludeSpecialFolders(account: LegacyAccount) {
     this.excludeSpecialFolder(account.trashFolderId)
     this.excludeSpecialFolder(account.draftsFolderId)
     this.excludeSpecialFolder(account.spamFolderId)
@@ -45,6 +49,10 @@ fun LocalSearch.excludeSpecialFolders(account: Account) {
 
 private fun LocalSearch.excludeSpecialFolder(folderId: Long?) {
     if (folderId != null) {
-        and(SearchField.FOLDER, folderId.toString(), SearchAttribute.NOT_EQUALS)
+        and(
+            SearchField.FOLDER,
+            folderId.toString(),
+            SearchAttribute.NOT_EQUALS,
+        )
     }
 }

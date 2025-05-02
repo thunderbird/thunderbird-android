@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">K-9 Dog Walkers</string>
     <string name="source_code">Zdrojový kód</string>
     <string name="app_license">Licencované pod licenciou Apache 2.0</string>
     <string name="about_project_title">Projekt s otvoreným zdrojovým kódom</string>
@@ -66,7 +66,7 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adresa bola skopírovaná do schránky</item>
         <item quantity="few">Adresy boli skopírované do schránky</item>
-        <item quantity="other">Adresy boli skopírované do schránky</item>
+        <item quantity="many">Adresy boli skopírované do schránky</item>
     </plurals>
     <string name="message_view_theme_action_dark">Prepnúť na tmavú tému</string>
     <string name="message_view_theme_action_light">Prepnúť na svetlú tému</string>
@@ -360,7 +360,6 @@
     <string name="account_settings_openpgp_missing">Aplikácia pre OpenPGP chýba - bola odinštalovaná?</string>
     <string name="folder_settings_title">Nastavenia priečinku</string>
     <string name="folder_settings_in_top_group_label">Zobraziť v najvyššej skupine</string>
-    <string name="folder_settings_in_top_group_summary">Zobraziť v hornej časti zoznamu priečinkov</string>
     <string name="folder_settings_clear_local_folder_action">Vymazať správy</string>
     <string name="account_settings_incoming_label">Server prichádzajúcej pošty</string>
     <string name="account_settings_incoming_summary">Nastaviť server prichádzajúcej pošty</string>
@@ -474,7 +473,6 @@
     <string name="integrated_inbox_title">Jednotná schránka</string>
     <string name="integrated_inbox_detail">Všetky správy v zjednotených priečinkoch</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Zjednotiť</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Všetky správy budú zobrazené v Jednotnej schránke</string>
     <string name="account_settings_no_folder_selected">Žiadna</string>
     <string name="account_settings_automatic_special_folder">Automaticky (%s)</string>
     <string name="font_size_settings_title">Veľkosť písma</string>
@@ -834,14 +832,14 @@
     <plurals name="remote_search_downloading">
         <item quantity="one">Preberám %d výsledok</item>
         <item quantity="few">Preberám %d výsledky</item>
-        <item quantity="other">Preberám %d výsledkov</item>
+        <item quantity="many">Preberám %d výsledkov</item>
     </plurals>
     <string name="folder_settings_sync_label">Povoliť synchronizáciu</string>
     <string name="folder_list_show_hidden_folders">Zobraziť skryté zložky</string>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Preberám %1$d z %2$d výsledkov</item>
         <item quantity="few">Preberám %1$d z %2$d výsledkov</item>
-        <item quantity="other">Preberám %1$d z %2$d výsledkov</item>
+        <item quantity="many">Preberám %1$d z %2$d výsledkov</item>
     </plurals>
     <string name="account_settings_crypto_hide_sign_only">Skryť nešifrované podpisy</string>
     <string name="crypto_msg_encrypted_no_provider">ale žiadna šifrovacia aplikácia nie je nastavená</string>

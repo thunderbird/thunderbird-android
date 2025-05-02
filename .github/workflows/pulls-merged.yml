@@ -1,0 +1,70 @@
+---
+name: PR Merged Actions
+
+# Warning, this job is running on pull_request_target and therefore has access to issue content.
+# Don't add any steps that act on external code.
+on:
+  pull_request_target:
+    branches: [main]
+    types: [closed]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  pull-request-merged:
+    if: github.event.pull_request.merged
+    runs-on: ubuntu-latest
+    environment: botmobile
+    steps:
+      - name: App token generate
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5  # v2.0.2
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Get active milestone
+        id: milestone
+        env:
+          PR_NUMBER: ${{  github.event.pull_request.number  }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: |
+          # The furthest open milestone in the future should be current main
+          gh api repos/$GITHUB_REPOSITORY/milestones --jq '
+                map(select(.state == "open" and .due_on != null))
+                | sort_by(.due_on) | reverse
+                | .[0] | { number, title }
+                | to_entries
+                | map(.key + "=" + (.value|tostring)) | join("\n")' | tee -a $GITHUB_OUTPUT
+
+      - name: Thank you
+        if: |
+          github.event.pull_request.author_association != 'OWNER' &&
+          github.event.pull_request.author_association != 'MEMBER' &&
+          github.event.pull_request.author_association != 'COLLABORATOR' &&
+          github.event.pull_request.author_association != 'CONTRIBUTOR'
+        env:
+          PR_NUMBER: ${{  github.event.pull_request.number  }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          MILESTONE: ${{ steps.milestone.outputs.title }}
+          MESSAGE: >-
+            Thanks for your contribution! Your pull request has been merged and will be part of
+            ${{ steps.milestone.outputs.title }}. We appreciate the time and effort you put into
+            improving Thunderbird. If you haven’t already, you’re welcome to join our Matrix chat
+            for contributors. It’s where we discuss development and help each other out.
+            https://matrix.to/#/#tb-android-dev:mozilla.org
+
+            Hope to see you there! 🚀📱🐦
+        run: |
+          gh pr comment $PR_NUMBER --repo $GITHUB_REPOSITORY --body "$MESSAGE"
+
+      - name: Set active milestone on PR
+        env:
+          PR_NUMBER: ${{  github.event.pull_request.number  }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+          MILESTONE: ${{ steps.milestone.outputs.number }}
+        run: |
+          gh api --method PATCH /repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER -f milestone=$MILESTONE

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="navigation_drawer_dropdown_action_settings">Agordoj</string>
+    <string name="navigation_drawer_dropdown_action_manage_folders">Administri mesaĝujojn</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">Unuigita ricevujo</string>
+    <string name="navigation_drawer_dropdown_action_show_accounts">Montri kontojn</string>
+    <string name="navigation_drawer_dropdown_action_sync_all_accounts">Samtempigi ĉiujn kontojn</string>
+    <string name="navigation_drawer_dropdown_action_hide_accounts">Kaŝi kontojn</string>
+</resources>

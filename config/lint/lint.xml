@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="MissingTranslation" severity="informational" />
-    <issue id="MissingQuantity" severity="informational" />
-    <issue id="ExtraTranslation" severity="warning" />
+    <!-- Validate translations - start -->
+    <issue id="MissingTranslation" severity="warning" />
+    <issue id="MissingQuantity" severity="error" />
+    <issue id="ExtraTranslation" severity="error" />
     <issue id="ImpliedQuantity" severity="warning" />
+    <issue id="HardcodedText" severity="error" />
+    <issue id="IncompleteTranslation" severity="error" />
+    <issue id="StringFormatInvalid" severity="error" />
+    <issue id="StringEscaping" severity="error" />
+    <issue id="Untranslatable" severity="error" />
+    <issue id="LocaleFolder" severity="error" />
+    <!-- Validate translations - end -->
+
+    <issue id="UnusedResources" severity="warning" />
 
     <issue id="all">
         <ignore path="**/ui-utils/ItemTouchHelper/**"/>

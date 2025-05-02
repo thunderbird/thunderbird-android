@@ -1,8 +1,9 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.accessors.dm.LibrariesForLibs
+import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
-internal fun CommonExtension<*, *, *, *, *, *>.configureSharedConfig() {
+internal fun CommonExtension<*, *, *, *, *, *>.configureSharedConfig(project: Project) {
     compileSdk = ThunderbirdProjectConfig.androidSdkCompile
 
     defaultConfig {
@@ -19,7 +20,10 @@ internal fun CommonExtension<*, *, *, *, *, *>.configureSharedConfig() {
     }
 
     lint {
-        abortOnError = false
+        warningsAsErrors = false
+        abortOnError = true
+        checkDependencies = true
+        lintConfig = project.file("${project.rootProject.projectDir}/config/lint/lint.xml")
     }
 
     testOptions {
@@ -49,11 +53,6 @@ internal fun CommonExtension<*, *, *, *, *, *>.configureSharedConfig() {
 internal fun CommonExtension<*, *, *, *, *, *>.configureSharedComposeConfig(libs: LibrariesForLibs) {
     buildFeatures {
         compose = true
-    }
-
-    lint {
-        warningsAsErrors = false
-        abortOnError = true
     }
 }
 

@@ -5,12 +5,9 @@ import app.k9mail.core.common.cache.Cache
 import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
 import app.k9mail.feature.funding.googleplay.data.remote.startConnection
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
-import app.k9mail.feature.funding.googleplay.domain.Outcome
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import app.k9mail.feature.funding.googleplay.domain.entity.OneTimeContribution
 import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
-import app.k9mail.feature.funding.googleplay.domain.handleAsync
-import app.k9mail.feature.funding.googleplay.domain.mapFailure
 import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
@@ -33,6 +30,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.outcome.handleAsync
+import net.thunderbird.core.outcome.mapFailure
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")

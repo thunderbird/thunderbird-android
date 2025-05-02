@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">ஏற்கனவே டெச்க்டாப்பில் தண்டர்பேர்டைப் பயன்படுத்துகிறீர்களா?</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">தண்டர்பேர்டுக்கு புதியதா?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">அமைப்புகளை இறக்குமதி செய்யுங்கள்</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">இப்போது ஒரு மின்னஞ்சல் கணக்கைச் சேர்க்கவும்</string>
+    <string name="onboarding_migration_thunderbird_import_title">மற்றொரு பயன்பாடு அல்லது சாதனத்திலிருந்து நகர்கிறீர்களா?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">உங்கள் கணக்கு அமைப்புகளை இப்போது இறக்குமதி செய்யுங்கள்</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">இணைப்பைத் திறக்க எந்த பயன்பாடும் கிடைக்கவில்லை.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">QR குறியீட்டை ச்கேன் செய்வதன் மூலம் உங்கள் கணக்கு அமைப்புகளை எளிதாக இறக்குமதி செய்யுங்கள்.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">தண்டர்பேர்ட் டெச்க்டாப்பில், செல்லுங்கள்:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">ச்பேச் கருவிப்பட்டியில் ‘அமைப்புகள்’ (கீழ் இடது)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">‘மொபைலுக்கு ஏற்றுமதி’ என்பதைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">இறக்குமதிக்கு தண்டர்பேர்ட் டெச்க்டாப் 128 இன் அண்மைக் கால பதிப்பு தேவைப்படுகிறது.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">தண்டர்பேர்டைப் புதுப்பிப்பது எப்படி என்பதை அறிக.</string>
+</resources>

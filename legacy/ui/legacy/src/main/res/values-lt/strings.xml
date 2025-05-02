@@ -75,7 +75,7 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Nukopijuotas adresas į iškarpinę</item>
         <item quantity="few">Nukopijuoti adresai į iškarpinę</item>
-        <item quantity="other">Nukopijuota adresų į iškarpinę</item>
+        <item quantity="many">Nukopijuota adresų į iškarpinę</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Nukopijuotas temos tekstas į iškarpinę</string>
     <string name="message_view_theme_action_dark">Perjungti į tamsią temą</string>
@@ -104,7 +104,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> naujas laiškas</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nauji laiškai</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> daugiau paskyroje <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Atsakyti</string>
@@ -389,7 +389,6 @@
     <string name="account_settings_openpgp_missing">Trūksta OpenPGP programos - ar ji buvo pašalinta?</string>
     <string name="folder_settings_title">Aplanko nustatymai</string>
     <string name="folder_settings_in_top_group_label">Rodyti viršutinėje grupėje</string>
-    <string name="folder_settings_in_top_group_summary">Rodyti aplankų sąrašo viršuje</string>
     <string name="folder_settings_clear_local_folder_action">Išvalyti vietinius laiškus</string>
     <string name="account_settings_incoming_label">Laiškų gavimo serveris</string>
     <string name="account_settings_incoming_summary">Konfigūruoti gaunamųjų laiškų serverį</string>
@@ -522,7 +521,6 @@
     <string name="integrated_inbox_title">Suvestiniai gautieji</string>
     <string name="integrated_inbox_detail">Visi laiškai suvestiniuose aplankuose</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Suvesti</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Visi laiškai rodomi suvestiniame gautųjų aplanke</string>
     <string name="account_settings_no_folder_selected">Jokios</string>
     <string name="account_settings_automatic_special_folder">Automatinis (%s)</string>
     <string name="font_size_settings_title">Šrifto dydis</string>
@@ -565,7 +563,7 @@
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laišką?</item>
         <item quantity="few">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
-        <item quantity="other">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
+        <item quantity="many">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Taip</string>
     <string name="dialog_confirm_delete_cancel_button">Ne</string>
@@ -579,7 +577,7 @@
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laišką į brukalo aplanką?</item>
         <item quantity="few">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškus į brukalo aplanką?</item>
-        <item quantity="other">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
+        <item quantity="many">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Taip</string>
     <string name="dialog_confirm_spam_cancel_button">Ne</string>

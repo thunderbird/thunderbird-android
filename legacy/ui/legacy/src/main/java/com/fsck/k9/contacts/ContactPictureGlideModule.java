@@ -8,8 +8,8 @@ import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.LibraryGlideModule;
 import app.k9mail.legacy.di.DI;
-import app.k9mail.legacy.ui.account.AccountImage;
 import com.fsck.k9.ui.account.AccountImageModelLoaderFactory;
+import net.thunderbird.core.ui.account.AccountImage;
 import org.jetbrains.annotations.NotNull;
 
 @GlideModule

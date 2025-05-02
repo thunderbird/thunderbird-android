@@ -1,12 +1,14 @@
 package com.fsck.k9
 
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
-import com.fsck.k9.preferences.InMemoryStoragePersister
 import kotlin.test.Test
+import net.thunderbird.core.android.preferences.InMemoryStoragePersister
 import org.junit.Before
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -17,12 +19,12 @@ class PreferencesTest {
         storagePersister = InMemoryStoragePersister(),
         localStoreProvider = mock(),
         accountPreferenceSerializer = AccountPreferenceSerializer(
-            resourceProvider = mock(),
             serverSettingsSerializer = mock {
                 on { serialize(any()) } doReturn ""
                 on { deserialize(any()) } doReturn SERVER_SETTINGS
             },
         ),
+        accountDefaultsProvider = mock(),
     )
 
     @Before
@@ -33,8 +35,8 @@ class PreferencesTest {
 
     @Test
     fun `reloading accounts should return same Account instance`() {
-        createAccount(ACCOUNT_UUID_ONE)
-        createAccount(ACCOUNT_UUID_TWO)
+        createAndSaveAccount(ACCOUNT_UUID_ONE)
+        createAndSaveAccount(ACCOUNT_UUID_TWO)
         val firstAccountOne = preferences.getAccount(ACCOUNT_UUID_ONE)
 
         preferences.loadAccounts()
@@ -43,7 +45,32 @@ class PreferencesTest {
         assertThat(firstAccountTwo).isSameInstanceAs(firstAccountOne)
     }
 
-    private fun createAccount(accountUuid: String) {
+    @Test
+    fun `saving accounts should return updated Account instance`() {
+        val account = createAccount(ACCOUNT_UUID_ONE)
+        preferences.saveAccount(account)
+
+        val updatedAccount = createAccount(ACCOUNT_UUID_ONE).apply {
+            name = "New name"
+        }
+
+        preferences.saveAccount(updatedAccount)
+
+        val currentAccountOne = preferences.getAccount(ACCOUNT_UUID_ONE)!!
+        assertThat(currentAccountOne.name).isEqualTo("New name")
+    }
+
+    private fun createAccount(accountId: String): LegacyAccount {
+        return LegacyAccount(
+            uuid = accountId,
+            isSensitiveDebugLoggingEnabled = { false },
+        ).apply {
+            incomingServerSettings = SERVER_SETTINGS
+            outgoingServerSettings = SERVER_SETTINGS
+        }
+    }
+
+    private fun createAndSaveAccount(accountUuid: String) {
         val account = preferences.newAccount(accountUuid).apply {
             // To be able to persist `Account` we need to set server settings
             incomingServerSettings = SERVER_SETTINGS

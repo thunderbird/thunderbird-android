@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_common_button_back">পিছনে</string>
+    <string name="account_common_error_server_message">সার্ভার এই বার্তাটি পাঠিয়েছে:\n%s</string>
+    <string name="account_common_button_next">পরবর্তী</string>
+</resources>

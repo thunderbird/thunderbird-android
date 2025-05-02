@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   build:
@@ -17,20 +18,22 @@ jobs:
       github.event.comment.author_association != 'OWNER' &&
       github.event.comment.author_association != 'MEMBER' &&
       github.event.comment.author_association != 'COLLABORATOR'
+    environment: botmobile
     permissions:
       issues: write
       pull-requests: write
     steps:
-      # https://github.com/octokit/request-action/issues/118
-      - name: Remove needinfo label
+      - name: App token generate
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5  # v2.0.2
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Remove needinfo label and add answered label
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: |
-          curl --request DELETE \
-            --url 'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/status%3A%20needs%20information' \
-            --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}'
-      - name: Add answered label
-        run: |
-          curl --request POST \
-            --url 'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels' \
-            --header 'Authorization: token ${{ secrets.GITHUB_TOKEN }}' \
-            --header 'Content-Type: application/json' \
-            --data '{"labels": ["status: answered"]}'
+          gh issue edit $ISSUE_NUMBER --repo "$GITHUB_REPOSITORY" --remove-label "status: needs information" --add-label "status: answered"

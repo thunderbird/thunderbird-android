@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.core.android.common.database.map
 import app.k9mail.core.common.mail.Protocols
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mailstore.MigrationsHelper
 import timber.log.Timber
 
@@ -121,7 +121,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         db.delete("folders", "id = ?", arrayOf(folderId.toString()))
     }
 
-    private fun Account.isPop3() = incomingServerSettings.type == Protocols.POP3
+    private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
         private const val OUTBOX_FOLDER_TYPE = "outbox"

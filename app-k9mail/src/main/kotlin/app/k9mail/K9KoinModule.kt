@@ -21,12 +21,14 @@ import com.fsck.k9.preferences.FilePrefixProvider
 import com.fsck.k9.provider.K9ThemeProvider
 import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.widget.list.MessageListWidgetProvider
+import net.thunderbird.app.common.appCommonModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val appModule = module {
+    includes(appCommonModule)
     includes(appWidgetModule)
     includes(featureModule)
 

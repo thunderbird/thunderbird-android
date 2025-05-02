@@ -9,4 +9,6 @@
     <string name="account_oauth_error_browser_not_available">היישומון לא הצליח למצוא דפדפן להשתמש בו כדי לתת גישה לחשבון שלך.</string>
     <string name="account_oauth_error_canceled">הרשאה בוטלה</string>
     <string name="account_oauth_error_failed">הרשאה נכשלה עם השגיאה שלהלן: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">מאמר תמיכה</string>
+    <string name="account_oauth_google_sign_in_support_text">אם אתה נתקל בבעיות בעת הכניסה ל-Google, פנה אל {placeHolder} שלנו.</string>
 </resources>

@@ -22,13 +22,11 @@ refactor our existing Java codebase to Kotlin.
 ## Consequences
 
 - **Positive Consequences**
-
   - Improved null safety, reducing potential for null pointer exceptions.
   - Increased code readability and maintainability due to less verbose syntax.
   - Availability of modern language features such as coroutines for asynchronous programming, and extension functions.
   - Officially supported by Google for Android development, ensuring future-proof development.
-
 - **Negative Consequences**
-
   - The process of refactoring existing Java code to Kotlin can be time-consuming.
   - Potential for introduction of new bugs during refactoring.
+

@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_incoming_loading_message">A’ sgrùdadh roghainnean an fhrithealaiche a-steach…</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Cha d’fhuair sinn greim air teisteanas a’ chliant</string>
+    <string name="account_server_validation_error_missing_server_capability">Tha comas a dhìth air an fhrithealaiche</string>
+    <string name="account_server_validation_sign_in">Clàraich a-steach</string>
+    <string name="account_server_validation_outgoing_loading_error">Dh’fhàillig sgrùdadh roghainnean an fhrithealaiche a-mach</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Tha an comas a leanas a dhìth air an fhrithealaiche:\n%s</string>
+    <string name="account_server_validation_incoming_loading_error">Dh’fhàillig sgrùdadh roghainnean an fhrithealaiche a-steach</string>
+    <string name="account_server_validation_outgoing_success">Chaidh roghainnean an fhrithealaiche a-mach a dhearbhadh</string>
+    <string name="account_server_validation_outgoing_loading_message">A’ sgrùdadh roghainnean an fhrithealaiche a-mach…</string>
+    <string name="account_server_validation_incoming_success">Chaidh roghainnean an fhrithealaiche a-steach a dhearbhadh</string>
+    <string name="account_server_validation_error_details">Mion-fhiosrachadh:\n%s</string>
+    <string name="account_server_validation_error_client_certificate_expired">Chan eil teisteanas a’ chliant dligheach tuilleadh</string>
+    <string name="account_server_validation_error_authentication">Mearachd dearbhaidh</string>
+    <string name="account_server_validation_error_network">Mearachd lìonraidh</string>
+    <string name="account_server_validation_error_server">Mearachd frithealaiche</string>
+    <string name="account_server_validation_error_unknown">Mearachd neo-aithnichte</string>
+</resources>

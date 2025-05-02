@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageDetailsAccessor
 import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
@@ -9,7 +9,7 @@ import com.fsck.k9.ui.helper.DisplayAddressHelper
 
 class MessageListItemMapper(
     private val messageHelper: MessageHelper,
-    private val account: Account,
+    private val account: LegacyAccount,
 ) : MessageMapper<MessageListItem> {
 
     override fun map(message: MessageDetailsAccessor): MessageListItem {
@@ -50,7 +50,7 @@ class MessageListItemMapper(
         )
     }
 
-    private fun createUniqueId(account: Account, messageId: Long): Long {
+    private fun createUniqueId(account: LegacyAccount, messageId: Long): Long {
         return ((account.accountNumber + 1).toLong() shl 52) + messageId
     }
 }

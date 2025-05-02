@@ -12,11 +12,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.core.os.bundleOf
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
-import app.k9mail.legacy.search.SearchAccount
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import net.thunderbird.feature.search.SearchAccount
 import org.koin.android.ext.android.inject
 
 @Suppress("TooManyFunctions")

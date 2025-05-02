@@ -16,7 +16,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.app.LoaderManager.LoaderCallbacks;
 import androidx.loader.content.Loader;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import app.k9mail.legacy.message.controller.MessageReference;
@@ -90,7 +90,7 @@ public class MessageLoaderHelper {
     // transient state
     private boolean onlyLoadMetadata;
     private MessageReference messageReference;
-    private Account account;
+    private LegacyAccount account;
 
     private LocalMessage localMessage;
     private MessageCryptoAnnotations messageCryptoAnnotations;
@@ -490,7 +490,7 @@ public class MessageLoaderHelper {
 
     MessagingListener downloadMessageListener = new SimpleMessagingListener() {
         @Override
-        public void loadMessageRemoteFinished(final Account account, final long folderId, final String uid) {
+        public void loadMessageRemoteFinished(final LegacyAccount account, final long folderId, final String uid) {
             handler.post(() -> {
                 if (!messageReference.equals(account.getUuid(), folderId, uid)) {
                     return;
@@ -500,7 +500,7 @@ public class MessageLoaderHelper {
         }
 
         @Override
-        public void loadMessageRemoteFailed(Account account, long folderId, String uid, final Throwable t) {
+        public void loadMessageRemoteFailed(LegacyAccount account, long folderId, String uid, final Throwable t) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {

@@ -74,6 +74,7 @@ def render_notes(
         render_data["releases"][vers]["date"] = release["release_date"]
         render_data["releases"][vers]["short_notes"] = []
         render_data["releases"][vers]["notes"] = {}
+        render_data["releases"][vers]["long_notes"] = []
         for note in yaml_content["notes"]:
             if ("0b" not in version) or (
                 "0b" in version and note["group"] == int(vers[-1])
@@ -89,6 +90,7 @@ def render_notes(
                     render_data["releases"][vers]["notes"][tag].append(
                         note["note"].strip()
                     )
+                    render_data["releases"][vers]["long_notes"].append(note["note"].strip())
                 if "short_note" in note:
                     render_data["releases"][vers]["short_notes"].append(
                         note["short_note"].strip()

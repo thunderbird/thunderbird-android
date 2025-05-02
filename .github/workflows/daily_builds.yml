@@ -14,5 +14,5 @@ jobs:
     uses: ./.github/workflows/shippable_builds.yml
     secrets: inherit
     permissions:
-      contents: write # For release bumps
       id-token: write # For GCS publishing (ftp.mo)
+      contents: read

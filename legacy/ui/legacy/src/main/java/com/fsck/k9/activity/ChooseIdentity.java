@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.Preferences;
@@ -21,7 +21,7 @@ import java.util.List;
 public class ChooseIdentity extends K9ListActivity {
     private final IdentityFormatter identityFormatter = DI.get(IdentityFormatter.class);
 
-    Account mAccount;
+    LegacyAccount mAccount;
     ArrayAdapter<String> adapter;
 
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseIdentity_account";
@@ -33,7 +33,6 @@ public class ChooseIdentity extends K9ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setLayout(R.layout.list_content_simple);
         setTitle(R.string.choose_identity_title);
 

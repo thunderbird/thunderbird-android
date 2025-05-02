@@ -6,6 +6,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceScreen
+import app.k9mail.core.featureflag.FeatureFlagProvider
+import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
@@ -20,6 +24,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: GeneralSettingsViewModel by viewModel()
     private val dataStore: GeneralSettingsDataStore by inject()
     private val telemetryManager: TelemetryManager by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private var rootKey: String? = null
     private var currentUiState: GeneralSettingsUiState? = null
@@ -36,6 +41,16 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         this.rootKey = rootKey
         setHasOptionsMenu(true)
         setPreferencesFromResource(R.xml.general_settings, rootKey)
+
+        featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
+            .onEnabled {
+                val parentPreference = findPreference<PreferenceCategory>("global_preferences")
+                val fontSizePreferenceScreen = findPreference<PreferenceScreen>("font_size")
+
+                if (parentPreference != null && fontSizePreferenceScreen != null) {
+                    parentPreference.removePreference(fontSizePreferenceScreen)
+                }
+            }
 
         initializeDataCollection()
 

@@ -5,6 +5,9 @@
     <!-- Used in the about dialog -->
     <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="attach_file">Attach File</string>
+    <string name="camera_permission_denied">Camera Permission Denied! Unable to take photo</string>
     <string name="source_code">Source code</string>
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="about_project_title">Open Source Project</string>
@@ -491,7 +494,6 @@
     <string name="folder_settings_title">Folder settings</string>
 
     <string name="folder_settings_in_top_group_label">Show in top group</string>
-    <string name="folder_settings_in_top_group_summary">Show near the top of the folder list</string>
 
     <string name="folder_settings_visible_label">Show folder</string>
     <string name="folder_settings_sync_label">Enable sync</string>
@@ -660,7 +662,6 @@
     <string name="integrated_inbox_detail">All messages in unified folders</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
 
     <string name="account_settings_no_folder_selected">None</string>
     <string name="account_settings_automatic_special_folder">Automatic (%s)</string>

@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_username_label">பயனர்பெயர்</string>
+    <string name="account_server_settings_connection_security_none">எதுவுமில்லை</string>
+    <string name="account_server_settings_connection_security_start_tls">Startls</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">எதுவுமில்லை</string>
+    <string name="account_server_settings_authentication_password_cleartext">சாதாரண கடவுச்சொல்</string>
+    <string name="account_server_settings_authentication_password_encrypted">மறைகுறியாக்கப்பட்ட கடவுச்சொல்</string>
+    <string name="account_server_settings_authentication_client_certificate">வாடிக்கையாளர் சான்றிதழ்</string>
+    <string name="account_server_settings_authentication_client_oauth">OAUTH 2.0</string>
+    <string name="account_server_settings_client_certificate_none_selected">எதுவுமில்லை</string>
+    <string name="account_server_settings_client_certificate_label">வாடிக்கையாளர் சான்றிதழ்</string>
+    <string name="account_server_settings_incoming_top_bar_title">உள்வரும் சேவையக அமைப்புகள்</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">தானாக கண்டறியப்பட்ட IMAP பெயர்வெளி</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">IMAP பாதை முன்னொட்டு</string>
+    <string name="account_server_settings_incoming_imap_compression_label">சுருக்கத்தைப் பயன்படுத்துங்கள்</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">கிளையன்ட் தகவல்களை அனுப்பவும்</string>
+    <string name="account_server_settings_outgoing_top_bar_title">வெளிச்செல்லும் சேவையக அமைப்புகள்</string>
+    <string name="account_server_settings_validation_error_server_required">சேவையக பெயர் தேவை.</string>
+    <string name="account_server_settings_validation_error_port_required">துறைமுகம் தேவை.</string>
+    <string name="account_server_settings_validation_error_port_invalid">துறைமுகம் தவறானது (1–65535 ஆக இருக்க வேண்டும்).</string>
+    <string name="account_server_settings_validation_error_username_required">பயனர்பெயர் தேவை.</string>
+    <string name="account_server_settings_validation_error_password_required">கடவுச்சொல் தேவை.</string>
+    <string name="account_server_settings_password_authentication_title">உங்கள் அடையாளத்தை சரிபார்க்கவும்</string>
+    <string name="account_server_settings_password_authentication_subtitle">உங்கள் கடவுச்சொல்லைக் காண திறக்கவும்</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">உங்கள் கடவுச்சொல்லை இங்கே காண, இந்த சாதனத்தில் திரை பூட்டை இயக்கவும்.</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">தவறான ஐபி அல்லது ஓச்ட்பெயர்</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">IMAP முன்னொட்டு காலியாக இருக்க முடியாது.</string>
+    <string name="account_server_settings_protocol_type_label">நெறிமுறை</string>
+    <string name="account_server_settings_server_label">சேவையகம்</string>
+    <string name="account_server_settings_security_label">பாதுகாப்பு</string>
+    <string name="account_server_settings_port_label">துறைமுகம்</string>
+    <string name="account_server_settings_authentication_label">ஏற்பு</string>
+</resources>

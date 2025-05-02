@@ -67,7 +67,7 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">כתובת הועתקה ללוח‭</item>
         <item quantity="two">כתובות הועתקו ללוח</item>
-        <item quantity="other">כתובות הועתקו ללוח</item>
+        <item quantity="many">כתובות הועתקו ללוח</item>
     </plurals>
     <string name="copy_subject_to_clipboard">הנושא הועתק ללוח</string>
     <string name="message_view_theme_action_dark">עבור לערכת נושא כהה</string>
@@ -95,7 +95,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה</item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> עוד עלינו<xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">השב</string>
@@ -313,7 +313,6 @@
     <string name="account_settings_sync_remote_deletetions_summary">הסר הודעות כאשר נמחק בשרת</string>
     <string name="folder_settings_title">הגדרות תיקייה</string>
     <string name="folder_settings_in_top_group_label">הצג בקבוצה העליונה</string>
-    <string name="folder_settings_in_top_group_summary">הצג בחלק העליון של רשימת התיקיות</string>
     <string name="folder_settings_clear_local_folder_action">נקה הודעות מקומיות</string>
     <string name="account_settings_incoming_label">שרת הודעות נכנסות</string>
     <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
@@ -422,7 +421,6 @@
     <string name="integrated_inbox_title">תיבת דואר נכנס אחידה</string>
     <string name="integrated_inbox_detail">כל ההודעות בתיקיות המאוחדות</string>
     <string name="folder_settings_include_in_integrated_inbox_label">לאחד</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">כל ההדועות מוצגות בתיבת דואר נכנס אחידה</string>
     <string name="account_settings_no_folder_selected">כלום</string>
     <string name="font_size_settings_title">גודל גופן</string>
     <string name="font_size_settings_description">הגדר גודל גופן</string>
@@ -593,12 +591,12 @@
     <plurals name="remote_search_downloading">
         <item quantity="one">מביא תוצאה %d</item>
         <item quantity="two">מביא %d תוצאות</item>
-        <item quantity="other">מביא %d תוצאות</item>
+        <item quantity="many">מביא %d תוצאות</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">מביא תוצאה %1$d מתוך %2$d</item>
         <item quantity="two">מביא %1$d תוצאות מתוך%2$d</item>
-        <item quantity="other">מביא %1$d תוצאות מתוך%2$d</item>
+        <item quantity="many">מביא %1$d תוצאות מתוך%2$d</item>
     </plurals>
     <string name="upgrade_databases_unspecified">משדרג מסדי נתונים…</string>
     <string name="upgrade_database_format">משדרג מסד נתונים של חשבון \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -700,7 +698,7 @@
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">בטוח שברצונך למחוק הודעה זו?</item>
         <item quantity="two">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
-        <item quantity="other">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
+        <item quantity="many">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
     </plurals>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>

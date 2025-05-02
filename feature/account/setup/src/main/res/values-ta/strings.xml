@@ -1,2 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">இந்த மின்னஞ்சல் முகவரி ஆதரிக்கப்படவில்லை.</string>
+    <string name="account_setup_special_folders_spam_folder_label">ச்பேம் கோப்புறை</string>
+    <string name="account_setup_special_folders_trash_folder_label">குப்பை கோப்புறை</string>
+    <string name="account_setup_options_section_display_options">காட்சி விருப்பங்கள்</string>
+    <string name="account_setup_options_account_name_label">கணக்கு பெயர்</string>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">ஒவ்வொரு மணி நேரமும்</item>
+        <item quantity="other">ஒவ்வொரு %d மணிநேரமும்</item>
+    </plurals>
+    <string name="account_setup_special_folders_form_description">உங்கள் கணக்கிற்கான சிறப்பு கோப்புறைகளைக் குறிப்பிடவும்.</string>
+    <string name="account_setup_special_folders_loading_message">கோப்புறைகளின் பட்டியலைப் பெறுதல்…</string>
+    <string name="account_setup_special_folders_error_message">சேவையகத்திலிருந்து கோப்புறைகளின் பட்டியலைப் பெறுவதில் தோல்வி</string>
+    <string name="account_setup_special_folders_success_message">அனைத்து சிறப்பு கோப்புறைகளும் சேவையகத்தால் தானாக கட்டமைக்கப்பட்டுள்ளன.</string>
+    <string name="account_setup_special_folders_archive_folder_label">காப்பக கோப்புறை</string>
+    <string name="account_setup_special_folders_drafts_folder_label">வரைவுகள் கோப்புறை</string>
+    <string name="account_setup_special_folders_sent_folder_label">கோப்புறை அனுப்பப்பட்டது</string>
+    <string name="account_setup_special_folders_folder_none">எதுவுமில்லை</string>
+    <string name="account_setup_options_email_signature_label">மின்னஞ்சல் கையொப்பம்</string>
+    <string name="account_setup_options_email_signature_error_blank">மின்னஞ்சல் கையொப்ப பெயர் காலியாக இருக்க முடியாது.</string>
+    <string name="account_setup_options_email_display_count_label">காண்பிக்க செய்திகளின் எண்ணிக்கை</string>
+    <string name="account_setup_options_show_notifications_label">அறிவிப்புகளைக் காட்டு</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">கடவுச்சொல் தேவை.</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">உள்ளமைவு காணப்படவில்லை</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">கைமுறையாக உள்ளமைக்கவும்</string>
+    <string name="account_setup_special_folders_form_description_automatic">\"தானியங்கி\" நுழைவு சேவையகத்தால் செய்யப்பட்ட மாற்றங்களை தானாகவே பின்பற்றும். தற்போதைய சேவையக மதிப்பு அடைப்புக்குறிக்குள் காட்டப்படும்.</string>
+    <string name="account_setup_options_display_name_error_required">உங்கள் பெயர் தேவை.</string>
+    <string name="account_setup_options_section_sync_options">விருப்பங்களை ஒத்திசைக்கவும்</string>
+    <string name="account_setup_create_account_creating">கணக்கை உருவாக்குதல்…</string>
+    <string name="account_setup_error_unknown">தெரியாத பிழை</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">மின்னஞ்சல் முகவரி தேவை.</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">உள்ளமைவைப் பார்க்கிறது…</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">இந்த மின்னஞ்சல் முகவரி அனுமதிக்கப்படவில்லை.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">இது சரியான மின்னஞ்சல் முகவரியாக அங்கீகரிக்கப்படவில்லை.</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">Startls</string>
+    <string name="account_setup_auto_discovery_loading_error">மின்னஞ்சல் உள்ளமைவை ஏற்றுவதில் தோல்வி</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">உள்ளமைவு காணப்பட்டது</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">தானாக உள்ளமைக்கவும்</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">இந்த உள்ளமைவு நம்பப்படவில்லை</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">நாங்கள் விரும்பும் அளவுக்கு பாதுகாப்பாக இல்லாத இணைப்பின் மூலம் உங்கள் மின்னஞ்சல் சேவையகத்திற்கான உள்ளமைவைப் பெற்றோம். இதன் பொருள் யாராவது அதை மாற்றியிருக்க ஒரு சிறிய வாய்ப்பு உள்ளது. வழங்கப்பட்ட உள்ளமைவை இருமுறை சரிபார்க்க முடியுமா?</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">உள்ளமைவுக்கு ஒப்புதல் அளிக்க வேண்டும்.</string>
+    <string name="account_setup_special_folders_folder_automatic">தானியங்கி (%s)</string>
+    <string name="account_setup_options_account_name_error_blank">கணக்கு பெயர் காலியாக இருக்க முடியாது.</string>
+    <string name="account_setup_options_display_name_label">உங்கள் பெயர்</string>
+    <string name="account_setup_options_account_check_frequency_label">சோதனை அதிர்வெண்</string>
+    <string name="account_setup_options_email_check_frequency_never">ஒருபோதும்</string>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 செய்தி</item>
+        <item quantity="other">%d செய்திகள்</item>
+    </plurals>
+    <string name="account_setup_create_account_error">கணக்கை உருவாக்க முயற்சிக்கும்போது பிழை ஏற்பட்டது</string>
+    <string name="account_setup_create_account_created">கணக்கு வெற்றிகரமாக உருவாக்கப்பட்டது</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">உள்ளமைவைத் திருத்து</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">இந்த உள்ளமைவை நான் நம்புகிறேன்</string>
+    <string name="account_setup_error_network">பிணைய பிழை. உங்கள் இணைப்பு நிலையை சரிபார்த்து மீண்டும் முயற்சிக்கவும்.</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">ஒவ்வொரு நிமிடமும்</item>
+        <item quantity="other">ஒவ்வொரு %d நிமிடங்களும்</item>
+    </plurals>
+</resources>

@@ -6,7 +6,7 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mail.crlf
+import com.fsck.k9.mail.testing.crlf
 import org.junit.Test
 
 class AddressHeaderBuilderTest {

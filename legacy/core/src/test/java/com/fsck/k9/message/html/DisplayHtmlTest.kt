@@ -32,15 +32,6 @@ class DisplayHtmlTest {
     }
 
     @Test
-    fun wrapMessageContent_whenDarkMessageViewTheme_addsDarkThemeCSS() {
-        val darkModeDisplayHtml = DisplayHtml(HtmlSettings(useDarkMode = true, useFixedWidthFont = false))
-
-        val html = darkModeDisplayHtml.wrapMessageContent("Some text")
-
-        assertThat(html).htmlElements("head > style").hasSize(2)
-    }
-
-    @Test
     fun wrapMessageContent_putsMessageContentInBody() {
         val content = "Some text"
 

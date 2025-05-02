@@ -28,7 +28,7 @@ internal class ServerSettingsWriter(
     private fun createServerSettings(server: ValidatedSettings.Server): ServerSettings {
         val validatedSettings = server.settings
 
-        val host = validatedSettings[HOST] as? String
+        val host = validatedSettings[HOST] as String
         val port = validatedSettings[PORT] as Int
         val connectionSecurity = ConnectionSecurity.valueOf(validatedSettings[CONNECTION_SECURITY] as String)
         val authenticationType = AuthType.valueOf(validatedSettings[AUTHENTICATION_TYPE] as String)

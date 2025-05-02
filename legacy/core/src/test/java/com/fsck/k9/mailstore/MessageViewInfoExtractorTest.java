@@ -43,9 +43,9 @@ import org.mockito.stubbing.Answer;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.robolectric.RuntimeEnvironment;
 
-import static com.fsck.k9.mail.TestMessageConstructionUtils.bodypart;
-import static com.fsck.k9.mail.TestMessageConstructionUtils.messageFromBody;
-import static com.fsck.k9.mail.TestMessageConstructionUtils.multipart;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.bodypart;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.messageFromBody;
+import static com.fsck.k9.mail.testing.message.TestMessageConstructionUtils.multipart;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_widget_list_item_loading">প্রক্রিয়ারত…</string>
+    <string name="message_list_widget_initializing">প্রক্রিয়ারত…</string>
+    <string name="message_list_widget_compose_action">তৈরি</string>
+    <string name="message_list_widget_inbox_title">সমন্বিত ইনবক্স</string>
+    <string name="message_list_widget_label">বার্তা তালিকা</string>
+</resources>

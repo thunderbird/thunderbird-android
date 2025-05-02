@@ -21,7 +21,7 @@
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">Kas %d minutę</item>
         <item quantity="few">Kas %d minutes</item>
-        <item quantity="other">Kas %d minučių</item>
+        <item quantity="many">Kas %d minučių</item>
     </plurals>
     <string name="account_setup_options_show_notifications_label">Rodyti pranešimus</string>
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Jūsų el. pašto serverių konfigūraciją gavome ne tokiu saugiu ryšiu, kokiu norėtume. Tai reiškia, jog yra nedidelė galimybė, kad ji buvo pakeista. Prašom patikrinti, jog žemiau nurodyta konfigūracija yra teisinga.</string>
@@ -54,12 +54,12 @@
     <plurals name="account_setup_options_email_check_frequency_hours">
         <item quantity="one">Kas %d valandą</item>
         <item quantity="few">Kas %d valandas</item>
-        <item quantity="other">Kas %d valandų</item>
+        <item quantity="many">Kas %d valandų</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="one">%d laiškas</item>
         <item quantity="few">%d laiškai</item>
-        <item quantity="other">%d laiškų</item>
+        <item quantity="many">%d laiškų</item>
     </plurals>
     <string name="account_setup_create_account_error">Kuriant paskyrą, įvyko klaida</string>
 </resources>

@@ -1,0 +1,20 @@
+MIME-Version: 1.0
+From: "Nested User" <nested@example.com>
+Date: Mon, 01 Jan 2024 12:00:00 -0400
+Message-ID: <nested_1@example.com>
+Subject: Nested Message
+To: User <user@example.com>
+Content-Type: multipart/alternative; boundary=047d7b450b100959e604d85a5320
+
+--047d7b450b100959e604d85a5320
+Content-Type: text/plain; charset=UTF-8
+
+This is a message in the Nested folder.
+
+--047d7b450b100959e604d85a5320
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>This is a message in the Nested folder.</div></div>
+
+--047d7b450b100959e604d85a5320--

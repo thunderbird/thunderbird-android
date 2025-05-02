@@ -2,4 +2,5 @@
 <resources>
     <string name="okay_action">OK</string>
     <string name="cancel_action">Cancel</string>
+    <string name="star_button_description">Star</string>
 </resources>

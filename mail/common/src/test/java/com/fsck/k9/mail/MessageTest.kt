@@ -10,6 +10,7 @@ import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.MimeMultipart
 import com.fsck.k9.mail.internet.TextBody
+import com.fsck.k9.mail.testing.crlf
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.nio.file.Files

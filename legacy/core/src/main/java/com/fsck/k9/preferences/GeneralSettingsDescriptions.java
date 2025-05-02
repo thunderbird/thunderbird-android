@@ -10,11 +10,9 @@ import java.util.TreeMap;
 import android.content.Context;
 
 import app.k9mail.feature.telemetry.api.TelemetryManager;
-import app.k9mail.legacy.account.Account;
-import app.k9mail.legacy.account.Account.SortType;
+import app.k9mail.legacy.account.SortType;
+import app.k9mail.legacy.account.AccountDefaultsProvider;
 import app.k9mail.legacy.di.DI;
-import app.k9mail.legacy.preferences.AppTheme;
-import app.k9mail.legacy.preferences.SubTheme;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.BACKGROUND_OPS;
@@ -41,6 +39,8 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo58;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
+import net.thunderbird.core.preferences.AppTheme;
+import net.thunderbird.core.preferences.SubTheme;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
@@ -178,10 +178,10 @@ class GeneralSettingsDescriptions {
             new V(102, new BooleanSetting(true))
         ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(10, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(10, new EnumSetting<>(SortType.class, AccountDefaultsProvider.getDEFAULT_SORT_TYPE()))
         ));
         s.put("sortAscending", Settings.versions(
-                new V(10, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+                new V(10, new BooleanSetting(AccountDefaultsProvider.DEFAULT_SORT_ASCENDING))
         ));
         s.put("theme", Settings.versions(
                 new V(1, new LegacyThemeSetting(AppTheme.LIGHT)),

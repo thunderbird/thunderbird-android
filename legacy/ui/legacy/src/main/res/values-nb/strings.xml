@@ -355,7 +355,6 @@
     <string name="account_settings_openpgp_missing">Manglende OpenPGP-program - ble det avinstallert?</string>
     <string name="folder_settings_title">Mappeinnstillinger</string>
     <string name="folder_settings_in_top_group_label">Vis i toppgruppe</string>
-    <string name="folder_settings_in_top_group_summary">Vis nær toppen av mappelisten</string>
     <string name="folder_settings_clear_local_folder_action">Fjern lokale meldinger</string>
     <string name="account_settings_incoming_label">Innkommende tjener</string>
     <string name="account_settings_incoming_summary">Sett opp innkommende e-posttjener</string>
@@ -468,7 +467,6 @@
     <string name="integrated_inbox_title">Samlet innboks</string>
     <string name="integrated_inbox_detail">Alle meldinger i samlede mapper</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Samle</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Alle meldinger vises i samlet innboks</string>
     <string name="account_settings_no_folder_selected">Ingen</string>
     <string name="account_settings_automatic_special_folder">Automatisk (%s)</string>
     <string name="font_size_settings_title">Skriftstørrelse</string>
@@ -703,9 +701,9 @@
     <string name="dialog_autocrypt_mutual_description_2">Hvis både avsender og mottakere skrur på gjensidig modus, vil kryptering være påslått som forvalg.</string>
     <string name="dialog_autocrypt_mutual_learn_more">Du kan <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klikke her</a> for å lære mer.</string>
     <string name="general_settings_title">Generelle innstillinger</string>
-    <string name="dialog_openkeychain_info_title">Inget OpenPGP-program installert</string>
+    <string name="dialog_openkeychain_info_title">Ingen OpenPGP-programmer er installert</string>
     <string name="dialog_openkeychain_info_install">Installer</string>
-    <string name="account_settings_crypto_encrypt_subject">Kryptert meldingsemne.</string>
+    <string name="account_settings_crypto_encrypt_subject">Krypter meldingsemner</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Er kanskje ikke støttet av noen mottakere</string>
     <string name="toast_account_not_found">Intern feil: Ugyldig konto!</string>
     <string name="toast_openpgp_provider_error">Feil ved tilkobling til %s!</string>
@@ -877,4 +875,21 @@
     <string name="push_notification_state_alarm_permission_missing">Mangler tillatelse til å planlegge alarmer</string>
     <string name="push_notification_grant_alarm_permission">Trykk for å gi tillatelse.</string>
     <string name="about_app_authors_thunderbird">Thunderbird Mobil Teamet</string>
+    <string name="volume_navigation_summary">Naviger gjennom meldinger ved å bruke volumknappene i meldingsvisning</string>
+    <string name="settings_ui_telemetry_description">Deler data om ytelse, bruk, maskinvare og tilpasninger om denne appen med Mozilla for å hjelpe oss å gjøre Thunderbird bedre</string>
+    <string name="save_attachment_action">Lagre vedlegg</string>
+    <string name="folder_settings_notifications_label">Varsler</string>
+    <string name="volume_navigation_title_short">Volumknappnavigering</string>
+    <string name="dialog_confirm_empty_spam_title">Bekreft tømming av søppelpost</string>
+    <string name="dialog_confirm_empty_spam_message">Vil du tømme søppelpostmappen?</string>
+    <string name="settings_list_action_support">Støtt <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="dialog_openkeychain_info_text">Appen OpenKeychain kreves for å skru på støtte for punkt-til-punkt-kryptering.</string>
+    <string name="empty_spam_action">Tøm søppelpost</string>
+    <string name="folder_settings_sync_label">Skru på synkronisering</string>
+    <string name="folder_list_show_hidden_folders">Vis skjulte mapper</string>
+    <string name="folder_settings_visible_label">Vis mappe</string>
+    <string name="settings_ui_data_collection">Datainnsamling</string>
+    <string name="settings_ui_telemetry_title">Bruksdata og tekniske data</string>
+    <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="expand_content_description">Utvid</string>
 </resources>

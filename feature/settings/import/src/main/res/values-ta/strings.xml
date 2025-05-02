@@ -1,2 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="settings_import_title">அமைப்புகளை இறக்குமதி செய்யுங்கள்</string>
+    <string name="settings_import_pick_app_button">பயன்பாட்டிலிருந்து இறக்குமதி</string>
+    <string name="settings_import_pick_app_dialog_title">பயன்பாட்டிலிருந்து இறக்குமதி</string>
+    <string name="settings_import_success_generic">அமைப்புகள் வெற்றிகரமாக இறக்குமதி செய்யப்படுகின்றன</string>
+    <string name="settings_import_authorization_required">தயவுசெய்து உள்நுழைக</string>
+    <string name="settings_import_authorization_and_password_required">தயவுசெய்து உள்நுழைந்து கடவுச்சொற்களை உள்ளிடவும்</string>
+    <string name="settings_import_password_required">கடவுச்சொற்களை உள்ளிடவும்</string>
+    <string name="settings_import_failure">அமைப்புகளை இறக்குமதி செய்யத் தவறிவிட்டது</string>
+    <string name="settings_import_read_failure">அமைப்புகள் கோப்பைப் படிக்கத் தவறிவிட்டது</string>
+    <string name="settings_import_partial_failure">சில அமைப்புகளை இறக்குமதி செய்யத் தவறிவிட்டது</string>
+    <string name="settings_import_status_success">வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது</string>
+    <string name="settings_import_status_password_required">கடவுச்சொல் தேவை</string>
+    <string name="settings_import_status_log_in_required">உள்நுழைவு தேவை</string>
+    <string name="settings_import_status_error">இறக்குமதி தோல்வி</string>
+    <string name="settings_import_later_button">பின்னர்</string>
+    <string name="settings_importing">அமைப்புகளை இறக்குமதி செய்தல்…</string>
+    <string name="settings_import_incoming_server_password_hint">உள்வரும் சேவையக கடவுச்சொல்</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">\"&lt;Xliff: g ஐடி =\" கணக்கு \"&gt;%s &lt;/xliff: g&gt;\" கணக்கைப் பயன்படுத்த நீங்கள் சேவையக கடவுச்சொல்லை வழங்க வேண்டும்.</item>
+        <item quantity="other">\"&lt;Xliff: g ஐடி =\" கணக்கு \"&gt;%s &lt;/xliff: g&gt;\" கணக்கைப் பயன்படுத்த நீங்கள் சேவையக கடவுச்சொற்களை வழங்க வேண்டும்.</item>
+    </plurals>
+    <string name="settings_import_server_name_format">சேவையக பெயர்: &lt;XLIFF: G ஐடி = \"HOSTNAME\"&gt;%s &lt;/xliff: g&gt;</string>
+    <string name="settings_import_oauth_sign_in">விடுபதிகை</string>
+    <string name="settings_import_oauth_description">இந்த மின்னஞ்சல் கணக்கைப் பயன்படுத்த, நீங்கள் உள்நுழைந்து உங்கள் மின்னஞ்சல்களுக்கான பயன்பாட்டு அணுகலை வழங்க வேண்டும்.</string>
+    <string name="settings_import_oauth_sign_in_with_google">Google உடன் உள்நுழைக</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">ஏற்பு ரத்து செய்யப்பட்டது</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">பின்வரும் பிழையுடன் ஏற்பு தோல்வியடைந்தது: &lt;xliff: g ஐடி = \"பிழை\"&gt;%s &lt;/xliff: g&gt;</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAUTH 2.0 தற்போது இந்த வழங்குநருடன் ஆதரிக்கப்படவில்லை.</string>
+    <string name="settings_import_oauth_error_browser_not_found">உங்கள் கணக்கிற்கு அணுகலை வழங்க பயன்படுத்த உலாவியை பயன்பாட்டால் கண்டுபிடிக்க முடியவில்லை.</string>
+    <string name="settings_import_app_version_not_supported">பயன்பாட்டு பதிப்பு ஆதரிக்கப்படவில்லை.</string>
+    <string name="settings_import_pick_document_button">கோப்பைத் தேர்ந்தெடு</string>
+    <string name="settings_import_status_not_imported">இறக்குமதி செய்யப்படவில்லை</string>
+    <string name="settings_import_outgoing_server_password_hint">வெளிச்செல்லும் சேவையக கடவுச்சொல்</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">வெளிச்செல்லும் சேவையகத்திற்கு அதே கடவுச்சொல்லைப் பயன்படுத்தவும்</string>
+    <string name="settings_import_general_settings_item">பொது அமைப்புகள்</string>
+    <string name="settings_import_scan_qr_code_button">QR குறியீட்டை ச்கேன் செய்யுங்கள்</string>
+    <string name="settings_import_button">இறக்குமதி</string>
+</resources>

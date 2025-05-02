@@ -1,0 +1,20 @@
+MIME-Version: 1.0
+From: "Nested Level 2 User" <nested.level2@example.com>
+Date: Mon, 01 Jan 2024 12:00:00 -0400
+Message-ID: <nested_level_2_2@example.com>
+Subject: Nested Level 2 Message
+To: Nested Level 1 User <nested.level1@example.com>
+Content-Type: multipart/alternative; boundary=047d7b450b100959e604d85a5320
+
+--047d7b450b100959e604d85a5320
+Content-Type: text/plain; charset=UTF-8
+
+This is a message 2 in the Nested Level 2 folder.
+
+--047d7b450b100959e604d85a5320
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>This is a message in the Nested Level 2 folder.</div></div>
+
+--047d7b450b100959e604d85a5320--

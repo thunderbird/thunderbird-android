@@ -9,6 +9,7 @@ android {
 dependencies {
     implementation(projects.legacy.account)
     implementation(projects.legacy.search)
+    implementation(projects.feature.search)
 
     implementation(projects.mail.common)
     implementation(projects.backend.api)

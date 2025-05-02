@@ -7,7 +7,6 @@ import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.mailstore.MessageStore
 import app.k9mail.legacy.mailstore.MoreMessages
 import app.k9mail.legacy.mailstore.SaveMessageData
-import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
@@ -15,6 +14,7 @@ import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import java.util.Date
+import net.thunderbird.feature.search.ConditionsTreeNode
 
 class K9MessageStore(
     database: LockableDatabase,

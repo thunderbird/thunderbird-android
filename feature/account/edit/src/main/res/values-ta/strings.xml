@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_edit_save_server_settings_success_message">சேவையக அமைப்புகள் சேமிக்கப்பட்டன</string>
+    <string name="account_edit_save_server_settings_loading_message">சேவையக அமைப்புகளைச் சேமிக்கிறது…</string>
+    <string name="account_edit_save_server_settings_error_message">சேவையக அமைப்புகளை சேமிப்பதில் தோல்வி</string>
+</resources>

@@ -8,18 +8,28 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: botmobile
     permissions:
       issues: write
       pull-requests: write
     steps:
-      - name: Close old issues with the needinfo tag
-        uses: imhoffd/needs-reply@71e8d5144caa0d4a1e292348bfafa3866d08c855 # v2.0.0
+      - name: App token generate
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5  # v2.0.2
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          app-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Close old issues with the needinfo tag
+        uses: imhoffd/needs-reply@71e8d5144caa0d4a1e292348bfafa3866d08c855  # v2.0.0
+        with:
+          repo-token: ${{ steps.app-token.outputs.token || github.token }}
           issue-label: "status: needs information"
           days-before-close: 30
           close-message: >

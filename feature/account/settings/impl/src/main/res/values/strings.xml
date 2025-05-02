@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="account_settings_general_title">General Settings</string>
+
+    <string name="account_settings_general_name_title">Account name</string>
+    <string name="account_settings_general_name_description">The name associated with your account.</string>
+
+    <string name="account_settings_general_color_title">Account color</string>
+    <string name="account_settings_general_color_description">The accent color of this account used in folders and account lists.</string>
+
+</resources>

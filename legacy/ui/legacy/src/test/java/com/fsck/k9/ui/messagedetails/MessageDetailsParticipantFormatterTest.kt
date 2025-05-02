@@ -4,9 +4,8 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import androidx.core.text.getSpans
-import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
@@ -15,6 +14,7 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 private const val IDENTITY_NAME = "Alice"
@@ -32,7 +32,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
         }
     }
 
-    private val account = Account("uuid").apply {
+    private val account = LegacyAccount("uuid").apply {
         identities += Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)
     }
 
@@ -47,7 +47,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity address with multiple identities`() {
-        val account = Account("uuid").apply {
+        val account = LegacyAccount("uuid").apply {
             identities += Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)
             identities += Identity(name = "Another identity", email = "irrelevant@domain.example")
         }
@@ -59,7 +59,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity without a display name`() {
-        val account = Account("uuid").apply {
+        val account = LegacyAccount("uuid").apply {
             identities += Identity(name = null, email = IDENTITY_ADDRESS)
         }
 
@@ -70,7 +70,7 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity and address without a display name`() {
-        val account = Account("uuid").apply {
+        val account = LegacyAccount("uuid").apply {
             identities += Identity(name = null, email = IDENTITY_ADDRESS)
             identities += Identity(name = "Another identity", email = "irrelevant@domain.example")
         }

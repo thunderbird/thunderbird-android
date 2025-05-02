@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import androidx.annotation.Nullable;
 
-import app.k9mail.core.android.testing.RobolectricTest;
+import net.thunderbird.core.android.testing.RobolectricTest;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;

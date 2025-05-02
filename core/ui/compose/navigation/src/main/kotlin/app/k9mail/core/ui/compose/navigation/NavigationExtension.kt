@@ -8,13 +8,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 
 inline fun <reified T : Route> NavGraphBuilder.deepLinkComposable(
-    route: T,
+    basePath: String,
     noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {
     composable<T>(
         deepLinks = listOf(
             navDeepLink<T>(
-                basePath = route.deepLink,
+                basePath = basePath,
             ),
         ),
         content = content,

@@ -16,9 +16,9 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.folders.FolderFetcherException
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.folders.RemoteFolder
-import com.fsck.k9.mail.helpers.FakeTrustManager
-import com.fsck.k9.mail.helpers.SimpleTrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponseList
+import com.fsck.k9.mail.testing.security.FakeTrustManager
+import com.fsck.k9.mail.testing.security.SimpleTrustedSocketFactory
 import kotlin.test.Test
 
 class ImapFolderFetcherTest {
