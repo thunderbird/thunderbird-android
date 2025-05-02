@@ -3,3 +3,7 @@
 *.bat eol=crlf
 *.eml eol=crlf
 *.jar binary
+
+app-k9mail/build.gradle.kts merge=merge_gradle
+app-thunderbird/build.gradle.kts merge=merge_gradle
+app-k9mail/src/main/res/raw/changelog_master.xml merge=ours
