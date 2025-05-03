@@ -80,7 +80,7 @@ echo "Label: \"$label\""
 echo ""
 
 # Fetch the uplift commits from the GitHub repository
-json_data=$(gh pr list --repo "$repo" --label "$label" --state merged --json "mergedAt,mergeCommit,number,url,title,milestone" | jq -c .)
+json_data=$(gh pr list --repo "$repo" --label "$label" --state merged --limit 99 --json "mergedAt,mergeCommit,number,url,title,milestone" | jq -c .)
 
 # Sort by mergedAt
 sorted_commits=$(echo "$json_data" | jq -c '. | sort_by(.mergedAt) | .[]')
@@ -99,13 +99,28 @@ do
     pr_url=$(echo "$commit" | jq -r '.url')
     pr_title=$(echo "$commit" | jq -r '.title')
     pr_milestone=$(echo "$commit" | jq -r '.milestone.title')
-    echo "Cherry-picking $oid from $pr_url ($pr_title)"
 
+    echo "Updating branches"
+    git checkout main && git pull --quiet
+    git checkout $current_branch && git pull --quiet
+
+    echo "Cherry-picking $oid from $pr_url ($pr_title)"
     if [ "$pr_milestone" != "$expected_milestone" ]; then
         fail "PR https://github.com/$repo/pull/$pr_number is on milestone $pr_milestone but expected $expected_milestone"
     fi
 
-    drydo git cherry-pick -m 1 "$oid" || fail "Failed to cherry-pick $oid"
+    if [ "$dry_run" = true ]; then
+        dry_run_branch="${branch}-dry-run"
+        if git show-ref --verify --quiet refs/heads/${dry_run_branch}; then
+            git branch -D "${dry_run_branch}"
+        fi
+        git checkout -b "${dry_run_branch}"
+        echo "Using $dry_run_branch for cherry-picks"
+    fi
+    if ! git cherry-pick -m 1 "$oid"; then
+        git cherry-pick --abort
+        fail "Failed to cherry-pick $oid"
+    fi
     if [ "$push" = true ]; then
       drydo git push || fail "Failed to push $oid"
     fi
