@@ -23,7 +23,7 @@ androidxAppCompat = "1.7.0"
 androidxBiometric = "1.1.0"
 androidxCamera = "1.4.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-androidxComposeBom = "2025.02.00"
+androidxComposeBom = "2025.04.01"
 androidxConstraintLayout = "2.2.1"
 androidxCoordinatorLayout = "1.3.0"
 androidxCore = "1.16.0"
