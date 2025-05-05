@@ -19,6 +19,7 @@
         <item name="messageListSwipeToggleReadColor">@color/material_blue_600</item>
         <item name="messageListSwipeToggleStarColor">@color/material_orange_600</item>
         <item name="messageListSwipeArchiveColor">@color/material_green_600</item>
+        <item name="messageListSwipeArchiveFolderNotSetColor">?attr/colorSurfaceContainerLowest</item>
         <item name="messageListSwipeDeleteColor">@color/material_red_600</item>
         <item name="messageListSwipeSpamColor">@color/material_red_700</item>
         <item name="messageListSwipeMoveColor">@color/material_purple_500</item>
