@@ -142,16 +142,17 @@ def render_notes(
         elif render_file == "changelog" or render_file == "changelog_long":
             stripped = rendered.lstrip()
             maxlen = render_files[render_file].get("max_length", float("inf"))
+            if print_only:
+                print(f"\n==={render_files[render_file]['outfile']}===")
+                print(stripped)
+
             if len(stripped) > maxlen:
                 print(
                     f"Error: Maximum length of {maxlen} exceeded, {render_file} is {len(stripped)} characters"
                 )
                 sys.exit(1)
 
-            if print_only:
-                print(f"\n==={render_files[render_file]['outfile']}===")
-                print(stripped)
-            else:
+            if not print_only:
                 with open(render_files[render_file]["outfile"], "x") as file:
                     file.write(stripped)
 
