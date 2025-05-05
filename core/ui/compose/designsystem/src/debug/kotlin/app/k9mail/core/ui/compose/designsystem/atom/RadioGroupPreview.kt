@@ -2,6 +2,10 @@ package app.k9mail.core.ui.compose.designsystem.atom
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
@@ -19,11 +23,12 @@ val choice = persistentListOf(
 @Preview(showBackground = true)
 internal fun RadioGroupSelectedPreview() {
     PreviewWithThemes {
+        var selectedOption by remember { mutableStateOf(choice[0]) }
         RadioGroup(
-            onClick = {},
+            onClick = { selectedOption = it },
             options = choice,
             optionTitle = { it.second },
-            selectedOption = choice[0],
+            selectedOption = selectedOption,
             modifier = Modifier.padding(MainTheme.spacings.default),
         )
     }

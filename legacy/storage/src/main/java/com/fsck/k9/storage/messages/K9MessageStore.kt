@@ -138,9 +138,8 @@ class K9MessageStore(
         deleteMessageOperations.destroyMessages(folderId, messageServerIds)
     }
 
-    override fun createFolders(folders: List<CreateFolderInfo>) {
+    override fun createFolders(folders: List<CreateFolderInfo>): Set<Long> =
         createFolderOperations.createFolders(folders)
-    }
 
     override fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
         return retrieveFolderOperations.getFolder(folderId, mapper)

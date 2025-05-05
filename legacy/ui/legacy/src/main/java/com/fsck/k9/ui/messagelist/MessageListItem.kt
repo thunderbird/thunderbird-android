@@ -3,7 +3,6 @@ package com.fsck.k9.ui.messagelist
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mail.Address
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountWrapper
 
 data class MessageListItem(
     val account: LegacyAccount,
@@ -26,7 +25,6 @@ data class MessageListItem(
     val databaseId: Long,
     val threadRoot: Long,
 ) {
-    val accountWrapper: LegacyAccountWrapper = LegacyAccountWrapper.from(account)
     val messageReference: MessageReference
         get() = MessageReference(account.uuid, folderId, messageUid)
 }

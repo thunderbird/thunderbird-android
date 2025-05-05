@@ -96,6 +96,7 @@ include(
 include(
     ":feature:mail:account:api",
     ":feature:mail:folder:api",
+    ":feature:mail:message:list",
 )
 
 include(

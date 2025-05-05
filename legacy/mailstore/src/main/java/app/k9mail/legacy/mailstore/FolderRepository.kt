@@ -2,6 +2,7 @@ package app.k9mail.legacy.mailstore
 
 import app.k9mail.legacy.mailstore.FolderTypeMapper.folderTypeOf
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
+import com.fsck.k9.mail.MessagingException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -54,8 +55,9 @@ class FolderRepository(
         }
     }
 
-    fun getRemoteFolders(account: LegacyAccount): List<RemoteFolder> {
-        val messageStore = messageStoreManager.getMessageStore(account)
+    @Throws(MessagingException::class)
+    fun getRemoteFolders(accountUuid: String): List<RemoteFolder> {
+        val messageStore = messageStoreManager.getMessageStore(accountUuid)
         return messageStore.getFolders(excludeLocalOnly = true) { folder ->
             RemoteFolder(
                 id = folder.id,
@@ -65,6 +67,10 @@ class FolderRepository(
             )
         }
     }
+
+    @Throws(MessagingException::class)
+    fun getRemoteFolders(account: LegacyAccount): List<RemoteFolder> =
+        getRemoteFolders(account.uuid)
 
     fun getRemoteFolderDetails(account: LegacyAccount): List<RemoteFolderDetails> {
         val messageStore = messageStoreManager.getMessageStore(account)
