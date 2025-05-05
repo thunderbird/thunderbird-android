@@ -8,11 +8,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
-import app.k9mail.legacy.account.LegacyAccountWrapper
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.color.MaterialColors
+import net.thunderbird.core.android.account.LegacyAccountWrapper
 
 class SwipeResourceProvider(private val context: Context) {
 
