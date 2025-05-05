@@ -1,0 +1,12 @@
+Thunderbird for Android version 11.0b1, based on K-9 Mail. Changes include:
+- Testing drawer improvements
+- Allow attach of images from Camera
+- Improve dark mode emails
+- Welcome screen layout improved
+- Selection now shown by adjusting color priority
+- Folder settings now use switches
+- Message list colors updated
+- Account setup issues with outlook and hotmail resolved
+- Keyboard navigation bugs resolved
+- Star and attachment icon colors corrected
+- Paste of recipient lists correctly parsed

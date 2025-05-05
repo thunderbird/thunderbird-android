@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="11.0b1" versioncode="14" date="2025-05-05">
+        <change>Testing drawer improvements in this beta, feedback on bugs is welcome</change>
+        <change>Option added to attach images directly from Camera</change>
+        <change>Improve dark mode emails with algorithmic darkening</change>
+        <change>Welcome screen logo layout improved</change>
+        <change>Selection now shown on active items by adjusting color priority</change>
+        <change>Folder settings now use switches instead of checkboxes</change>
+        <change>Message list colors updated for better contrast</change>
+        <change>Account setup issues with outlook.com and hotmail.com resolved</change>
+        <change>Keyboard navigation bugs resolved</change>
+        <change>Star and attachment icon colors corrected</change>
+        <change>Paste of recipient lists into compose field now correctly parsed</change>
+        <change>Back button now returns to Drafts folder when editing a draft</change>
+        <change>Unified Inbox now appears as expected</change>
+        <change>Dark and light mode switching issues resolved</change>
+        <change>Scroll indicator removed following review feedback</change>
+    </release>
     <release version="10.0b2" versioncode="13" date="2025-04-29">
         <change>Restrict displaying message search results to internal and system usages</change>
     </release>
