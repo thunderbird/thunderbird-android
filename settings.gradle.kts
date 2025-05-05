@@ -129,6 +129,10 @@ include(
 )
 
 include(
+    ":feature:messages",
+)
+
+include(
     ":core:common",
     ":core:featureflags",
     ":core:outcome",

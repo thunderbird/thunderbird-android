@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.message.controller.MessageReference
+import com.fsck.k9.logging.Timber
 import java.util.LinkedList
 
 class MessageListViewModel(private val messageListLiveDataFactory: MessageListLiveDataFactory) : ViewModel() {
@@ -17,8 +18,9 @@ class MessageListViewModel(private val messageListLiveDataFactory: MessageListLi
         return messageListLiveData
     }
 
-    fun loadMessageList(config: MessageListConfig) {
-        if (currentMessageListLiveData?.config == config) return
+    fun loadMessageList(config: MessageListConfig, forceUpdate: Boolean = false) {
+        Timber.d("loadMessageList() called with: config = $config, forceUpdate = $forceUpdate")
+        if (!forceUpdate && currentMessageListLiveData?.config == config) return
 
         removeCurrentMessageListLiveData()
 
@@ -26,6 +28,7 @@ class MessageListViewModel(private val messageListLiveDataFactory: MessageListLi
         currentMessageListLiveData = liveData
 
         messageListLiveData.addSource(liveData) { items ->
+            Timber.d("Received new MessageListInfo: $items")
             messageListLiveData.value = items
         }
     }

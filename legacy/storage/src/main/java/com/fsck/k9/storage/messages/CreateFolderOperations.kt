@@ -6,7 +6,7 @@ import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.toDatabaseFolderType
 
 internal class CreateFolderOperations(private val lockableDatabase: LockableDatabase) {
-    fun createFolders(folders: List<CreateFolderInfo>) {
+    fun createFolders(folders: List<CreateFolderInfo>): Set<Long> = buildSet {
         lockableDatabase.execute(true) { db ->
             for (folder in folders) {
                 val folderSettings = folder.settings
@@ -25,6 +25,8 @@ internal class CreateFolderOperations(private val lockableDatabase: LockableData
                 }
 
                 db.insert("folders", null, values)
+                    .takeIf { it != -1L }
+                    ?.let(::add)
             }
         }
     }
