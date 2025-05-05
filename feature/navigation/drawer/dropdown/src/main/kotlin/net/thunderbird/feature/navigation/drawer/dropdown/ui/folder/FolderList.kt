@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalContext
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
@@ -41,16 +40,17 @@ internal fun FolderList(
             key = { it.displayFolder?.id ?: '0' },
         ) { folder ->
             val currentDisplayFolder = folder.displayFolder
-            if (currentDisplayFolder is DisplayAccountFolder) {
-                FolderListItem(
-                    displayFolder = currentDisplayFolder,
-                    treeFolder = folder,
-                    selected = currentDisplayFolder.folder == selectedFolder,
-                    showStarredCount = showStarredCount,
-                    onClick = onFolderClick,
-                    folderNameFormatter = folderNameFormatter,
-                )
-            }
+            FolderListItem(
+                displayFolder = requireNotNull(currentDisplayFolder) {
+                    "Null DisplayFolder for folder ${folder.displayName}"
+                },
+                treeFolder = folder,
+                selected = currentDisplayFolder == selectedFolder,
+                showStarredCount = showStarredCount,
+                onClick = onFolderClick,
+                folderNameFormatter = folderNameFormatter,
+                selectedFolderId = selectedFolder?.id,
+            )
             if (currentDisplayFolder is DisplayUnifiedFolder) {
                 DividerHorizontal(
                     modifier = Modifier
