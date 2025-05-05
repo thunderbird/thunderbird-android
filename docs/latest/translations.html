@@ -203,19 +203,21 @@ sure you’ve rebased against the latest changes.</li>
 <a href="https://hosted.weblate.org/projects/tb-android/#repository" title="" target="_blank">repository maintenance</a> screen.</li>
 </ol>
 <h1 id="managing-translations"><a class="header" href="#managing-translations">Managing translations</a></h1>
-<p>Right now we’re using the <code>resourceConfigurations</code> mechanism provided by the Android Gradle Plugin to limit which
-languages are included in builds of the app.
-See e.g. https://github.com/thunderbird/thunderbird-android/blob/176a520e86bfe6875ad409a7565d122406dc7550/app-k9mail/build.gradle.kts#L40-L48</p>
+<p>Right now we’re using the <code>androidResources.localeFilters</code> mechanism provided by the Android Gradle Plugin to limit
+which languages are included in builds of the app,
+See <a href="https://developer.android.com/reference/tools/gradle-api/8.8/com/android/build/api/dsl/ApplicationAndroidResources#localeFilters()" title="" target="_blank">localFilters</a>.</p>
 <p>This list needs to be kept in sync with the string array <code>supported_languages</code>, so the in-app language picker offers
 exactly the languages that are included in the app.</p>
 <h2 id="removing-a-language"><a class="header" href="#removing-a-language">Removing a language</a></h2>
 <ol>
-<li>Remove the language code from the <code>resourceConfigurations</code> list in <code>app-k9mail/build.gradle.kts</code>.</li>
+<li>Remove the language code from the <code>androidResources.localeFilters</code> list in <code>app-thunderbird/build.gradle.kts</code> and
+<code>app-k9mail/build.gradle.kts</code>.</li>
 <li>Remove the entry from <code>supported_languages</code> in <code>app/core/src/main/res/values/arrays_general_settings_values.xml</code>.</li>
 </ol>
 <h2 id="adding-a-language"><a class="header" href="#adding-a-language">Adding a language</a></h2>
 <ol>
-<li>Add the language code to the <code>resourceConfigurations</code> list in <code>app-k9mail/build.gradle.kts</code>.</li>
+<li>Add the language code to the <code>androidResources.localeFilters</code> list in <code>app-thunderbird/build.gradle.kts</code> and
+<code>app-k9mail/build.gradle.kts</code>.</li>
 <li>Add an entry to <code>supported_languages</code> in <code>app/core/src/main/res/values/arrays_general_settings_values.xml</code>.</li>
 <li>Make sure that <code>language_values</code> in <code>app/core/src/main/res/values/arrays_general_settings_values.xml</code> contains an
 entry for the language code you just added. If not:
@@ -252,7 +254,7 @@ e.g. <code>feature/account/common/src/main/res/values/strings.xml</code>.</li>
 Weblate, but <em>iw</em> on Android. When writing automation tools, there needs to be a mapping step involved.</p>
 <p>See <a href="https://github.com/thunderbird/thunderbird-android/blob/ed07da8be5513ac74aabb1c934a4545aaae4f5a3/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13" title="" target="_blank">translation-cli</a>
 for an example.</p>
-<footer id="last-change">Last change: 2025-04-11, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/7a27f65">7a27f65</a></footer>
+<footer id="last-change">Last change: 2025-05-05, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/5af7e0e">5af7e0e</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
