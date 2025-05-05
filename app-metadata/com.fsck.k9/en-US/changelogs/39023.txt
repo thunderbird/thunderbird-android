@@ -1,0 +1,7 @@
+- Server field pre-filled in manual account setup
+- Add a menu entry to empty the Spam folder
+- Update Gmail OAuth client IDs to Thunderbird for Android
+- Preserve the <s> tag when sanitizing HTML content
+- Messages and star counts in the drawer update instantly
+- Hide accounts setting now remembered across restarts
+- Restart PushService after app update
