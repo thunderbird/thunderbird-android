@@ -81,7 +81,7 @@ internal fun FolderListItem(
                 displayFolder = displayChild,
                 selected = false,
                 showStarredCount = showStarredCount,
-                onClick = { onClick(displayChild) },
+                onClick = onClick,
                 folderNameFormatter = folderNameFormatter,
                 modifier = Modifier
                     .fillMaxWidth()
