@@ -5,6 +5,27 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="10.0" versioncode="39023" date="2025-05-05">
+        <change>Server field pre-filled in manual account setup</change>
+        <change>Add a menu entry to empty the Spam folder</change>
+        <change>Introduce an option to use the system theme on Android 10 and older</change>
+        <change>Update PushService to run as a specialUse foreground service for Android 15</change>
+        <change>Update Gmail OAuth client IDs to Thunderbird for Android</change>
+        <change>Preserve the <s> tag when sanitizing HTML content</change>
+        <change>Messages and star counts in the drawer update instantly</change>
+        <change>Folder names in the drawer are limited to two lines</change>
+        <change>Hide accounts setting now remembered across restarts</change>
+        <change>Account names in the drawer display as single lines when not set</change>
+        <change>Option to use text processing apps (like Translate) when selecting text</change>
+        <change>Recipient field now focused automatically when composing</change>
+        <change>Display the recipient's address instead of +1 and fix its size</change>
+        <change>Correct MIME type for .pkpass files</change>
+        <change>Accessibility improvements</change>
+        <change>Restart PushService after app update</change>
+        <change>Restrict displaying message search results to internal and system usages</change>
+        <change>Messages with one correspondent no longer showed "+1" incorrectly</change>
+        <change>Account email no longer duplicated in drawer header</change>
+    </release>
     <release version="9.0" versioncode="39022" date="2025-03-03">
         <change>Basic support for Android 15</change>
         <change>Add a link to the support article when signing in with Google</change>
