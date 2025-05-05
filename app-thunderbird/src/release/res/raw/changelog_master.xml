@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="10.0" versioncode="10" date="2025-05-05">
+        <change>Server field pre-filled in manual account setup</change>
+        <change>Add a menu entry to empty the Spam folder</change>
+        <change>Update Gmail OAuth client IDs to Thunderbird for Android</change>
+        <change>Preserve the <s> tag when sanitizing HTML content</change>
+        <change>Messages and star counts in the drawer update instantly</change>
+        <change>Hide accounts setting now remembered across restarts</change>
+        <change>Restart PushService after app update</change>
+    </release>
     <release version="9.0" versioncode="9" date="2025-03-03">
         <change>Basic support for Android 15</change>
         <change>Add a link to the support article when signing in with Google</change>
