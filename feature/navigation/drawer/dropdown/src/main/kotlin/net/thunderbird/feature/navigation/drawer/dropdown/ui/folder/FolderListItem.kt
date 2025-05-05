@@ -33,6 +33,7 @@ internal fun FolderListItem(
     modifier: Modifier = Modifier,
     treeFolder: DisplayTreeFolder? = null,
     parentPrefix: String? = "",
+    selectedFolderId: String? = null,
     indentationLevel: Int = 1,
 ) {
     var isExpanded = rememberSaveable { mutableStateOf(false) }
@@ -79,7 +80,7 @@ internal fun FolderListItem(
             if (displayChild === null) continue
             FolderListItem(
                 displayFolder = displayChild,
-                selected = false,
+                selected = selectedFolderId?.let { displayChild.id == selectedFolderId } == true,
                 showStarredCount = showStarredCount,
                 onClick = onClick,
                 folderNameFormatter = folderNameFormatter,
