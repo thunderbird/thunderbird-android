@@ -22,8 +22,10 @@ internal class UidCopyResponse private constructor(val uidMapping: Map<String, S
             allowUntaggedResponse: Boolean,
             uidMappingOutput: MutableMap<String, String>,
         ) {
-            if (!(allowUntaggedResponse || response.isTagged) || response.size < 2 ||
-                !ImapResponseParser.equalsIgnoreCase(response[0], Responses.OK) || !response.isList(1)
+            if (!(allowUntaggedResponse || response.isTagged) ||
+                response.size < 2 ||
+                !ImapResponseParser.equalsIgnoreCase(response[0], Responses.OK) ||
+                !response.isList(1)
             ) {
                 return
             }
@@ -31,7 +33,9 @@ internal class UidCopyResponse private constructor(val uidMapping: Map<String, S
             val responseTextList = response.getList(1)
             if (responseTextList.size < 4 ||
                 !ImapResponseParser.equalsIgnoreCase(responseTextList[0], Responses.COPYUID) ||
-                !responseTextList.isString(1) || !responseTextList.isString(2) || !responseTextList.isString(3)
+                !responseTextList.isString(1) ||
+                !responseTextList.isString(2) ||
+                !responseTextList.isString(3)
             ) {
                 return
             }

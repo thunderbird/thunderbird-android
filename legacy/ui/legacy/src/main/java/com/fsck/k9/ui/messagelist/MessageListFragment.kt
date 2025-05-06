@@ -1209,15 +1209,19 @@ class MessageListFragment :
         if (messages.isEmpty()) return false
 
         val account = accountManager.getAccount(messages.first().accountUuid)
-        if (operation == FolderOperation.MOVE && !messagingController.isMoveCapable(account) ||
-            operation == FolderOperation.COPY && !messagingController.isCopyCapable(account)
+        if (operation == FolderOperation.MOVE &&
+            !messagingController.isMoveCapable(account) ||
+            operation == FolderOperation.COPY &&
+            !messagingController.isCopyCapable(account)
         ) {
             return false
         }
 
         for (message in messages) {
-            if (operation == FolderOperation.MOVE && !messagingController.isMoveCapable(message) ||
-                operation == FolderOperation.COPY && !messagingController.isCopyCapable(message)
+            if (operation == FolderOperation.MOVE &&
+                !messagingController.isMoveCapable(message) ||
+                operation == FolderOperation.COPY &&
+                !messagingController.isCopyCapable(message)
             ) {
                 val toast = Toast.makeText(
                     activity,

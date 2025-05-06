@@ -47,7 +47,8 @@ object MimeParameterEncoder {
 
         if (unencodedValueFitsOnSingleLine && value.isToken()) {
             appendParameter(name, value)
-        } else if (quotedValueMightFitOnSingleLine && value.isQuotable() &&
+        } else if (quotedValueMightFitOnSingleLine &&
+            value.isQuotable() &&
             fixedCostLength + value.quotedLength() <= MAX_LINE_LENGTH
         ) {
             appendParameter(name, value.quoted())
