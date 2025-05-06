@@ -62,11 +62,13 @@ class TouchInterceptView(context: Context, attrs: AttributeSet?) : FrameLayout(c
                 val absoluteDeltaX = deltaX.absoluteValue
                 val absoluteDeltaY = deltaY.absoluteValue
 
-                if (absoluteDeltaY > touchSlop && absoluteDeltaY > absoluteDeltaX &&
+                if (absoluteDeltaY > touchSlop &&
+                    absoluteDeltaY > absoluteDeltaX &&
                     (scrollView.canScrollVertically(deltaY.toInt()) || webView.canScrollVertically(deltaY.toInt()))
                 ) {
                     scrollViewParent.requestDisallowInterceptTouchEvent(true)
-                } else if (absoluteDeltaX > touchSlop && absoluteDeltaX > absoluteDeltaY &&
+                } else if (absoluteDeltaX > touchSlop &&
+                    absoluteDeltaX > absoluteDeltaY &&
                     webView.canScrollHorizontally(deltaX.toInt())
                 ) {
                     webView.getHitRect(webViewRect)

@@ -125,7 +125,8 @@ internal class RealImapConnection(
     @get:Synchronized
     override val isConnected: Boolean
         get() {
-            return inputStream != null && imapOutputStream != null &&
+            return inputStream != null &&
+                imapOutputStream != null &&
                 socket.let { socket ->
                     socket != null && socket.isConnected && !socket.isClosed
                 }
