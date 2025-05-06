@@ -20,7 +20,6 @@ dependencies {
     implementation(libs.androidx.compose.material3.adaptive.layout)
     implementation(libs.androidx.compose.material3.adaptive.navigation)
     implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.androidx.compose.ui)
 
     // Landscapist imports a lot of dependencies that we don't need. We exclude them here.
     implementation(libs.lanscapist.coil) {
