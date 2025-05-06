@@ -4,6 +4,7 @@ import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.Preferences
+import net.thunderbird.backend.api.BackendStorageFactory
 
 class K9BackendStorageFactory(
     private val preferences: Preferences,
@@ -11,8 +12,8 @@ class K9BackendStorageFactory(
     private val messageStoreManager: MessageStoreManager,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val saveMessageDataCreator: SaveMessageDataCreator,
-) {
-    fun createBackendStorage(account: LegacyAccount): K9BackendStorage {
+) : BackendStorageFactory<LegacyAccount> {
+    override fun createBackendStorage(account: LegacyAccount): K9BackendStorage {
         val messageStore = messageStoreManager.getMessageStore(account)
         val folderSettingsProvider = FolderSettingsProvider(preferences, account)
         val specialFolderUpdater = SpecialFolderUpdater(

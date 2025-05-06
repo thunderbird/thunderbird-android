@@ -6,6 +6,7 @@ import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
 import com.fsck.k9.message.extractors.MessagePreviewCreator
+import net.thunderbird.backend.api.BackendStorageFactory
 import org.koin.dsl.module
 
 val mailStoreModule = module {
@@ -25,6 +26,9 @@ val mailStoreModule = module {
             specialFolderSelectionStrategy = get(),
             saveMessageDataCreator = get(),
         )
+    }
+    single<BackendStorageFactory<*>> {
+        get<K9BackendStorageFactory>()
     }
     factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get()) }
     single { MessageStoreManager(accountManager = get(), messageStoreFactory = get()) }
