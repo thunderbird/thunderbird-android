@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -20,6 +21,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.template.ListDetailPane
 import app.k9mail.core.ui.compose.designsystem.template.rememberListDetailNavigationController
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
 import net.thunderbird.ui.catalog.ui.page.common.list.sectionHeaderItem
@@ -34,6 +36,7 @@ fun LazyGridScope.layoutItems() {
 @Composable
 private fun ListDetailPaneItem() {
     val navigationController = rememberListDetailNavigationController<ListItem>()
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -59,7 +62,9 @@ private fun ListDetailPaneItem() {
                                 ListItem(
                                     item = item,
                                     onClick = {
-                                        navigationController.value.navigateToDetail(item)
+                                        coroutineScope.launch {
+                                            navigationController.value.navigateToDetail(item)
+                                        }
                                     },
                                 )
                             }
@@ -73,7 +78,11 @@ private fun ListDetailPaneItem() {
                 ) {
                     ListDetail(
                         item = item,
-                        onClick = { navigationController.value.navigateBack() },
+                        onClick = {
+                            coroutineScope.launch {
+                                navigationController.value.navigateBack()
+                            }
+                        },
                     )
                 }
             },
@@ -87,7 +96,8 @@ private fun ListItem(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.clickable(onClick = onClick)
+        modifier = Modifier
+            .clickable(onClick = onClick)
             .fillMaxWidth()
             .padding(MainTheme.spacings.default),
     ) {
@@ -101,7 +111,8 @@ private fun ListDetail(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.clickable(onClick = onClick)
+        modifier = Modifier
+            .clickable(onClick = onClick)
             .fillMaxWidth()
             .padding(MainTheme.spacings.default),
     ) {
