@@ -29,4 +29,6 @@
     <string name="account_server_settings_validation_error_port_invalid">Pordo estas nevalida (endas esti 1–65535).</string>
     <string name="account_server_settings_validation_error_port_required">Pordo nepras.</string>
     <string name="account_server_settings_validation_error_username_required">Uzanta nomo nepras.</string>
+    <string name="account_server_settings_incoming_top_bar_title">Eniran servilon agordoj</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Eliran servilon agordoj</string>
 </resources>

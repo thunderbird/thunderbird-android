@@ -2,4 +2,5 @@
 <resources>
     <string name="account_common_button_next">अगला</string>
     <string name="account_common_button_back">पिछला</string>
+    <string name="account_common_error_server_message">सेवक ने निम्न संदेश लौटायाः\n%s</string>
 </resources>

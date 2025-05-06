@@ -26,7 +26,7 @@ import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import androidx.core.database.CursorKt;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.MessageListRepository;
 import app.k9mail.legacy.mailstore.MoreMessages;
@@ -47,11 +47,11 @@ import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
-import app.k9mail.legacy.search.LocalSearch;
-import app.k9mail.legacy.search.api.SearchAttribute;
-import app.k9mail.legacy.search.api.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
 import kotlinx.datetime.Clock;
+import net.thunderbird.feature.search.LocalSearch;
+import net.thunderbird.feature.search.api.SearchAttribute;
+import net.thunderbird.feature.search.api.SearchField;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
@@ -163,19 +163,19 @@ public class LocalStore {
     private final AttachmentInfoExtractor attachmentInfoExtractor;
     private final StorageFilesProvider storageFilesProvider;
 
-    private final Account account;
+    private final LegacyAccount account;
     private final LockableDatabase database;
     private final OutboxStateRepository outboxStateRepository;
 
-    static LocalStore createInstance(Account account, Context context) throws MessagingException {
+    static LocalStore createInstance(LegacyAccount account, Context context) throws MessagingException {
         return new LocalStore(account, context);
     }
 
     /**
      * local://localhost/path/to/database/uuid.db
-     * This constructor is only used by {@link LocalStoreProvider#getInstance(Account)}
+     * This constructor is only used by {@link LocalStoreProvider#getInstance(LegacyAccount)}
      */
-    private LocalStore(final Account account, final Context context) throws MessagingException {
+    private LocalStore(final LegacyAccount account, final Context context) throws MessagingException {
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
         StorageFilesProviderFactory storageFilesProviderFactory = DI.get(StorageFilesProviderFactory.class);
@@ -199,7 +199,7 @@ public class LocalStore {
         return schemaDefinitionFactory.getDatabaseVersion();
     }
 
-    Account getAccount() {
+    LegacyAccount getAccount() {
         return account;
     }
 
@@ -1037,7 +1037,7 @@ public class LocalStore {
 
     class RealMigrationsHelper implements MigrationsHelper {
         @Override
-        public Account getAccount() {
+        public LegacyAccount getAccount() {
             return LocalStore.this.getAccount();
         }
 

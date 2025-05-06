@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 
@@ -14,7 +14,7 @@ import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 class MemorizingMessagingListener extends SimpleMessagingListener {
     Map<String, Memory> memories = new HashMap<>(31);
 
-    synchronized void removeAccount(Account account) {
+    synchronized void removeAccount(LegacyAccount account) {
         Iterator<Entry<String, Memory>> memIt = memories.entrySet().iterator();
 
         while (memIt.hasNext()) {
@@ -64,7 +64,7 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void synchronizeMailboxStarted(Account account, long folderId) {
+    public synchronized void synchronizeMailboxStarted(LegacyAccount account, long folderId) {
         Memory memory = getMemory(account, folderId);
         memory.syncingState = MemorizingState.STARTED;
         memory.folderCompleted = 0;
@@ -72,13 +72,13 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void synchronizeMailboxFinished(Account account, long folderId) {
+    public synchronized void synchronizeMailboxFinished(LegacyAccount account, long folderId) {
         Memory memory = getMemory(account, folderId);
         memory.syncingState = MemorizingState.FINISHED;
     }
 
     @Override
-    public synchronized void synchronizeMailboxFailed(Account account, long folderId,
+    public synchronized void synchronizeMailboxFailed(LegacyAccount account, long folderId,
             String message) {
 
         Memory memory = getMemory(account, folderId);
@@ -87,14 +87,14 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void synchronizeMailboxProgress(Account account, long folderId, int completed,
+    public synchronized void synchronizeMailboxProgress(LegacyAccount account, long folderId, int completed,
             int total) {
         Memory memory = getMemory(account, folderId);
         memory.folderCompleted = completed;
         memory.folderTotal = total;
     }
 
-    private Memory getMemory(Account account, long folderId) {
+    private Memory getMemory(LegacyAccount account, long folderId) {
         Memory memory = memories.get(getMemoryKey(account, folderId));
         if (memory == null) {
             memory = new Memory(account, folderId);
@@ -103,14 +103,14 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         return memory;
     }
 
-    private static String getMemoryKey(Account account, long folderId) {
+    private static String getMemoryKey(LegacyAccount account, long folderId) {
         return account.getUuid() + ":" + folderId;
     }
 
     private enum MemorizingState { STARTED, FINISHED, FAILED }
 
     private static class Memory {
-        Account account;
+        LegacyAccount account;
         long folderId;
         MemorizingState syncingState = null;
         String failureMessage = null;
@@ -118,7 +118,7 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         int folderCompleted = 0;
         int folderTotal = 0;
 
-        Memory(Account account, long folderId) {
+        Memory(LegacyAccount account, long folderId) {
             this.account = account;
             this.folderId = folderId;
         }

@@ -3,4 +3,5 @@
     <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
     <string name="okay_action">சரி</string>
     <string name="cancel_action">வேண்டாம்</string>
+    <string name="star_button_description">விண்மீன்</string>
 </resources>

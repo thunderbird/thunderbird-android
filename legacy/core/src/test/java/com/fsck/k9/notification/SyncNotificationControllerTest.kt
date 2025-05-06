@@ -5,11 +5,11 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
-import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.notification.NotificationIds.getFetchingMailNotificationId
-import com.fsck.k9.testing.MockHelper.mockBuilder
+import net.thunderbird.core.android.testing.MockHelper.mockBuilder
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito.verify
@@ -128,7 +128,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
         }
     }
 
-    private fun createFakeAccount(): Account {
+    private fun createFakeAccount(): LegacyAccount {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { name } doReturn ACCOUNT_NAME

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="navigation_drawer_siderail_action_settings">Roghainnean</string>
+    <string name="navigation_drawer_siderail_action_manage_folders">Stiùirich na pasganan</string>
+    <string name="navigation_drawer_siderail_unified_inbox_title">An t-oll-bhogsa</string>
+    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_99">Còrr is 99</string>
+    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_1_000">Còrr is 1k</string>
+    <string name="navigation_drawer_siderail_action_sync_all_accounts">Sioncronaich a h-uile cunntas</string>
+    <string name="navigation_drawer_siderail_action_show_accounts">Seall na cunntasan</string>
+    <string name="navigation_drawer_siderail_action_hide_accounts">Falaich na cunntasan</string>
+</resources>

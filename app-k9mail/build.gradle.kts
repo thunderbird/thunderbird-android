@@ -18,66 +18,66 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39004
-        versionName = "11.0"
+        versionName = "12.0"
         versionNameSuffix = "a1"
 
-        // Keep in sync with the resource string array "supported_languages"
-        resourceConfigurations.addAll(
-            listOf(
-                "ar",
-                "be",
-                "bg",
-                "ca",
-                "co",
-                "cs",
-                "cy",
-                "da",
-                "de",
-                "el",
-                "en",
-                "en_GB",
-                "eo",
-                "es",
-                "et",
-                "eu",
-                "fa",
-                "fi",
-                "fr",
-                "fy",
-                "ga",
-                "gl",
-                "hr",
-                "hu",
-                "in",
-                "is",
-                "it",
-                "iw",
-                "ja",
-                "ko",
-                "lt",
-                "lv",
-                "nb",
-                "nl",
-                "nn",
-                "pl",
-                "pt_BR",
-                "pt_PT",
-                "ro",
-                "ru",
-                "sk",
-                "sl",
-                "sq",
-                "sr",
-                "sv",
-                "tr",
-                "uk",
-                "vi",
-                "zh_CN",
-                "zh_TW",
-            ),
-        )
-
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
+    }
+
+    androidResources {
+        // Keep in sync with the resource string array "supported_languages"
+        localeFilters += listOf(
+            "ar",
+            "be",
+            "bg",
+            "ca",
+            "co",
+            "cs",
+            "cy",
+            "da",
+            "de",
+            "el",
+            "en",
+            "en-rGB",
+            "eo",
+            "es",
+            "et",
+            "eu",
+            "fa",
+            "fi",
+            "fr",
+            "fy",
+            "ga",
+            "gl",
+            "hr",
+            "hu",
+            "in",
+            "is",
+            "it",
+            "iw",
+            "ja",
+            "ko",
+            "lt",
+            "lv",
+            "nb",
+            "nl",
+            "nn",
+            "pl",
+            "pt-rBR",
+            "pt-rPT",
+            "ro",
+            "ru",
+            "sk",
+            "sl",
+            "sq",
+            "sr",
+            "sv",
+            "tr",
+            "uk",
+            "vi",
+            "zh-rCN",
+            "zh-rTW",
+        )
     }
 
     signingConfigs {
@@ -163,10 +163,6 @@ dependencies {
     debugImplementation(projects.feature.autodiscovery.demo)
 
     testImplementation(libs.robolectric)
-
-    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
-    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
-    testImplementation(projects.feature.account.setup)
 }
 
 dependencyGuard {

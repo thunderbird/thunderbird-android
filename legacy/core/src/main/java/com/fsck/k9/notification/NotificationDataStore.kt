@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 
 internal const val MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS = 9
@@ -16,13 +16,13 @@ internal class NotificationDataStore {
     private val notificationDataMap = mutableMapOf<String, NotificationData>()
 
     @Synchronized
-    fun isAccountInitialized(account: Account): Boolean {
+    fun isAccountInitialized(account: LegacyAccount): Boolean {
         return notificationDataMap[account.uuid] != null
     }
 
     @Synchronized
     fun initializeAccount(
-        account: Account,
+        account: LegacyAccount,
         activeNotifications: List<NotificationHolder>,
         inactiveNotifications: List<InactiveNotificationHolder>,
     ): NotificationData {
@@ -34,7 +34,7 @@ internal class NotificationDataStore {
     }
 
     @Synchronized
-    fun addNotification(account: Account, content: NotificationContent, timestamp: Long): AddNotificationResult? {
+    fun addNotification(account: LegacyAccount, content: NotificationContent, timestamp: Long): AddNotificationResult? {
         val notificationData = getNotificationData(account)
         val messageReference = content.messageReference
 
@@ -108,9 +108,10 @@ internal class NotificationDataStore {
         }
     }
 
+    @Suppress("LongMethod", "ReturnCount")
     @Synchronized
     fun removeNotifications(
-        account: Account,
+        account: LegacyAccount,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ): RemoveNotificationsResult? {
         var notificationData = getNotificationData(account)
@@ -195,11 +196,11 @@ internal class NotificationDataStore {
     }
 
     @Synchronized
-    fun clearNotifications(account: Account) {
+    fun clearNotifications(account: LegacyAccount) {
         notificationDataMap.remove(account.uuid)
     }
 
-    private fun getNotificationData(account: Account): NotificationData {
+    private fun getNotificationData(account: LegacyAccount): NotificationData {
         return notificationDataMap[account.uuid] ?: NotificationData.create(account).also { notificationData ->
             notificationDataMap[account.uuid] = notificationData
         }

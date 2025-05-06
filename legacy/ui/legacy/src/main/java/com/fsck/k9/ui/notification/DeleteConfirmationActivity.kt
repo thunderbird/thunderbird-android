@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReferenceHelper
@@ -21,7 +21,7 @@ class DeleteConfirmationActivity : K9Activity(ThemeType.DIALOG), ConfirmationDia
     private val preferences: Preferences by inject()
     private val messagingController: MessagingController by inject()
 
-    private lateinit var account: Account
+    private lateinit var account: LegacyAccount
     private lateinit var messagesToDelete: List<MessageReference>
 
     public override fun onCreate(savedInstanceState: Bundle?) {

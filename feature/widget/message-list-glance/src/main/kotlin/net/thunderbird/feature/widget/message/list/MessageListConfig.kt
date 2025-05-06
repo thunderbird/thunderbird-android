@@ -1,7 +1,7 @@
 package net.thunderbird.feature.widget.message.list
 
-import app.k9mail.legacy.account.Account.SortType
-import app.k9mail.legacy.search.LocalSearch
+import app.k9mail.legacy.account.SortType
+import net.thunderbird.feature.search.LocalSearch
 
 internal data class MessageListConfig(
     val search: LocalSearch,

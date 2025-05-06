@@ -206,7 +206,7 @@ jobs:
       new_version_code: ${{ steps.new_version_code.outputs.new_version_code }}
     steps:
       - name: App Token Generate
-        uses: actions/create-github-app-token@21cfef2b496dd8ef5b904c159339626a10ad380e # v1.11.6
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2.0.6
         if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:
@@ -225,14 +225,14 @@ jobs:
         shell: bash
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@94baf225fe0a508e581a564467443d0e2379123b # v4.3.0
+        uses: gradle/actions/setup-gradle@06832c7b30a0129d7fb559bcc6e43d26f6374244 # v4.3.1
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         with:
           cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
@@ -474,13 +474,13 @@ jobs:
         shell: bash
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+      - uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           distribution: 'temurin'
           java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@94baf225fe0a508e581a564467443d0e2379123b # v4.3.0
+        uses: gradle/actions/setup-gradle@06832c7b30a0129d7fb559bcc6e43d26f6374244 # v4.3.1
         with:
           cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: on-failure
@@ -563,7 +563,7 @@ jobs:
           ls -l ${UPLOAD_PATH}/
 
       - name: Upload unsigned
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         env:
           UPLOAD_PATH: "uploads"
         with:
@@ -583,7 +583,7 @@ jobs:
     env:
       RELEASE_TYPE: ${{ needs.dump_config.outputs.releaseType }}
     steps:
-      - uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: unsigned-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: uploads/
@@ -612,7 +612,7 @@ jobs:
           rm -f uploads/*.jks
 
       - name: Upload signed
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           if-no-files-found: error
@@ -704,7 +704,7 @@ jobs:
           ref: ${{ steps.shanotes.outputs.app_sha }}
 
       - name: Download Artifacts
-        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: signed-${{ matrix.appName }}-${{ matrix.packageFormat }}-${{ matrix.packageFlavor }}
           path: "uploads/"
@@ -765,7 +765,7 @@ jobs:
           ls -l uploads/${PKG_FILE_PRETTY}
 
       - name: App Token Generate
-        uses: actions/create-github-app-token@21cfef2b496dd8ef5b904c159339626a10ad380e  # v1.11.6
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e  # v2.0.6
         if: ${{ contains(matrix.releaseTarget, 'github') && vars.BOT_CLIENT_ID }}
         id: app-token
         with:
@@ -775,7 +775,7 @@ jobs:
       - name: Publish to GitHub Releases
         id: publish_gh
         if: ${{ contains(matrix.releaseTarget, 'github') }}
-        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda  # v2.2.1
+        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631  # v2.2.2
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
           target_commitish: ${{ steps.shanotes.outputs.app_sha }}
@@ -913,7 +913,7 @@ jobs:
 
       - name: Auth to GCS for FTP
         if: ${{ !inputs.skipFtp && contains(matrix.releaseTarget, 'ftp') && matrix.packageFormat == 'apk' }}
-        uses: google-github-actions/auth@71f986410dfbc7added4569d411d040a91dc6935 # v2.1.8
+        uses: google-github-actions/auth@ba79af03959ebeac9769e648f473a284504d9193 # v2.1.10
         with:
           service_account: ${{ steps.prepare_ftp.outputs.SERVICE_ACCOUNT }}
           workload_identity_provider: ${{ steps.prepare_ftp.outputs.WORKLOAD_IDENTITY_PROVIDER }}

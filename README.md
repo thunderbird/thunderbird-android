@@ -22,6 +22,8 @@ By using Thunderbird for Android Beta, you have early access to current developm
 
 Check out the [Release Notes](https://github.com/thunderbird/thunderbird-android/releases) to find out what changed in each version of Thunderbird for Android.
 
+The SHA-256 fingerprints for our signing certificates are available in [SECURITY.md](./SECURITY.md#verifying-fingerprints).
+
 ## Need Help? Found a bug? Have an idea? Want to chat?
 
 If the app is not behaving like it should, or you are not sure if you've encountered a bug:

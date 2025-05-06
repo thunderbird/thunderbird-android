@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="account_colors">
+        <item>@color/material_amber_600</item>
+        <item>@color/material_orange_600</item>
+        <item>@color/material_deep_orange_600</item>
+        <item>@color/material_red_600</item>
+
+        <item>@color/material_lime_600</item>
+        <item>@color/material_light_green_600</item>
+        <item>@color/material_green_700</item>
+        <item>@color/material_teal_600</item>
+
+        <item>@color/material_cyan_600</item>
+        <item>@color/material_light_blue_600</item>
+        <item>@color/material_blue_700</item>
+        <item>@color/material_indigo_600</item>
+
+        <item>@color/material_pink_500</item>
+        <item>@color/material_purple_600</item>
+        <item>@color/material_deep_purple_600</item>
+        <item>@color/material_blue_gray_700</item>
+    </integer-array>
+
+    <integer-array name="default_account_colors">
+        <item>@color/material_blue_700</item>
+        <item>@color/material_pink_500</item>
+        <item>@color/material_amber_600</item>
+    </integer-array>
+</resources>

@@ -29,11 +29,9 @@ import androidx.fragment.app.setFragmentResultListener
 import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.theme.api.Theme
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
-import app.k9mail.legacy.preferences.GeneralSettingsManager
-import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
@@ -60,6 +58,8 @@ import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
+import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 import timber.log.Timber
@@ -105,7 +105,7 @@ class MessageViewFragment :
     private var destinationFolderId: Long? = null
     private lateinit var fragmentListener: MessageViewFragmentListener
 
-    private lateinit var account: Account
+    private lateinit var account: LegacyAccount
     lateinit var messageReference: MessageReference
     private var showAccountChip: Boolean = true
 

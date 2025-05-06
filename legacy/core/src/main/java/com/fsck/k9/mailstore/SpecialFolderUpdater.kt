@@ -2,22 +2,22 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.core.common.mail.Protocols
 import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.SpecialFolderSelection
-import app.k9mail.legacy.folder.RemoteFolder
+import app.k9mail.legacy.account.LegacyAccount
+import app.k9mail.legacy.account.SpecialFolderSelection
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
+import net.thunderbird.feature.folder.api.RemoteFolder
 
 /**
- * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked
- * as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
+ * Updates special folders in [LegacyAccount] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they
+ * are marked as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
 // TODO: Find a better way to deal with local-only special folders
 class SpecialFolderUpdater(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
-    private val account: Account,
+    private val account: LegacyAccount,
 ) {
     fun updateSpecialFolders() {
         val folders = folderRepository.getRemoteFolders(account)
@@ -134,5 +134,5 @@ class SpecialFolderUpdater(
         preferences.saveAccount(account)
     }
 
-    private fun Account.isPop3() = incomingServerSettings.type == Protocols.POP3
+    private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
 }

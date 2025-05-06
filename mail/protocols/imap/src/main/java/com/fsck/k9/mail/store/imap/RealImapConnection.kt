@@ -385,7 +385,7 @@ internal class RealImapConnection(
         val oauthTokenProvider = checkNotNull(oauthTokenProvider)
         val responseParser = checkNotNull(responseParser)
 
-        val token = oauthTokenProvider.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
+        val token = oauthTokenProvider.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT)
 
         val authString = method.buildInitialClientResponse(settings.username, token)
         val tag = sendSaslIrCommand(method.command, authString, true)

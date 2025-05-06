@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.Preferences;
@@ -38,8 +38,8 @@ public class IdentityAdapter extends BaseAdapter {
 
         List<Object> items = new ArrayList<>();
         Preferences prefs = Preferences.getPreferences();
-        Collection<Account> accounts = prefs.getAccounts();
-        for (Account account : accounts) {
+        Collection<LegacyAccount> accounts = prefs.getAccounts();
+        for (LegacyAccount account : accounts) {
             items.add(account);
             List<Identity> identities = account.getIdentities();
             for (Identity identity : identities) {
@@ -61,7 +61,7 @@ public class IdentityAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (mItems.get(position) instanceof Account) ? 0 : 1;
+        return (mItems.get(position) instanceof LegacyAccount) ? 0 : 1;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class IdentityAdapter extends BaseAdapter {
         Object item = mItems.get(position);
 
         View view = null;
-        if (item instanceof Account) {
+        if (item instanceof LegacyAccount) {
             if (convertView != null && convertView.getTag() instanceof AccountHolder) {
                 view = convertView;
             } else {
@@ -100,7 +100,7 @@ public class IdentityAdapter extends BaseAdapter {
                 view.setTag(holder);
             }
 
-            Account account = (Account) item;
+            LegacyAccount account = (LegacyAccount) item;
             AccountHolder holder = (AccountHolder) view.getTag();
             holder.name.setText(account.getDisplayName());
             holder.chip.setBackgroundColor(account.getChipColor());
@@ -126,15 +126,15 @@ public class IdentityAdapter extends BaseAdapter {
     }
 
     /**
-     * Used to store an {@link Identity} instance together with the {@link Account} it belongs to.
+     * Used to store an {@link Identity} instance together with the {@link LegacyAccount} it belongs to.
      *
      * @see IdentityAdapter
      */
     public static class IdentityContainer {
         public final Identity identity;
-        public final Account account;
+        public final LegacyAccount account;
 
-        IdentityContainer(Identity identity, Account account) {
+        IdentityContainer(Identity identity, LegacyAccount account) {
             this.identity = identity;
             this.account = account;
         }

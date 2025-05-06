@@ -27,4 +27,18 @@
     <string name="settings_import_use_same_password_for_outgoing_server">Uzi la saman pasvorton por elira servilo</string>
     <string name="settings_import_server_name_format">Nomo de servilo: <xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_general_settings_item">Ĝeneralaj agordoj</string>
+    <string name="settings_import_oauth_sign_in">Ensaluti</string>
+    <string name="settings_import_pick_app_button">Enporti el apo</string>
+    <string name="settings_import_pick_app_dialog_title">Enport el apo</string>
+    <string name="settings_import_oauth_sign_in_with_google">Ensaluti per Google</string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Permeso nuligita</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Permeso fiaskis kun tiu ĉi eraro: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_browser_not_found">La apo ne povis trovi retumilon por permesi alireblon al via konto.</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 estas nune ne subtenata kun tiu ĉi provizanto.</string>
+    <string name="settings_import_scan_qr_code_button">Skani QR kodon</string>
+    <string name="settings_import_authorization_required">Bonvolu ensaluti</string>
+    <string name="settings_import_authorization_and_password_required">Bonvolu ensaluti kaj enigi viajn pasvortojn</string>
+    <string name="settings_import_status_log_in_required">Ensalutado postulata</string>
+    <string name="settings_import_app_version_not_supported">Versio apon ne subtenata.</string>
+    <string name="settings_import_oauth_description">Por uzi tiun ĉi retpoŝtkonton, vi bezonas ensaluti kaj doni al la apo alireblon al viaj retmesaĝoj.</string>
 </resources>

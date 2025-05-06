@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.DisplayFolderRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,7 +29,7 @@ class ChooseFolderViewModel(
         return foldersFlow.asLiveData()
     }
 
-    fun setDisplayMode(account: Account, showHiddenFolders: Boolean) {
+    fun setDisplayMode(account: LegacyAccount, showHiddenFolders: Boolean) {
         isShowHiddenFolders = showHiddenFolders
         viewModelScope.launch {
             inputFlow.emit(DisplayMode(account, showHiddenFolders))
@@ -37,4 +37,4 @@ class ChooseFolderViewModel(
     }
 }
 
-private data class DisplayMode(val account: Account, val showHiddenFolders: Boolean)
+private data class DisplayMode(val account: LegacyAccount, val showHiddenFolders: Boolean)

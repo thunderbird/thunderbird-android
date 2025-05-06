@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.messageview
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mail.Message
 
 /**
@@ -13,7 +13,7 @@ internal class DisplayRecipientsExtractor(
     private val recipientFormatter: MessageViewRecipientFormatter,
     private val maxNumberOfDisplayRecipients: Int,
 ) {
-    fun extractDisplayRecipients(message: Message, account: Account): DisplayRecipients {
+    fun extractDisplayRecipients(message: Message, account: LegacyAccount): DisplayRecipients {
         val toRecipients = message.getRecipients(Message.RecipientType.TO)
         val ccRecipients = message.getRecipients(Message.RecipientType.CC)
         val bccRecipients = message.getRecipients(Message.RecipientType.BCC)

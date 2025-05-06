@@ -18,65 +18,65 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 4
-        versionName = "11.0"
-
-        // Keep in sync with the resource string array "supported_languages"
-        resourceConfigurations.addAll(
-            listOf(
-                "ar",
-                "be",
-                "bg",
-                "ca",
-                "co",
-                "cs",
-                "cy",
-                "da",
-                "de",
-                "el",
-                "en",
-                "en_GB",
-                "eo",
-                "es",
-                "et",
-                "eu",
-                "fa",
-                "fi",
-                "fr",
-                "fy",
-                "ga",
-                "gl",
-                "hr",
-                "hu",
-                "in",
-                "is",
-                "it",
-                "iw",
-                "ja",
-                "ko",
-                "lt",
-                "lv",
-                "nb",
-                "nl",
-                "nn",
-                "pl",
-                "pt_BR",
-                "pt_PT",
-                "ro",
-                "ru",
-                "sl",
-                "sk",
-                "sq",
-                "sr",
-                "sv",
-                "tr",
-                "uk",
-                "vi",
-                "zh_CN",
-                "zh_TW",
-            ),
-        )
+        versionName = "12.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
+    }
+
+    androidResources {
+        // Keep in sync with the resource string array "supported_languages"
+        localeFilters += listOf(
+            "ar",
+            "be",
+            "bg",
+            "ca",
+            "co",
+            "cs",
+            "cy",
+            "da",
+            "de",
+            "el",
+            "en",
+            "en-rGB",
+            "eo",
+            "es",
+            "et",
+            "eu",
+            "fa",
+            "fi",
+            "fr",
+            "fy",
+            "ga",
+            "gl",
+            "hr",
+            "hu",
+            "in",
+            "is",
+            "it",
+            "iw",
+            "ja",
+            "ko",
+            "lt",
+            "lv",
+            "nb",
+            "nl",
+            "nn",
+            "pl",
+            "pt-rBR",
+            "pt-rPT",
+            "ro",
+            "ru",
+            "sl",
+            "sk",
+            "sq",
+            "sr",
+            "sv",
+            "tr",
+            "uk",
+            "vi",
+            "zh-rCN",
+            "zh-rTW",
+        )
     }
 
     signingConfigs {
@@ -244,10 +244,6 @@ dependencies {
     releaseImplementation(libs.appauth)
 
     testImplementation(libs.robolectric)
-
-    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
-    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
-    testImplementation(projects.feature.account.setup)
 }
 
 dependencyGuard {

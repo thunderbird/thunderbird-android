@@ -14,6 +14,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("new_account_settings".toFeatureFlagKey(), enabled = true),
             FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
             FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
+            FeatureFlag("enable_dropdown_drawer".toFeatureFlagKey(), enabled = true),
         )
     }
 }

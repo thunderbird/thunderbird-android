@@ -5,17 +5,23 @@ plugins {
 
 dependencies {
     api(projects.legacy.ui.base)
-    api(projects.legacy.ui.account)
+    api(projects.core.ui.account)
     api(projects.legacy.ui.folder)
     api(projects.core.ui.legacy.designsystem)
 
     implementation(projects.legacy.core)
+    implementation(projects.core.account)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
+    implementation(projects.core.contact)
 
     implementation(projects.core.featureflags)
+    implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
-    implementation(projects.feature.navigation.drawer)
+    implementation(projects.core.common)
+    implementation(projects.feature.navigation.drawer.api)
+    implementation(projects.feature.navigation.drawer.dropdown)
+    implementation(projects.feature.navigation.drawer.siderail)
     // TODO: Remove AccountOauth dependency
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.funding.api)

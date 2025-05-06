@@ -7,8 +7,6 @@ import java.io.OutputStream;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-
-import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
@@ -20,6 +18,7 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
+import net.thunderbird.core.android.testing.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

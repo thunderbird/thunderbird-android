@@ -5,9 +5,9 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
-import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Account
-import com.fsck.k9.testing.MockHelper.mockBuilder
+import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.testing.MockHelper.mockBuilder
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
@@ -104,7 +104,7 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
         }
     }
 
-    private fun createFakeAccount(): Account {
+    private fun createFakeAccount(): LegacyAccount {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { displayName } doReturn ACCOUNT_NAME
@@ -114,7 +114,7 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
     internal inner class TestAuthenticationErrorNotificationController :
         AuthenticationErrorNotificationController(notificationHelper, mock(), resourceProvider) {
 
-        override fun createContentIntent(account: Account, incoming: Boolean): PendingIntent {
+        override fun createContentIntent(account: LegacyAccount, incoming: Boolean): PendingIntent {
             return contentIntent
         }
     }

@@ -879,7 +879,7 @@
     <string name="settings_ui_telemetry_description">このアプリのパフォーマンス情報、使用状況、ハードウェア情報、設定を Mozilla に共有して Thunderbird の改善に協力します</string>
     <string name="folder_settings_push_label">プッシュ同期する</string>
     <string name="folder_list_show_hidden_folders">隠しフォルダーを表示</string>
-    <string name="folder_settings_sync_label">同期する</string>
+    <string name="folder_settings_sync_label">一定間隔で同期する</string>
     <string name="folder_settings_visible_label">フォルダーを表示する</string>
     <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> を支援する</string>
     <string name="volume_navigation_title_short">音量キー操作</string>

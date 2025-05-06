@@ -3,12 +3,12 @@ package com.fsck.k9.ui.settings.general
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fsck.k9.logging.LogFileWriter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.logging.LogFileWriter
 import timber.log.Timber
 
 class GeneralSettingsViewModel(private val logFileWriter: LogFileWriter) : ViewModel() {

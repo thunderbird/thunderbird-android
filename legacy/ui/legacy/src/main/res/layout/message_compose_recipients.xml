@@ -252,6 +252,7 @@
             android:background="@android:color/transparent"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:focusable="true"
             android:dropDownWidth="wrap_content"
             style="@style/RecipientEditText"
             />

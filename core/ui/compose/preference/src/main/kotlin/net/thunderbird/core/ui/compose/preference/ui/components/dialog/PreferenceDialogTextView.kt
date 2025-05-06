@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
@@ -20,28 +20,30 @@ internal fun PreferenceDialogTextView(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val currentPreference = remember { mutableStateOf(preference) }
+    val currentText = rememberSaveable { mutableStateOf(preference.value) }
 
     PreferenceDialogLayout(
-        title = preference.title,
-        icon = preference.icon,
+        title = preference.title(),
+        icon = preference.icon(),
         onConfirmClick = {
-            onConfirmClick(currentPreference.value)
+            onConfirmClick(preference.copy(value = currentText.value))
         },
         onDismissClick = onDismissClick,
         onDismissRequest = onDismissRequest,
         modifier = modifier,
     ) {
-        preference.description?.let {
+        preference.description()?.let {
             TextBodyMedium(text = it)
 
             Spacer(modifier = Modifier.height(MainTheme.spacings.default))
         }
 
         TextInput(
-            text = currentPreference.value.value,
+            text = currentText.value,
             contentPadding = PaddingValues(),
-            onTextChange = { currentPreference.value = currentPreference.value.copy(value = it) },
+            onTextChange = {
+                currentText.value = it
+            },
         )
     }
 }

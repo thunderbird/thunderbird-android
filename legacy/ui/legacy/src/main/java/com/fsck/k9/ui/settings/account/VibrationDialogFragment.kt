@@ -11,13 +11,13 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.PreferenceDialogFragmentCompat
-import app.k9mail.legacy.notification.NotificationVibration
-import app.k9mail.legacy.notification.VibratePattern
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.bundle.getEnum
 import com.fsck.k9.ui.base.bundle.putEnum
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.feature.notification.NotificationVibration
+import net.thunderbird.feature.notification.VibratePattern
 import org.koin.android.ext.android.inject
 import com.fsck.k9.ui.base.R as BaseR
 
@@ -80,7 +80,10 @@ class VibrationDialogFragment : PreferenceDialogFragmentCompat() {
     private fun playVibration() {
         val vibratePattern = adapter.vibratePattern
         val vibrationTimes = adapter.vibrationTimes
-        val vibrationPattern = NotificationVibration.getSystemPattern(vibratePattern, vibrationTimes)
+        val vibrationPattern = NotificationVibration.getSystemPattern(
+            vibratePattern,
+            vibrationTimes,
+        )
 
         vibrator.vibrate(vibrationPattern)
     }

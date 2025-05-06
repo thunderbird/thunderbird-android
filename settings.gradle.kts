@@ -72,7 +72,9 @@ include(
 )
 
 include(
+    ":feature:account:api",
     ":feature:account:avatar",
+    ":feature:account:core",
     ":feature:account:common",
     ":feature:account:edit",
     ":feature:account:oauth",
@@ -92,7 +94,9 @@ include(
 )
 
 include(
-    ":feature:navigation:drawer",
+    ":feature:navigation:drawer:api",
+    ":feature:navigation:drawer:dropdown",
+    ":feature:navigation:drawer:siderail",
 )
 
 include(
@@ -118,6 +122,7 @@ include(
 
 include(
     ":feature:funding:api",
+    ":feature:folder:api",
     ":feature:funding:googleplay",
     ":feature:funding:link",
     ":feature:funding:noop",
@@ -126,6 +131,7 @@ include(
 include(
     ":core:common",
     ":core:featureflags",
+    ":core:outcome",
     ":core:testing",
     ":core:android:common",
     ":core:android:network",
@@ -156,19 +162,14 @@ include(
     ":legacy:core",
     ":legacy:crypto-openpgp",
     ":legacy:di",
-    ":legacy:folder",
     ":legacy:mailstore",
     ":legacy:message",
-    ":legacy:notification",
-    ":legacy:preferences",
     ":legacy:search",
     ":legacy:storage",
     ":legacy:testing",
     ":legacy:ui:base",
-    ":legacy:ui:account",
     ":legacy:ui:folder",
     ":legacy:ui:legacy",
-    ":legacy:ui:theme",
 )
 
 include(
@@ -219,3 +220,12 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
         https://developer.android.com/build/jdks#jdk-config-in-studio
     """.trimIndent()
 }
+include(":core:android:logging")
+include(":core:preferences")
+include(":core:mail:mailserver")
+include(":feature:search")
+include(":core:account")
+include(":feature:notification")
+include(":core:ui:theme:manager")
+include(":core:contact")
+include(":core:ui:account")

@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_oauth_error_browser_not_available">Cha d’fhuair an aplacaid lorg air brabhsair sam bith a chleachadh e airson cead-inntrigidh dhan chunntas agad a thoirt seachad.</string>
+    <string name="account_oauth_error_not_supported">Chan eil an solaraiche seo a’ cur taic ri OAuth 2.0 aig an àm seo.</string>
+    <string name="account_oauth_google_sign_in_support_text">Ma tha duilgheadasan agad le bhith a’ clàradh a-steach le Google, thoir sùil air an {placeHolder} againn.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">artaigeal taice</string>
+    <string name="account_oauth_sign_in_description">Ath-stiùirichidh sinn gu solaraiche a’ phuist-d agad airson clàradh a-steach. Feumaidh tu cead-inntrigidh do chunntas a’ phuist-d agad a thoirt dhan aplacaid.</string>
+    <string name="account_oauth_sign_in_button">Clàraich a-steach</string>
+    <string name="account_oauth_sign_in_with_google_button">Clàraich a-steach le Google</string>
+    <string name="account_oauth_loading_message">Gad chlàradh a-steach le OAuth</string>
+    <string name="account_oauth_loading_error">Dh’fhàillig an clàradh a-steach le OAuth</string>
+    <string name="account_oauth_error_canceled">Sguireadh dhen ùghdarrachadh</string>
+    <string name="account_oauth_error_failed">Dh’fhàillig an t-ùghdarrachadh leis a’ mhearachd a leanas: <xliff:g id="error">%s</xliff:g></string>
+</resources>

@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="message_list_widget_compose_action">எழுது</string>
+    <string name="message_list_widget_inbox_title">ஒருங்கிணைந்த இன்பாக்ச்</string>
+    <string name="message_list_widget_label">செய்தி பட்டியல்</string>
+    <string name="message_list_widget_list_item_loading">ஏற்றுகிறது…</string>
+    <string name="message_list_widget_initializing">ஏற்றுகிறது…</string>
 </resources>

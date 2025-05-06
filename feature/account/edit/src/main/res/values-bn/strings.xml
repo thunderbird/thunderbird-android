@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_edit_save_server_settings_error_message">সার্ভার পছন্দসমূহ সংরক্ষণ ব্যর্থ হয়েছে</string>
+    <string name="account_edit_save_server_settings_success_message">সার্ভার পছন্দসমূহ সংরক্ষিত</string>
+    <string name="account_edit_save_server_settings_loading_message">সার্ভার পছন্দসমূহ সংরক্ষণ হচ্ছে…</string>
+</resources>

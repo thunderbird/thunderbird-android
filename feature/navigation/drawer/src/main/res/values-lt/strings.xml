@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="navigation_drawer_action_settings">Nustatymai</string>
-    <string name="navigation_drawer_action_manage_folders">Tvarkyti aplankus</string>
-    <string name="navigation_drawer_unified_inbox_title">Suvestiniai gautieji</string>
-    <string name="navigation_drawer_action_show_accounts">Rodyti paskyras</string>
-    <string name="navigation_drawer_action_sync_all_accounts">Sinchronizuoti visas paskyras</string>
-</resources>

@@ -1,2 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="funding_googleplay_contribution_title">Cùm taic ri Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_description">Chan eil Thunderbird a’ faighinn maoineachadh ach na gheibh e de thabhartasan o dhaoine mar thu fhèin. Cha seall sinn sanasachd idir is cha reic sinn an dàta agad uair sam bith. Ma tha Thunderbird a’ còrdadh riut, nach cùm thu taic rinn? Cha dèan sinn seo as d’ aonais!</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Le taic mar seo, is urrainn dhuinn Thunderbird a shìor-leasachadh agus tha sinn fada nad chomain.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Mòran taing uainn uile!</string>
+    <string name="funding_googleplay_contribution_list_title">Tabhartas tèarainte</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Chan urrainn dhut tabhartasan a bheir thu dhuinn a thoirt air falbh o na cìsean agad mar thabhartas do charthannas.</string>
+    <string name="funding_googleplay_contribution_footer_payment_button">Air adhart a dhèanamh pàigheadh</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Thoir tabhartas buadhmhor eile</string>
+    <string name="funding_googleplay_contribution_error_show_more">Seall barrachd fiosrachaidh</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Chan urrainnear pàigheadh an-dràsta fhèin</string>
+    <string name="funding_googleplay_contribution_footer_manage_button">Cuir am pàigheadh mìosail air gleus</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">Leis seachad a’ mhearachd</string>
+    <string name="funding_googleplay_contribution_error_unknown">Mearachd neo-aithnichte</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Tabhartas mòr</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Tabhartas air leth</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Chan urrainnear tabhartas a thoirt o bhroinn na h-aplacaid aig an ìre-sa.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Tadhail air <xliff:g id="link_text">%s</xliff:g> airson barrachd dhòighean air an cùm thu taic ri Thunderbird.</string>
+    <string name="funding_googleplay_contribution_list_error_retry_button">Feuch ris a-rithist</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Bun-tabhartas</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Tabhartas glè mhòr</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Cumaidh do thaic a’ doll sinn! Bidh buaidh aig fiù an tabhartas as lugha agus tha sinn cho toilichte gu bheil thu air bhòrd.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Gràinne-mhullaich nan tabhartasan</string>
+    <string name="funding_googleplay_contribution_header_title">Cùm taic ri Thunderbird</string>
+    <string name="funding_googleplay_contribution_list_type_recurring">Gach mìos</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Chan eil gin ri fhaighinn</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Dh’fhàillig a cheannach.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Chan urrainnear tabhartas a thoirt an-dràsta fhèin.</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Thoir tabhartas aon turas</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Tabhartas luachmhor</string>
+</resources>

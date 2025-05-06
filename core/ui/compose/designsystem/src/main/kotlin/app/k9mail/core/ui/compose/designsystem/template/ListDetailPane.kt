@@ -13,7 +13,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import kotlinx.coroutines.launch
 
 /**
  * A list and detail pane layout that can be used to display a list of items and a detail view.
@@ -33,6 +35,7 @@ fun <T : Parcelable> ListDetailPane(
     modifier: Modifier = Modifier,
 ) {
     val navigator = rememberListDetailPaneScaffoldNavigator<T>()
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(navigator) {
         navigationController.value = DefaultListDetailNavigationController(
@@ -41,7 +44,9 @@ fun <T : Parcelable> ListDetailPane(
     }
 
     BackHandler(navigator.canNavigateBack()) {
-        navigator.navigateBack()
+        coroutineScope.launch {
+            navigator.navigateBack()
+        }
     }
 
     ListDetailPaneScaffold(
@@ -53,7 +58,7 @@ fun <T : Parcelable> ListDetailPane(
             }
         },
         detailPane = {
-            navigator.currentDestination?.content?.let { item ->
+            navigator.currentDestination?.contentKey?.let { item ->
                 AnimatedPane {
                     detailPane(item)
                 }
@@ -82,8 +87,8 @@ fun <T : Parcelable> rememberListDetailNavigationController(): MutableState<List
  */
 interface ListDetailNavigationController<T : Parcelable> {
     fun canNavigateBack(): Boolean
-    fun navigateBack(): Boolean
-    fun navigateToDetail(item: T)
+    suspend fun navigateBack(): Boolean
+    suspend fun navigateToDetail(item: T)
 
     fun paneCount(): Int
 }
@@ -93,8 +98,8 @@ interface ListDetailNavigationController<T : Parcelable> {
  */
 internal class NoOpListDetailNavigationController<T : Parcelable> : ListDetailNavigationController<T> {
     override fun canNavigateBack() = false
-    override fun navigateBack() = false
-    override fun navigateToDetail(item: T) = Unit
+    override suspend fun navigateBack() = false
+    override suspend fun navigateToDetail(item: T) = Unit
 
     override fun paneCount() = 1
 }
@@ -108,8 +113,8 @@ internal class DefaultListDetailNavigationController<T : Parcelable>(
     private val navigator: ThreePaneScaffoldNavigator<T>,
 ) : ListDetailNavigationController<T> {
     override fun canNavigateBack() = navigator.canNavigateBack()
-    override fun navigateBack() = navigator.navigateBack()
-    override fun navigateToDetail(item: T) = navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, item)
+    override suspend fun navigateBack() = navigator.navigateBack()
+    override suspend fun navigateToDetail(item: T) = navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, item)
 
     override fun paneCount(): Int = navigator.scaffoldDirective.maxHorizontalPartitions
 }

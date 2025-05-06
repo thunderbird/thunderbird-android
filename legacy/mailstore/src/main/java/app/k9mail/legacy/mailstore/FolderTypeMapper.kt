@@ -1,11 +1,11 @@
 package app.k9mail.legacy.mailstore
 
 import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 
 object FolderTypeMapper {
 
-    fun folderTypeOf(account: Account, folderId: Long) = when (folderId) {
+    fun folderTypeOf(account: LegacyAccount, folderId: Long) = when (folderId) {
         account.inboxFolderId -> FolderType.INBOX
         account.outboxFolderId -> FolderType.OUTBOX
         account.sentFolderId -> FolderType.SENT

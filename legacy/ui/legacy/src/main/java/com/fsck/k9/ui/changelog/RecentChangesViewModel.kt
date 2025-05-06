@@ -2,13 +2,13 @@ package com.fsck.k9.ui.changelog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import app.k9mail.legacy.preferences.GeneralSettingsManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import net.thunderbird.core.preferences.GeneralSettingsManager
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RecentChangesViewModel(

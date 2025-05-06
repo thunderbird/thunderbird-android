@@ -21,7 +21,7 @@ jobs:
     environment: botmobile
     steps:
       - name: App token generate
-        uses: actions/create-github-app-token@21cfef2b496dd8ef5b904c159339626a10ad380e  # v1.11.6
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e  # v2.0.6
         if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:
@@ -34,7 +34,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Cargo cache
-        uses: actions-rust-lang/setup-rust-toolchain@9399c7bb15d4c7d47b27263d024f0a4978346ba4  # v1.11.0
+        uses: actions-rust-lang/setup-rust-toolchain@9d7e65c320fdb52dcd45ffaa68deb6c02c8754d9  # v1.12.0
 
       - name: Install mdbook and extensions
         run: ./docs/install.sh

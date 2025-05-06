@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.Preferences
@@ -12,7 +12,7 @@ class K9BackendStorageFactory(
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val saveMessageDataCreator: SaveMessageDataCreator,
 ) {
-    fun createBackendStorage(account: Account): K9BackendStorage {
+    fun createBackendStorage(account: LegacyAccount): K9BackendStorage {
         val messageStore = messageStoreManager.getMessageStore(account)
         val folderSettingsProvider = FolderSettingsProvider(preferences, account)
         val specialFolderUpdater = SpecialFolderUpdater(

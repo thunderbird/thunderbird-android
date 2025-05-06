@@ -2,6 +2,5 @@
 <resources>
     <string name="account_common_button_next">Weiter</string>
     <string name="account_common_button_back">Zurück</string>
-    <string name="account_common_error_server_message">Der Server hat die folgende Nachricht zurückgegeben:
-\n%s</string>
+    <string name="account_common_error_server_message">Der Server hat die folgende Nachricht zurückgegeben:\n%s</string>
 </resources>

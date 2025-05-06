@@ -1,19 +1,19 @@
 package com.fsck.k9.controller
 
 import app.cash.turbine.test
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.MessagingListener
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
-import app.k9mail.legacy.search.ConditionsTreeNode
-import app.k9mail.legacy.search.LocalSearch
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.search.ConditionsTreeNode
+import net.thunderbird.feature.search.LocalSearch
 import org.junit.Test
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
@@ -26,12 +26,16 @@ private const val STARRED_COUNT = 3
 
 class DefaultMessageCountsProviderTest {
 
-    private val account = Account(ACCOUNT_UUID)
+    private val account = LegacyAccount(ACCOUNT_UUID)
     private val accountManager = mock<AccountManager> {
         on { getAccounts() } doReturn listOf(account)
     }
     private val messageStore = mock<ListenableMessageStore> {
-        on { getUnreadMessageCount(anyOrNull<ConditionsTreeNode>()) } doReturn UNREAD_COUNT
+        on {
+            getUnreadMessageCount(
+                anyOrNull<ConditionsTreeNode>(),
+            )
+        } doReturn UNREAD_COUNT
         on { getStarredMessageCount(anyOrNull()) } doReturn STARRED_COUNT
     }
     private val messageStoreManager = mock<MessageStoreManager> {
@@ -75,7 +79,11 @@ class DefaultMessageCountsProviderTest {
         }
         var currentCount = 0
         val messageStore = mock<ListenableMessageStore> {
-            on { getUnreadMessageCount(anyOrNull<ConditionsTreeNode>()) } doAnswer { currentCount }
+            on {
+                getUnreadMessageCount(
+                    anyOrNull<ConditionsTreeNode>(),
+                )
+            } doAnswer { currentCount }
             on { getStarredMessageCount(anyOrNull()) } doAnswer { currentCount }
         }
         val messageStoreManager = mock<MessageStoreManager> {

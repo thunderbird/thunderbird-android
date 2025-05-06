@@ -853,5 +853,5 @@
     <string name="clipboard_label_name_and_email_address">الاسم وعنوان البريد الإلكتروني </string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
-<string name="about_app_authors_thunderbird">فريق ثَندَربِرْد للهواتف الذكيّة</string>
+    <string name="about_app_authors_thunderbird">فريق ثَندَربِرْد للهواتف الذكيّة</string>
 </resources>

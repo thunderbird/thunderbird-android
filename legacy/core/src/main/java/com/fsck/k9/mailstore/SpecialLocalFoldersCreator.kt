@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
 import app.k9mail.core.common.mail.Protocols
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.SpecialFolderSelection
+import app.k9mail.legacy.account.LegacyAccount
+import app.k9mail.legacy.account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderType
 import timber.log.Timber
@@ -13,7 +13,7 @@ class SpecialLocalFoldersCreator(
 ) {
     // TODO: When rewriting the account setup code make sure this method is only called once. Until then this can be
     //  called multiple times and we have to make sure folders are only created once.
-    fun createSpecialLocalFolders(account: Account) {
+    fun createSpecialLocalFolders(account: LegacyAccount) {
         Timber.d("Creating special local folders")
 
         val localStore = localStoreProvider.getInstance(account)
@@ -50,7 +50,7 @@ class SpecialLocalFoldersCreator(
         preferences.saveAccount(account)
     }
 
-    fun createOutbox(account: Account): Long {
+    fun createOutbox(account: LegacyAccount): Long {
         Timber.d("Creating Outbox folder")
 
         val localStore = localStoreProvider.getInstance(account)
@@ -62,10 +62,10 @@ class SpecialLocalFoldersCreator(
         return outboxFolderId
     }
 
-    private fun Account.isPop3() = incomingServerSettings.type == Protocols.POP3
+    private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
-        private const val OUTBOX_FOLDER_NAME = Account.OUTBOX_NAME
+        private const val OUTBOX_FOLDER_NAME = LegacyAccount.OUTBOX_NAME
         private const val DRAFTS_FOLDER_NAME = "Drafts"
         private const val SENT_FOLDER_NAME = "Sent"
         private const val TRASH_FOLDER_NAME = "Trash"
