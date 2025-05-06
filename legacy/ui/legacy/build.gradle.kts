@@ -70,9 +70,9 @@ dependencies {
     // This is necessary as RecipientPresenterTest fails to inject
     testImplementation(projects.legacy.common)
     testImplementation(projects.core.testing)
+    testImplementation(projects.core.android.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.legacy.storage)
-    testImplementation(projects.legacy.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
