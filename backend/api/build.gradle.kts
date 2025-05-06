@@ -4,5 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.core.account)
+    implementation(projects.core.outcome)
     api(projects.mail.common)
 }

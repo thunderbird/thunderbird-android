@@ -248,7 +248,13 @@ class RealImapFolderTest {
 
     @Test
     fun create_withoutNegativeImapResponse_shouldReturnTrue() {
-        val imapFolder = createFolder("Folder")
+        val folderName = "Folder"
+        val imapFolder = createFolder(folderName)
+
+        val createResponses = listOf(
+            createImapResponse("* OK - CREATE completed"),
+        )
+        whenever(imapConnection.executeSimpleCommand("CREATE \"$folderName\"")).thenReturn(createResponses)
 
         val success = imapFolder.create()
 

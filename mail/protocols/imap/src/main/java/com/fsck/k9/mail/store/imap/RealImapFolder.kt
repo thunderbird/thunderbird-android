@@ -235,7 +235,7 @@ internal class RealImapFolder(
     }
 
     @Throws(MessagingException::class)
-    fun create(): Boolean {
+    override fun create(): Boolean {
         /*
          * This method needs to operate in the unselected mode as well as the selected mode
          * so we must get the connection ourselves if it's not there. We are specifically
@@ -248,10 +248,12 @@ internal class RealImapFolder(
         return try {
             val encodedFolderName = folderNameCodec.encode(prefixedName)
             val escapedFolderName = ImapUtility.encodeString(encodedFolderName)
-            connection.executeSimpleCommand(String.format("CREATE %s", escapedFolderName))
 
-            true
+            // https://datatracker.ietf.org/doc/html/rfc3501#section-6.3.3
+            val responses = connection.executeSimpleCommand("CREATE $escapedFolderName")
+            responses.any { ImapResponseParser.equalsIgnoreCase(it[0], Responses.OK) }
         } catch (e: NegativeImapResponseException) {
+            Timber.e(e, "Unable to create folder %s for %s", serverId, logId)
             false
         } catch (ioe: IOException) {
             throw ioExceptionHandler(this.connection, ioe)
