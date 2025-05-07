@@ -2,7 +2,6 @@ package com.fsck.k9
 
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
-import app.k9mail.feature.launcher.di.featureLauncherModule
 import app.k9mail.feature.widget.message.list.messageListWidgetModule
 import app.k9mail.feature.widget.unread.UnreadWidgetUpdateListener
 import app.k9mail.feature.widget.unread.unreadWidgetModule
@@ -46,5 +45,4 @@ val legacyCommonAppModules = listOf(
     backendsModule,
     storageModule,
     newAccountModule,
-    featureLauncherModule,
 )
