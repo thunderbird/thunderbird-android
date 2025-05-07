@@ -9,8 +9,8 @@ import app.k9mail.feature.account.server.certificate.ui.DefaultServerNameFormatt
 import app.k9mail.feature.account.server.certificate.ui.FingerprintFormatter
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorViewModel
 import app.k9mail.feature.account.server.certificate.ui.ServerNameFormatter
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureAccountServerCertificateModule: Module = module {
