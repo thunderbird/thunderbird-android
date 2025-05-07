@@ -162,7 +162,11 @@ dependencies {
     debugImplementation(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
 
-    testImplementation(libs.robolectric)
+    // Required for DependencyInjectionTest
+    testImplementation(projects.feature.account.api)
+    testImplementation(projects.feature.account.common)
+    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
+    testImplementation(libs.appauth)
 }
 
 dependencyGuard {

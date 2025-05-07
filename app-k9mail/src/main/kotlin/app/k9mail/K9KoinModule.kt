@@ -9,6 +9,7 @@ import app.k9mail.provider.providerModule
 import app.k9mail.widget.widgetModule
 import com.fsck.k9.AppConfig
 import com.fsck.k9.BuildConfig
+import com.fsck.k9.DefaultAppConfig
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.provider.UnreadWidgetProvider
 import com.fsck.k9.widget.list.MessageListWidgetProvider
@@ -34,7 +35,7 @@ val appModule = module {
     developmentModuleAdditions()
 }
 
-val appConfig = AppConfig(
+val appConfig = DefaultAppConfig(
     componentsToDisable = listOf(
         MessageCompose::class.java,
         LauncherShortcutActivity::class.java,

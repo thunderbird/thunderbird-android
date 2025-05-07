@@ -6,6 +6,7 @@ import app.k9mail.legacy.di.DI
 import com.fsck.k9.AppConfig
 import com.fsck.k9.Core
 import com.fsck.k9.CoreResourceProvider
+import com.fsck.k9.DefaultAppConfig
 import com.fsck.k9.K9
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.crypto.EncryptionExtractor
@@ -45,7 +46,7 @@ class TestApp : Application() {
 
 val testModule = module {
     single<Logger> { TestApp.logger }
-    single { AppConfig(emptyList()) }
+    single<AppConfig> { DefaultAppConfig(emptyList()) }
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }
     single<StoragePersister> { K9StoragePersister(get()) }

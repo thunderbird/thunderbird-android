@@ -40,7 +40,7 @@ class TestApp : Application() {
 
 val testModule = module {
     single<Logger> { TestApp.logger }
-    single { AppConfig(emptyList()) }
+    single<AppConfig> { DefaultAppConfig(componentsToDisable = emptyList()) }
     single<CoreResourceProvider> { TestCoreResourceProvider() }
     single<StoragePersister> { InMemoryStoragePersister() }
     single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }

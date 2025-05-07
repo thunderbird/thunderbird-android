@@ -2,6 +2,7 @@ package net.thunderbird.android
 
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import com.fsck.k9.AppConfig
+import com.fsck.k9.DefaultAppConfig
 import com.fsck.k9.activity.MessageCompose
 import net.thunderbird.android.auth.TbOAuthConfigurationFactory
 import net.thunderbird.android.dev.developmentModuleAdditions
@@ -33,7 +34,7 @@ val appModule = module {
     developmentModuleAdditions()
 }
 
-val appConfig = AppConfig(
+val appConfig = DefaultAppConfig(
     componentsToDisable = listOf(
         MessageCompose::class.java,
         LauncherShortcutActivity::class.java,

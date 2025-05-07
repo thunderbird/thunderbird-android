@@ -49,7 +49,7 @@ class TestApp : Application() {
 
 val testModule = module {
     single<Logger> { TestApp.logger }
-    single { AppConfig(emptyList()) }
+    single<AppConfig> { DefaultAppConfig(emptyList()) }
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }
     single<StoragePersister> { InMemoryStoragePersister() }
