@@ -9,17 +9,18 @@ import net.thunderbird.android.auth.TbOAuthConfigurationFactory
 import net.thunderbird.android.dev.developmentModuleAdditions
 import net.thunderbird.android.feature.featureModule
 import net.thunderbird.android.featureflag.TbFeatureFlagFactory
-import net.thunderbird.android.widget.appWidgetModule
 import net.thunderbird.android.provider.providerModule
 import net.thunderbird.android.widget.provider.MessageListWidgetProvider
 import net.thunderbird.android.widget.provider.UnreadWidgetProvider
+import net.thunderbird.android.widget.widgetModule
 import net.thunderbird.app.common.appCommonModule
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val appModule = module {
     includes(appCommonModule)
-    includes(appWidgetModule)
+
+    includes(widgetModule)
     includes(featureModule)
     includes(providerModule)
 
