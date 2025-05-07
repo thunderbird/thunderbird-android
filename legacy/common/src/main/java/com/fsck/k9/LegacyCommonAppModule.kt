@@ -19,7 +19,7 @@ import com.fsck.k9.storage.storageModule
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val commonAppModule = module {
+val legacyCommonAppModule = module {
     single {
         MessagingListenerProvider(
             listOf(
@@ -37,8 +37,8 @@ val commonAppModule = module {
     }
 }
 
-val commonAppModules = listOf(
-    commonAppModule,
+val legacyCommonAppModules = listOf(
+    legacyCommonAppModule,
     messageListWidgetModule,
     unreadWidgetModule,
     notificationModule,

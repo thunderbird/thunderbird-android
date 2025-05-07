@@ -41,7 +41,7 @@ abstract class CommonApp : Application(), WorkManagerConfiguration.Provider {
         super.attachBaseContext(base)
 
         // Start Koin early so it is ready by the time content providers are initialized.
-        DI.start(this, listOf(provideAppModule()) + coreModules + uiModules + commonAppModules)
+        DI.start(this, listOf(provideAppModule()) + legacyCoreModules + legacyUiModules + legacyCommonAppModules)
     }
 
     override fun onCreate() {

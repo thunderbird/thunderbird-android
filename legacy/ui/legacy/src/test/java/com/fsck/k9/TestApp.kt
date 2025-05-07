@@ -19,7 +19,7 @@ class TestApp : Application() {
         super.onCreate()
         DI.start(
             application = this,
-            modules = coreModules + commonAppModules + uiModules + telemetryModule + testModule,
+            modules = legacyCoreModules + legacyCommonAppModules + legacyUiModules + telemetryModule + testModule,
             allowOverride = true,
         )
 
