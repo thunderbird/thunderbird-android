@@ -5,7 +5,7 @@ import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalCon
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
-val featureLauncherModule = module {
+internal val appCommonFeatureModule = module {
     factory<FeatureLauncherExternalContract.AccountSetupFinishedLauncher> {
         AccountSetupFinishedLauncher(
             context = androidContext(),
