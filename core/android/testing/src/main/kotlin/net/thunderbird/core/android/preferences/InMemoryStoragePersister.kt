@@ -1,15 +1,20 @@
 package net.thunderbird.core.android.preferences
 
-import com.fsck.k9.preferences.Storage
+import com.fsck.k9.preferences.DefaultStorage
 import com.fsck.k9.preferences.StorageEditor
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.preferences.StorageUpdater
+import net.thunderbird.core.preferences.Storage
 
 class InMemoryStoragePersister : StoragePersister {
     private val values = mutableMapOf<String, Any?>()
 
     override fun loadValues(): Storage {
-        return Storage(values.mapValues { (_, value) -> value?.toString() ?: "" })
+        return DefaultStorage(
+            values.mapValues { (_, value) ->
+                value?.toString() ?: ""
+            },
+        )
     }
 
     override fun createStorageEditor(storageUpdater: StorageUpdater): StorageEditor {
@@ -60,7 +65,7 @@ class InMemoryStoragePersister : StoragePersister {
         }
 
         private fun writeValues(currentStorage: Storage): Storage {
-            return Storage(currentStorage.all - removals + changes)
+            return DefaultStorage(currentStorage.getAll() - removals + changes)
         }
     }
 }

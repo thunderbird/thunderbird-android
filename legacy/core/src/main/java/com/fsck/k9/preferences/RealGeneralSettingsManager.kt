@@ -16,6 +16,7 @@ import net.thunderbird.core.preferences.BackgroundSync
 import net.thunderbird.core.preferences.GeneralSettings
 import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.core.preferences.SettingsChangePublisher
+import net.thunderbird.core.preferences.Storage
 import net.thunderbird.core.preferences.SubTheme
 import timber.log.Timber
 

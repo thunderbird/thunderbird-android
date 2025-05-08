@@ -48,7 +48,7 @@ class StoragePersisterTest : K9RobolectricTest() {
 
         storagePersister.doInTransaction(operationCallback)
 
-        val values = storagePersister.loadValues().all
+        val values = storagePersister.loadValues().getAll()
 
         assertThat(values).containsOnly("x" to "y")
     }
@@ -69,7 +69,7 @@ class StoragePersisterTest : K9RobolectricTest() {
 
         val values = storagePersister.loadValues()
 
-        assertThat(values.isEmpty).isTrue()
+        assertThat(values.isEmpty()).isTrue()
         verify(operationCallback, never()).onPersistTransactionSuccess(any())
     }
 
@@ -87,7 +87,7 @@ class StoragePersisterTest : K9RobolectricTest() {
 
         val values = storagePersister.loadValues()
 
-        assertThat(values.isEmpty).isTrue()
+        assertThat(values.isEmpty()).isTrue()
     }
 
     @Test
@@ -103,7 +103,7 @@ class StoragePersisterTest : K9RobolectricTest() {
 
         val values = storagePersister.loadValues()
 
-        assertThat(values.isEmpty).isTrue()
+        assertThat(values.isEmpty()).isTrue()
     }
 
     private fun prepareCallback(

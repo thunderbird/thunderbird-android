@@ -66,7 +66,7 @@ class SettingsExporter(
 
             val storage = preferences.storage
 
-            val prefs: Map<String, Any> = storage.all.toSortedMap()
+            val prefs: Map<String, Any> = storage.getAll().toSortedMap()
             if (includeGlobals) {
                 serializer.startTag(null, GLOBAL_ELEMENT)
                 writeSettings(serializer, prefs)
