@@ -124,6 +124,13 @@ object K9 : KoinComponent {
         }
 
     @JvmStatic
+    var isSyncLoggingEnabled: Boolean = false
+        set(debug) {
+            field = debug
+            updateSyncLogging()
+        }
+
+    @JvmStatic
     var isSensitiveDebugLoggingEnabled: Boolean = false
 
     @JvmStatic
@@ -286,6 +293,8 @@ object K9 : KoinComponent {
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
 
+    private var savedContext: Context? = null
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -323,6 +332,7 @@ object K9 : KoinComponent {
         com.fsck.k9.logging.Timber.logger = TimberLogger()
 
         checkCachedDatabaseVersion(context)
+        savedContext = context
 
         loadPrefs(generalSettingsManager.storage)
     }
@@ -331,6 +341,7 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
+        isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
@@ -422,6 +433,7 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
+        editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("animations", isShowAnimations)
@@ -498,6 +510,15 @@ object K9 : KoinComponent {
         Timber.uprootAll()
         if (isDebugLoggingEnabled) {
             Timber.plant(DebugTree())
+        }
+    }
+
+    private fun updateSyncLogging() {
+        if (savedContext != null && Timber.forest().contains(FileLoggerTree(savedContext!!))) {
+            savedContext?.let { Timber.uproot(FileLoggerTree(it)) }
+        }
+        if (isSyncLoggingEnabled) {
+            savedContext?.let { Timber.plant(FileLoggerTree(it)) }
         }
     }
 
