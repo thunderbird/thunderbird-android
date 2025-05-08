@@ -15,6 +15,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.migration.DefaultStorageMigrationHelper;
 import com.fsck.k9.preferences.migration.StorageMigrations;
 import com.fsck.k9.preferences.migration.StorageMigrationHelper;
+import net.thunderbird.core.preferences.Storage;
 import timber.log.Timber;
 
 
@@ -143,7 +144,7 @@ public class K9StoragePersister implements StoragePersister {
         Timber.i("Loading preferences from DB into Storage");
 
         try (SQLiteDatabase database = openDB()) {
-            return new Storage(readAllValues(database));
+            return new DefaultStorage(readAllValues(database));
         } finally {
             long endTime = SystemClock.elapsedRealtime();
             Timber.i("Preferences load took %d ms", endTime - startTime);
