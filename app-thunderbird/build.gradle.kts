@@ -185,11 +185,18 @@ android {
         resources {
             excludes += listOf(
                 "META-INF/*.kotlin_module",
-                "META-INF/*.version",
                 "kotlin/**",
                 "DebugProbesKt.bin",
             )
         }
+    }
+}
+
+androidComponents {
+    onVariants(selector().withBuildType("release")) { variant ->
+        variant.packaging.resources.excludes.addAll(
+            "META-INF/*.version",
+        )
     }
 }
 
