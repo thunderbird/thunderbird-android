@@ -105,7 +105,7 @@ fun Context.resolveColorAttribute(attrId: Int): Int {
 
     val found = theme.resolveAttribute(attrId, typedValue, true)
     if (!found) {
-        error("Couldn't resolve attribute ($attrId)")
+        error("Couldn't resolve attribute (${resources.getResourceName(attrId)}")
     }
 
     return typedValue.data
