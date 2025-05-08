@@ -1,15 +1,16 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.preferences.DefaultSettingsChangeBroker
 import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.core.preferences.SettingsChangeBroker
 import net.thunderbird.core.preferences.SettingsChangePublisher
+import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
+import net.thunderbird.core.android.account.AccountManager as LegacyAccountManager
 
 val preferencesModule = module {
     factory {
@@ -23,7 +24,8 @@ val preferencesModule = module {
         )
     }
     factory { FolderSettingsProvider(folderRepository = get()) }
-    factory<AccountManager> { get<Preferences>() }
+    factory<LegacyAccountManager> { get<Preferences>() }
+    factory<AccountManager<*>> { get<LegacyAccountManager>() }
     single {
         RealGeneralSettingsManager(
             preferences = get(),
