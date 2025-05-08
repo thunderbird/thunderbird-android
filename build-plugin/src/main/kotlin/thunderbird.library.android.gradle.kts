@@ -1,4 +1,3 @@
-import gradle.kotlin.dsl.accessors._d53916901dcf893c4f557c15eae913fd.kotlin
 import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
 
 plugins {
