@@ -1,12 +1,12 @@
 package com.fsck.k9.storage.messages
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreFactory
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.NotifierMessageStore
 import com.fsck.k9.mailstore.StorageFilesProviderFactory
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
+import net.thunderbird.core.android.account.LegacyAccount
 
 class K9MessageStoreFactory(
     private val localStoreProvider: LocalStoreProvider,

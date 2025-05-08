@@ -1,7 +1,5 @@
 package app.k9mail.feature.funding
 
-import app.k9mail.core.common.cache.Cache
-import app.k9mail.core.common.cache.InMemoryCache
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.funding.api.FundingNavigation
 import app.k9mail.feature.funding.googleplay.GooglePlayFundingManager
@@ -23,7 +21,9 @@ import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminder
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderDialog
 import com.android.billingclient.api.ProductDetails
-import org.koin.androidx.viewmodel.dsl.viewModel
+import net.thunderbird.core.common.cache.Cache
+import net.thunderbird.core.common.cache.InMemoryCache
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureFundingModule = module {

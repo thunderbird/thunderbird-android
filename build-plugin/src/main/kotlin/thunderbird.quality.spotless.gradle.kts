@@ -27,8 +27,9 @@ configure<SpotlessExtension> {
             .setEditorConfigPath("${project.rootProject.projectDir}/.editorconfig")
             .editorConfigOverride(
                 mapOf(
-                    "ktlint_standard_function-signature" to "disabled",
                     "ktlint_code_style" to "intellij_idea",
+                    "ktlint_standard_function-expression-body" to "disabled",
+                    "ktlint_standard_function-signature" to "disabled",
                 ),
             )
     }

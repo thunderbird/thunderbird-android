@@ -13,11 +13,10 @@ dependencies {
     implementation(libs.moshi)
 
     testImplementation(projects.mail.testing)
-    testImplementation(projects.legacy.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(libs.robolectric)
     testImplementation(libs.commons.io)
-    testImplementation(projects.core.featureflags)
+    testImplementation(projects.core.featureflag)
 }
 
 android {

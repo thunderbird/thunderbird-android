@@ -1,4 +1,9 @@
 version: 2
+commit-message:
+  prefix: chore
+  include: scope
+labels:
+  - "type: dependency"
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"

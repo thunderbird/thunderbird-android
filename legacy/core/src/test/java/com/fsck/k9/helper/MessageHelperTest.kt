@@ -4,9 +4,6 @@ import android.graphics.Color
 import android.text.SpannableString
 import app.k9mail.core.android.common.contact.Contact
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.core.common.mail.EmailAddress
-import app.k9mail.core.common.mail.toEmailAddressOrThrow
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -14,6 +11,9 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.TestCoreResourceProvider
 import com.fsck.k9.helper.MessageHelper.Companion.toFriendly
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.toEmailAddressOrThrow
 import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock

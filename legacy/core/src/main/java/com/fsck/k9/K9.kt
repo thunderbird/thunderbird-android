@@ -2,19 +2,20 @@ package com.fsck.k9
 
 import android.content.Context
 import android.content.SharedPreferences
-import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import app.k9mail.legacy.account.AccountDefaultsProvider
-import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.core.BuildConfig
+import com.fsck.k9.logging.Logger
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.preferences.Storage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -25,6 +26,7 @@ object K9 : KoinComponent {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
+    private val logger: Logger by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -121,6 +123,13 @@ object K9 : KoinComponent {
         set(debug) {
             field = debug
             updateLoggingStatus()
+        }
+
+    @JvmStatic
+    var isSyncLoggingEnabled: Boolean = false
+        set(debug) {
+            field = debug
+            updateSyncLogging()
         }
 
     @JvmStatic
@@ -286,6 +295,8 @@ object K9 : KoinComponent {
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
 
+    private var savedContext: Context? = null
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -320,9 +331,10 @@ object K9 : KoinComponent {
                 override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
             },
         )
-        com.fsck.k9.logging.Timber.logger = TimberLogger()
+        com.fsck.k9.logging.Timber.logger = logger
 
         checkCachedDatabaseVersion(context)
+        savedContext = context
 
         loadPrefs(generalSettingsManager.storage)
     }
@@ -331,6 +343,7 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
+        isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
@@ -422,6 +435,7 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
+        editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("animations", isShowAnimations)
@@ -498,6 +512,15 @@ object K9 : KoinComponent {
         Timber.uprootAll()
         if (isDebugLoggingEnabled) {
             Timber.plant(DebugTree())
+        }
+    }
+
+    private fun updateSyncLogging() {
+        if (savedContext != null && Timber.forest().contains(FileLoggerTree(savedContext!!))) {
+            savedContext?.let { Timber.uproot(FileLoggerTree(it)) }
+        }
+        if (isSyncLoggingEnabled) {
+            savedContext?.let { Timber.plant(FileLoggerTree(it)) }
         }
     }
 

@@ -26,17 +26,24 @@
         android:layout_height="match_parent"
         >
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/message_list"
+        <androidx.core.view.insets.ProtectionLayout
+            android:id="@+id/protection_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:fadingEdge="none"
-            android:paddingBottom="@dimen/floatingActionButtonSpacing"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/message_list_item"
-            />
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/message_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadingEdge="none"
+                android:paddingBottom="@dimen/floatingActionButtonSpacing"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/message_list_item"
+                />
+        </androidx.core.view.insets.ProtectionLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

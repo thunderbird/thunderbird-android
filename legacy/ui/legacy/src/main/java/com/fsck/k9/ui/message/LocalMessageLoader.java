@@ -4,9 +4,8 @@ package com.fsck.k9.ui.message;
 import android.content.Context;
 import androidx.loader.content.AsyncTaskLoader;
 
+import net.thunderbird.core.android.account.LegacyAccount;
 import timber.log.Timber;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.MessagingException;

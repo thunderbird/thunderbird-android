@@ -5,6 +5,10 @@ plugins {
 
 dependencies {
     api(projects.backend.api)
+    api(projects.core.outcome)
+
+    api(projects.feature.mail.account.api)
+
     api(projects.mail.protocols.imap)
     api(projects.mail.protocols.smtp)
 

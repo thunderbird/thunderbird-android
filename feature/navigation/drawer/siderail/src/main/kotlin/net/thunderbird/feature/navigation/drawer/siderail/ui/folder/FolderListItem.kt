@@ -4,11 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
+import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.siderail.R
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayFolder

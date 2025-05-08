@@ -1,6 +1,5 @@
 package app.k9mail.feature.funding.googleplay.data.remote
 
-import app.k9mail.core.common.cache.Cache
 import app.k9mail.feature.funding.googleplay.data.DataContract
 import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
@@ -16,6 +15,7 @@ import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.consumePurchase
+import net.thunderbird.core.common.cache.Cache
 import timber.log.Timber
 
 // TODO propagate errors via Outcome

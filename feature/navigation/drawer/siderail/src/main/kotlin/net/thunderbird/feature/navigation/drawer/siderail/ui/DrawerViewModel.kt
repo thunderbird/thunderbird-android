@@ -116,6 +116,7 @@ internal class DrawerViewModel(
                     state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
                 ).launchIn(viewModelScope)
             }
+
             DrawerContract.Event.OnManageFoldersClick -> emitEffect(DrawerContract.Effect.OpenManageFolders)
             DrawerContract.Event.OnSettingsClick -> emitEffect(DrawerContract.Effect.OpenSettings)
             DrawerContract.Event.OnSyncAccount -> onSyncAccount()
@@ -158,7 +159,12 @@ internal class DrawerViewModel(
 
     private fun openFolder(folder: DisplayFolder) {
         if (folder is DisplayAccountFolder) {
-            emitEffect(DrawerContract.Effect.OpenFolder(folder.folder.id))
+            emitEffect(
+                DrawerContract.Effect.OpenFolder(
+                    accountId = folder.accountId,
+                    folderId = folder.folder.id,
+                ),
+            )
         } else if (folder is DisplayUnifiedFolder) {
             emitEffect(DrawerContract.Effect.OpenUnifiedFolder)
         }

@@ -542,6 +542,11 @@
             android:summary="@string/debug_enable_debug_logging_summary"
             android:title="@string/debug_enable_debug_logging_title"
             />
+        <CheckBoxPreference
+            android:key="sync_debug_logging"
+            android:summary="@string/debug_enable_sync_debug_logging_summary"
+            android:title="@string/debug_enable_sync_debug_logging_title"
+            />
 
         <CheckBoxPreference
             android:key="sensitive_logging"

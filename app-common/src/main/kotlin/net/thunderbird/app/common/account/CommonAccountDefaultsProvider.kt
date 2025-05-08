@@ -1,38 +1,39 @@
 package net.thunderbird.app.common.account
 
-import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.toFeatureFlagKey
-import app.k9mail.legacy.account.AccountDefaultsProvider
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_ASCENDING
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_TYPE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
-import app.k9mail.legacy.account.Expunge
-import app.k9mail.legacy.account.FolderMode
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.ShowPictures
-import app.k9mail.legacy.account.SpecialFolderSelection
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_ASCENDING
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_TYPE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
+import net.thunderbird.core.android.account.Expunge
+import net.thunderbird.core.android.account.FolderMode
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.ShowPictures
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.preferences.Storage
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
 
 @Suppress("MagicNumber")
-class CommonAccountDefaultsProvider(
+internal class CommonAccountDefaultsProvider(
     private val resourceProvider: CoreResourceProvider,
     private val featureFlagProvider: FeatureFlagProvider,
 ) : AccountDefaultsProvider {
@@ -41,20 +42,25 @@ class CommonAccountDefaultsProvider(
         applyLegacyDefaults()
     }
 
-    override fun applyOverwrites(account: LegacyAccount) = with(account) {
-        isNotifyNewMail = featureFlagProvider.provide(
-            "email_notification_default".toFeatureFlagKey(),
-        ).whenEnabledOrNot(
-            onEnabled = { true },
-            onDisabledOrUnavailable = { false },
-        )
+    override fun applyOverwrites(account: LegacyAccount, storage: Storage) = with(account) {
+        if (storage.contains("${account.uuid}.notifyNewMail")) {
+            isNotifyNewMail = storage.getBoolean("${account.uuid}.notifyNewMail", false)
+            isNotifySelfNewMail = storage.getBoolean("${account.uuid}.notifySelfNewMail", true)
+        } else {
+            isNotifyNewMail = featureFlagProvider.provide(
+                "email_notification_default".toFeatureFlagKey(),
+            ).whenEnabledOrNot(
+                onEnabled = { true },
+                onDisabledOrUnavailable = { false },
+            )
 
-        isNotifySelfNewMail = featureFlagProvider.provide(
-            "email_notification_default".toFeatureFlagKey(),
-        ).whenEnabledOrNot(
-            onEnabled = { true },
-            onDisabledOrUnavailable = { false },
-        )
+            isNotifySelfNewMail = featureFlagProvider.provide(
+                "email_notification_default".toFeatureFlagKey(),
+            ).whenEnabledOrNot(
+                onEnabled = { true },
+                onDisabledOrUnavailable = { false },
+            )
+        }
     }
 
     @Suppress("LongMethod")

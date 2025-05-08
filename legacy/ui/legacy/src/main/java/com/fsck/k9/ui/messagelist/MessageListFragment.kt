@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -17,8 +18,11 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
+import androidx.core.view.insets.GradientProtection
+import androidx.core.view.insets.ProtectionLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -27,10 +31,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.Expunge
-import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
@@ -63,6 +63,10 @@ import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
 import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.Expunge
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
@@ -273,7 +277,23 @@ class MessageListFragment :
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (error == null) {
-            inflater.inflate(R.layout.message_list_fragment, container, false)
+            inflater.inflate(R.layout.message_list_fragment, container, false).also { view ->
+                val typedValued = TypedValue()
+                requireContext().theme.resolveAttribute(
+                    com.google.android.material.R.attr.colorSurface,
+                    typedValued,
+                    true,
+                )
+                view.findViewById<ProtectionLayout>(R.id.protection_layout)
+                    .setProtections(
+                        listOf(
+                            GradientProtection(
+                                WindowInsetsCompat.Side.BOTTOM,
+                                typedValued.data,
+                            ),
+                        ),
+                    )
+            }
         } else {
             inflater.inflate(R.layout.message_list_error, container, false)
         }
@@ -1209,15 +1229,19 @@ class MessageListFragment :
         if (messages.isEmpty()) return false
 
         val account = accountManager.getAccount(messages.first().accountUuid)
-        if (operation == FolderOperation.MOVE && !messagingController.isMoveCapable(account) ||
-            operation == FolderOperation.COPY && !messagingController.isCopyCapable(account)
+        if (operation == FolderOperation.MOVE &&
+            !messagingController.isMoveCapable(account) ||
+            operation == FolderOperation.COPY &&
+            !messagingController.isCopyCapable(account)
         ) {
             return false
         }
 
         for (message in messages) {
-            if (operation == FolderOperation.MOVE && !messagingController.isMoveCapable(message) ||
-                operation == FolderOperation.COPY && !messagingController.isCopyCapable(message)
+            if (operation == FolderOperation.MOVE &&
+                !messagingController.isMoveCapable(message) ||
+                operation == FolderOperation.COPY &&
+                !messagingController.isCopyCapable(message)
             ) {
                 val toast = Toast.makeText(
                     activity,

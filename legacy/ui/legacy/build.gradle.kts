@@ -10,13 +10,15 @@ dependencies {
     api(projects.core.ui.legacy.designsystem)
 
     implementation(projects.legacy.core)
-    implementation(projects.core.account)
+    implementation(projects.feature.mail.account.api)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
+    implementation(projects.core.android.contact)
 
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
+    implementation(projects.core.common)
     implementation(projects.feature.navigation.drawer.api)
     implementation(projects.feature.navigation.drawer.dropdown)
     implementation(projects.feature.navigation.drawer.siderail)
@@ -68,9 +70,9 @@ dependencies {
     // This is necessary as RecipientPresenterTest fails to inject
     testImplementation(projects.legacy.common)
     testImplementation(projects.core.testing)
+    testImplementation(projects.core.android.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.legacy.storage)
-    testImplementation(projects.legacy.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)

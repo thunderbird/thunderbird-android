@@ -7,10 +7,10 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import java.util.concurrent.TimeUnit
 import kotlinx.datetime.Clock
+import net.thunderbird.core.android.account.LegacyAccount
 import timber.log.Timber
 
 class MailSyncWorkerManager(

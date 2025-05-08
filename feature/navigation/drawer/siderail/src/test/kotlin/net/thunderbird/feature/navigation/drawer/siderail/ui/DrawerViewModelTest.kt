@@ -1,7 +1,5 @@
 package net.thunderbird.feature.navigation.drawer.siderail.ui
 
-import app.k9mail.core.mail.folder.api.Folder
-import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.advanceUntilIdle
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
@@ -20,6 +18,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 import net.thunderbird.feature.navigation.drawer.siderail.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayAccount
@@ -326,7 +326,12 @@ internal class DrawerViewModelTest {
         val displayFolders = displayFoldersMap[displayAccounts[0].id] ?: emptyList()
         testSubject.event(Event.OnFolderClick(displayFolders[1]))
 
-        assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenFolder(displayFolders[1].folder.id))
+        assertThat(turbines.awaitEffectItem()).isEqualTo(
+            Effect.OpenFolder(
+                accountId = displayFolders[1].accountId,
+                folderId = displayFolders[1].folder.id,
+            ),
+        )
 
         turbines.assertThatAndEffectTurbineConsumed {
             isEqualTo(Effect.CloseDrawer)

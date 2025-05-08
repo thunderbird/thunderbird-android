@@ -9,24 +9,23 @@ dependencies {
     api(projects.library.htmlCleaner)
     api(projects.core.mail.mailserver)
     api(projects.core.android.common)
+    api(projects.core.android.account)
     api(projects.core.preferences)
     api(projects.core.android.logging)
     api(projects.core.android.network)
-    api(projects.core.mail.folder.api)
-    api(projects.feature.folder.api)
+    api(projects.feature.mail.folder.api)
+    api(projects.feature.account.storage.legacy)
 
     api(projects.feature.search)
-    api(projects.core.account)
-    api(projects.legacy.account)
+    api(projects.feature.mail.account.api)
     api(projects.legacy.di)
     api(projects.legacy.mailstore)
     api(projects.legacy.message)
     api(projects.feature.notification)
-    api(projects.legacy.search)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
     implementation(projects.feature.telemetry.api)
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
 
     api(libs.androidx.annotation)
 
@@ -50,7 +49,6 @@ dependencies {
     testImplementation(projects.backend.imap)
     testImplementation(projects.mail.protocols.smtp)
     testImplementation(projects.legacy.storage)
-    testImplementation(projects.legacy.testing)
 
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.reflect)

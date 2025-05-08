@@ -5,16 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.feature.folder.api.RemoteFolder
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 class AccountSettingsViewModel(
     private val accountManager: AccountManager,

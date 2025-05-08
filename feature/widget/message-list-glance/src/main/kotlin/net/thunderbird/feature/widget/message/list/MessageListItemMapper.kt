@@ -1,6 +1,5 @@
 package net.thunderbird.feature.widget.message.list
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageDetailsAccessor
 import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.message.controller.MessageReference
@@ -8,6 +7,7 @@ import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.ui.helper.DisplayAddressHelper
 import java.util.Calendar
 import java.util.Locale
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal class MessageListItemMapper(
     private val messageHelper: MessageHelper,

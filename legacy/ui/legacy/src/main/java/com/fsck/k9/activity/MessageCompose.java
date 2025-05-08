@@ -4,11 +4,12 @@ package com.fsck.k9.activity;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,17 +29,17 @@ import android.text.TextWatcher;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -47,16 +49,16 @@ import androidx.core.os.BundleCompat;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import app.k9mail.legacy.account.LegacyAccount;
-import app.k9mail.legacy.account.MessageFormat;
+import net.thunderbird.core.android.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
-import app.k9mail.legacy.account.Identity;
+import net.thunderbird.core.android.account.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.compose.AttachmentPresenter;
 import com.fsck.k9.activity.compose.AttachmentPresenter.AttachmentMvpView;
 import com.fsck.k9.activity.compose.AttachmentPresenter.WaitingAction;
+import app.k9mail.core.android.common.camera.CameraCaptureHandler;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState;
 import com.fsck.k9.activity.compose.IdentityAdapter;
@@ -71,7 +73,6 @@ import com.fsck.k9.activity.compose.ReplyToView;
 import com.fsck.k9.activity.compose.SaveMessageTask;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
-import com.fsck.k9.contact.ContactIntentHelper;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.MessagingListener;
@@ -115,11 +116,16 @@ import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
+import net.thunderbird.core.android.account.MessageFormat;
+import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.search.LocalSearch;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
 import timber.log.Timber;
+import static com.fsck.k9.activity.compose.AttachmentPresenter.REQUEST_CODE_ATTACHMENT_URI;
+import static app.k9mail.core.android.common.camera.CameraCaptureHandler.CAMERA_PERMISSION_REQUEST_CODE;
+import static app.k9mail.core.android.common.camera.CameraCaptureHandler.REQUEST_IMAGE_CAPTURE;
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
@@ -171,6 +177,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int REQUEST_MASK_ATTACHMENT_PRESENTER = (1 << 10);
     private static final int REQUEST_MASK_MESSAGE_BUILDER = (1 << 11);
 
+
+
     /**
      * Regular expression to remove the first localized "Re:" prefix in subjects.
      *
@@ -187,6 +195,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
 
     private final Contacts contacts = DI.get(Contacts.class);
+
+    private final CameraCaptureHandler cameraCaptureHandler = DI.get(CameraCaptureHandler.class);
 
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
@@ -251,7 +261,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             finish();
             return;
         }
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setLayout(R.layout.message_compose);
         ViewStub contentContainer = findViewById(R.id.message_compose_content);
@@ -324,6 +333,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         EditText upperSignature = findViewById(R.id.upper_signature);
         EditText lowerSignature = findViewById(R.id.lower_signature);
 
+
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
         attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView,
@@ -390,9 +400,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             messageContentView.setText(CrLfConverter.toLf(intentData.getExtraText()));
         }
 
-        if (intentData.getExtraStream() != null) {
-            attachmentPresenter.addExternalAttachment(intentData.getExtraStream(), intentData.getIntentType());
+        List<Uri> uriList = intentData.getExtraStream();
+        String intentType = intentData.getIntentType();
+
+        if (intentType != null) {
+            for (Uri uri : uriList) {
+                attachmentPresenter.addExternalAttachment(uri, intentType);
+            }
         }
+
 
         if (intentData.getSubject() != null && subjectView.getText().length() == 0) {
             subjectView.setText(intentData.getSubject());
@@ -503,7 +519,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.reattachCallback(this);
         }
-
     }
 
     @Override
@@ -796,10 +811,30 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 attachmentPresenter.onActivityResult(resultCode, requestCode, data);
                 return;
             }
+
+            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+                Intent intent = new Intent();
+                intent.setData(cameraCaptureHandler.getCapturedImageUri());
+                attachmentPresenter.onActivityResult(resultCode, REQUEST_CODE_ATTACHMENT_URI, intent);
+                return;
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                cameraCaptureHandler.openCamera(this);
+            } else {
+                Toast.makeText(this,R.string.camera_permission_denied,Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     private void onAccountChosen(LegacyAccount account, Identity identity) {
         if (!this.account.equals(account)) {
@@ -844,6 +879,29 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         switchToIdentity(identity);
+    }
+
+    private void showPopupMenu(View view) {
+        PopupMenu popup = new PopupMenu(this, view);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.message_attachment_option, popup.getMenu());
+        popup.getMenu().findItem(R.id.open_camera).setVisible(cameraCaptureHandler.canLaunchCamera(this));
+        popup.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.open_camera) {
+                if(!cameraCaptureHandler.hasCameraPermission(this)){
+                    cameraCaptureHandler.requestCameraPermission(this);
+                }else {
+                    cameraCaptureHandler.openCamera(this);
+                }
+                return true;
+            } else if (itemId == R.id.attach_file) {
+                attachmentPresenter.onClickAddAttachment(recipientPresenter);
+                return true;
+            }
+            return false;
+        });
+        popup.show();
     }
 
     private void switchToIdentity(Identity identity) {
@@ -952,7 +1010,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else if (id == R.id.openpgp_sign_only_disable) {
             recipientPresenter.onMenuSetSignOnly(false);
         } else if (id == R.id.add_attachment) {
-            attachmentPresenter.onClickAddAttachment(recipientPresenter);
+            View attachmentMenuAnchor = findViewById(com.fsck.k9.ui.base.R.id.toolbar).findViewById(R.id.add_attachment);
+            showPopupMenu(attachmentMenuAnchor);
         } else if (id == R.id.read_receipt) {
             onReadReceipt();
         } else {

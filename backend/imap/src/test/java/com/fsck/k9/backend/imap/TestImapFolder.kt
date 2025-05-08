@@ -187,4 +187,8 @@ open class TestImapFolder(override val serverId: String) : ImapFolder {
     override fun expungeUids(uids: List<String>) {
         throw UnsupportedOperationException("not implemented")
     }
+
+    override fun create(): Boolean {
+        throw UnsupportedOperationException("not implemented")
+    }
 }

@@ -1,8 +1,8 @@
 package net.thunderbird.android.auth
 
-import app.k9mail.core.common.oauth.OAuthConfiguration
-import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import net.thunderbird.android.BuildConfig
+import net.thunderbird.core.common.oauth.OAuthConfiguration
+import net.thunderbird.core.common.oauth.OAuthConfigurationFactory
 
 @Suppress("ktlint:standard:max-line-length")
 class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
@@ -65,6 +65,8 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
         ) to OAuthConfiguration(
             clientId = "e6f8716e-299d-4ed9-bbf3-453f192f44e5",
             scopes = listOf(
+                "openid",
+                "email",
                 "https://outlook.office.com/IMAP.AccessAsUser.All",
                 "https://outlook.office.com/SMTP.Send",
                 "offline_access",

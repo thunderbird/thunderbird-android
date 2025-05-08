@@ -4,19 +4,24 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
-import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
+import com.fsck.k9.FileLoggerTree
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.settings.remove
 import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.toFeatureFlagKey
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,7 +46,20 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         this.rootKey = rootKey
         setHasOptionsMenu(true)
         setPreferencesFromResource(R.xml.general_settings, rootKey)
-
+        val listener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (!(newValue as Boolean)) {
+                val now = Calendar.getInstance()
+                val uriString = String.format(
+                    Locale.US,
+                    "%s_%s.txt",
+                    FileLoggerTree.DEFAULT_SYNC_FILENAME,
+                    SimpleDateFormat("yyyy-MM-dd", Locale.US).format(now.time),
+                )
+                exportLogsResultContract.launch(uriString)
+            }
+            true
+        }
+        findPreference<Preference>("sync_debug_logging")?.onPreferenceChangeListener = listener
         featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
             .onEnabled {
                 val parentPreference = findPreference<PreferenceCategory>("global_preferences")
@@ -64,8 +82,8 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         dismissSnackbar()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         activity?.title = preferenceScreen.title
     }
 
@@ -81,7 +99,15 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.exportLogs) {
             exportLogsResultContract.launch(GeneralSettingsViewModel.DEFAULT_FILENAME)
-            return true
+        } else if (item.itemId == R.id.exportSyncLogs) {
+            val now = Calendar.getInstance()
+            val uriString = String.format(
+                Locale.US,
+                "%s_%s.txt",
+                FileLoggerTree.DEFAULT_SYNC_FILENAME,
+                SimpleDateFormat("yyyy-MM-dd", Locale.US).format(now.time),
+            )
+            exportLogsResultContract.launch(uriString)
         }
 
         return super.onOptionsItemSelected(item)

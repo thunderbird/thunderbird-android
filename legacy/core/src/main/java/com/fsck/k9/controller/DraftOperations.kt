@@ -1,6 +1,5 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.K9
@@ -14,6 +13,7 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.SaveMessageDataCreator
+import net.thunderbird.core.android.account.LegacyAccount
 import org.jetbrains.annotations.NotNull
 import timber.log.Timber
 

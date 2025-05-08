@@ -1,6 +1,6 @@
 package com.fsck.k9.helper;
 
-import app.k9mail.core.android.testing.RobolectricTest;
+import net.thunderbird.core.android.testing.RobolectricTest;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeMessage;

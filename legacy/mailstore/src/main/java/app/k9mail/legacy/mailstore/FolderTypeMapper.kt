@@ -1,7 +1,7 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.mail.folder.api.FolderType
 
 object FolderTypeMapper {
 

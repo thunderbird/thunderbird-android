@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import app.k9mail.core.ui.compose.common.annotation.PreviewDevices
@@ -14,6 +15,7 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 @Composable
@@ -21,6 +23,7 @@ import kotlinx.parcelize.Parcelize
 internal fun ListDetailPanePreview() {
     PreviewWithTheme {
         val navigationController = rememberListDetailNavigationController<ListItem>()
+        val coroutineScope = rememberCoroutineScope()
 
         ListDetailPane(
             navigationController = navigationController,
@@ -34,7 +37,9 @@ internal fun ListDetailPanePreview() {
                             ListItem(
                                 item = item,
                                 onClick = {
-                                    navigationController.value.navigateToDetail(item)
+                                    coroutineScope.launch {
+                                        navigationController.value.navigateToDetail(item)
+                                    }
                                 },
                             )
                         }
@@ -48,7 +53,11 @@ internal fun ListDetailPanePreview() {
                 ) {
                     ListItem(
                         item = item,
-                        onClick = { navigationController.value.navigateBack() },
+                        onClick = {
+                            coroutineScope.launch {
+                                navigationController.value.navigateBack()
+                            }
+                        },
                     )
                 }
             },

@@ -1,8 +1,8 @@
 package com.fsck.k9.crypto
 
-import app.k9mail.legacy.account.Identity
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import net.thunderbird.core.android.account.Identity
 import org.junit.Test
 
 class OpenPgpApiHelperTest {

@@ -124,6 +124,7 @@ internal class HttpUriParser : UriParser {
         return matchResult.range.last + 1
     }
 
+    @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth", "ReturnCount")
     private fun tryMatchIpv6Address(text: CharSequence, startPos: Int): Int {
         if (startPos == text.length || text[startPos] != '[') return startPos
 
@@ -179,8 +180,10 @@ internal class HttpUriParser : UriParser {
         if (currentPos == addressEnd) {
             // 1) No compression and full address, everything fine
             // 2) Compression enabled and whole address parsed, everything fine as well
-            if (!compressionEnabled && beginSegmentsCount + endSegmentsCount == 8 ||
-                compressionEnabled && beginSegmentsCount + endSegmentsCount < 8
+            if (!compressionEnabled &&
+                beginSegmentsCount + endSegmentsCount == 8 ||
+                compressionEnabled &&
+                beginSegmentsCount + endSegmentsCount < 8
             ) {
                 // Only optional port left, skip address bracket
                 currentPos++

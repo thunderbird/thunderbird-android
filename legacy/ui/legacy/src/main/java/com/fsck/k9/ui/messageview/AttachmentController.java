@@ -14,7 +14,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import androidx.annotation.WorkerThread;
-import app.k9mail.legacy.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccount;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;

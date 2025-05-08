@@ -1,10 +1,10 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePassword
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.usecase.ValidateConfigurationApproval
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailAddress
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.server.settings.domain.ServerSettingsDomainContract.UseCase as ServerSettingsUseCase
 
 internal class AccountAutoDiscoveryValidator(

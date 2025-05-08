@@ -11,11 +11,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
+import net.thunderbird.core.android.account.LegacyAccount;
 import timber.log.Timber;
 
 

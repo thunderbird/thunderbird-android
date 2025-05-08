@@ -3,7 +3,6 @@ package com.fsck.k9.ui.endtoend
 import android.app.PendingIntent
 import android.content.Intent
 import androidx.core.content.IntentCompat
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.autocrypt.AutocryptTransferMessageCreator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.mail.Address
@@ -15,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.android.account.LegacyAccount
 import org.openintents.openpgp.util.OpenPgpApi
 
 class AutocryptSetupMessageLiveEvent(

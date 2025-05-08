@@ -2,14 +2,14 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult.NoUsableSettingsFound
 import app.k9mail.autodiscovery.autoconfig.MockAutoconfigFetcher.Companion.RESULT_ONE
-import app.k9mail.core.common.mail.toUserEmailAddress
-import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.mail.toUserEmailAddress
+import net.thunderbird.core.common.net.toDomain
 
 class MxLookupAutoconfigDiscoveryTest {
     private val mxResolver = MockMxResolver()

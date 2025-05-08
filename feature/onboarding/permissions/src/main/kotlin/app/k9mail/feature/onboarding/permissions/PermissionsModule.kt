@@ -5,8 +5,8 @@ import app.k9mail.feature.onboarding.permissions.domain.PermissionsDomainContrac
 import app.k9mail.feature.onboarding.permissions.domain.usecase.CheckPermission
 import app.k9mail.feature.onboarding.permissions.domain.usecase.HasRuntimePermissions
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureOnboardingPermissionsModule: Module = module {

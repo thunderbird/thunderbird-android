@@ -1,28 +1,5 @@
 package net.thunderbird.app.common.account
 
-import app.k9mail.core.featureflag.FeatureFlagResult
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_ASCENDING
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_TYPE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
-import app.k9mail.legacy.account.Expunge
-import app.k9mail.legacy.account.FolderMode
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.ShowPictures
-import app.k9mail.legacy.account.SpecialFolderSelection
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -30,6 +7,30 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_ASCENDING
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_TYPE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
+import net.thunderbird.core.android.account.Expunge
+import net.thunderbird.core.android.account.FolderMode
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.ShowPictures
+import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.preferences.Storage
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
@@ -147,6 +148,11 @@ class CommonAccountDefaultsProviderTest {
             uuid = "test-uuid",
             isSensitiveDebugLoggingEnabled = { false },
         )
+        val storage = mock<Storage> {
+            on { contains("${account.uuid}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+        }
         val testSubject = CommonAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
@@ -155,7 +161,7 @@ class CommonAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyOverwrites(account)
+        testSubject.applyOverwrites(account, storage)
 
         // assert
         assertThat(account.isNotifyNewMail).isFalse()
@@ -172,6 +178,11 @@ class CommonAccountDefaultsProviderTest {
             uuid = "test-uuid",
             isSensitiveDebugLoggingEnabled = { false },
         )
+        val storage = mock<Storage> {
+            on { contains("${account.uuid}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+        }
         val testSubject = CommonAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
@@ -180,7 +191,69 @@ class CommonAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyOverwrites(account)
+        testSubject.applyOverwrites(account, storage)
+
+        // assert
+        assertThat(account.isNotifyNewMail).isTrue()
+        assertThat(account.isNotifySelfNewMail).isTrue()
+    }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `applyOverwrites updates account notification values from storage when storage contains isNotifyNewMail value`() {
+        // arrange
+        val resourceProvider = mock<CoreResourceProvider> {
+            on { defaultIdentityDescription() } doReturn "Default Identity"
+        }
+        val account = LegacyAccount(
+            uuid = "test-uuid",
+            isSensitiveDebugLoggingEnabled = { false },
+        )
+        val storage = mock<Storage> {
+            on { contains("${account.uuid}.notifyNewMail") } doReturn true
+            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+        }
+        val testSubject = CommonAccountDefaultsProvider(
+            resourceProvider = resourceProvider,
+            featureFlagProvider = {
+                FeatureFlagResult.Enabled
+            },
+        )
+
+        // act
+        testSubject.applyOverwrites(account, storage)
+
+        // assert
+        assertThat(account.isNotifyNewMail).isFalse()
+        assertThat(account.isNotifySelfNewMail).isFalse()
+    }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `applyOverwrites updates account notification values from featureFlag values when storage does not contain isNotifyNewMail value`() {
+        // arrange
+        val resourceProvider = mock<CoreResourceProvider> {
+            on { defaultIdentityDescription() } doReturn "Default Identity"
+        }
+        val account = LegacyAccount(
+            uuid = "test-uuid",
+            isSensitiveDebugLoggingEnabled = { false },
+        )
+        val storage = mock<Storage> {
+            on { contains("${account.uuid}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+        }
+        val testSubject = CommonAccountDefaultsProvider(
+            resourceProvider = resourceProvider,
+            featureFlagProvider = {
+                FeatureFlagResult.Enabled
+            },
+        )
+
+        // act
+        testSubject.applyOverwrites(account, storage)
 
         // assert
         assertThat(account.isNotifyNewMail).isTrue()

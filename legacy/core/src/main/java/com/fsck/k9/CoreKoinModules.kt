@@ -16,7 +16,7 @@ import com.fsck.k9.preferences.preferencesModule
 import net.thunderbird.core.android.logging.loggingModule
 import net.thunderbird.core.android.network.coreAndroidNetworkModule
 
-val coreModules = listOf(
+val legacyCoreModules = listOf(
     mainModule,
     coreAndroidNetworkModule,
     openPgpModule,

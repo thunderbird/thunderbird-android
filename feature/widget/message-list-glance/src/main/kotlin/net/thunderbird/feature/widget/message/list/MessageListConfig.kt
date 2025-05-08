@@ -1,6 +1,6 @@
 package net.thunderbird.feature.widget.message.list
 
-import app.k9mail.legacy.account.SortType
+import net.thunderbird.core.android.account.SortType
 import net.thunderbird.feature.search.LocalSearch
 
 internal data class MessageListConfig(

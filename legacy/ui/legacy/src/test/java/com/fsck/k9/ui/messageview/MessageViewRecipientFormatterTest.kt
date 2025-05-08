@@ -4,15 +4,15 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import androidx.core.text.getSpans
-import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 private const val IDENTITY_ADDRESS = "me@domain.example"
@@ -45,7 +45,10 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
     @Test
     fun `multiple identities`() {
         val account = LegacyAccount("uuid").apply {
-            identities += Identity(description = "My identity", email = IDENTITY_ADDRESS)
+            identities += Identity(
+                description = "My identity",
+                email = IDENTITY_ADDRESS,
+            )
             identities += Identity(email = "another.one@domain.example")
         }
         val recipientFormatter = createRecipientFormatter()

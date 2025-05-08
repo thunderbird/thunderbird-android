@@ -8,10 +8,10 @@ import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
-import app.k9mail.legacy.account.SortType
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
+import net.thunderbird.core.android.account.SortType
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
 import org.koin.core.component.KoinComponent

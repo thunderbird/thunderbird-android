@@ -2,9 +2,9 @@ package com.fsck.k9.notification
 
 import androidx.core.app.NotificationCompat
 import androidx.test.core.app.ApplicationProvider
-import app.k9mail.core.android.testing.RobolectricTest
-import app.k9mail.legacy.account.LegacyAccount
-import com.fsck.k9.testing.MockHelper.mockBuilder
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.testing.MockHelper.mockBuilder
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any

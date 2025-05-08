@@ -10,6 +10,7 @@ import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 internal fun PreferenceItem(
     preference: Preference,
     onClick: () -> Unit,
+    onPreferenceChange: (PreferenceSetting<*>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (preference) {
@@ -30,10 +31,39 @@ internal fun PreferenceItem(
             )
         }
 
+        is PreferenceSetting.SingleChoice -> {
+            PreferenceItemSingleChoiceView(
+                preference = preference,
+                onPreferenceChange = onPreferenceChange,
+                modifier = modifier,
+            )
+        }
+
+        is PreferenceSetting.Switch -> {
+            PreferenceItemSwitchView(
+                preference = preference,
+                onPreferenceChange = onPreferenceChange,
+                modifier = modifier,
+            )
+        }
+
         // PreferenceDisplay
         is PreferenceDisplay.Custom -> {
             PreferenceItemCustomView(
                 preference = preference,
+                modifier = modifier,
+            )
+        }
+
+        is PreferenceDisplay.SectionHeader -> {
+            PreferenceItemSectionHeaderView(
+                preference = preference,
+                modifier = modifier,
+            )
+        }
+
+        is PreferenceDisplay.SectionDivider -> {
+            PreferenceItemSectionDividerView(
                 modifier = modifier,
             )
         }

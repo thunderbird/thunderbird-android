@@ -1,6 +1,6 @@
 package app.k9mail.legacy.message.controller
 
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
 
 interface MessagingControllerMailChecker {
     fun checkMail(
