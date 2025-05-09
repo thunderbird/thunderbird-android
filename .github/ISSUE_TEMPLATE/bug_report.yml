@@ -1,5 +1,5 @@
 name: Bug report
-description: Let us know about crashes or existing functionality not working like it should.
+description: Let us know about crashes or existing functionality not working like it should
 labels: [ "type: bug", "unconfirmed" ]
 body:
   - type: markdown
