@@ -22,7 +22,6 @@ import app.k9mail.legacy.account.FolderMode
 import app.k9mail.legacy.account.Identity
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.ShowPictures
-import app.k9mail.legacy.account.SpecialFolderSelection
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -30,6 +29,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
+import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration

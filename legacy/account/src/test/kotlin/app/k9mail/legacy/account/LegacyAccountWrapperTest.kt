@@ -6,6 +6,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
+import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
 
 class LegacyAccountWrapperTest {
