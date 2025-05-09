@@ -412,7 +412,7 @@ public abstract class TokenCompleteTextView<T> extends AppCompatAutoCompleteText
         Editable editable = getText();
         Range currentRange = getCurrentCandidateTokenRange();
 
-        String result = TextUtils.substring(editable, currentRange.start, currentRange.end);
+        String result = TextUtils.substring(editable, currentRange.start, currentRange.end).trim();
         Log.d(TAG, "Current completion text: " + result);
         return result;
     }
