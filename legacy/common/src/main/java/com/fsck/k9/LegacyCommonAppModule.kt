@@ -2,7 +2,6 @@ package com.fsck.k9
 
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
-import app.k9mail.feature.launcher.di.featureLauncherModule
 import app.k9mail.feature.widget.message.list.messageListWidgetModule
 import app.k9mail.feature.widget.unread.UnreadWidgetUpdateListener
 import app.k9mail.feature.widget.unread.unreadWidgetModule
@@ -19,7 +18,7 @@ import com.fsck.k9.storage.storageModule
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val commonAppModule = module {
+val legacyCommonAppModule = module {
     single {
         MessagingListenerProvider(
             listOf(
@@ -37,8 +36,8 @@ val commonAppModule = module {
     }
 }
 
-val commonAppModules = listOf(
-    commonAppModule,
+val legacyCommonAppModules = listOf(
+    legacyCommonAppModule,
     messageListWidgetModule,
     unreadWidgetModule,
     notificationModule,
@@ -46,5 +45,4 @@ val commonAppModules = listOf(
     backendsModule,
     storageModule,
     newAccountModule,
-    featureLauncherModule,
 )

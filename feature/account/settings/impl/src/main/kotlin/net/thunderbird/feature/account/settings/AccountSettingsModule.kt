@@ -9,7 +9,7 @@ import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGenera
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralResourceProvider
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureAccountSettingsModule = module {

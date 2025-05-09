@@ -12,8 +12,8 @@ import com.fsck.k9.Core
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.backend.BackendManager
-import com.fsck.k9.coreModules
 import com.fsck.k9.crypto.EncryptionExtractor
+import com.fsck.k9.legacyCoreModules
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import org.koin.dsl.module
@@ -24,7 +24,7 @@ class TestApp : Application() {
         Core.earlyInit()
 
         super.onCreate()
-        DI.start(this, coreModules + storageModule + telemetryModule + testModule)
+        DI.start(this, legacyCoreModules + storageModule + telemetryModule + testModule)
 
         K9.init(this)
         Core.init(this)

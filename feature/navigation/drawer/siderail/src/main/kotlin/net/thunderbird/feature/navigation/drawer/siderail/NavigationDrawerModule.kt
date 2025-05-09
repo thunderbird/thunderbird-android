@@ -10,8 +10,8 @@ import net.thunderbird.feature.navigation.drawer.siderail.domain.usecase.SaveDra
 import net.thunderbird.feature.navigation.drawer.siderail.domain.usecase.SyncAccount
 import net.thunderbird.feature.navigation.drawer.siderail.domain.usecase.SyncAllAccounts
 import net.thunderbird.feature.navigation.drawer.siderail.ui.DrawerViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val navigationSideRailDrawerModule: Module = module {

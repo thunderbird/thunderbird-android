@@ -23,7 +23,7 @@ import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminder
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderDialog
 import com.android.billingclient.api.ProductDetails
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureFundingModule = module {

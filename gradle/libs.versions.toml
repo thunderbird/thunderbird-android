@@ -69,7 +69,7 @@ jsoup = "1.19.1"
 junit = "4.13.2"
 jutf7 = "1.0.0"
 jzlib = "1.0.7"
-koinBom = "3.5.6"
+koinBom = "4.0.4"
 kotlinBom = "2.1.20"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "2.0.21"

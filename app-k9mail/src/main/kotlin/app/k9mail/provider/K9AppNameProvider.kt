@@ -6,7 +6,7 @@ import app.k9mail.core.common.provider.BrandNameProvider
 import com.fsck.k9.R
 import com.fsck.k9.preferences.FilePrefixProvider
 
-class K9AppNameProvider(
+internal class K9AppNameProvider(
     context: Context,
 ) : AppNameProvider, BrandNameProvider, FilePrefixProvider {
     override val appName: String by lazy {
