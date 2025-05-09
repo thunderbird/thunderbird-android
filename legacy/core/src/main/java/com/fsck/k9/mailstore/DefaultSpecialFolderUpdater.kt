@@ -6,6 +6,7 @@ import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.core.mail.folder.api.SpecialFolderUpdater
 import net.thunderbird.feature.folder.api.RemoteFolder
 
 /**
@@ -13,13 +14,13 @@ import net.thunderbird.feature.folder.api.RemoteFolder
  * are marked as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
 // TODO: Find a better way to deal with local-only special folders
-class SpecialFolderUpdater(
+class DefaultSpecialFolderUpdater private constructor(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val account: LegacyAccount,
-) {
-    fun updateSpecialFolders() {
+) : SpecialFolderUpdater {
+    override fun updateSpecialFolders() {
         val folders = folderRepository.getRemoteFolders(account)
 
         updateInbox(folders)
@@ -70,6 +71,7 @@ class SpecialFolderUpdater(
                 val specialFolder = specialFolderSelectionStrategy.selectSpecialFolder(folders, type)
                 setSpecialFolder(type, specialFolder?.id, SpecialFolderSelection.AUTOMATIC)
             }
+
             SpecialFolderSelection.MANUAL -> {
                 if (folders.none { it.id == getSpecialFolderId(type) }) {
                     setSpecialFolder(type, null, SpecialFolderSelection.MANUAL)
@@ -135,4 +137,17 @@ class SpecialFolderUpdater(
     }
 
     private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
+
+    class Factory(
+        private val preferences: Preferences,
+        private val folderRepository: FolderRepository,
+        private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
+    ) : SpecialFolderUpdater.Factory<LegacyAccount> {
+        override fun create(account: LegacyAccount): SpecialFolderUpdater = DefaultSpecialFolderUpdater(
+            preferences = preferences,
+            folderRepository = folderRepository,
+            specialFolderSelectionStrategy = specialFolderSelectionStrategy,
+            account = account,
+        )
+    }
 }
