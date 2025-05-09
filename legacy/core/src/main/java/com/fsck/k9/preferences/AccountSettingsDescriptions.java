@@ -17,7 +17,6 @@ import app.k9mail.legacy.account.MessageFormat;
 import app.k9mail.legacy.account.QuoteStyle;
 import app.k9mail.legacy.account.ShowPictures;
 import app.k9mail.legacy.account.SortType;
-import app.k9mail.legacy.account.SpecialFolderSelection;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
@@ -36,6 +35,7 @@ import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo80;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo81;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo91;
+import net.thunderbird.core.mail.folder.api.SpecialFolderSelection;
 import net.thunderbird.feature.notification.NotificationLight;
 
 import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;
