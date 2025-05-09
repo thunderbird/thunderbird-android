@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Release Automation - Thunderbird for Android - Developer Documentation</title>
+        <title>Git Commit Guide - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -135,7 +135,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./ci/AUTOMATION.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./contributing/git-commit-guide.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -164,113 +164,103 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="release-automation-setup"><a class="header" href="#release-automation-setup">Release Automation Setup</a></h1>
-<p>Release automation is triggered by the workflow_dispatch event on the “Shippable Build &amp; Signing”
-workflow. GitHub environments are used to set configuration variables and secrets for each
-application and release type.</p>
-<h2 id="automatic-setup"><a class="header" href="#automatic-setup">Automatic setup</a></h2>
-<p>There is a script available for automatic setup, which is helpful if you want to replicate this on
-your own repository for devlopment. Please see /scripts/ci/setup_release_automation.</p>
-<p>You can run it using:</p>
-<pre><code class="language-bash">python -m venv venv
-source venv/bin/activate
-pip install requests pynacl
-cd .signing
-python ../scripts/ci/setup_release_automation -r yourfork/thunderbird-android
+                        <h1 id="git-commit-guide"><a class="header" href="#git-commit-guide">Git Commit Guide</a></h1>
+<p>Use <a href="https://www.conventionalcommits.org/" title="" target="_blank">Conventional Commits</a> to write consistent and meaningful commit messages.
+This makes your work easier to review, track, and maintain for everyone involved in the project.</p>
+<h2 id="-commit-message-format"><a class="header" href="#-commit-message-format">✍️ Commit Message Format</a></h2>
+<pre><code class="language-git">&lt;type&gt;(&lt;scope&gt;): &lt;description&gt;
+
+&lt;body&gt;
+
+&lt;footer(s)&gt;
 </code></pre>
-<p>You will need the following files:</p>
+<p>Components:</p>
 <ul>
-<li>The signing keys with their default filenames</li>
-<li>A matrix-account.json with the following keys:</li>
+<li><code>&lt;type&gt;</code>: The <a href="#-commit-types">type of change</a> being made (e.g., feat, fix, docs).</li>
+<li><code>&lt;scope&gt;</code> <strong>(optional)</strong>: The <a href="#optional-scope">scope</a> indicates the area of the codebase affected by the change (e.g., auth, ui).</li>
+<li><code>&lt;description&gt;</code>: Short description of the change (50 characters or less)</li>
+<li><code>&lt;body&gt;</code> <strong>(optional)</strong>: Explain what changed and why, include context if helpful.</li>
+<li><code>&lt;footer(s)&gt;</code> <strong>(optional)</strong>: Include issue references, breaking changes, etc.</li>
 </ul>
-<pre><code class="language-json">{
-  "homeserver": "matrix-client.matrix.org",
-  "room": "room id here",
-  "token": "matrix token here",
-  "userMap": {
-    "github_username": "@matrix_id:mozilla.org"
-  }
-}
+<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<p>Basic:</p>
+<pre><code class="language-git">feat: add QR code scanner
 </code></pre>
-<ul>
-<li><code>play-store-account.json</code> with the service account json that will do the uploads</li>
-<li><code>thunderbird-mobile-gh-releaser-bot.clientid.txt</code> as a simple file with the client ID of the releaser bot (you can skip this to use GitHub Actions as the user)</li>
-<li><code>thunderbird-mobile-gh-releaser-bot.pem</code> with the private key of the releaser bot</li>
-</ul>
-<h2 id="build-environments"><a class="header" href="#build-environments">Build Environments</a></h2>
-<p>Build environments determine the configuration for the respective release channel. The following are
-available:</p>
-<ul>
-<li>thunderbird_beta</li>
-<li>thunderbird_daily</li>
-<li>thunderbird_release</li>
-</ul>
-<p>The following (non-sensitive) variables have been set:</p>
-<ul>
-<li>RELEASE_TYPE: daily | beta | release</li>
-<li>MATRIX_INCLUDES: A JSON string to determine the packages to be built</li>
-</ul>
-<p>The following MATRIX_INCLUDES would build an apk and aab for Thunderbird, and an apk for K-9 Mail.</p>
-<pre><code class="language-json">[
-  { "appName": "thunderbird", "packageFormat": "apk", "packageFlavor": "foss" },
-  {
-    "appName": "thunderbird",
-    "packageFormat": "bundle",
-    "packageFlavor": "full"
-  },
-  { "appName": "k9mail", "packageFormat": "apk", "packageFlavor": "foss" }
-]
+<p>With scope:</p>
+<pre><code class="language-git">feat(auth): add login functionality
 </code></pre>
-<p>The environments are locked to the respective branch they belong to.</p>
-<h2 id="signing-environments"><a class="header" href="#signing-environments">Signing Environments</a></h2>
-<p>These environments contain the secrets for signing. Their names follow this pattern:</p>
-<pre><code class="language-text">&lt;appName&gt;_&lt;releaseType&gt;_&lt;packageFlavor&gt;
-thunderbird_beta_full
-thunderbird_beta_foss
-k9mail_beta_foss
+<p>With body and issue reference:</p>
+<pre><code class="language-git">fix(api): handle null response from login endpoint
+
+Checks for missing tokens to prevent app crash during login.
+
+Fixes #123
 </code></pre>
-<p>The following secrets are needed:</p>
+<h3 id="-commit-types"><a class="header" href="#-commit-types">🏷️ Commit Types</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Use for…</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>feat</code></td><td>New features</td><td><code>feat(camera): add zoom support</code></td></tr>
+<tr><td><code>fix</code></td><td>Bug fixes</td><td><code>fix(auth): handle empty username crash</code></td></tr>
+<tr><td><code>docs</code></td><td>Documentation only</td><td><code>docs(readme): update setup instructions</code></td></tr>
+<tr><td><code>style</code></td><td>Code style (no logic changes)</td><td><code>style: reformat settings screen</code></td></tr>
+<tr><td><code>refactor</code></td><td>Code changes (no features/fixes)</td><td><code>refactor(nav): simplify stack setup</code></td></tr>
+<tr><td><code>test</code></td><td>Adding/editing tests</td><td><code>test(api): add unit test for login</code></td></tr>
+<tr><td><code>chore</code></td><td>Tooling, CI, dependencies</td><td><code>chore(ci): update GitHub Actions config</code></td></tr>
+<tr><td><code>revert</code></td><td>Reverting previous commits</td><td><code>revert: remove feature flag</code></td></tr>
+</tbody></table>
+</div>
+<h3 id="optional-scope"><a class="header" href="#optional-scope">📍Optional Scope</a></h3>
+<p>The <strong>scope</strong> is optional but recommended for clarity, especially for large changes or or when multiple areas of the
+codebase are involved.</p>
+<div class="table-wrapper"><table><thead><tr><th>Scope</th><th>Use for…</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>auth</code></td><td>Authentication</td><td><code>feat(auth): add login functionality</code></td></tr>
+<tr><td><code>settings</code></td><td>User settings</td><td><code>feat(settings): add dark mode toggle</code></td></tr>
+<tr><td><code>build</code></td><td>Build system</td><td><code>fix(build): improve build performance</code></td></tr>
+<tr><td><code>ui</code></td><td>UI/theme</td><td><code>refactor(ui): split theme into modules</code></td></tr>
+<tr><td><code>deps</code></td><td>Dependencies</td><td><code>chore(deps): bump Kotlin to 2.0.0</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="-best-practices"><a class="header" href="#-best-practices">🧠 Best Practices</a></h2>
+<h3 id="1-one-commit-one-purpose"><a class="header" href="#1-one-commit-one-purpose">1. One Commit, One Purpose</a></h3>
 <ul>
-<li>SIGNING_KEY: The base64 encoded signing key, see https://github.com/noriban/sign-android-release for details</li>
-<li>KEY_ALIAS: The alias of your signing key</li>
-<li>KEY_PASSWORD: The private key password for your signing keystore</li>
-<li>KEY_STORE_PASSWORD: The password to your signing keystore</li>
+<li>✅ Each commit should represent a single logical change or addition to the codebase.</li>
+<li>❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and )
+adding a feature).</li>
 </ul>
-<p>The environments are locked to the respective branch they belong to.</p>
-<h2 id="publishing-hold-environment"><a class="header" href="#publishing-hold-environment">Publishing Hold Environment</a></h2>
-<p>The “publish_hold” is shared by all application variants and is used by the “pre_publish” job.
-It has no secrets or variables, but “Required Reviewers” is set to trusted team members who oversee releases. The
-effect is that after package signing completes, the publishing jobs that depend on it will not run until released
-manually.</p>
-<p><img src="assets/publish_hold.png" alt="publish hold" /></p>
-<h2 id="github-releases-environment"><a class="header" href="#github-releases-environment">Github Releases Environment</a></h2>
-<p>This environment will create the github release. It uses <a href="https://github.com/actions/create-github-app-token" title="" target="_blank">actions/create-github-app-token</a>
-to upload the release with limited permissions.</p>
+<h3 id="2-keep-it-manageable"><a class="header" href="#2-keep-it-manageable">2. Keep It Manageable</a></h3>
 <ul>
-<li>RELEASER_APP_CLIENT_ID: Environment variable with the OAuth Client ID of the GitHub app</li>
-<li>RELEASER_APP_PRIVATE_KEY: Secret with the private key of the app</li>
+<li>✅ Break up large changes into smaller, more manageable commits.</li>
+<li>✅ If a commit changes more than 200 lines of code, consider breaking it up.</li>
+<li>❌ Avoid massive, hard-to-review commits.</li>
 </ul>
-<p>The releases environment is locked to the release, beta and main branches.</p>
-<p>If you leave out the environment, the Github Actions user will be used.</p>
-<h2 id="matrix-notify-environment"><a class="header" href="#matrix-notify-environment">Matrix Notify Environment</a></h2>
-<p>This environment will notify about build updates. It requires the following keys:</p>
+<h3 id="3-keep-it-working"><a class="header" href="#3-keep-it-working">3. Keep It Working</a></h3>
 <ul>
-<li>MATRIX_NOTIFY_TOKEN: The Matrix token of the user</li>
-<li>MATRIX_NOTIFY_HOMESERVER: The homeserver for the account</li>
-<li>MATRIX_NOTIFY_ROOM: The room id to notify in</li>
-<li>MATRIX_NOTIFY_USER_MAP: A json object that maps github usernames to matrix ids</li>
+<li>✅ Each commit should leave the codebase in a buildable and testable state.</li>
+<li>❌ Never commit broken code or failing tests.</li>
 </ul>
-<p>If you leave out this environment, no notifications will be sent.</p>
+<h3 id="4-think-about-reviewers-and-future-you"><a class="header" href="#4-think-about-reviewers-and-future-you">4. Think About Reviewers (and Future You)</a></h3>
+<ul>
+<li>✅ Write messages for your teammates and future self, assuming they have no context.</li>
+<li>✅ Explain non-obvious changes or decisions in the message body.</li>
+<li>✅ Consider the commit as a documentation tool.</li>
+<li>❌ Avoid jargon, acronyms, or vague messages like <code>update stuff</code>.</li>
+</ul>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<ul>
+<li>Use <a href="#-conventional-commits">Conventional Commits</a> for consistency.</li>
+<li>Keep commit messages short, structured, and focused.</li>
+<li>Make each commit purposeful and self-contained.</li>
+<li>Write commits that make collaboration and future development easier for everyone—including you.</li>
+</ul>
 <footer id="last-change">Last change: 2025-05-09, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/265c799">265c799</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../ci/RELEASE.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../contributing/java-to-kotlin-conversion-guide.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../ci/HISTORICAL_RELEASE.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../architecture/adr/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -280,11 +270,11 @@ to upload the release with limited permissions.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../ci/RELEASE.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../contributing/java-to-kotlin-conversion-guide.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../ci/HISTORICAL_RELEASE.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../architecture/adr/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
