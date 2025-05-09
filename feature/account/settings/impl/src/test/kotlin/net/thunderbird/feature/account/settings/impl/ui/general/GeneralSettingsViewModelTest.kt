@@ -12,6 +12,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.StandardTestDispatcher
 import net.thunderbird.core.outcome.Outcome
@@ -26,6 +27,19 @@ class GeneralSettingsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(StandardTestDispatcher())
+
+    @Test
+    fun `should load account name`() = runMviTest {
+        val accountId = AccountId.create()
+        val initialState = State(
+            subtitle = null,
+            preferences = persistentListOf(),
+        )
+
+        generalSettingsRobot(accountId, initialState, persistentListOf()) {
+            verifyAccountNameLoaded()
+        }
+    }
 
     @Test
     fun `should load general settings`() = runMviTest {
@@ -101,6 +115,9 @@ private class GeneralSettingsRobot(
     private val viewModel: GeneralSettingsContract.ViewModel by lazy {
         GeneralSettingsViewModel(
             accountId = accountId,
+            getAccountName = {
+                flowOf(Outcome.success("Subtitle"))
+            },
             getGeneralPreferences = {
                 preferencesState.map {
                     println("Loading preferences: $it")
@@ -130,6 +147,14 @@ private class GeneralSettingsRobot(
         turbines = mviContext.turbinesWithInitialStateCheck(
             initialState = initialState,
             viewModel = viewModel,
+        )
+    }
+
+    suspend fun verifyAccountNameLoaded() {
+        assertThat(turbines.awaitStateItem()).isEqualTo(
+            initialState.copy(
+                subtitle = "Subtitle",
+            ),
         )
     }
 
