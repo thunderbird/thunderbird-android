@@ -3,6 +3,7 @@ package net.thunderbird.legacy.core
 import app.k9mail.legacy.account.AccountDefaultsProvider
 import app.k9mail.legacy.account.Identity
 import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.preferences.Storage
 
 class FakeAccountDefaultsProvider : AccountDefaultsProvider {
     override fun applyDefaults(account: LegacyAccount) {
@@ -20,5 +21,5 @@ class FakeAccountDefaultsProvider : AccountDefaultsProvider {
         }
     }
 
-    override fun applyOverwrites(account: LegacyAccount) = Unit
+    override fun applyOverwrites(account: LegacyAccount, storage: Storage) = Unit
 }
