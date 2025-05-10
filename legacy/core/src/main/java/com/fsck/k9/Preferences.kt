@@ -91,7 +91,7 @@ class Preferences internal constructor(
 
                     accounts[uuid] = account
                     accountsInOrder.add(account)
-                    accountDefaultsProvider.applyOverwrites(account)
+                    accountDefaultsProvider.applyOverwrites(account, storage)
                 }
             }
 
