@@ -15,7 +15,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
-class K9BackendStorageTest : K9RobolectricTest() {
+class K9BackendDefaultStorageTest : K9RobolectricTest() {
     val preferences: Preferences by inject()
     val messageStoreManager: MessageStoreManager by inject()
     val saveMessageDataCreator: SaveMessageDataCreator by inject()
@@ -62,6 +62,7 @@ class K9BackendStorageTest : K9RobolectricTest() {
         assertThat(value).isEqualTo(23L)
     }
 
+    @Suppress("ForbiddenComment")
     fun createAccount(): LegacyAccount {
         // FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
         preferences.clearAccounts()

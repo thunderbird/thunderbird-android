@@ -1,5 +1,7 @@
 package app.k9mail.legacy.account
 
+import net.thunderbird.core.preferences.Storage
+
 interface AccountDefaultsProvider {
     /**
      * Apply default values to the account.
@@ -13,7 +15,7 @@ interface AccountDefaultsProvider {
      *
      * This method should be called when updating an existing account.
      */
-    fun applyOverwrites(account: LegacyAccount)
+    fun applyOverwrites(account: LegacyAccount, storage: Storage)
 
     companion object {
         const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072

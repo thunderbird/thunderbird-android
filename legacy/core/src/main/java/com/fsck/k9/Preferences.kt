@@ -11,7 +11,6 @@ import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import com.fsck.k9.preferences.StoragePersister
 import java.util.LinkedList
@@ -27,6 +26,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
+import net.thunderbird.core.preferences.Storage
 import timber.log.Timber
 
 @Suppress("MaxLineLength")
@@ -91,7 +91,7 @@ class Preferences internal constructor(
 
                     accounts[uuid] = account
                     accountsInOrder.add(account)
-                    accountDefaultsProvider.applyOverwrites(account)
+                    accountDefaultsProvider.applyOverwrites(account, storage)
                 }
             }
 

@@ -2,8 +2,8 @@ package com.fsck.k9
 
 import android.util.TypedValue
 import android.widget.TextView
-import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
+import net.thunderbird.core.preferences.Storage
 
 /**
  * Manage font size of the information displayed in the message list and in the message view.

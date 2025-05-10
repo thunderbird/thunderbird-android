@@ -4,28 +4,35 @@ package com.fsck.k9.preferences;
 import java.util.Collections;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import net.thunderbird.core.preferences.Storage;
 import timber.log.Timber;
 
-public class Storage {
+public class DefaultStorage implements Storage {
     private final Map<String, String> values;
 
-    public Storage(Map<String, String> values) {
+    public DefaultStorage(Map<String, String> values) {
         this.values = Collections.unmodifiableMap(values);
     }
 
+    @Override
     public boolean isEmpty() {
         return values.isEmpty();
     }
 
-    public boolean contains(String key) {
+    @Override
+    public boolean contains(@NonNull String key) {
         return values.containsKey(key);
     }
 
+    @NonNull
+    @Override
     public Map<String, String> getAll() {
         return values;
     }
 
-    public boolean getBoolean(String key, boolean defValue) {
+    @Override
+    public boolean getBoolean(@NonNull String key, boolean defValue) {
         String val = values.get(key);
         if (val == null) {
             return defValue;
@@ -33,7 +40,8 @@ public class Storage {
         return Boolean.parseBoolean(val);
     }
 
-    public int getInt(String key, int defValue) {
+    @Override
+    public int getInt(@NonNull String key, int defValue) {
         String val = values.get(key);
         if (val == null) {
             return defValue;
@@ -46,7 +54,8 @@ public class Storage {
         }
     }
 
-    public long getLong(String key, long defValue) {
+    @Override
+    public long getLong(@NonNull String key, long defValue) {
         String val = values.get(key);
         if (val == null) {
             return defValue;
@@ -59,6 +68,8 @@ public class Storage {
         }
     }
 
+    @NonNull
+    @Override
     public String getString(String key, String defValue) {
         String val = values.get(key);
         if (val == null) {
