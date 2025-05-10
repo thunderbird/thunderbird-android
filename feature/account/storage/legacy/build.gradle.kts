@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    api(projects.feature.account.storage.api)
+
     implementation(projects.core.preferences)
 
     implementation(projects.mail.common)
