@@ -435,6 +435,35 @@ class ImapResponseParserTest {
     }
 
     @Test
+    fun `readResponse() with LIST response containing folder name with UTF8`() {
+        val parser = createParserWithResponses(
+            """* LIST (\HasNoChildren) "." "萬里長城"""",
+            """* LIST (\HasNoChildren) "." "A&-B"""",
+        )
+        parser.setUtf8Accepted(true)
+
+        val response = parser.readResponse()
+        assertThat(response).hasSize(4)
+        assertThat(response).index(3).isEqualTo("萬里長城")
+
+        val response2 = parser.readResponse()
+        assertThat(response2).hasSize(4)
+        assertThat(response2).index(3).isEqualTo("A&-B")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with LIST response containing ambiguous folder name`() {
+        val parser = createParserWithResponses("""* LIST (\HasNoChildren) "." "A&-B"""")
+
+        val response = parser.readResponse()
+
+        assertThat(response).hasSize(4)
+        assertThat(response).index(3).isEqualTo("A&B")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
     fun `readResponse() with LIST response containing folder name with parentheses should throw`() {
         val parser = createParserWithResponses("""* LIST (\NoInferiors) "/" Root/Folder/Subfolder()""")
 
