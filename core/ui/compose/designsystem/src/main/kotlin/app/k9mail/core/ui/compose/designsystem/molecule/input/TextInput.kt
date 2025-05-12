@@ -22,7 +22,6 @@ fun TextInput(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     InputLayout(
-        modifier = Modifier,
         contentPadding = contentPadding,
         errorMessage = errorMessage,
     ) {
