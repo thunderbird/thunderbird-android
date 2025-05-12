@@ -27,6 +27,7 @@ import app.k9mail.legacy.account.ShowPictures
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.core.preferences.Storage
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
@@ -41,20 +42,25 @@ internal class CommonAccountDefaultsProvider(
         applyLegacyDefaults()
     }
 
-    override fun applyOverwrites(account: LegacyAccount) = with(account) {
-        isNotifyNewMail = featureFlagProvider.provide(
-            "email_notification_default".toFeatureFlagKey(),
-        ).whenEnabledOrNot(
-            onEnabled = { true },
-            onDisabledOrUnavailable = { false },
-        )
+    override fun applyOverwrites(account: LegacyAccount, storage: Storage) = with(account) {
+        if (storage.contains("${account.uuid}.notifyNewMail")) {
+            isNotifyNewMail = storage.getBoolean("${account.uuid}.notifyNewMail", false)
+            isNotifySelfNewMail = storage.getBoolean("${account.uuid}.notifySelfNewMail", true)
+        } else {
+            isNotifyNewMail = featureFlagProvider.provide(
+                "email_notification_default".toFeatureFlagKey(),
+            ).whenEnabledOrNot(
+                onEnabled = { true },
+                onDisabledOrUnavailable = { false },
+            )
 
-        isNotifySelfNewMail = featureFlagProvider.provide(
-            "email_notification_default".toFeatureFlagKey(),
-        ).whenEnabledOrNot(
-            onEnabled = { true },
-            onDisabledOrUnavailable = { false },
-        )
+            isNotifySelfNewMail = featureFlagProvider.provide(
+                "email_notification_default".toFeatureFlagKey(),
+            ).whenEnabledOrNot(
+                onEnabled = { true },
+                onDisabledOrUnavailable = { false },
+            )
+        }
     }
 
     @Suppress("LongMethod")

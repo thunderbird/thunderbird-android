@@ -40,6 +40,7 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
 import net.thunderbird.core.preferences.AppTheme;
+import net.thunderbird.core.preferences.Storage;
 import net.thunderbird.core.preferences.SubTheme;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
