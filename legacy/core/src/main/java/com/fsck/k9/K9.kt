@@ -12,9 +12,9 @@ import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
+import net.thunderbird.core.preferences.Storage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber

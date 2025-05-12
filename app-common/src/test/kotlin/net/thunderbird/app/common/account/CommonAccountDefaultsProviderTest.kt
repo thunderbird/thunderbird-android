@@ -30,6 +30,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
+import net.thunderbird.core.preferences.Storage
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
@@ -147,6 +148,11 @@ class CommonAccountDefaultsProviderTest {
             uuid = "test-uuid",
             isSensitiveDebugLoggingEnabled = { false },
         )
+        val storage = mock<Storage> {
+            on { contains("${account.uuid}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+        }
         val testSubject = CommonAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
@@ -155,7 +161,7 @@ class CommonAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyOverwrites(account)
+        testSubject.applyOverwrites(account, storage)
 
         // assert
         assertThat(account.isNotifyNewMail).isFalse()
@@ -172,6 +178,11 @@ class CommonAccountDefaultsProviderTest {
             uuid = "test-uuid",
             isSensitiveDebugLoggingEnabled = { false },
         )
+        val storage = mock<Storage> {
+            on { contains("${account.uuid}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+        }
         val testSubject = CommonAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
@@ -180,7 +191,69 @@ class CommonAccountDefaultsProviderTest {
         )
 
         // act
-        testSubject.applyOverwrites(account)
+        testSubject.applyOverwrites(account, storage)
+
+        // assert
+        assertThat(account.isNotifyNewMail).isTrue()
+        assertThat(account.isNotifySelfNewMail).isTrue()
+    }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `applyOverwrites updates account notification values from storage when storage contains isNotifyNewMail value`() {
+        // arrange
+        val resourceProvider = mock<CoreResourceProvider> {
+            on { defaultIdentityDescription() } doReturn "Default Identity"
+        }
+        val account = LegacyAccount(
+            uuid = "test-uuid",
+            isSensitiveDebugLoggingEnabled = { false },
+        )
+        val storage = mock<Storage> {
+            on { contains("${account.uuid}.notifyNewMail") } doReturn true
+            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+        }
+        val testSubject = CommonAccountDefaultsProvider(
+            resourceProvider = resourceProvider,
+            featureFlagProvider = {
+                FeatureFlagResult.Enabled
+            },
+        )
+
+        // act
+        testSubject.applyOverwrites(account, storage)
+
+        // assert
+        assertThat(account.isNotifyNewMail).isFalse()
+        assertThat(account.isNotifySelfNewMail).isFalse()
+    }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `applyOverwrites updates account notification values from featureFlag values when storage does not contain isNotifyNewMail value`() {
+        // arrange
+        val resourceProvider = mock<CoreResourceProvider> {
+            on { defaultIdentityDescription() } doReturn "Default Identity"
+        }
+        val account = LegacyAccount(
+            uuid = "test-uuid",
+            isSensitiveDebugLoggingEnabled = { false },
+        )
+        val storage = mock<Storage> {
+            on { contains("${account.uuid}.notifyNewMail") } doReturn false
+            on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
+            on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
+        }
+        val testSubject = CommonAccountDefaultsProvider(
+            resourceProvider = resourceProvider,
+            featureFlagProvider = {
+                FeatureFlagResult.Enabled
+            },
+        )
+
+        // act
+        testSubject.applyOverwrites(account, storage)
 
         // assert
         assertThat(account.isNotifyNewMail).isTrue()

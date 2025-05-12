@@ -12,5 +12,6 @@ dependencies {
     api(projects.mail.common)
 
     implementation(projects.core.account)
+    implementation(projects.core.preferences)
     implementation(projects.backend.api)
 }
