@@ -22,7 +22,7 @@ fun TextInput(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
 ) {
     InputLayout(
-        modifier = modifier,
+        modifier = Modifier,
         contentPadding = contentPadding,
         errorMessage = errorMessage,
     ) {
@@ -34,7 +34,7 @@ fun TextInput(
             isRequired = isRequired,
             hasError = errorMessage != null,
             isSingleLine = isSingleLine,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             keyboardOptions = keyboardOptions,
         )
     }
