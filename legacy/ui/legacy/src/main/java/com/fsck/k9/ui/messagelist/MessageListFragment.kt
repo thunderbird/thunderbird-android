@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -17,8 +18,11 @@ import androidx.appcompat.view.ActionMode
 import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
+import androidx.core.view.insets.GradientProtection
+import androidx.core.view.insets.ProtectionLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -273,7 +277,23 @@ class MessageListFragment :
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (error == null) {
-            inflater.inflate(R.layout.message_list_fragment, container, false)
+            inflater.inflate(R.layout.message_list_fragment, container, false).also { view ->
+                val typedValued = TypedValue()
+                requireContext().theme.resolveAttribute(
+                    com.google.android.material.R.attr.colorSurface,
+                    typedValued,
+                    true,
+                )
+                view.findViewById<ProtectionLayout>(R.id.protection_layout)
+                    .setProtections(
+                        listOf(
+                            GradientProtection(
+                                WindowInsetsCompat.Side.BOTTOM,
+                                typedValued.data,
+                            ),
+                        ),
+                    )
+            }
         } else {
             inflater.inflate(R.layout.message_list_error, container, false)
         }
