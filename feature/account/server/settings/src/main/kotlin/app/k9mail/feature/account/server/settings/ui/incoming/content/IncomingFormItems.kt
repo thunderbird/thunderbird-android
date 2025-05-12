@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
@@ -92,6 +95,7 @@ internal fun LazyListScope.incomingFormItems(
 
     item {
         TextInput(
+            modifier = Modifier.semantics { contentType = ContentType.Username + ContentType.EmailAddress },
             text = state.username.value,
             errorMessage = state.username.error?.toResourceString(resources),
             onTextChange = { onEvent(Event.UsernameChanged(it)) },
