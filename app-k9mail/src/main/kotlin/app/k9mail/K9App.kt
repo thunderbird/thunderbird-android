@@ -1,8 +1,8 @@
 package app.k9mail
 
-import com.fsck.k9.CommonApp
+import net.thunderbird.app.common.BaseApplication
 import org.koin.core.module.Module
 
-class K9App : CommonApp() {
+class K9App : BaseApplication() {
     override fun provideAppModule(): Module = appModule
 }

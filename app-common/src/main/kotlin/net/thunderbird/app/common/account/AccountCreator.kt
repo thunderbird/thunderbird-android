@@ -8,7 +8,6 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
 import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.SpecialFolderSelection
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.account.DeletePolicyProvider
@@ -25,9 +24,10 @@ import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
 
 // TODO Move to feature/account/setup
-class AccountCreator(
+internal class AccountCreator(
     private val accountColorPicker: AccountColorPicker,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val preferences: Preferences,

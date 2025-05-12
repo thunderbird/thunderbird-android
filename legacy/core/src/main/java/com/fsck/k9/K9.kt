@@ -9,12 +9,13 @@ import app.k9mail.legacy.account.AccountDefaultsProvider
 import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.core.BuildConfig
+import com.fsck.k9.logging.Logger
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
+import net.thunderbird.core.preferences.Storage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -25,6 +26,7 @@ object K9 : KoinComponent {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
+    private val logger: Logger by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -320,7 +322,7 @@ object K9 : KoinComponent {
                 override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
             },
         )
-        com.fsck.k9.logging.Timber.logger = TimberLogger()
+        com.fsck.k9.logging.Timber.logger = logger
 
         checkCachedDatabaseVersion(context)
 

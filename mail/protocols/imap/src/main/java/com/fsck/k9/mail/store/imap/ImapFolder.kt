@@ -92,6 +92,14 @@ interface ImapFolder {
 
     @Throws(MessagingException::class)
     fun expungeUids(uids: List<String>)
+
+    /**
+     * Creates this folder on the IMAP server.
+     *
+     * @throws MessagingException when fails to create folder on IMAP server.
+     */
+    @Throws(MessagingException::class)
+    fun create(): Boolean
 }
 
 interface FetchListener {

@@ -26,8 +26,10 @@ class IntentDataMapper {
         }
 
         if ((
-            Intent.ACTION_SEND == action || Intent.ACTION_SEND_MULTIPLE == action ||
-                Intent.ACTION_SENDTO == action || Intent.ACTION_VIEW == action
+            Intent.ACTION_SEND == action ||
+                Intent.ACTION_SEND_MULTIPLE == action ||
+                Intent.ACTION_SENDTO == action ||
+                Intent.ACTION_VIEW == action
             )
         ) {
             intentData = intentData.copy(

@@ -18,6 +18,7 @@ dependencies {
     implementation(projects.core.ui.compose.navigation)
     implementation(projects.core.ui.compose.preference)
     implementation(projects.core.ui.legacy.theme2.common)
+    implementation(libs.timber)
 
     testImplementation(projects.core.ui.compose.testing)
 }

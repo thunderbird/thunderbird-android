@@ -6,7 +6,7 @@ import app.k9mail.legacy.account.LegacyAccountWrapperManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class CommonLegacyAccountWrapperManager(
+internal class CommonLegacyAccountWrapperManager(
     private val accountManager: AccountManager,
 ) : LegacyAccountWrapperManager {
 

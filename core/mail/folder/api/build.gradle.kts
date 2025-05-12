@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(projects.core.account)
     implementation(projects.mail.common)
 
     testImplementation(projects.core.testing)

@@ -1,4 +1,4 @@
-package com.fsck.k9
+package net.thunderbird.app.common
 
 import android.app.Application
 import android.content.Context
@@ -6,8 +6,12 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import app.k9mail.feature.widget.message.list.MessageListWidgetManager
 import app.k9mail.legacy.di.DI
+import com.fsck.k9.Core
+import com.fsck.k9.K9
+import com.fsck.k9.MessagingListenerProvider
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.WorkManagerConfigurationProvider
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.extensions.currentLocale
@@ -21,10 +25,10 @@ import kotlinx.coroutines.flow.onEach
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
 import org.koin.core.module.Module
-import timber.log.Timber
 import androidx.work.Configuration as WorkManagerConfiguration
 
-abstract class CommonApp : Application(), WorkManagerConfiguration.Provider {
+abstract class BaseApplication : Application(), WorkManagerConfiguration.Provider {
+
     private val messagingController: MessagingController by inject()
     private val messagingListenerProvider: MessagingListenerProvider by inject()
     private val themeManager: ThemeManager by inject()
@@ -38,10 +42,11 @@ abstract class CommonApp : Application(), WorkManagerConfiguration.Provider {
 
     override fun attachBaseContext(base: Context?) {
         Core.earlyInit()
+
         super.attachBaseContext(base)
 
         // Start Koin early so it is ready by the time content providers are initialized.
-        DI.start(this, listOf(provideAppModule()) + coreModules + uiModules + commonAppModules)
+        DI.start(this, listOf(provideAppModule()))
     }
 
     override fun onCreate() {

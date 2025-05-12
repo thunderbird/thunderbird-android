@@ -119,7 +119,8 @@ internal class MessageDetailsViewModel(
         val messageCryptoDisplayStatus = MessageCryptoDisplayStatus.fromResultAnnotation(this)
         return CryptoDetails(
             cryptoStatus = messageCryptoDisplayStatus,
-            isClickable = messageCryptoDisplayStatus.hasAssociatedKey() || messageCryptoDisplayStatus.isUnknownKey ||
+            isClickable = messageCryptoDisplayStatus.hasAssociatedKey() ||
+                messageCryptoDisplayStatus.isUnknownKey ||
                 hasOpenPgpInsecureWarningPendingIntent(),
         )
     }

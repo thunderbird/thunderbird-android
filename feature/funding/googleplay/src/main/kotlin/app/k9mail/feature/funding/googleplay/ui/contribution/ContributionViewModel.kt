@@ -93,10 +93,11 @@ internal class ContributionViewModel(
     }
 
     private fun selectContribution(data: AvailableContributions): Contribution? {
-        val hasSelectedContribution = state.value.listState.selectedContribution != null && (
-            data.oneTimeContributions.contains(state.value.listState.selectedContribution) ||
-                data.recurringContributions.contains(state.value.listState.selectedContribution)
-            )
+        val hasSelectedContribution = state.value.listState.selectedContribution != null &&
+            (
+                data.oneTimeContributions.contains(state.value.listState.selectedContribution) ||
+                    data.recurringContributions.contains(state.value.listState.selectedContribution)
+                )
 
         return if (hasSelectedContribution) {
             state.value.listState.selectedContribution

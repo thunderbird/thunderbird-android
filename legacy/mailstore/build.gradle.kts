@@ -12,7 +12,6 @@ dependencies {
     implementation(projects.legacy.account)
     implementation(projects.legacy.di)
     implementation(projects.legacy.message)
-    implementation(projects.legacy.search)
 
     implementation(projects.mail.common)
     implementation(projects.core.mail.folder.api)

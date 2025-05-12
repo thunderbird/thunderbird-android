@@ -22,7 +22,6 @@ dependencies {
     implementation(projects.legacy.account)
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)
-    implementation(projects.legacy.search)
     implementation(projects.legacy.ui.folder)
     implementation(projects.core.featureflags)
 

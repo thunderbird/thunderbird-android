@@ -22,7 +22,6 @@ dependencies {
     api(projects.legacy.mailstore)
     api(projects.legacy.message)
     api(projects.feature.notification)
-    api(projects.legacy.search)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
     implementation(projects.feature.telemetry.api)
@@ -50,7 +49,6 @@ dependencies {
     testImplementation(projects.backend.imap)
     testImplementation(projects.mail.protocols.smtp)
     testImplementation(projects.legacy.storage)
-    testImplementation(projects.legacy.testing)
 
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.reflect)

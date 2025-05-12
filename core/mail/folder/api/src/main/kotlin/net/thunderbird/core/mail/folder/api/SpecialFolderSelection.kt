@@ -1,4 +1,4 @@
-package app.k9mail.legacy.account
+package net.thunderbird.core.mail.folder.api
 
 enum class SpecialFolderSelection {
     AUTOMATIC,

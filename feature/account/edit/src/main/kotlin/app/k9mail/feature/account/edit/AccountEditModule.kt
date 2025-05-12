@@ -15,7 +15,7 @@ import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.account.server.certificate.featureAccountServerCertificateModule
 import app.k9mail.feature.account.server.settings.featureAccountServerSettingsModule
 import app.k9mail.feature.account.server.validation.featureAccountServerValidationModule
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureAccountEditModule = module {

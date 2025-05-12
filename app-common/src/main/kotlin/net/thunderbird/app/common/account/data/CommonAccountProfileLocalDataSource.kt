@@ -8,7 +8,7 @@ import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 
-class CommonAccountProfileLocalDataSource(
+internal class CommonAccountProfileLocalDataSource(
     private val accountManager: LegacyAccountWrapperManager,
 ) : AccountProfileLocalDataSource {
 

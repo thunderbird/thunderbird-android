@@ -612,7 +612,10 @@ class RealImapConnectionTest {
                     "APPENDLIMIT=35651584",
             )
             output("2 OK")
-            simplePostAuthenticationDialog(tag = 3)
+            expect("3 ENABLE UTF8=ACCEPT")
+            output("* ENABLED")
+            output("3 OK")
+            simplePostAuthenticationDialog(tag = 4)
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
 
@@ -771,6 +774,42 @@ class RealImapConnectionTest {
             .hasMessage("Command: STARTTLS; response: #2# [NO]")
 
         server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with ENABLE capability should try to enable UTF8=ACCEPT`() {
+        val server = MockImapServer().apply {
+            simplePreAuthAndLoginDialog(postAuthCapabilities = "ENABLE")
+            expect("3 ENABLE UTF8=ACCEPT")
+            output("* ENABLED")
+            output("3 OK")
+            simplePostAuthenticationDialog(tag = 4)
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, useCompression = true)
+
+        imapConnection.open()
+        assertThat(imapConnection.isUtf8AcceptCapable).isFalse()
+
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with ENABLE and UTF8=ACCEPT capabilities should enable UTF8=ACCEPT`() {
+        val server = MockImapServer().apply {
+            simplePreAuthAndLoginDialog(postAuthCapabilities = "ENABLE UTF8=ACCEPT")
+            expect("3 ENABLE UTF8=ACCEPT")
+            output("* ENABLED UTF8=ACCEPT")
+            output("3 OK")
+            simplePostAuthenticationDialog(tag = 4)
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, useCompression = true)
+
+        imapConnection.open()
+        assertThat(imapConnection.isUtf8AcceptCapable).isTrue()
+
+        server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
     }
 

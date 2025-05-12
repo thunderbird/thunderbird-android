@@ -370,7 +370,8 @@ open class MessageList :
         val splitViewMode = K9.splitViewMode
         val orientation = resources.configuration.orientation
         return splitViewMode === SplitViewMode.ALWAYS ||
-            splitViewMode === SplitViewMode.WHEN_IN_LANDSCAPE && orientation == Configuration.ORIENTATION_LANDSCAPE
+            splitViewMode === SplitViewMode.WHEN_IN_LANDSCAPE &&
+            orientation == Configuration.ORIENTATION_LANDSCAPE
     }
 
     private fun initializeLayout() {
@@ -408,7 +409,8 @@ open class MessageList :
         }
     }
     private fun decodeExtras(intent: Intent): Boolean {
-        if (intent.action === Intent.ACTION_SEARCH && !intent.component?.className.equals(
+        if (intent.action === Intent.ACTION_SEARCH &&
+            !intent.component?.className.equals(
                 Search::class.java.name,
             )
         ) {
@@ -823,7 +825,8 @@ open class MessageList :
 
         when (event.keyCode) {
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                if (messageViewContainerFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
+                if (messageViewContainerFragment != null &&
+                    displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
                 ) {
                     showPreviousMessage()
@@ -832,7 +835,8 @@ open class MessageList :
             }
 
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                if (messageViewContainerFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
+                if (messageViewContainerFragment != null &&
+                    displayMode != DisplayMode.MESSAGE_LIST &&
                     K9.isUseVolumeKeysForNavigation
                 ) {
                     showNextMessage()
