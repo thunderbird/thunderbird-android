@@ -11,5 +11,16 @@ kotlin {
         commonTest.dependencies {
             implementation(projects.core.testing)
         }
+        jvmMain.dependencies {
+            implementation(libs.androidx.annotation)
+        }
+    }
+
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            listOf(
+                "-Xexpect-actual-classes",
+            ),
+        )
     }
 }
