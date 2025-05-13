@@ -30,6 +30,12 @@ fun TextInput(
         contentPadding = contentPadding,
         errorMessage = errorMessage,
     ) {
+        val textFieldModifier = if (contentType != null) {
+            Modifier.semantics { this.contentType = contentType }
+        } else {
+            Modifier
+        }
+
         TextFieldOutlined(
             value = text,
             onValueChange = onTextChange,
@@ -38,11 +44,7 @@ fun TextInput(
             isRequired = isRequired,
             hasError = errorMessage != null,
             isSingleLine = isSingleLine,
-            modifier = Modifier.fillMaxWidth().semantics {
-                if (contentType != null) {
-                    this.contentType = contentType
-                }
-            },
+            modifier = textFieldModifier.fillMaxWidth(),
             keyboardOptions = keyboardOptions,
         )
     }
