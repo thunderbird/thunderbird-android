@@ -4,6 +4,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
@@ -73,7 +74,7 @@ class UpdateGeneralPreferencesTest {
                 description = { "Account color" },
                 icon = { null },
                 value = newColor,
-                colors = listOf(0xFF0000, 0x00FF00, 0x0000FF),
+                colors = persistentListOf(0xFF0000, 0x00FF00, 0x0000FF),
             ),
         )
         val repository = FakeAccountProfileRepository(

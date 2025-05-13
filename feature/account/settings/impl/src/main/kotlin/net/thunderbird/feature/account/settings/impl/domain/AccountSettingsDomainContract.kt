@@ -48,7 +48,7 @@ internal interface AccountSettingsDomainContract {
             val colorTitle: () -> String
             val colorDescription: () -> String?
             val colorIcon: () -> ImageVector?
-            val colors: List<Int>
+            val colors: ImmutableList<Int>
         }
     }
 

@@ -21,7 +21,7 @@ internal object FakePreferenceData {
         title = { "Title" },
         description = { "Description" },
         value = 0xFFFF0000.toInt(),
-        colors = listOf(
+        colors = persistentListOf(
             0xFFFF0000.toInt(),
             0xFF00FF00.toInt(),
             0xFF0000FF.toInt(),

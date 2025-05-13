@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 import net.thunderbird.feature.account.settings.impl.ui.general.components.GeneralSettingsProfileView
@@ -41,5 +43,6 @@ internal class GeneralResourceProvider(
         context.getString(R.string.account_settings_general_color_description)
     }
     override val colorIcon: () -> ImageVector? = { null }
-    override val colors: List<Int> = context.resources.getIntArray(ThunderbirdCommonR.array.account_colors).toList()
+    override val colors: ImmutableList<Int> = context.resources.getIntArray(ThunderbirdCommonR.array.account_colors)
+        .toList().toImmutableList()
 }
