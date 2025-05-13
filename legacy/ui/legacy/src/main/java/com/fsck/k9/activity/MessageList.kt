@@ -652,7 +652,7 @@ open class MessageList :
                 navigationDrawer = DropDownDrawer(
                     parent = this,
                     openAccount = { accountId -> openRealAccount(accountId) },
-                    openFolder = { folderId -> openFolder(folderId) },
+                    openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
                     openUnifiedFolder = { openUnifiedInbox() },
                     openManageFolders = { launchManageFoldersScreen() },
                     openSettings = { SettingsActivity.launch(this) },
@@ -663,7 +663,7 @@ open class MessageList :
                 navigationDrawer = SideRailDrawer(
                     parent = this,
                     openAccount = { accountId -> openRealAccount(accountId) },
-                    openFolder = { folderId -> openFolder(folderId) },
+                    openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
                     openUnifiedFolder = { openUnifiedInbox() },
                     openManageFolders = { launchManageFoldersScreen() },
                     openSettings = { SettingsActivity.launch(this) },
@@ -692,21 +692,21 @@ open class MessageList :
         }
     }
 
-    private fun openFolder(folderId: Long) {
+    private fun openFolder(accountId: String, folderId: Long) {
         if (displayMode == DisplayMode.SPLIT_VIEW) {
             removeMessageViewContainerFragment()
             showMessageViewPlaceHolder()
         }
 
         val search = LocalSearch()
-        search.addAccountUuid(account!!.uuid)
+        search.addAccountUuid(accountId)
         search.addAllowedFolder(folderId)
 
         performSearch(search)
     }
 
     private fun openFolderImmediately(folderId: Long) {
-        openFolder(folderId)
+        openFolder(account!!.uuid, folderId)
         commitOpenFolderTransaction()
     }
 

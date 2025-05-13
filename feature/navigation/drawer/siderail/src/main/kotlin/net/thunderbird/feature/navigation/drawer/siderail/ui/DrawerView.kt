@@ -11,7 +11,7 @@ import org.koin.androidx.compose.koinViewModel
 internal fun DrawerView(
     drawerState: FolderDrawerState,
     openAccount: (accountId: String) -> Unit,
-    openFolder: (folderId: Long) -> Unit,
+    openFolder: (accountId: String, folderId: Long) -> Unit,
     openUnifiedFolder: () -> Unit,
     openManageFolders: () -> Unit,
     openSettings: () -> Unit,
@@ -21,7 +21,11 @@ internal fun DrawerView(
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
             is DrawerContract.Effect.OpenAccount -> openAccount(effect.accountId)
-            is DrawerContract.Effect.OpenFolder -> openFolder(effect.folderId)
+            is DrawerContract.Effect.OpenFolder -> openFolder(
+                effect.accountId,
+                effect.folderId,
+            )
+
             DrawerContract.Effect.OpenUnifiedFolder -> openUnifiedFolder()
             is DrawerContract.Effect.OpenManageFolders -> openManageFolders()
             is DrawerContract.Effect.OpenSettings -> openSettings()
