@@ -24,7 +24,7 @@ internal data class FolderDrawerState(
 class DropDownDrawer(
     override val parent: AppCompatActivity,
     private val openAccount: (accountId: String) -> Unit,
-    private val openFolder: (folderId: Long) -> Unit,
+    private val openFolder: (accountId: String, folderId: Long) -> Unit,
     private val openUnifiedFolder: () -> Unit,
     private val openManageFolders: () -> Unit,
     private val openSettings: () -> Unit,

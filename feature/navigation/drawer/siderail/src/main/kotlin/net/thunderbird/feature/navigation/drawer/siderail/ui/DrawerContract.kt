@@ -41,7 +41,7 @@ internal interface DrawerContract {
 
     sealed interface Effect {
         data class OpenAccount(val accountId: String) : Effect
-        data class OpenFolder(val folderId: Long) : Effect
+        data class OpenFolder(val accountId: String, val folderId: Long) : Effect
         data object OpenUnifiedFolder : Effect
         data object OpenManageFolders : Effect
         data object OpenSettings : Effect

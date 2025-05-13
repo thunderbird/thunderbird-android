@@ -173,7 +173,12 @@ internal class DrawerViewModel(
 
     private fun openFolder(folder: DisplayFolder) {
         if (folder is DisplayAccountFolder) {
-            emitEffect(Effect.OpenFolder(folder.folder.id))
+            emitEffect(
+                Effect.OpenFolder(
+                    accountId = folder.accountId,
+                    folderId = folder.folder.id,
+                ),
+            )
         } else if (folder is DisplayUnifiedFolder) {
             emitEffect(Effect.OpenUnifiedFolder)
         }

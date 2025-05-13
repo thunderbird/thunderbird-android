@@ -29,7 +29,7 @@ internal class DrawerViewKtTest : ComposeTest() {
             DrawerView(
                 drawerState = FolderDrawerState(),
                 openAccount = { counter.openAccountCount++ },
-                openFolder = { counter.openFolderCount++ },
+                openFolder = { _, _ -> counter.openFolderCount++ },
                 openUnifiedFolder = { counter.openUnifiedFolderCount++ },
                 openManageFolders = { counter.openManageFoldersCount++ },
                 openSettings = { counter.openSettingsCount++ },
@@ -46,7 +46,12 @@ internal class DrawerViewKtTest : ComposeTest() {
         assertThat(counter).isEqualTo(verifyCounter)
 
         verifyCounter.openFolderCount++
-        viewModel.effect(Effect.OpenFolder(1))
+        viewModel.effect(
+            Effect.OpenFolder(
+                accountId = "accountId",
+                folderId = 1,
+            ),
+        )
 
         verifyCounter.openUnifiedFolderCount++
         viewModel.effect(Effect.OpenUnifiedFolder)
@@ -74,7 +79,7 @@ internal class DrawerViewKtTest : ComposeTest() {
             DrawerView(
                 drawerState = state.value,
                 openAccount = { },
-                openFolder = { },
+                openFolder = { _, _ -> },
                 openUnifiedFolder = { },
                 openManageFolders = { },
                 openSettings = { },
@@ -111,7 +116,7 @@ internal class DrawerViewKtTest : ComposeTest() {
             DrawerView(
                 drawerState = FolderDrawerState(),
                 openAccount = {},
-                openFolder = {},
+                openFolder = { _, _ -> },
                 openUnifiedFolder = {},
                 openManageFolders = {},
                 openSettings = {},
