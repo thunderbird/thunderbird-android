@@ -284,17 +284,61 @@ On the latter, code that was in beta goes to release, where the general populati
 <p>There are exactly three open milestones at any given time, some of our automation depends on this being the case. The milestone with the date furthest into the future is the target for the <code>main</code> branch, the one closest is the target for the <code>release</code> branch. When an uplift occurs, the milestone is changed to the respective next target.</p>
 <p>Learn more on the <a href="https://github.com/thunderbird/thunderbird-android/milestones" title="" target="_blank">milestones page</a></p>
 <h2 id="merge-process"><a class="header" href="#merge-process">Merge Process</a></h2>
-<p>Merges are performed with the <code>git merge</code> command:</p>
-<pre><code class="language-sh">git checkout beta
-git merge main
-</code></pre>
-<p>This approach enables various benefits, including:</p>
+<p>The merge process enables various benefits, including:</p>
 <ul>
 <li>Carrying forward main branch history to beta, and beta branch history to release.</li>
 <li>No branch history is lost.</li>
-<li>Git tags are retained in git log.</li>
+<li>Git tags are retained in the git log.</li>
 <li>Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).</li>
 </ul>
+<p>The following steps are taken when merging main into beta:</p>
+<ol>
+<li>Lock the main branch with the ‘CLOSED TREE (main)’ ruleset</li>
+<li>Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:</li>
+</ol>
+<ul>
+<li>You will be performing the merge from main into beta</li>
+<li>The main branch is locked and cannot be changed during the merge</li>
+<li>You will let them know when the merge is complete and main is re-opened</li>
+</ul>
+<ol start="3">
+<li>Review merge results and ensure correctness</li>
+<li>Ensure feature flags are following the rules</li>
+<li>Push the merge</li>
+<li>Submit a pull request that increments the version in main</li>
+<li>Open a new milestone for the new version on github</li>
+<li>Once the version increment is merged into main, unlock the branch</li>
+<li>Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened</li>
+</ol>
+<p>The following steps are taken when merging beta into release:</p>
+<ol>
+<li>Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:</li>
+</ol>
+<ul>
+<li>You will be performing the merge from beta into release</li>
+<li>You will let them know when the merge is complete</li>
+</ul>
+<ol start="2">
+<li>Review merge results and ensure correctness</li>
+<li>Ensure feature flags are following the rules</li>
+<li>Push the merge</li>
+<li>Close the milestone for the version that was previously in release</li>
+<li>Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion</li>
+</ol>
+<p>Merges are performed with the <code>do_merge.sh</code> script.</p>
+<p>The following will merge main into beta:
+<code>scripts/ci/merges/do_merge.sh beta</code></p>
+<p>And the following will merge beta into release:
+<code>scripts/ci/merges/do_merge.sh release</code></p>
+<p>Be sure to review merge results and ensure correctness before pushing to the repository.</p>
+<p>Files of particular importance are:</p>
+<ul>
+<li>app-k9mail/build.gradle.kts</li>
+<li>app-thunderbird/build.gradle.kts</li>
+<li>app-k9mail/src/main/res/raw/changelog_master.xml</li>
+</ul>
+<p>These build.gradle.kts files must be handled as described in “Merge Days” section above. This is part of the do_merge.sh automation.
+The app-k9mail/src/main/res/raw/changelog_master.xml should not include any beta notes in the release branch.</p>
 <h2 id="branch-uplifts"><a class="header" href="#branch-uplifts">Branch Uplifts</a></h2>
 <p>If the urgency of a fix requires it to be included in the Beta or Release channel before the next merge, the uplift process is followed. If possible, uplifts should be avoided and patches should “ride the train” instead, following the merge day cycle.</p>
 <h3 id="uplift-criteria"><a class="header" href="#uplift-criteria">Uplift Criteria</a></h3>
@@ -369,7 +413,7 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 </ul>
 </li>
 </ol>
-<footer id="last-change">Last change: 2025-05-09, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/265c799">265c799</a></footer>
+<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
