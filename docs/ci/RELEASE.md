@@ -139,19 +139,55 @@ Learn more on the [milestones page](https://github.com/thunderbird/thunderbird-a
 
 ## Merge Process
 
-Merges are performed with the `git merge` command:
-
-```sh
-git checkout beta
-git merge main
-```
-
-This approach enables various benefits, including:
+The merge process enables various benefits, including:
 
 - Carrying forward main branch history to beta, and beta branch history to release.
 - No branch history is lost.
-- Git tags are retained in git log.
+- Git tags are retained in the git log.
 - Files/code that is unique per branch can remain that way (e.g. notes files such as changelog_master.xml, version codes).
+
+The following steps are taken when merging main into beta:
+1. Lock the main branch with the 'CLOSED TREE (main)' ruleset
+2. Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
+- You will be performing the merge from main into beta
+- The main branch is locked and cannot be changed during the merge
+- You will let them know when the merge is complete and main is re-opened
+3. Review merge results and ensure correctness
+4. Ensure feature flags are following the rules
+5. Push the merge
+6. Submit a pull request that increments the version in main
+7. Open a new milestone for the new version on github
+8. Once the version increment is merged into main, unlock the branch
+9. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion and that main is re-opened
+
+The following steps are taken when merging beta into release:
+1. Send a message to the #tb-mobile-dev:mozilla.org matrix channel to let them know:
+- You will be performing the merge from beta into release
+- You will let them know when the merge is complete
+2. Review merge results and ensure correctness
+3. Ensure feature flags are following the rules
+4. Push the merge
+5. Close the milestone for the version that was previously in release
+6. Send a message to the #tb-mobile-dev:mozilla.org channel to notify of merge completion
+
+Merges are performed with the `do_merge.sh` script.
+
+The following will merge main into beta:
+`scripts/ci/merges/do_merge.sh beta`
+
+And the following will merge beta into release:
+`scripts/ci/merges/do_merge.sh release`
+
+Be sure to review merge results and ensure correctness before pushing to the repository.
+
+Files of particular importance are:
+
+- app-k9mail/build.gradle.kts
+- app-thunderbird/build.gradle.kts
+- app-k9mail/src/main/res/raw/changelog_master.xml
+
+These build.gradle.kts files must be handled as described in "Merge Days" section above. This is part of the do_merge.sh automation.
+The app-k9mail/src/main/res/raw/changelog_master.xml should not include any beta notes in the release branch.
 
 ## Branch Uplifts
 
