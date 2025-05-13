@@ -328,7 +328,12 @@ internal class DrawerViewModelTest {
         val displayFolders = displayFoldersMap[displayAccounts[0].id] ?: emptyList()
         testSubject.event(Event.OnFolderClick(displayFolders[1]))
 
-        assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenFolder(displayFolders[1].folder.id))
+        assertThat(turbines.awaitEffectItem()).isEqualTo(
+            Effect.OpenFolder(
+                accountId = displayFolders[1].accountId,
+                folderId = displayFolders[1].folder.id,
+            ),
+        )
 
         turbines.assertThatAndEffectTurbineConsumed {
             isEqualTo(Effect.CloseDrawer)
