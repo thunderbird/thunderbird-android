@@ -4,8 +4,10 @@ import android.os.Parcelable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting.SingleChoice.Choice
 
 /**
  * A preference that can be displayed in a preference screen.
@@ -44,6 +46,24 @@ sealed interface PreferenceSetting<T> : Preference {
     ) : PreferenceSetting<Int> {
         @IgnoredOnParcel
         override val requiresEditView: Boolean = true
+    }
+
+    @Parcelize
+    data class SingleChoice(
+        override val id: String,
+        val title: () -> String,
+        val description: () -> String? = { null },
+        override val value: Choice,
+        val options: ImmutableList<Choice>,
+    ) : PreferenceSetting<Choice> {
+        @IgnoredOnParcel
+        override val requiresEditView: Boolean = false
+
+        @Parcelize
+        data class Choice(
+            val id: String,
+            val title: () -> String,
+        ) : Parcelable
     }
 }
 

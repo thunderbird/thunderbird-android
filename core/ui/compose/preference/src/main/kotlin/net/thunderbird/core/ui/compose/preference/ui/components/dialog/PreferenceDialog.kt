@@ -37,5 +37,8 @@ internal fun PreferenceDialog(
                 modifier = modifier,
             )
         }
+
+        // No dialog needed
+        is PreferenceSetting.SingleChoice -> Unit
     }
 }
