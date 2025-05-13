@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="11.0b2" versioncode="15" date="2025-05-13">
+        <change>System navigation bar did not correctly blend with message content</change>
+        <change>"New Mail Notifications" setting did not persist</change>
+        <change>Trailing whitespace in recipient fields caused "Incomplete input" error</change>
+        <change>Navigation drawer "Show Unified inbox" setting did not work</change>
+    </release>
     <release version="11.0b1" versioncode="14" date="2025-05-05">
         <change>Testing drawer improvements in this beta, feedback on bugs is welcome</change>
         <change>Option added to attach images directly from Camera</change>
