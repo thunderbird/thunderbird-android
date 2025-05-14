@@ -1,5 +1,0 @@
-Thunderbird for Android version 11.0b2, based on K-9 Mail. Changes include:
-- System navigation bar did not correctly blend with message content
-- "New Mail Notifications" setting did not persist
-- Trailing whitespace in recipient fields caused "Incomplete input" error
-- Navigation drawer "Show Unified inbox" setting did not work
