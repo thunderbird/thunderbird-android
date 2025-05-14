@@ -7,8 +7,10 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID
-import net.thunderbird.account.fake.FakeAccountProfileData.COLOR
-import net.thunderbird.account.fake.FakeAccountProfileData.NAME
+import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_COLOR
+import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_NAME
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
@@ -25,7 +27,7 @@ class LegacyAccountWrapperTest {
         val result = LegacyAccountWrapper(
             isSensitiveDebugLoggingEnabled = isSensitiveDebugLoggingEnabled,
             id = ACCOUNT_ID,
-            name = NAME,
+            name = PROFILE_NAME,
             email = email,
             profile = profile,
             incomingServerSettings = incomingServerSettings,
@@ -42,10 +44,18 @@ class LegacyAccountWrapperTest {
 
         const val email = "demo@example.com"
 
+        val avatar = AvatarDto(
+            avatarType = AvatarTypeDto.MONOGRAM,
+            avatarMonogram = null,
+            avatarImageUri = null,
+            avatarIconName = null,
+        )
+
         val profile = ProfileDto(
             id = ACCOUNT_ID,
-            name = NAME,
-            color = COLOR,
+            name = PROFILE_NAME,
+            color = PROFILE_COLOR,
+            avatar = avatar,
         )
 
         val incomingServerSettings = ServerSettings(
@@ -91,7 +101,7 @@ class LegacyAccountWrapperTest {
                 id = ACCOUNT_ID,
 
                 // [BaseAccount]
-                name = NAME,
+                name = PROFILE_NAME,
                 email = email,
 
                 // [AccountProfile]

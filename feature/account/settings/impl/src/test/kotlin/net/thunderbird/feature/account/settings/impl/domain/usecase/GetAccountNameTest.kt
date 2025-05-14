@@ -8,6 +8,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
@@ -22,6 +23,7 @@ class GetAccountNameTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
+            avatar = AccountAvatar.Icon(name = "star"),
         )
         val testSubject = createTestSubject(accountProfile)
 

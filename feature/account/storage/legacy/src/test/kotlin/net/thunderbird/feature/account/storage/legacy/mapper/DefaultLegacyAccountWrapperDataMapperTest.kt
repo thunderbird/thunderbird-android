@@ -18,18 +18,20 @@ import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
 
-class LegacyAccountWrapperDataMapperTest {
+class DefaultLegacyAccountWrapperDataMapperTest {
 
     @Test
     fun `toDomain should return wrapper`() {
         // arrange
         val account = createAccount()
         val expected = createAccountWrapper()
-        val testSubject = LegacyAccountWrapperDataMapper()
+        val testSubject = DefaultLegacyAccountWrapperDataMapper()
 
         // act
         val result = testSubject.toDomain(account)
@@ -43,7 +45,7 @@ class LegacyAccountWrapperDataMapperTest {
     fun `toDto should return account`() {
         // arrange
         val wrapper = createAccountWrapper()
-        val testSubject = LegacyAccountWrapperDataMapper()
+        val testSubject = DefaultLegacyAccountWrapperDataMapper()
 
         // act
         val result = testSubject.toDto(wrapper)
@@ -187,8 +189,21 @@ class LegacyAccountWrapperDataMapperTest {
                 isSensitiveDebugLoggingEnabled = defaultIsSensitiveDebugLoggingEnabled,
             ).apply {
                 identities = defaultIdentities
+
+                // [BaseAccount]
                 name = "displayName"
                 email = "demo@example.com"
+
+                // [AccountProfile]
+                chipColor = 0xFFFF0000.toInt()
+                avatar = AvatarDto(
+                    avatarType = AvatarTypeDto.ICON,
+                    avatarMonogram = null,
+                    avatarImageUri = null,
+                    avatarIconName = "star",
+                )
+
+                // Uncategorized
                 deletePolicy = DeletePolicy.SEVEN_DAYS
                 incomingServerSettings = defaultIncomingServerSettings
                 outgoingServerSettings = defaultOutgoingServerSettings
@@ -196,7 +211,6 @@ class LegacyAccountWrapperDataMapperTest {
                 alwaysBcc = "alwaysBcc"
                 automaticCheckIntervalMinutes = 60
                 displayCount = 10
-                chipColor = 0xFFFF0000.toInt()
                 isNotifyNewMail = true
                 folderNotifyNewMailMode = FolderMode.FIRST_AND_SECOND_CLASS
                 isNotifySelfNewMail = true
@@ -295,6 +309,12 @@ class LegacyAccountWrapperDataMapperTest {
                     id = id,
                     name = "displayName",
                     color = 0xFFFF0000.toInt(),
+                    avatar = AvatarDto(
+                        avatarType = AvatarTypeDto.ICON,
+                        avatarMonogram = null,
+                        avatarImageUri = null,
+                        avatarIconName = "star",
+                    ),
                 ),
 
                 // Uncategorized
