@@ -11,6 +11,7 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.PreferenceDisplay
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
@@ -26,6 +27,7 @@ internal class GetGeneralPreferencesTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
+            avatar = AccountAvatar.Icon(name = "star"),
         )
         val resourceProvider = FakeGeneralResourceProvider()
         val testSubject = createTestSubject(accountProfile)

@@ -7,4 +7,5 @@ data class ProfileDto(
     override val id: AccountId,
     val name: String,
     val color: Int,
+    val avatar: AvatarDto,
 ) : Account

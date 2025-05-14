@@ -8,6 +8,8 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO
 import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
@@ -52,6 +54,15 @@ open class LegacyAccount(
     @get:Synchronized
     @set:Synchronized
     var chipColor = 0
+
+    @get:Synchronized
+    @set:Synchronized
+    var avatar: AvatarDto = AvatarDto(
+        avatarType = AvatarTypeDto.MONOGRAM,
+        avatarMonogram = null,
+        avatarImageUri = null,
+        avatarIconName = null,
+    )
 
     // Uncategorized
     @get:Synchronized

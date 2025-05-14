@@ -76,7 +76,6 @@ internal class MessageListLoader(
             SortType.SORT_SUBJECT -> "${MessageColumns.SUBJECT} COLLATE NOCASE"
             SortType.SORT_UNREAD -> MessageColumns.READ
             SortType.SORT_DATE -> MessageColumns.DATE
-            else -> MessageColumns.DATE
         }
 
         val sortDirection = if (config.sortAscending) " ASC" else " DESC"

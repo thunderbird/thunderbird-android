@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "net.thunderbird.account.api"
+    namespace = "net.thunderbird.feature.account"
 }
 
 kotlin {

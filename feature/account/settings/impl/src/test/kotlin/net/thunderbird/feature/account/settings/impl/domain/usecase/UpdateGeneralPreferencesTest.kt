@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
@@ -25,6 +26,7 @@ class UpdateGeneralPreferencesTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
+            avatar = AccountAvatar.Icon(name = "star"),
         )
         val newName = "Updated Account Name"
         val preference = PreferenceSetting.Text(
@@ -57,6 +59,7 @@ class UpdateGeneralPreferencesTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
+            avatar = AccountAvatar.Icon(name = "star"),
         )
         val newName = "Updated Account Name"
         val newColor = 0x00FF00

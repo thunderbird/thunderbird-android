@@ -5,7 +5,7 @@ import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 
-class LegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, LegacyAccount> {
+class DefaultLegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, LegacyAccount> {
 
     @Suppress("LongMethod")
     override fun toDomain(dto: LegacyAccount): LegacyAccountWrapper {
@@ -113,6 +113,7 @@ class LegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, LegacyAc
             id = dto.id,
             name = dto.displayName,
             color = dto.chipColor,
+            avatar = dto.avatar,
         )
     }
 
@@ -216,5 +217,6 @@ class LegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, LegacyAc
     private fun fromProfileDto(dto: ProfileDto, account: LegacyAccount) {
         account.name = dto.name
         account.chipColor = dto.color
+        account.avatar = dto.avatar
     }
 }

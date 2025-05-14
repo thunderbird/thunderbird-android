@@ -7,13 +7,18 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.account.fake.FakeAccountProfileData.COLOR
-import net.thunderbird.account.fake.FakeAccountProfileData.NAME
+import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_COLOR
+import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_NAME
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountAvatarDataMapper
+import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountProfileDataMapper
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 import org.junit.Test
 
@@ -25,14 +30,7 @@ class DefaultAccountProfileLocalDataSourceTest {
         val accountId = AccountIdFactory.new()
         val legacyAccount = createLegacyAccount(accountId)
         val accountProfile = createAccountProfile(accountId)
-
-        val testSubject = DefaultAccountProfileLocalDataSource(
-            accountManager = FakeLegacyAccountWrapperManager(
-                initialAccounts = listOf(
-                    legacyAccount,
-                ),
-            ),
-        )
+        val testSubject = createTestSubject(legacyAccount)
 
         // act & assert
         testSubject.getById(accountId).test {
@@ -44,10 +42,7 @@ class DefaultAccountProfileLocalDataSourceTest {
     fun `getById should return null when account is not found`() = runTest {
         // arrange
         val accountId = AccountIdFactory.new()
-
-        val testSubject = DefaultAccountProfileLocalDataSource(
-            accountManager = FakeLegacyAccountWrapperManager(),
-        )
+        val testSubject = createTestSubject(null)
 
         // act & assert
         testSubject.getById(accountId).test {
@@ -65,15 +60,7 @@ class DefaultAccountProfileLocalDataSourceTest {
         val updatedName = "updatedName"
         val updatedAccountProfile = accountProfile.copy(name = updatedName)
 
-        val accountManager = FakeLegacyAccountWrapperManager(
-            initialAccounts = listOf(
-                legacyAccount,
-            ),
-        )
-
-        val testSubject = DefaultAccountProfileLocalDataSource(
-            accountManager = accountManager,
-        )
+        val testSubject = createTestSubject(legacyAccount)
 
         // act & assert
         testSubject.getById(accountId).test {
@@ -88,8 +75,8 @@ class DefaultAccountProfileLocalDataSourceTest {
     private companion object Companion {
         fun createLegacyAccount(
             id: AccountId,
-            displayName: String = NAME,
-            color: Int = COLOR,
+            displayName: String = PROFILE_NAME,
+            color: Int = PROFILE_COLOR,
         ): LegacyAccountWrapper {
             return LegacyAccountWrapper(
                 isSensitiveDebugLoggingEnabled = { true },
@@ -100,6 +87,12 @@ class DefaultAccountProfileLocalDataSourceTest {
                     id = id,
                     name = displayName,
                     color = color,
+                    avatar = AvatarDto(
+                        avatarType = AvatarTypeDto.ICON,
+                        avatarMonogram = null,
+                        avatarImageUri = null,
+                        avatarIconName = "star",
+                    ),
                 ),
                 identities = listOf(
                     Identity(
@@ -130,15 +123,35 @@ class DefaultAccountProfileLocalDataSourceTest {
             )
         }
 
-        fun createAccountProfile(
+        private fun createAccountProfile(
             accountId: AccountId,
-            name: String = NAME,
-            color: Int = COLOR,
+            name: String = PROFILE_NAME,
+            color: Int = PROFILE_COLOR,
         ): AccountProfile {
             return AccountProfile(
                 id = accountId,
                 name = name,
                 color = color,
+                avatar = AccountAvatar.Icon(
+                    name = "star",
+                ),
+            )
+        }
+
+        private fun createTestSubject(
+            legacyAccount: LegacyAccountWrapper?,
+        ): DefaultAccountProfileLocalDataSource {
+            return DefaultAccountProfileLocalDataSource(
+                accountManager = FakeLegacyAccountWrapperManager(
+                    initialAccounts = if (legacyAccount != null) {
+                        listOf(legacyAccount)
+                    } else {
+                        emptyList()
+                    },
+                ),
+                dataMapper = DefaultAccountProfileDataMapper(
+                    avatarMapper = DefaultAccountAvatarDataMapper(),
+                ),
             )
         }
     }
