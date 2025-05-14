@@ -9,7 +9,7 @@ android {
     configureSharedConfig(project)
 
     defaultConfig {
-        targetSdk = ThunderbirdProjectConfig.androidSdkTarget
+        targetSdk = ThunderbirdProjectConfig.Android.sdkTarget
     }
 
     buildFeatures {
@@ -21,7 +21,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = ThunderbirdProjectConfig.javaCompatibilityVersion.toString()
+        jvmTarget = ThunderbirdProjectConfig.Compiler.javaCompatibility.toString()
     }
 
     dependenciesInfo {

@@ -17,7 +17,7 @@ configure<DetektExtension> {
 }
 
 tasks.withType<Detekt>().configureEach {
-    jvmTarget = ThunderbirdProjectConfig.javaCompatibilityVersion.toString()
+    jvmTarget = ThunderbirdProjectConfig.Compiler.javaCompatibility.toString()
 
     exclude(defaultExcludes)
 
@@ -29,7 +29,7 @@ tasks.withType<Detekt>().configureEach {
 }
 
 tasks.withType<DetektCreateBaselineTask>().configureEach {
-    jvmTarget = ThunderbirdProjectConfig.javaCompatibilityVersion.toString()
+    jvmTarget = ThunderbirdProjectConfig.Compiler.javaCompatibility.toString()
 
     exclude(defaultExcludes)
 }
@@ -44,6 +44,4 @@ val defaultExcludes = listOf(
     "**/build/**",
     ".github/**",
     "gradle/**",
-    "**/app/k9mail/ui/utils/itemtouchhelper/**",
-    "**/app/k9mail/ui/utils/linearlayoutmanager/**",
 )
