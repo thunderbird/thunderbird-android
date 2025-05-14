@@ -64,6 +64,7 @@ icu4j = "72.1"
 javaDiffUtils = "4.12"
 jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.0.2"
+jetbrainsCompose = "1.8.1"
 jdom = "2.0.6.1"
 jmapClient = "0.3.1"
 jsoup = "1.19.1"
@@ -112,8 +113,10 @@ compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinBom
 dependency-check = { id = "com.github.ben-manes.versions", version.ref = "dependencyCheckPlugin" }
 dependency-guard = { id = "com.dropbox.dependency-guard", version.ref = "dependencyGuardPlugin" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detektPlugin" }
+jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "jetbrainsCompose" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinBom" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlinBom" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinBom" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinBom" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
@@ -260,10 +263,27 @@ xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 
 [bundles]
+shared-kmp-common = [
+  "koin-core",
+  "kotlinx-coroutines-core",
+  "kotlinx-datetime",
+]
+shared-kmp-android = [
+  "koin-android",
+  "kotlinx-coroutines-android",
+]
+shared-kmp-common-test = [
+  "assertk",
+  "koin-test",
+  "kotlin-test",
+  "kotlinx-coroutines-test",
+  "turbine",
+]
+
 shared-jvm-main = [
   "koin-core",
-  "kotlinx-datetime",
   "kotlinx-coroutines-core",
+  "kotlinx-datetime",
 ]
 shared-jvm-android = [
   "androidx-core",
