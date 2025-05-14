@@ -17,7 +17,7 @@ android {
         applicationId = "net.thunderbird.android"
         testApplicationId = "net.thunderbird.android.tests"
 
-        versionCode = 14
+        versionCode = 15
         versionName = "11.0"
 
         // Keep in sync with the resource string array "supported_languages"
@@ -118,7 +118,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b1"
+            versionNameSuffix = "b2"
 
             isMinifyEnabled = true
             isShrinkResources = true
