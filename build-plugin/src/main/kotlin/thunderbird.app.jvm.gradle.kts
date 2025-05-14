@@ -6,8 +6,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = ThunderbirdProjectConfig.javaCompatibilityVersion
-    targetCompatibility = ThunderbirdProjectConfig.javaCompatibilityVersion
+    sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+    targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
 }
 
 configureKotlinJavaCompatibility()
