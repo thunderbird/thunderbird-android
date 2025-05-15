@@ -1,4 +1,4 @@
-package com.fsck.k9
+package net.thunderbird.feature.account.storage.legacy
 
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
@@ -40,6 +40,7 @@ private val JSON_KEYS = JsonReader.Options.of(
     KEY_CLIENT_CERTIFICATE_ALIAS,
 )
 
+@Suppress("MagicNumber")
 private class ServerSettingsAdapter : JsonAdapter<ServerSettings>() {
     override fun fromJson(reader: JsonReader): ServerSettings {
         reader.beginObject()

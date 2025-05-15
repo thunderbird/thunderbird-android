@@ -1,4 +1,4 @@
-package com.fsck.k9
+package net.thunderbird.feature.account.storage.legacy
 
 import assertk.assertFailure
 import assertk.assertThat
@@ -9,7 +9,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
-import org.junit.Test
+import kotlin.test.Test
 
 class ServerSettingsSerializerTest {
     private val serverSettingsSerializer = ServerSettingsSerializer()
