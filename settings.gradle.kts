@@ -145,6 +145,7 @@ include(
 )
 
 include(
+    ":core:architecture:api",
     ":core:common",
     ":core:featureflag",
     ":core:logging:api",
