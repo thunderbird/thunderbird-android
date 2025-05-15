@@ -1,12 +1,12 @@
 package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.ServerSettingsSerializer
 import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.preferences.migration.migration12.ImapStoreUriDecoder
 import com.fsck.k9.preferences.migration.migration12.Pop3StoreUriDecoder
 import com.fsck.k9.preferences.migration.migration12.SmtpTransportUriDecoder
 import com.fsck.k9.preferences.migration.migration12.WebDavStoreUriDecoder
+import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 
 /**
  * Convert server settings from the old URI format to the new JSON format

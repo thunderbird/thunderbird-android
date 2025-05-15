@@ -84,6 +84,7 @@ include(
     ":feature:account:server:settings",
     ":feature:account:server:validation",
     ":feature:account:setup",
+    ":feature:account:storage:legacy",
 )
 
 include(
