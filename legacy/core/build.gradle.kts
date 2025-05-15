@@ -15,6 +15,7 @@ dependencies {
     api(projects.core.android.network)
     api(projects.core.mail.folder.api)
     api(projects.feature.folder.api)
+    api(projects.feature.account.storage.legacy)
 
     api(projects.feature.search)
     api(projects.core.account)
