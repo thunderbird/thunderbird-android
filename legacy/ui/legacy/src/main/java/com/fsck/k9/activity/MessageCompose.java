@@ -4,6 +4,7 @@ package com.fsck.k9.activity;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -401,9 +402,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             messageContentView.setText(CrLfConverter.toLf(intentData.getExtraText()));
         }
 
-        if (intentData.getExtraStream() != null) {
-            attachmentPresenter.addExternalAttachment(intentData.getExtraStream(), intentData.getIntentType());
+        List<Uri> uriList = intentData.getExtraStream();
+        String intentType = intentData.getIntentType();
+
+        if (intentType != null) {
+            for (Uri uri : uriList) {
+                attachmentPresenter.addExternalAttachment(uri, intentType);
+            }
         }
+
 
         if (intentData.getSubject() != null && subjectView.getText().length() == 0) {
             subjectView.setText(intentData.getSubject());
