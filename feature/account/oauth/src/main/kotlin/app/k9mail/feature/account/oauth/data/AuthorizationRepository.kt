@@ -2,7 +2,6 @@ package app.k9mail.feature.account.oauth.data
 
 import android.content.Intent
 import androidx.core.net.toUri
-import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
@@ -16,6 +15,7 @@ import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.CodeVerifierUtil
 import net.openid.appauth.ResponseTypeValues
+import net.thunderbird.core.common.oauth.OAuthConfiguration
 import timber.log.Timber
 
 class AuthorizationRepository(

@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.toEmailAddressOrNull
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import timber.log.Timber
 
 internal class ContactPhotoLoader(

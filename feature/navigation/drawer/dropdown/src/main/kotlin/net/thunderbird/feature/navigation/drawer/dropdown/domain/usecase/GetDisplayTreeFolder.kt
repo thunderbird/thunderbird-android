@@ -1,9 +1,9 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
 
-import app.k9mail.core.mail.folder.api.Folder
-import app.k9mail.core.mail.folder.api.FolderType
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder

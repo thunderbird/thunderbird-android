@@ -1,9 +1,9 @@
 package app.k9mail.feature.migration.qrcode.payload
 
-import app.k9mail.core.common.mail.EmailAddressParserException
-import app.k9mail.core.common.mail.toUserEmailAddress
-import app.k9mail.core.common.net.toHostname
-import app.k9mail.core.common.net.toPort
+import net.thunderbird.core.common.mail.EmailAddressParserException
+import net.thunderbird.core.common.mail.toUserEmailAddress
+import net.thunderbird.core.common.net.toHostname
+import net.thunderbird.core.common.net.toPort
 import timber.log.Timber
 
 @Suppress("TooManyFunctions")

@@ -1,6 +1,5 @@
 package net.thunderbird.app.common.account
 
-import app.k9mail.core.featureflag.FeatureFlagResult
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
@@ -29,8 +28,9 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
-import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.preferences.Storage
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration

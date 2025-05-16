@@ -1,13 +1,13 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.core.common.mail.EmailAddressParserError
-import app.k9mail.core.common.mail.EmailAddressParserException
-import app.k9mail.core.common.mail.toEmailAddressOrNull
-import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import com.fsck.k9.logging.Timber
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.common.mail.EmailAddressParserError
+import net.thunderbird.core.common.mail.EmailAddressParserException
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
+import net.thunderbird.core.common.mail.toUserEmailAddress
 
 /**
  * Validate an email address that the user wants to add to an account.

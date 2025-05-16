@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.testing.TestLifecycleOwner
-import app.k9mail.core.testing.TestClock
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.feature.funding.api.FundingSettings
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
@@ -17,6 +16,7 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import kotlin.test.Test
 import kotlinx.datetime.Instant
+import net.thunderbird.core.testing.TestClock
 import org.junit.Rule
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever

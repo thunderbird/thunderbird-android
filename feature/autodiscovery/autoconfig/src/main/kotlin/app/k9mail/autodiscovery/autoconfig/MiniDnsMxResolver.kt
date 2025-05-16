@@ -1,7 +1,7 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.net.Domain
-import app.k9mail.core.common.net.toDomainOrNull
+import net.thunderbird.core.common.net.Domain
+import net.thunderbird.core.common.net.toDomainOrNull
 import org.minidns.hla.DnssecResolverApi
 import org.minidns.record.MX
 

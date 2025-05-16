@@ -1,6 +1,6 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.net.Domain
+import net.thunderbird.core.common.net.Domain
 
 /**
  * Result for [MxResolver].

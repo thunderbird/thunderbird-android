@@ -1,7 +1,5 @@
 package com.fsck.k9
 
-import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
 import app.k9mail.feature.widget.message.list.messageListWidgetModule
 import app.k9mail.feature.widget.unread.UnreadWidgetUpdateListener
 import app.k9mail.feature.widget.unread.unreadWidgetModule
@@ -15,6 +13,8 @@ import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.resources.resourcesModule
 import com.fsck.k9.storage.storageModule
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 

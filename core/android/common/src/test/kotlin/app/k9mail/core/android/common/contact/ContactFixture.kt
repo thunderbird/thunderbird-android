@@ -1,7 +1,7 @@
 package app.k9mail.core.android.common.contact
 
 import android.net.Uri
-import app.k9mail.core.common.mail.toEmailAddressOrThrow
+import net.thunderbird.core.common.mail.toEmailAddressOrThrow
 
 const val CONTACT_ID = 123L
 const val CONTACT_NAME = "user name"

@@ -10,12 +10,12 @@ dependencies {
     api(projects.core.ui.legacy.designsystem)
 
     implementation(projects.legacy.core)
-    implementation(projects.core.account)
+    implementation(projects.feature.mail.account.api)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
-    implementation(projects.core.contact)
+    implementation(projects.core.android.contact)
 
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
     implementation(projects.core.common)

@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 class FakeAccountAutoDiscoveryValidator(
     private val emailAddressAnswer: ValidationResult = ValidationResult.Success,

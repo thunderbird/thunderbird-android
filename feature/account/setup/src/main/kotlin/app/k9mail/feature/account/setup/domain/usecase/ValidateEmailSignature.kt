@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.setup.domain.DomainContract
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailSignature.ValidateEmailSignatureError.BlankEmailSignature
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 // TODO check signature for input validity
 internal class ValidateEmailSignature : DomainContract.UseCase.ValidateEmailSignature {

@@ -1,12 +1,12 @@
 package app.k9mail.feature.account.oauth.domain.usecase
 
 import android.content.Intent
-import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.FakeAuthorizationRepository
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.oauth.OAuthConfiguration
 import org.junit.Test
 
 class GetOAuthRequestIntentTest {

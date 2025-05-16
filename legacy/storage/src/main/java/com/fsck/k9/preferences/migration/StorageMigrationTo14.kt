@@ -1,8 +1,8 @@
 package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.core.common.mail.Protocols
-import com.fsck.k9.ServerSettingsSerializer
+import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 
 /**
  * Rewrite 'folderPushMode' value of non-IMAP accounts to 'NONE'.

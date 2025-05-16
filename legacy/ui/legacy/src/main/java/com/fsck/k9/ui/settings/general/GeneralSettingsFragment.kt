@@ -8,8 +8,6 @@ import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
-import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
@@ -17,6 +15,8 @@ import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.settings.remove
 import com.google.android.material.snackbar.Snackbar
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.toFeatureFlagKey
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

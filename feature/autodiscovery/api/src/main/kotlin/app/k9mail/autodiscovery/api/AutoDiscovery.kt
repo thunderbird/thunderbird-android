@@ -1,6 +1,6 @@
 package app.k9mail.autodiscovery.api
 
-import app.k9mail.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.EmailAddress
 
 /**
  * Provides a mechanism to find mail server settings for a given email address.

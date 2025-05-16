@@ -1,7 +1,7 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.net.Domain
-import app.k9mail.core.common.net.toDomain
+import net.thunderbird.core.common.net.Domain
+import net.thunderbird.core.common.net.toDomain
 
 internal class RealSubDomainExtractor(private val baseDomainExtractor: BaseDomainExtractor) : SubDomainExtractor {
     @Suppress("ReturnCount")
