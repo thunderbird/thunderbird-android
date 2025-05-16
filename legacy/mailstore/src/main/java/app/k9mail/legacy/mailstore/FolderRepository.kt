@@ -1,7 +1,5 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.core.mail.folder.api.Folder
-import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.mailstore.FolderTypeMapper.folderTypeOf
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,6 +14,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.FolderDetails
 
 @Suppress("TooManyFunctions")
 class FolderRepository(

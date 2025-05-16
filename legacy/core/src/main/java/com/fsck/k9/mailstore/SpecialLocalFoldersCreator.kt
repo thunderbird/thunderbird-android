@@ -4,7 +4,7 @@ import app.k9mail.core.common.mail.Protocols
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderType
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import timber.log.Timber
 
 class SpecialLocalFoldersCreator(

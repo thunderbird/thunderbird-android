@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.core.mail.folder.api)
+    implementation(projects.feature.mail.folder.api)
 }

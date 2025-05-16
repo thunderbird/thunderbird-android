@@ -33,7 +33,7 @@ import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.account.QuoteStyle;
 import net.thunderbird.core.android.account.ShowPictures;
 import net.thunderbird.core.android.account.SortType;
-import net.thunderbird.core.mail.folder.api.SpecialFolderSelection;
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection;
 import net.thunderbird.feature.notification.NotificationLight;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;

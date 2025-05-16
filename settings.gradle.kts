@@ -131,6 +131,7 @@ include(
 
 include(
     ":feature:mail:account:api",
+    ":feature:mail:folder:api",
 )
 
 include(
@@ -155,10 +156,6 @@ include(
     ":core:ui:legacy:theme2:k9mail",
     ":core:ui:legacy:theme2:thunderbird",
     ":core:ui:theme:api",
-)
-
-include(
-    ":core:mail:folder:api",
 )
 
 include(

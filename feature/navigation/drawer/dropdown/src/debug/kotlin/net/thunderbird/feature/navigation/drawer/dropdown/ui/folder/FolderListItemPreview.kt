@@ -3,9 +3,9 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.folder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
+import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_FOLDER
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.UNIFIED_FOLDER

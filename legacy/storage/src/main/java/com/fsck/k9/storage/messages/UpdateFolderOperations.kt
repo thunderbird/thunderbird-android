@@ -1,11 +1,11 @@
 package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
-import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.mailstore.MoreMessages
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.toDatabaseFolderType
+import net.thunderbird.feature.mail.folder.api.FolderDetails
 
 internal class UpdateFolderOperations(private val lockableDatabase: LockableDatabase) {
     fun changeFolder(folderServerId: String, name: String, type: FolderType) {
