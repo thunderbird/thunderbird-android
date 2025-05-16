@@ -1,6 +1,6 @@
 package net.thunderbird.feature.search
 
-import net.thunderbird.core.account.BaseAccount
+import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchField
 

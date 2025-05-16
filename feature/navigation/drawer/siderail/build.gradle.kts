@@ -12,11 +12,11 @@ dependencies {
 
     implementation(projects.core.mail.folder.api)
 
-    implementation(projects.core.account)
     implementation(projects.core.ui.theme.api)
     implementation(projects.core.ui.compose.designsystem)
 
     implementation(projects.feature.account.avatar)
+    implementation(projects.feature.mail.account.api)
 
     implementation(projects.core.android.account)
     implementation(projects.legacy.mailstore)

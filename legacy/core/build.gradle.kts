@@ -18,8 +18,7 @@ dependencies {
     api(projects.feature.account.storage.legacy)
 
     api(projects.feature.search)
-    api(projects.core.account)
-    api(projects.core.android.account)
+    api(projects.feature.mail.account.api)
     api(projects.legacy.di)
     api(projects.legacy.mailstore)
     api(projects.legacy.message)

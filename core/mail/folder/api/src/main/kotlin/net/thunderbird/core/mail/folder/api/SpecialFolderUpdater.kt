@@ -1,6 +1,6 @@
 package net.thunderbird.core.mail.folder.api
 
-import net.thunderbird.core.account.BaseAccount
+import net.thunderbird.feature.mail.account.api.BaseAccount
 
 fun interface SpecialFolderUpdater {
     /**

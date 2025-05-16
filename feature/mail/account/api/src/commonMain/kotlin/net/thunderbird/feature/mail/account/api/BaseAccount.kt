@@ -1,4 +1,4 @@
-package net.thunderbird.core.account
+package net.thunderbird.feature.mail.account.api
 
 interface BaseAccount {
     val uuid: String
