@@ -1,6 +1,4 @@
-package net.thunderbird.feature.folder.api
-
-import net.thunderbird.feature.mail.folder.api.FolderType
+package net.thunderbird.feature.mail.folder.api
 
 data class RemoteFolder(
     val id: Long,

@@ -123,7 +123,6 @@ include(
 
 include(
     ":feature:funding:api",
-    ":feature:folder:api",
     ":feature:funding:googleplay",
     ":feature:funding:link",
     ":feature:funding:noop",
