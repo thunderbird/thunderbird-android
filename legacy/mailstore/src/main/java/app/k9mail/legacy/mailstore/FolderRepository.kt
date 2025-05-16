@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
+import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 @Suppress("TooManyFunctions")
 class FolderRepository(
