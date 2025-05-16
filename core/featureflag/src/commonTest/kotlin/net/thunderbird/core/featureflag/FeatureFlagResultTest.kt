@@ -1,6 +1,5 @@
-package app.k9mail.core.featureflags
+package net.thunderbird.core.featureflag
 
-import app.k9mail.core.featureflag.FeatureFlagResult
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import org.junit.Test

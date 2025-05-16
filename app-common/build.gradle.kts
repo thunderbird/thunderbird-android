@@ -17,7 +17,7 @@ dependencies {
     implementation(projects.legacy.core)
     implementation(projects.core.android.account)
 
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
     implementation(projects.core.ui.legacy.theme2.common)
 
     implementation(projects.feature.account.setup)
