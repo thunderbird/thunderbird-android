@@ -27,7 +27,6 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-import app.k9mail.core.featureflag.FeatureFlagProvider;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.message.controller.MessageReference;
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker;
@@ -85,6 +84,7 @@ import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.feature.search.LocalSearch;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

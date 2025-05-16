@@ -1,4 +1,4 @@
-package app.k9mail.core.featureflag
+package net.thunderbird.core.featureflag
 
 sealed interface FeatureFlagResult {
     data object Enabled : FeatureFlagResult

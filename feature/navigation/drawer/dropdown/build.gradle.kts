@@ -22,7 +22,7 @@ dependencies {
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)
     implementation(projects.legacy.ui.folder)
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
 
     testImplementation(projects.core.ui.compose.testing)
 }

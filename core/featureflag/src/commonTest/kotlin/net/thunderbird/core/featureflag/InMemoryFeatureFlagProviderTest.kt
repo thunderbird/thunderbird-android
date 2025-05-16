@@ -1,9 +1,5 @@
-package app.k9mail.core.featureflags
+package net.thunderbird.core.featureflag
 
-import app.k9mail.core.featureflag.FeatureFlag
-import app.k9mail.core.featureflag.FeatureFlagKey
-import app.k9mail.core.featureflag.FeatureFlagResult
-import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import org.junit.Test

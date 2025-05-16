@@ -1,6 +1,5 @@
 package net.thunderbird.app.common.account
 
-import app.k9mail.core.featureflag.FeatureFlagResult
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -29,6 +28,7 @@ import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.ShowPictures
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.preferences.Storage
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
