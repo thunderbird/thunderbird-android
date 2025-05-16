@@ -7,7 +7,7 @@
         <change>Introduce an option to use the system theme on Android 10 and older</change>
         <change>Update PushService to run as a specialUse foreground service for Android 15</change>
         <change>Update Gmail OAuth client IDs to Thunderbird for Android</change>
-        <change>Preserve the <s> tag when sanitizing HTML content</change>
+        <change>Preserve the &lt;s&gt; tag when sanitizing HTML content</change>
         <change>Messages and star counts in the drawer update instantly</change>
         <change>Folder names in the drawer are limited to two lines</change>
         <change>Hide accounts setting now remembered across restarts</change>
