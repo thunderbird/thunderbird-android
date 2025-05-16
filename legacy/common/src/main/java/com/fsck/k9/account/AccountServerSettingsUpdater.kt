@@ -1,6 +1,5 @@
 package com.fsck.k9.account
 
-import app.k9mail.core.common.mail.Protocols
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.edit.AccountEditExternalContract
 import app.k9mail.feature.account.edit.AccountEditExternalContract.AccountUpdaterFailure
@@ -16,6 +15,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.common.mail.Protocols
 
 class AccountServerSettingsUpdater(
     private val accountManager: AccountManager,

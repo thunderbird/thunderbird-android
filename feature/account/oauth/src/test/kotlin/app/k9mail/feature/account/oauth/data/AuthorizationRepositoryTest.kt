@@ -3,7 +3,6 @@ package app.k9mail.feature.account.oauth.data
 import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
-import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
 import assertk.all
@@ -25,6 +24,7 @@ import net.openid.appauth.GrantTypeValues
 import net.openid.appauth.ResponseTypeValues
 import net.openid.appauth.TokenRequest
 import net.openid.appauth.TokenResponse
+import net.thunderbird.core.common.oauth.OAuthConfiguration
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any

@@ -1,8 +1,8 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import net.thunderbird.core.common.net.toDomain
 import org.junit.Test
 
 class OkHttpBaseDomainExtractorTest {

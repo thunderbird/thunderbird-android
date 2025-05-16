@@ -5,11 +5,11 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult.NoUsableSettingsFound
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult.Settings
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
-import app.k9mail.core.common.mail.EmailAddress
-import app.k9mail.core.common.mail.toDomain
-import app.k9mail.core.common.net.Domain
 import com.fsck.k9.logging.Timber
 import java.io.IOException
+import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.toDomain
+import net.thunderbird.core.common.net.Domain
 import okhttp3.OkHttpClient
 import org.minidns.dnsname.InvalidDnsNameException
 

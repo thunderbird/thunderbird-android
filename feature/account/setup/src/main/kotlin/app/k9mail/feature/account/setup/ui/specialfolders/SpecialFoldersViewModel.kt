@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
@@ -18,6 +17,7 @@ import com.fsck.k9.mail.folders.FolderFetcherException
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 class SpecialFoldersViewModel(
     private val formUiModel: SpecialFoldersContract.FormUiModel,

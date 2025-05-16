@@ -1,8 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
@@ -25,6 +23,8 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.AccountAutoDiscoveryCon
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.delay
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import org.junit.Rule
 import org.junit.Test
 

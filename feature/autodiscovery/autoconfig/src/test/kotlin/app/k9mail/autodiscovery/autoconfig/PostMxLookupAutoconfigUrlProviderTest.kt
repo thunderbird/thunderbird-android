@@ -1,10 +1,10 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.mail.toEmailAddressOrThrow
-import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.extracting
+import net.thunderbird.core.common.mail.toEmailAddressOrThrow
+import net.thunderbird.core.common.net.toDomain
 import org.junit.Test
 
 class PostMxLookupAutoconfigUrlProviderTest {

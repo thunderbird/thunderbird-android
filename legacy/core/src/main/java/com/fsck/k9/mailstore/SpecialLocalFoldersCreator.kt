@@ -1,9 +1,9 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.core.common.mail.Protocols
 import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderType
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import timber.log.Timber
 

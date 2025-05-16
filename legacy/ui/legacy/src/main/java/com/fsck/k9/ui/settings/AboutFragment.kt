@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import app.k9mail.core.common.provider.AppNameProvider
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.core.common.provider.AppNameProvider
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 

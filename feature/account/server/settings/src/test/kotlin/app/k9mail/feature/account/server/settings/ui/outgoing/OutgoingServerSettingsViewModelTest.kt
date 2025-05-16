@@ -1,7 +1,5 @@
 package app.k9mail.feature.account.server.settings.ui.outgoing
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndMviTurbinesConsumed
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
@@ -24,6 +22,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import org.junit.Rule
 import org.junit.Test
 

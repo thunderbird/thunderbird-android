@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.core.common.mail.Protocols
+import net.thunderbird.core.common.mail.Protocols
 
 internal object ServerTypeConverter {
     @JvmStatic
