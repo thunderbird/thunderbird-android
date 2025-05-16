@@ -1,8 +1,8 @@
 package net.thunderbird.android.featureflag
 
-import app.k9mail.core.featureflag.FeatureFlag
-import app.k9mail.core.featureflag.FeatureFlagFactory
-import app.k9mail.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlag
+import net.thunderbird.core.featureflag.FeatureFlagFactory
+import net.thunderbird.core.featureflag.toFeatureFlagKey
 
 /**
  * Feature flags for Thunderbird Beta

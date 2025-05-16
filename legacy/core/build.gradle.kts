@@ -25,7 +25,7 @@ dependencies {
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
     implementation(projects.feature.telemetry.api)
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
 
     api(libs.androidx.annotation)
 

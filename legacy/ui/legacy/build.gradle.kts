@@ -15,7 +15,7 @@ dependencies {
     implementation(projects.uiUtils.toolbarBottomSheet)
     implementation(projects.core.android.contact)
 
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
     implementation(projects.core.common)

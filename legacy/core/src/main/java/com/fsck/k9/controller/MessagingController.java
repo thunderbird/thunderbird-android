@@ -27,7 +27,7 @@ import android.os.SystemClock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-import app.k9mail.core.featureflag.FeatureFlagProvider;
+import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.account.DeletePolicy;
 import app.k9mail.legacy.di.DI;

@@ -14,8 +14,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.SwitchPreference
 import app.k9mail.core.common.provider.AppNameProvider
-import app.k9mail.core.featureflag.FeatureFlagKey
-import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
@@ -39,6 +37,8 @@ import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.takisoft.preferencex.PreferenceFragmentCompat
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import org.koin.android.ext.android.inject

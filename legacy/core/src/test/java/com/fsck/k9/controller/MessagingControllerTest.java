@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
-import app.k9mail.core.featureflag.FeatureFlagProvider;
-import app.k9mail.core.featureflag.FeatureFlagResult.Disabled;
+import net.thunderbird.core.featureflag.FeatureFlagProvider;
+import net.thunderbird.core.featureflag.FeatureFlagResult.Disabled;
 import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.K9;

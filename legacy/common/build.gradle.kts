@@ -10,7 +10,7 @@ dependencies {
     implementation(projects.backend.imap)
     implementation(projects.backend.pop3)
 
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
     implementation(projects.feature.launcher)
 
     implementation(projects.feature.account.setup)
