@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "net.thunderbird.core.contact"
+    namespace = "net.thunderbird.core.android.contact"
 }
 
 dependencies {

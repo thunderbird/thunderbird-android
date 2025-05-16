@@ -1,4 +1,4 @@
-package net.thunderbird.core.contact
+package net.thunderbird.core.android.contact
 
 import android.content.Intent
 import android.net.Uri
