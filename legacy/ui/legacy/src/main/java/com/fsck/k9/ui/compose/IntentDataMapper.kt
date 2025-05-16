@@ -11,6 +11,7 @@ import org.openintents.openpgp.util.OpenPgpApi
 @Suppress("NestedBlockDepth", "MaxLineLength")
 class IntentDataMapper {
 
+    @Suppress("CyclomaticComplexMethod")
     fun initFromIntent(intent: Intent): IntentData {
         val action: String? = intent.action
         var intentData = IntentData()
@@ -25,43 +26,44 @@ class IntentDataMapper {
             }
         }
 
-        if ((
-            Intent.ACTION_SEND == action || Intent.ACTION_SEND_MULTIPLE == action ||
-                Intent.ACTION_SENDTO == action || Intent.ACTION_VIEW == action
-            )
+        if (
+            Intent.ACTION_SEND == action ||
+            Intent.ACTION_SEND_MULTIPLE == action ||
+            Intent.ACTION_SENDTO == action ||
+            Intent.ACTION_VIEW == action
         ) {
             intentData = intentData.copy(
                 startedByExternalIntent = true,
                 extraText = intent.getCharSequenceExtra(Intent.EXTRA_TEXT),
                 intentType = intent.type,
-            )
-
-            if ((Intent.ACTION_SEND == action)) {
-                val extraStream = IntentCompat.getParcelableExtra(
-                    intent,
-                    Intent.EXTRA_STREAM,
-                    Uri::class.java,
-                )
-                intentData = intentData.copy(extraStream = extraStream)
-            } else {
-                val list: List<Parcelable>? = IntentCompat.getParcelableArrayListExtra(
-                    intent,
-                    Intent.EXTRA_STREAM,
-                    Parcelable::class.java,
-                )
-                list?.let {
-                    for (parcelable in it) {
-                        intentData = intentData.copy(extraStream = parcelable as Uri)
-                    }
-                }
-            }
-            intentData = intentData.copy(
                 subject = intent.getStringExtra(Intent.EXTRA_SUBJECT),
                 shouldInitFromSendOrViewIntent = true,
             )
+
+            val extraStreams = when (action) {
+                Intent.ACTION_SEND -> {
+                    IntentCompat.getParcelableExtra(
+                        intent,
+                        Intent.EXTRA_STREAM,
+                        Uri::class.java,
+                    )?.let { listOf(it) } ?: emptyList()
+                }
+
+                Intent.ACTION_SEND_MULTIPLE -> {
+                    IntentCompat.getParcelableArrayListExtra<Parcelable>(
+                        intent,
+                        Intent.EXTRA_STREAM,
+                        Parcelable::class.java,
+                    )?.filterIsInstance<Uri>() ?: emptyList()
+                }
+
+                else -> emptyList()
+            }
+
+            intentData = intentData.copy(extraStream = extraStreams)
         }
 
-        if ((MessageCompose.ACTION_AUTOCRYPT_PEER == action)) {
+        if (MessageCompose.ACTION_AUTOCRYPT_PEER == action) {
             intentData = intentData.copy(
                 trustId = intent.getStringExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_ID),
                 startedByExternalIntent = true,
@@ -77,7 +79,7 @@ data class IntentData(
     val mailToUri: Uri? = null,
     val extraText: CharSequence? = null,
     val intentType: String? = null,
-    val extraStream: Uri? = null,
+    val extraStream: List<Uri> = emptyList(),
     val subject: String? = null,
     val trustId: String? = null,
 )
