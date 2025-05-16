@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.server.validation.ui
 
-import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Effect
@@ -8,6 +7,7 @@ import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.provider.BrandNameProvider
 import org.junit.Test
 
 class ServerValidationScreenKtTest : ComposeTest() {

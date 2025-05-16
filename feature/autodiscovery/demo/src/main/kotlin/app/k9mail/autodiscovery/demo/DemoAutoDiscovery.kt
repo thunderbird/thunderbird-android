@@ -5,11 +5,11 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
 import app.k9mail.autodiscovery.api.IncomingServerSettings
 import app.k9mail.autodiscovery.api.OutgoingServerSettings
-import app.k9mail.core.common.mail.EmailAddress
-import app.k9mail.core.common.mail.toDomain
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.toDomain
 
 class DemoAutoDiscovery : AutoDiscovery {
     override fun initDiscovery(email: EmailAddress): List<AutoDiscoveryRunnable> {

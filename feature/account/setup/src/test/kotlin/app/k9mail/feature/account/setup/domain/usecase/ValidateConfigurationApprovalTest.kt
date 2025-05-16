@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import org.junit.Test
 
 class ValidateConfigurationApprovalTest {

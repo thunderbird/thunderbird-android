@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.input.StringInputField
@@ -12,6 +11,7 @@ import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContrac
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Validator
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.ViewModel
 import kotlinx.coroutines.launch
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 internal class DisplayOptionsViewModel(
     private val validator: Validator,

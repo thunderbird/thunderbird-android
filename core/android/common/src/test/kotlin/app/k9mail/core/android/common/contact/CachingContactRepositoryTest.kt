@@ -1,13 +1,13 @@
 package app.k9mail.core.android.common.contact
 
-import app.k9mail.core.common.cache.InMemoryCache
-import app.k9mail.core.common.mail.EmailAddress
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import kotlin.test.Test
+import net.thunderbird.core.common.cache.InMemoryCache
+import net.thunderbird.core.common.mail.EmailAddress
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn

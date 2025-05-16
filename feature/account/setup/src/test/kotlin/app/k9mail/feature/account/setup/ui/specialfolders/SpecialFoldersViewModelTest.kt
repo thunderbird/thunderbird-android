@@ -1,7 +1,5 @@
 package app.k9mail.feature.account.setup.ui.specialfolders
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndStateTurbineConsumed
@@ -26,6 +24,8 @@ import com.fsck.k9.mail.folders.FolderFetcherException
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.folders.RemoteFolder
 import kotlinx.coroutines.delay
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import org.junit.Rule
 import org.junit.Test
 

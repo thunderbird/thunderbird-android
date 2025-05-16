@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.server.certificate.ui
 
-import app.k9mail.core.common.net.HostNameUtils
+import net.thunderbird.core.common.net.HostNameUtils
 
 /**
  * Format a hostname or IP address for display.
