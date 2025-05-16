@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import app.k9mail.core.testing.TestClock
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.contains
@@ -12,6 +11,7 @@ import assertk.assertions.isTrue
 import com.fsck.k9.K9
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.testing.TestClock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

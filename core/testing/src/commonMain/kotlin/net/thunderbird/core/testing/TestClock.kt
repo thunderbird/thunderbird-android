@@ -1,4 +1,4 @@
-package app.k9mail.core.testing
+package net.thunderbird.core.testing
 
 import kotlin.time.Duration
 import kotlinx.datetime.Clock
