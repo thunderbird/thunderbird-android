@@ -1,8 +1,8 @@
 package net.thunderbird.backend.api.folder
 
 import com.fsck.k9.mail.folders.FolderServerId
-import net.thunderbird.core.account.BaseAccount
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.mail.account.api.BaseAccount
 
 interface RemoteFolderCreator {
     /**
