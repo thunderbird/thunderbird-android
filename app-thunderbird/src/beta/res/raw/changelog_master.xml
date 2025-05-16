@@ -33,7 +33,7 @@
         <change>Add a menu enty to empty the Spam folder</change>
         <change>Provide Slovak translation</change>
         <change>Update Gmail OAuth client IDs to Thunderbird for Android</change>
-        <change>Preserve the <s> tag when sanitizing HTML content</change>
+        <change>Preserve the &lt;s&gt; tag when sanitizing HTML content</change>
         <change>Messages and star counts in the drawer update instantly</change>
         <change>The drawer remembers the state of hide accounts</change>
         <change>Restart PushService after app update</change>
