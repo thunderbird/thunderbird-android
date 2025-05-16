@@ -26,8 +26,8 @@ import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.ShowPictures
-import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.core.preferences.Storage
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration

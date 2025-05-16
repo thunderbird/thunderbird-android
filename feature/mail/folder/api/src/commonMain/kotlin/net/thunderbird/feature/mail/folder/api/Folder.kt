@@ -1,4 +1,4 @@
-package app.k9mail.core.mail.folder.api
+package net.thunderbird.feature.mail.folder.api
 
 data class Folder(
     val id: Long,

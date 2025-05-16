@@ -1,7 +1,7 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.core.mail.folder.api.FolderDetails
 import java.util.concurrent.CopyOnWriteArraySet
+import net.thunderbird.feature.mail.folder.api.FolderDetails
 
 @Suppress("TooManyFunctions")
 class ListenableMessageStore(private val messageStore: MessageStore) : MessageStore by messageStore {
