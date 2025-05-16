@@ -10,7 +10,7 @@ dependencies {
     api(projects.core.ui.legacy.designsystem)
 
     implementation(projects.legacy.core)
-    implementation(projects.core.account)
+    implementation(projects.feature.mail.account.api)
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
     implementation(projects.core.contact)

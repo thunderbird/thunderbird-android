@@ -11,7 +11,7 @@ import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.fsck.k9.activity.AccountList
 import com.fsck.k9.activity.MessageList
-import net.thunderbird.core.account.BaseAccount
+import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.SearchAccount
 import app.k9mail.core.ui.legacy.theme2.common.R as CommonR
 

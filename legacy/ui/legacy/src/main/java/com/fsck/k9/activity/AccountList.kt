@@ -17,8 +17,8 @@ import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.account.BaseAccount
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.SearchAccount.Companion.createUnifiedInboxAccount
 import org.koin.android.ext.android.inject
 

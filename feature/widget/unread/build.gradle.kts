@@ -3,7 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.core.account)
+    implementation(projects.feature.mail.account.api)
+
     implementation(projects.legacy.ui.legacy)
     implementation(projects.legacy.core)
     implementation(projects.core.android.account)
