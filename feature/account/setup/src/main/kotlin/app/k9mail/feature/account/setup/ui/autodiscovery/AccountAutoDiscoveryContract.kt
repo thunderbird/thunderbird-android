@@ -1,7 +1,6 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
@@ -10,6 +9,7 @@ import app.k9mail.feature.account.common.domain.input.BooleanInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 interface AccountAutoDiscoveryContract {
 

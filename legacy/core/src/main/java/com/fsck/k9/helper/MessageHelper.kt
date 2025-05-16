@@ -6,7 +6,6 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.toEmailAddressOrNull
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9.contactNameColor
 import com.fsck.k9.K9.isChangeContactNameColor
@@ -14,6 +13,7 @@ import com.fsck.k9.K9.isShowContactName
 import com.fsck.k9.K9.isShowCorrespondentNames
 import com.fsck.k9.mail.Address
 import java.util.regex.Pattern
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
 
 class MessageHelper(
     private val resourceProvider: CoreResourceProvider,

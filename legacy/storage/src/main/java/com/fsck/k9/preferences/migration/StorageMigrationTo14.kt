@@ -1,7 +1,7 @@
 package com.fsck.k9.preferences.migration
 
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.core.common.mail.Protocols
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 
 /**

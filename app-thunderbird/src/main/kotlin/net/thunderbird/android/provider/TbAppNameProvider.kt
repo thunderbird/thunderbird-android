@@ -1,10 +1,10 @@
 package net.thunderbird.android.provider
 
 import android.content.Context
-import app.k9mail.core.common.provider.AppNameProvider
-import app.k9mail.core.common.provider.BrandNameProvider
 import com.fsck.k9.preferences.FilePrefixProvider
 import net.thunderbird.android.R
+import net.thunderbird.core.common.provider.AppNameProvider
+import net.thunderbird.core.common.provider.BrandNameProvider
 
 internal class TbAppNameProvider(
     context: Context,

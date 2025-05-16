@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Validator
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 internal class FakeDisplayOptionsValidator(
     private val accountNameAnswer: ValidationResult = ValidationResult.Success,

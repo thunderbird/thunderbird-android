@@ -1,7 +1,6 @@
 package app.k9mail.feature.funding.googleplay.data
 
 import android.app.Activity
-import app.k9mail.core.common.cache.Cache
 import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
 import app.k9mail.feature.funding.googleplay.data.remote.startConnection
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
@@ -30,6 +29,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.outcome.handleAsync
 import net.thunderbird.core.outcome.mapFailure

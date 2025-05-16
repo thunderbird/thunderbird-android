@@ -1,11 +1,11 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.net.Domain
-import app.k9mail.core.common.net.toDomain
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import kotlin.test.Test
+import net.thunderbird.core.common.net.Domain
+import net.thunderbird.core.common.net.toDomain
 
 class RealSubDomainExtractorTest {
     private val testBaseDomainExtractor = TestBaseDomainExtractor(baseDomain = "domain.example")

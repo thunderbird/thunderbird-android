@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.oauth.domain.usecase
 
-import app.k9mail.core.common.oauth.OAuthConfigurationProvider
 import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract
 import app.k9mail.feature.account.oauth.domain.AccountOAuthDomainContract.UseCase.GetOAuthRequestIntent
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
+import net.thunderbird.core.common.oauth.OAuthConfigurationProvider
 
 internal class GetOAuthRequestIntent(
     private val repository: AccountOAuthDomainContract.AuthorizationRepository,

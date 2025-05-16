@@ -3,11 +3,11 @@ package app.k9mail.feature.onboarding.migration.thunderbird
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import net.thunderbird.core.common.provider.BrandNameProvider
 import org.junit.Test
 
 class TbOnboardingMigrationScreenKtTest : ComposeTest() {

@@ -1,7 +1,6 @@
 package net.thunderbird.app.common.account
 
 import android.content.Context
-import app.k9mail.core.common.mail.Protocols
 import app.k9mail.feature.account.common.domain.entity.Account
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
@@ -24,6 +23,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 
 // TODO Move to feature/account/setup

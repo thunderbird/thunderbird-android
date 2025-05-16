@@ -36,7 +36,7 @@ import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
-import app.k9mail.core.common.mail.Protocols;
+import net.thunderbird.core.common.mail.Protocols;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

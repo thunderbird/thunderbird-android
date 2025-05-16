@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.SSLCertificateSocketFactory
 import android.os.Build
 import android.text.TextUtils
-import app.k9mail.core.common.net.HostNameUtils.isLegalIPAddress
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
@@ -18,6 +17,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
+import net.thunderbird.core.common.net.HostNameUtils.isLegalIPAddress
 import timber.log.Timber
 
 class DefaultTrustedSocketFactory(

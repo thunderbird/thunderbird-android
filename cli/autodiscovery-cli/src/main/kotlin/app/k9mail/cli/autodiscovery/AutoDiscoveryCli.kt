@@ -6,7 +6,6 @@ import app.k9mail.autodiscovery.autoconfig.AutoconfigUrlConfig
 import app.k9mail.autodiscovery.autoconfig.createIspDbAutoconfigDiscovery
 import app.k9mail.autodiscovery.autoconfig.createMxLookupAutoconfigDiscovery
 import app.k9mail.autodiscovery.autoconfig.createProviderAutoconfigDiscovery
-import app.k9mail.core.common.mail.toUserEmailAddress
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
@@ -14,6 +13,7 @@ import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
 import kotlin.time.measureTimedValue
 import kotlinx.coroutines.runBlocking
+import net.thunderbird.core.common.mail.toUserEmailAddress
 import okhttp3.OkHttpClient.Builder
 
 class AutoDiscoveryCli : CliktCommand() {

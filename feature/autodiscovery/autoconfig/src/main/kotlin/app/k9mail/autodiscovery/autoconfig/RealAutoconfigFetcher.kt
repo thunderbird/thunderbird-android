@@ -5,9 +5,9 @@ import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.ParserError
 import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.Settings
 import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.ErrorResponse
 import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.SuccessResponse
-import app.k9mail.core.common.mail.EmailAddress
 import com.fsck.k9.logging.Timber
 import java.io.IOException
+import net.thunderbird.core.common.mail.EmailAddress
 import okhttp3.HttpUrl
 
 internal class RealAutoconfigFetcher(

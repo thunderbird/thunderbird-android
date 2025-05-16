@@ -1,7 +1,7 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.mail.EmailAddress
 import java.io.InputStream
+import net.thunderbird.core.common.mail.EmailAddress
 
 /**
  * Parser for Thunderbird's Autoconfig file format.
