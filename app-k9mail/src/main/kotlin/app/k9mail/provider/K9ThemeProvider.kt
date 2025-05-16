@@ -1,7 +1,7 @@
 package app.k9mail.provider
 
-import app.k9mail.core.ui.theme.api.ThemeProvider
 import com.fsck.k9.R
+import net.thunderbird.core.ui.theme.api.ThemeProvider
 
 internal class K9ThemeProvider : ThemeProvider {
     override val appThemeResourceId = R.style.Theme_K9_DayNight

@@ -1,21 +1,16 @@
-package app.k9mail.core.ui.theme.api
+package net.thunderbird.core.ui.theme.api
 
 import androidx.annotation.StyleRes
 
-interface ThemeManager {
-
-    val appTheme: Theme
-    val messageViewTheme: Theme
-    val messageComposeTheme: Theme
-
+interface ThemeProvider {
     @get:StyleRes
     val appThemeResourceId: Int
 
     @get:StyleRes
-    val messageViewThemeResourceId: Int
+    val appLightThemeResourceId: Int
 
     @get:StyleRes
-    val messageComposeThemeResourceId: Int
+    val appDarkThemeResourceId: Int
 
     @get:StyleRes
     val dialogThemeResourceId: Int
