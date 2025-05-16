@@ -1,12 +1,12 @@
 package app.k9mail.core.common.cache
 
-import app.k9mail.core.testing.TestClock
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.milliseconds
+import net.thunderbird.core.testing.TestClock
 
 class ExpiringCacheTest {
 

@@ -1,12 +1,12 @@
 package app.k9mail.core.common.cache
 
-import app.k9mail.core.testing.TestClock
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import kotlin.test.Test
+import net.thunderbird.core.testing.TestClock
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
