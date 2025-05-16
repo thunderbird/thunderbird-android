@@ -117,7 +117,7 @@ import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.MessageFormat;
-import net.thunderbird.core.contact.ContactIntentHelper;
+import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.search.LocalSearch;
 import org.openintents.openpgp.OpenPgpApiManager;

@@ -139,6 +139,7 @@ include(
     ":core:outcome",
     ":core:testing",
     ":core:android:common",
+    ":core:android:contact",
     ":core:android:network",
     ":core:android:permissions",
     ":core:android:testing",
@@ -224,6 +225,5 @@ include(":core:mail:mailserver")
 include(":feature:search")
 include(":feature:notification")
 include(":core:ui:theme:manager")
-include(":core:contact")
 include(":core:ui:account")
 include(":core:android:account")
