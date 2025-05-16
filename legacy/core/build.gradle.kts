@@ -12,7 +12,6 @@ dependencies {
     api(projects.core.preferences)
     api(projects.core.android.logging)
     api(projects.core.android.network)
-    api(projects.feature.folder.api)
     api(projects.feature.mail.folder.api)
     api(projects.feature.account.storage.legacy)
 

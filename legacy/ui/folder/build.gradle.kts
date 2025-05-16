@@ -14,7 +14,6 @@ dependencies {
     implementation(projects.legacy.message)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
-    implementation(projects.feature.folder.api)
 
     implementation(libs.androidx.lifecycle.livedata.ktx)
 }
