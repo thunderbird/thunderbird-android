@@ -26,8 +26,8 @@ import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.account.ShowPictures
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
-import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.core.preferences.Storage
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration

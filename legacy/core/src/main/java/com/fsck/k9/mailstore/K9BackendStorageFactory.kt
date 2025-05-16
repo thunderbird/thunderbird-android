@@ -5,7 +5,7 @@ import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.Preferences
 import net.thunderbird.backend.api.BackendStorageFactory
-import net.thunderbird.core.mail.folder.api.SpecialFolderUpdater
+import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 
 class K9BackendStorageFactory(
     private val preferences: Preferences,

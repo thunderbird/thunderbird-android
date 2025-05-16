@@ -24,7 +24,7 @@ import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 
 // TODO Move to feature/account/setup
 internal class AccountCreator(

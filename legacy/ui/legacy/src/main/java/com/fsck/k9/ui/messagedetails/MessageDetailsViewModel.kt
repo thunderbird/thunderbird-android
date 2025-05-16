@@ -9,7 +9,6 @@ import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactPermissionResolver
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.common.mail.toEmailAddressOrNull
-import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
@@ -30,6 +29,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.feature.mail.folder.api.Folder
 
 @Suppress("TooManyFunctions")
 internal class MessageDetailsViewModel(

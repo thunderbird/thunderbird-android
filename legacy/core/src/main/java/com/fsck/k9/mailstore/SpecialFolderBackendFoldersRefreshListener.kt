@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore
 
-import net.thunderbird.core.mail.folder.api.SpecialFolderUpdater
+import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 
 /**
  * Update special folders when folders are added, removed, or changed.
