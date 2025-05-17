@@ -9,7 +9,7 @@ android {
 dependencies {
     implementation(projects.feature.search)
     implementation(projects.core.account)
-    implementation(projects.legacy.account)
+    implementation(projects.core.android.account)
     implementation(projects.legacy.di)
     implementation(projects.legacy.message)
 

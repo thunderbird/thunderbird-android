@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.helper
 
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
 
 object DisplayAddressHelper {
     fun shouldShowRecipients(account: LegacyAccount, folderId: Long): Boolean {

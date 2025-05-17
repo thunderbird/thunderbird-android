@@ -11,12 +11,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import app.k9mail.feature.settings.importing.R
-import app.k9mail.legacy.account.AccountManager
 import com.fsck.k9.ui.base.K9Activity
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.account.AccountManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

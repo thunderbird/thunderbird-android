@@ -21,7 +21,6 @@ import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.funding.api.FundingType
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
@@ -32,6 +31,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.utils.DragDropUtil
+import net.thunderbird.core.android.account.LegacyAccount
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import app.k9mail.feature.settings.importing.R as SettingsImportR

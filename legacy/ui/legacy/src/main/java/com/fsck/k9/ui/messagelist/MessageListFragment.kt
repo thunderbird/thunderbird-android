@@ -31,10 +31,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.Expunge
-import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
@@ -67,6 +63,10 @@ import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
 import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.Expunge
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount

@@ -5,8 +5,6 @@ import android.content.SharedPreferences
 import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import app.k9mail.legacy.account.AccountDefaultsProvider
-import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.logging.Logger
@@ -15,6 +13,8 @@ import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
 import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preferences.Storage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

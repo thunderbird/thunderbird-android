@@ -1,6 +1,5 @@
 package com.fsck.k9.backends
 
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.pop3.Pop3Backend
@@ -9,6 +8,7 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.pop3.Pop3Store
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 import com.fsck.k9.mailstore.K9BackendStorageFactory
+import net.thunderbird.core.android.account.LegacyAccount
 
 class Pop3BackendFactory(
     private val backendStorageFactory: K9BackendStorageFactory,

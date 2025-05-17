@@ -1,7 +1,5 @@
 package com.fsck.k9.controller.push
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.mapToSet
@@ -22,6 +20,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.preferences.BackgroundSync

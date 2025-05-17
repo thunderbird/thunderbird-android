@@ -3,8 +3,8 @@ package com.fsck.k9.storage.migrations
 import android.database.sqlite.SQLiteDatabase
 import android.os.Build
 import androidx.core.content.contentValuesOf
-import app.k9mail.legacy.account.FolderMode
 import com.fsck.k9.mailstore.MigrationsHelper
+import net.thunderbird.core.android.account.FolderMode
 
 internal class MigrationTo87(private val db: SQLiteDatabase, private val migrationsHelper: MigrationsHelper) {
     fun addFoldersSyncEnabledColumn() {

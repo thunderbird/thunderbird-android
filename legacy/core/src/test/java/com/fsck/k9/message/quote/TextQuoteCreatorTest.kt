@@ -1,6 +1,5 @@
 package com.fsck.k9.message.quote
 
-import app.k9mail.legacy.account.QuoteStyle
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.TestCoreResourceProvider
@@ -9,6 +8,7 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.testing.crlf
 import java.util.Date
+import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.mockito.kotlin.doReturn

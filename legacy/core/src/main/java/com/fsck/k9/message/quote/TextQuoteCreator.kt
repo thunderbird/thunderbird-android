@@ -1,10 +1,10 @@
 package com.fsck.k9.message.quote
 
-import app.k9mail.legacy.account.QuoteStyle
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
+import net.thunderbird.core.android.account.QuoteStyle
 
 class TextQuoteCreator(
     private val quoteDateFormatter: QuoteDateFormatter,

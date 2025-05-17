@@ -4,11 +4,8 @@ package com.fsck.k9.mailstore;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import androidx.annotation.NonNull;
-
 import androidx.annotation.Nullable;
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.mailstore.MoreMessages;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
@@ -35,6 +32,7 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
+import net.thunderbird.core.android.account.LegacyAccount;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 

@@ -1,12 +1,12 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isSingleFolder
 import com.fsck.k9.search.isUnifiedInbox
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.LocalSearch
 
 internal class NotificationOperations(

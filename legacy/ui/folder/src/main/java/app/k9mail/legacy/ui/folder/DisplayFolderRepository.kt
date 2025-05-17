@@ -1,7 +1,7 @@
 package app.k9mail.legacy.ui.folder
 
-import app.k9mail.legacy.account.LegacyAccount
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.core.android.account.LegacyAccount
 
 interface DisplayFolderRepository {
 

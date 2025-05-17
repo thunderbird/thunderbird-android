@@ -4,8 +4,6 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import androidx.core.text.getSpans
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
@@ -14,6 +12,8 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
@@ -49,7 +49,10 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
     fun `identity address with multiple identities`() {
         val account = LegacyAccount("uuid").apply {
             identities += Identity(name = IDENTITY_NAME, email = IDENTITY_ADDRESS)
-            identities += Identity(name = "Another identity", email = "irrelevant@domain.example")
+            identities += Identity(
+                name = "Another identity",
+                email = "irrelevant@domain.example",
+            )
         }
 
         val displayName = participantFormatter.getDisplayName(Address(IDENTITY_ADDRESS, "irrelevant"), account)
@@ -72,7 +75,10 @@ class MessageDetailsParticipantFormatterTest : RobolectricTest() {
     fun `identity and address without a display name`() {
         val account = LegacyAccount("uuid").apply {
             identities += Identity(name = null, email = IDENTITY_ADDRESS)
-            identities += Identity(name = "Another identity", email = "irrelevant@domain.example")
+            identities += Identity(
+                name = "Another identity",
+                email = "irrelevant@domain.example",
+            )
         }
 
         val displayName = participantFormatter.getDisplayName(Address(IDENTITY_ADDRESS), account)

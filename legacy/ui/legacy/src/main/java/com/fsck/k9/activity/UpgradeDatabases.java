@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 import androidx.core.content.IntentCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import app.k9mail.legacy.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccount;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;

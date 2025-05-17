@@ -157,7 +157,6 @@ include(
 )
 
 include(
-    ":legacy:account",
     ":legacy:common",
     ":legacy:core",
     ":legacy:crypto-openpgp",
@@ -227,3 +226,4 @@ include(":feature:notification")
 include(":core:ui:theme:manager")
 include(":core:contact")
 include(":core:ui:account")
+include(":core:android:account")

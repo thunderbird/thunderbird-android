@@ -4,7 +4,7 @@ package com.fsck.k9.activity.compose;
 import android.os.AsyncTask;
 import android.os.Handler;
 
-import app.k9mail.legacy.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccount;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Message;

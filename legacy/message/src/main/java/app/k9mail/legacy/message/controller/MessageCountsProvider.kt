@@ -1,7 +1,7 @@
 package app.k9mail.legacy.message.controller
 
-import app.k9mail.legacy.account.LegacyAccount
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
 

@@ -15,8 +15,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.app.LoaderManager.LoaderCallbacks;
 import androidx.loader.content.Loader;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import app.k9mail.legacy.message.controller.MessageReference;
@@ -35,6 +33,7 @@ import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
+import net.thunderbird.core.android.account.LegacyAccount;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import timber.log.Timber;
 

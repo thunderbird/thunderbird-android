@@ -2,8 +2,8 @@
 
 package com.fsck.k9.search
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
 

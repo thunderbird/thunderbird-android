@@ -7,11 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import androidx.annotation.VisibleForTesting;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
+import net.thunderbird.core.android.account.LegacyAccount;
 
 
 public class ReplyToParser {

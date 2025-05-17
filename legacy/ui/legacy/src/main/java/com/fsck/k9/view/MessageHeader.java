@@ -12,13 +12,11 @@ import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.TooltipCompat;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
@@ -42,6 +40,7 @@ import com.fsck.k9.ui.messageview.MessageViewRecipientFormatter;
 import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textview.MaterialTextView;
+import net.thunderbird.core.android.account.LegacyAccount;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {

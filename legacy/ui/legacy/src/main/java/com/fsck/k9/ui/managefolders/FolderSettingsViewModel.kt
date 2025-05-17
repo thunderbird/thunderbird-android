@@ -6,13 +6,13 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderDetails
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.android.account.LegacyAccount
 import timber.log.Timber
 
 private const val NO_FOLDER_ID = 0L

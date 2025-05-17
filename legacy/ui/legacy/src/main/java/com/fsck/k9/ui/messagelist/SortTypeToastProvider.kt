@@ -1,14 +1,14 @@
 package com.fsck.k9.ui.messagelist
 
-import app.k9mail.legacy.account.SortType
-import app.k9mail.legacy.account.SortType.SORT_ARRIVAL
-import app.k9mail.legacy.account.SortType.SORT_ATTACHMENT
-import app.k9mail.legacy.account.SortType.SORT_DATE
-import app.k9mail.legacy.account.SortType.SORT_FLAGGED
-import app.k9mail.legacy.account.SortType.SORT_SENDER
-import app.k9mail.legacy.account.SortType.SORT_SUBJECT
-import app.k9mail.legacy.account.SortType.SORT_UNREAD
 import com.fsck.k9.ui.R
+import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.android.account.SortType.SORT_ARRIVAL
+import net.thunderbird.core.android.account.SortType.SORT_ATTACHMENT
+import net.thunderbird.core.android.account.SortType.SORT_DATE
+import net.thunderbird.core.android.account.SortType.SORT_FLAGGED
+import net.thunderbird.core.android.account.SortType.SORT_SENDER
+import net.thunderbird.core.android.account.SortType.SORT_SUBJECT
+import net.thunderbird.core.android.account.SortType.SORT_UNREAD
 
 class SortTypeToastProvider {
     fun getToast(sortType: SortType, ascending: Boolean): Int {

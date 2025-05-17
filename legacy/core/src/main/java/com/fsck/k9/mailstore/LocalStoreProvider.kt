@@ -1,10 +1,10 @@
 package com.fsck.k9.mailstore
 
 import android.content.Context
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.mail.MessagingException
 import java.util.concurrent.ConcurrentHashMap
+import net.thunderbird.core.android.account.LegacyAccount
 
 class LocalStoreProvider {
     private val localStores = ConcurrentHashMap<String, LocalStore>()

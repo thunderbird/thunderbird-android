@@ -1,6 +1,5 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderSettings
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertThat
@@ -8,6 +7,7 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage
+import net.thunderbird.core.android.account.LegacyAccount
 import org.junit.After
 import org.junit.Test
 import org.koin.core.component.inject

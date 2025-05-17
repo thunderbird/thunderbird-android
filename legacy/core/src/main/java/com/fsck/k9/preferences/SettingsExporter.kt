@@ -3,7 +3,6 @@ package com.fsck.k9.preferences
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_DESCRIPTION_KEY
@@ -18,6 +17,7 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import net.thunderbird.core.android.account.LegacyAccount
 import org.xmlpull.v1.XmlSerializer
 import timber.log.Timber
 

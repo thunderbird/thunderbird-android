@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.view.isVisible
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.core.android.account.LegacyAccount
 
 class AccountSelectionSpinner : AppCompatSpinner {
     var selection: LegacyAccount

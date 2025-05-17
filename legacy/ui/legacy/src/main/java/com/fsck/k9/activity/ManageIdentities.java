@@ -13,7 +13,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import app.k9mail.legacy.account.Identity;
+import net.thunderbird.core.android.account.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 

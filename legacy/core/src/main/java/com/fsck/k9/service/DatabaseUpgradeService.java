@@ -9,14 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import net.thunderbird.core.android.account.LegacyAccount;
 import timber.log.Timber;
 
 /**

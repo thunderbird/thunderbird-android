@@ -2,9 +2,9 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.core.common.mail.Protocols
 import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.core.mail.folder.api.SpecialFolderUpdater
 import net.thunderbird.feature.folder.api.RemoteFolder

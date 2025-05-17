@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTINGS_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY
@@ -11,6 +10,7 @@ import com.fsck.k9.ServerSettingsSerializer
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.util.UUID
 import kotlinx.datetime.Clock
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal class AccountSettingsWriter(
     private val preferences: Preferences,

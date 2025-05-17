@@ -1,9 +1,9 @@
 package net.thunderbird.app.common.account.data
 
-import app.k9mail.legacy.account.LegacyAccountWrapperManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import net.thunderbird.core.android.account.LegacyAccountWrapperManager
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource

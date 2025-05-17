@@ -1,8 +1,8 @@
 package com.fsck.k9.notification
 
 import android.app.PendingIntent
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
+import net.thunderbird.core.android.account.LegacyAccount
 
 interface NotificationActionCreator {
     fun createViewMessagePendingIntent(messageReference: MessageReference): PendingIntent

@@ -3,14 +3,14 @@ package com.fsck.k9.ui.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal class SettingsViewModel(
     private val accountManager: AccountManager,

@@ -1,12 +1,12 @@
 package com.fsck.k9.account
 
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.Core
 import com.fsck.k9.LocalKeyStoreManager
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
+import net.thunderbird.core.android.account.LegacyAccount
 import timber.log.Timber
 
 /**
