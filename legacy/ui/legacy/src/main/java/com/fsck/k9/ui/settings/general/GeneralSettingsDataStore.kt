@@ -45,6 +45,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_useragent" -> K9.isHideUserAgent
             "privacy_hide_timezone" -> K9.isHideTimeZone
             "debug_logging" -> K9.isDebugLoggingEnabled
+            "sync_debug_logging" -> K9.isSyncLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation
             "enable_telemetry" -> K9.isTelemetryEnabled
@@ -75,6 +76,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_useragent" -> K9.isHideUserAgent = value
             "privacy_hide_timezone" -> K9.isHideTimeZone = value
             "debug_logging" -> K9.isDebugLoggingEnabled = value
+            "sync_debug_logging" -> K9.isSyncLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
             "enable_telemetry" -> setTelemetryEnabled(value)
