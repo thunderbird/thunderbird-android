@@ -157,7 +157,6 @@ include(
 )
 
 include(
-    ":legacy:account",
     ":legacy:common",
     ":legacy:core",
     ":legacy:crypto-openpgp",
