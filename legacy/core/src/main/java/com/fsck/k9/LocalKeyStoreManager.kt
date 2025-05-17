@@ -1,9 +1,9 @@
 package com.fsck.k9
 
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.mail.mailserver.MailServerDirection
 
 class LocalKeyStoreManager(

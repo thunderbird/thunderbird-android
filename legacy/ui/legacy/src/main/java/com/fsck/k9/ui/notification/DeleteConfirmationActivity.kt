@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReferenceHelper
@@ -15,6 +14,7 @@ import com.fsck.k9.notification.NotificationActionService
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.base.ThemeType
+import net.thunderbird.core.android.account.LegacyAccount
 import org.koin.android.ext.android.inject
 
 class DeleteConfirmationActivity : K9Activity(ThemeType.DIALOG), ConfirmationDialogFragmentListener {

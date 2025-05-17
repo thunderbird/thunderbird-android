@@ -9,11 +9,11 @@ import android.database.Cursor
 import android.net.Uri
 import android.os.Build
 import android.os.ParcelFileDescriptor
-import app.k9mail.legacy.account.AccountManager
 import com.fsck.k9.helper.MimeTypeUtil
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.preferences.SettingsExporter
 import kotlin.concurrent.thread
+import net.thunderbird.core.android.account.AccountManager
 import okio.ByteString.Companion.toByteString
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent

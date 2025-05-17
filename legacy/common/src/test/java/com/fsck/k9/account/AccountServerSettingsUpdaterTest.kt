@@ -14,7 +14,7 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import app.k9mail.legacy.account.LegacyAccount as K9Account
+import net.thunderbird.core.android.account.LegacyAccount as K9Account
 
 class AccountServerSettingsUpdaterTest {
 

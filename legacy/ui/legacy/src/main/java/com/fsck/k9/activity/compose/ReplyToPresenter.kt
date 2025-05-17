@@ -1,9 +1,9 @@
 package com.fsck.k9.activity.compose
 
 import android.os.Bundle
-import app.k9mail.legacy.account.Identity
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
+import net.thunderbird.core.android.account.Identity
 
 private const val STATE_KEY_REPLY_TO_SHOWN = "com.fsck.k9.activity.compose.ReplyToPresenter.replyToShown"
 

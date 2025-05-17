@@ -6,8 +6,8 @@ import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.IncomingServerProtocol
-import app.k9mail.legacy.account.DeletePolicy
 import com.fsck.k9.account.DeletePolicyProvider
+import net.thunderbird.core.android.account.DeletePolicy
 
 internal class QrCodePayloadMapper(
     private val qrCodePayloadValidator: QrCodePayloadValidator,

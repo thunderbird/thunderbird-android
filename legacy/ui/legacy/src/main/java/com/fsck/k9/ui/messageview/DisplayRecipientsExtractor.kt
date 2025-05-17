@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.messageview
 
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mail.Message
+import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Extract recipient names from a message to display them in the message view.

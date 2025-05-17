@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.contains
@@ -10,6 +9,7 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.fsck.k9.K9
 import com.fsck.k9.K9.NotificationQuickDelete
+import net.thunderbird.core.android.account.LegacyAccount
 import org.junit.Test
 
 class SingleMessageNotificationDataCreatorTest {

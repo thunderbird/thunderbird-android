@@ -1,7 +1,5 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
@@ -9,6 +7,8 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern

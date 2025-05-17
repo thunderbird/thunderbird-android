@@ -1,11 +1,11 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import java.util.UUID
 import kotlin.test.Test
+import net.thunderbird.core.android.account.LegacyAccount
 
 class LocalDeleteOperationDeciderTest {
     private val localDeleteOperationDecider = LocalDeleteOperationDecider()

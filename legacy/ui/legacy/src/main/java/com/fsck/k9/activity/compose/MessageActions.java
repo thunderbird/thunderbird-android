@@ -6,10 +6,11 @@ import android.os.Parcelable;
 
 import app.k9mail.feature.launcher.FeatureLauncherActivity;
 import app.k9mail.feature.launcher.FeatureLauncherTarget.AccountSetup;
-import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
 import app.k9mail.legacy.message.controller.MessageReference;
+import net.thunderbird.core.android.account.LegacyAccount;
+
 
 public class MessageActions {
     /**

@@ -1,6 +1,6 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Decides whether deleting a message in the app moves it to the trash folder or deletes it immediately.

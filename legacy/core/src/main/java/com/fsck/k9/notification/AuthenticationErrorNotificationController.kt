@@ -4,7 +4,7 @@ import android.app.Notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal open class AuthenticationErrorNotificationController(
     private val notificationHelper: NotificationHelper,

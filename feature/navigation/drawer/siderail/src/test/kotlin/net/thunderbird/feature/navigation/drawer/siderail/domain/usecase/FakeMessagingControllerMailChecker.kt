@@ -1,8 +1,8 @@
 package net.thunderbird.feature.navigation.drawer.siderail.domain.usecase
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import app.k9mail.legacy.message.controller.MessagingListener
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal class FakeMessagingControllerMailChecker(
     val recordedParameters: MutableList<CheckMailParameters> = mutableListOf(),

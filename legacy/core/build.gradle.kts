@@ -9,6 +9,7 @@ dependencies {
     api(projects.library.htmlCleaner)
     api(projects.core.mail.mailserver)
     api(projects.core.android.common)
+    api(projects.core.android.account)
     api(projects.core.preferences)
     api(projects.core.android.logging)
     api(projects.core.android.network)
@@ -17,7 +18,7 @@ dependencies {
 
     api(projects.feature.search)
     api(projects.core.account)
-    api(projects.legacy.account)
+    api(projects.core.android.account)
     api(projects.legacy.di)
     api(projects.legacy.mailstore)
     api(projects.legacy.message)

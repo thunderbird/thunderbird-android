@@ -24,9 +24,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
-
 import androidx.core.database.CursorKt;
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.MessageListRepository;
 import app.k9mail.legacy.mailstore.MoreMessages;
@@ -49,6 +47,7 @@ import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.search.SqlQueryBuilder;
 import kotlinx.datetime.Clock;
+import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.feature.search.LocalSearch;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchField;

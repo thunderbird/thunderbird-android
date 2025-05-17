@@ -1,10 +1,10 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.AccountRemovedListener
-import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isSameInstanceAs
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.AccountRemovedListener
+import net.thunderbird.core.android.account.LegacyAccount
 import org.junit.Test
 import org.mockito.kotlin.KStubbing
 import org.mockito.kotlin.argumentCaptor

@@ -1,7 +1,5 @@
 package net.thunderbird.feature.navigation.drawer.siderail.domain.usecase
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageListChangedListener
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.message.controller.MessageCounts
@@ -16,6 +14,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.navigation.drawer.siderail.domain.DomainContract
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayAccount
 

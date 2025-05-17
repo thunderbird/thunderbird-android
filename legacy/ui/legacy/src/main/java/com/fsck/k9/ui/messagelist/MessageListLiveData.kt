@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
 import androidx.lifecycle.LiveData
-import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.mailstore.MessageListChangedListener
 import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.search.getAccountUuids
@@ -9,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.android.account.AccountManager
 
 class MessageListLiveData(
     private val messageListLoader: MessageListLoader,

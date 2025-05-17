@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderSettings
 import com.fsck.k9.Preferences
+import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Provides imported folder settings if available, otherwise default values.

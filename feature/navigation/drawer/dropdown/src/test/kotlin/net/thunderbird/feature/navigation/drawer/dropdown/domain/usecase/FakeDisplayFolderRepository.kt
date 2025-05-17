@@ -1,9 +1,9 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.DisplayFolderRepository
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal class FakeDisplayFolderRepository(
     private val foldersFlow: Flow<List<DisplayFolder>>,

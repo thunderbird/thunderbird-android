@@ -1,8 +1,8 @@
 package com.fsck.k9
 
-import app.k9mail.legacy.account.AccountManager
 import com.fsck.k9.preferences.RealGeneralSettingsManager
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
+import net.thunderbird.core.android.account.AccountManager
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
