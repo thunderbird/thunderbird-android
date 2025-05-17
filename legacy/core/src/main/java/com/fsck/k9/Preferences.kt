@@ -2,12 +2,6 @@ package com.fsck.k9
 
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
-import app.k9mail.legacy.account.AccountDefaultsProvider
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.AccountRemovedListener
-import app.k9mail.legacy.account.AccountsChangeListener
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
@@ -26,6 +20,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.AccountRemovedListener
+import net.thunderbird.core.android.account.AccountsChangeListener
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preferences.Storage
 import timber.log.Timber
 
@@ -86,7 +86,10 @@ class Preferences internal constructor(
             if (!accountUuids.isNullOrEmpty()) {
                 accountUuids.split(",").forEach { uuid ->
                     val existingAccount = accountsMap?.get(uuid)
-                    val account = existingAccount ?: LegacyAccount(uuid, K9::isSensitiveDebugLoggingEnabled)
+                    val account = existingAccount ?: LegacyAccount(
+                        uuid,
+                        K9::isSensitiveDebugLoggingEnabled,
+                    )
                     accountPreferenceSerializer.loadAccount(account, storage)
 
                     accounts[uuid] = account
@@ -181,7 +184,8 @@ class Preferences internal constructor(
     }
 
     fun newAccount(accountUuid: String): LegacyAccount {
-        val account = LegacyAccount(accountUuid, K9::isSensitiveDebugLoggingEnabled)
+        val account =
+            LegacyAccount(accountUuid, K9::isSensitiveDebugLoggingEnabled)
         accountDefaultsProvider.applyDefaults(account)
 
         synchronized(accountLock) {

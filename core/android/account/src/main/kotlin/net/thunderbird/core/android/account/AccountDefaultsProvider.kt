@@ -1,4 +1,4 @@
-package app.k9mail.legacy.account
+package net.thunderbird.core.android.account
 
 import net.thunderbird.core.preferences.Storage
 

@@ -2,12 +2,12 @@ package com.fsck.k9.notification
 
 import android.text.SpannableStringBuilder
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.K9
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal class NotificationContentCreator(
     private val resourceProvider: NotificationResourceProvider,

@@ -1,10 +1,10 @@
 package net.thunderbird.app.common.account
 
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
-import app.k9mail.legacy.account.AccountDefaultsProvider
-import app.k9mail.legacy.account.LegacyAccountWrapperManager
 import net.thunderbird.app.common.account.data.CommonAccountProfileLocalDataSource
 import net.thunderbird.app.common.account.data.CommonLegacyAccountWrapperManager
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccountWrapperManager
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 import net.thunderbird.feature.account.core.featureAccountCoreModule
 import org.koin.android.ext.koin.androidApplication

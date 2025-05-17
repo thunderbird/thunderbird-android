@@ -1,7 +1,7 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.legacy.account.AccountManager
 import com.fsck.k9.Preferences
+import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.preferences.DefaultSettingsChangeBroker
 import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.core.preferences.SettingsChangeBroker

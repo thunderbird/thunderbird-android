@@ -1,18 +1,18 @@
 package com.fsck.k9.ui.settings.account
 
 import androidx.preference.PreferenceDataStore
-import app.k9mail.legacy.account.DeletePolicy
-import app.k9mail.legacy.account.Expunge
-import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.MessageFormat
-import app.k9mail.legacy.account.QuoteStyle
-import app.k9mail.legacy.account.ShowPictures
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationController
 import java.util.concurrent.ExecutorService
+import net.thunderbird.core.android.account.DeletePolicy
+import net.thunderbird.core.android.account.Expunge
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.MessageFormat
+import net.thunderbird.core.android.account.QuoteStyle
+import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationVibration

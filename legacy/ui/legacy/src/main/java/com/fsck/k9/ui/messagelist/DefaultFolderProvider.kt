@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Decides which folder to display when an account is selected.

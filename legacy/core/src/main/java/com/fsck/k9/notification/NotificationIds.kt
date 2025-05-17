@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal object NotificationIds {
     const val PUSH_NOTIFICATION_ID = 1

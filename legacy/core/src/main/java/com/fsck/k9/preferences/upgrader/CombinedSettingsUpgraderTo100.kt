@@ -1,14 +1,15 @@
 package com.fsck.k9.preferences.upgrader
 
-import app.k9mail.legacy.account.FolderMode
 import com.fsck.k9.preferences.CombinedSettingsUpgrader
 import com.fsck.k9.preferences.InternalSettingsMap
 import com.fsck.k9.preferences.ValidatedSettings
 import com.fsck.k9.preferences.legacy.FolderClass
+import net.thunderbird.core.android.account.FolderMode
 
 class CombinedSettingsUpgraderTo100 : CombinedSettingsUpgrader {
     override fun upgrade(account: ValidatedSettings.Account): ValidatedSettings.Account {
-        val folderDisplayMode = account.settings["folderDisplayMode"] as? FolderMode ?: FolderMode.NONE
+        val folderDisplayMode = account.settings["folderDisplayMode"] as? FolderMode
+            ?: FolderMode.NONE
 
         val newFolders = account.folders.map { folder ->
             val newFolderSettings = folder.settings.toMutableMap().apply {

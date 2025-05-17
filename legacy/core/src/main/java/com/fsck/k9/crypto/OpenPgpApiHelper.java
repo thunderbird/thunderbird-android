@@ -1,8 +1,7 @@
 package com.fsck.k9.crypto;
 
-
-import app.k9mail.legacy.account.Identity;
 import com.fsck.k9.helper.StringHelper;
+import net.thunderbird.core.android.account.Identity;
 
 
 public class OpenPgpApiHelper {

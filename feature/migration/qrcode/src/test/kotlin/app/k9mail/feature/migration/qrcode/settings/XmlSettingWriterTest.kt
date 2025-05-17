@@ -5,10 +5,10 @@ import app.k9mail.core.common.net.toHostname
 import app.k9mail.core.common.net.toPort
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData
 import app.k9mail.feature.migration.qrcode.domain.entity.AccountData.ConnectionSecurity
-import app.k9mail.legacy.account.DeletePolicy
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
+import net.thunderbird.core.android.account.DeletePolicy
 import okio.Buffer
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner

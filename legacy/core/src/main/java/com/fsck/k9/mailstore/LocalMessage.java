@@ -6,13 +6,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Objects;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.VisibleForTesting;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.Address;
@@ -24,6 +21,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
+import net.thunderbird.core.android.account.LegacyAccount;
 import timber.log.Timber;
 
 

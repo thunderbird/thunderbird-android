@@ -1,10 +1,10 @@
 package net.thunderbird.app.common.account.data
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccountWrapper
-import app.k9mail.legacy.account.LegacyAccountWrapperManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountWrapper
+import net.thunderbird.core.android.account.LegacyAccountWrapperManager
 
 internal class CommonLegacyAccountWrapperManager(
     private val accountManager: AccountManager,
