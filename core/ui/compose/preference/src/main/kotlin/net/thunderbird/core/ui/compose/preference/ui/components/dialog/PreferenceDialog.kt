@@ -39,6 +39,6 @@ internal fun PreferenceDialog(
         }
 
         // No dialog needed
-        is PreferenceSetting.SingleChoice -> Unit
+        is PreferenceSetting.SingleChoice, is PreferenceSetting.Switch -> Unit
     }
 }

@@ -65,6 +65,18 @@ sealed interface PreferenceSetting<T> : Preference {
             val title: () -> String,
         ) : Parcelable
     }
+
+    @Parcelize
+    data class Switch(
+        override val id: String,
+        val title: () -> String,
+        val description: () -> String? = { null },
+        val enabled: Boolean,
+        override val value: Boolean,
+    ) : PreferenceSetting<Boolean> {
+        @IgnoredOnParcel
+        override val requiresEditView: Boolean = false
+    }
 }
 
 /**

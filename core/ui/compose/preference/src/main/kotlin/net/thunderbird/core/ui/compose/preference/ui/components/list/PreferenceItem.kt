@@ -39,6 +39,14 @@ internal fun PreferenceItem(
             )
         }
 
+        is PreferenceSetting.Switch -> {
+            PreferenceItemSwitchView(
+                preference = preference,
+                onPreferenceChange = onPreferenceChange,
+                modifier = modifier,
+            )
+        }
+
         // PreferenceDisplay
         is PreferenceDisplay.Custom -> {
             PreferenceItemCustomView(
