@@ -229,6 +229,7 @@ kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = 
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
@@ -292,6 +293,7 @@ shared-kmp-common-test = [
   "assertk",
   "koin-test",
   "kotlin-test",
+  "kotlin-test-junit",
   "kotlinx-coroutines-test",
   "turbine",
 ]

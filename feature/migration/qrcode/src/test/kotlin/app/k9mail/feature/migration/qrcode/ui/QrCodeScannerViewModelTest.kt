@@ -1,7 +1,6 @@
 package app.k9mail.feature.migration.qrcode.ui
 
 import android.app.Application
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.MviContext
 import app.k9mail.core.ui.compose.testing.mvi.MviTurbines
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
@@ -25,6 +24,7 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlinx.coroutines.Dispatchers
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
