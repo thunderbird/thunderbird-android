@@ -1,7 +1,7 @@
-package net.thunderbird.feature.account.api.profile
+package net.thunderbird.feature.account.profile
 
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
 
 interface AccountProfileRepository {
 

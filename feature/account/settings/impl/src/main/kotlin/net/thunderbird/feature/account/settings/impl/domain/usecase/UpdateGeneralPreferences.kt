@@ -3,9 +3,9 @@ package net.thunderbird.feature.account.settings.impl.domain.usecase
 import kotlinx.coroutines.flow.firstOrNull
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
-import net.thunderbird.feature.account.api.profile.AccountProfile
-import net.thunderbird.feature.account.api.profile.AccountProfileRepository
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference

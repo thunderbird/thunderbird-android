@@ -7,8 +7,8 @@ import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.account.api.AccountId
-import net.thunderbird.feature.account.api.profile.AccountProfile
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 
@@ -17,9 +17,9 @@ class GetAccountNameTest {
     @Test
     fun `should emit account name when account profile present`() = runTest {
         // Arrange
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.new()
         val accountProfile = AccountProfile(
-            accountId = accountId,
+            id = accountId,
             name = "Test Account",
             color = 0xFF0000,
         )
@@ -38,7 +38,7 @@ class GetAccountNameTest {
     @Test
     fun `should emit NotFound when account profile not present`() = runTest {
         // Arrange
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.new()
         val testSubject = createTestSubject()
 
         // Act & Assert

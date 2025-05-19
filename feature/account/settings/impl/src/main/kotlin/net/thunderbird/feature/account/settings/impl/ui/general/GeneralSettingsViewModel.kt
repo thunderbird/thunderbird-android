@@ -6,7 +6,7 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect

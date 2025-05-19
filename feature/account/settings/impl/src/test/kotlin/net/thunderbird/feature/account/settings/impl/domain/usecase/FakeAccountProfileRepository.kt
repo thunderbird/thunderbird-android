@@ -4,9 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import net.thunderbird.feature.account.api.AccountId
-import net.thunderbird.feature.account.api.profile.AccountProfile
-import net.thunderbird.feature.account.api.profile.AccountProfileRepository
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.profile.AccountProfileRepository
 
 internal class FakeAccountProfileRepository(
     initialAccountProfile: AccountProfile? = null,

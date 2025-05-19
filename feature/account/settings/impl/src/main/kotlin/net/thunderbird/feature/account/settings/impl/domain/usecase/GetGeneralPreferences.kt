@@ -8,9 +8,9 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.Preference
 import net.thunderbird.core.ui.compose.preference.api.PreferenceDisplay
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
-import net.thunderbird.feature.account.api.profile.AccountProfile
-import net.thunderbird.feature.account.api.profile.AccountProfileRepository
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
@@ -29,7 +29,7 @@ internal class GetGeneralPreferences(
             } else {
                 Outcome.failure(
                     SettingsError.NotFound(
-                        message = "Account profile not found for accountId: ${accountId.value}",
+                        message = "Account profile not found for accountId: ${accountId.asRaw()}",
                     ),
                 )
             }

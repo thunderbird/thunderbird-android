@@ -10,8 +10,9 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountWrapper
-import net.thunderbird.feature.account.api.AccountId
-import net.thunderbird.feature.account.api.profile.AccountProfile
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountProfile
 import org.junit.Test
 
 class LegacyAccountProfileLocalDataSourceTest {
@@ -19,8 +20,8 @@ class LegacyAccountProfileLocalDataSourceTest {
     @Test
     fun `getById should return account profile`() = runTest {
         // arrange
-        val accountId = AccountId.create()
-        val legacyAccount = createLegacyAccount(accountId.value)
+        val accountId = AccountIdFactory.new()
+        val legacyAccount = createLegacyAccount(accountId)
         val accountProfile = createAccountProfile(accountId)
 
         val testSubject = CommonAccountProfileLocalDataSource(
@@ -40,7 +41,7 @@ class LegacyAccountProfileLocalDataSourceTest {
     @Test
     fun `getById should return null when account is not found`() = runTest {
         // arrange
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.new()
 
         val testSubject = CommonAccountProfileLocalDataSource(
             accountManager = FakeLegacyAccountWrapperManager(),
@@ -55,8 +56,8 @@ class LegacyAccountProfileLocalDataSourceTest {
     @Test
     fun `update should save account profile`() = runTest {
         // arrange
-        val accountId = AccountId.create()
-        val legacyAccount = createLegacyAccount(accountId.value)
+        val accountId = AccountIdFactory.new()
+        val legacyAccount = createLegacyAccount(accountId)
         val accountProfile = createAccountProfile(accountId)
 
         val updatedName = "updatedName"
@@ -87,13 +88,13 @@ class LegacyAccountProfileLocalDataSourceTest {
         const val COLOR = 0xFF333333.toInt()
 
         fun createLegacyAccount(
-            accountId: String,
+            accountId: AccountId,
             displayName: String = NAME,
             color: Int = COLOR,
         ): LegacyAccountWrapper {
             return LegacyAccountWrapper.from(
                 LegacyAccount(
-                    uuid = accountId,
+                    uuid = accountId.asRaw(),
                     isSensitiveDebugLoggingEnabled = { true },
                 ).apply {
                     identities = ArrayList()
@@ -138,7 +139,7 @@ class LegacyAccountProfileLocalDataSourceTest {
             color: Int = COLOR,
         ): AccountProfile {
             return AccountProfile(
-                accountId = accountId,
+                id = accountId,
                 name = name,
                 color = color,
             )
