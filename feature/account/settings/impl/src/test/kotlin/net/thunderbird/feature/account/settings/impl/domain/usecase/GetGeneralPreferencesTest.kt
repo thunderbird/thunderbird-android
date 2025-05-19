@@ -10,8 +10,8 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.PreferenceDisplay
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
-import net.thunderbird.feature.account.api.profile.AccountProfile
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
@@ -21,9 +21,9 @@ internal class GetGeneralPreferencesTest {
     @Test
     fun `should emit preferences when account profile present`() = runTest {
         // Arrange
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.new()
         val accountProfile = AccountProfile(
-            accountId = accountId,
+            id = accountId,
             name = "Test Account",
             color = 0xFF0000,
         )
@@ -39,21 +39,21 @@ internal class GetGeneralPreferencesTest {
             assertThat(success.data).isEqualTo(
                 persistentListOf(
                     PreferenceDisplay.Custom(
-                        id = "${accountId.value}-general-profile",
+                        id = "${accountId.asRaw()}-general-profile",
                         customUi = resourceProvider.profileUi(
                             name = accountProfile.name,
                             color = accountProfile.color,
                         ),
                     ),
                     PreferenceSetting.Text(
-                        id = "${accountId.value}-general-name",
+                        id = "${accountId.asRaw()}-general-name",
                         title = resourceProvider.nameTitle,
                         description = resourceProvider.nameDescription,
                         icon = resourceProvider.nameIcon,
                         value = accountProfile.name,
                     ),
                     PreferenceSetting.Color(
-                        id = "${accountId.value}-general-color",
+                        id = "${accountId.asRaw()}-general-color",
                         title = resourceProvider.colorTitle,
                         description = resourceProvider.colorDescription,
                         icon = resourceProvider.colorIcon,
@@ -68,7 +68,7 @@ internal class GetGeneralPreferencesTest {
     @Test
     fun `should emit NotFound when account profile not found`() = runTest {
         // Arrange
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.new()
         val testSubject = createTestSubject()
 
         // Act & Assert
@@ -76,7 +76,7 @@ internal class GetGeneralPreferencesTest {
             assertThat(awaitItem()).isEqualTo(
                 Outcome.failure(
                     SettingsError.NotFound(
-                        message = "Account profile not found for accountId: ${accountId.value}",
+                        message = "Account profile not found for accountId: ${accountId.asRaw()}",
                     ),
                 ),
             )

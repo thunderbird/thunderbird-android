@@ -1,6 +1,6 @@
 package net.thunderbird.feature.account.settings.impl.domain.entity
 
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
 
 internal enum class GeneralPreference {
     PROFILE,
@@ -9,5 +9,5 @@ internal enum class GeneralPreference {
 }
 
 internal fun GeneralPreference.generateId(accountId: AccountId): String {
-    return "${accountId.value}-general-${this.name.lowercase()}"
+    return "${accountId.asRaw()}-general-${this.name.lowercase()}"
 }

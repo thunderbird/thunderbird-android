@@ -1,4 +1,4 @@
-package net.thunderbird.feature.account.api
+package net.thunderbird.feature.account
 
 import assertk.Assert
 import assertk.assertFailure
@@ -11,39 +11,42 @@ import kotlin.test.Test
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class AccountIdTest {
+class AccountIdFactoryTest {
 
     @Test
-    fun `from should return AccountId with the same id`() {
+    fun `create should return AccountId with the same id`() {
         val id = "123e4567-e89b-12d3-a456-426614174000"
 
-        val result = AccountId.from(id)
+        val result = AccountIdFactory.create(id)
 
-        assertThat(result.value).isEqualTo(id)
+        assertThat(result.asRaw()).isEqualTo(id)
     }
 
     @Test
-    fun `from should throw IllegalArgumentException when id is invalid`() {
+    fun `create should throw IllegalArgumentException when id is invalid`() {
         val id = "invalid"
 
         val result = assertFailure {
-            AccountId.from(id)
+            AccountIdFactory.create(id)
         }
 
-        result.hasMessage("Invalid AccountId: $id")
+        result.hasMessage(
+            "Expected either a 36-char string in the standard hex-and-dash UUID format or a 32-char " +
+                "hexadecimal string, but was \"invalid\" of length 7",
+        )
         result.isInstanceOf<IllegalArgumentException>()
     }
 
     @Test
-    fun `create should return AccountId with a uuid`() {
-        val result = AccountId.create()
+    fun `new should return AccountId with a uuid`() {
+        val result = AccountIdFactory.new()
 
-        assertThat(result.value).isUuid()
+        assertThat(result.asRaw()).isUuid()
     }
 
     @Test
     fun `create should return AccountId with unique ids`() {
-        val ids = List(10) { AccountId.create().value }
+        val ids = List(10) { AccountIdFactory.new().asRaw() }
 
         ids.forEachIndexed { index, id ->
             ids.drop(index + 1).forEach { otherId ->

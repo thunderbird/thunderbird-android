@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
-import net.thunderbird.feature.account.api.profile.AccountProfile
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
 import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
@@ -20,9 +20,9 @@ class UpdateGeneralPreferencesTest {
     @Test
     fun `should update account profile`() = runTest {
         // Arrange
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.new()
         val accountProfile = AccountProfile(
-            accountId = accountId,
+            id = accountId,
             name = "Test Account",
             color = 0xFF0000,
         )
@@ -52,9 +52,9 @@ class UpdateGeneralPreferencesTest {
     @Test
     fun `should update account profile for all general settings`() = runTest {
         // Arrange
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.new()
         val accountProfile = AccountProfile(
-            accountId = accountId,
+            id = accountId,
             name = "Test Account",
             color = 0xFF0000,
         )
@@ -99,7 +99,7 @@ class UpdateGeneralPreferencesTest {
     @Test
     fun `should emit NotFound when account profile not found`() = runTest {
         // Arrange
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.new()
         val preference = PreferenceSetting.Text(
             id = GeneralPreference.NAME.generateId(accountId),
             title = { "Name" },

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.Preference
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 
 internal typealias AccountNameOutcome = Outcome<String, SettingsError>
