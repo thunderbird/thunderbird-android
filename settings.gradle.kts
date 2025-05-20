@@ -67,6 +67,7 @@ include(
     ":feature:account:core",
     ":feature:account:common",
     ":feature:account:edit",
+    ":feature:account:fake",
     ":feature:account:oauth",
     ":feature:account:settings:api",
     ":feature:account:settings:impl",

@@ -56,6 +56,9 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.jdom2)
+
+    // test fakes
+    testImplementation(projects.feature.account.fake)
 }
 
 android {

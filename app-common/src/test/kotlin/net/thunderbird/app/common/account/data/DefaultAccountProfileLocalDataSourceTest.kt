@@ -7,15 +7,17 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.account.fake.FakeAccountProfileData.COLOR
+import net.thunderbird.account.fake.FakeAccountProfileData.NAME
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import org.junit.Test
 
-class LegacyAccountProfileLocalDataSourceTest {
+class DefaultAccountProfileLocalDataSourceTest {
 
     @Test
     fun `getById should return account profile`() = runTest {
@@ -24,7 +26,7 @@ class LegacyAccountProfileLocalDataSourceTest {
         val legacyAccount = createLegacyAccount(accountId)
         val accountProfile = createAccountProfile(accountId)
 
-        val testSubject = CommonAccountProfileLocalDataSource(
+        val testSubject = DefaultAccountProfileLocalDataSource(
             accountManager = FakeLegacyAccountWrapperManager(
                 initialAccounts = listOf(
                     legacyAccount,
@@ -43,7 +45,7 @@ class LegacyAccountProfileLocalDataSourceTest {
         // arrange
         val accountId = AccountIdFactory.new()
 
-        val testSubject = CommonAccountProfileLocalDataSource(
+        val testSubject = DefaultAccountProfileLocalDataSource(
             accountManager = FakeLegacyAccountWrapperManager(),
         )
 
@@ -69,7 +71,7 @@ class LegacyAccountProfileLocalDataSourceTest {
             ),
         )
 
-        val testSubject = CommonAccountProfileLocalDataSource(
+        val testSubject = DefaultAccountProfileLocalDataSource(
             accountManager = accountManager,
         )
 
@@ -83,53 +85,48 @@ class LegacyAccountProfileLocalDataSourceTest {
         }
     }
 
-    private companion object {
-        const val NAME = "name"
-        const val COLOR = 0xFF333333.toInt()
-
+    private companion object Companion {
         fun createLegacyAccount(
-            accountId: AccountId,
+            id: AccountId,
             displayName: String = NAME,
             color: Int = COLOR,
         ): LegacyAccountWrapper {
-            return LegacyAccountWrapper.from(
-                LegacyAccount(
-                    uuid = accountId.asRaw(),
-                    isSensitiveDebugLoggingEnabled = { true },
-                ).apply {
-                    identities = ArrayList()
-
-                    val identity = Identity(
+            return LegacyAccountWrapper(
+                isSensitiveDebugLoggingEnabled = { true },
+                id = id,
+                name = displayName,
+                email = "demo@example.com",
+                profile = ProfileDto(
+                    id = id,
+                    name = displayName,
+                    color = color,
+                ),
+                identities = listOf(
+                    Identity(
                         signatureUse = false,
                         description = "Demo User",
-                    )
-                    identities.add(identity)
-
-                    name = displayName
-                    chipColor = color
-                    email = "demo@example.com"
-
-                    incomingServerSettings = ServerSettings(
-                        type = "imap",
-                        host = "imap.example.com",
-                        port = 993,
-                        connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
-                        authenticationType = AuthType.PLAIN,
-                        username = "test",
-                        password = "password",
-                        clientCertificateAlias = null,
-                    )
-                    outgoingServerSettings = ServerSettings(
-                        type = "smtp",
-                        host = "smtp.example.com",
-                        port = 465,
-                        connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
-                        authenticationType = AuthType.PLAIN,
-                        username = "test",
-                        password = "password",
-                        clientCertificateAlias = null,
-                    )
-                },
+                    ),
+                ),
+                incomingServerSettings = ServerSettings(
+                    type = "imap",
+                    host = "imap.example.com",
+                    port = 993,
+                    connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+                    authenticationType = AuthType.PLAIN,
+                    username = "test",
+                    password = "password",
+                    clientCertificateAlias = null,
+                ),
+                outgoingServerSettings = ServerSettings(
+                    type = "smtp",
+                    host = "smtp.example.com",
+                    port = 465,
+                    connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+                    authenticationType = AuthType.PLAIN,
+                    username = "test",
+                    password = "password",
+                    clientCertificateAlias = null,
+                ),
             )
         }
 

@@ -9,7 +9,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 import net.thunderbird.feature.account.profile.AccountProfile
 
-internal class CommonAccountProfileLocalDataSource(
+internal class DefaultAccountProfileLocalDataSource(
     private val accountManager: LegacyAccountWrapperManager,
 ) : AccountProfileLocalDataSource {
 
@@ -19,8 +19,8 @@ internal class CommonAccountProfileLocalDataSource(
                 account?.let {
                     AccountProfile(
                         id = AccountIdFactory.create(account.uuid),
-                        name = account.displayName,
-                        color = account.chipColor,
+                        name = account.profile.name,
+                        color = account.profile.color,
                     )
                 }
             }
@@ -31,8 +31,10 @@ internal class CommonAccountProfileLocalDataSource(
             .firstOrNull() ?: return
 
         val updatedAccount = currentAccount.copy(
-            displayName = accountProfile.name,
-            chipColor = accountProfile.color,
+            profile = currentAccount.profile.copy(
+                name = accountProfile.name,
+                color = accountProfile.color,
+            ),
         )
 
         accountManager.update(updatedAccount)
