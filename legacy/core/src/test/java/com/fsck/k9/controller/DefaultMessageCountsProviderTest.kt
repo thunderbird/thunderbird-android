@@ -10,6 +10,7 @@ import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.ConditionsTreeNode
@@ -20,13 +21,12 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
-private const val ACCOUNT_UUID = "irrelevant"
 private const val UNREAD_COUNT = 2
 private const val STARRED_COUNT = 3
 
 class DefaultMessageCountsProviderTest {
 
-    private val account = LegacyAccount(ACCOUNT_UUID)
+    private val account = LegacyAccount(ACCOUNT_ID_RAW)
     private val accountManager = mock<AccountManager> {
         on { getAccounts() } doReturn listOf(account)
     }

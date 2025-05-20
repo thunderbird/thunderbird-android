@@ -33,7 +33,7 @@ import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
 
 @Suppress("MagicNumber")
-internal class CommonAccountDefaultsProvider(
+internal class DefaultAccountDefaultsProvider(
     private val resourceProvider: CoreResourceProvider,
     private val featureFlagProvider: FeatureFlagProvider,
 ) : AccountDefaultsProvider {

@@ -9,6 +9,9 @@ android {
 dependencies {
     api(projects.feature.account.storage.api)
 
+    implementation(projects.feature.mail.account.api)
+    implementation(projects.feature.mail.folder.api)
+
     implementation(projects.core.preferences)
 
     implementation(projects.mail.common)
@@ -17,5 +20,6 @@ dependencies {
 
     implementation(libs.moshi)
 
+    testImplementation(projects.feature.account.fake)
     testImplementation(projects.mail.protocols.imap)
 }

@@ -10,6 +10,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
@@ -29,7 +30,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
         }
     }
 
-    private val account = LegacyAccount("uuid").apply {
+    private val account = LegacyAccount(ACCOUNT_ID_RAW).apply {
         identities += Identity(email = IDENTITY_ADDRESS)
     }
 
@@ -44,7 +45,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
 
     @Test
     fun `multiple identities`() {
-        val account = LegacyAccount("uuid").apply {
+        val account = LegacyAccount(ACCOUNT_ID_RAW).apply {
             identities += Identity(
                 description = "My identity",
                 email = IDENTITY_ADDRESS,
@@ -60,7 +61,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity without a description`() {
-        val account = LegacyAccount("uuid").apply {
+        val account = LegacyAccount(ACCOUNT_ID_RAW).apply {
             identities += Identity(name = "My name", email = IDENTITY_ADDRESS)
             identities += Identity(email = "another.one@domain.example")
         }
@@ -73,7 +74,7 @@ class MessageViewRecipientFormatterTest : RobolectricTest() {
 
     @Test
     fun `identity without a description and name`() {
-        val account = LegacyAccount("uuid").apply {
+        val account = LegacyAccount(ACCOUNT_ID_RAW).apply {
             identities += Identity(email = IDENTITY_ADDRESS)
             identities += Identity(email = "another.one@domain.example")
         }

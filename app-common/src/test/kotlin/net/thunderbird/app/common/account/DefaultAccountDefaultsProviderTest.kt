@@ -38,7 +38,7 @@ import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
-class CommonAccountDefaultsProviderTest {
+class DefaultAccountDefaultsProviderTest {
 
     @Suppress("LongMethod")
     @Test
@@ -48,7 +48,7 @@ class CommonAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccount(
-            uuid = "test-uuid",
+            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
         val identities = listOf(
@@ -64,7 +64,7 @@ class CommonAccountDefaultsProviderTest {
             light = NotificationLight.Disabled,
             vibration = NotificationVibration.DEFAULT,
         )
-        val testSubject = CommonAccountDefaultsProvider(
+        val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
                 FeatureFlagResult.Disabled
@@ -145,7 +145,7 @@ class CommonAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccount(
-            uuid = "test-uuid",
+            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
         val storage = mock<Storage> {
@@ -153,7 +153,7 @@ class CommonAccountDefaultsProviderTest {
             on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
             on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
         }
-        val testSubject = CommonAccountDefaultsProvider(
+        val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
                 FeatureFlagResult.Disabled
@@ -175,7 +175,7 @@ class CommonAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccount(
-            uuid = "test-uuid",
+            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
         val storage = mock<Storage> {
@@ -183,7 +183,7 @@ class CommonAccountDefaultsProviderTest {
             on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
             on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
         }
-        val testSubject = CommonAccountDefaultsProvider(
+        val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
                 FeatureFlagResult.Enabled
@@ -206,7 +206,7 @@ class CommonAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccount(
-            uuid = "test-uuid",
+            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
         val storage = mock<Storage> {
@@ -214,7 +214,7 @@ class CommonAccountDefaultsProviderTest {
             on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
             on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
         }
-        val testSubject = CommonAccountDefaultsProvider(
+        val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
                 FeatureFlagResult.Enabled
@@ -237,7 +237,7 @@ class CommonAccountDefaultsProviderTest {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
         val account = LegacyAccount(
-            uuid = "test-uuid",
+            uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
         val storage = mock<Storage> {
@@ -245,7 +245,7 @@ class CommonAccountDefaultsProviderTest {
             on { getBoolean("${account.uuid}.notifyNewMail", false) } doReturn false
             on { getBoolean("${account.uuid}.notifySelfNewMail", false) } doReturn false
         }
-        val testSubject = CommonAccountDefaultsProvider(
+        val testSubject = DefaultAccountDefaultsProvider(
             resourceProvider = resourceProvider,
             featureFlagProvider = {
                 FeatureFlagResult.Enabled

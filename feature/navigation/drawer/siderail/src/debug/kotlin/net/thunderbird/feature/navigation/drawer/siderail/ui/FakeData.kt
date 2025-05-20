@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.toArgb
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.mail.folder.api.Folder
@@ -17,15 +18,11 @@ import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayU
 
 internal object FakeData {
 
-    const val ACCOUNT_UUID = "uuid"
     const val DISPLAY_NAME = "Account Name"
     const val EMAIL_ADDRESS = "test@example.com"
 
-    const val LONG_TEXT = "loremipsumdolorsitametconsetetursadipscingelitr" +
-        "seddiamnonumyeirmodtemporinviduntutlaboreetdoloremagnaaliquyameratseddiamvoluptua"
-
     val ACCOUNT = LegacyAccount(
-        uuid = ACCOUNT_UUID,
+        uuid = ACCOUNT_ID_RAW,
     ).apply {
         identities = ArrayList()
 
@@ -41,7 +38,7 @@ internal object FakeData {
     }
 
     val DISPLAY_ACCOUNT = DisplayAccount(
-        id = ACCOUNT_UUID,
+        id = ACCOUNT_ID_RAW,
         name = DISPLAY_NAME,
         email = EMAIL_ADDRESS,
         color = Color.Red.toArgb(),
@@ -57,7 +54,7 @@ internal object FakeData {
     )
 
     val DISPLAY_FOLDER = DisplayAccountFolder(
-        accountId = ACCOUNT_UUID,
+        accountId = ACCOUNT_ID_RAW,
         folder = FOLDER,
         isInTopGroup = false,
         unreadMessageCount = 14,

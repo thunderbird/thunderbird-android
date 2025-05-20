@@ -5,6 +5,9 @@ import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
 import java.util.Date
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
+import net.thunderbird.feature.account.Account
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
@@ -19,8 +22,38 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 @Suppress("TooManyFunctions")
 open class LegacyAccount(
     override val uuid: String,
-    internal val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
-) : BaseAccount {
+    val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
+) : Account, BaseAccount {
+
+    // [Account]
+    override val id: AccountId = AccountIdFactory.create(uuid)
+
+    // [BaseAccount]
+    @get:Synchronized
+    @set:Synchronized
+    override var name: String? = null
+        set(value) {
+            field = value?.takeIf { it.isNotEmpty() }
+        }
+
+    @get:Synchronized
+    @set:Synchronized
+    override var email: String
+        get() = identities[0].email!!
+        set(email) {
+            val newIdentity = identities[0].copy(email = email)
+            identities[0] = newIdentity
+        }
+
+    // [AccountProfile]
+    val displayName: String
+        get() = name ?: email
+
+    @get:Synchronized
+    @set:Synchronized
+    var chipColor = 0
+
+    // Uncategorized
     @get:Synchronized
     @set:Synchronized
     var deletePolicy = DeletePolicy.NEVER
@@ -51,13 +84,6 @@ open class LegacyAccount(
 
     @get:Synchronized
     @set:Synchronized
-    override var name: String? = null
-        set(value) {
-            field = value?.takeIf { it.isNotEmpty() }
-        }
-
-    @get:Synchronized
-    @set:Synchronized
     var alwaysBcc: String? = null
 
     /**
@@ -76,10 +102,6 @@ open class LegacyAccount(
                 isChangedVisibleLimits = true
             }
         }
-
-    @get:Synchronized
-    @set:Synchronized
-    var chipColor = 0
 
     @get:Synchronized
     @set:Synchronized
@@ -200,7 +222,7 @@ open class LegacyAccount(
     @set:Synchronized
     var sortType: SortType = SortType.SORT_DATE
 
-    internal var sortAscending: MutableMap<SortType, Boolean> = mutableMapOf()
+    var sortAscending: MutableMap<SortType, Boolean> = mutableMapOf()
 
     @get:Synchronized
     @set:Synchronized
@@ -345,7 +367,6 @@ open class LegacyAccount(
 
     @get:Synchronized
     var isFinishedSetup = false
-        internal set
 
     @get:Synchronized
     @set:Synchronized
@@ -354,7 +375,6 @@ open class LegacyAccount(
     @get:Synchronized
     @set:Synchronized
     var isChangedVisibleLimits = false
-        internal set
 
     /**
      * Database ID of the folder that was last selected for a copy or move operation.
@@ -363,7 +383,6 @@ open class LegacyAccount(
      */
     @get:Synchronized
     var lastSelectedFolderId: Long? = null
-        internal set
 
     @get:Synchronized
     @set:Synchronized
@@ -374,19 +393,6 @@ open class LegacyAccount(
 
     @get:Synchronized
     var notificationSettings = NotificationSettings()
-        internal set
-
-    val displayName: String
-        get() = name ?: email
-
-    @get:Synchronized
-    @set:Synchronized
-    override var email: String
-        get() = identities[0].email!!
-        set(email) {
-            val newIdentity = identities[0].withEmail(email)
-            identities[0] = newIdentity
-        }
 
     @get:Synchronized
     @set:Synchronized
