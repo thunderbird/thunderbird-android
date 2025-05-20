@@ -8,7 +8,7 @@ import com.fsck.k9.ui.base.loader.liveDataLoader
 import de.cketti.changelog.ReleaseItem
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 private typealias ChangeLogState = LoaderState<List<ReleaseItem>>
 

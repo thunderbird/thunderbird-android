@@ -12,7 +12,8 @@ import android.os.SystemClock;
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback;
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations;
 import net.thunderbird.core.logging.legacy.Log;
-import net.thunderbird.core.preferences.Storage;
+import net.thunderbird.core.preference.storage.Storage;
+import timber.log.Timber;
 
 
 public class K9StorageEditor implements StorageEditor {

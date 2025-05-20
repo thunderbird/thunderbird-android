@@ -16,7 +16,8 @@ import com.fsck.k9.preferences.migration.DefaultStorageMigrationHelper;
 import com.fsck.k9.preferences.migration.StorageMigrations;
 import com.fsck.k9.preferences.migration.StorageMigrationHelper;
 import net.thunderbird.core.logging.legacy.Log;
-import net.thunderbird.core.preferences.Storage;
+import net.thunderbird.core.preference.storage.Storage;
+import timber.log.Timber;
 
 
 public class K9StoragePersister implements StoragePersister {

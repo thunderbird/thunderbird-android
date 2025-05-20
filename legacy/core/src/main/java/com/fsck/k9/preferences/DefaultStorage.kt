@@ -1,7 +1,7 @@
 package com.fsck.k9.preferences
 
 import java.util.Collections
-import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preference.storage.Storage
 import timber.log.Timber
 
 class DefaultStorage(

@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "net.thunderbird.core.preferences"
+    namespace = "net.thunderbird.core.preference"
 }

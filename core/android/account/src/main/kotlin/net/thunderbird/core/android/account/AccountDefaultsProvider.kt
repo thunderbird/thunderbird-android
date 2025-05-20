@@ -1,6 +1,6 @@
 package net.thunderbird.core.android.account
 
-import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preference.storage.Storage
 
 interface AccountDefaultsProvider {
     /**

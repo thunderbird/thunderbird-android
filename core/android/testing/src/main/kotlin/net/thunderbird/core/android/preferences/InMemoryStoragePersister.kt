@@ -4,7 +4,7 @@ import com.fsck.k9.preferences.DefaultStorage
 import com.fsck.k9.preferences.StorageEditor
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.preferences.StorageUpdater
-import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preference.storage.Storage
 
 class InMemoryStoragePersister : StoragePersister {
     private val values = mutableMapOf<String, Any?>()

@@ -1,18 +1,18 @@
-package net.thunderbird.core.preferences
+package net.thunderbird.core.preference
 
-class DefaultSettingsChangeBroker(
-    private val subscribers: MutableSet<SettingsChangeSubscriber> = mutableSetOf(),
-) : SettingsChangeBroker, SettingsChangePublisher {
+class DefaultPreferenceChangeBroker(
+    private val subscribers: MutableSet<PreferenceChangeSubscriber> = mutableSetOf(),
+) : PreferenceChangeBroker, PreferenceChangePublisher {
 
     private val lock = Any()
 
-    override fun subscribe(subscriber: SettingsChangeSubscriber) {
+    override fun subscribe(subscriber: PreferenceChangeSubscriber) {
         synchronized(lock) {
             subscribers.add(subscriber)
         }
     }
 
-    override fun unsubscribe(subscriber: SettingsChangeSubscriber) {
+    override fun unsubscribe(subscriber: PreferenceChangeSubscriber) {
         synchronized(lock) {
             subscribers.remove(subscriber)
         }

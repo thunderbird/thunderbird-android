@@ -10,7 +10,7 @@ import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
 import com.fsck.k9.storage.K9RobolectricTest
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preference.storage.Storage
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any

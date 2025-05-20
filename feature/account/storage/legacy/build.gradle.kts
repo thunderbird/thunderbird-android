@@ -12,7 +12,7 @@ dependencies {
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
 
-    implementation(projects.core.preferences)
+    implementation(projects.core.preference.api)
 
     implementation(projects.mail.common)
 
