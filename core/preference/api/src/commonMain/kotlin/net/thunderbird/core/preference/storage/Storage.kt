@@ -1,4 +1,4 @@
-package net.thunderbird.core.preferences
+package net.thunderbird.core.preference.storage
 
 interface Storage {
     /**

@@ -17,7 +17,7 @@ import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.notification.DeleteConfirmationActivity
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.search.LocalSearch
 
 /**

@@ -2,7 +2,7 @@ package com.fsck.k9
 
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

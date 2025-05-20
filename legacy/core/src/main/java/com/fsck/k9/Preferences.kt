@@ -27,7 +27,7 @@ import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preference.storage.Storage
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(

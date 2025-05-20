@@ -14,11 +14,11 @@ import com.fsck.k9.mail.Address
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.common.mail.toEmailAddressOrThrow
-import net.thunderbird.core.preferences.AppTheme
-import net.thunderbird.core.preferences.BackgroundSync
-import net.thunderbird.core.preferences.GeneralSettings
-import net.thunderbird.core.preferences.GeneralSettingsManager
-import net.thunderbird.core.preferences.SubTheme
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.SubTheme
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.doReturn

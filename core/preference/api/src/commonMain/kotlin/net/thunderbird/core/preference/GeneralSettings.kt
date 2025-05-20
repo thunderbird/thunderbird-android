@@ -1,4 +1,4 @@
-package net.thunderbird.core.preferences
+package net.thunderbird.core.preference
 
 /**
  * Stores a snapshot of the app's general settings.

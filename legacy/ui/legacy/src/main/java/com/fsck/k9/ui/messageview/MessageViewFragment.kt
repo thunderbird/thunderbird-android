@@ -58,7 +58,7 @@ import java.util.Locale
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject

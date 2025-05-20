@@ -2,7 +2,7 @@ package com.fsck.k9.preferences
 
 import java.util.Collections
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preference.storage.Storage
 
 class DefaultStorage(
     values: Map<String, String>,

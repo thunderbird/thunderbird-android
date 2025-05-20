@@ -2,8 +2,7 @@ package com.fsck.k9.view;
 
 
 import app.k9mail.legacy.di.DI;
-import com.fsck.k9.K9;
-import net.thunderbird.core.preferences.GeneralSettingsManager;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 import android.content.Context;
 import android.util.AttributeSet;

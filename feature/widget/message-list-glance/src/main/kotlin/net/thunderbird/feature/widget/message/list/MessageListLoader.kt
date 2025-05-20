@@ -9,7 +9,7 @@ import com.fsck.k9.search.getAccounts
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal class MessageListLoader(
     private val preferences: Preferences,

@@ -69,7 +69,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
 import org.koin.android.ext.android.inject

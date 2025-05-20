@@ -27,8 +27,8 @@ import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.Storage
-import net.thunderbird.core.preferences.getEnumOrDefault
+import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight

@@ -14,8 +14,8 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
-import net.thunderbird.core.preferences.Storage
-import net.thunderbird.core.preferences.getEnumOrDefault
+import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -279,6 +279,7 @@ object K9 : KoinComponent {
     var fundingReminderReferenceTimestamp: Long = 0
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {

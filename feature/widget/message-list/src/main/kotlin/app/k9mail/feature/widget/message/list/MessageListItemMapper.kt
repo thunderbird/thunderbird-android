@@ -8,7 +8,7 @@ import com.fsck.k9.ui.helper.DisplayAddressHelper
 import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal class MessageListItemMapper(
     private val messageHelper: MessageHelper,

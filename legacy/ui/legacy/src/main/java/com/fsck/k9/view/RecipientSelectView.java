@@ -47,7 +47,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.google.android.material.textview.MaterialTextView;
 import com.tokenautocomplete.TokenCompleteTextView;
 import de.hdodenhof.circleimageview.CircleImageView;
-import net.thunderbird.core.preferences.GeneralSettingsManager;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.logging.legacy.Log;
 
 import static com.fsck.k9.FontSizes.FONT_DEFAULT;

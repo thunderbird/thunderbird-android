@@ -10,7 +10,7 @@ dependencies {
     api(projects.core.mail.mailserver)
     api(projects.core.android.common)
     api(projects.core.android.account)
-    api(projects.core.preferences)
+    api(projects.core.preference.impl)
     api(projects.core.android.logging)
     api(projects.core.android.network)
     api(projects.feature.mail.folder.api)

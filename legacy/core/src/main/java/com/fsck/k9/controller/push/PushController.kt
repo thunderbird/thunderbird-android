@@ -25,8 +25,8 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.BackgroundSync
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * Starts and stops [AccountPushController]s as necessary. Manages the Push foreground service.
