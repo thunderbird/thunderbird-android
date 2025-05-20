@@ -6,7 +6,6 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.K9
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
@@ -21,6 +20,7 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_TYPE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import net.thunderbird.core.android.account.Expunge
@@ -77,7 +77,7 @@ class DefaultAccountDefaultsProviderTest {
         // assert
         assertThat(account.automaticCheckIntervalMinutes).isEqualTo(DEFAULT_SYNC_INTERVAL)
         assertThat(account.idleRefreshMinutes).isEqualTo(24)
-        assertThat(account.displayCount).isEqualTo(K9.DEFAULT_VISIBLE_LIMIT)
+        assertThat(account.displayCount).isEqualTo(DEFAULT_VISIBLE_LIMIT)
         assertThat(account.accountNumber).isEqualTo(UNASSIGNED_ACCOUNT_NUMBER)
         assertThat(account.isNotifyNewMail).isTrue()
         assertThat(account.folderNotifyNewMailMode).isEqualTo(FolderMode.ALL)

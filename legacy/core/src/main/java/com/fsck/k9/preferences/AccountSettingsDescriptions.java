@@ -44,6 +44,7 @@ import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAU
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_SORT_ASCENDING;
 import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT;
 
 
 class AccountSettingsDescriptions {
@@ -86,7 +87,7 @@ class AccountSettingsDescriptions {
                 new V(1, new DeletePolicySetting(DeletePolicy.NEVER))
         ));
         s.put("displayCount", Settings.versions(
-                new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
+                new V(1, new IntegerResourceSetting(DEFAULT_VISIBLE_LIMIT,
                         R.array.display_count_values))
         ));
         s.put("draftsFolderName", Settings.versions(

@@ -43,6 +43,13 @@ interface AccountDefaultsProvider {
 
         const val DEFAULT_SYNC_INTERVAL = 60
 
+        /**
+         * Specifies how many messages will be shown in a folder by default. This number is set
+         * on each new folder and can be incremented with "Load more messages..." by the
+         * VISIBLE_LIMIT_INCREMENT
+         */
+        const val DEFAULT_VISIBLE_LIMIT = 25
+
         const val NO_OPENPGP_KEY: Long = 0
 
         const val UNASSIGNED_ACCOUNT_NUMBER = -1
