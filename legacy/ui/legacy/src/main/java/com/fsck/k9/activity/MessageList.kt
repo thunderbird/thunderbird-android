@@ -1424,11 +1424,11 @@ open class MessageList :
         actionBar.setHomeAsUpIndicator(Icons.Outlined.Menu)
     }
 
-    private fun initializeFromLocalSearch(search: LocalSearch?) {
+    private fun initializeFromLocalSearch(search: LocalSearch) {
         this.search = search
         singleFolderMode = false
 
-        if (!search!!.searchAllAccounts()) {
+        if (search.searchAllAccounts()) {
             val accountUuids = search.accountUuids
             if (accountUuids.size == 1) {
                 account = accountManager.getAccount(accountUuids[0])
@@ -1436,6 +1436,10 @@ open class MessageList :
                 singleFolderMode = folderIds.size == 1
             } else {
                 account = null
+            }
+        } else {
+            if (account == null && search.accountUuids.size == 1) {
+                account = accountManager.getAccount(search.accountUuids[0])
             }
         }
 
