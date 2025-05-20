@@ -42,9 +42,18 @@ internal object FakePreferenceData {
         options = choices,
     )
 
+    val switchPreference = PreferenceSetting.Switch(
+        id = "switch",
+        title = { "Title" },
+        description = { "Description" },
+        enabled = true,
+        value = true,
+    )
+
     val preferences = persistentListOf(
         textPreference,
         colorPreference,
+        switchPreference,
         singleChoicePreference,
     )
 }
