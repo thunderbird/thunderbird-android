@@ -94,6 +94,7 @@ import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.controller.Preconditions.requireNotNull;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT;
 
 
 /**
@@ -664,7 +665,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     account.getEarliestPollDate(),
                     account.isSyncRemoteDeletions(),
                     account.getMaximumAutoDownloadMessageSize(),
-                    K9.DEFAULT_VISIBLE_LIMIT,
+                    DEFAULT_VISIBLE_LIMIT,
                     SYNC_FLAGS);
     }
 

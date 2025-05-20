@@ -517,13 +517,6 @@ object K9 : KoinComponent {
     const val IDENTITY_HEADER = K9MailLib.IDENTITY_HEADER
 
     /**
-     * Specifies how many messages will be shown in a folder by default. This number is set
-     * on each new folder and can be incremented with "Load more messages..." by the
-     * VISIBLE_LIMIT_INCREMENT
-     */
-    const val DEFAULT_VISIBLE_LIMIT = 25
-
-    /**
      * The maximum size of an attachment we're willing to download (either View or Save)
      * Attachments that are base64 encoded (most) will be about 1.375x their actual size
      * so we should probably factor that in. A 5MB attachment will generally be around

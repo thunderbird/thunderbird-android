@@ -14,6 +14,7 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import net.thunderbird.core.android.account.DeletePolicy
@@ -59,9 +60,9 @@ class AccountPreferenceSerializer(
                 DEFAULT_SYNC_INTERVAL,
             )
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
-            displayCount = storage.getInt("$accountUuid.displayCount", K9.DEFAULT_VISIBLE_LIMIT)
+            displayCount = storage.getInt("$accountUuid.displayCount", DEFAULT_VISIBLE_LIMIT)
             if (displayCount < 0) {
-                displayCount = K9.DEFAULT_VISIBLE_LIMIT
+                displayCount = DEFAULT_VISIBLE_LIMIT
             }
             isNotifyNewMail = storage.getBoolean("$accountUuid.notifyNewMail", false)
             folderNotifyNewMailMode = getEnumStringPref<FolderMode>(

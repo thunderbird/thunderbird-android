@@ -1,7 +1,6 @@
 package net.thunderbird.app.common.account
 
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.K9
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
@@ -17,6 +16,7 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SORT_TYPE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
 import net.thunderbird.core.android.account.Expunge
@@ -67,7 +67,7 @@ internal class DefaultAccountDefaultsProvider(
     private fun LegacyAccount.applyLegacyDefaults() {
         automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
         idleRefreshMinutes = 24
-        displayCount = K9.DEFAULT_VISIBLE_LIMIT
+        displayCount = DEFAULT_VISIBLE_LIMIT
         accountNumber = UNASSIGNED_ACCOUNT_NUMBER
         isNotifyNewMail = true
         folderNotifyNewMailMode = FolderMode.ALL
