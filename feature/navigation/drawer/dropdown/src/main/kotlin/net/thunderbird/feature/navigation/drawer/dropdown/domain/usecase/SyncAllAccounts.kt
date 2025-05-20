@@ -1,7 +1,6 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
 
 import android.content.Context
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import kotlin.coroutines.CoroutineContext
@@ -10,6 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 
 class SyncAllAccounts(

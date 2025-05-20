@@ -1,10 +1,10 @@
 package net.thunderbird.feature.navigation.drawer.siderail.data
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
 

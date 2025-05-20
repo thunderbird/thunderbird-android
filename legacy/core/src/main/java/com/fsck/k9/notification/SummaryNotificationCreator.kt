@@ -3,8 +3,8 @@ package com.fsck.k9.notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
+import net.thunderbird.core.android.account.LegacyAccount
 import timber.log.Timber
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 

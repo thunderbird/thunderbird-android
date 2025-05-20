@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.identity
 
-import app.k9mail.legacy.account.Identity
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import net.thunderbird.core.android.account.Identity
 import org.junit.Test
 
 private const val IDENTITY_NAME = "Identity Name"
@@ -14,7 +14,11 @@ class IdentityFormatterTest {
 
     @Test
     fun `getDisplayName() with identity name`() {
-        val identity = Identity(description = IDENTITY_NAME, name = "irrelevant", email = EMAIL)
+        val identity = Identity(
+            description = IDENTITY_NAME,
+            name = "irrelevant",
+            email = EMAIL,
+        )
 
         val displayName = identityFormatter.getDisplayName(identity)
 
@@ -23,7 +27,8 @@ class IdentityFormatterTest {
 
     @Test
     fun `getDisplayName() without identity name, but sender name`() {
-        val identity = Identity(description = null, name = SENDER_NAME, email = EMAIL)
+        val identity =
+            Identity(description = null, name = SENDER_NAME, email = EMAIL)
 
         val displayName = identityFormatter.getDisplayName(identity)
 
@@ -59,7 +64,8 @@ class IdentityFormatterTest {
 
     @Test
     fun `getEmailDisplayName() should ignore identity name`() {
-        val identity = Identity(description = IDENTITY_NAME, name = null, email = EMAIL)
+        val identity =
+            Identity(description = IDENTITY_NAME, name = null, email = EMAIL)
 
         val displayName = identityFormatter.getEmailDisplayName(identity)
 

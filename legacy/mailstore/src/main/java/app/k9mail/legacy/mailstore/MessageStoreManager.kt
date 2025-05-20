@@ -1,8 +1,8 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import java.util.concurrent.ConcurrentHashMap
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 
 class MessageStoreManager(
     private val accountManager: AccountManager,

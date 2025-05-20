@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
 
 object NotificationGroupKeys {
     private const val NOTIFICATION_GROUP_KEY_PREFIX = "newMailNotifications-"

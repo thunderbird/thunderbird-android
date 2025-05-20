@@ -11,8 +11,6 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
@@ -32,6 +30,8 @@ import com.fsck.k9.message.MessageBuilder
 import com.fsck.k9.message.PgpMessageBuilder
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView.Recipient
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.contact.ContactIntentHelper
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback

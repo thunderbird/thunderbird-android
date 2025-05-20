@@ -1,13 +1,13 @@
 package net.thunderbird.feature.widget.message.list
 
-import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.MessageColumns
 import com.fsck.k9.search.SqlQueryBuilder
 import com.fsck.k9.search.getAccounts
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.SortType
 import timber.log.Timber
 
 internal class MessageListLoader(

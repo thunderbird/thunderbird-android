@@ -9,7 +9,7 @@ android {
 
 dependencies {
     implementation(projects.core.common)
-    implementation(projects.legacy.account)
+    implementation(projects.core.android.account)
     implementation(projects.legacy.common)
     implementation(projects.legacy.ui.base)
     implementation(projects.core.ui.compose.designsystem)

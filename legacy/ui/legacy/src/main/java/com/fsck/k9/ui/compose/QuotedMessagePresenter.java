@@ -7,9 +7,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import app.k9mail.core.android.common.compat.BundleCompat;
-import app.k9mail.legacy.account.LegacyAccount;
-import app.k9mail.legacy.account.MessageFormat;
-import app.k9mail.legacy.account.QuoteStyle;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.MessageFormat;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.activity.MessageCompose.Action;
@@ -30,6 +29,7 @@ import com.fsck.k9.message.quote.InsertableHtmlContent;
 import com.fsck.k9.message.quote.TextQuoteCreator;
 import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.message.signature.TextSignatureRemover;
+import net.thunderbird.core.android.account.QuoteStyle;
 import timber.log.Timber;
 
 

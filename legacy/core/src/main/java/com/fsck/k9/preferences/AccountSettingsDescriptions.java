@@ -6,17 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
-
 import android.content.Context;
-
-import app.k9mail.legacy.account.AccountDefaultsProvider;
-import app.k9mail.legacy.account.DeletePolicy;
-import app.k9mail.legacy.account.Expunge;
-import app.k9mail.legacy.account.FolderMode;
-import app.k9mail.legacy.account.MessageFormat;
-import app.k9mail.legacy.account.QuoteStyle;
-import app.k9mail.legacy.account.ShowPictures;
-import app.k9mail.legacy.account.SortType;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
@@ -35,18 +25,25 @@ import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo80;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo81;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo91;
+import net.thunderbird.core.android.account.AccountDefaultsProvider;
+import net.thunderbird.core.android.account.DeletePolicy;
+import net.thunderbird.core.android.account.Expunge;
+import net.thunderbird.core.android.account.FolderMode;
+import net.thunderbird.core.android.account.MessageFormat;
+import net.thunderbird.core.android.account.QuoteStyle;
+import net.thunderbird.core.android.account.ShowPictures;
+import net.thunderbird.core.android.account.SortType;
 import net.thunderbird.core.mail.folder.api.SpecialFolderSelection;
 import net.thunderbird.feature.notification.NotificationLight;
-
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_READ_RECEIPT;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_QUOTED_TEXT_SHOWN;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_QUOTE_PREFIX;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_SORT_ASCENDING;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_MESSAGE_READ_RECEIPT;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_QUOTED_TEXT_SHOWN;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_QUOTE_PREFIX;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_SORT_ASCENDING;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE;
 
 
 class AccountSettingsDescriptions {

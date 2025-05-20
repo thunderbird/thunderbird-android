@@ -1,18 +1,18 @@
 package net.thunderbird.app.common.account.data
 
 import app.cash.turbine.test
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccountWrapper
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.api.profile.AccountProfile
 import org.junit.Test
-import app.k9mail.legacy.account.LegacyAccount as LegacyAccount
 
 class LegacyAccountProfileLocalDataSourceTest {
 

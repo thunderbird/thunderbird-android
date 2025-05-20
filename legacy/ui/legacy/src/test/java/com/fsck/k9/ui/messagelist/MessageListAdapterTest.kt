@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import app.k9mail.core.testing.TestClock
-import app.k9mail.legacy.account.LegacyAccount
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -26,6 +25,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.google.android.material.textview.MaterialTextView
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -425,7 +425,9 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun createMessageListItem(
-        account: LegacyAccount = LegacyAccount(SOME_ACCOUNT_UUID),
+        account: LegacyAccount = LegacyAccount(
+            SOME_ACCOUNT_UUID,
+        ),
         subject: String? = "irrelevant",
         threadCount: Int = 0,
         messageDate: Long = 0L,

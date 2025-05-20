@@ -1,9 +1,6 @@
 package com.fsck.k9.backends
 
 import android.content.Context
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.Expunge
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
@@ -21,6 +18,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.Expunge
+import net.thunderbird.core.android.account.LegacyAccount
 
 @Suppress("LongParameterList")
 class ImapBackendFactory(

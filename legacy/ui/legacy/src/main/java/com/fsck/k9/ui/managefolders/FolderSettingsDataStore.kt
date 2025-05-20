@@ -2,12 +2,12 @@ package com.fsck.k9.ui.managefolders
 
 import androidx.preference.PreferenceDataStore
 import app.k9mail.core.mail.folder.api.FolderDetails
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.account.LegacyAccount
 
 class FolderSettingsDataStore(
     private val folderRepository: FolderRepository,

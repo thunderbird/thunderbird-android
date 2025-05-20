@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
 import kotlinx.coroutines.CoroutineScope
@@ -10,6 +9,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.account.LegacyAccount
 
 class AutocryptSetupTransferLiveEvent(
     private val messagingController: MessagingController,

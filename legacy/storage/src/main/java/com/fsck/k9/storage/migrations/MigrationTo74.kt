@@ -2,8 +2,8 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.legacy.account.DeletePolicy
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.DeletePolicy
+import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Remove all placeholder entries in 'messages' table

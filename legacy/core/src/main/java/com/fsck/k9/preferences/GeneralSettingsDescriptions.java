@@ -10,8 +10,6 @@ import java.util.TreeMap;
 import android.content.Context;
 
 import app.k9mail.feature.telemetry.api.TelemetryManager;
-import app.k9mail.legacy.account.SortType;
-import app.k9mail.legacy.account.AccountDefaultsProvider;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
@@ -39,6 +37,8 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo58;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
+import net.thunderbird.core.android.account.AccountDefaultsProvider;
+import net.thunderbird.core.android.account.SortType;
 import net.thunderbird.core.preferences.AppTheme;
 import net.thunderbird.core.preferences.Storage;
 import net.thunderbird.core.preferences.SubTheme;

@@ -1,10 +1,10 @@
 package net.thunderbird.feature.navigation.drawer.siderail.domain.usecase
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.AccountRemovedListener
-import app.k9mail.legacy.account.AccountsChangeListener
-import app.k9mail.legacy.account.LegacyAccount
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.AccountRemovedListener
+import net.thunderbird.core.android.account.AccountsChangeListener
+import net.thunderbird.core.android.account.LegacyAccount
 
 internal class FakeAccountManager(
     val recordedParameters: MutableList<String> = mutableListOf(),

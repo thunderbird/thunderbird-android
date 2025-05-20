@@ -2,7 +2,6 @@ package com.fsck.k9.mailstore
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertFailure
 import assertk.assertThat
@@ -24,6 +23,7 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
+import net.thunderbird.core.android.account.LegacyAccount
 import org.junit.After
 import org.junit.Test
 import org.koin.core.component.inject

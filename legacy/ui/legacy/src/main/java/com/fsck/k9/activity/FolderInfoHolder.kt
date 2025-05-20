@@ -2,9 +2,9 @@ package com.fsck.k9.activity
 
 import app.k9mail.core.mail.folder.api.Folder
 import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import com.fsck.k9.mailstore.LocalFolder
+import net.thunderbird.core.android.account.LegacyAccount
 
 class FolderInfoHolder(
     private val folderNameFormatter: FolderNameFormatter,

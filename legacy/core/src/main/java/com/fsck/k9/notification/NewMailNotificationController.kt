@@ -1,9 +1,9 @@
 package com.fsck.k9.notification
 
 import androidx.core.app.NotificationManagerCompat
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
+import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Handle notifications for new messages.

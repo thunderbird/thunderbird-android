@@ -1,8 +1,8 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.RemoteFolderDetails
+import net.thunderbird.core.android.account.LegacyAccount
 
 class FolderSettingsProvider(private val folderRepository: FolderRepository) {
     fun getFolderSettings(account: LegacyAccount): List<FolderSettings> {

@@ -17,9 +17,8 @@ import androidx.annotation.Nullable;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import net.thunderbird.core.android.account.LegacyAccount;
 import timber.log.Timber;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
