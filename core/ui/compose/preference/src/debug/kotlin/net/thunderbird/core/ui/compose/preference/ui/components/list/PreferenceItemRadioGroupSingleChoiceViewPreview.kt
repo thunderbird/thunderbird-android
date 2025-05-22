@@ -7,22 +7,12 @@ import net.thunderbird.core.ui.compose.preference.ui.fake.FakePreferenceData
 
 @Composable
 @Preview(showBackground = true)
-internal fun PreferenceItemSingleChoiceViewPreview() {
+internal fun PreferenceItemRadioGroupSingleChoiceViewPreview() {
     PreviewWithThemes {
-        PreferenceItemSingleChoiceView(
-            preference = FakePreferenceData.singleChoicePreference.copy(description = { null }),
-            onPreferenceChange = {},
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun PreferenceItemSingleChoiceViewWithDescriptionPreview() {
-    PreviewWithThemes {
-        PreferenceItemSingleChoiceView(
+        PreferenceItemRadioGroupSingleChoiceView(
             preference = FakePreferenceData.singleChoicePreference,
             onPreferenceChange = {},
+            onCancel = {},
         )
     }
 }
