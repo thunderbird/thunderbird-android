@@ -47,6 +47,8 @@ internal fun PreferenceItem(
             )
         }
 
+        is PreferenceSetting.SingleChoiceCompact -> Unit
+
         // PreferenceDisplay
         is PreferenceDisplay.Custom -> {
             PreferenceItemCustomView(
