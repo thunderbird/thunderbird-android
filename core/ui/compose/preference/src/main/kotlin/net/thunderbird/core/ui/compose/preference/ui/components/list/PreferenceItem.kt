@@ -47,6 +47,12 @@ internal fun PreferenceItem(
             )
         }
 
+        is PreferenceSetting.SingleChoiceCompact -> PreferenceItemSingleChoiceCompactView(
+            preference = preference,
+            onClick = onClick,
+            modifier = modifier,
+        )
+
         // PreferenceDisplay
         is PreferenceDisplay.Custom -> {
             PreferenceItemCustomView(

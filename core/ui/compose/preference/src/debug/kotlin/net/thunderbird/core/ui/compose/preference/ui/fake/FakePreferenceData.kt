@@ -4,6 +4,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting.SingleChoice.Choice
+import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting.SingleChoiceCompact.CompactChoice
 
 internal object FakePreferenceData {
 
@@ -40,6 +41,24 @@ internal object FakePreferenceData {
         description = { "Description" },
         value = choices[1],
         options = choices,
+    )
+
+    private val compactChoices = persistentListOf<CompactChoice>(
+        CompactChoice("1") { "Compact Choice 1" },
+        CompactChoice("2") { "Compact Choice 2" },
+        CompactChoice("3") { "Compact Choice 3" },
+        CompactChoice("1") { "Compact Choice 4" },
+        CompactChoice("2") { "Compact Choice 5" },
+        CompactChoice("3") { "Compact Choice 6" },
+    )
+
+    val singleChoiceCompactPreference = PreferenceSetting.SingleChoiceCompact(
+        id = "single_choice_compact",
+        title = { "Title" },
+        icon = { Icons.Outlined.Info },
+        description = { "Description" },
+        value = compactChoices[1],
+        options = compactChoices,
     )
 
     val switchPreference = PreferenceSetting.Switch(
