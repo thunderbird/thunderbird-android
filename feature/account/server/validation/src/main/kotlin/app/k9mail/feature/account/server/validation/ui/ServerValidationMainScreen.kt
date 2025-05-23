@@ -2,7 +2,6 @@ package app.k9mail.feature.account.server.validation.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.common.mvi.observeWithoutEffect
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
@@ -10,6 +9,7 @@ import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.common.ui.WizardNavigationBarState
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.Event
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract.ViewModel
+import net.thunderbird.core.common.provider.BrandNameProvider
 
 @Composable
 internal fun ServerValidationMainScreen(

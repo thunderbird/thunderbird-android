@@ -3,7 +3,7 @@ package app.k9mail.autodiscovery.service
 import app.k9mail.autodiscovery.api.AutoDiscoveryRegistry
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryService
-import app.k9mail.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.EmailAddress
 
 /**
  * Uses Thunderbird's Autoconfig mechanism to find mail server settings for a given email address.

@@ -10,20 +10,19 @@ android {
 dependencies {
     api(projects.feature.navigation.drawer.api)
 
-    implementation(projects.core.mail.folder.api)
-
-    implementation(projects.core.account)
     implementation(projects.core.ui.theme.api)
     implementation(projects.core.ui.compose.designsystem)
 
     implementation(projects.feature.account.avatar)
+    implementation(projects.feature.mail.account.api)
+    implementation(projects.feature.mail.folder.api)
 
     implementation(projects.core.android.account)
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)
     implementation(projects.feature.search)
     implementation(projects.legacy.ui.folder)
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
 
     testImplementation(projects.core.ui.compose.testing)
 }

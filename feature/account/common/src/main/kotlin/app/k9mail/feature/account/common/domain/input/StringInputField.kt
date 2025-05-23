@@ -1,7 +1,7 @@
 package app.k9mail.feature.account.common.domain.input
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 class StringInputField(
     override val value: String = "",

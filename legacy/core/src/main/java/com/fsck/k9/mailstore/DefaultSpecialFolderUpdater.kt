@@ -1,13 +1,13 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.core.common.mail.Protocols
-import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
-import net.thunderbird.core.mail.folder.api.SpecialFolderUpdater
-import net.thunderbird.feature.folder.api.RemoteFolder
+import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.api.RemoteFolder
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 
 /**
  * Updates special folders in [LegacyAccount] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they

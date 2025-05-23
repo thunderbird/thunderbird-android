@@ -2,13 +2,13 @@ package net.thunderbird.feature.navigation.drawer.siderail.ui
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import app.k9mail.core.mail.folder.api.Folder
-import app.k9mail.core.mail.folder.api.FolderType
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayFolder

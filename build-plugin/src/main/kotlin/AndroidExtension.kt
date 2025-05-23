@@ -4,19 +4,19 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 internal fun CommonExtension<*, *, *, *, *, *>.configureSharedConfig(project: Project) {
-    compileSdk = ThunderbirdProjectConfig.androidSdkCompile
+    compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
 
     defaultConfig {
-        compileSdk = ThunderbirdProjectConfig.androidSdkCompile
-        minSdk = ThunderbirdProjectConfig.androidSdkMin
+        compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
+        minSdk = ThunderbirdProjectConfig.Android.sdkMin
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
 
     compileOptions {
-        sourceCompatibility = ThunderbirdProjectConfig.javaCompatibilityVersion
-        targetCompatibility = ThunderbirdProjectConfig.javaCompatibilityVersion
+        sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
+        targetCompatibility = ThunderbirdProjectConfig.Compiler.javaCompatibility
     }
 
     lint {

@@ -1,7 +1,6 @@
 package com.fsck.k9.controller
 
 import android.content.Context
-import app.k9mail.core.featureflag.FeatureFlagProvider
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
@@ -12,6 +11,7 @@ import com.fsck.k9.mailstore.SaveMessageDataCreator
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
+import net.thunderbird.core.featureflag.FeatureFlagProvider
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 

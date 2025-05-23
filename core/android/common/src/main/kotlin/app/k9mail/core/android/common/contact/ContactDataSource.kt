@@ -7,7 +7,7 @@ import android.provider.ContactsContract
 import app.k9mail.core.android.common.database.EmptyCursor
 import app.k9mail.core.android.common.database.getLongOrThrow
 import app.k9mail.core.android.common.database.getStringOrNull
-import app.k9mail.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.EmailAddress
 
 interface ContactDataSource {
 

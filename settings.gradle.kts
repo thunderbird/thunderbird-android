@@ -59,19 +59,6 @@ include(
 )
 
 include(
-    ":feature:onboarding:main",
-    ":feature:onboarding:welcome",
-    ":feature:onboarding:permissions",
-    ":feature:onboarding:migration:api",
-    ":feature:onboarding:migration:thunderbird",
-    ":feature:onboarding:migration:noop",
-)
-
-include(
-    ":feature:settings:import",
-)
-
-include(
     ":feature:account:api",
     ":feature:account:avatar",
     ":feature:account:core",
@@ -84,6 +71,7 @@ include(
     ":feature:account:server:settings",
     ":feature:account:server:validation",
     ":feature:account:setup",
+    ":feature:account:storage:legacy",
 )
 
 include(
@@ -94,16 +82,15 @@ include(
 )
 
 include(
-    ":feature:navigation:drawer:api",
-    ":feature:navigation:drawer:dropdown",
-    ":feature:navigation:drawer:siderail",
+    ":feature:funding:api",
+    ":feature:funding:googleplay",
+    ":feature:funding:link",
+    ":feature:funding:noop",
 )
 
 include(
-    ":feature:widget:message-list",
-    ":feature:widget:message-list-glance",
-    ":feature:widget:shortcut",
-    ":feature:widget:unread",
+    ":feature:mail:account:api",
+    ":feature:mail:folder:api",
 )
 
 include(
@@ -115,45 +102,97 @@ include(
 )
 
 include(
+    ":feature:navigation:drawer:api",
+    ":feature:navigation:drawer:dropdown",
+    ":feature:navigation:drawer:siderail",
+)
+
+include(
+    ":feature:notification",
+)
+
+include(
+    ":feature:onboarding:main",
+    ":feature:onboarding:welcome",
+    ":feature:onboarding:permissions",
+    ":feature:onboarding:migration:api",
+    ":feature:onboarding:migration:thunderbird",
+    ":feature:onboarding:migration:noop",
+)
+
+include(
+    ":feature:search",
+)
+
+include(
+    ":feature:settings:import",
+)
+
+include(
     ":feature:telemetry:api",
     ":feature:telemetry:noop",
     ":feature:telemetry:glean",
 )
 
 include(
-    ":feature:funding:api",
-    ":feature:folder:api",
-    ":feature:funding:googleplay",
-    ":feature:funding:link",
-    ":feature:funding:noop",
+    ":feature:widget:message-list",
+    ":feature:widget:message-list-glance",
+    ":feature:widget:shortcut",
+    ":feature:widget:unread",
 )
 
 include(
     ":core:common",
-    ":core:featureflags",
+    ":core:featureflag",
+    ":core:mail:mailserver",
+    ":core:preferences",
     ":core:outcome",
     ":core:testing",
+)
+
+include(
+    ":core:android:account",
     ":core:android:common",
+    ":core:android:contact",
+    ":core:android:logging",
     ":core:android:network",
     ":core:android:permissions",
     ":core:android:testing",
+)
+
+include(
+    ":core:ui:account",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:navigation",
     ":core:ui:compose:preference",
+    ":core:ui:compose:testing",
     ":core:ui:compose:theme2:common",
     ":core:ui:compose:theme2:k9mail",
     ":core:ui:compose:theme2:thunderbird",
-    ":core:ui:compose:testing",
     ":core:ui:legacy:designsystem",
     ":core:ui:legacy:theme2:common",
     ":core:ui:legacy:theme2:k9mail",
     ":core:ui:legacy:theme2:thunderbird",
     ":core:ui:theme:api",
+    ":core:ui:theme:manager",
 )
 
 include(
-    ":core:mail:folder:api",
+    ":mail:common",
+    ":mail:testing",
+    ":mail:protocols:imap",
+    ":mail:protocols:pop3",
+    ":mail:protocols:smtp",
+)
+
+include(
+    ":backend:api",
+    ":backend:testing",
+    ":backend:imap",
+    ":backend:pop3",
+    ":backend:jmap",
+    ":backend:demo",
 )
 
 include(
@@ -173,23 +212,6 @@ include(
     ":ui-utils:LinearLayoutManager",
     ":ui-utils:ItemTouchHelper",
     ":ui-utils:ToolbarBottomSheet",
-)
-
-include(
-    ":mail:common",
-    ":mail:testing",
-    ":mail:protocols:imap",
-    ":mail:protocols:pop3",
-    ":mail:protocols:smtp",
-)
-
-include(
-    ":backend:api",
-    ":backend:testing",
-    ":backend:imap",
-    ":backend:pop3",
-    ":backend:jmap",
-    ":backend:demo",
 )
 
 include(":plugins:openpgp-api-lib:openpgp-api")
@@ -217,13 +239,3 @@ check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
         https://developer.android.com/build/jdks#jdk-config-in-studio
     """.trimIndent()
 }
-include(":core:android:logging")
-include(":core:preferences")
-include(":core:mail:mailserver")
-include(":feature:search")
-include(":core:account")
-include(":feature:notification")
-include(":core:ui:theme:manager")
-include(":core:contact")
-include(":core:ui:account")
-include(":core:android:account")

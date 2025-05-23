@@ -8,5 +8,5 @@ android {
 }
 
 dependencies {
-    implementation(projects.core.account)
+    implementation(projects.feature.mail.account.api)
 }

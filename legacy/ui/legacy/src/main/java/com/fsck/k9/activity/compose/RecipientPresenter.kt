@@ -32,7 +32,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView.Recipient
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.contact.ContactIntentHelper
+import net.thunderbird.core.android.contact.ContactIntentHelper
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError

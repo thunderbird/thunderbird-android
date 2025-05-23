@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 class FakeIncomingServerSettingsValidator(
     private val serverAnswer: ValidationResult = ValidationResult.Success,

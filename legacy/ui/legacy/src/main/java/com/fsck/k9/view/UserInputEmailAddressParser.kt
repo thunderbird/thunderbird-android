@@ -1,7 +1,7 @@
 package com.fsck.k9.view
 
-import app.k9mail.core.common.net.HostNameUtils
 import com.fsck.k9.mail.Address
+import net.thunderbird.core.common.net.HostNameUtils
 import org.apache.james.mime4j.util.CharsetUtil
 
 /**

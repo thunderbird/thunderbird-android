@@ -1,7 +1,7 @@
 package app.k9mail.core.android.common.contact
 
 import android.net.Uri
-import app.k9mail.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.EmailAddress
 
 data class Contact(
     val id: Long,

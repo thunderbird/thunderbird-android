@@ -1,8 +1,8 @@
 package app.k9mail.feature.onboarding.welcome.ui
 
 import androidx.compose.runtime.Composable
-import app.k9mail.core.common.provider.AppNameProvider
 import app.k9mail.feature.onboarding.migration.api.OnboardingMigrationManager
+import net.thunderbird.core.common.provider.AppNameProvider
 
 @Composable
 fun WelcomeScreen(

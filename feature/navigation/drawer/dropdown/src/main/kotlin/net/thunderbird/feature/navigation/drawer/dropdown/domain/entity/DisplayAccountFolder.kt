@@ -1,6 +1,6 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.domain.entity
 
-import app.k9mail.core.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.Folder
 
 internal data class DisplayAccountFolder(
     val accountId: String,

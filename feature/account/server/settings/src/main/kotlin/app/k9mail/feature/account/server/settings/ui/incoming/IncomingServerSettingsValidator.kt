@@ -1,12 +1,12 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.server.settings.domain.ServerSettingsDomainContract.UseCase
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateImapPrefix
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePassword
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePort
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateServer
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateUsername
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 internal class IncomingServerSettingsValidator(
     private val serverValidator: UseCase.ValidateServer = ValidateServer(),

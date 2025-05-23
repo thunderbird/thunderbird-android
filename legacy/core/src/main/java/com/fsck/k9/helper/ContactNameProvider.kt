@@ -1,7 +1,7 @@
 package com.fsck.k9.helper
 
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.toEmailAddressOrNull
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
 
 interface ContactNameProvider {
     fun getNameForAddress(address: String): String?

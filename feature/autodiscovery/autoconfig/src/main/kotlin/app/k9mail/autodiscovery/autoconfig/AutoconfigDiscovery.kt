@@ -2,8 +2,8 @@ package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.AutoDiscovery
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
-import app.k9mail.core.common.mail.EmailAddress
-import app.k9mail.core.common.mail.toDomain
+import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.toDomain
 import okhttp3.OkHttpClient
 
 class AutoconfigDiscovery internal constructor(

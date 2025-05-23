@@ -8,8 +8,6 @@ import app.k9mail.autodiscovery.api.ConnectionSecurity.StartTLS
 import app.k9mail.autodiscovery.api.ConnectionSecurity.TLS
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
-import app.k9mail.core.common.net.toHostname
-import app.k9mail.core.common.net.toPort
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -21,6 +19,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.net.toHostname
+import net.thunderbird.core.common.net.toPort
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PriorityParallelRunnerTest {
