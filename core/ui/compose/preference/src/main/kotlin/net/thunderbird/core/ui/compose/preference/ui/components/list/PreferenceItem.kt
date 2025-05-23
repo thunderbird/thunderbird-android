@@ -61,5 +61,11 @@ internal fun PreferenceItem(
                 modifier = modifier,
             )
         }
+
+        is PreferenceDisplay.SectionDivider -> {
+            PreferenceItemSectionDividerView(
+                modifier = modifier,
+            )
+        }
     }
 }
