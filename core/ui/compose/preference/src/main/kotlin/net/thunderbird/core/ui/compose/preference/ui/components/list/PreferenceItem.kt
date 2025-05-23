@@ -32,7 +32,7 @@ internal fun PreferenceItem(
         }
 
         is PreferenceSetting.SingleChoice -> {
-            PreferenceItemSingleChoiceView(
+            PreferenceItemButtonSegmentedSingleChoiceView(
                 preference = preference,
                 onPreferenceChange = onPreferenceChange,
                 modifier = modifier,

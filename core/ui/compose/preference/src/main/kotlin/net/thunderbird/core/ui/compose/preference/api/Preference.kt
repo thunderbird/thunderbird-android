@@ -52,6 +52,7 @@ sealed interface PreferenceSetting<T> : Preference {
     data class SingleChoice(
         override val id: String,
         val title: () -> String,
+        val cancelButtonTitle: () -> String,
         val description: () -> String? = { null },
         override val value: Choice,
         val options: ImmutableList<Choice>,

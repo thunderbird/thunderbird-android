@@ -37,6 +37,7 @@ internal object FakePreferenceData {
     val singleChoicePreference = PreferenceSetting.SingleChoice(
         id = "single_choice",
         title = { "Title" },
+        cancelButtonTitle = { "Cancel" },
         description = { "Description" },
         value = choices[1],
         options = choices,

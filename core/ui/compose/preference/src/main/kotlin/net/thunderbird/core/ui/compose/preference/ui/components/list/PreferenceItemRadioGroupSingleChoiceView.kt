@@ -2,19 +2,22 @@ package net.thunderbird.core.ui.compose.preference.ui.components.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonSegmentedSingleChoice
-import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
+import app.k9mail.core.ui.compose.designsystem.atom.RadioGroup
+import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 
 @Composable
-internal fun PreferenceItemSingleChoiceView(
+internal fun PreferenceItemRadioGroupSingleChoiceView(
     preference: PreferenceSetting.SingleChoice,
     onPreferenceChange: (PreferenceSetting<*>) -> Unit,
+    onCancel: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -23,7 +26,7 @@ internal fun PreferenceItemSingleChoiceView(
     ) {
         TextTitleMedium(text = preference.title())
 
-        ButtonSegmentedSingleChoice(
+        RadioGroup(
             onClick = {
                 onPreferenceChange(preference.copy(value = it))
             },
@@ -32,11 +35,11 @@ internal fun PreferenceItemSingleChoiceView(
             selectedOption = preference.value,
         )
 
-        preference.description()?.let {
-            TextBodyMedium(
-                modifier = Modifier.padding(start = MainTheme.spacings.oneHalf),
-                color = MainTheme.colors.onSurfaceVariant,
-                text = it,
+        Row {
+            Spacer(modifier = Modifier.weight(1f))
+            ButtonText(
+                text = preference.cancelButtonTitle(),
+                onClick = onCancel,
             )
         }
     }
