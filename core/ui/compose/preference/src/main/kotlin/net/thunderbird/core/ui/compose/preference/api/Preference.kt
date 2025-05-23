@@ -1,9 +1,12 @@
 package net.thunderbird.core.ui.compose.preference.api
 
 import android.os.Parcelable
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
@@ -88,5 +91,12 @@ sealed interface PreferenceDisplay : Preference {
     data class Custom(
         override val id: String,
         val customUi: @Composable (Modifier) -> Unit,
+    ) : PreferenceDisplay
+
+    @Parcelize
+    data class SectionDivider(
+        override val id: String,
+        val color: @Composable () -> Color = { DividerDefaults.color },
+        val thickness: () -> Dp = { DividerDefaults.Thickness },
     ) : PreferenceDisplay
 }
