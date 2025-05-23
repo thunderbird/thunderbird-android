@@ -3,6 +3,7 @@ package net.thunderbird.core.ui.compose.preference.api
 import android.os.Parcelable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.parcelize.IgnoredOnParcel
@@ -88,5 +89,12 @@ sealed interface PreferenceDisplay : Preference {
     data class Custom(
         override val id: String,
         val customUi: @Composable (Modifier) -> Unit,
+    ) : PreferenceDisplay
+
+    @Parcelize
+    data class SectionHeader(
+        override val id: String,
+        val title: () -> String,
+        val color: () -> Color = { Color.Unspecified },
     ) : PreferenceDisplay
 }
