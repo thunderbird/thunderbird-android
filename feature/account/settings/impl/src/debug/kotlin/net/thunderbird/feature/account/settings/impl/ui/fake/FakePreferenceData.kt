@@ -3,6 +3,7 @@ package net.thunderbird.feature.account.settings.impl.ui.fake
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardElevated
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
@@ -38,21 +39,28 @@ object FakePreferenceData {
         id = "custom",
         customUi = { modifier ->
             CardElevated(
-                modifier = modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
                     .padding(MainTheme.spacings.double),
             ) {
                 TextBodyLarge(
                     text = "Custom UI",
-                    modifier = Modifier.padding(MainTheme.spacings.default)
+                    modifier = Modifier
+                        .padding(MainTheme.spacings.default)
                         .fillMaxWidth(),
                 )
             }
         },
     )
 
+    val sectionDivider = PreferenceDisplay.SectionDivider(
+        id = "section_divider",
+    )
+
     val preferences = persistentListOf(
         textPreference,
         colorPreference,
         customPreference,
+        sectionDivider,
     )
 }

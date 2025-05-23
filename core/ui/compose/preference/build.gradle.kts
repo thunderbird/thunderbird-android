@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
+    implementation(libs.androidx.compose.material3)
 
     testImplementation(projects.core.ui.compose.testing)
 }
