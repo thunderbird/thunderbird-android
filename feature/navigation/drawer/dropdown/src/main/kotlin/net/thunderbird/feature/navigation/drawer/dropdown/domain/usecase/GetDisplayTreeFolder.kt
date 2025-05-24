@@ -54,7 +54,16 @@ internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
         paths: List<Pair<List<String>, DisplayAccountFolder>>,
         parentPath: String = "",
     ): List<DisplayTreeFolder> {
-        return paths.groupBy { it.first.getOrNull(0) ?: "(Unnamed)" }
+        return paths
+            .map {
+                Pair(
+                    it.first.filter { name -> name != "[Gmail]" },
+                    it.second.copy(
+                        folder = it.second.folder.copy(name = it.second.folder.name.substringAfter("/")),
+                    ),
+                )
+            }
+            .groupBy { it.first.getOrNull(0) ?: "(Unnamed)" }
             .map { (segment, entries) ->
                 val childPaths = entries.mapNotNull { (segments, folders) ->
                     if (segments.size > 1) {
