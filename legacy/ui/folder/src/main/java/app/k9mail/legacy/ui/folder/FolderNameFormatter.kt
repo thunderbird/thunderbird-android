@@ -19,16 +19,18 @@ class FolderNameFormatter(private val resources: Resources) {
         FolderType.DRAFTS -> resources.getString(R.string.special_mailbox_name_drafts)
         FolderType.SENT -> resources.getString(R.string.special_mailbox_name_sent)
         FolderType.TRASH -> resources.getString(R.string.special_mailbox_name_trash)
-        else -> folder.name
+        else -> folder.name.removeGmailPrefix()
     }
 
     private fun remoteFolderDisplayName(folder: Folder) = when (folder.type) {
         FolderType.INBOX -> resources.getString(R.string.special_mailbox_name_inbox)
-        else -> folder.name
+        else -> folder.name.removeGmailPrefix()
     }
 
     fun displayName(folder: RemoteFolder) = when (folder.type) {
         FolderType.INBOX -> resources.getString(R.string.special_mailbox_name_inbox)
-        else -> folder.name
+        else -> folder.name.removeGmailPrefix()
     }
 }
+
+private fun String.removeGmailPrefix(): String = this.replace("[Gmail]/", "")
