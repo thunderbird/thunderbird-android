@@ -16,10 +16,13 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
+import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
@@ -97,8 +100,10 @@ class K9BackendFolderTest : K9RobolectricTest() {
     fun createAccount(): LegacyAccount {
         // FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
         preferences.clearAccounts()
-
-        return preferences.newAccount()
+        return preferences.newAccount().apply {
+            incomingServerSettings = SERVER_SETTINGS
+            outgoingServerSettings = SERVER_SETTINGS
+        }
     }
 
     fun createBackendFolder(): BackendFolder {
@@ -158,5 +163,16 @@ class K9BackendFolderTest : K9RobolectricTest() {
         const val FOLDER_NAME = "Test Folder"
         val FOLDER_TYPE = FolderType.INBOX
         const val MESSAGE_SERVER_ID = "msg001"
+
+        private val SERVER_SETTINGS = ServerSettings(
+            type = "irrelevant",
+            host = "irrelevant",
+            port = 993,
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "username",
+            password = null,
+            clientCertificateAlias = null,
+        )
     }
 }
