@@ -198,6 +198,10 @@ class MessageListFragment :
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
+        accountManager.getAccounts().forEach {
+            messagingController.replaceGmailPrefixFromFolders(it)
+        }
+
         restoreInstanceState(savedInstanceState)
         val error = decodeArguments()
         if (error != null) {

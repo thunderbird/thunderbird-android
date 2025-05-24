@@ -1079,6 +1079,10 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         );
     }
 
+    public void replaceGmailPrefixFromFolders(LegacyAccount account) {
+        messageStoreManager.getMessageStore(account).removeGmailPrefixFromFolders();
+    }
+
     private void setFlagSynchronous(final LegacyAccount account, final List<Long> ids,
             final Flag flag, final boolean newState, final boolean threadedList) {
 

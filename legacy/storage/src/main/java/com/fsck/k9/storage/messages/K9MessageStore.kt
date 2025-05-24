@@ -142,6 +142,10 @@ class K9MessageStore(
         createFolderOperations.createFolders(folders)
     }
 
+    override fun removeGmailPrefixFromFolders() {
+        updateFolderOperations.removeGmailPrefixFromFolders()
+    }
+
     override fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
         return retrieveFolderOperations.getFolder(folderId, mapper)
     }

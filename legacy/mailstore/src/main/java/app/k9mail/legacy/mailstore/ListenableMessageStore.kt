@@ -12,6 +12,10 @@ class ListenableMessageStore(private val messageStore: MessageStore) : MessageSt
         notifyFolderSettingsChanged()
     }
 
+    override fun removeGmailPrefixFromFolders() {
+        messageStore.removeGmailPrefixFromFolders()
+    }
+
     override fun deleteFolders(folderServerIds: List<String>) {
         messageStore.deleteFolders(folderServerIds)
         notifyFolderSettingsChanged()
