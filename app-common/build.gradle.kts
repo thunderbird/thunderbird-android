@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.core.logging.api)
     implementation(projects.core.logging.implComposite)
     implementation(projects.core.logging.implConsole)
+    implementation(projects.core.logging.implLegacy)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.ui.legacy.theme2.common)

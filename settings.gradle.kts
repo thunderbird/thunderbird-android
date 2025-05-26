@@ -150,6 +150,7 @@ include(
     ":core:logging:api",
     ":core:logging:impl-composite",
     ":core:logging:impl-console",
+    ":core:logging:impl-legacy",
     ":core:mail:mailserver",
     ":core:preferences",
     ":core:outcome",
