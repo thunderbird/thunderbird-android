@@ -1,10 +1,6 @@
-package net.thunderbird.feature.search.api;
+package net.thunderbird.feature.search.api
 
-
-///////////////////////////////////////////////////////////////
-// SEARCHFIELD enum
-///////////////////////////////////////////////////////////////
-/*
+/**
  * Using an enum in order to have more robust code. Users ( & coders )
  * are prevented from passing illegal fields. No database overhead
  * when invalid fields passed.
@@ -14,9 +10,8 @@ package net.thunderbird.feature.search.api;
  * Fields not in here at this moment ( and by effect not searchable ):
  *      id, html_content, internal_date, message_id,
  *      preview, mime_type
- *
  */
-public enum SearchField {
+enum class SearchField {
     SUBJECT,
     DATE,
     UID,
@@ -36,5 +31,5 @@ public enum SearchField {
     NEW_MESSAGE,
     READ,
     FLAGGED,
-    VISIBLE
+    VISIBLE,
 }
