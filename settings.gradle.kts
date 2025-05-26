@@ -147,6 +147,7 @@ include(
 include(
     ":core:common",
     ":core:featureflag",
+    ":core:logging:api",
     ":core:mail:mailserver",
     ":core:preferences",
     ":core:outcome",
