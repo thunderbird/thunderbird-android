@@ -1,7 +1,6 @@
-package net.thunderbird.feature.search.api;
+package net.thunderbird.feature.search.api
 
-
-public enum SearchAttribute {
+enum class SearchAttribute {
     CONTAINS,
     EQUALS,
     NOT_EQUALS,
