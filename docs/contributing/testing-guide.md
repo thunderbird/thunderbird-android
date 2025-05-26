@@ -9,9 +9,9 @@ This document outlines the testing practices and guidelines for the Thunderbird 
 - Name the object under test as `testSubject`
 - Use [AssertK](https://github.com/willowtreeapps/assertk) for assertions
 
-## 🏗️ Test Structure
+## 📐 Test Structure
 
-### 🔄 Arrange-Act-Assert Pattern
+### 🔍 Arrange-Act-Assert Pattern
 
 Tests in this project should follow the Arrange-Act-Assert (AAA) pattern:
 
@@ -148,7 +148,7 @@ Note: You'll need to import the appropriate [AssertK](https://github.com/willowt
 - `assertk.assertThat` for the base assertion function
 - Functions from the `assertk.assertions` namespace for specific assertion types (e.g., `import assertk.assertions.isEqualTo`, `import assertk.assertions.contains`, `import assertk.assertions.isTrue`, etc.)
 
-## 🧩 Test Types
+## 🧮 Test Types
 
 This section describes the different types of tests we use in the project. Each type serves a specific purpose in our testing strategy, and together they help ensure the quality and reliability of our codebase.
 
