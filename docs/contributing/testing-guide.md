@@ -2,9 +2,9 @@
 
 This document outlines the testing practices and guidelines for the Thunderbird for Android project.
 
-## 🏗️ Test Structure
+## 📐 Test Structure
 
-### 🔄 Arrange-Act-Assert Pattern
+### 🔍 Arrange-Act-Assert Pattern
 
 Tests in this project should follow the Arrange-Act-Assert (AAA) pattern:
 
@@ -136,7 +136,7 @@ Note: You'll need to import the appropriate AssertK assertions:
 - `assertk.assertThat` for the base assertion function
 - `assertk.assertions.*` for specific assertion types (isEqualTo, contains, isTrue, etc.)
 
-## 🧩 Test Types
+## 🧮 Test Types
 
 ### 🔬 Unit Tests
 
