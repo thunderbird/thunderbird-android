@@ -1,9 +1,7 @@
-package net.thunderbird.feature.search.api;
+package net.thunderbird.feature.search.api
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
+import android.os.Parcel
+import android.os.Parcelable
 
 /**
  * This class represents 1 value for a certain search field. One value consists of three things: an attribute: equals,
@@ -11,68 +9,63 @@ import android.os.Parcelable;
  *
  * @author dzan
  */
-public class SearchCondition implements Parcelable {
-    public final String value;
-    public final SearchAttribute attribute;
-    public final SearchField field;
+class SearchCondition : Parcelable {
+    @JvmField
+    val value: String?
 
-    public SearchCondition(SearchField field, SearchAttribute attribute, String value) {
-        this.value = value;
-        this.attribute = attribute;
-        this.field = field;
+    @JvmField
+    val attribute: SearchAttribute
+
+    @JvmField
+    val field: SearchField
+
+    constructor(field: SearchField, attribute: SearchAttribute, value: String?) {
+        this.value = value
+        this.attribute = attribute
+        this.field = field
     }
 
-    private SearchCondition(Parcel in) {
-        this.value = in.readString();
-        this.attribute = SearchAttribute.values()[in.readInt()];
-        this.field = SearchField.values()[in.readInt()];
+    private constructor(parcel: Parcel) {
+        this.value = parcel.readString()
+        this.attribute = SearchAttribute.values()[parcel.readInt()]
+        this.field = SearchField.values()[parcel.readInt()]
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof SearchCondition) {
-            SearchCondition tmp = (SearchCondition) o;
+    override fun equals(other: Any?): Boolean {
+        if (other is SearchCondition) {
+            val tmp = other
             return tmp.attribute == attribute &&
                 tmp.field == field &&
-                tmp.value.equals(value);
+                tmp.value == value
         }
 
-        return false;
+        return false
     }
 
-    @Override
-    public int hashCode() {
-        int result = 1;
-        result = 31 * result + attribute.hashCode();
-        result = 31 * result + field.hashCode();
-        result = 31 * result + value.hashCode();
+    override fun hashCode(): Int {
+        var result = 1
+        result = 31 * result + attribute.hashCode()
+        result = 31 * result + field.hashCode()
+        result = 31 * result + value.hashCode()
 
-        return result;
+        return result
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) {
+        dest.writeString(value)
+        dest.writeInt(attribute.ordinal)
+        dest.writeInt(field.ordinal)
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(value);
-        dest.writeInt(attribute.ordinal());
-        dest.writeInt(field.ordinal());
+    companion object CREATOR : Parcelable.Creator<SearchCondition> {
+        override fun createFromParcel(parcel: Parcel): SearchCondition {
+            return SearchCondition(parcel)
+        }
+
+        override fun newArray(size: Int): Array<SearchCondition?> {
+            return arrayOfNulls(size)
+        }
     }
-
-    public static final Creator<SearchCondition> CREATOR =
-        new Creator<SearchCondition>() {
-
-            @Override
-            public SearchCondition createFromParcel(Parcel in) {
-                return new SearchCondition(in);
-            }
-
-            @Override
-            public SearchCondition[] newArray(int size) {
-                return new SearchCondition[size];
-            }
-        };
 }
