@@ -3,14 +3,15 @@
 ---
 
 - [Contributing](CONTRIBUTING.md)
+  - [Git Commit Guide](contributing/git-commit-guide.md)
+  - [Testing Guide](contributing/testing-guide.md)
+  - [Java to Kotlin Conversion Guide](contributing/java-to-kotlin-conversion-guide.md)
 - [Design](DESIGN.md)
 - [Release](ci/README.md)
   - [Release Process](ci/RELEASE.md)
   - [Release Automation](ci/AUTOMATION.md)
   - [Manual Release (historical)](ci/HISTORICAL_RELEASE.md)
 - [Translations](translations.md)
-- [Java to Kotlin Conversion Guide](contributing/java-to-kotlin-conversion-guide.md)
-- [Git Commit Guide](contributing/git-commit-guide.md)
 - [Architecture Decision Records](architecture/adr/README.md)
   - [Accepted]()
     - [0001 - Switch From Java to Kotlin](architecture/adr/0001-switch-from-java-to-kotlin.md)
