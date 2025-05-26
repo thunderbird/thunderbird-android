@@ -9,14 +9,15 @@ import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.logging.testing.TestLogger.Companion.TIMESTAMP
 
 class LogTest {
 
     @Test
     fun `init should set logger`() {
         // Arrange
-        val logger = FakeLogger()
+        val logger = TestLogger()
 
         // Act
         Log.logger = logger
@@ -41,7 +42,7 @@ class LogTest {
     @Test
     fun `log should add all event to the logger`() {
         // Arrange
-        val logger = FakeLogger()
+        val logger = TestLogger()
         val exceptionVerbose = Exception("Verbose exception")
         val exceptionDebug = Exception("Debug exception")
         val exceptionInfo = Exception("Info exception")
@@ -125,9 +126,5 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-    }
-
-    private companion object {
-        const val TIMESTAMP = 0L
     }
 }

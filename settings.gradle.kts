@@ -151,6 +151,7 @@ include(
     ":core:logging:impl-composite",
     ":core:logging:impl-console",
     ":core:logging:impl-legacy",
+    ":core:logging:testing",
     ":core:mail:mailserver",
     ":core:preferences",
     ":core:outcome",

@@ -12,5 +12,9 @@ kotlin {
             api(projects.core.logging.api)
             api(libs.androidx.annotation)
         }
+
+        commonTest.dependencies {
+            implementation(projects.core.logging.testing)
+        }
     }
 }
