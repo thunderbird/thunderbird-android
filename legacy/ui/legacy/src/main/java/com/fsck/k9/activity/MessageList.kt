@@ -418,9 +418,8 @@ open class MessageList :
         }
 
         val launchData = decodeExtrasToLaunchData(intent)
-        // If Unified Inbox was disabled show default account instead
         val search = if (launchData.search.isUnifiedInbox && !K9.isShowUnifiedInbox) {
-            createDefaultLocalSearch()
+            createDefaultLocalSearch(uuid = launchData.messageReference?.accountUuid)
         } else {
             launchData.search
         }
@@ -579,8 +578,10 @@ open class MessageList :
         return LaunchData(search)
     }
 
-    private fun createDefaultLocalSearch(): LocalSearch {
-        val account = preferences.defaultAccount ?: error("No default account available")
+    private fun createDefaultLocalSearch(uuid: String? = null): LocalSearch {
+        val account = uuid?.let { preferences.getAccount(it) } ?: run {
+            preferences.defaultAccount ?: error("No default account available")
+        }
         return LocalSearch().apply {
             addAccountUuid(account.uuid)
             addAllowedFolder(defaultFolderProvider.getDefaultFolder(account))
@@ -1195,6 +1196,7 @@ open class MessageList :
         expandSearchView()
         return true
     }
+
     override fun startSearch(query: String, account: LegacyAccount?, folderId: Long?): Boolean {
         // If this search was started from a MessageList of a single folder, pass along that folder info
         // so that we can enable remote search.
