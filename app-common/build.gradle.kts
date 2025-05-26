@@ -17,6 +17,9 @@ dependencies {
     implementation(projects.legacy.core)
     implementation(projects.core.android.account)
 
+    implementation(projects.core.logging.api)
+    implementation(projects.core.logging.implComposite)
+
     implementation(projects.core.featureflag)
     implementation(projects.core.ui.legacy.theme2.common)
 
