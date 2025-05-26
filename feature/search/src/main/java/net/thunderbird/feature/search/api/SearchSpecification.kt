@@ -1,17 +1,14 @@
-package net.thunderbird.feature.search.api;
+package net.thunderbird.feature.search.api
 
-import android.os.Parcelable;
+import android.os.Parcelable
+import net.thunderbird.feature.search.ConditionsTreeNode
 
-import net.thunderbird.feature.search.ConditionsTreeNode;
-
-
-public interface SearchSpecification extends Parcelable {
-
+interface SearchSpecification : Parcelable {
     /**
      * Get all the uuids of accounts this search acts on.
      * @return Array of uuids.
      */
-    String[] getAccountUuids();
+    val accountUuids: Array<String>
 
     /**
      * Returns the root node of the condition tree accompanying
@@ -19,5 +16,5 @@ public interface SearchSpecification extends Parcelable {
      *
      * @return Root node of conditions tree.
      */
-    ConditionsTreeNode getConditions();
+    val conditions: ConditionsTreeNode
 }
