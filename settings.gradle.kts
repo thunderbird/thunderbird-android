@@ -149,6 +149,7 @@ include(
     ":core:featureflag",
     ":core:logging:api",
     ":core:logging:impl-composite",
+    ":core:logging:impl-console",
     ":core:mail:mailserver",
     ":core:preferences",
     ":core:outcome",
