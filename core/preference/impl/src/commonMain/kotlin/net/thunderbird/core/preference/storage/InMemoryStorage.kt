@@ -1,13 +1,11 @@
-package com.fsck.k9.preferences
+package net.thunderbird.core.preference.storage
 
-import java.util.Collections
-import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.logging.Logger
 
-class DefaultStorage(
-    values: Map<String, String>,
+class InMemoryStorage(
+    private val values: Map<String, String>,
+    private val logger: Logger,
 ) : Storage {
-    private val values: Map<String, String> = Collections.unmodifiableMap(values)
 
     override fun isEmpty(): Boolean = values.isEmpty()
 
@@ -25,7 +23,10 @@ class DefaultStorage(
         return try {
             value.toInt()
         } catch (e: NumberFormatException) {
-            Log.e(e, "Could not parse int")
+            logger.error(
+                message = { "Could not parse int" },
+                throwable = e,
+            )
             defValue
         }
     }
@@ -35,7 +36,10 @@ class DefaultStorage(
         return try {
             value.toLong()
         } catch (e: NumberFormatException) {
-            Log.e(e, "Could not parse long")
+            logger.error(
+                message = { "Could not parse long" },
+                throwable = e,
+            )
             defValue
         }
     }

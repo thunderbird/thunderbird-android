@@ -10,7 +10,8 @@ import kotlin.test.Test
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.preferences.InMemoryStoragePersister
+import net.thunderbird.core.android.preferences.TestStoragePersister
+import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -18,7 +19,9 @@ import org.mockito.kotlin.mock
 
 class PreferencesTest {
     private val preferences = Preferences(
-        storagePersister = InMemoryStoragePersister(),
+        storagePersister = TestStoragePersister(
+            logger = TestLogger(),
+        ),
         localStoreProvider = mock(),
         accountPreferenceSerializer = AccountPreferenceSerializer(
             serverSettingsSerializer = mock {

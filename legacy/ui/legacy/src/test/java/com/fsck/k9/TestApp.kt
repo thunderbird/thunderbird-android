@@ -5,7 +5,7 @@ import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.contacts.ContactPictureLoader
 import net.thunderbird.core.android.account.AccountDefaultsProvider
-import net.thunderbird.core.android.preferences.InMemoryStoragePersister
+import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
@@ -42,7 +42,11 @@ val testModule = module {
     single<Logger> { TestApp.logger }
     single<AppConfig> { DefaultAppConfig(componentsToDisable = emptyList()) }
     single<CoreResourceProvider> { TestCoreResourceProvider() }
-    single<StoragePersister> { InMemoryStoragePersister() }
+    single<StoragePersister> {
+        TestStoragePersister(
+            logger = get(),
+        )
+    }
     single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(

@@ -49,7 +49,7 @@ val testModule = module {
     single<AppConfig> { DefaultAppConfig(emptyList()) }
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }
-    single<StoragePersister> { K9StoragePersister(get()) }
+    single<StoragePersister> { K9StoragePersister(get(), get()) }
     single { mock<BackendManager>() }
     single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
     single<FeatureFlagProvider> {

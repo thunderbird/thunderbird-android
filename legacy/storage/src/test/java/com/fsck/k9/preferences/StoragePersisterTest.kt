@@ -11,9 +11,7 @@ import assertk.assertions.isTrue
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
 import com.fsck.k9.storage.K9RobolectricTest
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
-import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.inOrder
@@ -25,13 +23,10 @@ import org.robolectric.RuntimeEnvironment
 
 class StoragePersisterTest : K9RobolectricTest() {
     private var context: Context = RuntimeEnvironment.getApplication()
-    private lateinit var storagePersister: K9StoragePersister
-
-    @Before
-    fun setUp() {
-        Log.logger = TestLogger()
-        storagePersister = K9StoragePersister(context)
-    }
+    private var storagePersister = K9StoragePersister(
+        context,
+        TestLogger(),
+    )
 
     @Test
     fun doInTransaction_order() {
