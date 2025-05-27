@@ -24,6 +24,7 @@ import net.thunderbird.feature.notification.VibratePattern
 
 class LegacyAccountStorageHandler(
     private val serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
+    private val profileDtoStorageHandler: LegacyProfileDtoStorageHandler,
     private val logger: Logger,
 ) : StorageHandler<LegacyAccount> {
 
@@ -42,7 +43,6 @@ class LegacyAccountStorageHandler(
                 storage.getStringOrDefault(keyGen.create(OUTGOING_SERVER_SETTINGS_KEY), ""),
             )
             oAuthState = storage.getStringOrNull(keyGen.create("oAuthState"))
-            name = storage.getStringOrNull(keyGen.create("description"))
             alwaysBcc = storage.getStringOrNull(keyGen.create("alwaysBcc")) ?: alwaysBcc
             automaticCheckIntervalMinutes = storage.getInt(
                 keyGen.create("automaticCheckIntervalMinutes"),
@@ -181,8 +181,6 @@ class LegacyAccountStorageHandler(
                 keyGen.create("accountNumber"),
                 AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER,
             )
-
-            chipColor = storage.getInt(keyGen.create("chipColor"), FALLBACK_ACCOUNT_COLOR)
 
             sortType = getEnumStringPref<SortType>(storage, keyGen.create("sortTypeEnum"), SortType.SORT_DATE)
 
@@ -325,7 +323,6 @@ class LegacyAccountStorageHandler(
                 serverSettingsDtoSerializer.serialize(outgoingServerSettings),
             )
             editor.putString(keyGen.create("oAuthState"), oAuthState)
-            editor.putString(keyGen.create("description"), name)
             editor.putString(keyGen.create("alwaysBcc"), alwaysBcc)
             editor.putInt(keyGen.create("automaticCheckIntervalMinutes"), automaticCheckIntervalMinutes)
             editor.putInt(keyGen.create("idleRefreshMinutes"), idleRefreshMinutes)
@@ -369,7 +366,6 @@ class LegacyAccountStorageHandler(
             editor.putString(keyGen.create("expungePolicy"), expungePolicy.name)
             editor.putBoolean(keyGen.create("syncRemoteDeletions"), isSyncRemoteDeletions)
             editor.putInt(keyGen.create("maxPushFolders"), maxPushFolders)
-            editor.putInt(keyGen.create("chipColor"), chipColor)
             editor.putBoolean(keyGen.create("subscribedFoldersOnly"), isSubscribedFoldersOnly)
             editor.putInt(keyGen.create("maximumPolledMessageAge"), maximumPolledMessageAge)
             editor.putInt(keyGen.create("maximumAutoDownloadMessageSize"), maximumAutoDownloadMessageSize)
@@ -450,7 +446,6 @@ class LegacyAccountStorageHandler(
         editor.remove(keyGen.create(INCOMING_SERVER_SETTINGS_KEY))
         editor.remove(keyGen.create(OUTGOING_SERVER_SETTINGS_KEY))
         editor.remove(keyGen.create("description"))
-        editor.remove(keyGen.create("name"))
         editor.remove(keyGen.create("email"))
         editor.remove(keyGen.create("alwaysBcc"))
         editor.remove(keyGen.create("automaticCheckIntervalMinutes"))
@@ -485,7 +480,6 @@ class LegacyAccountStorageHandler(
         editor.remove(keyGen.create("expungePolicy"))
         editor.remove(keyGen.create("syncRemoteDeletions"))
         editor.remove(keyGen.create("maxPushFolders"))
-        editor.remove(keyGen.create("chipColor"))
         editor.remove(keyGen.create("notificationLight"))
         editor.remove(keyGen.create("subscribedFoldersOnly"))
         editor.remove(keyGen.create("maximumPolledMessageAge"))
@@ -617,7 +611,5 @@ class LegacyAccountStorageHandler(
         const val IDENTITY_NAME_KEY = "name"
         const val IDENTITY_EMAIL_KEY = "email"
         const val IDENTITY_DESCRIPTION_KEY = "description"
-
-        const val FALLBACK_ACCOUNT_COLOR = 0x0099CC
     }
 }

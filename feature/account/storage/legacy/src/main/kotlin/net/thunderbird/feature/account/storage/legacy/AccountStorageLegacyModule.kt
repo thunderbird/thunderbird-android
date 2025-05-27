@@ -25,9 +25,15 @@ val featureAccountStorageLegacyModule = module {
 
     factory { ServerSettingsDtoSerializer() }
 
-    single {
+    factory<ProfileDtoStorageHandler> {
+        LegacyProfileDtoStorageHandler(
+        )
+    }
+
+    single<StorageHandler<LegacyAccount>> {
         LegacyAccountStorageHandler(
             serverSettingsDtoSerializer = get(),
+            profileDtoStorageHandler = get(),
             logger = get(),
         )
     }
