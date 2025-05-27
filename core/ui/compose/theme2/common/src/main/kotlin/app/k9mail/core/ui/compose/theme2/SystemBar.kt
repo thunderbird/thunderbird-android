@@ -1,7 +1,6 @@
 package app.k9mail.core.ui.compose.theme2
 
 import android.app.Activity
-import android.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
@@ -18,7 +17,7 @@ fun SystemBar(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.surfaceContainer.toArgb()
-            window.navigationBarColor = Color.TRANSPARENT
+            window.navigationBarColor = colorScheme.surfaceContainer.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
