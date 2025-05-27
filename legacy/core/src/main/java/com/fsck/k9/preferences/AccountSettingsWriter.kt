@@ -8,9 +8,9 @@ import java.util.UUID
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTINGS_KEY
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.INCOMING_SERVER_SETTINGS_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.OUTGOING_SERVER_SETTINGS_KEY
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 
 internal class AccountSettingsWriter(

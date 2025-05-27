@@ -28,13 +28,13 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
-    private val accountPreferenceSerializer: AccountPreferenceSerializer,
+    private val legacyAccountStorageHandler: LegacyAccountStorageHandler,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : AccountManager {
@@ -91,7 +91,7 @@ class Preferences internal constructor(
                         uuid,
                         K9::isSensitiveDebugLoggingEnabled,
                     )
-                    accountPreferenceSerializer.loadAccount(account, storage)
+                    legacyAccountStorageHandler.load(account, storage)
 
                     accounts[uuid] = account
                     accountsInOrder.add(account)
@@ -204,7 +204,7 @@ class Preferences internal constructor(
             accountsInOrder.remove(account)
 
             val storageEditor = createStorageEditor()
-            accountPreferenceSerializer.delete(storageEditor, storage, account)
+            legacyAccountStorageHandler.delete(account, storage, storageEditor)
             storageEditor.commit()
 
             if (account === newAccount) {
@@ -225,7 +225,7 @@ class Preferences internal constructor(
 
         synchronized(accountLock) {
             val editor = createStorageEditor()
-            accountPreferenceSerializer.save(editor, storage, account)
+            legacyAccountStorageHandler.save(account, storage, editor)
             editor.commit()
 
             loadAccounts()
@@ -272,7 +272,7 @@ class Preferences internal constructor(
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
         synchronized(accountLock) {
             val storageEditor = createStorageEditor()
-            accountPreferenceSerializer.move(storageEditor, account, storage, newPosition)
+            legacyAccountStorageHandler.move(account, storage, storageEditor, newPosition)
             storageEditor.commit()
 
             loadAccounts()

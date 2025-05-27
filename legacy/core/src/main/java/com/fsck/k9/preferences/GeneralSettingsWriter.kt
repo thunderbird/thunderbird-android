@@ -4,7 +4,7 @@ import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
 
 internal class GeneralSettingsWriter(
     private val preferences: Preferences,
@@ -45,8 +45,8 @@ internal fun StorageEditor.putStringWithLogging(key: String, value: String?) {
         var outputValue = value
         if (!K9.isSensitiveDebugLoggingEnabled &&
             (
-                key.endsWith("." + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY) ||
-                    key.endsWith("." + AccountPreferenceSerializer.INCOMING_SERVER_SETTINGS_KEY)
+                key.endsWith("." + LegacyAccountStorageHandler.OUTGOING_SERVER_SETTINGS_KEY) ||
+                    key.endsWith("." + LegacyAccountStorageHandler.INCOMING_SERVER_SETTINGS_KEY)
                 )
         ) {
             outputValue = "*sensitive*"
