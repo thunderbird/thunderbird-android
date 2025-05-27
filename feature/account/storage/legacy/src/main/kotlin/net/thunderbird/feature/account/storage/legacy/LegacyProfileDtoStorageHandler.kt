@@ -1,5 +1,6 @@
 package net.thunderbird.feature.account.storage.legacy
 
+import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
@@ -16,7 +17,7 @@ class LegacyProfileDtoStorageHandler(
 
         with(data) {
             name = storage.getStringOrNull(keyGen.create(KEY_NAME))
-            chipColor = storage.getInt(keyGen.create(KEY_COLOR), FALLBACK_ACCOUNT_COLOR)
+            chipColor = storage.getInt(keyGen.create(KEY_COLOR), AccountDefaultsProvider.COLOR)
         }
 
         avatarDtoStorageHandler.load(data, storage)
@@ -53,8 +54,5 @@ class LegacyProfileDtoStorageHandler(
     private companion object Companion {
         const val KEY_COLOR = "chipColor"
         const val KEY_NAME = "description"
-
-        // TODO why?
-        const val FALLBACK_ACCOUNT_COLOR = 0x0099CC
     }
 }
