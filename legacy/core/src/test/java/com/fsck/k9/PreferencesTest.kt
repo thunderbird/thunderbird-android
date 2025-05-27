@@ -12,7 +12,7 @@ import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
 import org.junit.Before
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -27,7 +27,7 @@ class PreferencesTest {
             logger = logger,
         ),
         localStoreProvider = mock(),
-        accountPreferenceSerializer = AccountPreferenceSerializer(
+        legacyAccountStorageHandler = LegacyAccountStorageHandler(
             serverSettingsDtoSerializer = mock {
                 on { serialize(any()) } doReturn ""
                 on { deserialize(any()) } doReturn SERVER_SETTINGS

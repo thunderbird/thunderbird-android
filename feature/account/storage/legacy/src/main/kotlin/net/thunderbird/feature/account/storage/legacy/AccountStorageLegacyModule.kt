@@ -1,6 +1,5 @@
 package net.thunderbird.feature.account.storage.legacy
 
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountAvatarDataMapper
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountProfileDataMapper
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
@@ -27,7 +26,7 @@ val featureAccountStorageLegacyModule = module {
     factory { ServerSettingsDtoSerializer() }
 
     single {
-        AccountPreferenceSerializer(
+        LegacyAccountStorageHandler(
             serverSettingsDtoSerializer = get(),
             logger = get(),
         )

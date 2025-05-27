@@ -22,7 +22,6 @@ import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
-import timber.log.Timber
 
 /**
  * Retrieve and modify general settings.

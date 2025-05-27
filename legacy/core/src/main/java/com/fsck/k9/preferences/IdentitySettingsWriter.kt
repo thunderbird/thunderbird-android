@@ -1,9 +1,9 @@
 package com.fsck.k9.preferences
 
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.IDENTITY_DESCRIPTION_KEY
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.IDENTITY_EMAIL_KEY
-import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.IDENTITY_NAME_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_DESCRIPTION_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_EMAIL_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_NAME_KEY
 
 internal class IdentitySettingsWriter {
     fun write(editor: StorageEditor, accountUuid: String, index: Int, identity: ValidatedSettings.Identity) {

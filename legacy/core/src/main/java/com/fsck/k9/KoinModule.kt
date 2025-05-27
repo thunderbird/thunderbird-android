@@ -20,7 +20,7 @@ val mainModule = module {
         Preferences(
             storagePersister = get(),
             localStoreProvider = get(),
-            accountPreferenceSerializer = get(),
+            legacyAccountStorageHandler = get(),
             accountDefaultsProvider = get(),
         )
     }

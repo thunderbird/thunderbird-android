@@ -22,18 +22,19 @@ import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
 
-class AccountPreferenceSerializer(
+class LegacyAccountStorageHandler(
     private val serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
     private val logger: Logger,
-) {
+) : StorageHandler<LegacyAccount> {
 
     @Suppress("LongMethod", "MagicNumber")
     @Synchronized
-    fun loadAccount(account: LegacyAccount, storage: Storage) {
-        val accountUuid = account.uuid
-        val keyGen = AccountKeyGenerator(account.id)
+    override fun load(data: LegacyAccount, storage: Storage) {
+        val keyGen = AccountKeyGenerator(data.id)
 
-        with(account) {
+        profileDtoStorageHandler.load(data, storage)
+
+        with(data) {
             incomingServerSettings = serverSettingsDtoSerializer.deserialize(
                 storage.getStringOrDefault(keyGen.create(INCOMING_SERVER_SETTINGS_KEY), ""),
             )
@@ -187,7 +188,8 @@ class AccountPreferenceSerializer(
 
             setSortAscending(sortType, storage.getBoolean(keyGen.create("sortAscending"), false))
 
-            showPictures = getEnumStringPref<ShowPictures>(storage, keyGen.create("showPicturesEnum"), ShowPictures.NEVER)
+            showPictures =
+                getEnumStringPref<ShowPictures>(storage, keyGen.create("showPicturesEnum"), ShowPictures.NEVER)
 
             updateNotificationSettings {
                 NotificationSettings(
@@ -223,7 +225,7 @@ class AccountPreferenceSerializer(
             folderPushMode = getEnumStringPref<FolderMode>(storage, keyGen.create("folderPushMode"), FolderMode.NONE)
 
             isSignatureBeforeQuotedText = storage.getBoolean(keyGen.create("signatureBeforeQuotedText"), false)
-            replaceIdentities(loadIdentities(account.id, storage))
+            replaceIdentities(loadIdentities(data.id, storage))
 
             openPgpProvider = storage.getStringOrDefault(keyGen.create("openPgpProvider"), "")
             openPgpKey = storage.getLong(keyGen.create("cryptoKey"), AccountDefaultsProvider.Companion.NO_OPENPGP_KEY)
@@ -304,16 +306,16 @@ class AccountPreferenceSerializer(
 
     @Suppress("LongMethod")
     @Synchronized
-    fun save(editor: StorageEditor, storage: Storage, account: LegacyAccount) {
-        val keyGen = AccountKeyGenerator(account.id)
+    override fun save(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+        val keyGen = AccountKeyGenerator(data.id)
 
-        if (!storage.getStringOrDefault("accountUuids", "").contains(account.uuid)) {
+        if (!storage.getStringOrDefault("accountUuids", "").contains(data.uuid)) {
             var accountUuids = storage.getStringOrDefault("accountUuids", "")
-            accountUuids += (if (accountUuids.isNotEmpty()) "," else "") + account.uuid
+            accountUuids += (if (accountUuids.isNotEmpty()) "," else "") + data.uuid
             editor.putString("accountUuids", accountUuids)
         }
 
-        with(account) {
+        with(data) {
             editor.putString(
                 keyGen.create(INCOMING_SERVER_SETTINGS_KEY),
                 serverSettingsDtoSerializer.serialize(incomingServerSettings),
@@ -414,14 +416,14 @@ class AccountPreferenceSerializer(
             editor.putBoolean(keyGen.create("migrateToOAuth"), shouldMigrateToOAuth)
         }
 
-        saveIdentities(account, storage, editor)
+        saveIdentities(data, storage, editor)
     }
 
     @Suppress("LongMethod")
     @Synchronized
-    fun delete(editor: StorageEditor, storage: Storage, account: LegacyAccount) {
-        val keyGen = AccountKeyGenerator(account.id)
-        val accountUuid = account.uuid
+    override fun delete(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+        val keyGen = AccountKeyGenerator(data.id)
+        val accountUuid = data.uuid
 
         // Get the list of account UUIDs
         val uuids = storage
@@ -535,17 +537,17 @@ class AccountPreferenceSerializer(
         editor.remove(keyGen.create("sendClientInfo"))
         editor.remove(keyGen.create("migrateToOAuth"))
 
-        deleteIdentities(account, storage, editor)
+        deleteIdentities(data, storage, editor)
         // TODO: Remove preference settings that may exist for individual folders in the account.
     }
 
     @Synchronized
-    private fun saveIdentities(account: LegacyAccount, storage: Storage, editor: StorageEditor) {
-        deleteIdentities(account, storage, editor)
+    private fun saveIdentities(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+        deleteIdentities(data, storage, editor)
         var ident = 0
-        val keyGen = AccountKeyGenerator(account.id)
+        val keyGen = AccountKeyGenerator(data.id)
 
-        with(account) {
+        with(data) {
             for (identity in identities) {
                 editor.putString(keyGen.create("$IDENTITY_NAME_KEY.$ident"), identity.name)
                 editor.putString(keyGen.create("$IDENTITY_EMAIL_KEY.$ident"), identity.email)
@@ -559,8 +561,8 @@ class AccountPreferenceSerializer(
     }
 
     @Synchronized
-    private fun deleteIdentities(account: LegacyAccount, storage: Storage, editor: StorageEditor) {
-        val keyGen = AccountKeyGenerator(account.id)
+    private fun deleteIdentities(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+        val keyGen = AccountKeyGenerator(data.id)
 
         var identityIndex = 0
         var gotOne: Boolean
@@ -580,15 +582,15 @@ class AccountPreferenceSerializer(
         } while (gotOne)
     }
 
-    fun move(editor: StorageEditor, account: LegacyAccount, storage: Storage, newPosition: Int) {
+    fun move(data: LegacyAccount, storage: Storage, editor: StorageEditor, newPosition: Int) {
         val accountUuids = storage.getStringOrDefault("accountUuids", "").split(",").filter { it.isNotEmpty() }
-        val oldPosition = accountUuids.indexOf(account.uuid)
+        val oldPosition = accountUuids.indexOf(data.uuid)
         if (oldPosition == -1 || oldPosition == newPosition) return
 
         val newAccountUuidsString = accountUuids.toMutableList()
             .apply {
                 removeAt(oldPosition)
-                add(newPosition, account.uuid)
+                add(newPosition, data.uuid)
             }
             .joinToString(separator = ",")
 
@@ -599,11 +601,9 @@ class AccountPreferenceSerializer(
         return try {
             storage.getEnumOrDefault<T>(key, defaultEnum)
         } catch (ex: IllegalArgumentException) {
-            logger.warn(
-                null,
-                "Unable to convert preference key [$key] to enum of type defaultEnum: $defaultEnum",
-                ex,
-            )
+            logger.warn(throwable = ex) {
+                "Unable to convert preference key [$key] to enum of type defaultEnum: $defaultEnum"
+            }
 
             defaultEnum
         }
