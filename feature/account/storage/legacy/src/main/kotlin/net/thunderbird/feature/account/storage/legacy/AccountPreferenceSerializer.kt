@@ -1,21 +1,6 @@
-package com.fsck.k9
+package net.thunderbird.feature.account.storage.legacy
 
-import com.fsck.k9.helper.Utility
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
+import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
@@ -25,11 +10,11 @@ import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
-import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
+import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
@@ -37,18 +22,19 @@ import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
 
 class AccountPreferenceSerializer(
-    private val serverSettingsSerializer: ServerSettingsSerializer,
+    private val serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
+    private val logger: Logger,
 ) {
 
-    @Suppress("LongMethod")
+    @Suppress("LongMethod", "MagicNumber")
     @Synchronized
     fun loadAccount(account: LegacyAccount, storage: Storage) {
         val accountUuid = account.uuid
         with(account) {
-            incomingServerSettings = serverSettingsSerializer.deserialize(
+            incomingServerSettings = serverSettingsDtoSerializer.deserialize(
                 storage.getStringOrDefault("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", ""),
             )
-            outgoingServerSettings = serverSettingsSerializer.deserialize(
+            outgoingServerSettings = serverSettingsDtoSerializer.deserialize(
                 storage.getStringOrDefault("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", ""),
             )
             oAuthState = storage.getStringOrNull("$accountUuid.oAuthState")
@@ -57,12 +43,15 @@ class AccountPreferenceSerializer(
             automaticCheckIntervalMinutes = storage.getInt(
                 "" +
                     "$accountUuid.automaticCheckIntervalMinutes",
-                DEFAULT_SYNC_INTERVAL,
+                AccountDefaultsProvider.Companion.DEFAULT_SYNC_INTERVAL,
             )
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
-            displayCount = storage.getInt("$accountUuid.displayCount", DEFAULT_VISIBLE_LIMIT)
+            displayCount = storage.getInt(
+                "$accountUuid.displayCount",
+                AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT,
+            )
             if (displayCount < 0) {
-                displayCount = DEFAULT_VISIBLE_LIMIT
+                displayCount = AccountDefaultsProvider.Companion.DEFAULT_VISIBLE_LIMIT
             }
             isNotifyNewMail = storage.getBoolean("$accountUuid.notifyNewMail", false)
             folderNotifyNewMailMode = getEnumStringPref<FolderMode>(
@@ -75,7 +64,12 @@ class AccountPreferenceSerializer(
             isIgnoreChatMessages = storage.getBoolean("$accountUuid.ignoreChatMessages", false)
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             messagesNotificationChannelVersion = storage.getInt("$accountUuid.messagesNotificationChannelVersion", 0)
-            deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
+            deletePolicy = DeletePolicy.Companion.fromInt(
+                storage.getInt(
+                    "$accountUuid.deletePolicy",
+                    DeletePolicy.NEVER.setting,
+                ),
+            )
             legacyInboxFolder = storage.getStringOrNull("$accountUuid.inboxFolderName")
             importedDraftsFolder = storage.getStringOrNull("$accountUuid.draftsFolderName")
             importedSentFolder = storage.getStringOrNull("$accountUuid.sentFolderName")
@@ -136,28 +130,54 @@ class AccountPreferenceSerializer(
             maximumPolledMessageAge = storage.getInt("$accountUuid.maximumPolledMessageAge", -1)
             maximumAutoDownloadMessageSize = storage.getInt(
                 "$accountUuid.maximumAutoDownloadMessageSize",
-                DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE,
+                AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE,
             )
-            messageFormat = getEnumStringPref(storage, "$accountUuid.messageFormat", DEFAULT_MESSAGE_FORMAT)
-            val messageFormatAuto = storage.getBoolean("$accountUuid.messageFormatAuto", DEFAULT_MESSAGE_FORMAT_AUTO)
+            messageFormat = getEnumStringPref(
+                storage,
+                "$accountUuid.messageFormat",
+                AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT,
+            )
+            val messageFormatAuto = storage.getBoolean(
+                "$accountUuid.messageFormatAuto",
+                AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO,
+            )
             if (messageFormatAuto && messageFormat == MessageFormat.TEXT) {
                 messageFormat = MessageFormat.AUTO
             }
-            isMessageReadReceipt = storage.getBoolean("$accountUuid.messageReadReceipt", DEFAULT_MESSAGE_READ_RECEIPT)
-            quoteStyle = getEnumStringPref<QuoteStyle>(storage, "$accountUuid.quoteStyle", DEFAULT_QUOTE_STYLE)
-            quotePrefix = storage.getStringOrDefault("$accountUuid.quotePrefix", DEFAULT_QUOTE_PREFIX)
+            isMessageReadReceipt = storage.getBoolean(
+                "$accountUuid.messageReadReceipt",
+                AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_READ_RECEIPT,
+            )
+            quoteStyle = getEnumStringPref<QuoteStyle>(
+                storage,
+                "$accountUuid.quoteStyle",
+                AccountDefaultsProvider.Companion.DEFAULT_QUOTE_STYLE,
+            )
+            quotePrefix = storage.getStringOrDefault(
+                "$accountUuid.quotePrefix",
+                AccountDefaultsProvider.Companion.DEFAULT_QUOTE_PREFIX,
+            )
             isDefaultQuotedTextShown = storage.getBoolean(
                 "$accountUuid.defaultQuotedTextShown",
-                DEFAULT_QUOTED_TEXT_SHOWN,
+                AccountDefaultsProvider.Companion.DEFAULT_QUOTED_TEXT_SHOWN,
             )
-            isReplyAfterQuote = storage.getBoolean("$accountUuid.replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE)
-            isStripSignature = storage.getBoolean("$accountUuid.stripSignature", DEFAULT_STRIP_SIGNATURE)
+            isReplyAfterQuote = storage.getBoolean(
+                "$accountUuid.replyAfterQuote",
+                AccountDefaultsProvider.Companion.DEFAULT_REPLY_AFTER_QUOTE,
+            )
+            isStripSignature = storage.getBoolean(
+                "$accountUuid.stripSignature",
+                AccountDefaultsProvider.Companion.DEFAULT_STRIP_SIGNATURE,
+            )
             useCompression = storage.getBoolean("$accountUuid.useCompression", true)
             isSendClientInfoEnabled = storage.getBoolean("$accountUuid.sendClientInfo", true)
 
             importedAutoExpandFolder = storage.getStringOrNull("$accountUuid.autoExpandFolderName")
 
-            accountNumber = storage.getInt("$accountUuid.accountNumber", UNASSIGNED_ACCOUNT_NUMBER)
+            accountNumber = storage.getInt(
+                "$accountUuid.accountNumber",
+                AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER,
+            )
 
             chipColor = storage.getInt("$accountUuid.chipColor", FALLBACK_ACCOUNT_COLOR)
 
@@ -170,7 +190,10 @@ class AccountPreferenceSerializer(
             updateNotificationSettings {
                 NotificationSettings(
                     isRingEnabled = storage.getBoolean("$accountUuid.ring", true),
-                    ringtone = storage.getStringOrDefault("$accountUuid.ringtone", DEFAULT_RINGTONE_URI),
+                    ringtone = storage.getStringOrDefault(
+                        "$accountUuid.ringtone",
+                        AccountDefaultsProvider.Companion.DEFAULT_RINGTONE_URI,
+                    ),
                     light = getEnumStringPref(
                         storage,
                         "$accountUuid.notificationLight",
@@ -178,7 +201,7 @@ class AccountPreferenceSerializer(
                     ),
                     vibration = NotificationVibration(
                         isEnabled = storage.getBoolean("$accountUuid.vibrate", false),
-                        pattern = VibratePattern.deserialize(
+                        pattern = VibratePattern.Companion.deserialize(
                             storage.getInt(
                                 "$accountUuid.vibratePattern",
                                 0,
@@ -201,14 +224,17 @@ class AccountPreferenceSerializer(
             replaceIdentities(loadIdentities(accountUuid, storage))
 
             openPgpProvider = storage.getStringOrDefault("$accountUuid.openPgpProvider", "")
-            openPgpKey = storage.getLong("$accountUuid.cryptoKey", NO_OPENPGP_KEY)
+            openPgpKey = storage.getLong("$accountUuid.cryptoKey", AccountDefaultsProvider.Companion.NO_OPENPGP_KEY)
             isOpenPgpHideSignOnly = storage.getBoolean("$accountUuid.openPgpHideSignOnly", true)
             isOpenPgpEncryptSubject = storage.getBoolean("$accountUuid.openPgpEncryptSubject", true)
             isOpenPgpEncryptAllDrafts = storage.getBoolean("$accountUuid.openPgpEncryptAllDrafts", true)
             autocryptPreferEncryptMutual = storage.getBoolean("$accountUuid.autocryptMutualMode", false)
             isRemoteSearchFullText = storage.getBoolean("$accountUuid.remoteSearchFullText", false)
             remoteSearchNumResults =
-                storage.getInt("$accountUuid.remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS)
+                storage.getInt(
+                    "$accountUuid.remoteSearchNumResults",
+                    AccountDefaultsProvider.Companion.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+                )
             isUploadSentMessages = storage.getBoolean("$accountUuid.uploadSentMessages", true)
 
             isMarkMessageAsReadOnView = storage.getBoolean("$accountUuid.markMessageAsReadOnView", true)
@@ -286,11 +312,11 @@ class AccountPreferenceSerializer(
         with(account) {
             editor.putString(
                 "$accountUuid.$INCOMING_SERVER_SETTINGS_KEY",
-                serverSettingsSerializer.serialize(incomingServerSettings),
+                serverSettingsDtoSerializer.serialize(incomingServerSettings),
             )
             editor.putString(
                 "$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY",
-                serverSettingsSerializer.serialize(outgoingServerSettings),
+                serverSettingsDtoSerializer.serialize(outgoingServerSettings),
             )
             editor.putString("$accountUuid.oAuthState", oAuthState)
             editor.putString("$accountUuid.description", name)
@@ -409,7 +435,7 @@ class AccountPreferenceSerializer(
 
         // Only change the 'accountUuids' value if this account's UUID was listed before
         if (newUuids.size < uuids.size) {
-            val accountUuids = Utility.combine(newUuids.toTypedArray(), ',')
+            val accountUuids = newUuids.joinToString(",")
             editor.putString("accountUuids", accountUuids)
         }
 
@@ -567,11 +593,10 @@ class AccountPreferenceSerializer(
         return try {
             storage.getEnumOrDefault<T>(key, defaultEnum)
         } catch (ex: IllegalArgumentException) {
-            Log.w(
+            logger.warn(
+                null,
+                "Unable to convert preference key [$key] to enum of type defaultEnum: $defaultEnum",
                 ex,
-                "Unable to convert preference key [%s] to enum of type %s",
-                key,
-                defaultEnum.declaringJavaClass,
             )
 
             defaultEnum

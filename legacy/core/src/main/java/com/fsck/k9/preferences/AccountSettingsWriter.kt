@@ -1,9 +1,6 @@
 package com.fsck.k9.preferences
 
 import android.content.Context
-import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
-import com.fsck.k9.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTINGS_KEY
-import com.fsck.k9.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
@@ -11,18 +8,21 @@ import java.util.UUID
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
+import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
+import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTINGS_KEY
+import net.thunderbird.feature.account.storage.legacy.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY
+import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 
 internal class AccountSettingsWriter(
     private val preferences: Preferences,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val clock: Clock,
-    serverSettingsSerializer: ServerSettingsSerializer,
+    serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
     private val context: Context,
 ) {
     private val identitySettingsWriter = IdentitySettingsWriter()
     private val folderSettingsWriter = FolderSettingsWriter()
-    private val serverSettingsWriter = ServerSettingsWriter(serverSettingsSerializer)
+    private val serverSettingsWriter = ServerSettingsWriter(serverSettingsDtoSerializer)
 
     fun write(account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
         val editor = preferences.createStorageEditor()
