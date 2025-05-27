@@ -11,8 +11,11 @@ import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.preferences.TestStoragePersister
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
+import net.thunderbird.feature.account.storage.legacy.LegacyAvatarDtoStorageHandler
+import net.thunderbird.feature.account.storage.legacy.LegacyProfileDtoStorageHandler
 import org.junit.Before
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -20,7 +23,7 @@ import org.mockito.kotlin.mock
 
 class PreferencesTest {
 
-    private val logger = TestLogger()
+    private val logger: Logger = TestLogger()
 
     private val preferences = Preferences(
         storagePersister = TestStoragePersister(
@@ -32,6 +35,9 @@ class PreferencesTest {
                 on { serialize(any()) } doReturn ""
                 on { deserialize(any()) } doReturn SERVER_SETTINGS
             },
+            profileDtoStorageHandler = LegacyProfileDtoStorageHandler(
+                avatarDtoStorageHandler = LegacyAvatarDtoStorageHandler(),
+            ),
             logger,
         ),
         accountDefaultsProvider = mock(),

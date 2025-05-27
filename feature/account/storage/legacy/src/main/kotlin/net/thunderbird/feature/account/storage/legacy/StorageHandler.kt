@@ -42,5 +42,8 @@ interface StorageHandler<T> {
     fun delete(data: T, storage: Storage, editor: StorageEditor)
 }
 
+interface AccountDtoStorageHandler : StorageHandler<LegacyAccount>
+
 interface ProfileDtoStorageHandler : StorageHandler<LegacyAccount>
 
+interface AvatarDtoStorageHandler : StorageHandler<LegacyAccount>
