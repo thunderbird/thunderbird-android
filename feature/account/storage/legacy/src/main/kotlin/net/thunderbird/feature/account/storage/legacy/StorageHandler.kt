@@ -1,6 +1,7 @@
 package net.thunderbird.feature.account.storage.legacy
 
 import androidx.annotation.Discouraged
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 
@@ -40,4 +41,6 @@ interface StorageHandler<T> {
      */
     fun delete(data: T, storage: Storage, editor: StorageEditor)
 }
+
+interface ProfileDtoStorageHandler : StorageHandler<LegacyAccount>
 

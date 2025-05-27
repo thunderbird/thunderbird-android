@@ -29,7 +29,6 @@ import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
-import timber.log.Timber
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(
