@@ -1,10 +1,10 @@
 package net.thunderbird.core.android.preferences
 
 import com.fsck.k9.preferences.DefaultStorage
-import com.fsck.k9.preferences.StorageEditor
-import com.fsck.k9.preferences.StoragePersister
-import com.fsck.k9.preferences.StorageUpdater
 import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.core.preference.storage.StorageUpdater
 
 class InMemoryStoragePersister : StoragePersister {
     private val values = mutableMapOf<String, Any?>()

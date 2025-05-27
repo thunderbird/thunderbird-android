@@ -10,6 +10,7 @@ import com.fsck.k9.preferences.ServerSettingsDescriptions.HOST
 import com.fsck.k9.preferences.ServerSettingsDescriptions.PASSWORD
 import com.fsck.k9.preferences.ServerSettingsDescriptions.PORT
 import com.fsck.k9.preferences.ServerSettingsDescriptions.USERNAME
+import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 
 internal class ServerSettingsWriter(

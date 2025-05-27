@@ -4,6 +4,8 @@ import com.fsck.k9.AccountPreferenceSerializer
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.storage.StorageEditor
+import timber.log.Timber
 
 internal class GeneralSettingsWriter(
     private val preferences: Preferences,

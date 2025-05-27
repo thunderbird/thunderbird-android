@@ -10,11 +10,11 @@ import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.crypto.openpgp.OpenPgpEncryptionExtractor
 import com.fsck.k9.notification.notificationModule
 import com.fsck.k9.preferences.K9StoragePersister
-import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.resources.resourcesModule
 import com.fsck.k9.storage.storageModule
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
+import net.thunderbird.core.preference.storage.StoragePersister
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
