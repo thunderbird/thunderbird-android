@@ -53,6 +53,10 @@ object FakePreferenceData {
         },
     )
 
+    val sectionDivider = PreferenceDisplay.SectionDivider(
+        id = "section_divider",
+    )
+
     val sectionHeader = PreferenceDisplay.SectionHeader(
         id = "section_header",
         title = { "Section Title" },
@@ -64,5 +68,6 @@ object FakePreferenceData {
         colorPreference,
         customPreference,
         sectionHeader,
+        sectionDivider,
     )
 }

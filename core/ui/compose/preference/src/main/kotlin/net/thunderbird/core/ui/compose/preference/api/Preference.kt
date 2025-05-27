@@ -97,4 +97,9 @@ sealed interface PreferenceDisplay : Preference {
         val title: () -> String,
         val color: () -> Color = { Color.Unspecified },
     ) : PreferenceDisplay
+
+    @Parcelize
+    data class SectionDivider(
+        override val id: String,
+    ) : PreferenceDisplay
 }
