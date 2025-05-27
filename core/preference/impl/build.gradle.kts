@@ -10,6 +10,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core.preference.api)
+
+            implementation(projects.core.logging.api)
         }
     }
 }

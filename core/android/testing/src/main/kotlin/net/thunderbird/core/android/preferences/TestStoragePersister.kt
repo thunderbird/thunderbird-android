@@ -1,19 +1,23 @@
 package net.thunderbird.core.android.preferences
 
-import com.fsck.k9.preferences.DefaultStorage
+import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.storage.InMemoryStorage
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.core.preference.storage.StorageUpdater
 
-class InMemoryStoragePersister : StoragePersister {
+class TestStoragePersister(
+    private val logger: Logger,
+) : StoragePersister {
     private val values = mutableMapOf<String, Any?>()
 
     override fun loadValues(): Storage {
-        return DefaultStorage(
-            values.mapValues { (_, value) ->
+        return InMemoryStorage(
+            values = values.mapValues { (_, value) ->
                 value?.toString() ?: ""
             },
+            logger,
         )
     }
 
@@ -65,7 +69,7 @@ class InMemoryStoragePersister : StoragePersister {
         }
 
         private fun writeValues(currentStorage: Storage): Storage {
-            return DefaultStorage(currentStorage.getAll() - removals + changes)
+            return InMemoryStorage(currentStorage.getAll() - removals + changes, logger)
         }
     }
 }

@@ -28,7 +28,9 @@ val legacyCommonAppModule = module {
     }
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
     single<EncryptionExtractor> { OpenPgpEncryptionExtractor.newInstance() }
-    single<StoragePersister> { K9StoragePersister(get()) }
+    single<StoragePersister> {
+        K9StoragePersister(get(), get())
+    }
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
             featureFlagFactory = get(),

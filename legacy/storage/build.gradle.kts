@@ -5,6 +5,8 @@ plugins {
 dependencies {
     api(libs.koin.core)
 
+    implementation(projects.core.logging.api)
+
     implementation(projects.legacy.core)
     implementation(libs.androidx.core.ktx)
     implementation(libs.mime4j.core)
@@ -13,6 +15,7 @@ dependencies {
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
+    testImplementation(projects.core.logging.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(libs.robolectric)
     testImplementation(libs.commons.io)
