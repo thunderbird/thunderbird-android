@@ -1,11 +1,11 @@
 package com.fsck.k9
 
-import app.k9mail.core.testing.TestClock
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import java.util.Calendar
 import kotlinx.datetime.Instant
+import net.thunderbird.core.testing.TestClock
 import org.junit.Test
 
 class QuietTimeCheckerTest {

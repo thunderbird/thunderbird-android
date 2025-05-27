@@ -209,7 +209,7 @@ dependencies {
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.legacy)
 
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
 
     implementation(projects.feature.account.settings.impl)
 

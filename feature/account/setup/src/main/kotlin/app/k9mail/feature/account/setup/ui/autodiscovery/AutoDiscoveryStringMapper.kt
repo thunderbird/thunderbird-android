@@ -1,12 +1,12 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
 import android.content.res.Resources
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePassword
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.domain.entity.AutoDiscoveryConnectionSecurity
 import app.k9mail.feature.account.setup.domain.usecase.ValidateConfigurationApproval
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailAddress
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
 
 internal fun AutoDiscoveryConnectionSecurity.toAutoDiscoveryConnectionSecurityString(resources: Resources): String {
     return when (this) {

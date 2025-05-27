@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.server.settings.ui.incoming
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
@@ -12,6 +11,7 @@ import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSett
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Validator
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.ViewModel
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 open class IncomingServerSettingsViewModel(
     initialState: State = State(),

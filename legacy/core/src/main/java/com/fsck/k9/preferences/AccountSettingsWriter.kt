@@ -6,11 +6,11 @@ import com.fsck.k9.AccountPreferenceSerializer.Companion.INCOMING_SERVER_SETTING
 import com.fsck.k9.AccountPreferenceSerializer.Companion.OUTGOING_SERVER_SETTINGS_KEY
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
-import com.fsck.k9.ServerSettingsSerializer
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.util.UUID
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 
 internal class AccountSettingsWriter(
     private val preferences: Preferences,

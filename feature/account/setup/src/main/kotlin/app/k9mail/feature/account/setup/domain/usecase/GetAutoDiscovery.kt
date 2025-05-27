@@ -6,9 +6,9 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryService
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.autodiscovery.demo.DemoServerSettings
-import app.k9mail.core.common.mail.toUserEmailAddress
-import app.k9mail.core.common.oauth.OAuthConfigurationProvider
 import app.k9mail.feature.account.setup.domain.DomainContract
+import net.thunderbird.core.common.mail.toUserEmailAddress
+import net.thunderbird.core.common.oauth.OAuthConfigurationProvider
 
 internal class GetAutoDiscovery(
     private val service: AutoDiscoveryService,

@@ -1,10 +1,10 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.ValidateSpecialFolderOptions.Failure
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 class ValidateSpecialFolderOptions : UseCase.ValidateSpecialFolderOptions {
     override fun invoke(specialFolderOptions: SpecialFolderOptions): ValidationResult {

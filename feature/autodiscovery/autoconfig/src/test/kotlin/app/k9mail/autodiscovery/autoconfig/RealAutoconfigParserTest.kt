@@ -8,9 +8,6 @@ import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.ParserError
 import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.Settings
-import app.k9mail.core.common.mail.toUserEmailAddress
-import app.k9mail.core.common.net.toHostname
-import app.k9mail.core.common.net.toPort
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
@@ -19,6 +16,9 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.prop
 import java.io.InputStream
+import net.thunderbird.core.common.mail.toUserEmailAddress
+import net.thunderbird.core.common.net.toHostname
+import net.thunderbird.core.common.net.toPort
 import org.intellij.lang.annotations.Language
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

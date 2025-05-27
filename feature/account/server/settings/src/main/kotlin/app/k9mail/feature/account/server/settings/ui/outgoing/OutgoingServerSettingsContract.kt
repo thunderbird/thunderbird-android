@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.server.settings.ui.outgoing
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.feature.account.common.domain.entity.AuthenticationType
 import app.k9mail.feature.account.common.domain.entity.ConnectionSecurity
@@ -8,6 +7,7 @@ import app.k9mail.feature.account.common.domain.entity.toSmtpDefaultPort
 import app.k9mail.feature.account.common.domain.input.NumberInputField
 import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.common.ui.WithInteractionMode
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 interface OutgoingServerSettingsContract {
 

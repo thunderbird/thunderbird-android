@@ -4,9 +4,9 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
 import java.util.Date
-import net.thunderbird.core.account.BaseAccount
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import net.thunderbird.core.mail.folder.api.SpecialFolderSelection
+import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
 
 // This needs to be in sync with K9.DEFAULT_VISIBLE_LIMIT

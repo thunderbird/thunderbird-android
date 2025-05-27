@@ -13,12 +13,11 @@ dependencies {
     api(projects.core.preferences)
     api(projects.core.android.logging)
     api(projects.core.android.network)
-    api(projects.core.mail.folder.api)
-    api(projects.feature.folder.api)
+    api(projects.feature.mail.folder.api)
+    api(projects.feature.account.storage.legacy)
 
     api(projects.feature.search)
-    api(projects.core.account)
-    api(projects.core.android.account)
+    api(projects.feature.mail.account.api)
     api(projects.legacy.di)
     api(projects.legacy.mailstore)
     api(projects.legacy.message)
@@ -26,7 +25,7 @@ dependencies {
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
     implementation(projects.feature.telemetry.api)
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
 
     api(libs.androidx.annotation)
 

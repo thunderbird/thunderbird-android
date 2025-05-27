@@ -1,11 +1,11 @@
 package com.fsck.k9.account
 
-import app.k9mail.core.common.mail.Protocols
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import net.thunderbird.core.android.account.DeletePolicy
+import net.thunderbird.core.common.mail.Protocols
 import org.junit.Test
 
 class DefaultDeletePolicyProviderTest {

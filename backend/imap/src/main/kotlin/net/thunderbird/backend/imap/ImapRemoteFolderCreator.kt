@@ -11,8 +11,8 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
-import net.thunderbird.core.account.BaseAccount
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.mail.account.api.BaseAccount
 
 class ImapRemoteFolderCreator(
     private val logger: Logger,

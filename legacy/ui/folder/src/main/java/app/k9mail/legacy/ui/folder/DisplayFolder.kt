@@ -1,6 +1,6 @@
 package app.k9mail.legacy.ui.folder
 
-import app.k9mail.core.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.Folder
 
 data class DisplayFolder(
     val folder: Folder,

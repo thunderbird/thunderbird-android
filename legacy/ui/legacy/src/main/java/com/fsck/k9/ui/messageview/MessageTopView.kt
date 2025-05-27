@@ -16,8 +16,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.EmailAddress
-import app.k9mail.core.common.mail.toEmailAddressOrNull
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.MessageViewInfo
@@ -30,6 +28,8 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.ShowPictures
+import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

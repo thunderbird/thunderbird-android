@@ -5,8 +5,8 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.ConnectionSecurity
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
-import app.k9mail.core.common.net.toHostname
-import app.k9mail.core.common.net.toPort
+import net.thunderbird.core.common.net.toHostname
+import net.thunderbird.core.common.net.toPort
 
 object AutoDiscoverySettingsFixture {
 
