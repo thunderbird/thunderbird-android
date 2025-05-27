@@ -1,7 +1,6 @@
 package com.fsck.k9
 
 import com.fsck.k9.helper.Utility
-import com.fsck.k9.preferences.StorageEditor
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.DEFAULT_MESSAGE_FORMAT_AUTO
@@ -28,6 +27,7 @@ import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection

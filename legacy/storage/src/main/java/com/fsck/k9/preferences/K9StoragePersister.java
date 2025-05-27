@@ -17,6 +17,9 @@ import com.fsck.k9.preferences.migration.StorageMigrations;
 import com.fsck.k9.preferences.migration.StorageMigrationHelper;
 import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.preference.storage.Storage;
+import net.thunderbird.core.preference.storage.StorageEditor;
+import net.thunderbird.core.preference.storage.StoragePersister;
+import net.thunderbird.core.preference.storage.StorageUpdater;
 
 public class K9StoragePersister implements StoragePersister {
     private static final int DB_VERSION = 26;

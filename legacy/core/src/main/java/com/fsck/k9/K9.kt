@@ -8,13 +8,13 @@ import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

@@ -13,7 +13,8 @@ import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallbac
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations;
 import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.preference.storage.Storage;
-
+import net.thunderbird.core.preference.storage.StorageEditor;
+import net.thunderbird.core.preference.storage.StorageUpdater;
 
 public class K9StorageEditor implements StorageEditor {
     private StorageUpdater storageUpdater;

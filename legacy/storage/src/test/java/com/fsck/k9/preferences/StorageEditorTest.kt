@@ -11,6 +11,7 @@ import com.fsck.k9.storage.K9RobolectricTest
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageUpdater
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any

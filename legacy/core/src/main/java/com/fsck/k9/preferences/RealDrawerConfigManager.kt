@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangeSubscriber
+import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
 internal class RealDrawerConfigManager(

@@ -10,6 +10,8 @@ dependencies {
     api(libs.junit)
     api(libs.robolectric)
 
+    implementation(projects.core.preference.api)
+
     implementation(projects.legacy.core)
 
     api(libs.koin.core)

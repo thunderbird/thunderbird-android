@@ -19,7 +19,9 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
+import net.thunderbird.core.preference.storage.putEnum
 
 /**
  * Retrieve and modify general settings.
@@ -211,8 +213,4 @@ private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultVal
         Log.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
         defaultValue
     }
-}
-
-private fun <T : Enum<T>> StorageEditor.putEnum(key: String, value: T) {
-    putString(key, value.name)
 }

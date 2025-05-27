@@ -5,8 +5,6 @@ import androidx.annotation.RestrictTo
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.preferences.StorageEditor
-import com.fsck.k9.preferences.StoragePersister
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArraySet
@@ -28,6 +26,8 @@ import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(

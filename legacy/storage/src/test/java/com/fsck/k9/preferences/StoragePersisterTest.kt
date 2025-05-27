@@ -10,7 +10,6 @@ import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
-import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.storage.K9RobolectricTest
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger

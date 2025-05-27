@@ -10,6 +10,7 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.util.UUID
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 
 internal class AccountSettingsWriter(
