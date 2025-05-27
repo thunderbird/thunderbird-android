@@ -1,4 +1,4 @@
-package net.thunderbird.feature.account.storage.legacy
+package net.thunderbird.feature.account.storage.legacy.serializer
 
 import assertk.assertFailure
 import assertk.assertThat
@@ -12,7 +12,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import kotlin.test.Test
 
 class ServerSettingsSerializerTest {
-    private val serverSettingsSerializer = ServerSettingsSerializer()
+    private val serverSettingsDtoSerializer = ServerSettingsDtoSerializer()
 
     @Test
     fun `serialize and deserialize IMAP server settings`() {
@@ -28,8 +28,8 @@ class ServerSettingsSerializerTest {
             extra = ImapStoreSettings.createExtra(autoDetectNamespace = true, pathPrefix = null),
         )
 
-        val json = serverSettingsSerializer.serialize(serverSettings)
-        val deserializedServerSettings = serverSettingsSerializer.deserialize(json)
+        val json = serverSettingsDtoSerializer.serialize(serverSettings)
+        val deserializedServerSettings = serverSettingsDtoSerializer.deserialize(json)
 
         assertThat(deserializedServerSettings).isEqualTo(serverSettings)
     }
@@ -47,8 +47,8 @@ class ServerSettingsSerializerTest {
             clientCertificateAlias = null,
         )
 
-        val json = serverSettingsSerializer.serialize(serverSettings)
-        val deserializedServerSettings = serverSettingsSerializer.deserialize(json)
+        val json = serverSettingsDtoSerializer.serialize(serverSettings)
+        val deserializedServerSettings = serverSettingsDtoSerializer.deserialize(json)
 
         assertThat(deserializedServerSettings).isEqualTo(serverSettings)
     }
@@ -68,7 +68,7 @@ class ServerSettingsSerializerTest {
         """.trimIndent()
 
         assertFailure {
-            serverSettingsSerializer.deserialize(json)
+            serverSettingsDtoSerializer.deserialize(json)
         }.isInstanceOf<IllegalArgumentException>()
             .hasMessage("'type' must not be missing")
     }

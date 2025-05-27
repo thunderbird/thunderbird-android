@@ -1,4 +1,4 @@
-package net.thunderbird.feature.account.storage.legacy
+package net.thunderbird.feature.account.storage.legacy.serializer
 
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
@@ -8,7 +8,7 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonReader.Token
 import com.squareup.moshi.JsonWriter
 
-class ServerSettingsSerializer {
+class ServerSettingsDtoSerializer {
     private val adapter = ServerSettingsAdapter()
 
     fun serialize(serverSettings: ServerSettings): String {

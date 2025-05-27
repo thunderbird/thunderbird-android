@@ -3,7 +3,6 @@ package com.fsck.k9.notification
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
-import com.fsck.k9.AccountPreferenceSerializer
 import java.util.concurrent.Executors
 import org.koin.dsl.module
 
@@ -33,11 +32,6 @@ val coreNotificationModule = module {
             notificationManager = get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
             resourceProvider = get(),
             notificationLightDecoder = get(),
-        )
-    }
-    single {
-        AccountPreferenceSerializer(
-            serverSettingsSerializer = get(),
         )
     }
     single {

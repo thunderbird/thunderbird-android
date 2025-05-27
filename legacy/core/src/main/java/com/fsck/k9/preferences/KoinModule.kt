@@ -65,7 +65,7 @@ val preferencesModule = module {
             preferences = get(),
             localFoldersCreator = get(),
             clock = get(),
-            serverSettingsSerializer = get(),
+            serverSettingsDtoSerializer = get(),
             context = get(),
         )
     }
