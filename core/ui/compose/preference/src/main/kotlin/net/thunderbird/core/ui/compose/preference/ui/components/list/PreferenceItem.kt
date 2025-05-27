@@ -54,5 +54,12 @@ internal fun PreferenceItem(
                 modifier = modifier,
             )
         }
+
+        is PreferenceDisplay.SectionHeader -> {
+            PreferenceItemSectionHeaderView(
+                preference = preference,
+                modifier = modifier,
+            )
+        }
     }
 }
