@@ -28,13 +28,13 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
-import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
+import net.thunderbird.feature.account.storage.legacy.AccountDtoStorageHandler
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
-    private val legacyAccountStorageHandler: LegacyAccountStorageHandler,
+    private val legacyAccountStorageHandler: AccountDtoStorageHandler,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : AccountManager {
@@ -272,13 +272,28 @@ class Preferences internal constructor(
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
         synchronized(accountLock) {
             val storageEditor = createStorageEditor()
-            legacyAccountStorageHandler.move(account, storage, storageEditor, newPosition)
+            moveToPosition(account, storage, storageEditor, newPosition)
             storageEditor.commit()
 
             loadAccounts()
         }
 
         notifyAccountsChangeListeners()
+    }
+
+    private fun moveToPosition(account: LegacyAccount, storage: Storage, editor: StorageEditor, newPosition: Int) {
+        val accountUuids = storage.getStringOrDefault("accountUuids", "").split(",").filter { it.isNotEmpty() }
+        val oldPosition = accountUuids.indexOf(account.uuid)
+        if (oldPosition == -1 || oldPosition == newPosition) return
+
+        val newAccountUuidsString = accountUuids.toMutableList()
+            .apply {
+                removeAt(oldPosition)
+                add(newPosition, account.uuid)
+            }
+            .joinToString(separator = ",")
+
+        editor.putString("accountUuids", newAccountUuidsString)
     }
 
     private fun notifyAccountsChangeListeners() {

@@ -69,7 +69,10 @@ class TestStoragePersister(
         }
 
         private fun writeValues(currentStorage: Storage): Storage {
-            return InMemoryStorage(currentStorage.getAll() - removals + changes, logger)
+            val updatedValues = currentStorage.getAll() - removals + changes
+            values.clear()
+            values.putAll(updatedValues.mapValues { (_, value) -> value })
+            return InMemoryStorage(updatedValues, logger)
         }
     }
 }

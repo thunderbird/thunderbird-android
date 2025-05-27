@@ -5,6 +5,7 @@ import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 
 class LegacyProfileDtoStorageHandler(
+    private val avatarDtoStorageHandler: AvatarDtoStorageHandler,
 ) : ProfileDtoStorageHandler {
 
     override fun load(
@@ -17,6 +18,8 @@ class LegacyProfileDtoStorageHandler(
             name = storage.getStringOrNull(keyGen.create(KEY_NAME))
             chipColor = storage.getInt(keyGen.create(KEY_COLOR), FALLBACK_ACCOUNT_COLOR)
         }
+
+        avatarDtoStorageHandler.load(data, storage)
     }
 
     override fun save(
@@ -30,6 +33,8 @@ class LegacyProfileDtoStorageHandler(
             editor.putString(keyGen.create(KEY_NAME), name)
             editor.putInt(keyGen.create(KEY_COLOR), chipColor)
         }
+
+        avatarDtoStorageHandler.save(data, storage, editor)
     }
 
     override fun delete(
@@ -41,6 +46,8 @@ class LegacyProfileDtoStorageHandler(
 
         editor.remove(keyGen.create(KEY_NAME))
         editor.remove(keyGen.create(KEY_COLOR))
+
+        avatarDtoStorageHandler.delete(data, storage, editor)
     }
 
     private companion object Companion {

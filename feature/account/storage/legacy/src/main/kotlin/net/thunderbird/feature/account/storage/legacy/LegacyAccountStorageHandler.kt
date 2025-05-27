@@ -24,9 +24,9 @@ import net.thunderbird.feature.notification.VibratePattern
 
 class LegacyAccountStorageHandler(
     private val serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
-    private val profileDtoStorageHandler: LegacyProfileDtoStorageHandler,
+    private val profileDtoStorageHandler: ProfileDtoStorageHandler,
     private val logger: Logger,
-) : StorageHandler<LegacyAccount> {
+) : AccountDtoStorageHandler {
 
     @Suppress("LongMethod", "MagicNumber")
     @Synchronized
@@ -307,6 +307,8 @@ class LegacyAccountStorageHandler(
     override fun save(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
         val keyGen = AccountKeyGenerator(data.id)
 
+        profileDtoStorageHandler.save(data, storage, editor)
+
         if (!storage.getStringOrDefault("accountUuids", "").contains(data.uuid)) {
             var accountUuids = storage.getStringOrDefault("accountUuids", "")
             accountUuids += (if (accountUuids.isNotEmpty()) "," else "") + data.uuid
@@ -420,6 +422,8 @@ class LegacyAccountStorageHandler(
     override fun delete(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
         val keyGen = AccountKeyGenerator(data.id)
         val accountUuid = data.uuid
+
+        profileDtoStorageHandler.delete(data, storage, editor)
 
         // Get the list of account UUIDs
         val uuids = storage
@@ -574,21 +578,6 @@ class LegacyAccountStorageHandler(
             }
             identityIndex++
         } while (gotOne)
-    }
-
-    fun move(data: LegacyAccount, storage: Storage, editor: StorageEditor, newPosition: Int) {
-        val accountUuids = storage.getStringOrDefault("accountUuids", "").split(",").filter { it.isNotEmpty() }
-        val oldPosition = accountUuids.indexOf(data.uuid)
-        if (oldPosition == -1 || oldPosition == newPosition) return
-
-        val newAccountUuidsString = accountUuids.toMutableList()
-            .apply {
-                removeAt(oldPosition)
-                add(newPosition, data.uuid)
-            }
-            .joinToString(separator = ",")
-
-        editor.putString("accountUuids", newAccountUuidsString)
     }
 
     private inline fun <reified T : Enum<T>> getEnumStringPref(storage: Storage, key: String, defaultEnum: T): T {

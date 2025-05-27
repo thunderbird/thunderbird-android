@@ -13,8 +13,10 @@ class AccountKeyGenerator(
      * Creates a key by combining account ID with the specified key.
      *
      * @param key The key to combine with the account ID.
+     * @throws IllegalArgumentException if the key is empty.
      */
     fun create(key: String): String {
+        require(key.isNotEmpty()) { "Key must not be empty" }
         return "${id.asRaw()}.$key"
     }
 }
