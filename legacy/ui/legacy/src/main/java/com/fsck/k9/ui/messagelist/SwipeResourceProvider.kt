@@ -16,19 +16,20 @@ import net.thunderbird.core.android.account.LegacyAccountWrapper
 
 class SwipeResourceProvider(private val context: Context) {
 
-    fun getActionIcon(action: SwipeAction): Drawable {
-        return context.loadDrawable(
-            when (action) {
-                SwipeAction.None -> error("action == SwipeAction.None")
-                SwipeAction.ToggleSelection -> Icons.Outlined.CheckCircle
-                SwipeAction.ToggleRead -> Icons.Outlined.MarkEmailRead
-                SwipeAction.ToggleStar -> Icons.Filled.Star
-                SwipeAction.Archive -> Icons.Outlined.Archive
-                SwipeAction.Delete -> Icons.Outlined.Delete
-                SwipeAction.Spam -> Icons.Outlined.Report
-                SwipeAction.Move -> Icons.Outlined.DriveFileMove
-            },
-        )
+    fun getActionIcon(action: SwipeAction, account: LegacyAccountWrapper): Drawable? {
+        val drawableId = when (action) {
+            SwipeAction.None -> error("action == SwipeAction.None")
+            SwipeAction.ToggleSelection -> Icons.Outlined.CheckCircle
+            SwipeAction.ToggleRead -> Icons.Outlined.MarkEmailRead
+            SwipeAction.ToggleStar -> Icons.Filled.Star
+            SwipeAction.Archive if account.isIncomingServerPop3() -> null
+            SwipeAction.Archive -> Icons.Outlined.Archive
+            SwipeAction.Delete -> Icons.Outlined.Delete
+            SwipeAction.Spam -> Icons.Outlined.Report
+            SwipeAction.Move -> Icons.Outlined.DriveFileMove
+        }
+
+        return drawableId?.let(context::loadDrawable)
     }
 
     fun getActionIconToggled(action: SwipeAction): Drawable? {
@@ -72,10 +73,11 @@ class SwipeResourceProvider(private val context: Context) {
                 SwipeAction.ToggleSelection -> R.string.swipe_action_select
                 SwipeAction.ToggleRead -> R.string.swipe_action_mark_as_read
                 SwipeAction.ToggleStar -> R.string.swipe_action_add_star
-                SwipeAction.Archive if account.hasArchiveFolder() ->
+                SwipeAction.Archive if account.hasArchiveFolder() && !account.isIncomingServerPop3() ->
                     R.string.swipe_action_archive
 
-                SwipeAction.Archive -> R.string.swipe_action_archive_folder_not_set
+                SwipeAction.Archive if !account.isIncomingServerPop3() -> R.string.swipe_action_archive_folder_not_set
+                SwipeAction.Archive -> R.string.swipe_action_change_swipe_gestures
                 SwipeAction.Delete -> R.string.swipe_action_delete
                 SwipeAction.Spam -> R.string.swipe_action_spam
                 SwipeAction.Move -> R.string.swipe_action_move

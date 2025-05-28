@@ -10,6 +10,7 @@ import android.view.View
 import android.view.View.MeasureSpec
 import android.widget.ImageView
 import androidx.core.graphics.withTranslation
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
@@ -216,9 +217,9 @@ class MessageListSwipeCallback(
         swipeLayout.setBackgroundColor(backgroundColor)
 
         val icon = getIcon(swipeAction, item, swipeActionConfig)
-        icon.setTint(foregroundColor)
-
+        icon?.setTint(foregroundColor)
         swipeIcon.setImageDrawable(icon)
+        swipeIcon.isVisible = icon != null
 
         val isSelected = adapter.isSelected(item)
         swipeText.text = getActionName(swipeAction, item, isSelected, swipeActionConfig)
@@ -255,7 +256,7 @@ class MessageListSwipeCallback(
         swipeAction: SwipeAction,
         item: MessageListItem,
         swipeActionConfig: SwipeActionConfig,
-    ) = if (isToggled(swipeAction, item)) {
+    ): Drawable? = if (isToggled(swipeAction, item)) {
         swipeActionConfig.iconToggled ?: error("action has no toggled icon")
     } else {
         swipeActionConfig.icon
@@ -336,7 +337,7 @@ class MessageListSwipeCallback(
             accounts.associate { account ->
                 account.uuid to SwipeActionConfig(
                     colorRoles = resourceProvider.getActionColorRoles(swipeAction, account),
-                    icon = resourceProvider.getActionIcon(swipeAction),
+                    icon = resourceProvider.getActionIcon(swipeAction, account),
                     iconToggled = resourceProvider.getActionIconToggled(swipeAction),
                     actionName = resourceProvider.getActionName(swipeAction, account),
                     actionNameToggled = resourceProvider.getActionNameToggled(swipeAction),
@@ -373,7 +374,7 @@ interface MessageListSwipeListener {
 
 private data class SwipeActionConfig(
     private val colorRoles: ColorRoles,
-    val icon: Drawable,
+    val icon: Drawable?,
     val iconToggled: Drawable? = null,
     val actionName: String,
     val actionNameToggled: String? = null,

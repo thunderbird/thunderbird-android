@@ -2,6 +2,7 @@ package net.thunderbird.core.android.account
 
 import com.fsck.k9.mail.ServerSettings
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
+import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.profile.ProfileDto
@@ -144,4 +145,7 @@ data class LegacyAccountWrapper(
     fun hasOpenPgpKey(): Boolean {
         return openPgpKey != NO_OPENPGP_KEY
     }
+
+    fun isIncomingServerPop3(): Boolean =
+        incomingServerSettings.type == Protocols.POP3
 }
