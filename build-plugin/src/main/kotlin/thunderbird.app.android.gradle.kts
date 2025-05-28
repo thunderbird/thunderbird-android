@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.android.desugar)
+    coreLibraryDesugaring(libs.android.desugar.nio)
 
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.koin.bom))
