@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.theme.api
+package net.thunderbird.core.ui.theme.api
 
 import androidx.compose.runtime.Composable
 

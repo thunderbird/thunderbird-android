@@ -1,6 +1,5 @@
 package net.thunderbird.feature.navigation.drawer.siderail.ui
 
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.advanceUntilIdle
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig

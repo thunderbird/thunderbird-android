@@ -1,6 +1,5 @@
 package net.thunderbird.feature.account.settings.impl.ui.general
 
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.MviContext
 import app.k9mail.core.ui.compose.testing.mvi.MviTurbines
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.StandardTestDispatcher
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.core.ui.compose.preference.api.Preference
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.api.AccountId

@@ -5,8 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import com.fsck.k9.ui.base.K9Activity
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject
 
 class QrCodeScannerActivity : K9Activity() {

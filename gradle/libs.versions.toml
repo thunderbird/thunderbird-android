@@ -65,6 +65,8 @@ javaDiffUtils = "4.12"
 jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.0.2"
 jetbrainsCompose = "1.8.1"
+jetbrainsComposeLifecycle = "2.8.4"
+jetbrainsComposeNavigation = "2.9.0-beta01"
 jdom = "2.0.6.1"
 jmapClient = "0.3.1"
 jsoup = "1.19.1"
@@ -206,6 +208,9 @@ glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 icu4j-charset = { module = "com.ibm.icu:icu4j-charset", version.ref = "icu4j" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
+jetbrains-compose-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrainsComposeLifecycle" }
+jetbrains-compose-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrainsComposeLifecycle" }
+jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrainsComposeNavigation" }
 jcip-annotations = { module = "net.jcip:jcip-annotations", version.ref = "jcipAnnotations" }
 jdom2 = { module = "org.jdom:jdom2", version.ref = "jdom" }
 jmap-client = { module = "rs.ltt.jmap:jmap-client", version.ref = "jmapClient" }
@@ -224,6 +229,7 @@ kotlin-gradle-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = 
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
@@ -265,17 +271,29 @@ zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 [bundles]
 shared-kmp-common = [
   "koin-core",
+  "kotlinx-collections-immutable",
   "kotlinx-coroutines-core",
   "kotlinx-datetime",
+  "kotlinx-serialization-json",
 ]
 shared-kmp-android = [
   "koin-android",
   "kotlinx-coroutines-android",
 ]
+shared-kmp-compose = [
+  "jetbrains-compose-lifecycle-runtime",
+  "jetbrains-compose-lifecycle-viewmodel",
+  # Disabled, as it's still in beta
+#  "jetbrains-compose-navigation",
+]
+shared-kmp-compose-android = [
+  "koin-androidx-compose",
+]
 shared-kmp-common-test = [
   "assertk",
   "koin-test",
   "kotlin-test",
+  "kotlin-test-junit",
   "kotlinx-coroutines-test",
   "turbine",
 ]

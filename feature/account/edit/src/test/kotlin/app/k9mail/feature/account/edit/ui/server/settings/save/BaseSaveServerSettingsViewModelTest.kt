@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.edit.ui.server.settings.save
 
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndEffectTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.assertThatAndStateTurbineConsumed
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
@@ -13,6 +12,7 @@ import app.k9mail.feature.account.edit.ui.server.settings.save.SaveServerSetting
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test
 

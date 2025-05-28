@@ -1,11 +1,15 @@
+// Thunderbird for Android
+rootProject.name = "tfa"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("build-plugin")
     repositories {
         google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
             }
         }
         mavenCentral()
@@ -17,20 +21,20 @@ dependencyResolutionManagement {
     repositoriesMode = RepositoriesMode.FAIL_ON_PROJECT_REPOS
     repositories {
         google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
             }
         }
         maven(url = "https://maven.mozilla.org/maven2") {
-            content {
+            mavenContent {
                 includeGroup("org.mozilla.components")
                 includeGroup("org.mozilla.telemetry")
             }
         }
         maven(url = "https://jitpack.io") {
-            content {
+            mavenContent {
                 includeGroup("com.github.ByteHamster")
                 includeGroup("com.github.cketti")
             }
@@ -39,10 +43,9 @@ dependencyResolutionManagement {
     }
 }
 
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
-// Thunderbird for Android
-rootProject.name = "tfa"
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+}
 
 include(
     ":app-k9mail",

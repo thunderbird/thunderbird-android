@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
@@ -13,6 +12,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import net.thunderbird.core.common.domain.usecase.validation.ValidationError
 import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test
 
