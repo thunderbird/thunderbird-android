@@ -19,6 +19,7 @@ import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo104;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo54;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
@@ -33,6 +34,7 @@ import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.account.QuoteStyle;
 import net.thunderbird.core.android.account.ShowPictures;
 import net.thunderbird.core.android.account.SortType;
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto;
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection;
 import net.thunderbird.feature.notification.NotificationLight;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
@@ -289,6 +291,18 @@ class AccountSettingsDescriptions {
         s.put("sendClientInfo", Settings.versions(
                 new V(91, new BooleanSetting(true))
         ));
+        s.put("avatarType", Settings.versions(
+                new V(104, new EnumSetting<>(AvatarTypeDto.class, AvatarTypeDto.MONOGRAM))
+        ));
+        s.put("avatarMonogram", Settings.versions(
+            new V(104, new StringSetting("XX"))
+        ));
+        s.put("avatarImageUri", Settings.versions(
+            new V(104, new StringSetting(null))
+        ));
+        s.put("avatarIconName", Settings.versions(
+            new V(104, new StringSetting(null))
+        ));
         // note that there is no setting for openPgpProvider, because this will have to be set up together
         // with the actual provider after import anyways.
 
@@ -301,6 +315,7 @@ class AccountSettingsDescriptions {
         u.put(80, new AccountSettingsUpgraderTo80());
         u.put(81, new AccountSettingsUpgraderTo81());
         u.put(91, new AccountSettingsUpgraderTo91());
+        u.put(104, new AccountSettingsUpgraderTo104());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
