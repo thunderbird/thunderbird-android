@@ -11,6 +11,7 @@ dependencies {
     api(projects.feature.notification)
     api(projects.mail.common)
 
+    implementation(projects.core.common)
     implementation(projects.core.preferences)
 
     implementation(projects.feature.mail.account.api)

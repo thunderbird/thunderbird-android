@@ -1774,6 +1774,8 @@ class MessageListFragment :
                     setFlag(item, Flag.FLAGGED, !item.isStarred)
                 }
 
+                SwipeAction.Archive if item.accountWrapper.isIncomingServerPop3() -> Unit
+
                 SwipeAction.Archive -> {
                     onArchive(item)
                 }
