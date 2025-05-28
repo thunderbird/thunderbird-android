@@ -23,10 +23,11 @@ class LogcatLogFileWriterTest {
     @Test
     fun `write log to contentUri`() = runBlocking {
         val logData = "a".repeat(10_000)
-        val logFileWriter = LogcatLogFileWriter(
+        val logFileWriter = MultiLogFileWriter(
             contentResolver = createContentResolver(),
             processExecutor = createProcessExecutor(logData),
             coroutineDispatcher = Dispatchers.Unconfined,
+            context = null,
         )
 
         logFileWriter.writeLogTo(contentUri)
@@ -36,10 +37,11 @@ class LogcatLogFileWriterTest {
 
     @Test(expected = FileNotFoundException::class)
     fun `contentResolver throws`() = runBlocking {
-        val logFileWriter = LogcatLogFileWriter(
+        val logFileWriter = MultiLogFileWriter(
             contentResolver = createThrowingContentResolver(FileNotFoundException()),
             processExecutor = createProcessExecutor("irrelevant"),
             coroutineDispatcher = Dispatchers.Unconfined,
+            context = null,
         )
 
         logFileWriter.writeLogTo(contentUri)
@@ -47,10 +49,11 @@ class LogcatLogFileWriterTest {
 
     @Test(expected = IOException::class)
     fun `processExecutor throws`() = runBlocking {
-        val logFileWriter = LogcatLogFileWriter(
+        val logFileWriter = MultiLogFileWriter(
             contentResolver = createContentResolver(),
             processExecutor = ThrowingProcessExecutor(IOException()),
             coroutineDispatcher = Dispatchers.Unconfined,
+            context = null,
         )
 
         logFileWriter.writeLogTo(contentUri)

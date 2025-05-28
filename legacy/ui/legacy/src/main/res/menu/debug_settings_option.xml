@@ -10,4 +10,10 @@
         app:showAsAction="never"
         />
 
+    <item
+        android:id="@+id/exportSyncLogs"
+        android:title="@string/debug_sync_export_logs_title"
+        app:showAsAction="never"
+        />
+
 </menu>
