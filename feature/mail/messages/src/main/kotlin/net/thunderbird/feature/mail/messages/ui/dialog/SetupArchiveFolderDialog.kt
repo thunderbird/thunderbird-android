@@ -7,7 +7,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,17 +16,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.window.DialogProperties
 import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.organism.BasicDialog
 import app.k9mail.core.ui.compose.designsystem.organism.BasicDialogDefaults
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
-import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.messages.R
 import net.thunderbird.feature.mail.messages.ui.dialog.SetupArchiveFolderDialogContract.Event
@@ -69,7 +62,7 @@ internal fun SetupArchiveFolderDialog(
 }
 
 @Composable
-private fun SetupArchiveFolderDialog(
+internal fun SetupArchiveFolderDialog(
     state: State,
     modifier: Modifier = Modifier,
     onNextClick: () -> Unit = {},
@@ -90,7 +83,6 @@ private fun SetupArchiveFolderDialog(
             )
         }
         BasicDialog(
-            onDismissRequest = onDismissRequest,
             headlineText = when (state) {
                 is State.ChooseArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_set_archive_folder)
                 is State.CreateArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_create_new_folder)
@@ -105,6 +97,7 @@ private fun SetupArchiveFolderDialog(
 
                 else -> null
             },
+            onDismissRequest = onDismissRequest,
             content = {
                 SetupArchiveFolderDialogContent(
                     state = state,
@@ -205,39 +198,5 @@ private fun RowScope.SetupArchiveFolderDialogButtons(
             onSkipClick = onDismissClick,
             onDoNotShowAgainChange = onDoNotShowAgainChange,
         )
-    }
-}
-
-private class SetupArchiveFolderDialogParamCol : CollectionPreviewParameterProvider<State>(
-    setOf(
-        State.EmailCantBeArchived(isDoNotShowDialogAgainChecked = true),
-        State.EmailCantBeArchived(isDoNotShowDialogAgainChecked = false),
-        State.ChooseArchiveFolder(isLoadingFolders = false, folders = emptyList()),
-        State.ChooseArchiveFolder(isLoadingFolders = true, folders = emptyList()),
-        State.ChooseArchiveFolder(
-            isLoadingFolders = false,
-            folders = List(size = 5) {
-                RemoteFolder(
-                    id = it.toLong(),
-                    serverId = "$it",
-                    name = "Folder 1",
-                    type = FolderType.REGULAR,
-                )
-            },
-        ),
-        State.CreateArchiveFolder(syncingMessage = null, folderName = ""),
-        State.CreateArchiveFolder(syncingMessage = "any message", folderName = ""),
-    ),
-)
-
-@PreviewLightDark
-@Composable
-private fun Preview(
-    @PreviewParameter(SetupArchiveFolderDialogParamCol::class) state: State,
-) {
-    ThunderbirdTheme2 {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            SetupArchiveFolderDialog(state = state)
-        }
     }
 }

@@ -1,4 +1,5 @@
 package app.k9mail.core.ui.compose.designsystem
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +15,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
+/**
+ * A Composable function that displays a preview of the content in both Thunderbird and K-9 Mail themes.
+ *
+ * It uses the current system theme (light or dark) for both previews.
+ *
+ * @param modifier The modifier to be applied to the layout.
+ * @param useRow Whether to display the previews in a row or column. Defaults to `false` (column).
+ * @param useScrim Whether to display a scrim behind the content. Defaults to `false`.
+ * @param scrimAlpha The alpha value for the scrim. Defaults to `0.8f`.
+ * @param scrimPadding The padding for the scrim. Defaults to `24.dp`.
+ * @param arrangement The arrangement for the previews. Defaults to `Arrangement.spacedBy(24.dp)`.
+ * @param content The content to be displayed in the previews.
+ */
 @Composable
 fun PreviewWithThemeLightDark(
+    modifier: Modifier = Modifier,
     useRow: Boolean = false,
     useScrim: Boolean = false,
     scrimAlpha: Float = 0.8f,
@@ -25,58 +40,66 @@ fun PreviewWithThemeLightDark(
 ) {
     val movableContent = remember {
         movableContentOf {
-            PreviewWithTheme(
+            ThemePreview(
                 themeType = PreviewThemeType.THUNDERBIRD,
-                isDarkTheme = isSystemInDarkTheme(),
-            ) {
-                PreviewSurface {
-                    if (useScrim) {
-                        Box(
-                            modifier = Modifier
-                                .background(MainTheme.colors.scrim.copy(alpha = scrimAlpha))
-                                .padding(scrimPadding),
-                        ) {
-                            content()
-                        }
-                    } else {
-                        content()
-                    }
-                    PreviewHeader(themeName = PreviewThemeType.THUNDERBIRD.name)
-                }
-            }
-            PreviewWithTheme(
+                useScrim = useScrim,
+                scrimAlpha = scrimAlpha,
+                scrimPadding = scrimPadding,
+                content = content,
+            )
+            ThemePreview(
                 themeType = PreviewThemeType.K9MAIL,
-                isDarkTheme = isSystemInDarkTheme(),
-            ) {
-                PreviewSurface {
-                    if (useScrim) {
-                        Box(
-                            modifier = Modifier
-                                .background(MainTheme.colors.scrim.copy(alpha = scrimAlpha))
-                                .padding(scrimPadding),
-                        ) {
-                            content()
-                        }
-                    } else {
-                        content()
-                    }
-                    PreviewHeader(themeName = PreviewThemeType.K9MAIL.name)
-                }
-            }
+                useScrim = useScrim,
+                scrimAlpha = scrimAlpha,
+                scrimPadding = scrimPadding,
+                content = content,
+            )
         }
     }
 
     if (useRow) {
         Row(
             horizontalArrangement = arrangement,
+            modifier = modifier,
         ) {
             movableContent()
         }
     } else {
         Column(
             verticalArrangement = arrangement,
+            modifier = modifier,
         ) {
             movableContent()
+        }
+    }
+}
+
+@Composable
+private fun ThemePreview(
+    themeType: PreviewThemeType,
+    useScrim: Boolean,
+    scrimAlpha: Float,
+    scrimPadding: PaddingValues,
+    content: @Composable (() -> Unit),
+) {
+    val movableContent = remember { movableContentOf { content() } }
+    PreviewWithTheme(
+        themeType = themeType,
+        isDarkTheme = isSystemInDarkTheme(),
+    ) {
+        PreviewSurface {
+            if (useScrim) {
+                Box(
+                    modifier = Modifier
+                        .background(MainTheme.colors.scrim.copy(alpha = scrimAlpha))
+                        .padding(scrimPadding),
+                ) {
+                    movableContent()
+                }
+            } else {
+                movableContent()
+            }
+            PreviewHeader(themeName = themeType.name)
         }
     }
 }
