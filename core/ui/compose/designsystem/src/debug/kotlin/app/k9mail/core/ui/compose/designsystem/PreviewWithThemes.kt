@@ -99,7 +99,7 @@ private fun PreviewWithThunderbirdTheme(
 }
 
 @Composable
-fun PreviewHeader(
+internal fun PreviewHeader(
     themeName: String,
 ) {
     Surface(
@@ -117,7 +117,7 @@ fun PreviewHeader(
 }
 
 @Composable
-fun PreviewSurface(
+internal fun PreviewSurface(
     content: @Composable () -> Unit,
 ) {
     Surface(

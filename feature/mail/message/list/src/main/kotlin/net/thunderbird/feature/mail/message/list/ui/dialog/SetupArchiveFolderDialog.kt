@@ -7,7 +7,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -17,20 +16,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.window.DialogProperties
 import app.k9mail.core.ui.compose.common.mvi.observe
-import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.organism.BasicDialog
 import app.k9mail.core.ui.compose.designsystem.organism.BasicDialogDefaults
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
-import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.R
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.Event
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.ViewModel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -39,7 +34,7 @@ internal fun SetupArchiveFolderDialog(
     accountUuid: String,
     onDismissDialog: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SetupArchiveFolderDialogContract.ViewModel = koinViewModel<SetupArchiveFolderDialogViewModel> { parametersOf(accountUuid) },
+    viewModel: ViewModel = koinViewModel<SetupArchiveFolderDialogViewModel> { parametersOf(accountUuid) },
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
@@ -67,8 +62,8 @@ internal fun SetupArchiveFolderDialog(
 }
 
 @Composable
-private fun SetupArchiveFolderDialog(
-    state: SetupArchiveFolderDialogContract.State,
+internal fun SetupArchiveFolderDialog(
+    state: State,
     modifier: Modifier = Modifier,
     onNextClick: () -> Unit = {},
     onDoneClick: () -> Unit = {},
@@ -78,31 +73,31 @@ private fun SetupArchiveFolderDialog(
     onFolderSelect: (RemoteFolder) -> Unit = {},
     onCreateAndSetClick: (folderName: String) -> Unit = {},
 ) {
-    if (state !is SetupArchiveFolderDialogContract.State.Closed) {
+    if (state !is State.Closed) {
         val canBeDismissed = remember(state) {
-            state !is SetupArchiveFolderDialogContract.State.CreateArchiveFolder || state.syncingMessage.isNullOrBlank()
+            state !is State.CreateArchiveFolder || state.syncingMessage.isNullOrBlank()
         }
         var folderName by rememberSaveable(state) {
             mutableStateOf(
-                (state as? SetupArchiveFolderDialogContract.State.CreateArchiveFolder)?.folderName ?: "",
+                (state as? State.CreateArchiveFolder)?.folderName ?: "",
             )
         }
         BasicDialog(
-            onDismissRequest = onDismissRequest,
             headlineText = when (state) {
-                is SetupArchiveFolderDialogContract.State.ChooseArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_set_archive_folder)
-                is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_create_new_folder)
-                is SetupArchiveFolderDialogContract.State.EmailCantBeArchived ->
+                is State.ChooseArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_set_archive_folder)
+                is State.CreateArchiveFolder -> stringResource(R.string.setup_archive_folder_dialog_create_new_folder)
+                is State.EmailCantBeArchived ->
                     stringResource(R.string.setup_archive_folder_dialog_email_can_not_be_archived)
 
                 else -> error("Invalid state: $state")
             },
             supportingText = when (state) {
-                is SetupArchiveFolderDialogContract.State.EmailCantBeArchived ->
+                is State.EmailCantBeArchived ->
                     stringResource(R.string.setup_archive_folder_dialog_configure_archive_folder)
 
                 else -> null
             },
+            onDismissRequest = onDismissRequest,
             content = {
                 SetupArchiveFolderDialogContent(
                     state = state,
@@ -126,12 +121,12 @@ private fun SetupArchiveFolderDialog(
                 dismissOnBackPress = canBeDismissed,
                 dismissOnClickOutside = canBeDismissed,
             ),
-            contentPadding = if (state is SetupArchiveFolderDialogContract.State.EmailCantBeArchived) {
+            contentPadding = if (state is State.EmailCantBeArchived) {
                 PaddingValues()
             } else {
                 BasicDialogDefaults.contentPadding
             },
-            showDividers = state !is SetupArchiveFolderDialogContract.State.EmailCantBeArchived,
+            showDividers = state !is State.EmailCantBeArchived,
             modifier = modifier,
         )
     }
@@ -139,7 +134,7 @@ private fun SetupArchiveFolderDialog(
 
 @Composable
 private fun SetupArchiveFolderDialogContent(
-    state: SetupArchiveFolderDialogContract.State,
+    state: State,
     folderName: String,
     onFolderSelect: (RemoteFolder) -> Unit,
     onFolderNameChange: (String) -> Unit,
@@ -156,12 +151,12 @@ private fun SetupArchiveFolderDialogContent(
         modifier = modifier,
     ) { state ->
         when (state) {
-            is SetupArchiveFolderDialogContract.State.ChooseArchiveFolder -> ChooseArchiveFolderDialogContent(
+            is State.ChooseArchiveFolder -> ChooseArchiveFolderDialogContent(
                 state = state,
                 onFolderSelect = onFolderSelect,
             )
 
-            is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> CreateNewArchiveFolderDialogContent(
+            is State.CreateArchiveFolder -> CreateNewArchiveFolderDialogContent(
                 folderName = folderName,
                 syncingMessage = state.syncingMessage,
                 errorMessage = state.errorMessage,
@@ -175,7 +170,7 @@ private fun SetupArchiveFolderDialogContent(
 
 @Composable
 private fun RowScope.SetupArchiveFolderDialogButtons(
-    state: SetupArchiveFolderDialogContract.State,
+    state: State,
     folderName: String,
     onDoneClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -184,58 +179,25 @@ private fun RowScope.SetupArchiveFolderDialogButtons(
     onDoNotShowAgainChange: (Boolean) -> Unit,
 ) {
     when (state) {
-        is SetupArchiveFolderDialogContract.State.ChooseArchiveFolder -> ChooseArchiveFolderDialogButtons(
+        is State.ChooseArchiveFolder -> ChooseArchiveFolderDialogButtons(
             state = state,
             onDoneClick = onDoneClick,
             onCreateNewFolderClick = onNextClick,
         )
 
-        SetupArchiveFolderDialogContract.State.Closed -> Unit
-        is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> CreateNewArchiveFolderDialogButtons(
+        State.Closed -> Unit
+        
+        is State.CreateArchiveFolder -> CreateNewArchiveFolderDialogButtons(
             isSynchronizing = state.syncingMessage?.isNotBlank() == true,
             onCancelClick = onDismissClick,
             onCreateAndSetClick = { onCreateAndSetClick(folderName) },
         )
 
-        is SetupArchiveFolderDialogContract.State.EmailCantBeArchived -> EmailCantBeArchivedDialogButtons(
+        is State.EmailCantBeArchived -> EmailCantBeArchivedDialogButtons(
             state = state,
             onSetArchiveFolderClick = onNextClick,
             onSkipClick = onDismissClick,
             onDoNotShowAgainChange = onDoNotShowAgainChange,
         )
-    }
-}
-
-private class SetupArchiveFolderDialogParamCol : CollectionPreviewParameterProvider<SetupArchiveFolderDialogContract.State>(
-    setOf(
-        SetupArchiveFolderDialogContract.State.EmailCantBeArchived(isDoNotShowDialogAgainChecked = true),
-        SetupArchiveFolderDialogContract.State.EmailCantBeArchived(isDoNotShowDialogAgainChecked = false),
-        SetupArchiveFolderDialogContract.State.ChooseArchiveFolder(isLoadingFolders = false, folders = emptyList()),
-        SetupArchiveFolderDialogContract.State.ChooseArchiveFolder(isLoadingFolders = true, folders = emptyList()),
-        SetupArchiveFolderDialogContract.State.ChooseArchiveFolder(
-            isLoadingFolders = false,
-            folders = List(size = 5) {
-                RemoteFolder(
-                    id = it.toLong(),
-                    serverId = "$it",
-                    name = "Folder 1",
-                    type = FolderType.REGULAR,
-                )
-            },
-        ),
-        SetupArchiveFolderDialogContract.State.CreateArchiveFolder(syncingMessage = null, folderName = ""),
-        SetupArchiveFolderDialogContract.State.CreateArchiveFolder(syncingMessage = "any message", folderName = ""),
-    ),
-)
-
-@PreviewLightDark
-@Composable
-private fun Preview(
-    @PreviewParameter(SetupArchiveFolderDialogParamCol::class) state: SetupArchiveFolderDialogContract.State,
-) {
-    ThunderbirdTheme2 {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            SetupArchiveFolderDialog(state = state)
-        }
     }
 }
