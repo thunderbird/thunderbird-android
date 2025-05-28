@@ -86,7 +86,7 @@ class GeneralSettingsDescriptions {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("enableSyncDebugLogging", Settings.versions(
-            new V(1, new BooleanSetting(false))
+            new V(103, new BooleanSetting(false))
         ));
         s.put("enableSensitiveLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))

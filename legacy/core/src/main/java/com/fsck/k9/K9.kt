@@ -27,6 +27,7 @@ object K9 : KoinComponent {
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val logger: Logger by inject()
+    private val context: Context by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -294,9 +295,6 @@ object K9 : KoinComponent {
     var fundingReminderReferenceTimestamp: Long = 0
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
-
-    private var savedContext: Context? = null
-
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -334,7 +332,6 @@ object K9 : KoinComponent {
         com.fsck.k9.logging.Timber.logger = logger
 
         checkCachedDatabaseVersion(context)
-        savedContext = context
 
         loadPrefs(generalSettingsManager.storage)
     }
@@ -516,11 +513,11 @@ object K9 : KoinComponent {
     }
 
     private fun updateSyncLogging() {
-        if (savedContext != null && Timber.forest().contains(FileLoggerTree(savedContext!!))) {
-            savedContext?.let { Timber.uproot(FileLoggerTree(it)) }
+        if (Timber.forest().contains(FileLoggerTree(context))) {
+            Timber.uproot(FileLoggerTree(context))
         }
         if (isSyncLoggingEnabled) {
-            savedContext?.let { Timber.plant(FileLoggerTree(it)) }
+            Timber.plant(FileLoggerTree(context))
         }
     }
 

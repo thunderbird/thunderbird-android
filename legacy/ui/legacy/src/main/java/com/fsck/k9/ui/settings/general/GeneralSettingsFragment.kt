@@ -48,14 +48,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.general_settings, rootKey)
         val listener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (!(newValue as Boolean)) {
-                val now = Calendar.getInstance()
-                val uriString = String.format(
-                    Locale.US,
-                    "%s_%s.txt",
-                    FileLoggerTree.DEFAULT_SYNC_FILENAME,
-                    SimpleDateFormat("yyyy-MM-dd", Locale.US).format(now.time),
-                )
-                exportLogsResultContract.launch(uriString)
+                exportLogsResultContract.launch(formatFileExportUriString())
             }
             true
         }
@@ -100,14 +93,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         if (item.itemId == R.id.exportLogs) {
             exportLogsResultContract.launch(GeneralSettingsViewModel.DEFAULT_FILENAME)
         } else if (item.itemId == R.id.exportSyncLogs) {
-            val now = Calendar.getInstance()
-            val uriString = String.format(
-                Locale.US,
-                "%s_%s.txt",
-                FileLoggerTree.DEFAULT_SYNC_FILENAME,
-                SimpleDateFormat("yyyy-MM-dd", Locale.US).format(now.time),
-            )
-            exportLogsResultContract.launch(uriString)
+            exportLogsResultContract.launch(formatFileExportUriString())
         }
 
         return super.onOptionsItemSelected(item)
@@ -153,6 +139,15 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_INDEFINITE)
             .also { snackbar = it }
             .show()
+    }
+    private fun formatFileExportUriString(): String {
+        val now = Calendar.getInstance()
+        return String.format(
+            Locale.US,
+            "%s_%s.txt",
+            FileLoggerTree.DEFAULT_SYNC_FILENAME,
+            SimpleDateFormat("yyyy-MM-dd", Locale.US).format(now.time),
+        )
     }
 
     companion object {

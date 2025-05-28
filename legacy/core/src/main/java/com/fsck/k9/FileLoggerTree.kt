@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,11 +13,13 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class FileLoggerTree(private val context: Context) : Timber.Tree() {
-    private val coroutineContext: CoroutineContext = Dispatchers.IO
+class FileLoggerTree(
+    context: Context,
+    coroutineContext: CoroutineContext = Dispatchers.IO,
+) : Timber.Tree() {
     private val coroutineScope = CoroutineScope(coroutineContext + SupervisorJob())
 
-    private val writeFile = AtomicReference<File>()
+    private val writeFile = context.createFile(fileName = "$DEFAULT_SYNC_FILENAME.txt")
     private val accumulatedLogs = ConcurrentHashMap<String, String>()
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
@@ -34,15 +35,14 @@ class FileLoggerTree(private val context: Context) : Timber.Tree() {
 
     private fun createLogFile() =
         coroutineScope.launch {
-            writeFile.lazySet(
-                context.createFile(fileName = "$DEFAULT_SYNC_FILENAME.txt"),
-            )
             writeToLogFile()
         }
 
-    private suspend fun writeToLogFile() {
+    private fun writeToLogFile() {
         val result = runCatching {
-            writeFile.get().bufferedWriter().use { it.write(accumulatedLogs.toString()) }
+            writeFile.bufferedWriter().use {
+                it.write(accumulatedLogs.entries.joinToString("\n") { it2 -> it2.key + " " + it2.value })
+            }
         }
         if (result.isFailure) {
             result.exceptionOrNull()?.printStackTrace()
@@ -55,7 +55,7 @@ class FileLoggerTree(private val context: Context) : Timber.Tree() {
         return format.format(date)
     }
     companion object {
-        private const val ANDROID_LOG_TIME_FORMAT = "MM-dd-yy kk:mm:ss.SSS"
+        private const val ANDROID_LOG_TIME_FORMAT = "MM-dd-yy hh:mm:ss.SSS"
         const val DEFAULT_SYNC_FILENAME = "thunderbird-sync-logs"
     }
 
