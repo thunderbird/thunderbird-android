@@ -71,7 +71,6 @@ dependencies {
 
     // This is necessary as RecipientPresenterTest fails to inject
     testImplementation(projects.legacy.common)
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.testing)
     testImplementation(projects.core.android.testing)
     testImplementation(projects.mail.testing)

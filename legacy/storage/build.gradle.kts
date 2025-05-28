@@ -15,7 +15,6 @@ dependencies {
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
-    testImplementation(projects.core.logging.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(libs.robolectric)
     testImplementation(libs.commons.io)
