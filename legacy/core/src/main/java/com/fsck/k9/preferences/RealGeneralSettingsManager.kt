@@ -18,6 +18,7 @@ import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.core.preferences.SettingsChangePublisher
 import net.thunderbird.core.preferences.Storage
 import net.thunderbird.core.preferences.SubTheme
+import net.thunderbird.core.preferences.getEnumOrDefault
 import timber.log.Timber
 
 /**
@@ -175,14 +176,9 @@ private fun K9.BACKGROUND_OPS.toBackgroundSync(): BackgroundSync {
 
 private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
     return try {
-        val value = getString(key, null)
-        if (value != null) {
-            enumValueOf(value)
-        } else {
-            defaultValue
-        }
+        getEnumOrDefault(key, defaultValue)
     } catch (e: Exception) {
-        Timber.e("Couldn't read setting '%s'. Using default value instead.", key)
+        Timber.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
         defaultValue
     }
 }

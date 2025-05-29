@@ -82,7 +82,7 @@ class Preferences internal constructor(
             val accounts = mutableMapOf<String, LegacyAccount>()
             val accountsInOrder = mutableListOf<LegacyAccount>()
 
-            val accountUuids = storage.getString("accountUuids", null)
+            val accountUuids = storage.getStringOrNull("accountUuids")
             if (!accountUuids.isNullOrEmpty()) {
                 accountUuids.split(",").forEach { uuid ->
                     val existingAccount = accountsMap?.get(uuid)
