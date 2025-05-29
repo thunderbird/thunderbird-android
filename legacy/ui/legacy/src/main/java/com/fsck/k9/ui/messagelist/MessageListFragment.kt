@@ -38,7 +38,7 @@ import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
 import com.fsck.k9.K9
-import com.fsck.k9.SwipeAction
+import com.fsck.k9.Preferences
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.Search
 import com.fsck.k9.activity.misc.ContactPicture
@@ -70,7 +70,9 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
+import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.mail.messages.domain.DomainContract
 import net.thunderbird.feature.mail.messages.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
@@ -97,6 +99,10 @@ class MessageListFragment :
     private val connectivityManager: ConnectivityManager by inject()
     private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
+    private val preferences: Preferences by inject()
+    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount> by inject {
+        parametersOf(preferences.storage)
+    }
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -429,7 +435,7 @@ class MessageListFragment :
                 context = requireContext(),
                 resourceProvider = SwipeResourceProvider(requireContext()),
                 swipeActionSupportProvider = swipeActionSupportProvider,
-                swipeActions = K9.swipeLeftAction to K9.swipeRightAction,
+                buildSwipeActions = buildSwipeActions,
                 adapter = adapter,
                 listener = swipeListener,
                 accounts = accounts,
@@ -1221,17 +1227,6 @@ class MessageListFragment :
         onArchive(listOf(message))
     }
 
-    private fun onArchive(item: MessageListItem) {
-        if (!item.accountWrapper.hasArchiveFolder()) {
-            setupArchiveFolderDialogFragmentFactory.show(
-                accountUuid = item.account.uuid,
-                fragmentManager = parentFragmentManager,
-            )
-            return
-        }
-        onArchive(item.messageReference)
-    }
-
     private fun onArchive(messages: List<MessageReference>) {
         if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) return
 
@@ -1774,10 +1769,15 @@ class MessageListFragment :
                     setFlag(item, Flag.FLAGGED, !item.isStarred)
                 }
 
-                SwipeAction.Archive if item.accountWrapper.isIncomingServerPop3() -> Unit
+                SwipeAction.ArchiveDisabled -> Unit
+
+                SwipeAction.ArchiveSetupArchiveFolder -> setupArchiveFolderDialogFragmentFactory.show(
+                    accountUuid = item.account.uuid,
+                    fragmentManager = parentFragmentManager,
+                )
 
                 SwipeAction.Archive -> {
-                    onArchive(item)
+                    onArchive(item.messageReference)
                 }
 
                 SwipeAction.Delete -> {
@@ -1814,7 +1814,7 @@ class MessageListFragment :
             SwipeAction.ToggleSelection -> true
             SwipeAction.ToggleRead -> !isOutbox
             SwipeAction.ToggleStar -> !isOutbox
-            SwipeAction.Archive -> {
+            SwipeAction.Archive, SwipeAction.ArchiveDisabled, SwipeAction.ArchiveSetupArchiveFolder -> {
                 !isOutbox && item.folderId != item.account.archiveFolderId
             }
 
