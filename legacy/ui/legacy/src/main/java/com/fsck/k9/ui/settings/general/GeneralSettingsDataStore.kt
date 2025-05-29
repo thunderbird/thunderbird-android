@@ -5,10 +5,10 @@ import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation
-import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
+import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SubTheme
@@ -326,7 +326,7 @@ class GeneralSettingsDataStore(
         SwipeAction.ToggleSelection -> "toggle_selection"
         SwipeAction.ToggleRead -> "toggle_read"
         SwipeAction.ToggleStar -> "toggle_star"
-        SwipeAction.Archive -> "archive"
+        SwipeAction.Archive, SwipeAction.ArchiveDisabled, SwipeAction.ArchiveSetupArchiveFolder -> "archive"
         SwipeAction.Delete -> "delete"
         SwipeAction.Spam -> "spam"
         SwipeAction.Move -> "move"

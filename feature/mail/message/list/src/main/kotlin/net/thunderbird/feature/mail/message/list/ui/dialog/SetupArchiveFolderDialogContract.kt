@@ -8,12 +8,15 @@ internal interface SetupArchiveFolderDialogContract {
     interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
 
     sealed interface State {
-        data class EmailCantBeArchived(val isDoNotShowDialogAgainChecked: Boolean = false) : State
-        data object Closed : State
+        val isDoNotShowDialogAgainChecked: Boolean
+
+        data class EmailCantBeArchived(override val isDoNotShowDialogAgainChecked: Boolean = false) : State
+        data class Closed(override val isDoNotShowDialogAgainChecked: Boolean = false) : State
 
         @Stable
         data class ChooseArchiveFolder(
             val isLoadingFolders: Boolean,
+            override val isDoNotShowDialogAgainChecked: Boolean = false,
             val folders: List<RemoteFolder> = emptyList(),
             val selectedFolder: RemoteFolder? = folders.firstOrNull(),
             val errorMessage: String? = null,
@@ -21,6 +24,7 @@ internal interface SetupArchiveFolderDialogContract {
 
         data class CreateArchiveFolder(
             val folderName: String,
+            override val isDoNotShowDialogAgainChecked: Boolean = false,
             val syncingMessage: String? = null,
             val errorMessage: String? = null,
         ) : State

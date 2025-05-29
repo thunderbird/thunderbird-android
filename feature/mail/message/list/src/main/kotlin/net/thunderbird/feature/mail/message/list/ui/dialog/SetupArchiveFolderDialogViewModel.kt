@@ -11,11 +11,16 @@ import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.outcome.handleAsync
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.R
 import net.thunderbird.feature.mail.message.list.domain.CreateArchiveFolderOutcome
-import net.thunderbird.feature.mail.message.list.domain.SetAccountFolderOutcome
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
+import net.thunderbird.feature.mail.message.list.domain.SetAccountFolderOutcome
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.Effect
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.Event
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.ViewModel
 
 internal class SetupArchiveFolderDialogViewModel(
     private val accountUuid: String,
@@ -24,40 +29,45 @@ internal class SetupArchiveFolderDialogViewModel(
     private val createArchiveFolder: DomainContract.UseCase.CreateArchiveFolder,
     private val setArchiveFolder: DomainContract.UseCase.SetArchiveFolder,
     private val resourceManager: StringsResourceManager,
-) : BaseViewModel<SetupArchiveFolderDialogContract.State, SetupArchiveFolderDialogContract.Event, SetupArchiveFolderDialogContract.Effect>(
-    initialState = SetupArchiveFolderDialogContract.State.EmailCantBeArchived(),
+    private val generalSettingsManager: GeneralSettingsManager,
+) : BaseViewModel<State, Event, Effect>(
+    initialState = if (generalSettingsManager.getSettings().shouldShowSetupArchiveFolderDialog) {
+        State.EmailCantBeArchived()
+    } else {
+        State.Closed(isDoNotShowDialogAgainChecked = true)
+    },
 ),
-    SetupArchiveFolderDialogContract.ViewModel {
+    ViewModel {
 
-    override fun event(event: SetupArchiveFolderDialogContract.Event) {
+    override fun event(event: Event) {
         when (event) {
-            SetupArchiveFolderDialogContract.Event.MoveNext -> onNext(state = state.value)
+            Event.MoveNext -> onNext(state = state.value)
 
-            SetupArchiveFolderDialogContract.Event.OnDoneClicked -> onDoneClicked(state = state.value)
+            Event.OnDoneClicked -> onDoneClicked(state = state.value)
 
-            SetupArchiveFolderDialogContract.Event.OnDismissClicked -> onDismissClicked()
+            Event.OnDismissClicked -> onDismissClicked()
 
-            is SetupArchiveFolderDialogContract.Event.OnDoNotShowDialogAgainChanged -> onDoNotShowDialogAgainChanged(isChecked = event.isChecked)
+            is Event.OnDoNotShowDialogAgainChanged -> onDoNotShowDialogAgainChanged(isChecked = event.isChecked)
 
-            is SetupArchiveFolderDialogContract.Event.OnCreateFolderClicked -> onCreateFolderClicked(newFolderName = event.newFolderName)
+            is Event.OnCreateFolderClicked -> onCreateFolderClicked(newFolderName = event.newFolderName)
 
-            is SetupArchiveFolderDialogContract.Event.OnFolderSelected -> onFolderSelected(folder = event.folder)
+            is Event.OnFolderSelected -> onFolderSelected(folder = event.folder)
         }
     }
 
-    private fun onNext(state: SetupArchiveFolderDialogContract.State) {
+    private fun onNext(state: State) {
         when (state) {
-            is SetupArchiveFolderDialogContract.State.ChooseArchiveFolder -> updateState {
-                SetupArchiveFolderDialogContract.State.CreateArchiveFolder(folderName = "")
+            is State.ChooseArchiveFolder -> updateState {
+                State.CreateArchiveFolder(folderName = "")
             }
 
-            is SetupArchiveFolderDialogContract.State.EmailCantBeArchived -> {
-                updateState { SetupArchiveFolderDialogContract.State.ChooseArchiveFolder(isLoadingFolders = true) }
+            is State.EmailCantBeArchived -> {
+                updateState { State.ChooseArchiveFolder(isLoadingFolders = true) }
                 viewModelScope.launch {
                     getAccountFolders(accountUuid = accountUuid).handle(
                         onSuccess = { folders ->
                             updateState {
-                                SetupArchiveFolderDialogContract.State.ChooseArchiveFolder(
+                                State.ChooseArchiveFolder(
                                     isLoadingFolders = false,
                                     folders = folders,
                                 )
@@ -65,7 +75,7 @@ internal class SetupArchiveFolderDialogViewModel(
                         },
                         onFailure = { error ->
                             updateState {
-                                SetupArchiveFolderDialogContract.State.ChooseArchiveFolder(
+                                State.ChooseArchiveFolder(
                                     isLoadingFolders = false,
                                     errorMessage = error.exception.message,
                                 )
@@ -79,8 +89,8 @@ internal class SetupArchiveFolderDialogViewModel(
         }
     }
 
-    private fun onDoneClicked(state: SetupArchiveFolderDialogContract.State) {
-        check(state is SetupArchiveFolderDialogContract.State.ChooseArchiveFolder) { "The '$state' state doesn't support the OnDoneClicked event" }
+    private fun onDoneClicked(state: State) {
+        check(state is State.ChooseArchiveFolder) { "The '$state' state doesn't support the OnDoneClicked event" }
         checkNotNull(state.selectedFolder) {
             "The selected folder is null. This should not happen."
         }
@@ -88,8 +98,8 @@ internal class SetupArchiveFolderDialogViewModel(
         viewModelScope.launch {
             setArchiveFolder(accountUuid = accountUuid, folder = state.selectedFolder).handle(
                 onSuccess = {
-                    updateState { SetupArchiveFolderDialogContract.State.Closed }
-                    emitEffect(SetupArchiveFolderDialogContract.Effect.DismissDialog)
+                    updateState { State.Closed() }
+                    emitEffect(Effect.DismissDialog)
                 },
                 onFailure = { error ->
                     updateState {
@@ -116,14 +126,21 @@ internal class SetupArchiveFolderDialogViewModel(
     }
 
     private fun onDismissClicked() {
-        updateState { SetupArchiveFolderDialogContract.State.Closed }
-        emitEffect(SetupArchiveFolderDialogContract.Effect.DismissDialog)
+        viewModelScope.launch {
+            generalSettingsManager.setSetupArchiveShouldNotShowAgain(state.value.isDoNotShowDialogAgainChecked.not())
+            updateState { State.Closed() }
+
+            emitEffect(Effect.DismissDialog)
+        }
     }
 
     private fun onDoNotShowDialogAgainChanged(isChecked: Boolean) {
         updateState { state ->
             when (state) {
-                is SetupArchiveFolderDialogContract.State.EmailCantBeArchived -> state.copy(isDoNotShowDialogAgainChecked = isChecked)
+                is State.EmailCantBeArchived -> state.copy(
+                    isDoNotShowDialogAgainChecked = isChecked,
+                )
+
                 else -> state
             }
         }
@@ -132,7 +149,7 @@ internal class SetupArchiveFolderDialogViewModel(
     private fun onCreateFolderClicked(newFolderName: String) {
         updateState { state ->
             when (state) {
-                is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> state.copy(
+                is State.CreateArchiveFolder -> state.copy(
                     folderName = newFolderName,
                     syncingMessage = resourceManager.stringResource(
                         R.string.setup_archive_folder_create_archive_folder_syncing,
@@ -159,7 +176,7 @@ internal class SetupArchiveFolderDialogViewModel(
             CreateArchiveFolderOutcome.Success.LocalFolderCreated -> {
                 updateState { state ->
                     when (state) {
-                        is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> state.copy(
+                        is State.CreateArchiveFolder -> state.copy(
                             syncingMessage = resourceManager.stringResource(
                                 R.string.setup_archive_folder_create_archive_folder_local_folder_created,
                             ),
@@ -174,7 +191,7 @@ internal class SetupArchiveFolderDialogViewModel(
             CreateArchiveFolderOutcome.Success.Created -> {
                 updateState { state ->
                     when (state) {
-                        is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> state.copy(
+                        is State.CreateArchiveFolder -> state.copy(
                             syncingMessage = resourceManager.stringResource(
                                 R.string.setup_archive_folder_create_archive_folder_remote_folder_created,
                             ),
@@ -184,15 +201,15 @@ internal class SetupArchiveFolderDialogViewModel(
                     }
                 }
                 delay(100.milliseconds)
-                updateState { SetupArchiveFolderDialogContract.State.Closed }
-                emitEffect(SetupArchiveFolderDialogContract.Effect.DismissDialog)
+                updateState { State.Closed() }
+                emitEffect(Effect.DismissDialog)
                 logger.debug { "Sync finished" }
             }
 
             is CreateArchiveFolderOutcome.Success.SyncStarted -> {
                 updateState { state ->
                     when (state) {
-                        is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> state.copy(
+                        is State.CreateArchiveFolder -> state.copy(
                             syncingMessage = resourceManager.stringResource(
                                 R.string.setup_archive_folder_create_archive_folder_creating_folder_email_provider,
                             ),
@@ -207,7 +224,7 @@ internal class SetupArchiveFolderDialogViewModel(
             CreateArchiveFolderOutcome.Success.UpdatingSpecialFolders ->
                 updateState { state ->
                     when (state) {
-                        is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> state.copy(
+                        is State.CreateArchiveFolder -> state.copy(
                             syncingMessage = resourceManager.stringResource(
                                 R.string.setup_archive_folder_create_archive_folder_updating_special_folder_rules,
                             ),
@@ -267,7 +284,7 @@ internal class SetupArchiveFolderDialogViewModel(
 
         updateState { state ->
             when (state) {
-                is SetupArchiveFolderDialogContract.State.CreateArchiveFolder -> state.copy(
+                is State.CreateArchiveFolder -> state.copy(
                     errorMessage = errorMessage,
                     syncingMessage = null,
                 )
@@ -280,7 +297,7 @@ internal class SetupArchiveFolderDialogViewModel(
     private fun onFolderSelected(folder: RemoteFolder) {
         updateState { state ->
             when (state) {
-                is SetupArchiveFolderDialogContract.State.ChooseArchiveFolder -> state.copy(selectedFolder = folder)
+                is State.ChooseArchiveFolder -> state.copy(selectedFolder = folder)
                 else -> state
             }
         }

@@ -5,6 +5,7 @@ import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
+import net.thunderbird.feature.mail.message.list.domain.usecase.BuildSwipeActions
 import net.thunderbird.feature.mail.message.list.domain.usecase.CreateArchiveFolder
 import net.thunderbird.feature.mail.message.list.domain.usecase.GetAccountFolders
 import net.thunderbird.feature.mail.message.list.domain.usecase.SetArchiveFolder
@@ -32,6 +33,13 @@ val featureMessageModule = module {
             specialFolderUpdaterFactory = get<SpecialFolderUpdater.Factory<BaseAccount>>(),
         )
     }
+    factory<DomainContract.UseCase.BuildSwipeActions<BaseAccount>> { parameters ->
+        BuildSwipeActions(
+            generalSettingsManager = get(),
+            accountManager = get(),
+            storage = parameters.get(),
+        )
+    }
     viewModel { parameters ->
         SetupArchiveFolderDialogViewModel(
             accountUuid = parameters.get(),
@@ -40,6 +48,7 @@ val featureMessageModule = module {
             createArchiveFolder = get(),
             setArchiveFolder = get(),
             resourceManager = get(),
+            generalSettingsManager = get(),
         )
     }
     factory<SetupArchiveFolderDialogFragmentFactory> {

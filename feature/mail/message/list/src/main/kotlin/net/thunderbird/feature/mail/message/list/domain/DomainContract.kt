@@ -2,7 +2,9 @@ package net.thunderbird.feature.mail.message.list.domain
 
 import com.fsck.k9.mail.folders.FolderServerId
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 interface DomainContract {
@@ -23,6 +25,14 @@ interface DomainContract {
                 accountUuid: String,
                 folder: RemoteFolder,
             ): Outcome<SetAccountFolderOutcome.Success, SetAccountFolderOutcome.Error>
+        }
+
+        fun interface BuildSwipeActions<out TAccount : BaseAccount> {
+            operator fun invoke(
+                accountUuids: Set<String>,
+                isIncomingServerPop3: (TAccount) -> Boolean,
+                hasArchiveFolder: (TAccount) -> Boolean,
+            ): Map<String, SwipeActions>
         }
     }
 }

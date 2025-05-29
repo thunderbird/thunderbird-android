@@ -8,22 +8,21 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
-import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.color.MaterialColors
-import net.thunderbird.core.android.account.LegacyAccountWrapper
+import net.thunderbird.core.common.action.SwipeAction
 
 class SwipeResourceProvider(private val context: Context) {
 
-    fun getActionIcon(action: SwipeAction, account: LegacyAccountWrapper): Drawable? {
+    fun getActionIcon(action: SwipeAction): Drawable? {
         val drawableId = when (action) {
             SwipeAction.None -> error("action == SwipeAction.None")
             SwipeAction.ToggleSelection -> Icons.Outlined.CheckCircle
             SwipeAction.ToggleRead -> Icons.Outlined.MarkEmailRead
             SwipeAction.ToggleStar -> Icons.Filled.Star
-            SwipeAction.Archive if account.isIncomingServerPop3() -> null
-            SwipeAction.Archive -> Icons.Outlined.Archive
+            SwipeAction.ArchiveDisabled -> null
+            SwipeAction.Archive, SwipeAction.ArchiveSetupArchiveFolder -> Icons.Outlined.Archive
             SwipeAction.Delete -> Icons.Outlined.Delete
             SwipeAction.Spam -> Icons.Outlined.Report
             SwipeAction.Move -> Icons.Outlined.DriveFileMove
@@ -42,23 +41,24 @@ class SwipeResourceProvider(private val context: Context) {
         }
     }
 
-    fun getActionColorRoles(action: SwipeAction, account: LegacyAccountWrapper): ColorRoles {
-        val harmonizedColor = MaterialColors.harmonizeWithPrimary(context, getActionColor(action, account))
+    fun getActionColorRoles(action: SwipeAction): ColorRoles {
+        val harmonizedColor = MaterialColors.harmonizeWithPrimary(context, getActionColor(action))
         return MaterialColors.getColorRoles(context, harmonizedColor)
     }
 
     @ColorInt
-    private fun getActionColor(action: SwipeAction, account: LegacyAccountWrapper): Int {
+    private fun getActionColor(action: SwipeAction): Int {
         return context.resolveColorAttribute(
             when (action) {
                 SwipeAction.None -> error("action == SwipeAction.None")
                 SwipeAction.ToggleSelection -> R.attr.messageListSwipeSelectColor
                 SwipeAction.ToggleRead -> R.attr.messageListSwipeToggleReadColor
                 SwipeAction.ToggleStar -> R.attr.messageListSwipeToggleStarColor
-                SwipeAction.Archive if account.hasArchiveFolder() ->
-                    R.attr.messageListSwipeArchiveColor
+                SwipeAction.Archive -> R.attr.messageListSwipeArchiveColor
 
-                SwipeAction.Archive -> com.google.android.material.R.attr.colorSurfaceContainerLowest
+                SwipeAction.ArchiveDisabled, SwipeAction.ArchiveSetupArchiveFolder ->
+                    com.google.android.material.R.attr.colorSurfaceContainerLowest
+
                 SwipeAction.Delete -> R.attr.messageListSwipeDeleteColor
                 SwipeAction.Spam -> R.attr.messageListSwipeSpamColor
                 SwipeAction.Move -> R.attr.messageListSwipeMoveColor
@@ -66,18 +66,16 @@ class SwipeResourceProvider(private val context: Context) {
         )
     }
 
-    fun getActionName(action: SwipeAction, account: LegacyAccountWrapper): String {
+    fun getActionName(action: SwipeAction): String {
         return context.loadString(
             when (action) {
                 SwipeAction.None -> error("action == SwipeAction.None")
                 SwipeAction.ToggleSelection -> R.string.swipe_action_select
                 SwipeAction.ToggleRead -> R.string.swipe_action_mark_as_read
                 SwipeAction.ToggleStar -> R.string.swipe_action_add_star
-                SwipeAction.Archive if account.hasArchiveFolder() && !account.isIncomingServerPop3() ->
-                    R.string.swipe_action_archive
-
-                SwipeAction.Archive if !account.isIncomingServerPop3() -> R.string.swipe_action_archive_folder_not_set
-                SwipeAction.Archive -> R.string.swipe_action_change_swipe_gestures
+                SwipeAction.Archive -> R.string.swipe_action_archive
+                SwipeAction.ArchiveSetupArchiveFolder -> R.string.swipe_action_archive_folder_not_set
+                SwipeAction.ArchiveDisabled -> R.string.swipe_action_change_swipe_gestures
                 SwipeAction.Delete -> R.string.swipe_action_delete
                 SwipeAction.Spam -> R.string.swipe_action_spam
                 SwipeAction.Move -> R.string.swipe_action_move

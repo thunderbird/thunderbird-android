@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,11 +43,17 @@ internal fun SetupArchiveFolderDialog(
         }
     }
 
+    LaunchedEffect(onDismissDialog, state.value) {
+        if (state.value is State.Closed) {
+            onDismissDialog()
+        }
+    }
+
     SetupArchiveFolderDialog(
         state = state.value,
         onNextClick = { dispatch(Event.MoveNext) },
         onDoneClick = { dispatch(Event.OnDoneClicked) },
-        onDismissRequest = onDismissDialog,
+        onDismissRequest = { dispatch(Event.OnDismissClicked) },
         onDismissClick = { dispatch(Event.OnDismissClicked) },
         onDoNotShowAgainChange = { isChecked ->
             dispatch(
@@ -185,8 +192,8 @@ private fun RowScope.SetupArchiveFolderDialogButtons(
             onCreateNewFolderClick = onNextClick,
         )
 
-        State.Closed -> Unit
-        
+        is State.Closed -> Unit
+
         is State.CreateArchiveFolder -> CreateNewArchiveFolderDialogButtons(
             isSynchronizing = state.syncingMessage?.isNotBlank() == true,
             onCancelClick = onDismissClick,

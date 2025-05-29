@@ -23,6 +23,8 @@ import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
+internal const val KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG = "shouldShowSetupArchiveFolderDialog"
+
 /**
  * Retrieve and modify general settings.
  *
@@ -156,6 +158,11 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowCorrespondentNames = isShowCorrespondentNames).persist()
     }
 
+    @Synchronized
+    override fun setSetupArchiveShouldNotShowAgain(shouldShowSetupArchiveFolderDialog: Boolean) {
+        getSettings().copy(shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -167,6 +174,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("messageListStars", settings.isShowMessageListStars)
         editor.putBoolean("animations", settings.isShowAnimations)
         editor.putBoolean("showCorrespondentNames", settings.isShowCorrespondentNames)
+        editor.putBoolean(KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG, settings.shouldShowSetupArchiveFolderDialog)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -190,6 +198,10 @@ internal class RealGeneralSettingsManager(
             isShowMessageListStars = storage.getBoolean("messageListStars", true),
             isShowAnimations = storage.getBoolean("animations", true),
             isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true),
+            shouldShowSetupArchiveFolderDialog = storage.getBoolean(
+                key = KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+                defValue = true,
+            ),
         )
 
         updateSettingsFlow(settings)

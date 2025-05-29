@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import app.k9mail.legacy.di.DI
+import com.fsck.k9.K9.DATABASE_VERSION_CACHE
+import com.fsck.k9.K9.areDatabasesUpToDate
+import com.fsck.k9.K9.checkCachedDatabaseVersion
+import com.fsck.k9.K9.setDatabasesUpToDate
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
@@ -11,6 +15,8 @@ import com.fsck.k9.preferences.RealGeneralSettingsManager
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.core.preference.storage.Storage
@@ -396,8 +402,14 @@ object K9 : KoinComponent {
 
         k9Language = storage.getStringOrDefault("language", "")
 
-        swipeRightAction = storage.getEnum("swipeRightAction", SwipeAction.ToggleSelection)
-        swipeLeftAction = storage.getEnum("swipeLeftAction", SwipeAction.ToggleRead)
+        swipeRightAction = storage.getEnum(
+            key = SwipeActions.KEY_SWIPE_ACTION_RIGHT,
+            defaultValue = SwipeAction.ToggleSelection,
+        )
+        swipeLeftAction = storage.getEnum(
+            key = SwipeActions.KEY_SWIPE_ACTION_LEFT,
+            defaultValue = SwipeAction.ToggleRead,
+        )
 
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             isTelemetryEnabled = storage.getBoolean("enableTelemetry", true)
@@ -465,8 +477,8 @@ object K9 : KoinComponent {
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
 
-        editor.putEnum("swipeRightAction", swipeRightAction)
-        editor.putEnum("swipeLeftAction", swipeLeftAction)
+        editor.putEnum(key = SwipeActions.KEY_SWIPE_ACTION_RIGHT, value = swipeRightAction)
+        editor.putEnum(key = SwipeActions.KEY_SWIPE_ACTION_LEFT, value = swipeLeftAction)
 
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             editor.putBoolean("enableTelemetry", isTelemetryEnabled)

@@ -21,4 +21,5 @@ interface GeneralSettingsManager {
     fun setIsShowMessageListStars(isShowMessageListStars: Boolean)
     fun setIsShowAnimations(isShowAnimations: Boolean)
     fun setIsShowCorrespondentNames(isShowCorrespondentNames: Boolean)
+    fun setSetupArchiveShouldNotShowAgain(shouldShowSetupArchiveFolderDialog: Boolean)
 }
