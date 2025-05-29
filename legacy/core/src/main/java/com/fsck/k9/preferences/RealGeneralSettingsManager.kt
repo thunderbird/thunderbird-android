@@ -175,14 +175,14 @@ private fun K9.BACKGROUND_OPS.toBackgroundSync(): BackgroundSync {
 
 private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
     return try {
-        val value = getString(key, null)
+        val value = getStringOrNull(key)
         if (value != null) {
             enumValueOf(value)
         } else {
             defaultValue
         }
     } catch (e: Exception) {
-        Timber.e("Couldn't read setting '%s'. Using default value instead.", key)
+        Timber.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
         defaultValue
     }
 }

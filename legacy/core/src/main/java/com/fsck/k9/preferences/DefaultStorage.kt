@@ -40,6 +40,13 @@ class DefaultStorage(
         }
     }
 
-    override fun getString(key: String?, defValue: String?): String =
-        values[key] ?: defValue.orEmpty()
+    @Throws(NoSuchElementException::class)
+    override fun getString(key: String): String =
+        values.getValue(key)
+
+    override fun getStringOrDefault(key: String, defValue: String): String =
+        getStringOrNull(key) ?: defValue
+
+    override fun getStringOrNull(key: String): String? =
+        values[key]
 }

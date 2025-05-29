@@ -347,8 +347,8 @@ object K9 : KoinComponent {
 
         isQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false)
         isNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true)
-        quietTimeStarts = storage.getString("quietTimeStarts", "21:00")
-        quietTimeEnds = storage.getString("quietTimeEnds", "7:00")
+        quietTimeStarts = storage.getStringOrDefault("quietTimeStarts", "21:00")
+        quietTimeEnds = storage.getStringOrDefault("quietTimeEnds", "7:00")
 
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true)
@@ -407,7 +407,7 @@ object K9 : KoinComponent {
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
 
-        k9Language = storage.getString("language", "")
+        k9Language = storage.getStringOrDefault("language", "")
 
         swipeRightAction = storage.getEnum("swipeRightAction", SwipeAction.ToggleSelection)
         swipeLeftAction = storage.getEnum("swipeLeftAction", SwipeAction.ToggleRead)
@@ -510,7 +510,7 @@ object K9 : KoinComponent {
 
     private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
         return try {
-            val value = getString(key, null)
+            val value = getStringOrNull(key)
             if (value != null) {
                 enumValueOf(value)
             } else {

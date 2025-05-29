@@ -341,7 +341,7 @@ class GeneralSettingsDescriptions {
     static Map<String, String> getGlobalSettings(Storage storage) {
         Map<String, String> result = new HashMap<>();
         for (String key : SETTINGS.keySet()) {
-            String value = storage.getString(key, null);
+            String value = storage.getStringOrNull(key);
             if (value != null) {
                 result.put(key, value);
             }

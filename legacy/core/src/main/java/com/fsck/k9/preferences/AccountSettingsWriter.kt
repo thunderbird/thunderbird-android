@@ -87,7 +87,7 @@ internal class AccountSettingsWriter(
     }
 
     private fun updateAccountUuids(editor: StorageEditor, accountUuid: String) {
-        val oldAccountUuids = preferences.storage.getString("accountUuids", "")
+        val oldAccountUuids = preferences.storage.getStringOrDefault("accountUuids", "")
             .split(',')
             .dropLastWhile { it.isEmpty() }
         val newAccountUuids = oldAccountUuids + accountUuid
