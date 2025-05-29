@@ -77,3 +77,32 @@ interface Storage {
      */
     fun getStringOrNull(key: String): String?
 }
+
+/**
+ * Returns the enum value for the given key, or the default value if the key is not found or the stored value
+ * is not a valid enum constant.
+ *
+ * @param T The enum type.
+ * @param key The key to look up.
+ * @param default The default enum value to return if the key is not found or the value is invalid.
+ * @return The enum value for the given key, or the default value.
+ * @throws IllegalArgumentException if the stored string value does not match any of the enum constants.
+ */
+@Throws(IllegalArgumentException::class)
+inline fun <reified T : Enum<T>> Storage.getEnumOrDefault(key: String, default: T): T =
+    getStringOrNull(key)
+        ?.let { value ->
+            try {
+                enumValueOf<T>(value)
+            } catch (e: IllegalArgumentException) {
+                throw IllegalArgumentException(
+                    buildString {
+                        append("Unable to convert stored key [$key] value [$value] ")
+                        appendLine("to enum of type ${T::class.qualifiedName}.")
+                        append("Valid values: ${enumValues<T>().joinToString()}")
+                    },
+                    e,
+                )
+            }
+        }
+        ?: default

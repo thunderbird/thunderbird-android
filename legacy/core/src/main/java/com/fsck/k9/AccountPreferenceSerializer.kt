@@ -26,6 +26,7 @@ import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preferences.getEnumOrDefault
 import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
@@ -391,8 +392,11 @@ class AccountPreferenceSerializer(
         val accountUuid = account.uuid
 
         // Get the list of account UUIDs
-        val uuids =
-            storage.getStringOrDefault("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val uuids = storage
+            .getStringOrDefault("accountUuids", "")
+            .split(",".toRegex())
+            .dropLastWhile { it.isEmpty() }
+            .toTypedArray()
 
         // Create a list of all account UUIDs excluding this account
         val newUuids = ArrayList<String>(uuids.size)
@@ -558,25 +562,18 @@ class AccountPreferenceSerializer(
         editor.putString("accountUuids", newAccountUuidsString)
     }
 
-    private fun <T : Enum<T>> getEnumStringPref(storage: Storage, key: String, defaultEnum: T): T {
-        val stringPref = storage.getStringOrNull(key)
+    private inline fun <reified T : Enum<T>> getEnumStringPref(storage: Storage, key: String, defaultEnum: T): T {
+        return try {
+            storage.getEnumOrDefault<T>(key, defaultEnum)
+        } catch (ex: IllegalArgumentException) {
+            Timber.w(
+                ex,
+                "Unable to convert preference key [%s] to enum of type %s",
+                key,
+                defaultEnum.declaringJavaClass,
+            )
 
-        return if (stringPref == null) {
             defaultEnum
-        } else {
-            try {
-                java.lang.Enum.valueOf<T>(defaultEnum.declaringJavaClass, stringPref)
-            } catch (ex: IllegalArgumentException) {
-                Timber.w(
-                    ex,
-                    "Unable to convert preference key [%s] value [%s] to enum of type %s",
-                    key,
-                    stringPref,
-                    defaultEnum.declaringJavaClass,
-                )
-
-                defaultEnum
-            }
         }
     }
 

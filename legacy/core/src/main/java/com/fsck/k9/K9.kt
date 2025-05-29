@@ -16,6 +16,7 @@ import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preferences.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -510,14 +511,9 @@ object K9 : KoinComponent {
 
     private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
         return try {
-            val value = getStringOrNull(key)
-            if (value != null) {
-                enumValueOf(value)
-            } else {
-                defaultValue
-            }
+            getEnumOrDefault(key, defaultValue)
         } catch (e: Exception) {
-            Timber.e("Couldn't read setting '%s'. Using default value instead.", key)
+            Timber.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
             defaultValue
         }
     }
