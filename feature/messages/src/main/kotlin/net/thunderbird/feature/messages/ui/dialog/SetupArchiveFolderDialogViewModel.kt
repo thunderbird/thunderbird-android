@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.outcome.handleAsync
+import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.messages.R
 import net.thunderbird.feature.messages.domain.CreateArchiveFolderOutcome
@@ -27,8 +28,13 @@ internal class SetupArchiveFolderDialogViewModel(
     private val createArchiveFolder: UseCase.CreateArchiveFolder,
     private val setArchiveFolder: UseCase.SetArchiveFolder,
     private val resourceManager: StringsResourceManager,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) : BaseViewModel<State, Event, Effect>(
-    initialState = State.EmailCantBeArchived(),
+    initialState = if (generalSettingsManager.getSettings().shouldShowSetupArchiveFolderDialog) {
+        State.EmailCantBeArchived()
+    } else {
+        State.Closed(isDoNotShowDialogAgainChecked = true)
+    },
 ),
     SetupArchiveFolderDialogContract.ViewModel {
 
@@ -91,7 +97,7 @@ internal class SetupArchiveFolderDialogViewModel(
         viewModelScope.launch {
             setArchiveFolder(accountUuid = accountUuid, folder = state.selectedFolder).handle(
                 onSuccess = {
-                    updateState { State.Closed }
+                    updateState { State.Closed() }
                     emitEffect(Effect.DismissDialog)
                 },
                 onFailure = { error ->
@@ -119,8 +125,12 @@ internal class SetupArchiveFolderDialogViewModel(
     }
 
     private fun onDismissClicked() {
-        updateState { State.Closed }
-        emitEffect(Effect.DismissDialog)
+        viewModelScope.launch {
+            generalSettingsManager.setSetupArchiveShouldNotShowAgain(state.value.isDoNotShowDialogAgainChecked.not())
+            updateState { State.Closed() }
+
+            emitEffect(Effect.DismissDialog)
+        }
     }
 
     private fun onDoNotShowDialogAgainChanged(isChecked: Boolean) {
@@ -187,7 +197,7 @@ internal class SetupArchiveFolderDialogViewModel(
                     }
                 }
                 delay(100.milliseconds)
-                updateState { State.Closed }
+                updateState { State.Closed() }
                 emitEffect(Effect.DismissDialog)
                 logger.d("Sync finished")
             }

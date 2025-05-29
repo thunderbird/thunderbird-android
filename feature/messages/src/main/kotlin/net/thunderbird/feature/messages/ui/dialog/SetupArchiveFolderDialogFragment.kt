@@ -11,7 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
-import app.k9mail.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import org.koin.android.ext.android.inject
 
 internal class SetupArchiveFolderDialogFragment : DialogFragment() {
