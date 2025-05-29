@@ -145,6 +145,10 @@ include(
 )
 
 include(
+    ":feature:messages",
+)
+
+include(
     ":core:common",
     ":core:featureflag",
     ":core:mail:mailserver",

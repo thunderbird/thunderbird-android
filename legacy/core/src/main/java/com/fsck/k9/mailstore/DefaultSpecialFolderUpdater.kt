@@ -107,7 +107,7 @@ class DefaultSpecialFolderUpdater private constructor(
         else -> throw AssertionError("Unsupported: $type")
     }
 
-    private fun setSpecialFolder(type: FolderType, folderId: Long?, selection: SpecialFolderSelection) {
+    override fun setSpecialFolder(type: FolderType, folderId: Long?, selection: SpecialFolderSelection) {
         if (getSpecialFolderId(type) == folderId) return
 
         when (type) {

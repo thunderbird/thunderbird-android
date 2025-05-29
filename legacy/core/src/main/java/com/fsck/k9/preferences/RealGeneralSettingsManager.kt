@@ -21,6 +21,8 @@ import net.thunderbird.core.preferences.SubTheme
 import net.thunderbird.core.preferences.getEnumOrDefault
 import timber.log.Timber
 
+private const val KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG = "shouldShowSetupArchiveFolderDialog"
+
 /**
  * Retrieve and modify general settings.
  *
@@ -134,12 +136,18 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(fixedMessageViewTheme = fixedMessageViewTheme).persist()
     }
 
+    @Synchronized
+    override fun setSetupArchiveShouldNotShowAgain(shouldShowSetupArchiveFolderDialog: Boolean) {
+        getSettings().copy(shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
         editor.putEnum("messageViewTheme", settings.messageViewTheme)
         editor.putEnum("messageComposeTheme", settings.messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", settings.fixedMessageViewTheme)
+        editor.putBoolean(KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG, settings.shouldShowSetupArchiveFolderDialog)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -158,6 +166,10 @@ internal class RealGeneralSettingsManager(
                 SubTheme.USE_GLOBAL,
             ),
             fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true),
+            shouldShowSetupArchiveFolderDialog = storage.getBoolean(
+                key = KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+                defValue = true,
+            ),
         )
 
         updateSettingsFlow(settings)
