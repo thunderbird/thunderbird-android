@@ -417,7 +417,7 @@ class ImapResponseParser {
             read += count;
         }
 
-        return new String(data, "US-ASCII");
+        return new String(data, "UTF8");
     }
 
     private String parseQuoted() throws IOException {
