@@ -19,6 +19,36 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
         }
     }
 
+    fun removeGmailPrefixFromFolders() {
+        lockableDatabase.execute(false) { db ->
+            val cursor = db.query(
+                "folders",
+                arrayOf("id", "name"),
+                "name LIKE ? OR name LIKE ?",
+                arrayOf("%[Gmail]/%", "%[Google Mail]/%"),
+                null,
+                null,
+                null,
+            )
+
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(cursor.getColumnIndexOrThrow("id"))
+                val name = cursor.getString(cursor.getColumnIndexOrThrow("name"))
+                val updatedName = name
+                    .replace("[Gmail]/", "")
+                    .replace("[Google Mail]/", "")
+
+                val values = ContentValues().apply {
+                    put("name", updatedName)
+                }
+
+                db.update("folders", values, "id = ?", arrayOf(id.toString()))
+            }
+
+            cursor.close()
+        }
+    }
+
     fun updateFolderSettings(folderDetails: FolderDetails) {
         lockableDatabase.execute(false) { db ->
             val contentValues = ContentValues().apply {

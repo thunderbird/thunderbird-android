@@ -42,7 +42,7 @@ class DefaultDisplayFolderRepository(
             DisplayFolder(
                 folder = Folder(
                     id = folder.id,
-                    name = folder.name,
+                    name = folder.name.replace("\\[(Gmail|Google Mail)]/".toRegex(), ""),
                     type = FolderTypeMapper.folderTypeOf(account, folder.id),
                     isLocalOnly = folder.isLocalOnly,
                 ),

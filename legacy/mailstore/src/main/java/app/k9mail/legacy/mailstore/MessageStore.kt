@@ -176,6 +176,8 @@ interface MessageStore {
      */
     fun createFolders(folders: List<CreateFolderInfo>)
 
+    fun removeGmailPrefixFromFolders()
+
     /**
      * Retrieve information about a folder.
      *
