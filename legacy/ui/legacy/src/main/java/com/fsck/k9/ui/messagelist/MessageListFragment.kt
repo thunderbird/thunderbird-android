@@ -1778,7 +1778,14 @@ class MessageListFragment :
                     setFlag(item, Flag.FLAGGED, !item.isStarred)
                 }
 
-                SwipeAction.ArchiveDisabled -> Unit
+                SwipeAction.ArchiveDisabled ->
+                    Snackbar
+                        .make(
+                            requireNotNull(view),
+                            R.string.archiving_not_available_for_this_account,
+                            Snackbar.LENGTH_LONG,
+                        )
+                        .show()
 
                 SwipeAction.ArchiveSetupArchiveFolder -> setupArchiveFolderDialogFragmentFactory.show(
                     accountUuid = item.account.uuid,
