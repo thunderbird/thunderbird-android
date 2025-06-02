@@ -19,12 +19,12 @@ class GetAccountFolders(
         withContext(ioDispatcher) {
             try {
                 Outcome.success(
-                    folderRepository
+                    data = folderRepository
                         .getRemoteFolders(accountUuid)
                         .filter { it.type == FolderType.REGULAR || it.type == FolderType.ARCHIVE },
                 )
             } catch (e: MessagingException) {
-                Outcome.failure(AccountFolderError(exception = e))
+                Outcome.failure(error = AccountFolderError(exception = e))
             }
         }
 }
