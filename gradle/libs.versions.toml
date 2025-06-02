@@ -93,6 +93,7 @@ mime4j = "0.8.12"
 minidns = "1.0.5"
 mockito = "5.18.0"
 mockitoKotlin = "5.4.0"
+mokkery = "2.8.0"
 moshi = "1.15.2"
 mozillaAndroidComponents = "139.0.4"
 okhttp = "4.12.0"
@@ -124,6 +125,7 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinBom" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
+dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
 [libraries]
 android-billing = { module = "com.android.billingclient:billing", version.ref = "androidBilling" }

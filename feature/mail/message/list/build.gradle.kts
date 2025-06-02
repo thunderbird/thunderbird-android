@@ -1,5 +1,6 @@
 plugins {
     id(ThunderbirdPlugins.Library.androidCompose)
+    alias(libs.plugins.dev.mokkery)
 }
 
 android {
