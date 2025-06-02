@@ -20,6 +20,7 @@ import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.view.K9WebViewClient
 import com.fsck.k9.view.MessageWebView
 import net.openid.appauth.AppAuthConfiguration
+import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -45,6 +46,7 @@ class DependencyInjectionTest {
                 InteractionMode::class,
                 NotificationManager::class,
                 Resources::class,
+                Storage::class,
             ),
             injections = injectedParameters(
                 definition<AccountRemoverWorker>(WorkerParameters::class),
