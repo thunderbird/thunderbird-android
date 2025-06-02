@@ -26,7 +26,8 @@ data class MessageListItem(
     val databaseId: Long,
     val threadRoot: Long,
 ) {
-    val accountWrapper: LegacyAccountWrapper = LegacyAccountWrapper.from(account)
+    val accountWrapper: LegacyAccountWrapper
+        get() = LegacyAccountWrapper.from(account)
     val messageReference: MessageReference
         get() = MessageReference(account.uuid, folderId, messageUid)
 }
