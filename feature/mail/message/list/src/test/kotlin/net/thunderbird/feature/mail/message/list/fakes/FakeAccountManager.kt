@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 
-internal class FakeAccountManager(
+internal open class FakeAccountManager(
     private val accounts: List<BaseAccount>,
 ) : AccountManager<BaseAccount> {
     override fun getAccounts(): List<BaseAccount> = error("not implemented.")

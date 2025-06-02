@@ -17,7 +17,7 @@ import net.thunderbird.feature.mail.message.list.domain.SetAccountFolderOutcome
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 internal class SetArchiveFolder(
-    private val baseAccountManager: AccountManager<BaseAccount>,
+    private val accountManager: AccountManager<BaseAccount>,
     private val backendStorageFactory: BackendStorageFactory<BaseAccount>,
     private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory<BaseAccount>,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -27,16 +27,16 @@ internal class SetArchiveFolder(
         folder: RemoteFolder,
     ): Outcome<SetAccountFolderOutcome.Success, SetAccountFolderOutcome.Error> {
         val account = withContext(ioDispatcher) {
-            baseAccountManager.getAccount(accountUuid)
+            accountManager.getAccount(accountUuid)
         } ?: return Outcome.Failure(SetAccountFolderOutcome.Error.AccountNotFound)
 
         val backend = backendStorageFactory.createBackendStorage(account)
         val specialFolderUpdater = specialFolderUpdaterFactory.create(account)
-        return withContext(ioDispatcher) {
-            backend
-                .createFolderUpdater()
-                .use { updater ->
-                    try {
+        return try {
+            withContext(ioDispatcher) {
+                backend
+                    .createFolderUpdater()
+                    .use { updater ->
                         updater.changeFolder(
                             folderServerId = folder.serverId,
                             name = folder.name,
@@ -48,13 +48,13 @@ internal class SetArchiveFolder(
                             selection = SpecialFolderSelection.MANUAL,
                         )
                         specialFolderUpdater.updateSpecialFolders()
-                        baseAccountManager.saveAccount(account)
+                        accountManager.saveAccount(account)
 
                         Outcome.success(SetAccountFolderOutcome.Success)
-                    } catch (e: MessagingException) {
-                        Outcome.Failure(SetAccountFolderOutcome.Error.UnhandledError(throwable = e))
                     }
-                }
+            }
+        } catch (e: MessagingException) {
+            Outcome.Failure(SetAccountFolderOutcome.Error.UnhandledError(throwable = e))
         }
     }
 }
