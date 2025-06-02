@@ -28,7 +28,7 @@ val featureMessageModule = module {
     }
     factory<DomainContract.UseCase.SetArchiveFolder> {
         SetArchiveFolder(
-            baseAccountManager = get<AccountManager<BaseAccount>>(),
+            accountManager = get<AccountManager<BaseAccount>>(),
             backendStorageFactory = get<BackendStorageFactory<BaseAccount>>(),
             specialFolderUpdaterFactory = get<SpecialFolderUpdater.Factory<BaseAccount>>(),
         )
