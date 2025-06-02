@@ -9,6 +9,7 @@ import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
+import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
@@ -138,6 +139,7 @@ class K9MessageStore(
         deleteMessageOperations.destroyMessages(folderId, messageServerIds)
     }
 
+    @Throws(MessagingException::class)
     override fun createFolders(folders: List<CreateFolderInfo>): Set<Long> =
         createFolderOperations.createFolders(folders)
 

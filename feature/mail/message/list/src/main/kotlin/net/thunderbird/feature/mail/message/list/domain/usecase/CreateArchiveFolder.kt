@@ -24,7 +24,7 @@ import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 class CreateArchiveFolder(
-    private val baseAccountManager: AccountManager<BaseAccount>,
+    private val accountManager: AccountManager<BaseAccount>,
     private val backendStorageFactory: BackendStorageFactory<BaseAccount>,
     private val remoteFolderCreatorFactory: RemoteFolderCreator.Factory,
     private val specialFolderUpdaterFactory: SpecialFolderUpdater.Factory<BaseAccount>,
@@ -40,7 +40,7 @@ class CreateArchiveFolder(
         }
 
         val account = withContext(ioDispatcher) {
-            baseAccountManager.getAccount(accountUuid)
+            accountManager.getAccount(accountUuid)
         } ?: run {
             emit(Outcome.failure(CreateArchiveFolderOutcome.Error.AccountNotFound))
             return@flow
@@ -110,7 +110,7 @@ class CreateArchiveFolder(
                 selection = SpecialFolderSelection.MANUAL,
             )
             specialFolderUpdater.updateSpecialFolders()
-            baseAccountManager.saveAccount(account)
+            accountManager.saveAccount(account)
         }
         emit(Outcome.success(CreateArchiveFolderOutcome.Success.Created))
     }

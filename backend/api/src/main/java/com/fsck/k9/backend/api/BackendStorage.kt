@@ -18,6 +18,7 @@ interface BackendStorage {
 }
 
 interface BackendFolderUpdater : Closeable {
+    @Throws(MessagingException::class)
     fun createFolders(folders: List<FolderInfo>): Set<Long>
     fun deleteFolders(folderServerIds: List<String>)
 

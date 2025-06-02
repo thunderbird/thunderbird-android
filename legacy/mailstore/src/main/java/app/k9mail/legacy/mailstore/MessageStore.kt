@@ -176,6 +176,7 @@ interface MessageStore {
     /**
      * Create folders.
      */
+    @Throws(MessagingException::class)
     fun createFolders(folders: List<CreateFolderInfo>): Set<Long>
 
     /**

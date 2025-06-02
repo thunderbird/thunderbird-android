@@ -6,16 +6,18 @@ import com.fsck.k9.mail.FolderType
 
 internal open class FakeBackendFolderUpdater(
     private val exception: Exception? = null,
+    private val returnEmptySetWhenCreatingFolders: Boolean = false,
 ) : BackendFolderUpdater {
     private val ids = mutableSetOf<Long>()
     override fun createFolders(folders: List<FolderInfo>): Set<Long> {
-        if (exception != null) throw exception
-
-        var last = ids.last()
-
-        ids.addAll(folders.map { ++last })
-
-        return ids
+        return when {
+            exception != null -> throw exception
+            returnEmptySetWhenCreatingFolders -> emptySet()
+            else -> ids.apply {
+                var last = ids.lastOrNull() ?: 0
+                addAll(folders.map { ++last })
+            }
+        }
     }
 
     override fun deleteFolders(folderServerIds: List<String>) {
