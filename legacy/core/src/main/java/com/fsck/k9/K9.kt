@@ -28,6 +28,7 @@ object K9 : KoinComponent {
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val logger: Logger by inject()
+    private val context: Context by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -124,6 +125,13 @@ object K9 : KoinComponent {
         set(debug) {
             field = debug
             updateLoggingStatus()
+        }
+
+    @JvmStatic
+    var isSyncLoggingEnabled: Boolean = false
+        set(debug) {
+            field = debug
+            updateSyncLogging()
         }
 
     @JvmStatic
@@ -288,7 +296,6 @@ object K9 : KoinComponent {
     var fundingReminderReferenceTimestamp: Long = 0
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
-
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -334,6 +341,7 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
+        isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
@@ -425,6 +433,7 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
+        editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("animations", isShowAnimations)
@@ -501,6 +510,15 @@ object K9 : KoinComponent {
         Timber.uprootAll()
         if (isDebugLoggingEnabled) {
             Timber.plant(DebugTree())
+        }
+    }
+
+    private fun updateSyncLogging() {
+        if (Timber.forest().contains(FileLoggerTree(context))) {
+            Timber.uproot(FileLoggerTree(context))
+        }
+        if (isSyncLoggingEnabled) {
+            Timber.plant(FileLoggerTree(context))
         }
     }
 

@@ -168,10 +168,14 @@
 
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
+    <string name="debug_enable_sync_debug_logging_title">Enable sync debug logging</string>
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
+    <string name="debug_enable_sync_debug_logging_summary">Log sync diagnostic information for 24 hours</string>
+
     <string name="debug_enable_sensitive_logging_title">Log sensitive information</string>
     <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
     <string name="debug_export_logs_title">Export logs</string>
+    <string name="debug_sync_export_logs_title">Export Sync logs</string>
     <string name="debug_export_logs_success">Export successful. Logs might contain sensitive information. Be careful who you send them to.</string>
     <string name="debug_export_logs_failure">Export failed.</string>
 
