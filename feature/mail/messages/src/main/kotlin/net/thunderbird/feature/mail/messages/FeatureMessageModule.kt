@@ -20,7 +20,7 @@ val featureMessageModule = module {
     factory<DomainContract.UseCase.GetAccountFolders> { GetAccountFolders(folderRepository = get()) }
     factory<DomainContract.UseCase.CreateArchiveFolder> {
         CreateArchiveFolder(
-            baseAccountManager = get<AccountManager<BaseAccount>>(),
+            accountManager = get<AccountManager<BaseAccount>>(),
             backendStorageFactory = get<BackendStorageFactory<BaseAccount>>(),
             specialFolderUpdaterFactory = get<SpecialFolderUpdater.Factory<BaseAccount>>(),
             remoteFolderCreatorFactory = get(named("imap")),

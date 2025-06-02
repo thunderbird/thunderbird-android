@@ -10,7 +10,7 @@ import net.thunderbird.feature.mail.account.api.BaseAccount
 class FakeBackendStorageFactory(
     backendFolderUpdater: FakeBackendFolderUpdater = FakeBackendFolderUpdater(),
 ) : BackendStorageFactory<BaseAccount> {
-    val backendFolderUpdater = spyk(backendFolderUpdater)
+    val backendFolderUpdater = spyk<BackendFolderUpdater>(backendFolderUpdater)
 
     override fun createBackendStorage(account: BaseAccount): BackendStorage = object : BackendStorage {
         override fun getFolder(folderServerId: String): BackendFolder = error("not implemented.")
