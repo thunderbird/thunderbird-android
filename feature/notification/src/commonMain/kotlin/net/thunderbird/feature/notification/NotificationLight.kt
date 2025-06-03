@@ -1,7 +1,5 @@
 package net.thunderbird.feature.notification
 
-import android.app.Notification
-
 enum class NotificationLight {
     Disabled,
     AccountColor,
@@ -19,7 +17,7 @@ enum class NotificationLight {
         return when (this) {
             Disabled -> null
             AccountColor -> accountColor.toArgb()
-            SystemDefaultColor -> Notification.COLOR_DEFAULT
+            SystemDefaultColor -> defaultColorInt
             White -> 0xFFFFFF.toArgb()
             Red -> 0xFF0000.toArgb()
             Green -> 0x00FF00.toArgb()
@@ -30,5 +28,7 @@ enum class NotificationLight {
         }
     }
 
-    private fun Int.toArgb() = this or 0xFF000000L.toInt()
+    internal fun Int.toArgb() = this or 0xFF000000L.toInt()
 }
+
+internal expect val NotificationLight.defaultColorInt: Int
