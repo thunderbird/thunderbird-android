@@ -17,6 +17,7 @@ data class GeneralSettings(
     val messageViewTheme: SubTheme,
     val messageComposeTheme: SubTheme,
     val fixedMessageViewTheme: Boolean,
+    val isShowUnifiedInbox: Boolean,
 )
 
 enum class BackgroundSync {

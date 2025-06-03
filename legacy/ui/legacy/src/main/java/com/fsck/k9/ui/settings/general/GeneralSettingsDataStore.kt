@@ -26,7 +26,7 @@ class GeneralSettingsDataStore(
         return when (key) {
             "fixed_message_view_theme" -> generalSettingsManager.getSettings().fixedMessageViewTheme
             "animations" -> K9.isShowAnimations
-            "show_unified_inbox" -> K9.isShowUnifiedInbox
+            "show_unified_inbox" -> generalSettingsManager.getSettings().isShowUnifiedInbox
             "show_starred_count" -> K9.isShowStarredCount
             "messagelist_stars" -> K9.isShowMessageListStars
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
@@ -57,7 +57,7 @@ class GeneralSettingsDataStore(
         when (key) {
             "fixed_message_view_theme" -> setFixedMessageViewTheme(value)
             "animations" -> K9.isShowAnimations = value
-            "show_unified_inbox" -> K9.isShowUnifiedInbox = value
+            "show_unified_inbox" -> setIsShowUnifiedInbox(value)
             "show_starred_count" -> K9.isShowStarredCount = value
             "messagelist_stars" -> K9.isShowMessageListStars = value
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
@@ -149,9 +149,11 @@ class GeneralSettingsDataStore(
             "notification_quick_delete" -> {
                 K9.notificationQuickDeleteBehaviour = K9.NotificationQuickDelete.valueOf(value)
             }
+
             "lock_screen_notification_visibility" -> {
                 K9.lockScreenNotificationVisibility = K9.LockScreenNotificationVisibility.valueOf(value)
             }
+
             "background_ops" -> setBackgroundOps(value)
             "quiet_time_starts" -> K9.quietTimeStarts = value
             "quiet_time_ends" -> K9.quietTimeEnds = value
@@ -172,6 +174,7 @@ class GeneralSettingsDataStore(
             "post_mark_as_unread_navigation" -> {
                 K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
             }
+
             else -> return
         }
 
@@ -190,6 +193,7 @@ class GeneralSettingsDataStore(
                     if (K9.isConfirmMarkAllRead) add("mark_all_read")
                 }
             }
+
             "messageview_visible_refile_actions" -> {
                 mutableSetOf<String>().apply {
                     if (K9.isMessageViewDeleteActionVisible) add("delete")
@@ -199,6 +203,7 @@ class GeneralSettingsDataStore(
                     if (K9.isMessageViewSpamActionVisible) add("spam")
                 }
             }
+
             else -> defValues
         }
     }
@@ -214,6 +219,7 @@ class GeneralSettingsDataStore(
                 K9.isConfirmDiscardMessage = "discard" in checkedValues
                 K9.isConfirmMarkAllRead = "mark_all_read" in checkedValues
             }
+
             "messageview_visible_refile_actions" -> {
                 K9.isMessageViewDeleteActionVisible = "delete" in checkedValues
                 K9.isMessageViewArchiveActionVisible = "archive" in checkedValues
@@ -221,6 +227,7 @@ class GeneralSettingsDataStore(
                 K9.isMessageViewCopyActionVisible = "copy" in checkedValues
                 K9.isMessageViewSpamActionVisible = "spam" in checkedValues
             }
+
             else -> return
         }
 
@@ -253,6 +260,11 @@ class GeneralSettingsDataStore(
     private fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setFixedMessageViewTheme(fixedMessageViewTheme)
+    }
+
+    private fun setIsShowUnifiedInbox(isShowUnifiedInbox: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsShowUnifiedInbox(isShowUnifiedInbox)
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {

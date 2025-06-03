@@ -35,6 +35,7 @@ data class MessageListActivityConfig(
     val fontSizeMessageViewContentAsPercent: Int,
     val swipeRightAction: SwipeAction,
     val swipeLeftAction: SwipeAction,
+    val generalSettingsManager: GeneralSettingsManager,
 ) {
 
     companion object {
@@ -44,7 +45,7 @@ data class MessageListActivityConfig(
             val settings = generalSettingsManager.getSettings()
             return MessageListActivityConfig(
                 appTheme = settings.appTheme,
-                isShowUnifiedInbox = K9.isShowUnifiedInbox,
+                isShowUnifiedInbox = generalSettingsManager.getSettings().isShowUnifiedInbox,
                 isShowMessageListStars = K9.isShowMessageListStars,
                 isShowCorrespondentNames = K9.isShowCorrespondentNames,
                 isMessageListSenderAboveSubject = K9.isMessageListSenderAboveSubject,
@@ -70,6 +71,7 @@ data class MessageListActivityConfig(
                 fontSizeMessageViewContentAsPercent = K9.fontSizes.messageViewContentAsPercent,
                 swipeRightAction = K9.swipeRightAction,
                 swipeLeftAction = K9.swipeLeftAction,
+                generalSettingsManager = generalSettingsManager,
             )
         }
     }

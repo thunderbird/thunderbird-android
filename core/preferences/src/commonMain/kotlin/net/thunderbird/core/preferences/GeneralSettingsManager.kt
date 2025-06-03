@@ -16,4 +16,5 @@ interface GeneralSettingsManager {
     fun setMessageViewTheme(subTheme: SubTheme)
     fun setMessageComposeTheme(subTheme: SubTheme)
     fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean)
+    fun setIsShowUnifiedInbox(isShowUnifiedInbox: Boolean)
 }

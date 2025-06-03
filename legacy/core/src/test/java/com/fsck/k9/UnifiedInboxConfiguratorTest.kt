@@ -1,17 +1,19 @@
 package com.fsck.k9
 
-import com.fsck.k9.preferences.RealGeneralSettingsManager
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.preferences.GeneralSettingsManager
 import org.junit.After
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.GlobalContext.stopKoin
 import org.koin.dsl.module
+import org.mockito.ArgumentMatchers.anyBoolean
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -19,24 +21,22 @@ import org.mockito.junit.MockitoJUnitRunner
 class UnifiedInboxConfiguratorTest {
 
     private lateinit var accountManager: AccountManager
+    private lateinit var generalSettingsManager: GeneralSettingsManager
     private lateinit var configurator: UnifiedInboxConfigurator
 
     @Before
     fun setUp() {
         accountManager = mock(AccountManager::class.java)
-        configurator = UnifiedInboxConfigurator(accountManager)
+        generalSettingsManager = mock(GeneralSettingsManager::class.java)
+        configurator = UnifiedInboxConfigurator(accountManager, generalSettingsManager)
 
-        // Start Koin with a minimal module
         startKoin {
             modules(
                 module {
-                    single { mock(RealGeneralSettingsManager::class.java) }
+                    single { generalSettingsManager } // No need for RealGeneralSettingsManager here
                 },
             )
         }
-
-        // Reset K9 settings to avoid state leakage across tests
-        K9.isShowUnifiedInbox = false
     }
 
     @After
@@ -53,7 +53,7 @@ class UnifiedInboxConfiguratorTest {
         configurator.configureUnifiedInbox()
 
         // Then
-        assertTrue(K9.isShowUnifiedInbox)
+        verify(generalSettingsManager).setIsShowUnifiedInbox(true)
     }
 
     @Test
@@ -65,7 +65,7 @@ class UnifiedInboxConfiguratorTest {
         configurator.configureUnifiedInbox()
 
         // Then
-        assertTrue(!K9.isShowUnifiedInbox)
+        verify(generalSettingsManager, never()).setIsShowUnifiedInbox(anyBoolean())
     }
 
     @Test
@@ -77,6 +77,6 @@ class UnifiedInboxConfiguratorTest {
         configurator.configureUnifiedInbox()
 
         // Then
-        assertTrue(!K9.isShowUnifiedInbox)
+        verify(generalSettingsManager, never()).setIsShowUnifiedInbox(anyBoolean())
     }
 }

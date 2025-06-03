@@ -408,6 +408,7 @@ open class MessageList :
             }
         }
     }
+
     private fun decodeExtras(intent: Intent): Boolean {
         if (intent.action === Intent.ACTION_SEARCH &&
             !intent.component?.className.equals(
@@ -418,8 +419,9 @@ open class MessageList :
         }
 
         val launchData = decodeExtrasToLaunchData(intent)
-        val search = if (launchData.search.isUnifiedInbox && !K9.isShowUnifiedInbox) {
-            createDefaultLocalSearch(uuid = launchData.messageReference?.accountUuid)
+        // If Unified Inbox was disabled show default account instead
+        val search = if (launchData.search.isUnifiedInbox && !generalSettingsManager.getSettings().isShowUnifiedInbox) {
+            createDefaultLocalSearch()
         } else {
             launchData.search
         }
@@ -569,7 +571,7 @@ open class MessageList :
         }
 
         // Default action
-        val search = if (K9.isShowUnifiedInbox) {
+        val search = if (generalSettingsManager.getSettings().isShowUnifiedInbox) {
             createSearchAccount().relatedSearch
         } else {
             createDefaultLocalSearch()
@@ -793,7 +795,7 @@ open class MessageList :
             collapseSearchView()
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
-                if (K9.isShowUnifiedInbox) {
+                if (generalSettingsManager.getSettings().isShowUnifiedInbox) {
                     if (search!!.id != SearchAccount.UNIFIED_INBOX) {
                         openUnifiedInbox()
                     } else {
@@ -1475,7 +1477,9 @@ open class MessageList :
         when {
             singleFolderMode -> drawer.selectFolder(search!!.accountUuids[0], search!!.folderIds[0])
             // Don't select any item in the drawer because the Unified Inbox is displayed, but not listed in the drawer
-            search!!.id == SearchAccount.UNIFIED_INBOX && !K9.isShowUnifiedInbox -> drawer.deselect()
+            search!!.id == SearchAccount.UNIFIED_INBOX &&
+                !generalSettingsManager.getSettings().isShowUnifiedInbox -> drawer.deselect()
+
             search!!.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
             else -> drawer.deselect()
         }
