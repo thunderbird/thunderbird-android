@@ -104,11 +104,6 @@ object Log : Logger {
     }
 
     @JvmStatic
-    fun v(t: Throwable?) {
-        logger.verbose(message = { t?.message ?: "" }, throwable = t)
-    }
-
-    @JvmStatic
     fun d(message: String?, vararg args: Any?) {
         logger.debug(message = { formatMessage(message, args) })
     }
@@ -116,11 +111,6 @@ object Log : Logger {
     @JvmStatic
     fun d(t: Throwable?, message: String?, vararg args: Any?) {
         logger.debug(message = { formatMessage(message, args) }, throwable = t)
-    }
-
-    @JvmStatic
-    fun d(t: Throwable?) {
-        logger.debug(message = { t?.message ?: "" }, throwable = t)
     }
 
     @JvmStatic
@@ -134,11 +124,6 @@ object Log : Logger {
     }
 
     @JvmStatic
-    fun i(t: Throwable?) {
-        logger.info(message = { t?.message ?: "" }, throwable = t)
-    }
-
-    @JvmStatic
     fun w(message: String?, vararg args: Any?) {
         logger.warn(message = { formatMessage(message, args) })
     }
@@ -149,11 +134,6 @@ object Log : Logger {
     }
 
     @JvmStatic
-    fun w(t: Throwable?) {
-        logger.warn(message = { t?.message ?: "" }, throwable = t)
-    }
-
-    @JvmStatic
     fun e(message: String?, vararg args: Any?) {
         logger.error(message = { formatMessage(message, args) })
     }
@@ -161,11 +141,6 @@ object Log : Logger {
     @JvmStatic
     fun e(t: Throwable?, message: String?, vararg args: Any?) {
         logger.error(message = { formatMessage(message, args) }, throwable = t)
-    }
-
-    @JvmStatic
-    fun e(t: Throwable?) {
-        logger.error(message = { t?.message ?: "" }, throwable = t)
     }
 
     private fun formatMessage(message: String?, args: Array<out Any?>): String {

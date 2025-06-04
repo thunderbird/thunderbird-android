@@ -137,31 +137,26 @@ class LogTest {
         // Verbose methods
         Log.v("Verbose message %s", "arg1")
         Log.v(exception, "Verbose message with exception %s", "arg1")
-        Log.v(exception)
 
         // Debug methods
         Log.d("Debug message %s", "arg1")
         Log.d(exception, "Debug message with exception %s", "arg1")
-        Log.d(exception)
 
         // Info methods
         Log.i("Info message %s", "arg1")
         Log.i(exception, "Info message with exception %s", "arg1")
-        Log.i(exception)
 
         // Warn methods
         Log.w("Warn message %s", "arg1")
         Log.w(exception, "Warn message with exception %s", "arg1")
-        Log.w(exception)
 
         // Error methods
         Log.e("Error message %s", "arg1")
         Log.e(exception, "Error message with exception %s", "arg1")
-        Log.e(exception)
 
         // Assert
         val events = logger.events
-        assertThat(events).hasSize(15)
+        assertThat(events).hasSize(10)
 
         // Verify verbose events
         assertThat(events[0]).isEqualTo(
@@ -182,18 +177,9 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-        assertThat(events[2]).isEqualTo(
-            LogEvent(
-                level = LogLevel.VERBOSE,
-                tag = null,
-                message = "Test exception",
-                throwable = exception,
-                timestamp = TIMESTAMP,
-            ),
-        )
 
         // Verify debug events
-        assertThat(events[3]).isEqualTo(
+        assertThat(events[2]).isEqualTo(
             LogEvent(
                 level = LogLevel.DEBUG,
                 tag = null,
@@ -202,7 +188,7 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-        assertThat(events[4]).isEqualTo(
+        assertThat(events[3]).isEqualTo(
             LogEvent(
                 level = LogLevel.DEBUG,
                 tag = null,
@@ -211,18 +197,9 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-        assertThat(events[5]).isEqualTo(
-            LogEvent(
-                level = LogLevel.DEBUG,
-                tag = null,
-                message = "Test exception",
-                throwable = exception,
-                timestamp = TIMESTAMP,
-            ),
-        )
 
         // Verify info events
-        assertThat(events[6]).isEqualTo(
+        assertThat(events[4]).isEqualTo(
             LogEvent(
                 level = LogLevel.INFO,
                 tag = null,
@@ -231,7 +208,7 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-        assertThat(events[7]).isEqualTo(
+        assertThat(events[5]).isEqualTo(
             LogEvent(
                 level = LogLevel.INFO,
                 tag = null,
@@ -240,18 +217,9 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-        assertThat(events[8]).isEqualTo(
-            LogEvent(
-                level = LogLevel.INFO,
-                tag = null,
-                message = "Test exception",
-                throwable = exception,
-                timestamp = TIMESTAMP,
-            ),
-        )
 
         // Verify warn events
-        assertThat(events[9]).isEqualTo(
+        assertThat(events[6]).isEqualTo(
             LogEvent(
                 level = LogLevel.WARN,
                 tag = null,
@@ -260,7 +228,7 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-        assertThat(events[10]).isEqualTo(
+        assertThat(events[7]).isEqualTo(
             LogEvent(
                 level = LogLevel.WARN,
                 tag = null,
@@ -269,18 +237,9 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-        assertThat(events[11]).isEqualTo(
-            LogEvent(
-                level = LogLevel.WARN,
-                tag = null,
-                message = "Test exception",
-                throwable = exception,
-                timestamp = TIMESTAMP,
-            ),
-        )
 
         // Verify error events
-        assertThat(events[12]).isEqualTo(
+        assertThat(events[8]).isEqualTo(
             LogEvent(
                 level = LogLevel.ERROR,
                 tag = null,
@@ -289,20 +248,11 @@ class LogTest {
                 timestamp = TIMESTAMP,
             ),
         )
-        assertThat(events[13]).isEqualTo(
+        assertThat(events[9]).isEqualTo(
             LogEvent(
                 level = LogLevel.ERROR,
                 tag = null,
                 message = "Error message with exception arg1",
-                throwable = exception,
-                timestamp = TIMESTAMP,
-            ),
-        )
-        assertThat(events[14]).isEqualTo(
-            LogEvent(
-                level = LogLevel.ERROR,
-                tag = null,
-                message = "Test exception",
                 throwable = exception,
                 timestamp = TIMESTAMP,
             ),
