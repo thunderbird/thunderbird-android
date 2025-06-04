@@ -145,9 +145,6 @@ object K9 : KoinComponent {
     var backgroundOps = BACKGROUND_OPS.ALWAYS
 
     @JvmStatic
-    var isShowAnimations = true
-
-    @JvmStatic
     var isConfirmDelete = false
 
     @JvmStatic
@@ -331,7 +328,6 @@ object K9 : KoinComponent {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
-        isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
@@ -421,7 +417,6 @@ object K9 : KoinComponent {
         editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
-        editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("autofitWidth", isAutoFitWidth)
         editor.putBoolean("quietTimeEnabled", isQuietTimeEnabled)

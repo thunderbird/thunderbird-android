@@ -146,6 +146,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowMessageListStars = isShowMessageListStars).persist()
     }
 
+    override fun setIsShowAnimations(isShowAnimations: Boolean) {
+        getSettings().copy(isShowAnimations = isShowAnimations).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -155,6 +159,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("showUnifiedInbox", settings.isShowUnifiedInbox)
         editor.putBoolean("showStarredCount", settings.isShowStarredCount)
         editor.putBoolean("messageListStars", settings.isShowMessageListStars)
+        editor.putBoolean("animations", settings.isShowAnimations)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -176,6 +181,7 @@ internal class RealGeneralSettingsManager(
             isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", false),
             isShowStarredCount = storage.getBoolean("showStarredCount", false),
             isShowMessageListStars = storage.getBoolean("messageListStars", true),
+            isShowAnimations = storage.getBoolean("animations", true),
         )
 
         updateSettingsFlow(settings)
