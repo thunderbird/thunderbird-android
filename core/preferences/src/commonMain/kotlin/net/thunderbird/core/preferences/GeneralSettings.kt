@@ -21,6 +21,7 @@ data class GeneralSettings(
     val isShowStarredCount: Boolean,
     val isShowMessageListStars: Boolean,
     val isShowAnimations: Boolean,
+    val isShowCorrespondentNames: Boolean,
 )
 
 enum class BackgroundSync {

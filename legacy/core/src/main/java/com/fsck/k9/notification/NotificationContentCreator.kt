@@ -8,10 +8,12 @@ import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preferences.GeneralSettingsManager
 
 internal class NotificationContentCreator(
     private val resourceProvider: NotificationResourceProvider,
     private val contactRepository: ContactRepository,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun createFromMessage(account: LegacyAccount, message: LocalMessage): NotificationContent {
         val sender = getMessageSender(account, message)
@@ -77,7 +79,11 @@ internal class NotificationContentCreator(
         if (!fromAddresses.isNullOrEmpty()) {
             isSelf = account.isAnIdentity(fromAddresses)
             if (!isSelf) {
-                return MessageHelper.toFriendly(fromAddresses.first(), localContactRepository).toString()
+                return MessageHelper.toFriendly(
+                    fromAddresses.first(),
+                    generalSettingsManager.getSettings().isShowCorrespondentNames,
+                    localContactRepository,
+                ).toString()
             }
         }
 
@@ -87,6 +93,7 @@ internal class NotificationContentCreator(
             if (!recipients.isNullOrEmpty()) {
                 val recipientDisplayName = MessageHelper.toFriendly(
                     address = recipients.first(),
+                    isShowCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
                     contactRepository = localContactRepository,
                 ).toString()
                 return resourceProvider.recipientDisplayName(recipientDisplayName)

@@ -20,4 +20,5 @@ interface GeneralSettingsManager {
     fun setIsShowStarredCount(isShowStarredCount: Boolean)
     fun setIsShowMessageListStars(isShowMessageListStars: Boolean)
     fun setIsShowAnimations(isShowAnimations: Boolean)
+    fun setIsShowCorrespondentNames(isShowCorrespondentNames: Boolean)
 }

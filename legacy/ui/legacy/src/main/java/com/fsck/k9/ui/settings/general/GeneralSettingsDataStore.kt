@@ -29,7 +29,7 @@ class GeneralSettingsDataStore(
             "show_unified_inbox" -> generalSettingsManager.getSettings().isShowUnifiedInbox
             "show_starred_count" -> generalSettingsManager.getSettings().isShowStarredCount
             "messagelist_stars" -> generalSettingsManager.getSettings().isShowMessageListStars
-            "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
+            "messagelist_show_correspondent_names" -> generalSettingsManager.getSettings().isShowCorrespondentNames
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
             "messagelist_show_contact_name" -> K9.isShowContactName
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor
@@ -60,7 +60,7 @@ class GeneralSettingsDataStore(
             "show_unified_inbox" -> setIsShowUnifiedInbox(value)
             "show_starred_count" -> setIsShowStarredCount(isShowStarredCount = value)
             "messagelist_stars" -> setIsShowMessageListStars(isShowMessageListStars = value)
-            "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
+            "messagelist_show_correspondent_names" -> setIsShowCorrespondentNames(isShowCorrespondentNames = value)
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value
             "messagelist_show_contact_name" -> K9.isShowContactName = value
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor = value
@@ -280,6 +280,11 @@ class GeneralSettingsDataStore(
     private fun setIsShowAnimations(isShowAnimations: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setIsShowAnimations(isShowAnimations)
+    }
+
+    private fun setIsShowCorrespondentNames(isShowCorrespondentNames: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsShowCorrespondentNames(isShowCorrespondentNames)
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {
