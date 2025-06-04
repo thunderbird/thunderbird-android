@@ -11,9 +11,9 @@ import com.fsck.k9.helper.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
-import timber.log.Timber
 
 private const val NO_FOLDER_ID = 0L
 
@@ -45,7 +45,7 @@ class FolderSettingsViewModel(
             val account = loadAccount(accountUuid)
             val folderDetails = folderRepository.loadFolderDetails(account, folderId)
             if (folderDetails == null) {
-                Timber.w("Folder with ID $folderId not found")
+                Log.w("Folder with ID $folderId not found")
                 emit(FolderNotFound)
                 return@liveData
             }

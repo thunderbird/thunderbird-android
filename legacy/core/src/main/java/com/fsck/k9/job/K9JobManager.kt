@@ -3,7 +3,7 @@ package com.fsck.k9.job
 import androidx.work.WorkManager
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class K9JobManager(
     private val workManager: WorkManager,
@@ -11,7 +11,7 @@ class K9JobManager(
     private val mailSyncWorkerManager: MailSyncWorkerManager,
 ) {
     fun scheduleAllMailJobs() {
-        Timber.v("scheduling all jobs")
+        Log.v("scheduling all jobs")
         scheduleMailSync()
     }
 
@@ -29,7 +29,7 @@ class K9JobManager(
     }
 
     private fun cancelAllMailSyncJobs() {
-        Timber.v("canceling mail sync job")
+        Log.v("canceling mail sync job")
         workManager.cancelAllWorkByTag(MailSyncWorkerManager.MAIL_SYNC_TAG)
     }
 }

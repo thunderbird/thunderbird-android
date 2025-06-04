@@ -4,7 +4,7 @@ import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Activity to select an account for the unread widget.
@@ -23,7 +23,7 @@ class UnreadWidgetConfigurationActivity : K9Activity() {
         }
 
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
-            Timber.e("Received an invalid widget ID")
+            Log.e("Received an invalid widget ID")
             finish()
             return
         }

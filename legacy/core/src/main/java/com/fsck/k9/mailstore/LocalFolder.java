@@ -52,7 +52,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class LocalFolder {
@@ -794,7 +794,7 @@ public class LocalFolder {
                 try {
                     updateOrInsertMessagePart(db, new ContentValues(), part, messagePartId);
                 } catch (Exception e) {
-                    Timber.e(e, "Error writing message part");
+                    Log.e(e, "Error writing message part");
                 }
 
                 return null;
@@ -838,7 +838,7 @@ public class LocalFolder {
                     try {
                         message.setFlags(flags, value);
                     } catch (MessagingException e) {
-                        Timber.e(e, "Something went wrong while setting flag");
+                        Log.e(e, "Something went wrong while setting flag");
                     }
                 }
 
@@ -1108,7 +1108,7 @@ public class LocalFolder {
                 File file = localStore.getAttachmentFile(messagePartId);
                 if (file.exists()) {
                     if (!file.delete() && K9.isDebugLoggingEnabled()) {
-                        Timber.d("Couldn't delete message part file: %s", file.getAbsolutePath());
+                        Log.d("Couldn't delete message part file: %s", file.getAbsolutePath());
                     }
                 }
             }

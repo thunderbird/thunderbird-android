@@ -10,7 +10,6 @@ dependencies {
     implementation(projects.core.android.account)
 
     implementation(libs.preferencex)
-    implementation(libs.timber)
 
     testImplementation(libs.robolectric)
 }

@@ -18,7 +18,7 @@ import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import net.thunderbird.core.common.net.HostNameUtils.isLegalIPAddress
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class DefaultTrustedSocketFactory(
     private val context: Context?,
@@ -116,7 +116,7 @@ class DefaultTrustedSocketFactory(
                  */
                 supportedProtocols = socket.supportedProtocols
             } catch (e: Exception) {
-                Timber.e(e, "Error getting information about available SSL/TLS ciphers and protocols")
+                Log.e(e, "Error getting information about available SSL/TLS ciphers and protocols")
             }
 
             ENABLED_CIPHERS = enabledCiphers?.let { remove(it, DISALLOWED_CIPHERS) }
@@ -144,7 +144,7 @@ class DefaultTrustedSocketFactory(
             try {
                 socket.javaClass.getMethod("setHostname", String::class.java).invoke(socket, hostname)
             } catch (e: Throwable) {
-                Timber.e(e, "Could not call SSLSocket#setHostname(String) method ")
+                Log.e(e, "Could not call SSLSocket#setHostname(String) method ")
             }
         }
     }

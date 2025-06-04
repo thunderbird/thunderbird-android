@@ -4,13 +4,13 @@ import net.thunderbird.core.common.mail.EmailAddressParserException
 import net.thunderbird.core.common.mail.toUserEmailAddress
 import net.thunderbird.core.common.net.toHostname
 import net.thunderbird.core.common.net.toPort
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 @Suppress("TooManyFunctions")
 internal class QrCodePayloadValidator {
     fun isValid(data: QrCodeData): Boolean {
         if (data.version != 1) {
-            Timber.d("Unsupported version: %s", data.version)
+            Log.d("Unsupported version: %s", data.version)
             return false
         }
 
@@ -18,7 +18,7 @@ internal class QrCodePayloadValidator {
             validateData(data)
             true
         } catch (e: IllegalArgumentException) {
-            Timber.d(e, "QR code payload failed validation")
+            Log.d(e, "QR code payload failed validation")
             false
         }
     }

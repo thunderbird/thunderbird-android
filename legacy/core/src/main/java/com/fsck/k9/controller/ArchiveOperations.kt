@@ -8,7 +8,7 @@ import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 internal class ArchiveOperations(
     private val messagingController: MessagingController,
@@ -44,11 +44,11 @@ internal class ArchiveOperations(
             val sourceFolderId = messageFolder.databaseId
             when (val archiveFolderId = account.archiveFolderId) {
                 null -> {
-                    Timber.v("No archive folder configured for account %s", account)
+                    Log.v("No archive folder configured for account %s", account)
                 }
 
                 sourceFolderId -> {
-                    Timber.v("Skipping messages already in archive folder")
+                    Log.v("Skipping messages already in archive folder")
                 }
 
                 else -> {

@@ -28,7 +28,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
@@ -387,7 +387,7 @@ internal class SettingsImportViewModel(
                     initializeSettingsList(items)
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Error reading settings file")
+                Log.e(e, "Error reading settings file")
 
                 updateUiModel {
                     showReadFailureText()
@@ -423,7 +423,7 @@ internal class SettingsImportViewModel(
                     updateCloseButtonAndImportStatusText()
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Error importing settings")
+                Log.e(e, "Error importing settings")
 
                 updateUiModel {
                     showImportErrorText()

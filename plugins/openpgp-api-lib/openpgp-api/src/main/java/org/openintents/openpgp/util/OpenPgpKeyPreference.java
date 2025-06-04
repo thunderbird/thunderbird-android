@@ -30,6 +30,7 @@ import android.util.AttributeSet;
 import androidx.core.content.IntentCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
+import net.thunderbird.core.logging.legacy.Log;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError;
@@ -38,7 +39,6 @@ import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.R;
 import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpCallback;
 import org.openintents.openpgp.util.OpenPgpUtils.UserId;
-import timber.log.Timber;
 
 
 public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManagerCallback {
@@ -171,7 +171,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
                         OpenPgpApi.RESULT_ERROR,
                         OpenPgpError.class
                     );
-                    Timber.e("RESULT_CODE_ERROR: %s", error.getMessage());
+                    Log.e("RESULT_CODE_ERROR: %s", error.getMessage());
 
                     break;
                 }
@@ -191,7 +191,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
 
     private void apiStartPendingIntent() {
         if (pendingIntentSelectKey == null) {
-            Timber.e("Tried to launch pending intent but didn't have any?");
+            Log.e("Tried to launch pending intent but didn't have any?");
             return;
         }
 
@@ -199,7 +199,7 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
             OpenPgpIntentStarter.startIntentSenderForResult(intentSenderFragment,
                 pendingIntentSelectKey.getIntentSender(), REQUEST_CODE_KEY_PREFERENCE);
         } catch (IntentSender.SendIntentException e) {
-            Timber.e(e,"Error launching pending intent");
+            Log.e(e,"Error launching pending intent");
         } finally {
             pendingIntentSelectKey = null;
         }

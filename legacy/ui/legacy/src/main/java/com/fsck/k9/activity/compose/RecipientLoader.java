@@ -29,7 +29,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import org.apache.james.mime4j.util.CharsetUtil;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
 
@@ -234,7 +234,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                 return;
             }
         } catch (Exception e) {
-            Timber.e(e, "Couldn't obtain recipients from crypto provider!");
+            Log.e(e, "Couldn't obtain recipients from crypto provider!");
             return;
         }
 

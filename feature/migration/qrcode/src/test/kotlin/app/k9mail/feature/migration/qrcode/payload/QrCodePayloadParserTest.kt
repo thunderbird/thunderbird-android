@@ -5,10 +5,18 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlin.test.Test
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
 
 @Suppress("LongMethod")
 class QrCodePayloadParserTest {
     private val parser = QrCodePayloadParser(QrCodePayloadAdapter())
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `one account, one identity, no account name, no passwords`() {

@@ -12,7 +12,7 @@ import androidx.core.app.PendingIntentCompat
 import com.fsck.k9.K9
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import net.thunderbird.core.android.account.LegacyAccount
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class NotificationHelper(
     private val context: Context,
@@ -45,7 +45,7 @@ class NotificationHelper(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
                 e.message?.contains("does not have permission to") == true
             ) {
-                Timber.e(e, "Failed to create a notification for a new message")
+                Log.e(e, "Failed to create a notification for a new message")
                 showNotifyErrorNotification(account)
             } else {
                 throw e

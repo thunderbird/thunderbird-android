@@ -30,11 +30,11 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.ParcelFileDescriptor;
 
+import net.thunderbird.core.logging.legacy.Log;
 import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSinkTransferThread;
 import org.openintents.openpgp.util.ParcelFileDescriptorUtil.DataSourceTransferThread;
-import timber.log.Timber;
 
 
 public class OpenPgpApi {
@@ -475,7 +475,7 @@ public class OpenPgpApi {
             pumpThread.join();
             return new OpenPgpDataResult<>(result, pumpThread.getResult());
         } catch (Exception e) {
-            Timber.e(e, "Exception in executeApi call");
+            Log.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -512,7 +512,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Timber.e(e, "Exception in executeApi call");
+            Log.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -597,7 +597,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Timber.e(e, "Exception in executeApi call");
+            Log.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -626,7 +626,7 @@ public class OpenPgpApi {
 
             return result;
         } catch (Exception e) {
-            Timber.e(e, "Exception in executeApi call");
+            Log.e(e, "Exception in executeApi call");
             Intent result = new Intent();
             result.putExtra(RESULT_CODE, RESULT_CODE_ERROR);
             result.putExtra(RESULT_ERROR,
@@ -643,7 +643,7 @@ public class OpenPgpApi {
             try {
                 input.close();
             } catch (IOException e) {
-                Timber.e(e, "IOException when closing ParcelFileDescriptor!");
+                Log.e(e, "IOException when closing ParcelFileDescriptor!");
             }
         }
     }

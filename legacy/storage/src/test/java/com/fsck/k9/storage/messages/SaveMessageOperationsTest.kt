@@ -21,7 +21,10 @@ import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import com.fsck.k9.storage.RobolectricTest
 import java.io.ByteArrayOutputStream
 import java.util.Stack
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
 class SaveMessageOperationsTest : RobolectricTest() {
@@ -41,6 +44,11 @@ class SaveMessageOperationsTest : RobolectricTest() {
         basicPartInfoExtractor,
         threadMessageOperations,
     )
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @After
     fun tearDown() {

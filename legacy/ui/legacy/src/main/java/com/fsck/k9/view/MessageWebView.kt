@@ -9,9 +9,9 @@ import android.webkit.WebView
 import com.fsck.k9.mailstore.AttachmentResolver
 import net.thunderbird.core.android.common.view.showInDarkMode
 import net.thunderbird.core.android.common.view.showInLightMode
+import net.thunderbird.core.logging.legacy.Log
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
 
 class MessageWebView : WebView, KoinComponent {
     constructor(context: Context) : super(context)
@@ -25,7 +25,7 @@ class MessageWebView : WebView, KoinComponent {
         try {
             settings.blockNetworkLoads = shouldBlockNetworkData
         } catch (e: SecurityException) {
-            Timber.e(e, "Failed to unblock network loads. Missing INTERNET permission?")
+            Log.e(e, "Failed to unblock network loads. Missing INTERNET permission?")
         }
     }
 

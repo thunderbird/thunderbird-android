@@ -57,12 +57,12 @@ import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
-import timber.log.Timber
 
 @Suppress("LargeClass")
 class MessageViewFragment :
@@ -209,7 +209,7 @@ class MessageViewFragment :
     }
 
     private fun loadMessage(messageReference: MessageReference) {
-        Timber.d("MessageViewFragment displaying message %s", messageReference)
+        Log.d("MessageViewFragment displaying message %s", messageReference)
 
         account = accountManager.getAccount(messageReference.accountUuid)
             ?: error("Account ${messageReference.accountUuid} not found")
@@ -953,7 +953,7 @@ class MessageViewFragment :
                     maskedRequestCode,
                 )
             } catch (e: SendIntentException) {
-                Timber.e(e, "Irrecoverable error calling PendingIntent!")
+                Log.e(e, "Irrecoverable error calling PendingIntent!")
             }
 
             return true

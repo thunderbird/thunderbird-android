@@ -30,7 +30,7 @@ import com.fsck.k9.message.quote.TextQuoteCreator;
 import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.message.signature.TextSignatureRemover;
 import net.thunderbird.core.android.account.QuoteStyle;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class QuotedMessagePresenter {
@@ -202,7 +202,7 @@ public class QuotedMessagePresenter {
             try {
                 cursorPosition = Integer.parseInt(k9identity.get(IdentityField.CURSOR_POSITION));
             } catch (Exception e) {
-                Timber.e(e, "Could not parse cursor position for MessageCompose; continuing.");
+                Log.e(e, "Could not parse cursor position for MessageCompose; continuing.");
             }
         }
 
@@ -265,15 +265,15 @@ public class QuotedMessagePresenter {
                 String text = MessageExtractor.getTextFromPart(part);
 
                 if (text == null) {
-                    Timber.d("Empty message; skipping.");
+                    Log.d("Empty message; skipping.");
                     bodyText = "";
                 } else {
-                    Timber.d("Loading message with offset %d, length %d. Text length is %d.",
+                    Log.d("Loading message with offset %d, length %d. Text length is %d.",
                             bodyOffset, bodyLength, text.length());
 
                     if (bodyOffset + bodyLength > text.length()) {
                         // The draft was edited outside of K-9 Mail?
-                        Timber.d("The identity field from the draft contains an invalid LENGTH/OFFSET");
+                        Log.d("The identity field from the draft contains an invalid LENGTH/OFFSET");
                         bodyOffset = 0;
                         bodyLength = 0;
                     }
@@ -308,14 +308,14 @@ public class QuotedMessagePresenter {
             quotedTextFormat = SimpleMessageFormat.TEXT;
             processSourceMessageText(messageViewInfo.rootPart, bodyOffset, bodyLength, true);
         } else {
-            Timber.e("Unhandled message format.");
+            Log.e("Unhandled message format.");
         }
 
         // Set the cursor position if we have it.
         try {
             view.setMessageContentCursorPosition(cursorPosition);
         } catch (Exception e) {
-            Timber.e(e, "Could not set cursor position in MessageCompose; ignoring.");
+            Log.e(e, "Could not set cursor position in MessageCompose; ignoring.");
         }
 
         showOrHideQuotedText(quotedMode);
@@ -337,7 +337,7 @@ public class QuotedMessagePresenter {
 
         String messageText = MessageExtractor.getTextFromPart(textPart);
 
-        Timber.d("Loading message with offset %d, length %d. Text length is %d.",
+        Log.d("Loading message with offset %d, length %d. Text length is %d.",
                 bodyOffset, bodyLength, messageText.length());
 
         // If we had a body length (and it was valid), separate the composition from the quoted text
@@ -364,7 +364,7 @@ public class QuotedMessagePresenter {
                 messageText = messageText.substring(bodyOffset, bodyOffset + bodyLength);
             } catch (IndexOutOfBoundsException e) {
                 // Invalid bodyOffset or bodyLength.  The draft was edited outside of K-9 Mail?
-                Timber.d("The identity field from the draft contains an invalid bodyOffset/bodyLength");
+                Log.d("The identity field from the draft contains an invalid bodyOffset/bodyLength");
             }
         }
 

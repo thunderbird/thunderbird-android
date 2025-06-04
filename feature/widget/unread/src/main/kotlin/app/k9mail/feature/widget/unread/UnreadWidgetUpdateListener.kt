@@ -3,7 +3,7 @@ package app.k9mail.feature.widget.unread
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import com.fsck.k9.mail.Message
 import net.thunderbird.core.android.account.LegacyAccount
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class UnreadWidgetUpdateListener(
     private val unreadWidgetUpdater: UnreadWidgetUpdater,
@@ -14,7 +14,7 @@ class UnreadWidgetUpdateListener(
         try {
             unreadWidgetUpdater.updateAll()
         } catch (e: Exception) {
-            Timber.e(e, "Error while updating unread widget(s)")
+            Log.e(e, "Error while updating unread widget(s)")
         }
     }
 

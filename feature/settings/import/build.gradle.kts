@@ -24,5 +24,5 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.fastadapter)
 
-    implementation(libs.timber)
+    testImplementation(projects.core.logging.testing)
 }

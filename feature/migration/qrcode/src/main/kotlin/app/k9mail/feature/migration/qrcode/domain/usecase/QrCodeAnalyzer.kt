@@ -9,7 +9,7 @@ import com.google.zxing.NotFoundException
 import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 import com.google.zxing.multi.qrcode.QRCodeMultiReader
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * An [ImageAnalysis.Analyzer] that scans for QR codes and notifies the listener for each one found.
@@ -47,7 +47,7 @@ internal class QrCodeAnalyzer(
         } catch (e: NotFoundException) {
             emptyList()
         } catch (e: Exception) {
-            Timber.e(e, "Error while trying to read QR code")
+            Log.e(e, "Error while trying to read QR code")
             emptyList()
         } finally {
             qrCodeReader.reset()

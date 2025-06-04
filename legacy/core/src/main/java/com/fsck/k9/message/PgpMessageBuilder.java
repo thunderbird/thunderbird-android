@@ -42,7 +42,7 @@ import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class PgpMessageBuilder extends MessageBuilder {
@@ -249,7 +249,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         for (String address : addresses) {
             byte[] keyMaterial = autocryptOpenPgpApiInteractor.getKeyMaterialForUserId(openPgpApi, address);
             if (keyMaterial == null) {
-                Timber.e("Failed fetching gossip key material for address %s", address);
+                Log.e("Failed fetching gossip key material for address %s", address);
                 continue;
             }
             autocryptOperations.addAutocryptGossipHeaderToPart(bodyPart, keyMaterial, address);
@@ -337,7 +337,7 @@ public class PgpMessageBuilder extends MessageBuilder {
                         throw new IllegalStateException(
                                 "Got opportunistic error, but encryption wasn't supposed to be opportunistic!");
                     }
-                    Timber.d("Skipping encryption due to opportunistic mode");
+                    Log.d("Skipping encryption due to opportunistic mode");
                     return null;
                 }
                 */
@@ -415,7 +415,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             String micAlgParameter = result.getStringExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG);
             contentType += String.format("; micalg=\"%s\"", micAlgParameter);
         } else {
-            Timber.e("missing micalg parameter for pgp multipart/signed!");
+            Log.e("missing micalg parameter for pgp multipart/signed!");
         }
         currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
     }

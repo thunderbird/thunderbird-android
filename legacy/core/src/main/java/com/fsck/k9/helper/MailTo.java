@@ -6,7 +6,7 @@ import android.net.Uri;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.internet.MessageIdParser;
 import com.fsck.k9.mail.internet.MimeHeaderParserException;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ public final class MailTo {
                 List<String> inReplyToMessageIds = MessageIdParser.parseList(inReplyTo);
                 inReplyToMessageId = inReplyToMessageIds.get(0);
             } catch (MimeHeaderParserException e) {
-                Timber.w(e, "Ignoring invalid in-reply-to value within the mailto: link.");
+                Log.w(e, "Ignoring invalid in-reply-to value within the mailto: link.");
             }
         }
 

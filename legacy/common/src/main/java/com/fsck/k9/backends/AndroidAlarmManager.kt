@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 private const val ALARM_ACTION = "com.fsck.k9.backends.ALARM"
 private const val REQUEST_CODE = 1
@@ -48,7 +48,7 @@ class AndroidAlarmManager(
                 override fun onReceive(context: Context?, intent: Intent?) {
                     val callback = callback.getAndSet(null)
                     if (callback == null) {
-                        Timber.w("Alarm triggered but 'callback' was null")
+                        Log.w("Alarm triggered but 'callback' was null")
                     } else {
                         coroutineScope.launch {
                             callback.invoke()

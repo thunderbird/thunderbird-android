@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 import net.thunderbird.core.common.provider.AppNameProvider
+import net.thunderbird.core.logging.legacy.Log
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 class AboutFragment : Fragment() {
     private val appNameProvider: AppNameProvider by inject()
@@ -84,7 +84,7 @@ class AboutFragment : Fragment() {
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             packageInfo.versionName
         } catch (e: PackageManager.NameNotFoundException) {
-            Timber.e(e, "Error getting PackageInfo")
+            Log.e(e, "Error getting PackageInfo")
             null
         }
     }

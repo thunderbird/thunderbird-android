@@ -28,7 +28,7 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.LegacyAccount;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 /**
@@ -102,7 +102,7 @@ public class RawMessageProvider extends ContentProvider {
             message.writeTo(countingOutputStream);
             return countingOutputStream.getCount();
         } catch (IOException | MessagingException e) {
-            Timber.w(e, "Unable to compute message size");
+            Log.w(e, "Unable to compute message size");
             return 0;
         }
     }
@@ -144,7 +144,7 @@ public class RawMessageProvider extends ContentProvider {
             }
             return openPgpDataSource.startPumpThread();
         } catch (IOException e) {
-            Timber.e(e, "Error creating ParcelFileDescriptor");
+            Log.e(e, "Error creating ParcelFileDescriptor");
             return null;
         }
     }
@@ -175,7 +175,7 @@ public class RawMessageProvider extends ContentProvider {
 
         LegacyAccount account = Preferences.getPreferences().getAccount(accountUuid);
         if (account == null) {
-            Timber.w("Account not found: %s", accountUuid);
+            Log.w("Account not found: %s", accountUuid);
             return null;
         }
 
@@ -186,7 +186,7 @@ public class RawMessageProvider extends ContentProvider {
 
             LocalMessage message = localFolder.getMessage(uid);
             if (message == null || message.getDatabaseId() == 0) {
-                Timber.w("Message not found: folder=%s, uid=%s", folderId, uid);
+                Log.w("Message not found: folder=%s, uid=%s", folderId, uid);
                 return null;
             }
 
@@ -196,7 +196,7 @@ public class RawMessageProvider extends ContentProvider {
 
             return message;
         } catch (MessagingException e) {
-            Timber.e(e, "Error loading message: folder=%d, uid=%s", folderId, uid);
+            Log.e(e, "Error loading message: folder=%d, uid=%s", folderId, uid);
             return null;
         }
     }

@@ -8,7 +8,7 @@ import com.fsck.k9.search.SqlQueryBuilder
 import com.fsck.k9.search.getAccounts
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 internal class MessageListLoader(
     private val preferences: Preferences,
@@ -21,7 +21,7 @@ internal class MessageListLoader(
         return try {
             getMessageListInfo(config)
         } catch (e: Exception) {
-            Timber.e(e, "Error while fetching message list")
+            Log.e(e, "Error while fetching message list")
 
             // TODO: Return an error object instead of an empty list
             emptyList()

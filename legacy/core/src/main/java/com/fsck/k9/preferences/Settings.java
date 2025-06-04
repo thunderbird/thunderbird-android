@@ -10,7 +10,7 @@ import java.util.TreeMap;
 
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 /*
  * TODO:
@@ -63,7 +63,7 @@ class Settings {
 
             boolean useDefaultValue;
             if (!importedSettings.containsKey(key)) {
-                Timber.v("Key \"%s\" wasn't found in the imported file.%s",
+                Log.v("Key \"%s\" wasn't found in the imported file.%s",
                         key,
                         (useDefaultValues) ? " Using default value." : "");
 
@@ -75,7 +75,7 @@ class Settings {
                     validatedSettings.put(key, internalValue);
                     useDefaultValue = false;
                 } catch (InvalidSettingValueException e) {
-                    Timber.v("Key \"%s\" has invalid value \"%s\" in imported file. %s",
+                    Log.v("Key \"%s\" has invalid value \"%s\" in imported file. %s",
                             key,
                             prettyValue,
                             (useDefaultValues) ? "Using default value." : "Skipping.");
@@ -125,7 +125,7 @@ class Settings {
 
                 serializedSettings.put(settingName, stringValue);
             } else {
-                Timber.w("Settings.convert() called with a setting that should have been removed: %s", settingName);
+                Log.w("Settings.convert() called with a setting that should have been removed: %s", settingName);
             }
         }
 

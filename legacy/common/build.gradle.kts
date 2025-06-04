@@ -24,7 +24,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.preferencex)
-    implementation(libs.timber)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.appauth)
 

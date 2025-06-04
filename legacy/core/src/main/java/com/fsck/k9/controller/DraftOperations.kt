@@ -14,8 +14,8 @@ import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.SaveMessageDataCreator
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import org.jetbrains.annotations.NotNull
-import timber.log.Timber
 
 internal class DraftOperations(
     private val messagingController: @NotNull MessagingController,
@@ -40,7 +40,7 @@ internal class DraftOperations(
 
             messageId
         } catch (e: MessagingException) {
-            Timber.e(e, "Unable to save message as draft.")
+            Log.e(e, "Unable to save message as draft.")
             null
         }
     }
@@ -106,10 +106,10 @@ internal class DraftOperations(
         val uploadMessageId = command.uploadMessageId
         val localMessage = localFolder.getMessage(uploadMessageId)
         if (localMessage == null) {
-            Timber.w("Couldn't find local copy of message to upload [ID: %d]", uploadMessageId)
+            Log.w("Couldn't find local copy of message to upload [ID: %d]", uploadMessageId)
             return
         } else if (!localMessage.uid.startsWith(K9.LOCAL_UID_PREFIX)) {
-            Timber.i("Message [ID: %d] to be uploaded already has a server ID set. Skipping upload.", uploadMessageId)
+            Log.i("Message [ID: %d] to be uploaded already has a server ID set. Skipping upload.", uploadMessageId)
         } else {
             uploadMessage(backend, account, localFolder, localMessage)
         }
@@ -124,7 +124,7 @@ internal class DraftOperations(
         localMessage: LocalMessage,
     ) {
         val folderServerId = localFolder.serverId
-        Timber.d("Uploading message [ID: %d] to remote folder '%s'", localMessage.databaseId, folderServerId)
+        Log.d("Uploading message [ID: %d] to remote folder '%s'", localMessage.databaseId, folderServerId)
 
         val fetchProfile = FetchProfile().apply {
             add(FetchProfile.Item.BODY)
@@ -134,7 +134,7 @@ internal class DraftOperations(
         val messageServerId = backend.uploadMessage(folderServerId, localMessage)
 
         if (messageServerId == null) {
-            Timber.w(
+            Log.w(
                 "Failed to get a server ID for the uploaded message. Removing local copy [ID: %d]",
                 localMessage.databaseId,
             )
@@ -153,7 +153,7 @@ internal class DraftOperations(
 
     private fun deleteMessage(backend: Backend, localFolder: LocalFolder, messageId: Long) {
         val messageServerId = localFolder.getMessageUidById(messageId) ?: run {
-            Timber.i("Couldn't find local copy of message [ID: %d] to be deleted. Skipping delete.", messageId)
+            Log.i("Couldn't find local copy of message [ID: %d] to be deleted. Skipping delete.", messageId)
             return
         }
 

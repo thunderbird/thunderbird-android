@@ -29,7 +29,7 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.html.HtmlConverter;
 import app.k9mail.html.cleaner.HtmlProcessor;
 import org.openintents.openpgp.util.OpenPgpUtils;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import static com.fsck.k9.mail.internet.MimeUtility.getHeaderParameter;
 import static com.fsck.k9.mail.internet.Viewable.Alternative;
@@ -68,7 +68,7 @@ public class MessageViewInfoExtractor {
 
         if (cryptoContentPart == null) {
             if (cryptoAnnotations != null && !cryptoAnnotations.isEmpty()) {
-                Timber.e("Got crypto message cryptoContentAnnotations but no crypto root part!");
+                Log.e("Got crypto message cryptoContentAnnotations but no crypto root part!");
             }
             MessageViewInfo messageViewInfo = extractSimpleMessageForView(message, message);
             return messageViewInfo.withSubject(message.getSubject(), false);

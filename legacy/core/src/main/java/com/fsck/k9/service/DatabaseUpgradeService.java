@@ -16,7 +16,7 @@ import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.LegacyAccount;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 /**
  * Service used to upgrade the accounts' databases and/or track the progress of the upgrade.
@@ -119,7 +119,7 @@ public class DatabaseUpgradeService extends Service {
         boolean success = mRunning.compareAndSet(false, true);
         if (success) {
             // The service wasn't running yet.
-            Timber.i("DatabaseUpgradeService started");
+            Log.i("DatabaseUpgradeService started");
 
             acquireWakelock();
 
@@ -155,7 +155,7 @@ public class DatabaseUpgradeService extends Service {
      */
     private void stopService() {
         stopSelf();
-        Timber.i("DatabaseUpgradeService stopped");
+        Log.i("DatabaseUpgradeService stopped");
 
         releaseWakelock();
         mRunning.set(false);
@@ -193,7 +193,7 @@ public class DatabaseUpgradeService extends Service {
                 // Account.getLocalStore() is blocking and will upgrade the database if necessary
                 DI.get(LocalStoreProvider.class).getInstance(account);
             } catch (Exception e) {
-                Timber.e(e, "Error while upgrading database");
+                Log.e(e, "Error while upgrading database");
             }
 
             mProgress++;

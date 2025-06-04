@@ -28,7 +28,7 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 private const val KEY_AUTHORIZATION = "app.k9mail_auth"
 
@@ -76,7 +76,7 @@ internal class AuthViewModel(
         return try {
             account.oAuthState?.let { AuthState.jsonDeserialize(it) } ?: AuthState()
         } catch (e: Exception) {
-            Timber.e(e, "Error deserializing AuthState")
+            Log.e(e, "Error deserializing AuthState")
             AuthState()
         }
     }

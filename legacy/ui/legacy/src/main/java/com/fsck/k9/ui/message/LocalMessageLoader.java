@@ -5,7 +5,7 @@ import android.content.Context;
 import androidx.loader.content.AsyncTaskLoader;
 
 import net.thunderbird.core.android.account.LegacyAccount;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.MessagingException;
@@ -54,7 +54,7 @@ public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
                 return loadMessageFromDatabase();
             }
         } catch (Exception e) {
-            Timber.e(e, "Error while loading message from database");
+            Log.e(e, "Error while loading message from database");
             return null;
         }
     }

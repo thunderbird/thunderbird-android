@@ -11,7 +11,7 @@ import androidx.loader.content.AsyncTaskLoader;
 
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.message.Attachment.LoadingState;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -96,17 +96,17 @@ public class AttachmentInfoLoader  extends AsyncTaskLoader<Attachment> {
                     File f = new File(uriString.substring("file://".length()));
                     size = f.length();
                 } else {
-                    Timber.v("Not a file: %s", uriString);
+                    Log.v("Not a file: %s", uriString);
                 }
             } else {
-                Timber.v("old attachment.size: %d", size);
+                Log.v("old attachment.size: %d", size);
             }
-            Timber.v("new attachment.size: %d", size);
+            Log.v("new attachment.size: %d", size);
 
             cachedResultAttachment = sourceAttachment.deriveWithMetadataLoaded(usableContentType, name, size);
             return cachedResultAttachment;
         } catch (Exception e) {
-            Timber.e(e, "Error getting attachment meta data");
+            Log.e(e, "Error getting attachment meta data");
 
             cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();
             return cachedResultAttachment;

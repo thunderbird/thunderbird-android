@@ -48,6 +48,8 @@ import java.io.OutputStream
 import java.util.Date
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.QuoteStyle
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.Before
 import org.junit.Test
@@ -93,6 +95,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     @Before
     @Throws(Exception::class)
     fun setUp() {
+        Log.logger = TestLogger()
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.getApplication().cacheDir)
         `when`(autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
             .thenReturn(AUTOCRYPT_KEY_MATERIAL)
