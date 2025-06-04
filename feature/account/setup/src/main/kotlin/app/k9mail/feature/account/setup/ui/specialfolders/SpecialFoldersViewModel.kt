@@ -12,12 +12,12 @@ import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.FormEvent
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.State
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract.ViewModel
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.folders.FolderFetcherException
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.logging.legacy.Log
 
 class SpecialFoldersViewModel(
     private val formUiModel: SpecialFoldersContract.FormUiModel,
@@ -90,7 +90,7 @@ class SpecialFoldersViewModel(
         return try {
             getSpecialFolderOptions()
         } catch (exception: FolderFetcherException) {
-            Timber.e(exception, "Error while loading special folders")
+            Log.e(exception, "Error while loading special folders")
             updateState { state ->
                 state.copy(
                     isLoading = false,

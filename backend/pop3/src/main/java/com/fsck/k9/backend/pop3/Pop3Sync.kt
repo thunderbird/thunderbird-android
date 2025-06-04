@@ -5,7 +5,6 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.helper.ExceptionHelper
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
@@ -20,6 +19,7 @@ import java.util.ArrayList
 import java.util.Date
 import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
+import net.thunderbird.core.logging.legacy.Log
 
 @Suppress("TooManyFunctions")
 internal class Pop3Sync(
@@ -42,13 +42,13 @@ internal class Pop3Sync(
     fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         var remoteFolder: Pop3Folder? = null
 
-        Timber.i("Synchronizing folder %s:%s", accountName, folder)
+        Log.i("Synchronizing folder %s:%s", accountName, folder)
 
         var backendFolder: BackendFolder? = null
         try {
-            Timber.d("SYNC: About to process pending commands for account %s", accountName)
+            Log.d("SYNC: About to process pending commands for account %s", accountName)
 
-            Timber.v("SYNC: About to get local folder %s", folder)
+            Log.v("SYNC: About to get local folder %s", folder)
             backendFolder = backendStorage.getFolder(folder)
 
             listener.syncStarted(folder)
@@ -59,7 +59,7 @@ internal class Pop3Sync(
              */
             var localUidMap: Map<String, Long?> = backendFolder.getAllMessagesAndEffectiveDates()
 
-            Timber.v("SYNC: About to get remote folder %s", folder)
+            Log.v("SYNC: About to get remote folder %s", folder)
             remoteFolder = remoteStore.getFolder(folder)
 
             /*
@@ -83,7 +83,7 @@ internal class Pop3Sync(
             /*
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
-            Timber.v("SYNC: About to open remote folder %s", folder)
+            Log.v("SYNC: About to open remote folder %s", folder)
 
             remoteFolder.open()
 
@@ -103,7 +103,7 @@ internal class Pop3Sync(
             val remoteMessages: MutableList<Pop3Message?> = ArrayList<Pop3Message?>()
             val remoteUidMap: MutableMap<String?, Pop3Message?> = HashMap<String?, Pop3Message?>()
 
-            Timber.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount)
+            Log.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount)
 
             val earliestDate = syncConfig.earliestPollDate
             val earliestTimestamp = if (earliestDate != null) earliestDate.time else 0L
@@ -116,7 +116,7 @@ internal class Pop3Sync(
                     remoteStart += (remoteMessageCount - visibleLimit).coerceAtLeast(0)
                 }
 
-                Timber.v(
+                Log.v(
                     "SYNC: About to get messages %d through %d for folder %s",
                     remoteStart,
                     remoteMessageCount,
@@ -141,7 +141,7 @@ internal class Pop3Sync(
                     }
                 }
 
-                Timber.v("SYNC: Got %d messages for folder %s", remoteUidMap.size, folder)
+                Log.v("SYNC: Got %d messages for folder %s", remoteUidMap.size, folder)
 
                 listener.syncHeadersFinished(folder, headerProgress.get(), remoteUidMap.size)
             } else if (remoteMessageCount < 0) {
@@ -191,7 +191,7 @@ internal class Pop3Sync(
             backendFolder.setLastChecked(System.currentTimeMillis())
             backendFolder.setStatus(null)
 
-            Timber.d(
+            Log.d(
                 "Done synchronizing folder %s:%s @ %tc with %d new messages",
                 accountName,
                 folder,
@@ -201,11 +201,11 @@ internal class Pop3Sync(
 
             listener.syncFinished(folder)
 
-            Timber.i("Done synchronizing folder %s:%s", accountName, folder)
+            Log.i("Done synchronizing folder %s:%s", accountName, folder)
         } catch (e: AuthenticationFailedException) {
             listener.syncFailed(folder, "Authentication failure", e)
         } catch (e: Exception) {
-            Timber.e(e, "synchronizeMailbox")
+            Log.e(e, "synchronizeMailbox")
             // If we don't set the last checked, it can try too often during
             // failure conditions
             val rootMessage = ExceptionHelper.getRootCauseMessage(e)
@@ -214,13 +214,13 @@ internal class Pop3Sync(
                     backendFolder.setStatus(rootMessage)
                     backendFolder.setLastChecked(System.currentTimeMillis())
                 } catch (e1: Exception) {
-                    Timber.e(e1, "Could not set last checked on folder %s:%s", accountName, folder)
+                    Log.e(e1, "Could not set last checked on folder %s:%s", accountName, folder)
                 }
             }
 
             listener.syncFailed(folder, rootMessage, e)
 
-            Timber.e(
+            Log.e(
                 "Failed synchronizing folder %s:%s @ %tc",
                 accountName,
                 folder,
@@ -260,7 +260,7 @@ internal class Pop3Sync(
         val downloadStarted = Date() // now
 
         if (earliestDate != null) {
-            Timber.d("Only syncing messages after %s", earliestDate)
+            Log.d("Only syncing messages after %s", earliestDate)
         }
         val folder = remoteFolder.serverId
 
@@ -278,7 +278,7 @@ internal class Pop3Sync(
         val todo = unsyncedMessages.size + syncFlagMessages.size
         listener.syncProgress(folder, progress.get(), todo)
 
-        Timber.d("SYNC: Have %d unsynced messages", unsyncedMessages.size)
+        Log.d("SYNC: Have %d unsynced messages", unsyncedMessages.size)
 
         messages.clear()
         val largeMessages: MutableList<Pop3Message> = ArrayList<Pop3Message>()
@@ -294,17 +294,17 @@ internal class Pop3Sync(
             val fp = FetchProfile()
             fp.add(FetchProfile.Item.ENVELOPE)
 
-            Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
+            Log.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
 
             fetchUnsyncedMessages(
                 syncConfig, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress,
                 todo, fp, listener,
             )
 
-            Timber.d("SYNC: Synced unsynced messages for folder %s", folder)
+            Log.d("SYNC: Synced unsynced messages for folder %s", folder)
         }
 
-        Timber.d(
+        Log.d(
             "SYNC: Have %d large messages and %d small messages out of %d unsynced messages",
             largeMessages.size,
             smallMessages.size,
@@ -342,7 +342,7 @@ internal class Pop3Sync(
         )
         largeMessages.clear()
 
-        Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get())
+        Log.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get())
 
         // If the oldest message seen on this sync is newer than the oldest message seen on the previous sync, then
         // we want to move our high-water mark forward.
@@ -378,7 +378,7 @@ internal class Pop3Sync(
     ) {
         val messageServerId = message.uid
         if (message.isSet(Flag.DELETED)) {
-            Timber.v("Message with uid %s is marked as deleted", messageServerId)
+            Log.v("Message with uid %s is marked as deleted", messageServerId)
 
             syncFlagMessages.add(message)
             return
@@ -388,11 +388,11 @@ internal class Pop3Sync(
 
         if (!messagePresentLocally) {
             if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                Timber.v("Message with uid %s has not yet been downloaded", messageServerId)
+                Log.v("Message with uid %s has not yet been downloaded", messageServerId)
 
                 unsyncedMessages.add(message)
             } else {
-                Timber.v("Message with uid %s is partially or fully downloaded", messageServerId)
+                Log.v("Message with uid %s is partially or fully downloaded", messageServerId)
 
                 // Store the updated message locally
                 val completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL)
@@ -410,17 +410,17 @@ internal class Pop3Sync(
 
         val messageFlags: Set<Flag> = backendFolder.getMessageFlags(messageServerId)
         if (!messageFlags.contains(Flag.DELETED)) {
-            Timber.v("Message with uid %s is present in the local store", messageServerId)
+            Log.v("Message with uid %s is present in the local store", messageServerId)
 
             if (!messageFlags.contains(Flag.X_DOWNLOADED_FULL) && !messageFlags.contains(Flag.X_DOWNLOADED_PARTIAL)) {
-                Timber.v("Message with uid %s is not downloaded, even partially; trying again", messageServerId)
+                Log.v("Message with uid %s is not downloaded, even partially; trying again", messageServerId)
 
                 unsyncedMessages.add(message)
             } else {
                 syncFlagMessages.add(message)
             }
         } else {
-            Timber.v("Local copy of message with uid %s is marked as deleted", messageServerId)
+            Log.v("Local copy of message with uid %s is marked as deleted", messageServerId)
         }
     }
 
@@ -450,7 +450,7 @@ internal class Pop3Sync(
                     try {
                         if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
                             if (message.isSet(Flag.DELETED)) {
-                                Timber.v(
+                                Log.v(
                                     "Newly downloaded message %s:%s:%s was marked deleted on server, " +
                                         "skipping",
                                     accountName,
@@ -458,7 +458,7 @@ internal class Pop3Sync(
                                     message.uid,
                                 )
                             } else {
-                                Timber.d(
+                                Log.d(
                                     "Newly downloaded message %s is older than %s, skipping",
                                     message.uid,
                                     earliestDate,
@@ -481,7 +481,7 @@ internal class Pop3Sync(
                             smallMessages.add(message)
                         }
                     } catch (e: Exception) {
-                        Timber.e(e, "Error while storing downloaded message.")
+                        Log.e(e, "Error while storing downloaded message.")
                     }
                 }
             },
@@ -503,7 +503,7 @@ internal class Pop3Sync(
     ) {
         val folder = remoteFolder.serverId
 
-        Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
+        Log.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
 
         remoteFolder.fetch(
             smallMessages,
@@ -525,7 +525,7 @@ internal class Pop3Sync(
                         }
 
                         val messageServerId = message.uid
-                        Timber.v(
+                        Log.v(
                             "About to notify listeners that we got a new small message %s:%s:%s",
                             accountName,
                             folder,
@@ -538,14 +538,14 @@ internal class Pop3Sync(
                         val isOldMessage = isOldMessage(backendFolder, message)
                         listener.syncNewMessage(folder, messageServerId, isOldMessage)
                     } catch (e: Exception) {
-                        Timber.e(e, "SYNC: fetch small messages")
+                        Log.e(e, "SYNC: fetch small messages")
                     }
                 }
             },
             -1,
         )
 
-        Timber.d("SYNC: Done fetching small messages for folder %s", folder)
+        Log.d("SYNC: Done fetching small messages for folder %s", folder)
     }
 
     private fun isOldMessage(backendFolder: BackendFolder, message: Pop3Message): Boolean {
@@ -567,7 +567,7 @@ internal class Pop3Sync(
     ) {
         val folder = remoteFolder.serverId
 
-        Timber.d("SYNC: Fetching large messages for folder %s", folder)
+        Log.d("SYNC: Fetching large messages for folder %s", folder)
 
         val maxDownloadSize = syncConfig.maximumAutoDownloadMessageSize
         remoteFolder.fetch(largeMessages, fp, null, maxDownloadSize)
@@ -575,7 +575,7 @@ internal class Pop3Sync(
             downloadSaneBody(syncConfig, remoteFolder, backendFolder, message)
 
             val messageServerId = message.uid
-            Timber.v(
+            Log.v(
                 "About to notify listeners that we got a new large message %s:%s:%s",
                 accountName,
                 folder,
@@ -599,7 +599,7 @@ internal class Pop3Sync(
             listener.syncNewMessage(folder, messageServerId, isOldMessage)
         }
 
-        Timber.d("SYNC: Done fetching large messages for folder %s", folder)
+        Log.d("SYNC: Done fetching large messages for folder %s", folder)
     }
 
     @Throws(MessagingException::class)

@@ -4,6 +4,8 @@ package com.fsck.k9.mail.internet;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.logging.testing.TestLogger;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,6 +23,7 @@ public class MessageExtractorTest {
 
     @Before
     public void setUp() throws Exception {
+        Log.logger = new TestLogger();
         part = new MimeBodyPart();
     }
 
@@ -75,7 +78,7 @@ public class MessageExtractorTest {
         part.setBody(body);
 
         String result = MessageExtractor.getTextFromPart(part);
-        
+
         assertEquals(bodyText, result);
     }
 

@@ -10,7 +10,6 @@ import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.account.DeletePolicyProvider
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
@@ -24,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 
 // TODO Move to feature/account/setup
@@ -43,7 +43,7 @@ internal class AccountCreator(
         return try {
             withContext(coroutineDispatcher) { AccountCreatorResult.Success(create(account)) }
         } catch (e: Exception) {
-            Timber.e(e, "Error while creating new account")
+            Log.e(e, "Error while creating new account")
 
             AccountCreatorResult.Error(e.message ?: "Unknown create account error")
         }

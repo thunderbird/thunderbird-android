@@ -5,11 +5,19 @@ import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
 import org.junit.Test
 
 class ValidateEmailAddressTest {
 
     private val testSubject = ValidateEmailAddress()
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `should succeed when email address is valid`() {

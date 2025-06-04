@@ -11,7 +11,6 @@ import com.fsck.k9.K9
 import com.fsck.k9.MessagingListenerProvider
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.WorkManagerConfigurationProvider
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.extensions.currentLocale
@@ -99,7 +98,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
     }
 
     private fun updateConfigurationWithLocale(configuration: Configuration, locale: Locale) {
-        Timber.d("Updating application configuration with locale '$locale'")
+        Log.d("Updating application configuration with locale '$locale'")
 
         val newConfiguration = Configuration(configuration).apply {
             currentLocale = locale
@@ -123,7 +122,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
         if (appLanguageManagerInitialized) {
             appLanguageManager.getOverrideLocale()?.let { overrideLocale ->
                 if (resources.configuration.currentLocale != overrideLocale) {
-                    Timber.w("Resources configuration was reset. Re-applying locale override.")
+                    Log.w("Resources configuration was reset. Re-applying locale override.")
                     appLanguageManager.applyOverrideLocale()
                     applyOverrideLocaleToConfiguration()
                 }

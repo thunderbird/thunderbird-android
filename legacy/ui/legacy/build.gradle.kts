@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
 
+    testImplementation(projects.core.logging.testing)
+
     // This is necessary as RecipientPresenterTest fails to inject
     testImplementation(projects.legacy.common)
     testImplementation(projects.core.testing)

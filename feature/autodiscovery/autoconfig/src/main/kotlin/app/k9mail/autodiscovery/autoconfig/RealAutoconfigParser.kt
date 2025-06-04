@@ -11,7 +11,6 @@ import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.IncomingServerSettings
 import app.k9mail.autodiscovery.api.OutgoingServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
-import com.fsck.k9.logging.Timber
 import java.io.InputStream
 import java.io.InputStreamReader
 import net.thunderbird.core.common.mail.EmailAddress
@@ -20,6 +19,7 @@ import net.thunderbird.core.common.net.Hostname
 import net.thunderbird.core.common.net.Port
 import net.thunderbird.core.common.net.toHostname
 import net.thunderbird.core.common.net.toPort
+import net.thunderbird.core.logging.legacy.Log
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
@@ -159,7 +159,7 @@ private class ClientConfigParser(
     ): T? {
         val type = pullParser.getAttributeValue(null, "type")
         if (type != protocolType) {
-            Timber.d("Unsupported '%s[type]' value: '%s'", pullParser.name, type)
+            Log.d("Unsupported '%s[type]' value: '%s'", pullParser.name, type)
             skipElement()
             return null
         }
@@ -229,7 +229,7 @@ private class ClientConfigParser(
             "password-cleartext" -> PasswordCleartext
             "password-encrypted" -> PasswordEncrypted
             else -> {
-                Timber.d("Ignoring unknown 'authentication' value '$this'")
+                Log.d("Ignoring unknown 'authentication' value '$this'")
                 null
             }
         }
@@ -280,7 +280,7 @@ private class ClientConfigParser(
     }
 
     private fun skipElement() {
-        Timber.d("Skipping element '%s'", pullParser.name)
+        Log.d("Skipping element '%s'", pullParser.name)
         readElement { /* Do nothing */ }
     }
 

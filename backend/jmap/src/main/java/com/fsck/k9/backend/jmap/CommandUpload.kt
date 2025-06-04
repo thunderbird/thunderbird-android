@@ -1,9 +1,9 @@
 package com.fsck.k9.backend.jmap
 
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.squareup.moshi.Moshi
+import net.thunderbird.core.logging.legacy.Log
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -25,7 +25,7 @@ class CommandUpload(
     private val moshi = Moshi.Builder().build()
 
     fun uploadMessage(folderServerId: String, message: Message): String? {
-        Timber.d("Uploading message to $folderServerId")
+        Log.d("Uploading message to $folderServerId")
 
         val uploadResponse = uploadMessageAsBlob(message)
         return importEmailBlob(uploadResponse, folderServerId)

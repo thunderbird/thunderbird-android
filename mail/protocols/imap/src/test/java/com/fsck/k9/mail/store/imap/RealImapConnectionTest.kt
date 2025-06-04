@@ -13,7 +13,6 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import assertk.assertions.message
 import assertk.assertions.prop
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
@@ -22,11 +21,12 @@ import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.mockserver.MockImapServer
-import com.fsck.k9.mail.testing.SystemOutLogger
 import com.fsck.k9.mail.testing.XOAuth2ChallengeParserTestData
 import com.fsck.k9.mail.testing.security.TestTrustedSocketFactory
 import java.io.IOException
 import java.net.UnknownHostException
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import okio.ByteString.Companion.encodeUtf8
 import org.junit.Before
 import org.junit.Test
@@ -51,8 +51,8 @@ class RealImapConnectionTest {
 
     @Before
     fun setUp() {
+        Log.logger = TestLogger()
         if (DEBUGGING) {
-            Timber.logger = SystemOutLogger()
             K9MailLib.setDebug(true)
             K9MailLib.setDebugSensitive(true)
         }

@@ -1,7 +1,6 @@
 package net.thunderbird.backend.imap
 
 import com.fsck.k9.backend.imap.ImapBackend
-import com.fsck.k9.logging.Logger
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.store.imap.ImapStore
@@ -11,6 +10,7 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.mail.account.api.BaseAccount
 
@@ -42,7 +42,7 @@ class ImapRemoteFolderCreator(
                 )
             }
         } catch (e: MessagingException) {
-            logger.e(e, "Unhandled exception while trying to create remote folder '${folderServerId.serverId}'.")
+            logger.error(message = { "Failed to create remote folder '${folderServerId.serverId}'" }, throwable = e)
             Outcome.failure(
                 RemoteFolderCreationOutcome.Error.FailedToCreateRemoteFolder(
                     reason = e.message ?: "Unhandled exception. Please check the logs.",

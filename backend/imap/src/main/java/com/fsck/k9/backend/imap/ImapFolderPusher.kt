@@ -1,6 +1,5 @@
 package com.fsck.k9.backend.imap
 
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.IdleRefreshTimeoutProvider
@@ -8,6 +7,7 @@ import com.fsck.k9.mail.store.imap.IdleResult
 import com.fsck.k9.mail.store.imap.ImapFolderIdler
 import com.fsck.k9.mail.store.imap.ImapStore
 import kotlin.concurrent.thread
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Listens for changes to an IMAP folder in a dedicated thread.
@@ -28,25 +28,25 @@ class ImapFolderPusher(
     private var stopPushing = false
 
     fun start() {
-        Timber.v("Starting ImapFolderPusher for %s / %s", accountName, folderServerId)
+        Log.v("Starting ImapFolderPusher for %s / %s", accountName, folderServerId)
 
         thread(name = "ImapFolderPusher-$accountName-$folderServerId") {
-            Timber.v("Starting ImapFolderPusher thread for %s / %s", accountName, folderServerId)
+            Log.v("Starting ImapFolderPusher thread for %s / %s", accountName, folderServerId)
 
             runPushLoop()
 
-            Timber.v("Exiting ImapFolderPusher thread for %s / %s", accountName, folderServerId)
+            Log.v("Exiting ImapFolderPusher thread for %s / %s", accountName, folderServerId)
         }
     }
 
     fun refresh() {
-        Timber.v("Refreshing ImapFolderPusher for %s / %s", accountName, folderServerId)
+        Log.v("Refreshing ImapFolderPusher for %s / %s", accountName, folderServerId)
 
         folderIdler?.refresh()
     }
 
     fun stop() {
-        Timber.v("Stopping ImapFolderPusher for %s / %s", accountName, folderServerId)
+        Log.v("Stopping ImapFolderPusher for %s / %s", accountName, folderServerId)
 
         stopPushing = true
         folderIdler?.stop()
@@ -86,7 +86,7 @@ class ImapFolderPusher(
                 }
             }
         } catch (e: Exception) {
-            Timber.v(e, "Exception in ImapFolderPusher")
+            Log.v(e, "Exception in ImapFolderPusher")
 
             this.folderIdler = null
             callback.onPushError(folderServerId, e)

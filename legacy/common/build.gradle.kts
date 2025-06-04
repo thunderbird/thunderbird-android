@@ -35,6 +35,7 @@ dependencies {
         debugImplementation(libs.leakcanary.android)
     }
 
+    testImplementation(projects.core.logging.testing)
     testImplementation(libs.robolectric)
 }
 

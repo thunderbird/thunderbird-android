@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.transport.smtp
 
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.Authentication
@@ -38,6 +37,7 @@ import java.net.UnknownHostException
 import java.security.GeneralSecurityException
 import java.util.Locale
 import javax.net.ssl.SSLException
+import net.thunderbird.core.logging.legacy.Log
 import org.apache.commons.io.IOUtils
 import org.jetbrains.annotations.VisibleForTesting
 
@@ -74,7 +74,7 @@ class SmtpTransport(
             get() = K9MailLib.isDebug()
 
         override fun log(throwable: Throwable?, message: String, vararg args: Any?) {
-            Timber.v(throwable, message, *args)
+            Log.v(throwable, message, *args)
         }
     }
 
@@ -218,7 +218,7 @@ class SmtpTransport(
             connectException = try {
                 return connectToAddress(address)
             } catch (e: IOException) {
-                Timber.w(e, "Could not connect to %s", address)
+                Log.w(e, "Could not connect to %s", address)
                 e
             }
         }
@@ -228,7 +228,7 @@ class SmtpTransport(
 
     private fun connectToAddress(address: InetAddress): Socket {
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
-            Timber.d("Connecting to %s as %s", host, address)
+            Log.d("Connecting to %s as %s", host, address)
         }
 
         val socketAddress = InetSocketAddress(address, port)
@@ -255,7 +255,7 @@ class SmtpTransport(
     private fun logResponse(smtpResponse: SmtpResponse, sensitive: Boolean = false) {
         if (K9MailLib.isDebug()) {
             val omitText = sensitive && !K9MailLib.isDebugSensitive()
-            Timber.v("%s", smtpResponse.toLogString(omitText, linePrefix = "SMTP <<< "))
+            Log.v("%s", smtpResponse.toLogString(omitText, linePrefix = "SMTP <<< "))
         }
     }
 
@@ -279,7 +279,7 @@ class SmtpTransport(
                 largestAcceptableMessage = size
             } else {
                 if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_SMTP) {
-                    Timber.d("SIZE parameter is not a valid integer: %s", sizeParameter)
+                    Log.d("SIZE parameter is not a valid integer: %s", sizeParameter)
                 }
             }
         }
@@ -307,13 +307,13 @@ class SmtpTransport(
             helloResponse.keywords
         } else {
             if (K9MailLib.isDebug()) {
-                Timber.v("Server doesn't support the EHLO command. Trying HELO...")
+                Log.v("Server doesn't support the EHLO command. Trying HELO...")
             }
 
             try {
                 executeCommand("HELO %s", host)
             } catch (e: NegativeSmtpReplyException) {
-                Timber.w("Server doesn't support the HELO command. Continuing anyway.")
+                Log.w("Server doesn't support the HELO command. Continuing anyway.")
             }
 
             emptyMap()
@@ -409,14 +409,14 @@ class SmtpTransport(
         return if (is8bitEncodingAllowed) {
             String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress)
         } else {
-            Timber.d("Server does not support 8-bit transfer encoding")
+            Log.d("Server does not support 8-bit transfer encoding")
             String.format("MAIL FROM:<%s>", fromAddress)
         }
     }
 
     private fun ensureClosed() {
         if (inputStream != null || outputStream != null || socket != null || responseParser != null) {
-            Timber.w(RuntimeException(), "SmtpTransport was open when it was expected to be closed")
+            Log.w(RuntimeException(), "SmtpTransport was open when it was expected to be closed")
             close()
         }
     }
@@ -449,7 +449,7 @@ class SmtpTransport(
             } else {
                 "SMTP >>> $command"
             }
-            Timber.d(commandToLog)
+            Log.d(commandToLog)
         }
 
         // Important: Send command + CRLF using just one write() call. Using multiple calls might result in multiple
@@ -594,7 +594,7 @@ class SmtpTransport(
     ) {
         // Token was invalid. We could avoid this double check if we had a reasonable chance of knowing if a token was
         // invalid before use (e.g. due to expiry). But we don't. This is the intended behaviour per AccountManager.
-        Timber.v(negativeResponseFromOldToken, "Authentication exception, re-trying with new token")
+        Log.v(negativeResponseFromOldToken, "Authentication exception, re-trying with new token")
 
         try {
             attempOAuth(method, username)
@@ -604,7 +604,7 @@ class SmtpTransport(
             }
 
             // Okay, we failed on a new token. Invalidate the token anyway but assume it's permanent.
-            Timber.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed")
+            Log.v(negativeResponseFromNewToken, "Authentication exception for new token, permanent error assumed")
 
             oauthTokenProvider!!.invalidateToken()
             handlePermanentOAuthFailure(method, negativeResponseFromNewToken)
@@ -652,7 +652,7 @@ class SmtpTransport(
         try {
             open()
         } catch (e: Exception) {
-            Timber.e(e, "Error while checking server settings")
+            Log.e(e, "Error while checking server settings")
             throw e
         } finally {
             close()

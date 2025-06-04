@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.store.imap
 
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
@@ -17,6 +16,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import java.io.IOException
 import java.util.Deque
 import java.util.LinkedList
+import net.thunderbird.core.logging.legacy.Log
 
 internal open class RealImapStore(
     private val serverSettings: ServerSettings,
@@ -182,7 +182,7 @@ internal open class RealImapStore(
         val decodedFolderName = try {
             folderNameCodec.decode(serverId)
         } catch (e: CharacterCodingException) {
-            Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s", serverId)
+            Log.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s", serverId)
             serverId
         }
 
@@ -226,7 +226,7 @@ internal open class RealImapStore(
             connection.open()
             connection.close()
         } catch (e: Exception) {
-            Timber.e(e, "Error while checking server settings")
+            Log.e(e, "Error while checking server settings")
             throw e
         }
     }
@@ -266,7 +266,7 @@ internal open class RealImapStore(
     }
 
     override fun closeAllConnections() {
-        Timber.v("ImapStore.closeAllConnections()")
+        Log.v("ImapStore.closeAllConnections()")
 
         val connectionsToClose = synchronized(connections) {
             val connectionsToClose = connections.toList()

@@ -1,6 +1,9 @@
 package com.fsck.k9.mail;
 
 
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.logging.testing.TestLogger;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -10,6 +13,13 @@ import static org.junit.Assert.assertTrue;
 
 
 public class AddressTest {
+
+    @Before
+    public void setUp() {
+        Log.logger = new TestLogger();
+    }
+
+
     /**
      * test the possibility to parse "From:" fields with no email.
      * for example: From: News for Vector Limited - Google Finance
@@ -121,7 +131,7 @@ public class AddressTest {
     public void hashCode_withoutPersonal() throws Exception {
         Address address = Address.parse("alice@example.org")[0];
         assertNull(address.getPersonal());
-        
+
         address.hashCode();
     }
 

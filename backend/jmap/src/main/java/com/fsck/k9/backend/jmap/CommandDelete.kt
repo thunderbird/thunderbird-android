@@ -1,6 +1,6 @@
 package com.fsck.k9.backend.jmap
 
-import com.fsck.k9.logging.Timber
+import net.thunderbird.core.logging.legacy.Log
 import rs.ltt.jmap.client.JmapClient
 import rs.ltt.jmap.common.Request.Invocation.ResultReference
 import rs.ltt.jmap.common.entity.filter.EmailFilterCondition
@@ -14,7 +14,7 @@ class CommandDelete(
     private val accountId: String,
 ) {
     fun deleteMessages(messageServerIds: List<String>) {
-        Timber.v("Deleting messages %s", messageServerIds)
+        Log.v("Deleting messages %s", messageServerIds)
 
         val session = jmapClient.session.get()
         val maxObjectsInSet = session.maxObjectsInSet
@@ -32,13 +32,13 @@ class CommandDelete(
     }
 
     fun deleteAllMessages(folderServerId: String) {
-        Timber.d("Deleting all messages from %s", folderServerId)
+        Log.d("Deleting all messages from %s", folderServerId)
 
         val session = jmapClient.session.get()
         val limit = session.maxObjectsInSet.coerceAtMost(MAX_CHUNK_SIZE).toLong()
 
         do {
-            Timber.v("Trying to delete up to %d messages from %s", limit, folderServerId)
+            Log.v("Trying to delete up to %d messages from %s", limit, folderServerId)
             val multiCall = jmapClient.newMultiCall()
 
             val queryEmailCall = multiCall.call(
@@ -65,7 +65,7 @@ class CommandDelete(
 
             setEmailCall.getMainResponseBlocking<SetEmailMethodResponse>()
 
-            Timber.v("Deleted %d messages from %s", numberOfReturnedEmails, folderServerId)
+            Log.v("Deleted %d messages from %s", numberOfReturnedEmails, folderServerId)
         } while (totalNumberOfEmails > numberOfReturnedEmails)
     }
 }

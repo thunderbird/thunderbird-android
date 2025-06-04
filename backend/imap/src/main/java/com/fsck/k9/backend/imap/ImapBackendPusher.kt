@@ -2,7 +2,6 @@ package com.fsck.k9.backend.imap
 
 import com.fsck.k9.backend.api.BackendPusher
 import com.fsck.k9.backend.api.BackendPusherCallback
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.power.PowerManager
@@ -16,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import net.thunderbird.core.logging.legacy.Log
 
 private const val IO_ERROR_TIMEOUT = 5 * 60 * 1000L
 private const val UNEXPECTED_ERROR_TIMEOUT = 60 * 60 * 1000L
@@ -83,11 +83,11 @@ internal class ImapBackendPusher(
     }
 
     private fun updateFolders(folderServerIds: Collection<String>, maxPushFolders: Int) {
-        Timber.v("ImapBackendPusher.updateFolders(): %s", folderServerIds)
+        Log.v("ImapBackendPusher.updateFolders(): %s", folderServerIds)
 
         val pushFolderServerIds = if (folderServerIds.size > maxPushFolders) {
             folderServerIds.take(maxPushFolders).also { pushFolderServerIds ->
-                Timber.v("..limiting Push to %d folders: %s", maxPushFolders, pushFolderServerIds)
+                Log.v("..limiting Push to %d folders: %s", maxPushFolders, pushFolderServerIds)
             }
         } else {
             folderServerIds
@@ -131,7 +131,7 @@ internal class ImapBackendPusher(
     }
 
     override fun stop() {
-        Timber.v("ImapBackendPusher.stop()")
+        Log.v("ImapBackendPusher.stop()")
 
         coroutineScope.cancel()
 
@@ -151,7 +151,7 @@ internal class ImapBackendPusher(
     }
 
     override fun reconnect() {
-        Timber.v("ImapBackendPusher.reconnect()")
+        Log.v("ImapBackendPusher.reconnect()")
 
         synchronized(lock) {
             for (pushFolder in pushFolders.values) {
@@ -193,19 +193,19 @@ internal class ImapBackendPusher(
 
             when (exception) {
                 is AuthenticationFailedException -> {
-                    Timber.v(exception, "Authentication failure when attempting to use IDLE")
+                    Log.v(exception, "Authentication failure when attempting to use IDLE")
                     // TODO: This could be happening because of too many connections to the host. Ideally we'd want to
                     //  detect this case and use a lower timeout.
 
                     startRetryTimer(folderServerId, UNEXPECTED_ERROR_TIMEOUT)
                 }
                 is IOException -> {
-                    Timber.v(exception, "I/O error while trying to use IDLE")
+                    Log.v(exception, "I/O error while trying to use IDLE")
 
                     startRetryTimer(folderServerId, IO_ERROR_TIMEOUT)
                 }
                 is MessagingException -> {
-                    Timber.v(exception, "MessagingException")
+                    Log.v(exception, "MessagingException")
 
                     if (exception.isPermanentFailure) {
                         startRetryTimer(folderServerId, UNEXPECTED_ERROR_TIMEOUT)
@@ -214,7 +214,7 @@ internal class ImapBackendPusher(
                     }
                 }
                 else -> {
-                    Timber.v(exception, "Unexpected error")
+                    Log.v(exception, "Unexpected error")
                     startRetryTimer(folderServerId, UNEXPECTED_ERROR_TIMEOUT)
                 }
             }
@@ -230,12 +230,12 @@ internal class ImapBackendPusher(
     }
 
     private fun startRetryTimer(folderServerId: String, timeout: Long) {
-        Timber.v("ImapBackendPusher for folder %s sleeping for %d ms", folderServerId, timeout)
+        Log.v("ImapBackendPusher for folder %s sleeping for %d ms", folderServerId, timeout)
         pushFolderSleeping[folderServerId] = idleRefreshManager.startTimer(timeout, ::restartFolderPushers)
     }
 
     private fun cancelRetryTimer(folderServerId: String) {
-        Timber.v("Canceling ImapBackendPusher retry timer for folder %s", folderServerId)
+        Log.v("Canceling ImapBackendPusher retry timer for folder %s", folderServerId)
         pushFolderSleeping.remove(folderServerId)?.cancel()
     }
 
@@ -244,7 +244,7 @@ internal class ImapBackendPusher(
     }
 
     private fun restartFolderPushers() {
-        Timber.v("Refreshing ImapBackendPusher (at least one retry timer has expired)")
+        Log.v("Refreshing ImapBackendPusher (at least one retry timer has expired)")
 
         updateFolders()
     }
