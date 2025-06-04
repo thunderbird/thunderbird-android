@@ -9,11 +9,13 @@ import com.fsck.k9.search.getAccounts
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preferences.GeneralSettingsManager
 
 internal class MessageListLoader(
     private val preferences: Preferences,
     private val messageListRepository: MessageListRepository,
     private val messageHelper: MessageHelper,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
 
     @Suppress("TooGenericExceptionCaught")
@@ -42,7 +44,7 @@ internal class MessageListLoader(
     private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
         val accountUuid = account.uuid
         val sortOrder = buildSortOrder(config)
-        val mapper = MessageListItemMapper(messageHelper, account)
+        val mapper = MessageListItemMapper(messageHelper, account, generalSettingsManager)
 
         return if (config.showingThreadedList) {
             val (selection, selectionArgs) = buildSelection(config)

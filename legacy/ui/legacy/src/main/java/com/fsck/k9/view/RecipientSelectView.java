@@ -47,13 +47,14 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.google.android.material.textview.MaterialTextView;
 import com.tokenautocomplete.TokenCompleteTextView;
 import de.hdodenhof.circleimageview.CircleImageView;
+import net.thunderbird.core.preferences.GeneralSettingsManager;
 import net.thunderbird.core.logging.legacy.Log;
 
 import static com.fsck.k9.FontSizes.FONT_DEFAULT;
 
 
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
-        AlternateRecipientListener {
+    AlternateRecipientListener {
 
     private static final int MINIMUM_LENGTH_FOR_FILTERING = 2;
 
@@ -64,6 +65,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
 
     private final UserInputEmailAddressParser emailAddressParser = DI.get(UserInputEmailAddressParser.class);
+
+    private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
 
     private RecipientAdapter adapter;
     @Nullable
@@ -149,7 +152,9 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private void bindObjectView(Recipient recipient, View view) {
         RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
 
-        holder.vName.setText(recipient.getDisplayNameOrAddress());
+        holder.vName.setText(recipient.getDisplayNameOrAddress(
+            generalSettingsManager.getSettings().isShowCorrespondentNames()
+        ));
         if (tokenTextSize != FONT_DEFAULT) {
             holder.vName.setTextSize(TypedValue.COMPLEX_UNIT_SP, tokenTextSize);
         }
@@ -163,7 +168,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         boolean isAvailable = recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED ||
-                recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED;
+            recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED;
 
         holder.showCryptoState(isAvailable, showCryptoEnabled);
     }
@@ -224,16 +229,15 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     /**
-     * TokenCompleteTextView removes composing strings, and etc, but leaves internal composition
-     * predictions partially constructed. Changing either/or the Selection or Candidate start/end
-     * positions, forces the IMM to reset cleaner.
+     * TokenCompleteTextView removes composing strings, and etc, but leaves internal composition predictions partially
+     * constructed. Changing either/or the Selection or Candidate start/end positions, forces the IMM to reset cleaner.
      */
     @Override
     protected void replaceText(CharSequence text) {
         super.replaceText(text);
 
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+            Context.INPUT_METHOD_SERVICE);
         imm.updateSelection(this, getSelectionStart(), getSelectionEnd(), -1, -1);
     }
 
@@ -506,8 +510,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     /**
-     * Changing the size of our RecipientTokenSpan doesn't seem to redraw the cursor in the new position. This will
-     * make sure the cursor position is recalculated.
+     * Changing the size of our RecipientTokenSpan doesn't seem to redraw the cursor in the new position. This will make
+     * sure the cursor position is recalculated.
      */
     private void invalidateCursorPositionHack() {
         int oldStart = getSelectionStart();
@@ -522,9 +526,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     /**
-     * This method builds the span given a recipient object. We override it with identical
-     * functionality, but using the custom RecipientTokenSpan class which allows us to
-     * retrieve the view for redrawing at a later point.
+     * This method builds the span given a recipient object. We override it with identical functionality, but using the
+     * custom RecipientTokenSpan class which allows us to retrieve the view for redrawing at a later point.
      */
     @Override
     protected TokenImageSpan buildSpanForObject(Recipient obj) {
@@ -537,8 +540,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     /**
-     * Find the token view tied to a given recipient. This method relies on spans to
-     * be of the RecipientTokenSpan class, as created by the buildSpanForObject method.
+     * Find the token view tied to a given recipient. This method relies on spans to be of the RecipientTokenSpan class,
+     * as created by the buildSpanForObject method.
      */
     private View getTokenViewForRecipient(Recipient currentRecipient) {
         Editable text = getText();
@@ -557,8 +560,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     /**
-     * We use a specialized version of TokenCompleteTextView.TokenListener as well,
-     * adding a callback for onTokenChanged.
+     * We use a specialized version of TokenCompleteTextView.TokenListener as well, adding a callback for
+     * onTokenChanged.
      */
     public void setTokenListener(TokenListener<Recipient> listener) {
         super.setTokenListener(listener);
@@ -592,7 +595,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         @Override
         public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y,
-                int bottom, @NonNull Paint paint) {
+            int bottom, @NonNull Paint paint) {
             super.draw(canvas, text, start, end, x, top, y, bottom, paint);
 
             // Dispatch onPreDraw event so image loading using Glide will work properly.
@@ -660,7 +663,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey,
-                int timesContacted, String sortKey, boolean starred) {
+            int timesContacted, String sortKey, boolean starred) {
             this.address = new Address(email, name);
             this.contactId = contactId;
             this.addressLabel = addressLabel;
@@ -671,8 +674,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             this.starred = starred;
         }
 
-        public String getDisplayNameOrAddress() {
-            final String displayName = K9.isShowCorrespondentNames() ? getDisplayName() : null;
+        public String getDisplayNameOrAddress(Boolean showCorrespondentNames) {
+            final String displayName = showCorrespondentNames ? getDisplayName() : null;
 
             if (displayName != null) {
                 return displayName;
