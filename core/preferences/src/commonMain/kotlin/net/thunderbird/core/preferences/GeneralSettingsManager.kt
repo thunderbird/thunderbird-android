@@ -18,4 +18,5 @@ interface GeneralSettingsManager {
     fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean)
     fun setIsShowUnifiedInbox(isShowUnifiedInbox: Boolean)
     fun setIsShowStarredCount(isShowStarredCount: Boolean)
+    fun setIsShowMessageListStars(isShowMessageListStars: Boolean)
 }
