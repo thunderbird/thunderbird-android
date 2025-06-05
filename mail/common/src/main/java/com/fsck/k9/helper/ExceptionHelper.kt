@@ -1,28 +1,17 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
 
+import net.thunderbird.core.common.exception.rootCauseMassage
 
-import com.fsck.k9.mail.MessagingException;
-
-
-public class ExceptionHelper {
-    public static String getRootCauseMessage(Throwable t) {
-        Throwable rootCause = t;
-        Throwable nextCause;
-        do {
-            nextCause = rootCause.getCause();
-            if (nextCause != null) {
-                rootCause = nextCause;
-            }
-        } while (nextCause != null);
-
-        if (rootCause instanceof MessagingException) {
-            return rootCause.getMessage();
-        }
-
-        // Remove the namespace on the exception so we have a fighting chance of seeing more of the error in the
-        // notification.
-        String simpleName = rootCause.getClass().getSimpleName();
-        return (rootCause.getLocalizedMessage() != null) ?
-        simpleName + ": " + rootCause.getLocalizedMessage() : simpleName;
+object ExceptionHelper {
+    @Deprecated(
+        message = "Use net.thunderbird.core.common.exception.rootCauseMassage extension property instead.",
+        replaceWith = ReplaceWith(
+            "throwable.rootCauseMassage",
+            "net.thunderbird.core.common.exception.rootCauseMassage",
+        ),
+    )
+    @JvmStatic
+    fun getRootCauseMessage(throwable: Throwable): String {
+        return throwable.rootCauseMassage.orEmpty()
     }
 }
