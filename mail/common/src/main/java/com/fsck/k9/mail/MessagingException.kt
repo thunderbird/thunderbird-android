@@ -1,35 +1,24 @@
+package com.fsck.k9.mail
 
-package com.fsck.k9.mail;
+open class MessagingException : Exception {
+    var isPermanentFailure: Boolean = false
+        private set
 
-public class MessagingException extends Exception {
-    public static final long serialVersionUID = -1;
+    constructor(cause: Throwable?) : super(cause)
 
-    private boolean permanentFailure = false;
+    constructor(message: String?) : super(message)
 
-    public MessagingException(Throwable cause) {
-        super(cause);
+    constructor(message: String?, perm: Boolean) : super(message) {
+        this.isPermanentFailure = perm
     }
 
-    public MessagingException(String message) {
-        super(message);
+    constructor(message: String?, throwable: Throwable?) : super(message, throwable)
+
+    constructor(message: String?, perm: Boolean, throwable: Throwable?) : super(message, throwable) {
+        this.isPermanentFailure = perm
     }
 
-    public MessagingException(String message, boolean perm) {
-        super(message);
-        permanentFailure = perm;
+    companion object {
+        val serialVersionUID: Long = -1
     }
-
-    public MessagingException(String message, Throwable throwable) {
-        super(message, throwable);
-    }
-
-    public MessagingException(String message, boolean perm, Throwable throwable) {
-        super(message, throwable);
-        permanentFailure = perm;
-    }
-
-    public boolean isPermanentFailure() {
-        return permanentFailure;
-    }
-
 }
