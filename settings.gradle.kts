@@ -67,6 +67,7 @@ include(
     ":feature:account:core",
     ":feature:account:common",
     ":feature:account:edit",
+    ":feature:account:fake",
     ":feature:account:oauth",
     ":feature:account:settings:api",
     ":feature:account:settings:impl",
@@ -74,6 +75,7 @@ include(
     ":feature:account:server:settings",
     ":feature:account:server:validation",
     ":feature:account:setup",
+    ":feature:account:storage:api",
     ":feature:account:storage:legacy",
 )
 
@@ -145,6 +147,7 @@ include(
 )
 
 include(
+    ":core:architecture:api",
     ":core:common",
     ":core:featureflag",
     ":core:logging:api",
@@ -153,7 +156,8 @@ include(
     ":core:logging:impl-legacy",
     ":core:logging:testing",
     ":core:mail:mailserver",
-    ":core:preferences",
+    ":core:preference:api",
+    ":core:preference:impl",
     ":core:outcome",
     ":core:testing",
 )

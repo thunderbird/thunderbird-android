@@ -15,6 +15,7 @@ import com.fsck.k9.power.powerModule
 import com.fsck.k9.preferences.preferencesModule
 import net.thunderbird.core.android.logging.loggingModule
 import net.thunderbird.core.android.network.coreAndroidNetworkModule
+import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyModule
 
 val legacyCoreModules = listOf(
     mainModule,
@@ -33,4 +34,5 @@ val legacyCoreModules = listOf(
     preferencesModule,
     powerModule,
     loggingModule,
+    featureAccountStorageLegacyModule,
 )

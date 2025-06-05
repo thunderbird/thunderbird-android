@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.preference.storage.StorageEditor;
 
 /*
  * TODO:
@@ -33,7 +34,7 @@ class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 103;
+    public static final int VERSION = 104;
 
     static Map<String, Object> validate(int version, Map<String, TreeMap<Integer, SettingsDescription<?>>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {

@@ -11,7 +11,6 @@ import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.legacyCoreModules
 import com.fsck.k9.preferences.K9StoragePersister
-import com.fsck.k9.preferences.StoragePersister
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
@@ -19,6 +18,7 @@ import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.preference.storage.StoragePersister
 import org.koin.dsl.module
 import org.mockito.kotlin.mock
 
@@ -48,7 +48,7 @@ val testModule = module {
     single { AppConfig(emptyList()) }
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }
-    single<StoragePersister> { K9StoragePersister(get()) }
+    single<StoragePersister> { K9StoragePersister(get(), get()) }
     single { mock<BackendManager>() }
     single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
     single<FeatureFlagProvider> {

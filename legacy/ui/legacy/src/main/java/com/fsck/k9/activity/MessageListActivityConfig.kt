@@ -3,9 +3,9 @@ package com.fsck.k9.activity
 import com.fsck.k9.K9
 import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
-import net.thunderbird.core.preferences.AppTheme
-import net.thunderbird.core.preferences.GeneralSettingsManager
-import net.thunderbird.core.preferences.SubTheme
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.SubTheme
 
 data class MessageListActivityConfig(
     val appTheme: AppTheme,

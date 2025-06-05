@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RecentChangesViewModel(

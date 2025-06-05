@@ -3,5 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "net.thunderbird.account.api"
+    namespace = "net.thunderbird.feature.account"
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.architecture.api)
+        }
+    }
 }
