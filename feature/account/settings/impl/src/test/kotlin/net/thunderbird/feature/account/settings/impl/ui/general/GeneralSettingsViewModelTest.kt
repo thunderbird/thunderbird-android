@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.StandardTestDispatcher
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.core.ui.compose.preference.api.Preference
@@ -21,12 +23,18 @@ import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.api.AccountId
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
+import org.junit.Before
 import org.junit.Rule
 
 class GeneralSettingsViewModelTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(StandardTestDispatcher())
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `should load account name`() = runMviTest {

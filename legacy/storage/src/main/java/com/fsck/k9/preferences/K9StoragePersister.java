@@ -15,8 +15,8 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.migration.DefaultStorageMigrationHelper;
 import com.fsck.k9.preferences.migration.StorageMigrations;
 import com.fsck.k9.preferences.migration.StorageMigrationHelper;
+import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.preferences.Storage;
-import timber.log.Timber;
 
 
 public class K9StoragePersister implements StoragePersister {
@@ -60,7 +60,7 @@ public class K9StoragePersister implements StoragePersister {
     }
 
     private void createStorageDatabase(SQLiteDatabase db) {
-        Timber.i("Creating Storage database");
+        Log.i("Creating Storage database");
 
         db.execSQL("DROP TABLE IF EXISTS preferences_storage");
         db.execSQL("CREATE TABLE preferences_storage " +
@@ -141,13 +141,13 @@ public class K9StoragePersister implements StoragePersister {
     @Override
     public Storage loadValues() {
         long startTime = SystemClock.elapsedRealtime();
-        Timber.i("Loading preferences from DB into Storage");
+        Log.i("Loading preferences from DB into Storage");
 
         try (SQLiteDatabase database = openDB()) {
             return new DefaultStorage(readAllValues(database));
         } finally {
             long endTime = SystemClock.elapsedRealtime();
-            Timber.i("Preferences load took %d ms", endTime - startTime);
+            Log.i("Preferences load took %d ms", endTime - startTime);
         }
     }
 
@@ -159,7 +159,7 @@ public class K9StoragePersister implements StoragePersister {
             while (cursor.moveToNext()) {
                 String key = cursor.getString(0);
                 String value = cursor.getString(1);
-                Timber.d("Loading key '%s', value = '%s'", key, value);
+                Log.d("Loading key '%s', value = '%s'", key, value);
                 loadedValues.put(key, value);
             }
         } finally {

@@ -1,7 +1,7 @@
 package com.fsck.k9.backend.jmap
 
-import com.fsck.k9.logging.Timber
 import java.net.UnknownHostException
+import net.thunderbird.core.logging.legacy.Log
 import rs.ltt.jmap.client.JmapClient
 import rs.ltt.jmap.client.api.EndpointNotFoundException
 import rs.ltt.jmap.client.api.UnauthorizedException
@@ -19,7 +19,7 @@ class JmapAccountDiscovery {
         } catch (e: UnauthorizedException) {
             return JmapDiscoveryResult.AuthenticationFailure
         } catch (e: Exception) {
-            Timber.e(e, "Unable to get JMAP session")
+            Log.e(e, "Unable to get JMAP session")
             return JmapDiscoveryResult.GenericFailure(e)
         }
 

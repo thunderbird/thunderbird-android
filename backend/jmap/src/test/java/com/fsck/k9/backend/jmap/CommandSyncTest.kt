@@ -18,6 +18,8 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import java.io.File
 import java.util.EnumSet
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
@@ -44,6 +46,7 @@ class CommandSyncTest {
     fun setUp() {
         BinaryTempFileBody.setTempDirectory(File(System.getProperty("java.io.tmpdir")))
         createFolderInBackendStorage()
+        Log.logger = TestLogger()
     }
 
     @Test

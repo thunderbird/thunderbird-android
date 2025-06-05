@@ -16,6 +16,9 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
+import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.koin.dsl.module
 import org.mockito.kotlin.mock
 
@@ -24,14 +27,24 @@ class TestApp : Application() {
         Core.earlyInit()
 
         super.onCreate()
-        DI.start(this, legacyCoreModules + storageModule + telemetryModule + testModule)
+
+        Log.logger = logger
+        DI.start(
+            application = this,
+            modules = legacyCoreModules + storageModule + telemetryModule + testModule,
+        )
 
         K9.init(this)
         Core.init(this)
     }
+
+    companion object {
+        val logger: Logger = TestLogger()
+    }
 }
 
 val testModule = module {
+    single<Logger> { TestApp.logger }
     single { AppConfig(emptyList()) }
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }

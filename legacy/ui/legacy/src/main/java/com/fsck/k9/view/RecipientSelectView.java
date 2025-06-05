@@ -47,7 +47,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.google.android.material.textview.MaterialTextView;
 import com.tokenautocomplete.TokenCompleteTextView;
 import de.hdodenhof.circleimageview.CircleImageView;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import static com.fsck.k9.FontSizes.FONT_DEFAULT;
 
@@ -471,7 +471,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         List<Recipient> currentRecipients = getObjects();
         int indexOfRecipient = currentRecipients.indexOf(recipientToReplace);
         if (indexOfRecipient == -1) {
-            Timber.e("Tried to refresh invalid view token!");
+            Log.e("Tried to refresh invalid view token!");
             return;
         }
         Recipient currentRecipient = currentRecipients.get(indexOfRecipient);
@@ -482,7 +482,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
         View recipientTokenView = getTokenViewForRecipient(currentRecipient);
         if (recipientTokenView == null) {
-            Timber.e("Tried to refresh invalid view token!");
+            Log.e("Tried to refresh invalid view token!");
             return;
         }
 

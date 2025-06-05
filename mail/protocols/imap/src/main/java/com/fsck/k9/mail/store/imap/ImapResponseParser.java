@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -94,11 +94,11 @@ class ImapResponseParser {
             response = readResponse();
 
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                Timber.v("%s<<<%s", logId, response);
+                Log.v("%s<<<%s", logId, response);
             }
 
             if (response.getTag() != null && !response.getTag().equalsIgnoreCase(tag)) {
-                Timber.w("After sending tag %s, got tag response from previous command %s for %s", tag, response, logId);
+                Log.w("After sending tag %s, got tag response from previous command %s for %s", tag, response, logId);
 
                 Iterator<ImapResponse> responseIterator = responses.iterator();
 
@@ -401,7 +401,7 @@ class ImapResponseParser {
                 }
                 return "EXCEPTION";
             }
-            
+
             if (result != null) {
                 return result;
             }
@@ -450,7 +450,7 @@ class ImapResponseParser {
             return null;
         }
     }
-    
+
     private void parseNil() throws IOException {
         expect('N');
         expect('I');

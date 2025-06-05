@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.logging.LogFileWriter
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class GeneralSettingsViewModel(private val logFileWriter: LogFileWriter) : ViewModel() {
     private var snackbarJob: Job? = null
@@ -24,7 +24,7 @@ class GeneralSettingsViewModel(private val logFileWriter: LogFileWriter) : ViewM
                 logFileWriter.writeLogTo(contentUri)
                 showSnackbar(GeneralSettingsUiState.Success)
             } catch (e: Exception) {
-                Timber.e(e, "Failed to write log to URI: %s", contentUri)
+                Log.e(e, "Failed to write log to URI: %s", contentUri)
                 showSnackbar(GeneralSettingsUiState.Failure)
             }
         }

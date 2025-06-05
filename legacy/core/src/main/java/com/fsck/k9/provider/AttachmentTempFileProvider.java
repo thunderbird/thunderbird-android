@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.K9;
 import okio.ByteString;
@@ -106,7 +106,7 @@ public class AttachmentTempFileProvider extends FileProvider {
             if (lastModified < deletionThreshold) {
                 boolean fileDeleted = tempFile.delete();
                 if (!fileDeleted) {
-                    Timber.e("Failed to delete temporary file");
+                    Log.e("Failed to delete temporary file");
                     // TODO really do this? might cause our service to stay up indefinitely if a file can't be deleted
                     allFilesDeleted = false;
                 }
@@ -114,7 +114,7 @@ public class AttachmentTempFileProvider extends FileProvider {
                 if (K9.isDebugLoggingEnabled()) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
-                    Timber.e("Not deleting temp file (for another %s minutes)", timeLeftStr);
+                    Log.e("Not deleting temp file (for another %s minutes)", timeLeftStr);
                 }
                 allFilesDeleted = false;
             }
@@ -127,7 +127,7 @@ public class AttachmentTempFileProvider extends FileProvider {
         File directory = new File(context.getCacheDir(), CACHE_DIRECTORY);
         if (!directory.exists()) {
             if (!directory.mkdir()) {
-                Timber.e("Error creating directory: %s", directory.getAbsolutePath());
+                Log.e("Error creating directory: %s", directory.getAbsolutePath());
             }
         }
 
@@ -172,7 +172,7 @@ public class AttachmentTempFileProvider extends FileProvider {
                 return;
             }
 
-            Timber.d("Unregistering temp file cleanup receiver");
+            Log.d("Unregistering temp file cleanup receiver");
             context.unregisterReceiver(cleanupReceiver);
             cleanupReceiver = null;
         }
@@ -184,7 +184,7 @@ public class AttachmentTempFileProvider extends FileProvider {
                 return;
             }
 
-            Timber.d("Registering temp file cleanup receiver");
+            Log.d("Registering temp file cleanup receiver");
             cleanupReceiver = new AttachmentTempFileProviderCleanupReceiver();
 
             IntentFilter intentFilter = new IntentFilter();
@@ -201,7 +201,7 @@ public class AttachmentTempFileProvider extends FileProvider {
                 throw new IllegalArgumentException("onReceive called with action that isn't screen off!");
             }
 
-            Timber.d("Cleaning up temp files");
+            Log.d("Cleaning up temp files");
 
             boolean allFilesDeleted = deleteOldTemporaryFiles(context);
             if (allFilesDeleted) {

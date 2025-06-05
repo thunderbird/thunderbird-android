@@ -28,9 +28,9 @@ import android.os.ParcelFileDescriptor.AutoCloseInputStream;
 import android.system.ErrnoException;
 import android.system.OsConstants;
 
+import net.thunderbird.core.logging.legacy.Log;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import timber.log.Timber;
 
 
 public class ParcelFileDescriptorUtil {
@@ -77,7 +77,7 @@ public class ParcelFileDescriptorUtil {
                     mOut.write(buf, 0, len);
                 }
             } catch (IOException e) {
-                Timber.e(e, "IOException when writing to out");
+                Log.e(e, "IOException when writing to out");
             } finally {
                 try {
                     mIn.close();
@@ -116,11 +116,11 @@ public class ParcelFileDescriptorUtil {
                 dataSource.writeTo(outputStream);
             } catch (IOException e) {
                 if (dataSource.isCancelled()) {
-                    Timber.d("Stopped writing because operation was cancelled.");
+                    Log.d("Stopped writing because operation was cancelled.");
                 } else if (isIOExceptionCausedByEPIPE(e)) {
-                    Timber.d("Stopped writing due to broken pipe (other end closed pipe?)");
+                    Log.d("Stopped writing due to broken pipe (other end closed pipe?)");
                 } else {
-                    Timber.e(e, "IOException when writing to out");
+                    Log.e(e, "IOException when writing to out");
                 }
             } finally {
                 try {
@@ -154,9 +154,9 @@ public class ParcelFileDescriptorUtil {
                 sinkResult = dataSink.processData(inputStream);
             } catch (IOException e) {
                 if (isIOExceptionCausedByEPIPE(e)) {
-                    Timber.e("Stopped read due to broken pipe (other end closed pipe?)");
+                    Log.e("Stopped read due to broken pipe (other end closed pipe?)");
                 } else {
-                    Timber.e(e, "IOException while reading from in");
+                    Log.e(e, "IOException while reading from in");
                 }
                 sinkResult = null;
             } finally {

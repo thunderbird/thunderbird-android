@@ -24,9 +24,9 @@ import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preferences.BackgroundSync
 import net.thunderbird.core.preferences.GeneralSettingsManager
-import timber.log.Timber
 
 /**
  * Starts and stops [AccountPushController]s as necessary. Manages the Push foreground service.
@@ -80,7 +80,7 @@ class PushController internal constructor(
     }
 
     fun disablePush() {
-        Timber.v("PushController.disablePush()")
+        Log.v("PushController.disablePush()")
 
         coroutineScope.launch(coroutineDispatcher) {
             for (account in accountManager.getAccounts()) {
@@ -90,7 +90,7 @@ class PushController internal constructor(
     }
 
     private fun initInBackground() {
-        Timber.v("PushController.initInBackground()")
+        Log.v("PushController.initInBackground()")
 
         accountManager.addOnAccountsChangeListener(::onAccountsChanged)
         listenForBackgroundSyncChanges()
@@ -156,7 +156,7 @@ class PushController internal constructor(
 
     @Suppress("LongMethod", "CyclomaticComplexMethod")
     private fun updatePushers() {
-        Timber.v("PushController.updatePushers()")
+        Log.v("PushController.updatePushers()")
 
         val generalSettings = generalSettingsManager.getSettings()
 
@@ -184,7 +184,7 @@ class PushController internal constructor(
             val stopPushAccountUuids = currentPushAccountUuids - pushAccountUuids
 
             if (stopPushAccountUuids.isNotEmpty()) {
-                Timber.v("..Stopping PushController for accounts: %s", stopPushAccountUuids)
+                Log.v("..Stopping PushController for accounts: %s", stopPushAccountUuids)
                 for (accountUuid in stopPushAccountUuids) {
                     val accountPushController = pushers.remove(accountUuid)
                     accountPushController?.stop()
@@ -192,7 +192,7 @@ class PushController internal constructor(
             }
 
             if (startPushAccountUuids.isNotEmpty()) {
-                Timber.v("..Starting PushController for accounts: %s", startPushAccountUuids)
+                Log.v("..Starting PushController for accounts: %s", startPushAccountUuids)
                 for (accountUuid in startPushAccountUuids) {
                     val account = accountManager.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
                     pushers[accountUuid] = accountPushControllerFactory.create(account).also { accountPushController ->
@@ -201,7 +201,7 @@ class PushController internal constructor(
                 }
             }
 
-            Timber.v("..Running PushControllers: %s", pushers.keys)
+            Log.v("..Running PushControllers: %s", pushers.keys)
 
             pushers.isNotEmpty()
         }
@@ -305,7 +305,7 @@ class PushController internal constructor(
             while (iterator.hasNext()) {
                 val (accountUuid, collectorJob) = iterator.next()
                 if (accountUuid !in accountUuids) {
-                    Timber.v("..Stopping to listen for push enabled changes in account: %s", accountUuid)
+                    Log.v("..Stopping to listen for push enabled changes in account: %s", accountUuid)
                     iterator.remove()
                     collectorJob.cancel()
                 }
@@ -315,7 +315,7 @@ class PushController internal constructor(
             val newAccounts = accounts.filterNot { account -> pushEnabledCollectorJobs.containsKey(account.uuid) }
             for (account in newAccounts) {
                 pushEnabledCollectorJobs[account.uuid] = coroutineScope.launch(coroutineDispatcher) {
-                    Timber.v("..Starting to listen for push enabled changes in account: %s", account.uuid)
+                    Log.v("..Starting to listen for push enabled changes in account: %s", account.uuid)
                     folderRepository.hasPushEnabledFolderFlow(account)
                         .collect {
                             updatePushers()

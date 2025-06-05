@@ -14,6 +14,8 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.Multipart;
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.logging.testing.TestLogger;
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 public class MimeMessageParseTest {
     @Before
     public void setup() {
+        Log.logger = new TestLogger();
         BinaryTempFileBody.setTempDirectory(new File(System.getProperty("java.io.tmpdir")));
     }
 

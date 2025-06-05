@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.core.BuildConfig
-import com.fsck.k9.logging.Logger
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
@@ -27,7 +26,6 @@ object K9 : KoinComponent {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
-    private val logger: Logger by inject()
     private val context: Context by inject()
 
     /**
@@ -330,7 +328,6 @@ object K9 : KoinComponent {
                 override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
             },
         )
-        com.fsck.k9.logging.Timber.logger = logger
 
         checkCachedDatabaseVersion(context)
 

@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -47,7 +47,7 @@ public class MessageExtractor {
         try {
             Body body = part.getBody();
             if (body == null) {
-                Timber.v("No body present for this message part");
+                Log.v("No body present for this message part");
                 return null;
             }
 
@@ -62,9 +62,9 @@ public class MessageExtractor {
                 return getTextFromTextPart(part, body, mimeType, textSizeLimit);
             }
 
-            Timber.w("Provided non-text part: %s", mimeType);
+            Log.w("Provided non-text part: %s", mimeType);
         } catch (IOException | MessagingException e) {
-            Timber.e(e, "Unable to getTextFromPart");
+            Log.e(e, "Unable to getTextFromPart");
         }
 
         return null;

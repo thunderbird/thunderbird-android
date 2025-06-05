@@ -33,11 +33,11 @@ import com.fsck.k9.view.RecipientSelectView.Recipient
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.contact.ContactIntentHelper
+import net.thunderbird.core.logging.legacy.Log
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
-import timber.log.Timber
 
 private const val STATE_KEY_CC_SHOWN = "state:ccShown"
 private const val STATE_KEY_BCC_SHOWN = "state:bccShown"
@@ -565,7 +565,7 @@ class RecipientPresenter(
     fun onClickCryptoStatus() {
         when (openPgpApiManager.openPgpProviderState) {
             OpenPgpProviderState.UNCONFIGURED -> {
-                Timber.e("click on crypto status while unconfigured - this should not really happen?!")
+                Log.e("click on crypto status while unconfigured - this should not really happen?!")
             }
             OpenPgpProviderState.OK -> {
                 toggleEncryptionState(false)
@@ -584,7 +584,7 @@ class RecipientPresenter(
     private fun toggleEncryptionState(showGotIt: Boolean) {
         val currentCryptoStatus = currentCachedCryptoStatus
         if (currentCryptoStatus == null) {
-            Timber.e("click on crypto status while crypto status not available - should not really happen?!")
+            Log.e("click on crypto status while crypto status not available - should not really happen?!")
             return
         }
 

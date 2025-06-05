@@ -11,12 +11,20 @@ import assertk.assertions.isTrue
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.storage.RobolectricTest
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
 import org.junit.Test
 
 class RetrieveMessageListOperationsTest : RobolectricTest() {
     private val sqliteDatabase = createDatabase()
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
     private val retrieveMessageListOperations = RetrieveMessageListOperations(lockableDatabase)
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `getMessages() on empty folder`() {

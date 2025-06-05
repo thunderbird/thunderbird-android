@@ -18,8 +18,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import org.xmlpull.v1.XmlSerializer
-import timber.log.Timber
 
 class SettingsExporter(
     private val contentResolver: ContentResolver,
@@ -62,7 +62,7 @@ class SettingsExporter(
             serializer.attribute(null, VERSION_ATTRIBUTE, Settings.VERSION.toString())
             serializer.attribute(null, FILE_FORMAT_ATTRIBUTE, FILE_FORMAT_VERSION.toString())
 
-            Timber.i("Exporting preferences")
+            Log.i("Exporting preferences")
 
             val storage = preferences.storage
 
@@ -95,7 +95,7 @@ class SettingsExporter(
         } catch (e: Exception) {
             // An error here could mean we export notification settings that don't reflect the current configuration
             // of the notification channels. But we prefer stale data over failing the export.
-            Timber.w(e, "Error while updating accounts with notification configuration from system")
+            Log.w(e, "Error while updating accounts with notification configuration from system")
         }
     }
 
@@ -109,14 +109,14 @@ class SettingsExporter(
                 try {
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, valueString)
                 } catch (e: InvalidSettingValueException) {
-                    Timber.w(
+                    Log.w(
                         "Global setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
                         key,
                         valueString,
                     )
                 }
             } else {
-                Timber.d("Couldn't find key \"%s\" in preference storage. Using default value.", key)
+                Log.d("Couldn't find key \"%s\" in preference storage. Using default value.", key)
                 writeKeyAndDefaultValueFromSetting(serializer, key, setting)
             }
         }
@@ -285,7 +285,7 @@ class SettingsExporter(
                 try {
                     writeKeyAndPrettyValueFromSetting(serializer, keyPart, setting, valueString)
                 } catch (e: InvalidSettingValueException) {
-                    Timber.w(
+                    Log.w(
                         "Account setting \"%s\" (%s) has invalid value \"%s\" in preference storage. " +
                             "This shouldn't happen!",
                         keyPart,
@@ -393,7 +393,7 @@ class SettingsExporter(
                     try {
                         writeKeyAndPrettyValueFromSetting(serializer, identityKey, setting, valueString)
                     } catch (e: InvalidSettingValueException) {
-                        Timber.w(
+                        Log.w(
                             "Identity setting \"%s\" has invalid value \"%s\" in preference storage. " +
                                 "This shouldn't happen!",
                             identityKey,
@@ -433,7 +433,7 @@ class SettingsExporter(
                 try {
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, value)
                 } catch (e: InvalidSettingValueException) {
-                    Timber.w(
+                    Log.w(
                         "Folder setting \"%s\" has invalid value \"%s\" in preference storage. This shouldn't happen!",
                         key,
                         value,

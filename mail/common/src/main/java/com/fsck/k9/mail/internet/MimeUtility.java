@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
@@ -159,7 +159,7 @@ public class MimeUtility {
                     }
                 };
             } else {
-                Timber.w("Unsupported encoding: %s", encoding);
+                Log.w("Unsupported encoding: %s", encoding);
                 inputStream = rawInputStream;
             }
         } else {

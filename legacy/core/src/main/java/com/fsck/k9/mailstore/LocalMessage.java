@@ -22,7 +22,7 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
 import net.thunderbird.core.android.account.LegacyAccount;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class LocalMessage extends MimeMessage {
@@ -76,7 +76,7 @@ public class LocalMessage extends MimeMessage {
 
                 catch (Exception e) {
                     if (!"X_BAD_FLAG".equals(flag)) {
-                        Timber.w("Unable to parse flag %s", flag);
+                        Log.w("Unable to parse flag %s", flag);
                     }
                 }
             }
@@ -130,7 +130,7 @@ public class LocalMessage extends MimeMessage {
         if (header != null) {
             MessageHeaderParser.parse(new ByteArrayInputStream(header), this::addRawHeader);
         } else {
-            Timber.d("No headers available for this message!");
+            Log.d("No headers available for this message!");
         }
 
         headerNeedsUpdating = false;

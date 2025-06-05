@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.mail.filter.Base64;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class StorageMigrationTo2 {
     public static void urlEncodeUserNameAndPassword(SQLiteDatabase db, StorageMigrationHelper migrationsHelper) {
-        Timber.i("Updating preferences to urlencoded username/password");
+        Log.i("Updating preferences to urlencoded username/password");
 
         String accountUuids = migrationsHelper.readValue(db, "accountUuids");
         if (accountUuids != null && accountUuids.length() != 0) {
@@ -92,7 +92,7 @@ public class StorageMigrationTo2 {
                         migrationsHelper.writeValue(db, uuid + ".storeUri", newStoreUriStr);
                     }
                 } catch (Exception e) {
-                    Timber.e(e, "ooops");
+                    Log.e(e, "ooops");
                 }
             }
         }

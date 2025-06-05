@@ -17,10 +17,10 @@ import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.view.StatusIndicator
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.delay
+import net.thunderbird.core.logging.legacy.Log
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import org.openintents.openpgp.util.OpenPgpIntentStarter
-import timber.log.Timber
 
 class AutocryptKeyTransferActivity : K9Activity() {
     private val presenter: AutocryptKeyTransferPresenter by inject { parametersOf(this, this) }
@@ -164,7 +164,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
         try {
             OpenPgpIntentStarter.startIntentSender(this, pendingIntent.intentSender)
         } catch (e: SendIntentException) {
-            Timber.e(e, "Error starting PendingIntent")
+            Log.e(e, "Error starting PendingIntent")
         }
     }
 

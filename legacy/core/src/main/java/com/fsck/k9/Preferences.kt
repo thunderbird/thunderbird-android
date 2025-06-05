@@ -26,8 +26,8 @@ import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preferences.Storage
-import timber.log.Timber
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(
@@ -244,7 +244,7 @@ class Preferences internal constructor(
             try {
                 localStoreProvider.getInstance(account).resetVisibleLimits(account.displayCount)
             } catch (e: MessagingException) {
-                Timber.e(e, "Failed to load LocalStore!")
+                Log.e(e, "Failed to load LocalStore!")
             }
         }
         account.resetChangeMarkers()

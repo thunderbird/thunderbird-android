@@ -20,10 +20,10 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.search.ConditionsTreeNode
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
-import timber.log.Timber
 
 internal class DefaultMessageCountsProvider(
     private val accountManager: AccountManager,
@@ -68,7 +68,7 @@ internal class DefaultMessageCountsProvider(
                 messageStore.getUnreadMessageCount(folderId)
             }
         } catch (e: Exception) {
-            Timber.e(e, "Unable to getUnreadMessageCount for account: %s, folder: %d", account, folderId)
+            Log.e(e, "Unable to getUnreadMessageCount for account: %s, folder: %d", account, folderId)
             0
         }
     }
@@ -101,7 +101,7 @@ internal class DefaultMessageCountsProvider(
                 starred = messageStore.getStarredMessageCount(conditions),
             )
         } catch (e: Exception) {
-            Timber.e(e, "Unable to getMessageCounts for account: %s", account)
+            Log.e(e, "Unable to getMessageCounts for account: %s", account)
             MessageCounts(unread = 0, starred = 0)
         }
     }

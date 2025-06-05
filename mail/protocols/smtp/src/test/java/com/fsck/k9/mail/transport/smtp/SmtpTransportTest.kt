@@ -22,6 +22,9 @@ import com.fsck.k9.mail.testing.XOAuth2ChallengeParserTestData
 import com.fsck.k9.mail.testing.message.TestMessageBuilder
 import com.fsck.k9.mail.testing.security.TestTrustedSocketFactory
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.kotlin.doReturn
@@ -37,6 +40,11 @@ private val CLIENT_CERTIFICATE_ALIAS: String? = null
 class SmtpTransportTest {
     private val socketFactory = TestTrustedSocketFactory
     private val oAuth2TokenProvider = createMockOAuth2TokenProvider()
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `open() should issue EHLO command`() {

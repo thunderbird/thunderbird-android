@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preferences.AppTheme
 import net.thunderbird.core.preferences.BackgroundSync
 import net.thunderbird.core.preferences.GeneralSettings
@@ -19,7 +20,6 @@ import net.thunderbird.core.preferences.SettingsChangePublisher
 import net.thunderbird.core.preferences.Storage
 import net.thunderbird.core.preferences.SubTheme
 import net.thunderbird.core.preferences.getEnumOrDefault
-import timber.log.Timber
 
 /**
  * Retrieve and modify general settings.
@@ -178,7 +178,7 @@ private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultVal
     return try {
         getEnumOrDefault(key, defaultValue)
     } catch (e: Exception) {
-        Timber.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
+        Log.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
         defaultValue
     }
 }

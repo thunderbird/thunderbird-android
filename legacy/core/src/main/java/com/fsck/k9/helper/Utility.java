@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 public class Utility {
 
@@ -178,12 +178,12 @@ public class Utility {
         while (imgMatches.find()) {
             String uriScheme = imgMatches.group(1);
             if (uriScheme.equals("http") || uriScheme.equals("https")) {
-                Timber.d("External images found");
+                Log.d("External images found");
                 return true;
             }
         }
 
-        Timber.d("No external images.");
+        Log.d("No external images.");
         return false;
     }
 

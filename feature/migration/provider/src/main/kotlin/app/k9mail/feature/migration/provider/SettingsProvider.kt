@@ -14,10 +14,10 @@ import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.preferences.SettingsExporter
 import kotlin.concurrent.thread
 import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.logging.legacy.Log
 import okio.ByteString.Companion.toByteString
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
-import timber.log.Timber
 
 /**
  * A `ContentProvider` that makes settings available to another app.
@@ -40,7 +40,7 @@ class SettingsProvider : ContentProvider(), KoinComponent {
 
     override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
         if (!isTrustedCaller()) {
-            Timber.d("Caller must be in the allowlist")
+            Log.d("Caller must be in the allowlist")
             return null
         }
 
@@ -127,16 +127,16 @@ class SettingsProvider : ContentProvider(), KoinComponent {
         }
 
         if (callerSignature == null) {
-            Timber.v("Couldn't retrieve caller signature")
+            Log.v("Couldn't retrieve caller signature")
             return false
         }
 
         val callerSignatureHash = callerSignature.toByteArray().toByteString().sha256().hex()
         val result = callerSignatureHash in expectedHashes
         if (result) {
-            Timber.d("Caller %s signature fingerprint matches %s", callerPackage, callerSignatureHash)
+            Log.d("Caller %s signature fingerprint matches %s", callerPackage, callerSignatureHash)
         } else {
-            Timber.d("Failed! Signature mismatch for calling package %s (%s)", callerPackage, callerSignatureHash)
+            Log.d("Failed! Signature mismatch for calling package %s (%s)", callerPackage, callerSignatureHash)
         }
 
         return result

@@ -10,7 +10,7 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.CertificateChainException;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.TrustManager;
@@ -23,7 +23,7 @@ public class TrustManagerFactory {
         try {
             trustManagerFactory.initialize();
         } catch (NoSuchAlgorithmException | KeyStoreException e) {
-            Timber.e(e, "Failed to initialize X509 Trust Manager!");
+            Log.e(e, "Failed to initialize X509 Trust Manager!");
             throw new IllegalStateException(e);
         }
         return trustManagerFactory;

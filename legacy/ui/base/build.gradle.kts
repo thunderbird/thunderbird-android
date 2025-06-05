@@ -16,7 +16,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.biometric)
-    implementation(libs.timber)
     implementation(libs.kotlinx.coroutines.core)
 }
 

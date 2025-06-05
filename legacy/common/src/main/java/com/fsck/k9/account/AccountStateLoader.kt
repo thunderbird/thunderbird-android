@@ -4,7 +4,6 @@ import app.k9mail.feature.account.common.AccountCommonExternalContract
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import com.fsck.k9.backends.toImapServerSettings
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +11,7 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.logging.legacy.Log
 
 class AccountStateLoader(
     private val accountManager: AccountManager,
@@ -25,7 +25,7 @@ class AccountStateLoader(
                 load(accountUuid)
             }
         } catch (e: Exception) {
-            Timber.e(e, "Error while loading account")
+            Log.e(e, "Error while loading account")
 
             null
         }

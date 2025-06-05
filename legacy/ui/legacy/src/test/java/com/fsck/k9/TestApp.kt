@@ -10,6 +10,9 @@ import net.thunderbird.core.android.preferences.InMemoryStoragePersister
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
+import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.koin.dsl.module
 import org.mockito.Mockito.mock
 
@@ -18,6 +21,8 @@ class TestApp : Application() {
         Core.earlyInit()
 
         super.onCreate()
+
+        Log.logger = logger
         DI.start(
             application = this,
             modules = legacyCoreModules + legacyCommonAppModules + legacyUiModules + telemetryModule + testModule,
@@ -27,9 +32,14 @@ class TestApp : Application() {
         K9.init(this)
         Core.init(this)
     }
+
+    companion object {
+        val logger: Logger = TestLogger()
+    }
 }
 
 val testModule = module {
+    single<Logger> { TestApp.logger }
     single { AppConfig(emptyList()) }
     single<CoreResourceProvider> { TestCoreResourceProvider() }
     single<StoragePersister> { InMemoryStoragePersister() }

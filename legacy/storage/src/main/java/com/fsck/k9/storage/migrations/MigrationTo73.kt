@@ -13,7 +13,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag
 import com.fsck.k9.controller.PendingCommandSerializer
 import com.squareup.moshi.Moshi
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 internal class MigrationTo73(private val db: SQLiteDatabase) {
     private val serializer = PendingCommandSerializer.getInstance()
@@ -133,7 +133,7 @@ internal class MigrationTo73(private val db: SQLiteDatabase) {
         }
 
         if (folderIds.any { it == null }) {
-            Timber.w("Couldn't find folder ID for pending command with database ID $commandId. Removing entry.")
+            Log.w("Couldn't find folder ID for pending command with database ID $commandId. Removing entry.")
             removePendingCommand(commandId)
         } else {
             val pendingCommand = convertPendingCommand(folderIds.filterNotNull())

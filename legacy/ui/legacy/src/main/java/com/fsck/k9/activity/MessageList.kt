@@ -65,6 +65,7 @@ import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
@@ -78,7 +79,6 @@ import net.thunderbird.feature.search.api.SearchSpecification
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
 
 /**
  * MessageList is the primary user interface for the program. This Activity shows a list of messages.
@@ -150,7 +150,7 @@ open class MessageList :
         // bringing the app's task to the foreground. We catch this situation here and simply finish the activity. This
         // will bring the task to the foreground, showing the last active screen.
         if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_LAUNCHER) && !isTaskRoot) {
-            Timber.v("Not displaying MessageList. Only bringing the app task to the foreground.")
+            Log.v("Not displaying MessageList. Only bringing the app task to the foreground.")
             finish()
             return
         }
@@ -459,7 +459,7 @@ open class MessageList :
             if (accountUuid != null) {
                 val account = accountManager.getAccount(accountUuid)
                 if (account == null) {
-                    Timber.d("Account %s not found.", accountUuid)
+                    Log.d("Account %s not found.", accountUuid)
                     return LaunchData(createDefaultLocalSearch())
                 }
 
@@ -731,7 +731,7 @@ open class MessageList :
 
     private fun launchManageFoldersScreen() {
         if (account == null) {
-            Timber.e("Tried to open \"Manage folders\", but no account selected!")
+            Log.e("Tried to open \"Manage folders\", but no account selected!")
             return
         }
 
@@ -989,7 +989,7 @@ open class MessageList :
         // Swallow these events too to avoid the audible notification of a volume change
         if (K9.isUseVolumeKeysForNavigation) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-                Timber.v("Swallowed key up.")
+                Log.v("Swallowed key up.")
                 return true
             }
         }

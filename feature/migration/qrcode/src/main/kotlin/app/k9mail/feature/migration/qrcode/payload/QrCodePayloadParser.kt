@@ -2,7 +2,7 @@ package app.k9mail.feature.migration.qrcode.payload
 
 import com.squareup.moshi.JsonDataException
 import java.io.IOException
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 internal class QrCodePayloadParser(
     private val qrCodePayloadAdapter: QrCodePayloadAdapter,
@@ -16,10 +16,10 @@ internal class QrCodePayloadParser(
         return try {
             qrCodePayloadAdapter.fromJson(payload)
         } catch (e: JsonDataException) {
-            Timber.d(e, "Failed to parse JSON")
+            Log.d(e, "Failed to parse JSON")
             null
         } catch (e: IOException) {
-            Timber.d(e, "Unexpected IOException")
+            Log.d(e, "Unexpected IOException")
             null
         }
     }

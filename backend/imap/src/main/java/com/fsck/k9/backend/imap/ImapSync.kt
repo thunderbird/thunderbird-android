@@ -7,7 +7,6 @@ import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.helper.ExceptionHelper
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.DefaultBodyFactory
@@ -24,6 +23,7 @@ import java.util.Collections
 import java.util.Date
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
+import net.thunderbird.core.logging.legacy.Log
 
 internal class ImapSync(
     private val accountName: String,
@@ -35,19 +35,19 @@ internal class ImapSync(
     }
 
     private fun synchronizeMailboxSynchronous(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
-        Timber.i("Synchronizing folder %s:%s", accountName, folder)
+        Log.i("Synchronizing folder %s:%s", accountName, folder)
 
         var remoteFolder: ImapFolder? = null
         var backendFolder: BackendFolder? = null
         var newHighestKnownUid: Long = 0
         try {
-            Timber.v("SYNC: About to get local folder %s", folder)
+            Log.v("SYNC: About to get local folder %s", folder)
 
             backendFolder = backendStorage.getFolder(folder)
 
             listener.syncStarted(folder)
 
-            Timber.v("SYNC: About to get remote folder %s", folder)
+            Log.v("SYNC: About to get remote folder %s", folder)
             remoteFolder = imapStore.getFolder(folder)
 
             /*
@@ -71,10 +71,10 @@ internal class ImapSync(
             /*
              * Open the remote folder. This pre-loads certain metadata like message count.
              */
-            Timber.v("SYNC: About to open remote folder %s", folder)
+            Log.v("SYNC: About to open remote folder %s", folder)
 
             if (syncConfig.expungePolicy === ExpungePolicy.ON_POLL) {
-                Timber.d("SYNC: Expunging folder %s:%s", accountName, folder)
+                Log.d("SYNC: Expunging folder %s:%s", accountName, folder)
                 if (!remoteFolder.isOpen || remoteFolder.mode != OpenMode.READ_WRITE) {
                     remoteFolder.open(OpenMode.READ_WRITE)
                 }
@@ -88,10 +88,10 @@ internal class ImapSync(
             val uidValidity = remoteFolder.getUidValidity()
             val oldUidValidity = backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY)
             if (oldUidValidity == null && uidValidity != null) {
-                Timber.d("SYNC: Saving UIDVALIDITY for %s", folder)
+                Log.d("SYNC: Saving UIDVALIDITY for %s", folder)
                 backendFolder.setFolderExtraNumber(EXTRA_UID_VALIDITY, uidValidity)
             } else if (oldUidValidity != null && oldUidValidity != uidValidity) {
-                Timber.d("SYNC: UIDVALIDITY for %s changed; clearing local message cache", folder)
+                Log.d("SYNC: UIDVALIDITY for %s changed; clearing local message cache", folder)
                 backendFolder.clearAllMessages()
                 backendFolder.setFolderExtraNumber(EXTRA_UID_VALIDITY, uidValidity!!)
                 backendFolder.setFolderExtraNumber(EXTRA_HIGHEST_KNOWN_UID, 0)
@@ -118,7 +118,7 @@ internal class ImapSync(
             val remoteMessages = mutableListOf<ImapMessage>()
             val remoteUidMap = mutableMapOf<String, ImapMessage>()
 
-            Timber.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount)
+            Log.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount)
 
             val earliestDate = syncConfig.earliestPollDate
             val earliestTimestamp = earliestDate?.time ?: 0L
@@ -132,7 +132,7 @@ internal class ImapSync(
                     1
                 }
 
-                Timber.v(
+                Log.v(
                     "SYNC: About to get messages %d through %d for folder %s",
                     remoteStart,
                     remoteMessageCount,
@@ -162,7 +162,7 @@ internal class ImapSync(
                     }
                 }
 
-                Timber.v("SYNC: Got %d messages for folder %s", remoteUidMap.size, folder)
+                Log.v("SYNC: Got %d messages for folder %s", remoteUidMap.size, folder)
 
                 listener.syncHeadersFinished(folder, headerProgress.get(), remoteUidMap.size)
             } else if (remoteMessageCount < 0) {
@@ -216,15 +216,15 @@ internal class ImapSync(
             backendFolder.setLastChecked(System.currentTimeMillis())
             backendFolder.setStatus(null)
 
-            Timber.d("Done synchronizing folder %s:%s @ %tc", accountName, folder, System.currentTimeMillis())
+            Log.d("Done synchronizing folder %s:%s @ %tc", accountName, folder, System.currentTimeMillis())
 
             listener.syncFinished(folder)
 
-            Timber.i("Done synchronizing folder %s:%s", accountName, folder)
+            Log.i("Done synchronizing folder %s:%s", accountName, folder)
         } catch (e: AuthenticationFailedException) {
             listener.syncFailed(folder, "Authentication failure", e)
         } catch (e: Exception) {
-            Timber.e(e, "synchronizeMailbox")
+            Log.e(e, "synchronizeMailbox")
             // If we don't set the last checked, it can try too often during
             // failure conditions
             val rootMessage = ExceptionHelper.getRootCauseMessage(e)
@@ -233,13 +233,13 @@ internal class ImapSync(
                     backendFolder.setStatus(rootMessage)
                     backendFolder.setLastChecked(System.currentTimeMillis())
                 } catch (e: Exception) {
-                    Timber.e(e, "Could not set last checked on folder %s:%s", accountName, folder)
+                    Log.e(e, "Could not set last checked on folder %s:%s", accountName, folder)
                 }
             }
 
             listener.syncFailed(folder, rootMessage, e)
 
-            Timber.e(
+            Log.e(
                 "Failed synchronizing folder %s:%s @ %tc",
                 accountName,
                 folder,
@@ -247,7 +247,7 @@ internal class ImapSync(
             )
         } finally {
             if (newHighestKnownUid > 0 && backendFolder != null) {
-                Timber.v("Saving new highest known UID: %d", newHighestKnownUid)
+                Log.v("Saving new highest known UID: %d", newHighestKnownUid)
                 backendFolder.setFolderExtraNumber(EXTRA_HIGHEST_KNOWN_UID, newHighestKnownUid)
             }
             remoteFolder?.close()
@@ -312,7 +312,7 @@ internal class ImapSync(
         val todo = unsyncedMessages.size + syncFlagMessages.size
         listener.syncProgress(folder, progress.get(), todo)
 
-        Timber.d("SYNC: Have %d unsynced messages", unsyncedMessages.size)
+        Log.d("SYNC: Have %d unsynced messages", unsyncedMessages.size)
 
         messages.clear()
         val largeMessages = mutableListOf<ImapMessage>()
@@ -326,7 +326,7 @@ internal class ImapSync(
                 unsyncedMessages = unsyncedMessages.subList(0, visibleLimit)
             }
 
-            Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
+            Log.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size, folder)
 
             fetchUnsyncedMessages(
                 syncConfig,
@@ -339,10 +339,10 @@ internal class ImapSync(
                 listener,
             )
 
-            Timber.d("SYNC: Synced unsynced messages for folder %s", folder)
+            Log.d("SYNC: Synced unsynced messages for folder %s", folder)
         }
 
-        Timber.d(
+        Log.d(
             "SYNC: Have %d large messages and %d small messages out of %d unsynced messages",
             largeMessages.size,
             smallMessages.size,
@@ -392,7 +392,7 @@ internal class ImapSync(
          */
         refreshLocalMessageFlags(syncConfig, remoteFolder, backendFolder, syncFlagMessages, progress, todo, listener)
 
-        Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, downloadedMessageCount.get())
+        Log.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, downloadedMessageCount.get())
     }
 
     private fun evaluateMessageForDownload(
@@ -403,29 +403,29 @@ internal class ImapSync(
     ) {
         val messageServerId = message.uid
         if (message.isSet(Flag.DELETED)) {
-            Timber.v("Message with uid %s is marked as deleted", messageServerId)
+            Log.v("Message with uid %s is marked as deleted", messageServerId)
             syncFlagMessages.add(message)
             return
         }
 
         val messagePresentLocally = backendFolder.isMessagePresent(messageServerId)
         if (!messagePresentLocally) {
-            Timber.v("Message with uid %s has not yet been downloaded", messageServerId)
+            Log.v("Message with uid %s has not yet been downloaded", messageServerId)
             unsyncedMessages.add(message)
             return
         }
 
         val messageFlags = backendFolder.getMessageFlags(messageServerId)
         if (!messageFlags.contains(Flag.DELETED)) {
-            Timber.v("Message with uid %s is present in the local store", messageServerId)
+            Log.v("Message with uid %s is present in the local store", messageServerId)
             if (!messageFlags.contains(Flag.X_DOWNLOADED_FULL) && !messageFlags.contains(Flag.X_DOWNLOADED_PARTIAL)) {
-                Timber.v("Message with uid %s is not downloaded, even partially; trying again", messageServerId)
+                Log.v("Message with uid %s is not downloaded, even partially; trying again", messageServerId)
                 unsyncedMessages.add(message)
             } else {
                 syncFlagMessages.add(message)
             }
         } else {
-            Timber.v("Local copy of message with uid %s is marked as deleted", messageServerId)
+            Log.v("Local copy of message with uid %s is marked as deleted", messageServerId)
         }
     }
 
@@ -436,7 +436,7 @@ internal class ImapSync(
             val messageUid = messageServerId.toLong()
             return messageUid <= highestKnownUid
         } catch (e: NumberFormatException) {
-            Timber.w(e, "Couldn't parse UID: %s", messageServerId)
+            Log.w(e, "Couldn't parse UID: %s", messageServerId)
         }
 
         return false
@@ -465,7 +465,7 @@ internal class ImapSync(
                 override fun onFetchResponse(message: ImapMessage, isFirstResponse: Boolean) {
                     try {
                         if (message.isSet(Flag.DELETED)) {
-                            Timber.v(
+                            Log.v(
                                 "Newly downloaded message %s:%s:%s was marked deleted on server, skipping",
                                 accountName,
                                 folder,
@@ -490,7 +490,7 @@ internal class ImapSync(
                             smallMessages.add(message)
                         }
                     } catch (e: Exception) {
-                        Timber.e(e, "Error while storing downloaded message.")
+                        Log.e(e, "Error while storing downloaded message.")
                     }
                 }
             },
@@ -513,7 +513,7 @@ internal class ImapSync(
             add(FetchProfile.Item.BODY)
         }
 
-        Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
+        Log.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size, folder)
 
         remoteFolder.fetch(
             smallMessages,
@@ -530,7 +530,7 @@ internal class ImapSync(
                         }
 
                         val messageServerId = message.uid
-                        Timber.v(
+                        Log.v(
                             "About to notify listeners that we got a new small message %s:%s:%s",
                             accountName,
                             folder,
@@ -543,14 +543,14 @@ internal class ImapSync(
                         val isOldMessage = isOldMessage(messageServerId, highestKnownUid)
                         listener.syncNewMessage(folder, messageServerId, isOldMessage)
                     } catch (e: Exception) {
-                        Timber.e(e, "SYNC: fetch small messages")
+                        Log.e(e, "SYNC: fetch small messages")
                     }
                 }
             },
             -1,
         )
 
-        Timber.d("SYNC: Done fetching small messages for folder %s", folder)
+        Log.d("SYNC: Done fetching small messages for folder %s", folder)
     }
 
     private fun downloadLargeMessages(
@@ -569,7 +569,7 @@ internal class ImapSync(
             add(FetchProfile.Item.STRUCTURE)
         }
 
-        Timber.d("SYNC: Fetching large messages for folder %s", folder)
+        Log.d("SYNC: Fetching large messages for folder %s", folder)
 
         remoteFolder.fetch(largeMessages, fetchProfile, null, maxDownloadSize)
         for (message in largeMessages) {
@@ -580,7 +580,7 @@ internal class ImapSync(
             }
 
             val messageServerId = message.uid
-            Timber.v(
+            Log.v(
                 "About to notify listeners that we got a new large message %s:%s:%s",
                 accountName,
                 folder,
@@ -597,7 +597,7 @@ internal class ImapSync(
             listener.syncNewMessage(folder, messageServerId, isOldMessage)
         }
 
-        Timber.d("SYNC: Done fetching large messages for folder %s", folder)
+        Log.d("SYNC: Done fetching large messages for folder %s", folder)
     }
 
     private fun refreshLocalMessageFlags(
@@ -610,7 +610,7 @@ internal class ImapSync(
         listener: SyncListener,
     ) {
         val folder = remoteFolder.serverId
-        Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size, folder)
+        Log.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size, folder)
 
         val fetchProfile = FetchProfile()
         fetchProfile.add(FetchProfile.Item.FLAGS)

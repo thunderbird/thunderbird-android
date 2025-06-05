@@ -14,15 +14,23 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.toDatabaseFolderType
 import com.fsck.k9.storage.RobolectricTest
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchField
+import org.junit.Before
 import org.junit.Test
 
 class RetrieveFolderOperationsTest : RobolectricTest() {
     private val sqliteDatabase = createDatabase()
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
     private val retrieveFolderOperations = RetrieveFolderOperations(lockableDatabase)
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `get folder`() {

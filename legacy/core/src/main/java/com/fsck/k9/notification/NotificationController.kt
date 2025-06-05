@@ -4,7 +4,7 @@ import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccount
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class NotificationController internal constructor(
     private val certificateErrorNotificationController: CertificateErrorNotificationController,
@@ -62,7 +62,7 @@ class NotificationController internal constructor(
     }
 
     fun addNewMailNotification(account: LegacyAccount, message: LocalMessage, silent: Boolean) {
-        Timber.v(
+        Log.v(
             "Creating notification for message %s:%s:%s",
             message.account.uuid,
             message.folder.databaseId,
@@ -73,7 +73,7 @@ class NotificationController internal constructor(
     }
 
     fun removeNewMailNotification(account: LegacyAccount, messageReference: MessageReference) {
-        Timber.v("Removing notification for message %s", messageReference)
+        Log.v("Removing notification for message %s", messageReference)
 
         newMailNotificationController.removeNewMailNotifications(account, clearNewMessageState = true) {
             listOf(messageReference)
@@ -84,13 +84,13 @@ class NotificationController internal constructor(
         account: LegacyAccount,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ) {
-        Timber.v("Removing some notifications for account %s", account.uuid)
+        Log.v("Removing some notifications for account %s", account.uuid)
 
         newMailNotificationController.removeNewMailNotifications(account, clearNewMessageState = false, selector)
     }
 
     fun clearNewMailNotifications(account: LegacyAccount, clearNewMessageState: Boolean) {
-        Timber.v("Removing all notifications for account %s", account.uuid)
+        Log.v("Removing all notifications for account %s", account.uuid)
 
         newMailNotificationController.clearNewMailNotifications(account, clearNewMessageState)
     }

@@ -36,6 +36,8 @@ import com.fsck.k9.mailstore.CryptoResultAnnotation.CryptoError;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor.ViewableExtractedText;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import app.k9mail.html.cleaner.HtmlProcessor;
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.logging.testing.TestLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -73,6 +75,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
+        Log.logger = new TestLogger();
         context = RuntimeEnvironment.getApplication();
 
         HtmlProcessor htmlProcessor = createFakeHtmlProcessor();

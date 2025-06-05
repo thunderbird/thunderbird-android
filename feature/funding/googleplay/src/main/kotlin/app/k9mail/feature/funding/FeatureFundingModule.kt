@@ -82,6 +82,7 @@ val featureFundingModule = module {
         GoogleBillingPurchaseHandler(
             productCache = get(),
             productMapper = get(),
+            logger = get(),
         )
     }
 
@@ -92,6 +93,7 @@ val featureFundingModule = module {
             resultMapper = get(),
             productCache = get(),
             purchaseHandler = get(),
+            logger = get(),
         )
     }
 

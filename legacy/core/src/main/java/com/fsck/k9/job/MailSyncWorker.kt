@@ -9,7 +9,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.AuthType
 import net.thunderbird.core.android.account.LegacyAccount
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 // IMPORTANT: Update K9WorkerFactory when moving this class and the FQCN no longer starts with "com.fsck.k9".
 class MailSyncWorker(
@@ -23,31 +23,31 @@ class MailSyncWorker(
         val accountUuid = inputData.getString(EXTRA_ACCOUNT_UUID)
         requireNotNull(accountUuid)
 
-        Timber.d("Executing periodic mail sync for account %s", accountUuid)
+        Log.d("Executing periodic mail sync for account %s", accountUuid)
 
         if (isBackgroundSyncDisabled()) {
-            Timber.d("Background sync is disabled. Skipping mail sync.")
+            Log.d("Background sync is disabled. Skipping mail sync.")
             return Result.success()
         }
 
         val account = preferences.getAccount(accountUuid)
         if (account == null) {
-            Timber.e("Account %s not found. Can't perform mail sync.", accountUuid)
+            Log.e("Account %s not found. Can't perform mail sync.", accountUuid)
             return Result.failure()
         }
 
         if (account.isPeriodicMailSyncDisabled) {
-            Timber.d("Periodic mail sync has been disabled for this account. Skipping mail sync.")
+            Log.d("Periodic mail sync has been disabled for this account. Skipping mail sync.")
             return Result.success()
         }
 
         if (account.incomingServerSettings.isMissingCredentials) {
-            Timber.d("Password for this account is missing. Skipping mail sync.")
+            Log.d("Password for this account is missing. Skipping mail sync.")
             return Result.success()
         }
 
         if (account.incomingServerSettings.authenticationType == AuthType.XOAUTH2 && account.oAuthState == null) {
-            Timber.d("Account requires sign-in. Skipping mail sync.")
+            Log.d("Account requires sign-in. Skipping mail sync.")
             return Result.success()
         }
 

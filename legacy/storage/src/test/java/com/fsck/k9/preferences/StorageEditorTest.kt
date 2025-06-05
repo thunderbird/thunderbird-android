@@ -8,7 +8,10 @@ import assertk.assertions.isTrue
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
 import com.fsck.k9.storage.K9RobolectricTest
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preferences.Storage
+import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.kotlin.doAnswer
@@ -30,6 +33,11 @@ class DefaultStorageEditorTest : K9RobolectricTest() {
 
     private val newValues: Map<String, String>
         get() = storageUpdater.newStorage!!.getAll()
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun commit_exception() {

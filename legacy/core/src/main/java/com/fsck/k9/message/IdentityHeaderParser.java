@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import android.net.Uri;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.mail.filter.Base64;
 
@@ -23,7 +23,7 @@ public class IdentityHeaderParser {
     public static Map<IdentityField, String> parse(final String identityString) {
         Map<IdentityField, String> identity = new HashMap<>();
 
-        Timber.d("Decoding identity: %s", identityString);
+        Log.d("Decoding identity: %s", identityString);
 
         if (identityString == null || identityString.length() < 1) {
             return identity;
@@ -43,7 +43,7 @@ public class IdentityHeaderParser {
                 }
             }
 
-            Timber.d("Decoded identity: %s", identity);
+            Log.d("Decoded identity: %s", identity);
 
             // Sanity check our Integers so that recipients of this result don't have to.
             for (IdentityField key : IdentityField.getIntegerFields()) {
@@ -51,14 +51,14 @@ public class IdentityHeaderParser {
                     try {
                         Integer.parseInt(identity.get(key));
                     } catch (NumberFormatException e) {
-                        Timber.e("Invalid %s field in identity: %s", key.name(), identity.get(key));
+                        Log.e("Invalid %s field in identity: %s", key.name(), identity.get(key));
                     }
                 }
             }
         } else {
             // Legacy identity
 
-            Timber.d("Got a saved legacy identity: %s", encodedString);
+            Log.d("Got a saved legacy identity: %s", encodedString);
 
             StringTokenizer tokenizer = new StringTokenizer(encodedString, ":", false);
 
@@ -68,7 +68,7 @@ public class IdentityHeaderParser {
                 try {
                     identity.put(IdentityField.LENGTH, Integer.valueOf(bodyLengthS).toString());
                 } catch (Exception e) {
-                    Timber.e("Unable to parse bodyLength '%s'", bodyLengthS);
+                    Log.e("Unable to parse bodyLength '%s'", bodyLengthS);
                 }
             }
             if (tokenizer.hasMoreTokens()) {

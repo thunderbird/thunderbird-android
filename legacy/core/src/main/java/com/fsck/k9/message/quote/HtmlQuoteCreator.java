@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 import com.fsck.k9.CoreResourceProvider;
 import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.android.account.QuoteStyle;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -144,7 +144,7 @@ public class HtmlQuoteCreator {
             hasBodyTag = true;
         }
 
-        Timber.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
+        Log.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
 
         // Given our inspections, let's figure out where to start our content.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just after it.
@@ -195,7 +195,7 @@ public class HtmlQuoteCreator {
             hasBodyEndTag = true;
         }
 
-        Timber.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
+        Log.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
 
         // Now figure out where to put our footer.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just before it.

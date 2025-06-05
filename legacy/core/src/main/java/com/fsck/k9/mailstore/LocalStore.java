@@ -56,7 +56,7 @@ import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 /**
  * <pre>
@@ -353,7 +353,7 @@ public class LocalStore {
                 ((!TextUtils.isEmpty(where)) ? " AND (" + where + ")" : "") +
                 " ORDER BY date DESC";
 
-        Timber.d("Query = %s", sqlQuery);
+        Log.d("Query = %s", sqlQuery);
 
         return getMessages(null, sqlQuery, selectionArgs);
     }
@@ -388,7 +388,7 @@ public class LocalStore {
                         messages.add(message);
                     }
                 } catch (Exception e) {
-                    Timber.d(e, "Got an exception");
+                    Log.d(e, "Got an exception");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }

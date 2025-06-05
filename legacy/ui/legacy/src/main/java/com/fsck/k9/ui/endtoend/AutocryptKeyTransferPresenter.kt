@@ -7,10 +7,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
-import timber.log.Timber
 
 class AutocryptKeyTransferPresenter internal constructor(
     lifecycleOwner: LifecycleOwner,
@@ -100,7 +100,7 @@ class AutocryptKeyTransferPresenter internal constructor(
             }
 
             is AutocryptSetupTransferResult.Failure -> {
-                Timber.e(result.exception, "Error sending setup message")
+                Log.e(result.exception, "Error sending setup message")
                 view.setLoadingStateSendingFailed()
                 view.sceneSendError()
             }

@@ -11,7 +11,6 @@ import com.fsck.k9.K9
 import com.fsck.k9.MessagingListenerProvider
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.WorkManagerConfigurationProvider
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.extensions.currentLocale
@@ -22,6 +21,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
 import org.koin.core.module.Module
@@ -36,6 +37,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
     private val notificationChannelManager: NotificationChannelManager by inject()
     private val messageListWidgetManager: MessageListWidgetManager by inject()
     private val workManagerConfigurationProvider: WorkManagerConfigurationProvider by inject()
+    private val logger: Logger by inject()
 
     private val appCoroutineScope: CoroutineScope = MainScope()
     private var appLanguageManagerInitialized = false
@@ -52,6 +54,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
     override fun onCreate() {
         super.onCreate()
 
+        Log.logger = logger
         K9.init(this)
         Core.init(this)
         initializeAppLanguage()
@@ -95,7 +98,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
     }
 
     private fun updateConfigurationWithLocale(configuration: Configuration, locale: Locale) {
-        Timber.d("Updating application configuration with locale '$locale'")
+        Log.d("Updating application configuration with locale '$locale'")
 
         val newConfiguration = Configuration(configuration).apply {
             currentLocale = locale
@@ -119,7 +122,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
         if (appLanguageManagerInitialized) {
             appLanguageManager.getOverrideLocale()?.let { overrideLocale ->
                 if (resources.configuration.currentLocale != overrideLocale) {
-                    Timber.w("Resources configuration was reset. Re-applying locale override.")
+                    Log.w("Resources configuration was reset. Re-applying locale override.")
                     appLanguageManager.applyOverrideLocale()
                     applyOverrideLocaleToConfiguration()
                 }

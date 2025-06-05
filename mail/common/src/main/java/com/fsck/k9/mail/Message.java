@@ -8,7 +8,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import org.jetbrains.annotations.NotNull;
@@ -164,7 +164,7 @@ public abstract class Message implements Part, Body {
             eolOut.flush();
             return out.getCount();
         } catch (IOException | MessagingException e) {
-            Timber.e(e, "Failed to calculate a message size");
+            Log.e(e, "Failed to calculate a message size");
         }
         return 0;
     }

@@ -7,7 +7,6 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.backend.imap.TestImapFolder
-import com.fsck.k9.logging.NoOpLogger
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.store.imap.FolderListItem
 import com.fsck.k9.mail.store.imap.ImapFolder
@@ -15,11 +14,12 @@ import com.fsck.k9.mail.store.imap.ImapStore
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome.Error.FailedToCreateRemoteFolder
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import org.junit.Test
 
 class ImapRemoteFolderCreatorTest {
-    private val logger = NoOpLogger()
+    private val logger = TestLogger()
 
     @Test
     fun `when mustCreate true and folder exists, should return Error AlreadyExists`() = runTest {

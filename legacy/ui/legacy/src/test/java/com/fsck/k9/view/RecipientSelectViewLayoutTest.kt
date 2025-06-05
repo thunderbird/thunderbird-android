@@ -5,6 +5,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.ui.R
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,6 +23,7 @@ class RecipientSelectViewLayoutTest(
 
     @Before
     fun setUp() {
+        Log.logger = TestLogger()
         activity = Robolectric.buildActivity(AppCompatActivity::class.java).get()
         activity.setTheme(R.style.Theme_Legacy_Test)
         view = RecipientSelectView(activity)

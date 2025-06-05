@@ -59,13 +59,14 @@ dependencies {
     implementation(libs.commons.io)
     implementation(libs.androidx.core.ktx)
     implementation(libs.jcip.annotations)
-    implementation(libs.timber)
     implementation(libs.mime4j.core)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
 
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
+
+    testImplementation(projects.core.logging.testing)
 
     // This is necessary as RecipientPresenterTest fails to inject
     testImplementation(projects.legacy.common)

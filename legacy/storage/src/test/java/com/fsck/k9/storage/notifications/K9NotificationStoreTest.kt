@@ -11,6 +11,9 @@ import com.fsck.k9.storage.RobolectricTest
 import com.fsck.k9.storage.messages.createDatabase
 import com.fsck.k9.storage.messages.createLockableDatabaseMock
 import com.fsck.k9.storage.messages.createMessage
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
 import org.junit.Test
 
 private const val FOLDER_ID = 1L
@@ -21,6 +24,11 @@ class K9NotificationStoreTest : RobolectricTest() {
     private val store = K9NotificationStore(lockableDatabase)
     private val messageIdOne = sqliteDatabase.createMessage(folderId = FOLDER_ID, uid = "uid-1")
     private val messageIdTwo = sqliteDatabase.createMessage(folderId = FOLDER_ID, uid = "uid-2")
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `add notification`() {

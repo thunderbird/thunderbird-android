@@ -9,13 +9,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillis
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.preferences.SettingsExporter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.logging.legacy.Log
 
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
@@ -146,7 +146,7 @@ class SettingsExportViewModel(
                     showSuccessText()
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Error writing settings file")
+                Log.e(e, "Error writing settings file")
 
                 updateUiModel {
                     showFailureText()

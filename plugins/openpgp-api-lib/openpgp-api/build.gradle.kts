@@ -15,6 +15,6 @@ dependencies {
     api(libs.androidx.preference)
     api(libs.androidx.fragment)
 
+    implementation(projects.core.logging.implLegacy)
     implementation(libs.androidx.annotation)
-    implementation(libs.timber)
 }

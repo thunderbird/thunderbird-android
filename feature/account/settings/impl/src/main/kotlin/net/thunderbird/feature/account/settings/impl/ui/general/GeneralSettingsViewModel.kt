@@ -3,6 +3,7 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlinx.coroutines.launch
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
 import net.thunderbird.feature.account.api.AccountId
@@ -11,7 +12,6 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Event
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
-import timber.log.Timber
 
 internal class GeneralSettingsViewModel(
     private val accountId: AccountId,
@@ -68,7 +68,7 @@ internal class GeneralSettingsViewModel(
 
     private fun handleError(error: SettingsError) {
         when (error) {
-            is SettingsError.NotFound -> Timber.w(error.message)
+            is SettingsError.NotFound -> Log.w(error.message)
         }
     }
 }

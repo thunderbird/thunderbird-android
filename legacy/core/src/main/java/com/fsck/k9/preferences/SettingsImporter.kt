@@ -7,7 +7,7 @@ import com.fsck.k9.preferences.ServerSettingsDescriptions.PASSWORD
 import com.fsck.k9.preferences.ServerSettingsDescriptions.USERNAME
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import java.io.InputStream
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 @Suppress("LongParameterList")
 class SettingsImporter internal constructor(
@@ -95,11 +95,11 @@ class SettingsImporter internal constructor(
                     val importResult = importAccount(contents.contentVersion, account)
                     importedAccounts.add(importResult)
                 } catch (e: InvalidSettingValueException) {
-                    Timber.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
+                    Log.e(e, "Encountered invalid setting while importing account \"%s\"", account.name)
 
                     erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                 } catch (e: Exception) {
-                    Timber.e(e, "Exception while importing account \"%s\"", account.name)
+                    Log.e(e, "Exception while importing account \"%s\"", account.name)
 
                     erroneousAccounts.add(AccountDescription(account.name!!, account.uuid))
                 }
@@ -123,13 +123,13 @@ class SettingsImporter internal constructor(
         importAccountUuids: List<String>,
     ): SettingsFile.Contents {
         if (importGeneralSettings && contents.globalSettings == null) {
-            Timber.w("Was asked to import global settings but none found.")
+            Log.w("Was asked to import global settings but none found.")
         }
 
         val accountUuids = contents.accounts.mapCollectionToSet { it.uuid }
         for (importAccountUuid in importAccountUuids) {
             if (importAccountUuid !in accountUuids) {
-                Timber.w("Was asked to import account %s. But this account wasn't found.", importAccountUuid)
+                Log.w("Was asked to import account %s. But this account wasn't found.", importAccountUuid)
             }
         }
 
@@ -148,7 +148,7 @@ class SettingsImporter internal constructor(
 
             generalSettingsWriter.write(currentSettings)
         } catch (e: Exception) {
-            Timber.e(e, "Exception while importing general settings")
+            Log.e(e, "Exception while importing general settings")
             false
         }
     }

@@ -45,8 +45,8 @@ import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.logging.legacy.Log
 import org.koin.compose.koinInject
-import timber.log.Timber
 
 @Composable
 internal fun TbOnboardingMigrationScreen(
@@ -268,7 +268,7 @@ private fun Context.launchLearnHowToUpdateThunderbird() {
 
         startActivity(viewIntent)
     } catch (e: ActivityNotFoundException) {
-        Timber.d(e, "Failed to open URL")
+        Log.d(e, "Failed to open URL")
 
         Toast.makeText(
             this,

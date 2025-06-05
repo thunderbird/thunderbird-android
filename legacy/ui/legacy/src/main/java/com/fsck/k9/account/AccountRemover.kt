@@ -7,7 +7,7 @@ import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
 import net.thunderbird.core.android.account.LegacyAccount
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Removes an account and all associated data.
@@ -23,12 +23,12 @@ class AccountRemover(
     fun removeAccount(accountUuid: String) {
         val account = preferences.getAccount(accountUuid)
         if (account == null) {
-            Timber.w("Can't remove account with UUID %s because it doesn't exist.", accountUuid)
+            Log.w("Can't remove account with UUID %s because it doesn't exist.", accountUuid)
             return
         }
 
         val accountName = account.toString()
-        Timber.v("Removing account '%s'…", accountName)
+        Log.v("Removing account '%s'…", accountName)
 
         removeLocalStore(account)
         messagingController.deleteAccount(account)
@@ -39,7 +39,7 @@ class AccountRemover(
         removeCertificates(account)
         Core.setServicesEnabled()
 
-        Timber.v("Finished removing account '%s'.", accountName)
+        Log.v("Finished removing account '%s'.", accountName)
     }
 
     private fun removeLocalStore(account: LegacyAccount) {
@@ -47,7 +47,7 @@ class AccountRemover(
             val localStore = localStoreProvider.getInstance(account)
             localStore.delete()
         } catch (e: Exception) {
-            Timber.w(e, "Error removing message database for account '%s'", account)
+            Log.w(e, "Error removing message database for account '%s'", account)
 
             // Ignore, this may lead to localStores on sd-cards that are currently not inserted to be left
         }
@@ -59,7 +59,7 @@ class AccountRemover(
         try {
             backendManager.removeBackend(account)
         } catch (e: Exception) {
-            Timber.e(e, "Failed to reset remote store for account %s", account)
+            Log.e(e, "Failed to reset remote store for account %s", account)
         }
     }
 
@@ -67,7 +67,7 @@ class AccountRemover(
         try {
             localKeyStoreManager.deleteCertificates(account)
         } catch (e: Exception) {
-            Timber.e(e, "Failed to remove certificates for account %s", account)
+            Log.e(e, "Failed to remove certificates for account %s", account)
         }
     }
 }

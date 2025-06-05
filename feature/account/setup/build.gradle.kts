@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.feature.account.server.certificate)
     api(projects.feature.account.server.validation)
 
+    testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
 
     testImplementation(platform(libs.forkhandles.bom))

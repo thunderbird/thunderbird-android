@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteException;
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.MessagingException;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -160,7 +160,7 @@ public class LockableDatabase {
                     // not doing endTransaction in the same 'finally' block of unlockRead() because endTransaction() may throw an exception
                     mDb.endTransaction();
                     if (debug) {
-                        Timber.v("LockableDatabase: Transaction ended, took %d ms / %s",
+                        Log.v("LockableDatabase: Transaction ended, took %d ms / %s",
                                 currentTimeMillis() - begin,
                                 new Exception().getStackTrace()[1]);
                     }
@@ -191,9 +191,9 @@ public class LockableDatabase {
                 doOpenOrCreateDb(databaseFile);
             } catch (SQLiteException e) {
                 // TODO handle this error in a better way!
-                Timber.w(e, "Unable to open DB %s - removing file and retrying", databaseFile);
+                Log.w(e, "Unable to open DB %s - removing file and retrying", databaseFile);
                 if (databaseFile.exists() && !databaseFile.delete()) {
-                    Timber.d("Failed to remove %s that couldn't be opened", databaseFile);
+                    Log.d("Failed to remove %s that couldn't be opened", databaseFile);
                 }
                 doOpenOrCreateDb(databaseFile);
             }
@@ -258,7 +258,7 @@ public class LockableDatabase {
             try {
                 mDb.close();
             } catch (Exception e) {
-                Timber.d("Exception caught in DB close: %s", e.getMessage());
+                Log.d("Exception caught in DB close: %s", e.getMessage());
             }
             try {
                 final File attachmentDirectory = storageFilesProvider.getAttachmentDirectory();
@@ -267,23 +267,23 @@ public class LockableDatabase {
                     if (attachment.exists()) {
                         boolean attachmentWasDeleted = attachment.delete();
                         if (!attachmentWasDeleted) {
-                            Timber.d("Attachment was not deleted!");
+                            Log.d("Attachment was not deleted!");
                         }
                     }
                 }
                 if (attachmentDirectory.exists()) {
                     boolean attachmentDirectoryWasDeleted = attachmentDirectory.delete();
                     if (!attachmentDirectoryWasDeleted) {
-                        Timber.d("Attachment directory was not deleted!");
+                        Log.d("Attachment directory was not deleted!");
                     }
                 }
             } catch (Exception e) {
-                Timber.d("Exception caught in clearing attachments: %s", e.getMessage());
+                Log.d("Exception caught in clearing attachments: %s", e.getMessage());
             }
             try {
                 deleteDatabase(storageFilesProvider.getDatabaseFile());
             } catch (Exception e) {
-                Timber.i(e, "LockableDatabase: delete(): Unable to delete backing DB file");
+                Log.i(e, "LockableDatabase: delete(): Unable to delete backing DB file");
             }
 
             if (recreate) {
@@ -297,7 +297,7 @@ public class LockableDatabase {
     private void deleteDatabase(File database) {
         boolean deleted = SQLiteDatabase.deleteDatabase(database);
         if (!deleted) {
-            Timber.i("LockableDatabase: deleteDatabase(): No files deleted.");
+            Log.i("LockableDatabase: deleteDatabase(): No files deleted.");
         }
     }
 }

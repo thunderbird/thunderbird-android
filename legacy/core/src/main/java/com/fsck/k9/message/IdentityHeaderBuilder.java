@@ -11,7 +11,7 @@ import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import net.thunderbird.core.android.account.Identity;
 import net.thunderbird.core.android.account.QuoteStyle;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class IdentityHeaderBuilder {
@@ -102,7 +102,7 @@ public class IdentityHeaderBuilder {
         String k9identity = IdentityField.IDENTITY_VERSION_1 + uri.build().getEncodedQuery();
         String headerValue = foldHeaderValue(k9identity);
 
-        Timber.d("Generated identity: %s", headerValue);
+        Log.d("Generated identity: %s", headerValue);
         return headerValue;
     }
 

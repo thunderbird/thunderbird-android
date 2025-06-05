@@ -16,7 +16,7 @@ import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.CodeVerifierUtil
 import net.openid.appauth.ResponseTypeValues
 import net.thunderbird.core.common.oauth.OAuthConfiguration
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class AuthorizationRepository(
     private val service: AuthorizationService,
@@ -35,7 +35,7 @@ class AuthorizationRepository(
         return try {
             AuthorizationResponse.fromIntent(intent)
         } catch (e: IllegalArgumentException) {
-            Timber.e(e, "Error deserializing AuthorizationResponse")
+            Log.e(e, "Error deserializing AuthorizationResponse")
             null
         }
     }
@@ -44,7 +44,7 @@ class AuthorizationRepository(
         return try {
             AuthorizationException.fromIntent(intent)
         } catch (e: IllegalArgumentException) {
-            Timber.e(e, "Error deserializing AuthorizationException")
+            Log.e(e, "Error deserializing AuthorizationException")
             null
         }
     }

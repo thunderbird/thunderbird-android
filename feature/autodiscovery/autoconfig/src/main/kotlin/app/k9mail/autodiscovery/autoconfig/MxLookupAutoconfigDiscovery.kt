@@ -5,11 +5,11 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult.NoUsableSettingsFound
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult.Settings
 import app.k9mail.autodiscovery.api.AutoDiscoveryRunnable
-import com.fsck.k9.logging.Timber
 import java.io.IOException
 import net.thunderbird.core.common.mail.EmailAddress
 import net.thunderbird.core.common.mail.toDomain
 import net.thunderbird.core.common.net.Domain
+import net.thunderbird.core.logging.legacy.Log
 import okhttp3.OkHttpClient
 import org.minidns.dnsname.InvalidDnsNameException
 
@@ -68,10 +68,10 @@ class MxLookupAutoconfigDiscovery internal constructor(
         return try {
             mxResolver.lookup(domain).takeIf { it.mxNames.isNotEmpty() }
         } catch (e: IOException) {
-            Timber.d(e, "Failed to get MX record for domain: %s", domain.value)
+            Log.d(e, "Failed to get MX record for domain: %s", domain.value)
             null
         } catch (e: InvalidDnsNameException) {
-            Timber.d(e, "Invalid DNS name for domain: %s", domain.value)
+            Log.d(e, "Invalid DNS name for domain: %s", domain.value)
             null
         }
     }

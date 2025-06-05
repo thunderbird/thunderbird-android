@@ -10,7 +10,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfoExtractor;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo> {
@@ -53,7 +53,7 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
         try {
             return messageViewInfoExtractor.extractMessageForView(message, annotations, message.getAccount().isOpenPgpProviderConfigured());
         } catch (Exception e) {
-            Timber.e(e, "Error while decoding message");
+            Log.e(e, "Error while decoding message");
             return null;
         }
     }

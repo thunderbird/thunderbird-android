@@ -29,6 +29,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.logging.testing.TestLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -199,6 +201,7 @@ public class MessageBuilderTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
+        Log.logger = new TestLogger();
         messageIdGenerator = mock(MessageIdGenerator.class);
         when(messageIdGenerator.generateMessageId(any(Message.class))).thenReturn(TEST_MESSAGE_ID);
 

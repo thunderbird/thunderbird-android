@@ -1,9 +1,9 @@
 package com.fsck.k9.mail.store.imap
 
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.power.WakeLock
 import java.io.IOException
+import net.thunderbird.core.logging.legacy.Log
 
 private const val SOCKET_EXTRA_TIMEOUT_MS = 2 * 60 * 1000L
 
@@ -30,14 +30,14 @@ internal class RealImapFolderIdler(
     private var doneSent = false
 
     override fun idle(): IdleResult {
-        Timber.v("%s.idle()", logTag)
+        Log.v("%s.idle()", logTag)
 
         val folder = imapStore.getFolder(folderServerId).also { this.folder = it }
         folder.open(OpenMode.READ_ONLY)
 
         try {
             return folder.idle().also { idleResult ->
-                Timber.v("%s.idle(): result=%s", logTag, idleResult)
+                Log.v("%s.idle(): result=%s", logTag, idleResult)
             }
         } finally {
             folder.close()
@@ -46,13 +46,13 @@ internal class RealImapFolderIdler(
 
     @Synchronized
     override fun refresh() {
-        Timber.v("%s.refresh()", logTag)
+        Log.v("%s.refresh()", logTag)
         endIdle()
     }
 
     @Synchronized
     override fun stop() {
-        Timber.v("%s.stop()", logTag)
+        Log.v("%s.stop()", logTag)
         stopIdle = true
         endIdle()
     }
@@ -64,7 +64,7 @@ internal class RealImapFolderIdler(
             try {
                 sendDone()
             } catch (e: IOException) {
-                Timber.v(e, "%s: IOException while sending DONE", logTag)
+                Log.v(e, "%s: IOException while sending DONE", logTag)
             }
         }
     }
@@ -74,7 +74,7 @@ internal class RealImapFolderIdler(
 
         val connection = connectionProvider.getConnection(this)!!
         if (!connection.isIdleCapable) {
-            Timber.w("%s: IDLE not supported by server", logTag)
+            Log.w("%s: IDLE not supported by server", logTag)
             return IdleResult.NOT_SUPPORTED
         }
 
@@ -95,7 +95,7 @@ internal class RealImapFolderIdler(
             do {
                 val response = connection.readResponse()
                 if (response.tag == tag) {
-                    Timber.w("%s.idle(): IDLE command completed without a continuation request response", logTag)
+                    Log.w("%s.idle(): IDLE command completed without a continuation request response", logTag)
                     return IdleResult.NOT_SUPPORTED
                 } else if (response.isRelevant) {
                     receivedRelevantResponse = true
@@ -103,7 +103,7 @@ internal class RealImapFolderIdler(
             } while (!response.isContinuationRequested)
 
             if (receivedRelevantResponse) {
-                Timber.v("%s.idle(): Received a relevant untagged response right after sending IDLE command", logTag)
+                Log.v("%s.idle(): Received a relevant untagged response right after sending IDLE command", logTag)
                 result = IdleResult.SYNC
                 stopIdle = true
                 sendDone()
@@ -128,12 +128,12 @@ internal class RealImapFolderIdler(
                 }
 
                 if (response.isRelevant && !stopIdle) {
-                    Timber.v("%s.idle(): Received a relevant untagged response during IDLE", logTag)
+                    Log.v("%s.idle(): Received a relevant untagged response during IDLE", logTag)
                     result = IdleResult.SYNC
                     stopIdle = true
                     sendDone()
                 } else if (!response.isTagged) {
-                    Timber.v("%s.idle(): Ignoring untagged response", logTag)
+                    Log.v("%s.idle(): Ignoring untagged response", logTag)
                 }
             } while (response.tag != tag)
 
@@ -147,17 +147,17 @@ internal class RealImapFolderIdler(
 
     @Synchronized
     private fun idleRefresh() {
-        Timber.v("%s.idleRefresh()", logTag)
+        Log.v("%s.idleRefresh()", logTag)
 
         if (!idleSent || doneSent) {
-            Timber.v("%s: Connection is not in a state where it can be refreshed.", logTag)
+            Log.v("%s: Connection is not in a state where it can be refreshed.", logTag)
             return
         }
 
         try {
             sendDone()
         } catch (e: IOException) {
-            Timber.v(e, "%s: IOException while sending DONE", logTag)
+            Log.v(e, "%s: IOException while sending DONE", logTag)
         }
     }
 

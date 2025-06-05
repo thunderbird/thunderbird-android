@@ -12,6 +12,7 @@ dependencies {
     implementation(libs.moshi)
     ksp(libs.moshi.kotlin.codegen)
 
+    testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
     testImplementation(projects.backend.testing)
     testImplementation(libs.okhttp.mockwebserver)

@@ -12,7 +12,7 @@ import androidx.annotation.WorkerThread;
 import androidx.core.content.IntentCompat;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.util.OpenPgpApi;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class AutocryptStatusInteractor {
@@ -48,9 +48,9 @@ public class AutocryptStatusInteractor {
                     OpenPgpError.class
                 );
                 if (error != null) {
-                    Timber.w("OpenPGP API Error #%s: %s", error.getErrorId(), error.getMessage());
+                    Log.w("OpenPGP API Error #%s: %s", error.getErrorId(), error.getMessage());
                 } else {
-                    Timber.w("OpenPGP API Unknown Error");
+                    Log.w("OpenPGP API Unknown Error");
                 }
                 return new RecipientAutocryptStatus(RecipientAutocryptStatusType.ERROR, null);
             case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:

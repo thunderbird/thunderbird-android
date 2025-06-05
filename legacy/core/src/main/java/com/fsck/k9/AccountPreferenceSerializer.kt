@@ -25,6 +25,7 @@ import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preferences.Storage
 import net.thunderbird.core.preferences.getEnumOrDefault
 import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
@@ -33,7 +34,6 @@ import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
-import timber.log.Timber
 
 class AccountPreferenceSerializer(
     private val serverSettingsSerializer: ServerSettingsSerializer,
@@ -566,7 +566,7 @@ class AccountPreferenceSerializer(
         return try {
             storage.getEnumOrDefault<T>(key, defaultEnum)
         } catch (ex: IllegalArgumentException) {
-            Timber.w(
+            Log.w(
                 ex,
                 "Unable to convert preference key [%s] to enum of type %s",
                 key,

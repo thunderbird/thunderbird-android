@@ -10,9 +10,9 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
-import timber.log.Timber
 
 class UnreadWidgetDataProvider(
     private val context: Context,
@@ -86,7 +86,7 @@ class UnreadWidgetDataProvider(
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
         } else {
-            Timber.e("Error loading folder for account %s, folder ID: %d", account, folderId)
+            Log.e("Error loading folder for account %s, folder ID: %d", account, folderId)
             ""
         }
     }
