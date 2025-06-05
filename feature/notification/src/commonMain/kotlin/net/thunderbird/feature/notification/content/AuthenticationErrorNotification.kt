@@ -3,10 +3,10 @@ package net.thunderbird.feature.notification.content
 import net.thunderbird.feature.notification.NotificationChannel
 import net.thunderbird.feature.notification.NotificationId
 import net.thunderbird.feature.notification.NotificationSeverity
-import net.thunderbird.feature.notification.ui.action.NotificationAction
 import net.thunderbird.feature.notification.resources.Res
 import net.thunderbird.feature.notification.resources.notification_authentication_error_text
 import net.thunderbird.feature.notification.resources.notification_authentication_error_title
+import net.thunderbird.feature.notification.ui.action.NotificationAction
 import org.jetbrains.compose.resources.getString
 
 /**
