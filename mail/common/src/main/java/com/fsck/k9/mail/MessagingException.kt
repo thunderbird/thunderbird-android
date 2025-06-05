@@ -1,6 +1,15 @@
 package com.fsck.k9.mail
 
-open class MessagingException : Exception {
+import net.thunderbird.core.common.exception.MessagingException
+
+@Deprecated(
+    message = "Use net.thunderbird.core.common.exception.MessagingException instead",
+    replaceWith = ReplaceWith(
+        expression = "MessagingException",
+        "net.thunderbird.core.common.exception.MessagingException",
+    ),
+)
+open class MessagingException : MessagingException {
     var isPermanentFailure: Boolean = false
         private set
 

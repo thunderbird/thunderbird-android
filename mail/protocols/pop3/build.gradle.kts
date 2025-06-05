@@ -10,6 +10,7 @@ if (testCoverageEnabled) {
 
 dependencies {
     api(projects.mail.common)
+    implementation(projects.core.common)
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
