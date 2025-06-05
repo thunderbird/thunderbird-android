@@ -15,9 +15,5 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.timber)
         }
-
-        androidUnitTest.dependencies {
-            implementation(libs.robolectric)
-        }
     }
 }

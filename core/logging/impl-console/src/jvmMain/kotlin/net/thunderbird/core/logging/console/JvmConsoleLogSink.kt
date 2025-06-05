@@ -1,41 +1,23 @@
 package net.thunderbird.core.logging.console
 
-import java.util.regex.Pattern
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
+import net.thunderbird.core.logging.LogSink
 
 internal class JvmConsoleLogSink(
-    level: LogLevel,
-) : BaseConsoleLogSink(level) {
+    override val level: LogLevel,
+) : LogSink {
 
-    override fun logWithTag(event: LogEvent, tag: String?) {
-        println("[$level] ${composeMessage(event, tag)}")
+    override fun log(event: LogEvent) {
+        println("[$level] ${composeMessage(event)}")
         event.throwable?.printStackTrace()
     }
 
-    private fun composeMessage(event: LogEvent, tag: String?): String {
-        return if (tag != null) {
-            "[$tag] ${event.message}"
+    private fun composeMessage(event: LogEvent): String {
+        return if (event.tag != null) {
+            "[${event.tag}] ${event.message}"
         } else {
             event.message
         }
-    }
-
-    override fun getAnonymousClassPattern(): Pattern {
-        return ANONYMOUS_CLASS
-    }
-
-    override fun getIgnoreClasses(): Set<String> {
-        return IGNORE_CLASSES
-    }
-
-    companion object {
-        private val ANONYMOUS_CLASS = Pattern.compile("(\\$\\d+)+$")
-
-        private val IGNORE_CLASSES = setOf(
-            JvmConsoleLogSink::class.java.name,
-            BaseConsoleLogSink::class.java.name,
-            // Add other classes to ignore if needed
-        )
     }
 }
