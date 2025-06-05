@@ -23,6 +23,6 @@ public class ExceptionHelper {
         // notification.
         String simpleName = rootCause.getClass().getSimpleName();
         return (rootCause.getLocalizedMessage() != null) ?
-                simpleName + ": " + rootCause.getLocalizedMessage() : simpleName;
+        simpleName + ": " + rootCause.getLocalizedMessage() : simpleName;
     }
 }
