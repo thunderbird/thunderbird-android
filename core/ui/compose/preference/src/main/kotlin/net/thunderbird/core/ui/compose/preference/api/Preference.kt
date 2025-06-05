@@ -9,6 +9,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting.SingleChoice.Choice
+import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting.SingleChoiceCompact.CompactChoice
 
 /**
  * A preference that can be displayed in a preference screen.
@@ -62,6 +63,25 @@ sealed interface PreferenceSetting<T> : Preference {
 
         @Parcelize
         data class Choice(
+            val id: String,
+            val title: () -> String,
+        ) : Parcelable
+    }
+
+    @Parcelize
+    data class SingleChoiceCompact(
+        override val id: String,
+        val title: () -> String,
+        val description: () -> String? = { null },
+        val icon: () -> ImageVector? = { null },
+        override val value: CompactChoice,
+        val options: ImmutableList<CompactChoice>,
+    ) : PreferenceSetting<CompactChoice> {
+        @IgnoredOnParcel
+        override val requiresEditView: Boolean = true
+
+        @Parcelize
+        data class CompactChoice(
             val id: String,
             val title: () -> String,
         ) : Parcelable
