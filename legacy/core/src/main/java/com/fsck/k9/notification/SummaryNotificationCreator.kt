@@ -5,7 +5,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import net.thunderbird.core.android.account.LegacyAccount
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
 internal class SummaryNotificationCreator(
@@ -72,7 +72,7 @@ internal class SummaryNotificationCreator(
             .setLockScreenNotification(baseNotificationData)
             .build()
 
-        Timber.v("Creating inbox-style summary notification (silent=%b): %s", notificationData.isSilent, notification)
+        Log.v("Creating inbox-style summary notification (silent=%b): %s", notificationData.isSilent, notification)
         notificationHelper.notify(account, notificationData.notificationId, notification)
     }
 

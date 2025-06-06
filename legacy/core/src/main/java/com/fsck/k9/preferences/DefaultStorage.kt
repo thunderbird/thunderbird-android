@@ -1,8 +1,8 @@
 package com.fsck.k9.preferences
 
 import java.util.Collections
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preferences.Storage
-import timber.log.Timber
 
 class DefaultStorage(
     values: Map<String, String>,
@@ -25,7 +25,7 @@ class DefaultStorage(
         return try {
             value.toInt()
         } catch (e: NumberFormatException) {
-            Timber.e(e, "Could not parse int")
+            Log.e(e, "Could not parse int")
             defValue
         }
     }
@@ -35,7 +35,7 @@ class DefaultStorage(
         return try {
             value.toLong()
         } catch (e: NumberFormatException) {
-            Timber.e(e, "Could not parse long")
+            Log.e(e, "Could not parse long")
             defValue
         }
     }

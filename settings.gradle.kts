@@ -236,6 +236,10 @@ include(
     ":library:TokenAutoComplete",
 )
 
+include(
+    ":quality:konsist",
+)
+
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
     """
         Java 17+ is required to build Thunderbird for Android.

@@ -9,7 +9,7 @@ import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
 import timber.log.Timber
 
-class AndroidConsoleLoggerTest {
+class AndroidConsoleLogSinkTest {
 
     @Test
     fun shouldHaveCorrectLogLevel() {
