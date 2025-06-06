@@ -21,6 +21,8 @@ import net.thunderbird.core.preferences.Storage
 import net.thunderbird.core.preferences.SubTheme
 import net.thunderbird.core.preferences.getEnumOrDefault
 
+private const val KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG = "shouldShowSetupArchiveFolderDialog"
+
 /**
  * Retrieve and modify general settings.
  *
@@ -142,6 +144,11 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowStarredCount = isShowStarredCount).persist()
     }
 
+    @Synchronized
+    override fun setSetupArchiveShouldNotShowAgain(shouldShowSetupArchiveFolderDialog: Boolean) {
+        getSettings().copy(shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -150,6 +157,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("fixedMessageViewTheme", settings.fixedMessageViewTheme)
         editor.putBoolean("showUnifiedInbox", settings.isShowUnifiedInbox)
         editor.putBoolean("showStarredCount", settings.isShowStarredCount)
+        editor.putBoolean(KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG, settings.shouldShowSetupArchiveFolderDialog)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -170,6 +178,10 @@ internal class RealGeneralSettingsManager(
             fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true),
             isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", false),
             isShowStarredCount = storage.getBoolean("showStarredCount", false),
+            shouldShowSetupArchiveFolderDialog = storage.getBoolean(
+                key = KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+                defValue = true,
+            ),
         )
 
         updateSettingsFlow(settings)

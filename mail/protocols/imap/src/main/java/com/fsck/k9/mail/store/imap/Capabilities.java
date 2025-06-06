@@ -20,5 +20,6 @@ class Capabilities {
     public static final String LIST_EXTENDED = "LIST-EXTENDED";
     public static final String MOVE = "MOVE";
     public static final String ENABLE = "ENABLE";
+    public static final String CREATE_SPECIAL_USE = "CREATE-SPECIAL-USE";
     public static final String UTF8_ACCEPT = "UTF8=ACCEPT";
 }

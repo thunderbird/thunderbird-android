@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.feature.funding.api)
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
+    implementation(projects.feature.mail.messages)
 
     compileOnly(projects.mail.protocols.imap)
 

@@ -47,8 +47,8 @@ class K9BackendStorage(
             listeners.forEach { it.onBeforeFolderListRefresh() }
         }
 
-        override fun createFolders(folders: List<FolderInfo>) {
-            if (folders.isEmpty()) return
+        override fun createFolders(folders: List<FolderInfo>): Set<Long> {
+            if (folders.isEmpty()) return emptySet()
 
             val createFolderInfo = folders.map { folderInfo ->
                 CreateFolderInfo(
@@ -58,7 +58,7 @@ class K9BackendStorage(
                     settings = folderSettingsProvider.getFolderSettings(folderInfo.serverId),
                 )
             }
-            messageStore.createFolders(createFolderInfo)
+            return messageStore.createFolders(createFolderInfo)
         }
 
         override fun deleteFolders(folderServerIds: List<String>) {

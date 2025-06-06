@@ -7,6 +7,7 @@
     <item type="id" name="dialog_confirm_delete" />
     <item type="id" name="dialog_confirm_spam" />
     <item type="id" name="dialog_attachment_progress" />
+    <item type="id" name="dialog_setup_archive_folder" />
 
     <item type="id" name="settings_export_list_general_item" />
     <item type="id" name="settings_export_list_account_item" />

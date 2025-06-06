@@ -93,6 +93,7 @@ mime4j = "0.8.12"
 minidns = "1.0.5"
 mockito = "5.17.0"
 mockitoKotlin = "5.4.0"
+mockk = "1.14.2"
 moshi = "1.15.2"
 mozillaAndroidComponents = "138.0"
 okhttp = "4.12.0"
@@ -253,6 +254,7 @@ mime4j-dom = { module = "org.apache.james:apache-mime4j-dom", version.ref = "mim
 minidns-hla = { module = "org.minidns:minidns-hla", version.ref = "minidns" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshi" }
 mozilla-components-glean = { module = "org.mozilla.components:service-glean", version.ref = "mozillaAndroidComponents" }
@@ -299,6 +301,7 @@ shared-kmp-common-test = [
   "kotlin-test-junit",
   "kotlinx-coroutines-test",
   "turbine",
+  "mockk",
 ]
 
 shared-jvm-main = [

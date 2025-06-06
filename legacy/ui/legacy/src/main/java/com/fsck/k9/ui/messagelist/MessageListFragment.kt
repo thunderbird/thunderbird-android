@@ -28,6 +28,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -37,7 +38,7 @@ import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import app.k9mail.ui.utils.linearlayoutmanager.LinearLayoutManager
 import com.fsck.k9.K9
-import com.fsck.k9.SwipeAction
+import com.fsck.k9.Preferences
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.Search
 import com.fsck.k9.activity.misc.ContactPicture
@@ -66,9 +67,13 @@ import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
+import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.mail.messages.domain.DomainContract
+import net.thunderbird.feature.mail.messages.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
 import org.koin.android.ext.android.inject
@@ -93,6 +98,11 @@ class MessageListFragment :
     private val accountManager: AccountManager by inject()
     private val connectivityManager: ConnectivityManager by inject()
     private val clock: Clock by inject()
+    private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
+    private val preferences: Preferences by inject()
+    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount> by inject {
+        parametersOf(preferences.storage)
+    }
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -122,6 +132,7 @@ class MessageListFragment :
     private lateinit var adapter: MessageListAdapter
 
     private lateinit var accountUuids: Array<String>
+    private var accounts: List<LegacyAccountWrapper> = emptyList()
     private var account: LegacyAccount? = null
     private var currentFolder: FolderInfoHolder? = null
     private var remoteSearchFuture: Future<*>? = null
@@ -167,6 +178,8 @@ class MessageListFragment :
     private var isInitialized = false
 
     private var error: Error? = null
+
+    private var messageListSwipeCallback: MessageListSwipeCallback? = null
 
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
@@ -235,7 +248,7 @@ class MessageListFragment :
         localSearch = BundleCompat.getParcelable(arguments, ARG_SEARCH, LocalSearch::class.java)!!
 
         allAccounts = localSearch.searchAllAccounts()
-        val searchAccounts = localSearch.getAccounts(accountManager)
+        val searchAccounts = localSearch.getAccounts(accountManager).also(::updateAccountList)
         if (searchAccounts.size == 1) {
             isSingleAccountMode = true
             val singleAccount = searchAccounts[0]
@@ -293,6 +306,17 @@ class MessageListFragment :
                             ),
                         ),
                     )
+
+                setFragmentResultListener(
+                    SetupArchiveFolderDialogFragmentFactory.RESULT_CODE_DISMISS_REQUEST_KEY,
+                ) { key, bundle ->
+                    Log.d(
+                        "SetupArchiveFolderDialogFragment fragment listener triggered with " +
+                            "key: $key and bundle: $bundle",
+                    )
+                    loadMessageList(forceUpdate = true)
+                    messageListSwipeCallback?.invalidateSwipeActions(accounts)
+                }
             }
         } else {
             inflater.inflate(R.layout.message_list_error, container, false)
@@ -408,14 +432,14 @@ class MessageListFragment :
 
         val itemTouchHelper = ItemTouchHelper(
             MessageListSwipeCallback(
-                requireContext(),
+                context = requireContext(),
                 resourceProvider = SwipeResourceProvider(requireContext()),
-                swipeActionSupportProvider,
-                swipeRightAction = K9.swipeRightAction,
-                swipeLeftAction = K9.swipeLeftAction,
-                adapter,
-                swipeListener,
-            ),
+                swipeActionSupportProvider = swipeActionSupportProvider,
+                buildSwipeActions = buildSwipeActions,
+                adapter = adapter,
+                listener = swipeListener,
+                accounts = accounts,
+            ).also { messageListSwipeCallback = it },
         )
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
@@ -474,7 +498,7 @@ class MessageListFragment :
         }
     }
 
-    private fun loadMessageList() {
+    private fun loadMessageList(forceUpdate: Boolean = false) {
         val config = MessageListConfig(
             localSearch,
             showingThreadedList,
@@ -484,7 +508,16 @@ class MessageListFragment :
             activeMessage,
             viewModel.messageSortOverrides.toMap(),
         )
-        viewModel.loadMessageList(config)
+
+        if (forceUpdate) {
+            updateAccountList(accounts = config.search.getAccounts(accountManager))
+        }
+
+        viewModel.loadMessageList(config, forceUpdate)
+    }
+
+    private fun updateAccountList(accounts: List<LegacyAccount>) {
+        this.accounts = accounts.map(LegacyAccountWrapper::from)
     }
 
     fun folderLoading(folderId: Long, loading: Boolean) {
@@ -607,6 +640,7 @@ class MessageListFragment :
 
     override fun onDestroyView() {
         recyclerView = null
+        messageListSwipeCallback = null
         itemTouchHelper = null
         swipeRefreshLayout = null
         floatingActionButton = null
@@ -1735,6 +1769,20 @@ class MessageListFragment :
                     setFlag(item, Flag.FLAGGED, !item.isStarred)
                 }
 
+                SwipeAction.ArchiveDisabled ->
+                    Snackbar
+                        .make(
+                            requireNotNull(view),
+                            R.string.archiving_not_available_for_this_account,
+                            Snackbar.LENGTH_LONG,
+                        )
+                        .show()
+
+                SwipeAction.ArchiveSetupArchiveFolder -> setupArchiveFolderDialogFragmentFactory.show(
+                    accountUuid = item.account.uuid,
+                    fragmentManager = parentFragmentManager,
+                )
+
                 SwipeAction.Archive -> {
                     onArchive(item.messageReference)
                 }
@@ -1773,8 +1821,8 @@ class MessageListFragment :
             SwipeAction.ToggleSelection -> true
             SwipeAction.ToggleRead -> !isOutbox
             SwipeAction.ToggleStar -> !isOutbox
-            SwipeAction.Archive -> {
-                !isOutbox && item.account.hasArchiveFolder() && item.folderId != item.account.archiveFolderId
+            SwipeAction.Archive, SwipeAction.ArchiveDisabled, SwipeAction.ArchiveSetupArchiveFolder -> {
+                !isOutbox && item.folderId != item.account.archiveFolderId
             }
 
             SwipeAction.Delete -> true
