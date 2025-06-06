@@ -134,12 +134,17 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(fixedMessageViewTheme = fixedMessageViewTheme).persist()
     }
 
+    override fun setIsShowUnifiedInbox(isShowUnifiedInbox: Boolean) {
+        getSettings().copy(isShowUnifiedInbox = isShowUnifiedInbox).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
         editor.putEnum("messageViewTheme", settings.messageViewTheme)
         editor.putEnum("messageComposeTheme", settings.messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", settings.fixedMessageViewTheme)
+        editor.putBoolean("showUnifiedInbox", settings.isShowUnifiedInbox)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -158,6 +163,7 @@ internal class RealGeneralSettingsManager(
                 SubTheme.USE_GLOBAL,
             ),
             fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true),
+            isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", false),
         )
 
         updateSettingsFlow(settings)

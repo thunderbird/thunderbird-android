@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.core.preferences.SettingsChangeBroker
 import net.thunderbird.core.preferences.SettingsChangeSubscriber
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
@@ -17,6 +18,7 @@ internal class RealDrawerConfigManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
     private val changeBroker: SettingsChangeBroker,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) : DrawerConfigManager {
     private val drawerConfigFlow = MutableSharedFlow<DrawerConfig>(replay = 1)
 
@@ -37,7 +39,7 @@ internal class RealDrawerConfigManager(
         return DrawerConfig(
             showAccountSelector = K9.isShowAccountSelector,
             showStarredCount = K9.isShowStarredCount,
-            showUnifiedFolders = K9.isShowUnifiedInbox,
+            showUnifiedFolders = generalSettingsManager.getSettings().isShowUnifiedInbox,
         )
     }
 

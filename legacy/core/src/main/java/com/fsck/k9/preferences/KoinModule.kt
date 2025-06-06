@@ -36,6 +36,7 @@ val preferencesModule = module {
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changeBroker = get(),
+            generalSettingsManager = get(),
         )
     } bind DrawerConfigManager::class
 
@@ -69,7 +70,7 @@ val preferencesModule = module {
         )
     }
 
-    factory { UnifiedInboxConfigurator(accountManager = get()) }
+    factory { UnifiedInboxConfigurator(accountManager = get(), generalSettingsManager = get()) }
 
     factory {
         SettingsImporter(
