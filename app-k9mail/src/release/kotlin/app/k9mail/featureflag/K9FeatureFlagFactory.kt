@@ -12,6 +12,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = false),
             FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = false),
             FeatureFlag("enable_dropdown_drawer".toFeatureFlagKey(), enabled = false),
+            FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = false),
         )
     }
 }
