@@ -22,14 +22,15 @@ class ImapResponseParser {
     private boolean utf8Accept;
     private FolderNameCodec folderNameCodec;
 
-    public ImapResponseParser(PeekableInputStream in) {
+    public ImapResponseParser(PeekableInputStream in, FolderNameCodec folderNameCodec) {
         this.inputStream = in;
         this.utf8Accept = false;
-        this.folderNameCodec = new FolderNameCodec();
+        this.folderNameCodec = folderNameCodec;
     }
 
     public void setUtf8Accepted(final boolean yes) {
         utf8Accept = yes;
+        folderNameCodec.setAcceptUtf8Encoding(yes);
     }
 
     public ImapResponse readResponse() throws IOException {
