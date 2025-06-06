@@ -45,6 +45,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -122,7 +133,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -228,7 +239,496 @@
 </ul>
 <h2 id="thank-you"><a class="header" href="#thank-you">Thank You!</a></h2>
 <p>Thank you for taking the time to contribute to Thunderbird for Android! We appreciate your help in making the project better and more useful for everyone.</p>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="repository-structure"><a class="header" href="#repository-structure">Repository structure</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="git-commit-guide"><a class="header" href="#git-commit-guide">Git Commit Guide</a></h1>
+<p>Use <a href="https://www.conventionalcommits.org/" title="" target="_blank">Conventional Commits</a> to write consistent and meaningful commit messages.
+This makes your work easier to review, track, and maintain for everyone involved in the project.</p>
+<h2 id="-commit-message-format"><a class="header" href="#-commit-message-format">✍️ Commit Message Format</a></h2>
+<pre><code class="language-git">&lt;type&gt;(&lt;scope&gt;): &lt;description&gt;
+
+&lt;body&gt;
+
+&lt;footer(s)&gt;
+</code></pre>
+<p>Components:</p>
+<ul>
+<li><code>&lt;type&gt;</code>: The <a href="contributing/git-commit-guide.html#-commit-types">type of change</a> being made (e.g., feat, fix, docs).</li>
+<li><code>&lt;scope&gt;</code> <strong>(optional)</strong>: The <a href="contributing/git-commit-guide.html#optional-scope">scope</a> indicates the area of the codebase affected by the change (e.g., auth, ui).</li>
+<li><code>&lt;description&gt;</code>: Short description of the change (50 characters or less)</li>
+<li><code>&lt;body&gt;</code> <strong>(optional)</strong>: Explain what changed and why, include context if helpful.</li>
+<li><code>&lt;footer(s)&gt;</code> <strong>(optional)</strong>: Include issue references, breaking changes, etc.</li>
+</ul>
+<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<p>Basic:</p>
+<pre><code class="language-git">feat: add QR code scanner
+</code></pre>
+<p>With scope:</p>
+<pre><code class="language-git">feat(auth): add login functionality
+</code></pre>
+<p>With body and issue reference:</p>
+<pre><code class="language-git">fix(api): handle null response from login endpoint
+
+Checks for missing tokens to prevent app crash during login.
+
+Fixes #123
+</code></pre>
+<h3 id="-commit-types"><a class="header" href="#-commit-types">🏷️ Commit Types</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Use for…</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>feat</code></td><td>New features</td><td><code>feat(camera): add zoom support</code></td></tr>
+<tr><td><code>fix</code></td><td>Bug fixes</td><td><code>fix(auth): handle empty username crash</code></td></tr>
+<tr><td><code>docs</code></td><td>Documentation only</td><td><code>docs(readme): update setup instructions</code></td></tr>
+<tr><td><code>style</code></td><td>Code style (no logic changes)</td><td><code>style: reformat settings screen</code></td></tr>
+<tr><td><code>refactor</code></td><td>Code changes (no features/fixes)</td><td><code>refactor(nav): simplify stack setup</code></td></tr>
+<tr><td><code>test</code></td><td>Adding/editing tests</td><td><code>test(api): add unit test for login</code></td></tr>
+<tr><td><code>chore</code></td><td>Tooling, CI, dependencies</td><td><code>chore(ci): update GitHub Actions config</code></td></tr>
+<tr><td><code>revert</code></td><td>Reverting previous commits</td><td><code>revert: remove feature flag</code></td></tr>
+</tbody></table>
+</div>
+<h3 id="optional-scope"><a class="header" href="#optional-scope">📍Optional Scope</a></h3>
+<p>The <strong>scope</strong> is optional but recommended for clarity, especially for large changes or or when multiple areas of the
+codebase are involved.</p>
+<div class="table-wrapper"><table><thead><tr><th>Scope</th><th>Use for…</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>auth</code></td><td>Authentication</td><td><code>feat(auth): add login functionality</code></td></tr>
+<tr><td><code>settings</code></td><td>User settings</td><td><code>feat(settings): add dark mode toggle</code></td></tr>
+<tr><td><code>build</code></td><td>Build system</td><td><code>fix(build): improve build performance</code></td></tr>
+<tr><td><code>ui</code></td><td>UI/theme</td><td><code>refactor(ui): split theme into modules</code></td></tr>
+<tr><td><code>deps</code></td><td>Dependencies</td><td><code>chore(deps): bump Kotlin to 2.0.0</code></td></tr>
+</tbody></table>
+</div>
+<h2 id="-best-practices"><a class="header" href="#-best-practices">🧠 Best Practices</a></h2>
+<h3 id="1-one-commit-one-purpose"><a class="header" href="#1-one-commit-one-purpose">1. One Commit, One Purpose</a></h3>
+<ul>
+<li>✅ Each commit should represent a single logical change or addition to the codebase.</li>
+<li>❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and )
+adding a feature).</li>
+</ul>
+<h3 id="2-keep-it-manageable"><a class="header" href="#2-keep-it-manageable">2. Keep It Manageable</a></h3>
+<ul>
+<li>✅ Break up large changes into smaller, more manageable commits.</li>
+<li>✅ If a commit changes more than 200 lines of code, consider breaking it up.</li>
+<li>❌ Avoid massive, hard-to-review commits.</li>
+</ul>
+<h3 id="3-keep-it-working"><a class="header" href="#3-keep-it-working">3. Keep It Working</a></h3>
+<ul>
+<li>✅ Each commit should leave the codebase in a buildable and testable state.</li>
+<li>❌ Never commit broken code or failing tests.</li>
+</ul>
+<h3 id="4-think-about-reviewers-and-future-you"><a class="header" href="#4-think-about-reviewers-and-future-you">4. Think About Reviewers (and Future You)</a></h3>
+<ul>
+<li>✅ Write messages for your teammates and future self, assuming they have no context.</li>
+<li>✅ Explain non-obvious changes or decisions in the message body.</li>
+<li>✅ Consider the commit as a documentation tool.</li>
+<li>❌ Avoid jargon, acronyms, or vague messages like <code>update stuff</code>.</li>
+</ul>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<ul>
+<li>Use <a href="contributing/git-commit-guide.html#-conventional-commits">Conventional Commits</a> for consistency.</li>
+<li>Keep commit messages short, structured, and focused.</li>
+<li>Make each commit purposeful and self-contained.</li>
+<li>Write commits that make collaboration and future development easier for everyone—including you.</li>
+</ul>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="-testing-guide"><a class="header" href="#-testing-guide">🧪 Testing Guide</a></h1>
+<p>This document outlines the testing practices and guidelines for the Thunderbird for Android project.</p>
+<p><strong>Key Testing Principles:</strong></p>
+<ul>
+<li>Follow the Arrange-Act-Assert (AAA) pattern</li>
+<li>Use descriptive test names</li>
+<li>Prefer fake implementations over mocks</li>
+<li>Name the object under test as <code>testSubject</code></li>
+<li>Use <a href="https://github.com/willowtreeapps/assertk" title="" target="_blank">AssertK</a> for assertions</li>
+</ul>
+<h2 id="-test-structure"><a class="header" href="#-test-structure">🏗️ Test Structure</a></h2>
+<h3 id="-arrange-act-assert-pattern"><a class="header" href="#-arrange-act-assert-pattern">🔄 Arrange-Act-Assert Pattern</a></h3>
+<p>Tests in this project should follow the Arrange-Act-Assert (AAA) pattern:</p>
+<ol>
+<li><strong>Arrange</strong>: Set up the test conditions and inputs</li>
+<li><strong>Act</strong>: Perform the action being tested</li>
+<li><strong>Assert</strong>: Verify the expected outcomes</li>
+</ol>
+<p>Example:</p>
+<pre><code class="language-kotlin">@Test
+fun `example test using AAA pattern`() {
+    // Arrange
+    val input = "test input"
+    val expectedOutput = "expected result"
+    val testSubject = SystemUnderTest()
+
+    // Act
+    val result = testSubject.processInput(input)
+
+    // Assert
+    assertThat(result).isEqualTo(expectedOutput)
+}
+</code></pre>
+<p>Use comments to clearly separate these sections in your tests:</p>
+<pre><code class="language-kotlin">// Arrange
+// Act
+// Assert
+</code></pre>
+<h3 id="-test-naming"><a class="header" href="#-test-naming">📝 Test Naming</a></h3>
+<p>Use descriptive test names that clearly indicate what is being tested. For JVM tests, use backticks:</p>
+<pre><code class="language-kotlin">@Test
+fun `method should return expected result when given valid input`() {
+    // Test implementation
+}
+</code></pre>
+<p>Note: Android instrumentation tests do not support backticks in test names. For these tests, use camelCase instead:</p>
+<pre><code class="language-kotlin">@Test
+fun methodShouldReturnExpectedResultWhenGivenValidInput() {
+    // Test implementation
+}
+</code></pre>
+<h2 id="-test-implementation"><a class="header" href="#-test-implementation">💻 Test Implementation</a></h2>
+<h3 id="-fakes-over-mocks"><a class="header" href="#-fakes-over-mocks">🎭 Fakes over Mocks</a></h3>
+<p>In this project, we prefer using fake implementations over mocks:</p>
+<ul>
+<li>✅ <strong>Preferred</strong>: Create fake/test implementations of interfaces or classes</li>
+<li>❌ <strong>Avoid</strong>: Using mocking libraries to create mock objects</li>
+</ul>
+<p>Fakes provide better test reliability and are more maintainable in the long run. They also make tests more readable
+and less prone to breaking when implementation details change.</p>
+<p>Mocks can lead to brittle tests that are tightly coupled to the implementation details, making them harder to maintain.
+They also negatively impact test performance, particularly during test initialization. Which can quickly become overwhelming
+when an excessive number of tests includes mock implementations.</p>
+<p>Example of a fake implementation:</p>
+<pre><code class="language-kotlin">// Interface
+interface DataRepository {
+    fun getData(): List&lt;String&gt;
+}
+
+// Fake implementation for testing
+class FakeDataRepository(
+    // Allow passing initial data during construction
+    initialData: List&lt;String&gt; = emptyList()
+) : DataRepository {
+    // Mutable property to allow changing data between tests
+    var dataToReturn = initialData
+
+    override fun getData(): List&lt;String&gt; {
+        return dataToReturn
+    }
+}
+
+// In test
+@Test
+fun `processor should transform data correctly`() {
+    // Arrange
+    val fakeRepo = FakeDataRepository(listOf("item1", "item2"))
+    val testSubject = DataProcessor(fakeRepo)
+
+    // Act
+    val result = testSubject.process()
+
+    // Assert
+    assertThat(result).containsExactly("ITEM1", "ITEM2")
+}
+</code></pre>
+<h3 id="-naming-conventions"><a class="header" href="#-naming-conventions">📋 Naming Conventions</a></h3>
+<p>When writing tests, use the following naming conventions:</p>
+<ul>
+<li>Name the object under test as <code>testSubject</code> (not “sut” or other abbreviations)</li>
+<li>Name fake implementations with a “Fake” prefix (e.g., <code>FakeDataRepository</code>)</li>
+<li>Use descriptive variable names that clearly indicate their purpose</li>
+</ul>
+<h3 id="-assertions"><a class="header" href="#-assertions">✅ Assertions</a></h3>
+<p>Use <a href="https://github.com/willowtreeapps/assertk" title="" target="_blank">AssertK</a> for assertions in tests:</p>
+<pre><code class="language-kotlin">@Test
+fun `example test`() {
+    // Arrange
+    val list = listOf("apple", "banana")
+
+    // Act
+    val result = list.contains("apple")
+
+    // Assert
+    assertThat(result).isTrue()
+    assertThat(list).contains("banana")
+}
+</code></pre>
+<p>Note: You’ll need to import the appropriate <a href="https://github.com/willowtreeapps/assertk" title="" target="_blank">AssertK</a> assertions:</p>
+<ul>
+<li><code>assertk.assertThat</code> for the base assertion function</li>
+<li>Functions from the <code>assertk.assertions</code> namespace for specific assertion types (e.g., <code>import assertk.assertions.isEqualTo</code>, <code>import assertk.assertions.contains</code>, <code>import assertk.assertions.isTrue</code>, etc.)</li>
+</ul>
+<h2 id="-test-types"><a class="header" href="#-test-types">🧩 Test Types</a></h2>
+<p>This section describes the different types of tests we use in the project. Each type serves a specific purpose in our testing strategy, and together they help ensure the quality and reliability of our codebase.</p>
+<h3 id="-unit-tests"><a class="header" href="#-unit-tests">🔬 Unit Tests</a></h3>
+<blockquote>
+<p><strong>Unit tests verify that individual components work correctly in isolation.</strong></p>
+</blockquote>
+<p><strong>What to Test:</strong></p>
+<ul>
+<li>Single units of functionality</li>
+<li>Individual methods or functions</li>
+<li>Classes in isolation</li>
+<li>Business logic</li>
+<li>Edge cases and error handling</li>
+</ul>
+<p><strong>Key Characteristics:</strong></p>
+<ul>
+<li>Independent (no external dependencies)</li>
+<li>No reliance on external resources</li>
+<li>Uses fake implementations for dependencies</li>
+</ul>
+<p><strong>Frameworks:</strong></p>
+<ul>
+<li>JUnit 4</li>
+<li><a href="https://github.com/willowtreeapps/assertk" title="" target="_blank">AssertK</a> for assertions</li>
+<li><a href="https://robolectric.org/" title="" target="_blank">Robolectric</a> (for Android framework classes)</li>
+</ul>
+<p><strong>Location:</strong></p>
+<ul>
+<li>Tests should be in the same module as the code being tested</li>
+<li>Should be in the <code>src/test</code> directory or <code>src/{platformTarget}Test</code> for Kotlin Multiplatform</li>
+<li>Tests should be in the same package as the code being tested</li>
+</ul>
+<p><strong>Contributor Expectations:</strong></p>
+<ul>
+<li>✅ All new code should be covered by unit tests</li>
+<li>✅ Add tests that reproduce bugs when fixing issues</li>
+<li>✅ Follow the AAA pattern (Arrange-Act-Assert)</li>
+<li>✅ Use descriptive test names</li>
+<li>✅ Prefer fake implementations over mocks</li>
+</ul>
+<h3 id="-integration-tests"><a class="header" href="#-integration-tests">🔌 Integration Tests</a></h3>
+<blockquote>
+<p><strong>Integration tests verify that components work correctly together.</strong></p>
+</blockquote>
+<p><strong>What to Test:</strong></p>
+<ul>
+<li>Interactions between components</li>
+<li>Communication between layers</li>
+<li>Data flow across multiple units</li>
+<li>Component integration points</li>
+</ul>
+<p><strong>Key Characteristics:</strong></p>
+<ul>
+<li>Tests multiple components together</li>
+<li>May use real implementations when appropriate</li>
+<li>Focuses on component boundaries</li>
+</ul>
+<p><strong>Frameworks:</strong></p>
+<ul>
+<li>JUnit 4 (for tests in <code>src/test</code>)</li>
+<li><a href="https://github.com/willowtreeapps/assertk" title="" target="_blank">AssertK</a> for assertions</li>
+<li><a href="https://robolectric.org/" title="" target="_blank">Robolectric</a> (for Android framework classes in <code>src/test</code>)</li>
+<li>Espresso (for UI testing in <code>src/androidTest</code>)</li>
+</ul>
+<p><strong>Location:</strong></p>
+<ul>
+<li>Preferably in the <code>src/test</code> or <code>src/commonTest</code>, <code>src/{platformTarget}Test</code> for Kotlin Multiplatform</li>
+<li>Only use <code>src/androidTest</code>, when there’s a specific need for Android dependencies</li>
+</ul>
+<p><strong>Why prefer <code>test</code> over <code>androidTest</code>:</strong></p>
+<ul>
+<li>JUnit tests run faster (on JVM instead of emulator/device)</li>
+<li>Easier to set up and maintain</li>
+<li>Better integration with CI/CD pipelines</li>
+<li>Lower resource requirements</li>
+<li>Faster feedback during development</li>
+</ul>
+<p><strong>When to use androidTest:</strong></p>
+<ul>
+<li>When testing functionality that depends on Android-specific APIs that are not available with Robolectric</li>
+<li>When tests need to interact with the Android framework directly</li>
+</ul>
+<p><strong>Contributor Expectations:</strong></p>
+<ul>
+<li>✅ Add tests for features involving multiple components</li>
+<li>✅ Focus on critical paths and user flows</li>
+<li>✅ Be mindful of test execution time</li>
+<li>✅ Follow the AAA pattern</li>
+<li>✅ Use descriptive test names</li>
+</ul>
+<h3 id="-ui-tests"><a class="header" href="#-ui-tests">📱 UI Tests</a></h3>
+<blockquote>
+<p><strong>UI tests verify the application from a user’s perspective.</strong></p>
+</blockquote>
+<p><strong>What to Test:</strong></p>
+<ul>
+<li>User interface behavior</li>
+<li>UI component interactions</li>
+<li>Complete user flows</li>
+<li>Screen transitions</li>
+<li>Input handling and validation</li>
+</ul>
+<p><strong>Key Characteristics:</strong></p>
+<ul>
+<li>Tests from user perspective</li>
+<li>Verifies visual elements and interactions</li>
+<li>Covers end-to-end scenarios</li>
+</ul>
+<p><strong>Frameworks:</strong></p>
+<ul>
+<li>Espresso for Android UI testing</li>
+<li>Compose UI testing for Jetpack Compose</li>
+<li>JUnit 4 as the test runner</li>
+</ul>
+<p><strong>Location:</strong></p>
+<ul>
+<li>In the <code>src/test</code> directory for Compose UI tests</li>
+<li>In the <code>src/androidTest</code> directory for Espresso tests</li>
+</ul>
+<p><strong>Contributor Expectations:</strong></p>
+<ul>
+<li>✅ Add tests for new UI components and screens</li>
+<li>✅ Focus on critical user flows</li>
+<li>✅ Consider different device configurations</li>
+<li>✅ Test both positive and negative scenarios</li>
+<li>✅ Follow the AAA pattern</li>
+<li>✅ Use descriptive test names</li>
+</ul>
+<h3 id="-screenshot-tests"><a class="header" href="#-screenshot-tests">📸 Screenshot Tests</a></h3>
+<p><strong>⚠️ Work in Progress ⚠️</strong></p>
+<blockquote>
+<p><strong>Screenshot tests verify the visual appearance of UI components.</strong></p>
+</blockquote>
+<p><strong>What to Test:</strong></p>
+<ul>
+<li>Visual appearance of UI components</li>
+<li>Layout correctness</li>
+<li>Visual regressions</li>
+<li>Theme and style application</li>
+</ul>
+<p><strong>Key Characteristics:</strong></p>
+<ul>
+<li>Captures visual snapshots</li>
+<li>Compares against reference images (<code>golden</code> images)</li>
+<li>Detects unintended visual changes</li>
+</ul>
+<p><strong>Frameworks:</strong></p>
+<ul>
+<li>JUnit 4 as the test runner</li>
+<li>Compose UI testing</li>
+<li>Screenshot comparison tools (TBD)</li>
+</ul>
+<p><strong>Location:</strong></p>
+<ul>
+<li>Same module as the code being tested</li>
+<li>In the <code>src/test</code> directory</li>
+</ul>
+<p><strong>Contributor Expectations:</strong></p>
+<ul>
+<li>✅ Add tests for new Composable UI components</li>
+<li>✅ Verify correct rendering in different states</li>
+<li>✅ Update reference screenshots for intentional changes</li>
+</ul>
+<h2 id="-test-types-we-dont-currently-have"><a class="header" href="#-test-types-we-dont-currently-have">🚫 Test Types We Don’t Currently Have</a></h2>
+<blockquote>
+<p><strong>This section helps contributors understand our testing strategy and future plans.</strong></p>
+</blockquote>
+<p><strong>End-to-End Tests</strong> ✨</p>
+<ul>
+<li>Full system tests verifying complete user journeys</li>
+<li>Tests across multiple screens and features</li>
+<li>Validates entire application workflows</li>
+</ul>
+<p><strong>Performance Tests</strong> ⚡</p>
+<ul>
+<li>Measures startup time, memory usage, responsiveness</li>
+<li>Validates app performance under various conditions</li>
+<li>Identifies performance bottlenecks</li>
+</ul>
+<p><strong>Accessibility Tests</strong> ♿</p>
+<ul>
+<li>Verifies proper content descriptions</li>
+<li>Checks contrast ratios and keyboard navigation</li>
+<li>Ensures app is usable by people with disabilities</li>
+</ul>
+<p><strong>Localization Tests</strong> 🌐</p>
+<ul>
+<li>Verifies correct translation display</li>
+<li>Tests right-to-left language support</li>
+<li>Validates date, time, and number formatting</li>
+</ul>
+<p><strong>Manual Test Scripts</strong> 📝</p>
+<ul>
+<li>Manual testing by QA team for exploratory testing</li>
+<li>Ensures repeatable test execution</li>
+<li>Documents expected behavior for manual tests</li>
+</ul>
+<h2 id="-running-tests"><a class="header" href="#-running-tests">🏃 Running Tests</a></h2>
+<blockquote>
+<p><strong>Quick commands to run tests in the project.</strong></p>
+</blockquote>
+<p>Run all tests:</p>
+<pre><code class="language-bash">./gradlew test
+</code></pre>
+<p>Run tests for a specific module:</p>
+<pre><code class="language-bash">./gradlew :module-name:test
+</code></pre>
+<p>Run Android instrumentation tests:</p>
+<pre><code class="language-bash">./gradlew connectedAndroidTest
+</code></pre>
+<p>Run tests with coverage:</p>
+<pre><code class="language-bash">./gradlew testDebugUnitTestCoverage
+</code></pre>
+<h2 id="-code-coverage"><a class="header" href="#-code-coverage">📊 Code Coverage</a></h2>
+<blockquote>
+<p><strong>⚠️ Work in Progress ⚠️</strong></p>
+<p>This section is currently under development and will be updated with specific code coverage rules and guidelines.</p>
+</blockquote>
+<p>Code coverage helps us understand how much of our codebase is being tested. While we don’t currently have strict requirements, we aim for high coverage in critical components.</p>
+<p><strong>Current Approach:</strong></p>
+<ul>
+<li>Focus on critical business logic</li>
+<li>Prioritize user-facing features</li>
+<li>No strict percentage requirements</li>
+<li>Quality of tests over quantity</li>
+</ul>
+<p><strong>Future Guidelines (Coming Soon):</strong></p>
+<ul>
+<li>Code coverage targets by component type</li>
+<li>Coverage report generation instructions</li>
+<li>Interpretation guidelines</li>
+<li>Exemptions for generated/simple code</li>
+<li>CI/CD integration details</li>
+</ul>
+<p><strong>Remember:</strong> High code coverage doesn’t guarantee high-quality tests. Focus on writing meaningful tests that verify correct behavior, not just increasing coverage numbers.</p>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="java-to-kotlin-conversion-guide"><a class="header" href="#java-to-kotlin-conversion-guide">Java to Kotlin Conversion Guide</a></h1>
+<p>This guide describes our process for converting Java code to Kotlin.</p>
+<h2 id="why-convert-to-kotlin"><a class="header" href="#why-convert-to-kotlin">Why Convert to Kotlin?</a></h2>
+<p>Java and Kotlin are compatible languages, but we decided to convert our codebase to Kotlin for the following reasons:</p>
+<ul>
+<li>Kotlin is more concise and expressive than Java.</li>
+<li>Kotlin has better support for null safety.</li>
+<li>Kotlin has a number of modern language features that make it easier to write maintainable code.</li>
+</ul>
+<p>See our <a href="contributing/../architecture/adr/0001-switch-from-java-to-kotlin.html">ADR-0001</a> for more information.</p>
+<h2 id="how-to-convert-java-code-to-kotlin"><a class="header" href="#how-to-convert-java-code-to-kotlin">How to Convert Java Code to Kotlin</a></h2>
+<ol>
+<li>Write tests for any code that is not adequately covered by tests.</li>
+<li>Use the “Convert Java File to Kotlin File” action in IntelliJ or Android Studio to convert the Java code.</li>
+<li>Fix any issues that prevent the code from compiling after the automatic conversion.</li>
+<li>Commit the changes as separate commits:
+<ol>
+<li>The change of file extension (e.g. <code>example.java</code> -&gt; <code>example.kt</code>).</li>
+<li>The conversion of the Java file to Kotlin.</li>
+</ol>
+<ul>
+<li>This can be automated by IntelliJ/Android Studio if you use their VCS integration and enable the option to commit changes separately.</li>
+</ul>
+</li>
+<li>Refactor the code to improve readability and maintainability. This includes:
+<ol>
+<li>Removing unnecessary code.</li>
+<li>Using Kotlin’s standard library functions, language features, null safety and coding conventions.</li>
+</ol>
+</li>
+</ol>
+<h2 id="additional-tips"><a class="header" href="#additional-tips">Additional Tips</a></h2>
+<ul>
+<li>Use <code>when</code> expressions instead of <code>if-else</code> statements.</li>
+<li>Use <code>apply</code> and <code>also</code> to perform side effects on objects.</li>
+<li>Use <code>@JvmField</code> to expose a Kotlin property as a field in Java.</li>
+</ul>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<ul>
+<li><a href="https://kotlinlang.org/docs/coding-conventions.html" title="" target="_blank">Kotlin Coding Conventions</a></li>
+<li><a href="https://kotlinlang.org/docs/java-to-kotlin-interop.html" title="" target="_blank">Calling Kotlin from Java</a></li>
+<li><a href="https://kotlinlang.org/docs/java-interop.html" title="" target="_blank">Calling Java from Kotlin</a></li>
+<li><a href="https://developer.android.com/kotlin?hl=en" title="" target="_blank">Kotlin and Android | Android Developers</a></li>
+</ul>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="repository-structure"><a class="header" href="#repository-structure">Repository structure</a></h1>
 <p>The project is divided into several directories below which are nested gradle projects.</p>
 <h2 id="app"><a class="header" href="#app">app</a></h2>
 <p>This contains the highest level code such as UI and core logic.</p>
@@ -247,7 +747,7 @@ classes. Each class is colour-coded by its top-level project.</p>
 <p><img src="assets/ReadEmailClasses.png" alt="read email classes" /></p>
 <h2 id="sending-email"><a class="header" href="#sending-email">Sending email</a></h2>
 <p><img src="assets/SendEmail.png" alt="send email sequence" /></p>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="thunderbird-for-android-release-documentation"><a class="header" href="#thunderbird-for-android-release-documentation">Thunderbird for Android Release Documentation</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="thunderbird-for-android-release-documentation"><a class="header" href="#thunderbird-for-android-release-documentation">Thunderbird for Android Release Documentation</a></h1>
 <p>Please see the sub-pages for release documentation</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="releases"><a class="header" href="#releases">Releases</a></h1>
 <p>Thunderbird for Android follows a release train model to ensure timely and predictable releases. This model allows for regular feature rollouts, stability improvements, and bug fixes.</p>
@@ -498,7 +998,7 @@ Daily builds are scheduled with the <a href="https://github.com/thunderbird/thun
 </ul>
 </li>
 </ol>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="release-automation-setup"><a class="header" href="#release-automation-setup">Release Automation Setup</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="release-automation-setup"><a class="header" href="#release-automation-setup">Release Automation Setup</a></h1>
 <p>Release automation is triggered by the workflow_dispatch event on the “Shippable Build &amp; Signing”
 workflow. GitHub environments are used to set configuration variables and secrets for each
 application and release type.</p>
@@ -595,7 +1095,7 @@ to upload the release with limited permissions.</p>
 <li>MATRIX_NOTIFY_USER_MAP: A json object that maps github usernames to matrix ids</li>
 </ul>
 <p>If you leave out this environment, no notifications will be sent.</p>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="create-k-9-mail-releases"><a class="header" href="#create-k-9-mail-releases">Create K-9 Mail releases</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="create-k-9-mail-releases"><a class="header" href="#create-k-9-mail-releases">Create K-9 Mail releases</a></h1>
 <div class="warning">
 This document contains the historical manual release process for K-9 Mail. Please use the <a href="ci/AUTOMATION.html">automated process</a> instead.
 We're keeping this around in case we need to do a manual release.
@@ -930,7 +1430,7 @@ URL)</p>
 <li>Check <a href="https://fdroidstatus.org/status/fdroid" title="" target="_blank">F-Droid Status</a> for any issues.</li>
 <li>Check <a href="https://monitor.f-droid.org/builds" title="" target="_blank">F-Droid Monitor</a> for any errors mentioning <code>com.fsck.k9</code>.</li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="managing-strings"><a class="header" href="#managing-strings">Managing strings</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="managing-strings"><a class="header" href="#managing-strings">Managing strings</a></h1>
 <p>We use Android’s <a href="https://developer.android.com/guide/topics/resources/localization" title="" target="_blank">resource system</a> to localize
 user-visible strings in our apps.</p>
 <p>Our source language is English (American English to be more precise, but simply “English” (en) on Weblate).</p>
@@ -1020,138 +1520,7 @@ e.g. <code>feature/account/common/src/main/res/values/strings.xml</code>.</li>
 Weblate, but <em>iw</em> on Android. When writing automation tools, there needs to be a mapping step involved.</p>
 <p>See <a href="https://github.com/thunderbird/thunderbird-android/blob/ed07da8be5513ac74aabb1c934a4545aaae4f5a3/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13" title="" target="_blank">translation-cli</a>
 for an example.</p>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="java-to-kotlin-conversion-guide"><a class="header" href="#java-to-kotlin-conversion-guide">Java to Kotlin Conversion Guide</a></h1>
-<p>This guide describes our process for converting Java code to Kotlin.</p>
-<h2 id="why-convert-to-kotlin"><a class="header" href="#why-convert-to-kotlin">Why Convert to Kotlin?</a></h2>
-<p>Java and Kotlin are compatible languages, but we decided to convert our codebase to Kotlin for the following reasons:</p>
-<ul>
-<li>Kotlin is more concise and expressive than Java.</li>
-<li>Kotlin has better support for null safety.</li>
-<li>Kotlin has a number of modern language features that make it easier to write maintainable code.</li>
-</ul>
-<p>See our <a href="contributing/../architecture/adr/0001-switch-from-java-to-kotlin.html">ADR-0001</a> for more information.</p>
-<h2 id="how-to-convert-java-code-to-kotlin"><a class="header" href="#how-to-convert-java-code-to-kotlin">How to Convert Java Code to Kotlin</a></h2>
-<ol>
-<li>Write tests for any code that is not adequately covered by tests.</li>
-<li>Use the “Convert Java File to Kotlin File” action in IntelliJ or Android Studio to convert the Java code.</li>
-<li>Fix any issues that prevent the code from compiling after the automatic conversion.</li>
-<li>Commit the changes as separate commits:
-<ol>
-<li>The change of file extension (e.g. <code>example.java</code> -&gt; <code>example.kt</code>).</li>
-<li>The conversion of the Java file to Kotlin.</li>
-</ol>
-<ul>
-<li>This can be automated by IntelliJ/Android Studio if you use their VCS integration and enable the option to commit changes separately.</li>
-</ul>
-</li>
-<li>Refactor the code to improve readability and maintainability. This includes:
-<ol>
-<li>Removing unnecessary code.</li>
-<li>Using Kotlin’s standard library functions, language features, null safety and coding conventions.</li>
-</ol>
-</li>
-</ol>
-<h2 id="additional-tips"><a class="header" href="#additional-tips">Additional Tips</a></h2>
-<ul>
-<li>Use <code>when</code> expressions instead of <code>if-else</code> statements.</li>
-<li>Use <code>apply</code> and <code>also</code> to perform side effects on objects.</li>
-<li>Use <code>@JvmField</code> to expose a Kotlin property as a field in Java.</li>
-</ul>
-<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
-<ul>
-<li><a href="https://kotlinlang.org/docs/coding-conventions.html" title="" target="_blank">Kotlin Coding Conventions</a></li>
-<li><a href="https://kotlinlang.org/docs/java-to-kotlin-interop.html" title="" target="_blank">Calling Kotlin from Java</a></li>
-<li><a href="https://kotlinlang.org/docs/java-interop.html" title="" target="_blank">Calling Java from Kotlin</a></li>
-<li><a href="https://developer.android.com/kotlin?hl=en" title="" target="_blank">Kotlin and Android | Android Developers</a></li>
-</ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="git-commit-guide"><a class="header" href="#git-commit-guide">Git Commit Guide</a></h1>
-<p>Use <a href="https://www.conventionalcommits.org/" title="" target="_blank">Conventional Commits</a> to write consistent and meaningful commit messages.
-This makes your work easier to review, track, and maintain for everyone involved in the project.</p>
-<h2 id="-commit-message-format"><a class="header" href="#-commit-message-format">✍️ Commit Message Format</a></h2>
-<pre><code class="language-git">&lt;type&gt;(&lt;scope&gt;): &lt;description&gt;
-
-&lt;body&gt;
-
-&lt;footer(s)&gt;
-</code></pre>
-<p>Components:</p>
-<ul>
-<li><code>&lt;type&gt;</code>: The <a href="contributing/git-commit-guide.html#-commit-types">type of change</a> being made (e.g., feat, fix, docs).</li>
-<li><code>&lt;scope&gt;</code> <strong>(optional)</strong>: The <a href="contributing/git-commit-guide.html#optional-scope">scope</a> indicates the area of the codebase affected by the change (e.g., auth, ui).</li>
-<li><code>&lt;description&gt;</code>: Short description of the change (50 characters or less)</li>
-<li><code>&lt;body&gt;</code> <strong>(optional)</strong>: Explain what changed and why, include context if helpful.</li>
-<li><code>&lt;footer(s)&gt;</code> <strong>(optional)</strong>: Include issue references, breaking changes, etc.</li>
-</ul>
-<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
-<p>Basic:</p>
-<pre><code class="language-git">feat: add QR code scanner
-</code></pre>
-<p>With scope:</p>
-<pre><code class="language-git">feat(auth): add login functionality
-</code></pre>
-<p>With body and issue reference:</p>
-<pre><code class="language-git">fix(api): handle null response from login endpoint
-
-Checks for missing tokens to prevent app crash during login.
-
-Fixes #123
-</code></pre>
-<h3 id="-commit-types"><a class="header" href="#-commit-types">🏷️ Commit Types</a></h3>
-<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Use for…</th><th>Example</th></tr></thead><tbody>
-<tr><td><code>feat</code></td><td>New features</td><td><code>feat(camera): add zoom support</code></td></tr>
-<tr><td><code>fix</code></td><td>Bug fixes</td><td><code>fix(auth): handle empty username crash</code></td></tr>
-<tr><td><code>docs</code></td><td>Documentation only</td><td><code>docs(readme): update setup instructions</code></td></tr>
-<tr><td><code>style</code></td><td>Code style (no logic changes)</td><td><code>style: reformat settings screen</code></td></tr>
-<tr><td><code>refactor</code></td><td>Code changes (no features/fixes)</td><td><code>refactor(nav): simplify stack setup</code></td></tr>
-<tr><td><code>test</code></td><td>Adding/editing tests</td><td><code>test(api): add unit test for login</code></td></tr>
-<tr><td><code>chore</code></td><td>Tooling, CI, dependencies</td><td><code>chore(ci): update GitHub Actions config</code></td></tr>
-<tr><td><code>revert</code></td><td>Reverting previous commits</td><td><code>revert: remove feature flag</code></td></tr>
-</tbody></table>
-</div>
-<h3 id="optional-scope"><a class="header" href="#optional-scope">📍Optional Scope</a></h3>
-<p>The <strong>scope</strong> is optional but recommended for clarity, especially for large changes or or when multiple areas of the
-codebase are involved.</p>
-<div class="table-wrapper"><table><thead><tr><th>Scope</th><th>Use for…</th><th>Example</th></tr></thead><tbody>
-<tr><td><code>auth</code></td><td>Authentication</td><td><code>feat(auth): add login functionality</code></td></tr>
-<tr><td><code>settings</code></td><td>User settings</td><td><code>feat(settings): add dark mode toggle</code></td></tr>
-<tr><td><code>build</code></td><td>Build system</td><td><code>fix(build): improve build performance</code></td></tr>
-<tr><td><code>ui</code></td><td>UI/theme</td><td><code>refactor(ui): split theme into modules</code></td></tr>
-<tr><td><code>deps</code></td><td>Dependencies</td><td><code>chore(deps): bump Kotlin to 2.0.0</code></td></tr>
-</tbody></table>
-</div>
-<h2 id="-best-practices"><a class="header" href="#-best-practices">🧠 Best Practices</a></h2>
-<h3 id="1-one-commit-one-purpose"><a class="header" href="#1-one-commit-one-purpose">1. One Commit, One Purpose</a></h3>
-<ul>
-<li>✅ Each commit should represent a single logical change or addition to the codebase.</li>
-<li>❌ Don’t mix unrelated changes together (e.g., fixing a bug and updating docs, or changing a style and )
-adding a feature).</li>
-</ul>
-<h3 id="2-keep-it-manageable"><a class="header" href="#2-keep-it-manageable">2. Keep It Manageable</a></h3>
-<ul>
-<li>✅ Break up large changes into smaller, more manageable commits.</li>
-<li>✅ If a commit changes more than 200 lines of code, consider breaking it up.</li>
-<li>❌ Avoid massive, hard-to-review commits.</li>
-</ul>
-<h3 id="3-keep-it-working"><a class="header" href="#3-keep-it-working">3. Keep It Working</a></h3>
-<ul>
-<li>✅ Each commit should leave the codebase in a buildable and testable state.</li>
-<li>❌ Never commit broken code or failing tests.</li>
-</ul>
-<h3 id="4-think-about-reviewers-and-future-you"><a class="header" href="#4-think-about-reviewers-and-future-you">4. Think About Reviewers (and Future You)</a></h3>
-<ul>
-<li>✅ Write messages for your teammates and future self, assuming they have no context.</li>
-<li>✅ Explain non-obvious changes or decisions in the message body.</li>
-<li>✅ Consider the commit as a documentation tool.</li>
-<li>❌ Avoid jargon, acronyms, or vague messages like <code>update stuff</code>.</li>
-</ul>
-<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
-<ul>
-<li>Use <a href="contributing/git-commit-guide.html#-conventional-commits">Conventional Commits</a> for consistency.</li>
-<li>Keep commit messages short, structured, and focused.</li>
-<li>Make each commit purposeful and self-contained.</li>
-<li>Write commits that make collaboration and future development easier for everyone—including you.</li>
-</ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="architecture-decision-records"><a class="header" href="#architecture-decision-records">Architecture Decision Records</a></h1>
 <p>The <a href="architecture/adr//docs/architecture/adr">docs/architecture/adr</a> folder contains the architecture decision records (ADRs) for our project.</p>
 <p>ADRs are short text documents that serve as a historical context for the architecture decisions we make over the
 course of the project.</p>
@@ -1250,7 +1619,7 @@ refactor our existing Java codebase to Kotlin.</p>
 </ul>
 </li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="ui---wrap-material-components-in-atomic-design-system"><a class="header" href="#ui---wrap-material-components-in-atomic-design-system">UI - Wrap Material Components in Atomic Design System</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="ui---wrap-material-components-in-atomic-design-system"><a class="header" href="#ui---wrap-material-components-in-atomic-design-system">UI - Wrap Material Components in Atomic Design System</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7221" title="" target="_blank">#7221</a></li>
 </ul>
@@ -1287,7 +1656,7 @@ using to construct our application’s UI.</p>
 </ul>
 </li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="switch-test-assertions-from-truth-to-assertk"><a class="header" href="#switch-test-assertions-from-truth-to-assertk">Switch Test Assertions from Truth to assertk</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="switch-test-assertions-from-truth-to-assertk"><a class="header" href="#switch-test-assertions-from-truth-to-assertk">Switch Test Assertions from Truth to assertk</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7242" title="" target="_blank">#7242</a></li>
 </ul>
@@ -1324,7 +1693,7 @@ effort, although mitigated by the similar syntax.</li>
 </ul>
 </li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7794" title="" target="_blank">#7794</a></li>
 </ul>
@@ -1370,7 +1739,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 </ul>
 </li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module"><a class="header" href="#central-management-of-android-project-dependencies-and-gradle-configurations-via-build-plugin-module">Central Management of Android Project Dependencies and Gradle Configurations via Build-Plugin Module</a></h1>
 <ul>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7803" title="" target="_blank">#7803</a></li>
 </ul>
@@ -1400,7 +1769,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <li><strong>Complexity for New Developers:</strong> The centralized build architecture, particularly with the use of a Gradle Version Catalog, may initially seem daunting to new team members who are unfamiliar with this level of abstraction.</li>
 <li><strong>Dependency on the Build-Plugin Module:</strong> The entire project becomes reliant on the stability and accuracy of the <code>build-plugin</code> module. Errors within this module or the catalog could impact the build process across all modules.</li>
 </ol>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="white-label-architecture"><a class="header" href="#white-label-architecture">White Label Architecture</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="white-label-architecture"><a class="header" href="#white-label-architecture">White Label Architecture</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7807" title="" target="_blank">#7807</a></li>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7805" title="" target="_blank">#7805</a></li>
@@ -1428,7 +1797,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <li>Potential for configuration complexities as differentiations increase between the two applications.</li>
 <li>Higher initial setup time and learning curve for new developers due to the modular and decoupled architecture.</li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/7852" title="" target="_blank">#7852</a></li>
 <li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7829" title="" target="_blank">#7829</a></li>
@@ -1589,7 +1958,7 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
 <li>Over-modularization can lead to excessive abstraction, potentially impacting runtime performance and complicating the debugging process.</li>
 <li>Legacy modules may require additional effort to migrate to the new structure, potentially causing delays in the adoption of the new architecture.</li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="change-shared-modules-package-to-netthunderbird"><a class="header" href="#change-shared-modules-package-to-netthunderbird">Change Shared Modules package to <code>net.thunderbird</code></a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="change-shared-modules-package-to-netthunderbird"><a class="header" href="#change-shared-modules-package-to-netthunderbird">Change Shared Modules package to <code>net.thunderbird</code></a></h1>
 <ul>
 <li>Issue: <a href="https://github.com/thunderbird/thunderbird-android/issues/9012" title="" target="_blank">#9012</a></li>
 </ul>
@@ -1632,7 +2001,7 @@ project for cross-platform development.</p>
 <li>Potential for disruption in local development setups (e.g., IDE caching, broken imports)</li>
 <li>Contributors familiar with the old structure may need time to adjust</li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-document"><a class="header" href="#how-to-document">How to Document</a></h1>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer><div style="break-before: page; page-break-before: always;"></div><h1 id="how-to-document"><a class="header" href="#how-to-document">How to Document</a></h1>
 <p>This guide provides detailed instructions for contributing to and maintaining the documentation for the Thunderbird for Android project. It explains the tools used, the structure of the documentation, and guidelines for creating and editing content.</p>
 <p>We use <a href="https://rust-lang.github.io/mdBook/" title="" target="_blank">mdbook</a> to generate the documentation. The source files for the documentation are located in the <code>docs/</code> directory.</p>
 <h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
@@ -1705,7 +2074,7 @@ respective section.</p>
 <pre><code class="language-shell">mdbook serve docs --open
 </code></pre>
 <p>The <code>mdbook serve docs</code> command will serve the book at <a href="http://localhost:3000" title="" target="_blank">http://localhost:3000</a> and rebuild the documentation on changes. The <code>--open</code> option will open the book in your web browser and is optional.</p>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

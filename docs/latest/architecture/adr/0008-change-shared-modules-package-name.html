@@ -44,6 +44,17 @@
         <script src="../../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -121,7 +132,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -207,7 +218,7 @@ project for cross-platform development.</p>
 <li>Potential for disruption in local development setups (e.g., IDE caching, broken imports)</li>
 <li>Contributors familiar with the old structure may need time to adjust</li>
 </ul>
-<footer id="last-change">Last change: 2025-05-13, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/eee090c">eee090c</a></footer>
+<footer id="last-change">Last change: 2025-06-06, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/2a6cc73">2a6cc73</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
