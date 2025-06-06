@@ -22,7 +22,7 @@ val appCommonCoreModule: Module = module {
         )
     }
 
-    single<LogSink> {
+    single<CompositeLogSink> {
         CompositeLogSink(
             level = get(),
             sinks = get(),
@@ -31,7 +31,7 @@ val appCommonCoreModule: Module = module {
 
     single<Logger> {
         DefaultLogger(
-            sink = get(),
+            sink = get<CompositeLogSink>(),
         )
     }
 }
