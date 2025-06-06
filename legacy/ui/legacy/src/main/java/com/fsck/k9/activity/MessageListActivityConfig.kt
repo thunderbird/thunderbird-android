@@ -46,7 +46,7 @@ data class MessageListActivityConfig(
             return MessageListActivityConfig(
                 appTheme = settings.appTheme,
                 isShowUnifiedInbox = generalSettingsManager.getSettings().isShowUnifiedInbox,
-                isShowMessageListStars = K9.isShowMessageListStars,
+                isShowMessageListStars = generalSettingsManager.getSettings().isShowMessageListStars,
                 isShowCorrespondentNames = K9.isShowCorrespondentNames,
                 isMessageListSenderAboveSubject = K9.isMessageListSenderAboveSubject,
                 isShowContactName = K9.isShowContactName,
