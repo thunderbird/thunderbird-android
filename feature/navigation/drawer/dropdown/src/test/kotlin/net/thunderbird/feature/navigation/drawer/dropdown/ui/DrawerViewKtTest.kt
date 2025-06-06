@@ -34,6 +34,7 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openManageFolders = { counter.openManageFoldersCount++ },
                 openSettings = { counter.openSettingsCount++ },
                 closeDrawer = { counter.closeDrawerCount++ },
+                featureFlagProvider = FakeFeatureFlagProvider(isEnabled = true),
                 viewModel = viewModel,
             )
         }
@@ -84,6 +85,7 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openManageFolders = { },
                 openSettings = { },
                 closeDrawer = { },
+                featureFlagProvider = FakeFeatureFlagProvider(isEnabled = true),
                 viewModel = viewModel,
             )
         }
@@ -121,6 +123,7 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openManageFolders = {},
                 openSettings = {},
                 closeDrawer = {},
+                featureFlagProvider = FakeFeatureFlagProvider(isEnabled = true),
                 viewModel = viewModel,
             )
         }
