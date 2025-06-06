@@ -27,7 +27,7 @@ class GeneralSettingsDataStore(
             "fixed_message_view_theme" -> generalSettingsManager.getSettings().fixedMessageViewTheme
             "animations" -> K9.isShowAnimations
             "show_unified_inbox" -> generalSettingsManager.getSettings().isShowUnifiedInbox
-            "show_starred_count" -> K9.isShowStarredCount
+            "show_starred_count" -> generalSettingsManager.getSettings().isShowStarredCount
             "messagelist_stars" -> K9.isShowMessageListStars
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
@@ -58,7 +58,7 @@ class GeneralSettingsDataStore(
             "fixed_message_view_theme" -> setFixedMessageViewTheme(value)
             "animations" -> K9.isShowAnimations = value
             "show_unified_inbox" -> setIsShowUnifiedInbox(value)
-            "show_starred_count" -> K9.isShowStarredCount = value
+            "show_starred_count" -> setIsShowStarredCount(isShowStarredCount = value)
             "messagelist_stars" -> K9.isShowMessageListStars = value
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value
@@ -260,6 +260,11 @@ class GeneralSettingsDataStore(
     private fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setFixedMessageViewTheme(fixedMessageViewTheme)
+    }
+
+    private fun setIsShowStarredCount(isShowStarredCount: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsShowStarredCount(isShowStarredCount)
     }
 
     private fun setIsShowUnifiedInbox(isShowUnifiedInbox: Boolean) {

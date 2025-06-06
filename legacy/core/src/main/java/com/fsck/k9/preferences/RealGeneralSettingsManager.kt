@@ -138,6 +138,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowUnifiedInbox = isShowUnifiedInbox).persist()
     }
 
+    override fun setIsShowStarredCount(isShowStarredCount: Boolean) {
+        getSettings().copy(isShowStarredCount = isShowStarredCount).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -145,6 +149,7 @@ internal class RealGeneralSettingsManager(
         editor.putEnum("messageComposeTheme", settings.messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", settings.fixedMessageViewTheme)
         editor.putBoolean("showUnifiedInbox", settings.isShowUnifiedInbox)
+        editor.putBoolean("showStarredCount", settings.isShowStarredCount)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -164,6 +169,7 @@ internal class RealGeneralSettingsManager(
             ),
             fixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true),
             isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", false),
+            isShowStarredCount = storage.getBoolean("showStarredCount", false),
         )
 
         updateSettingsFlow(settings)
