@@ -1,62 +1,45 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
+
+import java.io.Serializable
 
 /**
  * Represents a single response from the IMAP server.
  *
- * <p>
- * Tagged responses will have a non-null tag. Untagged responses will have a null tag. The
- * object will contain all of the available tokens at the time the response is received.
- * </p>
+ * Tagged responses have a non-null tag.
+ * Untagged responses have a null tag.
+ * Continuation requests are identified with a `+`.
+ * The object will contain all of the available tokens at the time the response is received.
  */
-class ImapResponse extends ImapList {
-    private static final long serialVersionUID = 6886458551615975669L;
+internal class ImapResponse private constructor(
+    var callback: ImapResponseCallback?,
+    val isContinuationRequested: Boolean,
+    val tag: String?,
+) : ImapList(), Serializable {
 
+    companion object {
+        private const val serialVersionUID: Long = 6886458551615975669L
 
-    private ImapResponseCallback callback;
-    private final boolean commandContinuationRequested;
-    private final String tag;
+        @JvmStatic
+        fun newContinuationRequest(callback: ImapResponseCallback?): ImapResponse {
+            return ImapResponse(callback, true, null)
+        }
 
+        @JvmStatic
+        fun newUntaggedResponse(callback: ImapResponseCallback?): ImapResponse {
+            return ImapResponse(callback, false, null)
+        }
 
-    private ImapResponse(ImapResponseCallback callback, boolean commandContinuationRequested, String tag) {
-        this.callback = callback;
-        this.commandContinuationRequested = commandContinuationRequested;
-        this.tag = tag;
+        @JvmStatic
+        fun newTaggedResponse(callback: ImapResponseCallback?, tag: String): ImapResponse {
+            return ImapResponse(callback, false, tag)
+        }
     }
 
-    public static ImapResponse newContinuationRequest(ImapResponseCallback callback) {
-        return new ImapResponse(callback, true, null);
-    }
+    val isTagged: Boolean
+        get() = tag != null
 
-    public static ImapResponse newUntaggedResponse(ImapResponseCallback callback) {
-        return new ImapResponse(callback, false, null);
-    }
-
-    public static ImapResponse newTaggedResponse(ImapResponseCallback callback, String tag) {
-        return new ImapResponse(callback, false, tag);
-    }
-
-    public boolean isContinuationRequested() {
-        return commandContinuationRequested;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public boolean isTagged() {
-        return tag != null;
-    }
-
-    public ImapResponseCallback getCallback() {
-        return callback;
-    }
-
-    public void setCallback(ImapResponseCallback callback) {
-        this.callback = callback;
-    }
-
-    @Override
-    public String toString() {
-        return "#" + (commandContinuationRequested ? "+" : tag) + "# " + super.toString();
+    override fun toString(): String {
+        val displayTag = if (isContinuationRequested) "+" else tag
+        return "#$displayTag# ${super.toString()}"
     }
 }
