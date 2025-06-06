@@ -10,6 +10,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preferences.GeneralSettingsManager
 
 /**
  * Get the display name for a recipient to be shown in the message view screen.
@@ -79,10 +80,11 @@ internal class RealMessageViewRecipientFormatter(
 internal fun createMessageViewRecipientFormatter(
     contactNameProvider: ContactNameProvider,
     resources: Resources,
+    generalSettingsManager: GeneralSettingsManager,
 ): MessageViewRecipientFormatter {
     return RealMessageViewRecipientFormatter(
         contactNameProvider = contactNameProvider,
-        showCorrespondentNames = K9.isShowCorrespondentNames,
+        showCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
         showContactNames = K9.isShowContactName,
         contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
         meText = resources.getString(R.string.message_view_me_text),

@@ -8,10 +8,12 @@ import com.fsck.k9.ui.helper.DisplayAddressHelper
 import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preferences.GeneralSettingsManager
 
 internal class MessageListItemMapper(
     private val messageHelper: MessageHelper,
     private val account: LegacyAccount,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) : MessageMapper<MessageListItem> {
     private val calendar: Calendar = Calendar.getInstance()
 
@@ -24,7 +26,10 @@ internal class MessageListItemMapper(
         val showRecipients = DisplayAddressHelper.shouldShowRecipients(account, message.folderId)
         val displayAddress = if (showRecipients) toAddresses.firstOrNull() else fromAddresses.firstOrNull()
         val displayName = if (showRecipients) {
-            messageHelper.getRecipientDisplayNames(toAddresses.toTypedArray()).toString()
+            messageHelper.getRecipientDisplayNames(
+                toAddresses.toTypedArray(),
+                generalSettingsManager.getSettings().isShowCorrespondentNames,
+            ).toString()
         } else {
             messageHelper.getSenderDisplayName(displayAddress).toString()
         }
