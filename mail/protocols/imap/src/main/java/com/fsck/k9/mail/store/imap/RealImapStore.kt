@@ -18,6 +18,8 @@ import java.io.IOException
 import java.util.Deque
 import java.util.LinkedList
 
+private const val LAST_ASCII_CODE = 127
+
 internal open class RealImapStore(
     private val serverSettings: ServerSettings,
     override val config: ImapStoreConfig,
@@ -180,7 +182,11 @@ internal open class RealImapStore(
 
     private fun getFolderDisplayName(serverId: String): String {
         val decodedFolderName = try {
-            folderNameCodec.decode(serverId)
+            if (serverId.all { it.code <= LAST_ASCII_CODE }) {
+                folderNameCodec.decode(serverId)
+            } else {
+                serverId
+            }
         } catch (e: CharacterCodingException) {
             Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s", serverId)
             serverId
