@@ -8,17 +8,17 @@ import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
 import org.junit.Test
 
-class CompositeLogSinkTest {
+class DefaultCompositeLogSinkTest {
 
     @Test
     fun `init should set initial sinks`() {
         // Arrange
         val sink1 = FakeLogSink(LogLevel.INFO)
         val sink2 = FakeLogSink(LogLevel.INFO)
-        val sinkManager = FakeLogSinkManager()
+        val sinkManager = FakeCompositeLogSinkManager()
 
         // Act
-        CompositeLogSink(
+        DefaultCompositeLogSink(
             level = LogLevel.INFO,
             manager = sinkManager,
             sinks = listOf(sink1, sink2),
@@ -35,9 +35,9 @@ class CompositeLogSinkTest {
         // Arrange
         val sink1 = FakeLogSink(LogLevel.INFO)
         val sink2 = FakeLogSink(LogLevel.INFO)
-        val sinkManager = FakeLogSinkManager(mutableListOf(sink1, sink2))
+        val sinkManager = FakeCompositeLogSinkManager(mutableListOf(sink1, sink2))
 
-        val testSubject = CompositeLogSink(
+        val testSubject = DefaultCompositeLogSink(
             level = LogLevel.INFO,
             manager = sinkManager,
         )
@@ -57,9 +57,9 @@ class CompositeLogSinkTest {
         // Arrange
         val sink1 = FakeLogSink(LogLevel.INFO)
         val sink2 = FakeLogSink(LogLevel.INFO)
-        val sinkManager = FakeLogSinkManager(mutableListOf(sink1, sink2))
+        val sinkManager = FakeCompositeLogSinkManager(mutableListOf(sink1, sink2))
 
-        val testSubject = CompositeLogSink(
+        val testSubject = DefaultCompositeLogSink(
             level = LogLevel.WARN,
             manager = sinkManager,
         )
@@ -77,9 +77,9 @@ class CompositeLogSinkTest {
         // Arrange
         val sink1 = FakeLogSink(LogLevel.WARN)
         val sink2 = FakeLogSink(LogLevel.INFO)
-        val sinkManager = FakeLogSinkManager(mutableListOf(sink1, sink2))
+        val sinkManager = FakeCompositeLogSinkManager(mutableListOf(sink1, sink2))
 
-        val testSubject = CompositeLogSink(
+        val testSubject = DefaultCompositeLogSink(
             level = LogLevel.INFO,
             manager = sinkManager,
         )
@@ -93,7 +93,7 @@ class CompositeLogSinkTest {
         assertThat(sink2.events[0]).isEqualTo(LOG_EVENT)
     }
 
-    private companion object {
+    private companion object Companion {
         const val TIMESTAMP = 0L
 
         val LOG_EVENT = LogEvent(

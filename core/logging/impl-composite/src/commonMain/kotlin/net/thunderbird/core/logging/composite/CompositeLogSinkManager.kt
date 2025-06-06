@@ -3,9 +3,9 @@ package net.thunderbird.core.logging.composite
 import net.thunderbird.core.logging.LogSink
 
 /**
- * LogSinkManager is responsible for managing a collection of [LogSink] instances.
+ * CompositeLogSinkManager is responsible for managing a collection of [LogSink] instances.
  */
-interface LogSinkManager {
+interface CompositeLogSinkManager {
 
     /**
      * Retrieves all [LogSink] instances managed by this manager.

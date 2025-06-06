@@ -9,12 +9,12 @@ import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
 import timber.log.Timber
 
-class AndroidConsoleLogSinkTest {
+class ConsoleLogSinkTest {
 
     @Test
     fun shouldHaveCorrectLogLevel() {
         // Arrange
-        val testSubject = AndroidConsoleLogSink(LogLevel.INFO)
+        val testSubject = ConsoleLogSink(LogLevel.INFO)
 
         // Act & Assert
         assertThat(testSubject.level).isEqualTo(LogLevel.INFO)
@@ -61,7 +61,7 @@ class AndroidConsoleLogSinkTest {
             timestamp = 0L,
         )
 
-        val testSubject = AndroidConsoleLogSink(LogLevel.VERBOSE)
+        val testSubject = ConsoleLogSink(LogLevel.VERBOSE)
 
         // Act
         testSubject.log(eventVerbose)

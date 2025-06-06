@@ -2,9 +2,9 @@ package net.thunderbird.core.logging.composite
 
 import net.thunderbird.core.logging.LogSink
 
-class FakeLogSinkManager(
+class FakeCompositeLogSinkManager(
     val sinks: MutableList<LogSink> = mutableListOf(),
-) : LogSinkManager {
+) : CompositeLogSinkManager {
 
     override fun getAll(): List<LogSink> = sinks
 

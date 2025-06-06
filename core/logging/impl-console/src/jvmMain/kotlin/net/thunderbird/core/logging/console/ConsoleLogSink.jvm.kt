@@ -2,11 +2,12 @@ package net.thunderbird.core.logging.console
 
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.LogSink
 
-internal class JvmConsoleLogSink(
+actual fun ConsoleLogSink(level: LogLevel): ConsoleLogSink = JvmConsoleLogSink(level)
+
+private class JvmConsoleLogSink(
     override val level: LogLevel,
-) : LogSink {
+) : ConsoleLogSink {
 
     override fun log(event: LogEvent) {
         println("[$level] ${composeMessage(event)}")

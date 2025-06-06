@@ -3,9 +3,9 @@ package net.thunderbird.core.logging.composite
 import net.thunderbird.core.logging.LogSink
 
 /**
- * Default implementation of [LogSinkManager] that manages a collection of [LogSink] instances.
+ * Default implementation of [CompositeLogSinkManager] that manages a collection of [LogSink] instances.
  */
-class DefaultLogSinkManager : LogSinkManager {
+internal class DefaultLogSinkManager : CompositeLogSinkManager {
     private val sinks: MutableList<LogSink> = mutableListOf()
 
     override fun getAll(): List<LogSink> {
