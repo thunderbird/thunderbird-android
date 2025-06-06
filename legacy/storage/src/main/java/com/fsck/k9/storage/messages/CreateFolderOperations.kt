@@ -11,7 +11,7 @@ internal class CreateFolderOperations(private val lockableDatabase: LockableData
             for (folder in folders) {
                 val folderSettings = folder.settings
                 val values = ContentValues().apply {
-                    put("name", folder.name)
+                    put("name", folder.name.replace("\\[(Gmail|Google Mail)]/".toRegex(), ""))
                     put("visible_limit", folderSettings.visibleLimit)
                     put("integrate", folderSettings.integrate)
                     put("top_group", folderSettings.inTopGroup)
