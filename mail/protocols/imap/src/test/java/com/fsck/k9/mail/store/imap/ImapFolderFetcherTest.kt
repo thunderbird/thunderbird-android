@@ -60,49 +60,41 @@ class ImapFolderFetcherTest {
                     serverId = "INBOX",
                     name = "INBOX",
                     type = FolderType.INBOX,
-                    oldServerId = "INBOX",
                 ),
                 FolderListItem(
                     serverId = "[Gmail]/All Mail",
                     name = "[Gmail]/All Mail",
                     type = FolderType.ARCHIVE,
-                    oldServerId = "[Gmail]/All Mail",
                 ),
                 FolderListItem(
                     serverId = "[Gmail]/Drafts",
                     name = "[Gmail]/Drafts",
                     type = FolderType.DRAFTS,
-                    oldServerId = "[Gmail]/Drafts",
                 ),
                 FolderListItem(
                     serverId = "[Gmail]/Important",
                     name = "[Gmail]/Important",
                     type = FolderType.REGULAR,
-                    oldServerId = "[Gmail]/Important",
                 ),
                 FolderListItem(
                     serverId = "[Gmail]/Sent Mail",
                     name = "[Gmail]/Sent Mail",
                     type = FolderType.SENT,
-                    oldServerId = "[Gmail]/Sent Mail",
                 ),
                 FolderListItem(
                     serverId = "[Gmail]/Spam",
                     name = "[Gmail]/Spam",
                     type = FolderType.SPAM,
-                    oldServerId = "[Gmail]/Spam",
                 ),
                 FolderListItem(
                     serverId = "[Gmail]/Starred",
                     name = "[Gmail]/Starred",
                     type = FolderType.REGULAR,
-                    oldServerId = "[Gmail]/Starred",
                 ),
                 FolderListItem(
                     serverId = "[Gmail]/Trash",
                     name = "[Gmail]/Trash",
                     type = FolderType.TRASH,
-                    oldServerId = "[Gmail]/Trash",
                 ),
             )
         }
@@ -151,38 +143,6 @@ class ImapFolderFetcherTest {
                 type = FolderType.TRASH,
             ),
         )
-        assertThat(fakeImapStore.hasOpenConnections).isFalse()
-    }
-
-    @Test
-    fun `folder without oldServerId should be ignored`() {
-        fakeImapStore.getFoldersAction = {
-            listOf(
-                FolderListItem(
-                    serverId = "ünicode",
-                    name = "ünicode",
-                    type = FolderType.REGULAR,
-                    oldServerId = null,
-                ),
-                FolderListItem(
-                    serverId = "INBOX",
-                    name = "INBOX",
-                    type = FolderType.INBOX,
-                    oldServerId = "INBOX",
-                ),
-            )
-        }
-
-        val folders = folderFetcher.getFolders(serverSettings, authStateStorage = null)
-
-        assertThat(folders).containsExactly(
-            RemoteFolder(
-                serverId = FolderServerId("INBOX"),
-                displayName = "INBOX",
-                type = FolderType.INBOX,
-            ),
-        )
-
         assertThat(fakeImapStore.hasOpenConnections).isFalse()
     }
 
