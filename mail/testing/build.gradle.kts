@@ -10,6 +10,7 @@ if (testCoverageEnabled) {
 
 dependencies {
     api(projects.mail.common)
+    api(projects.core.common)
 
     api(libs.okio)
     api(libs.junit)

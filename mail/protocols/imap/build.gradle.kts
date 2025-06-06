@@ -10,6 +10,7 @@ if (testCoverageEnabled) {
 
 dependencies {
     api(projects.mail.common)
+    implementation(projects.core.common)
 
     implementation(libs.jzlib)
     implementation(libs.jutf7)

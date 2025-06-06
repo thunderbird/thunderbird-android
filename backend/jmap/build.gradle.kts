@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     api(projects.backend.api)
+    implementation(projects.core.common)
 
     api(libs.okhttp)
     implementation(libs.jmap.client)
