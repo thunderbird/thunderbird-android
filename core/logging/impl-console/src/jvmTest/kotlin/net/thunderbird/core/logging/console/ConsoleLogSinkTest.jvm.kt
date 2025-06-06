@@ -7,12 +7,12 @@ import kotlin.test.assertEquals
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
 
-class JvmConsoleLogSinkTest {
+class ConsoleLogSinkTest {
 
     @Test
     fun shouldHaveCorrectLogLevel() {
         // Arrange
-        val testSubject = JvmConsoleLogSink(LogLevel.INFO)
+        val testSubject = ConsoleLogSink(LogLevel.INFO)
 
         // Act & Assert
         assertEquals(LogLevel.INFO, testSubject.level)
@@ -34,7 +34,7 @@ class JvmConsoleLogSinkTest {
                 timestamp = 0L,
             )
 
-            val testSubject = JvmConsoleLogSink(LogLevel.VERBOSE)
+            val testSubject = ConsoleLogSink(LogLevel.VERBOSE)
 
             // Act
             testSubject.log(eventInfo)

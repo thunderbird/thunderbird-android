@@ -2,12 +2,13 @@ package net.thunderbird.core.logging.console
 
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
-import net.thunderbird.core.logging.LogSink
 import timber.log.Timber
 
-internal class AndroidConsoleLogSink(
+actual fun ConsoleLogSink(level: LogLevel): ConsoleLogSink = AndroidConsoleLogSink(level)
+
+private class AndroidConsoleLogSink(
     override val level: LogLevel,
-) : LogSink {
+) : ConsoleLogSink {
 
     override fun log(event: LogEvent) {
         val timber = event.tag?.let { Timber.tag(it) } ?: Timber

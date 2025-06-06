@@ -1,6 +1,5 @@
 package net.thunderbird.core.logging.console
 
-import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogSink
 
@@ -11,12 +10,14 @@ import net.thunderbird.core.logging.LogSink
  *
  * @param level The minimum [LogLevel] for messages to be logged.
  */
-class ConsoleLogSink(
-    override val level: LogLevel,
-) : LogSink {
-    private val platformSink = platformLogSink(level)
+interface ConsoleLogSink : LogSink
 
-    override fun log(event: LogEvent) {
-        platformSink.log(event)
-    }
-}
+/**
+ * Creates a [ConsoleLogSink] with the specified log level.
+ *
+ * @param level The minimum [LogLevel] for messages to be logged.
+ * @return A new instance of [ConsoleLogSink].
+ */
+expect fun ConsoleLogSink(
+    level: LogLevel = LogLevel.INFO,
+): ConsoleLogSink
