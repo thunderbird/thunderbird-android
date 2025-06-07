@@ -1,25 +1,24 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
-
-class Commands {
-    public static final String IDLE = "IDLE";
-    public static final String NAMESPACE = "NAMESPACE";
-    public static final String CAPABILITY = "CAPABILITY";
-    public static final String COMPRESS_DEFLATE = "COMPRESS DEFLATE";
-    public static final String STARTTLS = "STARTTLS";
-    public static final String AUTHENTICATE_XOAUTH2 = "AUTHENTICATE XOAUTH2";
-    public static final String AUTHENTICATE_OAUTHBEARER = "AUTHENTICATE OAUTHBEARER";
-    public static final String AUTHENTICATE_CRAM_MD5 = "AUTHENTICATE CRAM-MD5";
-    public static final String AUTHENTICATE_PLAIN = "AUTHENTICATE PLAIN";
-    public static final String AUTHENTICATE_EXTERNAL = "AUTHENTICATE EXTERNAL";
-    public static final String LOGIN = "LOGIN";
-    public static final String LIST = "LIST";
-    public static final String NOOP = "NOOP";
-    public static final String UID_SEARCH = "UID SEARCH";
-    public static final String UID_STORE = "UID STORE";
-    public static final String UID_FETCH = "UID FETCH";
-    public static final String UID_COPY = "UID COPY";
-    public static final String UID_MOVE = "UID MOVE";
-    public static final String UID_EXPUNGE = "UID EXPUNGE";
-    public static final String ENABLE = "ENABLE UTF8=ACCEPT";
+internal object Commands {
+    const val IDLE: String = "IDLE"
+    const val NAMESPACE: String = "NAMESPACE"
+    const val CAPABILITY: String = "CAPABILITY"
+    const val COMPRESS_DEFLATE: String = "COMPRESS DEFLATE"
+    const val STARTTLS: String = "STARTTLS"
+    const val AUTHENTICATE_XOAUTH2: String = "AUTHENTICATE XOAUTH2"
+    const val AUTHENTICATE_OAUTHBEARER: String = "AUTHENTICATE OAUTHBEARER"
+    const val AUTHENTICATE_CRAM_MD5: String = "AUTHENTICATE CRAM-MD5"
+    const val AUTHENTICATE_PLAIN: String = "AUTHENTICATE PLAIN"
+    const val AUTHENTICATE_EXTERNAL: String = "AUTHENTICATE EXTERNAL"
+    const val LOGIN: String = "LOGIN"
+    const val LIST: String = "LIST"
+    const val NOOP: String = "NOOP"
+    const val UID_SEARCH: String = "UID SEARCH"
+    const val UID_STORE: String = "UID STORE"
+    const val UID_FETCH: String = "UID FETCH"
+    const val UID_COPY: String = "UID COPY"
+    const val UID_MOVE: String = "UID MOVE"
+    const val UID_EXPUNGE: String = "UID EXPUNGE"
+    const val ENABLE: String = "ENABLE UTF8=ACCEPT"
 }
