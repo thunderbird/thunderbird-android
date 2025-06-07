@@ -1,19 +1,15 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+internal object ResponseCodeExtractor {
+    const val AUTHENTICATION_FAILED: String = "AUTHENTICATIONFAILED"
 
-class ResponseCodeExtractor {
-    public static final String AUTHENTICATION_FAILED = "AUTHENTICATIONFAILED";
-
-
-    private ResponseCodeExtractor() {
-    }
-
-    public static String getResponseCode(ImapResponse response) {
-        if (response.size() < 2 || !response.isList(1)) {
-            return null;
+    @JvmStatic
+    fun getResponseCode(response: ImapResponse): String? {
+        if (response.size < 2 || !response.isList(1)) {
+            return null
         }
 
-        ImapList responseTextCode = response.getList(1);
-        return responseTextCode.size() != 1 ? null : responseTextCode.getString(0);
+        val responseTextCode = response.getList(1)
+        return if (responseTextCode.size != 1) null else responseTextCode.getString(0)
     }
 }
