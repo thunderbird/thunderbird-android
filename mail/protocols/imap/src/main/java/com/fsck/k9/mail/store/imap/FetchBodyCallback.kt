@@ -1,34 +1,29 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.filter.FixedLengthInputStream
+import java.io.IOException
 
-import java.io.IOException;
-import java.util.Map;
+const val LITERAL_HANDLED = 1
 
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.filter.FixedLengthInputStream;
+internal class FetchBodyCallback(private val messageMap: Map<String, ImapMessage>) : ImapResponseCallback {
+    @Throws(MessagingException::class, IOException::class)
+    override fun foundLiteral(
+        response: ImapResponse,
+        literal: FixedLengthInputStream,
+    ): Any? {
+        if (response.tag == null &&
+            ImapResponseParser.equalsIgnoreCase(response[1], "FETCH")
+        ) {
+            val fetchList = response.getKeyedValue("FETCH") as ImapList
+            val uid = fetchList.getKeyedString("UID")
 
-
-class FetchBodyCallback implements ImapResponseCallback {
-    private Map<String, ImapMessage> mMessageMap;
-
-    FetchBodyCallback(Map<String, ImapMessage> messageMap) {
-        mMessageMap = messageMap;
-    }
-
-    @Override
-    public Object foundLiteral(ImapResponse response,
-                               FixedLengthInputStream literal) throws MessagingException, IOException {
-        if (response.getTag() == null &&
-                ImapResponseParser.equalsIgnoreCase(response.get(1), "FETCH")) {
-            ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
-            String uid = fetchList.getKeyedString("UID");
-
-            ImapMessage message = mMessageMap.get(uid);
-            message.parse(literal);
+            val message = messageMap[uid]
+            message?.parse(literal)
 
             // Return placeholder object
-            return 1;
+            return LITERAL_HANDLED
         }
-        return null;
+        return null
     }
 }
