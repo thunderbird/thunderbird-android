@@ -1,12 +1,7 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+class ImapResponseParserException : RuntimeException {
+    constructor(message: String?) : super(message)
 
-public class ImapResponseParserException extends RuntimeException {
-    public ImapResponseParserException(String message) {
-        super(message);
-    }
-
-    public ImapResponseParserException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
 }
