@@ -1,24 +1,23 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
-
-class Capabilities {
-    public static final String IDLE = "IDLE";
-    public static final String CONDSTORE = "CONDSTORE";
-    public static final String SASL_IR = "SASL-IR";
-    public static final String AUTH_XOAUTH2 = "AUTH=XOAUTH2";
-    public static final String AUTH_OAUTHBEARER = "AUTH=OAUTHBEARER";
-    public static final String AUTH_CRAM_MD5 = "AUTH=CRAM-MD5";
-    public static final String AUTH_PLAIN = "AUTH=PLAIN";
-    public static final String AUTH_EXTERNAL = "AUTH=EXTERNAL";
-    public static final String LOGINDISABLED = "LOGINDISABLED";
-    public static final String NAMESPACE = "NAMESPACE";
-    public static final String COMPRESS_DEFLATE = "COMPRESS=DEFLATE";
-    public static final String ID = "ID";
-    public static final String STARTTLS = "STARTTLS";
-    public static final String SPECIAL_USE = "SPECIAL-USE";
-    public static final String UID_PLUS = "UIDPLUS";
-    public static final String LIST_EXTENDED = "LIST-EXTENDED";
-    public static final String MOVE = "MOVE";
-    public static final String ENABLE = "ENABLE";
-    public static final String UTF8_ACCEPT = "UTF8=ACCEPT";
+internal object Capabilities {
+    const val IDLE: String = "IDLE"
+    const val CONDSTORE: String = "CONDSTORE"
+    const val SASL_IR: String = "SASL-IR"
+    const val AUTH_XOAUTH2: String = "AUTH=XOAUTH2"
+    const val AUTH_OAUTHBEARER: String = "AUTH=OAUTHBEARER"
+    const val AUTH_CRAM_MD5: String = "AUTH=CRAM-MD5"
+    const val AUTH_PLAIN: String = "AUTH=PLAIN"
+    const val AUTH_EXTERNAL: String = "AUTH=EXTERNAL"
+    const val LOGINDISABLED: String = "LOGINDISABLED"
+    const val NAMESPACE: String = "NAMESPACE"
+    const val COMPRESS_DEFLATE: String = "COMPRESS=DEFLATE"
+    const val ID: String = "ID"
+    const val STARTTLS: String = "STARTTLS"
+    const val SPECIAL_USE: String = "SPECIAL-USE"
+    const val UID_PLUS: String = "UIDPLUS"
+    const val LIST_EXTENDED: String = "LIST-EXTENDED"
+    const val MOVE: String = "MOVE"
+    const val ENABLE: String = "ENABLE"
+    const val UTF8_ACCEPT: String = "UTF8=ACCEPT"
 }
