@@ -1,21 +1,20 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
-
-class Responses {
-    public static final String CAPABILITY = "CAPABILITY";
-    public static final String NAMESPACE = "NAMESPACE";
-    public static final String LIST = "LIST";
-    public static final String LSUB = "LSUB";
-    public static final String OK = "OK";
-    public static final String NO = "NO";
-    public static final String BAD = "BAD";
-    public static final String PREAUTH = "PREAUTH";
-    public static final String BYE = "BYE";
-    public static final String EXISTS = "EXISTS";
-    public static final String EXPUNGE = "EXPUNGE";
-    public static final String PERMANENTFLAGS = "PERMANENTFLAGS";
-    public static final String COPYUID = "COPYUID";
-    public static final String SEARCH = "SEARCH";
-    public static final String UIDVALIDITY = "UIDVALIDITY";
-    public static final String ENABLED = "ENABLED";
+internal object Responses {
+    const val CAPABILITY: String = "CAPABILITY"
+    const val NAMESPACE: String = "NAMESPACE"
+    const val LIST: String = "LIST"
+    const val LSUB: String = "LSUB"
+    const val OK: String = "OK"
+    const val NO: String = "NO"
+    const val BAD: String = "BAD"
+    const val PREAUTH: String = "PREAUTH"
+    const val BYE: String = "BYE"
+    const val EXISTS: String = "EXISTS"
+    const val EXPUNGE: String = "EXPUNGE"
+    const val PERMANENTFLAGS: String = "PERMANENTFLAGS"
+    const val COPYUID: String = "COPYUID"
+    const val SEARCH: String = "SEARCH"
+    const val UIDVALIDITY: String = "UIDVALIDITY"
+    const val ENABLED: String = "ENABLED"
 }
