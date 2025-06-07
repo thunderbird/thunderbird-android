@@ -1,15 +1,13 @@
-package com.fsck.k9.mail.store.imap;
+package com.fsck.k9.mail.store.imap
 
+import com.fsck.k9.mail.internet.MimeMessage
 
-import com.fsck.k9.mail.internet.MimeMessage;
-
-
-public class ImapMessage extends MimeMessage {
-    ImapMessage(String uid) {
-        this.mUid = uid;
+class ImapMessage(uid: String) : MimeMessage() {
+    init {
+        this.mUid = uid
     }
 
-    public void setSize(int size) {
-        this.mSize = size;
+    fun setSize(size: Int) {
+        this.mSize = size
     }
 }
