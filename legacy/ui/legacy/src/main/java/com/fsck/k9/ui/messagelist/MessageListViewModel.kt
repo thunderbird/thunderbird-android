@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.k9mail.legacy.message.controller.MessageReference
 import java.util.LinkedList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.core.logging.Logger
 
 class MessageListViewModel(
@@ -14,11 +16,17 @@ class MessageListViewModel(
 ) : ViewModel() {
     private var currentMessageListLiveData: MessageListLiveData? = null
     private val messageListLiveData = MediatorLiveData<MessageListInfo>()
+    private val _widowProgress: MutableStateFlow<Int> = MutableStateFlow(0)
 
+    val widowProgress: StateFlow<Int> = _widowProgress
     val messageSortOverrides = LinkedList<Pair<MessageReference, MessageSortOverride>>()
 
     fun getMessageListLiveData(): LiveData<MessageListInfo> {
         return messageListLiveData
+    }
+
+    fun updateWindowProgress(progress: Int) {
+        _widowProgress.value = progress
     }
 
     fun loadMessageList(config: MessageListConfig, forceUpdate: Boolean = false) {

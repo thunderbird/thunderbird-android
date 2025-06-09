@@ -11,11 +11,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.view.ActionMode
 import androidx.appcompat.widget.SearchView
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
@@ -30,6 +35,7 @@ import androidx.fragment.app.commitNow
 import app.k9mail.core.android.common.compat.BundleCompat
 import app.k9mail.core.android.common.contact.CachingRepository
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.core.ui.compose.designsystem.atom.LinearProgressIndicator
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.feature.funding.api.FundingManager
 import app.k9mail.feature.launcher.FeatureLauncherActivity
@@ -115,7 +121,8 @@ open class MessageList :
 
     private var navigationDrawer: NavigationDrawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
-    private var progressBar: ProgressBar? = null
+    private var progressBar: ComposeView? = null
+    private var isProgressBarVisible by mutableStateOf(false)
     private var messageViewPlaceHolder: PlaceholderFragment? = null
     private var messageListFragment: MessageListFragment? = null
     private var messageViewContainerFragment: MessageViewContainerFragment? = null
@@ -380,6 +387,13 @@ open class MessageList :
 
     private fun initializeLayout() {
         progressBar = findViewById(R.id.message_list_progress)
+        progressBar?.setContent {
+            val windowProgress: State<Int>? = messageListFragment?.viewModel?.widowProgress?.collectAsState(0)
+            LinearProgressIndicator(
+                progress = windowProgress?.value ?: 0,
+                visible = isProgressBarVisible,
+            )
+        }
         messageViewPlaceHolder = PlaceholderFragment()
     }
 
@@ -1097,11 +1111,11 @@ open class MessageList :
     }
 
     override fun setMessageListProgressEnabled(enable: Boolean) {
-        progressBar!!.visibility = if (enable) View.VISIBLE else View.INVISIBLE
+        isProgressBarVisible = enable
     }
 
     override fun setMessageListProgress(level: Int) {
-        progressBar!!.progress = level
+        messageListFragment?.viewModel?.updateWindowProgress(level)
     }
 
     override fun openMessage(messageReference: MessageReference) {

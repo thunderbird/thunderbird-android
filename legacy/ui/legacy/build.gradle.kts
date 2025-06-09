@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.mail.common)
     implementation(projects.uiUtils.toolbarBottomSheet)
     implementation(projects.core.android.contact)
+    implementation(projects.core.ui.compose.designsystem)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.ui.theme.api)
