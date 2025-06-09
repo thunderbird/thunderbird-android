@@ -1027,6 +1027,8 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="swipe_action_remove_star">Remove star</string>
     <!-- Name of the swipe action to archive a message. Try to keep it short. -->
     <string name="swipe_action_archive">Archive</string>
+    <string name="swipe_action_archive_folder_not_set">Set Up Archive Folder</string>
+    <string name="swipe_action_change_swipe_gestures">Change \nSwipe Gestures</string>
     <!-- Name of the swipe action to delete a message. Try to keep it short. -->
     <string name="swipe_action_delete">Delete</string>
     <!-- Name of the swipe action to move a message to the Spam folder. Try to keep it short. -->
@@ -1088,4 +1090,5 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="settings_ui_telemetry_title">Usage and technical data</string>
     <!-- Description of the "Usage and technical data" setting used in the "data collection" section of the general settings screen -->
     <string name="settings_ui_telemetry_description">Shares performance, usage, hardware and customization data about this app with Mozilla to help us make Thunderbird better</string>
+    <string name="archiving_not_available_for_this_account">Archiving is not available for this account.</string>
 </resources>

@@ -7,9 +7,10 @@ import net.thunderbird.feature.mail.folder.api.FolderDetails
 class ListenableMessageStore(private val messageStore: MessageStore) : MessageStore by messageStore {
     private val folderSettingsListener = CopyOnWriteArraySet<FolderSettingsChangedListener>()
 
-    override fun createFolders(folders: List<CreateFolderInfo>) {
-        messageStore.createFolders(folders)
-        notifyFolderSettingsChanged()
+    override fun createFolders(folders: List<CreateFolderInfo>): Set<Long> {
+        return messageStore.createFolders(folders).also {
+            notifyFolderSettingsChanged()
+        }
     }
 
     override fun deleteFolders(folderServerIds: List<String>) {
