@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="11.0b3" versioncode="16" date="2025-06-10">
+        <change>Sharing multiple selected images from gallery only selected last image</change>
+        <change>Account drawer could crash when folder was selected</change>
+        <change>Application could crash when fetching emails</change>
+    </release>
     <release version="11.0b2" versioncode="15" date="2025-05-13">
         <change>System navigation bar did not correctly blend with message content</change>
         <change>"New Mail Notifications" setting did not persist</change>
