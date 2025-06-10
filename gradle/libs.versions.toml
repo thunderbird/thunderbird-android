@@ -65,7 +65,7 @@ javaDiffUtils = "4.12"
 jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.0.2"
 jetbrainsCompose = "1.8.1"
-jetbrainsComposeLifecycle = "2.8.4"
+jetbrainsComposeLifecycle = "2.9.0"
 jetbrainsComposeNavigation = "2.9.0-beta01"
 jdom = "2.0.6.1"
 jmapClient = "0.3.1"
@@ -212,6 +212,8 @@ icu4j-charset = { module = "com.ibm.icu:icu4j-charset", version.ref = "icu4j" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrainsAnnotations" }
 jetbrains-compose-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "jetbrainsComposeLifecycle" }
+jetbrains-compose-lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "jetbrainsComposeLifecycle" }
+jetbrains-compose-lifecycle-viewmodel-savedstate = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-savedstate", version.ref = "jetbrainsComposeLifecycle" }
 jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "jetbrainsComposeNavigation" }
 jcip-annotations = { module = "net.jcip:jcip-annotations", version.ref = "jcipAnnotations" }
 jdom2 = { module = "org.jdom:jdom2", version.ref = "jdom" }
@@ -286,6 +288,8 @@ shared-kmp-android = [
 shared-kmp-compose = [
   "jetbrains-compose-lifecycle-runtime",
   "jetbrains-compose-lifecycle-viewmodel",
+  "jetbrains-compose-lifecycle-viewmodel-compose",
+  "jetbrains-compose-lifecycle-viewmodel-savedstate",
   # Disabled, as it's still in beta
 #  "jetbrains-compose-navigation",
 ]
