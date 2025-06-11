@@ -19,7 +19,7 @@ import kotlin.uuid.Uuid
  */
 @OptIn(ExperimentalUuidApi::class)
 abstract class BaseIdFactory<T> : IdFactory<T> {
-    override fun create(raw: String): Id<T> = Id(Uuid.parse(raw))
+    override fun of(raw: String): Id<T> = Id(Uuid.parse(raw))
 
-    override fun new(): Id<T> = Id(Uuid.random())
+    override fun create(): Id<T> = Id(Uuid.random())
 }

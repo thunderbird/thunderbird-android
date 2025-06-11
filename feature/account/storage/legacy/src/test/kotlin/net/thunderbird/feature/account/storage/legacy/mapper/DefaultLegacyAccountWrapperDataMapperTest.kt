@@ -51,7 +51,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         val result = testSubject.toDto(wrapper)
 
         // assert
-        assertThat(result.id).isEqualTo(AccountIdFactory.create(ACCOUNT_ID_RAW))
+        assertThat(result.id).isEqualTo(AccountIdFactory.of(ACCOUNT_ID_RAW))
         assertThat(result.uuid).isEqualTo(ACCOUNT_ID_RAW)
         assertThat(result.isSensitiveDebugLoggingEnabled).isEqualTo(defaultIsSensitiveDebugLoggingEnabled)
         assertThat(result.identities).isEqualTo(defaultIdentities)
@@ -292,7 +292,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
 
         @Suppress("LongMethod")
         fun createAccountWrapper(): LegacyAccountWrapper {
-            val id = AccountIdFactory.create(ACCOUNT_ID_RAW)
+            val id = AccountIdFactory.of(ACCOUNT_ID_RAW)
 
             return LegacyAccountWrapper(
                 isSensitiveDebugLoggingEnabled = defaultIsSensitiveDebugLoggingEnabled,

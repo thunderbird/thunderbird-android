@@ -17,7 +17,7 @@ class AccountIdFactoryTest {
     fun `create should return AccountId with the same id`() {
         val id = "123e4567-e89b-12d3-a456-426614174000"
 
-        val result = AccountIdFactory.create(id)
+        val result = AccountIdFactory.of(id)
 
         assertThat(result.asRaw()).isEqualTo(id)
     }
@@ -27,7 +27,7 @@ class AccountIdFactoryTest {
         val id = "invalid"
 
         val result = assertFailure {
-            AccountIdFactory.create(id)
+            AccountIdFactory.of(id)
         }
 
         result.hasMessage(
@@ -39,14 +39,14 @@ class AccountIdFactoryTest {
 
     @Test
     fun `new should return AccountId with a uuid`() {
-        val result = AccountIdFactory.new()
+        val result = AccountIdFactory.create()
 
         assertThat(result.asRaw()).isUuid()
     }
 
     @Test
     fun `create should return AccountId with unique ids`() {
-        val ids = List(10) { AccountIdFactory.new().asRaw() }
+        val ids = List(10) { AccountIdFactory.create().asRaw() }
 
         ids.forEachIndexed { index, id ->
             ids.drop(index + 1).forEach { otherId ->

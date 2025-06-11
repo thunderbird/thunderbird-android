@@ -18,7 +18,7 @@ class GetAccountNameTest {
     @Test
     fun `should emit account name when account profile present`() = runTest {
         // Arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val accountProfile = AccountProfile(
             id = accountId,
             name = "Test Account",
@@ -40,7 +40,7 @@ class GetAccountNameTest {
     @Test
     fun `should emit NotFound when account profile not present`() = runTest {
         // Arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val testSubject = createTestSubject()
 
         // Act & Assert

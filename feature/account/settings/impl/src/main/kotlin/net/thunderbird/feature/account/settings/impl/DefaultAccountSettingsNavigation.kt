@@ -20,7 +20,7 @@ internal class DefaultAccountSettingsNavigation : AccountSettingsNavigation {
                 basePath = AccountSettingsRoute.GeneralSettings.Companion.BASE_PATH,
             ) { backStackEntry ->
                 val generalSettingsRoute = backStackEntry.toRoute<AccountSettingsRoute.GeneralSettings>()
-                val accountId = AccountIdFactory.create(generalSettingsRoute.accountId)
+                val accountId = AccountIdFactory.of(generalSettingsRoute.accountId)
 
                 GeneralSettingsScreen(
                     accountId = accountId,

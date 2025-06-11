@@ -27,7 +27,7 @@ class DefaultAccountProfileLocalDataSourceTest {
     @Test
     fun `getById should return account profile`() = runTest {
         // arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val legacyAccount = createLegacyAccount(accountId)
         val accountProfile = createAccountProfile(accountId)
         val testSubject = createTestSubject(legacyAccount)
@@ -41,7 +41,7 @@ class DefaultAccountProfileLocalDataSourceTest {
     @Test
     fun `getById should return null when account is not found`() = runTest {
         // arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val testSubject = createTestSubject(null)
 
         // act & assert
@@ -53,7 +53,7 @@ class DefaultAccountProfileLocalDataSourceTest {
     @Test
     fun `update should save account profile`() = runTest {
         // arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val legacyAccount = createLegacyAccount(accountId)
         val accountProfile = createAccountProfile(accountId)
 

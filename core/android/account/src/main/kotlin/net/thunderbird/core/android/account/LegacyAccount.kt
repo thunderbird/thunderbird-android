@@ -28,7 +28,7 @@ open class LegacyAccount(
 ) : Account, BaseAccount {
 
     // [Account]
-    override val id: AccountId = AccountIdFactory.create(uuid)
+    override val id: AccountId = AccountIdFactory.of(uuid)
 
     // [BaseAccount]
     @get:Synchronized

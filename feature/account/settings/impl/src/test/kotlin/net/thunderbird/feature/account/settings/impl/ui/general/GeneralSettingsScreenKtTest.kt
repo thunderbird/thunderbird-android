@@ -15,7 +15,7 @@ internal class GeneralSettingsScreenKtTest : ComposeTest() {
     @Test
     fun `should call onBack when back button is pressed`() {
         val initialState = State()
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val viewModel = FakeGeneralSettingsViewModel(initialState)
         var onBackCounter = 0
 
@@ -37,7 +37,7 @@ internal class GeneralSettingsScreenKtTest : ComposeTest() {
     @Test
     fun `should call onBack when navigate back effect received`() {
         val initialState = State()
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val viewModel = FakeGeneralSettingsViewModel(initialState)
         var onBackCounter = 0
 

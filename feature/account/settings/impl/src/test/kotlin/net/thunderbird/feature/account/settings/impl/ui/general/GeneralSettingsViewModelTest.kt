@@ -39,7 +39,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should load account name`() = runMviTest {
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = null,
             preferences = persistentListOf(),
@@ -52,7 +52,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should load general settings`() = runMviTest {
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),
@@ -66,7 +66,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should navigate back when back is pressed`() = runMviTest {
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),
@@ -82,7 +82,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should update preference when changed`() = runMviTest {
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),

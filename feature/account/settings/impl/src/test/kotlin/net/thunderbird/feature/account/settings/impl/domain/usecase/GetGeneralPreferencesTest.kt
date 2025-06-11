@@ -22,7 +22,7 @@ internal class GetGeneralPreferencesTest {
     @Test
     fun `should emit preferences when account profile present`() = runTest {
         // Arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val accountProfile = AccountProfile(
             id = accountId,
             name = "Test Account",
@@ -70,7 +70,7 @@ internal class GetGeneralPreferencesTest {
     @Test
     fun `should emit NotFound when account profile not found`() = runTest {
         // Arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val testSubject = createTestSubject()
 
         // Act & Assert

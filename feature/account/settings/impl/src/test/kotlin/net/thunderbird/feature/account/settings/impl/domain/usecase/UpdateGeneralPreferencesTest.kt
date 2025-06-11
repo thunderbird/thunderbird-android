@@ -21,7 +21,7 @@ class UpdateGeneralPreferencesTest {
     @Test
     fun `should update account profile`() = runTest {
         // Arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val accountProfile = AccountProfile(
             id = accountId,
             name = "Test Account",
@@ -54,7 +54,7 @@ class UpdateGeneralPreferencesTest {
     @Test
     fun `should update account profile for all general settings`() = runTest {
         // Arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val accountProfile = AccountProfile(
             id = accountId,
             name = "Test Account",
@@ -102,7 +102,7 @@ class UpdateGeneralPreferencesTest {
     @Test
     fun `should emit NotFound when account profile not found`() = runTest {
         // Arrange
-        val accountId = AccountIdFactory.new()
+        val accountId = AccountIdFactory.create()
         val preference = PreferenceSetting.Text(
             id = GeneralPreference.NAME.generateId(accountId),
             title = { "Name" },
