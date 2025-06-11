@@ -10,7 +10,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import com.fsck.k9.FileLoggerTree
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.observe
@@ -24,6 +23,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.inject
 
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: GeneralSettingsViewModel by viewModel()
@@ -41,6 +41,13 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    private val exportSyncDebugLogsResultContract =
+        registerForActivityResult(CreateDocument("text/plain")) { contentUri ->
+            if (contentUri != null) {
+                viewModel.fileExport(contentUri)
+            }
+        }
+
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = dataStore
         this.rootKey = rootKey
@@ -48,7 +55,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.general_settings, rootKey)
         val listener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (!(newValue as Boolean)) {
-                exportLogsResultContract.launch(formatFileExportUriString())
+                exportSyncDebugLogsResultContract.launch(formatFileExportUriString())
             }
             true
         }
@@ -93,7 +100,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         if (item.itemId == R.id.exportLogs) {
             exportLogsResultContract.launch(GeneralSettingsViewModel.DEFAULT_FILENAME)
         } else if (item.itemId == R.id.exportSyncLogs) {
-            exportLogsResultContract.launch(formatFileExportUriString())
+            exportSyncDebugLogsResultContract.launch(formatFileExportUriString())
         }
 
         return super.onOptionsItemSelected(item)
@@ -145,7 +152,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         return String.format(
             Locale.US,
             "%s_%s.txt",
-            FileLoggerTree.DEFAULT_SYNC_FILENAME,
+            DEFAULT_SYNC_FILENAME,
             SimpleDateFormat("yyyy-MM-dd", Locale.US).format(now.time),
         )
     }
@@ -153,6 +160,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     companion object {
         private const val PREFERENCE_SCREEN_DEBUGGING = "debug_preferences"
         private const val PREFERENCE_DATA_COLLECTION = "data_collection"
+        const val DEFAULT_SYNC_FILENAME = "thunderbird-sync-logs"
 
         fun create(rootKey: String? = null) = GeneralSettingsFragment().withArguments(ARG_PREFERENCE_ROOT to rootKey)
     }

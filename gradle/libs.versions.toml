@@ -82,6 +82,7 @@ kotlinKsp = "2.1.21-2.0.2"
 kotlinxCoroutines = "1.10.2"
 kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDateTime = "0.6.2"
+kotlinxIoCore = "0.7.0"
 kotlinxSerialization = "1.8.1"
 ktlint = "1.5.0"
 ktor = "3.1.3"
@@ -171,6 +172,7 @@ androidx-glance-appwidget-preview = { module = "androidx.glance:glance-appwidget
 androidx-glance-preview = { module = "androidx.glance:glance-preview", version.ref = "androidxGlance" }
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "androidxGlanceMaterial3" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidxLifecycle" }
+androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime-testing = { module = "androidx.lifecycle:lifecycle-runtime-testing", version.ref = "androidxLifecycle" }
@@ -242,6 +244,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTime" }
+kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinxIoCore" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }

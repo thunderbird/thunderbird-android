@@ -19,11 +19,14 @@ import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.logging.composite.CompositeLogSink
+import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -32,7 +35,8 @@ object K9 : KoinComponent {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
-    private val context: Context by inject()
+    private val syncDebugCompositeSink: CompositeLogSink by inject(named("syncDebug"))
+    private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -447,11 +451,10 @@ object K9 : KoinComponent {
     }
 
     private fun updateSyncLogging() {
-        if (Timber.forest().contains(FileLoggerTree(context))) {
-            Timber.uproot(FileLoggerTree(context))
-        }
         if (isSyncLoggingEnabled) {
-            Timber.plant(FileLoggerTree(context))
+            syncDebugCompositeSink.manager.add(syncDebugFileLogSink)
+        } else {
+            syncDebugCompositeSink.manager.remove(syncDebugFileLogSink)
         }
     }
 

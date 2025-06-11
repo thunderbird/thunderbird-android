@@ -37,6 +37,7 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.common.mail.Protocols;
+import net.thunderbird.core.logging.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -114,6 +115,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private String accountUuid;
     private FeatureFlagProvider featureFlagProvider;
 
+    @Mock
+    private Logger syncLogger;
 
     @Before
     public void setUp() throws MessagingException {
@@ -135,8 +138,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
             saveMessageDataCreator,
             specialLocalFoldersCreator,
             new LocalDeleteOperationDecider(),
-                Collections.<ControllerExtension>emptyList(),
-                featureFlagProvider
+            Collections.<ControllerExtension>emptyList(),
+            featureFlagProvider,
+            syncLogger
         );
 
         configureAccount();

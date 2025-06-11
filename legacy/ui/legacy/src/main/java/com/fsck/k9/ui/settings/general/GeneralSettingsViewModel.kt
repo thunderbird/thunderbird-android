@@ -9,9 +9,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.logging.LogFileWriter
+import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.logging.legacy.Log
 
-class GeneralSettingsViewModel(private val logFileWriter: LogFileWriter) : ViewModel() {
+class GeneralSettingsViewModel(
+    private val logFileWriter: LogFileWriter,
+    private val syncDebugFileLogSink: FileLogSink,
+) :
+    ViewModel() {
     private var snackbarJob: Job? = null
     private val uiStateFlow = MutableStateFlow<GeneralSettingsUiState>(GeneralSettingsUiState.Idle)
     val uiState: Flow<GeneralSettingsUiState> = uiStateFlow
@@ -19,9 +24,21 @@ class GeneralSettingsViewModel(private val logFileWriter: LogFileWriter) : ViewM
     fun exportLogs(contentUri: Uri) {
         viewModelScope.launch {
             setExportingState()
-
             try {
                 logFileWriter.writeLogTo(contentUri)
+                showSnackbar(GeneralSettingsUiState.Success)
+            } catch (e: Exception) {
+                Log.e(e, "Failed to write log to URI: %s", contentUri)
+                showSnackbar(GeneralSettingsUiState.Failure)
+            }
+        }
+    }
+
+    fun fileExport(contentUri: Uri) {
+        viewModelScope.launch {
+            setExportingState()
+            try {
+                syncDebugFileLogSink.export(contentUri.toString())
                 showSnackbar(GeneralSettingsUiState.Success)
             } catch (e: Exception) {
                 Log.e(e, "Failed to write log to URI: %s", contentUri)

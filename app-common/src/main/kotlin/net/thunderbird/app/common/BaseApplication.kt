@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import androidx.lifecycle.ProcessLifecycleOwner
+import app.k9mail.core.common.exception.ExceptionHandler
 import app.k9mail.feature.widget.message.list.MessageListWidgetManager
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.Core
@@ -21,11 +23,14 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import net.thunderbird.app.common.feature.LoggerLifecycleObserver
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import androidx.work.Configuration as WorkManagerConfiguration
 
 abstract class BaseApplication : Application(), WorkManagerConfiguration.Provider {
@@ -38,6 +43,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
     private val messageListWidgetManager: MessageListWidgetManager by inject()
     private val workManagerConfigurationProvider: WorkManagerConfigurationProvider by inject()
     private val logger: Logger by inject()
+    private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
 
     private val appCoroutineScope: CoroutineScope = MainScope()
     private var appLanguageManagerInitialized = false
@@ -65,6 +71,10 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
         messagingListenerProvider.listeners.forEach { listener ->
             messagingController.addListener(listener)
         }
+        val originalHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler(originalHandler))
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(LoggerLifecycleObserver(syncDebugFileLogSink))
     }
 
     abstract fun provideAppModule(): Module

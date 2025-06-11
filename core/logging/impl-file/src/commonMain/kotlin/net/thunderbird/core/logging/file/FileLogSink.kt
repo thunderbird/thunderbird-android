@@ -1,8 +1,23 @@
 package net.thunderbird.core.logging.file
 
-import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogSink
+
+interface FileLogSink : LogSink {
+    /**
+     * Exports from the logging method to the requested external file
+     *
+     * @param uriString The [String] for the URI to export the log to
+     *
+     **/
+    fun export(uriString: String)
+
+    /**
+     * On a crash, flushes buffer to file fo avoid log loss
+     *
+     **/
+    suspend fun flushAndCloseBuffer()
+}
 
 /**
  * A [LogSink] implementation that logs messages to a specified internal file.
@@ -11,17 +26,12 @@ import net.thunderbird.core.logging.LogSink
  *
  * @param level The minimum [LogLevel] for messages to be logged.
  * @param fileName The [String] fileName to log to
+ * @param fileLocation The [String] fileLocation for the log file
+ * @param fileSystemManager The [FileSystemManager] abstraction for opening the file stream
  */
-class FileLogSink(
-    override val level: LogLevel,
-    tagFilters: Array<String>?,
-    private val messageFilter: String?,
-    private val fileName: String,
+expect fun FileLogSink(
+    level: LogLevel,
+    fileName: String,
     fileLocation: String,
-) : LogSink {
-    private val platformSink = platformFileLogSink(level, tagFilters, messageFilter, fileName, fileLocation)
-
-    override fun log(event: LogEvent) {
-        platformSink.log(event)
-    }
-}
+    fileSystemManager: FileSystemManager,
+): FileLogSink
