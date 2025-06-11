@@ -1,5 +1,9 @@
 package com.fsck.k9
 
-data class AppConfig(
-    val componentsToDisable: List<Class<*>>,
-)
+interface AppConfig {
+    val componentsToDisable: List<Class<*>>
+}
+
+class DefaultAppConfig(
+    override val componentsToDisable: List<Class<*>>,
+) : AppConfig
