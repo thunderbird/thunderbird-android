@@ -48,6 +48,7 @@ class MessageHelperTest : RobolectricTest() {
                 isShowUnifiedInbox = false,
                 isShowStarredCount = false,
                 isShowMessageListStars = false,
+                isShowAnimations = false,
             ),
         )
     }

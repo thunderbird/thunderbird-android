@@ -158,6 +158,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     isShowStarredCount = false,
                     isShowUnifiedInbox = false,
                     isShowMessageListStars = false,
+                    isShowAnimations = false,
                 )
             },
         )
