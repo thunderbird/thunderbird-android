@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.map
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.core.android.account.LegacyAccountWrapperManager
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
 
 internal class DefaultLegacyAccountWrapperManager(
@@ -21,8 +22,8 @@ internal class DefaultLegacyAccountWrapperManager(
             }
     }
 
-    override fun getById(id: String): Flow<LegacyAccountWrapper?> {
-        return accountManager.getAccountFlow(id).map { account ->
+    override fun getById(id: AccountId): Flow<LegacyAccountWrapper?> {
+        return accountManager.getAccountFlow(id.asRaw()).map { account ->
             account?.let {
                 accountDataMapper.toDomain(it)
             }

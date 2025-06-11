@@ -15,7 +15,7 @@ internal class DefaultAccountProfileLocalDataSource(
 ) : AccountProfileLocalDataSource {
 
     override fun getById(accountId: AccountId): Flow<AccountProfile?> {
-        return accountManager.getById(accountId.asRaw())
+        return accountManager.getById(accountId)
             .map { account ->
                 account?.let { dto ->
                     dataMapper.toDomain(dto.profile)
@@ -24,7 +24,7 @@ internal class DefaultAccountProfileLocalDataSource(
     }
 
     override suspend fun update(accountProfile: AccountProfile) {
-        val currentAccount = accountManager.getById(accountProfile.id.asRaw())
+        val currentAccount = accountManager.getById(accountProfile.id)
             .firstOrNull() ?: return
 
         val accountProfile = dataMapper.toDto(accountProfile)
