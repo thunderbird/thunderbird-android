@@ -271,6 +271,10 @@ org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2
 org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2
 org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.6.2
 org.jetbrains.kotlinx:kotlinx-datetime:0.6.2
+org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:0.7.0
+org.jetbrains.kotlinx:kotlinx-io-bytestring:0.7.0
+org.jetbrains.kotlinx:kotlinx-io-core-jvm:0.7.0
+org.jetbrains.kotlinx:kotlinx-io-core:0.7.0
 org.jetbrains.kotlinx:kotlinx-serialization-bom:1.8.1
 org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.8.1
 org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.1
