@@ -47,6 +47,7 @@ class MessageHelperTest : RobolectricTest() {
                 messageViewTheme = SubTheme.DARK,
                 isShowUnifiedInbox = false,
                 isShowStarredCount = false,
+                isShowMessageListStars = false,
             ),
         )
     }

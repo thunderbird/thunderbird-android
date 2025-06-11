@@ -157,6 +157,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     messageViewTheme = SubTheme.DARK,
                     isShowStarredCount = false,
                     isShowUnifiedInbox = false,
+                    isShowMessageListStars = false,
                 )
             },
         )
