@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import app.k9mail.core.common.exception.ExceptionHandler
 import app.k9mail.feature.widget.message.list.MessageListWidgetManager
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.Core
@@ -65,6 +66,7 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
         messagingListenerProvider.listeners.forEach { listener ->
             messagingController.addListener(listener)
         }
+        Thread.setDefaultUncaughtExceptionHandler(ExceptionHandler())
     }
 
     abstract fun provideAppModule(): Module

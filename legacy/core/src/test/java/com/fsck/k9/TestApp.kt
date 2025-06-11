@@ -16,7 +16,11 @@ import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
+import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.logging.composite.CompositeLogSink
+import net.thunderbird.core.logging.composite.CompositeLogSinkManager
+import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
@@ -44,11 +48,23 @@ class TestApp : Application() {
 
     companion object {
         val logger: Logger = TestLogger()
+        val sinkManager: CompositeLogSinkManager = mock<CompositeLogSinkManager>()
+        val fileSink: FileLogSink = mock<FileLogSink>()
+
+        val compositeSink: CompositeLogSink = CompositeLogSink(
+            level = LogLevel.DEBUG,
+            manager = sinkManager,
+            sinks = listOf(fileSink),
+        )
     }
 }
 
 val testModule = module {
     single<Logger> { TestApp.logger }
+    single(named("syncDebug")) { TestApp.logger }
+    single(named("syncDebug")) { TestApp.compositeSink }
+    single(named("syncDebug")) { TestApp.fileSink }
+    single(named("syncDebug")) { TestApp.sinkManager }
     single<AppConfig> { DefaultAppConfig(emptyList()) }
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }
