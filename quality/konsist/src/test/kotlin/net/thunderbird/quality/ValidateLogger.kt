@@ -16,7 +16,7 @@ class ValidateLogger {
     @Test
     fun `no class should use Android util logging`() {
         projectScope.files
-            .filterNot { it.hasNameMatching("AndroidConsoleLogSinkTest".toRegex()) }
+            .filterNot { it.hasNameMatching("ConsoleLogSinkTest.android".toRegex()) }
             .assertFalse(
                 additionalMessage = "No class should use android.util.Log import, use net.thunderbird.core.logging.Logger instead."
             ) {
@@ -27,7 +27,7 @@ class ValidateLogger {
     @Test
     fun `no class should use Timber logging`() {
         projectScope.files
-            .filterNot { it.hasNameMatching("AndroidConsoleLogSink|AndroidConsoleLogSinkTest".toRegex()) }
+            .filterNot { it.hasNameMatching("ConsoleLogSink.android|ConsoleLogSinkTest.android".toRegex()) }
             .filterNot {
                 // Exclude legacy code that still uses Timber
                 it.hasNameMatching("LogFileWriter|FileLoggerTree|K9".toRegex())
