@@ -25,6 +25,7 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MlfUtils
@@ -32,6 +33,7 @@ import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
 import kotlin.math.max
 
+@Suppress("LongParameterList")
 class MessageViewHolder(
     view: View,
     private val appearance: MessageListAppearance,
@@ -39,6 +41,7 @@ class MessageViewHolder(
     private val res: Resources,
     private val contactsPictureLoader: ContactPictureLoader,
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
+    private val sizeFormatter: SizeFormatter,
     private val colors: MessageViewHolderColors,
 ) : MessageListViewHolder(view) {
 
@@ -50,6 +53,7 @@ class MessageViewHolder(
     val subjectView: MaterialTextView = view.findViewById(R.id.subject)
     val previewView: MaterialTextView = view.findViewById(R.id.preview)
     val dateView: MaterialTextView = view.findViewById(R.id.date)
+    val sizeView: MaterialTextView = view.findViewById(R.id.size)
     val chipView: ImageView = view.findViewById(R.id.account_color_chip)
     val threadCountView: MaterialTextView = view.findViewById(R.id.thread_count)
     val starView: ImageView = view.findViewById(R.id.star)
@@ -137,6 +141,16 @@ class MessageViewHolder(
             dateView.typeface = Typeface.create(dateView.typeface, maybeBoldTypeface)
             dateView.setTextColor(foregroundColor)
             dateView.text = displayDate
+
+            if (appearance.showMessageSize && size > 0) {
+                sizeView.isVisible = true
+                sizeView.typeface = Typeface.create(sizeView.typeface, maybeBoldTypeface)
+                sizeView.setTextColor(foregroundColor)
+                sizeView.text = sizeFormatter.formatSize(size)
+            } else {
+                sizeView.isVisible = false
+            }
+
             attachmentView.isVisible = hasAttachments
             attachmentView.setColorFilter(foregroundColor)
 
@@ -283,6 +297,7 @@ class MessageViewHolder(
                 res = res,
                 contactsPictureLoader = contactsPictureLoader,
                 relativeDateTimeFormatter = relativeDateTimeFormatter,
+                sizeFormatter = SizeFormatter(res),
                 colors = colors,
             )
 
@@ -324,6 +339,7 @@ class MessageViewHolder(
             }
 
             fontSizes.setViewTextSize(holder.dateView, fontSizes.messageListDate)
+            fontSizes.setViewTextSize(holder.sizeView, fontSizes.messageListDate)
         }
 
         private fun applyDensityValue(holder: MessageViewHolder, density: UiDensity, res: Resources) {

@@ -24,6 +24,7 @@ data class MessageListItem(
     val messageUid: String,
     val databaseId: Long,
     val threadRoot: Long,
+    val size: Long,
 ) {
     val messageReference: MessageReference
         get() = MessageReference(account.uuid, folderId, messageUid)
