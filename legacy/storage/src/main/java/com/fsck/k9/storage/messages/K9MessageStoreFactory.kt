@@ -13,16 +13,13 @@ class K9MessageStoreFactory(
     private val storageFilesProviderFactory: StorageFilesProviderFactory,
     private val basicPartInfoExtractor: BasicPartInfoExtractor,
 ) : MessageStoreFactory {
-    private lateinit var folderNameSanitizer: FolderNameSanitizer
 
     override fun create(account: LegacyAccount): ListenableMessageStore {
         val localStore = localStoreProvider.getInstance(account)
         if (account.incomingServerSettings.host.isGoogle() ||
             account.outgoingServerSettings.host.isGoogle()
         ) {
-            if (!this::folderNameSanitizer.isInitialized) {
-                folderNameSanitizer = FolderNameSanitizer(lockableDatabase = localStore.database)
-            }
+            val folderNameSanitizer = FolderNameSanitizer(lockableDatabase = localStore.database)
             folderNameSanitizer.removeGmailPrefixFromFolders()
         }
         val storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.uuid)
