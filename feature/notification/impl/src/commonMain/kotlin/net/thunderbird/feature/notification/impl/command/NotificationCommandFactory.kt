@@ -4,15 +4,14 @@ import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
-import net.thunderbird.feature.notification.impl.receiver.InAppNotificationNotifier
-import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNotifier
+import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 
 /**
  * A factory for creating a set of notification commands based on a given notification.
  */
 internal class NotificationCommandFactory(
-    private val systemNotificationNotifier: SystemNotificationNotifier,
-    private val inAppNotificationNotifier: InAppNotificationNotifier,
+    private val systemNotificationNotifier: NotificationNotifier<SystemNotification>,
+    private val inAppNotificationNotifier: NotificationNotifier<InAppNotification>,
 ) {
     /**
      * Creates a set of [NotificationCommand]s for the given [notification].

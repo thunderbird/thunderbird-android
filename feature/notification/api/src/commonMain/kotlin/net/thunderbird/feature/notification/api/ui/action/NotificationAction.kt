@@ -1,9 +1,13 @@
 package net.thunderbird.feature.notification.api.ui.action
 
+import net.thunderbird.core.common.io.KmpParcelable
+import net.thunderbird.core.common.io.KmpParcelize
+
 /**
  * Represents the various actions that can be performed on a notification.
  */
-sealed interface NotificationAction {
+@KmpParcelize
+sealed interface NotificationAction : KmpParcelable {
     /**
      * Action to reply to the email message associated with the notification.
      */

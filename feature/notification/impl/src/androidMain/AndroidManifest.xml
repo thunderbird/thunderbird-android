@@ -1,0 +1,13 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="net.thunderbird.permission.POST_IN_APP_NOTIFICATION_PERMISSION" />
+
+    <permission
+        android:name="net.thunderbird.permission.POST_IN_APP_NOTIFICATION_PERMISSION"
+        android:permissionGroup="android.permission-group.NOTIFICATIONS"
+        android:label="@string/in_app_notification_permission_label"
+        android:description="@string/in_app_notification_permission_description"
+        />
+
+</manifest>

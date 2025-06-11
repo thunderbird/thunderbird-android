@@ -1,5 +1,8 @@
 package net.thunderbird.feature.notification.api
 
+import net.thunderbird.core.common.io.KmpParcelable
+import net.thunderbird.core.common.io.KmpParcelize
+
 /**
  * Represents a key for a notification group.
  *
@@ -10,4 +13,5 @@ package net.thunderbird.feature.notification.api
  * @param value The string value of the notification group key.
  */
 @JvmInline
-value class NotificationGroupKey(val value: String)
+@KmpParcelize
+value class NotificationGroupKey(val value: String) : KmpParcelable

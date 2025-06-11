@@ -554,6 +554,11 @@
             android:title="@string/debug_enable_sensitive_logging_title"
             />
 
+        <Preference
+            android:key="debug_send_test_notifications"
+            android:title="Send Test Notifications"
+            android:summary="Send test notifications to verify if they are correctly working" />
+
     </PreferenceScreen>
 
 </PreferenceScreen>

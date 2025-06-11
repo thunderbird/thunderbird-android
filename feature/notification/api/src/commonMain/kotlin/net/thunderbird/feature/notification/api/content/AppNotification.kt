@@ -4,10 +4,11 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import net.thunderbird.core.common.io.KmpParcelable
+import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.LockscreenNotificationAppearance
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
-import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
@@ -17,7 +18,6 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
  * This interface defines the common properties that all notifications must have.
  * Must not be directly implemented. You must extend [AppNotification] instead.
  *
- * @property id The unique identifier of the notification.
  * @property title The title of the notification.
  * @property accessibilityText The text to be used for accessibility purposes.
  * @property contentText The main content text of the notification, can be null.
@@ -29,8 +29,8 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
  * @property group The notification group to which this notification belongs, can be null.
  * @see AppNotification
  */
-sealed interface Notification {
-    val id: NotificationId
+@KmpParcelize
+sealed interface Notification : KmpParcelable {
     val title: String
     val accessibilityText: String
     val contentText: String?
@@ -81,7 +81,6 @@ sealed interface SystemNotification : Notification {
 }
 
 /**
- *
  * Represents a notification displayed within the application.
  *
  * In-app notifications are typically less intrusive than system notifications and **do not require**

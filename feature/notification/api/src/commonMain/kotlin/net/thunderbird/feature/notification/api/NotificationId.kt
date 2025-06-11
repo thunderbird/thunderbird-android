@@ -1,5 +1,8 @@
 package net.thunderbird.feature.notification.api
 
+import net.thunderbird.core.common.io.KmpParcelable
+import net.thunderbird.core.common.io.KmpParcelize
+
 /**
  * Represents a unique identifier for a notification.
  *
@@ -10,4 +13,9 @@ package net.thunderbird.feature.notification.api
  * @property value The integer value of the notification ID.
  */
 @JvmInline
-value class NotificationId(val value: Int) : Comparable<Int> by value
+@KmpParcelize
+value class NotificationId(val value: Int) : KmpParcelable, Comparable<Int> by value {
+    companion object {
+        val Undefined = NotificationId(value = -1)
+    }
+}

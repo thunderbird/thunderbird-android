@@ -10,13 +10,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.logging.LogFileWriter
 import net.thunderbird.core.logging.file.FileLogSink
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.notification.api.content.PushServiceNotification
+import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 class GeneralSettingsViewModel(
     private val logFileWriter: LogFileWriter,
     private val syncDebugFileLogSink: FileLogSink,
-) :
-    ViewModel() {
+    private val notificationSender: NotificationSender,
+    private val logger: Logger,
+) : ViewModel() {
     private var snackbarJob: Job? = null
     private val uiStateFlow = MutableStateFlow<GeneralSettingsUiState>(GeneralSettingsUiState.Idle)
     val uiState: Flow<GeneralSettingsUiState> = uiStateFlow
@@ -68,6 +72,16 @@ class GeneralSettingsViewModel(
 
     private fun sendUiState(uiState: GeneralSettingsUiState) {
         uiStateFlow.value = uiState
+    }
+
+    fun onNotificationSend() {
+        viewModelScope.launch {
+            notificationSender.send(
+                notification = PushServiceNotification.AlarmPermissionMissing(),
+            ).collect { result ->
+                logger.debug { "onNotificationSend() called with: result = $result" }
+            }
+        }
     }
 
     companion object {

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="in_app_notification_permission_label">Post In-App notifications</string>
+    <string name="in_app_notification_permission_description">Allows the app to post In-App notifications</string>
+</resources>

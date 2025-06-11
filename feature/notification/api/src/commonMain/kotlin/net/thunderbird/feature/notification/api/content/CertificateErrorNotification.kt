@@ -1,7 +1,7 @@
 package net.thunderbird.feature.notification.api.content
 
+import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
-import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.resources.Res
@@ -16,8 +16,8 @@ import org.jetbrains.compose.resources.getString
  * preventing secure communication. It prompts the user to update their server settings.
  */
 @ConsistentCopyVisibility
+@KmpParcelize
 data class CertificateErrorNotification private constructor(
-    override val id: NotificationId,
     override val title: String,
     override val contentText: String,
     val lockScreenTitle: String,
@@ -34,17 +34,14 @@ data class CertificateErrorNotification private constructor(
         /**
          * Creates a [CertificateErrorNotification].
          *
-         * @param id The unique identifier for this notification.
          * @param accountUuid The UUID of the account associated with the notification.
          * @param accountDisplayName The display name of the account associated with the notification.
          * @return A [CertificateErrorNotification] instance.
          */
         suspend operator fun invoke(
-            id: NotificationId,
             accountUuid: String,
             accountDisplayName: String,
         ): CertificateErrorNotification = CertificateErrorNotification(
-            id = id,
             title = getString(resource = Res.string.notification_certificate_error_public, accountDisplayName),
             lockScreenTitle = getString(resource = Res.string.notification_certificate_error_public),
             contentText = getString(resource = Res.string.notification_certificate_error_text),
