@@ -19,6 +19,7 @@ dependencies {
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
     implementation(projects.core.common)
+    implementation(projects.core.outcome)
     implementation(projects.feature.navigation.drawer.api)
     implementation(projects.feature.navigation.drawer.dropdown)
     implementation(projects.feature.navigation.drawer.siderail)
