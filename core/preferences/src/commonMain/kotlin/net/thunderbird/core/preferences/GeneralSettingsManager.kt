@@ -19,4 +19,5 @@ interface GeneralSettingsManager {
     fun setIsShowUnifiedInbox(isShowUnifiedInbox: Boolean)
     fun setIsShowStarredCount(isShowStarredCount: Boolean)
     fun setIsShowMessageListStars(isShowMessageListStars: Boolean)
+    fun setIsShowAnimations(isShowAnimations: Boolean)
 }
