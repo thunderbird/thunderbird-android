@@ -1,5 +1,8 @@
 package net.thunderbird.feature.notification.api
 
+import net.thunderbird.core.common.io.KmpIgnoredOnParcel
+import net.thunderbird.core.common.io.KmpParcelable
+import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.resources.Res
 import net.thunderbird.feature.notification.resources.notification_channel_messages_description
 import net.thunderbird.feature.notification.resources.notification_channel_messages_title
@@ -19,12 +22,13 @@ import org.jetbrains.compose.resources.StringResource
  * @property description The user-visible description of the channel.
  * @property importance The importance level of the channel.
  */
+@KmpParcelize
 sealed class NotificationChannel(
     val id: String,
-    val name: StringResource,
-    val description: StringResource,
+    @KmpIgnoredOnParcel val name: StringResource,
+    @KmpIgnoredOnParcel val description: StringResource,
     val importance: NotificationChannelImportance,
-) {
+) : KmpParcelable {
     /**
      * Represents a notification channel for new messages.
      *
