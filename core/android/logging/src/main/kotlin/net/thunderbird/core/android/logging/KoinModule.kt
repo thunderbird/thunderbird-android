@@ -5,10 +5,9 @@ import org.koin.dsl.module
 val loggingModule = module {
     factory<ProcessExecutor> { RealProcessExecutor() }
     factory<LogFileWriter> {
-        MultiLogFileWriter(
+        LogcatLogFileWriter(
             contentResolver = get(),
             processExecutor = get(),
-            context = get(),
         )
     }
 }

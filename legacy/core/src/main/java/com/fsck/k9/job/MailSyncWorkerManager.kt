@@ -11,11 +11,13 @@ import com.fsck.k9.K9
 import java.util.concurrent.TimeUnit
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 
 class MailSyncWorkerManager(
     private val workManager: WorkManager,
     val clock: Clock,
+    val syncDebugLogger: Logger,
 ) {
 
     fun cancelMailSync(account: LegacyAccount) {
@@ -30,6 +32,8 @@ class MailSyncWorkerManager(
         getSyncIntervalIfEnabled(account)?.let { syncIntervalMinutes ->
             Log.v("Scheduling mail sync worker for %s", account)
             Log.v("  sync interval: %d minutes", syncIntervalMinutes)
+            syncDebugLogger.info(null, null) { "Scheduling mail sync worker $account" }
+            syncDebugLogger.info(null, null) { "  sync interval: $syncIntervalMinutes minutes\"" }
 
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -38,9 +42,11 @@ class MailSyncWorkerManager(
 
             val lastSyncTime = account.lastSyncTime
             Log.v("  last sync time: %tc", lastSyncTime)
+            syncDebugLogger.info(null, null) { "last sync time: $lastSyncTime" }
 
             val initialDelay = calculateInitialDelay(lastSyncTime, syncIntervalMinutes)
             Log.v("  initial delay: %d ms", initialDelay)
+            syncDebugLogger.info(null, null) { "  initial delay: $initialDelay ms" }
 
             val data = workDataOf(MailSyncWorker.EXTRA_ACCOUNT_UUID to account.uuid)
 
@@ -53,7 +59,11 @@ class MailSyncWorkerManager(
                 .build()
 
             val uniqueWorkName = createUniqueWorkName(account.uuid)
-            workManager.enqueueUniquePeriodicWork(uniqueWorkName, ExistingPeriodicWorkPolicy.REPLACE, mailSyncRequest)
+            workManager.enqueueUniquePeriodicWork(
+                uniqueWorkName,
+                ExistingPeriodicWorkPolicy.REPLACE,
+                mailSyncRequest,
+            )
         }
     }
 

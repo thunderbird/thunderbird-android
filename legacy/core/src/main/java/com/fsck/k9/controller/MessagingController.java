@@ -86,6 +86,7 @@ import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.feature.search.LocalMessageSearch;
+import net.thunderbird.core.logging.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.thunderbird.core.logging.legacy.Log;
@@ -134,6 +135,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final DraftOperations draftOperations;
     private final NotificationOperations notificationOperations;
     private final ArchiveOperations archiveOperations;
+    private final Logger syncDebugLogger;
 
 
     private volatile boolean stopped = false;
@@ -156,7 +158,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         SpecialLocalFoldersCreator specialLocalFoldersCreator,
         LocalDeleteOperationDecider localDeleteOperationDecider,
         List<ControllerExtension> controllerExtensions,
-        FeatureFlagProvider featureFlagProvider
+        FeatureFlagProvider featureFlagProvider,
+        Logger syncDebugLogger
     ) {
         this.context = context;
         this.notificationController = notificationController;
@@ -168,6 +171,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.saveMessageDataCreator = saveMessageDataCreator;
         this.specialLocalFoldersCreator = specialLocalFoldersCreator;
         this.localDeleteOperationDecider = localDeleteOperationDecider;
+        this.syncDebugLogger = syncDebugLogger;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -626,6 +630,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             localFolder = localStore.getFolder(folderId);
             localFolder.open();
         } catch (MessagingException e) {
+
+            syncDebugLogger.error("MessagingException",null, e::getMessage);
             Log.e(e, "syncFolder: Couldn't load local folder %d", folderId);
             return;
         }
@@ -653,6 +659,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = getRootCauseMessage(commandException);
+            syncDebugLogger.error("MessagingException",null, () -> rootMessage);
             Log.e("Root cause failure in %s:%s was '%s'", account, folderServerId, rootMessage);
             updateFolderStatus(account, folderId, rootMessage);
             listener.synchronizeMailboxFailed(account, folderId, rootMessage);
@@ -1249,6 +1256,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             notifyUserIfCertificateProblem(account, e, true);
             Log.e(e, "Error while loading remote message");
+            syncDebugLogger.error("MessagingException",null, () -> "Error while loading remote message");
         }
     }
 
