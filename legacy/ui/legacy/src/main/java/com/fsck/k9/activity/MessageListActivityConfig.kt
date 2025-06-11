@@ -47,7 +47,7 @@ data class MessageListActivityConfig(
                 appTheme = settings.appTheme,
                 isShowUnifiedInbox = generalSettingsManager.getSettings().isShowUnifiedInbox,
                 isShowMessageListStars = generalSettingsManager.getSettings().isShowMessageListStars,
-                isShowCorrespondentNames = K9.isShowCorrespondentNames,
+                isShowCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
                 isMessageListSenderAboveSubject = K9.isMessageListSenderAboveSubject,
                 isShowContactName = K9.isShowContactName,
                 isChangeContactNameColor = K9.isChangeContactNameColor,

@@ -10,6 +10,10 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.preferences.AppTheme
+import net.thunderbird.core.preferences.BackgroundSync
+import net.thunderbird.core.preferences.GeneralSettings
+import net.thunderbird.core.preferences.SubTheme
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -142,6 +146,21 @@ class NotificationContentCreatorTest : RobolectricTest() {
         return NotificationContentCreator(
             resourceProvider,
             contactRepository,
+            mock {
+                on { getSettings() } doReturn GeneralSettings(
+                    backgroundSync = BackgroundSync.ALWAYS,
+                    showRecentChanges = true,
+                    appTheme = AppTheme.DARK,
+                    messageComposeTheme = SubTheme.DARK,
+                    isShowCorrespondentNames = true,
+                    fixedMessageViewTheme = true,
+                    messageViewTheme = SubTheme.DARK,
+                    isShowStarredCount = false,
+                    isShowUnifiedInbox = false,
+                    isShowMessageListStars = false,
+                    isShowAnimations = false,
+                )
+            },
         )
     }
 
