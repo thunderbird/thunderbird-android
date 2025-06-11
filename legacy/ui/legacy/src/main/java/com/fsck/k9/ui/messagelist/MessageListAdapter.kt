@@ -304,6 +304,8 @@ class MessageListAdapter internal constructor(
         holder.starClickArea.isVisible = appearance.stars
         holder.starClickArea.setOnClickListener(starClickListener)
 
+        holder.size.isVisible = appearance.showMessageSize
+
         applyDensityValue(holder, appearance.density)
 
         view.tag = holder
@@ -440,6 +442,16 @@ class MessageListAdapter internal constructor(
             holder.date.typeface = Typeface.create(holder.date.typeface, maybeBoldTypeface)
             holder.date.setTextColor(foregroundColor)
             holder.date.text = displayDate
+
+            if (appearance.showMessageSize) {
+                holder.size.typeface = Typeface.create(holder.size.typeface, maybeBoldTypeface)
+                holder.size.setTextColor(foregroundColor)
+                holder.size.text = formatFileSize(size)
+                holder.size.isVisible = true
+            } else {
+                holder.size.isVisible = false
+            }
+
             holder.attachment.isVisible = hasAttachments
             holder.attachment.setColorFilter(foregroundColor)
 
@@ -631,6 +643,29 @@ class MessageListAdapter internal constructor(
     private fun getItemFromView(view: View): MessageListItem? {
         val messageViewHolder = view.tag as MessageViewHolder
         return getItemById(messageViewHolder.uniqueId)
+    }
+
+    private fun formatFileSize(sizeInBytes: Long): String {
+        if (sizeInBytes <= 0) return "0B"
+
+        val units = arrayOf("B", "KiB", "MiB", "GiB", "TiB")
+        var size = sizeInBytes.toDouble()
+        var unitIndex = 0
+
+        while (size >= BINARY_UNIT_SIZE && unitIndex < units.size - 1) {
+            size /= BINARY_UNIT_SIZE
+            unitIndex++
+        }
+
+        return if (unitIndex == 0) {
+            "${size.toInt()}${units[unitIndex]}"
+        } else {
+            "%.1f%s".format(size, units[unitIndex])
+        }
+    }
+
+    companion object {
+        private const val BINARY_UNIT_SIZE = 1024.0
     }
 }
 

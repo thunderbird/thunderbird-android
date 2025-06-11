@@ -180,6 +180,10 @@
                 android:id="@+id/set_sort_attach"
                 android:title="@string/sort_by_attach"
                 />
+            <item
+                android:id="@+id/set_sort_size"
+                android:title="@string/sort_by_size"
+                />
         </menu>
     </item>
 

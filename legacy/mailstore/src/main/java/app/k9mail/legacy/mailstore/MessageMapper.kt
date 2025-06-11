@@ -25,4 +25,5 @@ interface MessageDetailsAccessor {
     val hasAttachments: Boolean
     val threadRoot: Long
     val threadCount: Int
+    val size: Long
 }

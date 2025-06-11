@@ -37,7 +37,8 @@ SELECT
   answered, 
   forwarded, 
   attachment_count, 
-  root
+  root,
+  size
 FROM messages
 JOIN threads ON (threads.message_id = messages.id)
 LEFT JOIN FOLDERS ON (folders.id = messages.folder_id)
@@ -90,7 +91,8 @@ SELECT
   aggregated.forwarded AS forwarded, 
   aggregated.attachment_count AS attachment_count, 
   root, 
-  aggregated.thread_count AS thread_count
+  aggregated.thread_count AS thread_count,
+  messages.size AS size
 FROM (
   SELECT 
     threads.root AS thread_root,
@@ -162,7 +164,8 @@ SELECT
   answered, 
   forwarded, 
   attachment_count, 
-  root
+  root,
+  size
 FROM threads 
 JOIN messages ON (messages.id = threads.message_id)
 LEFT JOIN FOLDERS ON (folders.id = messages.folder_id)
@@ -229,6 +232,17 @@ private class CursorMessageAccessor(val cursor: Cursor, val includesThreadCount:
         get() = cursor.getLong(16)
     override val threadCount: Int
         get() = if (includesThreadCount) cursor.getInt(17) else 0
+    override val size: Long
+        get() = if (includesThreadCount) {
+            cursor.getLong(SIZE_COLUMN_INDEX_WITH_THREAD)
+        } else {
+            cursor.getLong(SIZE_COLUMN_INDEX_WITHOUT_THREAD)
+        }
+
+    companion object {
+        private const val SIZE_COLUMN_INDEX_WITH_THREAD = 18
+        private const val SIZE_COLUMN_INDEX_WITHOUT_THREAD = 17
+    }
 }
 
 private val AGGREGATED_MESSAGES_COLUMNS = arrayOf(

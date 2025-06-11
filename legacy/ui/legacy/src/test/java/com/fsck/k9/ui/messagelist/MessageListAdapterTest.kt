@@ -376,6 +376,114 @@ class MessageListAdapterTest : RobolectricTest() {
         assertThat(view.secondLineView.textSize).isEqualTo(22f)
     }
 
+    @Test
+    fun withShowMessageSize_shouldShowSizeView() {
+        val adapter = createAdapter(showMessageSize = true)
+
+        val view = adapter.createAndBindView()
+
+        assertThat(view.sizeView).isVisible()
+    }
+
+    @Test
+    fun withoutShowMessageSize_shouldHideSizeView() {
+        val adapter = createAdapter(showMessageSize = false)
+
+        val view = adapter.createAndBindView()
+
+        assertThat(view.sizeView).isGone()
+    }
+
+    @Test
+    fun formatFileSize_withZeroBytes_shouldShowZeroB() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 0L)
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("0B")
+    }
+
+    @Test
+    fun formatFileSize_withNegativeBytes_shouldShowZeroB() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = -100L)
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("0B")
+    }
+
+    @Test
+    fun formatFileSize_withBytesLessThan1024_shouldShowBytesWithoutDecimals() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 500L)
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("500B")
+    }
+
+    @Test
+    fun formatFileSize_withExactlyOneKiB_shouldShow1KiB() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 1024L)
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("1.0KiB")
+    }
+
+    @Test
+    fun formatFileSize_with1536Bytes_shouldShow1Point5KiB() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 1536L) // 1.5 * 1024
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("1.5KiB")
+    }
+
+    @Test
+    fun formatFileSize_withExactlyOneMiB_shouldShow1MiB() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 1048576L) // 1024 * 1024
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("1.0MiB")
+    }
+
+    @Test
+    fun formatFileSize_withExactlyOneGiB_shouldShow1GiB() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 1073741824L) // 1024 * 1024 * 1024
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("1.0GiB")
+    }
+
+    @Test
+    fun formatFileSize_withExactlyOneTiB_shouldShow1TiB() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 1099511627776L) // 1024^4
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("1.0TiB")
+    }
+
+    @Test
+    fun formatFileSize_withLargeSize_shouldShow2Point3GiB() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 2469606195L) // ~2.3 GiB
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView.textString).isEqualTo("2.3GiB")
+    }
+
     fun createFontSizes(
         subject: Int = FONT_DEFAULT,
         sender: Int = FONT_DEFAULT,
@@ -396,6 +504,7 @@ class MessageListAdapterTest : RobolectricTest() {
         stars: Boolean = true,
         senderAboveSubject: Boolean = false,
         showContactPicture: Boolean = true,
+        showMessageSize: Boolean = true,
         showingThreadedList: Boolean = true,
         backGroundAsReadIndicator: Boolean = false,
         showAccountChip: Boolean = false,
@@ -407,6 +516,7 @@ class MessageListAdapterTest : RobolectricTest() {
             stars,
             senderAboveSubject,
             showContactPicture,
+            showMessageSize,
             showingThreadedList,
             backGroundAsReadIndicator,
             showAccountChip,
@@ -446,6 +556,7 @@ class MessageListAdapterTest : RobolectricTest() {
         messageUid: String = "irrelevant",
         databaseId: Long = 0L,
         threadRoot: Long = 0L,
+        size: Long = 1024L,
     ): MessageListItem {
         return MessageListItem(
             account,
@@ -467,6 +578,7 @@ class MessageListAdapterTest : RobolectricTest() {
             messageUid,
             databaseId,
             threadRoot,
+            size,
         )
     }
 
@@ -487,6 +599,7 @@ class MessageListAdapterTest : RobolectricTest() {
     val View.secondLineView: MaterialTextView get() = findViewById(R.id.preview)
     val View.attachmentCountView: View get() = findViewById(R.id.attachment)
     val View.dateView: MaterialTextView get() = findViewById(R.id.date)
+    val View.sizeView: MaterialTextView get() = findViewById(R.id.size)
 
     private fun Assert<View>.isVisible() = given { actual ->
         if (!actual.isVisible) {

@@ -184,6 +184,8 @@ class MessageListFragment :
     val isShowAccountChip: Boolean
         get() = isUnifiedInbox || !isSingleAccountMode
 
+    private var previousAppearance: MessageListAppearance? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -641,6 +643,7 @@ class MessageListFragment :
             stars = !isOutbox && K9.isShowMessageListStars,
             senderAboveSubject = K9.isMessageListSenderAboveSubject,
             showContactPicture = K9.isShowContactPicture,
+            showMessageSize = K9.isShowMessageSize,
             showingThreadedList = showingThreadedList,
             backGroundAsReadIndicator = K9.isUseBackgroundAsUnreadIndicator,
             showAccountChip = isShowAccountChip,
@@ -660,6 +663,25 @@ class MessageListFragment :
         }
 
         messagingController.addListener(activityListener)
+
+        // Recreate adapter if appearance settings have changed since last resume.
+        val currentAppearance = messageListAppearance
+        if (previousAppearance != null && previousAppearance != currentAppearance) {
+            // Preserve current adapter state.
+            val currentMessages = adapter.messages
+            val currentActiveMessage = adapter.activeMessage
+            val currentSelected = adapter.selected
+
+            // Recreate adapter with new appearance settings.
+            adapter = createMessageListAdapter()
+            recyclerView?.adapter = adapter
+
+            // Restore adapter state.
+            adapter.messages = currentMessages
+            adapter.activeMessage = currentActiveMessage
+            adapter.restoreSelected(currentSelected)
+        }
+        previousAppearance = currentAppearance
 
         updateTitle()
     }
@@ -927,6 +949,7 @@ class MessageListFragment :
             R.id.set_sort_flag -> changeSort(SortType.SORT_FLAGGED)
             R.id.set_sort_unread -> changeSort(SortType.SORT_UNREAD)
             R.id.set_sort_attach -> changeSort(SortType.SORT_ATTACHMENT)
+            R.id.set_sort_size -> changeSort(SortType.SORT_SIZE)
             R.id.select_all -> selectAll()
             R.id.mark_all_as_read -> confirmMarkAllAsRead()
             R.id.send_messages -> onSendPendingMessages()
