@@ -155,6 +155,8 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     isShowCorrespondentNames = true,
                     fixedMessageViewTheme = true,
                     messageViewTheme = SubTheme.DARK,
+                    isShowStarredCount = false,
+                    isShowUnifiedInbox = false,
                 )
             },
         )
