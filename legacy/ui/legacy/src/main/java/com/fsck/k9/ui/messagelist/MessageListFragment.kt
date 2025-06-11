@@ -69,6 +69,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preferences.GeneralSettingsManager
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
 import org.koin.android.ext.android.inject
@@ -87,6 +88,7 @@ class MessageListFragment :
     val viewModel: MessageListViewModel by viewModel()
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
 
+    private val generalSettingsManager: GeneralSettingsManager by inject()
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingController by inject()
@@ -638,7 +640,7 @@ class MessageListFragment :
         get() = MessageListAppearance(
             fontSizes = K9.fontSizes,
             previewLines = K9.messageListPreviewLines,
-            stars = !isOutbox && K9.isShowMessageListStars,
+            stars = !isOutbox && generalSettingsManager.getSettings().isShowMessageListStars,
             senderAboveSubject = K9.isMessageListSenderAboveSubject,
             showContactPicture = K9.isShowContactPicture,
             showingThreadedList = showingThreadedList,

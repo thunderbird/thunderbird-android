@@ -175,9 +175,6 @@ object K9 : KoinComponent {
     var messageListDensity: UiDensity = UiDensity.Default
 
     @JvmStatic
-    var isShowMessageListStars = true
-
-    @JvmStatic
     var messageListPreviewLines = 2
 
     @JvmStatic
@@ -338,7 +335,6 @@ object K9 : KoinComponent {
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
-        isShowMessageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
         isAutoFitWidth = storage.getBoolean("autofitWidth", true)
@@ -436,7 +432,6 @@ object K9 : KoinComponent {
         editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
-        editor.putBoolean("messageListStars", isShowMessageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)
         editor.putBoolean("showContactName", isShowContactName)
