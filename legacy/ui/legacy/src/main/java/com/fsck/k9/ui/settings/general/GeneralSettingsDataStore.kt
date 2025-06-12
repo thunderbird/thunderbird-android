@@ -30,7 +30,7 @@ class GeneralSettingsDataStore(
             "show_starred_count" -> generalSettingsManager.getSettings().isShowStarredCount
             "messagelist_stars" -> generalSettingsManager.getSettings().isShowMessageListStars
             "messagelist_show_correspondent_names" -> generalSettingsManager.getSettings().isShowCorrespondentNames
-            "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
+            "messagelist_sender_above_subject" -> generalSettingsManager.getSettings().isMessageListSenderAboveSubject
             "messagelist_show_contact_name" -> K9.isShowContactName
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor
             "messagelist_show_contact_picture" -> K9.isShowContactPicture
@@ -61,7 +61,9 @@ class GeneralSettingsDataStore(
             "show_starred_count" -> setIsShowStarredCount(isShowStarredCount = value)
             "messagelist_stars" -> setIsShowMessageListStars(isShowMessageListStars = value)
             "messagelist_show_correspondent_names" -> setIsShowCorrespondentNames(isShowCorrespondentNames = value)
-            "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value
+            "messagelist_sender_above_subject" -> setIsMessageListSenderAboveSubject(
+                isMessageListSenderAboveSubject = value,
+            )
             "messagelist_show_contact_name" -> K9.isShowContactName = value
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor = value
             "messagelist_show_contact_picture" -> K9.isShowContactPicture = value
@@ -285,6 +287,11 @@ class GeneralSettingsDataStore(
     private fun setIsShowCorrespondentNames(isShowCorrespondentNames: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setIsShowCorrespondentNames(isShowCorrespondentNames)
+    }
+
+    private fun setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject)
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {

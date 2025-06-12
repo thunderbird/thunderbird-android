@@ -156,6 +156,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowCorrespondentNames = isShowCorrespondentNames).persist()
     }
 
+    override fun setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject: Boolean) {
+        getSettings().copy(isMessageListSenderAboveSubject = isMessageListSenderAboveSubject).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -167,6 +171,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("messageListStars", settings.isShowMessageListStars)
         editor.putBoolean("animations", settings.isShowAnimations)
         editor.putBoolean("showCorrespondentNames", settings.isShowCorrespondentNames)
+        editor.putBoolean("messageListSenderAboveSubject", settings.isMessageListSenderAboveSubject)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -190,6 +195,7 @@ internal class RealGeneralSettingsManager(
             isShowMessageListStars = storage.getBoolean("messageListStars", true),
             isShowAnimations = storage.getBoolean("animations", true),
             isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true),
+            isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false),
         )
 
         updateSettingsFlow(settings)
