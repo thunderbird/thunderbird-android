@@ -256,8 +256,8 @@ org.jetbrains.kotlin:kotlin-stdlib-common:2.1.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.21
 org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.21
 org.jetbrains.kotlin:kotlin-stdlib:2.1.21
-org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.8
-org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8
+org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.4.0
+org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0
 org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2
 org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.10.2
 org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.10.2
