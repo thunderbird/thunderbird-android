@@ -293,6 +293,12 @@
                 />
 
             <CheckBoxPreference
+                android:key="messagelist_show_message_size"
+                android:summary="@string/global_settings_show_message_size_summary"
+                android:title="@string/global_settings_show_message_size_label"
+                />
+
+            <CheckBoxPreference
                 android:key="messagelist_background_as_unread_indicator"
                 android:summary="@string/global_settings_background_as_unread_indicator_summary"
                 android:title="@string/global_settings_background_as_unread_indicator_label"

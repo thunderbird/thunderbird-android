@@ -40,6 +40,7 @@ public class LocalMessage extends MimeMessage {
     private PreviewType previewType;
     private boolean headerNeedsUpdating = false;
     private LocalFolder mFolder;
+    private long size;
 
 
     LocalMessage(LocalStore localStore, String uid, LocalFolder folder) {
@@ -132,6 +133,8 @@ public class LocalMessage extends MimeMessage {
         } else {
             Log.d("No headers available for this message!");
         }
+
+        this.size = cursor.isNull(LocalStore.MSG_INDEX_SIZE) ? 0 : cursor.getLong(LocalStore.MSG_INDEX_SIZE);
 
         headerNeedsUpdating = false;
     }
@@ -448,5 +451,9 @@ public class LocalMessage extends MimeMessage {
 
     private String getAccountUuid() {
         return getAccount().getUuid();
+    }
+
+    public long getSize() {
+        return size;
     }
 }

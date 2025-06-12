@@ -21,4 +21,5 @@ object MessageColumns {
     const val FLAGGED = "flagged"
     const val ANSWERED = "answered"
     const val FORWARDED = "forwarded"
+    const val SIZE = "size"
 }

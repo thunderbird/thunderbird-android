@@ -108,6 +108,7 @@ class MessageListLoader(
             SortType.SORT_SUBJECT -> "${MessageColumns.SUBJECT} COLLATE NOCASE"
             SortType.SORT_UNREAD -> MessageColumns.READ
             SortType.SORT_DATE -> MessageColumns.DATE
+            SortType.SORT_SIZE -> MessageColumns.SIZE
             else -> MessageColumns.DATE
         }
 
@@ -159,6 +160,10 @@ class MessageListLoader(
 
             SortType.SORT_ATTACHMENT -> {
                 compareBy<MessageListItem>(!config.sortAscending) { it.hasAttachments }
+                    .thenByDate(config)
+            }
+            SortType.SORT_SIZE -> {
+                compareBy<MessageListItem>(config.sortAscending) { it.size }
                     .thenByDate(config)
             }
         }.thenByDescending { it.databaseId }

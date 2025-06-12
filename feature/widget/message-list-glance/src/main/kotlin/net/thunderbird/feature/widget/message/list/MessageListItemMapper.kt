@@ -50,6 +50,7 @@ internal class MessageListItemMapper(
             sortInternalDate = message.internalDate,
             sortIsStarred = message.isStarred,
             sortDatabaseId = message.id,
+            sortSize = message.size,
         )
     }
 
