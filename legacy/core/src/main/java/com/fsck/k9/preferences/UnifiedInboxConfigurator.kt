@@ -1,7 +1,7 @@
 package com.fsck.k9.preferences
 
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * Configures the unified inbox after an account has been added.

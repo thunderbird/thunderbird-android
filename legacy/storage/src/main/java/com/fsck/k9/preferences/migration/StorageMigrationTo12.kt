@@ -6,7 +6,7 @@ import com.fsck.k9.preferences.migration.migration12.ImapStoreUriDecoder
 import com.fsck.k9.preferences.migration.migration12.Pop3StoreUriDecoder
 import com.fsck.k9.preferences.migration.migration12.SmtpTransportUriDecoder
 import com.fsck.k9.preferences.migration.migration12.WebDavStoreUriDecoder
-import net.thunderbird.feature.account.storage.legacy.ServerSettingsSerializer
+import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 
 /**
  * Convert server settings from the old URI format to the new JSON format
@@ -15,7 +15,7 @@ class StorageMigrationTo12(
     private val db: SQLiteDatabase,
     private val migrationsHelper: StorageMigrationHelper,
 ) {
-    private val serverSettingsSerializer = ServerSettingsSerializer()
+    private val serverSettingsDtoSerializer = ServerSettingsDtoSerializer()
 
     fun removeStoreAndTransportUri() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")
@@ -40,7 +40,7 @@ class StorageMigrationTo12(
             else -> error("Unsupported account type")
         }
 
-        val json = serverSettingsSerializer.serialize(serverSettings)
+        val json = serverSettingsDtoSerializer.serialize(serverSettings)
 
         migrationsHelper.insertValue(db, "$accountUuid.incomingServerSettings", json)
         migrationsHelper.writeValue(db, "$accountUuid.storeUri", null)
@@ -55,7 +55,7 @@ class StorageMigrationTo12(
             else -> error("Unsupported account type")
         }
 
-        val json = serverSettingsSerializer.serialize(serverSettings)
+        val json = serverSettingsDtoSerializer.serialize(serverSettings)
 
         migrationsHelper.insertValue(db, "$accountUuid.outgoingServerSettings", json)
         migrationsHelper.writeValue(db, "$accountUuid.transportUri", null)

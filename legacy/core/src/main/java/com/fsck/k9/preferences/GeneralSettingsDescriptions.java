@@ -39,9 +39,9 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
 import net.thunderbird.core.android.account.AccountDefaultsProvider;
 import net.thunderbird.core.android.account.SortType;
-import net.thunderbird.core.preferences.AppTheme;
-import net.thunderbird.core.preferences.Storage;
-import net.thunderbird.core.preferences.SubTheme;
+import net.thunderbird.core.preference.AppTheme;
+import net.thunderbird.core.preference.storage.Storage;
+import net.thunderbird.core.preference.SubTheme;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 

@@ -33,4 +33,6 @@ dependencies {
     implementation(projects.mail.protocols.imap)
 
     implementation(libs.androidx.work.runtime)
+
+    testImplementation(projects.feature.account.fake)
 }

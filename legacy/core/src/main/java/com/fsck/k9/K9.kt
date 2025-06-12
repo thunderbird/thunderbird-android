@@ -8,14 +8,14 @@ import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
-import net.thunderbird.core.preferences.Storage
-import net.thunderbird.core.preferences.getEnumOrDefault
+import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -279,6 +279,7 @@ object K9 : KoinComponent {
     var fundingReminderReferenceTimestamp: Long = 0
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -515,13 +516,6 @@ object K9 : KoinComponent {
     const val LOCAL_UID_PREFIX = "K9LOCAL:"
 
     const val IDENTITY_HEADER = K9MailLib.IDENTITY_HEADER
-
-    /**
-     * Specifies how many messages will be shown in a folder by default. This number is set
-     * on each new folder and can be incremented with "Load more messages..." by the
-     * VISIBLE_LIMIT_INCREMENT
-     */
-    const val DEFAULT_VISIBLE_LIMIT = 25
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)

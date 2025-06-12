@@ -5,6 +5,8 @@ plugins {
 dependencies {
     api(libs.koin.core)
 
+    implementation(projects.core.logging.api)
+
     implementation(projects.legacy.core)
     implementation(libs.androidx.core.ktx)
     implementation(libs.mime4j.core)

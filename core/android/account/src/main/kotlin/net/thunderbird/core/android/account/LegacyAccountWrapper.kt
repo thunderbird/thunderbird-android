@@ -2,6 +2,9 @@ package net.thunderbird.core.android.account
 
 import com.fsck.k9.mail.ServerSettings
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
+import net.thunderbird.feature.account.Account
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
@@ -14,97 +17,105 @@ import net.thunderbird.feature.notification.NotificationSettings
  * Use LegacyAccountWrapper.from(account) to create a wrapper from an account.
  * Use LegacyAccountWrapper.to(wrapper) to create an account from a wrapper.
  */
-@Suppress("LongMethod")
 data class LegacyAccountWrapper(
-    override val uuid: String,
+    val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
+
+    // [Account]
+    override val id: AccountId,
+
+    // [BaseAccount]
     override val name: String?,
     override val email: String,
-    private val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
-    val deletePolicy: DeletePolicy,
+
+    // [AccountProfile]
+    val profile: ProfileDto,
+
+    // Uncategorized
+    val deletePolicy: DeletePolicy = DeletePolicy.NEVER,
     val incomingServerSettings: ServerSettings,
     val outgoingServerSettings: ServerSettings,
-    val oAuthState: String?,
-    val alwaysBcc: String?,
-    val automaticCheckIntervalMinutes: Int,
-    val displayCount: Int,
-    val chipColor: Int,
-    val isNotifyNewMail: Boolean,
-    val folderNotifyNewMailMode: FolderMode,
-    val isNotifySelfNewMail: Boolean,
-    val isNotifyContactsMailOnly: Boolean,
-    val isIgnoreChatMessages: Boolean,
-    val legacyInboxFolder: String?,
-    val importedDraftsFolder: String?,
-    val importedSentFolder: String?,
-    val importedTrashFolder: String?,
-    val importedArchiveFolder: String?,
-    val importedSpamFolder: String?,
-    val inboxFolderId: Long?,
-    val outboxFolderId: Long?,
-    val draftsFolderId: Long?,
-    val sentFolderId: Long?,
-    val trashFolderId: Long?,
-    val archiveFolderId: Long?,
-    val spamFolderId: Long?,
-    val draftsFolderSelection: SpecialFolderSelection,
-    val sentFolderSelection: SpecialFolderSelection,
-    val trashFolderSelection: SpecialFolderSelection,
-    val archiveFolderSelection: SpecialFolderSelection,
-    val spamFolderSelection: SpecialFolderSelection,
-    val importedAutoExpandFolder: String?,
-    val autoExpandFolderId: Long?,
-    val folderDisplayMode: FolderMode,
-    val folderSyncMode: FolderMode,
-    val folderPushMode: FolderMode,
-    val accountNumber: Int,
-    val isNotifySync: Boolean,
-    val sortType: SortType,
-    val sortAscending: Map<SortType, Boolean>,
-    val showPictures: ShowPictures,
-    val isSignatureBeforeQuotedText: Boolean,
-    val expungePolicy: Expunge,
-    val maxPushFolders: Int,
-    val idleRefreshMinutes: Int,
-    val useCompression: Boolean,
-    val isSendClientInfoEnabled: Boolean,
-    val isSubscribedFoldersOnly: Boolean,
-    val maximumPolledMessageAge: Int,
-    val maximumAutoDownloadMessageSize: Int,
-    val messageFormat: MessageFormat,
-    val isMessageFormatAuto: Boolean,
-    val isMessageReadReceipt: Boolean,
-    val quoteStyle: QuoteStyle,
-    val quotePrefix: String?,
-    val isDefaultQuotedTextShown: Boolean,
-    val isReplyAfterQuote: Boolean,
-    val isStripSignature: Boolean,
-    val isSyncRemoteDeletions: Boolean,
-    val openPgpProvider: String?,
-    val openPgpKey: Long,
-    val autocryptPreferEncryptMutual: Boolean,
-    val isOpenPgpHideSignOnly: Boolean,
-    val isOpenPgpEncryptSubject: Boolean,
-    val isOpenPgpEncryptAllDrafts: Boolean,
-    val isMarkMessageAsReadOnView: Boolean,
-    val isMarkMessageAsReadOnDelete: Boolean,
-    val isAlwaysShowCcBcc: Boolean,
-    val isRemoteSearchFullText: Boolean,
-    val remoteSearchNumResults: Int,
-    val isUploadSentMessages: Boolean,
-    val lastSyncTime: Long,
-    val lastFolderListRefreshTime: Long,
-    val isFinishedSetup: Boolean,
-    val messagesNotificationChannelVersion: Int,
-    val isChangedVisibleLimits: Boolean,
-    val lastSelectedFolderId: Long?,
+    val oAuthState: String? = null,
+    val alwaysBcc: String? = null,
+    val automaticCheckIntervalMinutes: Int = 0,
+    val displayCount: Int = 0,
+    val isNotifyNewMail: Boolean = false,
+    val folderNotifyNewMailMode: FolderMode = FolderMode.ALL,
+    val isNotifySelfNewMail: Boolean = false,
+    val isNotifyContactsMailOnly: Boolean = false,
+    val isIgnoreChatMessages: Boolean = false,
+    val legacyInboxFolder: String? = null,
+    val importedDraftsFolder: String? = null,
+    val importedSentFolder: String? = null,
+    val importedTrashFolder: String? = null,
+    val importedArchiveFolder: String? = null,
+    val importedSpamFolder: String? = null,
+    val inboxFolderId: Long? = null,
+    val outboxFolderId: Long? = null,
+    val draftsFolderId: Long? = null,
+    val sentFolderId: Long? = null,
+    val trashFolderId: Long? = null,
+    val archiveFolderId: Long? = null,
+    val spamFolderId: Long? = null,
+    val draftsFolderSelection: SpecialFolderSelection = SpecialFolderSelection.AUTOMATIC,
+    val sentFolderSelection: SpecialFolderSelection = SpecialFolderSelection.AUTOMATIC,
+    val trashFolderSelection: SpecialFolderSelection = SpecialFolderSelection.AUTOMATIC,
+    val archiveFolderSelection: SpecialFolderSelection = SpecialFolderSelection.AUTOMATIC,
+    val spamFolderSelection: SpecialFolderSelection = SpecialFolderSelection.AUTOMATIC,
+    val importedAutoExpandFolder: String? = null,
+    val autoExpandFolderId: Long? = null,
+    val folderDisplayMode: FolderMode = FolderMode.NOT_SECOND_CLASS,
+    val folderSyncMode: FolderMode = FolderMode.FIRST_CLASS,
+    val folderPushMode: FolderMode = FolderMode.NONE,
+    val accountNumber: Int = 0,
+    val isNotifySync: Boolean = false,
+    val sortType: SortType = SortType.SORT_DATE,
+    val sortAscending: Map<SortType, Boolean> = emptyMap(),
+    val showPictures: ShowPictures = ShowPictures.NEVER,
+    val isSignatureBeforeQuotedText: Boolean = false,
+    val expungePolicy: Expunge = Expunge.EXPUNGE_IMMEDIATELY,
+    val maxPushFolders: Int = 0,
+    val idleRefreshMinutes: Int = 0,
+    val useCompression: Boolean = true,
+    val isSendClientInfoEnabled: Boolean = true,
+    val isSubscribedFoldersOnly: Boolean = false,
+    val maximumPolledMessageAge: Int = 0,
+    val maximumAutoDownloadMessageSize: Int = 0,
+    val messageFormat: MessageFormat = MessageFormat.HTML,
+    val isMessageFormatAuto: Boolean = false,
+    val isMessageReadReceipt: Boolean = false,
+    val quoteStyle: QuoteStyle = QuoteStyle.PREFIX,
+    val quotePrefix: String? = null,
+    val isDefaultQuotedTextShown: Boolean = false,
+    val isReplyAfterQuote: Boolean = false,
+    val isStripSignature: Boolean = false,
+    val isSyncRemoteDeletions: Boolean = false,
+    val openPgpProvider: String? = null,
+    val openPgpKey: Long = 0,
+    val autocryptPreferEncryptMutual: Boolean = false,
+    val isOpenPgpHideSignOnly: Boolean = false,
+    val isOpenPgpEncryptSubject: Boolean = false,
+    val isOpenPgpEncryptAllDrafts: Boolean = false,
+    val isMarkMessageAsReadOnView: Boolean = false,
+    val isMarkMessageAsReadOnDelete: Boolean = false,
+    val isAlwaysShowCcBcc: Boolean = false,
+    val isRemoteSearchFullText: Boolean = false,
+    val remoteSearchNumResults: Int = 0,
+    val isUploadSentMessages: Boolean = false,
+    val lastSyncTime: Long = 0,
+    val lastFolderListRefreshTime: Long = 0,
+    val isFinishedSetup: Boolean = false,
+    val messagesNotificationChannelVersion: Int = 0,
+    val isChangedVisibleLimits: Boolean = false,
+    val lastSelectedFolderId: Long? = null,
     val identities: List<Identity>,
-    val notificationSettings: NotificationSettings,
-    val displayName: String,
-    val senderName: String?,
-    val signatureUse: Boolean,
-    val signature: String?,
-    val shouldMigrateToOAuth: Boolean,
-) : BaseAccount {
+    val notificationSettings: NotificationSettings = NotificationSettings(),
+    val senderName: String? = identities[0].name,
+    val signatureUse: Boolean = identities[0].signatureUse,
+    val signature: String? = identities[0].signature,
+    val shouldMigrateToOAuth: Boolean = false,
+) : Account, BaseAccount {
+
+    override val uuid: String = id.asRaw()
 
     fun hasDraftsFolder(): Boolean {
         return draftsFolderId != null
@@ -132,195 +143,5 @@ data class LegacyAccountWrapper(
 
     fun hasOpenPgpKey(): Boolean {
         return openPgpKey != NO_OPENPGP_KEY
-    }
-
-    companion object {
-        @Suppress("LongMethod")
-        fun from(account: LegacyAccount): LegacyAccountWrapper {
-            return LegacyAccountWrapper(
-                uuid = account.uuid,
-                isSensitiveDebugLoggingEnabled = account.isSensitiveDebugLoggingEnabled,
-                name = account.displayName,
-                identities = account.identities,
-                email = account.email,
-                deletePolicy = account.deletePolicy,
-                incomingServerSettings = account.incomingServerSettings,
-                outgoingServerSettings = account.outgoingServerSettings,
-                oAuthState = account.oAuthState,
-                alwaysBcc = account.alwaysBcc,
-                automaticCheckIntervalMinutes = account.automaticCheckIntervalMinutes,
-                displayCount = account.displayCount,
-                chipColor = account.chipColor,
-                isNotifyNewMail = account.isNotifyNewMail,
-                folderNotifyNewMailMode = account.folderNotifyNewMailMode,
-                isNotifySelfNewMail = account.isNotifySelfNewMail,
-                isNotifyContactsMailOnly = account.isNotifyContactsMailOnly,
-                isIgnoreChatMessages = account.isIgnoreChatMessages,
-                legacyInboxFolder = account.legacyInboxFolder,
-                importedDraftsFolder = account.importedDraftsFolder,
-                importedSentFolder = account.importedSentFolder,
-                importedTrashFolder = account.importedTrashFolder,
-                importedArchiveFolder = account.importedArchiveFolder,
-                importedSpamFolder = account.importedSpamFolder,
-                inboxFolderId = account.inboxFolderId,
-                outboxFolderId = account.outboxFolderId,
-                draftsFolderId = account.draftsFolderId,
-                sentFolderId = account.sentFolderId,
-                trashFolderId = account.trashFolderId,
-                archiveFolderId = account.archiveFolderId,
-                spamFolderId = account.spamFolderId,
-                draftsFolderSelection = account.draftsFolderSelection,
-                sentFolderSelection = account.sentFolderSelection,
-                trashFolderSelection = account.trashFolderSelection,
-                archiveFolderSelection = account.archiveFolderSelection,
-                spamFolderSelection = account.spamFolderSelection,
-                importedAutoExpandFolder = account.importedAutoExpandFolder,
-                autoExpandFolderId = account.autoExpandFolderId,
-                folderDisplayMode = account.folderDisplayMode,
-                folderSyncMode = account.folderSyncMode,
-                folderPushMode = account.folderPushMode,
-                accountNumber = account.accountNumber,
-                isNotifySync = account.isNotifySync,
-                sortType = account.sortType,
-                sortAscending = account.sortAscending,
-                showPictures = account.showPictures,
-                isSignatureBeforeQuotedText = account.isSignatureBeforeQuotedText,
-                expungePolicy = account.expungePolicy,
-                maxPushFolders = account.maxPushFolders,
-                idleRefreshMinutes = account.idleRefreshMinutes,
-                useCompression = account.useCompression,
-                isSendClientInfoEnabled = account.isSendClientInfoEnabled,
-                isSubscribedFoldersOnly = account.isSubscribedFoldersOnly,
-                maximumPolledMessageAge = account.maximumPolledMessageAge,
-                maximumAutoDownloadMessageSize = account.maximumAutoDownloadMessageSize,
-                messageFormat = account.messageFormat,
-                isMessageFormatAuto = account.isMessageFormatAuto,
-                isMessageReadReceipt = account.isMessageReadReceipt,
-                quoteStyle = account.quoteStyle,
-                quotePrefix = account.quotePrefix,
-                isDefaultQuotedTextShown = account.isDefaultQuotedTextShown,
-                isReplyAfterQuote = account.isReplyAfterQuote,
-                isStripSignature = account.isStripSignature,
-                isSyncRemoteDeletions = account.isSyncRemoteDeletions,
-                openPgpProvider = account.openPgpProvider,
-                openPgpKey = account.openPgpKey,
-                autocryptPreferEncryptMutual = account.autocryptPreferEncryptMutual,
-                isOpenPgpHideSignOnly = account.isOpenPgpHideSignOnly,
-                isOpenPgpEncryptSubject = account.isOpenPgpEncryptSubject,
-                isOpenPgpEncryptAllDrafts = account.isOpenPgpEncryptAllDrafts,
-                isMarkMessageAsReadOnView = account.isMarkMessageAsReadOnView,
-                isMarkMessageAsReadOnDelete = account.isMarkMessageAsReadOnDelete,
-                isAlwaysShowCcBcc = account.isAlwaysShowCcBcc,
-                isRemoteSearchFullText = account.isRemoteSearchFullText,
-                remoteSearchNumResults = account.remoteSearchNumResults,
-                isUploadSentMessages = account.isUploadSentMessages,
-                lastSyncTime = account.lastSyncTime,
-                lastFolderListRefreshTime = account.lastFolderListRefreshTime,
-                isFinishedSetup = account.isFinishedSetup,
-                messagesNotificationChannelVersion = account.messagesNotificationChannelVersion,
-                isChangedVisibleLimits = account.isChangedVisibleLimits,
-                lastSelectedFolderId = account.lastSelectedFolderId,
-                notificationSettings = account.notificationSettings,
-                displayName = account.displayName,
-                senderName = account.senderName,
-                signatureUse = account.signatureUse,
-                signature = account.signature,
-                shouldMigrateToOAuth = account.shouldMigrateToOAuth,
-            )
-        }
-
-        @Suppress("LongMethod")
-        fun to(wrapper: LegacyAccountWrapper): LegacyAccount {
-            return LegacyAccount(
-                uuid = wrapper.uuid,
-                isSensitiveDebugLoggingEnabled = wrapper.isSensitiveDebugLoggingEnabled,
-            ).apply {
-                identities = wrapper.identities.toMutableList()
-                name = wrapper.displayName
-                email = wrapper.email
-                deletePolicy = wrapper.deletePolicy
-                incomingServerSettings = wrapper.incomingServerSettings
-                outgoingServerSettings = wrapper.outgoingServerSettings
-                oAuthState = wrapper.oAuthState
-                alwaysBcc = wrapper.alwaysBcc
-                automaticCheckIntervalMinutes = wrapper.automaticCheckIntervalMinutes
-                displayCount = wrapper.displayCount
-                chipColor = wrapper.chipColor
-                isNotifyNewMail = wrapper.isNotifyNewMail
-                folderNotifyNewMailMode = wrapper.folderNotifyNewMailMode
-                isNotifySelfNewMail = wrapper.isNotifySelfNewMail
-                isNotifyContactsMailOnly = wrapper.isNotifyContactsMailOnly
-                isIgnoreChatMessages = wrapper.isIgnoreChatMessages
-                legacyInboxFolder = wrapper.legacyInboxFolder
-                importedDraftsFolder = wrapper.importedDraftsFolder
-                importedSentFolder = wrapper.importedSentFolder
-                importedTrashFolder = wrapper.importedTrashFolder
-                importedArchiveFolder = wrapper.importedArchiveFolder
-                importedSpamFolder = wrapper.importedSpamFolder
-                inboxFolderId = wrapper.inboxFolderId
-                outboxFolderId = wrapper.outboxFolderId
-                draftsFolderId = wrapper.draftsFolderId
-                sentFolderId = wrapper.sentFolderId
-                trashFolderId = wrapper.trashFolderId
-                archiveFolderId = wrapper.archiveFolderId
-                spamFolderId = wrapper.spamFolderId
-                draftsFolderSelection = wrapper.draftsFolderSelection
-                sentFolderSelection = wrapper.sentFolderSelection
-                trashFolderSelection = wrapper.trashFolderSelection
-                archiveFolderSelection = wrapper.archiveFolderSelection
-                spamFolderSelection = wrapper.spamFolderSelection
-                importedAutoExpandFolder = wrapper.importedAutoExpandFolder
-                autoExpandFolderId = wrapper.autoExpandFolderId
-                folderDisplayMode = wrapper.folderDisplayMode
-                folderSyncMode = wrapper.folderSyncMode
-                folderPushMode = wrapper.folderPushMode
-                accountNumber = wrapper.accountNumber
-                isNotifySync = wrapper.isNotifySync
-                sortType = wrapper.sortType
-                sortAscending = wrapper.sortAscending.toMutableMap()
-                showPictures = wrapper.showPictures
-                isSignatureBeforeQuotedText = wrapper.isSignatureBeforeQuotedText
-                expungePolicy = wrapper.expungePolicy
-                maxPushFolders = wrapper.maxPushFolders
-                idleRefreshMinutes = wrapper.idleRefreshMinutes
-                useCompression = wrapper.useCompression
-                isSendClientInfoEnabled = wrapper.isSendClientInfoEnabled
-                isSubscribedFoldersOnly = wrapper.isSubscribedFoldersOnly
-                maximumPolledMessageAge = wrapper.maximumPolledMessageAge
-                maximumAutoDownloadMessageSize = wrapper.maximumAutoDownloadMessageSize
-                messageFormat = wrapper.messageFormat
-                isMessageFormatAuto = wrapper.isMessageFormatAuto
-                isMessageReadReceipt = wrapper.isMessageReadReceipt
-                quoteStyle = wrapper.quoteStyle
-                quotePrefix = wrapper.quotePrefix
-                isDefaultQuotedTextShown = wrapper.isDefaultQuotedTextShown
-                isReplyAfterQuote = wrapper.isReplyAfterQuote
-                isStripSignature = wrapper.isStripSignature
-                isSyncRemoteDeletions = wrapper.isSyncRemoteDeletions
-                openPgpProvider = wrapper.openPgpProvider
-                openPgpKey = wrapper.openPgpKey
-                autocryptPreferEncryptMutual = wrapper.autocryptPreferEncryptMutual
-                isOpenPgpHideSignOnly = wrapper.isOpenPgpHideSignOnly
-                isOpenPgpEncryptSubject = wrapper.isOpenPgpEncryptSubject
-                isOpenPgpEncryptAllDrafts = wrapper.isOpenPgpEncryptAllDrafts
-                isMarkMessageAsReadOnView = wrapper.isMarkMessageAsReadOnView
-                isMarkMessageAsReadOnDelete = wrapper.isMarkMessageAsReadOnDelete
-                isAlwaysShowCcBcc = wrapper.isAlwaysShowCcBcc
-                isRemoteSearchFullText = wrapper.isRemoteSearchFullText
-                remoteSearchNumResults = wrapper.remoteSearchNumResults
-                isUploadSentMessages = wrapper.isUploadSentMessages
-                lastSyncTime = wrapper.lastSyncTime
-                lastFolderListRefreshTime = wrapper.lastFolderListRefreshTime
-                isFinishedSetup = wrapper.isFinishedSetup
-                messagesNotificationChannelVersion = wrapper.messagesNotificationChannelVersion
-                isChangedVisibleLimits = wrapper.isChangedVisibleLimits
-                lastSelectedFolderId = wrapper.lastSelectedFolderId
-                notificationSettings = wrapper.notificationSettings
-                senderName = wrapper.senderName
-                signatureUse = wrapper.signatureUse
-                signature = wrapper.signature
-                shouldMigrateToOAuth = wrapper.shouldMigrateToOAuth
-            }
-        }
     }
 }

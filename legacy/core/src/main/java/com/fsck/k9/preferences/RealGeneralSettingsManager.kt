@@ -12,14 +12,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.AppTheme
-import net.thunderbird.core.preferences.BackgroundSync
-import net.thunderbird.core.preferences.GeneralSettings
-import net.thunderbird.core.preferences.GeneralSettingsManager
-import net.thunderbird.core.preferences.SettingsChangePublisher
-import net.thunderbird.core.preferences.Storage
-import net.thunderbird.core.preferences.SubTheme
-import net.thunderbird.core.preferences.getEnumOrDefault
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.PreferenceChangePublisher
+import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.getEnumOrDefault
+import net.thunderbird.core.preference.storage.putEnum
 
 /**
  * Retrieve and modify general settings.
@@ -33,7 +35,7 @@ import net.thunderbird.core.preferences.getEnumOrDefault
 internal class RealGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
-    private val changePublisher: SettingsChangePublisher,
+    private val changePublisher: PreferenceChangePublisher,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GeneralSettingsManager {
     private val settingsFlow = MutableSharedFlow<GeneralSettings>(replay = 1)
@@ -211,8 +213,4 @@ private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultVal
         Log.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
         defaultValue
     }
-}
-
-private fun <T : Enum<T>> StorageEditor.putEnum(key: String, value: T) {
-    putString(key, value.name)
 }

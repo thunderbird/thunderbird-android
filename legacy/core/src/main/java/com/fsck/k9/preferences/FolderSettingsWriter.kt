@@ -1,5 +1,7 @@
 package com.fsck.k9.preferences
 
+import net.thunderbird.core.preference.storage.StorageEditor
+
 internal class FolderSettingsWriter {
     fun write(editor: StorageEditor, accountUuid: String, folder: ValidatedSettings.Folder) {
         // Convert folder settings to the string representation used in preference storage

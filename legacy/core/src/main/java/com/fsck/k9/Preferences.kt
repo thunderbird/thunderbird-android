@@ -5,8 +5,6 @@ import androidx.annotation.RestrictTo
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.preferences.StorageEditor
-import com.fsck.k9.preferences.StoragePersister
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArraySet
@@ -27,13 +25,16 @@ import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.feature.account.storage.legacy.AccountDtoStorageHandler
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
-    private val accountPreferenceSerializer: AccountPreferenceSerializer,
+    private val legacyAccountStorageHandler: AccountDtoStorageHandler,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : AccountManager {
@@ -90,7 +91,7 @@ class Preferences internal constructor(
                         uuid,
                         K9::isSensitiveDebugLoggingEnabled,
                     )
-                    accountPreferenceSerializer.loadAccount(account, storage)
+                    legacyAccountStorageHandler.load(account, storage)
 
                     accounts[uuid] = account
                     accountsInOrder.add(account)
@@ -203,7 +204,7 @@ class Preferences internal constructor(
             accountsInOrder.remove(account)
 
             val storageEditor = createStorageEditor()
-            accountPreferenceSerializer.delete(storageEditor, storage, account)
+            legacyAccountStorageHandler.delete(account, storage, storageEditor)
             storageEditor.commit()
 
             if (account === newAccount) {
@@ -224,7 +225,7 @@ class Preferences internal constructor(
 
         synchronized(accountLock) {
             val editor = createStorageEditor()
-            accountPreferenceSerializer.save(editor, storage, account)
+            legacyAccountStorageHandler.save(account, storage, editor)
             editor.commit()
 
             loadAccounts()
@@ -271,13 +272,28 @@ class Preferences internal constructor(
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
         synchronized(accountLock) {
             val storageEditor = createStorageEditor()
-            accountPreferenceSerializer.move(storageEditor, account, storage, newPosition)
+            moveToPosition(account, storage, storageEditor, newPosition)
             storageEditor.commit()
 
             loadAccounts()
         }
 
         notifyAccountsChangeListeners()
+    }
+
+    private fun moveToPosition(account: LegacyAccount, storage: Storage, editor: StorageEditor, newPosition: Int) {
+        val accountUuids = storage.getStringOrDefault("accountUuids", "").split(",").filter { it.isNotEmpty() }
+        val oldPosition = accountUuids.indexOf(account.uuid)
+        if (oldPosition == -1 || oldPosition == newPosition) return
+
+        val newAccountUuidsString = accountUuids.toMutableList()
+            .apply {
+                removeAt(oldPosition)
+                add(newPosition, account.uuid)
+            }
+            .joinToString(separator = ",")
+
+        editor.putString("accountUuids", newAccountUuidsString)
     }
 
     private fun notifyAccountsChangeListeners() {

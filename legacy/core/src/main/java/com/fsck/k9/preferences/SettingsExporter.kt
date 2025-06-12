@@ -4,10 +4,6 @@ import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
 import app.k9mail.legacy.mailstore.FolderRepository
-import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
-import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_DESCRIPTION_KEY
-import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_EMAIL_KEY
-import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_NAME_KEY
 import com.fsck.k9.Preferences
 import com.fsck.k9.notification.NotificationSettingsUpdater
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
@@ -19,6 +15,10 @@ import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_DESCRIPTION_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_EMAIL_KEY
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_NAME_KEY
 import org.xmlpull.v1.XmlSerializer
 
 class SettingsExporter(

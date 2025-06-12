@@ -20,7 +20,7 @@ import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.view.K9WebViewClient
 import com.fsck.k9.view.MessageWebView
 import net.openid.appauth.AppAuthConfiguration
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.definition

@@ -2,10 +2,10 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.preferences.DefaultSettingsChangeBroker
-import net.thunderbird.core.preferences.GeneralSettingsManager
-import net.thunderbird.core.preferences.SettingsChangeBroker
-import net.thunderbird.core.preferences.SettingsChangePublisher
+import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangePublisher
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.binds
@@ -65,7 +65,7 @@ val preferencesModule = module {
             preferences = get(),
             localFoldersCreator = get(),
             clock = get(),
-            serverSettingsSerializer = get(),
+            serverSettingsDtoSerializer = get(),
             context = get(),
         )
     }
@@ -85,11 +85,11 @@ val preferencesModule = module {
         )
     }
 
-    single { DefaultSettingsChangeBroker() }
+    single { DefaultPreferenceChangeBroker() }
         .binds(
             arrayOf(
-                SettingsChangePublisher::class,
-                SettingsChangeBroker::class,
+                PreferenceChangePublisher::class,
+                PreferenceChangeBroker::class,
             ),
         )
 }

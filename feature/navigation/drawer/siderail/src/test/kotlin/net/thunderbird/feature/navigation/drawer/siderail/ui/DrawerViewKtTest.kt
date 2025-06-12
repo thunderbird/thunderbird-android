@@ -11,6 +11,7 @@ import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.feature.navigation.drawer.siderail.FolderDrawerState
 import net.thunderbird.feature.navigation.drawer.siderail.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.siderail.ui.DrawerContract.Event
@@ -48,7 +49,7 @@ internal class DrawerViewKtTest : ComposeTest() {
         verifyCounter.openFolderCount++
         viewModel.effect(
             Effect.OpenFolder(
-                accountId = "accountId",
+                accountId = ACCOUNT_ID_RAW,
                 folderId = 1,
             ),
         )

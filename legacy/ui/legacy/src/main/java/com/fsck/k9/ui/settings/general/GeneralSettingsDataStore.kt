@@ -9,9 +9,9 @@ import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
-import net.thunderbird.core.preferences.AppTheme
-import net.thunderbird.core.preferences.GeneralSettingsManager
-import net.thunderbird.core.preferences.SubTheme
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.SubTheme
 
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,

@@ -17,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.SearchAccount.Companion.createUnifiedInboxAccount
 import org.koin.android.ext.android.inject

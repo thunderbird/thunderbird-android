@@ -20,7 +20,8 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.core.ui.compose.preference.api.Preference
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
 import org.junit.Before
@@ -38,7 +39,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should load account name`() = runMviTest {
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = null,
             preferences = persistentListOf(),
@@ -51,7 +52,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should load general settings`() = runMviTest {
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),
@@ -65,7 +66,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should navigate back when back is pressed`() = runMviTest {
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),
@@ -81,7 +82,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should update preference when changed`() = runMviTest {
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),

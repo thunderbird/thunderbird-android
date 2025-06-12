@@ -13,7 +13,7 @@ import com.fsck.k9.K9.isShowContactName
 import com.fsck.k9.mail.Address
 import java.util.regex.Pattern
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 class MessageHelper(
     private val resourceProvider: CoreResourceProvider,

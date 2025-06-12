@@ -47,22 +47,6 @@ public class Utility {
     }
 
     /**
-     * Combines the given array of Objects into a single String using
-     * each Object's toString() method and the separator character
-     * between each part.
-     *
-     * @param parts
-     * @param separator
-     * @return new String
-     */
-    public static String combine(Object[] parts, char separator) {
-        if (parts == null) {
-            return null;
-        }
-        return TextUtils.join(String.valueOf(separator), parts);
-    }
-
-    /**
      * Combines the given Objects into a single String using
      * each Object's toString() method and the separator character
      * between each part.

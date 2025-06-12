@@ -10,10 +10,10 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
-import net.thunderbird.core.preferences.AppTheme
-import net.thunderbird.core.preferences.BackgroundSync
-import net.thunderbird.core.preferences.GeneralSettings
-import net.thunderbird.core.preferences.SubTheme
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.SubTheme
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
