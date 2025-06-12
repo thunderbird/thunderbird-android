@@ -24,7 +24,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.SettingList
 
 @Composable
-internal fun DrawerContent(
+internal fun SideRailDrawerContent(
     state: State,
     onEvent: (Event) -> Unit,
     modifier: Modifier = Modifier,
