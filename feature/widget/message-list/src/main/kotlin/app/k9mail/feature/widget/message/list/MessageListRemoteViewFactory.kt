@@ -12,6 +12,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
 import org.koin.core.component.KoinComponent
@@ -21,6 +22,7 @@ import org.koin.core.component.inject
 internal class MessageListRemoteViewFactory(private val context: Context) : RemoteViewsFactory, KoinComponent {
     private val messageListLoader: MessageListLoader by inject()
     private val coreResourceProvider: CoreResourceProvider by inject()
+    private val generalSettingsManager: GeneralSettingsManager by inject()
 
     private lateinit var unifiedInboxSearch: LocalSearch
 
@@ -35,7 +37,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
             unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
         ).relatedSearch
 
-        senderAboveSubject = K9.isMessageListSenderAboveSubject
+        senderAboveSubject = generalSettingsManager.getSettings().isMessageListSenderAboveSubject
         readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read)
         unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread)
     }
