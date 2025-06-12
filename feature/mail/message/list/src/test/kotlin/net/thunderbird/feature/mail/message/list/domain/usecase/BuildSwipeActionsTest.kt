@@ -40,6 +40,7 @@ class BuildSwipeActionsTest {
             isShowAnimations = false,
             isShowCorrespondentNames = false,
             shouldShowSetupArchiveFolderDialog = false,
+            isMessageListSenderAboveSubject = false,
         )
 
     @Test
