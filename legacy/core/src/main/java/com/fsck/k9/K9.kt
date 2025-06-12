@@ -175,9 +175,6 @@ object K9 : KoinComponent {
     var messageListPreviewLines = 2
 
     @JvmStatic
-    var isMessageListSenderAboveSubject = false
-
-    @JvmStatic
     var isShowContactName = false
 
     @JvmStatic
@@ -328,7 +325,6 @@ object K9 : KoinComponent {
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
-        isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
         isAutoFitWidth = storage.getBoolean("autofitWidth", true)
@@ -422,7 +418,6 @@ object K9 : KoinComponent {
         editor.putString("quietTimeEnds", quietTimeEnds)
 
         editor.putEnum("messageListDensity", messageListDensity)
-        editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putBoolean("showContactName", isShowContactName)
