@@ -9,6 +9,7 @@
 - [Architecture](architecture/README.md)
   - [Module Organization](architecture/module-organization.md)
   - [Module Structure](architecture/module-structure.md)
+  - [Feature Modules](architecture/feature-modules.md)
   - [UI Architecture](architecture/ui-architecture.md)
   - [User Flows](architecture/user-flows.md)
   - [Legacy Module Integration](architecture/legacy-module-integration.md)
@@ -33,4 +34,3 @@
 ---
 
 [How to Document](HOW-TO-DOCUMENT.md)
-[Glossary](GLOSSARY.md)
