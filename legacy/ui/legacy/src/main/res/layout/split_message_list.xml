@@ -23,7 +23,7 @@
             android:layout_alignParentTop="true"
             />
 
-        <ProgressBar
+        <androidx.compose.ui.platform.ComposeView
             android:id="@+id/message_list_progress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
@@ -31,8 +31,7 @@
             android:layout_below="@id/toolbar"
             android:layout_marginTop="-6dp"
             android:elevation="8dp"
-            android:max="10000"
-            android:visibility="invisible"
+            android:visibility="visible"
             />
 
         <LinearLayout
