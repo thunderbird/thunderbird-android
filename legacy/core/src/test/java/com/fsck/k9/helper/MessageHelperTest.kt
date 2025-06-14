@@ -49,6 +49,7 @@ class MessageHelperTest : RobolectricTest() {
                 isShowStarredCount = false,
                 isShowMessageListStars = false,
                 isShowAnimations = false,
+                isShowContactName = false,
             ),
         )
     }
