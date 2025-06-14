@@ -161,6 +161,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     isShowAnimations = false,
                     shouldShowSetupArchiveFolderDialog = false,
                     isMessageListSenderAboveSubject = false,
+                    isShowContactName = false,
                 )
             },
         )

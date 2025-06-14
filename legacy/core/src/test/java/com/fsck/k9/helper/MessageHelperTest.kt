@@ -51,6 +51,7 @@ class MessageHelperTest : RobolectricTest() {
                 isShowAnimations = false,
                 shouldShowSetupArchiveFolderDialog = false,
                 isMessageListSenderAboveSubject = false,
+                isShowContactName = false,
             ),
         )
     }

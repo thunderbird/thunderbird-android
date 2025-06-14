@@ -41,6 +41,7 @@ class BuildSwipeActionsTest {
             isShowCorrespondentNames = false,
             shouldShowSetupArchiveFolderDialog = false,
             isMessageListSenderAboveSubject = false,
+            isShowContactName = false,
         )
 
     @Test
