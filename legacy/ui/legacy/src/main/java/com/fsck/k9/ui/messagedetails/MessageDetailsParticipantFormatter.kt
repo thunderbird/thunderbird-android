@@ -10,6 +10,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * Get the display name for a participant to be shown in the message details screen.
@@ -61,10 +62,11 @@ internal class RealMessageDetailsParticipantFormatter(
 internal fun createMessageDetailsParticipantFormatter(
     contactNameProvider: ContactNameProvider,
     resources: Resources,
+    generalSettingsManager: GeneralSettingsManager,
 ): MessageDetailsParticipantFormatter {
     return RealMessageDetailsParticipantFormatter(
         contactNameProvider = contactNameProvider,
-        showContactNames = K9.isShowContactName,
+        showContactNames = generalSettingsManager.getSettings().isShowContactName,
         contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
         meText = resources.getString(R.string.message_view_me_text),
     )

@@ -178,9 +178,6 @@ object K9 : KoinComponent {
     var isMessageListSenderAboveSubject = false
 
     @JvmStatic
-    var isShowContactName = false
-
-    @JvmStatic
     var isChangeContactNameColor = false
 
     @JvmStatic
@@ -339,7 +336,6 @@ object K9 : KoinComponent {
         quietTimeEnds = storage.getStringOrDefault("quietTimeEnds", "7:00")
 
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
-        isShowContactName = storage.getBoolean("showContactName", false)
         isShowContactPicture = storage.getBoolean("showContactPicture", true)
         isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
@@ -425,7 +421,6 @@ object K9 : KoinComponent {
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
-        editor.putBoolean("showContactName", isShowContactName)
         editor.putBoolean("showContactPicture", isShowContactPicture)
         editor.putBoolean("changeRegisteredNameColor", isChangeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
