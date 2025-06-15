@@ -29,6 +29,7 @@ import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.account.storage.legacy.AccountDtoStorageHandler
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(
@@ -131,7 +132,16 @@ class Preferences internal constructor(
                 loadAccounts()
             }
 
-            return accountsMap!![accountUuid]
+            val account = accountsMap!![accountUuid]
+            account?.avatar = if (
+                account!!.avatar.avatarType == AvatarTypeDto.MONOGRAM &&
+                account.avatar.avatarMonogram.isNullOrBlank()
+            ) {
+                account.avatar.copy(avatarMonogram = account.displayName.take(2).uppercase())
+            } else {
+                account.avatar
+            }
+            return account
         }
     }
 

@@ -9,6 +9,7 @@ import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
+import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.logging.Logger
@@ -91,6 +92,12 @@ class PreferencesTest {
             // To be able to persist `Account` we need to set server settings
             incomingServerSettings = SERVER_SETTINGS
             outgoingServerSettings = SERVER_SETTINGS
+            identities = mutableListOf(
+                Identity(
+                    name = "Test User",
+                    email = "test_email@gmail.com",
+                ),
+            )
         }
 
         preferences.saveAccount(account)
