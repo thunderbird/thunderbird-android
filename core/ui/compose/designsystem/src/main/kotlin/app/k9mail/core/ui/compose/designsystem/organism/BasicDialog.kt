@@ -54,11 +54,11 @@ fun BasicDialog(
 @Composable
 fun BasicDialog(
     headlineText: String,
-    supportingText: String?,
     onDismissRequest: () -> Unit,
     content: (@Composable () -> Unit)?,
     buttons: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
+    supportingText: String? = null,
     contentPadding: PaddingValues = BasicDialogDefaults.contentPadding,
     showDividers: Boolean = BasicDialogDefaults.showDividers,
     dividerColor: Color = BasicDialogDefaults.dividerColor,
