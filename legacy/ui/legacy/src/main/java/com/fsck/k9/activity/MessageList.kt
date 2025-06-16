@@ -1465,14 +1465,23 @@ open class MessageList :
 
     private fun configureDrawer() {
         val drawer = navigationDrawer ?: return
-        drawer.selectAccount(account!!.uuid)
-        when {
-            singleFolderMode -> drawer.selectFolder(search!!.accountUuids[0], search!!.folderIds[0])
-            // Don't select any item in the drawer because the Unified Inbox is displayed, but not listed in the drawer
-            search!!.id == SearchAccount.UNIFIED_INBOX && !K9.isShowUnifiedInbox -> drawer.deselect()
-            search!!.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
-            else -> drawer.deselect()
+        val accountUuid = account?.uuid ?: return Unit.also {
+            Timber.w("The account property is null. Skipping drawer configuration. ")
+            Timber.v("drawer = $drawer, localSearch = $search")
         }
+        drawer.selectAccount(accountUuid)
+
+        search?.let { search ->
+            when {
+                singleFolderMode -> drawer.selectFolder(search.accountUuids[0], search.folderIds[0])
+
+                // Don't select any item in the drawer because the Unified Inbox is displayed,
+                // but not listed in the drawer
+                search.id == SearchAccount.UNIFIED_INBOX && !K9.isShowUnifiedInbox -> drawer.deselect()
+                search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
+                else -> drawer.deselect()
+            }
+        } ?: Timber.w("Couldn't select folder for $accountUuid as LocalSearch is null.")
     }
 
     private fun createSearchAccount(): SearchAccount {
