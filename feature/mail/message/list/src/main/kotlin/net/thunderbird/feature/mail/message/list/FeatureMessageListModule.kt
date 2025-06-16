@@ -6,6 +6,7 @@ import net.thunderbird.feature.mail.message.list.domain.usecase.BuildSwipeAction
 import net.thunderbird.feature.mail.message.list.domain.usecase.CreateArchiveFolder
 import net.thunderbird.feature.mail.message.list.domain.usecase.GetAccountFolders
 import net.thunderbird.feature.mail.message.list.domain.usecase.SetArchiveFolder
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragment
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogViewModel
@@ -46,7 +47,7 @@ val featureMessageListModule = module {
             setArchiveFolder = get(),
             resourceManager = get(),
             generalSettingsManager = get(),
-        )
+        ) as SetupArchiveFolderDialogContract.ViewModel
     }
     factory<SetupArchiveFolderDialogFragmentFactory> {
         SetupArchiveFolderDialogFragment.Factory

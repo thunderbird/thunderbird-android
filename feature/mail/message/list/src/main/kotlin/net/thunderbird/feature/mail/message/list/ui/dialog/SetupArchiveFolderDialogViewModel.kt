@@ -1,7 +1,6 @@
 package net.thunderbird.feature.mail.message.list.ui.dialog
 
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -30,14 +29,13 @@ internal class SetupArchiveFolderDialogViewModel(
     private val setArchiveFolder: DomainContract.UseCase.SetArchiveFolder,
     private val resourceManager: StringsResourceManager,
     private val generalSettingsManager: GeneralSettingsManager,
-) : BaseViewModel<State, Event, Effect>(
+) : ViewModel(
     initialState = if (generalSettingsManager.getSettings().shouldShowSetupArchiveFolderDialog) {
         State.EmailCantBeArchived()
     } else {
         State.Closed(isDoNotShowDialogAgainChecked = true)
     },
-),
-    ViewModel {
+) {
 
     override fun event(event: Event) {
         when (event) {

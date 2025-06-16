@@ -22,6 +22,7 @@ import com.fsck.k9.view.MessageWebView
 import net.openid.appauth.AppAuthConfiguration
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.definition
@@ -55,6 +56,7 @@ class DependencyInjectionTest {
                 definition<K9WebViewClient>(AttachmentResolver::class, MessageWebView.OnPageFinishedListener::class),
                 definition<MailSyncWorker>(WorkerParameters::class),
                 definition<OpenPgpApiManager>(LifecycleOwner::class),
+                definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
             ),
         )
     }

@@ -1,11 +1,14 @@
 package net.thunderbird.feature.mail.message.list.ui.dialog
 
 import androidx.compose.runtime.Stable
+import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
-internal interface SetupArchiveFolderDialogContract {
-    interface ViewModel : UnidirectionalViewModel<State, Event, Effect>
+sealed interface SetupArchiveFolderDialogContract {
+    abstract class ViewModel(
+        initialState: State,
+    ) : BaseViewModel<State, Event, Effect>(initialState), UnidirectionalViewModel<State, Event, Effect>
 
     sealed interface State {
         val isDoNotShowDialogAgainChecked: Boolean

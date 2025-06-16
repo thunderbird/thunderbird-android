@@ -35,7 +35,7 @@ internal fun SetupArchiveFolderDialog(
     accountUuid: String,
     onDismissDialog: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ViewModel = koinViewModel<SetupArchiveFolderDialogViewModel> { parametersOf(accountUuid) },
+    viewModel: ViewModel = koinViewModel<ViewModel> { parametersOf(accountUuid) },
 ) {
     val (state, dispatch) = viewModel.observe { effect ->
         when (effect) {
