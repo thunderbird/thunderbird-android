@@ -6,6 +6,7 @@ import java.util.Set;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
 import net.thunderbird.feature.search.api.SearchCondition;
 
 
@@ -255,5 +256,17 @@ public class ConditionsTreeNode implements Parcelable {
         if (mRight != null) {
             mRight.mParent = this;
         }
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "ConditionsTreeNode(" +
+            "mLeft=" + mLeft +
+            ", mRight=" + mRight +
+            ", mParent=" + mParent +
+            ", mValue=" + mValue +
+            ", mCondition=" + mCondition +
+            ')';
     }
 }

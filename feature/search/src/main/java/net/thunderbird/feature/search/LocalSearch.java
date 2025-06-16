@@ -8,6 +8,7 @@ import java.util.Set;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchCondition;
 import net.thunderbird.feature.search.api.SearchField;
@@ -293,5 +294,17 @@ public class LocalSearch implements SearchSpecification {
         if (mConditions != null) {
             mLeafSet = mConditions.getLeafSet();
         }
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "LocalSearch(" +
+            "id='" + id + '\'' +
+            ", mManualSearch=" + mManualSearch +
+            ", mAccountUuids=" + mAccountUuids +
+            ", mConditions=" + mConditions +
+            ", mLeafSet=" + mLeafSet +
+            ')';
     }
 }
