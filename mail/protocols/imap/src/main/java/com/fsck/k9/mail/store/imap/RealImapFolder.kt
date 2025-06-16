@@ -262,7 +262,12 @@ internal class RealImapFolder(
 
             // https://www.rfc-editor.org/rfc/rfc6154.html#section-5.3
             val specialUseAttribute = folderType
-                .takeIf { hasSpecialUseCapability && folderType != FolderType.REGULAR }
+                .takeIf {
+                    hasSpecialUseCapability &&
+                        folderType != FolderType.REGULAR &&
+                        folderType != FolderType.INBOX &&
+                        folderType != FolderType.OUTBOX
+                }
                 ?.let { "(USE (${folderType.attributeName}))" }
                 .orEmpty()
 
@@ -657,9 +662,11 @@ internal class RealImapFolder(
                                     val bodyStream: InputStream = literal.toByteArray().inputStream()
                                     message.parse(bodyStream)
                                 }
+
                                 is Int -> {
                                     // All the work was done in FetchBodyCallback.foundLiteral()
                                 }
+
                                 else -> {
                                     // This shouldn't happen
                                     throw MessagingException("Got FETCH response with bogus parameters")
@@ -728,6 +735,7 @@ internal class RealImapFolder(
                                 // Most of the work was done in FetchAttachmentCallback.foundLiteral()
                                 MimeMessageHelper.setBody(part, literal as Body?)
                             }
+
                             is String -> {
                                 val bodyStream: InputStream = literal.toByteArray().inputStream()
                                 val contentTransferEncoding =
@@ -736,6 +744,7 @@ internal class RealImapFolder(
                                 val body = bodyFactory.createBody(contentTransferEncoding, contentType, bodyStream)
                                 MimeMessageHelper.setBody(part, body)
                             }
+
                             else -> {
                                 // This shouldn't happen
                                 throw MessagingException("Got FETCH response with bogus parameters")
@@ -764,20 +773,25 @@ internal class RealImapFolder(
                         flag.equals("\\Deleted", ignoreCase = true) -> {
                             message.setFlag(Flag.DELETED, true)
                         }
+
                         flag.equals("\\Answered", ignoreCase = true) -> {
                             message.setFlag(Flag.ANSWERED, true)
                         }
+
                         flag.equals("\\Seen", ignoreCase = true) -> {
                             message.setFlag(Flag.SEEN, true)
                         }
+
                         flag.equals("\\Flagged", ignoreCase = true) -> {
                             message.setFlag(Flag.FLAGGED, true)
                         }
+
                         flag.equals("\$Forwarded", ignoreCase = true) -> {
                             message.setFlag(Flag.FORWARDED, true)
                             // a message contains FORWARDED FLAG -> so we can also create them
                             internalImapStore.getPermanentFlagsIndex().add(Flag.FORWARDED)
                         }
+
                         flag.equals("\\Draft", ignoreCase = true) -> {
                             message.setFlag(Flag.DRAFT, true)
                         }
