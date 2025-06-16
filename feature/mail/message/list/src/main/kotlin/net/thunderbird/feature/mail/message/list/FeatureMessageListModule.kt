@@ -1,9 +1,6 @@
 package net.thunderbird.feature.mail.message.list
 
-import net.thunderbird.backend.api.BackendStorageFactory
-import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
-import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.domain.usecase.BuildSwipeActions
 import net.thunderbird.feature.mail.message.list.domain.usecase.CreateArchiveFolder
@@ -16,21 +13,21 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-val featureMessageModule = module {
+val featureMessageListModule = module {
     factory<DomainContract.UseCase.GetAccountFolders> { GetAccountFolders(folderRepository = get()) }
     factory<DomainContract.UseCase.CreateArchiveFolder> {
         CreateArchiveFolder(
-            accountManager = get<AccountManager<BaseAccount>>(),
-            backendStorageFactory = get<BackendStorageFactory<BaseAccount>>(),
-            specialFolderUpdaterFactory = get<SpecialFolderUpdater.Factory<BaseAccount>>(),
+            accountManager = get(),
+            backendStorageFactory = get(),
+            specialFolderUpdaterFactory = get(),
             remoteFolderCreatorFactory = get(named("imap")),
         )
     }
     factory<DomainContract.UseCase.SetArchiveFolder> {
         SetArchiveFolder(
-            accountManager = get<AccountManager<BaseAccount>>(),
-            backendStorageFactory = get<BackendStorageFactory<BaseAccount>>(),
-            specialFolderUpdaterFactory = get<SpecialFolderUpdater.Factory<BaseAccount>>(),
+            accountManager = get(),
+            backendStorageFactory = get(),
+            specialFolderUpdaterFactory = get(),
         )
     }
     factory<DomainContract.UseCase.BuildSwipeActions<BaseAccount>> { parameters ->
