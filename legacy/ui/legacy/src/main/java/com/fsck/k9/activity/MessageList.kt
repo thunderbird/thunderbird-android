@@ -65,6 +65,7 @@ import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
@@ -79,6 +80,8 @@ import net.thunderbird.feature.search.api.SearchSpecification
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+
+private const val TAG = "MessageList"
 
 /**
  * MessageList is the primary user interface for the program. This Activity shows a list of messages.
@@ -103,6 +106,7 @@ open class MessageList :
     private val coreResourceProvider: CoreResourceProvider by inject()
     private val fundingManager: FundingManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
+    private val logger: Logger by inject()
 
     private lateinit var actionBar: ActionBar
     private var searchView: SearchView? = null
@@ -1473,16 +1477,25 @@ open class MessageList :
 
     private fun configureDrawer() {
         val drawer = navigationDrawer ?: return
-        drawer.selectAccount(account!!.uuid)
-        when {
-            singleFolderMode -> drawer.selectFolder(search!!.accountUuids[0], search!!.folderIds[0])
-            // Don't select any item in the drawer because the Unified Inbox is displayed, but not listed in the drawer
-            search!!.id == SearchAccount.UNIFIED_INBOX &&
-                !generalSettingsManager.getSettings().isShowUnifiedInbox -> drawer.deselect()
-
-            search!!.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
-            else -> drawer.deselect()
+        val accountUuid = account?.uuid ?: return Unit.also {
+            logger.warn(TAG) { "The account property is null. Skipping drawer configuration. " }
+            logger.verbose(TAG) { "drawer = $drawer, localSearch = $search" }
         }
+        drawer.selectAccount(accountUuid)
+
+        search?.let { search ->
+            when {
+                singleFolderMode -> drawer.selectFolder(search.accountUuids[0], search.folderIds[0])
+
+                // Don't select any item in the drawer because the Unified Inbox is displayed,
+                // but not listed in the drawer
+                search.id == SearchAccount.UNIFIED_INBOX &&
+                    !generalSettingsManager.getSettings().isShowUnifiedInbox -> drawer.deselect()
+
+                search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
+                else -> drawer.deselect()
+            }
+        } ?: logger.warn(TAG) { "Couldn't select folder for $accountUuid as LocalSearch is null." }
     }
 
     private fun createSearchAccount(): SearchAccount {
