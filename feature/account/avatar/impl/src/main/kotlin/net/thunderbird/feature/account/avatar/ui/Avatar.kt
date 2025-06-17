@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.avatar.ui
+package net.thunderbird.feature.account.avatar.ui
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.border

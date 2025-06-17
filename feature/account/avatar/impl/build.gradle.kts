@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "app.k9mail.feature.account.avatar"
+    namespace = "net.thunderbird.feature.account.avatar.impl"
     resourcePrefix = "account_avatar_"
 }
 

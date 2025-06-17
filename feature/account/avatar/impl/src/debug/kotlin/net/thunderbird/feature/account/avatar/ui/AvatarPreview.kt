@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.avatar.ui
+package net.thunderbird.feature.account.avatar.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -7,23 +7,24 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 
 @Composable
 @Preview(showBackground = true)
-internal fun AvatarOutlinedPreview() {
+internal fun AvatarPreview() {
     PreviewWithThemes {
-        AvatarOutlined(
+        Avatar(
             color = Color(0xFFe57373),
             name = "example",
+            selected = false,
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-internal fun AvatarOutlinedLargePreview() {
+internal fun AvatarSelectedPreview() {
     PreviewWithThemes {
-        AvatarOutlined(
+        Avatar(
             color = Color(0xFFe57373),
             name = "example",
-            size = AvatarSize.LARGE,
+            selected = true,
         )
     }
 }

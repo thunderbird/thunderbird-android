@@ -10,7 +10,7 @@ android {
 dependencies {
     api(projects.feature.account.settings.api)
     implementation(projects.feature.account.core)
-    implementation(projects.feature.account.avatar)
+    implementation(projects.feature.account.avatar.impl)
 
     implementation(projects.core.outcome)
 

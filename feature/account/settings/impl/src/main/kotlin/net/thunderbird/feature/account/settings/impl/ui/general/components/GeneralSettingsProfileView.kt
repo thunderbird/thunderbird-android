@@ -16,8 +16,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.card.CardElevated
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.feature.account.avatar.ui.AvatarOutlined
-import app.k9mail.feature.account.avatar.ui.AvatarSize
+import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
+import net.thunderbird.feature.account.avatar.ui.AvatarSize
 
 @Composable
 internal fun GeneralSettingsProfileView(
