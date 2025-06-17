@@ -1,5 +1,6 @@
 package net.thunderbird.backend.api.folder
 
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.folders.FolderServerId
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.mail.account.api.BaseAccount
@@ -13,6 +14,7 @@ interface RemoteFolderCreator {
      * @param mustCreate If `true`, the folder must be created returning
      * [RemoteFolderCreationOutcome.Error.FailedToCreateRemoteFolder]. If `false`, the folder will be created
      * only if it doesn't exist.
+     * @param folderType The folder type. This requires special handling for some servers. Default [FolderType.REGULAR].
      * @return The result of the operation.
      * @see RemoteFolderCreationOutcome.Success
      * @see RemoteFolderCreationOutcome.Error
@@ -20,6 +22,7 @@ interface RemoteFolderCreator {
     suspend fun create(
         folderServerId: FolderServerId,
         mustCreate: Boolean,
+        folderType: FolderType = FolderType.REGULAR,
     ): Outcome<RemoteFolderCreationOutcome.Success, RemoteFolderCreationOutcome.Error>
 
     interface Factory {

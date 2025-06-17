@@ -1,6 +1,7 @@
 package net.thunderbird.backend.imap
 
 import com.fsck.k9.backend.imap.ImapBackend
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.store.imap.ImapStore
@@ -22,6 +23,7 @@ class ImapRemoteFolderCreator(
     override suspend fun create(
         folderServerId: FolderServerId,
         mustCreate: Boolean,
+        folderType: FolderType,
     ): Outcome<RemoteFolderCreationOutcome.Success, RemoteFolderCreationOutcome.Error> = withContext(ioDispatcher) {
         val remoteFolder = imapStore.getFolder(name = folderServerId.serverId)
         val outcome = try {
@@ -33,7 +35,9 @@ class ImapRemoteFolderCreator(
 
                 folderExists -> Outcome.success(RemoteFolderCreationOutcome.Success.AlreadyExists)
 
-                !folderExists && remoteFolder.create() -> Outcome.success(RemoteFolderCreationOutcome.Success.Created)
+                !folderExists && remoteFolder.create(folderType = folderType) -> Outcome.success(
+                    RemoteFolderCreationOutcome.Success.Created,
+                )
 
                 else -> Outcome.failure(
                     RemoteFolderCreationOutcome.Error.FailedToCreateRemoteFolder(

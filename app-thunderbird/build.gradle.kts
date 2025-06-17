@@ -185,11 +185,18 @@ android {
         resources {
             excludes += listOf(
                 "META-INF/*.kotlin_module",
-                "META-INF/*.version",
                 "kotlin/**",
                 "DebugProbesKt.bin",
             )
         }
+    }
+}
+
+androidComponents {
+    onVariants(selector().withBuildType("release")) { variant ->
+        variant.packaging.resources.excludes.addAll(
+            "META-INF/*.version",
+        )
     }
 }
 
@@ -212,6 +219,7 @@ dependencies {
     implementation(projects.core.featureflag)
 
     implementation(projects.feature.account.settings.impl)
+    implementation(projects.feature.mail.message.list)
 
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.messageListGlance)

@@ -14,6 +14,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonSegmentedSingleChoice
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
+import app.k9mail.core.ui.compose.designsystem.atom.button.RadioButton
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
@@ -121,6 +122,24 @@ fun LazyGridScope.buttonItems() {
             imageVector = Icons.Outlined.AccountCircle,
             onClick = { },
             enabled = false,
+            modifier = Modifier.padding(defaultItemPadding()),
+        )
+    }
+
+    sectionHeaderItem(text = "Button - RadioButton")
+    defaultItem {
+        RadioButton(
+            selected = false,
+            label = "Radio Button",
+            onClick = { },
+            modifier = Modifier.padding(defaultItemPadding()),
+        )
+    }
+    defaultItem {
+        RadioButton(
+            selected = true,
+            label = "Selected Radio Button",
+            onClick = { },
             modifier = Modifier.padding(defaultItemPadding()),
         )
     }

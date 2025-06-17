@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -20,6 +22,12 @@ android {
         unitTests {
             isIncludeAndroidResources = true
         }
+    }
+}
+
+kotlin {
+    sourceSets.all {
+        languageSettings.enableLanguageFeature(LanguageFeature.WhenGuards.name)
     }
 }
 

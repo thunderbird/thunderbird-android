@@ -20,7 +20,9 @@ import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.view.K9WebViewClient
 import com.fsck.k9.view.MessageWebView
 import net.openid.appauth.AppAuthConfiguration
+import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.definition
@@ -45,6 +47,7 @@ class DependencyInjectionTest {
                 InteractionMode::class,
                 NotificationManager::class,
                 Resources::class,
+                Storage::class,
             ),
             injections = injectedParameters(
                 definition<AccountRemoverWorker>(WorkerParameters::class),
@@ -53,6 +56,7 @@ class DependencyInjectionTest {
                 definition<K9WebViewClient>(AttachmentResolver::class, MessageWebView.OnPageFinishedListener::class),
                 definition<MailSyncWorker>(WorkerParameters::class),
                 definition<OpenPgpApiManager>(LifecycleOwner::class),
+                definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
             ),
         )
     }

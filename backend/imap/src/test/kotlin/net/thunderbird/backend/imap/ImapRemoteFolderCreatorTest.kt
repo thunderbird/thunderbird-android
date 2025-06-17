@@ -7,6 +7,7 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import assertk.assertions.prop
 import com.fsck.k9.backend.imap.TestImapFolder
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.store.imap.FolderListItem
 import com.fsck.k9.mail.store.imap.ImapFolder
@@ -73,7 +74,7 @@ class ImapRemoteFolderCreatorTest {
         val folderServerId = FolderServerId("New Folder")
         val fakeFolder = object : TestImapFolder(folderServerId.serverId) {
             override fun exists(): Boolean = false
-            override fun create(): Boolean = true
+            override fun create(folderType: FolderType): Boolean = true
         }
         val imapStore = FakeImapStore(fakeFolder)
         val sut = ImapRemoteFolderCreator(logger, imapStore)
@@ -97,7 +98,7 @@ class ImapRemoteFolderCreatorTest {
         val folderServerId = FolderServerId("New Folder")
         val fakeFolder = object : TestImapFolder(folderServerId.serverId) {
             override fun exists(): Boolean = false
-            override fun create(): Boolean = false
+            override fun create(folderType: FolderType): Boolean = false
         }
         val imapStore = FakeImapStore(fakeFolder)
         val sut = ImapRemoteFolderCreator(logger, imapStore)

@@ -19,5 +19,6 @@ internal object Capabilities {
     const val LIST_EXTENDED: String = "LIST-EXTENDED"
     const val MOVE: String = "MOVE"
     const val ENABLE: String = "ENABLE"
+    const val CREATE_SPECIAL_USE: String = "CREATE-SPECIAL-USE"
     const val UTF8_ACCEPT: String = "UTF8=ACCEPT"
 }

@@ -19,6 +19,7 @@ import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
@@ -31,6 +32,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.util.Date
 import java.util.TimeZone
+import net.thunderbird.protocols.imap.folder.attributeName
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.After
@@ -53,6 +55,7 @@ import org.mockito.kotlin.never
 import org.mockito.kotlin.stub
 import org.mockito.kotlin.whenever
 
+@Suppress("MaxLineLength")
 class RealImapFolderTest {
     private val imapStoreConfig = FakeImapStoreConfig()
     private val internalImapStore = object : InternalImapStore {
@@ -1517,6 +1520,31 @@ class RealImapFolderTest {
         val message = folder.getMessage("uid")
 
         assertThat(message.uid).isEqualTo("uid")
+    }
+
+    @Test
+    fun `create() when folderType not in (REGULAR INBOX OUTBOX) and connection has CREATE_SPECIAL_USE capability, should call CREATE command with USE command and return true`() {
+        // Arrange
+        val types = FolderType.entries.filterNot { folderType ->
+            folderType == FolderType.REGULAR ||
+                folderType == FolderType.INBOX ||
+                folderType == FolderType.OUTBOX
+        }
+        imapConnection.stub {
+            on { hasCapability(Capabilities.CREATE_SPECIAL_USE) } doReturn true
+        }
+        val folderName = "New Folder"
+        val remoteFolder = createFolder(folderName)
+
+        for (folderType in types) {
+            // Act
+            remoteFolder.create(folderType = folderType)
+        }
+
+        // Assert
+        for (folderType in types) {
+            assertCommandIssued("CREATE \"$folderName\" (USE (${folderType.attributeName}))")
+        }
     }
 
     @Suppress("SameParameterValue")

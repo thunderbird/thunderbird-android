@@ -18,7 +18,6 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
 import com.fsck.k9.K9.PostRemoveNavigation;
 import com.fsck.k9.K9.SplitViewMode;
-import com.fsck.k9.SwipeAction;
 import com.fsck.k9.UiDensity;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
@@ -39,6 +38,7 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
 import net.thunderbird.core.android.account.AccountDefaultsProvider;
 import net.thunderbird.core.android.account.SortType;
+import net.thunderbird.core.common.action.SwipeAction;
 import net.thunderbird.core.preference.AppTheme;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.SubTheme;
@@ -308,6 +308,12 @@ class GeneralSettingsDescriptions {
             new V(90,
                 new EnumSetting<>(PostMarkAsUnreadNavigation.class, PostMarkAsUnreadNavigation.ReturnToMessageList))
         ));
+        s.put(
+            RealGeneralSettingsManagerKt.KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+            Settings.versions(
+                new V(105, new BooleanSetting(true))
+            )
+        );
 
         // TODO: Add a way to properly support feature-specific settings.
         if (telemetryManager.isTelemetryFeatureIncluded()) {

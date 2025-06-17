@@ -129,6 +129,10 @@ complexity:
   LongMethod:
     active: true
     threshold: 60
+    ignoreAnnotated:
+      - 'Preview'
+      - 'PreviewLightDark'
+      - 'PreviewLightDarkLandscape'
   LongParameterList:
     active: true
     functionThreshold: 8
@@ -622,6 +626,8 @@ style:
     ignoreAnnotation: false
     ignoreAnnotated:
       - 'Preview'
+      - 'PreviewLightDark'
+      - 'PreviewLightDarkLandscape'
     ignoreNamedArgument: true
     ignoreEnums: false
     ignoreRanges: false
@@ -740,11 +746,17 @@ style:
   UnusedPrivateMember:
     active: true
     allowedNames: ''
+    ignoreAnnotated:
+      - 'Preview'
+      - 'PreviewLightDark'
+      - 'PreviewLightDarkLandscape'
   UnusedPrivateProperty:
     active: true
     allowedNames: '_|ignored|expected|serialVersionUID'
     ignoreAnnotated:
       - 'Preview'
+      - 'PreviewLightDark'
+      - 'PreviewLightDarkLandscape'
   UseAnyOrNoneInsteadOfFind:
     active: true
   UseArrayLiteralsInAnnotations:
