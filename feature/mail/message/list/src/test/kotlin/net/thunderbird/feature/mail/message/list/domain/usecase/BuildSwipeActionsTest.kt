@@ -393,6 +393,8 @@ private class FakeGeneralSettingsManager(
     }
 
     override fun setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject: Boolean) = error("not implemented")
+
+    override fun setIsShowContactName(isShowContactName: Boolean) = error("not implemented")
 }
 
 private class FakeStorage(
