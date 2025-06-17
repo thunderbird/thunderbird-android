@@ -7,6 +7,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.api.R
@@ -32,6 +33,7 @@ class DropDownDrawer(
 ) : NavigationDrawer, KoinComponent {
 
     private val themeProvider: FeatureThemeProvider by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.navigation_drawer_layout)
     private val drawerContent: ComposeView = parent.findViewById(R.id.navigation_drawer_content)
@@ -52,6 +54,7 @@ class DropDownDrawer(
                     openUnifiedFolder = openUnifiedFolder,
                     openManageFolders = openManageFolders,
                     openSettings = openSettings,
+                    featureFlagProvider = featureFlagProvider,
                     closeDrawer = { close() },
                 )
             }
