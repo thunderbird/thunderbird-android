@@ -11,5 +11,7 @@ dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
 
+    implementation(projects.feature.account.avatar.api)
+
     testImplementation(projects.core.ui.compose.testing)
 }
