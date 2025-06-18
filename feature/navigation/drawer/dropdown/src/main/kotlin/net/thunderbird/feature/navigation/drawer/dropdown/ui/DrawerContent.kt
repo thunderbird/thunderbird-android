@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
@@ -123,6 +125,10 @@ private fun FolderContent(
     state: State,
     onEvent: (Event) -> Unit,
 ) {
+    val isUnifiedAccount = remember(state.selectedAccountId) {
+        state.accounts.any { it.id == state.selectedAccountId && it is UnifiedDisplayAccount }
+    }
+
     Surface(
         color = MainTheme.colors.surfaceContainerLow,
     ) {
@@ -142,6 +148,7 @@ private fun FolderContent(
             FolderSettingList(
                 onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
                 onSettingsClick = { onEvent(Event.OnSettingsClick) },
+                isUnifiedAccount = isUnifiedAccount,
             )
         }
     }

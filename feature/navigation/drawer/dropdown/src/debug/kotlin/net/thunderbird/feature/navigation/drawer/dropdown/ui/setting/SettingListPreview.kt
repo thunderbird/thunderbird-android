@@ -11,6 +11,19 @@ internal fun SettingListPreview() {
         FolderSettingList(
             onManageFoldersClick = {},
             onSettingsClick = {},
+            isUnifiedAccount = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun SettingListWithUnifiedAccountPreview() {
+    PreviewWithTheme {
+        FolderSettingList(
+            onManageFoldersClick = {},
+            onSettingsClick = {},
+            isUnifiedAccount = true,
         )
     }
 }
