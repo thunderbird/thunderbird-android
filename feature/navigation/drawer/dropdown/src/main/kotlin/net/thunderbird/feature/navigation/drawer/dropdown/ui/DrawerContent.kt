@@ -19,6 +19,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
@@ -131,7 +133,7 @@ private fun FolderContent(
         ) {
             FolderList(
                 rootFolder = state.rootFolder,
-                selectedFolder = state.folders.firstOrNull { it.id == state.selectedFolderId },
+                selectedFolder = state.selectedFolder,
                 onFolderClick = { folder ->
                     onEvent(Event.OnFolderClick(folder))
                 },
@@ -146,3 +148,4 @@ private fun FolderContent(
         }
     }
 }
+

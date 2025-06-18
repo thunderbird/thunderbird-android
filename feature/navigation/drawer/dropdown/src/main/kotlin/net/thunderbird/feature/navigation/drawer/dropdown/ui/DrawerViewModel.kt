@@ -99,17 +99,51 @@ internal class DrawerViewModel(
     }
 
     private fun updateFolders(displayFolders: List<DisplayFolder>, rootFolder: DisplayTreeFolder) {
-        val selectedFolder = displayFolders.find {
+        // First try to find the folder in the flat list
+        var selectedFolder = displayFolders.find {
             it.id == state.value.selectedFolderId
-        } ?: displayFolders.firstOrNull()
+        }
+
+        // If not found, try to find it in the tree hierarchy
+        if (selectedFolder == null) {
+            selectedFolder = findFolderById(rootFolder, state.value.selectedFolderId)
+        }
+
+        // If still not found, default to the first folder
+        if (selectedFolder == null) {
+            selectedFolder = displayFolders.firstOrNull() ?: rootFolder.children.firstOrNull()?.displayFolder
+        }
 
         updateState {
             it.copy(
                 rootFolder = rootFolder,
                 folders = displayFolders.toImmutableList(),
                 selectedFolderId = selectedFolder?.id,
+                selectedFolder = selectedFolder,
             )
         }
+    }
+
+    /**
+     * Recursively searches for a folder with the given ID in the DisplayTreeFolder hierarchy.
+     */
+    private fun findFolderById(treeFolder: DisplayTreeFolder, folderId: String?): DisplayFolder? {
+        if (folderId == null) return null
+
+        // Check if the current folder matches the ID
+        if (treeFolder.displayFolder?.id == folderId) {
+            return treeFolder.displayFolder
+        }
+
+        // Recursively search in children
+        for (child in treeFolder.children) {
+            val found = findFolderById(child, folderId)
+            if (found != null) {
+                return found
+            }
+        }
+
+        return null
     }
 
     override fun event(event: Event) {
@@ -147,9 +181,20 @@ internal class DrawerViewModel(
     }
 
     private fun selectFolder(folderId: String?) {
+        // Find the folder with the given ID
+        val folder = if (folderId != null) {
+            // First try to find the folder in the flat list
+            state.value.folders.find { it.id == folderId }
+                // If not found, try to find it in the tree hierarchy
+                ?: findFolderById(state.value.rootFolder, folderId)
+        } else {
+            null
+        }
+
         updateState {
             it.copy(
                 selectedFolderId = folderId,
+                selectedFolder = folder,
             )
         }
     }
@@ -172,6 +217,9 @@ internal class DrawerViewModel(
     }
 
     private fun openFolder(folder: DisplayFolder) {
+        // Update the selected folder ID in the state
+        selectFolder(folder.id)
+
         if (folder is DisplayAccountFolder) {
             emitEffect(
                 Effect.OpenFolder(
