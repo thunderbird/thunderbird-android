@@ -27,13 +27,13 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountAvatar
 
 @Suppress("LongMethod")
 @Composable
 internal fun SideRailAccountView(
-    account: DisplayAccount,
+    account: MailDisplayAccount,
     onClick: () -> Unit,
     showAvatar: Boolean,
     modifier: Modifier = Modifier,

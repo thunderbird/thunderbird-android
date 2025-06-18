@@ -13,15 +13,15 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.theme2.ColorRoles
 import app.k9mail.core.ui.compose.theme2.toColorRoles
 import net.thunderbird.feature.account.avatar.ui.Avatar
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.labelForCount
 
 @Composable
 internal fun AccountAvatar(
-    account: DisplayAccount,
+    account: MailDisplayAccount,
     selected: Boolean,
     modifier: Modifier = Modifier,
-    onClick: ((DisplayAccount) -> Unit)? = null,
+    onClick: ((MailDisplayAccount) -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val accountColor = calculateAccountColor(account.color)

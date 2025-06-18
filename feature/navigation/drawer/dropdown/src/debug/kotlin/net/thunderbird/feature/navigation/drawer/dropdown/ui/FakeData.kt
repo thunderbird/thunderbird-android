@@ -10,14 +10,16 @@ import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 
 internal object FakeData {
+
+    const val UNIFIED_ACCOUNT_ID = "unified_account"
 
     const val DISPLAY_NAME = "Account Name"
     const val EMAIL_ADDRESS = "test@example.com"
@@ -38,7 +40,12 @@ internal object FakeData {
         email = EMAIL_ADDRESS
     }
 
-    val DISPLAY_ACCOUNT = DisplayAccount(
+    val UNIFIED_DISPLAY_ACCOUNT = UnifiedDisplayAccount(
+        unreadMessageCount = 224,
+        starredMessageCount = 42,
+    )
+
+    val MAIL_DISPLAY_ACCOUNT = MailDisplayAccount(
         id = ACCOUNT_ID_RAW,
         name = DISPLAY_NAME,
         email = EMAIL_ADDRESS,
@@ -54,7 +61,7 @@ internal object FakeData {
         isLocalOnly = false,
     )
 
-    val DISPLAY_FOLDER = DisplayAccountFolder(
+    val DISPLAY_FOLDER = MailDisplayFolder(
         accountId = ACCOUNT_ID_RAW,
         folder = FOLDER,
         isInTopGroup = false,
@@ -86,9 +93,9 @@ internal object FakeData {
         children = persistentListOf(),
     )
 
-    val UNIFIED_FOLDER = DisplayUnifiedFolder(
+    val UNIFIED_FOLDER = UnifiedDisplayFolder(
         id = "unified_inbox",
-        unifiedType = DisplayUnifiedFolderType.INBOX,
+        unifiedType = UnifiedDisplayFolderType.INBOX,
         unreadMessageCount = 123,
         starredMessageCount = 567,
     )
@@ -140,9 +147,9 @@ internal object FakeData {
         ),
     )
 
-    fun createAccountList(): PersistentList<DisplayAccount> {
+    fun createAccountList(): PersistentList<MailDisplayAccount> {
         return persistentListOf(
-            DisplayAccount(
+            MailDisplayAccount(
                 id = "account1",
                 name = "job@example.com",
                 email = "job@example.com",
@@ -150,7 +157,7 @@ internal object FakeData {
                 unreadMessageCount = 2,
                 starredMessageCount = 0,
             ),
-            DisplayAccount(
+            MailDisplayAccount(
                 id = "account2",
                 name = "Jodie Doe",
                 email = "jodie@example.com",
@@ -158,7 +165,7 @@ internal object FakeData {
                 unreadMessageCount = 12,
                 starredMessageCount = 0,
             ),
-            DisplayAccount(
+            MailDisplayAccount(
                 id = "account3",
                 name = "John Doe",
                 email = "john@example.com",

@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData
 import app.k9mail.legacy.ui.folder.DisplayFolder as LegacyDisplayFolder
 
@@ -105,16 +105,16 @@ internal class GetDisplayFoldersForAccountTest {
             starredMessageCount = 0,
         )
 
-        val DISPLAY_UNIFIED_FOLDER = DisplayUnifiedFolder(
+        val DISPLAY_UNIFIED_FOLDER = UnifiedDisplayFolder(
             id = "unified_inbox",
-            unifiedType = DisplayUnifiedFolderType.INBOX,
+            unifiedType = UnifiedDisplayFolderType.INBOX,
             unreadMessageCount = 2,
             starredMessageCount = 2,
         )
 
-        val DISPLAY_UNIFIED_FOLDER_2 = DisplayUnifiedFolder(
+        val DISPLAY_UNIFIED_FOLDER_2 = UnifiedDisplayFolder(
             id = "unified_inbox",
-            unifiedType = DisplayUnifiedFolderType.INBOX,
+            unifiedType = UnifiedDisplayFolderType.INBOX,
             unreadMessageCount = 3,
             starredMessageCount = 3,
         )
@@ -122,14 +122,14 @@ internal class GetDisplayFoldersForAccountTest {
         val DISPLAY_UNIFIED_FOLDERS = listOf(DISPLAY_UNIFIED_FOLDER)
 
         val DISPLAY_ACCOUNT_FOLDERS = listOf<DisplayFolder>(
-            DisplayAccountFolder(
+            MailDisplayFolder(
                 accountId = ACCOUNT_ID_RAW,
                 folder = FakeData.FOLDER,
                 isInTopGroup = false,
                 unreadMessageCount = 0,
                 starredMessageCount = 0,
             ),
-            DisplayAccountFolder(
+            MailDisplayFolder(
                 accountId = ACCOUNT_ID_RAW,
                 folder = FakeData.FOLDER.copy(
                     id = 2,
@@ -141,7 +141,7 @@ internal class GetDisplayFoldersForAccountTest {
             ),
         )
 
-        val DISPLAY_ACCOUNT_FOLDERS_2 = DISPLAY_ACCOUNT_FOLDERS + DisplayAccountFolder(
+        val DISPLAY_ACCOUNT_FOLDERS_2 = DISPLAY_ACCOUNT_FOLDERS + MailDisplayFolder(
             accountId = ACCOUNT_ID_RAW,
             folder = FakeData.FOLDER.copy(
                 id = 3,

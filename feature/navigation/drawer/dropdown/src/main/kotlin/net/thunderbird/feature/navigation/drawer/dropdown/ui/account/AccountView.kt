@@ -36,11 +36,11 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
 import net.thunderbird.feature.navigation.drawer.dropdown.R
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 
 @Composable
 internal fun AccountView(
-    account: DisplayAccount,
+    account: MailDisplayAccount,
     onClick: () -> Unit,
     showAccount: Boolean,
     modifier: Modifier = Modifier,
@@ -82,7 +82,7 @@ private fun AnimatedSelectionIcon(showAccount: Boolean) {
 
 @Composable
 private fun RowScope.AccountSelectedView(
-    account: DisplayAccount,
+    account: MailDisplayAccount,
 ) {
     AvatarOutlined(
         color = Color(account.color),

@@ -23,16 +23,16 @@ import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_ACCOUNT
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.MAIL_DISPLAY_ACCOUNT
 import org.junit.Rule
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.times
@@ -71,12 +71,12 @@ internal class DrawerViewModelTest {
     @Test
     fun `should change loading state when OnSyncAccount event is received`() = runMviTest {
         val initialState = State(
-            accounts = listOf(DISPLAY_ACCOUNT).toImmutableList(),
-            selectedAccountId = DISPLAY_ACCOUNT.id,
+            accounts = listOf(MAIL_DISPLAY_ACCOUNT).toImmutableList(),
+            selectedAccountId = MAIL_DISPLAY_ACCOUNT.id,
         )
         val testSubject = createTestSubject(
             initialState = initialState,
-            displayAccountsFlow = flow { emit(listOf(DISPLAY_ACCOUNT)) },
+            displayAccountsFlow = flow { emit(listOf(MAIL_DISPLAY_ACCOUNT)) },
             syncAccountFlow = flow {
                 delay(25)
                 emit(Result.success(Unit))
@@ -220,7 +220,7 @@ internal class DrawerViewModelTest {
 
     @Test
     fun `should set selected account to null when no accounts are present`() = runTest {
-        val getDisplayAccountsFlow = MutableStateFlow(emptyList<DisplayAccount>())
+        val getDisplayAccountsFlow = MutableStateFlow(emptyList<MailDisplayAccount>())
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
         )
@@ -461,7 +461,7 @@ internal class DrawerViewModelTest {
     private fun createTestSubject(
         initialState: State = State(),
         drawerConfigFlow: Flow<DrawerConfig> = flow { emit(createDrawerConfig()) },
-        displayAccountsFlow: Flow<List<DisplayAccount>> = flow { emit(emptyList()) },
+        displayAccountsFlow: Flow<List<MailDisplayAccount>> = flow { emit(emptyList()) },
         displayFoldersFlow: Flow<Map<String, List<DisplayFolder>>> = flow { emit(emptyMap()) },
         displayTreeFolder: DisplayTreeFolder = DisplayTreeFolder(
             displayFolder = null,
@@ -508,8 +508,8 @@ internal class DrawerViewModelTest {
         email: String = "test@example.com",
         unreadCount: Int = 0,
         starredCount: Int = 0,
-    ): DisplayAccount {
-        return DisplayAccount(
+    ): MailDisplayAccount {
+        return MailDisplayAccount(
             id = id,
             name = name,
             email = email,
@@ -519,7 +519,7 @@ internal class DrawerViewModelTest {
         )
     }
 
-    private fun createDisplayAccountList(count: Int): List<DisplayAccount> {
+    private fun createDisplayAccountList(count: Int): List<MailDisplayAccount> {
         return List(count) { index ->
             createDisplayAccount(
                 id = "uuid-$index",
@@ -534,7 +534,7 @@ internal class DrawerViewModelTest {
         type: FolderType = FolderType.REGULAR,
         unreadCount: Int = 0,
         starredCount: Int = 0,
-    ): DisplayAccountFolder {
+    ): MailDisplayFolder {
         val folder = Folder(
             id = id,
             name = name,
@@ -542,7 +542,7 @@ internal class DrawerViewModelTest {
             isLocalOnly = false,
         )
 
-        return DisplayAccountFolder(
+        return MailDisplayFolder(
             accountId = accountId,
             folder = folder,
             isInTopGroup = false,
@@ -551,7 +551,7 @@ internal class DrawerViewModelTest {
         )
     }
 
-    private fun createDisplayFolderList(count: Int): List<DisplayAccountFolder> {
+    private fun createDisplayFolderList(count: Int): List<MailDisplayFolder> {
         return List(count) { index ->
             createDisplayFolder(
                 id = index.toLong() + 100,
@@ -561,11 +561,11 @@ internal class DrawerViewModelTest {
 
     private fun createDisplayUnifiedFolder(
         id: String = "unified_inbox",
-        unifiedType: DisplayUnifiedFolderType = DisplayUnifiedFolderType.INBOX,
+        unifiedType: UnifiedDisplayFolderType = UnifiedDisplayFolderType.INBOX,
         unreadCount: Int = 0,
         starredCount: Int = 0,
-    ): DisplayUnifiedFolder {
-        return DisplayUnifiedFolder(
+    ): UnifiedDisplayFolder {
+        return UnifiedDisplayFolder(
             id = id,
             unifiedType = unifiedType,
             unreadMessageCount = unreadCount,

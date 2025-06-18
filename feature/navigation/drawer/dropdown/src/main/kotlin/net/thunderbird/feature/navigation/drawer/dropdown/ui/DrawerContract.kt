@@ -5,9 +5,9 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 
 internal interface DrawerContract {
 
@@ -20,7 +20,7 @@ internal interface DrawerContract {
             showStarredCount = false,
             showAccountSelector = true,
         ),
-        val accounts: ImmutableList<DisplayAccount> = persistentListOf(),
+        val accounts: ImmutableList<MailDisplayAccount> = persistentListOf(),
         val selectedAccountId: String? = null,
         val rootFolder: DisplayTreeFolder = DisplayTreeFolder(
             displayFolder = null,
@@ -38,8 +38,8 @@ internal interface DrawerContract {
     sealed interface Event {
         data class SelectAccount(val accountId: String?) : Event
         data class SelectFolder(val folderId: String?) : Event
-        data class OnAccountClick(val account: DisplayAccount) : Event
-        data class OnAccountViewClick(val account: DisplayAccount) : Event
+        data class OnAccountClick(val account: MailDisplayAccount) : Event
+        data class OnAccountViewClick(val account: MailDisplayAccount) : Event
         data class OnFolderClick(val folder: DisplayFolder) : Event
         data object OnAccountSelectorClick : Event
         data object OnManageFoldersClick : Event

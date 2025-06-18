@@ -17,11 +17,11 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.R
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 
 @Composable
 internal fun FolderListItem(
@@ -88,7 +88,7 @@ internal fun FolderListItem(
                     .fillMaxWidth()
                     .padding(start = MainTheme.spacings.double * indentationLevel),
                 treeFolder = child,
-                parentPrefix = if (displayParent is DisplayAccountFolder) displayParent.folder.name else null,
+                parentPrefix = if (displayParent is MailDisplayFolder) displayParent.folder.name else null,
                 indentationLevel = indentationLevel + 1,
             )
         }
@@ -102,28 +102,28 @@ private fun mapFolderName(
     parentPrefix: String? = "",
 ): String {
     return when (displayFolder) {
-        is DisplayAccountFolder -> folderNameFormatter.displayName(displayFolder.folder).removePrefix("$parentPrefix/")
-        is DisplayUnifiedFolder -> mapUnifiedFolderName(displayFolder)
+        is MailDisplayFolder -> folderNameFormatter.displayName(displayFolder.folder).removePrefix("$parentPrefix/")
+        is UnifiedDisplayFolder -> mapUnifiedFolderName(displayFolder)
         else -> throw IllegalArgumentException("Unknown display folder: $displayFolder")
     }
 }
 
 @Composable
-private fun mapUnifiedFolderName(folder: DisplayUnifiedFolder): String {
+private fun mapUnifiedFolderName(folder: UnifiedDisplayFolder): String {
     return when (folder.unifiedType) {
-        DisplayUnifiedFolderType.INBOX -> stringResource(R.string.navigation_drawer_dropdown_unified_inbox_title)
+        UnifiedDisplayFolderType.INBOX -> stringResource(R.string.navigation_drawer_dropdown_unified_inbox_title)
     }
 }
 
 private fun mapFolderIcon(folder: DisplayFolder): ImageVector {
     return when (folder) {
-        is DisplayAccountFolder -> mapDisplayAccountFolderIcon(folder)
-        is DisplayUnifiedFolder -> mapDisplayUnifiedFolderIcon(folder)
+        is MailDisplayFolder -> mapDisplayAccountFolderIcon(folder)
+        is UnifiedDisplayFolder -> mapDisplayUnifiedFolderIcon(folder)
         else -> throw IllegalArgumentException("Unknown display folder type: $folder")
     }
 }
 
-private fun mapDisplayAccountFolderIcon(folder: DisplayAccountFolder): ImageVector {
+private fun mapDisplayAccountFolderIcon(folder: MailDisplayFolder): ImageVector {
     return when (folder.folder.type) {
         FolderType.INBOX -> Icons.Outlined.Inbox
         FolderType.OUTBOX -> Icons.Outlined.Outbox
@@ -136,8 +136,8 @@ private fun mapDisplayAccountFolderIcon(folder: DisplayAccountFolder): ImageVect
     }
 }
 
-private fun mapDisplayUnifiedFolderIcon(folder: DisplayUnifiedFolder): ImageVector {
+private fun mapDisplayUnifiedFolderIcon(folder: UnifiedDisplayFolder): ImageVector {
     when (folder.unifiedType) {
-        DisplayUnifiedFolderType.INBOX -> return Icons.Outlined.AllInbox
+        UnifiedDisplayFolderType.INBOX -> return Icons.Outlined.AllInbox
     }
 }

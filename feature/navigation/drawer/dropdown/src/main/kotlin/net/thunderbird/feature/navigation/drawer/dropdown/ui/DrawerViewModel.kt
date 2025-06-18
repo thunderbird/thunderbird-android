@@ -15,11 +15,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
@@ -66,12 +66,16 @@ internal class DrawerViewModel(
     }
 
     private suspend fun loadAccounts() {
-        getDisplayAccounts().collectLatest { accounts ->
-            updateAccounts(accounts)
-        }
+        state.map { it.config.showUnifiedFolders }
+            .distinctUntilChanged()
+            .flatMapLatest { showUnifiedFolders ->
+                getDisplayAccounts(showUnifiedFolders)
+            }.collectLatest { accounts ->
+                updateAccounts(accounts)
+            }
     }
 
-    private fun updateAccounts(accounts: List<DisplayAccount>) {
+    private fun updateAccounts(accounts: List<MailDisplayAccount>) {
         val selectedAccount = accounts.find { it.id == state.value.selectedAccountId }
             ?: accounts.firstOrNull()
 
@@ -220,14 +224,14 @@ internal class DrawerViewModel(
         // Update the selected folder ID in the state
         selectFolder(folder.id)
 
-        if (folder is DisplayAccountFolder) {
+        if (folder is MailDisplayFolder) {
             emitEffect(
                 Effect.OpenFolder(
                     accountId = folder.accountId,
                     folderId = folder.folder.id,
                 ),
             )
-        } else if (folder is DisplayUnifiedFolder) {
+        } else if (folder is UnifiedDisplayFolder) {
             emitEffect(Effect.OpenUnifiedFolder)
         }
 

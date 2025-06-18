@@ -18,9 +18,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
@@ -97,7 +95,7 @@ internal fun DrawerContent(
 private fun AccountContent(
     state: State,
     onEvent: (Event) -> Unit,
-    selectedAccount: DisplayAccount?,
+    selectedAccount: MailDisplayAccount?,
 ) {
     Surface(
         color = MainTheme.colors.surfaceContainerLow,
@@ -148,4 +146,3 @@ private fun FolderContent(
         }
     }
 }
-
