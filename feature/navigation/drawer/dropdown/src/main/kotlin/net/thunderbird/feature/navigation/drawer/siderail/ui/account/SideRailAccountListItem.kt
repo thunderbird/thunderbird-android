@@ -7,13 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountAvatar
 
 @Composable
 internal fun SideRailAccountListItem(
-    account: MailDisplayAccount,
-    onClick: (MailDisplayAccount) -> Unit,
+    account: DisplayAccount,
+    onClick: (DisplayAccount) -> Unit,
     selected: Boolean,
     modifier: Modifier = Modifier,
 ) {

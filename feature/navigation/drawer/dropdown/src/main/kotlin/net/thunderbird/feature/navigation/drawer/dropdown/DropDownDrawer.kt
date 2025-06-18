@@ -11,6 +11,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.api.R
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.createMailDisplayAccountFolderId
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerView
@@ -82,6 +83,7 @@ class DropDownDrawer(
     override fun selectUnifiedInbox() {
         drawerState.update {
             it.copy(
+                selectedAccountUuid = UnifiedDisplayAccount.UNIFIED_ACCOUNT_ID,
                 selectedFolderId = UnifiedDisplayFolderType.INBOX.id,
             )
         }

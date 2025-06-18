@@ -20,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -36,37 +35,40 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
 import net.thunderbird.feature.navigation.drawer.dropdown.R
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountName
 
 @Composable
 internal fun AccountView(
-    account: MailDisplayAccount,
+    account: DisplayAccount,
     onClick: () -> Unit,
-    showAccount: Boolean,
+    showAccountSelection: Boolean,
     modifier: Modifier = Modifier,
 ) {
     AccountLayout(
         onClick = onClick,
         modifier = modifier,
     ) {
-        if (showAccount) {
+        if (showAccountSelection) {
+            AccountSelectionView()
+        } else {
             AccountSelectedView(
                 account = account,
             )
-        } else {
-            AccountSelectionView()
         }
 
         AnimatedSelectionIcon(
-            showAccount,
+            showAccountSelection,
         )
     }
 }
 
 @Composable
-private fun AnimatedSelectionIcon(showAccount: Boolean) {
+private fun AnimatedSelectionIcon(showAccountSelection: Boolean) {
     val rotationAngle by animateFloatAsState(
-        targetValue = if (showAccount) 0f else 180f,
+        targetValue = if (showAccountSelection) 180f else 0f,
         label = "rotationAngle",
     )
 
@@ -82,11 +84,14 @@ private fun AnimatedSelectionIcon(showAccount: Boolean) {
 
 @Composable
 private fun RowScope.AccountSelectedView(
-    account: MailDisplayAccount,
+    account: DisplayAccount,
 ) {
+    val color = getDisplayAccountColor(account)
+    val name = getDisplayAccountName(account)
+
     AvatarOutlined(
-        color = Color(account.color),
-        name = account.name,
+        color = color,
+        name = name,
         size = AvatarSize.MEDIUM,
     )
     Column(
@@ -98,11 +103,11 @@ private fun RowScope.AccountSelectedView(
         TextBodyLarge(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(account.name)
+                    append(name)
                 }
             },
         )
-        if (account.name != account.email) {
+        if (account is MailDisplayAccount && account.name != account.email) {
             TextBodyMedium(
                 text = account.email,
             )

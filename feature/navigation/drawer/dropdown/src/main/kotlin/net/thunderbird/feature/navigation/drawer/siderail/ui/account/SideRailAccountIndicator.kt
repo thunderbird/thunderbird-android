@@ -4,13 +4,15 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.calculateAccountColor
 
 @Composable
 internal fun SideRailAccountIndicator(
-    accountColor: Int,
+    accountColor: Color,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -19,7 +21,7 @@ internal fun SideRailAccountIndicator(
             .defaultMinSize(
                 minHeight = MainTheme.spacings.default,
             ),
-        color = calculateAccountColor(accountColor),
+        color = calculateAccountColor(accountColor.toArgb()),
         shape = MainTheme.shapes.medium,
     ) {}
 }

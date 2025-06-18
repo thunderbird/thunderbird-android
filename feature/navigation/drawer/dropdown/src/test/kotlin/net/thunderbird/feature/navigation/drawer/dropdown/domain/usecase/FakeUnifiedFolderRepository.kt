@@ -8,7 +8,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedD
 internal class FakeUnifiedFolderRepository(
     private val displayUnifiedFolderFlow: Flow<UnifiedDisplayFolder>,
 ) : UnifiedFolderRepository {
-    override fun getDisplayUnifiedFolderFlow(unifiedFolderType: UnifiedDisplayFolderType): Flow<UnifiedDisplayFolder> {
+    override fun getUnifiedDisplayFolderFlow(unifiedFolderType: UnifiedDisplayFolderType): Flow<UnifiedDisplayFolder> {
         return displayUnifiedFolderFlow
     }
 }
