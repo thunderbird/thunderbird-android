@@ -17,12 +17,12 @@ import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerI
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 
 @Composable
 internal fun AccountListItem(
-    account: DisplayAccount,
-    onClick: (DisplayAccount) -> Unit,
+    account: MailDisplayAccount,
+    onClick: (MailDisplayAccount) -> Unit,
     selected: Boolean,
     showStarredCount: Boolean,
     modifier: Modifier = Modifier,
@@ -52,7 +52,7 @@ internal fun AccountListItem(
 
 @Composable
 private fun AccountLabel(
-    account: DisplayAccount,
+    account: MailDisplayAccount,
     modifier: Modifier = Modifier,
 ) {
     Column(

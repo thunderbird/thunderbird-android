@@ -15,7 +15,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 
 @Composable
 internal fun FolderList(
@@ -50,7 +50,7 @@ internal fun FolderList(
                 folderNameFormatter = folderNameFormatter,
                 selectedFolderId = selectedFolder?.id,
             )
-            if (currentDisplayFolder is DisplayUnifiedFolder) {
+            if (currentDisplayFolder is UnifiedDisplayFolder) {
                 DividerHorizontal(
                     modifier = Modifier
                         .fillMaxWidth()
