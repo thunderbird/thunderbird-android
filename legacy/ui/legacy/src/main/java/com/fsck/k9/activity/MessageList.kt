@@ -1504,7 +1504,6 @@ open class MessageList :
                     !generalSettingsManager.getSettings().isShowUnifiedInbox -> drawer.deselect()
 
                 search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
-                else -> drawer.deselect()
             }
         } ?: logger.warn(TAG) { "Couldn't select folder for $accountUuid as LocalSearch is null." }
     }
