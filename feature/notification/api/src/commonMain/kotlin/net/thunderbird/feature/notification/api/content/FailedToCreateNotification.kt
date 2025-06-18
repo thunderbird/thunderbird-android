@@ -1,8 +1,8 @@
 package net.thunderbird.feature.notification.api.content
 
+import net.thunderbird.core.common.io.KmpIgnoredOnParcel
 import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
-import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.resources.Res
 import net.thunderbird.feature.notification.resources.notification_notify_error_text
@@ -18,11 +18,13 @@ import org.jetbrains.compose.resources.getString
 @ConsistentCopyVisibility
 @KmpParcelize
 data class FailedToCreateNotification private constructor(
+    override val accountNumber: Int,
     override val title: String,
     override val contentText: String?,
     override val channel: NotificationChannel,
     val failedNotification: AppNotification,
 ) : AppNotification(), SystemNotification, InAppNotification {
+    @KmpIgnoredOnParcel
     override val severity: NotificationSeverity = NotificationSeverity.Critical
 
     companion object {
@@ -34,10 +36,11 @@ data class FailedToCreateNotification private constructor(
          * @return A [FailedToCreateNotification] instance.
          */
         suspend operator fun invoke(
-            id: NotificationId,
+            accountNumber: Int,
             accountUuid: String,
             failedNotification: AppNotification,
         ): FailedToCreateNotification = FailedToCreateNotification(
+            accountNumber = accountNumber,
             title = getString(resource = Res.string.notification_notify_error_title),
             contentText = getString(resource = Res.string.notification_notify_error_text),
             channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),

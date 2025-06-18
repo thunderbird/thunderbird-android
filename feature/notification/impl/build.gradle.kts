@@ -11,6 +11,9 @@ kotlin {
             implementation(projects.feature.account.api)
             implementation(projects.feature.notification.api)
         }
+        androidMain.dependencies {
+            implementation(projects.feature.launcher)
+        }
     }
 }
 
