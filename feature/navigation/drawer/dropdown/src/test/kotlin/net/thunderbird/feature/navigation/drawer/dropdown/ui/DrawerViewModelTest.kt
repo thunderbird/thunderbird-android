@@ -316,6 +316,7 @@ internal class DrawerViewModelTest {
             selectedAccountId = displayAccounts[0].id,
             folders = displayFoldersMap[displayAccounts[0].id]!!.toImmutableList(),
             selectedFolderId = displayFoldersMap[displayAccounts[0].id]!![0].id,
+            selectedFolder = displayFoldersMap[displayAccounts[0].id]!![0],
         )
         val testSubject = createTestSubject(
             displayAccountsFlow = getDisplayAccountsFlow,
@@ -327,6 +328,9 @@ internal class DrawerViewModelTest {
 
         val displayFolders = displayFoldersMap[displayAccounts[0].id] ?: emptyList()
         testSubject.event(Event.OnFolderClick(displayFolders[1]))
+
+        // Consume the state update
+        turbines.awaitStateItem()
 
         assertThat(turbines.awaitEffectItem()).isEqualTo(
             Effect.OpenFolder(
@@ -355,6 +359,7 @@ internal class DrawerViewModelTest {
                 selectedAccountId = displayAccounts[0].id,
                 folders = displayFoldersMap[displayAccounts[0].id]!!.toImmutableList(),
                 selectedFolderId = displayFoldersMap[displayAccounts[0].id]!![0].id,
+                selectedFolder = displayFoldersMap[displayAccounts[0].id]!![0],
             )
             val testSubject = createTestSubject(
                 displayAccountsFlow = getDisplayAccountsFlow,
@@ -366,6 +371,9 @@ internal class DrawerViewModelTest {
 
             val displayFolders = displayFoldersMap[displayAccounts[0].id] ?: emptyList()
             testSubject.event(Event.OnFolderClick(displayFolders[1]))
+
+            // Consume the state update
+            turbines.awaitStateItem()
 
             assertThat(turbines.awaitEffectItem()).isEqualTo(Effect.OpenUnifiedFolder)
 
