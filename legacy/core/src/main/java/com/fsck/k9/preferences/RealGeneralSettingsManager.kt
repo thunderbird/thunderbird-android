@@ -24,6 +24,7 @@ import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
 internal const val KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG = "shouldShowSetupArchiveFolderDialog"
+internal const val KEY_CHANGE_REGISTERED_NAME_COLOR = "changeRegisteredNameColor"
 
 /**
  * Retrieve and modify general settings.
@@ -175,6 +176,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowContactPicture = isShowContactPicture).persist()
     }
 
+    override fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) {
+        getSettings().copy(isChangeContactNameColor = isChangeContactNameColor).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -190,6 +195,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("messageListSenderAboveSubject", settings.isMessageListSenderAboveSubject)
         editor.putBoolean("showContactName", settings.isShowContactName)
         editor.putBoolean("showContactPicture", settings.isShowContactPicture)
+        editor.putBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, settings.isChangeContactNameColor)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -220,6 +226,7 @@ internal class RealGeneralSettingsManager(
             isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false),
             isShowContactName = storage.getBoolean("showContactName", false),
             isShowContactPicture = storage.getBoolean("showContactPicture", true),
+            isChangeContactNameColor = storage.getBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, false),
         )
 
         updateSettingsFlow(settings)

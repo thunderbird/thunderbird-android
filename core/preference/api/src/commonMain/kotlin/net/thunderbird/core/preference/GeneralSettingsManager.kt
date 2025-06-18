@@ -25,4 +25,5 @@ interface GeneralSettingsManager {
     fun setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject: Boolean)
     fun setIsShowContactName(isShowContactName: Boolean)
     fun setIsShowContactPicture(isShowContactPicture: Boolean)
+    fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean)
 }

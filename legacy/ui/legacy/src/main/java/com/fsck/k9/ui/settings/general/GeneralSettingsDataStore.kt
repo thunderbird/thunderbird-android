@@ -32,7 +32,7 @@ class GeneralSettingsDataStore(
             "messagelist_show_correspondent_names" -> generalSettingsManager.getSettings().isShowCorrespondentNames
             "messagelist_sender_above_subject" -> generalSettingsManager.getSettings().isMessageListSenderAboveSubject
             "messagelist_show_contact_name" -> generalSettingsManager.getSettings().isShowContactName
-            "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor
+            "messagelist_change_contact_name_color" -> generalSettingsManager.getSettings().isChangeContactNameColor
             "messagelist_show_contact_picture" -> generalSettingsManager.getSettings().isShowContactPicture
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator
@@ -65,7 +65,7 @@ class GeneralSettingsDataStore(
                 isMessageListSenderAboveSubject = value,
             )
             "messagelist_show_contact_name" -> setIsShowContactName(isShowContactName = value)
-            "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor = value
+            "messagelist_change_contact_name_color" -> setIsChangeContactNameColor(isChangeContactNameColor = value)
             "messagelist_show_contact_picture" -> setIsShowContactPicture(isShowContactPicture = value)
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator = value
@@ -302,6 +302,11 @@ class GeneralSettingsDataStore(
     private fun setIsShowContactPicture(isShowContactPicture: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setIsShowContactPicture(isShowContactPicture)
+    }
+
+    private fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsChangeContactNameColor(isChangeContactNameColor)
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {
