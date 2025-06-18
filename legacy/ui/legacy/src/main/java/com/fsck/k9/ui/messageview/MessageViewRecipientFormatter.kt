@@ -86,7 +86,13 @@ internal fun createMessageViewRecipientFormatter(
         contactNameProvider = contactNameProvider,
         showCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
         showContactNames = generalSettingsManager.getSettings().isShowContactName,
-        contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
+        contactNameColor = if (
+            generalSettingsManager.getSettings().isChangeContactNameColor
+        ) {
+            K9.contactNameColor
+        } else {
+            null
+        },
         meText = resources.getString(R.string.message_view_me_text),
     )
 }

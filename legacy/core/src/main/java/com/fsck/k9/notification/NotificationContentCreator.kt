@@ -82,6 +82,7 @@ internal class NotificationContentCreator(
                 return MessageHelper.toFriendly(
                     fromAddresses.first(),
                     generalSettingsManager.getSettings().isShowCorrespondentNames,
+                    generalSettingsManager.getSettings().isChangeContactNameColor,
                     localContactRepository,
                 ).toString()
             }
@@ -94,6 +95,7 @@ internal class NotificationContentCreator(
                 val recipientDisplayName = MessageHelper.toFriendly(
                     address = recipients.first(),
                     isShowCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
+                    isChangeContactNameColor = generalSettingsManager.getSettings().isChangeContactNameColor,
                     contactRepository = localContactRepository,
                 ).toString()
                 return resourceProvider.recipientDisplayName(recipientDisplayName)

@@ -184,9 +184,6 @@ object K9 : KoinComponent {
     var isShowContactName = false
 
     @JvmStatic
-    var isChangeContactNameColor = false
-
-    @JvmStatic
     var contactNameColor = 0xFF1093F5.toInt()
 
     @JvmStatic
@@ -342,7 +339,6 @@ object K9 : KoinComponent {
 
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         isShowContactPicture = storage.getBoolean("showContactPicture", true)
-        isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         messageViewPostRemoveNavigation =
@@ -432,7 +428,6 @@ object K9 : KoinComponent {
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putBoolean("showContactPicture", isShowContactPicture)
-        editor.putBoolean("changeRegisteredNameColor", isChangeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
         editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)

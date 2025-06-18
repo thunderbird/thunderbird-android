@@ -8,7 +8,6 @@ import android.text.style.ForegroundColorSpan
 import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9.contactNameColor
-import com.fsck.k9.K9.isChangeContactNameColor
 import com.fsck.k9.mail.Address
 import java.util.regex.Pattern
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
@@ -25,15 +24,24 @@ class MessageHelper(
             return resourceProvider.contactUnknownSender()
         }
         val repository = if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
-        return toFriendly(address, generalSettingsManager.getSettings().isShowCorrespondentNames, repository)
+        return toFriendly(
+            address,
+            generalSettingsManager.getSettings().isShowCorrespondentNames,
+            generalSettingsManager.getSettings().isChangeContactNameColor,
+            repository,
+        )
     }
 
-    fun getRecipientDisplayNames(addresses: Array<Address>?, isShowCorrespondentNames: Boolean): CharSequence {
+    fun getRecipientDisplayNames(
+        addresses: Array<Address>?,
+        isShowCorrespondentNames: Boolean,
+        isChangeContactNameColor: Boolean,
+    ): CharSequence {
         if (addresses == null || addresses.isEmpty()) {
             return resourceProvider.contactUnknownRecipient()
         }
         val repository = if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
-        val recipients = toFriendly(addresses, isShowCorrespondentNames, repository)
+        val recipients = toFriendly(addresses, isShowCorrespondentNames, isChangeContactNameColor, repository)
         return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(' ').append(recipients)
     }
 
@@ -63,6 +71,7 @@ class MessageHelper(
         fun toFriendly(
             address: Address,
             isShowCorrespondentNames: Boolean,
+            isChangeContactNameColor: Boolean,
             contactRepository: ContactRepository?,
         ): CharSequence {
             return toFriendly(
@@ -77,6 +86,7 @@ class MessageHelper(
         fun toFriendly(
             addresses: Array<Address>?,
             isShowCorrespondentNames: Boolean,
+            isChangeContactNameColor: Boolean,
             contactRepository: ContactRepository?,
         ): CharSequence? {
             var repository = contactRepository
@@ -89,7 +99,14 @@ class MessageHelper(
             }
             val stringBuilder = SpannableStringBuilder()
             for (i in addresses.indices) {
-                stringBuilder.append(toFriendly(addresses[i], isShowCorrespondentNames, repository))
+                stringBuilder.append(
+                    toFriendly(
+                        addresses[i],
+                        isShowCorrespondentNames,
+                        isChangeContactNameColor,
+                        repository,
+                    ),
+                )
                 if (i < addresses.size - 1) {
                     stringBuilder.append(',')
                 }
