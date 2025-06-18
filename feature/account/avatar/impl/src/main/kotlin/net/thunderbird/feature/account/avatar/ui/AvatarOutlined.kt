@@ -18,9 +18,8 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
-import app.k9mail.core.ui.compose.theme2.ColorRoles
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.core.ui.compose.theme2.toColorRoles
+import app.k9mail.core.ui.compose.theme2.toSurfaceContainer
 
 @Composable
 fun AvatarOutlined(
@@ -31,17 +30,18 @@ fun AvatarOutlined(
     onClick: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val colorRoles = color.toColorRoles(context)
+    val avatarColor = calculateAvatarColor(color)
+    val containerColor = avatarColor.toSurfaceContainer(context)
 
     AvatarLayout(
-        color = color,
-        colorRoles = colorRoles,
+        color = containerColor,
+        borderColor = avatarColor,
         onClick = onClick,
         modifier = modifier.size(getAvatarSize(size)),
     ) {
         AvatarPlaceholder(
+            color = avatarColor,
             displayName = name,
-            color = color,
             size = size,
         )
         // TODO: Add image loading
@@ -51,19 +51,19 @@ fun AvatarOutlined(
 @Composable
 private fun AvatarLayout(
     color: Color,
-    colorRoles: ColorRoles,
+    borderColor: Color,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit,
 ) {
     Surface(
-        color = colorRoles.accentContainer,
+        color = color,
         modifier = modifier
             .clip(CircleShape)
             .border(
                 width = 2.dp,
                 shape = CircleShape,
-                color = color,
+                color = borderColor,
             )
             .clickable(
                 enabled = onClick != null,

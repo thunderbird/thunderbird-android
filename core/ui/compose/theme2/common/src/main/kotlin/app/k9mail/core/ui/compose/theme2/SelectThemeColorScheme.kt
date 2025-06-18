@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.theme2
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -131,4 +132,10 @@ fun Color.toColorRoles(context: Context): ColorRoles {
         accentContainer = Color(colorRoles.accentContainer),
         onAccentContainer = Color(colorRoles.onAccentContainer),
     )
+}
+
+@SuppressLint("RestrictedApi")
+fun Color.toSurfaceContainer(context: Context): Color {
+    val surfaceContainer = MaterialColors.getSurfaceContainerFromSeed(context, this.toArgb())
+    return Color(surfaceContainer)
 }
