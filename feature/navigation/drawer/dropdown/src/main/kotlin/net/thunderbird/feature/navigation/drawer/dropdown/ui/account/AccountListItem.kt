@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -17,16 +16,22 @@ import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerI
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountName
 
 @Composable
 internal fun AccountListItem(
-    account: MailDisplayAccount,
-    onClick: (MailDisplayAccount) -> Unit,
+    account: DisplayAccount,
+    onClick: (DisplayAccount) -> Unit,
     selected: Boolean,
     showStarredCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val color = getDisplayAccountColor(account)
+    val name = getDisplayAccountName(account)
+
     NavigationDrawerItem(
         label = { AccountLabel(account = account) },
         selected = selected,
@@ -35,8 +40,8 @@ internal fun AccountListItem(
             .height(MainTheme.sizes.large),
         icon = {
             AvatarOutlined(
-                color = Color(account.color),
-                name = account.name,
+                color = color,
+                name = name,
                 size = AvatarSize.MEDIUM,
             )
         },
@@ -52,9 +57,11 @@ internal fun AccountListItem(
 
 @Composable
 private fun AccountLabel(
-    account: MailDisplayAccount,
+    account: DisplayAccount,
     modifier: Modifier = Modifier,
 ) {
+    val name = getDisplayAccountName(account)
+
     Column(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
         modifier = modifier.fillMaxWidth(),
@@ -66,7 +73,7 @@ private fun AccountLabel(
                 }
             },
         )
-        if (account.name != account.email) {
+        if (account is MailDisplayAccount && account.name != account.email) {
             TextBodyMedium(
                 text = account.email,
             )

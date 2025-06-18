@@ -26,7 +26,7 @@ internal class UnifiedFolderRepositoryTest {
         )
         val folderType = UnifiedDisplayFolderType.INBOX
 
-        val result = testSubject.getDisplayUnifiedFolderFlow(folderType).first()
+        val result = testSubject.getUnifiedDisplayFolderFlow(folderType).first()
 
         assertThat(result).isEqualTo(
             UnifiedDisplayFolder(

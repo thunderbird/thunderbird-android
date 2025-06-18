@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
@@ -30,6 +30,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.View
  * for the ripple effect to finish.
  */
 private const val DRAWER_CLOSE_DELAY = 250L
+private const val ACCOUNT_CLOSE_DELAY = 150L
 
 @Suppress("MagicNumber", "TooManyFunctions")
 internal class DrawerViewModel(
@@ -65,6 +66,7 @@ internal class DrawerViewModel(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadAccounts() {
         state.map { it.config.showUnifiedFolders }
             .distinctUntilChanged()
@@ -75,7 +77,7 @@ internal class DrawerViewModel(
             }
     }
 
-    private fun updateAccounts(accounts: List<MailDisplayAccount>) {
+    private fun updateAccounts(accounts: List<DisplayAccount>) {
         val selectedAccount = accounts.find { it.id == state.value.selectedAccountId }
             ?: accounts.firstOrNull()
 
@@ -90,13 +92,11 @@ internal class DrawerViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun loadFolders() {
         state.map {
-            it.selectedAccountId?.let { accountId ->
-                Pair(accountId, it.config.showUnifiedFolders)
-            }
+            it.selectedAccountId
         }.filterNotNull()
             .distinctUntilChanged()
-            .flatMapLatest { (accountId, showUnifiedInbox) ->
-                getDisplayFoldersForAccount(accountId, showUnifiedInbox)
+            .flatMapLatest { accountId ->
+                getDisplayFoldersForAccount(accountId)
             }.collect { folders ->
                 updateFolders(folders, getDisplayTreeFolder(folders, maxNestingLevel))
             }
@@ -134,20 +134,21 @@ internal class DrawerViewModel(
     private fun findFolderById(treeFolder: DisplayTreeFolder, folderId: String?): DisplayFolder? {
         if (folderId == null) return null
 
-        // Check if the current folder matches the ID
-        if (treeFolder.displayFolder?.id == folderId) {
-            return treeFolder.displayFolder
-        }
-
-        // Recursively search in children
-        for (child in treeFolder.children) {
-            val found = findFolderById(child, folderId)
-            if (found != null) {
-                return found
+        return if (treeFolder.displayFolder?.id == folderId) {
+            treeFolder.displayFolder
+        } else {
+            // Recursively search in children
+            var folder: DisplayFolder? = null
+            for (child in treeFolder.children) {
+                val found = findFolderById(child, folderId)
+                if (found != null) {
+                    folder = found
+                    break
+                }
             }
-        }
 
-        return null
+            folder
+        }
     }
 
     override fun event(event: Event) {
@@ -164,9 +165,15 @@ internal class DrawerViewModel(
             }
 
             Event.OnAccountSelectorClick -> {
-                saveDrawerConfig(
-                    state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
-                ).launchIn(viewModelScope)
+                viewModelScope.launch {
+                    saveDrawerConfig(
+                        state.value.config.copy(showAccountSelector = state.value.config.showAccountSelector.not()),
+                    ).launchIn(viewModelScope)
+                    delay(ACCOUNT_CLOSE_DELAY)
+                    updateState {
+                        it.copy(showAccountSelection = it.showAccountSelection.not())
+                    }
+                }
             }
 
             Event.OnManageFoldersClick -> emitEffect(Effect.OpenManageFolders)
@@ -177,22 +184,27 @@ internal class DrawerViewModel(
     }
 
     private fun selectAccount(accountId: String?) {
-        updateState {
-            it.copy(
-                selectedAccountId = accountId,
-            )
+        viewModelScope.launch {
+            updateState {
+                it.copy(
+                    selectedAccountId = accountId,
+                )
+            }
+            delay(ACCOUNT_CLOSE_DELAY)
+            updateState {
+                it.copy(
+                    showAccountSelection = false,
+                )
+            }
         }
     }
 
     private fun selectFolder(folderId: String?) {
         // Find the folder with the given ID
-        val folder = if (folderId != null) {
-            // First try to find the folder in the flat list
+        val folder = folderId?.let {
             state.value.folders.find { it.id == folderId }
                 // If not found, try to find it in the tree hierarchy
                 ?: findFolderById(state.value.rootFolder, folderId)
-        } else {
-            null
         }
 
         updateState {
