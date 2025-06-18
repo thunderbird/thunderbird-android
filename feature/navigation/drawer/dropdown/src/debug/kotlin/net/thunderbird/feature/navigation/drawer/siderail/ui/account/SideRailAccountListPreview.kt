@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_ACCOUNT
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.MAIL_DISPLAY_ACCOUNT
 
 @Composable
 @Preview(showBackground = true)
@@ -12,7 +12,7 @@ internal fun SideRailAccountListPreview() {
     PreviewWithTheme {
         SideRailAccountList(
             accounts = persistentListOf(
-                DISPLAY_ACCOUNT,
+                MAIL_DISPLAY_ACCOUNT,
             ),
             selectedAccount = null,
             onAccountClick = { },
@@ -28,9 +28,9 @@ internal fun SideRailAccountListWithSelectedPreview() {
     PreviewWithTheme {
         SideRailAccountList(
             accounts = persistentListOf(
-                DISPLAY_ACCOUNT,
+                MAIL_DISPLAY_ACCOUNT,
             ),
-            selectedAccount = DISPLAY_ACCOUNT,
+            selectedAccount = MAIL_DISPLAY_ACCOUNT,
             onAccountClick = { },
             onSettingsClick = { },
             onSyncAllAccountsClick = { },

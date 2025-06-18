@@ -3,14 +3,14 @@ package net.thunderbird.feature.navigation.drawer.siderail.ui.account
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_ACCOUNT
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.MAIL_DISPLAY_ACCOUNT
 
 @Composable
 @Preview(showBackground = true)
 internal fun SideRailAccountViewPreview() {
     PreviewWithThemes {
         SideRailAccountView(
-            account = DISPLAY_ACCOUNT,
+            account = MAIL_DISPLAY_ACCOUNT,
             onClick = {},
             showAvatar = false,
         )
@@ -22,7 +22,7 @@ internal fun SideRailAccountViewPreview() {
 internal fun SideRailAccountViewWithColorPreview() {
     PreviewWithThemes {
         SideRailAccountView(
-            account = DISPLAY_ACCOUNT,
+            account = MAIL_DISPLAY_ACCOUNT,
             onClick = {},
             showAvatar = false,
         )
@@ -34,7 +34,7 @@ internal fun SideRailAccountViewWithColorPreview() {
 internal fun SideRailAccountViewWithLongDisplayName() {
     PreviewWithThemes {
         SideRailAccountView(
-            account = DISPLAY_ACCOUNT,
+            account = MAIL_DISPLAY_ACCOUNT,
             onClick = {},
             showAvatar = false,
         )
@@ -46,7 +46,7 @@ internal fun SideRailAccountViewWithLongDisplayName() {
 internal fun SideRailAccountViewWithLongEmailPreview() {
     PreviewWithThemes {
         SideRailAccountView(
-            account = DISPLAY_ACCOUNT,
+            account = MAIL_DISPLAY_ACCOUNT,
             onClick = {},
             showAvatar = false,
         )

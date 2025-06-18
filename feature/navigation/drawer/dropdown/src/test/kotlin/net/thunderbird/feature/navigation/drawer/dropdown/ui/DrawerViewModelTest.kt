@@ -395,7 +395,7 @@ internal class DrawerViewModelTest {
             ).thenReturn(flowOf(Unit))
 
             val testSubject = createTestSubject(
-                initialState = State(config = drawerConfigWithAccountSelectorDisabled),
+                initialState = State(config = drawerConfigWithAccountSelectorDisabled, showAccountSelection = false),
                 saveDrawerConfig = saveDrawerConfig,
                 drawerConfigFlow = flowOf(drawerConfigWithAccountSelectorDisabled),
             )
@@ -406,6 +406,9 @@ internal class DrawerViewModelTest {
             advanceUntilIdle()
             verify(saveDrawerConfig, times(1)).invoke(captor.capture())
             assertThat(captor.firstValue).isEqualTo(drawerConfigWithAccountSelectorEnabled)
+
+            // Verify that showAccountSelection is toggled after the delay
+            assertThat(testSubject.state.value.showAccountSelection).isEqualTo(true)
         }
 
     @Suppress("MaxLineLength")
@@ -421,7 +424,7 @@ internal class DrawerViewModelTest {
             ).thenReturn(flowOf(Unit))
 
             val testSubject = createTestSubject(
-                initialState = State(config = drawerConfigWithAccountSelectorEnabled),
+                initialState = State(config = drawerConfigWithAccountSelectorEnabled, showAccountSelection = false),
                 saveDrawerConfig = saveDrawerConfig,
                 drawerConfigFlow = flowOf(drawerConfigWithAccountSelectorEnabled),
             )
@@ -432,6 +435,9 @@ internal class DrawerViewModelTest {
             advanceUntilIdle()
             verify(saveDrawerConfig, times(1)).invoke(captor.capture())
             assertThat(captor.firstValue).isEqualTo(drawerConfigWithAccountSelectorDisabled)
+
+            // Verify that showAccountSelection is toggled after the delay
+            assertThat(testSubject.state.value.showAccountSelection).isEqualTo(true)
         }
 
     @Test
@@ -478,7 +484,7 @@ internal class DrawerViewModelTest {
             initialState = initialState,
             getDrawerConfig = { drawerConfigFlow },
             getDisplayAccounts = { displayAccountsFlow },
-            getDisplayFoldersForAccount = { accountId, _ ->
+            getDisplayFoldersForAccount = { accountId ->
                 displayFoldersFlow.map { it[accountId] ?: emptyList() }
             },
             getDisplayTreeFolder = { folders, maxDepth ->

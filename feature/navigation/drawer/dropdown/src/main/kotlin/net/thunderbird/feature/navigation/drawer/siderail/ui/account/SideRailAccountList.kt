@@ -21,15 +21,15 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.feature.navigation.drawer.dropdown.R
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.getDisplayCutOutHorizontalInsetPadding
 import net.thunderbird.feature.navigation.drawer.siderail.ui.setting.SideRailSettingItem
 
 @Composable
 internal fun SideRailAccountList(
-    accounts: ImmutableList<MailDisplayAccount>,
-    selectedAccount: MailDisplayAccount?,
-    onAccountClick: (MailDisplayAccount) -> Unit,
+    accounts: ImmutableList<DisplayAccount>,
+    selectedAccount: DisplayAccount?,
+    onAccountClick: (DisplayAccount) -> Unit,
     onSyncAllAccountsClick: () -> Unit,
     onSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,

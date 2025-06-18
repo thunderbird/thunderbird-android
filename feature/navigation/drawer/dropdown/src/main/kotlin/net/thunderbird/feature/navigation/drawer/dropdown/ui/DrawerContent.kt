@@ -18,7 +18,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
@@ -58,13 +58,13 @@ internal fun DrawerContent(
                 AccountView(
                     account = selectedAccount,
                     onClick = { onEvent(Event.OnAccountSelectorClick) },
-                    showAccount = state.config.showAccountSelector.not(),
+                    showAccountSelection = state.showAccountSelection,
                 )
 
                 DividerHorizontal()
             }
             AnimatedContent(
-                targetState = state.config.showAccountSelector,
+                targetState = state.showAccountSelection,
                 label = "AccountSelectorVisibility",
                 transitionSpec = {
                     if (targetState) {
@@ -95,7 +95,7 @@ internal fun DrawerContent(
 private fun AccountContent(
     state: State,
     onEvent: (Event) -> Unit,
-    selectedAccount: MailDisplayAccount?,
+    selectedAccount: DisplayAccount?,
 ) {
     Surface(
         color = MainTheme.colors.surfaceContainerLow,

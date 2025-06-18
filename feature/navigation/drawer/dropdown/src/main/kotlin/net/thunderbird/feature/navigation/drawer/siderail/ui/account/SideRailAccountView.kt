@@ -27,13 +27,16 @@ import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountAvatar
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountName
 
 @Suppress("LongMethod")
 @Composable
 internal fun SideRailAccountView(
-    account: MailDisplayAccount,
+    account: DisplayAccount,
     onClick: () -> Unit,
     showAvatar: Boolean,
     modifier: Modifier = Modifier,
@@ -78,8 +81,11 @@ internal fun SideRailAccountView(
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            val color = getDisplayAccountColor(account)
+            val name = getDisplayAccountName(account)
+
             SideRailAccountIndicator(
-                accountColor = account.color,
+                accountColor = color,
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(end = MainTheme.spacings.oneHalf),
@@ -88,10 +94,10 @@ internal fun SideRailAccountView(
                 verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
             ) {
                 TextBodyLarge(
-                    text = account.name,
+                    text = name,
                     color = MainTheme.colors.onSurface,
                 )
-                if (account.name != account.email) {
+                if (account is MailDisplayAccount && account.name != account.email) {
                     TextBodyMedium(
                         text = account.email,
                         color = MainTheme.colors.onSurfaceVariant,

@@ -14,7 +14,7 @@ internal class UnifiedFolderRepository(
     private val messageCountsProvider: MessageCountsProvider,
 ) : DomainContract.UnifiedFolderRepository {
 
-    override fun getDisplayUnifiedFolderFlow(unifiedFolderType: UnifiedDisplayFolderType): Flow<UnifiedDisplayFolder> {
+    override fun getUnifiedDisplayFolderFlow(unifiedFolderType: UnifiedDisplayFolderType): Flow<UnifiedDisplayFolder> {
         return messageCountsProvider.getMessageCountsFlow(createUnifiedFolderSearch(unifiedFolderType)).map {
             UnifiedDisplayFolder(
                 id = UNIFIED_INBOX_ID,

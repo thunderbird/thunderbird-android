@@ -745,13 +745,17 @@ open class MessageList :
     }
 
     fun openRealAccount(accountId: String) {
-        val account = accountManager.getAccount(accountId) ?: return
-        val folderId = defaultFolderProvider.getDefaultFolder(account)
+        if (accountId == "unified_account") {
+            openUnifiedInbox()
+        } else {
+            val account = accountManager.getAccount(accountId) ?: return
+            val folderId = defaultFolderProvider.getDefaultFolder(account)
 
-        val search = LocalMessageSearch()
-        search.addAllowedFolder(folderId)
-        search.addAccountUuid(account.uuid)
-        actionDisplaySearch(this, search, noThreading = false, newTask = false)
+            val search = LocalMessageSearch()
+            search.addAllowedFolder(folderId)
+            search.addAccountUuid(account.uuid)
+            actionDisplaySearch(this, search, noThreading = false, newTask = false)
+        }
     }
 
     private fun performSearch(search: LocalMessageSearch) {
