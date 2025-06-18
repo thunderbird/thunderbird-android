@@ -5,6 +5,8 @@ import net.thunderbird.app.common.account.data.DefaultAccountProfileLocalDataSou
 import net.thunderbird.app.common.account.data.DefaultLegacyAccountWrapperManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountWrapperManager
+import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 import net.thunderbird.feature.account.core.featureAccountCoreModule
 import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyModule
@@ -45,6 +47,10 @@ internal val appCommonAccountModule = module {
         )
     }
 
+    factory<AvatarMonogramCreator> {
+        DefaultAvatarMonogramCreator()
+    }
+
     factory<AccountSetupExternalContract.AccountCreator> {
         AccountCreator(
             accountColorPicker = get(),
@@ -53,6 +59,7 @@ internal val appCommonAccountModule = module {
             context = androidApplication(),
             deletePolicyProvider = get(),
             messagingController = get(),
+            avatarMonogramCreator = get(),
             unifiedInboxConfigurator = get(),
         )
     }

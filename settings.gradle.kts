@@ -63,7 +63,8 @@ include(
 
 include(
     ":feature:account:api",
-    ":feature:account:avatar",
+    ":feature:account:avatar:api",
+    ":feature:account:avatar:impl",
     ":feature:account:core",
     ":feature:account:common",
     ":feature:account:edit",

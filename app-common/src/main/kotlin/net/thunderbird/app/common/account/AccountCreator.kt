@@ -24,9 +24,13 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 
 // TODO Move to feature/account/setup
+@Suppress("LongParameterList")
 internal class AccountCreator(
     private val accountColorPicker: AccountColorPicker,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
@@ -34,8 +38,9 @@ internal class AccountCreator(
     private val context: Context,
     private val messagingController: MessagingController,
     private val deletePolicyProvider: DeletePolicyProvider,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val avatarMonogramCreator: AvatarMonogramCreator,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountSetupExternalContract.AccountCreator {
 
     @Suppress("TooGenericExceptionCaught")
@@ -53,6 +58,13 @@ internal class AccountCreator(
         val newAccount = preferences.newAccount(account.uuid)
 
         newAccount.email = account.emailAddress
+
+        newAccount.avatar = AvatarDto(
+            avatarType = AvatarTypeDto.MONOGRAM,
+            avatarMonogram = avatarMonogramCreator.create(account.options.accountName, account.emailAddress),
+            avatarImageUri = null,
+            avatarIconName = null,
+        )
 
         newAccount.setIncomingServerSettings(account.incomingServerSettings)
         newAccount.outgoingServerSettings = account.outgoingServerSettings

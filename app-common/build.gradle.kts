@@ -25,6 +25,8 @@ dependencies {
     implementation(projects.core.featureflag)
     implementation(projects.core.ui.legacy.theme2.common)
 
+    implementation(projects.feature.account.avatar.api)
+    implementation(projects.feature.account.avatar.impl)
     implementation(projects.feature.account.setup)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.migration.provider)
