@@ -12,7 +12,7 @@ package net.thunderbird.feature.notification.api
  * For [Temporary] and [Warning], user action might be recommended or optional.
  * For [Information], no user action is usually needed.
  */
-enum class NotificationSeverity {
+enum class NotificationSeverity(val dismissable: Boolean) {
     /**
      * Completely blocks the user from performing essential tasks or accessing core functionality.
      *
@@ -24,7 +24,7 @@ enum class NotificationSeverity {
      *     - Retry
      *     - Provide other credentials
      */
-    Fatal,
+    Fatal(dismissable = false),
 
     /**
      * Prevents the user from completing specific core actions or causes significant disruption to functionality.
@@ -36,7 +36,7 @@ enum class NotificationSeverity {
      * - **Notification Actions:**
      *    - Retry
      */
-    Critical,
+    Critical(dismissable = false),
 
     /**
      * Causes a temporary disruption or delay to functionality, which may resolve on its own.
@@ -48,7 +48,7 @@ enum class NotificationSeverity {
      * - **Notification Message:** You are offline, the message will be sent later.
      * - **Notification Actions:** N/A
      */
-    Temporary,
+    Temporary(dismissable = true),
 
     /**
      * Alerts the user to a potential issue or limitation that may affect functionality if not addressed.
@@ -61,7 +61,7 @@ enum class NotificationSeverity {
      * - **Notification Actions:**
      *    - Manage Storage
      */
-    Warning,
+    Warning(dismissable = true),
 
     /**
      * Provides status or context without impacting functionality or requiring action.
@@ -72,5 +72,5 @@ enum class NotificationSeverity {
      * - **Notification Message:** Last time email synchronization succeeded
      * - **Notification Actions:** N/A
      */
-    Information,
+    Information(dismissable = true),
 }

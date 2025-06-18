@@ -77,7 +77,7 @@ class GeneralSettingsViewModel(
     fun onNotificationSend() {
         viewModelScope.launch {
             notificationSender.send(
-                notification = PushServiceNotification.AlarmPermissionMissing(),
+                notification = PushServiceNotification.AlarmPermissionMissing(accountNumber = 1),
             ).collect { result ->
                 logger.debug { "onNotificationSend() called with: result = $result" }
             }
