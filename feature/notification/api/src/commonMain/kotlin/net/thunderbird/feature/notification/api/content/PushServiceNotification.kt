@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.api.content
 
+import net.thunderbird.core.common.io.KmpIgnoredOnParcel
 import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -30,6 +31,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
     @ConsistentCopyVisibility
     @KmpParcelize
     data class Initializing private constructor(
+        override val accountNumber: Int,
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
@@ -40,7 +42,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
              *
              * @return An [Initializing] notification.
              */
-            suspend operator fun invoke(): Initializing = Initializing(
+            suspend operator fun invoke(accountNumber: Int): Initializing = Initializing(
+                accountNumber = accountNumber,
                 title = getString(resource = Res.string.push_notification_state_initializing),
                 contentText = getString(resource = Res.string.push_notification_info),
                 actions = buildNotificationActions(),
@@ -55,6 +58,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
     @ConsistentCopyVisibility
     @KmpParcelize
     data class Listening private constructor(
+        override val accountNumber: Int,
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
@@ -65,7 +69,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
              *
              * @return A new [Listening] notification.
              */
-            suspend operator fun invoke(): Listening = Listening(
+            suspend operator fun invoke(accountNumber: Int): Listening = Listening(
+                accountNumber = accountNumber,
                 title = getString(resource = Res.string.push_notification_state_listening),
                 contentText = getString(resource = Res.string.push_notification_info),
                 actions = buildNotificationActions(),
@@ -80,6 +85,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
     @ConsistentCopyVisibility
     @KmpParcelize
     data class WaitBackgroundSync private constructor(
+        override val accountNumber: Int,
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
@@ -90,7 +96,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
              *
              * @return A [WaitBackgroundSync] notification.
              */
-            suspend operator fun invoke(): WaitBackgroundSync = WaitBackgroundSync(
+            suspend operator fun invoke(accountNumber: Int): WaitBackgroundSync = WaitBackgroundSync(
+                accountNumber = accountNumber,
                 title = getString(resource = Res.string.push_notification_state_wait_background_sync),
                 contentText = getString(resource = Res.string.push_notification_info),
                 actions = buildNotificationActions(),
@@ -105,6 +112,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
     @ConsistentCopyVisibility
     @KmpParcelize
     data class WaitNetwork private constructor(
+        override val accountNumber: Int,
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
@@ -115,7 +123,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
              *
              * @return A [WaitNetwork] notification.
              */
-            suspend operator fun invoke(): WaitNetwork = WaitNetwork(
+            suspend operator fun invoke(accountNumber: Int): WaitNetwork = WaitNetwork(
+                accountNumber = accountNumber,
                 title = getString(resource = Res.string.push_notification_state_wait_network),
                 contentText = getString(resource = Res.string.push_notification_info),
                 actions = buildNotificationActions(),
@@ -134,9 +143,11 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
     @ConsistentCopyVisibility
     @KmpParcelize
     data class AlarmPermissionMissing private constructor(
+        override val accountNumber: Int,
         override val title: String,
         override val contentText: String?,
     ) : PushServiceNotification(), InAppNotification {
+        @KmpIgnoredOnParcel
         override val severity: NotificationSeverity = NotificationSeverity.Critical
 
         companion object {
@@ -145,7 +156,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
              *
              * @return An [AlarmPermissionMissing] instance.
              */
-            suspend operator fun invoke(): AlarmPermissionMissing = AlarmPermissionMissing(
+            suspend operator fun invoke(accountNumber: Int): AlarmPermissionMissing = AlarmPermissionMissing(
+                accountNumber = accountNumber,
                 title = getString(resource = Res.string.push_notification_state_alarm_permission_missing),
                 contentText = getString(resource = Res.string.push_notification_grant_alarm_permission),
             )

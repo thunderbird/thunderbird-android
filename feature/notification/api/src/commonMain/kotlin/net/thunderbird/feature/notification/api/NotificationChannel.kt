@@ -22,28 +22,33 @@ import org.jetbrains.compose.resources.StringResource
  * @property description The user-visible description of the channel.
  * @property importance The importance level of the channel.
  */
-@KmpParcelize
 sealed class NotificationChannel(
     val id: String,
-    @KmpIgnoredOnParcel val name: StringResource,
-    @KmpIgnoredOnParcel val description: StringResource,
     val importance: NotificationChannelImportance,
 ) : KmpParcelable {
+    abstract val name: StringResource
+    abstract val description: StringResource
+
     /**
      * Represents a notification channel for new messages.
      *
      * @property accountUuid The unique identifier of the account associated with these messages.
      * @property suffix An optional suffix to further differentiate the channel, e.g., for different folder types.
      */
+    @KmpParcelize
     data class Messages(
         val accountUuid: String,
         val suffix: String,
     ) : NotificationChannel(
         id = "messages_channel_$accountUuid$suffix",
-        name = Res.string.notification_channel_messages_title,
-        description = Res.string.notification_channel_messages_description,
         importance = NotificationChannelImportance.Default,
-    )
+    ) {
+        @KmpIgnoredOnParcel
+        override val name = Res.string.notification_channel_messages_title
+
+        @KmpIgnoredOnParcel
+        override val description = Res.string.notification_channel_messages_description
+    }
 
     /**
      * Represents a notification channel for miscellaneous notifications.
@@ -54,6 +59,7 @@ sealed class NotificationChannel(
      *
      * @property accountUuid The unique identifier of the account associated with these notifications, if applicable.
      */
+    @KmpParcelize
     data class Miscellaneous(
         val accountUuid: String? = null,
     ) : NotificationChannel(
@@ -62,10 +68,14 @@ sealed class NotificationChannel(
         } else {
             "miscellaneous_channel_$accountUuid"
         },
-        name = Res.string.notification_channel_miscellaneous_title,
-        description = Res.string.notification_channel_miscellaneous_description,
         importance = NotificationChannelImportance.Low,
-    )
+    ) {
+        @KmpIgnoredOnParcel
+        override val name = Res.string.notification_channel_miscellaneous_title
+
+        @KmpIgnoredOnParcel
+        override val description = Res.string.notification_channel_miscellaneous_description
+    }
 
     /**
      * Represents a notification channel for push service messages.
@@ -73,12 +83,17 @@ sealed class NotificationChannel(
      * This channel is used for notifications related to the background push service,
      * such as connection status or errors.
      */
+    @KmpParcelize
     data object PushService : NotificationChannel(
         id = "push",
-        name = Res.string.notification_channel_push_title,
-        description = Res.string.notification_channel_push_description,
         importance = NotificationChannelImportance.Low,
-    )
+    ) {
+        @KmpIgnoredOnParcel
+        override val name = Res.string.notification_channel_push_title
+
+        @KmpIgnoredOnParcel
+        override val description = Res.string.notification_channel_push_description
+    }
 }
 
 /**

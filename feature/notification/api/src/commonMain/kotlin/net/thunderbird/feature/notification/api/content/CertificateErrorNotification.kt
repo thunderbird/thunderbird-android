@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.api.content
 
+import net.thunderbird.core.common.io.KmpIgnoredOnParcel
 import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -18,15 +19,19 @@ import org.jetbrains.compose.resources.getString
 @ConsistentCopyVisibility
 @KmpParcelize
 data class CertificateErrorNotification private constructor(
+    override val accountNumber: Int,
     override val title: String,
     override val contentText: String,
     val lockScreenTitle: String,
     override val channel: NotificationChannel,
 ) : AppNotification(), SystemNotification, InAppNotification {
+    @KmpIgnoredOnParcel
     override val severity: NotificationSeverity = NotificationSeverity.Fatal
+
+    @KmpIgnoredOnParcel
     override val actions: Set<NotificationAction> = setOf(NotificationAction.UpdateServerSettings)
 
-    override val lockscreenNotification: SystemNotification = copy(
+    override val lockscreenNotification: SystemNotification get() = copy(
         contentText = lockScreenTitle,
     )
 
@@ -39,9 +44,11 @@ data class CertificateErrorNotification private constructor(
          * @return A [CertificateErrorNotification] instance.
          */
         suspend operator fun invoke(
+            accountNumber: Int,
             accountUuid: String,
             accountDisplayName: String,
         ): CertificateErrorNotification = CertificateErrorNotification(
+            accountNumber = accountNumber,
             title = getString(resource = Res.string.notification_certificate_error_public, accountDisplayName),
             lockScreenTitle = getString(resource = Res.string.notification_certificate_error_public),
             contentText = getString(resource = Res.string.notification_certificate_error_text),
