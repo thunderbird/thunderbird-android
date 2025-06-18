@@ -14,6 +14,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.R
 internal fun FolderSettingList(
     onManageFoldersClick: () -> Unit,
     onSettingsClick: () -> Unit,
+    isUnifiedAccount: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -21,11 +22,13 @@ internal fun FolderSettingList(
             .padding(vertical = MainTheme.spacings.default)
             .fillMaxWidth(),
     ) {
-        SettingListItem(
-            label = stringResource(R.string.navigation_drawer_dropdown_action_manage_folders),
-            onClick = onManageFoldersClick,
-            icon = Icons.Outlined.FolderManaged,
-        )
+        if (isUnifiedAccount.not()) {
+            SettingListItem(
+                label = stringResource(R.string.navigation_drawer_dropdown_action_manage_folders),
+                onClick = onManageFoldersClick,
+                icon = Icons.Outlined.FolderManaged,
+            )
+        }
         SettingListItem(
             label = stringResource(id = R.string.navigation_drawer_dropdown_action_settings),
             onClick = onSettingsClick,
