@@ -24,4 +24,5 @@ interface GeneralSettingsManager {
     fun setSetupArchiveShouldNotShowAgain(shouldShowSetupArchiveFolderDialog: Boolean)
     fun setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject: Boolean)
     fun setIsShowContactName(isShowContactName: Boolean)
+    fun setIsShowContactPicture(isShowContactPicture: Boolean)
 }
