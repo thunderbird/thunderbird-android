@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UnifiedFolderRepository
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 
 internal class GetDisplayFoldersForAccount(
     private val displayFolderRepository: DisplayFolderRepository,
@@ -20,7 +20,7 @@ internal class GetDisplayFoldersForAccount(
         val accountFoldersFlow: Flow<List<DisplayFolder>> =
             displayFolderRepository.getDisplayFoldersFlow(accountId).map { displayFolders ->
                 displayFolders.map { displayFolder ->
-                    DisplayAccountFolder(
+                    MailDisplayFolder(
                         accountId = accountId,
                         folder = displayFolder.folder,
                         isInTopGroup = displayFolder.isInTopGroup,
@@ -31,12 +31,12 @@ internal class GetDisplayFoldersForAccount(
             }
 
         val unifiedFoldersFlow: Flow<List<DisplayFolder>> = if (includeUnifiedFolders) {
-            unifiedFolderRepository.getDisplayUnifiedFolderFlow(DisplayUnifiedFolderType.INBOX)
+            unifiedFolderRepository.getDisplayUnifiedFolderFlow(UnifiedDisplayFolderType.INBOX)
                 .map { displayUnifiedFolder ->
                     listOf(displayUnifiedFolder)
                 }
         } else {
-            flowOf(emptyList<DisplayUnifiedFolder>())
+            flowOf(emptyList<UnifiedDisplayFolder>())
         }
 
         return combine(

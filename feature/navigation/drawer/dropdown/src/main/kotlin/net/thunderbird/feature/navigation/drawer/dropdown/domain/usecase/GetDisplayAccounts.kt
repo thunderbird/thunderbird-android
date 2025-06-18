@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 
 internal class GetDisplayAccounts(
     private val accountManager: AccountManager,
@@ -27,7 +27,7 @@ internal class GetDisplayAccounts(
 ) : UseCase.GetDisplayAccounts {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun invoke(): Flow<List<DisplayAccount>> {
+    override fun invoke(): Flow<List<MailDisplayAccount>> {
         return accountManager.getAccountsFlow()
             .flatMapLatest { accounts ->
                 val messageCountsFlows: List<Flow<MessageCounts>> = accounts.map { account ->
@@ -36,7 +36,7 @@ internal class GetDisplayAccounts(
 
                 combine(messageCountsFlows) { messageCountsList ->
                     messageCountsList.mapIndexed { index, messageCounts ->
-                        DisplayAccount(
+                        MailDisplayAccount(
                             id = accounts[index].uuid,
                             name = accounts[index].displayName,
                             email = accounts[index].email,
