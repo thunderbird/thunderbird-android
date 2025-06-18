@@ -115,7 +115,8 @@ include(
 )
 
 include(
-    ":feature:notification",
+    ":feature:notification:api",
+    ":feature:notification:impl",
 )
 
 include(

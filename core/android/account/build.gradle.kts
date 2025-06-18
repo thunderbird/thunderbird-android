@@ -11,7 +11,7 @@ dependencies {
     api(projects.feature.account.api)
     api(projects.feature.account.storage.api)
 
-    api(projects.feature.notification)
+    implementation(projects.feature.notification.api)
     api(projects.mail.common)
 
     implementation(projects.core.common)
