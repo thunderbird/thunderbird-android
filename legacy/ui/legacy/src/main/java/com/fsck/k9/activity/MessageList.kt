@@ -73,10 +73,10 @@ import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
 import net.thunderbird.feature.search.LocalSearch
 import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.api.MessageSearchSpecification
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
 import net.thunderbird.feature.search.api.SearchField
-import net.thunderbird.feature.search.api.SearchSpecification
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -1554,7 +1554,7 @@ open class MessageList :
         @JvmOverloads
         fun actionDisplaySearch(
             context: Context,
-            search: SearchSpecification?,
+            search: MessageSearchSpecification?,
             noThreading: Boolean,
             newTask: Boolean,
             clearTop: Boolean = true,
@@ -1565,7 +1565,7 @@ open class MessageList :
         @JvmStatic
         fun intentDisplaySearch(
             context: Context?,
-            search: SearchSpecification?,
+            search: MessageSearchSpecification?,
             noThreading: Boolean,
             newTask: Boolean,
             clearTop: Boolean,

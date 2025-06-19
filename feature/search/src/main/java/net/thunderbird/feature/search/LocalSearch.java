@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchCondition;
 import net.thunderbird.feature.search.api.SearchField;
-import net.thunderbird.feature.search.api.SearchSpecification;
+import net.thunderbird.feature.search.api.MessageSearchSpecification;
 
 
 /**
@@ -28,7 +28,7 @@ import net.thunderbird.feature.search.api.SearchSpecification;
  *
  */
 
-public class LocalSearch implements SearchSpecification {
+public class LocalSearch implements MessageSearchSpecification {
 
     private String id;
     private boolean mManualSearch = false;
