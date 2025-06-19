@@ -5,7 +5,7 @@ import java.util.List;
 import net.thunderbird.feature.search.SearchConditionTreeNode;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchCondition;
-import net.thunderbird.feature.search.api.SearchField;
+import net.thunderbird.feature.search.api.MessageSearchField;
 import net.thunderbird.core.logging.legacy.Log;
 
 
@@ -24,7 +24,7 @@ public class SqlQueryBuilder {
 
         if (node.getLeft() == null && node.getRight() == null) {
             SearchCondition condition = node.getCondition();
-            if (condition.field == SearchField.MESSAGE_CONTENTS) {
+            if (condition.field == MessageSearchField.MESSAGE_CONTENTS) {
                 String fulltextQueryString = condition.value;
                 if (condition.attribute != SearchAttribute.CONTAINS) {
                     Log.e("message contents can only be matched!");
@@ -151,7 +151,7 @@ public class SqlQueryBuilder {
     private static void appendExprRight(SearchCondition condition, StringBuilder query,
             List<String> selectionArgs) {
         String value = condition.value;
-        SearchField field = condition.field;
+        MessageSearchField field = condition.field;
 
         query.append(" ");
         String selectionArg = null;
@@ -188,7 +188,7 @@ public class SqlQueryBuilder {
         selectionArgs.add(selectionArg);
     }
 
-    private static boolean isNumberColumn(SearchField field) {
+    private static boolean isNumberColumn(MessageSearchField field) {
         switch (field) {
             case ATTACHMENT_COUNT:
             case DATE:

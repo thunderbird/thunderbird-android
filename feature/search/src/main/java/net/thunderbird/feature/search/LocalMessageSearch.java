@@ -11,7 +11,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchCondition;
-import net.thunderbird.feature.search.api.SearchField;
+import net.thunderbird.feature.search.api.MessageSearchField;
 import net.thunderbird.feature.search.api.MessageSearchSpecification;
 
 
@@ -79,7 +79,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * @param value Value to look for.
      * @param attribute Attribute to use when matching.
      */
-    public void and(SearchField field, String value, SearchAttribute attribute) {
+    public void and(MessageSearchField field, String value, SearchAttribute attribute) {
         and(new SearchCondition(field, attribute, value));
     }
 
@@ -165,7 +165,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
          *          - do and on root of it & rest of search
          *          - do or between folder nodes
          */
-        mConditions = and(new SearchCondition(SearchField.FOLDER, SearchAttribute.EQUALS, Long.toString(folderId)));
+        mConditions = and(new SearchCondition(MessageSearchField.FOLDER, SearchAttribute.EQUALS, Long.toString(folderId)));
     }
 
     /*
@@ -176,7 +176,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
     public List<Long> getFolderIds() {
         List<Long> results = new ArrayList<>();
         for (SearchConditionTreeNode node : mLeafSet) {
-            if (node.getCondition().field == SearchField.FOLDER &&
+            if (node.getCondition().field == MessageSearchField.FOLDER &&
                     node.getCondition().attribute == SearchAttribute.EQUALS) {
                 results.add(Long.valueOf(node.getCondition().value));
             }
@@ -207,8 +207,8 @@ public class LocalMessageSearch implements MessageSearchSpecification {
         }
 
         for (SearchConditionTreeNode node : leafSet) {
-            if (node.getCondition().field == SearchField.SUBJECT ||
-                    node.getCondition().field == SearchField.SENDER ) {
+            if (node.getCondition().field == MessageSearchField.SUBJECT ||
+                    node.getCondition().field == MessageSearchField.SENDER ) {
                 return node.getCondition().value;
             }
         }

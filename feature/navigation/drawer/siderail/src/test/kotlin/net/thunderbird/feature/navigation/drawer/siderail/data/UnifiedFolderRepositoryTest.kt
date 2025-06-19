@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchField
 
 internal class UnifiedFolderRepositoryTest {
 
@@ -42,6 +42,6 @@ internal class UnifiedFolderRepositoryTest {
         val condition = search.conditions.condition
         assertThat(condition?.value).isEqualTo("1")
         assertThat(condition?.attribute).isEqualTo(SearchAttribute.EQUALS)
-        assertThat(condition?.field).isEqualTo(SearchField.INTEGRATE)
+        assertThat(condition?.field).isEqualTo(MessageSearchField.INTEGRATE)
     }
 }

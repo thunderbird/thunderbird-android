@@ -4,9 +4,9 @@ import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchField
 import org.junit.Test
 
 class SearchConditionTreeNodeTest {
@@ -14,7 +14,7 @@ class SearchConditionTreeNodeTest {
     @Test
     fun `should create a node with a condition`() {
         // Arrange
-        val condition = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
 
         // Act
         val node = SearchConditionTreeNode.Builder(condition).build()
@@ -29,8 +29,8 @@ class SearchConditionTreeNodeTest {
     @Test
     fun `should create a node with AND operator`() {
         // Arrange
-        val condition1 = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
-        val condition2 = SearchCondition(SearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
+        val condition1 = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition2 = SearchCondition(MessageSearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
 
         // Act
         val node = SearchConditionTreeNode.Builder(condition1)
@@ -55,8 +55,8 @@ class SearchConditionTreeNodeTest {
     @Test
     fun `should create a node with OR operator`() {
         // Arrange
-        val condition1 = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
-        val condition2 = SearchCondition(SearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
+        val condition1 = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition2 = SearchCondition(MessageSearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
 
         // Act
         val node = SearchConditionTreeNode.Builder(condition1)
@@ -81,9 +81,9 @@ class SearchConditionTreeNodeTest {
     @Test
     fun `should create a complex tree with nested conditions`() {
         // Arrange
-        val condition1 = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
-        val condition2 = SearchCondition(SearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
-        val condition3 = SearchCondition(SearchField.FLAGGED, SearchAttribute.EQUALS, "1")
+        val condition1 = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition2 = SearchCondition(MessageSearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
+        val condition3 = SearchCondition(MessageSearchField.FLAGGED, SearchAttribute.EQUALS, "1")
 
         // Act
         val node = SearchConditionTreeNode.Builder(condition1)
@@ -120,9 +120,9 @@ class SearchConditionTreeNodeTest {
     @Test
     fun `should collect all leaf nodes`() {
         // Arrange
-        val condition1 = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
-        val condition2 = SearchCondition(SearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
-        val condition3 = SearchCondition(SearchField.FLAGGED, SearchAttribute.EQUALS, "1")
+        val condition1 = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition2 = SearchCondition(MessageSearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
+        val condition3 = SearchCondition(MessageSearchField.FLAGGED, SearchAttribute.EQUALS, "1")
 
         val node = SearchConditionTreeNode.Builder(condition1)
             .and(
@@ -148,7 +148,7 @@ class SearchConditionTreeNodeTest {
     @Test
     fun `should create a node with NOT operator`() {
         // Arrange
-        val condition = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
 
         // Act
         val node = SearchConditionTreeNode.Builder(condition)

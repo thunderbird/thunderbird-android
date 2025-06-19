@@ -2,16 +2,16 @@ package com.fsck.k9.search
 
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchField
 
 /**
  * Modify the supplied [LocalMessageSearch] instance to limit the search to displayable folders.
  */
 fun LocalMessageSearch.limitToDisplayableFolders() {
     and(
-        SearchField.VISIBLE,
+        MessageSearchField.VISIBLE,
         "1",
         SearchAttribute.EQUALS,
     )
@@ -39,7 +39,7 @@ fun LocalMessageSearch.excludeSpecialFolders(account: LegacyAccount) {
     account.inboxFolderId?.let { inboxFolderId ->
         or(
             SearchCondition(
-                SearchField.FOLDER,
+                MessageSearchField.FOLDER,
                 SearchAttribute.EQUALS,
                 inboxFolderId.toString(),
             ),
@@ -50,7 +50,7 @@ fun LocalMessageSearch.excludeSpecialFolders(account: LegacyAccount) {
 private fun LocalMessageSearch.excludeSpecialFolder(folderId: Long?) {
     if (folderId != null) {
         and(
-            SearchField.FOLDER,
+            MessageSearchField.FOLDER,
             folderId.toString(),
             SearchAttribute.NOT_EQUALS,
         )

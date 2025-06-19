@@ -50,7 +50,7 @@ import kotlinx.datetime.Clock;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.feature.search.LocalMessageSearch;
 import net.thunderbird.feature.search.api.SearchAttribute;
-import net.thunderbird.feature.search.api.SearchField;
+import net.thunderbird.feature.search.api.MessageSearchField;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
@@ -405,7 +405,7 @@ public class LocalStore {
         String rootIdString = Long.toString(rootId);
 
         LocalMessageSearch search = new LocalMessageSearch();
-        search.and(SearchField.THREAD_ID, rootIdString, SearchAttribute.EQUALS);
+        search.and(MessageSearchField.THREAD_ID, rootIdString, SearchAttribute.EQUALS);
 
         return searchForMessages(search);
     }
