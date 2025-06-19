@@ -23,7 +23,7 @@ public class SqlQueryBuilder {
         }
 
         if (node.mLeft == null && node.mRight == null) {
-            SearchCondition condition = node.mCondition;
+            SearchCondition condition = node.condition;
             if (condition.field == SearchField.MESSAGE_CONTENTS) {
                 String fulltextQueryString = condition.value;
                 if (condition.attribute != SearchAttribute.CONTAINS) {
