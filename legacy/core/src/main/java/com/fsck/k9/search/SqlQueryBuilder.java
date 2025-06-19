@@ -7,6 +7,8 @@ import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchCondition;
 import net.thunderbird.feature.search.api.MessageSearchField;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.feature.search.api.SearchField;
+import net.thunderbird.feature.search.api.SearchFieldType;
 
 
 public class SqlQueryBuilder {
@@ -24,13 +26,17 @@ public class SqlQueryBuilder {
 
         if (node.getLeft() == null && node.getRight() == null) {
             SearchCondition condition = node.getCondition();
-            if (condition.field == MessageSearchField.MESSAGE_CONTENTS) {
-                String fulltextQueryString = condition.value;
+            if (condition.field.getFieldType() == SearchFieldType.CUSTOM) {
+                String fullQueryString = condition.value;
                 if (condition.attribute != SearchAttribute.CONTAINS) {
-                    Log.e("message contents can only be matched!");
+                    throw new IllegalArgumentException("Custom fields only support CONTAINS");
                 }
-                query.append("messages.id IN (SELECT docid FROM messages_fulltext WHERE fulltext MATCH ?)");
-                selectionArgs.add(fulltextQueryString);
+                if (condition.field.getCustomQueryTemplate() == null || condition.field.getCustomQueryTemplate().isEmpty()) {
+                    throw new IllegalArgumentException("Custom field has no query template!");
+                }
+
+                query.append(condition.field.getCustomQueryTemplate());
+                selectionArgs.add(fullQueryString);
             } else {
                 appendCondition(condition, query, selectionArgs);
             }
@@ -57,101 +63,13 @@ public class SqlQueryBuilder {
     }
 
     private static String getColumnName(SearchCondition condition) {
-        String columnName = null;
-        switch (condition.field) {
-            case ATTACHMENT_COUNT: {
-                columnName = "attachment_count";
-                break;
-            }
-            case BCC: {
-                columnName = "bcc_list";
-                break;
-            }
-            case CC: {
-                columnName = "cc_list";
-                break;
-            }
-            case FOLDER: {
-                columnName = "folder_id";
-                break;
-            }
-            case DATE: {
-                columnName = "date";
-                break;
-            }
-            case DELETED: {
-                columnName = "deleted";
-                break;
-            }
-            case FLAG: {
-                columnName = "flags";
-                break;
-            }
-            case ID: {
-                columnName = "id";
-                break;
-            }
-            case REPLY_TO: {
-                columnName = "reply_to_list";
-                break;
-            }
-            case SENDER: {
-                columnName = "sender_list";
-                break;
-            }
-            case SUBJECT: {
-                columnName = "subject";
-                break;
-            }
-            case TO: {
-                columnName = "to_list";
-                break;
-            }
-            case UID: {
-                columnName = "uid";
-                break;
-            }
-            case INTEGRATE: {
-                columnName = "integrate";
-                break;
-            }
-            case NEW_MESSAGE: {
-                columnName = "new_message";
-                break;
-            }
-            case READ: {
-                columnName = "read";
-                break;
-            }
-            case FLAGGED: {
-                columnName = "flagged";
-                break;
-            }
-            case VISIBLE: {
-                columnName = "visible";
-                break;
-            }
-            case THREAD_ID: {
-                columnName = "threads.root";
-                break;
-            }
-            case MESSAGE_CONTENTS: {
-                // Special case handled in buildWhereClauseInternal()
-                break;
-            }
-        }
-
-        if (columnName == null) {
-            throw new RuntimeException("Unhandled case");
-        }
-
-        return columnName;
+        return condition.field.getFieldName();
     }
 
     private static void appendExprRight(SearchCondition condition, StringBuilder query,
             List<String> selectionArgs) {
         String value = condition.value;
-        MessageSearchField field = condition.field;
+        SearchField field = condition.field;
 
         query.append(" ");
         String selectionArg = null;
@@ -188,25 +106,8 @@ public class SqlQueryBuilder {
         selectionArgs.add(selectionArg);
     }
 
-    private static boolean isNumberColumn(MessageSearchField field) {
-        switch (field) {
-            case ATTACHMENT_COUNT:
-            case DATE:
-            case DELETED:
-            case FOLDER:
-            case ID:
-            case INTEGRATE:
-            case NEW_MESSAGE:
-            case THREAD_ID:
-            case READ:
-            case VISIBLE:
-            case FLAGGED: {
-                return true;
-            }
-            default: {
-                return false;
-            }
-        }
+    private static boolean isNumberColumn(SearchField field) {
+        return field.getFieldType() == SearchFieldType.NUMBER;
     }
 
     public static String addPrefixToSelection(String[] columnNames, String prefix, String selection) {

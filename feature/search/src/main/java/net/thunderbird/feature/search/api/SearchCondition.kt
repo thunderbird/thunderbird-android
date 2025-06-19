@@ -14,7 +14,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SearchCondition(
     @JvmField
-    val field: MessageSearchField,
+    val field: SearchField,
 
     @JvmField
     val attribute: SearchAttribute,
