@@ -95,7 +95,7 @@ class MessageListLoader(
 
     private fun getThreadId(search: LocalMessageSearch): Long? {
         return search.leafSet.firstOrNull {
-            it.condition.field == SearchField.THREAD_ID
+            it.condition?.field == SearchField.THREAD_ID
         }?.condition?.value?.toLong()
     }
 

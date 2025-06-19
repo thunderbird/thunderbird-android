@@ -22,8 +22,8 @@ public class SqlQueryBuilder {
             return;
         }
 
-        if (node.mLeft == null && node.mRight == null) {
-            SearchCondition condition = node.condition;
+        if (node.getLeft() == null && node.getRight() == null) {
+            SearchCondition condition = node.getCondition();
             if (condition.field == SearchField.MESSAGE_CONTENTS) {
                 String fulltextQueryString = condition.value;
                 if (condition.attribute != SearchAttribute.CONTAINS) {
@@ -36,11 +36,11 @@ public class SqlQueryBuilder {
             }
         } else {
             query.append("(");
-            buildWhereClauseInternal(node.mLeft, query, selectionArgs);
+            buildWhereClauseInternal(node.getLeft(), query, selectionArgs);
             query.append(") ");
-            query.append(node.mValue.name());
+            query.append(node.getOperator().name());
             query.append(" (");
-            buildWhereClauseInternal(node.mRight, query, selectionArgs);
+            buildWhereClauseInternal(node.getRight(), query, selectionArgs);
             query.append(")");
         }
     }

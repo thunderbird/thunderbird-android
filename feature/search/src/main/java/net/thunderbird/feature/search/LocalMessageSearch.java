@@ -91,7 +91,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * @return New top AND node, new root.
      */
     public SearchConditionTreeNode and(SearchCondition condition) {
-        SearchConditionTreeNode tmp = new SearchConditionTreeNode(condition);
+        SearchConditionTreeNode tmp = new SearchConditionTreeNode.Builder(condition).build();
         return and(tmp);
     }
 
@@ -110,7 +110,10 @@ public class LocalMessageSearch implements MessageSearchSpecification {
             return node;
         }
 
-        mConditions = mConditions.and(node);
+        mConditions = new SearchConditionTreeNode.Builder(mConditions)
+                .and(node)
+                .build();
+
         return mConditions;
     }
 
@@ -122,7 +125,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * @return New top OR node, new root.
      */
     public SearchConditionTreeNode or(SearchCondition condition) {
-        SearchConditionTreeNode tmp = new SearchConditionTreeNode(condition);
+        SearchConditionTreeNode tmp = new SearchConditionTreeNode.Builder(condition).build();
         return or(tmp);
     }
 
@@ -141,7 +144,10 @@ public class LocalMessageSearch implements MessageSearchSpecification {
             return node;
         }
 
-        mConditions = mConditions.or(node);
+        mConditions = new SearchConditionTreeNode.Builder(mConditions)
+                .or(node)
+                .build();
+
         return mConditions;
     }
 
@@ -170,9 +176,9 @@ public class LocalMessageSearch implements MessageSearchSpecification {
     public List<Long> getFolderIds() {
         List<Long> results = new ArrayList<>();
         for (SearchConditionTreeNode node : mLeafSet) {
-            if (node.condition.field == SearchField.FOLDER &&
-                    node.condition.attribute == SearchAttribute.EQUALS) {
-                results.add(Long.valueOf(node.condition.value));
+            if (node.getCondition().field == SearchField.FOLDER &&
+                    node.getCondition().attribute == SearchAttribute.EQUALS) {
+                results.add(Long.valueOf(node.getCondition().value));
             }
         }
         return results;
