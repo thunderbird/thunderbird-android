@@ -170,9 +170,9 @@ public class LocalMessageSearch implements MessageSearchSpecification {
     public List<Long> getFolderIds() {
         List<Long> results = new ArrayList<>();
         for (SearchConditionTreeNode node : mLeafSet) {
-            if (node.mCondition.field == SearchField.FOLDER &&
-                    node.mCondition.attribute == SearchAttribute.EQUALS) {
-                results.add(Long.valueOf(node.mCondition.value));
+            if (node.condition.field == SearchField.FOLDER &&
+                    node.condition.attribute == SearchAttribute.EQUALS) {
+                results.add(Long.valueOf(node.condition.value));
             }
         }
         return results;
