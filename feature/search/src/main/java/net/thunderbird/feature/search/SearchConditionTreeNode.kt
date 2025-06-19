@@ -2,7 +2,9 @@ package net.thunderbird.feature.search
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
+import net.thunderbird.feature.search.api.SearchFieldType
 
 /**
  * Represents a node in a boolean expression tree for evaluating search conditions.
@@ -97,6 +99,7 @@ class SearchConditionTreeNode private constructor(
                 val rightStr = right?.toString() ?: "null"
                 "($leftStr ${operator.name} $rightStr)"
             }
+
             Operator.CONDITION -> condition.toString()
             Operator.NOT -> "(NOT ${left?.toString() ?: "null"})"
         }
@@ -105,14 +108,37 @@ class SearchConditionTreeNode private constructor(
     class Builder(
         private var root: SearchConditionTreeNode,
     ) {
-
         constructor(condition: SearchCondition) : this(SearchConditionTreeNode(Operator.CONDITION, condition))
 
+        private fun validateCondition(condition: SearchCondition) {
+            if (condition.field.fieldType == SearchFieldType.CUSTOM &&
+                condition.attribute != SearchAttribute.CONTAINS
+            ) {
+                error("Custom fields can only be used with the CONTAINS attribute")
+            }
+        }
+
+        private fun validateTree(node: SearchConditionTreeNode?) {
+            if (node == null) return
+
+            if (node.operator == Operator.CONDITION) {
+                if (node.condition == null) {
+                    error("CONDITION nodes must have a condition")
+                }
+                validateCondition(node.condition)
+            } else {
+                validateTree(node.left)
+                validateTree(node.right)
+            }
+        }
+
         fun and(condition: SearchCondition): Builder {
+            validateCondition(condition)
             return and(SearchConditionTreeNode(Operator.CONDITION, condition))
         }
 
         fun and(node: SearchConditionTreeNode): Builder {
+            validateTree(node)
             root = SearchConditionTreeNode(
                 operator = Operator.AND,
                 left = root,
@@ -130,10 +156,12 @@ class SearchConditionTreeNode private constructor(
         }
 
         fun or(condition: SearchCondition): Builder {
+            validateCondition(condition)
             return or(SearchConditionTreeNode(Operator.CONDITION, condition))
         }
 
         fun or(node: SearchConditionTreeNode): Builder {
+            validateTree(node)
             root = SearchConditionTreeNode(
                 operator = Operator.OR,
                 left = root,

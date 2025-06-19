@@ -1,15 +1,27 @@
 package net.thunderbird.feature.search
 
+import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
+import kotlinx.parcelize.Parcelize
 import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
+import net.thunderbird.feature.search.api.SearchField
+import net.thunderbird.feature.search.api.SearchFieldType
 import org.junit.Test
 
 class SearchConditionTreeNodeTest {
+
+    @Parcelize
+    data class TestSearchField(
+        override val fieldName: String,
+        override val fieldType: SearchFieldType,
+        override val customQueryTemplate: String? = null,
+    ) : SearchField
 
     @Test
     fun `should create a node with a condition`() {
@@ -164,5 +176,62 @@ class SearchConditionTreeNodeTest {
         // Left node should be the condition
         assertThat(node.left?.operator).isEqualTo(SearchConditionTreeNode.Operator.CONDITION)
         assertThat(node.left?.condition).isEqualTo(condition)
+    }
+
+    @Test
+    fun `should throw exception when adding condition with custom field and non-CONTAINS attribute`() {
+        // Arrange
+        val condition = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val builder = SearchConditionTreeNode.Builder(condition)
+
+        val customField = TestSearchField(
+            fieldName = "test_custom_field",
+            fieldType = SearchFieldType.CUSTOM,
+            customQueryTemplate = "custom_query_template",
+        )
+
+        // Act & Assert
+        assertFailure {
+            builder.and(SearchCondition(customField, SearchAttribute.EQUALS, "test value"))
+        }.isInstanceOf<IllegalStateException>()
+    }
+
+    @Test
+    fun `should throw exception when adding condition with custom field and non-CONTAINS attribute using or`() {
+        // Arrange
+        val condition = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val builder = SearchConditionTreeNode.Builder(condition)
+
+        val customField = TestSearchField(
+            fieldName = "test_custom_field",
+            fieldType = SearchFieldType.CUSTOM,
+            customQueryTemplate = "custom_query_template",
+        )
+
+        // Act & Assert
+        assertFailure {
+            builder.or(SearchCondition(customField, SearchAttribute.EQUALS, "test value"))
+        }.isInstanceOf<IllegalStateException>()
+    }
+
+    @Test
+    fun `should throw exception when adding node with invalid condition`() {
+        // Arrange
+        val customField = TestSearchField(
+            fieldName = "test_custom_field",
+            fieldType = SearchFieldType.CUSTOM,
+            customQueryTemplate = "custom_query_template",
+        )
+        val validCondition = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "valid")
+        val validBuilder = SearchConditionTreeNode.Builder(validCondition)
+
+        // Add an invalid condition to the builder
+        val invalidCondition = SearchCondition(customField, SearchAttribute.EQUALS, "invalid")
+
+        // Act & Assert
+        // This should throw an exception when trying to add the invalid condition to the builder
+        assertFailure {
+            validBuilder.and(invalidCondition)
+        }.isInstanceOf<IllegalStateException>()
     }
 }
