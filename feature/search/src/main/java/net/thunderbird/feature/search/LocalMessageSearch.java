@@ -35,8 +35,8 @@ public class LocalMessageSearch implements MessageSearchSpecification {
 
     // since the uuid isn't in the message table it's not in the tree neither
     private Set<String> mAccountUuids = new HashSet<>();
-    private ConditionsTreeNode mConditions = null;
-    private Set<ConditionsTreeNode> mLeafSet = new HashSet<>();
+    private SearchConditionTreeNode mConditions = null;
+    private Set<SearchConditionTreeNode> mLeafSet = new HashSet<>();
 
 
     ///////////////////////////////////////////////////////////////
@@ -90,8 +90,8 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * @param condition Condition to 'AND' with.
      * @return New top AND node, new root.
      */
-    public ConditionsTreeNode and(SearchCondition condition) {
-        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+    public SearchConditionTreeNode and(SearchCondition condition) {
+        SearchConditionTreeNode tmp = new SearchConditionTreeNode(condition);
         return and(tmp);
     }
 
@@ -102,7 +102,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * @param node Node to 'AND' with.
      * @return New top AND node, new root.
      */
-    public ConditionsTreeNode and(ConditionsTreeNode node) {
+    public SearchConditionTreeNode and(SearchConditionTreeNode node) {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -121,8 +121,8 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * @param condition Condition to 'OR' with.
      * @return New top OR node, new root.
      */
-    public ConditionsTreeNode or(SearchCondition condition) {
-        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+    public SearchConditionTreeNode or(SearchCondition condition) {
+        SearchConditionTreeNode tmp = new SearchConditionTreeNode(condition);
         return or(tmp);
     }
 
@@ -133,7 +133,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * @param node Node to 'OR' with.
      * @return New top OR node, new root.
      */
-    public ConditionsTreeNode or(ConditionsTreeNode node) {
+    public SearchConditionTreeNode or(SearchConditionTreeNode node) {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -169,7 +169,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      */
     public List<Long> getFolderIds() {
         List<Long> results = new ArrayList<>();
-        for (ConditionsTreeNode node : mLeafSet) {
+        for (SearchConditionTreeNode node : mLeafSet) {
             if (node.mCondition.field == SearchField.FOLDER &&
                     node.mCondition.attribute == SearchAttribute.EQUALS) {
                 results.add(Long.valueOf(node.mCondition.value));
@@ -183,7 +183,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      *
      * @return All the leaf conditions as a set.
      */
-    public Set<ConditionsTreeNode> getLeafSet() {
+    public Set<SearchConditionTreeNode> getLeafSet() {
         return mLeafSet;
     }
 
@@ -195,12 +195,12 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * very dirty fix for remotesearch support atm
      */
     public String getRemoteSearchArguments() {
-        Set<ConditionsTreeNode> leafSet = getLeafSet();
+        Set<SearchConditionTreeNode> leafSet = getLeafSet();
         if (leafSet == null) {
             return null;
         }
 
-        for (ConditionsTreeNode node : leafSet) {
+        for (SearchConditionTreeNode node : leafSet) {
             if (node.getCondition().field == SearchField.SUBJECT ||
                     node.getCondition().field == SearchField.SENDER ) {
                 return node.getCondition().value;
@@ -250,7 +250,7 @@ public class LocalMessageSearch implements MessageSearchSpecification {
      * @return The root node of the related conditions tree.
      */
     @Override
-    public ConditionsTreeNode getConditions() {
+    public SearchConditionTreeNode getConditions() {
         return mConditions;
     }
 

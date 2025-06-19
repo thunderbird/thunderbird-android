@@ -21,9 +21,9 @@ import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.feature.search.ConditionsTreeNode
 import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.SearchConditionTreeNode
 
 internal class DefaultMessageCountsProvider(
     private val accountManager: AccountManager,
@@ -93,7 +93,7 @@ internal class DefaultMessageCountsProvider(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun getMessageCounts(account: LegacyAccount, conditions: ConditionsTreeNode?): MessageCounts {
+    private fun getMessageCounts(account: LegacyAccount, conditions: SearchConditionTreeNode?): MessageCounts {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
             return MessageCounts(

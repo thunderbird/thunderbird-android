@@ -1,7 +1,7 @@
 package net.thunderbird.feature.search.api
 
 import android.os.Parcelable
-import net.thunderbird.feature.search.ConditionsTreeNode
+import net.thunderbird.feature.search.SearchConditionTreeNode
 
 /**
  * Represents a search specification that defines the accounts and conditions
@@ -24,5 +24,5 @@ interface MessageSearchSpecification : Parcelable {
      *
      * @return Root node of conditions tree.
      */
-    val conditions: ConditionsTreeNode
+    val conditions: SearchConditionTreeNode
 }

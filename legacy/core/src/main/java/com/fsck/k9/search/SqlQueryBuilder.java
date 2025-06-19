@@ -2,7 +2,7 @@ package com.fsck.k9.search;
 
 import java.util.List;
 
-import net.thunderbird.feature.search.ConditionsTreeNode;
+import net.thunderbird.feature.search.SearchConditionTreeNode;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchCondition;
 import net.thunderbird.feature.search.api.SearchField;
@@ -10,11 +10,11 @@ import net.thunderbird.core.logging.legacy.Log;
 
 
 public class SqlQueryBuilder {
-    public static void buildWhereClause(ConditionsTreeNode node, StringBuilder query, List<String> selectionArgs) {
+    public static void buildWhereClause(SearchConditionTreeNode node, StringBuilder query, List<String> selectionArgs) {
         buildWhereClauseInternal(node, query, selectionArgs);
     }
 
-    private static void buildWhereClauseInternal(ConditionsTreeNode node, StringBuilder query,
+    private static void buildWhereClauseInternal(SearchConditionTreeNode node, StringBuilder query,
         List<String> selectionArgs) {
 
         if (node == null) {

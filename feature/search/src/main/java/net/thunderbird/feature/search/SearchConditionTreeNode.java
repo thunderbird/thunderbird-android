@@ -17,15 +17,15 @@ import net.thunderbird.feature.search.api.SearchCondition;
  * TODO removing conditions from the tree
  * TODO implement NOT as a node again
  */
-public class ConditionsTreeNode implements Parcelable {
+public class SearchConditionTreeNode implements Parcelable {
 
     public enum Operator {
         AND, OR, CONDITION
     }
 
-    public ConditionsTreeNode mLeft;
-    public ConditionsTreeNode mRight;
-    public ConditionsTreeNode mParent;
+    public SearchConditionTreeNode mLeft;
+    public SearchConditionTreeNode mRight;
+    public SearchConditionTreeNode mParent;
 
     /*
      * If mValue isn't CONDITION then mCondition contains a real
@@ -43,13 +43,13 @@ public class ConditionsTreeNode implements Parcelable {
     ///////////////////////////////////////////////////////////////
     // Constructors
     ///////////////////////////////////////////////////////////////
-    public ConditionsTreeNode(SearchCondition condition) {
+    public SearchConditionTreeNode(SearchCondition condition) {
         mParent = null;
         mCondition = condition;
         mValue = Operator.CONDITION;
     }
 
-    public ConditionsTreeNode(ConditionsTreeNode parent, Operator op) {
+    public SearchConditionTreeNode(SearchConditionTreeNode parent, Operator op) {
         mParent = parent;
         mValue = op;
         mCondition = null;
@@ -66,7 +66,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @param expr Expression to 'AND' with.
      * @return New top AND node.
      */
-    public ConditionsTreeNode and(ConditionsTreeNode expr) {
+    public SearchConditionTreeNode and(SearchConditionTreeNode expr) {
         return add(expr, Operator.AND);
     }
 
@@ -78,8 +78,8 @@ public class ConditionsTreeNode implements Parcelable {
      * @param condition Condition to 'AND' with.
      * @return New top AND node, new root.
      */
-    public ConditionsTreeNode and(SearchCondition condition) {
-        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+    public SearchConditionTreeNode and(SearchCondition condition) {
+        SearchConditionTreeNode tmp = new SearchConditionTreeNode(condition);
         return and(tmp);
     }
 
@@ -90,7 +90,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @param expr Expression to 'OR' with.
      * @return New top OR node.
      */
-    public ConditionsTreeNode or(ConditionsTreeNode expr) {
+    public SearchConditionTreeNode or(SearchConditionTreeNode expr) {
         return add(expr, Operator.OR);
     }
 
@@ -102,8 +102,8 @@ public class ConditionsTreeNode implements Parcelable {
      * @param condition Condition to 'OR' with.
      * @return New top OR node, new root.
      */
-    public ConditionsTreeNode or(SearchCondition condition) {
-        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+    public SearchConditionTreeNode or(SearchCondition condition) {
+        SearchConditionTreeNode tmp = new SearchConditionTreeNode(condition);
         return or(tmp);
     }
 
@@ -123,8 +123,8 @@ public class ConditionsTreeNode implements Parcelable {
      * Get a set of all the leaves in the tree.
      * @return Set of all the leaves.
      */
-    public Set<ConditionsTreeNode> getLeafSet() {
-        Set<ConditionsTreeNode> leafSet = new HashSet<>();
+    public Set<SearchConditionTreeNode> getLeafSet() {
+        Set<SearchConditionTreeNode> leafSet = new HashSet<>();
         return getLeafSet(leafSet);
     }
 
@@ -147,12 +147,12 @@ public class ConditionsTreeNode implements Parcelable {
      * @return New parent node, containing the operator.
      * @throws IllegalArgumentException Throws when the provided new node does not have a null parent.
      */
-    private ConditionsTreeNode add(ConditionsTreeNode node, Operator op) {
+    private SearchConditionTreeNode add(SearchConditionTreeNode node, Operator op) {
         if (node.mParent != null) {
             throw new IllegalArgumentException("Can only add new expressions from root node down.");
         }
 
-        ConditionsTreeNode tmpNode = new ConditionsTreeNode(mParent, op);
+        SearchConditionTreeNode tmpNode = new SearchConditionTreeNode(mParent, op);
         tmpNode.mLeft = this;
         tmpNode.mRight = node;
 
@@ -174,7 +174,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @param oldChild Old child node to be replaced.
      * @param newChild New child node.
      */
-    private void updateChild(ConditionsTreeNode oldChild, ConditionsTreeNode newChild) {
+    private void updateChild(SearchConditionTreeNode oldChild, SearchConditionTreeNode newChild) {
         // we can compare objects id's because this is the desired behaviour in this case
         if (mLeft == oldChild) {
             mLeft = newChild;
@@ -190,7 +190,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @param leafSet Leafset that's being built.
      * @return Set of leaves being completed.
      */
-    private Set<ConditionsTreeNode> getLeafSet(Set<ConditionsTreeNode> leafSet) {
+    private Set<SearchConditionTreeNode> getLeafSet(Set<SearchConditionTreeNode> leafSet) {
         if (mLeft == null && mRight == null) {
             // if we ended up in a leaf, add ourself and return
             leafSet.add(this);
@@ -228,25 +228,25 @@ public class ConditionsTreeNode implements Parcelable {
         dest.writeParcelable(mRight, flags);
     }
 
-    public static final Parcelable.Creator<ConditionsTreeNode> CREATOR =
-            new Parcelable.Creator<ConditionsTreeNode>() {
+    public static final Parcelable.Creator<SearchConditionTreeNode> CREATOR =
+            new Parcelable.Creator<SearchConditionTreeNode>() {
 
         @Override
-        public ConditionsTreeNode createFromParcel(Parcel in) {
-            return new ConditionsTreeNode(in);
+        public SearchConditionTreeNode createFromParcel(Parcel in) {
+            return new SearchConditionTreeNode(in);
         }
 
         @Override
-        public ConditionsTreeNode[] newArray(int size) {
-            return new ConditionsTreeNode[size];
+        public SearchConditionTreeNode[] newArray(int size) {
+            return new SearchConditionTreeNode[size];
         }
     };
 
-    private ConditionsTreeNode(Parcel in) {
+    private SearchConditionTreeNode(Parcel in) {
         mValue = Operator.values()[in.readInt()];
-        mCondition = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
-        mLeft = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
-        mRight = in.readParcelable(ConditionsTreeNode.class.getClassLoader());
+        mCondition = in.readParcelable(SearchConditionTreeNode.class.getClassLoader());
+        mLeft = in.readParcelable(SearchConditionTreeNode.class.getClassLoader());
+        mRight = in.readParcelable(SearchConditionTreeNode.class.getClassLoader());
         mParent = null;
 
         if (mLeft != null) {
