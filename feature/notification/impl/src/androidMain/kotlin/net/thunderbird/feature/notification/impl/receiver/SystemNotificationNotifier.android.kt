@@ -54,7 +54,7 @@ internal class AndroidSystemNotificationNotifier(
         return NotificationCompat
             .Builder(context, channel.id)
             .apply {
-//                setSmallIcon(notification.icon) // TODO.
+                setSmallIcon(icon.resolve(notification = this@toAndroidNotification))
                 setContentTitle(title)
                 setTicker(accessibilityText)
                 contentText?.let(::setContentText)

@@ -5,6 +5,9 @@ import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.icon.AuthenticationError
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
 import net.thunderbird.feature.notification.resources.Res
 import net.thunderbird.feature.notification.resources.notification_authentication_error_text
 import net.thunderbird.feature.notification.resources.notification_authentication_error_title
@@ -22,6 +25,8 @@ data class AuthenticationErrorNotification private constructor(
     override val title: String,
     override val contentText: String?,
     override val channel: NotificationChannel,
+    @KmpIgnoredOnParcel
+    override val icon: NotificationIcon = NotificationIcons.AuthenticationError,
 ) : AppNotification(), SystemNotification, InAppNotification {
     @KmpIgnoredOnParcel
     override val severity: NotificationSeverity = NotificationSeverity.Fatal

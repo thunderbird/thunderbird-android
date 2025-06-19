@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <!-- TODO: Perform a cleanup removing the other resources from the other modules with the same name once the notification system is consolidated. -->
+    <!-- TODO(#9418): Perform a cleanup removing the other resources from the other modules with the same name once the notification system is consolidated. -->
     <!-- Channel configuration -->
     <string name="notification_channel_push_title">Synchronize (Push)</string>
     <string name="notification_channel_push_description">Displayed while waiting for new messages</string>
@@ -15,23 +15,23 @@
     <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound.\n\nTap to open notification settings.</string>
 
     <string name="notification_authentication_error_title">Authentication failed</string>
-    <string name="notification_authentication_error_text">Authentication failed for %s. Update your server settings.</string>
+    <string name="notification_authentication_error_text">Authentication failed for %1$s. Update your server settings.</string>
 
     <string name="notification_certificate_error_public">Certificate error</string>
-    <string name="notification_certificate_error_title">Certificate error for %s</string>
+    <string name="notification_certificate_error_title">Certificate error for %1$s</string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
     <string name="notification_bg_sync_ticker">Checking mail: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Checking mail</string>
     <string name="notification_bg_sync_text">%1$s: %2$s</string>
-    <string name="notification_bg_send_ticker">Sending mail: %s</string>
+    <string name="notification_bg_send_ticker">Sending mail: %1$s</string>
     <string name="notification_bg_send_title">Sending mail</string>
 
     <string name="send_failure_subject">Failed to send some messages</string>
 
     <plurals name="notification_new_messages_title">
-        <item quantity="one">%d new message</item>
-        <item quantity="other">%d new messages</item>
+        <item quantity="one">%1$d new message</item>
+        <item quantity="other">%1$d new messages</item>
     </plurals>
     <string name="notification_additional_messages">+ %1$d more on %2$s</string>
 

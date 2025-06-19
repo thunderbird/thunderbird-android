@@ -5,6 +5,13 @@ import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.icon.AlarmPermissionMissing
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
+import net.thunderbird.feature.notification.api.ui.icon.PushServiceInitializing
+import net.thunderbird.feature.notification.api.ui.icon.PushServiceListening
+import net.thunderbird.feature.notification.api.ui.icon.PushServiceWaitBackgroundSync
+import net.thunderbird.feature.notification.api.ui.icon.PushServiceWaitNetwork
 import net.thunderbird.feature.notification.resources.Res
 import net.thunderbird.feature.notification.resources.push_info_disable_push_action
 import net.thunderbird.feature.notification.resources.push_notification_grant_alarm_permission
@@ -35,6 +42,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
+        @KmpIgnoredOnParcel
+        override val icon: NotificationIcon = NotificationIcons.PushServiceInitializing,
     ) : PushServiceNotification() {
         companion object {
             /**
@@ -62,6 +71,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
+        @KmpIgnoredOnParcel
+        override val icon: NotificationIcon = NotificationIcons.PushServiceListening,
     ) : PushServiceNotification() {
         companion object {
             /**
@@ -89,6 +100,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
+        @KmpIgnoredOnParcel
+        override val icon: NotificationIcon = NotificationIcons.PushServiceWaitBackgroundSync,
     ) : PushServiceNotification() {
         companion object {
             /**
@@ -116,6 +129,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
+        @KmpIgnoredOnParcel
+        override val icon: NotificationIcon = NotificationIcons.PushServiceWaitNetwork,
     ) : PushServiceNotification() {
         companion object {
             /**
@@ -146,6 +161,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val accountNumber: Int,
         override val title: String,
         override val contentText: String?,
+        @KmpIgnoredOnParcel
+        override val icon: NotificationIcon = NotificationIcons.AlarmPermissionMissing,
     ) : PushServiceNotification(), InAppNotification {
         @KmpIgnoredOnParcel
         override val severity: NotificationSeverity = NotificationSeverity.Critical

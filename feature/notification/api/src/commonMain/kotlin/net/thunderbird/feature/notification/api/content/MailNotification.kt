@@ -8,6 +8,13 @@ import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.icon.MailFetching
+import net.thunderbird.feature.notification.api.ui.icon.MailSendFailed
+import net.thunderbird.feature.notification.api.ui.icon.MailSending
+import net.thunderbird.feature.notification.api.ui.icon.NewMailSingleMail
+import net.thunderbird.feature.notification.api.ui.icon.NewMailSummaryMail
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
 import net.thunderbird.feature.notification.resources.Res
 import net.thunderbird.feature.notification.resources.notification_additional_messages
 import net.thunderbird.feature.notification.resources.notification_bg_send_ticker
@@ -31,12 +38,15 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     override val authenticationRequired: Boolean = true
 
     @KmpParcelize
-    data class Fetching(
+    @ConsistentCopyVisibility
+    data class Fetching private constructor(
         override val accountNumber: Int,
         override val title: String,
         override val accessibilityText: String,
         override val contentText: String?,
         override val channel: NotificationChannel,
+        @KmpIgnoredOnParcel
+        override val icon: NotificationIcon = NotificationIcons.MailFetching,
     ) : MailNotification() {
         @KmpIgnoredOnParcel
         override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
@@ -81,12 +91,15 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     }
 
     @KmpParcelize
-    data class Sending(
+    @ConsistentCopyVisibility
+    data class Sending private constructor(
         override val accountNumber: Int,
         override val title: String,
         override val accessibilityText: String,
         override val contentText: String?,
         override val channel: NotificationChannel,
+        @KmpIgnoredOnParcel
+        override val icon: NotificationIcon = NotificationIcons.MailSending,
     ) : MailNotification() {
         @KmpIgnoredOnParcel
         override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
@@ -117,11 +130,14 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     }
 
     @KmpParcelize
-    data class SendFailed(
+    @ConsistentCopyVisibility
+    data class SendFailed private constructor(
         override val accountNumber: Int,
         override val title: String,
         override val contentText: String?,
         override val channel: NotificationChannel,
+        @KmpIgnoredOnParcel
+        override val icon: NotificationIcon = NotificationIcons.MailSendFailed,
     ) : MailNotification(), InAppNotification {
         @KmpIgnoredOnParcel
         override val severity: NotificationSeverity = NotificationSeverity.Critical
@@ -208,6 +224,8 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             val preview: String,
             override val group: NotificationGroup?,
             override val lockscreenNotificationAppearance: LockscreenNotificationAppearance,
+            @KmpIgnoredOnParcel
+            override val icon: NotificationIcon = NotificationIcons.NewMailSingleMail,
         ) : NewMail() {
             @KmpIgnoredOnParcel
             override val title: String = sender
@@ -226,8 +244,8 @@ sealed class MailNotification : AppNotification(), SystemNotification {
          * @property contentText The content text of the notification, or null if there is no content text.
          * @property group The notification group this summary belongs to.
          */
-        @ConsistentCopyVisibility
         @KmpParcelize
+        @ConsistentCopyVisibility
         data class SummaryMail private constructor(
             override val accountNumber: Int,
             override val accountUuid: String,
@@ -236,6 +254,8 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             override val title: String,
             override val contentText: String?,
             override val group: NotificationGroup,
+            @KmpIgnoredOnParcel
+            override val icon: NotificationIcon = NotificationIcons.NewMailSummaryMail,
         ) : NewMail() {
             companion object {
                 /**

@@ -10,6 +10,7 @@ import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 
 /**
  * Represents a notification that can be displayed to the user.
@@ -26,6 +27,7 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
  * @property authenticationRequired Indicates whether authentication is required to view the notification.
  * @property channel The notification channel to which this notification belongs.
  * @property group The notification group to which this notification belongs, can be null.
+ * @property icon The notification icon.
  * @see AppNotification
  */
 sealed interface Notification : KmpParcelable {
@@ -38,6 +40,7 @@ sealed interface Notification : KmpParcelable {
     val authenticationRequired: Boolean
     val channel: NotificationChannel
     val group: NotificationGroup?
+    val icon: NotificationIcon
 }
 
 /**
