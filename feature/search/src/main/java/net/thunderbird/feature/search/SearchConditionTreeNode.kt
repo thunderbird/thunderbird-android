@@ -7,32 +7,47 @@ import net.thunderbird.feature.search.api.SearchCondition
 /**
  * Represents a node in a boolean expression tree for evaluating search conditions.
  *
- * This data structure is used to construct complex logical queries by combining
- * simple `SearchCondition` objects using logical operators like `AND` and `OR`.
+ * This tree is used to construct logical queries by combining simple {@link SearchCondition}
+ * leaf nodes using logical operators: AND, OR, and NOT.
  *
- * Each node in the tree is one of:
- * - A leaf node: `operator == CONDITION`, contains a single `SearchCondition`
- * - An internal node: `operator == AND` or `OR`, with left and right children
+ * The tree consists of:
+ *  - Leaf nodes with `operator == CONDITION`, containing a single {@link SearchCondition}
+ *  - Internal nodes with `operator == AND` or `OR`, referencing two child nodes
+ *  - Unary nodes with `operator == NOT`, referencing one child node (`left`)
+ *
+ * The tree supports immutable construction via the {@link Builder} class.
  *
  * Example tree:
  *
- *      OR
- *     /  \
- *   AND   CONDITION(subject CONTAINS "invoice")
- *  /   \
- * A     B
+ *             OR
+ *            /  \
+ *         NOT   CONDITION(subject contains "invoice")
+ *          |
+ *        AND
+ *       /   \
+ *      A    B
  *
  * Where:
  * - A = CONDITION(from CONTAINS "bob@example.com")
  * - B = CONDITION(to CONTAINS "alice@example.com")
  *
  * Represents logic:
- *   (from CONTAINS "bob@example.com" AND to CONTAINS "alice@example.com")
+ *   NOT (from CONTAINS "bob@example.com" AND to CONTAINS "alice@example.com")
  *   OR subject CONTAINS "invoice"
  *
  * Use `getLeafSet()` to extract all base conditions for analysis or UI rendering.
  *
- *  TODO implement NOT as a node again
+ * Example usage (Kotlin):
+ *
+ * ```kotlin
+ * val tree = SearchConditionTreeNode.Builder(conditionA)
+ *    .and(conditionB)
+ *    .not()
+ *    .or(conditionC)
+ *    .build()
+ * ```
+ *
+ * This would produce: ((NOT (A AND B)) OR C)
  *
  * @see SearchCondition
  * @see LocalMessageSearch
@@ -46,6 +61,7 @@ class SearchConditionTreeNode private constructor(
 ) : Parcelable {
     enum class Operator {
         AND,
+        NOT,
         OR,
         CONDITION,
     }
@@ -59,22 +75,30 @@ class SearchConditionTreeNode private constructor(
     private fun collectLeaves(node: SearchConditionTreeNode?, leafSet: MutableSet<SearchConditionTreeNode>) {
         if (node == null) return
 
-        if (node.left == null && node.right == null) {
-            leafSet.add(node)
-        } else {
-            collectLeaves(node.left, leafSet)
-            collectLeaves(node.right, leafSet)
+        when (node.operator) {
+            Operator.CONDITION -> leafSet.add(node)
+
+            Operator.NOT -> {
+                // Unary: only traverse left
+                collectLeaves(node.left, leafSet)
+            }
+
+            Operator.AND, Operator.OR -> {
+                collectLeaves(node.left, leafSet)
+                collectLeaves(node.right, leafSet)
+            }
         }
     }
 
     override fun toString(): String {
         return when (operator) {
-            Operator.CONDITION -> condition.toString()
             Operator.AND, Operator.OR -> {
                 val leftStr = left?.toString() ?: "null"
                 val rightStr = right?.toString() ?: "null"
                 "($leftStr ${operator.name} $rightStr)"
             }
+            Operator.CONDITION -> condition.toString()
+            Operator.NOT -> "(NOT ${left?.toString() ?: "null"})"
         }
     }
 
@@ -93,6 +117,14 @@ class SearchConditionTreeNode private constructor(
                 operator = Operator.AND,
                 left = root,
                 right = node,
+            )
+            return this
+        }
+
+        fun not(): Builder {
+            root = SearchConditionTreeNode(
+                operator = Operator.NOT,
+                left = root,
             )
             return this
         }

@@ -34,7 +34,12 @@ public class SqlQueryBuilder {
             } else {
                 appendCondition(condition, query, selectionArgs);
             }
+        } else if (node.getOperator() == SearchConditionTreeNode.Operator.NOT) {
+            query.append("NOT (");
+            buildWhereClauseInternal(node.getLeft(), query, selectionArgs);
+            query.append(")");
         } else {
+            // Handle binary operators (AND, OR)
             query.append("(");
             buildWhereClauseInternal(node.getLeft(), query, selectionArgs);
             query.append(") ");
