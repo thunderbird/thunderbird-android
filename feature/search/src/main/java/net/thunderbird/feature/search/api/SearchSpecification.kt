@@ -6,9 +6,9 @@ import net.thunderbird.feature.search.ConditionsTreeNode
 interface SearchSpecification : Parcelable {
     /**
      * Get all the uuids of accounts this search acts on.
-     * @return Array of uuids.
+     * @return Set of uuids.
      */
-    val accountUuids: Array<String>
+    val accountUuids: Set<String>
 
     /**
      * Returns the root node of the condition tree accompanying
