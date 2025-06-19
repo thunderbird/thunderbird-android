@@ -6,7 +6,7 @@ import assertk.assertions.isEqualTo
 import net.thunderbird.feature.search.SearchConditionTreeNode
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchField
+import net.thunderbird.feature.search.api.MessageSearchField
 import org.junit.Test
 
 class SqlQueryBuilderTest {
@@ -14,7 +14,7 @@ class SqlQueryBuilderTest {
     @Test
     fun `should build correct SQL query for NOT operator`() {
         // Arrange
-        val condition = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
         val node = SearchConditionTreeNode.Builder(condition)
             .not()
             .build()
@@ -34,8 +34,8 @@ class SqlQueryBuilderTest {
     @Test
     fun `should build correct SQL query for complex expression with NOT operator`() {
         // Arrange
-        val condition1 = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
-        val condition2 = SearchCondition(SearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
+        val condition1 = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition2 = SearchCondition(MessageSearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
 
         val node = SearchConditionTreeNode.Builder(condition1)
             .and(condition2)
@@ -58,9 +58,9 @@ class SqlQueryBuilderTest {
     @Test
     fun `should build correct SQL query for NOT operator combined with AND`() {
         // Arrange
-        val condition1 = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
-        val condition2 = SearchCondition(SearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
-        val condition3 = SearchCondition(SearchField.FLAGGED, SearchAttribute.EQUALS, "1")
+        val condition1 = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition2 = SearchCondition(MessageSearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
+        val condition3 = SearchCondition(MessageSearchField.FLAGGED, SearchAttribute.EQUALS, "1")
 
         val node = SearchConditionTreeNode.Builder(condition1)
             .not()
@@ -85,9 +85,9 @@ class SqlQueryBuilderTest {
     @Test
     fun `should build correct SQL query for NOT operator combined with OR`() {
         // Arrange
-        val condition1 = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
-        val condition2 = SearchCondition(SearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
-        val condition3 = SearchCondition(SearchField.FLAGGED, SearchAttribute.EQUALS, "1")
+        val condition1 = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition2 = SearchCondition(MessageSearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
+        val condition3 = SearchCondition(MessageSearchField.FLAGGED, SearchAttribute.EQUALS, "1")
 
         val node = SearchConditionTreeNode.Builder(condition1)
             .not()
@@ -112,8 +112,8 @@ class SqlQueryBuilderTest {
     @Test
     fun `should build correct SQL query for multiple NOT operators`() {
         // Arrange
-        val condition1 = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
-        val condition2 = SearchCondition(SearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
+        val condition1 = SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+        val condition2 = SearchCondition(MessageSearchField.SENDER, SearchAttribute.CONTAINS, "example.com")
 
         val node = SearchConditionTreeNode.Builder(condition1)
             .not()
@@ -140,7 +140,7 @@ class SqlQueryBuilderTest {
     @Test
     fun `should build correct SQL query for NOT operator with MESSAGE_CONTENTS field`() {
         // Arrange
-        val condition = SearchCondition(SearchField.MESSAGE_CONTENTS, SearchAttribute.CONTAINS, "test content")
+        val condition = SearchCondition(MessageSearchField.MESSAGE_CONTENTS, SearchAttribute.CONTAINS, "test content")
 
         val node = SearchConditionTreeNode.Builder(condition)
             .not()

@@ -7,8 +7,8 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
 import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchField
 
 internal class UnifiedFolderRepository(
     private val messageCountsProvider: MessageCountsProvider,
@@ -34,7 +34,7 @@ internal class UnifiedFolderRepository(
     private fun createUnifiedInboxSearch(): LocalMessageSearch {
         return LocalMessageSearch().apply {
             id = UNIFIED_INBOX_ID
-            and(SearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
+            and(MessageSearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
         }
     }
 

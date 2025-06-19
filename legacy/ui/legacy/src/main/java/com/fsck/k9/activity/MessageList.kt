@@ -73,10 +73,10 @@ import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
 import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.MessageSearchSpecification
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchField
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -485,42 +485,42 @@ open class MessageList :
                 isManualSearch = true
                 or(
                     SearchCondition(
-                        SearchField.SENDER,
+                        MessageSearchField.SENDER,
                         SearchAttribute.CONTAINS,
                         query,
                     ),
                 )
                 or(
                     SearchCondition(
-                        SearchField.TO,
+                        MessageSearchField.TO,
                         SearchAttribute.CONTAINS,
                         query,
                     ),
                 )
                 or(
                     SearchCondition(
-                        SearchField.CC,
+                        MessageSearchField.CC,
                         SearchAttribute.CONTAINS,
                         query,
                     ),
                 )
                 or(
                     SearchCondition(
-                        SearchField.BCC,
+                        MessageSearchField.BCC,
                         SearchAttribute.CONTAINS,
                         query,
                     ),
                 )
                 or(
                     SearchCondition(
-                        SearchField.SUBJECT,
+                        MessageSearchField.SUBJECT,
                         SearchAttribute.CONTAINS,
                         query,
                     ),
                 )
                 or(
                     SearchCondition(
-                        SearchField.MESSAGE_CONTENTS,
+                        MessageSearchField.MESSAGE_CONTENTS,
                         SearchAttribute.CONTAINS,
                         query,
                     ),
@@ -1240,7 +1240,7 @@ open class MessageList :
         val tmpSearch = LocalMessageSearch().apply {
             setId(search?.id)
             addAccountUuid(account.uuid)
-            and(SearchField.THREAD_ID, threadRootId.toString(), SearchAttribute.EQUALS)
+            and(MessageSearchField.THREAD_ID, threadRootId.toString(), SearchAttribute.EQUALS)
         }
 
         initializeFromLocalSearch(tmpSearch)
@@ -1609,7 +1609,7 @@ open class MessageList :
             val search = LocalMessageSearch().apply {
                 id = SearchAccount.NEW_MESSAGES
                 addAccountUuid(account.uuid)
-                and(SearchField.NEW_MESSAGE, "1", SearchAttribute.EQUALS)
+                and(MessageSearchField.NEW_MESSAGE, "1", SearchAttribute.EQUALS)
             }
 
             return intentDisplaySearch(context, search, noThreading = false, newTask = true, clearTop = true)

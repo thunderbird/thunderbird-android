@@ -17,8 +17,8 @@ import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchField
 import org.junit.Before
 import org.junit.Test
 
@@ -506,7 +506,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
 
     private val unifiedInboxConditions = LocalMessageSearch().apply {
         and(
-            SearchField.INTEGRATE,
+            MessageSearchField.INTEGRATE,
             "1",
             SearchAttribute.EQUALS,
         )

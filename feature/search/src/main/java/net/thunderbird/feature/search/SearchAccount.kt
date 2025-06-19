@@ -1,8 +1,8 @@
 package net.thunderbird.feature.search
 
 import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchField
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as an account.
@@ -38,7 +38,7 @@ class SearchAccount(
         ): SearchAccount {
             val tmpSearch = LocalMessageSearch().apply {
                 id = UNIFIED_INBOX
-                and(SearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
+                and(MessageSearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
             }
 
             return SearchAccount(

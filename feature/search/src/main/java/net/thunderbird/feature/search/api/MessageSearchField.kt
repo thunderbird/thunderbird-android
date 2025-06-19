@@ -11,7 +11,7 @@ package net.thunderbird.feature.search.api
  *      id, html_content, internal_date, message_id,
  *      preview, mime_type
  */
-enum class SearchField {
+enum class MessageSearchField {
     SUBJECT,
     DATE,
     UID,
