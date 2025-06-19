@@ -144,4 +144,25 @@ class SearchConditionTreeNodeTest {
         assertThat(conditions).contains(condition2)
         assertThat(conditions).contains(condition3)
     }
+
+    @Test
+    fun `should create a node with NOT operator`() {
+        // Arrange
+        val condition = SearchCondition(SearchField.SUBJECT, SearchAttribute.CONTAINS, "test")
+
+        // Act
+        val node = SearchConditionTreeNode.Builder(condition)
+            .not()
+            .build()
+
+        // Assert
+        assertThat(node.operator).isEqualTo(SearchConditionTreeNode.Operator.NOT)
+        assertThat(node.condition).isEqualTo(null)
+        assertThat(node.left).isNotNull()
+        assertThat(node.right).isEqualTo(null)
+
+        // Left node should be the condition
+        assertThat(node.left?.operator).isEqualTo(SearchConditionTreeNode.Operator.CONDITION)
+        assertThat(node.left?.condition).isEqualTo(condition)
+    }
 }
