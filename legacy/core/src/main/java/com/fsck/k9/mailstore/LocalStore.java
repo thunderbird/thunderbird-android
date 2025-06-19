@@ -48,7 +48,7 @@ import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.search.SqlQueryBuilder;
 import kotlinx.datetime.Clock;
 import net.thunderbird.core.android.account.LegacyAccount;
-import net.thunderbird.feature.search.LocalSearch;
+import net.thunderbird.feature.search.LocalMessageSearch;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchField;
 import org.apache.commons.io.IOUtils;
@@ -334,7 +334,7 @@ public class LocalStore {
         });
     }
 
-    public List<LocalMessage> searchForMessages(LocalSearch search) throws MessagingException {
+    public List<LocalMessage> searchForMessages(LocalMessageSearch search) throws MessagingException {
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(search.getConditions(), query, queryArgs);
@@ -404,7 +404,7 @@ public class LocalStore {
     public List<LocalMessage> getMessagesInThread(final long rootId) throws MessagingException {
         String rootIdString = Long.toString(rootId);
 
-        LocalSearch search = new LocalSearch();
+        LocalMessageSearch search = new LocalMessageSearch();
         search.and(SearchField.THREAD_ID, rootIdString, SearchAttribute.EQUALS);
 
         return searchForMessages(search);

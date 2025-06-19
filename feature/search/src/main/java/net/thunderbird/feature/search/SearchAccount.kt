@@ -10,7 +10,7 @@ import net.thunderbird.feature.search.api.SearchField
  */
 class SearchAccount(
     val id: String,
-    search: LocalSearch,
+    search: LocalMessageSearch,
     override val name: String,
     override val email: String,
 ) : BaseAccount {
@@ -25,7 +25,7 @@ class SearchAccount(
      */
     override val uuid: String = id
 
-    val relatedSearch: LocalSearch = search
+    val relatedSearch: LocalMessageSearch = search
 
     companion object {
         const val UNIFIED_INBOX = "unified_inbox"
@@ -36,7 +36,7 @@ class SearchAccount(
             unifiedInboxTitle: String,
             unifiedInboxDetail: String,
         ): SearchAccount {
-            val tmpSearch = LocalSearch().apply {
+            val tmpSearch = LocalMessageSearch().apply {
                 id = UNIFIED_INBOX
                 and(SearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
             }

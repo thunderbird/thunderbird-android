@@ -11,7 +11,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.api.SearchField
 
 class MessageListLoader(
@@ -93,7 +93,7 @@ class MessageListLoader(
         return selection to selectionArgs
     }
 
-    private fun getThreadId(search: LocalSearch): Long? {
+    private fun getThreadId(search: LocalMessageSearch): Long? {
         return search.leafSet.firstOrNull {
             it.condition.field == SearchField.THREAD_ID
         }?.condition?.value?.toLong()

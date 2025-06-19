@@ -28,7 +28,7 @@ import net.thunderbird.feature.search.api.MessageSearchSpecification;
  *
  */
 
-public class LocalSearch implements MessageSearchSpecification {
+public class LocalMessageSearch implements MessageSearchSpecification {
 
     private String id;
     private boolean mManualSearch = false;
@@ -46,7 +46,7 @@ public class LocalSearch implements MessageSearchSpecification {
      * Use this only if the search won't be saved. Saved searches need
      * a name!
      */
-    public LocalSearch() {}
+    public LocalMessageSearch() {}
 
     ///////////////////////////////////////////////////////////////
     // Public manipulation methods
@@ -270,25 +270,25 @@ public class LocalSearch implements MessageSearchSpecification {
         dest.writeParcelable(mConditions, flags);
     }
 
-    public static final Parcelable.Creator<LocalSearch> CREATOR =
-            new Parcelable.Creator<LocalSearch>() {
+    public static final Parcelable.Creator<LocalMessageSearch> CREATOR =
+            new Parcelable.Creator<LocalMessageSearch>() {
 
         @Override
-        public LocalSearch createFromParcel(Parcel in) {
-            return new LocalSearch(in);
+        public LocalMessageSearch createFromParcel(Parcel in) {
+            return new LocalMessageSearch(in);
         }
 
         @Override
-        public LocalSearch[] newArray(int size) {
-            return new LocalSearch[size];
+        public LocalMessageSearch[] newArray(int size) {
+            return new LocalMessageSearch[size];
         }
     };
 
-    public LocalSearch(Parcel in) {
+    public LocalMessageSearch(Parcel in) {
         id = in.readString();
         mManualSearch = (in.readByte() == 1);
         mAccountUuids.addAll(in.createStringArrayList());
-        mConditions = in.readParcelable(LocalSearch.class.getClassLoader());
+        mConditions = in.readParcelable(LocalMessageSearch.class.getClassLoader());
         if (mConditions != null) {
             mLeafSet = mConditions.getLeafSet();
         }
