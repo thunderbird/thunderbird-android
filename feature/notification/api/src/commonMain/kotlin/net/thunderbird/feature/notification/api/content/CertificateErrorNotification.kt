@@ -5,6 +5,9 @@ import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.icon.CertificateError
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
 import net.thunderbird.feature.notification.resources.Res
 import net.thunderbird.feature.notification.resources.notification_certificate_error_public
 import net.thunderbird.feature.notification.resources.notification_certificate_error_text
@@ -24,6 +27,8 @@ data class CertificateErrorNotification private constructor(
     override val contentText: String,
     val lockScreenTitle: String,
     override val channel: NotificationChannel,
+    @KmpIgnoredOnParcel
+    override val icon: NotificationIcon = NotificationIcons.CertificateError,
 ) : AppNotification(), SystemNotification, InAppNotification {
     @KmpIgnoredOnParcel
     override val severity: NotificationSeverity = NotificationSeverity.Fatal

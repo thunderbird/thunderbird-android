@@ -12,7 +12,7 @@ import net.thunderbird.core.android.logging.LogFileWriter
 import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.feature.notification.api.content.PushServiceNotification
+import net.thunderbird.feature.notification.api.content.MailNotification
 import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 class GeneralSettingsViewModel(
@@ -77,7 +77,11 @@ class GeneralSettingsViewModel(
     fun onNotificationSend() {
         viewModelScope.launch {
             notificationSender.send(
-                notification = PushServiceNotification.AlarmPermissionMissing(accountNumber = 1),
+                notification = MailNotification.Sending(
+                    accountNumber = 1,
+                    accountUuid = "e50d9f92-c895-456d-b9ca-1e817ab53124",
+                    accountDisplayName = "Any name?",
+                ),
             ).collect { result ->
                 logger.debug { "onNotificationSend() called with: result = $result" }
             }

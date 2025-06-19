@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
+
 plugins {
     id(ThunderbirdPlugins.Library.kmpCompose)
     id("kotlin-parcelize")
@@ -9,6 +11,9 @@ kotlin {
             implementation(projects.core.common)
             implementation(projects.core.outcome)
         }
+        androidMain.dependencies {
+            implementation(projects.core.ui.compose.designsystem)
+        }
     }
 
     compilerOptions {
@@ -16,6 +21,10 @@ kotlin {
             "-P",
             "plugin:org.jetbrains.kotlin.parcelize:additionalAnnotation=net.thunderbird.core.common.io.KmpParcelize",
         )
+    }
+
+    sourceSets.all {
+        languageSettings.enableLanguageFeature(LanguageFeature.ExpectActualClasses.name)
     }
 }
 
