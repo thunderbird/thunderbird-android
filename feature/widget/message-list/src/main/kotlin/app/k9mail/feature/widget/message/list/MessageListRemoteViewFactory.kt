@@ -12,7 +12,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -22,7 +22,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
     private val messageListLoader: MessageListLoader by inject()
     private val coreResourceProvider: CoreResourceProvider by inject()
 
-    private lateinit var unifiedInboxSearch: LocalSearch
+    private lateinit var unifiedInboxSearch: LocalMessageSearch
 
     private var messageListItems = emptyList<MessageListItem>()
     private var senderAboveSubject = false

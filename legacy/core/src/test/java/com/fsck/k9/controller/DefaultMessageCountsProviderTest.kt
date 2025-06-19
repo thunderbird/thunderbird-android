@@ -14,7 +14,7 @@ import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.ConditionsTreeNode
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
 import org.junit.Test
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
@@ -94,7 +94,7 @@ class DefaultMessageCountsProviderTest {
             messageStoreManager = messageStoreManager,
             messagingControllerRegistry = registry,
         )
-        val search = LocalSearch().apply {
+        val search = LocalMessageSearch().apply {
             addAccountUuid(account.uuid)
         }
 

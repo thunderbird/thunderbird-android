@@ -77,7 +77,7 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -165,7 +165,7 @@ class MessageListFragment :
     private var rememberedSelected: Set<Long>? = null
     private var lastMessageClick = 0L
 
-    lateinit var localSearch: LocalSearch
+    lateinit var localSearch: LocalMessageSearch
         private set
     var isSingleAccountMode = false
         private set
@@ -253,7 +253,7 @@ class MessageListFragment :
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
-        localSearch = BundleCompat.getParcelable(arguments, ARG_SEARCH, LocalSearch::class.java)!!
+        localSearch = BundleCompat.getParcelable(arguments, ARG_SEARCH, LocalMessageSearch::class.java)!!
 
         allAccounts = localSearch.searchAllAccounts()
         val searchAccounts = localSearch.getAccounts(accountManager).also(::updateAccountList)
@@ -2229,7 +2229,11 @@ class MessageListFragment :
         private const val STATE_ACTIVE_MESSAGE = "activeMessage"
         private const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
 
-        fun newInstance(search: LocalSearch, isThreadDisplay: Boolean, threadedList: Boolean): MessageListFragment {
+        fun newInstance(
+            search: LocalMessageSearch,
+            isThreadDisplay: Boolean,
+            threadedList: Boolean,
+        ): MessageListFragment {
             return MessageListFragment().apply {
                 arguments = bundleOf(
                     ARG_SEARCH to search,
