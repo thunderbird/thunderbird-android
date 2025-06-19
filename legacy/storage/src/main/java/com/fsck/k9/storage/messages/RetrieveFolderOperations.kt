@@ -11,7 +11,7 @@ import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.toFolderType
 import com.fsck.k9.search.SqlQueryBuilder
-import net.thunderbird.feature.search.ConditionsTreeNode
+import net.thunderbird.feature.search.SearchConditionTreeNode
 
 internal class RetrieveFolderOperations(private val lockableDatabase: LockableDatabase) {
     fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
@@ -158,15 +158,15 @@ $displayModeSelection
         }
     }
 
-    fun getUnreadMessageCount(conditions: ConditionsTreeNode?): Int {
+    fun getUnreadMessageCount(conditions: SearchConditionTreeNode?): Int {
         return getMessageCount(condition = "messages.read = 0", conditions)
     }
 
-    fun getStarredMessageCount(conditions: ConditionsTreeNode?): Int {
+    fun getStarredMessageCount(conditions: SearchConditionTreeNode?): Int {
         return getMessageCount(condition = "messages.flagged = 1", conditions)
     }
 
-    private fun getMessageCount(condition: String, extraConditions: ConditionsTreeNode?): Int {
+    private fun getMessageCount(condition: String, extraConditions: SearchConditionTreeNode?): Int {
         val whereBuilder = StringBuilder()
         val queryArgs = mutableListOf<String>()
         SqlQueryBuilder.buildWhereClause(extraConditions, whereBuilder, queryArgs)

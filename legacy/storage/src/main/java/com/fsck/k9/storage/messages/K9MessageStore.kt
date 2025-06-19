@@ -15,7 +15,7 @@ import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import java.util.Date
 import net.thunderbird.feature.mail.folder.api.FolderDetails
-import net.thunderbird.feature.search.ConditionsTreeNode
+import net.thunderbird.feature.search.SearchConditionTreeNode
 
 class K9MessageStore(
     database: LockableDatabase,
@@ -183,11 +183,11 @@ class K9MessageStore(
         return retrieveFolderOperations.getUnreadMessageCount(folderId)
     }
 
-    override fun getUnreadMessageCount(conditions: ConditionsTreeNode?): Int {
+    override fun getUnreadMessageCount(conditions: SearchConditionTreeNode?): Int {
         return retrieveFolderOperations.getUnreadMessageCount(conditions)
     }
 
-    override fun getStarredMessageCount(conditions: ConditionsTreeNode?): Int {
+    override fun getStarredMessageCount(conditions: SearchConditionTreeNode?): Int {
         return retrieveFolderOperations.getStarredMessageCount(conditions)
     }
 

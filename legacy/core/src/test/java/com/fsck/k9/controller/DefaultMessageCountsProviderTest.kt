@@ -13,8 +13,8 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.search.ConditionsTreeNode
 import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.SearchConditionTreeNode
 import org.junit.Test
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
@@ -33,7 +33,7 @@ class DefaultMessageCountsProviderTest {
     private val messageStore = mock<ListenableMessageStore> {
         on {
             getUnreadMessageCount(
-                anyOrNull<ConditionsTreeNode>(),
+                anyOrNull<SearchConditionTreeNode>(),
             )
         } doReturn UNREAD_COUNT
         on { getStarredMessageCount(anyOrNull()) } doReturn STARRED_COUNT
@@ -81,7 +81,7 @@ class DefaultMessageCountsProviderTest {
         val messageStore = mock<ListenableMessageStore> {
             on {
                 getUnreadMessageCount(
-                    anyOrNull<ConditionsTreeNode>(),
+                    anyOrNull<SearchConditionTreeNode>(),
                 )
             } doAnswer { currentCount }
             on { getStarredMessageCount(anyOrNull()) } doAnswer { currentCount }

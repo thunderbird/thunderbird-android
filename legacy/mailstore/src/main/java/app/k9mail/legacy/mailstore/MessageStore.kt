@@ -7,7 +7,7 @@ import com.fsck.k9.mail.MessagingException
 import java.util.Date
 import kotlin.jvm.Throws
 import net.thunderbird.feature.mail.folder.api.FolderDetails
-import net.thunderbird.feature.search.ConditionsTreeNode
+import net.thunderbird.feature.search.SearchConditionTreeNode
 
 /**
  * Functions for accessing and modifying locally stored messages.
@@ -239,12 +239,12 @@ interface MessageStore {
     /**
      * Retrieve the number of unread messages matching [conditions].
      */
-    fun getUnreadMessageCount(conditions: ConditionsTreeNode?): Int
+    fun getUnreadMessageCount(conditions: SearchConditionTreeNode?): Int
 
     /**
      * Retrieve the number of starred messages matching [conditions].
      */
-    fun getStarredMessageCount(conditions: ConditionsTreeNode?): Int
+    fun getStarredMessageCount(conditions: SearchConditionTreeNode?): Int
 
     /**
      * Update a folder's name and type.
