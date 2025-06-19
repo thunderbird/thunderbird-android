@@ -4,6 +4,9 @@ import net.thunderbird.core.common.io.KmpIgnoredOnParcel
 import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
+import net.thunderbird.feature.notification.api.ui.icon.FailedToCreate
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
 import net.thunderbird.feature.notification.resources.Res
 import net.thunderbird.feature.notification.resources.notification_notify_error_text
 import net.thunderbird.feature.notification.resources.notification_notify_error_title
@@ -23,6 +26,8 @@ data class FailedToCreateNotification private constructor(
     override val contentText: String?,
     override val channel: NotificationChannel,
     val failedNotification: AppNotification,
+    @KmpIgnoredOnParcel
+    override val icon: NotificationIcon = NotificationIcons.FailedToCreate,
 ) : AppNotification(), SystemNotification, InAppNotification {
     @KmpIgnoredOnParcel
     override val severity: NotificationSeverity = NotificationSeverity.Critical
