@@ -231,10 +231,8 @@ public class LocalSearch implements SearchSpecification {
      * all accounts should be included in the search.
      */
     @Override
-    public String[] getAccountUuids() {
-        String[] tmp = new String[mAccountUuids.size()];
-        mAccountUuids.toArray(tmp);
-        return tmp;
+    public Set<String> getAccountUuids() {
+        return new HashSet<>(mAccountUuids);
     }
 
     /**

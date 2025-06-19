@@ -1443,7 +1443,7 @@ open class MessageList :
         if (search.searchAllAccounts()) {
             val accountUuids = search.accountUuids
             if (accountUuids.size == 1) {
-                account = accountManager.getAccount(accountUuids[0])
+                account = accountManager.getAccount(accountUuids.elementAt(0))
                 val folderIds = search.folderIds
                 singleFolderMode = folderIds.size == 1
             } else {
@@ -1451,7 +1451,7 @@ open class MessageList :
             }
         } else {
             if (account == null && search.accountUuids.size == 1) {
-                account = accountManager.getAccount(search.accountUuids[0])
+                account = accountManager.getAccount(search.accountUuids.elementAt(0))
             }
         }
 
@@ -1489,7 +1489,10 @@ open class MessageList :
 
         search?.let { search ->
             when {
-                singleFolderMode -> drawer.selectFolder(search.accountUuids[0], search.folderIds[0])
+                singleFolderMode -> drawer.selectFolder(
+                    accountUuid = search.accountUuids.elementAt(0),
+                    folderId = search.folderIds[0],
+                )
 
                 // Don't select any item in the drawer because the Unified Inbox is displayed,
                 // but not listed in the drawer
