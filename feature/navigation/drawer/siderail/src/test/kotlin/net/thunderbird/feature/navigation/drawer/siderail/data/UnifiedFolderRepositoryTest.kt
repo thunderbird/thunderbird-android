@@ -40,8 +40,8 @@ internal class UnifiedFolderRepositoryTest {
         val search = messageCountsProvider.recordedSearch
         assertThat(search.id).isEqualTo("unified_inbox")
         val condition = search.conditions.condition
-        assertThat(condition.value).isEqualTo("1")
-        assertThat(condition.attribute).isEqualTo(SearchAttribute.EQUALS)
-        assertThat(condition.field).isEqualTo(SearchField.INTEGRATE)
+        assertThat(condition?.value).isEqualTo("1")
+        assertThat(condition?.attribute).isEqualTo(SearchAttribute.EQUALS)
+        assertThat(condition?.field).isEqualTo(SearchField.INTEGRATE)
     }
 }
