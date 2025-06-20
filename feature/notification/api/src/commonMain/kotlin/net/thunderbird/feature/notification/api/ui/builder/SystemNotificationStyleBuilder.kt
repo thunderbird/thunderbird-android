@@ -44,6 +44,7 @@ class SystemNotificationStyleBuilder internal constructor() {
      * @param text The text to be displayed in the notification.
      */
     fun bigText(text: String) {
+        @Suppress("VisibleForTests")
         bigText = BigTextStyle(text = text)
     }
 

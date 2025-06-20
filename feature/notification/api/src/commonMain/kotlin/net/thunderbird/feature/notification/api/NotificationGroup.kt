@@ -8,4 +8,12 @@ import net.thunderbird.core.common.io.KmpParcelize
 data class NotificationGroup(
     val key: NotificationGroupKey,
     val summary: String,
+    val alertBehaviour: NotificationGroupAlertBehaviour = NotificationGroupAlertBehaviour.AlertSummary,
 ) : KmpParcelable
+
+enum class NotificationGroupAlertBehaviour {
+    AlertAll,
+    AlertSummary,
+    AlertChildren,
+    Silent,
+}

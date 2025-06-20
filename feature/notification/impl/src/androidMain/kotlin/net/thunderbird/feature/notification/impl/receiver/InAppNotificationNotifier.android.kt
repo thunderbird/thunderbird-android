@@ -34,7 +34,7 @@ internal class AndroidInAppNotificationNotifier(
         startBroadcast()
     }
 
-    override fun show(id: NotificationId, notification: InAppNotification) {
+    override suspend fun show(id: NotificationId, notification: InAppNotification) {
         logger.debug(TAG) { "show() called with id = $id, notification = $notification" }
         val intent = Intent(POST_IN_APP_NOTIFICATION_ACTION).apply {
             setPackage(context.packageName)

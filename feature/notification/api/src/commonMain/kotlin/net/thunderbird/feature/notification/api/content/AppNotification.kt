@@ -9,6 +9,7 @@ import net.thunderbird.feature.notification.api.LockscreenNotificationAppearance
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationSeverity
+import net.thunderbird.feature.notification.api.ui.NotificationStyle
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 
@@ -21,6 +22,7 @@ import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
  * @property title The title of the notification.
  * @property accessibilityText The text to be used for accessibility purposes.
  * @property contentText The main content text of the notification, can be null.
+ * @property subText Additional text displayed below the content text, can be null.
  * @property severity The severity level of the notification.
  * @property createdAt The date and time when the notification was created.
  * @property actions A set of actions that can be performed on the notification.
@@ -34,6 +36,7 @@ sealed interface Notification : KmpParcelable {
     val title: String
     val accessibilityText: String
     val contentText: String?
+    val subText: String? get() = null
     val severity: NotificationSeverity
     val createdAt: LocalDateTime
     val actions: Set<NotificationAction>
@@ -72,13 +75,20 @@ sealed class AppNotification : Notification {
  * @property lockscreenNotification The notification to display on the lock screen.
  * Override if you need to hide any content when showing this notification in the lockscreen.
  * By default, this is the same as the notification itself.
+ * @property systemNotificationStyle The style of the system notification.
+ * Defaults to [NotificationStyle.System.Undefined].
  * @property lockscreenNotificationAppearance The appearance of the notification on the lockscreen.
  * By default, the notification is [LockscreenNotificationAppearance.Public].
  * @see LockscreenNotificationAppearance
+ * @see NotificationStyle.System
+ * @see net.thunderbird.feature.notification.api.ui.builder.notificationStyle
  */
 sealed interface SystemNotification : Notification {
     val accountNumber: Int
     val lockscreenNotification: SystemNotification get() = this
+
+    val systemNotificationStyle: NotificationStyle.System get() = NotificationStyle.System.Undefined
+
     val lockscreenNotificationAppearance: LockscreenNotificationAppearance
         get() = LockscreenNotificationAppearance.Public
 }
@@ -89,4 +99,6 @@ sealed interface SystemNotification : Notification {
  * In-app notifications are typically less intrusive than system notifications and **do not require**
  * system notification permissions to be displayed.
  */
-sealed interface InAppNotification : Notification
+sealed interface InAppNotification : Notification {
+    val inAppNotificationStyle: NotificationStyle.InApp get() = NotificationStyle.InApp.Undefined
+}
