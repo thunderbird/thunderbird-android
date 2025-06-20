@@ -1,5 +1,6 @@
 package net.thunderbird.app.common.core
 
+import net.thunderbird.app.common.BuildConfig
 import net.thunderbird.core.logging.DefaultLogger
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogSink
@@ -11,7 +12,7 @@ import org.koin.dsl.module
 
 val appCommonCoreModule: Module = module {
     single<LogLevel> {
-        LogLevel.INFO
+        if (BuildConfig.DEBUG) LogLevel.VERBOSE else LogLevel.INFO
     }
 
     single<List<LogSink>> {

@@ -11,7 +11,9 @@ private class AndroidConsoleLogSink(
 ) : ConsoleLogSink {
 
     override fun log(event: LogEvent) {
-        val timber = event.tag?.let { Timber.tag(it) } ?: Timber
+        val timber = event.tag
+            ?.let { Timber.tag(it) }
+            ?: Timber.tag(event.composeTag(ignoredClasses = IGNORE_CLASSES) ?: this::class.java.name)
 
         when (event.level) {
             LogLevel.VERBOSE -> timber.v(event.throwable, event.message)
@@ -20,5 +22,16 @@ private class AndroidConsoleLogSink(
             LogLevel.WARN -> timber.w(event.throwable, event.message)
             LogLevel.ERROR -> timber.e(event.throwable, event.message)
         }
+    }
+
+    companion object {
+        private val IGNORE_CLASSES = setOf(
+            Timber::class.java.name,
+            Timber.Forest::class.java.name,
+            Timber.Tree::class.java.name,
+            Timber.DebugTree::class.java.name,
+            AndroidConsoleLogSink::class.java.name,
+            // Add other classes to ignore if needed
+        )
     }
 }
