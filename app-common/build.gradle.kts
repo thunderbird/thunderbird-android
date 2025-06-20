@@ -4,6 +4,10 @@ plugins {
 
 android {
     namespace = "net.thunderbird.app.common"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
