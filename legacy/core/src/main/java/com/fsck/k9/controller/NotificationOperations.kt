@@ -7,14 +7,14 @@ import com.fsck.k9.search.isSingleFolder
 import com.fsck.k9.search.isUnifiedInbox
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
 
 internal class NotificationOperations(
     private val notificationController: NotificationController,
     private val accountManager: AccountManager,
     private val messageStoreManager: MessageStoreManager,
 ) {
-    fun clearNotifications(search: LocalSearch) {
+    fun clearNotifications(search: LocalMessageSearch) {
         if (search.isUnifiedInbox) {
             clearUnifiedInboxNotifications()
         } else if (search.isNewMessages) {
@@ -57,7 +57,7 @@ internal class NotificationOperations(
         }
     }
 
-    private fun LocalSearch.firstAccount(): LegacyAccount? {
+    private fun LocalMessageSearch.firstAccount(): LegacyAccount? {
         return accountManager.getAccount(accountUuids.first())
     }
 }

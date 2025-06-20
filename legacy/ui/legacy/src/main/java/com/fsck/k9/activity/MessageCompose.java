@@ -119,7 +119,7 @@ import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
-import net.thunderbird.feature.search.LocalSearch;
+import net.thunderbird.feature.search.LocalMessageSearch;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
 import net.thunderbird.core.logging.legacy.Log;
@@ -1078,7 +1078,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void openDefaultFolder() {
         long folderId = defaultFolderProvider.getDefaultFolder(account);
-        LocalSearch search = new LocalSearch();
+        LocalMessageSearch search = new LocalMessageSearch();
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folderId);
         MessageList.actionDisplaySearch(this, search, false, true);

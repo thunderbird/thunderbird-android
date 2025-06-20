@@ -1,35 +1,26 @@
 package net.thunderbird.feature.search.api
 
+import android.os.Parcelable
+
 /**
- * Using an enum in order to have more robust code. Users ( & coders )
- * are prevented from passing illegal fields. No database overhead
- * when invalid fields passed.
- *
- * By result, only the fields in here are searchable.
- *
- * Fields not in here at this moment ( and by effect not searchable ):
- *      id, html_content, internal_date, message_id,
- *      preview, mime_type
+ * Represents a field that can be searched.
  */
-enum class SearchField {
-    SUBJECT,
-    DATE,
-    UID,
-    FLAG,
-    SENDER,
-    TO,
-    CC,
-    FOLDER,
-    BCC,
-    REPLY_TO,
-    MESSAGE_CONTENTS,
-    ATTACHMENT_COUNT,
-    DELETED,
-    THREAD_ID,
-    ID,
-    INTEGRATE,
-    NEW_MESSAGE,
-    READ,
-    FLAGGED,
-    VISIBLE,
+interface SearchField : Parcelable {
+    /**
+     * The name of the field.
+     */
+    val fieldName: String
+
+    /**
+     * The type of the field.
+     */
+    val fieldType: SearchFieldType
+
+    /**
+     * An optional custom query template for this field.
+     * This can be used to define how the field should be queried in a custom way.
+     *
+     * Only applicable for fields with [SearchFieldType.CUSTOM].
+     */
+    val customQueryTemplate: String?
 }

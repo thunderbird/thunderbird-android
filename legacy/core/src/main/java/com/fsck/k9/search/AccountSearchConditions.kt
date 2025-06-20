@@ -1,24 +1,24 @@
 package com.fsck.k9.search
 
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchField
 
 /**
- * Modify the supplied [LocalSearch] instance to limit the search to displayable folders.
+ * Modify the supplied [LocalMessageSearch] instance to limit the search to displayable folders.
  */
-fun LocalSearch.limitToDisplayableFolders() {
+fun LocalMessageSearch.limitToDisplayableFolders() {
     and(
-        SearchField.VISIBLE,
+        MessageSearchField.VISIBLE,
         "1",
         SearchAttribute.EQUALS,
     )
 }
 
 /**
- * Modify the supplied [LocalSearch] instance to exclude special folders.
+ * Modify the supplied [LocalMessageSearch] instance to exclude special folders.
  *
  * Currently the following folders are excluded:
  *  - Trash
@@ -29,7 +29,7 @@ fun LocalSearch.limitToDisplayableFolders() {
  *
  * The Inbox will always be included even if one of the special folders is configured to point to the Inbox.
  */
-fun LocalSearch.excludeSpecialFolders(account: LegacyAccount) {
+fun LocalMessageSearch.excludeSpecialFolders(account: LegacyAccount) {
     this.excludeSpecialFolder(account.trashFolderId)
     this.excludeSpecialFolder(account.draftsFolderId)
     this.excludeSpecialFolder(account.spamFolderId)
@@ -39,7 +39,7 @@ fun LocalSearch.excludeSpecialFolders(account: LegacyAccount) {
     account.inboxFolderId?.let { inboxFolderId ->
         or(
             SearchCondition(
-                SearchField.FOLDER,
+                MessageSearchField.FOLDER,
                 SearchAttribute.EQUALS,
                 inboxFolderId.toString(),
             ),
@@ -47,10 +47,10 @@ fun LocalSearch.excludeSpecialFolders(account: LegacyAccount) {
     }
 }
 
-private fun LocalSearch.excludeSpecialFolder(folderId: Long?) {
+private fun LocalMessageSearch.excludeSpecialFolder(folderId: Long?) {
     if (folderId != null) {
         and(
-            SearchField.FOLDER,
+            MessageSearchField.FOLDER,
             folderId.toString(),
             SearchAttribute.NOT_EQUALS,
         )
