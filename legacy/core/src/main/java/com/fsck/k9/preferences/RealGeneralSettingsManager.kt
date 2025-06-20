@@ -171,6 +171,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowContactName = isShowContactName).persist()
     }
 
+    override fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) {
+        getSettings().copy(isChangeContactNameColor = isChangeContactNameColor).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -185,6 +189,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean(KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG, settings.shouldShowSetupArchiveFolderDialog)
         editor.putBoolean("messageListSenderAboveSubject", settings.isMessageListSenderAboveSubject)
         editor.putBoolean("showContactName", settings.isShowContactName)
+        editor.putBoolean("changeRegisteredNameColor", settings.isChangeContactNameColor)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -214,6 +219,7 @@ internal class RealGeneralSettingsManager(
             ),
             isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false),
             isShowContactName = storage.getBoolean("showContactName", false),
+            isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false),
         )
 
         updateSettingsFlow(settings)

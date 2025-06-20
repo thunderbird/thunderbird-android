@@ -50,7 +50,7 @@ data class MessageListActivityConfig(
                 isShowCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
                 isMessageListSenderAboveSubject = generalSettingsManager.getSettings().isMessageListSenderAboveSubject,
                 isShowContactName = generalSettingsManager.getSettings().isShowContactName,
-                isChangeContactNameColor = K9.isChangeContactNameColor,
+                isChangeContactNameColor = generalSettingsManager.getSettings().isChangeContactNameColor,
                 isShowContactPicture = K9.isShowContactPicture,
                 isColorizeMissingContactPictures = K9.isColorizeMissingContactPictures,
                 isUseBackgroundAsUnreadIndicator = K9.isUseBackgroundAsUnreadIndicator,

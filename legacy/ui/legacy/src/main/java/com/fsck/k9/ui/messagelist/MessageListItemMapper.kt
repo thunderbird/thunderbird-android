@@ -25,8 +25,9 @@ class MessageListItemMapper(
         val displayAddress = if (showRecipients) toAddresses.firstOrNull() else fromAddresses.firstOrNull()
         val displayName = if (showRecipients) {
             messageHelper.getRecipientDisplayNames(
-                toAddresses.toTypedArray(),
-                generalSettingsManager.getSettings().isShowCorrespondentNames,
+                addresses = toAddresses.toTypedArray(),
+                isShowCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
+                isChangeContactNameColor = generalSettingsManager.getSettings().isChangeContactNameColor,
             )
         } else {
             messageHelper.getSenderDisplayName(displayAddress)
