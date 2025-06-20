@@ -335,15 +335,15 @@ public class LocalStore {
     }
 
     public List<LocalMessage> searchForMessages(LocalMessageSearch search) throws MessagingException {
-        StringBuilder query = new StringBuilder();
-        List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(search.getConditions(), query, queryArgs);
+        SqlQueryBuilder whereClause = new SqlQueryBuilder.Builder()
+            .withConditions(search.getConditions())
+            .build();
 
         // Avoid "ambiguous column name" error by prefixing "id" with the message table name
-        String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
-                "messages.", query.toString());
+        String where = SqlQueryBuilder.Companion.addPrefixToSelection(new String[] { "id" },
+                "messages.", whereClause.getSelection());
 
-        String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
+        String[] selectionArgs = whereClause.getSelectionArgs().toArray(new String[0]);
 
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +

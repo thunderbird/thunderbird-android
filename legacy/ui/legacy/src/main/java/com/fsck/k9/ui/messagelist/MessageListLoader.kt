@@ -81,7 +81,12 @@ class MessageListLoader(
             queryArgs.add(activeMessage.folderId.toString())
         }
 
-        SqlQueryBuilder.buildWhereClause(config.search.conditions, query, queryArgs)
+        val whereClause = SqlQueryBuilder.Builder()
+            .withConditions(config.search.conditions)
+            .build()
+
+        query.append(whereClause.selection)
+        queryArgs.addAll(whereClause.selectionArgs)
 
         if (selectActive) {
             query.append(')')
@@ -108,7 +113,6 @@ class MessageListLoader(
             SortType.SORT_SUBJECT -> "${MessageColumns.SUBJECT} COLLATE NOCASE"
             SortType.SORT_UNREAD -> MessageColumns.READ
             SortType.SORT_DATE -> MessageColumns.DATE
-            else -> MessageColumns.DATE
         }
 
         val sortDirection = if (config.sortAscending) " ASC" else " DESC"

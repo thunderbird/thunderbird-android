@@ -67,7 +67,11 @@ ORDER BY $sortOrder
         sortOrder: String,
         mapper: MessageMapper<out T?>,
     ): List<T> {
-        val orderBy = SqlQueryBuilder.addPrefixToSelection(AGGREGATED_MESSAGES_COLUMNS, "aggregated.", sortOrder)
+        val orderBy = SqlQueryBuilder.addPrefixToSelection(
+            AGGREGATED_MESSAGES_COLUMNS,
+            "aggregated.",
+            sortOrder,
+        )
 
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(

@@ -3,114 +3,163 @@ package net.thunderbird.feature.search.sql
 import net.thunderbird.feature.search.SearchConditionTreeNode
 import net.thunderbird.feature.search.api.SearchAttribute
 import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchField
 import net.thunderbird.feature.search.api.SearchFieldType
 
-object SqlQueryBuilder {
-    fun buildWhereClause(node: SearchConditionTreeNode?, query: StringBuilder, selectionArgs: MutableList<String?>) {
-        buildWhereClauseInternal(node, query, selectionArgs)
-    }
+/**
+ * Builds a SQL query string based on a search condition tree and selection arguments.
+ *
+ * This class constructs a SQL WHERE clause from a tree of search conditions, allowing for complex
+ * logical expressions using AND, OR, and NOT operators. It supports custom fields with templates
+ * for specific query formats.
+ *
+ * Example usage:
+ * ```
+ * val query = SqlQueryBuilder.Builder()
+ *     .withConditions(searchConditionTree)
+ *     .build()
+ * ```
+ */
+class SqlQueryBuilder private constructor(
+    val selection: String,
+    val selectionArgs: List<String>,
+) {
+    class Builder {
+        private var root: SearchConditionTreeNode? = null
 
-    private fun buildWhereClauseInternal(
-        node: SearchConditionTreeNode?, query: StringBuilder,
-        selectionArgs: MutableList<String?>
-    ) {
-        if (node == null) {
-            query.append("1")
-            return
+        /**
+         * Sets the root of the search condition tree.
+         *
+         * This method is used to specify the root node of the search condition tree that will be
+         * used to build the SQL query. It will replace any previously set conditions.
+         *
+         * @param node The root node of the search condition tree.
+         */
+        fun withConditions(node: SearchConditionTreeNode): Builder {
+            root = node
+            return this
         }
 
-        if (node.left == null && node.right == null) {
-            val condition = node.condition
-            if (condition!!.field.fieldType == SearchFieldType.CUSTOM) {
-                val fullQueryString = condition.value
-                require(condition.attribute == SearchAttribute.CONTAINS) { "Custom fields only support CONTAINS" }
-                require(!(condition.field.customQueryTemplate == null || condition.field.customQueryTemplate!!.isEmpty())) { "Custom field has no query template!" }
+        /**
+         * Builds the SQL query string based on the provided conditions and selection arguments.
+         *
+         * @return The constructed SQL query string.
+         */
+        fun build(): SqlQueryBuilder {
+            val arguments = mutableListOf<String>()
+            val query = StringBuilder()
+            buildWhereClause(root, query, arguments)
 
-                query.append(condition.field.customQueryTemplate)
-                selectionArgs.add(fullQueryString)
+            return SqlQueryBuilder(
+                selection = query.toString(),
+                selectionArgs = arguments,
+            )
+        }
+
+        private fun buildWhereClause(
+            node: SearchConditionTreeNode?,
+            query: StringBuilder,
+            selectionArgs: MutableList<String>,
+        ) {
+            if (node == null) {
+                query.append("1")
+                return
+            }
+
+            if (node.left == null && node.right == null) {
+                val condition = node.condition ?: error("Leaf node missing condition")
+
+                if (condition.field.fieldType == SearchFieldType.CUSTOM) {
+                    require(condition.attribute == SearchAttribute.CONTAINS) {
+                        "Custom fields only support CONTAINS"
+                    }
+                    require(
+                        !(
+                            condition.field.customQueryTemplate == null ||
+                                condition.field.customQueryTemplate!!.isEmpty()
+                            ),
+                    ) {
+                        "Custom field has no query template!"
+                    }
+                    query.append(condition.field.customQueryTemplate)
+                    selectionArgs.add(condition.value)
+                } else {
+                    appendCondition(condition, query, selectionArgs)
+                }
+            } else if (node.operator == SearchConditionTreeNode.Operator.NOT) {
+                query.append("NOT (")
+                buildWhereClause(node.left, query, selectionArgs)
+                query.append(")")
             } else {
-                SqlQueryBuilder.appendCondition(condition, query, selectionArgs)
+                // Handle binary operators (AND, OR)
+                query.append("(")
+                buildWhereClause(node.left, query, selectionArgs)
+                query.append(") ")
+                query.append(node.operator.name)
+                query.append(" (")
+                buildWhereClause(node.right, query, selectionArgs)
+                query.append(")")
             }
-        } else if (node.operator == SearchConditionTreeNode.Operator.NOT) {
-            query.append("NOT (")
-            buildWhereClauseInternal(node.left, query, selectionArgs)
-            query.append(")")
-        } else {
-            // Handle binary operators (AND, OR)
-            query.append("(")
-            buildWhereClauseInternal(node.left, query, selectionArgs)
-            query.append(") ")
-            query.append(node.operator.name)
-            query.append(" (")
-            buildWhereClauseInternal(node.right, query, selectionArgs)
-            query.append(")")
         }
-    }
 
-    private fun appendCondition(
-        condition: SearchCondition, query: StringBuilder,
-        selectionArgs: MutableList<String?>
-    ) {
-        query.append(getColumnName(condition))
-        appendExprRight(condition, query, selectionArgs)
-    }
+        private fun appendCondition(
+            condition: SearchCondition,
+            query: StringBuilder,
+            selectionArgs: MutableList<String>,
+        ) {
+            query.append(condition.field.fieldName)
+            appendExpressionRight(condition, query, selectionArgs)
+        }
 
-    private fun getColumnName(condition: SearchCondition): String {
-        return condition.field.fieldName
-    }
+        private fun appendExpressionRight(
+            condition: SearchCondition,
+            query: StringBuilder,
+            selectionArgs: MutableList<String>,
+        ) {
+            val value = condition.value
+            val field = condition.field
 
-    private fun appendExprRight(
-        condition: SearchCondition, query: StringBuilder,
-        selectionArgs: MutableList<String?>
-    ) {
-        val value = condition.value
-        val field = condition.field
+            query.append(" ")
 
-        query.append(" ")
-        var selectionArg: String? = null
-        when (condition.attribute) {
-            SearchAttribute.CONTAINS -> {
-                query.append("LIKE ?")
-                selectionArg = "%" + value + "%"
-            }
-
-            SearchAttribute.NOT_EQUALS -> {
-                if (isNumberColumn(field)) {
-                    query.append("!= ?")
-                } else {
-                    query.append("NOT LIKE ?")
-                }
-                selectionArg = value
-            }
-
-            SearchAttribute.EQUALS -> {
-                if (isNumberColumn(field)) {
-                    query.append("= ?")
-                } else {
+            val selectionArg: String = when (condition.attribute) {
+                SearchAttribute.CONTAINS -> {
                     query.append("LIKE ?")
+                    "%$value%"
                 }
-                selectionArg = value
+
+                SearchAttribute.NOT_EQUALS -> {
+                    if (field.fieldType == SearchFieldType.NUMBER) {
+                        query.append("!= ?")
+                        value
+                    } else {
+                        query.append("NOT LIKE ?")
+                        value
+                    }
+                }
+
+                SearchAttribute.EQUALS -> {
+                    if (field.fieldType == SearchFieldType.NUMBER) {
+                        query.append("= ?")
+                        value
+                    } else {
+                        query.append("LIKE ?")
+                        value
+                    }
+                }
             }
-        }
 
-        if (selectionArg == null) {
-            throw RuntimeException("Unhandled case")
+            selectionArgs.add(selectionArg)
         }
-
-        selectionArgs.add(selectionArg)
     }
 
-    private fun isNumberColumn(field: SearchField): Boolean {
-        return field.fieldType == SearchFieldType.NUMBER
-    }
+    companion object {
+        // TODO: This is a workaround for ambiguous column names in the selection. Find a better solution.
+        fun addPrefixToSelection(columnNames: Array<String>, prefix: String?, selection: String): String {
+            var result = selection
+            for (columnName in columnNames) {
+                result = result.replace(("(?<=^|[^\\.])\\b$columnName\\b").toRegex(), "$prefix$columnName")
+            }
 
-    fun addPrefixToSelection(columnNames: Array<String?>, prefix: String?, selection: String): String {
-        var result = selection
-        for (columnName in columnNames) {
-            result = result.replace(("(?<=^|[^\\.])\\b$columnName\\b").toRegex(), "$prefix$columnName")
+            return result
         }
-
-        return result
     }
 }
