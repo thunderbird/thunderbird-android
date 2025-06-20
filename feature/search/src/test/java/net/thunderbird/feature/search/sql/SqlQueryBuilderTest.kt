@@ -1,4 +1,4 @@
-package com.fsck.k9.search
+package net.thunderbird.feature.search.sql
 
 import assertk.assertFailure
 import assertk.assertThat

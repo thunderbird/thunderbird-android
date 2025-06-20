@@ -5,7 +5,6 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
-import com.fsck.k9.search.SqlQueryBuilder
 import com.fsck.k9.search.getAccounts
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
@@ -13,6 +12,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.api.MessageSearchField
+import net.thunderbird.feature.search.sql.SqlQueryBuilder
 
 class MessageListLoader(
     private val preferences: Preferences,
