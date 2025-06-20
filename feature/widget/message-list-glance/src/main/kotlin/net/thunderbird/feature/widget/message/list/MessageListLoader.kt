@@ -56,15 +56,11 @@ internal class MessageListLoader(
     }
 
     private fun buildSelection(config: MessageListConfig): Pair<String, Array<String>> {
-        val query = StringBuilder()
-        val queryArgs = mutableListOf<String>()
+        val whereClause = SqlQueryBuilder.Builder()
+            .withConditions(config.search.conditions)
+            .build()
 
-        SqlQueryBuilder.buildWhereClause(config.search.conditions, query, queryArgs)
-
-        val selection = query.toString()
-        val selectionArgs = queryArgs.toTypedArray()
-
-        return selection to selectionArgs
+        return whereClause.selection to whereClause.selectionArgs.toTypedArray()
     }
 
     private fun buildSortOrder(config: MessageListConfig): String {

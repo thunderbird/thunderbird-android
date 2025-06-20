@@ -167,12 +167,14 @@ $displayModeSelection
     }
 
     private fun getMessageCount(condition: String, extraConditions: SearchConditionTreeNode?): Int {
-        val whereBuilder = StringBuilder()
-        val queryArgs = mutableListOf<String>()
-        SqlQueryBuilder.buildWhereClause(extraConditions, whereBuilder, queryArgs)
+        val whereClause = extraConditions?.let {
+            SqlQueryBuilder.Builder()
+                .withConditions(extraConditions)
+                .build()
+        }
 
-        val where = if (whereBuilder.isNotEmpty()) "AND ($whereBuilder)" else ""
-        val selectionArgs = queryArgs.toTypedArray()
+        val where = if (whereClause != null) "AND (${whereClause.selection})" else ""
+        val selectionArgs = whereClause?.selectionArgs?.toTypedArray() ?: emptyArray()
 
         val query =
             """

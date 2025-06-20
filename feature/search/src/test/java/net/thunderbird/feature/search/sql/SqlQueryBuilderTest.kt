@@ -31,16 +31,15 @@ class SqlQueryBuilderTest {
             .not()
             .build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo("NOT (subject LIKE ?)")
-        assertThat(selectionArgs).hasSize(1)
-        assertThat(selectionArgs[0]).isEqualTo("%test%")
+        assertThat(result.selection).isEqualTo("NOT (subject LIKE ?)")
+        assertThat(result.selectionArgs).hasSize(1)
+        assertThat(result.selectionArgs[0]).isEqualTo("%test%")
     }
 
     @Test
@@ -54,17 +53,16 @@ class SqlQueryBuilderTest {
             .not()
             .build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo("NOT ((subject LIKE ?) AND (sender_list LIKE ?))")
-        assertThat(selectionArgs).hasSize(2)
-        assertThat(selectionArgs[0]).isEqualTo("%test%")
-        assertThat(selectionArgs[1]).isEqualTo("%example.com%")
+        assertThat(result.selection).isEqualTo("NOT ((subject LIKE ?) AND (sender_list LIKE ?))")
+        assertThat(result.selectionArgs).hasSize(2)
+        assertThat(result.selectionArgs[0]).isEqualTo("%test%")
+        assertThat(result.selectionArgs[1]).isEqualTo("%example.com%")
     }
 
     @Test
@@ -80,18 +78,17 @@ class SqlQueryBuilderTest {
             .and(condition3)
             .build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo("((NOT (subject LIKE ?)) AND (sender_list LIKE ?)) AND (flagged = ?)")
-        assertThat(selectionArgs).hasSize(3)
-        assertThat(selectionArgs[0]).isEqualTo("%test%")
-        assertThat(selectionArgs[1]).isEqualTo("%example.com%")
-        assertThat(selectionArgs[2]).isEqualTo("1")
+        assertThat(result.selection).isEqualTo("((NOT (subject LIKE ?)) AND (sender_list LIKE ?)) AND (flagged = ?)")
+        assertThat(result.selectionArgs).hasSize(3)
+        assertThat(result.selectionArgs[0]).isEqualTo("%test%")
+        assertThat(result.selectionArgs[1]).isEqualTo("%example.com%")
+        assertThat(result.selectionArgs[2]).isEqualTo("1")
     }
 
     @Test
@@ -107,18 +104,17 @@ class SqlQueryBuilderTest {
             .or(condition3)
             .build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo("((NOT (subject LIKE ?)) OR (sender_list LIKE ?)) OR (flagged = ?)")
-        assertThat(selectionArgs).hasSize(3)
-        assertThat(selectionArgs[0]).isEqualTo("%test%")
-        assertThat(selectionArgs[1]).isEqualTo("%example.com%")
-        assertThat(selectionArgs[2]).isEqualTo("1")
+        assertThat(result.selection).isEqualTo("((NOT (subject LIKE ?)) OR (sender_list LIKE ?)) OR (flagged = ?)")
+        assertThat(result.selectionArgs).hasSize(3)
+        assertThat(result.selectionArgs[0]).isEqualTo("%test%")
+        assertThat(result.selectionArgs[1]).isEqualTo("%example.com%")
+        assertThat(result.selectionArgs[2]).isEqualTo("1")
     }
 
     @Test
@@ -136,40 +132,37 @@ class SqlQueryBuilderTest {
             )
             .build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo("(NOT (subject LIKE ?)) AND (NOT (sender_list LIKE ?))")
-        assertThat(selectionArgs).hasSize(2)
-        assertThat(selectionArgs[0]).isEqualTo("%test%")
-        assertThat(selectionArgs[1]).isEqualTo("%example.com%")
+        assertThat(result.selection).isEqualTo("(NOT (subject LIKE ?)) AND (NOT (sender_list LIKE ?))")
+        assertThat(result.selectionArgs).hasSize(2)
+        assertThat(result.selectionArgs[0]).isEqualTo("%test%")
+        assertThat(result.selectionArgs[1]).isEqualTo("%example.com%")
     }
 
     @Test
     fun `should build correct SQL query for NOT operator with MESSAGE_CONTENTS field`() {
         // Arrange
         val condition = SearchCondition(MessageSearchField.MESSAGE_CONTENTS, SearchAttribute.CONTAINS, "test content")
-
         val node = SearchConditionTreeNode.Builder(condition)
             .not()
             .build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo(
+        assertThat(result.selection).isEqualTo(
             "NOT (messages.id IN (SELECT docid FROM messages_fulltext WHERE fulltext MATCH ?))",
         )
-        assertThat(selectionArgs).hasSize(1)
-        assertThat(selectionArgs[0]).isEqualTo("test content")
+        assertThat(result.selectionArgs).hasSize(1)
+        assertThat(result.selectionArgs[0]).isEqualTo("test content")
     }
 
     @Test
@@ -179,16 +172,15 @@ class SqlQueryBuilderTest {
         val condition = SearchCondition(textField, SearchAttribute.CONTAINS, "test value")
         val node = SearchConditionTreeNode.Builder(condition).build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo("test_text_field LIKE ?")
-        assertThat(selectionArgs).hasSize(1)
-        assertThat(selectionArgs[0]).isEqualTo("%test value%")
+        assertThat(result.selection).isEqualTo("test_text_field LIKE ?")
+        assertThat(result.selectionArgs).hasSize(1)
+        assertThat(result.selectionArgs[0]).isEqualTo("%test value%")
     }
 
     @Test
@@ -198,16 +190,15 @@ class SqlQueryBuilderTest {
         val condition = SearchCondition(numberField, SearchAttribute.EQUALS, "42")
         val node = SearchConditionTreeNode.Builder(condition).build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo("test_number_field = ?")
-        assertThat(selectionArgs).hasSize(1)
-        assertThat(selectionArgs[0]).isEqualTo("42")
+        assertThat(result.selection).isEqualTo("test_number_field = ?")
+        assertThat(result.selectionArgs).hasSize(1)
+        assertThat(result.selectionArgs[0]).isEqualTo("42")
     }
 
     @Test
@@ -217,16 +208,15 @@ class SqlQueryBuilderTest {
         val condition = SearchCondition(numberField, SearchAttribute.NOT_EQUALS, "42")
         val node = SearchConditionTreeNode.Builder(condition).build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(query.toString()).isEqualTo("test_number_field != ?")
-        assertThat(selectionArgs).hasSize(1)
-        assertThat(selectionArgs[0]).isEqualTo("42")
+        assertThat(result.selection).isEqualTo("test_number_field != ?")
+        assertThat(result.selectionArgs).hasSize(1)
+        assertThat(result.selectionArgs[0]).isEqualTo("42")
     }
 
     @Test
@@ -240,18 +230,16 @@ class SqlQueryBuilderTest {
         val condition = SearchCondition(customField, SearchAttribute.CONTAINS, "custom value")
         val node = SearchConditionTreeNode.Builder(condition).build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act
-        SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+        val result = SqlQueryBuilder.Builder()
+            .withConditions(node)
+            .build()
 
         // Assert
-        assertThat(
-            query.toString(),
-        ).isEqualTo("custom_table.id IN (SELECT id FROM custom_table WHERE custom_column MATCH ?)")
-        assertThat(selectionArgs).hasSize(1)
-        assertThat(selectionArgs[0]).isEqualTo("custom value")
+        assertThat(result.selection)
+            .isEqualTo("custom_table.id IN (SELECT id FROM custom_table WHERE custom_column MATCH ?)")
+        assertThat(result.selectionArgs).hasSize(1)
+        assertThat(result.selectionArgs[0]).isEqualTo("custom value")
     }
 
     @Test
@@ -265,12 +253,11 @@ class SqlQueryBuilderTest {
         val condition = SearchCondition(customField, SearchAttribute.CONTAINS, "custom value")
         val node = SearchConditionTreeNode.Builder(condition).build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act & Assert
         assertFailure {
-            SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+            SqlQueryBuilder.Builder()
+                .withConditions(node)
+                .build()
         }.isInstanceOf<IllegalArgumentException>()
     }
 
@@ -285,12 +272,11 @@ class SqlQueryBuilderTest {
         val condition = SearchCondition(customField, SearchAttribute.CONTAINS, "custom value")
         val node = SearchConditionTreeNode.Builder(condition).build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act & Assert
         assertFailure {
-            SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+            SqlQueryBuilder.Builder()
+                .withConditions(node)
+                .build()
         }.isInstanceOf<IllegalArgumentException>()
     }
 
@@ -305,12 +291,11 @@ class SqlQueryBuilderTest {
         val condition = SearchCondition(customField, SearchAttribute.EQUALS, "custom value")
         val node = SearchConditionTreeNode.Builder(condition).build()
 
-        val query = StringBuilder()
-        val selectionArgs = mutableListOf<String>()
-
         // Act & Assert
         assertFailure {
-            SqlQueryBuilder.buildWhereClause(node, query, selectionArgs)
+            SqlQueryBuilder.Builder()
+                .withConditions(node)
+                .build()
         }.isInstanceOf<IllegalArgumentException>()
     }
 }
