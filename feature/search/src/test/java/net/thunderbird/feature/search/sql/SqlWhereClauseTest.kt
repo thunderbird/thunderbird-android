@@ -14,7 +14,7 @@ import net.thunderbird.feature.search.api.SearchField
 import net.thunderbird.feature.search.api.SearchFieldType
 import org.junit.Test
 
-class SqlQueryBuilderTest {
+class SqlWhereClauseTest {
 
     @Parcelize
     data class TestSearchField(
@@ -32,7 +32,7 @@ class SqlQueryBuilderTest {
             .build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -54,7 +54,7 @@ class SqlQueryBuilderTest {
             .build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -79,7 +79,7 @@ class SqlQueryBuilderTest {
             .build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -105,7 +105,7 @@ class SqlQueryBuilderTest {
             .build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -133,7 +133,7 @@ class SqlQueryBuilderTest {
             .build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -153,7 +153,7 @@ class SqlQueryBuilderTest {
             .build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -173,7 +173,7 @@ class SqlQueryBuilderTest {
         val node = SearchConditionTreeNode.Builder(condition).build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -191,7 +191,7 @@ class SqlQueryBuilderTest {
         val node = SearchConditionTreeNode.Builder(condition).build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -209,7 +209,7 @@ class SqlQueryBuilderTest {
         val node = SearchConditionTreeNode.Builder(condition).build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -231,7 +231,7 @@ class SqlQueryBuilderTest {
         val node = SearchConditionTreeNode.Builder(condition).build()
 
         // Act
-        val result = SqlQueryBuilder.Builder()
+        val result = SqlWhereClause.Builder()
             .withConditions(node)
             .build()
 
@@ -255,7 +255,7 @@ class SqlQueryBuilderTest {
 
         // Act & Assert
         assertFailure {
-            SqlQueryBuilder.Builder()
+            SqlWhereClause.Builder()
                 .withConditions(node)
                 .build()
         }.isInstanceOf<IllegalArgumentException>()
@@ -274,7 +274,7 @@ class SqlQueryBuilderTest {
 
         // Act & Assert
         assertFailure {
-            SqlQueryBuilder.Builder()
+            SqlWhereClause.Builder()
                 .withConditions(node)
                 .build()
         }.isInstanceOf<IllegalArgumentException>()
@@ -293,7 +293,7 @@ class SqlQueryBuilderTest {
 
         // Act & Assert
         assertFailure {
-            SqlQueryBuilder.Builder()
+            SqlWhereClause.Builder()
                 .withConditions(node)
                 .build()
         }.isInstanceOf<IllegalArgumentException>()

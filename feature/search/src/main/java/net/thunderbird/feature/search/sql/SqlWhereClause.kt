@@ -6,7 +6,7 @@ import net.thunderbird.feature.search.api.SearchCondition
 import net.thunderbird.feature.search.api.SearchFieldType
 
 /**
- * Builds a SQL query string based on a search condition tree and selection arguments.
+ * Builds a SQL query string based on a search condition tree and creates the selection arguments.
  *
  * This class constructs a SQL WHERE clause from a tree of search conditions, allowing for complex
  * logical expressions using AND, OR, and NOT operators. It supports custom fields with templates
@@ -14,12 +14,12 @@ import net.thunderbird.feature.search.api.SearchFieldType
  *
  * Example usage:
  * ```
- * val query = SqlQueryBuilder.Builder()
+ * val query = SqlWhereClause.Builder()
  *     .withConditions(searchConditionTree)
  *     .build()
  * ```
  */
-class SqlQueryBuilder private constructor(
+class SqlWhereClause private constructor(
     val selection: String,
     val selectionArgs: List<String>,
 ) {
@@ -40,16 +40,16 @@ class SqlQueryBuilder private constructor(
         }
 
         /**
-         * Builds the SQL query string based on the provided conditions and selection arguments.
+         * Builds the SQL query string based on the provided conditions and creates the selection arguments.
          *
          * @return The constructed SQL query string.
          */
-        fun build(): SqlQueryBuilder {
+        fun build(): SqlWhereClause {
             val arguments = mutableListOf<String>()
             val query = StringBuilder()
             buildWhereClause(root, query, arguments)
 
-            return SqlQueryBuilder(
+            return SqlWhereClause(
                 selection = query.toString(),
                 selectionArgs = arguments,
             )
@@ -151,7 +151,7 @@ class SqlQueryBuilder private constructor(
         }
     }
 
-    companion object {
+    companion object Companion {
         // TODO: This is a workaround for ambiguous column names in the selection. Find a better solution.
         fun addPrefixToSelection(columnNames: Array<String>, prefix: String?, selection: String): String {
             var result = selection

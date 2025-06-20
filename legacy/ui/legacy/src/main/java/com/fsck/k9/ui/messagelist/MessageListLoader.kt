@@ -12,7 +12,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.sql.SqlQueryBuilder
+import net.thunderbird.feature.search.sql.SqlWhereClause
 
 class MessageListLoader(
     private val preferences: Preferences,
@@ -81,7 +81,7 @@ class MessageListLoader(
             queryArgs.add(activeMessage.folderId.toString())
         }
 
-        val whereClause = SqlQueryBuilder.Builder()
+        val whereClause = SqlWhereClause.Builder()
             .withConditions(config.search.conditions)
             .build()
 

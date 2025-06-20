@@ -9,7 +9,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.sql.SqlQueryBuilder
+import net.thunderbird.feature.search.sql.SqlWhereClause
 
 internal class MessageListLoader(
     private val preferences: Preferences,
@@ -56,7 +56,7 @@ internal class MessageListLoader(
     }
 
     private fun buildSelection(config: MessageListConfig): Pair<String, Array<String>> {
-        val whereClause = SqlQueryBuilder.Builder()
+        val whereClause = SqlWhereClause.Builder()
             .withConditions(config.search.conditions)
             .build()
 

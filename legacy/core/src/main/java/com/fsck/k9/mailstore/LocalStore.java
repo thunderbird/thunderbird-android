@@ -45,7 +45,7 @@ import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
-import net.thunderbird.feature.search.sql.SqlQueryBuilder;
+import net.thunderbird.feature.search.sql.SqlWhereClause;
 import kotlinx.datetime.Clock;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.feature.search.LocalMessageSearch;
@@ -335,12 +335,12 @@ public class LocalStore {
     }
 
     public List<LocalMessage> searchForMessages(LocalMessageSearch search) throws MessagingException {
-        SqlQueryBuilder whereClause = new SqlQueryBuilder.Builder()
+        SqlWhereClause whereClause = new SqlWhereClause.Builder()
             .withConditions(search.getConditions())
             .build();
 
         // Avoid "ambiguous column name" error by prefixing "id" with the message table name
-        String where = SqlQueryBuilder.Companion.addPrefixToSelection(new String[] { "id" },
+        String where = SqlWhereClause.Companion.addPrefixToSelection(new String[] { "id" },
                 "messages.", whereClause.getSelection());
 
         String[] selectionArgs = whereClause.getSelectionArgs().toArray(new String[0]);
