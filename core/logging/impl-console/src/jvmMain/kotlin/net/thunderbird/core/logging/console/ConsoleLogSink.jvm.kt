@@ -15,10 +15,18 @@ private class JvmConsoleLogSink(
     }
 
     private fun composeMessage(event: LogEvent): String {
-        return if (event.tag != null) {
-            "[${event.tag}] ${event.message}"
+        val tag = event.tag ?: event.composeTag(ignoredClasses = IGNORE_CLASSES)
+        return if (tag != null) {
+            "[$tag] ${event.message}"
         } else {
             event.message
         }
+    }
+
+    companion object {
+        private val IGNORE_CLASSES = setOf(
+            JvmConsoleLogSink::class.java.name,
+            // Add other classes to ignore if needed
+        )
     }
 }
