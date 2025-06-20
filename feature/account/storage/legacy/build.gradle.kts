@@ -9,6 +9,7 @@ android {
 dependencies {
     api(projects.feature.account.storage.api)
 
+    implementation(projects.feature.notification.api)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
 

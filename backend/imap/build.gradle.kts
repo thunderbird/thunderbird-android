@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     api(projects.backend.api)
+    implementation(projects.core.common)
     api(projects.core.outcome)
 
     api(projects.feature.mail.account.api)
