@@ -26,14 +26,13 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedD
 @Composable
 internal fun FolderListItem(
     displayFolder: DisplayFolder,
-    selected: Boolean,
     onClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
     folderNameFormatter: FolderNameFormatter,
+    selectedFolderId: String?,
     modifier: Modifier = Modifier,
     treeFolder: DisplayTreeFolder? = null,
     parentPrefix: String? = "",
-    selectedFolderId: String? = null,
     indentationLevel: Int = 1,
 ) {
     val isExpanded = rememberSaveable { mutableStateOf(false) }
@@ -53,7 +52,7 @@ internal fun FolderListItem(
     ) {
         NavigationDrawerItem(
             label = mapFolderName(displayFolder, folderNameFormatter, parentPrefix),
-            selected = selected,
+            selected = selectedFolderId == displayFolder.id,
             onClick = { onClick(displayFolder) },
             modifier = Modifier.fillMaxWidth(),
             icon = {
@@ -80,7 +79,7 @@ internal fun FolderListItem(
             if (displayChild === null) continue
             FolderListItem(
                 displayFolder = displayChild,
-                selected = selectedFolderId?.let { displayChild.id == selectedFolderId } == true,
+                selectedFolderId = selectedFolderId,
                 showStarredCount = showStarredCount,
                 onClick = onClick,
                 folderNameFormatter = folderNameFormatter,

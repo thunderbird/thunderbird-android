@@ -41,7 +41,6 @@ internal fun FolderList(
                     "Null DisplayFolder for folder ${folder.displayName}"
                 },
                 treeFolder = folder,
-                selected = currentDisplayFolder == selectedFolder,
                 showStarredCount = showStarredCount,
                 onClick = onFolderClick,
                 folderNameFormatter = folderNameFormatter,
