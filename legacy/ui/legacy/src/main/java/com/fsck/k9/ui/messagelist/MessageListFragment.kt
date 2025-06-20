@@ -683,7 +683,7 @@ class MessageListFragment :
             previewLines = K9.messageListPreviewLines,
             stars = !isOutbox && generalSettingsManager.getSettings().isShowMessageListStars,
             senderAboveSubject = generalSettingsManager.getSettings().isMessageListSenderAboveSubject,
-            showContactPicture = K9.isShowContactPicture,
+            showContactPicture = generalSettingsManager.getSettings().isShowContactPicture,
             showingThreadedList = showingThreadedList,
             backGroundAsReadIndicator = K9.isUseBackgroundAsUnreadIndicator,
             showAccountChip = isShowAccountChip,

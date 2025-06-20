@@ -33,7 +33,7 @@ class GeneralSettingsDataStore(
             "messagelist_sender_above_subject" -> generalSettingsManager.getSettings().isMessageListSenderAboveSubject
             "messagelist_show_contact_name" -> generalSettingsManager.getSettings().isShowContactName
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor
-            "messagelist_show_contact_picture" -> K9.isShowContactPicture
+            "messagelist_show_contact_picture" -> generalSettingsManager.getSettings().isShowContactPicture
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator
             "show_compose_button" -> K9.isShowComposeButtonOnMessageList
@@ -66,7 +66,7 @@ class GeneralSettingsDataStore(
             )
             "messagelist_show_contact_name" -> setIsShowContactName(isShowContactName = value)
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor = value
-            "messagelist_show_contact_picture" -> K9.isShowContactPicture = value
+            "messagelist_show_contact_picture" -> setIsShowContactPicture(isShowContactPicture = value)
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator = value
             "show_compose_button" -> K9.isShowComposeButtonOnMessageList = value
@@ -297,6 +297,11 @@ class GeneralSettingsDataStore(
     private fun setIsShowContactName(isShowContactName: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setIsShowContactName(isShowContactName)
+    }
+
+    private fun setIsShowContactPicture(isShowContactPicture: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsShowContactPicture(isShowContactPicture)
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {
