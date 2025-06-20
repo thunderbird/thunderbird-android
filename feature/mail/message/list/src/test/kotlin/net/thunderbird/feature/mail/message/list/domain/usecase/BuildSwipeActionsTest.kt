@@ -40,6 +40,7 @@ class BuildSwipeActionsTest {
             isShowAnimations = false,
             isShowCorrespondentNames = false,
             shouldShowSetupArchiveFolderDialog = false,
+            isMessageListSenderAboveSubject = false,
         )
 
     @Test
@@ -389,6 +390,8 @@ private class FakeGeneralSettingsManager(
     override fun setSetupArchiveShouldNotShowAgain(shouldShowSetupArchiveFolderDialog: Boolean) {
         generalSettings.update { it.copy(shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog) }
     }
+
+    override fun setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject: Boolean) = error("not implemented")
 }
 
 private class FakeStorage(
