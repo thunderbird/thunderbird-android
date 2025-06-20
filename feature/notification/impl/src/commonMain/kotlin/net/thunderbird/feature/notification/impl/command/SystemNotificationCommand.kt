@@ -21,7 +21,7 @@ internal class SystemNotificationCommand(
     notification: SystemNotification,
     notifier: NotificationNotifier<SystemNotification>,
 ) : NotificationCommand<SystemNotification>(notification, notifier) {
-    override fun execute(): Outcome<Success<SystemNotification>, Failure<SystemNotification>> {
+    override suspend fun execute(): Outcome<Success<SystemNotification>, Failure<SystemNotification>> {
         return if (canExecuteCommand()) {
             notifier.show(
                 id = notificationIdFactory.next(notification.accountNumber),
