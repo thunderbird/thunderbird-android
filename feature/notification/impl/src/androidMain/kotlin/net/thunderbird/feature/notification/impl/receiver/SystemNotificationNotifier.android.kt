@@ -10,7 +10,10 @@ import net.thunderbird.core.common.provider.ContextProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.content.SystemNotification
+import net.thunderbird.feature.notification.api.ui.NotificationStyle
+import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.impl.intent.SystemNotificationIntentCreator
+import net.thunderbird.feature.notification.impl.ui.action.NotificationActionCreator
 import org.koin.core.component.KoinComponent
 import org.koin.core.qualifier.named
 import org.koin.java.KoinJavaComponent.inject
@@ -33,11 +36,16 @@ internal class AndroidSystemNotificationNotifier(
         List::class.java,
         named<SystemNotificationIntentCreator.TypeQualifier>(),
     ),
+    actionCreators: Lazy<List<NotificationActionCreator<NotificationAction>>> = inject(
+        List::class.java,
+        named<NotificationActionCreator.TypeQualifier>(),
+    ),
 ) : SystemNotificationNotifier, KoinComponent {
     private val notificationIntentCreators by notificationIntentCreators
+    private val actionCreators by actionCreators
     private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
 
-    override fun show(
+    override suspend fun show(
         id: NotificationId,
         notification: SystemNotification,
     ) {
@@ -49,7 +57,7 @@ internal class AndroidSystemNotificationNotifier(
         logger.debug(TAG) { "dispose() called" }
     }
 
-    private fun SystemNotification.toAndroidNotification(): Notification {
+    private suspend fun SystemNotification.toAndroidNotification(): Notification {
         logger.debug(TAG) { "toAndroidNotification() called with systemNotification = $this" }
         return NotificationCompat
             .Builder(context, channel.id)
@@ -58,6 +66,7 @@ internal class AndroidSystemNotificationNotifier(
                 setContentTitle(title)
                 setTicker(accessibilityText)
                 contentText?.let(::setContentText)
+                subText?.let(::setSubText)
                 setOngoing(severity.dismissable.not())
                 setWhen(createdAt.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds())
                 if (this@toAndroidNotification != lockscreenNotification) {
@@ -68,14 +77,45 @@ internal class AndroidSystemNotificationNotifier(
                     .firstOrNull { it.accept(this@toAndroidNotification) }
                     ?.let { creator -> setContentIntent(creator.create(this@toAndroidNotification)) }
 
+                setNotificationStyle(notification = this@toAndroidNotification)
+
 //                TODO: Create Actions.
-//                if (actions.isNotEmpty()) {
-//                    for (action in actions) {
-//                        notificationIntentCreators
-//                            .firstOrNull { it.accept(this@toAndroidNotification) } ?: continue
-//                    }
-//                }
+                if (actions.isNotEmpty()) {
+                    for (action in actions) {
+                        val notificationAction = actionCreators
+                            .single { it.accept(action) }
+                            .create(action)
+
+                        addAction(
+                            notificationAction.icon,
+                            notificationAction.title,
+                            notificationAction.pendingIntent,
+                        )
+                    }
+                }
             }
             .build()
+    }
+
+    private fun NotificationCompat.Builder.setNotificationStyle(
+        notification: SystemNotification,
+    ) {
+        when (val style = notification.systemNotificationStyle) {
+            is NotificationStyle.System.BigTextStyle -> setStyle(
+                NotificationCompat.BigTextStyle().bigText(style.text),
+            )
+
+            is NotificationStyle.System.InboxStyle -> {
+                val inboxStyle = NotificationCompat.InboxStyle()
+                    .setBigContentTitle(style.bigContentTitle)
+                    .setSummaryText(style.summary)
+
+                style.lines.forEach(inboxStyle::addLine)
+
+                setStyle(inboxStyle)
+            }
+
+            NotificationStyle.System.Undefined -> Unit
+        }
     }
 }

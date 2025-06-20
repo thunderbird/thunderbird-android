@@ -24,7 +24,7 @@ abstract class NotificationCommand<TNotification : Notification>(
      * Executes the command.
      * @return The result of the execution.
      */
-    abstract fun execute(): Outcome<Success<TNotification>, Failure<TNotification>>
+    abstract suspend fun execute(): Outcome<Success<TNotification>, Failure<TNotification>>
 
     /**
      * Represents the outcome of a command's execution.

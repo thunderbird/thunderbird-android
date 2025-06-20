@@ -17,7 +17,7 @@ interface NotificationNotifier<in TNotification : Notification> {
      * @param id The notification id. Mostly used by System Notifications.
      * @param notification The notification to show.
      */
-    fun show(id: NotificationId, notification: TNotification)
+    suspend fun show(id: NotificationId, notification: TNotification)
 
     /**
      * Disposes of any resources used by the notifier.

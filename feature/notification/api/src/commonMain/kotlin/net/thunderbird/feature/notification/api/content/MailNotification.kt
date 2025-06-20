@@ -7,7 +7,9 @@ import net.thunderbird.feature.notification.api.LockscreenNotificationAppearance
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationSeverity
+import net.thunderbird.feature.notification.api.ui.NotificationStyle
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.builder.notificationStyle
 import net.thunderbird.feature.notification.api.ui.icon.MailFetching
 import net.thunderbird.feature.notification.api.ui.icon.MailSendFailed
 import net.thunderbird.feature.notification.api.ui.icon.MailSending
@@ -35,6 +37,8 @@ import org.jetbrains.compose.resources.getString
 sealed class MailNotification : AppNotification(), SystemNotification {
     @KmpIgnoredOnParcel
     override val severity: NotificationSeverity = NotificationSeverity.Information
+
+    @KmpIgnoredOnParcel
     override val authenticationRequired: Boolean = true
 
     @KmpParcelize
@@ -232,6 +236,13 @@ sealed class MailNotification : AppNotification(), SystemNotification {
 
             @KmpIgnoredOnParcel
             override val contentText: String = subject
+
+            @KmpIgnoredOnParcel
+            override val systemNotificationStyle: NotificationStyle.System = notificationStyle {
+                systemStyle {
+                    bigText(preview)
+                }
+            }.systemStyle
         }
 
         /**

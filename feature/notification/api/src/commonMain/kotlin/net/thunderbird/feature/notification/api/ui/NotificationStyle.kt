@@ -1,5 +1,7 @@
 package net.thunderbird.feature.notification.api.ui
 
+import org.jetbrains.annotations.VisibleForTesting
+
 /**
  * Represents the different styles a notification can have, catering to both system-level
  * and in-app display formats.
@@ -20,7 +22,7 @@ sealed interface NotificationStyle {
          *
          * @property text The main text content of the notification.
          */
-        data class BigTextStyle(
+        data class BigTextStyle @VisibleForTesting constructor(
             val text: String,
         ) : System
 
@@ -31,7 +33,7 @@ sealed interface NotificationStyle {
          * @property summary Overrides the summary of the notification.
          * @property lines List of strings to display in the notification.
          */
-        data class InboxStyle(
+        data class InboxStyle @VisibleForTesting constructor(
             val bigContentTitle: String,
             val summary: String,
             val lines: List<CharSequence>,

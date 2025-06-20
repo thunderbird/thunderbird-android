@@ -69,6 +69,7 @@ class InboxSystemNotificationStyleBuilder internal constructor(
      *  title, summary, and lines.
      * @throws IllegalStateException if the big content title or summary is not set.
      */
+    @Suppress("VisibleForTests")
     fun build(): NotificationStyle.System.InboxStyle = NotificationStyle.System.InboxStyle(
         bigContentTitle = checkNotNull(bigContentTitle) {
             "The inbox notification's title is required"
