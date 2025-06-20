@@ -167,6 +167,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isMessageListSenderAboveSubject = isMessageListSenderAboveSubject).persist()
     }
 
+    override fun setIsShowContactName(isShowContactName: Boolean) {
+        getSettings().copy(isShowContactName = isShowContactName).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -180,6 +184,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("showCorrespondentNames", settings.isShowCorrespondentNames)
         editor.putBoolean(KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG, settings.shouldShowSetupArchiveFolderDialog)
         editor.putBoolean("messageListSenderAboveSubject", settings.isMessageListSenderAboveSubject)
+        editor.putBoolean("showContactName", settings.isShowContactName)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -208,6 +213,7 @@ internal class RealGeneralSettingsManager(
                 defValue = true,
             ),
             isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false),
+            isShowContactName = storage.getBoolean("showContactName", false),
         )
 
         updateSettingsFlow(settings)

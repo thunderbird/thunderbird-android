@@ -21,5 +21,11 @@ val messageDetailsUiModule = module {
     factory { ContactSettingsProvider() }
     factory { AddToContactsLauncher() }
     factory { ShowContactLauncher() }
-    factory { createMessageDetailsParticipantFormatter(contactNameProvider = get(), resources = get()) }
+    factory {
+        createMessageDetailsParticipantFormatter(
+            contactNameProvider = get(),
+            resources = get(),
+            generalSettingsManager = get(),
+        )
+    }
 }

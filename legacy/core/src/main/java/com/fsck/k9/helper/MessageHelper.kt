@@ -9,7 +9,6 @@ import app.k9mail.core.android.common.contact.ContactRepository
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9.contactNameColor
 import com.fsck.k9.K9.isChangeContactNameColor
-import com.fsck.k9.K9.isShowContactName
 import com.fsck.k9.mail.Address
 import java.util.regex.Pattern
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
@@ -25,7 +24,7 @@ class MessageHelper(
         if (address == null) {
             return resourceProvider.contactUnknownSender()
         }
-        val repository = if (isShowContactName) contactRepository else null
+        val repository = if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
         return toFriendly(address, generalSettingsManager.getSettings().isShowCorrespondentNames, repository)
     }
 
@@ -33,7 +32,7 @@ class MessageHelper(
         if (addresses == null || addresses.isEmpty()) {
             return resourceProvider.contactUnknownRecipient()
         }
-        val repository = if (isShowContactName) contactRepository else null
+        val repository = if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
         val recipients = toFriendly(addresses, isShowCorrespondentNames, repository)
         return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(' ').append(recipients)
     }
