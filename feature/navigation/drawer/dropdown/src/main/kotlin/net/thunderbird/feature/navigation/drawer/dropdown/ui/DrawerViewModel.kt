@@ -184,17 +184,19 @@ internal class DrawerViewModel(
     }
 
     private fun selectAccount(accountId: String?) {
-        viewModelScope.launch {
-            updateState {
-                it.copy(
-                    selectedAccountId = accountId,
-                )
-            }
-            delay(ACCOUNT_CLOSE_DELAY)
-            updateState {
-                it.copy(
-                    showAccountSelection = false,
-                )
+        if (accountId != state.value.selectedAccountId) {
+            viewModelScope.launch {
+                updateState {
+                    it.copy(
+                        selectedAccountId = accountId,
+                    )
+                }
+                delay(ACCOUNT_CLOSE_DELAY)
+                updateState {
+                    it.copy(
+                        showAccountSelection = false,
+                    )
+                }
             }
         }
     }
