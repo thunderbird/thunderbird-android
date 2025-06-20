@@ -28,15 +28,17 @@ fi
 if $FORCE_UPDATE; then
     echo "Forcing mdbook installation..."
     cargo install --force mdbook
+    cargo install --force mdbook-alerts
     cargo install --force mdbook-external-links
-    cargo install --force mdbook-mermaid
     cargo install --force mdbook-last-changed
+    cargo install --force mdbook-mermaid
     cargo install --force mdbook-pagetoc
 else
     cargo install mdbook
+    cargo install mdbook-alerts
     cargo install mdbook-external-links
-    cargo install mdbook-mermaid
     cargo install mdbook-last-changed
+    cargo install mdbook-mermaid
     cargo install mdbook-pagetoc
 fi
 

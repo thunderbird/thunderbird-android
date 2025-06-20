@@ -1,8 +1,7 @@
-.sidebar-scrollbox .section a[href*="adr"] strong {
+.sidebar-scrollbox .section a[href*="adr"]:not([href*="index.html"]) strong {
     display: none;
 }
-
-.sidebar-scrollbox .section a[href*="adr"] .number {
+.sidebar-scrollbox .section a[href*="adr"]:not([href*="index.html"]) .number {
     font-weight: 550;
 }
 
