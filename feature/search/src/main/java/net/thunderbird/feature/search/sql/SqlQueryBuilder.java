@@ -1,12 +1,10 @@
-package com.fsck.k9.search;
+package net.thunderbird.feature.search.sql;
 
 import java.util.List;
 
 import net.thunderbird.feature.search.SearchConditionTreeNode;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchCondition;
-import net.thunderbird.feature.search.api.MessageSearchField;
-import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.feature.search.api.SearchField;
 import net.thunderbird.feature.search.api.SearchFieldType;
 

@@ -7,7 +7,7 @@ import app.k9mail.legacy.message.extractors.PreviewResult
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.search.SqlQueryBuilder
+import net.thunderbird.feature.search.sql.SqlQueryBuilder
 
 internal class RetrieveMessageListOperations(private val lockableDatabase: LockableDatabase) {
 
