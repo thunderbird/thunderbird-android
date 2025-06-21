@@ -243,8 +243,6 @@ object K9 : KoinComponent {
     @JvmStatic
     var splitViewMode = SplitViewMode.NEVER
 
-    var isColorizeMissingContactPictures = true
-
     @JvmStatic
     var isMessageViewArchiveActionVisible = false
 
@@ -384,8 +382,6 @@ object K9 : KoinComponent {
 
         backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
 
-        isColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true)
-
         isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
         isMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true)
         isMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false)
@@ -459,7 +455,6 @@ object K9 : KoinComponent {
         editor.putBoolean("showComposeButtonOnMessageList", isShowComposeButtonOnMessageList)
         editor.putBoolean("threadedView", isThreadedViewEnabled)
         editor.putEnum("splitViewMode", splitViewMode)
-        editor.putBoolean("colorizeMissingContactPictures", isColorizeMissingContactPictures)
 
         editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
         editor.putBoolean("messageViewDeleteActionVisible", isMessageViewDeleteActionVisible)

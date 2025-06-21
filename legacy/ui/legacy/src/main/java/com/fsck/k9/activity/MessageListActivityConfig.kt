@@ -52,7 +52,8 @@ data class MessageListActivityConfig(
                 isShowContactName = generalSettingsManager.getSettings().isShowContactName,
                 isChangeContactNameColor = K9.isChangeContactNameColor,
                 isShowContactPicture = K9.isShowContactPicture,
-                isColorizeMissingContactPictures = K9.isColorizeMissingContactPictures,
+                isColorizeMissingContactPictures = generalSettingsManager.getSettings()
+                    .isColorizeMissingContactPictures,
                 isUseBackgroundAsUnreadIndicator = K9.isUseBackgroundAsUnreadIndicator,
                 isShowComposeButton = K9.isShowComposeButtonOnMessageList,
                 contactNameColor = K9.contactNameColor,
