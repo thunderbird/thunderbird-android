@@ -220,9 +220,6 @@ object K9 : KoinComponent {
     var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
-    @JvmStatic
-    var isUseBackgroundAsUnreadIndicator = false
-
     @get:Synchronized
     @set:Synchronized
     var isShowComposeButtonOnMessageList = true
@@ -363,7 +360,6 @@ object K9 : KoinComponent {
 
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
 
-        isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", false)
         isShowComposeButtonOnMessageList = storage.getBoolean("showComposeButtonOnMessageList", true)
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
 
@@ -441,7 +437,6 @@ object K9 : KoinComponent {
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
-        editor.putBoolean("useBackgroundAsUnreadIndicator", isUseBackgroundAsUnreadIndicator)
         editor.putBoolean("showComposeButtonOnMessageList", isShowComposeButtonOnMessageList)
         editor.putBoolean("threadedView", isThreadedViewEnabled)
         editor.putEnum("splitViewMode", splitViewMode)

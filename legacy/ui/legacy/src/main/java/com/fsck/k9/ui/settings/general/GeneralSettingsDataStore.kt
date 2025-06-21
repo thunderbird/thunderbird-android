@@ -36,7 +36,8 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_picture" -> generalSettingsManager.getSettings().isShowContactPicture
             "messagelist_colorize_missing_contact_pictures" -> generalSettingsManager.getSettings()
                 .isColorizeMissingContactPictures
-            "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator
+            "messagelist_background_as_unread_indicator" -> generalSettingsManager.getSettings()
+                .isUseBackgroundAsUnreadIndicator
             "show_compose_button" -> K9.isShowComposeButtonOnMessageList
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
@@ -65,14 +66,15 @@ class GeneralSettingsDataStore(
             "messagelist_sender_above_subject" -> setIsMessageListSenderAboveSubject(
                 isMessageListSenderAboveSubject = value,
             )
-
             "messagelist_show_contact_name" -> setIsShowContactName(isShowContactName = value)
             "messagelist_change_contact_name_color" -> setIsChangeContactNameColor(isChangeContactNameColor = value)
             "messagelist_show_contact_picture" -> setIsShowContactPicture(isShowContactPicture = value)
             "messagelist_colorize_missing_contact_pictures" -> setIsColorizeMissingContactPictures(
                 isColorizeMissingContactPictures = value,
             )
-            "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator = value
+            "messagelist_background_as_unread_indicator" -> setIsUseBackgroundAsUnreadIndicator(
+                isUseBackgroundAsUnreadIndicator = value,
+            )
             "show_compose_button" -> K9.isShowComposeButtonOnMessageList = value
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
@@ -316,6 +318,13 @@ class GeneralSettingsDataStore(
     private fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setIsShowContactName(isColorizeMissingContactPictures)
+    }
+
+    private fun setIsUseBackgroundAsUnreadIndicator(isUseBackgroundAsUnreadIndicator: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsUseBackgroundAsUnreadIndicator(
+            isUseBackgroundAsUnreadIndicator = isUseBackgroundAsUnreadIndicator,
+        )
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {

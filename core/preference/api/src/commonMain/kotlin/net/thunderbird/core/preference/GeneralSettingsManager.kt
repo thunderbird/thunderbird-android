@@ -27,4 +27,5 @@ interface GeneralSettingsManager {
     fun setIsShowContactPicture(isShowContactPicture: Boolean)
     fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean)
     fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean)
+    fun setIsUseBackgroundAsUnreadIndicator(isUseBackgroundAsUnreadIndicator: Boolean)
 }
