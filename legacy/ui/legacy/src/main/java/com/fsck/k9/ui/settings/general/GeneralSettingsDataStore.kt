@@ -34,7 +34,8 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_name" -> generalSettingsManager.getSettings().isShowContactName
             "messagelist_change_contact_name_color" -> generalSettingsManager.getSettings().isChangeContactNameColor
             "messagelist_show_contact_picture" -> generalSettingsManager.getSettings().isShowContactPicture
-            "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
+            "messagelist_colorize_missing_contact_pictures" -> generalSettingsManager.getSettings()
+                .isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator
             "show_compose_button" -> K9.isShowComposeButtonOnMessageList
             "threaded_view" -> K9.isThreadedViewEnabled
@@ -64,10 +65,13 @@ class GeneralSettingsDataStore(
             "messagelist_sender_above_subject" -> setIsMessageListSenderAboveSubject(
                 isMessageListSenderAboveSubject = value,
             )
+
             "messagelist_show_contact_name" -> setIsShowContactName(isShowContactName = value)
             "messagelist_change_contact_name_color" -> setIsChangeContactNameColor(isChangeContactNameColor = value)
             "messagelist_show_contact_picture" -> setIsShowContactPicture(isShowContactPicture = value)
-            "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
+            "messagelist_colorize_missing_contact_pictures" -> setIsColorizeMissingContactPictures(
+                isColorizeMissingContactPictures = value,
+            )
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator = value
             "show_compose_button" -> K9.isShowComposeButtonOnMessageList = value
             "threaded_view" -> K9.isThreadedViewEnabled = value
@@ -307,6 +311,11 @@ class GeneralSettingsDataStore(
     private fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setIsChangeContactNameColor(isChangeContactNameColor)
+    }
+
+    private fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsShowContactName(isColorizeMissingContactPictures)
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {

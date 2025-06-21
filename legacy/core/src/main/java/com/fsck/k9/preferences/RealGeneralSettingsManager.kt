@@ -25,6 +25,7 @@ import net.thunderbird.core.preference.storage.putEnum
 
 internal const val KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG = "shouldShowSetupArchiveFolderDialog"
 internal const val KEY_CHANGE_REGISTERED_NAME_COLOR = "changeRegisteredNameColor"
+internal const val KEY_COLORIZE_MISSING_CONTACT_PICTURE = "colorizeMissingContactPictures"
 
 /**
  * Retrieve and modify general settings.
@@ -180,6 +181,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isChangeContactNameColor = isChangeContactNameColor).persist()
     }
 
+    override fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean) {
+        getSettings().copy(isColorizeMissingContactPictures = isColorizeMissingContactPictures).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -196,6 +201,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("showContactName", settings.isShowContactName)
         editor.putBoolean("showContactPicture", settings.isShowContactPicture)
         editor.putBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, settings.isChangeContactNameColor)
+        editor.putBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, settings.isColorizeMissingContactPictures)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -226,6 +232,7 @@ internal class RealGeneralSettingsManager(
             isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false),
             isShowContactName = storage.getBoolean("showContactName", false),
             isShowContactPicture = storage.getBoolean("showContactPicture", true),
+            isColorizeMissingContactPictures = storage.getBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, true),
             isChangeContactNameColor = storage.getBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, false),
         )
 
