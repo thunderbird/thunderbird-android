@@ -25,6 +25,7 @@ data class GeneralSettings(
     val shouldShowSetupArchiveFolderDialog: Boolean,
     val isMessageListSenderAboveSubject: Boolean,
     val isShowContactName: Boolean,
+    val isColorizeMissingContactPictures: Boolean,
 )
 
 enum class BackgroundSync {
