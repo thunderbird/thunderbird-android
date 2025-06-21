@@ -44,6 +44,7 @@ class BuildSwipeActionsTest {
             isShowContactName = false,
             isShowContactPicture = false,
             isChangeContactNameColor = false,
+            isColorizeMissingContactPictures = false,
         )
 
     @Test
@@ -401,6 +402,10 @@ private class FakeGeneralSettingsManager(
     override fun setIsShowContactPicture(isShowContactPicture: Boolean) = error("not implemented")
 
     override fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) = error("not implemented")
+
+    override fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean) = error(
+        "not implemented",
+    )
 }
 
 private class FakeStorage(
