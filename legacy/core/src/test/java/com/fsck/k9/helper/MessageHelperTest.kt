@@ -54,6 +54,7 @@ class MessageHelperTest : RobolectricTest() {
                 isShowContactName = false,
                 isShowContactPicture = false,
                 isChangeContactNameColor = false,
+                isColorizeMissingContactPictures = false,
             ),
         )
     }
