@@ -166,6 +166,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     isChangeContactNameColor = false,
                     isColorizeMissingContactPictures = false,
                     isUseBackgroundAsUnreadIndicator = false,
+                    isShowComposeButtonOnMessageList = false,
                 )
             },
         )

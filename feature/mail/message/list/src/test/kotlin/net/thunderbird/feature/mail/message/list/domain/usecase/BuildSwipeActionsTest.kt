@@ -46,6 +46,7 @@ class BuildSwipeActionsTest {
             isChangeContactNameColor = false,
             isColorizeMissingContactPictures = false,
             isUseBackgroundAsUnreadIndicator = false,
+            isShowComposeButtonOnMessageList = false,
         )
 
     @Test
@@ -410,6 +411,10 @@ private class FakeGeneralSettingsManager(
     override fun setIsUseBackgroundAsUnreadIndicator(
         isUseBackgroundAsUnreadIndicator: Boolean,
     ) = error("not implemented")
+
+    override fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean) = error(
+        "not implemented",
+    )
 }
 
 private class FakeStorage(
