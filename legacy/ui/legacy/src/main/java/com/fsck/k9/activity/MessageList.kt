@@ -224,7 +224,7 @@ open class MessageList :
 
         ViewCompat.setOnApplyWindowInsetsListener(container) { v, windowsInsets ->
             val insets = windowsInsets.getInsets(displayCutout() or navigationBars())
-            v.setPadding(insets.left, 0, insets.right, 0)
+            v.setPadding(insets.left, 0, insets.right, insets.bottom)
 
             windowsInsets
         }
