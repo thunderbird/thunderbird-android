@@ -54,7 +54,7 @@ data class MessageListActivityConfig(
                 isShowContactPicture = settings.isShowContactPicture,
                 isColorizeMissingContactPictures = settings.isColorizeMissingContactPictures,
                 isUseBackgroundAsUnreadIndicator = settings.isUseBackgroundAsUnreadIndicator,
-                isShowComposeButton = K9.isShowComposeButtonOnMessageList,
+                isShowComposeButton = settings.isShowComposeButtonOnMessageList,
                 contactNameColor = K9.contactNameColor,
                 messageViewTheme = settings.messageViewTheme,
                 messageListPreviewLines = K9.messageListPreviewLines,

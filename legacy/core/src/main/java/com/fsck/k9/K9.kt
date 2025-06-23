@@ -222,10 +222,6 @@ object K9 : KoinComponent {
 
     @get:Synchronized
     @set:Synchronized
-    var isShowComposeButtonOnMessageList = true
-
-    @get:Synchronized
-    @set:Synchronized
     @JvmStatic
     var isThreadedViewEnabled = true
 
@@ -359,8 +355,6 @@ object K9 : KoinComponent {
         )
 
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
-
-        isShowComposeButtonOnMessageList = storage.getBoolean("showComposeButtonOnMessageList", true)
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
 
         featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
@@ -437,7 +431,6 @@ object K9 : KoinComponent {
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
-        editor.putBoolean("showComposeButtonOnMessageList", isShowComposeButtonOnMessageList)
         editor.putBoolean("threadedView", isThreadedViewEnabled)
         editor.putEnum("splitViewMode", splitViewMode)
 

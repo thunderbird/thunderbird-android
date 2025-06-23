@@ -28,4 +28,5 @@ interface GeneralSettingsManager {
     fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean)
     fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean)
     fun setIsUseBackgroundAsUnreadIndicator(isUseBackgroundAsUnreadIndicator: Boolean)
+    fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean)
 }
