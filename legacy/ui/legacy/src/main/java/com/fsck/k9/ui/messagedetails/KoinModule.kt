@@ -18,7 +18,7 @@ val messageDetailsUiModule = module {
             folderNameFormatter = get(),
         )
     }
-    factory { ContactSettingsProvider() }
+    factory { ContactSettingsProvider(generalSettingsManager = get()) }
     factory { AddToContactsLauncher() }
     factory { ShowContactLauncher() }
     factory {
