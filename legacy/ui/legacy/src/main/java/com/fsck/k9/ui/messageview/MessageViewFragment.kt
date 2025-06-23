@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -192,11 +193,13 @@ class MessageViewFragment :
     }
 
     private fun initializeMessageTopViewInsets(messageTopView: MessageTopView) {
-        val view = messageTopView.findViewById<View>(R.id.message_container)
+        val view = messageTopView.findViewById<View>(R.id.message_view)
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowsInsets ->
             val insets = windowsInsets.getInsets(navigationBars())
-            v.setPadding(0, 0, 0, insets.bottom)
+            v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                bottomMargin = insets.bottom
+            }
 
             windowsInsets
         }
