@@ -163,6 +163,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     isMessageListSenderAboveSubject = false,
                     isShowContactName = false,
                     isShowContactPicture = false,
+                    isChangeContactNameColor = false,
                 )
             },
         )
