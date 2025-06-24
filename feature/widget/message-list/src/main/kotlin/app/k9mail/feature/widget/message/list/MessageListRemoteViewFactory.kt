@@ -9,7 +9,6 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -50,7 +49,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
         // TODO: Use same sort order that is used for the Unified Inbox inside the app
         val messageListConfig = MessageListConfig(
             search = unifiedInboxSearch,
-            showingThreadedList = K9.isThreadedViewEnabled,
+            showingThreadedList = generalSettingsManager.getSettings().isThreadedViewEnabled,
             sortType = SortType.SORT_DATE,
             sortAscending = false,
             sortDateAscending = false,

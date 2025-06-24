@@ -322,7 +322,7 @@ open class MessageList :
             val messageListFragment = MessageListFragment.newInstance(
                 search!!,
                 false,
-                K9.isThreadedViewEnabled && !noThreading,
+                generalSettingsManager.getSettings().isThreadedViewEnabled && !noThreading,
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment)
             fragmentTransaction.commitNow()
@@ -764,7 +764,11 @@ open class MessageList :
         }
 
         val openFolderTransaction = fragmentManager.beginTransaction()
-        val messageListFragment = MessageListFragment.newInstance(search, false, K9.isThreadedViewEnabled)
+        val messageListFragment = MessageListFragment.newInstance(
+            search,
+            false,
+            generalSettingsManager.getSettings().isThreadedViewEnabled,
+        )
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment)
 
         this.messageListFragment = messageListFragment

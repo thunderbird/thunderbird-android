@@ -36,10 +36,12 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_picture" -> generalSettingsManager.getSettings().isShowContactPicture
             "messagelist_colorize_missing_contact_pictures" -> generalSettingsManager.getSettings()
                 .isColorizeMissingContactPictures
+
             "messagelist_background_as_unread_indicator" -> generalSettingsManager.getSettings()
                 .isUseBackgroundAsUnreadIndicator
+
             "show_compose_button" -> generalSettingsManager.getSettings().isShowComposeButtonOnMessageList
-            "threaded_view" -> K9.isThreadedViewEnabled
+            "threaded_view" -> generalSettingsManager.getSettings().isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
             "quiet_time_enabled" -> K9.isQuietTimeEnabled
@@ -66,17 +68,20 @@ class GeneralSettingsDataStore(
             "messagelist_sender_above_subject" -> setIsMessageListSenderAboveSubject(
                 isMessageListSenderAboveSubject = value,
             )
+
             "messagelist_show_contact_name" -> setIsShowContactName(isShowContactName = value)
             "messagelist_change_contact_name_color" -> setIsChangeContactNameColor(isChangeContactNameColor = value)
             "messagelist_show_contact_picture" -> setIsShowContactPicture(isShowContactPicture = value)
             "messagelist_colorize_missing_contact_pictures" -> setIsColorizeMissingContactPictures(
                 isColorizeMissingContactPictures = value,
             )
+
             "messagelist_background_as_unread_indicator" -> setIsUseBackgroundAsUnreadIndicator(
                 isUseBackgroundAsUnreadIndicator = value,
             )
+
             "show_compose_button" -> setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList = value)
-            "threaded_view" -> K9.isThreadedViewEnabled = value
+            "threaded_view" -> setIsThreadedViewEnabled(isThreadedViewEnabled = value)
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
             "quiet_time_enabled" -> K9.isQuietTimeEnabled = value
@@ -331,6 +336,13 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.setIsShowComposeButtonOnMessageList(
             isShowComposeButtonOnMessageList = isShowComposeButtonOnMessageList,
+        )
+    }
+
+    private fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsThreadedViewEnabled(
+            isThreadedViewEnabled = isThreadedViewEnabled,
         )
     }
 

@@ -28,6 +28,7 @@ internal const val KEY_CHANGE_REGISTERED_NAME_COLOR = "changeRegisteredNameColor
 internal const val KEY_COLORIZE_MISSING_CONTACT_PICTURE = "colorizeMissingContactPictures"
 internal const val KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR = "isUseBackgroundAsUnreadIndicator"
 internal const val KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST = "showComposeButtonOnMessageList"
+internal const val KEY_THREAD_VIEW_ENABLED = "isThreadedViewEnabled"
 
 /**
  * Retrieve and modify general settings.
@@ -195,6 +196,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowComposeButtonOnMessageList = isShowComposeButtonOnMessageList).persist()
     }
 
+    override fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean) {
+        getSettings().copy(isThreadedViewEnabled = isThreadedViewEnabled).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -214,6 +219,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, settings.isColorizeMissingContactPictures)
         editor.putBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, settings.isUseBackgroundAsUnreadIndicator)
         editor.putBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, settings.isShowComposeButtonOnMessageList)
+        editor.putBoolean(KEY_THREAD_VIEW_ENABLED, settings.isThreadedViewEnabled)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -248,6 +254,7 @@ internal class RealGeneralSettingsManager(
             isChangeContactNameColor = storage.getBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, false),
             isUseBackgroundAsUnreadIndicator = storage.getBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, false),
             isShowComposeButtonOnMessageList = storage.getBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, true),
+            isThreadedViewEnabled = storage.getBoolean(KEY_THREAD_VIEW_ENABLED, true),
         )
 
         updateSettingsFlow(settings)

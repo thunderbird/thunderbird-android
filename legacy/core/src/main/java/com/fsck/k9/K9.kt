@@ -223,11 +223,6 @@ object K9 : KoinComponent {
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
-    var isThreadedViewEnabled = true
-
-    @get:Synchronized
-    @set:Synchronized
-    @JvmStatic
     var splitViewMode = SplitViewMode.NEVER
 
     @JvmStatic
@@ -355,7 +350,6 @@ object K9 : KoinComponent {
         )
 
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
-        isThreadedViewEnabled = storage.getBoolean("threadedView", true)
 
         featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
             .onDisabledOrUnavailable {
@@ -431,7 +425,6 @@ object K9 : KoinComponent {
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
-        editor.putBoolean("threadedView", isThreadedViewEnabled)
         editor.putEnum("splitViewMode", splitViewMode)
 
         editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
