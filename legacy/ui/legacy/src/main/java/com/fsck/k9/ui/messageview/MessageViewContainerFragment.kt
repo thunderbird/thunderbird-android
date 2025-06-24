@@ -12,6 +12,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import app.k9mail.legacy.message.controller.MessageReference
+import com.fsck.k9.K9
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.messagelist.MessageListItem
@@ -89,7 +90,7 @@ class MessageViewContainerFragment : Fragment() {
         val pageMargin = resources.getDimension(R.dimen.message_view_pager_page_margin).toInt()
 
         viewPager = view.findViewById(R.id.message_viewpager)
-        viewPager.isUserInputEnabled = true
+        viewPager.isUserInputEnabled = K9.isUseLeftRightGestureNavigation
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         viewPager.setPageTransformer(MarginPageTransformer(pageMargin))
         viewPager.registerOnPageChangeCallback(

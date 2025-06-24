@@ -192,6 +192,9 @@ object K9 : KoinComponent {
         PostMarkAsUnreadNavigation.ReturnToMessageList
 
     @JvmStatic
+    var isUseLeftRightGestureNavigation = true
+
+    @JvmStatic
     var isUseVolumeKeysForNavigation = false
 
     @JvmStatic
@@ -307,6 +310,7 @@ object K9 : KoinComponent {
         isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
+        isUseLeftRightGestureNavigation = storage.getBoolean("useLeftRightGestureNavigation", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
@@ -390,6 +394,7 @@ object K9 : KoinComponent {
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
+        editor.putBoolean("useLeftRightGestureNavigation", isUseLeftRightGestureNavigation)
         editor.putBoolean("autofitWidth", isAutoFitWidth)
         editor.putBoolean("quietTimeEnabled", isQuietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
