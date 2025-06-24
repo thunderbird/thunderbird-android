@@ -31,7 +31,8 @@ The application is organized into several module types:
 - **📚 Library Modules**: `library:*` - Specific implementations for reuse
 - **🔙 Legacy Modules**: Legacy code being gradually migrated
 
-For more details on the module structure, see the [Module Structure](module-structure.md) document.
+For more details on the module organization and structure, see the [Module Organization](module-organization.md) and
+[Module Structure](module-structure.md) documents.
 
 ## 🧩 Architectural Patterns
 

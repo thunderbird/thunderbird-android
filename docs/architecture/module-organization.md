@@ -61,7 +61,7 @@ graph TB
     FEATURE ~~~ CORE
     CORE ~~~ LIBRARY
     LIBRARY ~~~ LEGACY
-    
+
     APP --> |depends on| COMMON
     COMMON --> |depends on| FEATURE
     FEATURE --> |depends on| CORE
@@ -101,6 +101,53 @@ primary "glue" that binds various `feature` modules together, providing a seamle
 - Shared application logic
 - Feature coordination
 - Common dependency injection setup
+- Legacy code bridges and adapters
+
+##### What Should Go in App Common
+
+The app-common module should contain:
+
+1. **Shared Application Logic**: Code that's needed by both app modules but isn't specific to any one feature.
+   - Example: `BaseApplication` provides common application initialization, language management, and theme setup.
+   - This avoids duplication between app-thunderbird and app-k9mail.
+2. **Feature Integration Code**: Code that connects different features together.
+   - Example: Code that coordinates between account and mail features.
+   - This maintains separation between features while allowing them to work together.
+3. **Common Dependency Injection Setup**: Koin modules that configure dependencies shared by both applications.
+   - Example: `AppCommonModule` includes legacy modules and app-common specific modules.
+   - This ensures consistent dependency configuration across both applications.
+4. **Legacy Code Bridges/Adapters**: Implementations of interfaces defined in feature modules that delegate to legacy code.
+   - Example: `DefaultAccountProfileLocalDataSource` implements `AccountProfileLocalDataSource` from `feature:account:core` and delegates to legacy account code.
+   - These bridges isolate legacy code and prevent direct dependencies on it from feature modules.
+
+##### What Should NOT Go in App Common
+
+The following should NOT be placed in app-common:
+
+1. **Feature-Specific Business Logic**: Business logic that belongs to a specific feature domain should be in that feature's module.
+   - Example: Mail composition logic should be in `feature:mail`, not in app-common.
+   - This maintains clear separation of concerns and feature independence.
+2. **UI Components**: UI components should be in core:ui or in feature modules.
+   - Example: A custom button component should be in core:ui, while a mail-specific UI component should be in feature:mail.
+   - This ensures proper layering and reusability.
+3. **Direct Legacy Code**: Legacy code should remain in legacy modules, with app-common providing bridges.
+   - Example: Don't move legacy mail code into app-common; instead, create a bridge in app-common.
+   - This maintains the separation between legacy and modern code.
+4. **New Feature Implementations**: New features should be implemented in feature modules, not in app-common.
+   - Example: A new calendar feature should be in `feature:calendar`, not in app-common.
+   - This ensures features can evolve independently.
+
+##### Decision Criteria for New Contributors
+
+When deciding whether code belongs in app-common or a feature module, consider:
+
+1. **Is it shared between both applications?** If yes, it might belong in app-common.
+2. **Is it specific to a single feature domain?** If yes, it belongs in that feature module.
+3. **Does it bridge to legacy code?** If yes, it belongs in app-common.
+4. **Does it coordinate between multiple features?** If yes, it might belong in app-common.
+5. **Is it a new feature implementation?** If yes, create a new feature module instead.
+
+Remember that app-common should primarily contain integration code, shared application logic, and bridges to legacy code. Feature-specific logic should be in feature modules, even if used by both applications.
 
 #### ✨ Feature Modules
 
@@ -110,7 +157,7 @@ reusable and can be integrated into any application module as needed.
 Feature implementation modules (e.g., `:feature:account:impl`) should ideally not depend directly on other feature
 implementation modules. Instead, they should depend on the public `:api` module of other features (e.g.,
 `:feature:someOtherFeature:api`) to access their functionality through defined contracts, see
-[module structure](module-structure.md#module-structure) for more details.
+[module structure](module-structure.md#-api-module) for more details.
 
 When features are complex, they can be split into smaller sub feature modules, addressing specific aspects or
 functionality within a feature domain:
