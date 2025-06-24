@@ -27,6 +27,7 @@ internal const val KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG = "shouldShowSetu
 internal const val KEY_CHANGE_REGISTERED_NAME_COLOR = "changeRegisteredNameColor"
 internal const val KEY_COLORIZE_MISSING_CONTACT_PICTURE = "colorizeMissingContactPictures"
 internal const val KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR = "isUseBackgroundAsUnreadIndicator"
+internal const val KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST = "showComposeButtonOnMessageList"
 
 /**
  * Retrieve and modify general settings.
@@ -190,6 +191,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isUseBackgroundAsUnreadIndicator = isUseBackgroundAsUnreadIndicator).persist()
     }
 
+    override fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean) {
+        getSettings().copy(isShowComposeButtonOnMessageList = isShowComposeButtonOnMessageList).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -208,6 +213,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, settings.isChangeContactNameColor)
         editor.putBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, settings.isColorizeMissingContactPictures)
         editor.putBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, settings.isUseBackgroundAsUnreadIndicator)
+        editor.putBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, settings.isShowComposeButtonOnMessageList)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -241,6 +247,7 @@ internal class RealGeneralSettingsManager(
             isColorizeMissingContactPictures = storage.getBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, true),
             isChangeContactNameColor = storage.getBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, false),
             isUseBackgroundAsUnreadIndicator = storage.getBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, false),
+            isShowComposeButtonOnMessageList = storage.getBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, true),
         )
 
         updateSettingsFlow(settings)

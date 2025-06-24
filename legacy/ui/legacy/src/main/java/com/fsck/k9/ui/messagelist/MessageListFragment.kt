@@ -385,7 +385,7 @@ class MessageListFragment :
     }
 
     private fun initializeFloatingActionButton(view: View) {
-        isShowFloatingActionButton = K9.isShowComposeButtonOnMessageList
+        isShowFloatingActionButton = generalSettingsManager.getSettings().isShowComposeButtonOnMessageList
         if (isShowFloatingActionButton) {
             enableFloatingActionButton(view)
         } else {

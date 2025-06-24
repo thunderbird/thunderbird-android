@@ -38,7 +38,7 @@ class GeneralSettingsDataStore(
                 .isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> generalSettingsManager.getSettings()
                 .isUseBackgroundAsUnreadIndicator
-            "show_compose_button" -> K9.isShowComposeButtonOnMessageList
+            "show_compose_button" -> generalSettingsManager.getSettings().isShowComposeButtonOnMessageList
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
@@ -75,7 +75,7 @@ class GeneralSettingsDataStore(
             "messagelist_background_as_unread_indicator" -> setIsUseBackgroundAsUnreadIndicator(
                 isUseBackgroundAsUnreadIndicator = value,
             )
-            "show_compose_button" -> K9.isShowComposeButtonOnMessageList = value
+            "show_compose_button" -> setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList = value)
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
@@ -324,6 +324,13 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.setIsUseBackgroundAsUnreadIndicator(
             isUseBackgroundAsUnreadIndicator = isUseBackgroundAsUnreadIndicator,
+        )
+    }
+
+    private fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsShowComposeButtonOnMessageList(
+            isShowComposeButtonOnMessageList = isShowComposeButtonOnMessageList,
         )
     }
 
