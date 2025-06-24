@@ -291,21 +291,313 @@ val featureModule = module {
 
 ## 🔄 Cross-Cutting Concerns
 
+Cross-cutting concerns are aspects of the application that affect multiple features and cannot be cleanly handled
+individually for every feature. These concerns require consistent implementation throughout the codebase to ensure
+maintainability an reliability.
+
+In Thunderbird for Android, several cross-cutting concerns are implemented as dedicated core modules to provide
+standardized solutions that can be reused across the application:
+
+- **⚠️ Error Handling**: Comprehensive error handling (`core/outcome`) transforms exceptions into domain-specific errors and provides user-friendly feedback.
+- **📋 Logging**: Centralized logging system (`core/logging`) ensures consistent log formatting, levels, and storage.
+- **🔒 Security**: Modules like `core/security` handle encryption, authentication, and secure data storage.
+
+Work in progress:
+- **🔐 Encryption**: The `core/crypto` module provides encryption and decryption utilities for secure data handling.
+- **📦 Feature Flags**: The `core/feature-flags` module manages feature toggles and experimental features.
+- **🔄 Synchronization**: The `core/sync` module manages background synchronization, conflict resolution, and offline-first behavior.
+- **🛠️ Configuration Management**: Centralized handling of application settings and environment-specific configurations.
+
+By implementing these concerns as core modules, the application achieves a clean and modular architecture that is easier to maintain and extend.
+
 ### ⚠️ Error Handling
 
-- 🧠 Domain errors for business logic errors
-- 💾 Data errors for data access errors
-- 🖼️ UI error handling for user-friendly error presentation
+The application implements a comprehensive error handling strategy across all layers. We favor using the Outcome pattern
+over exceptions for expected error conditions, while exceptions are reserved for truly exceptional situations that
+indicate programming errors or unrecoverable system failures.
+
+- 🧠 **Domain Errors**: Encapsulate business logic errors as sealed classes, ensuring clear representation of specific
+  error cases.
+- 💾 **Data Errors**: Transform network or database exceptions into domain-specific errors using result patterns in repository implementations.
+- 🖼️ **UI Error Handling**: Provide user-friendly error feedback by:
+  - Mapping domain errors to UI state in ViewModels.
+  - Displaying actionable error states in Compose UI components.
+  - Offering retry options for network connectivity issues.
+
+> [!NOTE]  
+> Exceptions should be used sparingly. Favor the Outcome pattern and sealed classes for predictable error conditions to
+> enhance maintainability and clarity.
+
+#### 🛠️ How to Implement Error Handling
+
+When implementing error handling in your code:
+
+1. **Define domain-specific errors** as sealed classes in your feature's domain layer:
+
+   ```kotlin
+   sealed class AccountError {
+       data class AuthenticationFailed(val reason: String) : AccountError()
+       data class NetworkError(val exception: Exception) : AccountError()
+       data class ValidationError(val field: String, val message: String) : AccountError()
+   }
+   ```
+2. **Use result patterns (Outcome)** instead of exceptions for error handling:
+
+   ```kotlin
+   // Use the Outcome class for representing success or failure
+   sealed class Outcome<out T, out E> {
+       data class Success<T>(val value: T) : Outcome<T, Nothing>()
+       data class Failure<E>(val error: E) : Outcome<Nothing, E>()
+   }
+   ```
+3. **Transform external errors** into domain errors in your repositories using result patterns:
+
+   ```kotlin
+   // Return Outcome instead of throwing exceptions
+   fun authenticate(credentials: Credentials): Outcome<AuthResult, AccountError> {
+       return try {
+           val result = apiClient.authenticate(credentials)
+           Outcome.Success(result)
+       } catch (e: HttpException) {
+           val error = when (e.code()) {
+               401 -> AccountError.AuthenticationFailed("Invalid credentials")
+               else -> AccountError.NetworkError(e)
+           }
+           logger.error(e) { "Authentication failed: ${error::class.simpleName}" }
+           Outcome.Failure(error)
+       } catch (e: Exception) {
+           logger.error(e) { "Authentication failed with unexpected error" }
+           Outcome.Failure(AccountError.NetworkError(e))
+       }
+   }
+   ```
+4. **Handle errors in Use Cases** by propagating the Outcome:
+
+   ```kotlin
+   class LoginUseCase(
+       private val accountRepository: AccountRepository,
+       private val credentialValidator: CredentialValidator,
+   ) {
+       fun execute(credentials: Credentials): Outcome<AuthResult, AccountError> {
+           // Validate input first
+           val validationResult = credentialValidator.validate(credentials)
+           if (validationResult is ValidationResult.Failure) {
+               return Outcome.Failure(
+                   AccountError.ValidationError(
+                       field = validationResult.field,
+                       message = validationResult.message
+                   )
+               )
+           }
+
+           // Proceed with authentication
+           return accountRepository.authenticate(credentials)
+       }
+   }
+   ```
+5. **Handle outcomes in ViewModels** and transform them into UI state:
+
+   ```kotlin
+   viewModelScope.launch {
+       val outcome = loginUseCase.execute(credentials)
+
+       when (outcome) {
+           is Outcome.Success -> {
+               _uiState.update { it.copy(isLoggedIn = true) }
+           }
+           is Outcome.Failure -> {
+               val errorMessage = when (val error = outcome.error) {
+                   is AccountError.AuthenticationFailed -> 
+                       stringProvider.getString(R.string.error_authentication_failed, error.reason)
+                   is AccountError.NetworkError -> 
+                       stringProvider.getString(R.string.error_network, error.exception.message)
+                   is AccountError.ValidationError -> 
+                       stringProvider.getString(R.string.error_validation, error.field, error.message)
+               }
+               _uiState.update { it.copy(error = errorMessage) }
+           }
+       }
+   }
+   ```
+6. **Always log errors** for debugging purposes:
+
+   ```kotlin
+   // Logging is integrated into the Outcome pattern
+   fun fetchMessages(): Outcome<List<Message>, MessageError> {
+       return try {
+           val messages = messageService.fetchMessages()
+           logger.info { "Successfully fetched ${messages.size} messages" }
+           Outcome.Success(messages)
+       } catch (e: Exception) {
+           logger.error(e) { "Failed to fetch messages" }
+           Outcome.Failure(MessageError.FetchFailed(e))
+       }
+   }
+   ```
+7. **Compose multiple operations** that return Outcomes:
+
+   ```kotlin
+   fun synchronizeAccount(): Outcome<SyncResult, SyncError> {
+       // First operation
+       val messagesOutcome = fetchMessages()
+       if (messagesOutcome is Outcome.Failure) {
+           return Outcome.Failure(SyncError.MessageSyncFailed(messagesOutcome.error))
+       }
+
+       // Second operation using the result of the first
+       val messages = messagesOutcome.getOrNull()!!
+       val folderOutcome = updateFolders(messages)
+       if (folderOutcome is Outcome.Failure) {
+           return Outcome.Failure(SyncError.FolderUpdateFailed(folderOutcome.error))
+       }
+
+       // Return success with combined results
+       return Outcome.Success(
+           SyncResult(
+               messageCount = messages.size,
+               folderCount = folderOutcome.getOrNull()!!.size
+           )
+       )
+   }
+   ```
 
 ### 📝 Logging
 
-- 📊 Structured logging with different log levels
+The application uses a structured logging system with a well-defined API:
+
+- 📊 **Logging Architecture**:
+  - Core logging API (`core/logging/api`) defines interfaces like `Logger` and `LogSink`
+  - Multiple implementations (composite, console) allow for flexible logging targets
+  - Composite implementation enables logging to multiple sinks simultaneously
+- 🔄 **Logger vs. Sink**:
+  - **Logger**: The front-facing interface that application code interacts with to create log entries
+    - Provides methods for different log levels (verbose, debug, info, warn, error)
+    - Handles the creation of log events with appropriate metadata (timestamp, tag, etc.)
+    - Example: `DefaultLogger` implements the `Logger` interface and delegates to a `LogSink`
+  - **LogSink**: The back-end component that receives log events and determines how to process them
+    - Defines where and how log messages are actually stored or displayed
+    - Filters log events based on configured log levels
+    - Can be implemented in various ways (console output, file storage, remote logging service)
+    - Multiple sinks can be used simultaneously via composite pattern
+- 📋 **Log Levels**:
+  - `VERBOSE`: Most detailed log level for debugging
+  - `DEBUG`: Detailed information for diagnosing problems
+  - `INFO`: General information about application flow
+  - `WARN`: Potential issues that don't affect functionality
+  - `ERROR`: Issues that affect functionality but don't crash the application
+
+#### 🛠️ How to Implement Logging
+
+When adding logging to your code:
+
+1. **Inject a Logger** into your class:
+
+   ```kotlin
+   class AccountRepository(
+       private val apiClient: ApiClient,
+       private val logger: Logger,
+   ) {
+       // Repository implementation
+   }
+   ```
+2. **Choose the appropriate log level** based on the importance of the information:
+   - Use `verbose` for detailed debugging information (only visible in debug builds)
+   - Use `debug` for general debugging information
+   - Use `info` for important events that should be visible in production
+   - Use `warn` for potential issues that don't affect functionality
+   - Use `error` for issues that affect functionality
+3. **Use lambda syntax** to avoid string concatenation when logging isn't needed:
+
+   ```kotlin
+   // Good - string is only created if this log level is enabled
+   logger.debug { "Processing message with ID: $messageId" }
+
+   // Avoid - string is always created even if debug logging is disabled
+   logger.debug("Processing message with ID: " + messageId)
+   ```
+4. **Include relevant context** in log messages:
+
+   ```kotlin
+   logger.info { "Syncing account: ${account.email}, folders: ${folders.size}" }
+   ```
+5. **Log exceptions** with the appropriate level and context:
+
+   ```kotlin
+   try {
+       apiClient.fetchMessages()
+   } catch (e: Exception) {
+       logger.error(e) { "Failed to fetch messages for account: ${account.email}" }
+       throw MessageSyncError.FetchFailed(e)
+   }
+   ```
+6. **Use tags** for better filtering when needed:
+
+   ```kotlin
+   private val logTag = LogTag("AccountSync")
+
+   fun syncAccount() {
+       logger.info(logTag) { "Starting account sync for: ${account.email}" }
+   }
+   ```
 
 ### 🔒 Security
 
-- 🔐 Data encryption for sensitive information
-- 🔑 Secure authentication mechanisms
-- 🛡️ Network security with proper certificate validation
+Security is a critical aspect of an email client. The application implements:
+
+- 🔐 **Data Encryption**:
+  - End-to-end encryption using OpenPGP (via the `legacy/crypto-openpgp` module)
+  - Classes like `EncryptionDetector` and `OpenPgpEncryptionExtractor` handle encrypted emails
+  - Local storage encryption for sensitive data like account credentials
+- 🔑 **Authentication**:
+  - Support for various authentication types (OAuth, password, client certificate)
+  - Secure token storage and management
+  - Authentication error handling and recovery
+- 🛡️ **Network Security**:
+  - TLS for all network connections with certificate validation
+  - Certificate pinning for critical connections
+  - Protection against MITM attacks
+
+> [!NOTE]
+> This section is a work in progress. The security architecture is being developed and will be documented in detail
+> as it evolves.
+
+#### 🛠️ How to Implement Security
+
+When implementing security features in your code:
+
+1. **Never store sensitive data in plain text**:
+
+   ```kotlin
+   // Bad - storing password in plain text
+   sharedPreferences.putString("password", password)
+
+   // Good - use the secure credential storage
+   val credentialStorage = get<CredentialStorage>()
+   credentialStorage.storeCredentials(accountUuid, credentials)
+   ```
+2. **Use encryption for sensitive data**:
+
+   ```kotlin
+   // For data that needs to be stored encrypted
+   val encryptionManager = get<EncryptionManager>()
+   val encryptedData = encryptionManager.encrypt(sensitiveData)
+   database.storeEncryptedData(encryptedData)
+   ```
+3. **Validate user input** to prevent injection attacks:
+
+   ```kotlin
+   // Validate input before using it
+   if (!InputValidator.isValidEmailAddress(userInput)) {
+       throw ValidationError("Invalid email address")
+   }
+   ```
+4. **Use secure network connections**:
+
+   ```kotlin
+   // The networking modules enforce TLS by default
+   // Make sure to use the provided clients rather than creating your own
+   val networkClient = get<NetworkClient>()
+   ```
 
 ## 🧪 Testing Strategy
 
