@@ -47,6 +47,7 @@ class BuildSwipeActionsTest {
             isColorizeMissingContactPictures = false,
             isUseBackgroundAsUnreadIndicator = false,
             isShowComposeButtonOnMessageList = false,
+            isThreadedViewEnabled = false,
         )
 
     @Test
@@ -413,6 +414,10 @@ private class FakeGeneralSettingsManager(
     ) = error("not implemented")
 
     override fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean) = error(
+        "not implemented",
+    )
+
+    override fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean) = error(
         "not implemented",
     )
 }
