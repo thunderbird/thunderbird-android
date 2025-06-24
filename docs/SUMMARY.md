@@ -14,6 +14,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Module Structure](architecture/module-structure.md)
   - [Feature Modules](architecture/feature-modules.md)
   - [UI Architecture](architecture/ui-architecture.md)
+  - [Design System](architecture/design-system.md)
   - [User Flows](architecture/user-flows.md)
   - [Legacy Module Integration](architecture/legacy-module-integration.md)
   - [Architecture Decision Records](architecture/adr/README.md)

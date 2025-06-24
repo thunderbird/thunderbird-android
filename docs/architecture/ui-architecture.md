@@ -111,6 +111,7 @@ fun AccountSettingsContent(
 - Consistent visual language across the application
 - Encapsulate styling, theming, and behavior from Material Design 3
 - Located in the `core:ui:compose:designsystem` module for reuse across features
+- Built using the [Atomic Design Methodology](design-system.md)
 
 Example:
 
