@@ -380,7 +380,9 @@ The Telemetry module handles usage analytics and reporting.
 
 ## 🔌 Extending with Additional Features
 
-The modular architecture of Thunderbird for Android allows for easy extension with additional features. Here are some examples of how the app could be extended:
+The modular architecture of Thunderbird for Android allows for easy extension with additional features. To give you an
+idea how the app could be extended when building a new feature, here are some theoretical examples along with their
+structure:
 
 ### 📅 Calendar Feature
 
@@ -396,54 +398,6 @@ feature:calendar
 └── feature:calendar:sync
     ├── feature:calendar:sync:api
     └── feature:calendar:sync:impl
-```
-
-### ✅ Todo Feature
-
-A Todo feature could add task management capabilities.
-
-```shell
-feature:todo
-├── feature:todo:api
-├── feature:todo:impl
-├── feature:todo:list
-│   ├── feature:todo:list:api
-│   └── feature:todo:list:impl
-└── feature:todo:reminder
-    ├── feature:todo:reminder:api
-    └── feature:todo:reminder:impl
-```
-
-### 🔄 Sync Feature
-
-A dedicated Sync feature could enhance synchronization across devices.
-
-```shell
-feature:sync
-├── feature:sync:api
-├── feature:sync:impl
-├── feature:sync:conflict
-│   ├── feature:sync:conflict:api
-│   └── feature:sync:conflict:impl
-└── feature:sync:scheduler
-    ├── feature:sync:scheduler:api
-    └── feature:sync:scheduler:impl
-```
-
-### 📝 Notes Feature
-
-A Notes feature could add note-taking capabilities integrated with email.
-
-```shell
-feature:notes
-├── feature:notes:api
-├── feature:notes:impl
-├── feature:notes:editor
-│   ├── feature:notes:editor:api
-│   └── feature:notes:editor:impl
-└── feature:notes:attachment
-    ├── feature:notes:attachment:api
-    └── feature:notes:attachment:impl
 ```
 
 ### 🗓️ Appointments Feature
@@ -464,37 +418,26 @@ feature:appointment
 
 ## 🔗 Feature Relationships
 
-Features in the application interact with each other through well-defined APIs. The diagram below illustrates the relationships between different features:
+Features in the application interact with each other through well-defined APIs. The diagram below illustrates the
+relationships between different features:
 
 ```mermaid
 graph TB
     subgraph CORE[Core Features]
         ACCOUNT[Account]
         MAIL[Mail]
-        NAVIGATION[Navigation]
-        SETTINGS[Settings]
     end
 
     subgraph EXTENSIONS[Potential Extensions]
         CALENDAR[Calendar]
-        TODO[Todo]
-        SYNC[Sync]
-        NOTES[Notes]
         APPOINTMENT[Appointments]
     end
 
     MAIL --> |uses| ACCOUNT
-    NAVIGATION --> |displays| MAIL
-    SETTINGS --> |configures| ACCOUNT
-    SETTINGS --> |configures| MAIL
 
     CALENDAR --> |integrates with| MAIL
     CALENDAR --> |uses| ACCOUNT
-    TODO --> |attaches to| MAIL
-    TODO --> |uses| ACCOUNT
-    SYNC --> |synchronizes| MAIL
-    SYNC --> |synchronizes| ACCOUNT
-    NOTES --> |attaches to| MAIL
+    APPOINTMENT --> |uses| ACCOUNT
     APPOINTMENT --> |integrates with| CALENDAR
     APPOINTMENT --> |uses| MAIL
 
