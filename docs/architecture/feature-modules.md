@@ -4,6 +4,24 @@ The Thunderbird for Android project is organized into multiple feature modules, 
 functionality of the application. This document provides an overview of the main feature modules, how they are
 split into subfeatures, and how the application can be extended with additional features.
 
+## 📏 Feature Module Best Practices
+
+When developing new feature modules or extending existing ones, follow these best practices:
+
+1. **API-First Design**: Define clear public interfaces before implementation
+2. **Single Responsibility**: Each feature module should have a single, well-defined responsibility
+3. **Minimal Dependencies**: Minimize dependencies between feature modules
+4. **Proper Layering**: Follow Clean Architecture principles within each feature
+5. **Testability**: Design features to be easily testable in isolation
+6. **Documentation**: Document the purpose and usage of each feature module
+7. **Consistent Naming**: Follow the established naming conventions
+8. **Feature Flags**: Use feature flags for gradual rollout and A/B testing
+9. **Accessibility**: Ensure all features are accessible to all users
+10. **Internationalization**: Design features with internationalization in mind
+
+By following these guidelines, the Thunderbird for Android application can maintain a clean, modular architecture while
+expanding its functionality to meet user needs.
+
 ## 📋 Feature Module Overview
 
 The application is composed of several core feature modules, each responsible for a specific aspect of the
@@ -467,19 +485,3 @@ graph TB
     class CALENDAR,TODO,SYNC,NOTES,APPOINTMENT extension_module
 ```
 
-## 📏 Feature Module Best Practices
-
-When developing new feature modules or extending existing ones, follow these best practices:
-
-1. **API-First Design**: Define clear public interfaces before implementation
-2. **Single Responsibility**: Each feature module should have a single, well-defined responsibility
-3. **Minimal Dependencies**: Minimize dependencies between feature modules
-4. **Proper Layering**: Follow Clean Architecture principles within each feature
-5. **Testability**: Design features to be easily testable in isolation
-6. **Documentation**: Document the purpose and usage of each feature module
-7. **Consistent Naming**: Follow the established naming conventions
-8. **Feature Flags**: Use feature flags for gradual rollout and A/B testing
-9. **Accessibility**: Ensure all features are accessible to all users
-10. **Internationalization**: Design features with internationalization in mind
-
-By following these guidelines, the Thunderbird for Android application can maintain a clean, modular architecture while expanding its functionality to meet user needs.

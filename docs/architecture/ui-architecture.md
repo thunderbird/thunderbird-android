@@ -1,6 +1,6 @@
 # 🎨 UI Architecture
 
-The UI is built using Jetpack Compose with a component-based architecture following the Model-View-Intent (MVI) pattern. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.
+The UI is built using Jetpack Compose with a component-based architecture following a modified Model-View-Intent (MVI) pattern. While we refer to it as MVI, our implementation uses "Events" instead of "Intents" for user interactions and "Actions" for use case calls. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.
 
 ## 📱 Component Hierarchy
 
@@ -146,7 +146,7 @@ fun PrimaryButton(
 
 ## 🔄 MVI Implementation
 
-The UI layer implements the Model-View-Intent (MVI) pattern for state management and user interactions:
+The UI layer implements our modified Model-View-Intent (MVI) pattern for state management and user interactions. As mentioned earlier, we use "Events" instead of "Intents" and "Actions" for use case calls:
 
 ```mermaid
 graph LR
@@ -211,11 +211,6 @@ sealed interface AccountSettingsEvent {
     data object RetryClicked : AccountSettingsEvent
     data object BackClicked : AccountSettingsEvent
 }
-
-sealed interface AccountSettingsEffect {
-    data object NavigateNext : AccountSettingsEffect
-    data object NavigateBack : AccountSettingsEffect
-}
 ```
 
 ### Effects
@@ -223,6 +218,14 @@ sealed interface AccountSettingsEffect {
 - Represent side effects or navigation actions
 - Emitted by the ViewModel to trigger navigation or other actions
 - Handled by the UI layer to perform navigation or show messages
+  Example:
+
+```kotlin
+sealed interface AccountSettingsEffect {
+    data object NavigateNext : AccountSettingsEffect
+    data object NavigateBack : AccountSettingsEffect
+}
+```
 
 ### 🧠 ViewModel
 
@@ -308,8 +311,6 @@ TODO: explain how to set up navigation in the app, including the navigation grap
 
 The UI architecture supports comprehensive theming and customization:
 
-(colors, elevations, images, shapes, sizes, spacings, typography)
-
 - **✨ Material Design 3**: Based on Material Design 3 principles
 - **🎨 Colors**: Custom color schemes with light and dark modes
   - **🌓 Dark Mode**: Full support for light and dark themes
@@ -330,3 +331,4 @@ The UI is designed with accessibility in mind:
 - **🎯 Touch Targets**: Appropriately sized touch targets
 - **🎨 Color Contrast**: Sufficient color contrast for readability
 - **⌨️ Keyboard Navigation**: Support for keyboard navigation
+

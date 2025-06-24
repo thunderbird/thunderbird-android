@@ -4,6 +4,8 @@ The application follows a modular architecture with clear separation between dif
 
 ## 🔑 Key Architectural Principles
 
+- **🚀 Multi platform Compatibility**: The architecture is designed to support future Kotlin Multiplatform adoption
+- **📱 Offline-First**: The application is designed to work offline with local data storage and synchronization with remote servers
 - **🧩 Modularity**: The application is divided into distinct modules with clear responsibilities
 - **🔀 Separation of Concerns**: Each module focuses on a specific aspect of the application
 - **⬇️ Dependency Inversion**: Higher-level modules do not depend on lower-level modules directly
@@ -11,8 +13,6 @@ The application follows a modular architecture with clear separation between dif
 - **🔄 API/Implementation Separation**: Clear separation between public APIs and implementation details
 - **🧹 Clean Architecture**: Separation of UI, domain, and data layers
 - **🧪 Testability**: The architecture facilitates comprehensive testing at all levels
-- **📱 Offline-First**: The application is designed to work offline with local data storage and synchronization with remote servers
-- **🚀 Multi platform Compatibility**: The architecture is designed to support future Kotlin Multiplatform adoption
 
 ## 📝 Architecture Decision Records
 
@@ -61,14 +61,37 @@ feature implementation into manageable components. Each layer has a specific res
 The UI layer is responsible for displaying data to the user and handling user interactions.
 
 **Key Components:**
-- **🎨 Compose UI**: Screen components built with Jetpack Compose
-- **🧠 ViewModels**: Manage UI state and handle UI events
-- **📊 UI State**: Immutable data classes representing the UI state
+- **🎨 [Compose UI](ui-architecture.md#-screens)**: Screen components built with Jetpack Compose
+- **🧠 [ViewModels](ui-architecture.md#-viewmodel)**: Manage UI state and handle UI events
+- **📊 [UI State](ui-architecture.md#-state)**: Immutable data classes representing the UI state
+- **🎮 [Events](ui-architecture.md#-events)**: User interactions or system events that trigger state changes
+- **🔔 [Effects](ui-architecture.md#effects)**: One-time side effects like navigation or showing messages
+
+> [!NOTE]
+> **What is Immutability?**
+>
+> Immutability means that once an object is created, it cannot be changed. Instead of modifying existing objects, new objects are created with the desired changes. In the context of UI state, this means that each state object represents a complete snapshot of the UI at a specific point in time.
+>
+> **Why is Immutability Important?**
+>
+> Immutability provides several benefits:
+> - **Predictability**: With immutable state, the UI can only change when a new state object is provided, making the flow of data more predictable and easier to reason about.
+> - **Debugging**: Each state change creates a new state object, making it easier to track changes and debug issues by comparing state objects.
+> - **Concurrency**: Immutable objects are thread-safe by nature, eliminating many concurrency issues.
+> - **Performance**: While creating new objects might seem inefficient, modern frameworks optimize this process, and the benefits of immutability often outweigh the costs.
+> - **Time-travel debugging**: Immutability enables storing previous states, allowing developers to "time travel" back to previous application states during debugging.
 
 **Pattern: Model-View-Intent (MVI)**
+
+> [!NOTE]
+> While we refer to the pattern as MVI (Model-View-Intent), our implementation uses a slightly modified version:
+> - We use "Events" instead of "Intents" for user interactions
+> - We use "Actions" to represent use case calls from ViewModels to the domain layer
+
 - **📋 Model**: UI state representing the current state of the screen
 - **👁️ View**: Compose UI that renders the state
-- **🎯 Intent**: Events triggered by user actions
+- **🎮 Event**: User interactions that trigger state changes (equivalent to "Intent" in standard MVI)
+- **🔔 Effect**: One-time side effects like navigation or notifications
 
 ```mermaid
 graph TD
@@ -114,7 +137,7 @@ graph TD
 
 ##### 🔄 Model-View-Intent (MVI)
 
-The UI layer follows the Model-View-Intent (MVI) pattern, which provides a unidirectional data flow and clear separation between UI state and UI logic.
+The UI layer follows the Model-View-Intent (MVI) pattern (with our Events/Actions adaptation as noted above), which provides a unidirectional data flow and clear separation between UI state and UI logic.
 
 ```mermaid
 graph LR
@@ -149,10 +172,11 @@ graph LR
 
 Key components:
 - **👁️ View**: Renders the UI based on the current state and sends user events to the ViewModel
-- **🧠 ViewModel**: Processes events, updates state, and triggers actions
-- **📊 State**: Immutable representation of the UI state
-- **🎮 Event**: User interactions or system events
-- **⚡ Action**: Operations triggered by the ViewModel
+- **🧠 ViewModel**: Processes user events, converting them into actions and sending them to the Domain Layer. It also maps the results to a state and sends state updates to the UI.
+- **📊 [State](ui-architecture.md#-state)**: Immutable representation of the UI state. States are the single source of truth for the UI and represent everything that can be displayed on the screen.
+- **🎮 [Event](ui-architecture.md#-events)**: User interactions or system events that are passed to the ViewModel to be processed. Events trigger state changes or side effects.
+- **🔔 [Effect](ui-architecture.md#effects)**: One-time side effects that don't belong in the state, such as navigation actions, showing toasts, or playing sounds.
+- **⚡ Action**: Operations triggered by the ViewModel to interact with the domain layer.
 
 #### 🧠 Domain Layer (Business Logic)
 
@@ -245,7 +269,7 @@ graph TD
 
 ## 🎨 UI Architecture
 
-The UI is built using Jetpack Compose with a component-based architecture following the Model-View-Intent (MVI) pattern. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.
+The UI is built using Jetpack Compose with a component-based architecture following our modified Model-View-Intent (MVI) pattern. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.
 
 For detailed information about the UI architecture, see the [UI Architecture](ui-architecture.md) document.
 
