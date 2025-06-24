@@ -39,12 +39,16 @@ The architecture follows several key patterns to ensure maintainability, testabi
 
 ### 🔄 API/Implementation Separation
 
-Each module is split into API and implementation parts:
+Each module should be split into two main parts: **API** and **implementation**. This separation provides clear
+boundaries between what a module exposes to other modules and how it implements its functionality internally:
 
 - **📝 API**: Public interfaces, models, and contracts
 - **⚙️ Implementation**: Concrete implementations of the interfaces
 
 This separation provides clear boundaries, improves testability, and enables flexibility.
+
+See [API Module](module-structure.md#-api-module) and
+[Implementation Module](module-structure.md#-implementation-module) for more details.
 
 ### Clean Architecture
 
@@ -310,6 +314,9 @@ The architecture supports comprehensive testing:
 - **🔬 Unit Tests**: Test individual components in isolation
 - **🔌 Integration Tests**: Test interactions between components
 - **📱 UI Tests**: Test the UI behavior and user flows
+
+See the [Testing guide](../contributing/testing-guide.md) document for more details on how to write and run tests
+for the application.
 
 ## 🔙 Legacy Integration
 
