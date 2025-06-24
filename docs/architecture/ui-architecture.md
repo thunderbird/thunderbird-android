@@ -8,7 +8,7 @@ The UI components are organized in a hierarchical structure:
 
 ```mermaid
 graph TD
-    subgraph "UI Architecture"
+    subgraph UI_ARCHITECTURE["UI Architecture"]
         SCREENS[Screens]
         COMPONENTS[Components]
         DESIGN[Design System Components]
@@ -19,15 +19,19 @@ graph TD
     COMPONENTS --> DESIGN
     DESIGN --> THEME
 
-    classDef screenClass fill:#d0e0ff,stroke:#0066cc
-    classDef componentClass fill:#d5f5d5,stroke:#00aa00
-    classDef designClass fill:#ffe0d0,stroke:#cc6600
-    classDef themeClass fill:#f0f0f0,stroke:#666666
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef screen fill:#99ccff,stroke:#000000,color:#000000
+    classDef component fill:#99ff99,stroke:#000000,color:#000000
+    classDef design fill:#ffcc99,stroke:#000000,color:#000000
+    classDef theme fill:#ffff99,stroke:#000000,color:#000000
 
-    class SCREENS screenClass
-    class COMPONENTS componentClass
-    class DESIGN designClass
-    class THEME themeClass
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class UI_ARCHITECTURE ui_layer
+    class SCREENS screen
+    class COMPONENTS component
+    class DESIGN design
+    class THEME theme
 ```
 
 ### 🖥️ Screens
@@ -146,18 +150,33 @@ The UI layer implements the Model-View-Intent (MVI) pattern for state management
 
 ```mermaid
 graph LR
-    V[View] --> |Events| VM[ViewModel]
-    VM --> |State| V
-    VM --> |Actions| UC[Use Cases]
-    UC --> |Results| VM
+    subgraph UI[UI Layer]
+        VIEW[View]
+        VIEW_MODEL[ViewModel]
+    end
 
-    classDef viewClass fill:#d0e0ff,stroke:#0066cc
-    classDef vmClass fill:#d5f5d5,stroke:#00aa00
-    classDef ucClass fill:#ffe0d0,stroke:#cc6600
+    subgraph DOMAIN[Domain Layer]
+        USE_CASE[Use Cases]
+    end
 
-    class V viewClass
-    class VM vmClass
-    class UC ucClass
+    VIEW --> |Events| VIEW_MODEL
+    VIEW_MODEL --> |State| VIEW
+    VIEW_MODEL --> |Actions| USE_CASE
+    USE_CASE --> |Results| VIEW_MODEL
+
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef view fill:#7fd3e0,stroke:#000000,color:#000000
+    classDef view_model fill:#cc99ff,stroke:#000000,color:#000000
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef use_case fill:#99ffcc,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class UI ui_layer
+    class VIEW view
+    class VIEW_MODEL view_model
+    class DOMAIN domain_layer
+    class USE_CASE use_case
 ```
 
 ### 📋 State
@@ -311,4 +330,3 @@ The UI is designed with accessibility in mind:
 - **🎯 Touch Targets**: Appropriately sized touch targets
 - **🎨 Color Contrast**: Sufficient color contrast for readability
 - **⌨️ Keyboard Navigation**: Support for keyboard navigation
-

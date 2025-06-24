@@ -58,39 +58,47 @@ The following diagram illustrates this pattern, showing how both a feature's own
 
 ```mermaid
 graph TB
-    subgraph NEW_MODULES[Newer Application Modules]
+    subgraph FEATURE[Feature Modules]
         direction TB
         INTERFACES["`**Interfaces**<br> (e.g., :feature:mail:api)`"]
         IMPLEMENTATIONS["`**Implementations**<br> (e.g., :feature:mail:impl)`"]
         OTHER_MODULES["`**Other Modules**<br>(depend on Interfaces)`"]
     end
 
-    subgraph COMMON[App Common]
+    subgraph COMMON[App Common Module]
         direction TB
-        APP_COMMON["`**:app-common**<br>Glue code`"]
+        COMMON_APP["`**:app-common**<br>Integration Code`"]
     end
 
-    subgraph LEGACY[Legacy]
+    subgraph LEGACY[Legacy Modules]
         direction TB
-        LEGACY1[legacy:*]
-        LEGACY3[backend:*]
-        LEGACY2[mail:*]
+        LEGACY_K9["`**:legacy**`"]
+        LEGACY_MAIL["`**:mail**`"]
+        LEGACY_BACKEND["`**:backend**`"]
     end
 
     OTHER_MODULES --> |uses| INTERFACES
     IMPLEMENTATIONS --> |depends on| INTERFACES
-    APP_COMMON --> |implements| INTERFACES
-    APP_COMMON --> |delegates to / wraps| LEGACY1
-    APP_COMMON --> |delegates to / wraps| LEGACY2
-    APP_COMMON --> |delegates to / wraps| LEGACY3
+    COMMON_APP --> |implements| INTERFACES
+    COMMON_APP --> |delegates to / wraps| LEGACY_K9
+    COMMON_APP --> |delegates to / wraps| LEGACY_MAIL
+    COMMON_APP --> |delegates to / wraps| LEGACY_BACKEND
 
-    classDef legacy fill:#f0f0f0,stroke:#999999
-    classDef app_common fill:#d5f5d5,stroke:#00aa00
-    classDef new_modules fill:#d0e0ff,stroke:#0066cc
+    classDef common fill:#e6e6e6,stroke:#000000,color:#000000
+    classDef common_module fill:#999999,stroke:#000000,color:#000000
+    classDef feature fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef feature_module fill:#33cc33,stroke:#000000,color:#000000
+    classDef legacy fill:#ffe6e6,stroke:#000000,color:#000000
+    classDef legacy_module fill:#ff9999,stroke:#000000,color:#000000
 
-    class APP_COMMON app_common
-    class OTHER_MODULES,INTERFACES,IMPLEMENTATIONS new_modules
-    class LEGACY1,LEGACY2,LEGACY3 legacy
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class COMMON common
+    class COMMON_APP common_module
+    class FEATURE feature
+    class INTERFACES,IMPLEMENTATIONS,OTHER_MODULES feature_module
+    class LEGACY legacy
+    class LEGACY_MAIL,LEGACY_BACKEND,LEGACY_K9 legacy_module
 ```
 
 ### Implementation Techniques
@@ -371,66 +379,81 @@ The legacy module integration diagram below explains how legacy code is integrat
 
 ```mermaid
 graph TB
-    subgraph APP[App]
+    subgraph APP[App Modules]
         direction TB
-        APP_K9["`**:app-k9mail**<br>K-9 Mail`"]
         APP_TB["`**:app-thunderbird**<br>Thunderbird for Android`"]
+        APP_K9["`**:app-k9mail**<br>K-9 Mail`"]
     end
 
-    subgraph COMMON[App Common]
+    subgraph COMMON[App Common Module]
         direction TB
-        APP_COMMON["`**:app-common**<br>Integration Code`"]
+        COMMON_APP["`**:app-common**<br>Integration Code`"]
     end
 
-    subgraph FEATURE[Feature]
+    subgraph FEATURE[Feature Modules]
         direction TB
         FEATURE1[Feature 1]
         FEATURE2[Feature 2]
         FEATURE3[Feature from Legacy]
     end
 
-    subgraph CORE[Core]
+    subgraph CORE[Core Modules]
         direction TB
         CORE1[Core 1]
         CORE2[Core 2]
         CORE3[Core from Legacy]
     end
 
-    subgraph LIBRARY[Library]
+    subgraph LIBRARY[Library Modules]
         direction TB
         LIB1[Library 1]
         LIB2[Library 2]
     end
 
-    subgraph LEGACY[Legacy]
+    subgraph LEGACY[Legacy Modules]
         direction TB
-        LEG[Legacy Code]
+        LEGACY_CODE[Legacy Code]
     end
 
-    APP_K9 --> |depends on| APP_COMMON
-    APP_TB --> |depends on| APP_COMMON
-    APP_COMMON --> |integrates| FEATURE1
-    APP_COMMON --> |integrates| FEATURE2
-    APP_COMMON --> |integrates| FEATURE3
+    APP_K9 --> |depends on| COMMON_APP
+    APP_TB --> |depends on| COMMON_APP
+    COMMON_APP --> |integrates| FEATURE1
+    COMMON_APP --> |integrates| FEATURE2
+    COMMON_APP --> |integrates| FEATURE3
     FEATURE1 --> |uses| CORE1
     FEATURE1 --> |uses| LIB2
     FEATURE2 --> |uses| CORE2
     FEATURE2 --> |uses| CORE3
-    APP_COMMON --> |integrates| LEG
-    LEG -.-> |migrate to| FEATURE3
-    LEG -.-> |migrate to| CORE3
+    COMMON_APP --> |integrates| LEGACY_CODE
+    LEGACY_CODE -.-> |migrate to| FEATURE3
+    LEGACY_CODE -.-> |migrate to| CORE3
 
-    classDef module fill:yellow
-    classDef app fill:azure
-    classDef app_common fill:#ddd
-    classDef featureK9 fill:#ffcccc,stroke:#cc0000
-    classDef featureTB fill:#ccccff,stroke:#0000cc
-    classDef legacy fill:#F99
+    classDef app fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef app_module fill:#4d94ff,stroke:#000000,color:#000000
+    classDef common fill:#e6e6e6,stroke:#000000,color:#000000
+    classDef common_module fill:#999999,stroke:#000000,color:#000000
+    classDef feature fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef feature_module fill:#33cc33,stroke:#000000,color:#000000
+    classDef core fill:#e6cce6,stroke:#000000,color:#000000
+    classDef core_module fill:#cc99cc,stroke:#000000,color:#000000
+    classDef library fill:#fff0d0,stroke:#000000,color:#000000
+    classDef library_module fill:#ffaa33,stroke:#000000,color:#000000
+    classDef legacy fill:#ffe6e6,stroke:#000000,color:#000000
+    classDef legacy_module fill:#ff9999,stroke:#000000,color:#000000
 
-    class APP_K9,APP_TB app
-    class APP_COMMON app_common
-    class FEATURE_K9 featureK9
-    class FEATURE_TB featureTB
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class APP app
+    class APP_K9,APP_TB app_module
+    class COMMON common
+    class COMMON_APP common_module
+    class FEATURE feature
+    class FEATURE1,FEATURE2,FEATURE3 feature_module
+    class CORE core
+    class CORE1,CORE2,CORE3 core_module
+    class LIBRARY library
+    class LIB1,LIB2 library_module
     class LEGACY legacy
+    class LEGACY_CODE legacy_module
 ```
 

@@ -72,36 +72,44 @@ The UI layer is responsible for displaying data to the user and handling user in
 
 ```mermaid
 graph TD
-    subgraph "User Interface"
-        UI[UI Components]
-        VM[ViewModels]
+    subgraph UI[UI Layer]
+        UI_COMPONENTS[UI Components]
+        VIEW_MODEL[ViewModels]
     end
 
-    subgraph "Business Logic"
-        UC[Use Cases]
+    subgraph DOMAIN["Domain Layer"]
+        USE_CASE[Use Cases]
         REPO[Repositories]
     end
 
-    subgraph "Data Layer"
-        DS[Data Sources]
+    subgraph DATA[Data Layer]
+        DATA_SOURCE[Data Sources]
         API[API Clients]
         DB[Local Database]
     end
 
-    UI --> VM
-    VM --> UC
-    UC --> REPO
-    REPO --> DS
-    DS --> API
-    DS --> DB
+    UI_COMPONENTS --> VIEW_MODEL
+    VIEW_MODEL --> USE_CASE
+    USE_CASE --> REPO
+    REPO --> DATA_SOURCE
+    DATA_SOURCE --> API
+    DATA_SOURCE --> DB
 
-    classDef uiLayer fill:#d0e0ff,stroke:#0066cc
-    classDef businessLayer fill:#d5f5d5,stroke:#00aa00
-    classDef dataLayer fill:#ffe0d0,stroke:#cc6600
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef ui_class fill:#4d94ff,stroke:#000000,color:#000000
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef domain_class fill:#33cc33,stroke:#000000,color:#000000
+    classDef data_layer fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef data_class fill:#ffaa33,stroke:#000000,color:#000000
+    
+    linkStyle default stroke:#999,stroke-width:2px
 
-    class UI,VM uiLayer
-    class UC,REPO businessLayer
-    class DS,API,DB dataLayer
+    class UI ui_layer
+    class UI_COMPONENTS,VIEW_MODEL ui_class
+    class DOMAIN domain_layer
+    class USE_CASE,REPO domain_class
+    class DATA data_layer
+    class DATA_SOURCE,API,DB data_class
 ```
 
 ##### 🔄 Model-View-Intent (MVI)
@@ -110,18 +118,33 @@ The UI layer follows the Model-View-Intent (MVI) pattern, which provides a unidi
 
 ```mermaid
 graph LR
-    V[View] --> |Events| VM[ViewModel]
-    VM --> |State| V
-    VM --> |Actions| UC[Use Cases]
-    UC --> |Results| VM
+    subgraph UI[UI Layer]
+        VIEW[View]
+        VIEW_MODEL[ViewModel]
+    end
+    
+    subgraph DOMAIN[Domain Layer]
+        USE_CASE[Use Cases]
+    end
+    
+    VIEW --> |Events| VIEW_MODEL
+    VIEW_MODEL --> |State| VIEW
+    VIEW_MODEL --> |Actions| USE_CASE
+    USE_CASE --> |Results| VIEW_MODEL
 
-    classDef viewClass fill:#d0e0ff,stroke:#0066cc
-    classDef vmClass fill:#d5f5d5,stroke:#00aa00
-    classDef ucClass fill:#ffe0d0,stroke:#cc6600
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef view fill:#7fd3e0,stroke:#000000,color:#000000
+    classDef view_model fill:#cc99ff,stroke:#000000,color:#000000
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef use_case fill:#99ffcc,stroke:#000000,color:#000000
 
-    class V viewClass
-    class VM vmClass
-    class UC ucClass
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class UI ui_layer
+    class VIEW view
+    class VIEW_MODEL view_model
+    class DOMAIN domain_layer
+    class USE_CASE use_case
 ```
 
 Key components:
@@ -144,26 +167,32 @@ allowing for easy testing and reuse.
 ```mermaid
 graph TB
     subgraph DOMAIN[Domain Layer]
-        UC[Use Cases]
-        DM[Domain Models]
-        RI[Repository Interfaces]
+        USE_CASE[Use Cases]
+        MODEL[Domain Models]
+        REPO_API[Repository Interfaces]
     end
 
     subgraph DATA[Data Layer]
-        REPO[Repository Implementations]
+        REPO_IMPL[Repository Implementations]
     end
 
-    UC --> |uses| RI
-    UC --> |uses| DM
-    RI --> |uses| DM
-    REPO --> |implements| RI
-    REPO --> |uses| DM
+    USE_CASE --> |uses| REPO_API
+    USE_CASE --> |uses| MODEL
+    REPO_API --> |uses| MODEL
+    REPO_IMPL --> |implements| REPO_API
+    REPO_IMPL --> |uses| MODEL
 
-    classDef domainClass fill:#d0e0ff,stroke:#0066cc
-    classDef dataClass fill:#ffe0d0,stroke:#cc6600
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef domain_class fill:#33cc33,stroke:#000000,color:#000000
+    classDef data_layer fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef data_class fill:#ffaa33,stroke:#000000,color:#000000
 
-    class UC,RI,DM domainClass
-    class REPO dataClass
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class DOMAIN domain_layer
+    class USE_CASE,REPO_API,MODEL domain_class
+    class DATA data_layer
+    class REPO_IMPL data_class
 ```
 
 #### 💾 Data Layer
@@ -182,37 +211,36 @@ The data layer is responsible for data retrieval, storage, and synchronization.
 ```mermaid
 graph TD
     subgraph DOMAIN[Domain Layer]
-        REPOSITORIES[Repository]
-        M
+        REPO_API[Repository]
     end
 
     subgraph DATA[Data Layer]
-        REPO[Repository implementations]
+        REPO_IMPL[Repository implementations]
         RDS[Remote Data Sources]
         LDS[Local Data Sources]
         MAPPER[Data Mappers]
         DTO[Data Transfer Objects]
     end
 
-    DOMAIN ~~~ DATA
-
-    REPO --> |implements| REPOSITORIES
-    REPO --> RDS
-    REPO --> LDS
-    REPO --> MAPPER
+    REPO_IMPL --> |implements| REPO_API
+    REPO_IMPL --> RDS
+    REPO_IMPL --> LDS
+    REPO_IMPL --> MAPPER
     RDS --> MAPPER
     LDS --> MAPPER
     MAPPER --> DTO
 
-    classDef repoClass fill:#ffe0d0,stroke:#cc6600
-    classDef dsClass fill:#ffe0d0,stroke:#cc6600
-    classDef mapperClass fill:#ffe0d0,stroke:#cc6600
-    classDef dtoClass fill:#ffe0d0,stroke:#cc6600
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef domain_class fill:#33cc33,stroke:#000000,color:#000000
+    classDef data_layer fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef data_class fill:#ffaa33,stroke:#000000,color:#000000
 
-    class REPO repoClass
-    class RDS,LDS dsClass
-    class MAPPER mapperClass
-    class DTO dtoClass
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class DOMAIN domain_layer
+    class REPO_API domain_class
+    class DATA data_layer
+    class REPO_IMPL,RDS,LDS,MAPPER,DTO data_class
 ```
 
 ## 🎨 UI Architecture
@@ -233,26 +261,54 @@ The application implements an offline-first Approach to provide a reliable user 
 #### Implementation Approach
 
 ```mermaid
-graph TD
-    UI[UI Layer] --> VM[ViewModel]
-    VM --> UC[Use Cases]
-    UC --> REPO[Repository]
-    REPO --> LOCAL[Local Data Source]
-    REPO --> REMOTE[Remote Data Source]
-    REPO --> SYNC[Sync Manager]
-    SYNC --> LOCAL
-    SYNC --> REMOTE
-    SYNC --> QUEUE[Operation Queue]
+graph LR
+    subgraph UI[UI Layer]
+        VIEW_MODEL[ViewModel]
+    end
 
-    classDef uiLayer fill:#d0e0ff,stroke:#0066cc
-    classDef businessLayer fill:#d5f5d5,stroke:#00aa00
-    classDef dataLayer fill:#ffe0d0,stroke:#cc6600
-    classDef syncLayer fill:#f0d0ff,stroke:#cc00cc
+    subgraph DOMAIN[Domain Layer]
+        USE_CASE[Use Cases]
+    end
 
-    class UI,VM uiLayer
-    class UC businessLayer
-    class REPO,LOCAL,REMOTE dataLayer
-    class SYNC,QUEUE syncLayer
+    subgraph DATA[Data Layer]
+        subgraph SYNC[Synchronization]
+            SYNC_MANAGER[Sync Manager]
+            SYNC_QUEUE[Sync Queue]
+        end
+        REPO[Repository]
+        LOCAL[Local Data Source]
+        REMOTE[Remote Data Source]
+    end
+    
+    VIEW_MODEL --> USE_CASE
+    USE_CASE --> REPO
+    SYNC_MANAGER --> LOCAL
+    SYNC_MANAGER --> REMOTE
+    SYNC_MANAGER --> SYNC_QUEUE
+    REPO --> LOCAL
+    REPO --> REMOTE
+    REPO --> SYNC_MANAGER
+    REPO ~~~ SYNC
+    
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef ui_class fill:#4d94ff,stroke:#000000,color:#000000
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef domain_class fill:#33cc33,stroke:#000000,color:#000000
+    classDef data_layer fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef data_class fill:#ffaa33,stroke:#000000,color:#000000
+    classDef sync_layer fill:#e6cce6,stroke:#000000,color:#000000
+    classDef sync_class fill:#cc99cc,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class UI ui_layer
+    class VIEW_MODEL ui_class
+    class DOMAIN domain_layer
+    class USE_CASE domain_class
+    class DATA data_layer
+    class REPO,LOCAL,REMOTE data_class
+    class SYNC sync_layer
+    class SYNC_MANAGER,SYNC_API,SYNC_QUEUE sync_class
 ```
 
 The offline-first approach is implemented across all layers of the application:

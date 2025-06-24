@@ -15,45 +15,45 @@ The modules are organized into several types, each serving a specific purpose in
 graph TB
     subgraph APP[App Modules]
         direction TB
-        APP_TB["`**app-thunderbird**`"]
-        APP_K9["`**app-k9mail**`"]
+        APP_TB["`**:app-thunderbird**<br>Thunderbird for Android`"]
+        APP_K9["`**:app-k9mail**<br>K-9 Mail`"]
     end
 
     subgraph COMMON[App Common Module]
         direction TB
-        APP_COMMON["`**app-common**`"]
+        COMMON_APP["`**:app-common**<br>Integration Code`"]
     end
 
     subgraph FEATURE[Feature Modules]
         direction TB
-        FEATURE_ACCOUNT["`**feature:account**`"]
-        FEATURE_SETTINGS["`**feature:settings**`"]
-        FEATURE_ONBOARDING["`**feature:onboarding**`"]
-        FEATURE_MAIL["`**feature:mail**`"]
+        FEATURE_ACCOUNT["`**:feature:account**`"]
+        FEATURE_SETTINGS["`**:feature:settings**`"]
+        FEATURE_ONBOARDING["`**:feature:onboarding**`"]
+        FEATURE_MAIL["`**:feature:mail**`"]
     end
 
     subgraph CORE[Core Modules]
         direction TB
-        CORE_UI["`**core:ui**`"]
-        CORE_COMMON["`**core:common**`"]
-        CORE_ANDROID["`**core:android**`"]
-        CORE_NETWORK["`**core:network**`"]
-        CORE_DATABASE["`**core:database**`"]
-        CORE_TESTING["`**core:testing**`"]
+        CORE_UI["`**:core:ui**`"]
+        CORE_COMMON["`**:core:common**`"]
+        CORE_ANDROID["`**:core:android**`"]
+        CORE_NETWORK["`**:core:network**`"]
+        CORE_DATABASE["`**:core:database**`"]
+        CORE_TESTING["`**:core:testing**`"]
     end
 
     subgraph LIBRARY[Library Modules]
         direction TB
-        LIB_AUTH["`**library:auth**`"]
-        LIB_CRYPTO["`**library:crypto**`"]
-        LIB_STORAGE["`**library:storage**`"]
+        LIB_AUTH["`**:library:auth**`"]
+        LIB_CRYPTO["`**:library:crypto**`"]
+        LIB_STORAGE["`**:library:storage**`"]
     end
 
     subgraph LEGACY[Legacy Modules]
         direction TB
-        LEGACY_K9["`**legacy**`"]
-        LEGACY_MAIL["`**mail**`"]
-        LEGACY_BACKEND["`**backend**`"]
+        LEGACY_K9["`**:legacy**`"]
+        LEGACY_MAIL["`**:mail**`"]
+        LEGACY_BACKEND["`**:backend**`"]
     end
 
     APP ~~~ COMMON
@@ -68,19 +68,34 @@ graph TB
     CORE --> |depends on| LIBRARY
     COMMON --> |depends on<br>as legacy bridge| LEGACY
 
-    classDef app fill: #d0e0ff, stroke: #0066cc
-    classDef common fill: #d5f5d5, stroke: #00aa00
-    classDef feature fill: #ffe0d0, stroke: #cc6600
-    classDef core fill: #f0d0ff, stroke: #cc00cc
-    classDef library fill: #fff0d0, stroke: #cc9900
-    classDef legacy fill: #f0f0f0, stroke: #999999
+    classDef app fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef app_module fill:#4d94ff,stroke:#000000,color:#000000
+    classDef common fill:#e6e6e6,stroke:#000000,color:#000000
+    classDef common_module fill:#999999,stroke:#000000,color:#000000
+    classDef feature fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef feature_module fill:#33cc33,stroke:#000000,color:#000000
+    classDef core fill:#e6cce6,stroke:#000000,color:#000000
+    classDef core_module fill:#cc99cc,stroke:#000000,color:#000000
+    classDef library fill:#fff0d0,stroke:#000000,color:#000000
+    classDef library_module fill:#ffaa33,stroke:#000000,color:#000000
+    classDef legacy fill:#ffe6e6,stroke:#000000,color:#000000
+    classDef legacy_module fill:#ff9999,stroke:#000000,color:#000000
 
-    class APP_TB,APP_K9 app
-    class APP_COMMON common
-    class FEATURE_ACCOUNT,FEATURE_SETTINGS,FEATURE_ONBOARDING,FEATURE_MAIL feature
-    class CORE_UI,CORE_COMMON,CORE_ANDROID,CORE_DATABASE,CORE_NETWORK,CORE_TESTING core
-    class LIB_AUTH,LIB_CRYPTO,LIB_STORAGE library
-    class LEGACY_MAIL,LEGACY_BACKEND,LEGACY_K9 legacy
+    linkStyle default stroke:#999,stroke-width:2px
+    linkStyle 0,1,2,3,4 stroke-width:0px
+
+    class APP app
+    class APP_TB,APP_K9 app_module
+    class COMMON common
+    class COMMON_APP common_module
+    class FEATURE feature
+    class FEATURE_ACCOUNT,FEATURE_SETTINGS,FEATURE_ONBOARDING,FEATURE_MAIL feature_module
+    class CORE core
+    class CORE_UI,CORE_COMMON,CORE_ANDROID,CORE_DATABASE,CORE_NETWORK,CORE_TESTING core_module
+    class LIBRARY library
+    class LIB_AUTH,LIB_CRYPTO,LIB_STORAGE library_module
+    class LEGACY legacy
+    class LEGACY_MAIL,LEGACY_BACKEND,LEGACY_K9 legacy_module
 ```
 
 ### Module Types
@@ -215,45 +230,44 @@ Rules for module dependencies:
 
 ```mermaid
 graph TB
-    subgraph APP[App]
+    subgraph APP[App Modules]
         direction TB
-        APP_K9["`**:app-k9mail**<br>K-9 Mail`"]
         APP_TB["`**:app-thunderbird**<br>Thunderbird for Android`"]
+        APP_K9["`**:app-k9mail**<br>K-9 Mail`"]
     end
 
-    subgraph COMMON[App Common]
+    subgraph COMMON[App Common Module]
         direction TB
-        APP_COMMON["`**:app-common**<br>Integration Code`"]
+        COMMON_APP["`**:app-common**<br>Integration Code`"]
     end
 
-    subgraph FEATURE[Feature]
+    subgraph FEATURE[Feature Modules]
         direction TB
-        FEATURE_ACCOUNT_API[feature:account:api]
-        FEATURE_ACCOUNT_IMPL[feature:account:impl]
-        FEATURE_SETTINGS_API[feature:settings:api]
-        FEATURE_SETTINGS_API[feature:settings:api]
-        FEATURE_K9[feature:k9OnlyFeature:impl]
-        FEATURE_TB[feature:tfaOnlyFeature:impl]
+        FEATURE_ACCOUNT_API["`**:feature:account:api**`"]
+        FEATURE_ACCOUNT_IMPL["`**:feature:account:impl**`"]
+        FEATURE_SETTINGS_API["`**:feature:settings:api**`"]
+        FEATURE_K9["`**:feature:k9OnlyFeature:impl**`"]
+        FEATURE_TB["`**:feature:tfaOnlyFeature:impl**`"]
     end
 
-    subgraph CORE[Core]
+    subgraph CORE[Core Modules]
         direction TB
-        CORE_UI_API[core:ui:api]
-        CORE_COMMON_API[core:common:api]
+        CORE_UI_API["`**:core:ui:api**`"]
+        CORE_COMMON_API["`**:core:common:api**`"]
     end
 
-    subgraph LIBRARY[Library]
+    subgraph LIBRARY[Library Modules]
         direction TB
-        LIB_AUTH[library:auth]
-        LIB_STORAGE[library:storage]
+        LIB_AUTH["`**:library:auth**`"]
+        LIB_STORAGE["`**:library:storage**`"]
     end
 
-    APP_K9 --> |depends on| APP_COMMON
-    APP_TB --> |depends on| APP_COMMON
-    APP_COMMON --> |uses| FEATURE_ACCOUNT_API
-    APP_COMMON --> |injects/uses impl of| FEATURE_ACCOUNT_IMPL
+    APP_K9 --> |depends on| COMMON_APP
+    APP_TB --> |depends on| COMMON_APP
+    COMMON_APP --> |uses| FEATURE_ACCOUNT_API
+    COMMON_APP --> |injects/uses impl of| FEATURE_ACCOUNT_IMPL
     FEATURE_ACCOUNT_IMPL --> FEATURE_ACCOUNT_API
-    APP_COMMON --> |uses| FEATURE_SETTINGS_API
+    COMMON_APP --> |uses| FEATURE_SETTINGS_API
     APP_K9 --> |injects/uses impl of| FEATURE_K9
     APP_TB --> |injects/uses impl of| FEATURE_TB
     FEATURE_ACCOUNT_API --> |uses| CORE_UI_API
@@ -262,15 +276,34 @@ graph TB
     FEATURE_K9 --> |uses| LIB_STORAGE
     CORE_COMMON_API --> |uses| LIB_STORAGE
 
-    classDef module fill:yellow
-    classDef app fill:azure
-    classDef app_common fill:#ddd
-    classDef featureK9 fill:#ffcccc,stroke:#cc0000
-    classDef featureTB fill:#ccccff,stroke:#0000cc
-    class APP_K9 app
-    class APP_TB app
-    class APP_COMMON app_common
+    classDef app fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef app_module fill:#4d94ff,stroke:#000000,color:#000000
+    classDef common fill:#e6e6e6,stroke:#000000,color:#000000
+    classDef common_module fill:#999999,stroke:#000000,color:#000000
+    classDef feature fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef feature_module fill:#33cc33,stroke:#000000,color:#000000
+    classDef core fill:#e6cce6,stroke:#000000,color:#000000
+    classDef core_module fill:#cc99cc,stroke:#000000,color:#000000
+    classDef library fill:#fff0d0,stroke:#000000,color:#000000
+    classDef library_module fill:#ffaa33,stroke:#000000,color:#000000
+    classDef legacy fill:#ffe6e6,stroke:#000000,color:#000000
+    classDef legacy_module fill:#ff9999,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class APP app
+    class APP_TB,APP_K9 app_module
+    class COMMON common
+    class COMMON_APP common_module
+    class FEATURE feature
+    class FEATURE_ACCOUNT_API,FEATURE_ACCOUNT_IMPL,FEATURE_SETTINGS_API,FEATURE_MAIL feature_module
+    class CORE core
+    class CORE_UI_API,CORE_COMMON_API core_module
+    class LIBRARY library
+    class LIB_AUTH,LIB_STORAGE library_module
+
+    classDef featureK9 fill:#ffcccc,stroke:#cc0000,color:#000000
+    classDef featureTB fill:#ccccff,stroke:#0000cc,color:#000000
     class FEATURE_K9 featureK9
     class FEATURE_TB featureTB
 ```
-

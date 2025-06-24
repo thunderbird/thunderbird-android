@@ -11,20 +11,34 @@ application's functionality:
 
 ```mermaid
 graph TB
-    subgraph FEATURES[App Features]
+    subgraph FEATURE[App Features]
         direction TB
-        ACCOUNT["`**Account**<br>User accounts management`"]
-        MAIL["`**Mail**<br>Email handling and display`"]
-        NAVIGATION["`**Navigation**<br>App navigation and UI components`"]
-        ONBOARDING["`**Onboarding**<br>User setup and introduction`"]
-        SETTINGS["`**Settings**<br>App configuration`"]
-        NOTIFICATION["`**Notification**<br>Push and alert handling`"]
-        SEARCH["`**Search**<br>Content discovery`"]
-        WIDGET["`**Widget**<br>Home screen components`"]
+        
+        
+        subgraph ROW_2[" "]
+            direction LR
+            SETTINGS["`**Settings**<br>App configuration`"]
+            NOTIFICATION["`**Notification**<br>Push and alert handling`"]
+            SEARCH["`**Search**<br>Content discovery`"]
+            WIDGET["`**Widget**<br>Home screen components`"]
+        end
+        
+        subgraph ROW_1[" "]
+            direction LR
+            ACCOUNT["`**Account**<br>User accounts management`"]
+            MAIL["`**Mail**<br>Email handling and display`"]
+            NAVIGATION["`**Navigation**<br>App navigation and UI components`"]
+            ONBOARDING["`**Onboarding**<br>User setup and introduction`"]
+        end
     end
 
-    classDef feature fill:#ffe0d0, stroke:#cc6600
-    class ACCOUNT,MAIL,NAVIGATION,ONBOARDING,SETTINGS,NOTIFICATION,SEARCH,WIDGET feature
+    classDef row fill: #d9ffd9, stroke: #d9ffd9, color: #d9ffd9
+    classDef feature fill: #d9ffd9,stroke: #000000, color: #000000
+    classDef feature_module fill: #33cc33, stroke: #000000, color:#000000
+    
+    class ROW_1,ROW_2 row
+    class FEATURE feature
+    class ACCOUNT,MAIL,NAVIGATION,ONBOARDING,SETTINGS,NOTIFICATION,SEARCH,WIDGET feature_module
 ```
 
 ## 🧩 Feature Module Details
@@ -441,10 +455,16 @@ graph TB
     APPOINTMENT --> |integrates with| CALENDAR
     APPOINTMENT --> |uses| MAIL
 
-    classDef core fill:#f0d0ff, stroke:#cc00cc
-    classDef extension fill:#d0e0ff, stroke:#0066cc
-    class ACCOUNT,MAIL,NAVIGATION,SETTINGS core
-    class CALENDAR,TODO,SYNC,NOTES,APPOINTMENT extension
+    linkStyle default stroke:#999,stroke-width:2px
+
+    classDef core fill:#e8c8ff,stroke:#000000,color:#000000
+    classDef core_module fill:#c090ff,stroke:#000000,color:#000000
+    classDef extension fill:#d0e0ff,stroke:#000000,color:#000000
+    classDef extension_module fill:#8090ff,stroke:#000000,color:#000000
+    class CORE core
+    class ACCOUNT,MAIL,NAVIGATION,SETTINGS core_module
+    class EXTENSIONS extension
+    class CALENDAR,TODO,SYNC,NOTES,APPOINTMENT extension_module
 ```
 
 ## 📏 Feature Module Best Practices

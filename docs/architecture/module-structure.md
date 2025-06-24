@@ -274,15 +274,15 @@ the dependencies and integration points between modules.
 
 ```mermaid
 graph TB
-    subgraph APP[App]
+    subgraph APP[App Modules]
         direction TB
-        APP_K9["`**:app-k9mail**<br>K-9 Mail`"]
         APP_TB["`**:app-thunderbird**<br>Thunderbird for Android`"]
+        APP_K9["`**:app-k9mail**<br>K-9 Mail`"]
     end
 
-    subgraph COMMON[App Common]
+    subgraph COMMON[App Common Module]
         direction TB
-        APP_COMMON["`**:app-common**<br>Integration Code`"]
+        COMMON_APP["`**:app-common**<br>Integration Code`"]
     end
 
     subgraph FEATURE[Feature]
@@ -306,12 +306,12 @@ graph TB
         LIB2[Library 2]
     end
 
-    APP_K9 --> |depends on| APP_COMMON
-    APP_TB --> |depends on| APP_COMMON
-    APP_COMMON --> |integrates| FEATURE1
-    APP_COMMON --> |injects| FEATURE2
+    APP_K9 --> |depends on| COMMON_APP
+    APP_TB --> |depends on| COMMON_APP
+    COMMON_APP --> |integrates| FEATURE1
+    COMMON_APP --> |injects| FEATURE2
     FEATURE2 --> FEATURE1
-    APP_COMMON --> |integrates| FEATURE3
+    COMMON_APP --> |integrates| FEATURE3
     APP_K9 --> |integrates| FEATURE_K9
     APP_TB --> |integrates| FEATURE_TB
     FEATURE1 --> |uses| CORE1
@@ -320,16 +320,33 @@ graph TB
     FEATURE_K9 --> |uses| LIB2
     CORE2 --> |uses| LIB1
 
-    classDef module fill:yellow
-    classDef app fill:azure
-    classDef app_common fill:#ddd
-    classDef featureK9 fill:#ffcccc,stroke:#cc0000
-    classDef featureTB fill:#ccccff,stroke:#0000cc
-    class APP_K9 app
-    class APP_TB app
-    class APP_COMMON app_common
+    classDef app fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef app_module fill:#4d94ff,stroke:#000000,color:#000000
+    classDef common fill:#e6e6e6,stroke:#000000,color:#000000
+    classDef common_module fill:#999999,stroke:#000000,color:#000000
+    classDef feature fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef feature_module fill:#33cc33,stroke:#000000,color:#000000
+    classDef core fill:#e6cce6,stroke:#000000,color:#000000
+    classDef core_module fill:#cc99cc,stroke:#000000,color:#000000
+    classDef library fill:#fff0d0,stroke:#000000,color:#000000
+    classDef library_module fill:#ffaa33,stroke:#000000,color:#000000
+    classDef legacy fill:#ffe6e6,stroke:#000000,color:#000000
+    classDef legacy_module fill:#ff9999,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class APP app
+    class APP_K9,APP_TB app_module
+    class COMMON common
+    class COMMON_APP common_module
+    class FEATURE feature
+    class FEATURE1,FEATURE2,FEATURE3 feature_module
     class FEATURE_K9 featureK9
     class FEATURE_TB featureTB
+    class CORE core
+    class CORE1,CORE2 core_module
+    class LIBRARY library
+    class LIB1,LIB2 library_module
 ```
 
 ### Module Interaction Patterns
@@ -403,4 +420,3 @@ Keep functionality in the same module when:
 1. **Cohesion**: The functionality is highly cohesive and tightly coupled
 2. **Small Size**: The functionality is small and simple
 3. **Single Responsibility**: The functionality represents a single responsibility
-
