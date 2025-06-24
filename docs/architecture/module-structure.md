@@ -43,7 +43,7 @@ API modules should follow the naming convention:
 
 ```bash
 feature:account:api
-├── src/main/kotlin/app/k9mail/feature/account/api
+├── src/main/kotlin/net/thunderbird/feature/account/api
 │   ├── AccountManager.kt (interface)
 │   ├── Account.kt (entity)
 │   ├── AccountNavigation.kt (interface)
@@ -174,10 +174,13 @@ Fake modules provide alternative implementations of interfaces for testing, deve
 The fake module contains:
 
 - **Fake implementations**: Simplified implementations of interfaces
-- **Test data**: Sample data for testing and demonstration
+- **Generic test data**: Basic, reusable sample data for testing and demonstration
 - **In-memory data stores**: In-memory alternatives to real data stores
 - **Controlled behavior**: Implementations with predictable, configurable behavior
 - **Test doubles**: Mocks, stubs, and spies for testing
+
+> [!IMPORTANT]
+> Fake modules should be limited to the most generic data and implementations. Specific use cases or test setups should be part of the actual test, not the fake module.
 
 #### Naming Convention
 
@@ -206,8 +209,9 @@ feature:account:fake
 - **Configuration**: Allow configuration of behavior for different test scenarios
 - **Visibility**: Make internal state visible for testing assertions
 - **Performance**: Fake implementations should be fast for testing efficiency
-- **Comprehensive test data**: Include a variety of test data to cover different scenarios
-- **Realistic data**: Test data should be realistic enough to be useful for testing and demonstrations
+- **Generic test data**: Include basic, reusable test data that can be used across different tests
+- **Realistic but generic data**: Test data should be realistic enough to be useful but generic enough to be reused
+- **Separation of concerns**: Keep specific test scenarios and edge cases in the actual tests, not in the fake module
 
 ### 🔄 Common Module
 
@@ -235,7 +239,7 @@ Common modules should follow the naming convention:
 
 ```bash
 feature:account:common
-├── src/main/kotlin/app/k9mail/feature/account/common
+├── src/main/kotlin/net/thunderbird/feature/account/common
 │   ├── AccountCommonModule.kt
 │   ├── data/
 │   │   └── InMemoryAccountStateRepository.kt
@@ -267,47 +271,6 @@ feature:account:common
 
 The module dependency diagram below illustrates how different modules interact with each other in the project, showing
 the dependencies and integration points between modules.
-
-### Module Interaction Patterns
-
-- **App Modules**: Depend on the App Common module for shared functionality and selectively integrate feature modules
-- **App Common**: Integrates various feature modules to provide a cohesive application
-- **Feature Modules**: Use core modules and libraries for their implementation, may depend on other feature API modules
-- **App-Specific Features**: Some features are integrated directly by specific apps (K-9 Mail or Thunderbird)
-
-### Dependency Rules
-
-These rules must be strictly followed:
-
-1. **One-Way Dependencies**:
-   - Modules should not depend on each other in a circular manner
-   - Dependencies should form a directed acyclic graph (DAG)
-2. **API-Implementation Separation**:
-   - Modules should depend only on API modules, not implementation modules
-   - Implementation modules should be referenced only in dependency injection setup
-3. **Feature Integration**:
-   - Features should be integrated through the App Common module, which acts as a central hub
-   - Direct dependencies between feature implementations should be avoided, or limited to API modules
-4. **Dependency Direction**:
-   - Dependencies should flow from app modules to common, then to features, and finally to core and libraries
-   - Higher-level modules should depend on lower-level modules, not vice versa
-5. **Minimal Dependencies**:
-   - Each module should have the minimal set of dependencies required
-   - Avoid unnecessary dependencies that could lead to bloat
-
-### Dependency Management
-
-- **Explicit Dependencies**: All dependencies should be explicitly declared in the module's build file
-- **Transitive Dependencies**: Avoid relying on transitive dependencies
-- **Version Management**: Use centralized version management for dependencies
-- **Dependency Visibility**: Use appropriate visibility modifiers to limit access to implementation details
-
-### Dependency Injection
-
-- Use Koin for dependency injection
-- Configure module dependencies in dedicated Koin modules
-- Inject API interfaces, not implementation classes
-- Use lazy injection where appropriate to improve startup performance
 
 ```mermaid
 graph TB
@@ -368,6 +331,47 @@ graph TB
     class FEATURE_K9 featureK9
     class FEATURE_TB featureTB
 ```
+
+### Module Interaction Patterns
+
+- **App Modules**: Depend on the App Common module for shared functionality and selectively integrate feature modules
+- **App Common**: Integrates various feature modules to provide a cohesive application
+- **Feature Modules**: Use core modules and libraries for their implementation, may depend on other feature API modules
+- **App-Specific Features**: Some features are integrated directly by specific apps (K-9 Mail or Thunderbird)
+
+### Dependency Rules
+
+These rules must be strictly followed:
+
+1. **One-Way Dependencies**:
+   - Modules should not depend on each other in a circular manner
+   - Dependencies should form a directed acyclic graph (DAG)
+2. **API-Implementation Separation**:
+   - Modules should depend only on API modules, not implementation modules
+   - Implementation modules should be referenced only in dependency injection setup
+3. **Feature Integration**:
+   - Features should be integrated through the App Common module, which acts as a central hub
+   - Direct dependencies between feature implementations should be avoided, or limited to API modules
+4. **Dependency Direction**:
+   - Dependencies should flow from app modules to common, then to features, and finally to core and libraries
+   - Higher-level modules should depend on lower-level modules, not vice versa
+5. **Minimal Dependencies**:
+   - Each module should have the minimal set of dependencies required
+   - Avoid unnecessary dependencies that could lead to bloat
+
+### Dependency Management
+
+- **Explicit Dependencies**: All dependencies should be explicitly declared in the module's build file
+- **Transitive Dependencies**: Avoid relying on transitive dependencies
+- **Version Management**: Use centralized version management for dependencies
+- **Dependency Visibility**: Use appropriate visibility modifiers to limit access to implementation details
+
+### Dependency Injection
+
+- Use Koin for dependency injection
+- Configure module dependencies in dedicated Koin modules
+- Inject API interfaces, not implementation classes
+- Use lazy injection where appropriate to improve startup performance
 
 ## 📏 Module Granularity
 
