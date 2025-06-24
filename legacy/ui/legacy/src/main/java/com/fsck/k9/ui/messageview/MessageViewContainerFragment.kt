@@ -17,13 +17,14 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MessageListViewModel
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * A fragment that uses [ViewPager2] to allow the user to swipe between messages.
  *
  * Individual messages are displayed using a [MessageViewFragment].
  */
-class MessageViewContainerFragment : Fragment() {
+class MessageViewContainerFragment: Fragment() {
     var isActive: Boolean = false
         set(value) {
             field = value
@@ -31,6 +32,8 @@ class MessageViewContainerFragment : Fragment() {
         }
 
     private var showAccountChip: Boolean = true
+
+    private var isUseLeftRightGestureNavigation: Boolean = true
 
     lateinit var messageReference: MessageReference
         private set
@@ -70,6 +73,8 @@ class MessageViewContainerFragment : Fragment() {
 
         showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
 
+        isUseLeftRightGestureNavigation = arguments?.getBoolean(ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION) ?: isUseLeftRightGestureNavigation
+
         adapter = MessageViewContainerAdapter(this, showAccountChip)
     }
 
@@ -90,7 +95,7 @@ class MessageViewContainerFragment : Fragment() {
         val pageMargin = resources.getDimension(R.dimen.message_view_pager_page_margin).toInt()
 
         viewPager = view.findViewById(R.id.message_viewpager)
-        viewPager.isUserInputEnabled = K9.isUseLeftRightGestureNavigation
+        viewPager.isUserInputEnabled = isUseLeftRightGestureNavigation
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         viewPager.setPageTransformer(MarginPageTransformer(pageMargin))
         viewPager.registerOnPageChangeCallback(
@@ -309,10 +314,17 @@ class MessageViewContainerFragment : Fragment() {
 
         private const val STATE_MESSAGE_REFERENCE = "messageReference"
 
-        fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewContainerFragment {
+        private const val ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION = "isUseLeftRightGestureNavigation"
+
+        fun newInstance(
+            reference: MessageReference,
+            showAccountChip: Boolean,
+            isUseLeftRightGestureNavigation: Boolean
+        ): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
                 ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
+                ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION to isUseLeftRightGestureNavigation
             )
         }
     }
