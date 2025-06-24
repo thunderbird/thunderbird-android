@@ -97,11 +97,11 @@ graph TB
 
 Several techniques are used to implement the bridge pattern effectively:
 
-1. **Wrapper Classes**: Creating immutable data classes that wrap legacy data structures, implementing interfaces from the new architecture. These wrappers typically include conversion methods to transform between legacy and new data structures.
+1. **Wrapper Classes**: Creating immutable data classes that wrap legacy data structures, implementing interfaces from the new architecture. These wrappers should not contain conversion methods but should delegate this responsibility to specific mapper classes.
 
 2. **Adapter Implementations**: Classes in `:app-common` that implement interfaces from the new architecture but delegate to legacy code internally.
 
-3. **Data Conversion**: Static conversion methods (often in companion objects) that handle mapping between legacy and new data structures, ensuring clean separation of concerns.
+3. **Data Conversion**: Dedicated mapper classes that handle mapping between legacy and new data structures, ensuring clean separation of concerns.
 
 #### Example: Account Profile Bridge
 
@@ -113,10 +113,10 @@ A concrete example of this pattern is the account profile bridge, which demonstr
 2. **Modern Data Structure**: `AccountProfile` in `feature:account:api` is a clean, immutable data class that represents account profile information in the new architecture.
 3. **Repository Implementation**: `DefaultAccountProfileRepository` in `feature:account:core` implements the `AccountProfileRepository` interface and depends on `AccountProfileLocalDataSource`.
 4. **Bridge Implementation**: `DefaultAccountProfileLocalDataSource` in `app-common` implements the `AccountProfileLocalDataSource` interface and serves as the bridge to legacy code.
-5. **Legacy Access**: The bridge uses `LegacyAccountWrapperManager` to access legacy account data:
+5. **Legacy Access**: The bridge uses `DefaultLegacyAccountWrapperManager` to access legacy account data:
    - `LegacyAccountWrapperManager` in `core:android:account` defines the contract for legacy account access
    - `LegacyAccountWrapper` in `core:android:account` is an immutable wrapper around the legacy `LegacyAccount` class
-6. **Data Conversion**: The bridge converts between modern `AccountProfile` objects and legacy account data via `LegacyAccountWrapper`.
+6. **Data Conversion**: The bridge uses a dedicated mapper class to convert between modern `AccountProfile` objects and legacy account data.
 7. **Dependency Injection**: The `appCommonAccountModule` in `app-common` registers `DefaultAccountProfileLocalDataSource` as implementations of the respective interface.
 
 This multi-layered approach allows newer modules to interact with legacy account functionality through clean, modern interfaces without directly depending on legacy code. It also demonstrates how bridges can be composed, with higher-level bridges (AccountProfile) building on lower-level bridges (LegacyAccountWrapper).
@@ -126,7 +126,7 @@ This multi-layered approach allows newer modules to interact with legacy account
 Testing bridge implementations requires special attention to ensure both the bridge itself and its integration with legacy code work correctly:
 
 1. **Unit Testing Bridge Classes**:
-   - Test the bridge implementation in isolation by mocking/stubbing the legacy dependencies
+   - Test the bridge implementation in isolation by faking/stubbing the legacy dependencies
    - Verify that the bridge correctly translates between the new interfaces and legacy code
    - Focus on testing the conversion logic and error handling
 2. **Integration Testing**:
@@ -139,16 +139,211 @@ Testing bridge implementations requires special attention to ensure both the bri
    - When migrating from a legacy bridge to a new implementation, test both implementations with the same test suite
    - Ensure behavior consistency during the transition
 
+### Testing Examples
+
+Below are examples of tests for legacy module integration, demonstrating different testing approaches and best practices.
+
+#### Example 1: Unit Testing a Bridge Implementation
+
+This example shows how to test a bridge implementation (`DefaultAccountProfileLocalDataSource`) in isolation by using a fake implementation of the legacy dependency (`FakeLegacyAccountWrapperManager`):
+
+```kotlin
+class DefaultAccountProfileLocalDataSourceTest {
+
+    @Test
+    fun `getById should return account profile`() = runTest {
+        // arrange
+        val accountId = AccountIdFactory.create()
+        val legacyAccount = createLegacyAccount(accountId)
+        val accountProfile = createAccountProfile(accountId)
+        val testSubject = createTestSubject(legacyAccount)
+
+        // act & assert
+        testSubject.getById(accountId).test {
+            assertThat(awaitItem()).isEqualTo(accountProfile)
+        }
+    }
+
+    @Test
+    fun `getById should return null when account is not found`() = runTest {
+        // arrange
+        val accountId = AccountIdFactory.create()
+        val testSubject = createTestSubject(null)
+
+        // act & assert
+        testSubject.getById(accountId).test {
+            assertThat(awaitItem()).isEqualTo(null)
+        }
+    }
+
+    @Test
+    fun `update should save account profile`() = runTest {
+        // arrange
+        val accountId = AccountIdFactory.create()
+        val legacyAccount = createLegacyAccount(accountId)
+        val accountProfile = createAccountProfile(accountId)
+
+        val updatedName = "updatedName"
+        val updatedAccountProfile = accountProfile.copy(name = updatedName)
+
+        val testSubject = createTestSubject(legacyAccount)
+
+        // act & assert
+        testSubject.getById(accountId).test {
+            assertThat(awaitItem()).isEqualTo(accountProfile)
+
+            testSubject.update(updatedAccountProfile)
+
+            assertThat(awaitItem()).isEqualTo(updatedAccountProfile)
+        }
+    }
+
+    private fun createTestSubject(
+        legacyAccount: LegacyAccountWrapper?,
+    ): DefaultAccountProfileLocalDataSource {
+        return DefaultAccountProfileLocalDataSource(
+            accountManager = FakeLegacyAccountWrapperManager(
+                initialAccounts = if (legacyAccount != null) {
+                    listOf(legacyAccount)
+                } else {
+                    emptyList()
+                },
+            ),
+            dataMapper = DefaultAccountProfileDataMapper(
+                avatarMapper = DefaultAccountAvatarDataMapper(),
+            ),
+        )
+    }
+}
+```
+
+Key points:
+- The test creates a controlled test environment using a fake implementation of the legacy dependency
+- It tests both success cases and error handling (account not found)
+- It verifies that the bridge correctly translates between legacy data structures and domain models
+- The test is structured with clear arrange, act, and assert sections
+
+#### Example 2: Creating Test Doubles for Legacy Dependencies
+
+This example shows how to create a fake implementation of a legacy dependency (`FakeLegacyAccountWrapperManager`) for testing:
+
+```kotlin
+internal class FakeLegacyAccountWrapperManager(
+    initialAccounts: List<LegacyAccountWrapper> = emptyList(),
+) : LegacyAccountWrapperManager {
+
+    private val accountsState = MutableStateFlow(
+        initialAccounts,
+    )
+    private val accounts: StateFlow<List<LegacyAccountWrapper>> = accountsState
+
+    override fun getAll(): Flow<List<LegacyAccountWrapper>> = accounts
+
+    override fun getById(id: AccountId): Flow<LegacyAccountWrapper?> = accounts
+        .map { list ->
+            list.find { it.id == id }
+        }
+
+    override suspend fun update(account: LegacyAccountWrapper) {
+        accountsState.update { currentList ->
+            currentList.toMutableList().apply {
+                removeIf { it.uuid == account.uuid }
+                add(account)
+            }
+        }
+    }
+}
+```
+
+Key points:
+- The fake implementation implements the same interface as the real implementation
+- It provides a simple in-memory implementation for testing
+- It uses Kotlin Flows to simulate the reactive behavior of the real implementation
+- It allows for easy setup of test data through the constructor parameter
+
+#### Example 3: Testing Data Conversion Logic
+
+This example shows how to test data conversion logic in bridge implementations:
+
+```kotlin
+class DefaultAccountProfileDataMapperTest {
+
+    @Test
+    fun `toDomain should convert ProfileDto to AccountProfile`() {
+        // Arrange
+        val dto = createProfileDto()
+        val expected = createAccountProfile()
+
+        val testSubject = DefaultAccountProfileDataMapper(
+            avatarMapper = FakeAccountAvatarDataMapper(
+                dto = dto.avatar,
+                domain = expected.avatar,
+            ),
+        )
+
+        // Act
+        val result = testSubject.toDomain(dto)
+
+        // Assert
+        assertThat(result.id).isEqualTo(expected.id)
+        assertThat(result.name).isEqualTo(expected.name)
+        assertThat(result.color).isEqualTo(expected.color)
+        assertThat(result.avatar).isEqualTo(expected.avatar)
+    }
+
+    @Test
+    fun `toDto should convert AccountProfile to ProfileDto`() {
+        // Arrange
+        val domain = createAccountProfile()
+        val expected = createProfileDto()
+
+        val testSubject = DefaultAccountProfileDataMapper(
+            avatarMapper = FakeAccountAvatarDataMapper(
+                dto = expected.avatar,
+                domain = domain.avatar,
+            ),
+        )
+
+        // Act
+        val result = testSubject.toDto(domain)
+
+        // Assert
+        assertThat(result.id).isEqualTo(expected.id)
+        assertThat(result.name).isEqualTo(expected.name)
+        assertThat(result.color).isEqualTo(expected.color)
+        assertThat(result.avatar).isEqualTo(expected.avatar)
+    }
+}
+```
+
+Key points:
+- The test verifies that the mapper correctly converts between legacy data structures (DTOs) and domain models
+- It tests both directions of the conversion (toDomain and toDto)
+- It uses a fake implementation of a dependency (FakeAccountAvatarDataMapper) to isolate the test
+- It verifies that all properties are correctly mapped
+
+#### Best Practices for Testing Legacy Module Integration
+
+1. **Isolate the Bridge**: Test the bridge implementation in isolation by using fake or mock implementations of legacy dependencies.
+2. **Test Both Directions**: For data conversion, test both directions (legacy to domain and domain to legacy).
+3. **Cover Edge Cases**: Test edge cases such as null values, empty collections, and error conditions.
+4. **Use Clear Test Structure**: Structure tests with clear arrange, act, and assert sections.
+5. **Create Reusable Test Fixtures**: Create helper methods for creating test data to make tests more readable and maintainable.
+6. **Test Reactive Behavior**: For reactive code (using Flows, LiveData, etc.), use appropriate testing utilities (e.g., Turbine for Flow testing).
+7. **Verify Integration**: In addition to unit tests, create integration tests that verify the bridge works correctly with actual legacy code.
+8. **Test Migration Path**: When migrating from a legacy bridge to a new implementation, test both implementations with the same test suite to ensure behavior consistency.
+
 ## Migration Strategy
 
 The long-term strategy involves gradually migrating functionality out of the legacy modules:
 
 1. **Identify Functionality**: Pinpoint specific functionalities within legacy modules that need to be modernized.
 2. **Define Interfaces**: Ensure clear interfaces are defined (typically in feature `api` modules) for this functionality.
-3. **Implement in New Modules**: Re-implement the functionality within new, dedicated feature `impl` modules or core modules.
-4. **Update Bridge (Optional)**: If `:app-common` was bridging to this specific legacy code, its bridge implementation can be updated or removed.
-5. **Switch DI Configuration**: Update the dependency injection to provide the new modern implementation instead of the legacy bridge.
-6. **Retire Legacy Code**: Once no longer referenced, the corresponding legacy code can be safely removed.
+3. **Entity Modeling**: Create proper domain entity models that represent the business objects as immutable data classes.
+4. **Implement in New Modules**: Re-implement the functionality within new, dedicated feature `impl` modules or core modules.
+5. **Update Bridge (Optional)**: If `:app-common` was bridging to this specific legacy code, its bridge implementation can be updated or removed.
+6. **Switch DI Configuration**: Update the dependency injection to provide the new modern implementation instead of the legacy bridge.
+7. **Retire Legacy Code**: Once no longer referenced, the corresponding legacy code can be safely removed.
 
 ### Migration Example
 
@@ -158,10 +353,11 @@ Using the account profile example, the migration process would look like:
 2. **Define Interfaces**:
    - `AccountProfileRepository` interface is defined in `feature:account:api`
    - `AccountProfileLocalDataSource` interface is defined in `feature:account:core`
-3. **Implement**: Create a new implementation of `AccountProfileLocalDataSource` in a modern module, e.g., `feature:account:impl`.
-4. **Update Bridge**: Update or remove `DefaultAccountProfileLocalDataSource` in `app-common`.
-5. **Switch DI**: Update `appCommonAccountModule` to provide the new implementation instead of `CommonAccountProfileLocalDataSource`.
-6. **Retire**: Once all references to legacy account code are removed, the legacy code and lower-level bridges (`LegacyAccountWrapperManager`, `CommonLegacyAccountWrapperManager`) can be safely deleted.
+3. **Entity Modeling**: Create `AccountProfile` as an immutable data class in `feature:account:api`.
+4. **Implement**: Create a new implementation of `AccountProfileLocalDataSource` in a modern module, e.g., `feature:account:impl`.
+5. **Update Bridge**: Update or remove `DefaultAccountProfileLocalDataSource` in `app-common`.
+6. **Switch DI**: Update `appCommonAccountModule` to provide the new implementation instead of `DefaultAccountProfileLocalDataSource`.
+7. **Retire**: Once all references to legacy account code are removed, the legacy code and lower-level bridges (`LegacyAccountWrapperManager`, `DefaultLegacyAccountWrapperManager`) can be safely deleted.
 
 This approach ensures a smooth transition with minimal disruption to the application's functionality.
 
