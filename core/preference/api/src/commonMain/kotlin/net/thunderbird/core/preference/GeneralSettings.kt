@@ -28,6 +28,7 @@ data class GeneralSettings(
     val isShowContactPicture: Boolean,
     val isChangeContactNameColor: Boolean,
     val isColorizeMissingContactPictures: Boolean,
+    val isUseBackgroundAsUnreadIndicator: Boolean,
 )
 
 enum class BackgroundSync {

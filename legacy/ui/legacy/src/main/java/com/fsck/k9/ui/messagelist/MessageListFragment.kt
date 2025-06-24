@@ -685,7 +685,7 @@ class MessageListFragment :
             senderAboveSubject = generalSettingsManager.getSettings().isMessageListSenderAboveSubject,
             showContactPicture = generalSettingsManager.getSettings().isShowContactPicture,
             showingThreadedList = showingThreadedList,
-            backGroundAsReadIndicator = K9.isUseBackgroundAsUnreadIndicator,
+            backGroundAsReadIndicator = generalSettingsManager.getSettings().isUseBackgroundAsUnreadIndicator,
             showAccountChip = isShowAccountChip,
             density = K9.messageListDensity,
         )

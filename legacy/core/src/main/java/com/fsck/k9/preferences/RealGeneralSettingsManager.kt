@@ -26,6 +26,7 @@ import net.thunderbird.core.preference.storage.putEnum
 internal const val KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG = "shouldShowSetupArchiveFolderDialog"
 internal const val KEY_CHANGE_REGISTERED_NAME_COLOR = "changeRegisteredNameColor"
 internal const val KEY_COLORIZE_MISSING_CONTACT_PICTURE = "colorizeMissingContactPictures"
+internal const val KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR = "isUseBackgroundAsUnreadIndicator"
 
 /**
  * Retrieve and modify general settings.
@@ -185,6 +186,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isColorizeMissingContactPictures = isColorizeMissingContactPictures).persist()
     }
 
+    override fun setIsUseBackgroundAsUnreadIndicator(isUseBackgroundAsUnreadIndicator: Boolean) {
+        getSettings().copy(isUseBackgroundAsUnreadIndicator = isUseBackgroundAsUnreadIndicator).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -202,6 +207,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("showContactPicture", settings.isShowContactPicture)
         editor.putBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, settings.isChangeContactNameColor)
         editor.putBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, settings.isColorizeMissingContactPictures)
+        editor.putBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, settings.isUseBackgroundAsUnreadIndicator)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -234,6 +240,7 @@ internal class RealGeneralSettingsManager(
             isShowContactPicture = storage.getBoolean("showContactPicture", true),
             isColorizeMissingContactPictures = storage.getBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, true),
             isChangeContactNameColor = storage.getBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, false),
+            isUseBackgroundAsUnreadIndicator = storage.getBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, false),
         )
 
         updateSettingsFlow(settings)
