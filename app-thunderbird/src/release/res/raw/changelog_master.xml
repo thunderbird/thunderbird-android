@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="10.1" versioncode="11" date="2025-06-24">
+        <change>Attach all images when sharing from gallery, not just the last</change>
+        <change>Show the full changelog when it contains special characters</change>
+    </release>
     <release version="10.0" versioncode="10" date="2025-05-05">
         <change>Server field pre-filled in manual account setup</change>
         <change>Add a menu entry to empty the Spam folder</change>
