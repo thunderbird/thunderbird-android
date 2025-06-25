@@ -14,12 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.navigation.drawer.siderail.ui.account.AccountList
 import net.thunderbird.feature.navigation.drawer.siderail.ui.account.AccountView
 import net.thunderbird.feature.navigation.drawer.siderail.ui.folder.FolderList
@@ -42,7 +42,7 @@ internal fun DrawerContent(
             .windowInsetsPadding(WindowInsets.statusBars)
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
-            .testTag("DrawerContent"),
+            .testTagAsResourceId("DrawerContent"),
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
         Column {

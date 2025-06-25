@@ -5,13 +5,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.feature.account.edit.R
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 
 @Composable
 fun SaveServerSettingsContent(
@@ -21,7 +21,7 @@ fun SaveServerSettingsContent(
 ) {
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTag("SaveServerSettingsContent")
+            .testTagAsResourceId("SaveServerSettingsContent")
             .padding(contentPadding)
             .then(modifier),
     ) {
