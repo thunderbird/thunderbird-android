@@ -29,4 +29,5 @@ interface GeneralSettingsManager {
     fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean)
     fun setIsUseBackgroundAsUnreadIndicator(isUseBackgroundAsUnreadIndicator: Boolean)
     fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean)
+    fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean)
 }
