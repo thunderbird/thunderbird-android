@@ -13,6 +13,7 @@ class MessageViewHolder(view: View) : MessageListViewHolder(view) {
 
     val selected: View = view.findViewById(R.id.selected)
     val contactPicture: ImageView = view.findViewById(R.id.contact_picture)
+    val contactPictureClickArea: View = view.findViewById(R.id.contact_picture_click_area)
     val subject: MaterialTextView = view.findViewById(R.id.subject)
     val preview: MaterialTextView = view.findViewById(R.id.preview)
     val date: MaterialTextView = view.findViewById(R.id.date)
