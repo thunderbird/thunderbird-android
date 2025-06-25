@@ -1,19 +1,23 @@
-appId: com.fsck.k9.debug
+appId: net.thunderbird.android.debug
 ---
-- runFlow: ../shared/login_demo_account.yml
+- runFlow:
+    file: ../shared/onboard_with_demo_account.yml
+    when:
+      visible:
+        id: "onboarding_welcome_start_button"
 
 ## Open message
 - tapOn:
-    id: "com.fsck.k9.debug:id/subject"
+    id: "net.thunderbird.android.debug:id/subject"
     index: 0
     text: "Message details demo"
 
 ## Check message
 - assertVisible:
-    id: "com.fsck.k9.debug:id/from"
+    id: "net.thunderbird.android.debug:id/from"
     text: "Alice"
 - assertVisible:
-    id: "com.fsck.k9.debug:id/recipient_names"
+    id: "net.thunderbird.android.debug:id/recipient_names"
     text: "to User 1.*"
 
 ### Open message details
@@ -21,10 +25,10 @@ appId: com.fsck.k9.debug
 
 ## Check message details
 - assertVisible:
-    id: "com.fsck.k9.debug:id/name"
+    id: "net.thunderbird.android.debug:id/name"
     text: "Alice"
 - assertVisible:
-    id: "com.fsck.k9.debug:id/name"
+    id: "net.thunderbird.android.debug:id/name"
     text: "User 1"
 
 ## Add contacts
@@ -52,16 +56,16 @@ appId: com.fsck.k9.debug
 
 ## Open message
 - tapOn:
-    id: "com.fsck.k9.debug:id/subject"
+    id: "net.thunderbird.android.debug:id/subject"
     index: 0
     text: "Message details demo"
 
 ## Check message
 - assertVisible:
-    id: "com.fsck.k9.debug:id/from"
+    id: "net.thunderbird.android.debug:id/from"
     text: "Alice from Contacts"
 - assertVisible:
-    id: "com.fsck.k9.debug:id/recipient_names"
+    id: "net.thunderbird.android.debug:id/recipient_names"
     text: "to User from Contacts.*"
 
 ### Open message details
@@ -69,10 +73,10 @@ appId: com.fsck.k9.debug
 
 ## Check message details
 - assertVisible:
-    id: "com.fsck.k9.debug:id/name"
+    id: "net.thunderbird.android.debug:id/name"
     text: "Alice from Contacts"
 - assertVisible:
-    id: "com.fsck.k9.debug:id/name"
+    id: "net.thunderbird.android.debug:id/name"
     text: "User from Contacts 1"
 
 ## Remove contacts

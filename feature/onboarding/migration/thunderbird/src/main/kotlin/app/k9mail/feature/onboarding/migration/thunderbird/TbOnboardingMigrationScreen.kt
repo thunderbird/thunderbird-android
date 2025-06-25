@@ -86,7 +86,7 @@ internal fun TbOnboardingMigrationScreen(
                 ButtonOutlined(
                     text = stringResource(R.string.onboarding_migration_thunderbird_new_account_button_text),
                     onClick = onAddAccount,
-                    modifier = Modifier.testTagAsResourceId("onboarding_migration_new_account_button",),
+                    modifier = Modifier.testTagAsResourceId("onboarding_migration_new_account_button"),
                 )
             }
 

@@ -1,4 +1,4 @@
-appId: com.fsck.k9.debug
+appId: net.thunderbird.android.debug
 ---
 
 ## Open drawer
@@ -6,12 +6,12 @@ appId: com.fsck.k9.debug
 
 ### Open settings
 - tapOn:
-    id: "com.fsck.k9.debug:id/material_drawer_name"
+    id: "net.thunderbird.android.debug:id/material_drawer_name"
     index: 9
 
 ### Open general settings
 - tapOn:
-    id: "com.fsck.k9.debug:id/text"
+    id: "net.thunderbird.android.debug:id/text"
     index: 0
     text: "General settings"
 

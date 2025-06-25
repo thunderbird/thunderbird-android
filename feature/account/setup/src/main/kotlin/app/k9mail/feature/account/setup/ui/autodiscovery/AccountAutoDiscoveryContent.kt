@@ -152,6 +152,7 @@ internal fun ContentView(
             errorMessage = state.emailAddress.error?.toAutoDiscoveryValidationErrorString(resources),
             onEmailAddressChange = { onEvent(Event.EmailAddressChanged(it)) },
             contentPadding = PaddingValues(),
+            modifier = Modifier.testTagAsResourceId("account_setup_email_address_input"),
         )
 
         if (state.configStep == AccountAutoDiscoveryContract.ConfigStep.PASSWORD) {
@@ -161,6 +162,7 @@ internal fun ContentView(
                 errorMessage = state.password.error?.toAutoDiscoveryValidationErrorString(resources),
                 onPasswordChange = { onEvent(Event.PasswordChanged(it)) },
                 contentPadding = PaddingValues(),
+                modifier = Modifier.testTagAsResourceId("account_setup_password_input"),
             )
         } else if (state.configStep == AccountAutoDiscoveryContract.ConfigStep.OAUTH) {
             val isAutoDiscoverySettingsTrusted = state.autoDiscoverySettings?.isTrusted ?: false
