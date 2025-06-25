@@ -1,0 +1,3 @@
+Thunderbird for Android version 11.0b4, based on K-9 Mail. Changes include:
+- Don't cover download complete message with navigation bar
+- Avoid a crash related to the drawer when device orientation changes

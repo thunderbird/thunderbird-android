@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="11.0b4" versioncode="17" date="2025-06-24">
+        <change>Don't cover download complete message with navigation bar</change>
+        <change>Avoid a crash related to the drawer when device orientation changes</change>
+    </release>
     <release version="11.0b3" versioncode="16" date="2025-06-10">
         <change>Sharing multiple selected images from gallery only selected last image</change>
         <change>Account drawer could crash when folder was selected</change>
