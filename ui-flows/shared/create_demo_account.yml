@@ -1,0 +1,53 @@
+# use env to provide properties:
+# env:
+#    EMAIL_ADDRESS: "demo@example.com"
+#    ACCOUNT_NAME: "Demo Account"
+#    DISPLAY_NAME: "Demo User"
+
+appId: net.thunderbird.android.debug
+---
+## Auto-discovery screen
+- waitForAnimationToEnd:
+    timeout: 500
+- tapOn:
+    id: "account_setup_email_address_input"
+- waitForAnimationToEnd:
+    timeout: 500
+- inputText: ${EMAIL_ADDRESS}
+- tapOn:
+    id: "account_setup_next_button"
+
+## Wait for auto-discovery to complete and enter password
+- waitForAnimationToEnd:
+    timeout: 500
+- tapOn:
+    id: "account_setup_password_input"
+- waitForAnimationToEnd:
+    timeout: 500
+- inputText: "password"
+- tapOn:
+    id: "account_setup_next_button"
+
+## Wait for server validation
+- waitForAnimationToEnd:
+    timeout: 3000
+
+## Display options
+- tapOn:
+    id: "account_setup_display_options_account_name_input"
+- eraseText
+- inputText: ${ACCOUNT_NAME}
+- tapOn:
+    id: "account_setup_display_options_display_name_input"
+- inputText: ${DISPLAY_NAME}
+- tapOn:
+    id: "account_setup_next_button"
+
+## Sync options
+- waitForAnimationToEnd:
+    timeout: 500
+- tapOn:
+    id: "account_setup_next_button"
+
+- waitForAnimationToEnd:
+    timeout: 500
