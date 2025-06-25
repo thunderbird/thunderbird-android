@@ -56,43 +56,6 @@ See [API Module](module-structure.md#-api-module) and
 Thunderbird for Android uses **Clean Architecture** with three main layers (UI, domain, and data) to break down complex
 feature implementation into manageable components. Each layer has a specific responsibility:
 
-#### 🖼️ UI Layer (Presentation)
-
-The UI layer is responsible for displaying data to the user and handling user interactions.
-
-**Key Components:**
-- **🎨 [Compose UI](ui-architecture.md#-screens)**: Screen components built with Jetpack Compose
-- **🧠 [ViewModels](ui-architecture.md#-viewmodel)**: Manage UI state and handle UI events
-- **📊 [UI State](ui-architecture.md#-state)**: Immutable data classes representing the UI state
-- **🎮 [Events](ui-architecture.md#-events)**: User interactions or system events that trigger state changes
-- **🔔 [Effects](ui-architecture.md#effects)**: One-time side effects like navigation or showing messages
-
-> [!NOTE]
-> **What is Immutability?**
->
-> Immutability means that once an object is created, it cannot be changed. Instead of modifying existing objects, new objects are created with the desired changes. In the context of UI state, this means that each state object represents a complete snapshot of the UI at a specific point in time.
->
-> **Why is Immutability Important?**
->
-> Immutability provides several benefits:
-> - **Predictability**: With immutable state, the UI can only change when a new state object is provided, making the flow of data more predictable and easier to reason about.
-> - **Debugging**: Each state change creates a new state object, making it easier to track changes and debug issues by comparing state objects.
-> - **Concurrency**: Immutable objects are thread-safe by nature, eliminating many concurrency issues.
-> - **Performance**: While creating new objects might seem inefficient, modern frameworks optimize this process, and the benefits of immutability often outweigh the costs.
-> - **Time-travel debugging**: Immutability enables storing previous states, allowing developers to "time travel" back to previous application states during debugging.
-
-**Pattern: Model-View-Intent (MVI)**
-
-> [!NOTE]
-> While we refer to the pattern as MVI (Model-View-Intent), our implementation uses a slightly modified version:
-> - We use "Events" instead of "Intents" for user interactions
-> - We use "Actions" to represent use case calls from ViewModels to the domain layer
-
-- **📋 Model**: UI state representing the current state of the screen
-- **👁️ View**: Compose UI that renders the state
-- **🎮 Event**: User interactions that trigger state changes (equivalent to "Intent" in standard MVI)
-- **🔔 Effect**: One-time side effects like navigation or notifications
-
 ```mermaid
 graph TD
     subgraph UI[UI Layer]
@@ -135,48 +98,23 @@ graph TD
     class DATA_SOURCE,API,DB data_class
 ```
 
-##### 🔄 Model-View-Intent (MVI)
+#### 🖼️ UI Layer (Presentation)
 
-The UI layer follows the Model-View-Intent (MVI) pattern (with our Events/Actions adaptation as noted above), which provides a unidirectional data flow and clear separation between UI state and UI logic.
+The UI layer is responsible for displaying data to the user and handling user interactions.
 
-```mermaid
-graph LR
-    subgraph UI[UI Layer]
-        VIEW[View]
-        VIEW_MODEL[ViewModel]
-    end
-    
-    subgraph DOMAIN[Domain Layer]
-        USE_CASE[Use Cases]
-    end
-    
-    VIEW --> |Events| VIEW_MODEL
-    VIEW_MODEL --> |State| VIEW
-    VIEW_MODEL --> |Actions| USE_CASE
-    USE_CASE --> |Results| VIEW_MODEL
+**Key Components:**
+- **🎨 [Compose UI](ui-architecture.md#-screens)**: Screen components built with Jetpack Compose
+- **🧠 [ViewModels](ui-architecture.md#-viewmodel)**: Manage UI state and handle UI events
+- **📊 [UI State](ui-architecture.md#-state)**: Immutable data classes representing the UI state
+- **🎮 [Events](ui-architecture.md#-events)**: User interactions or system events that trigger state changes
+- **🔔 [Effects](ui-architecture.md#effects)**: One-time side effects like navigation or showing messages
 
-    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
-    classDef view fill:#7fd3e0,stroke:#000000,color:#000000
-    classDef view_model fill:#cc99ff,stroke:#000000,color:#000000
-    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
-    classDef use_case fill:#99ffcc,stroke:#000000,color:#000000
+**Pattern: Model-View-Intent (MVI)**
 
-    linkStyle default stroke:#999,stroke-width:2px
-
-    class UI ui_layer
-    class VIEW view
-    class VIEW_MODEL view_model
-    class DOMAIN domain_layer
-    class USE_CASE use_case
-```
-
-Key components:
-- **👁️ View**: Renders the UI based on the current state and sends user events to the ViewModel
-- **🧠 ViewModel**: Processes user events, converting them into actions and sending them to the Domain Layer. It also maps the results to a state and sends state updates to the UI.
-- **📊 [State](ui-architecture.md#-state)**: Immutable representation of the UI state. States are the single source of truth for the UI and represent everything that can be displayed on the screen.
-- **🎮 [Event](ui-architecture.md#-events)**: User interactions or system events that are passed to the ViewModel to be processed. Events trigger state changes or side effects.
-- **🔔 [Effect](ui-architecture.md#effects)**: One-time side effects that don't belong in the state, such as navigation actions, showing toasts, or playing sounds.
-- **⚡ Action**: Operations triggered by the ViewModel to interact with the domain layer.
+- **📋 Model**: UI state representing the current state of the screen
+- **👁️ View**: Compose UI that renders the state
+- **🎮 Event**: User interactions that trigger state changes (equivalent to "Intent" in standard MVI)
+- **🔔 Effect**: One-time side effects like navigation or notifications
 
 #### 🧠 Domain Layer (Business Logic)
 
@@ -267,11 +205,24 @@ graph TD
     class REPO_IMPL,RDS,LDS,MAPPER,DTO data_class
 ```
 
+### 🔄 Immutability
+
+Immutability means that once an object is created, it cannot be changed. Instead of modifying existing objects, new objects are created with the desired changes. In the context of UI state, this means that each state object represents a complete snapshot of the UI at a specific point in time.
+
+**Why is Immutability Important?**
+
+Immutability provides several benefits:
+- **Predictability**: With immutable state, the UI can only change when a new state object is provided, making the flow of data more predictable and easier to reason about.
+- **Debugging**: Each state change creates a new state object, making it easier to track changes and debug issues by comparing state objects.
+- **Concurrency**: Immutable objects are thread-safe by nature, eliminating many concurrency issues.
+- **Performance**: While creating new objects might seem inefficient, modern frameworks optimize this process, and the benefits of immutability often outweigh the costs.
+- **Time-travel debugging**: Immutability enables storing previous states, allowing developers to "time travel" back to previous application states during debugging.
+
 ## 🎨 UI Architecture
 
 The UI is built using Jetpack Compose with a component-based architecture following our modified Model-View-Intent (MVI) pattern. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.
 
-For detailed information about the UI architecture and theming, see the [UI Architecture](ui-architecture.md) and 
+For detailed information about the UI architecture and theming, see the [UI Architecture](ui-architecture.md) and
 [Theme System](theme-system.md) documents.
 
 ## 📱 Offline-First Approach
