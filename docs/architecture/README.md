@@ -271,7 +271,8 @@ graph TD
 
 The UI is built using Jetpack Compose with a component-based architecture following our modified Model-View-Intent (MVI) pattern. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.
 
-For detailed information about the UI architecture, see the [UI Architecture](ui-architecture.md) document.
+For detailed information about the UI architecture and theming, see the [UI Architecture](ui-architecture.md) and 
+[Theme System](theme-system.md) documents.
 
 ## 📱 Offline-First Approach
 
