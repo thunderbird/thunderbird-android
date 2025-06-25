@@ -1,0 +1,2 @@
+- Attach all images when sharing from gallery, not just the last
+- Show the full changelog when it contains special characters
