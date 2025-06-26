@@ -12,7 +12,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val uiModule = module {
-    single { HtmlSettingsProvider(get()) }
+    single { HtmlSettingsProvider(themeManager = get(), generalSettingsManager = get()) }
     single { DisplayHtmlUiFactory(get()) }
     single<MessagingControllerMailChecker> { get<MessagingController>() }
     factory(named("MessageView")) { get<DisplayHtmlUiFactory>().createForMessageView() }

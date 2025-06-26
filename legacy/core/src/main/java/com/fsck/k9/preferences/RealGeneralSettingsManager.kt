@@ -29,6 +29,7 @@ internal const val KEY_COLORIZE_MISSING_CONTACT_PICTURE = "colorizeMissingContac
 internal const val KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR = "isUseBackgroundAsUnreadIndicator"
 internal const val KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST = "showComposeButtonOnMessageList"
 internal const val KEY_THREAD_VIEW_ENABLED = "isThreadedViewEnabled"
+internal const val KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT = "messageViewFixedWidthFont"
 
 /**
  * Retrieve and modify general settings.
@@ -200,6 +201,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isThreadedViewEnabled = isThreadedViewEnabled).persist()
     }
 
+    override fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean) {
+        getSettings().copy(isUseMessageViewFixedWidthFont = isUseMessageViewFixedWidthFont).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -220,6 +225,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, settings.isUseBackgroundAsUnreadIndicator)
         editor.putBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, settings.isShowComposeButtonOnMessageList)
         editor.putBoolean(KEY_THREAD_VIEW_ENABLED, settings.isThreadedViewEnabled)
+        editor.putBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, settings.isUseMessageViewFixedWidthFont)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -255,6 +261,7 @@ internal class RealGeneralSettingsManager(
             isUseBackgroundAsUnreadIndicator = storage.getBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, false),
             isShowComposeButtonOnMessageList = storage.getBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, true),
             isThreadedViewEnabled = storage.getBoolean(KEY_THREAD_VIEW_ENABLED, true),
+            isUseMessageViewFixedWidthFont = storage.getBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, false),
         )
 
         updateSettingsFlow(settings)
