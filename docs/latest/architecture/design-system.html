@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>0004 - Naming Conventions for Interfaces and Their Implementations - Thunderbird for Android - Developer Documentation</title>
+        <title>Design System - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,36 +12,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="../../favicon.svg">
-        <link rel="shortcut icon" href="../../favicon.png">
-        <link rel="stylesheet" href="../../css/variables.css">
-        <link rel="stylesheet" href="../../css/general.css">
-        <link rel="stylesheet" href="../../css/chrome.css">
-        <link rel="stylesheet" href="../../css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../../assets/theme/last-changed.css">
-        <link rel="stylesheet" href="../../assets/theme/navigation.css">
-        <link rel="stylesheet" href="../../assets/theme/pagetoc.css">
+        <link rel="stylesheet" href="../assets/theme/last-changed.css">
+        <link rel="stylesheet" href="../assets/theme/navigation.css">
+        <link rel="stylesheet" href="../assets/theme/pagetoc.css">
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "../../";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="../../toc.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -105,7 +105,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -140,13 +140,13 @@
                     <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./architecture/adr/0004-naming-conventions-for-interfaces-and-their-implementations.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./architecture/design-system.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -242,62 +242,44 @@
 }
 
 </style>
-<h1 id="naming-conventions-for-interfaces-and-their-implementations"><a class="header" href="#naming-conventions-for-interfaces-and-their-implementations">Naming Conventions for Interfaces and Their Implementations</a></h1>
+<h1 id="-design-system"><a class="header" href="#-design-system">🎨 Design System</a></h1>
+<p>The design system is a collection of guidelines, principles, and tools that help teams create consistent and cohesive visual designs and user experiences. It is built using the Atomic Design Methodology.</p>
+<h2 id="-background"><a class="header" href="#-background">📚 Background</a></h2>
+<p><a href="https://developer.android.com/jetpack/compose" title="" target="_blank">Jetpack Compose</a> is a declarative UI toolkit for Android that provides a modern and efficient way to build UIs for Android apps. In this context, design systems and atomic design can help designers and developers create more scalable, maintainable, and reusable UIs.</p>
+<h3 id="-design-system-1"><a class="header" href="#-design-system-1">🧩 Design System</a></h3>
+<p>A design system is a collection of guidelines, principles, and tools that help teams create consistent and cohesive visual designs and user experiences.
+It typically includes a set of reusable components, such as icons, typography, color palettes, and layouts, that can be combined and customized to create new designs.</p>
+<p>The design system also provides documentation and resources for designers and developers to ensure that the designs are implemented consistently and efficiently across all platforms and devices.
+The goal of a design system is to streamline the design process, improve design quality, and maintain brand consistency.</p>
+<p>An example is Google’s <a href="https://m3.material.io/" title="" target="_blank">Material Design</a> that is used to develop cohesive apps.</p>
+<h3 id="-atomic-design"><a class="header" href="#-atomic-design">🧪 Atomic Design</a></h3>
+<p><img src="assets/atomic_design.svg" alt="Atomic design" /></p>
+<p>Atomic design is a methodology for creating user interfaces (UI) in a design system by breaking them down into smaller, reusable components.
+These components are classified into five categories based on their level of abstraction: <strong>atoms</strong>, <strong>molecules</strong>, <strong>organisms</strong>, <strong>templates</strong>, and <strong>pages</strong>.</p>
 <ul>
-<li>Pull Request: <a href="https://github.com/thunderbird/thunderbird-android/pull/7794" title="" target="_blank">#7794</a></li>
+<li><strong>Atoms</strong> are the smallest building blocks, such as buttons, labels, and input fields and could be combined to create more complex components.</li>
+<li><strong>Molecules</strong> are groups of atoms that work together, like search bars, forms or menus</li>
+<li><strong>Organisms</strong> are more complex components that combine molecules and atoms, such as headers or cards.</li>
+<li><strong>Templates</strong> are pages with placeholders for components</li>
+<li><strong>Pages</strong> are the final UI</li>
 </ul>
-<h2 id="status"><a class="header" href="#status">Status</a></h2>
+<p>By using atomic design, designers and developers can create more consistent and reusable UIs.
+This can save time and improve the overall quality, as well as facilitate collaboration between team members.</p>
+<h2 id="-acknowledgement"><a class="header" href="#-acknowledgement">📝 Acknowledgement</a></h2>
 <ul>
-<li><strong>Accepted</strong></li>
-</ul>
-<h2 id="context"><a class="header" href="#context">Context</a></h2>
-<p>When there’s an interface that has multiple implementations it’s often easy enough to give meaningful names to both the
-interface and the implementations (e.g. the interface <code>Backend</code> with the implementations <code>ImapBackend</code> and
-<code>Pop3Backend</code>). Naming becomes harder when the interface mainly exists to allow having isolated unit tests and the
-production code contains exactly one implementation of the interface.
-Prior to this ADR we didn’t have any naming guidelines and the names varied widely. Often when there was only one
-(production) implementation, the class name used one of the prefixes <code>Default</code>, <code>Real</code>, or <code>K9</code>. None of these had any
-special meaning and it wasn’t clear which one to pick when creating a new interface/class pair.</p>
-<h2 id="decision"><a class="header" href="#decision">Decision</a></h2>
-<p>We’ll be using the following guidelines for naming interfaces and their implementation classes:</p>
-<ol>
-<li><strong>Interface Naming:</strong> Name interfaces as if they were classes, using a clear and descriptive name. Avoid using the
-“IInterface” pattern.</li>
-<li><strong>Implementation Naming:</strong> Use a prefix that clearly indicates the relationship between the interface and
-implementation, such as <code>DatabaseMessageStore</code> or <code>InMemoryMessageStore</code> for the <code>MessageStore</code> interface.</li>
-<li><strong>Descriptive Names:</strong> Use descriptive names for interfaces and implementing classes that accurately reflect their
-purpose and functionality.</li>
-<li><strong>Platform-specific Implementations:</strong> Use the platform name as a prefix for interface implementations specific to
-that platform, e.g. <code>AndroidPowerManager</code>.</li>
-<li><strong>App-specific Implementations:</strong> Use the prefix <code>K9</code> for K-9 Mail and <code>Tb</code> for Thunderbird when app-specific
-implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppNameProvider</code>.</li>
-<li><strong>Flexibility:</strong> If no brief descriptive name fits and there is only one production implementation, use the prefix
-<code>Default</code>, like <code>DefaultImapFolder</code>.</li>
-</ol>
-<h2 id="consequences"><a class="header" href="#consequences">Consequences</a></h2>
-<ul>
-<li><strong>Positive Consequences</strong>
-<ul>
-<li>Improved code readability and maintainability through consistent naming.</li>
-<li>Reduced confusion and misunderstandings by using clear and descriptive names.</li>
-</ul>
-</li>
-<li><strong>Negative Consequences</strong>
-<ul>
-<li>Initial effort is required to rename existing classes that do not follow these naming conventions.</li>
-</ul>
-</li>
+<li><a href="https://atomicdesign.bradfrost.com/chapter-2/" title="" target="_blank">Atomic Design Methodology | Atomic Design by Brad Frost</a></li>
+<li><a href="https://www.wearemobilefirst.com/blog/atomic-design" title="" target="_blank">Atomic Design: Getting Started | Blog | We Are Mobile First</a></li>
 </ul>
 <footer id="last-change">Last change: 2025-06-26, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/3b4ef25">3b4ef25</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../architecture/adr/0003-switch-test-assertions-from-truth-to-assertk.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../architecture/theme-system.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../../architecture/adr/0005-central-project-configuration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../architecture/user-flows.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -307,11 +289,11 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../architecture/adr/0003-switch-test-assertions-from-truth-to-assertk.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../architecture/theme-system.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../../architecture/adr/0005-central-project-configuration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../architecture/user-flows.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -326,19 +308,19 @@ implementations are needed, e.g. <code>K9AppNameProvider</code> and <code>TbAppN
         </script>
 
 
-        <script src="../../elasticlunr.min.js"></script>
-        <script src="../../mark.min.js"></script>
-        <script src="../../searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="../../clipboard.min.js"></script>
-        <script src="../../highlight.js"></script>
-        <script src="../../book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="../../assets/theme/mermaid.min.js"></script>
-        <script src="../../assets/theme/mermaid-init.js"></script>
-        <script src="../../assets/theme/navigation.js"></script>
-        <script src="../../assets/theme/pagetoc.js"></script>
+        <script src="../assets/theme/mermaid.min.js"></script>
+        <script src="../assets/theme/mermaid-init.js"></script>
+        <script src="../assets/theme/navigation.js"></script>
+        <script src="../assets/theme/pagetoc.js"></script>
 
 
     </div>
