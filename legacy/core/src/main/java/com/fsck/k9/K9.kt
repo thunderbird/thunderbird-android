@@ -197,9 +197,6 @@ object K9 : KoinComponent {
     @JvmStatic
     var isShowAccountSelector = true
 
-    @JvmStatic
-    var isAutoFitWidth: Boolean = false
-
     var isQuietTimeEnabled = false
     var isNotificationDuringQuietTimeEnabled = true
     var quietTimeStarts: String? = null
@@ -310,8 +307,6 @@ object K9 : KoinComponent {
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
-        isAutoFitWidth = storage.getBoolean("autofitWidth", true)
-
         isQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false)
         isNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true)
         quietTimeStarts = storage.getStringOrDefault("quietTimeStarts", "21:00")
@@ -390,7 +385,6 @@ object K9 : KoinComponent {
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
-        editor.putBoolean("autofitWidth", isAutoFitWidth)
         editor.putBoolean("quietTimeEnabled", isQuietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putString("quietTimeStarts", quietTimeStarts)

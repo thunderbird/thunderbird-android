@@ -30,6 +30,7 @@ internal const val KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR = "isUseBackgroundAsUn
 internal const val KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST = "showComposeButtonOnMessageList"
 internal const val KEY_THREAD_VIEW_ENABLED = "isThreadedViewEnabled"
 internal const val KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT = "messageViewFixedWidthFont"
+internal const val KEY_AUTO_FIT_WIDTH = "autofitWidth"
 
 /**
  * Retrieve and modify general settings.
@@ -205,6 +206,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isUseMessageViewFixedWidthFont = isUseMessageViewFixedWidthFont).persist()
     }
 
+    override fun setIsAutoFitWidth(isAutoFitWidth: Boolean) {
+        getSettings().copy(isAutoFitWidth = isAutoFitWidth).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -226,6 +231,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, settings.isShowComposeButtonOnMessageList)
         editor.putBoolean(KEY_THREAD_VIEW_ENABLED, settings.isThreadedViewEnabled)
         editor.putBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, settings.isUseMessageViewFixedWidthFont)
+        editor.putBoolean(KEY_AUTO_FIT_WIDTH, settings.isAutoFitWidth)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -262,6 +268,7 @@ internal class RealGeneralSettingsManager(
             isShowComposeButtonOnMessageList = storage.getBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, true),
             isThreadedViewEnabled = storage.getBoolean(KEY_THREAD_VIEW_ENABLED, true),
             isUseMessageViewFixedWidthFont = storage.getBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, false),
+            isAutoFitWidth = storage.getBoolean(KEY_AUTO_FIT_WIDTH, true),
         )
 
         updateSettingsFlow(settings)
