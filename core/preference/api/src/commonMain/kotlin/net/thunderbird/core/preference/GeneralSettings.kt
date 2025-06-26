@@ -28,6 +28,7 @@ data class GeneralSettings(
     val isMessageListSenderAboveSubject: Boolean,
     val isShowContactName: Boolean,
     val isShowContactPicture: Boolean,
+    val isUseLeftRightGestureNavigation: Boolean,
     val isChangeContactNameColor: Boolean,
     val isColorizeMissingContactPictures: Boolean,
     val isUseBackgroundAsUnreadIndicator: Boolean,

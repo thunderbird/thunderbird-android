@@ -894,6 +894,8 @@
     <string name="volume_navigation_summary">Navegue entre as mensagens usando os botões de volume</string>
     <string name="save_attachment_action">Salvar anexo</string>
     <string name="volume_navigation_title_short">Navegação com o botão de volume</string>
+    <string name="left_right_gestures_title_short">Navegação com gestos para esquerda e direita</string>
+    <string name="left_right_gestures_summary">Navegue entre as mensagens usando os gestos para esquerda e direita</string>
     <string name="expand_content_description">Expandir</string>
     <string name="empty_spam_action">Spam Vazio</string>
     <string name="dialog_confirm_empty_spam_title">Confirmar esvaziamento do spam</string>

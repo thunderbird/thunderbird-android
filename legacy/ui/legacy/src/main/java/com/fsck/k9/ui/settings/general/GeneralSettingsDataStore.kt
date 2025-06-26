@@ -39,7 +39,6 @@ class GeneralSettingsDataStore(
 
             "messagelist_background_as_unread_indicator" -> generalSettingsManager.getSettings()
                 .isUseBackgroundAsUnreadIndicator
-
             "show_compose_button" -> generalSettingsManager.getSettings().isShowComposeButtonOnMessageList
             "threaded_view" -> generalSettingsManager.getSettings().isThreadedViewEnabled
             "messageview_fixedwidth_font" -> generalSettingsManager.getSettings().isUseMessageViewFixedWidthFont
@@ -52,6 +51,7 @@ class GeneralSettingsDataStore(
             "sync_debug_logging" -> K9.isSyncLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation
+            "left_right_gesture_navigation" -> generalSettingsManager.getSettings().isUseLeftRightGestureNavigation
             "enable_telemetry" -> K9.isTelemetryEnabled
             else -> defValue
         }
@@ -92,6 +92,7 @@ class GeneralSettingsDataStore(
             "sync_debug_logging" -> K9.isSyncLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
+            "left_right_gesture_navigation" -> setIsUseLeftRightGestureNavigation(isUseLeftRightGestureNavigation = value)
             "enable_telemetry" -> setTelemetryEnabled(value)
             else -> return
         }
@@ -351,6 +352,11 @@ class GeneralSettingsDataStore(
         generalSettingsManager.setIsUseMessageViewFixedWidthFont(
             isUseMessageViewFixedWidthFont = isUseMessageViewFixedWidthFont,
         )
+    }
+
+    private fun setIsUseLeftRightGestureNavigation(isUseLeftRightGestureNavigation: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsUseLeftRightGestureNavigation(isUseLeftRightGestureNavigation)
     }
 
     private fun setQuietTimeStarts(quietTimeStarts: String) {

@@ -659,6 +659,9 @@
     <string name="volume_navigation_title_short">Volume key navigation</string>
     <string name="volume_navigation_summary">Navigate between messages using the volume keys in message view</string>
 
+    <string name="left_right_gestures_title_short">Left and right gestures navigation</string>
+    <string name="left_right_gestures_summary">Navigate between messages using left and right gestures in message view</string>
+
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
     <string name="show_starred_count_title">Show starred count</string>
 

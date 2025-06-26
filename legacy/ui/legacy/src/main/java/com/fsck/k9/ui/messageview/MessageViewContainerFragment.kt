@@ -7,21 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import app.k9mail.legacy.message.controller.MessageReference
+import com.fsck.k9.K9
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MessageListViewModel
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * A fragment that uses [ViewPager2] to allow the user to swipe between messages.
  *
  * Individual messages are displayed using a [MessageViewFragment].
  */
-class MessageViewContainerFragment : Fragment() {
+class MessageViewContainerFragment: Fragment() {
     var isActive: Boolean = false
         set(value) {
             field = value
@@ -29,6 +32,8 @@ class MessageViewContainerFragment : Fragment() {
         }
 
     private var showAccountChip: Boolean = true
+
+    private var isUseLeftRightGestureNavigation: Boolean = true
 
     lateinit var messageReference: MessageReference
         private set
@@ -68,6 +73,8 @@ class MessageViewContainerFragment : Fragment() {
 
         showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
 
+        isUseLeftRightGestureNavigation = arguments?.getBoolean(ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION) ?: isUseLeftRightGestureNavigation
+
         adapter = MessageViewContainerAdapter(this, showAccountChip)
     }
 
@@ -88,7 +95,7 @@ class MessageViewContainerFragment : Fragment() {
         val pageMargin = resources.getDimension(R.dimen.message_view_pager_page_margin).toInt()
 
         viewPager = view.findViewById(R.id.message_viewpager)
-        viewPager.isUserInputEnabled = true
+        viewPager.isUserInputEnabled = isUseLeftRightGestureNavigation
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         viewPager.setPageTransformer(MarginPageTransformer(pageMargin))
         viewPager.registerOnPageChangeCallback(
@@ -108,6 +115,17 @@ class MessageViewContainerFragment : Fragment() {
                 }
             },
         )
+
+        val recyclerView = viewPager.getChildAt(0) as? RecyclerView
+        recyclerView?.let { rv ->
+            // Reduce horizontal fling speed to make page swipes less sensitive and prevent accidental swipes.
+            rv.onFlingListener = object : RecyclerView.OnFlingListener() {
+                override fun onFling(velocityX: Int, velocityY: Int): Boolean {
+                    val adjustedVelocityX = (velocityX * 0.5f).toInt().coerceIn(-4000, 4000)
+                    return rv.fling(adjustedVelocityX, velocityY)
+                }
+            }
+        }
 
         return view
     }
@@ -296,10 +314,17 @@ class MessageViewContainerFragment : Fragment() {
 
         private const val STATE_MESSAGE_REFERENCE = "messageReference"
 
-        fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewContainerFragment {
+        private const val ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION = "isUseLeftRightGestureNavigation"
+
+        fun newInstance(
+            reference: MessageReference,
+            showAccountChip: Boolean,
+            isUseLeftRightGestureNavigation: Boolean
+        ): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
                 ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
+                ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION to isUseLeftRightGestureNavigation
             )
         }
     }
