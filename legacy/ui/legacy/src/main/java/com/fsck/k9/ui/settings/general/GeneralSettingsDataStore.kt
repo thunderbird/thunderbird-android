@@ -42,7 +42,7 @@ class GeneralSettingsDataStore(
 
             "show_compose_button" -> generalSettingsManager.getSettings().isShowComposeButtonOnMessageList
             "threaded_view" -> generalSettingsManager.getSettings().isThreadedViewEnabled
-            "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
+            "messageview_fixedwidth_font" -> generalSettingsManager.getSettings().isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
             "quiet_time_enabled" -> K9.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
@@ -82,7 +82,7 @@ class GeneralSettingsDataStore(
 
             "show_compose_button" -> setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList = value)
             "threaded_view" -> setIsThreadedViewEnabled(isThreadedViewEnabled = value)
-            "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
+            "messageview_fixedwidth_font" -> setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont = value)
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
             "quiet_time_enabled" -> K9.isQuietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
@@ -343,6 +343,13 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.setIsThreadedViewEnabled(
             isThreadedViewEnabled = isThreadedViewEnabled,
+        )
+    }
+
+    private fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsUseMessageViewFixedWidthFont(
+            isUseMessageViewFixedWidthFont = isUseMessageViewFixedWidthFont,
         )
     }
 

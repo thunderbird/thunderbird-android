@@ -31,6 +31,7 @@ data class GeneralSettings(
     val isUseBackgroundAsUnreadIndicator: Boolean,
     val isShowComposeButtonOnMessageList: Boolean,
     val isThreadedViewEnabled: Boolean,
+    val isUseMessageViewFixedWidthFont: Boolean,
 )
 
 enum class BackgroundSync {

@@ -30,4 +30,5 @@ interface GeneralSettingsManager {
     fun setIsUseBackgroundAsUnreadIndicator(isUseBackgroundAsUnreadIndicator: Boolean)
     fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean)
     fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean)
+    fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean)
 }

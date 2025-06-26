@@ -58,6 +58,7 @@ class MessageHelperTest : RobolectricTest() {
                 isUseBackgroundAsUnreadIndicator = false,
                 isShowComposeButtonOnMessageList = false,
                 isThreadedViewEnabled = false,
+                isUseMessageViewFixedWidthFont = false,
             ),
         )
     }
