@@ -48,6 +48,7 @@ class BuildSwipeActionsTest {
             isUseBackgroundAsUnreadIndicator = false,
             isShowComposeButtonOnMessageList = false,
             isThreadedViewEnabled = false,
+            isUseMessageViewFixedWidthFont = false,
         )
 
     @Test
@@ -409,6 +410,7 @@ private class FakeGeneralSettingsManager(
     override fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean) = error(
         "not implemented",
     )
+
     override fun setIsUseBackgroundAsUnreadIndicator(
         isUseBackgroundAsUnreadIndicator: Boolean,
     ) = error("not implemented")
@@ -418,6 +420,10 @@ private class FakeGeneralSettingsManager(
     )
 
     override fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean) = error(
+        "not implemented",
+    )
+
+    override fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean) = error(
         "not implemented",
     )
 }
