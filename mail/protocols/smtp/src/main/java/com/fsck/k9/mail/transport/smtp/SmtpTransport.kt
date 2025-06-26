@@ -29,7 +29,6 @@ import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.net.Inet6Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -100,7 +99,10 @@ class SmtpTransport(
 
             readGreeting()
 
-            val helloName = buildHostnameToReport()
+            // We use "ehlo.thunderbird.net" for privacy reasons,
+            // see https://ehlo.thunderbird.net/
+            val helloName = "ehlo.thunderbird.net"
+
             var extensions = sendHello(helloName)
 
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME")
@@ -256,18 +258,6 @@ class SmtpTransport(
         if (K9MailLib.isDebug()) {
             val omitText = sensitive && !K9MailLib.isDebugSensitive()
             Log.v("%s", smtpResponse.toLogString(omitText, linePrefix = "SMTP <<< "))
-        }
-    }
-
-    private fun buildHostnameToReport(): String {
-        val localAddress = socket!!.localAddress
-
-        // We use local IP statically for privacy reasons,
-        // see https://github.com/thunderbird/thunderbird-android/pull/3798
-        return if (localAddress is Inet6Address) {
-            "[IPv6:::1]"
-        } else {
-            "[127.0.0.1]"
         }
     }
 
