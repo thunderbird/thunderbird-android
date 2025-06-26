@@ -64,8 +64,6 @@ class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
         ) to OAuthConfiguration(
             clientId = "e647013a-ada4-4114-b419-e43d250f99c5",
             scopes = listOf(
-                "openid",
-                "email",
                 "https://outlook.office.com/IMAP.AccessAsUser.All",
                 "https://outlook.office.com/SMTP.Send",
                 "offline_access",
