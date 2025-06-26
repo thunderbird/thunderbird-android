@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
@@ -108,6 +109,17 @@ class MessageViewContainerFragment : Fragment() {
                 }
             },
         )
+
+        val recyclerView = viewPager.getChildAt(0) as? RecyclerView
+        recyclerView?.let { rv ->
+            // Reduce horizontal fling speed to make page swipes less sensitive and prevent accidental swipes.
+            rv.onFlingListener = object : RecyclerView.OnFlingListener() {
+                override fun onFling(velocityX: Int, velocityY: Int): Boolean {
+                    val adjustedVelocityX = (velocityX * 0.5f).toInt().coerceIn(-4000, 4000)
+                    return rv.fling(adjustedVelocityX, velocityY)
+                }
+            }
+        }
 
         return view
     }
