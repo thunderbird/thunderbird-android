@@ -551,27 +551,20 @@ class SmtpTransport(
     }
 
     private fun saslOAuth(method: OAuthMethod) {
-        checkNotNull(oauthTokenProvider) {
-            "Can't perform saslOAuth with a null OAuthTokenProvider."
-        }
         retryOAuthWithNewToken = true
-
-        val primaryEmail = oauthTokenProvider.primaryEmail
-        val primaryUsername = primaryEmail ?: username
-
         try {
-            attempOAuth(method, primaryUsername)
+            attempOAuth(method, username)
         } catch (negativeResponse: NegativeSmtpReplyException) {
             if (negativeResponse.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 throw negativeResponse
             }
 
-            oauthTokenProvider.invalidateToken()
+            oauthTokenProvider!!.invalidateToken()
 
             if (!retryOAuthWithNewToken) {
                 handlePermanentOAuthFailure(method, negativeResponse)
             } else {
-                handleTemporaryOAuthFailure(method, primaryUsername, negativeResponse)
+                handleTemporaryOAuthFailure(method, username, negativeResponse)
             }
         }
     }
@@ -612,7 +605,7 @@ class SmtpTransport(
     }
 
     private fun attempOAuth(method: OAuthMethod, username: String) {
-        val token = oauthTokenProvider!!.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT)
+        val token = oauthTokenProvider!!.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
         val authString = method.buildInitialClientResponse(username, token)
 
         val response = executeSensitiveCommand("%s %s", method.command, authString)
