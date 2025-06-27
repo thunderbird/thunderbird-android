@@ -2,13 +2,16 @@ package com.fsck.k9.notification
 
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Manages notifications for new messages
  */
-internal class NewMailNotificationManager(
+internal class NewMailNotificationManager
+@OptIn(ExperimentalTime::class)
+constructor(
     private val contentCreator: NotificationContentCreator,
     private val notificationRepository: NotificationRepository,
     private val baseNotificationDataCreator: BaseNotificationDataCreator,
@@ -134,5 +137,6 @@ internal class NewMailNotificationManager(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun now(): Long = clock.now().toEpochMilliseconds()
 }

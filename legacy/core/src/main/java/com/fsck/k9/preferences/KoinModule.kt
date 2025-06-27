@@ -1,6 +1,7 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
@@ -76,6 +77,7 @@ val preferencesModule = module {
     }
 
     factory {
+        @OptIn(ExperimentalTime::class)
         AccountSettingsWriter(
             preferences = get(),
             localFoldersCreator = get(),

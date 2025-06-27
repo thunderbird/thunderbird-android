@@ -46,7 +46,7 @@ import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import net.thunderbird.feature.search.sql.SqlWhereClause;
-import kotlinx.datetime.Clock;
+import kotlin.time.Clock;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.feature.search.LocalMessageSearch;
 import net.thunderbird.feature.search.api.SearchAttribute;
