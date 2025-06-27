@@ -45,7 +45,7 @@ class SmtpServerSettingsValidatorTest {
     fun `valid server settings with password should return Success`() {
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
-            expect("EHLO [127.0.0.1]")
+            expect("EHLO ehlo.thunderbird.net")
             output("250-localhost Hello client.localhost")
             output("250-ENHANCEDSTATUSCODES")
             output("250-AUTH PLAIN LOGIN")
@@ -85,7 +85,7 @@ class SmtpServerSettingsValidatorTest {
         )
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
-            expect("EHLO [127.0.0.1]")
+            expect("EHLO ehlo.thunderbird.net")
             output("250-localhost Hello client.localhost")
             output("250-ENHANCEDSTATUSCODES")
             output("250-AUTH PLAIN LOGIN OAUTHBEARER")
@@ -119,7 +119,7 @@ class SmtpServerSettingsValidatorTest {
     fun `authentication error should return AuthenticationError`() {
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
-            expect("EHLO [127.0.0.1]")
+            expect("EHLO ehlo.thunderbird.net")
             output("250-localhost Hello client.localhost")
             output("250-ENHANCEDSTATUSCODES")
             output("250-AUTH PLAIN LOGIN")
@@ -178,7 +178,7 @@ class SmtpServerSettingsValidatorTest {
     fun `missing capability should return MissingServerCapabilityError`() {
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
-            expect("EHLO [127.0.0.1]")
+            expect("EHLO ehlo.thunderbird.net")
             output("250-localhost Hello 127.0.0.1")
             output("250 HELP")
             expect("QUIT")
@@ -209,7 +209,7 @@ class SmtpServerSettingsValidatorTest {
         trustedSocketFactory.injectClientCertificateError(ClientCertificateError.RetrievalFailure)
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
-            expect("EHLO [127.0.0.1]")
+            expect("EHLO ehlo.thunderbird.net")
             output("250-localhost Hello 127.0.0.1")
             output("250-STARTTLS")
             output("250 HELP")
@@ -242,7 +242,7 @@ class SmtpServerSettingsValidatorTest {
         trustedSocketFactory.injectClientCertificateError(ClientCertificateError.CertificateExpired)
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
-            expect("EHLO [127.0.0.1]")
+            expect("EHLO ehlo.thunderbird.net")
             output("250-localhost Hello 127.0.0.1")
             output("250-STARTTLS")
             output("250 HELP")
@@ -275,7 +275,7 @@ class SmtpServerSettingsValidatorTest {
         fakeTrustManager.shouldThrowException = true
         val server = MockSmtpServer().apply {
             output("220 localhost Simple Mail Transfer Service Ready")
-            expect("EHLO [127.0.0.1]")
+            expect("EHLO ehlo.thunderbird.net")
             output("250-localhost Hello 127.0.0.1")
             output("250-STARTTLS")
             output("250 HELP")
