@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
@@ -29,6 +28,7 @@ import app.k9mail.feature.account.setup.domain.entity.EmailCheckFrequency
 import app.k9mail.feature.account.setup.domain.entity.EmailDisplayCount
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract.State
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 
 @Suppress("LongMethod")
 @Composable
@@ -43,7 +43,7 @@ internal fun SyncOptionsContent(
 
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTag("SyncOptionsContent")
+            .testTagAsResourceId("SyncOptionsContent")
             .consumeWindowInsets(contentPadding)
             .padding(contentPadding)
             .then(modifier),

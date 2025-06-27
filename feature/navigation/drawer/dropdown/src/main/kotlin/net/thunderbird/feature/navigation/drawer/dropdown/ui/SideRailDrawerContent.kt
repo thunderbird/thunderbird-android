@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
@@ -36,7 +36,7 @@ internal fun SideRailDrawerContent(
             .windowInsetsPadding(WindowInsets.statusBars)
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
-            .testTag("DrawerContent"),
+            .testTagAsResourceId("DrawerContent"),
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
         Column {
