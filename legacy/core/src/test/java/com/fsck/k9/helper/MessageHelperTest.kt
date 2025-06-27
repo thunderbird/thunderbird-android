@@ -59,6 +59,7 @@ class MessageHelperTest : RobolectricTest() {
                 isShowComposeButtonOnMessageList = false,
                 isThreadedViewEnabled = false,
                 isUseMessageViewFixedWidthFont = false,
+                isAutoFitWidth = false,
             ),
         )
     }

@@ -169,6 +169,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     isShowComposeButtonOnMessageList = false,
                     isThreadedViewEnabled = false,
                     isUseMessageViewFixedWidthFont = false,
+                    isAutoFitWidth = false,
                 )
             },
         )

@@ -49,6 +49,7 @@ class BuildSwipeActionsTest {
             isShowComposeButtonOnMessageList = false,
             isThreadedViewEnabled = false,
             isUseMessageViewFixedWidthFont = false,
+            isAutoFitWidth = false,
         )
 
     @Test
@@ -424,6 +425,10 @@ private class FakeGeneralSettingsManager(
     )
 
     override fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean) = error(
+        "not implemented",
+    )
+
+    override fun setIsAutoFitWidth(isAutoFitWidth: Boolean) = error(
         "not implemented",
     )
 }

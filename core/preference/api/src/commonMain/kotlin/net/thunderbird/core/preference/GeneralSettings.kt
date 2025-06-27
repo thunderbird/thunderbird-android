@@ -32,6 +32,7 @@ data class GeneralSettings(
     val isShowComposeButtonOnMessageList: Boolean,
     val isThreadedViewEnabled: Boolean,
     val isUseMessageViewFixedWidthFont: Boolean,
+    val isAutoFitWidth: Boolean,
 )
 
 enum class BackgroundSync {

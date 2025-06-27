@@ -8,7 +8,7 @@ import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
 import org.koin.dsl.module
 
 val viewModule = module {
-    single { WebViewConfigProvider(themeManager = get()) }
+    single { WebViewConfigProvider(themeManager = get(), generalSettingsManager = get()) }
     factory { RelativeDateTimeFormatter(context = get(), clock = get()) }
     factory { ReplyToParser() }
     factory { ReplyActionStrategy(replyRoParser = get()) }

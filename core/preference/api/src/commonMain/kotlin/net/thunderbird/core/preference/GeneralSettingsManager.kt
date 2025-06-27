@@ -31,4 +31,5 @@ interface GeneralSettingsManager {
     fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean)
     fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean)
     fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean)
+    fun setIsAutoFitWidth(isAutoFitWidth: Boolean)
 }
