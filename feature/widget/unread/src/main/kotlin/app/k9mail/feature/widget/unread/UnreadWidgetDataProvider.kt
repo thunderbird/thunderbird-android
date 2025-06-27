@@ -11,7 +11,7 @@ import com.fsck.k9.activity.MessageList
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
 
 class UnreadWidgetDataProvider(
@@ -92,7 +92,7 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getClickIntentForFolder(account: LegacyAccount, folderId: Long): Intent {
-        val search = LocalSearch()
+        val search = LocalMessageSearch()
         search.addAllowedFolder(folderId)
         search.addAccountUuid(account.uuid)
 

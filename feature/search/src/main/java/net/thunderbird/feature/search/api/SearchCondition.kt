@@ -20,5 +20,5 @@ data class SearchCondition(
     val attribute: SearchAttribute,
 
     @JvmField
-    val value: String?,
+    val value: String,
 ) : Parcelable

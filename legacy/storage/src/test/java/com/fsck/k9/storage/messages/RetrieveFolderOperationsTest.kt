@@ -16,9 +16,9 @@ import com.fsck.k9.mailstore.toDatabaseFolderType
 import com.fsck.k9.storage.RobolectricTest
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchField
 import org.junit.Before
 import org.junit.Test
 
@@ -504,9 +504,9 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
         assertThat(result).isEqualTo(MoreMessages.TRUE)
     }
 
-    private val unifiedInboxConditions = LocalSearch().apply {
+    private val unifiedInboxConditions = LocalMessageSearch().apply {
         and(
-            SearchField.INTEGRATE,
+            MessageSearchField.INTEGRATE,
             "1",
             SearchAttribute.EQUALS,
         )

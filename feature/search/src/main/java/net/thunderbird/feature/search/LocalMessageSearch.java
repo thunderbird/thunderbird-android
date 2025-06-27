@@ -11,8 +11,8 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import net.thunderbird.feature.search.api.SearchAttribute;
 import net.thunderbird.feature.search.api.SearchCondition;
-import net.thunderbird.feature.search.api.SearchField;
-import net.thunderbird.feature.search.api.SearchSpecification;
+import net.thunderbird.feature.search.api.MessageSearchField;
+import net.thunderbird.feature.search.api.MessageSearchSpecification;
 
 
 /**
@@ -28,15 +28,15 @@ import net.thunderbird.feature.search.api.SearchSpecification;
  *
  */
 
-public class LocalSearch implements SearchSpecification {
+public class LocalMessageSearch implements MessageSearchSpecification {
 
     private String id;
     private boolean mManualSearch = false;
 
     // since the uuid isn't in the message table it's not in the tree neither
     private Set<String> mAccountUuids = new HashSet<>();
-    private ConditionsTreeNode mConditions = null;
-    private Set<ConditionsTreeNode> mLeafSet = new HashSet<>();
+    private SearchConditionTreeNode mConditions = null;
+    private Set<SearchConditionTreeNode> mLeafSet = new HashSet<>();
 
 
     ///////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ public class LocalSearch implements SearchSpecification {
      * Use this only if the search won't be saved. Saved searches need
      * a name!
      */
-    public LocalSearch() {}
+    public LocalMessageSearch() {}
 
     ///////////////////////////////////////////////////////////////
     // Public manipulation methods
@@ -79,7 +79,7 @@ public class LocalSearch implements SearchSpecification {
      * @param value Value to look for.
      * @param attribute Attribute to use when matching.
      */
-    public void and(SearchField field, String value, SearchAttribute attribute) {
+    public void and(MessageSearchField field, String value, SearchAttribute attribute) {
         and(new SearchCondition(field, attribute, value));
     }
 
@@ -90,8 +90,8 @@ public class LocalSearch implements SearchSpecification {
      * @param condition Condition to 'AND' with.
      * @return New top AND node, new root.
      */
-    public ConditionsTreeNode and(SearchCondition condition) {
-        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+    public SearchConditionTreeNode and(SearchCondition condition) {
+        SearchConditionTreeNode tmp = new SearchConditionTreeNode.Builder(condition).build();
         return and(tmp);
     }
 
@@ -102,7 +102,7 @@ public class LocalSearch implements SearchSpecification {
      * @param node Node to 'AND' with.
      * @return New top AND node, new root.
      */
-    public ConditionsTreeNode and(ConditionsTreeNode node) {
+    public SearchConditionTreeNode and(SearchConditionTreeNode node) {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -110,7 +110,10 @@ public class LocalSearch implements SearchSpecification {
             return node;
         }
 
-        mConditions = mConditions.and(node);
+        mConditions = new SearchConditionTreeNode.Builder(mConditions)
+                .and(node)
+                .build();
+
         return mConditions;
     }
 
@@ -121,8 +124,8 @@ public class LocalSearch implements SearchSpecification {
      * @param condition Condition to 'OR' with.
      * @return New top OR node, new root.
      */
-    public ConditionsTreeNode or(SearchCondition condition) {
-        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+    public SearchConditionTreeNode or(SearchCondition condition) {
+        SearchConditionTreeNode tmp = new SearchConditionTreeNode.Builder(condition).build();
         return or(tmp);
     }
 
@@ -133,7 +136,7 @@ public class LocalSearch implements SearchSpecification {
      * @param node Node to 'OR' with.
      * @return New top OR node, new root.
      */
-    public ConditionsTreeNode or(ConditionsTreeNode node) {
+    public SearchConditionTreeNode or(SearchConditionTreeNode node) {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -141,7 +144,10 @@ public class LocalSearch implements SearchSpecification {
             return node;
         }
 
-        mConditions = mConditions.or(node);
+        mConditions = new SearchConditionTreeNode.Builder(mConditions)
+                .or(node)
+                .build();
+
         return mConditions;
     }
 
@@ -159,7 +165,7 @@ public class LocalSearch implements SearchSpecification {
          *          - do and on root of it & rest of search
          *          - do or between folder nodes
          */
-        mConditions = and(new SearchCondition(SearchField.FOLDER, SearchAttribute.EQUALS, Long.toString(folderId)));
+        mConditions = and(new SearchCondition(MessageSearchField.FOLDER, SearchAttribute.EQUALS, Long.toString(folderId)));
     }
 
     /*
@@ -169,10 +175,10 @@ public class LocalSearch implements SearchSpecification {
      */
     public List<Long> getFolderIds() {
         List<Long> results = new ArrayList<>();
-        for (ConditionsTreeNode node : mLeafSet) {
-            if (node.mCondition.field == SearchField.FOLDER &&
-                    node.mCondition.attribute == SearchAttribute.EQUALS) {
-                results.add(Long.valueOf(node.mCondition.value));
+        for (SearchConditionTreeNode node : mLeafSet) {
+            if (node.getCondition().field == MessageSearchField.FOLDER &&
+                    node.getCondition().attribute == SearchAttribute.EQUALS) {
+                results.add(Long.valueOf(node.getCondition().value));
             }
         }
         return results;
@@ -183,7 +189,7 @@ public class LocalSearch implements SearchSpecification {
      *
      * @return All the leaf conditions as a set.
      */
-    public Set<ConditionsTreeNode> getLeafSet() {
+    public Set<SearchConditionTreeNode> getLeafSet() {
         return mLeafSet;
     }
 
@@ -195,14 +201,14 @@ public class LocalSearch implements SearchSpecification {
      * very dirty fix for remotesearch support atm
      */
     public String getRemoteSearchArguments() {
-        Set<ConditionsTreeNode> leafSet = getLeafSet();
+        Set<SearchConditionTreeNode> leafSet = getLeafSet();
         if (leafSet == null) {
             return null;
         }
 
-        for (ConditionsTreeNode node : leafSet) {
-            if (node.getCondition().field == SearchField.SUBJECT ||
-                    node.getCondition().field == SearchField.SENDER ) {
+        for (SearchConditionTreeNode node : leafSet) {
+            if (node.getCondition().field == MessageSearchField.SUBJECT ||
+                    node.getCondition().field == MessageSearchField.SENDER ) {
                 return node.getCondition().value;
             }
         }
@@ -231,10 +237,8 @@ public class LocalSearch implements SearchSpecification {
      * all accounts should be included in the search.
      */
     @Override
-    public String[] getAccountUuids() {
-        String[] tmp = new String[mAccountUuids.size()];
-        mAccountUuids.toArray(tmp);
-        return tmp;
+    public Set<String> getAccountUuids() {
+        return new HashSet<>(mAccountUuids);
     }
 
     /**
@@ -252,7 +256,7 @@ public class LocalSearch implements SearchSpecification {
      * @return The root node of the related conditions tree.
      */
     @Override
-    public ConditionsTreeNode getConditions() {
+    public SearchConditionTreeNode getConditions() {
         return mConditions;
     }
 
@@ -272,25 +276,25 @@ public class LocalSearch implements SearchSpecification {
         dest.writeParcelable(mConditions, flags);
     }
 
-    public static final Parcelable.Creator<LocalSearch> CREATOR =
-            new Parcelable.Creator<LocalSearch>() {
+    public static final Parcelable.Creator<LocalMessageSearch> CREATOR =
+            new Parcelable.Creator<LocalMessageSearch>() {
 
         @Override
-        public LocalSearch createFromParcel(Parcel in) {
-            return new LocalSearch(in);
+        public LocalMessageSearch createFromParcel(Parcel in) {
+            return new LocalMessageSearch(in);
         }
 
         @Override
-        public LocalSearch[] newArray(int size) {
-            return new LocalSearch[size];
+        public LocalMessageSearch[] newArray(int size) {
+            return new LocalMessageSearch[size];
         }
     };
 
-    public LocalSearch(Parcel in) {
+    public LocalMessageSearch(Parcel in) {
         id = in.readString();
         mManualSearch = (in.readByte() == 1);
         mAccountUuids.addAll(in.createStringArrayList());
-        mConditions = in.readParcelable(LocalSearch.class.getClassLoader());
+        mConditions = in.readParcelable(LocalMessageSearch.class.getClassLoader());
         if (mConditions != null) {
             mLeafSet = mConditions.getLeafSet();
         }
