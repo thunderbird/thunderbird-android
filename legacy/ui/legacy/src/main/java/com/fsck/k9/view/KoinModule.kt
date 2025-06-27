@@ -5,10 +5,12 @@ import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.message.ReplyActionStrategy
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
+import kotlin.time.ExperimentalTime
 import org.koin.dsl.module
 
 val viewModule = module {
     single { WebViewConfigProvider(themeManager = get(), generalSettingsManager = get()) }
+    @OptIn(ExperimentalTime::class)
     factory { RelativeDateTimeFormatter(context = get(), clock = get()) }
     factory { ReplyToParser() }
     factory { ReplyActionStrategy(replyRoParser = get()) }

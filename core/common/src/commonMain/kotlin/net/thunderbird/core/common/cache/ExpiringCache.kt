@@ -1,8 +1,10 @@
 package net.thunderbird.core.common.cache
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 class ExpiringCache<KEY : Any, VALUE : Any?>(
     private val clock: Clock,
     private val delegateCache: Cache<KEY, VALUE> = InMemoryCache(),
