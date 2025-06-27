@@ -1,4 +1,4 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
+package net.thunderbird.feature.navigation.drawer.siderail.ui.setting
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -6,24 +6,24 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 
 @Composable
 @Preview(showBackground = true)
-internal fun SettingListPreview() {
+internal fun SideRailSettingListPreview() {
     PreviewWithTheme {
-        FolderSettingList(
+        SideRailSettingList(
+            onAccountSelectorClick = {},
             onManageFoldersClick = {},
-            onSettingsClick = {},
-            isUnifiedAccount = false,
+            showAccountSelector = false,
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-internal fun SettingListWithUnifiedAccountPreview() {
+internal fun SideRailSettingListShowAccountSelectorPreview() {
     PreviewWithTheme {
-        FolderSettingList(
+        SideRailSettingList(
+            onAccountSelectorClick = {},
             onManageFoldersClick = {},
-            onSettingsClick = {},
-            isUnifiedAccount = true,
+            showAccountSelector = true,
         )
     }
 }

@@ -1,20 +1,19 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
+package net.thunderbird.feature.navigation.drawer.siderail.ui.account
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountIndicatorPreview() {
+internal fun SideRailAccountIndicatorPreview() {
     PreviewWithThemes {
-        AccountIndicator(
-            accountColor = 0,
+        SideRailAccountIndicator(
+            accountColor = Color.Unspecified,
             modifier = Modifier.height(MainTheme.spacings.double),
         )
     }
@@ -22,10 +21,10 @@ internal fun AccountIndicatorPreview() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountIndicatorPreviewWithYellowAccountColor() {
+internal fun SideRailAccountIndicatorPreviewWithYellowAccountColor() {
     PreviewWithThemes {
-        AccountIndicator(
-            accountColor = Color.Yellow.toArgb(),
+        SideRailAccountIndicator(
+            accountColor = Color.Yellow,
             modifier = Modifier.height(MainTheme.spacings.double),
         )
     }
@@ -33,10 +32,10 @@ internal fun AccountIndicatorPreviewWithYellowAccountColor() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountIndicatorPreviewWithGrayAccountColor() {
+internal fun SideRailAccountIndicatorPreviewWithGrayAccountColor() {
     PreviewWithThemes {
-        AccountIndicator(
-            accountColor = Color.Gray.toArgb(),
+        SideRailAccountIndicator(
+            accountColor = Color.Gray,
             modifier = Modifier.height(MainTheme.spacings.double),
         )
     }

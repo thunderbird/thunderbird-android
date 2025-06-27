@@ -31,6 +31,8 @@ internal interface DrawerContract {
         ),
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
         val selectedFolderId: String? = null,
+        val selectedFolder: DisplayFolder? = null,
+        val showAccountSelection: Boolean = false,
         val isLoading: Boolean = false,
     )
 

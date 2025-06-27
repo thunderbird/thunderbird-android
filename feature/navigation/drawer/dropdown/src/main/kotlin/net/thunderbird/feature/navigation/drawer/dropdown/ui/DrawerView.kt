@@ -12,6 +12,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.FolderDrawerState
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Effect
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.ViewModel
+import net.thunderbird.feature.navigation.drawer.siderail.ui.SideRailDrawerContent
 import org.koin.androidx.compose.koinViewModel
 
 @Suppress("LongParameterList")

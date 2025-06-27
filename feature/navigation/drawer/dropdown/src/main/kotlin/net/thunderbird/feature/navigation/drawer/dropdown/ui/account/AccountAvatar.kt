@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -14,6 +15,8 @@ import app.k9mail.core.ui.compose.theme2.ColorRoles
 import app.k9mail.core.ui.compose.theme2.toColorRoles
 import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountName
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.labelForCount
 
 @Composable
@@ -24,7 +27,9 @@ internal fun AccountAvatar(
     onClick: ((DisplayAccount) -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val accountColor = calculateAccountColor(account.color)
+    val name = getDisplayAccountName(account)
+    val color = getDisplayAccountColor(account)
+    val accountColor = calculateAccountColor(color.toArgb())
     val accountColorRoles = accountColor.toColorRoles(context)
 
     Box(
@@ -33,7 +38,7 @@ internal fun AccountAvatar(
     ) {
         Avatar(
             color = accountColor,
-            name = account.name,
+            name = name,
             onClick = onClick?.let { { onClick(account) } },
             selected = selected,
         )

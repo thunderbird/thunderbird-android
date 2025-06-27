@@ -6,8 +6,8 @@ import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
 
@@ -24,12 +24,12 @@ internal class UnifiedFolderRepositoryTest {
         val testSubject = UnifiedFolderRepository(
             messageCountsProvider = messageCountsProvider,
         )
-        val folderType = DisplayUnifiedFolderType.INBOX
+        val folderType = UnifiedDisplayFolderType.INBOX
 
-        val result = testSubject.getDisplayUnifiedFolderFlow(folderType).first()
+        val result = testSubject.getUnifiedDisplayFolderFlow(folderType).first()
 
         assertThat(result).isEqualTo(
-            DisplayUnifiedFolder(
+            UnifiedDisplayFolder(
                 id = "unified_inbox",
                 unifiedType = folderType,
                 unreadMessageCount = 2,

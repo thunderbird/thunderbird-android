@@ -1,4 +1,4 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
+package net.thunderbird.feature.navigation.drawer.siderail.ui.setting
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -12,9 +12,10 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.navigation.drawer.dropdown.R
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.SettingListItem
 
 @Composable
-internal fun SettingList(
+internal fun SideRailSettingList(
     onAccountSelectorClick: () -> Unit,
     onManageFoldersClick: () -> Unit,
     showAccountSelector: Boolean,
@@ -29,7 +30,7 @@ internal fun SettingList(
         SettingListItem(
             label = stringResource(R.string.navigation_drawer_dropdown_action_manage_folders),
             onClick = onManageFoldersClick,
-            imageVector = Icons.Outlined.FolderManaged,
+            icon = Icons.Outlined.FolderManaged,
         )
         SettingListItem(
             label = if (showAccountSelector) {
@@ -38,7 +39,7 @@ internal fun SettingList(
                 stringResource(R.string.navigation_drawer_dropdown_action_show_accounts)
             },
             onClick = onAccountSelectorClick,
-            imageVector = if (showAccountSelector) {
+            icon = if (showAccountSelector) {
                 Icons.Outlined.ChevronLeft
             } else {
                 Icons.Outlined.ChevronRight

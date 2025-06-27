@@ -5,16 +5,16 @@ import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 
 internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
     private var placeholderCounter = 0L
 
     override fun invoke(folders: List<DisplayFolder>, maxDepth: Int): DisplayTreeFolder {
-        val unifiedFolderTreeList = folders.filterIsInstance<DisplayUnifiedFolder>().map {
+        val unifiedFolderTreeList = folders.filterIsInstance<UnifiedDisplayFolder>().map {
             DisplayTreeFolder(
                 displayFolder = it,
                 displayName = it.unifiedType.id,
@@ -24,7 +24,7 @@ internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
             )
         }
 
-        val accountFolders = folders.filterIsInstance<DisplayAccountFolder>().map {
+        val accountFolders = folders.filterIsInstance<MailDisplayFolder>().map {
             val path = flattenPath(it.folder.name, maxDepth)
             println("Flattened path for ${it.folder.name} → $path")
             path to it
@@ -51,7 +51,7 @@ internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
     }
 
     private fun buildAccountFolderTree(
-        paths: List<Pair<List<String>, DisplayAccountFolder>>,
+        paths: List<Pair<List<String>, MailDisplayFolder>>,
         parentPath: String = "",
     ): List<DisplayTreeFolder> {
         return paths.groupBy { it.first.getOrNull(0) ?: "(Unnamed)" }
@@ -87,9 +87,9 @@ internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
             }
     }
 
-    private fun createPlaceholderFolder(name: String): DisplayAccountFolder {
+    private fun createPlaceholderFolder(name: String): MailDisplayFolder {
         placeholderCounter += 1
-        return DisplayAccountFolder(
+        return MailDisplayFolder(
             accountId = "placeholder",
             folder = Folder(
                 id = placeholderCounter,

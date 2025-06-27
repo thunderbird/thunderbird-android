@@ -745,13 +745,17 @@ open class MessageList :
     }
 
     fun openRealAccount(accountId: String) {
-        val account = accountManager.getAccount(accountId) ?: return
-        val folderId = defaultFolderProvider.getDefaultFolder(account)
+        if (accountId == "unified_account") {
+            openUnifiedInbox()
+        } else {
+            val account = accountManager.getAccount(accountId) ?: return
+            val folderId = defaultFolderProvider.getDefaultFolder(account)
 
-        val search = LocalMessageSearch()
-        search.addAllowedFolder(folderId)
-        search.addAccountUuid(account.uuid)
-        actionDisplaySearch(this, search, noThreading = false, newTask = false)
+            val search = LocalMessageSearch()
+            search.addAllowedFolder(folderId)
+            search.addAccountUuid(account.uuid)
+            actionDisplaySearch(this, search, noThreading = false, newTask = false)
+        }
     }
 
     private fun performSearch(search: LocalMessageSearch) {
@@ -1500,7 +1504,6 @@ open class MessageList :
                     !generalSettingsManager.getSettings().isShowUnifiedInbox -> drawer.deselect()
 
                 search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
-                else -> drawer.deselect()
             }
         } ?: logger.warn(TAG) { "Couldn't select folder for $accountUuid as LocalSearch is null." }
     }
