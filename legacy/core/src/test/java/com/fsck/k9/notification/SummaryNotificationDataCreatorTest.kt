@@ -9,7 +9,8 @@ import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import com.fsck.k9.K9
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.testing.TestClock
 import org.junit.After
@@ -21,6 +22,7 @@ import org.koin.dsl.module
 
 private val TIMESTAMP = 0L
 
+@OptIn(ExperimentalTime::class)
 class SummaryNotificationDataCreatorTest {
     private val account = createAccount()
     private val notificationDataCreator = SummaryNotificationDataCreator(SingleMessageNotificationDataCreator())

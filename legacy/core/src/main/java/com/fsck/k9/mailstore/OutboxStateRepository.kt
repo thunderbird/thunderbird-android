@@ -5,8 +5,10 @@ import app.k9mail.core.android.common.database.getIntOrThrow
 import app.k9mail.core.android.common.database.getLongOrThrow
 import app.k9mail.core.android.common.database.getStringOrNull
 import app.k9mail.core.android.common.database.getStringOrThrow
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class OutboxStateRepository(
     private val database: LockableDatabase,
     private val clock: Clock,

@@ -62,7 +62,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
@@ -87,6 +88,7 @@ private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 private const val MINIMUM_CLICK_INTERVAL = 200L
 private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
 
+@OptIn(ExperimentalTime::class)
 class MessageListFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,

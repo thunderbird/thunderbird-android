@@ -5,7 +5,8 @@ import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.util.UUID
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
@@ -13,6 +14,7 @@ import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandle
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.OUTGOING_SERVER_SETTINGS_KEY
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 
+@OptIn(ExperimentalTime::class)
 internal class AccountSettingsWriter(
     private val preferences: Preferences,
     private val localFoldersCreator: SpecialLocalFoldersCreator,

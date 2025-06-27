@@ -3,7 +3,7 @@ package com.fsck.k9;
 
 import java.util.Calendar;
 
-import kotlinx.datetime.Clock;
+import kotlin.time.Clock;
 
 
 class QuietTimeChecker {

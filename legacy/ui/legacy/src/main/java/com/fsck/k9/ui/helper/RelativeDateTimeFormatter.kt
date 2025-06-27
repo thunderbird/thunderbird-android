@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.fsck.k9.ui.helper
 
 import android.content.Context
@@ -12,8 +14,9 @@ import android.text.format.DateUtils.FORMAT_SHOW_YEAR
 import java.util.Calendar
 import java.util.Calendar.DAY_OF_WEEK
 import java.util.Calendar.YEAR
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * Formatter to describe timestamps as a time relative to now.

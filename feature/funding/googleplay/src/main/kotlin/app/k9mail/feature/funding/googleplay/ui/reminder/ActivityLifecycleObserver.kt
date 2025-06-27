@@ -5,8 +5,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import app.k9mail.feature.funding.api.FundingSettings
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class ActivityLifecycleObserver(
     private val settings: FundingSettings,
     private val clock: Clock = Clock.System,
