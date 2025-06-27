@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.WorkManager
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import kotlin.time.ExperimentalTime
 import org.koin.dsl.module
 
 val jobModule = module {
@@ -17,6 +18,7 @@ val jobModule = module {
             mailSyncWorkerManager = get(),
         )
     }
+    @OptIn(ExperimentalTime::class)
     factory { MailSyncWorkerManager(workManager = get(), clock = get()) }
     factory { (parameters: WorkerParameters) ->
         MailSyncWorker(messagingController = get(), preferences = get(), context = get(), parameters)

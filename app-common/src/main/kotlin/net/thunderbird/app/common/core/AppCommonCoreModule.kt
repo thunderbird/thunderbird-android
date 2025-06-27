@@ -1,5 +1,6 @@
 package net.thunderbird.app.common.core
 
+import kotlin.time.ExperimentalTime
 import net.thunderbird.app.common.BuildConfig
 import net.thunderbird.core.logging.DefaultLogger
 import net.thunderbird.core.logging.LogLevel
@@ -31,6 +32,7 @@ val appCommonCoreModule: Module = module {
     }
 
     single<Logger> {
+        @OptIn(ExperimentalTime::class)
         DefaultLogger(
             sink = get<CompositeLogSink>(),
         )

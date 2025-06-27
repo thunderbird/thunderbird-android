@@ -9,10 +9,12 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.fsck.k9.K9
 import java.util.concurrent.TimeUnit
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
 
+@OptIn(ExperimentalTime::class)
 class MailSyncWorkerManager(
     private val workManager: WorkManager,
     val clock: Clock,
