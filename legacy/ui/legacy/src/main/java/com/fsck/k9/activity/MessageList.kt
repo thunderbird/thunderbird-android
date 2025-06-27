@@ -1227,7 +1227,7 @@ open class MessageList :
         showMessageViewPlaceHolder()
 
         val tmpSearch = LocalMessageSearch().apply {
-            setId(search?.id)
+            id = search?.id ?: "ShowThread-${account.uuid}-$threadRootId"
             addAccountUuid(account.uuid)
             and(MessageSearchField.THREAD_ID, threadRootId.toString(), SearchAttribute.EQUALS)
         }
