@@ -433,8 +433,8 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
             }
         }
 
-        val textToDisplay = messageText
-            ?: displayHtml.wrapStatusMessage(context.getString(R.string.webview_empty_message))
+        val textToDisplay =
+            displayHtml.wrapStatusMessage(messageText ?: context.getString(R.string.webview_empty_message))
 
         displayHtmlContentWithInlineAttachments(
             htmlText = textToDisplay,
