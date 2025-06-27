@@ -7,9 +7,12 @@ import androidx.fragment.app.FragmentManager
 import app.k9mail.feature.funding.api.FundingSettings
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.FragmentLifecycleObserver
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
-class FundingReminder(
+class FundingReminder
+@OptIn(ExperimentalTime::class)
+constructor(
     private val settings: FundingSettings,
     private val fragmentObserver: FragmentLifecycleObserver,
     private val activityCounterObserver: ActivityLifecycleObserver,
@@ -66,6 +69,7 @@ class FundingReminder(
     }
 
     private fun shouldShowReminder(): Boolean {
+        @OptIn(ExperimentalTime::class)
         val currentTime = clock.now().toEpochMilliseconds()
 
         return settings.getReminderShownTimestamp() == 0L &&
@@ -79,6 +83,7 @@ class FundingReminder(
             val installTime = context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
             settings.setReminderReferenceTimestamp(installTime)
         } catch (exception: NameNotFoundException) {
+            @OptIn(ExperimentalTime::class)
             settings.setReminderReferenceTimestamp(clock.now().toEpochMilliseconds())
         }
     }
@@ -86,6 +91,7 @@ class FundingReminder(
     private fun showFundingReminderDialog(fragmentManager: FragmentManager) {
         // We're about to show the funding reminder dialog. So mark it as being shown. This way, if there's an error,
         // we err on the side of the dialog not being shown rather than it being shown more than once.
+        @OptIn(ExperimentalTime::class)
         settings.setReminderShownTimestamp(clock.now().toEpochMilliseconds())
 
         dialog.show(fragmentManager)

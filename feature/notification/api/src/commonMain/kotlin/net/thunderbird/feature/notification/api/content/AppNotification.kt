@@ -1,6 +1,7 @@
 package net.thunderbird.feature.notification.api.content
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -57,6 +58,8 @@ sealed interface Notification {
  */
 sealed class AppNotification : Notification {
     override val accessibilityText: String = title
+
+    @OptIn(ExperimentalTime::class)
     override val createdAt: LocalDateTime = Clock.System.now().toLocalDateTime(timeZone = TimeZone.UTC)
     override val actions: Set<NotificationAction> = emptySet()
     override val authenticationRequired: Boolean = false

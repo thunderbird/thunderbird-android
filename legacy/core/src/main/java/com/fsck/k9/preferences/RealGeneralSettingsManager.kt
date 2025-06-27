@@ -6,6 +6,8 @@ import app.k9mail.legacy.di.DI
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.QuietTimeChecker
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +15,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundSync
@@ -59,7 +60,6 @@ internal class RealGeneralSettingsManager(
 ) : GeneralSettingsManager, PrivacySettingsManager by privacySettingsManager {
     private val settingsFlow = MutableSharedFlow<GeneralSettings>(replay = 1)
     private var generalSettings: GeneralSettings? = null
-    val clock = DI.get<Clock>()
 
     @Deprecated("This only exists for collaboration with the K9 class")
     val storage: Storage
@@ -339,7 +339,13 @@ internal class RealGeneralSettingsManager(
         if (isQuietTimeEnabled) {
             return false
         }
-        val quietTimeChecker = QuietTimeChecker(clock, quietTimeStarts, quietTimeEnds)
+
+        @OptIn(ExperimentalTime::class)
+        val quietTimeChecker = QuietTimeChecker(
+            clock = DI.get<Clock>(),
+            quietTimeStart = quietTimeStarts,
+            quietTimeEnd = quietTimeEnds,
+        )
         return quietTimeChecker.isQuietTime
     }
 }

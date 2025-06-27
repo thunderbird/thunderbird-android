@@ -63,12 +63,13 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
@@ -107,6 +108,8 @@ class MessageListFragment :
     private val messagingController: MessagingController by inject()
     private val accountManager: AccountManager by inject()
     private val connectivityManager: ConnectivityManager by inject()
+
+    @OptIn(ExperimentalTime::class)
     private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
     private val legacyAccountWrapperDataMapper: DataMapper<
@@ -304,6 +307,7 @@ class MessageListFragment :
     }
 
     private fun createMessageListAdapter(): MessageListAdapter {
+        @OptIn(ExperimentalTime::class)
         return MessageListAdapter(
             theme = requireActivity().theme,
             res = resources,

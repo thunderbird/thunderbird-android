@@ -8,7 +8,8 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.TimeZone
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.testing.TestClock
 import org.junit.Before
@@ -16,6 +17,7 @@ import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
+@OptIn(ExperimentalTime::class)
 @Config(
     qualifiers = "en",
     sdk = [Build.VERSION_CODES.S],
