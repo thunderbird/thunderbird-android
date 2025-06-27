@@ -16,30 +16,53 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
 
     fun wrapMessageContent(messageContent: CharSequence): String {
         // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
-        return "<html dir=\"auto\"><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
-            cssStylePre() +
-            "</head><body>" +
-            messageContent +
-            "</body></html>"
+        return """
+            <html dir="auto">
+                <head>
+                    <meta name="viewport" content="width=device-width"/>
+                    ${cssStylePre()}
+                </head>
+                <body>
+                    $messageContent
+                </body>
+            </html>
+        """.trimIndent()
     }
 
     /**
-     * Dynamically generate a CSS style for `<pre>` elements.
+     * Dynamically generate a CSS style for <pre> elements.
      *
      * The style incorporates the user's current preference setting for the font family used for plain text messages.
      *
-     * @return A `<style>` element that can be dynamically included in the HTML `<head>` element when messages are
+     * @return A <style> element that can be dynamically included in the HTML <head> element when messages are
      * displayed.
      */
     private fun cssStylePre(): String {
         val font = if (settings.useFixedWidthFont) "monospace" else "sans-serif"
 
-        return "<style type=\"text/css\"> pre." + EmailTextToHtml.K9MAIL_CSS_CLASS +
-            " {white-space: pre-wrap; word-wrap:break-word; " +
-            "font-family: " + font + "; margin-top: 0px}</style>"
+        return """
+            <style type="text/css">
+                pre.${EmailTextToHtml.K9MAIL_CSS_CLASS} {
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    font-family: $font;
+                    margin-top: 0px;
+                }
+                a {
+                    word-break: break-word;
+                    overflow-wrap: break-word;
+                }
+            </style>
+        """.trimIndent()
     }
 
     private fun cssStyleSignature(): String {
-        return """<style type="text/css">.k9mail-signature { opacity: 0.5 }</style>"""
+        return """
+            <style type="text/css">
+                .k9mail-signature {
+                    opacity: 0.5;
+                }
+            </style>
+        """.trimIndent()
     }
 }
