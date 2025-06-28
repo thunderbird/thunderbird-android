@@ -1,13 +1,14 @@
 package app.k9mail.core.ui.compose.designsystem.template
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.common.padding.calculateResponsiveWidthPadding
 import app.k9mail.core.ui.compose.common.window.WindowSizeClass
 import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -25,7 +26,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 @Composable
 fun ResponsiveContent(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     val windowSizeClass = getWindowSizeInfo()
 
@@ -39,21 +40,21 @@ fun ResponsiveContent(
 @Composable
 private fun CompactContent(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .then(modifier),
     ) {
-        content()
+        content(calculateResponsiveWidthPadding())
     }
 }
 
 @Composable
 private fun MediumContent(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -61,18 +62,14 @@ private fun MediumContent(
             .then(modifier),
         contentAlignment = Alignment.TopCenter,
     ) {
-        Box(
-            modifier = Modifier.requiredWidth(WindowSizeClass.COMPACT_MAX_WIDTH.dp),
-        ) {
-            content()
-        }
+        content(calculateResponsiveWidthPadding())
     }
 }
 
 @Composable
 private fun ExpandedContent(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     when (getWindowSizeInfo().screenHeightSizeClass) {
         WindowSizeClass.Compact -> MediumContent(modifier, content)
@@ -84,10 +81,9 @@ private fun ExpandedContent(
                 contentAlignment = Alignment.TopCenter,
             ) {
                 Surface(
-                    modifier = Modifier.requiredWidth(WindowSizeClass.MEDIUM_MAX_WIDTH.dp),
                     tonalElevation = MainTheme.elevations.level1,
                 ) {
-                    content()
+                    content(calculateResponsiveWidthPadding())
                 }
             }
         }
@@ -101,11 +97,10 @@ private fun ExpandedContent(
             ) {
                 Surface(
                     modifier = Modifier
-                        .requiredWidth(WindowSizeClass.MEDIUM_MAX_WIDTH.dp)
                         .requiredHeight(WindowSizeClass.MEDIUM_MAX_HEIGHT.dp),
                     tonalElevation = MainTheme.elevations.level1,
                 ) {
-                    content()
+                    content(calculateResponsiveWidthPadding())
                 }
             }
         }
