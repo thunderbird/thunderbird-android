@@ -45,6 +45,10 @@ private const val SOCKET_SEND_MESSAGE_READ_TIMEOUT = 5 * 60 * 1000 // 5 minutes
 private const val SMTP_CONTINUE_REQUEST = 334
 private const val SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535
 
+// We use "ehlo.thunderbird.net" for privacy reasons,
+// see https://ehlo.thunderbird.net/
+public const val SMTP_HELLO_NAME = "ehlo.thunderbird.net"
+
 class SmtpTransport(
     serverSettings: ServerSettings,
     private val trustedSocketFactory: TrustedSocketFactory,
@@ -99,11 +103,7 @@ class SmtpTransport(
 
             readGreeting()
 
-            // We use "ehlo.thunderbird.net" for privacy reasons,
-            // see https://ehlo.thunderbird.net/
-            val helloName = "ehlo.thunderbird.net"
-
-            var extensions = sendHello(helloName)
+            var extensions = sendHello(SMTP_HELLO_NAME)
 
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME")
             isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES")
@@ -125,7 +125,7 @@ class SmtpTransport(
                     outputStream = BufferedOutputStream(tlsSocket.getOutputStream(), 1024)
 
                     // Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically, Exim.
-                    extensions = sendHello(helloName)
+                    extensions = sendHello(SMTP_HELLO_NAME)
                     secureConnection = true
                 } else {
                     throw MissingCapabilityException("STARTTLS")
