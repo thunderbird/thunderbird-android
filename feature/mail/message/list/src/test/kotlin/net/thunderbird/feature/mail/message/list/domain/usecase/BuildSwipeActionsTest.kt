@@ -50,6 +50,10 @@ class BuildSwipeActionsTest {
             isThreadedViewEnabled = false,
             isUseMessageViewFixedWidthFont = false,
             isAutoFitWidth = false,
+            quietTimeStarts = "7:00",
+            quietTimeEnds = "7:00",
+            isQuietTime = false,
+            isQuietTimeEnabled = false,
         )
 
     @Test
@@ -429,6 +433,18 @@ private class FakeGeneralSettingsManager(
     )
 
     override fun setIsAutoFitWidth(isAutoFitWidth: Boolean) = error(
+        "not implemented",
+    )
+
+    override fun setQuietTimeEnds(quietTimeEnds: String) = error(
+        "not implemented",
+    )
+
+    override fun setQuietTimeStarts(quietTimeStarts: String) = error(
+        "not implemented",
+    )
+
+    override fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean) = error(
         "not implemented",
     )
 }
