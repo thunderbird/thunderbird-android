@@ -1,46 +1,40 @@
-package com.fsck.k9;
+package com.fsck.k9
 
+import java.util.Calendar
+import kotlinx.datetime.Clock
 
-import java.util.Calendar;
+private const val MINUTES_PER_HOUR = 60
+class QuietTimeChecker(private val clock: Clock, quietTimeStart: String, quietTimeEnd: String) {
+    private val quietTimeStart: Int = parseTime(quietTimeStart)
+    private val quietTimeEnd: Int = parseTime(quietTimeEnd)
 
-import kotlinx.datetime.Clock;
+    val isQuietTime: Boolean
+        get() {
+            // If start and end times are the same, we're never quiet
+            if (quietTimeStart == quietTimeEnd) {
+                return false
+            }
 
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = clock.now().toEpochMilliseconds()
 
-public class QuietTimeChecker {
-    private final Clock clock;
-    private final int quietTimeStart;
-    private final int quietTimeEnd;
+            val minutesSinceMidnight =
+                (calendar[Calendar.HOUR_OF_DAY] * MINUTES_PER_HOUR) + calendar[Calendar.MINUTE]
 
-
-    public QuietTimeChecker(Clock clock, String quietTimeStart, String quietTimeEnd) {
-        this.clock = clock;
-        this.quietTimeStart = parseTime(quietTimeStart);
-        this.quietTimeEnd = parseTime(quietTimeEnd);
-    }
-
-    private static int parseTime(String time) {
-        String[] parts = time.split(":");
-        int hour = Integer.parseInt(parts[0]);
-        int minute = Integer.parseInt(parts[1]);
-
-        return hour * 60 + minute;
-    }
-
-    public boolean isQuietTime() {
-        // If start and end times are the same, we're never quiet
-        if (quietTimeStart == quietTimeEnd) {
-            return false;
+            return if (quietTimeStart > quietTimeEnd) {
+                minutesSinceMidnight >= quietTimeStart || minutesSinceMidnight <= quietTimeEnd
+            } else {
+                minutesSinceMidnight in quietTimeStart..quietTimeEnd
+            }
         }
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(clock.now().toEpochMilliseconds());
+    companion object {
+        private fun parseTime(time: String): Int {
+            val parts = time.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val hour = parts[0].toInt()
+            val minute = parts[1].toInt()
 
-        int minutesSinceMidnight = (calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE);
-
-        if (quietTimeStart > quietTimeEnd) {
-            return minutesSinceMidnight >= quietTimeStart || minutesSinceMidnight <= quietTimeEnd;
-        } else {
-            return minutesSinceMidnight >= quietTimeStart && minutesSinceMidnight <= quietTimeEnd;
+            return hour * MINUTES_PER_HOUR + minute
         }
     }
 }
