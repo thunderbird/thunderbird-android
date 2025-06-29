@@ -8,6 +8,10 @@ import androidx.test.core.app.ApplicationProvider
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.SubTheme
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito.verify
@@ -33,6 +37,36 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
         notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider,
+        generalSettingsManager = mock {
+            on { getSettings() } doReturn GeneralSettings(
+                backgroundSync = BackgroundSync.ALWAYS,
+                showRecentChanges = true,
+                appTheme = AppTheme.DARK,
+                messageComposeTheme = SubTheme.DARK,
+                isShowCorrespondentNames = true,
+                fixedMessageViewTheme = true,
+                messageViewTheme = SubTheme.DARK,
+                isShowStarredCount = false,
+                isShowUnifiedInbox = false,
+                isShowMessageListStars = false,
+                isShowAnimations = false,
+                shouldShowSetupArchiveFolderDialog = false,
+                isMessageListSenderAboveSubject = false,
+                isShowContactName = false,
+                isShowContactPicture = false,
+                isChangeContactNameColor = false,
+                isColorizeMissingContactPictures = false,
+                isUseBackgroundAsUnreadIndicator = false,
+                isShowComposeButtonOnMessageList = false,
+                isThreadedViewEnabled = false,
+                isUseMessageViewFixedWidthFont = false,
+                isAutoFitWidth = false,
+                isQuietTime = false,
+                quietTimeStarts = "7:00",
+                quietTimeEnds = "7:00",
+                isQuietTimeEnabled = false,
+            )
+        },
     )
 
     @Test
