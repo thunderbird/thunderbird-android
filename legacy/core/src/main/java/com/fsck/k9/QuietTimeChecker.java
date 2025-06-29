@@ -6,13 +6,13 @@ import java.util.Calendar;
 import kotlinx.datetime.Clock;
 
 
-class QuietTimeChecker {
+public class QuietTimeChecker {
     private final Clock clock;
     private final int quietTimeStart;
     private final int quietTimeEnd;
 
 
-    QuietTimeChecker(Clock clock, String quietTimeStart, String quietTimeEnd) {
+    public QuietTimeChecker(Clock clock, String quietTimeStart, String quietTimeEnd) {
         this.clock = clock;
         this.quietTimeStart = parseTime(quietTimeStart);
         this.quietTimeEnd = parseTime(quietTimeEnd);

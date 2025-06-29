@@ -23,6 +23,7 @@ val coreNotificationModule = module {
             notificationManager = get(),
             notificationChannelManager = get(),
             resourceProvider = get(),
+            generalSettingsManager = get(),
         )
     }
     single {
@@ -39,6 +40,7 @@ val coreNotificationModule = module {
             notificationHelper = get(),
             actionCreator = get(),
             resourceProvider = get(),
+            generalSettingsManager = get(),
         )
     }
     single {
@@ -46,13 +48,19 @@ val coreNotificationModule = module {
             notificationHelper = get(),
             actionCreator = get(),
             resourceProvider = get(),
+            generalSettingsManager = get(),
         )
     }
     single {
         SyncNotificationController(notificationHelper = get(), actionBuilder = get(), resourceProvider = get())
     }
     single {
-        SendFailedNotificationController(notificationHelper = get(), actionBuilder = get(), resourceProvider = get())
+        SendFailedNotificationController(
+            notificationHelper = get(),
+            actionBuilder = get(),
+            resourceProvider = get(),
+            generalSettingsManager = get(),
+        )
     }
     single {
         NewMailNotificationController(
@@ -81,7 +89,12 @@ val coreNotificationModule = module {
     }
     factory { BaseNotificationDataCreator() }
     factory { SingleMessageNotificationDataCreator() }
-    factory { SummaryNotificationDataCreator(singleMessageNotificationDataCreator = get()) }
+    factory {
+        SummaryNotificationDataCreator(
+            singleMessageNotificationDataCreator = get(),
+            generalSettingsManager = get(),
+        )
+    }
     factory {
         SingleMessageNotificationCreator(
             notificationHelper = get(),

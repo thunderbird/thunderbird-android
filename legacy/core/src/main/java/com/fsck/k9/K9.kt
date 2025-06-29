@@ -3,7 +3,6 @@ package com.fsck.k9
 import android.content.Context
 import android.content.SharedPreferences
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import app.k9mail.legacy.di.DI
 import com.fsck.k9.K9.DATABASE_VERSION_CACHE
 import com.fsck.k9.K9.areDatabasesUpToDate
 import com.fsck.k9.K9.checkCachedDatabaseVersion
@@ -12,7 +11,6 @@ import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.common.action.SwipeAction
@@ -197,10 +195,7 @@ object K9 : KoinComponent {
     @JvmStatic
     var isShowAccountSelector = true
 
-    var isQuietTimeEnabled = false
     var isNotificationDuringQuietTimeEnabled = true
-    var quietTimeStarts: String? = null
-    var quietTimeEnds: String? = null
 
     @JvmStatic
     var isHideUserAgent = false
@@ -257,17 +252,6 @@ object K9 : KoinComponent {
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
 
-    val isQuietTime: Boolean
-        get() {
-            if (!isQuietTimeEnabled) {
-                return false
-            }
-
-            val clock = DI.get<Clock>()
-            val quietTimeChecker = QuietTimeChecker(clock, quietTimeStarts, quietTimeEnds)
-            return quietTimeChecker.isQuietTime
-        }
-
     @Synchronized
     @JvmStatic
     fun isSortAscending(sortType: SortType): Boolean {
@@ -307,10 +291,7 @@ object K9 : KoinComponent {
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
-        isQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false)
         isNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true)
-        quietTimeStarts = storage.getStringOrDefault("quietTimeStarts", "21:00")
-        quietTimeEnds = storage.getStringOrDefault("quietTimeEnds", "7:00")
 
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
@@ -385,11 +366,7 @@ object K9 : KoinComponent {
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
-        editor.putBoolean("quietTimeEnabled", isQuietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
-        editor.putString("quietTimeStarts", quietTimeStarts)
-        editor.putString("quietTimeEnds", quietTimeEnds)
-
         editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)

@@ -2,8 +2,10 @@
 
 package com.fsck.k9.preferences
 
+import app.k9mail.legacy.di.DI
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
+import com.fsck.k9.QuietTimeChecker
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundSync
@@ -31,6 +34,9 @@ internal const val KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST = "showComposeButtonO
 internal const val KEY_THREAD_VIEW_ENABLED = "isThreadedViewEnabled"
 internal const val KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT = "messageViewFixedWidthFont"
 internal const val KEY_AUTO_FIT_WIDTH = "autofitWidth"
+internal const val KEY_QUIET_TIME_ENDS = "quietTimeEnds"
+internal const val KEY_QUIET_TIME_STARTS = "quietTimeStarts"
+internal const val KEY_QUIET_TIME_ENABLED = "quietTimeEnabled"
 
 /**
  * Retrieve and modify general settings.
@@ -49,6 +55,7 @@ internal class RealGeneralSettingsManager(
 ) : GeneralSettingsManager {
     private val settingsFlow = MutableSharedFlow<GeneralSettings>(replay = 1)
     private var generalSettings: GeneralSettings? = null
+    val clock = DI.get<Clock>()
 
     @Deprecated("This only exists for collaboration with the K9 class")
     val storage: Storage
@@ -210,6 +217,18 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isAutoFitWidth = isAutoFitWidth).persist()
     }
 
+    override fun setQuietTimeEnds(quietTimeEnds: String) {
+        getSettings().copy(quietTimeEnds = quietTimeEnds).persist()
+    }
+
+    override fun setQuietTimeStarts(quietTimeStarts: String) {
+        getSettings().copy(quietTimeStarts = quietTimeStarts).persist()
+    }
+
+    override fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean) {
+        getSettings().copy(isQuietTimeEnabled = isQuietTimeEnabled).persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -232,6 +251,9 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean(KEY_THREAD_VIEW_ENABLED, settings.isThreadedViewEnabled)
         editor.putBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, settings.isUseMessageViewFixedWidthFont)
         editor.putBoolean(KEY_AUTO_FIT_WIDTH, settings.isAutoFitWidth)
+        editor.putString(KEY_QUIET_TIME_ENDS, settings.quietTimeEnds)
+        editor.putString(KEY_QUIET_TIME_STARTS, settings.quietTimeStarts)
+        editor.putBoolean(KEY_QUIET_TIME_ENABLED, settings.isQuietTimeEnabled)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -269,11 +291,37 @@ internal class RealGeneralSettingsManager(
             isThreadedViewEnabled = storage.getBoolean(KEY_THREAD_VIEW_ENABLED, true),
             isUseMessageViewFixedWidthFont = storage.getBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, false),
             isAutoFitWidth = storage.getBoolean(KEY_AUTO_FIT_WIDTH, true),
+            quietTimeEnds = storage.getStringOrDefault(KEY_QUIET_TIME_ENDS, "7:00"),
+            quietTimeStarts = storage.getStringOrDefault(KEY_QUIET_TIME_STARTS, "21:00"),
+            isQuietTimeEnabled = storage.getBoolean(KEY_QUIET_TIME_ENABLED, false),
+            isQuietTime = getIsQuietTime(),
         )
 
         updateSettingsFlow(settings)
 
         return settings
+    }
+
+    private fun getIsQuietTime(): Boolean {
+        val (isQuietTimeEnabled, quietTimeStarts, quietTimeEnds) = generalSettings?.let { settings ->
+            Triple(
+                settings.isQuietTimeEnabled,
+                settings.quietTimeStarts,
+                settings.quietTimeEnds,
+            )
+        } ?: run {
+            Triple(
+                storage.getBoolean(KEY_QUIET_TIME_ENABLED, false),
+                storage.getStringOrDefault(KEY_QUIET_TIME_STARTS, "21:00"),
+                storage.getStringOrDefault(KEY_QUIET_TIME_ENDS, "7:00"),
+            )
+        }
+
+        if (isQuietTimeEnabled) {
+            return false
+        }
+        val quietTimeChecker = QuietTimeChecker(clock, quietTimeStarts, quietTimeEnds)
+        return quietTimeChecker.isQuietTime
     }
 }
 

@@ -44,7 +44,7 @@ class GeneralSettingsDataStore(
             "threaded_view" -> generalSettingsManager.getSettings().isThreadedViewEnabled
             "messageview_fixedwidth_font" -> generalSettingsManager.getSettings().isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> generalSettingsManager.getSettings().isAutoFitWidth
-            "quiet_time_enabled" -> K9.isQuietTimeEnabled
+            "quiet_time_enabled" -> generalSettingsManager.getSettings().isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.isHideUserAgent
             "privacy_hide_timezone" -> K9.isHideTimeZone
@@ -84,7 +84,7 @@ class GeneralSettingsDataStore(
             "threaded_view" -> setIsThreadedViewEnabled(isThreadedViewEnabled = value)
             "messageview_fixedwidth_font" -> setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont = value)
             "messageview_autofit_width" -> setIsAutoFitWidth(isAutoFitWidth = value)
-            "quiet_time_enabled" -> K9.isQuietTimeEnabled = value
+            "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.isHideUserAgent = value
             "privacy_hide_timezone" -> K9.isHideTimeZone = value
@@ -128,8 +128,8 @@ class GeneralSettingsDataStore(
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> K9.backgroundOps.name
-            "quiet_time_starts" -> K9.quietTimeStarts
-            "quiet_time_ends" -> K9.quietTimeEnds
+            "quiet_time_starts" -> generalSettingsManager.getSettings().quietTimeStarts
+            "quiet_time_ends" -> generalSettingsManager.getSettings().quietTimeEnds
             "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
             "message_list_sender_font" -> K9.fontSizes.messageListSender.toString()
             "message_list_date_font" -> K9.fontSizes.messageListDate.toString()
@@ -168,8 +168,8 @@ class GeneralSettingsDataStore(
             }
 
             "background_ops" -> setBackgroundOps(value)
-            "quiet_time_starts" -> K9.quietTimeStarts = value
-            "quiet_time_ends" -> K9.quietTimeEnds = value
+            "quiet_time_starts" -> setQuietTimeStarts(quietTimeStarts = value)
+            "quiet_time_ends" -> setQuietTimeEnds(quietTimeEnds = value)
             "message_list_subject_font" -> K9.fontSizes.messageListSubject = value.toInt()
             "message_list_sender_font" -> K9.fontSizes.messageListSender = value.toInt()
             "message_list_date_font" -> K9.fontSizes.messageListDate = value.toInt()
@@ -353,10 +353,31 @@ class GeneralSettingsDataStore(
         )
     }
 
+    private fun setQuietTimeStarts(quietTimeStarts: String) {
+        skipSaveSettings = true
+        generalSettingsManager.setQuietTimeStarts(
+            quietTimeStarts = quietTimeStarts,
+        )
+    }
+
+    private fun setQuietTimeEnds(quietTimeEnds: String) {
+        skipSaveSettings = true
+        generalSettingsManager.setQuietTimeEnds(
+            quietTimeEnds = quietTimeEnds,
+        )
+    }
+
     private fun setIsAutoFitWidth(isAutoFitWidth: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.setIsAutoFitWidth(
             isAutoFitWidth = isAutoFitWidth,
+        )
+    }
+
+    private fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsQuietTimeEnabled(
+            isQuietTimeEnabled = isQuietTimeEnabled,
         )
     }
 

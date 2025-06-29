@@ -5,11 +5,13 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal open class AuthenticationErrorNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun showAuthenticationErrorNotification(account: LegacyAccount, incoming: Boolean) {
         val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming)
@@ -30,7 +32,7 @@ internal open class AuthenticationErrorNotificationController(
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setPublicVersion(createLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_ERROR)
-            .setErrorAppearance()
+            .setErrorAppearance(generalSettingsManager = generalSettingsManager)
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
