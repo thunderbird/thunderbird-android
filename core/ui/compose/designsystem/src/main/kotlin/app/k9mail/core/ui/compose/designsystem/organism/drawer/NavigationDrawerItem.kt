@@ -28,7 +28,7 @@ fun NavigationDrawerItem(
     icon: (@Composable () -> Unit)? = null,
     badge: (@Composable () -> Unit)? = null,
 ) {
-    Material3NavigationDrawerItem(
+    NavigationDrawerItem(
         label = {
             TextLabelLarge(
                 text = label,
@@ -38,9 +38,7 @@ fun NavigationDrawerItem(
         },
         selected = selected,
         onClick = onClick,
-        modifier = Modifier
-            .padding(NavigationDrawerItemDefaults.ItemPadding)
-            .then(modifier),
+        modifier = modifier,
         icon = icon,
         badge = badge,
     )
@@ -65,7 +63,7 @@ fun NavigationDrawerItem(
     icon: (@Composable () -> Unit)? = null,
     badge: (@Composable () -> Unit)? = null,
 ) {
-    Material3NavigationDrawerItem(
+    NavigationDrawerItem(
         label = {
             TextLabelLarge(
                 text = label,
@@ -75,9 +73,7 @@ fun NavigationDrawerItem(
         },
         selected = selected,
         onClick = onClick,
-        modifier = Modifier
-            .padding(NavigationDrawerItemDefaults.ItemPadding)
-            .then(modifier),
+        modifier = modifier,
         icon = icon,
         badge = badge,
     )
