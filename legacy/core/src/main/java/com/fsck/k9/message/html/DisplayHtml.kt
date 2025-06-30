@@ -1,26 +1,32 @@
 package com.fsck.k9.message.html
 
 import app.k9mail.html.cleaner.HtmlHeadProvider
+import org.intellij.lang.annotations.Language
 
 class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
     override val headHtml: String
         get() {
-            return """
+            @Language("HTML")
+            val html = """
                 <meta name="viewport" content="width=device-width"/>
                 ${cssStyleGlobal()}
                 ${cssStylePre()}
                 ${cssStyleSignature()}
             """.trimIndent()
+
+            return html
         }
 
     fun wrapStatusMessage(status: CharSequence): String {
+        @Language("HTML")
         val html = """
-            <div style=\"text-align:center; color: grey;\">$status</div>
+            <div style="text-align:center; color: grey;">$status</div>
         """.trimIndent()
 
         return wrapMessageContent(html)
     }
 
+    @Language("HTML")
     fun wrapMessageContent(messageContent: CharSequence): String {
         // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
         return """
@@ -44,6 +50,7 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
      * @return A `<style>` element string that can be dynamically injected into the HTML `<head>`
      * to apply these global styles when rendering messages.
      */
+    @Language("HTML")
     private fun cssStyleGlobal(): String {
         return """
             <style type="text/css">
@@ -63,6 +70,7 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
      * @return A `<style>` element that can be dynamically included in the HTML `<head>` element when messages are
      * displayed.
      */
+    @Language("HTML")
     private fun cssStylePre(): String {
         val font = if (settings.useFixedWidthFont) "monospace" else "sans-serif"
 
@@ -78,6 +86,7 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
         """.trimIndent()
     }
 
+    @Language("HTML")
     private fun cssStyleSignature(): String {
         return """
             <style type="text/css">
