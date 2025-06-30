@@ -25,8 +25,7 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
         return """
             <html dir="auto">
                 <head>
-                    <meta name="viewport" content="width=device-width"/>
-                    ${cssStylePre()}
+                    $headHtml
                 </head>
                 <body>
                     $messageContent
