@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 import androidx.core.content.IntentCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
@@ -53,7 +53,7 @@ import com.google.android.material.textview.MaterialTextView;
  * Currently we make no attempts to stop the background code (e.g. {@link MessagingController}) from
  * opening the accounts' databases. If this happens the upgrade is performed in one of the
  * background threads and not by {@link DatabaseUpgradeService}. But this is not a problem. Due to
- * the locking in {@link com.fsck.k9.mailstore.LocalStoreProvider#getInstance(Account)} the upgrade service will block
+ * the locking in {@link com.fsck.k9.mailstore.LocalStoreProvider#getInstance(LegacyAccount)} the upgrade service will block
  * and from the outside (especially for this activity) it will appear as if
  * {@link DatabaseUpgradeService} is performing the upgrade.
  * </p>
@@ -205,7 +205,7 @@ public class UpgradeDatabases extends K9Activity {
                 String accountUuid = intent.getStringExtra(
                         DatabaseUpgradeService.EXTRA_ACCOUNT_UUID);
 
-                Account account = mPreferences.getAccount(accountUuid);
+                LegacyAccount account = mPreferences.getAccount(accountUuid);
 
                 if (account != null) {
                     String upgradeStatus = getString(R.string.upgrade_database_format, account.getDisplayName());

@@ -3,8 +3,8 @@ package app.k9mail.feature.launcher
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import app.k9mail.core.ui.compose.common.activity.setActivityContent
 import app.k9mail.feature.launcher.ui.FeatureLauncherApp
 import com.fsck.k9.ui.base.K9Activity
 
@@ -15,7 +15,7 @@ class FeatureLauncherActivity : K9Activity() {
 
         enableEdgeToEdge()
 
-        setActivityContent {
+        setContent {
             FeatureLauncherApp()
         }
     }

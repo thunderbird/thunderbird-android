@@ -339,7 +339,6 @@
     <string name="account_settings_sync_remote_deletetions_summary">서버에서 삭제된 메시지를 앱에서도 삭제합니다</string>
     <string name="folder_settings_title">폴더 설정</string>
     <string name="folder_settings_in_top_group_label">첫번째 그룹에 보여짐</string>
-    <string name="folder_settings_in_top_group_summary">폴더 목록의 가장 위에 보여짐</string>
     <string name="folder_settings_clear_local_folder_action">로컬 메시지 삭제</string>
     <string name="account_settings_incoming_label">수신 서버</string>
     <string name="account_settings_incoming_summary">메일 수신 서버 수정</string>
@@ -448,7 +447,6 @@
     <string name="integrated_inbox_title">통합 편지함</string>
     <string name="integrated_inbox_detail">통합 폴더의 모든 이메일</string>
     <string name="folder_settings_include_in_integrated_inbox_label">통합</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">통합 편지함에서 모든 메시지를 볼 수 있습니다</string>
     <string name="account_settings_no_folder_selected">없음</string>
     <string name="font_size_settings_title">글꼴 크기</string>
     <string name="font_size_settings_description">글꼴 크기 수정</string>

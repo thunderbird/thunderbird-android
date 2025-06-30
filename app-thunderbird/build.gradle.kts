@@ -18,7 +18,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 11
-        versionName = "10.1"
+        versionName = "11.0"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -210,7 +210,10 @@ dependencies {
 
     implementation(projects.core.featureflags)
 
+    implementation(projects.feature.account.settings.impl)
+
     implementation(projects.feature.widget.messageList)
+    implementation(projects.feature.widget.messageListGlance)
     implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)
 
@@ -240,10 +243,6 @@ dependencies {
     releaseImplementation(libs.appauth)
 
     testImplementation(libs.robolectric)
-
-    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
-    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
-    testImplementation(projects.feature.account.setup)
 }
 
 dependencyGuard {

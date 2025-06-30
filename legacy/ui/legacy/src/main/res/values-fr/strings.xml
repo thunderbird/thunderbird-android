@@ -290,16 +290,16 @@
     <string name="idle_refresh_period_36min">Toutes les 36 minutes</string>
     <string name="idle_refresh_period_48min">Toutes les 48 minutes</string>
     <string name="idle_refresh_period_60min">Toutes les 60 minutes</string>
-    <string name="account_setup_options_mail_display_count_10">10 courriels</string>
+    <string name="account_setup_options_mail_display_count_10">10 courriels</string>
     <string name="account_setup_options_mail_display_count_25">25 courriels</string>
-    <string name="account_setup_options_mail_display_count_50">50 courriels</string>
-    <string name="account_setup_options_mail_display_count_100">100 courriels</string>
-    <string name="account_setup_options_mail_display_count_250">250 courriels</string>
-    <string name="account_setup_options_mail_display_count_500">500 courriels</string>
-    <string name="account_setup_options_mail_display_count_1000">1 000 courriels</string>
-    <string name="account_setup_options_mail_display_count_2500">2 500 courriels</string>
-    <string name="account_setup_options_mail_display_count_5000">5 000 courriels</string>
-    <string name="account_setup_options_mail_display_count_10000">10 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_50">50 courriels</string>
+    <string name="account_setup_options_mail_display_count_100">100 courriels</string>
+    <string name="account_setup_options_mail_display_count_250">250 courriels</string>
+    <string name="account_setup_options_mail_display_count_500">500 courriels</string>
+    <string name="account_setup_options_mail_display_count_1000">1 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_2500">2 500 courriels</string>
+    <string name="account_setup_options_mail_display_count_5000">5 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_10000">10 000 courriels</string>
     <string name="account_setup_options_mail_display_count_all">tous les courriels</string>
     <string name="move_copy_cannot_copy_unsynced_message">Impossible de copier ou déplacer un courriel qui n’est pas synchronisé avec le serveur</string>
     <string name="account_settings_push_advanced_title">Avancé</string>
@@ -398,7 +398,6 @@
     <string name="account_settings_openpgp_missing">L’appli OpenPGP manque. A-t-elle été désinstallée ?</string>
     <string name="folder_settings_title">Paramètres du dossier</string>
     <string name="folder_settings_in_top_group_label">Afficher dans le groupe supérieur</string>
-    <string name="folder_settings_in_top_group_summary">Afficher dans le haut de la liste des dossiers</string>
     <string name="folder_settings_clear_local_folder_action">Effacer les courriels locaux</string>
     <string name="account_settings_incoming_label">Serveur entrant</string>
     <string name="account_settings_incoming_summary">Configurer le serveur de courriel entrant</string>
@@ -518,12 +517,12 @@
     <string name="account_setup_push_limit_label">Maximum de dossiers à vérifier avec le poussé</string>
     <string name="account_setup_push_limit_5">5 dossiers</string>
     <string name="account_setup_push_limit_10">10 dossiers</string>
-    <string name="account_setup_push_limit_25">25 dossiers</string>
+    <string name="account_setup_push_limit_25">25 dossiers</string>
     <string name="account_setup_push_limit_50">50 dossiers</string>
     <string name="account_setup_push_limit_100">100 dossiers</string>
     <string name="account_setup_push_limit_250">250 dossiers</string>
     <string name="account_setup_push_limit_500">500 dossiers</string>
-    <string name="account_setup_push_limit_1000">1 000 dossiers</string>
+    <string name="account_setup_push_limit_1000">1 000 dossiers</string>
     <string name="animations_title">Animation</string>
     <string name="animations_summary">Utiliser des effets visuels voyants</string>
     <string name="show_unified_inbox_title">Afficher la boîte de réception unifiée</string>
@@ -531,7 +530,6 @@
     <string name="integrated_inbox_title">Boîte de réception unifiée</string>
     <string name="integrated_inbox_detail">Tous les courriels dans les dossiers unifiés</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Unifier</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Tous les courriels sont affichés dans la boîte de réception unifiée</string>
     <string name="account_settings_no_folder_selected">Aucun</string>
     <string name="account_settings_automatic_special_folder">Automatique (%s)</string>
     <string name="font_size_settings_title">Taille des polices</string>
@@ -573,8 +571,8 @@
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce courriel ?</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Voulez-vous supprimer ce courriel ?</item>
-        <item quantity="many">Voulez-vous supprimer les <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
-        <item quantity="other">Voulez-vous supprimer les <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
+        <item quantity="many">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
+        <item quantity="other">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Oui</string>
     <string name="dialog_confirm_delete_cancel_button">Non</string>
@@ -587,8 +585,8 @@
     <string name="dialog_confirm_spam_title">Confirmer le déplacement vers le dossier des pourriels (indésirables)</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce courriel vers le dossier des pourriels ?</item>
-        <item quantity="many">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossier des pourriels ?</item>
-        <item quantity="other">Voulez-vous déplacer les <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossier des pourriels ?</item>
+        <item quantity="many">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossier des pourriels ?</item>
+        <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossier des pourriels ?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Oui</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
@@ -629,7 +627,7 @@
     <string name="account_settings_remote_search_num_results_entries_100">100</string>
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
-    <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
     <string name="account_settings_remote_search_num_label">Limite de recherche sur le serveur</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
     <plurals name="remote_search_downloading">
@@ -881,7 +879,7 @@
     <string name="push_notification_grant_alarm_permission">Touchez pour accorder l’autorisation.</string>
     <string name="about_title">À propos de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">L’équipe Thunderbird pour appareils mobiles</string>
-    <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Si le poussé est utilisé, <xliff:g id="app_name">%1$s</xliff:g> maintient une connexion vers le serveur de courriel. Android exige d’afficher une notification continue quand l’appli est active en arrière-plan. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">L’appli OpenKeychain est nécessaire pour prendre en charge le chiffrement de bout en bout.</string>
     <string name="folder_settings_notifications_label">Notifications</string>

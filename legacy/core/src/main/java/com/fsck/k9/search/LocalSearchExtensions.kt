@@ -2,10 +2,10 @@
 
 package com.fsck.k9.search
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.search.LocalSearch
-import app.k9mail.legacy.search.SearchAccount
+import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.SearchAccount
 
 val LocalSearch.isUnifiedInbox: Boolean
     get() = id == SearchAccount.UNIFIED_INBOX
@@ -20,7 +20,7 @@ val LocalSearch.isSingleFolder: Boolean
     get() = isSingleAccount && folderIds.size == 1
 
 @JvmName("getAccountsFromLocalSearch")
-fun LocalSearch.getAccounts(accountManager: AccountManager): List<Account> {
+fun LocalSearch.getAccounts(accountManager: AccountManager): List<LegacyAccount> {
     val accounts = accountManager.getAccounts()
     return if (searchAllAccounts()) {
         accounts

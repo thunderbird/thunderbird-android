@@ -35,7 +35,7 @@
     <plurals name="settings_import_password_prompt">
         <item quantity="one">על מנת להשתמש בחשבון \"<xliff:g id="account">%s</xliff:g>\" עליך לספק את סיסמת השרת.</item>
         <item quantity="two">על מנת להשתמש בחשבון \"<xliff:g id="account">%s</xliff:g>\" עליך לספק את סיסמאות השרת.</item>
-        <item quantity="other">על מנת להשתמש בחשבון \"<xliff:g id="account">%s</xliff:g>\" עליך לספק את סיסמאות השרת.</item>
+        <item quantity="many">על מנת להשתמש בחשבון \"<xliff:g id="account">%s</xliff:g>\" עליך לספק את סיסמאות השרת.</item>
     </plurals>
     <string name="settings_import_pick_app_button">ייבא מיישום</string>
     <string name="settings_import_pick_app_dialog_title">ייבא מיישום</string>

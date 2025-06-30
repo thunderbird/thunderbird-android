@@ -71,7 +71,7 @@
     <string name="flag_action">Přidat \u2605</string>
     <string name="unflag_action">Odebrat \u2606</string>
     <string name="copy_action">Kopírovat</string>
-    <string name="unsubscribe_action">Zrušit přihlášení se k odběru</string>
+    <string name="unsubscribe_action">Odhlásit odběr</string>
     <string name="show_headers_action">Zobrazit hlavičku</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adresa zkopírována do schránky</item>
@@ -106,7 +106,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nová zpráva</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nové zprávy</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> pro účet <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Odpovědět</string>
@@ -353,7 +353,7 @@
     <string name="account_settings_sync">Stahování pošty</string>
     <string name="account_settings_folders">Složky</string>
     <string name="account_settings_quote_prefix_label">Předpona citovaného textu</string>
-    <string name="account_settings_crypto">Šifrování mezi odesilatelem a příjemcem</string>
+    <string name="account_settings_crypto">Koncové šifrování</string>
     <string name="account_settings_crypto_app">Zapnout podporu OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Vybrat OpenPGP aplikaci</string>
     <string name="account_settings_crypto_key">Nastavit klíč pro šifrování mezi odesilatelem a příjemcem</string>
@@ -401,7 +401,6 @@
     <string name="account_settings_openpgp_missing">Chybí OpenPGP aplikace – byla odinstalována?</string>
     <string name="folder_settings_title">Nastavení složky</string>
     <string name="folder_settings_in_top_group_label">Zobrazit v nejvyšší skupině</string>
-    <string name="folder_settings_in_top_group_summary">Zobrazit blízko špičky seznamu složek</string>
     <string name="folder_settings_clear_local_folder_action">Vyčistit místní zprávy</string>
     <string name="account_settings_incoming_label">Server příchozí pošty</string>
     <string name="account_settings_incoming_summary">Nastavení serveru příchozí pošty</string>
@@ -534,7 +533,6 @@
     <string name="integrated_inbox_title">Jednotná schránka</string>
     <string name="integrated_inbox_detail">Všechny zprávy v integrovaných složkách</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Integrovat</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Všechny zprávy jsou zobrazeny v Integrované doručené poště</string>
     <string name="account_settings_no_folder_selected">Žádné</string>
     <string name="account_settings_automatic_special_folder">Automaticky (%s)</string>
     <string name="font_size_settings_title">Velikost písma</string>
@@ -646,7 +644,7 @@
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Stahování %1$d z %2$d výsledku</item>
         <item quantity="few">Stahování %1$d ze %2$d výsledků</item>
-        <item quantity="other">Stahování %1$d z %2$d výsledků</item>
+        <item quantity="many">Stahování %1$d z %2$d výsledků</item>
     </plurals>
     <string name="remote_search_error">Vzdálené vyhledávání se nezdařilo</string>
     <string name="account_settings_search">Hledání</string>
@@ -658,7 +656,7 @@
     <string name="global_settings_threaded_view_summary">Sjednotit zprávy patřící ke stejnému vláknu</string>
     <string name="upgrade_databases_title">Aktualizace databází</string>
     <string name="upgrade_databases_unspecified">Aktualizuji databáze…</string>
-    <string name="upgrade_database_format">Přechod na novější verzi databáze účtu \\<xliff:g id="account">%s</xliff:g>\\</string>
+    <string name="upgrade_database_format">Přechod na novější verzi databáze účtu „<xliff:g id="account">%s</xliff:g>“</string>
     <string name="global_settings_splitview_mode_label">Zobraz rozdělení obrazovky</string>
     <string name="global_settings_splitview_always">Vždy</string>
     <string name="global_settings_splitview_never">Nikdy</string>
@@ -791,7 +789,7 @@
     <string name="account_settings_crypto_encrypt_subject_subtitle">Nemusí být podporováno některými příjemci</string>
     <string name="toast_account_not_found">Vnitřní chyba: neplatný účet!</string>
     <string name="toast_openpgp_provider_error">Chyba při připojování k %s!</string>
-    <string name="ac_transfer_setting_title">Poslat Autocrypt nastavovací zprávu</string>
+    <string name="ac_transfer_setting_title">Poslat nastavovací zprávu Autocrypt</string>
     <string name="ac_transfer_setting_summary">Zabezpečeně sdílet nastavení s ostatními zařízeními</string>
     <string name="ac_transfer_title">Autocrypt nastavovací zpráva</string>
     <string name="ac_transfer_intro">Autocrypt nastavovací zpráva zabezpečeně sdílí vaše nastavení s ostatními zařízeními.</string>

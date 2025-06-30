@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="license">অনুমতিপত্র</string>
+    <string name="about_libraries">গ্রন্থাগার</string>
+    <string name="changelog_title">পরিবর্তনসূচি</string>
+    <string name="delete_action">অপসারণ</string>
+    <string name="archive_action">সংরক্ষণাগার</string>
+    <string name="done_action">সম্পন্ন</string>
+    <string name="compose_title_compose">সম্পাদন</string>
+    <string name="accounts_title">অ্যাকাউন্ট</string>
+    <string name="discard_action">বাদ দাও</string>
+    <string name="general_settings_swipe_action_none">কোনটি নয়</string>
+    <string name="about_website_title">ওয়েবসাইট</string>
+    <string name="changelog_snackbar_button_text">প্রদর্শন</string>
+    <string name="authors">লেখক</string>
+    <string name="compose_title_forward">পুনঃপ্রেরণ</string>
+    <string name="forward_action">পুনঃপ্রেরণ</string>
+    <string name="message_compose_signature_hint">স্বাক্ষর</string>
+    <string name="message_compose_quote_header_subject">বিষয়:</string>
+    <string name="message_compose_quote_header_send_date">পাঠানো হয়েছে:</string>
+    <string name="message_compose_quote_header_from">থেকে:</string>
+    <string name="message_view_bcc_label">বিসিসি:</string>
+    <string name="global_settings_confirm_action_delete">অপসারণ</string>
+    <string name="global_settings_confirm_action_spam">স্প্যাম</string>
+    <string name="send_action">পাঠাও</string>
+    <string name="message_compose_quote_header_cc">সিসি:</string>
+    <string name="message_compose_quote_header_to">প্রতি:</string>
+    <string name="compose_title_reply">উত্তর</string>
+    <string name="move_action">সরাও</string>
+    <string name="reply_action">উত্তর</string>
+    <string name="spam_action">স্প্যাম</string>
+    <string name="refile_action">রিফাইল…</string>
+    <string name="version">সংস্করণ</string>
+    <string name="message_compose_subject_hint">বিষয়</string>
+    <string name="message_to_label">প্রতি:</string>
+    <string name="message_view_me_text">আমি</string>
+    <string name="general_settings_swipe_action_archive">সংরক্ষণাগার</string>
+    <string name="message_view_cc_label">সিসি:</string>
+    <string name="general_settings_swipe_action_delete">অপসারণ</string>
+    <string name="message_view_additional_recipient_prefix">+</string>
+    <string name="general_settings_swipe_action_spam">স্প্যাম</string>
+</resources>

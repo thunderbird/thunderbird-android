@@ -2,7 +2,7 @@ package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
 import androidx.lifecycle.LifecycleOwner
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -21,7 +21,7 @@ class AutocryptKeyTransferPresenter internal constructor(
     private val presenterScope: CoroutineScope = MainScope(),
 ) {
 
-    private lateinit var account: Account
+    private lateinit var account: LegacyAccount
     private lateinit var showTransferCodePi: PendingIntent
 
     init {

@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Me connecter avec Google</string>
     <string name="account_oauth_loading_error">Échec de connexion OAuth</string>
-    <string name="account_oauth_error_failed">Échec d’autorisation avec l’erreur suivante : <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_error_failed">Échec d’autorisation avec l’erreur suivante : <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">L’appli n’a pas trouvé de navigateur pour accorder l’accès à votre compte.</string>
     <string name="account_oauth_error_not_supported">OAuth n\'est actuellement pas pris en charge par ce fournisseur.</string>
     <string name="account_oauth_error_canceled">L\'autorisation a été annulée</string>

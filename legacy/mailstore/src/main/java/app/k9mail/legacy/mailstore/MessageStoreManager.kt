@@ -1,7 +1,7 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
+import app.k9mail.legacy.account.LegacyAccount
 import java.util.concurrent.ConcurrentHashMap
 
 class MessageStoreManager(
@@ -21,7 +21,7 @@ class MessageStoreManager(
         return getMessageStore(account)
     }
 
-    fun getMessageStore(account: Account): ListenableMessageStore {
+    fun getMessageStore(account: LegacyAccount): ListenableMessageStore {
         return messageStores.getOrPut(account.uuid) { messageStoreFactory.create(account) }
     }
 

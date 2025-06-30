@@ -3,8 +3,8 @@ package com.fsck.k9.helper;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import app.k9mail.core.android.testing.RobolectricTest;
-import app.k9mail.legacy.account.Account;
+import net.thunderbird.core.android.testing.RobolectricTest;
+import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -34,13 +34,13 @@ public class ReplyToParserTest extends RobolectricTest {
 
     private ReplyToParser replyToParser;
     private Message message;
-    private Account account;
+    private LegacyAccount account;
 
 
     @Before
     public void setUp() throws Exception {
         message = mock(Message.class);
-        account = mock(Account.class);
+        account = mock(LegacyAccount.class);
 
         replyToParser = new ReplyToParser();
     }

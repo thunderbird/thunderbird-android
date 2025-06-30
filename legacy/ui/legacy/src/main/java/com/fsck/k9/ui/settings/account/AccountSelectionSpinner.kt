@@ -9,13 +9,13 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.view.isVisible
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
 
 class AccountSelectionSpinner : AppCompatSpinner {
-    var selection: Account
-        get() = selectedItem as Account
+    var selection: LegacyAccount
+        get() = selectedItem as LegacyAccount
         set(account) {
             selectedAccount = account
             val adapter = adapter as AccountsAdapter
@@ -24,7 +24,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
         }
 
     private val cachedBackground: Drawable
-    private var selectedAccount: Account? = null
+    private var selectedAccount: LegacyAccount? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -40,7 +40,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
         adapter.notifyDataSetChanged()
     }
 
-    fun setAccounts(accounts: List<Account>) {
+    fun setAccounts(accounts: List<LegacyAccount>) {
         val adapter = adapter as AccountsAdapter
         adapter.clear()
         adapter.addAll(accounts)
@@ -52,7 +52,7 @@ class AccountSelectionSpinner : AppCompatSpinner {
         background = if (showAccountSwitcher) cachedBackground else null
     }
 
-    internal class AccountsAdapter(context: Context) : ArrayAdapter<Account>(context, 0) {
+    internal class AccountsAdapter(context: Context) : ArrayAdapter<LegacyAccount>(context, 0) {
         var title: CharSequence = ""
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

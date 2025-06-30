@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="navigation_drawer_siderail_action_settings">Ezarpenak</string>
+    <string name="navigation_drawer_siderail_action_manage_folders">Kudeatu karpetak</string>
+    <string name="navigation_drawer_siderail_unified_inbox_title">Sarrerako ontzi bateratua</string>
+    <string name="navigation_drawer_siderail_action_sync_all_accounts">Sinkronizatu kontu guztiak</string>
+    <string name="navigation_drawer_siderail_action_show_accounts">Erakutsi kontuak</string>
+    <string name="navigation_drawer_siderail_action_hide_accounts">Ezkutatu kontuak</string>
+    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_1_000">1.000+</string>
+    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_99">99+</string>
+</resources>

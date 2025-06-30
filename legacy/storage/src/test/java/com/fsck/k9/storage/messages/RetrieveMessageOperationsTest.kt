@@ -8,7 +8,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
-import com.fsck.k9.mail.crlf
+import com.fsck.k9.mail.testing.crlf
 import com.fsck.k9.storage.RobolectricTest
 import java.util.Date
 import org.junit.Test

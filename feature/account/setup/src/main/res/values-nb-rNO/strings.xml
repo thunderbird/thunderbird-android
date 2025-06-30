@@ -10,14 +10,14 @@
     <string name="account_setup_options_email_signature_error_blank">E-postsignatur må fylles ut.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Det kreves for å godkjenne oppsettet.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
-    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Oppsettet for din e-posttjener ble mottatt på en tilkobling som ikke er sikker nok. Dette betyr at noen kan ha endret den. Kan du dobbeltsjekke at angitt oppsett er slik det skal være\?</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Vi mottok oppsettet for din e-posttjener på en tilkobling som ikke er så sikker som vi hadde ønske. Dette betyr at det er en mikroskopisk sjanse for at noen kan ha endret den. Kan du dobbeltsjekke at det angitte oppsettet er slik det skal være?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Rediger oppsett</string>
     <string name="account_setup_error_unknown">Ukjent feil</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Fant ikke noe oppsett</string>
     <string name="account_setup_options_account_name_label">Kontonavn</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Fant et oppsett</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-postadresse kreves</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">E-postadresse kreves.</string>
     <string name="account_setup_options_display_name_label">Ditt navn</string>
     <string name="account_setup_auto_discovery_loading_error">Klarte ikke å laste inn e-postoppsett</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jeg stoler på dette oppsettet</string>

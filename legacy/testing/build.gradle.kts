@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation(projects.legacy.core)
 
+    implementation(projects.legacy.core)
     api(projects.core.android.testing)
 
     api(libs.koin.core)

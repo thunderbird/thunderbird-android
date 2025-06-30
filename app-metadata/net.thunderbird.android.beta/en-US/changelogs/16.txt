@@ -1,0 +1,4 @@
+Thunderbird for Android version 11.0b3, based on K-9 Mail. Changes include:
+- Sharing multiple selected images from gallery only selected last image
+- Account drawer could crash when folder was selected
+- Application could crash when fetching emails

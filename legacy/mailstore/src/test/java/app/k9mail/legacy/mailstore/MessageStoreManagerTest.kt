@@ -1,8 +1,8 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
 import app.k9mail.legacy.account.AccountRemovedListener
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isSameInstanceAs
 import org.junit.Test
@@ -14,7 +14,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 class MessageStoreManagerTest {
-    private val account = Account("00000000-0000-4000-0000-000000000000")
+    private val account = LegacyAccount("00000000-0000-4000-0000-000000000000")
     private val messageStore1 = mock<ListenableMessageStore>(name = "messageStore1")
     private val messageStore2 = mock<ListenableMessageStore>(name = "messageStore2")
     private val messageStoreFactory = mock<MessageStoreFactory> {

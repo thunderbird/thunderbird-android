@@ -1,7 +1,11 @@
 package com.fsck.k9.storage
 
 import android.app.Application
+import app.k9mail.core.featureflag.FeatureFlag
+import app.k9mail.core.featureflag.FeatureFlagProvider
+import app.k9mail.core.featureflag.InMemoryFeatureFlagProvider
 import app.k9mail.feature.telemetry.telemetryModule
+import app.k9mail.legacy.account.AccountDefaultsProvider
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.AppConfig
 import com.fsck.k9.Core
@@ -33,4 +37,12 @@ val testModule = module {
     single { mock<EncryptionExtractor>() }
     single<StoragePersister> { K9StoragePersister(get()) }
     single { mock<BackendManager>() }
+    single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
+    single<FeatureFlagProvider> {
+        InMemoryFeatureFlagProvider(
+            featureFlagFactory = {
+                emptyList<FeatureFlag>()
+            },
+        )
+    }
 }

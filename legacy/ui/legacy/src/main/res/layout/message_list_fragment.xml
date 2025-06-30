@@ -8,27 +8,6 @@
     android:layout_height="match_parent"
     tools:context=".messagelist.MessageListFragment"
     >
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/message_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:fadingEdge="none"
-            android:paddingBottom="@dimen/floatingActionButtonSpacing"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/message_list_item"
-            />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"
@@ -38,6 +17,36 @@
         android:contentDescription="@string/compose_action"
         app:layout_behavior="com.fsck.k9.ui.fab.HideFabOnScrollBehavior"
         app:srcCompat="@drawable/ic_edit"
+        android:focusable="true"
         />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.core.view.insets.ProtectionLayout
+            android:id="@+id/protection_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/message_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fadingEdge="none"
+                android:paddingBottom="@dimen/floatingActionButtonSpacing"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/message_list_item"
+                />
+        </androidx.core.view.insets.ProtectionLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

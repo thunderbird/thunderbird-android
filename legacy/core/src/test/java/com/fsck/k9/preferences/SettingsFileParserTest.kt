@@ -1,6 +1,5 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.containsExactly
@@ -14,6 +13,7 @@ import com.fsck.k9.preferences.SettingsFile.Account
 import com.fsck.k9.preferences.SettingsFile.Identity
 import com.fsck.k9.preferences.SettingsFile.Server
 import java.util.UUID
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 class SettingsFileParserTest : RobolectricTest() {

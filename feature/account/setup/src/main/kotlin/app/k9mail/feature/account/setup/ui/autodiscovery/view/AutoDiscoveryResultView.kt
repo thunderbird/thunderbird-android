@@ -43,8 +43,15 @@ internal fun AutoDiscoveryResultView(
                     width = 1.dp,
                     color = Color.Gray.copy(alpha = 0.5f),
                     shape = MainTheme.shapes.small,
-                )
-                .clickable(enabled = discoveryResultHeaderState.isExpandable) { expanded.value = !expanded.value },
+                ).let {
+                    if (discoveryResultHeaderState.isExpandable) {
+                        it.clickable(enabled = true) { expanded.value = !expanded.value }
+                    } else if (discoveryResultHeaderState == AutoDiscoveryResultHeaderState.NoSettings) {
+                        it.clickable(enabled = true) { onEditConfigurationClick() }
+                    } else {
+                        it.clickable(enabled = false) {}
+                    }
+                },
         ) {
             Column(
                 modifier = Modifier.padding(MainTheme.spacings.default),

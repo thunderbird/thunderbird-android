@@ -2,17 +2,19 @@ package com.fsck.k9
 
 import android.content.Context
 import android.content.SharedPreferences
+import app.k9mail.core.featureflag.FeatureFlagProvider
+import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.SortType
+import app.k9mail.legacy.account.AccountDefaultsProvider
+import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import kotlinx.datetime.Clock
+import net.thunderbird.core.preferences.Storage
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -22,6 +24,7 @@ import timber.log.Timber.DebugTree
 object K9 : KoinComponent {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -223,7 +226,7 @@ object K9 : KoinComponent {
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
-    var sortType: SortType = Account.DEFAULT_SORT_TYPE
+    var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
     @JvmStatic
@@ -366,9 +369,9 @@ object K9 : KoinComponent {
         isConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true)
         isConfirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true)
 
-        sortType = storage.getEnum("sortTypeEnum", Account.DEFAULT_SORT_TYPE)
+        sortType = storage.getEnum("sortTypeEnum", AccountDefaultsProvider.DEFAULT_SORT_TYPE)
 
-        val sortAscendingSetting = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING)
+        val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
 
         notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)
@@ -383,7 +386,11 @@ object K9 : KoinComponent {
         isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", false)
         isShowComposeButtonOnMessageList = storage.getBoolean("showComposeButtonOnMessageList", true)
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
-        fontSizes.load(storage)
+
+        featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
+            .onDisabledOrUnavailable {
+                fontSizes.load(storage)
+            }
 
         backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
 
@@ -542,11 +549,8 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-    const val PUSH_WAKE_LOCK_TIMEOUT = K9MailLib.PUSH_WAKE_LOCK_TIMEOUT
-    const val MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000
-    const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
 
-    @Suppress("ktlint:standard:class-naming")
+    @Suppress("ClassName")
     enum class BACKGROUND_OPS {
         ALWAYS,
         NEVER,

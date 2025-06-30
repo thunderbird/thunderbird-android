@@ -17,7 +17,7 @@ import android.provider.OpenableColumns;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.Preferences;
 import app.k9mail.legacy.message.controller.MessageReference;
@@ -174,7 +174,7 @@ public class RawMessageProvider extends ContentProvider {
         long folderId = messageReference.getFolderId();
         String uid = messageReference.getUid();
 
-        Account account = Preferences.getPreferences().getAccount(accountUuid);
+        LegacyAccount account = Preferences.getPreferences().getAccount(accountUuid);
         if (account == null) {
             Timber.w("Account not found: %s", accountUuid);
             return null;

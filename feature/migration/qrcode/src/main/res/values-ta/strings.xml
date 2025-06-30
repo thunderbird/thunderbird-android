@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="migration_qrcode_permission_denied_message">ஆண்ட்ராய்டு அமைப்புகளுக்குச் சென்று, அனுமதிகளைத் தட்டவும், கேமராவை அணுக அனுமதிக்கவும்.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">அமைப்புகளுக்குச் செல்லுங்கள்</string>
+    <string name="migration_qrcode_scanning_progress">%2$s இன் %1$s ஐ ச்கேன் செய்தது</string>
+    <string name="migration_qrcode_done_button_text">முடிந்தது</string>
+    <string name="migration_qrcode_scanning_instructions">தண்டர்பேர்ட் டெச்க்டாப்பில் இருந்து வழங்கப்பட்ட QR குறியீட்டை சீரமைக்கவும்</string>
+    <string name="migration_qrcode_permission_denied_title">கேமரா அணுகல் தேவை</string>
+</resources>

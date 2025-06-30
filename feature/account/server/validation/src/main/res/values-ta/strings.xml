@@ -1,2 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_validation_error_client_certificate_expired">கிளையன்ட் சான்றிதழ் இனி செல்லுபடியாகாது</string>
+    <string name="account_server_validation_error_details">விவரங்கள்:\n %s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">சேவையகம் இந்த திறனைக் காணவில்லை:\n %s</string>
+    <string name="account_server_validation_incoming_loading_message">உள்வரும் சேவையக அமைப்புகளை சரிபார்க்கிறது…</string>
+    <string name="account_server_validation_incoming_loading_error">உள்வரும் சேவையக அமைப்புகளை சரிபார்க்கிறது</string>
+    <string name="account_server_validation_incoming_success">உள்வரும் சேவையக அமைப்புகள் சரிபார்க்கப்பட்டன</string>
+    <string name="account_server_validation_outgoing_loading_message">வெளிச்செல்லும் சேவையக அமைப்புகளைச் சரிபார்க்கிறது…</string>
+    <string name="account_server_validation_outgoing_loading_error">வெளிச்செல்லும் சேவையக அமைப்புகளைப் பார்ப்பது தோல்வியடைந்தது</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">கிளையன்ட் சான்றிதழை அணுக முடியவில்லை</string>
+    <string name="account_server_validation_error_missing_server_capability">சேவையக திறனைக் காணவில்லை</string>
+    <string name="account_server_validation_outgoing_success">வெளிச்செல்லும் சேவையக அமைப்புகள் சரிபார்க்கப்பட்டன</string>
+    <string name="account_server_validation_sign_in">தயவுசெய்து உள்நுழைக</string>
+    <string name="account_server_validation_error_authentication">அங்கீகார பிழை</string>
+    <string name="account_server_validation_error_network">பிணைய பிழை</string>
+    <string name="account_server_validation_error_server">சேவையக பிழை</string>
+    <string name="account_server_validation_error_unknown">தெரியாத பிழை</string>
+</resources>

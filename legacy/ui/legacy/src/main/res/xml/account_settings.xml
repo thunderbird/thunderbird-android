@@ -8,6 +8,12 @@
     android:title="@string/account_settings_title_fmt"
     >
 
+    <Preference
+        android:icon="@drawable/ic_settings"
+        android:key="general"
+        android:title="@string/account_settings_general_title"
+        />
+
     <PreferenceScreen
         android:icon="@drawable/ic_settings"
         android:key="account_settings"

@@ -3,7 +3,7 @@ package com.fsck.k9.preferences
 import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_DESCRIPTION_KEY
@@ -66,7 +66,7 @@ class SettingsExporter(
 
             val storage = preferences.storage
 
-            val prefs: Map<String, Any> = storage.all.toSortedMap()
+            val prefs: Map<String, Any> = storage.getAll().toSortedMap()
             if (includeGlobals) {
                 serializer.startTag(null, GLOBAL_ELEMENT)
                 writeSettings(serializer, prefs)
@@ -122,9 +122,10 @@ class SettingsExporter(
         }
     }
 
+    @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
     private fun writeAccount(
         serializer: XmlSerializer,
-        account: Account,
+        account: LegacyAccount,
         prefs: Map<String, Any>,
         includePasswords: Boolean,
     ) {
@@ -272,7 +273,7 @@ class SettingsExporter(
         serializer: XmlSerializer,
         keyPart: String,
         valueString: String,
-        account: Account,
+        account: LegacyAccount,
     ) {
         val versionedSetting = AccountSettingsDescriptions.SETTINGS[keyPart]
         if (versionedSetting != null) {
@@ -297,7 +298,7 @@ class SettingsExporter(
     }
 
     private fun writeFolderNameSettings(
-        account: Account,
+        account: LegacyAccount,
         folderRepository: FolderRepository,
         serializer: XmlSerializer,
     ) {

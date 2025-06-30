@@ -18,7 +18,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39024
-        versionName = "10.1"
+        versionName = "11.0"
 
         // Keep in sync with the resource string array "supported_languages"
         resourceConfigurations.addAll(
@@ -143,12 +143,15 @@ dependencies {
 
     implementation(projects.core.featureflags)
 
+    implementation(projects.feature.account.settings.impl)
+
     "fossImplementation"(projects.feature.funding.noop)
     "fullImplementation"(projects.feature.funding.googleplay)
     implementation(projects.feature.migration.launcher.noop)
     implementation(projects.feature.onboarding.migration.noop)
     implementation(projects.feature.telemetry.noop)
     implementation(projects.feature.widget.messageList)
+    implementation(projects.feature.widget.messageListGlance)
     implementation(projects.feature.widget.shortcut)
     implementation(projects.feature.widget.unread)
 
@@ -159,10 +162,6 @@ dependencies {
     debugImplementation(projects.feature.autodiscovery.demo)
 
     testImplementation(libs.robolectric)
-
-    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
-    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
-    testImplementation(projects.feature.account.setup)
 }
 
 dependencyGuard {

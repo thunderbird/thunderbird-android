@@ -2,8 +2,8 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.DeletePolicy
+import app.k9mail.legacy.account.DeletePolicy
+import app.k9mail.legacy.account.LegacyAccount
 
 /**
  * Remove all placeholder entries in 'messages' table
@@ -23,7 +23,7 @@ import app.k9mail.legacy.account.Account.DeletePolicy
  * deleted messages are re-downloaded. And if they are, the next sync after the remote operation has completed will
  * remove them again.
  */
-internal class MigrationTo74(private val db: SQLiteDatabase, private val account: Account) {
+internal class MigrationTo74(private val db: SQLiteDatabase, private val account: LegacyAccount) {
 
     fun removeDeletedMessages() {
         if (account.deletePolicy != DeletePolicy.ON_DELETE) return

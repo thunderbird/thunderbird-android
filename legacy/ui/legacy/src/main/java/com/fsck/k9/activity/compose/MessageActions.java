@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.os.Parcelable;
 
 import app.k9mail.feature.launcher.FeatureLauncherActivity;
-import app.k9mail.feature.launcher.FeatureLauncherTarget;
 import app.k9mail.feature.launcher.FeatureLauncherTarget.AccountSetup;
-import app.k9mail.legacy.account.Account;
+import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
 import app.k9mail.legacy.message.controller.MessageReference;
@@ -18,8 +17,8 @@ public class MessageActions {
      * will be used. If there is no default account set, user will be sent to AccountSetup
      * activity.
      */
-    public static void actionCompose(Context context, Account account) {
-        Account defaultAccount = Preferences.getPreferences().getDefaultAccount();
+    public static void actionCompose(Context context, LegacyAccount account) {
+        LegacyAccount defaultAccount = Preferences.getPreferences().getDefaultAccount();
         if (account == null && defaultAccount == null) {
             FeatureLauncherActivity.launch(context, AccountSetup.INSTANCE);
         } else {

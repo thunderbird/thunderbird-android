@@ -12,6 +12,7 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import java.net.Socket
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.android.ext.koin.androidContext
@@ -23,6 +24,7 @@ import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.verify.verify
+import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
@@ -32,12 +34,22 @@ class ServerValidationModuleKtTest : KoinTest {
 
     private val externalModule: Module = module {
         single<TrustedSocketFactory> {
-            TrustedSocketFactory { _, _, _, _ -> null }
+            object : TrustedSocketFactory {
+                override fun createSocket(
+                    socket: Socket?,
+                    host: String,
+                    port: Int,
+                    clientCertificateAlias: String?,
+                ): Socket {
+                    return Mockito.mock()
+                }
+            }
         }
         single<OAuthConfigurationFactory> { OAuthConfigurationFactory { emptyMap() } }
         single<OAuth2TokenProviderFactory> {
             OAuth2TokenProviderFactory { _ ->
                 object : OAuth2TokenProvider {
+                    override val primaryEmail: String? get() = TODO()
                     override fun getToken(timeoutMillis: Long) = TODO()
                     override fun invalidateToken() = TODO()
                 }

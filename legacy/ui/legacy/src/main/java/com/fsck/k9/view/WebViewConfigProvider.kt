@@ -1,8 +1,8 @@
 package com.fsck.k9.view
 
 import app.k9mail.core.ui.theme.api.Theme
-import app.k9mail.legacy.ui.theme.ThemeManager
 import com.fsck.k9.K9
+import net.thunderbird.core.ui.theme.manager.ThemeManager
 
 class WebViewConfigProvider(private val themeManager: ThemeManager) {
     fun createForMessageView() = createWebViewConfig(themeManager.messageViewTheme)

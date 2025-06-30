@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_password_authentication_title">Dearbh cò thusa</string>
+    <string name="account_server_settings_password_authentication_subtitle">Thoir a’ ghlas dheth airson am facal-faire fhaicinn</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Tha an IP no ainm an òstair mì-dhligheach</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">Airson am facal-faire agad fhaicinn an-seo, cuir glas na sgrìn an comas air an uidheam seo.</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Cuir fiosrachadh mun chliant</string>
+    <string name="account_server_settings_protocol_type_label">Pròtacal</string>
+    <string name="account_server_settings_server_label">Frithealaiche</string>
+    <string name="account_server_settings_security_label">Tèarainteachd</string>
+    <string name="account_server_settings_port_label">Port</string>
+    <string name="account_server_settings_authentication_label">Dearbhadh</string>
+    <string name="account_server_settings_username_label">Ainm-cleachdaiche</string>
+    <string name="account_server_settings_connection_security_none">Chan eil gin</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">Chan eil gin</string>
+    <string name="account_server_settings_authentication_password_cleartext">Facal-faire àbhaisteach</string>
+    <string name="account_server_settings_authentication_password_encrypted">Facal-faire crioptaichte</string>
+    <string name="account_server_settings_authentication_client_certificate">Teisteanas a’ chliant</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_client_certificate_none_selected">Chan eil gin</string>
+    <string name="account_server_settings_client_certificate_label">Teisteanas a’ chliant</string>
+    <string name="account_server_settings_incoming_top_bar_title">Roghainnean an fhrithealaiche a-steach</string>
+    <string name="account_server_settings_incoming_imap_namespace_label">Mothaich dha ainm-spàs IMAP gu fèin-obrachail</string>
+    <string name="account_server_settings_incoming_imap_prefix_label">Ro-leasachan slighe IMAP</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Cleachd dùmhlachadh</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Roghainnean an fhrithealaiche a-mach</string>
+    <string name="account_server_settings_validation_error_password_required">Tha feum air facal-faire.</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">Chan fhaod ro-leasachan IMAP a bhith bàn.</string>
+    <string name="account_server_settings_validation_error_port_required">Tha feum air port.</string>
+    <string name="account_server_settings_validation_error_server_required">Tha feum air ainm an fhrithealaiche.</string>
+    <string name="account_server_settings_validation_error_port_invalid">Tha feum air port (feumaidh e a bhith eadar 1 is 65535).</string>
+    <string name="account_server_settings_validation_error_username_required">Tha feum air ainm-cleachdaiche.</string>
+</resources>

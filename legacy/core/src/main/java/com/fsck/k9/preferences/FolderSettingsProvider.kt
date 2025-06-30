@@ -1,11 +1,11 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.RemoteFolderDetails
 
 class FolderSettingsProvider(private val folderRepository: FolderRepository) {
-    fun getFolderSettings(account: Account): List<FolderSettings> {
+    fun getFolderSettings(account: LegacyAccount): List<FolderSettings> {
         return folderRepository.getRemoteFolderDetails(account)
             .filterNot { it.containsOnlyDefaultValues() }
             .map { it.toFolderSettings() }

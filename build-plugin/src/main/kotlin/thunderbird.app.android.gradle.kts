@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    configureSharedConfig()
+    configureSharedConfig(project)
 
     defaultConfig {
         targetSdk = ThunderbirdProjectConfig.androidSdkTarget
@@ -24,11 +24,6 @@ android {
         jvmTarget = ThunderbirdProjectConfig.javaCompatibilityVersion.toString()
     }
 
-    lint {
-        checkDependencies = true
-        lintConfig = file("${rootProject.projectDir}/config/lint/lint.xml")
-    }
-
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
@@ -36,7 +31,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring(libs.android.desugar)
+    coreLibraryDesugaring(libs.android.desugar.nio)
 
     implementation(platform(libs.kotlin.bom))
     implementation(platform(libs.koin.bom))

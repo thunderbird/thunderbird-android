@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <application android:supportsRtl="true">
+        <provider
+            android:name=".camera.provider.CaptureImageFileProvider"
+            android:authorities="${applicationId}.activity"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/capture_image_file_provider_paths"
+                />
+            <meta-data
+                android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
+                android:value="true"
+                />
+        </provider>
+    </application>
+
+</manifest>

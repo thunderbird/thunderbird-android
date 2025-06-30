@@ -11,4 +11,10 @@
     <string name="account_server_validation_error_client_certificate_expired">La klienta atestilo ne plu estas valida</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">La klienta atestilo ne povis esti atingata</string>
     <string name="account_server_validation_error_missing_server_capability_details">La servilo ne havas tiun kapablon:\n%s</string>
+    <string name="account_server_validation_incoming_loading_error">Kontrolo de la agordoj eniran servilon fiaskis</string>
+    <string name="account_server_validation_incoming_loading_message">Kontrolas agordojn de la enira servilo…</string>
+    <string name="account_server_validation_outgoing_loading_message">Kontrolas agordojn de la elira servilo…</string>
+    <string name="account_server_validation_outgoing_loading_error">Kontrolo de la agordoj eliran servilon fiaskis</string>
+    <string name="account_server_validation_incoming_success">Eniran servilon agordoj kontrolitaj</string>
+    <string name="account_server_validation_outgoing_success">Eliran servilon agordoj kontrolitaj</string>
 </resources>

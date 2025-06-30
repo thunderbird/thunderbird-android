@@ -19,7 +19,7 @@ fun LazyItemScope.ListItem(
     Box(
         modifier = Modifier
             .padding(contentPaddingValues)
-            .animateItemPlacement()
+            .animateItem()
             .fillMaxWidth()
             .then(modifier),
     ) {

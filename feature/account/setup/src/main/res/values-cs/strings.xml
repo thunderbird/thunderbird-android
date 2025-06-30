@@ -50,16 +50,16 @@
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">Každou minutu</item>
         <item quantity="few">Každé %d minuty</item>
-        <item quantity="other">Každých %d minut</item>
+        <item quantity="many">Každých %d minut</item>
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_hours">
         <item quantity="one">Každou hodinu</item>
         <item quantity="few">Každé %d hodiny</item>
-        <item quantity="other">Každých %d hodin</item>
+        <item quantity="many">Každých %d hodin</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="one">1 zpráva</item>
         <item quantity="few">%d zprávy</item>
-        <item quantity="other">%d zpráv</item>
+        <item quantity="many">%d zpráv</item>
     </plurals>
 </resources>

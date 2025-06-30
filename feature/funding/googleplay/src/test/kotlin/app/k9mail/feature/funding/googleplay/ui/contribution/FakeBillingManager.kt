@@ -3,10 +3,10 @@ package app.k9mail.feature.funding.googleplay.ui.contribution
 import android.app.Activity
 import app.k9mail.feature.funding.googleplay.domain.DomainContract
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
-import app.k9mail.feature.funding.googleplay.domain.Outcome
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import net.thunderbird.core.outcome.Outcome
 
 class FakeBillingManager : DomainContract.BillingManager {
 

@@ -397,7 +397,6 @@
     <string name="account_settings_openpgp_missing">Saknade OpenPGP-app - har den avinstallerats?</string>
     <string name="folder_settings_title">Mappinställningar</string>
     <string name="folder_settings_in_top_group_label">Visa i toppgruppen</string>
-    <string name="folder_settings_in_top_group_summary">Visa nära toppen av mapplistan</string>
     <string name="folder_settings_clear_local_folder_action">Rensa lokalt lagrade meddelanden</string>
     <string name="account_settings_incoming_label">Inkommande server</string>
     <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
@@ -530,7 +529,6 @@
     <string name="integrated_inbox_title">Samlad inkorg</string>
     <string name="integrated_inbox_detail">Alla meddelanden i samlade mappar</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Förena</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Alla meddelanden visas i samlad inkorg</string>
     <string name="account_settings_no_folder_selected">Inga</string>
     <string name="account_settings_automatic_special_folder">Automatisk (%s)</string>
     <string name="font_size_settings_title">Teckenstorlek</string>

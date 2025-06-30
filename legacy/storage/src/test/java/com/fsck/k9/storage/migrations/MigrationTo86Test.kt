@@ -2,8 +2,8 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.FolderMode
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
 import com.fsck.k9.mailstore.MigrationsHelper
@@ -130,15 +130,15 @@ class MigrationTo86Test {
         )
     }
 
-    private fun createAccount(): Account {
-        return mock<Account> {
+    private fun createAccount(): LegacyAccount {
+        return mock<LegacyAccount> {
             on { folderPushMode } doAnswer { folderPushMode }
         }
     }
 
-    private fun createMigrationsHelper(account: Account): MigrationsHelper {
+    private fun createMigrationsHelper(account: LegacyAccount): MigrationsHelper {
         return object : MigrationsHelper {
-            override fun getAccount(): Account {
+            override fun getAccount(): LegacyAccount {
                 return account
             }
 

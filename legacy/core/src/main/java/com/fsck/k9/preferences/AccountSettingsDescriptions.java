@@ -9,17 +9,15 @@ import java.util.TreeMap;
 
 import android.content.Context;
 
-import app.k9mail.legacy.notification.NotificationLight;
-import app.k9mail.legacy.account.Account;
-import app.k9mail.legacy.account.Account.DeletePolicy;
-import app.k9mail.legacy.account.Account.Expunge;
-import app.k9mail.legacy.account.Account.FolderMode;
-import app.k9mail.legacy.account.Account.MessageFormat;
-import app.k9mail.legacy.account.Account.QuoteStyle;
-import app.k9mail.legacy.account.Account.ShowPictures;
-import app.k9mail.legacy.account.Account.SortType;
-import app.k9mail.legacy.account.Account.SpecialFolderSelection;
-import com.fsck.k9.AccountPreferenceSerializer;
+import app.k9mail.legacy.account.AccountDefaultsProvider;
+import app.k9mail.legacy.account.DeletePolicy;
+import app.k9mail.legacy.account.Expunge;
+import app.k9mail.legacy.account.FolderMode;
+import app.k9mail.legacy.account.MessageFormat;
+import app.k9mail.legacy.account.QuoteStyle;
+import app.k9mail.legacy.account.ShowPictures;
+import app.k9mail.legacy.account.SortType;
+import app.k9mail.legacy.account.SpecialFolderSelection;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
@@ -38,7 +36,16 @@ import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo80;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo81;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo91;
+import net.thunderbird.feature.notification.NotificationLight;
 
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_READ_RECEIPT;
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_QUOTED_TEXT_SHOWN;
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_QUOTE_PREFIX;
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE;
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_SORT_ASCENDING;
+import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
 
 
@@ -76,7 +83,7 @@ class AccountSettingsDescriptions {
                 new V(1, new ColorSetting(0xFF0000FF))
         ));
         s.put("defaultQuotedTextShown", Settings.versions(
-                new V(1, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_QUOTED_TEXT_SHOWN))
+                new V(1, new BooleanSetting(DEFAULT_QUOTED_TEXT_SHOWN))
         ));
         s.put("deletePolicy", Settings.versions(
                 new V(1, new DeletePolicySetting(DeletePolicy.NEVER))
@@ -135,13 +142,16 @@ class AccountSettingsDescriptions {
                 new V(1, new IntegerResourceSetting(-1, R.array.message_age_values))
         ));
         s.put("messageFormat", Settings.versions(
-                new V(1, new EnumSetting<>(MessageFormat.class, AccountPreferenceSerializer.DEFAULT_MESSAGE_FORMAT))
+                new V(1, new EnumSetting<>(
+                    MessageFormat.class,
+                    AccountDefaultsProvider.getDEFAULT_MESSAGE_FORMAT()
+                ))
         ));
         s.put("messageFormatAuto", Settings.versions(
-                new V(2, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_MESSAGE_FORMAT_AUTO))
+                new V(2, new BooleanSetting(DEFAULT_MESSAGE_FORMAT_AUTO))
         ));
         s.put("messageReadReceipt", Settings.versions(
-                new V(1, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_MESSAGE_READ_RECEIPT))
+                new V(1, new BooleanSetting(DEFAULT_MESSAGE_READ_RECEIPT))
         ));
         s.put("notifyMailCheck", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -157,13 +167,13 @@ class AccountSettingsDescriptions {
                 new V(1, new BooleanSetting(true))
         ));
         s.put("quotePrefix", Settings.versions(
-                new V(1, new StringSetting(AccountPreferenceSerializer.DEFAULT_QUOTE_PREFIX))
+                new V(1, new StringSetting(DEFAULT_QUOTE_PREFIX))
         ));
         s.put("quoteStyle", Settings.versions(
-                new V(1, new EnumSetting<>(QuoteStyle.class, AccountPreferenceSerializer.DEFAULT_QUOTE_STYLE))
+                new V(1, new EnumSetting<>(QuoteStyle.class, AccountDefaultsProvider.getDEFAULT_QUOTE_STYLE()))
         ));
         s.put("replyAfterQuote", Settings.versions(
-                new V(1, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_REPLY_AFTER_QUOTE))
+                new V(1, new BooleanSetting(DEFAULT_REPLY_AFTER_QUOTE))
         ));
         s.put("ring", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -176,10 +186,10 @@ class AccountSettingsDescriptions {
                 new V(53, new StringSetting(null))
         ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(9, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(9, new EnumSetting<>(SortType.class, AccountDefaultsProvider.getDEFAULT_SORT_TYPE()))
         ));
         s.put("sortAscending", Settings.versions(
-                new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+                new V(9, new BooleanSetting(DEFAULT_SORT_ASCENDING))
         ));
         s.put("showPicturesEnum", Settings.versions(
                 new V(1, new EnumSetting<>(ShowPictures.class, ShowPictures.NEVER))
@@ -192,7 +202,7 @@ class AccountSettingsDescriptions {
                 new V(53, new StringSetting(null))
         ));
         s.put("stripSignature", Settings.versions(
-                new V(2, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_STRIP_SIGNATURE))
+                new V(2, new BooleanSetting(DEFAULT_STRIP_SIGNATURE))
         ));
         s.put("subscribedFoldersOnly", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -226,7 +236,7 @@ class AccountSettingsDescriptions {
                 new V(1, new IntegerRangeSetting(1, 10, 5))
         ));
         s.put("remoteSearchNumResults", Settings.versions(
-                new V(18, new IntegerResourceSetting(AccountPreferenceSerializer.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+                new V(18, new IntegerResourceSetting(DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
                         R.array.remote_search_num_results_values))
         ));
         s.put("remoteSearchFullText", Settings.versions(

@@ -6,12 +6,12 @@ import app.k9mail.core.android.common.database.map
 import app.k9mail.legacy.mailstore.FolderDetailsAccessor
 import app.k9mail.legacy.mailstore.FolderMapper
 import app.k9mail.legacy.mailstore.MoreMessages
-import app.k9mail.legacy.search.ConditionsTreeNode
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.toFolderType
 import com.fsck.k9.search.SqlQueryBuilder
+import net.thunderbird.feature.search.ConditionsTreeNode
 
 internal class RetrieveFolderOperations(private val lockableDatabase: LockableDatabase) {
     fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {

@@ -8,7 +8,7 @@
     <string name="account_oauth_loading_error">Не удалось выполнить вход по протоколу OAuth</string>
     <string name="account_oauth_error_canceled">Авторизация отменена</string>
     <string name="account_oauth_error_failed">Авторизация не выполнена из-за ошибки: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_sign_in_description">Сейчас вы будете перенаправлены к вашему провайдеру электронной почты для входа в систему. Вам необходимо будет предоставить доступ приложению к вашему электронному адресу.</string>
+    <string name="account_oauth_sign_in_description">Сейчас вы будете перенаправлены к вашему провайдеру электронной почты для входа в систему. Вам будет необходимо предоставить приложению доступ к вашему электронному адресу.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">статье поддержки</string>
     <string name="account_oauth_google_sign_in_support_text">Если у вас возникли проблемы при входе в учётную запись Google, обратитесь к {placeHolder}.</string>
 </resources>

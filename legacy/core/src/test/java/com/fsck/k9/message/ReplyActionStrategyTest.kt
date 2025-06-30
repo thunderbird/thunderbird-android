@@ -1,14 +1,14 @@
 package com.fsck.k9.message
 
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.Identity
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.containsExactly
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.helper.ReplyToParser
-import com.fsck.k9.mail.buildMessage
+import com.fsck.k9.mail.testing.message.buildMessage
 import org.junit.Test
 
 private const val IDENTITY_EMAIL_ADDRESS = "myself@domain.example"
@@ -107,8 +107,8 @@ class ReplyActionStrategyTest {
         assertThat(replyActions.additionalActions).isEmpty()
     }
 
-    private fun createAccount(): Account {
-        return Account("00000000-0000-4000-0000-000000000000").apply {
+    private fun createAccount(): LegacyAccount {
+        return LegacyAccount("00000000-0000-4000-0000-000000000000").apply {
             identities += Identity(name = "Myself", email = IDENTITY_EMAIL_ADDRESS)
         }
     }

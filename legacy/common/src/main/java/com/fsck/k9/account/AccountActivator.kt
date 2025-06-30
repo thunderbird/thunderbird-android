@@ -2,7 +2,7 @@ package com.fsck.k9.account
 
 import android.content.Context
 import app.k9mail.feature.settings.import.SettingsImportExternalContract
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
@@ -28,7 +28,7 @@ class AccountActivator(
         enableAccount(account)
     }
 
-    private fun enableAccount(account: Account) {
+    private fun enableAccount(account: LegacyAccount) {
         // Start services if necessary
         Core.setServicesEnabled(context)
 
@@ -37,7 +37,7 @@ class AccountActivator(
     }
 
     private fun setAccountPasswords(
-        account: Account,
+        account: LegacyAccount,
         incomingServerPassword: String?,
         outgoingServerPassword: String?,
     ) {

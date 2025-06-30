@@ -21,6 +21,7 @@ val mainModule = module {
             storagePersister = get(),
             localStoreProvider = get(),
             accountPreferenceSerializer = get(),
+            accountDefaultsProvider = get(),
         )
     }
     single { get<Context>().resources }

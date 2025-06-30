@@ -8,11 +8,11 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
-import app.k9mail.legacy.account.Account
 import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.notification.NotificationLight
-import app.k9mail.legacy.notification.NotificationSettings
+import app.k9mail.legacy.account.LegacyAccount
 import java.util.concurrent.Executor
+import net.thunderbird.feature.notification.NotificationLight
+import net.thunderbird.feature.notification.NotificationSettings
 import timber.log.Timber
 
 class NotificationChannelManager(
@@ -58,7 +58,7 @@ class NotificationChannelManager(
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun addChannelsForAccounts(
         notificationManager: NotificationManager,
-        accounts: List<Account>,
+        accounts: List<LegacyAccount>,
     ) {
         for (account in accounts) {
             val groupId = account.notificationChannelGroupId
@@ -76,7 +76,7 @@ class NotificationChannelManager(
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun removeChannelsForNonExistingOrChangedAccounts(
         notificationManager: NotificationManager,
-        accounts: List<Account>,
+        accounts: List<LegacyAccount>,
     ) {
         val accountUuids = accounts.map { it.uuid }.toSet()
 
@@ -120,7 +120,7 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private fun getChannelMessages(account: Account): NotificationChannel {
+    private fun getChannelMessages(account: LegacyAccount): NotificationChannel {
         val channelName = resourceProvider.messagesChannelName
         val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -134,7 +134,7 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private fun getChannelMiscellaneous(account: Account): NotificationChannel {
+    private fun getChannelMiscellaneous(account: LegacyAccount): NotificationChannel {
         val channelName = resourceProvider.miscellaneousChannelName
         val channelDescription = resourceProvider.miscellaneousChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MISCELLANEOUS)
@@ -148,7 +148,7 @@ class NotificationChannelManager(
         return miscellaneousChannel
     }
 
-    fun getChannelIdFor(account: Account, channelType: ChannelType): String {
+    fun getChannelIdFor(account: LegacyAccount, channelType: ChannelType): String {
         return if (channelType == ChannelType.MESSAGES) {
             getMessagesChannelId(account, account.messagesNotificationChannelSuffix)
         } else {
@@ -156,12 +156,12 @@ class NotificationChannelManager(
         }
     }
 
-    private fun getMessagesChannelId(account: Account, suffix: String): String {
+    private fun getMessagesChannelId(account: LegacyAccount, suffix: String): String {
         return "messages_channel_${account.uuid}$suffix"
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getNotificationConfiguration(account: Account): NotificationConfiguration {
+    fun getNotificationConfiguration(account: LegacyAccount): NotificationConfiguration {
         val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val notificationChannel = notificationManager.getNotificationChannel(channelId)
 
@@ -174,7 +174,7 @@ class NotificationChannelManager(
         )
     }
 
-    fun recreateMessagesNotificationChannel(account: Account) {
+    fun recreateMessagesNotificationChannel(account: LegacyAccount) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
         val oldChannelId = getChannelIdFor(account, ChannelType.MESSAGES)
@@ -210,7 +210,7 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationChannel.matches(account: Account): Boolean {
+    private fun NotificationChannel.matches(account: LegacyAccount): Boolean {
         val systemLight = notificationLightDecoder.decode(
             isBlinkLightsEnabled = shouldShowLights(),
             lightColor = lightColor,
@@ -237,7 +237,7 @@ class NotificationChannelManager(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun NotificationChannel.setPropertiesFrom(account: Account) {
+    private fun NotificationChannel.setPropertiesFrom(account: LegacyAccount) {
         val notificationSettings = account.notificationSettings
 
         if (notificationSettings.isRingEnabled) {
@@ -254,12 +254,12 @@ class NotificationChannelManager(
         enableVibration(notificationSettings.vibration.isEnabled)
     }
 
-    private val Account.notificationChannelGroupId: String
+    private val LegacyAccount.notificationChannelGroupId: String
         get() = uuid
 
     private fun String.toAccountUuid(): String = this
 
-    private val Account.messagesNotificationChannelSuffix: String
+    private val LegacyAccount.messagesNotificationChannelSuffix: String
         get() = messagesNotificationChannelVersion.let { version -> if (version == 0) "" else "_$version" }
 
     private val NotificationSettings.ringtoneUri: Uri?

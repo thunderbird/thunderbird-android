@@ -19,12 +19,12 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.MissingCapabilityException
-import com.fsck.k9.mail.SystemOutLogger
-import com.fsck.k9.mail.XOAuth2ChallengeParserTest
-import com.fsck.k9.mail.helpers.TestTrustedSocketFactory
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.mockserver.MockImapServer
+import com.fsck.k9.mail.testing.SystemOutLogger
+import com.fsck.k9.mail.testing.XOAuth2ChallengeParserTestData
+import com.fsck.k9.mail.testing.security.TestTrustedSocketFactory
 import java.io.IOException
 import java.net.UnknownHostException
 import okio.ByteString.Companion.encodeUtf8
@@ -46,7 +46,7 @@ private val XOAUTH_STRING_RETRY = "user=$USERNAME\u0001auth=Bearer $XOAUTH_TOKEN
 private val OAUTHBEARER_STRING = "n,a=$USERNAME,\u0001auth=Bearer $XOAUTH_TOKEN\u0001\u0001".base64()
 
 class RealImapConnectionTest {
-    private var socketFactory = TestTrustedSocketFactory.newInstance()
+    private var socketFactory = TestTrustedSocketFactory
     private var oAuth2TokenProvider = TestTokenProvider()
 
     @Before
@@ -411,7 +411,7 @@ class RealImapConnectionTest {
         val server = MockImapServer().apply {
             preAuthenticationDialog(capabilities = "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2")
             expect("2 AUTHENTICATE XOAUTH2 $XOAUTH_STRING")
-            output("+ ${XOAuth2ChallengeParserTest.STATUS_401_RESPONSE}")
+            output("+ ${XOAuth2ChallengeParserTestData.STATUS_401_RESPONSE}")
             expect("")
             output("2 NO SASL authentication failed")
         }
@@ -429,7 +429,7 @@ class RealImapConnectionTest {
         val server = MockImapServer().apply {
             preAuthenticationDialog(capabilities = "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2")
             expect("2 AUTHENTICATE XOAUTH2 $XOAUTH_STRING")
-            output("+ ${XOAuth2ChallengeParserTest.STATUS_400_RESPONSE}")
+            output("+ ${XOAuth2ChallengeParserTestData.STATUS_400_RESPONSE}")
             expect("")
             output("2 NO SASL authentication failed")
             expect("3 AUTHENTICATE XOAUTH2 $XOAUTH_STRING_RETRY")
@@ -449,7 +449,7 @@ class RealImapConnectionTest {
         val server = MockImapServer().apply {
             preAuthenticationDialog(capabilities = "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2")
             expect("2 AUTHENTICATE XOAUTH2 $XOAUTH_STRING")
-            output("+ ${XOAuth2ChallengeParserTest.INVALID_RESPONSE}")
+            output("+ ${XOAuth2ChallengeParserTestData.INVALID_RESPONSE}")
             expect("")
             output("2 NO SASL authentication failed")
             expect("3 AUTHENTICATE XOAUTH2 $XOAUTH_STRING_RETRY")
@@ -470,7 +470,7 @@ class RealImapConnectionTest {
         val server = MockImapServer().apply {
             preAuthenticationDialog(capabilities = "SASL-IR AUTH=XOAUTH AUTH=XOAUTH2")
             expect("2 AUTHENTICATE XOAUTH2 $XOAUTH_STRING")
-            output("+ ${XOAuth2ChallengeParserTest.MISSING_STATUS_RESPONSE}")
+            output("+ ${XOAuth2ChallengeParserTestData.MISSING_STATUS_RESPONSE}")
             expect("")
             output("2 NO SASL authentication failed")
             expect("3 AUTHENTICATE XOAUTH2 $XOAUTH_STRING_RETRY")
@@ -1233,7 +1233,7 @@ class RealImapConnectionTest {
     }
 }
 
-class TestTokenProvider : OAuth2TokenProvider {
+class TestTokenProvider(override val primaryEmail: String? = null) : OAuth2TokenProvider {
     private var invalidationCount = 0
 
     override fun getToken(timeoutMillis: Long): String {

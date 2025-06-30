@@ -2,7 +2,6 @@ package com.fsck.k9.ui.helper
 
 import android.os.Build
 import android.os.SystemClock
-import app.k9mail.core.android.testing.RobolectricTest
 import app.k9mail.core.testing.TestClock
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -11,6 +10,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.TimeZone
 import kotlinx.datetime.Instant
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment

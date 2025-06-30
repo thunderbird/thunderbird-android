@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore
 
 import android.content.Context
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.mail.MessagingException
 import java.util.concurrent.ConcurrentHashMap
@@ -11,7 +11,7 @@ class LocalStoreProvider {
     private val accountLocks = ConcurrentHashMap<String, Any>()
 
     @Throws(MessagingException::class)
-    fun getInstance(account: Account): LocalStore {
+    fun getInstance(account: LegacyAccount): LocalStore {
         val context = DI.get(Context::class.java)
         val accountUuid = account.uuid
 
@@ -23,7 +23,7 @@ class LocalStoreProvider {
         }
     }
 
-    fun removeInstance(account: Account) {
+    fun removeInstance(account: LegacyAccount) {
         val accountUuid = account.uuid
         localStores.remove(accountUuid)
     }

@@ -428,7 +428,6 @@
     <string name="account_settings_message_age_3_months">3 tháng qua</string>
     <string name="account_settings_message_format_text">Văn bản thuần túy (loại bỏ hình ảnh và định dạng)</string>
     <string name="account_settings_message_age_label">Đồng bộ tin nhắn từ</string>
-    <string name="folder_settings_in_top_group_summary">Hiển thị gần đầu danh sách thư mục</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Chỉ mã hóa bản nháp nếu bật mã hóa</string>
     <string name="account_settings_quote_style_prefix">Tiền tố (như Gmail)</string>
     <string name="account_settings_message_age_0">hôm nay</string>
@@ -806,7 +805,6 @@
     <string name="sort_earliest_first">Tin nhắn sớm nhất trước</string>
     <string name="sort_latest_first">Tin nhắn muộn nhất trước</string>
     <string name="account_setup_push_limit_10">10 thư mục</string>
-    <string name="folder_settings_include_in_integrated_inbox_summary">Tất cả tin nhắn đã được hiển thị trong Hộp thư đồng nhất</string>
     <string name="font_size_message_list">Danh sách tin nhắn</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="other">Bạn có thực sự muốn xóa <xliff:g id="message_count">%1$d</xliff:g> tin nhắn?</item>

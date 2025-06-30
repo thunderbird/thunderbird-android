@@ -1,8 +1,8 @@
 package com.fsck.k9.ui.helper
 
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config

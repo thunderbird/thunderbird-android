@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.testing.TestLifecycleOwner
 import app.k9mail.core.testing.TestClock
+import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.feature.funding.api.FundingSettings
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.ActivityLifecycleObserver
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract.Dialog
@@ -16,10 +17,14 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import kotlin.test.Test
 import kotlinx.datetime.Instant
+import org.junit.Rule
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 class FundingReminderTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     @Test
     fun `should set reference timestamp when not set`() {

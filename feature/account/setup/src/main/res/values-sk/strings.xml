@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_setup_error_network">Sieť</string>
+    <string name="account_setup_error_network">Sieťová chyba. Prosím skontrolujte stav pripojenia a skúste znova.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Táto e-mailová adresa nie je podporovaná.</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Neplatná e-mailová adresa.</string>
-    <string name="account_setup_auto_discovery_loading_message">Zisťujem podrobnosti o e-maili</string>
+    <string name="account_setup_auto_discovery_loading_message">Zisťujem podrobnosti o konfigurácií…</string>
     <string name="account_setup_special_folders_drafts_folder_label">Zložka konceptov</string>
     <string name="account_setup_special_folders_sent_folder_label">Zložka odoslanej pošty</string>
     <string name="account_setup_create_account_error">Nastala chyba počas vytvárania konta</string>
@@ -20,17 +20,17 @@
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">Každú minútu</item>
         <item quantity="few">Každé %d minúty</item>
-        <item quantity="other">Každých %d minút</item>
+        <item quantity="many">Každých %d minút</item>
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_hours">
         <item quantity="one">Každú hodinu</item>
         <item quantity="few">Každé %d hodiny</item>
-        <item quantity="other">Každých %d hodín</item>
+        <item quantity="many">Každých %d hodín</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="one">1 správa</item>
         <item quantity="few">%d správy</item>
-        <item quantity="other">%d správ</item>
+        <item quantity="many">%d správ</item>
     </plurals>
     <string name="account_setup_special_folders_error_message">Zlyhalo načítanie zoznamu zložiek zo servera</string>
     <string name="account_setup_special_folders_spam_folder_label">Zložka SPAMu</string>

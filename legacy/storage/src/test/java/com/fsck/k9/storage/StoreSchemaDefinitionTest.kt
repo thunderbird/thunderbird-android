@@ -3,8 +3,8 @@ package com.fsck.k9.storage
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import app.k9mail.core.android.common.database.map
-import app.k9mail.legacy.account.Account
-import app.k9mail.legacy.account.Account.FolderMode
+import app.k9mail.legacy.account.FolderMode
+import app.k9mail.legacy.account.LegacyAccount
 import assertk.Assert
 import assertk.assertFailure
 import assertk.assertThat
@@ -378,7 +378,7 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
     private fun createStoreSchemaDefinition(): StoreSchemaDefinition {
         val account = createAccount()
         val migrationsHelper = object : MigrationsHelper {
-            override fun getAccount(): Account {
+            override fun getAccount(): LegacyAccount {
                 return account
             }
 
@@ -390,8 +390,8 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
         return StoreSchemaDefinition(migrationsHelper)
     }
 
-    private fun createAccount(): Account {
-        return mock<Account> {
+    private fun createAccount(): LegacyAccount {
+        return mock<LegacyAccount> {
             on { legacyInboxFolder } doReturn "Inbox"
             on { importedTrashFolder } doReturn "Trash"
             on { importedDraftsFolder } doReturn "Drafts"

@@ -2,9 +2,6 @@ package com.fsck.k9.ui.settings.general
 
 import androidx.preference.PreferenceDataStore
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import app.k9mail.legacy.preferences.AppTheme
-import app.k9mail.legacy.preferences.GeneralSettingsManager
-import app.k9mail.legacy.preferences.SubTheme
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
 import com.fsck.k9.K9.PostRemoveNavigation
@@ -12,6 +9,9 @@ import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
+import net.thunderbird.core.preferences.AppTheme
+import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.preferences.SubTheme
 
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,

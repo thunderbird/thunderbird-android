@@ -1,13 +1,13 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.account.Account
+import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderSettings
 import com.fsck.k9.Preferences
 
 /**
  * Provides imported folder settings if available, otherwise default values.
  */
-class FolderSettingsProvider(val preferences: Preferences, val account: Account) {
+class FolderSettingsProvider(val preferences: Preferences, val account: LegacyAccount) {
     fun getFolderSettings(folderServerId: String): FolderSettings {
         val storage = preferences.storage
         val prefix = "${account.uuid}.$folderServerId"

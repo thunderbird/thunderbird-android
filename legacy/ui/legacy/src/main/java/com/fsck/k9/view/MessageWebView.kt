@@ -3,11 +3,12 @@ package com.fsck.k9.view
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.webkit.WebSettings.LayoutAlgorithm
 import android.webkit.WebSettings.RenderPriority
 import android.webkit.WebView
 import com.fsck.k9.mailstore.AttachmentResolver
+import net.thunderbird.core.android.common.view.showInDarkMode
+import net.thunderbird.core.android.common.view.showInLightMode
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber
@@ -34,12 +35,7 @@ class MessageWebView : WebView, KoinComponent {
         scrollBarStyle = SCROLLBARS_INSIDE_OVERLAY
         isLongClickable = true
 
-        if (config.useDarkMode) {
-            val typedValue = TypedValue()
-            context.theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
-            val backgroundColor = typedValue.data
-            setBackgroundColor(backgroundColor)
-        }
+        configureDarkLightMode(this, config)
 
         with(settings) {
             setSupportZoom(true)
@@ -66,6 +62,17 @@ class MessageWebView : WebView, KoinComponent {
 
         // Disable network images by default. This is overridden by preferences.
         blockNetworkData(true)
+    }
+
+    private fun configureDarkLightMode(
+        webView: WebView,
+        config: WebViewConfig,
+    ) {
+        if (config.useDarkMode) {
+            webView.showInDarkMode()
+        } else {
+            webView.showInLightMode()
+        }
     }
 
     private fun disableDisplayZoomControls() {

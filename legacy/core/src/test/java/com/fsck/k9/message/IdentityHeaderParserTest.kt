@@ -1,9 +1,9 @@
 package com.fsck.k9.message
 
-import app.k9mail.core.android.testing.RobolectricTest
 import assertk.assertThat
 import assertk.assertions.contains
 import com.fsck.k9.helper.toCrLf
+import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
 class IdentityHeaderParserTest : RobolectricTest() {

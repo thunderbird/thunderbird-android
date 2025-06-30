@@ -119,4 +119,25 @@ class FeatureFlagResultTest {
         assertThat(resultUnavailable).isEqualTo("unavailable")
         assertThat(resultDisabledOrUnavailable).isEqualTo("disabled or unavailable")
     }
+
+    @Test
+    fun `whenEnabledOrNot should return correct value based on state`() {
+        val enabledResult = FeatureFlagResult.Enabled.whenEnabledOrNot(
+            onEnabled = { "Feature is ON" },
+            onDisabledOrUnavailable = { "Feature is OFF" },
+        )
+        assertThat(enabledResult).isEqualTo("Feature is ON")
+
+        val disabledResult = FeatureFlagResult.Disabled.whenEnabledOrNot(
+            onEnabled = { "Feature is ON" },
+            onDisabledOrUnavailable = { "Feature is OFF" },
+        )
+        assertThat(disabledResult).isEqualTo("Feature is OFF")
+
+        val unavailableResult = FeatureFlagResult.Unavailable.whenEnabledOrNot(
+            onEnabled = { "Feature is ON" },
+            onDisabledOrUnavailable = { "Feature is OFF" },
+        )
+        assertThat(unavailableResult).isEqualTo("Feature is OFF")
+    }
 }

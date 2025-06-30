@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="okay_action">আচ্ছা</string>
+    <string name="cancel_action">ঠিকাছে</string>
+    <string name="star_button_description">তারা</string>
+</resources>

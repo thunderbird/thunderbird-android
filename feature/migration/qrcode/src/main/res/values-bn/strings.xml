@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="migration_qrcode_scanning_instructions">থান্ডারবার্ড ডেস্কটপ থেকে কিউআর কোড ক্যামেরায় আনো</string>
+    <string name="migration_qrcode_scanning_progress">%2$s এর %1$sটি স্ক্যানকৃত</string>
+    <string name="migration_qrcode_permission_denied_message">অ্যান্ড্রয়েড পছন্দসমূহে যাও, অনুমতিসমূহ টিপ দাও এবং ক্যামেরার অনুমতি দাও।</string>
+    <string name="migration_qrcode_permission_denied_title">ক্যামেরা অনুমতি প্রয়োজন</string>
+    <string name="migration_qrcode_go_to_settings_button_text">পছন্দসমূহে যাও</string>
+    <string name="migration_qrcode_done_button_text">সম্পূর্ণ</string>
+</resources>

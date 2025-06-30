@@ -2,4 +2,5 @@
 <resources>
     <string name="account_common_button_next">Next</string>
     <string name="account_common_button_back">Back</string>
+    <string name="account_common_error_server_message">The server returned the following message:\n%s</string>
 </resources>
