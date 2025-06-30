@@ -2,6 +2,7 @@ package com.fsck.k9.message.html
 
 import assertk.Assert
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import org.jsoup.Jsoup
@@ -38,6 +39,35 @@ class DisplayHtmlTest {
         val html = displayHtml.wrapMessageContent(content)
 
         assertThat(html).bodyText().isEqualTo(content)
+    }
+
+    @Test
+    fun wrapMessageContent_addsGlobalStyleRules() {
+        val html = displayHtml.wrapMessageContent("test")
+
+        assertThat(html).containsStyleRulesFor(
+            selector = "*",
+            "word-break: break-word;",
+            "overflow-wrap: break-word;",
+        )
+    }
+
+    private fun Assert<String>.containsStyleRulesFor(selector: String, vararg expectedRules: String) = given { html ->
+        val styleContent = Jsoup.parse(html)
+            .select("style")
+            .joinToString("\n") { it.data() }
+
+        val selectorPattern = Regex.escape(selector).replace("\\*", "\\\\*")
+        val selectorBlock = Regex("$selectorPattern\\s*\\{([^}]*)\\}", RegexOption.MULTILINE)
+            .find(styleContent)
+            ?.groupValues?.get(1)
+            ?.trim()
+
+        requireNotNull(selectorBlock) { "No style block found for selector: $selector" }
+
+        expectedRules.forEach { rule ->
+            assertThat(selectorBlock).contains(rule)
+        }
     }
 
     private fun Assert<String>.containsHtmlElement(cssQuery: String) = given { actual ->
