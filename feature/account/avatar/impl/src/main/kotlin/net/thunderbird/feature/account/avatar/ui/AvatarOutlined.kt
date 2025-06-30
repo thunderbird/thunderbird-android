@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -20,6 +19,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.core.ui.compose.theme2.toSurfaceContainer
+
+private const val AVATAR_ALPHA = 0.12f
 
 @Composable
 fun AvatarOutlined(
@@ -29,9 +30,8 @@ fun AvatarOutlined(
     size: AvatarSize = AvatarSize.MEDIUM,
     onClick: (() -> Unit)? = null,
 ) {
-    val context = LocalContext.current
     val avatarColor = calculateAvatarColor(color)
-    val containerColor = avatarColor.toSurfaceContainer(context)
+    val containerColor = avatarColor.toSurfaceContainer(alpha = AVATAR_ALPHA)
 
     AvatarLayout(
         color = containerColor,
