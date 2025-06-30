@@ -15,15 +15,17 @@ internal fun AccountSettingList(
     onSyncAllAccountsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    SettingList(
         modifier = modifier
             .padding(vertical = MainTheme.spacings.default)
             .fillMaxWidth(),
     ) {
-        SettingListItem(
-            label = stringResource(id = R.string.navigation_drawer_dropdown_action_sync_all_accounts),
-            onClick = onSyncAllAccountsClick,
-            icon = Icons.Outlined.Sync,
-        )
+        item {
+            SettingListItem(
+                label = stringResource(id = R.string.navigation_drawer_dropdown_action_sync_all_accounts),
+                onClick = onSyncAllAccountsClick,
+                icon = Icons.Outlined.Sync,
+            )
+        }
     }
 }
