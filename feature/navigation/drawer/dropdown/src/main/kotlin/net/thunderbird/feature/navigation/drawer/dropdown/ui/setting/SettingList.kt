@@ -10,7 +10,7 @@ import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 
 @Composable
 internal fun SettingList(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     content: LazyGridScope.() -> Unit,
 ) {
     val windowSizeInfo = getWindowSizeInfo()

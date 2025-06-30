@@ -114,6 +114,7 @@ private fun AccountContent(
             )
             DividerHorizontal()
             AccountSettingList(
+                onAddAccountClick = { onEvent(Event.OnAddAccountClick) },
                 onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
             )
         }

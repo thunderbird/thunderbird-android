@@ -23,6 +23,7 @@ internal data class FolderDrawerState(
     val selectedFolderId: String? = null,
 )
 
+@Suppress("LongParameterList")
 class DropDownDrawer(
     override val parent: AppCompatActivity,
     private val openAccount: (accountId: String) -> Unit,
@@ -30,6 +31,7 @@ class DropDownDrawer(
     private val openUnifiedFolder: () -> Unit,
     private val openManageFolders: () -> Unit,
     private val openSettings: () -> Unit,
+    private val openAddAccount: () -> Unit,
     createDrawerListener: () -> DrawerLayout.DrawerListener,
 ) : NavigationDrawer, KoinComponent {
 
@@ -55,6 +57,7 @@ class DropDownDrawer(
                     openUnifiedFolder = openUnifiedFolder,
                     openManageFolders = openManageFolders,
                     openSettings = openSettings,
+                    openAddAccount = openAddAccount,
                     featureFlagProvider = featureFlagProvider,
                     closeDrawer = { close() },
                 )

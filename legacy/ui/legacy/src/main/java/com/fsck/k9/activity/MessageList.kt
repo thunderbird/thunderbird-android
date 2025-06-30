@@ -659,6 +659,7 @@ open class MessageList :
                 navigationDrawer = DropDownDrawer(
                     parent = this,
                     openAccount = { accountId -> openRealAccount(accountId) },
+                    openAddAccount = { launchAddAccountScreen() },
                     openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
                     openUnifiedFolder = { openUnifiedInbox() },
                     openManageFolders = { launchManageFoldersScreen() },
@@ -742,6 +743,13 @@ open class MessageList :
         }
 
         ManageFoldersActivity.launch(this, account!!)
+    }
+
+    private fun launchAddAccountScreen() {
+        FeatureLauncherActivity.launch(
+            context = this,
+            target = FeatureLauncherTarget.AccountSetup,
+        )
     }
 
     fun openRealAccount(accountId: String) {

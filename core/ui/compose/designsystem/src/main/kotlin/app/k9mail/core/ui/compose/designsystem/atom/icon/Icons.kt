@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Outbox
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AllInbox
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Check
@@ -54,6 +55,9 @@ object Icons {
     object Outlined {
         val AccountCircle: ImageVector
             get() = MaterialIcons.Outlined.AccountCircle
+
+        val Add: ImageVector
+            get() = MaterialIcons.Outlined.Add
 
         val AllInbox: ImageVector
             get() = MaterialIcons.Outlined.AllInbox

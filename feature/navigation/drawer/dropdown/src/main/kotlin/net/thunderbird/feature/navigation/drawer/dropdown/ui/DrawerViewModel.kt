@@ -180,6 +180,7 @@ internal class DrawerViewModel(
             Event.OnSettingsClick -> emitEffect(Effect.OpenSettings)
             Event.OnSyncAccount -> onSyncAccount()
             Event.OnSyncAllAccounts -> onSyncAllAccounts()
+            Event.OnAddAccountClick -> emitEffect(Effect.OpenAddAccount)
         }
     }
 

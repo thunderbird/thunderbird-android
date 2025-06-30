@@ -24,6 +24,7 @@ internal fun DrawerView(
     openUnifiedFolder: () -> Unit,
     openManageFolders: () -> Unit,
     openSettings: () -> Unit,
+    openAddAccount: () -> Unit,
     closeDrawer: () -> Unit,
     featureFlagProvider: FeatureFlagProvider,
     viewModel: ViewModel = koinViewModel<DrawerViewModel>(),
@@ -39,6 +40,7 @@ internal fun DrawerView(
             Effect.OpenUnifiedFolder -> openUnifiedFolder()
             is Effect.OpenManageFolders -> openManageFolders()
             is Effect.OpenSettings -> openSettings()
+            Effect.OpenAddAccount -> openAddAccount()
             Effect.CloseDrawer -> closeDrawer()
         }
     }

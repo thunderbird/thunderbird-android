@@ -1,6 +1,5 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.setting
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -12,6 +11,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.R
 
 @Composable
 internal fun AccountSettingList(
+    onAddAccountClick: () -> Unit,
     onSyncAllAccountsClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -25,6 +25,13 @@ internal fun AccountSettingList(
                 label = stringResource(id = R.string.navigation_drawer_dropdown_action_sync_all_accounts),
                 onClick = onSyncAllAccountsClick,
                 icon = Icons.Outlined.Sync,
+            )
+        }
+        item {
+            SettingListItem(
+                label = stringResource(id = R.string.navigation_drawer_dropdown_action_add_account),
+                onClick = onAddAccountClick,
+                icon = Icons.Outlined.Add,
             )
         }
     }
