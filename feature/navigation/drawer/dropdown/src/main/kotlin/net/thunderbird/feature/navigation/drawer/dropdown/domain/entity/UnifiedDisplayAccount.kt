@@ -1,6 +1,6 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.domain.entity
 
-internal data class UnifiedDisplayAccount(
+data class UnifiedDisplayAccount(
     override val unreadMessageCount: Int,
     override val starredMessageCount: Int,
 ) : DisplayAccount {

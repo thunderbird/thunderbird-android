@@ -70,6 +70,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
 import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
@@ -753,7 +754,7 @@ open class MessageList :
     }
 
     fun openRealAccount(accountId: String) {
-        if (accountId == "unified_account") {
+        if (accountId == UnifiedDisplayAccount.UNIFIED_ACCOUNT_ID) {
             openUnifiedInbox()
         } else {
             val account = accountManager.getAccount(accountId) ?: return
