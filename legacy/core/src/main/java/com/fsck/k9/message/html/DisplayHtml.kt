@@ -5,22 +5,34 @@ import app.k9mail.html.cleaner.HtmlHeadProvider
 class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
     override val headHtml: String
         get() {
-            return """<meta name="viewport" content="width=device-width"/>""" +
-                cssStylePre() +
-                cssStyleSignature()
+            return """
+                <meta name="viewport" content="width=device-width"/>
+                ${cssStylePre()}
+                ${cssStyleSignature()}
+            """.trimIndent()
         }
 
     fun wrapStatusMessage(status: CharSequence): String {
-        return wrapMessageContent("<div style=\"text-align:center; color: grey;\">$status</div>")
+        val html = """
+            <div style=\"text-align:center; color: grey;\">$status</div>
+        """.trimIndent()
+
+        return wrapMessageContent(html)
     }
 
     fun wrapMessageContent(messageContent: CharSequence): String {
         // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
-        return "<html dir=\"auto\"><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
-            cssStylePre() +
-            "</head><body>" +
-            messageContent +
-            "</body></html>"
+        return """
+            <html dir="auto">
+                <head>
+                    <meta name="viewport" content="width=device-width"/>
+                    ${cssStylePre()}
+                </head>
+                <body>
+                    $messageContent
+                </body>
+            </html>
+        """.trimIndent()
     }
 
     /**
@@ -34,12 +46,25 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
     private fun cssStylePre(): String {
         val font = if (settings.useFixedWidthFont) "monospace" else "sans-serif"
 
-        return "<style type=\"text/css\"> pre." + EmailTextToHtml.K9MAIL_CSS_CLASS +
-            " {white-space: pre-wrap; word-wrap:break-word; " +
-            "font-family: " + font + "; margin-top: 0px}</style>"
+        return """
+            <style type="text/css">
+                pre.${EmailTextToHtml.K9MAIL_CSS_CLASS} {
+                    white-space: pre-wrap;
+                    word-wrap: break-word;
+                    font-family: $font;
+                    margin-top: 0px;
+                }
+            </style>
+        """.trimIndent()
     }
 
     private fun cssStyleSignature(): String {
-        return """<style type="text/css">.k9mail-signature { opacity: 0.5 }</style>"""
+        return """
+            <style type="text/css">
+                .k9mail-signature {
+                    opacity: 0.5;
+                }
+            </style>
+        """.trimIndent()
     }
 }
