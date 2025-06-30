@@ -1,17 +1,27 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.folder
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
@@ -22,6 +32,7 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayT
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.AnimatedExpandIcon
 
 @Composable
 internal fun FolderListItem(
@@ -51,7 +62,19 @@ internal fun FolderListItem(
             .animateContentSize(),
     ) {
         NavigationDrawerItem(
-            label = mapFolderName(displayFolder, folderNameFormatter, parentPrefix),
+            label = {
+                NavigationDrawerLabel(
+                    label = mapFolderName(displayFolder, folderNameFormatter, parentPrefix),
+                    expandableState = if (treeFolder !== null && treeFolder.children.isNotEmpty()) isExpanded else null,
+                    badge = {
+                        FolderListItemBadge(
+                            unreadCount = unreadCount,
+                            starredCount = starredCount,
+                            showStarredCount = showStarredCount,
+                        )
+                    },
+                )
+            },
             selected = selectedFolderId == displayFolder.id,
             onClick = { onClick(displayFolder) },
             modifier = Modifier.fillMaxWidth(),
@@ -60,23 +83,15 @@ internal fun FolderListItem(
                     imageVector = mapFolderIcon(displayFolder),
                 )
             },
-            badge = {
-                FolderListItemBadge(
-                    unreadCount = unreadCount,
-                    starredCount = starredCount,
-                    showStarredCount = showStarredCount,
-                    expandableState = if (treeFolder !== null && treeFolder.children.isNotEmpty()) isExpanded else null,
-                )
-            },
         )
 
         // Managing children
         if (!isExpanded.value) return
         if (treeFolder === null) return
         for (child in treeFolder.children) {
-            var displayParent = treeFolder.displayFolder
-            var displayChild = child.displayFolder
-            if (displayChild === null) continue
+            val displayParent = treeFolder.displayFolder
+            val displayChild = child.displayFolder
+            if (displayChild == null) continue
             FolderListItem(
                 displayFolder = displayChild,
                 selectedFolderId = selectedFolderId,
@@ -91,6 +106,45 @@ internal fun FolderListItem(
                 indentationLevel = indentationLevel + 1,
             )
         }
+    }
+}
+
+@Composable
+private fun NavigationDrawerLabel(
+    label: String,
+    badge: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    expandableState: MutableState<Boolean>? = null,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TextLabelLarge(
+            text = label,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 2,
+            modifier = Modifier.weight(1f),
+        )
+        if (expandableState?.value != null) {
+            Box(
+                modifier = Modifier
+                    .size(MainTheme.sizes.iconAvatar)
+                    .padding(
+                        start = MainTheme.spacings.quarter,
+                        end = MainTheme.spacings.quarter,
+                    )
+                    .clip(CircleShape)
+                    .clickable(onClick = { expandableState.value = !expandableState.value }),
+                contentAlignment = Alignment.Center,
+            ) {
+                AnimatedExpandIcon(
+                    isExpanded = expandableState.value,
+                )
+            }
+        }
+        badge()
     }
 }
 

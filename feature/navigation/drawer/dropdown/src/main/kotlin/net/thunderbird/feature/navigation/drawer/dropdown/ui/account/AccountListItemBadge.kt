@@ -1,6 +1,6 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -34,9 +34,9 @@ private fun AccountCountAndStarredBadge(
     showStarredCount: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    Column(
         modifier = modifier,
-        verticalAlignment = Alignment.Companion.CenterVertically,
+        horizontalAlignment = Alignment.End,
     ) {
         val resources = LocalContext.current.resources
 

@@ -1,6 +1,5 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,10 +15,8 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -27,8 +24,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -37,6 +32,7 @@ import net.thunderbird.feature.account.avatar.ui.AvatarSize
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.AnimatedExpandIcon
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountName
 
@@ -59,27 +55,12 @@ internal fun AccountView(
             )
         }
 
-        AnimatedSelectionIcon(
-            showAccountSelection,
+        AnimatedExpandIcon(
+            isExpanded = showAccountSelection,
+            modifier = Modifier.padding(end = MainTheme.spacings.double),
+            tint = MainTheme.colors.onSurfaceVariant,
         )
     }
-}
-
-@Composable
-private fun AnimatedSelectionIcon(showAccountSelection: Boolean) {
-    val rotationAngle by animateFloatAsState(
-        targetValue = if (showAccountSelection) 180f else 0f,
-        label = "rotationAngle",
-    )
-
-    Icon(
-        imageVector = Icons.Outlined.KeyboardArrowDown,
-        contentDescription = null,
-        tint = MainTheme.colors.onSurfaceVariant,
-        modifier = Modifier
-            .padding(end = MainTheme.spacings.double)
-            .rotate(rotationAngle),
-    )
 }
 
 @Composable

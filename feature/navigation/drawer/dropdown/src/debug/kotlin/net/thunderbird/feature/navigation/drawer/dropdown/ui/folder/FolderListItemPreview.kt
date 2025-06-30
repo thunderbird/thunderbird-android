@@ -112,3 +112,18 @@ internal fun FolderListItemWithUnifiedFolderSelectedPreview() {
         )
     }
 }
+
+@Composable
+@Preview(showBackground = true)
+internal fun FolderListItemStarredCountPreview() {
+    PreviewWithThemes {
+        FolderListItem(
+            displayFolder = UNIFIED_FOLDER,
+            treeFolder = DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER,
+            selectedFolderId = null,
+            showStarredCount = true,
+            onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
+        )
+    }
+}
