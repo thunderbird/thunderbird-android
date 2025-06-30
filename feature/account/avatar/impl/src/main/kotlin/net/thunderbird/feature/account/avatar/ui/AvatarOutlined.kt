@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -20,7 +19,7 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.core.ui.compose.theme2.toSurfaceContainer
 
-private const val AVATAR_ALPHA = 0.12f
+private const val AVATAR_ALPHA = 0.2f
 
 @Composable
 fun AvatarOutlined(
@@ -58,8 +57,8 @@ private fun AvatarLayout(
 ) {
     Surface(
         color = color,
+        shape = CircleShape,
         modifier = modifier
-            .clip(CircleShape)
             .border(
                 width = 2.dp,
                 shape = CircleShape,
