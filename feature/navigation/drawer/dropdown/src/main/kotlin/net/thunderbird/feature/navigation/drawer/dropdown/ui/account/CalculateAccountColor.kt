@@ -6,10 +6,10 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.core.ui.compose.theme2.toHarmonizedColor
 
 @Composable
-internal fun calculateAccountColor(accountColor: Int): Color {
-    return if (accountColor == 0) {
+internal fun calculateAccountColor(accountColor: Color): Color {
+    return if (accountColor == Color.Unspecified) {
         MainTheme.colors.primary
     } else {
-        Color(accountColor).toHarmonizedColor(MainTheme.colors.surface)
+        accountColor.toHarmonizedColor(MainTheme.colors.surface)
     }
 }

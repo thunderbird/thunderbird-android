@@ -6,7 +6,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -29,7 +28,7 @@ internal fun AccountAvatar(
     val context = LocalContext.current
     val name = getDisplayAccountName(account)
     val color = getDisplayAccountColor(account)
-    val accountColor = calculateAccountColor(color.toArgb())
+    val accountColor = calculateAccountColor(color)
     val accountColorRoles = accountColor.toColorRoles(context)
 
     Box(
