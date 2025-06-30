@@ -7,6 +7,7 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
         get() {
             return """
                 <meta name="viewport" content="width=device-width"/>
+                ${cssStyleGlobal()}
                 ${cssStylePre()}
                 ${cssStyleSignature()}
             """.trimIndent()
@@ -31,6 +32,26 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
                     $messageContent
                 </body>
             </html>
+        """.trimIndent()
+    }
+
+    /**
+     * Dynamically generates a CSS style block that applies global rules to all elements (`*` selector).
+     *
+     * The style enforces word-breaking and overflow wrapping to prevent content overflow
+     * and ensures long text strings break correctly without causing horizontal scrolling.
+     *
+     * @return A `<style>` element string that can be dynamically injected into the HTML `<head>`
+     * to apply these global styles when rendering messages.
+     */
+    private fun cssStyleGlobal(): String {
+        return """
+            <style type="text/css">
+                * {
+                    word-break: break-word;
+                    overflow-wrap: break-word;
+                }
+            </style>
         """.trimIndent()
     }
 
