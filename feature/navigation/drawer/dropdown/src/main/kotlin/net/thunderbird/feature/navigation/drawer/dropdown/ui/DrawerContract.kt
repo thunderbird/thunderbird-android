@@ -31,6 +31,8 @@ internal interface DrawerContract {
         ),
         val folders: ImmutableList<DisplayFolder> = persistentListOf(),
         val selectedFolderId: String? = null,
+        val selectedFolder: DisplayFolder? = null,
+        val showAccountSelection: Boolean = false,
         val isLoading: Boolean = false,
     )
 
@@ -45,6 +47,7 @@ internal interface DrawerContract {
         data object OnSettingsClick : Event
         data object OnSyncAccount : Event
         data object OnSyncAllAccounts : Event
+        data object OnAddAccountClick : Event
     }
 
     sealed interface Effect {
@@ -53,6 +56,7 @@ internal interface DrawerContract {
         data object OpenUnifiedFolder : Effect
         data object OpenManageFolders : Effect
         data object OpenSettings : Effect
+        data object OpenAddAccount : Effect
         data object CloseDrawer : Effect
     }
 }

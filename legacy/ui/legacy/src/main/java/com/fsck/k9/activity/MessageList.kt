@@ -70,6 +70,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
 import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
@@ -659,6 +660,7 @@ open class MessageList :
                 navigationDrawer = DropDownDrawer(
                     parent = this,
                     openAccount = { accountId -> openRealAccount(accountId) },
+                    openAddAccount = { launchAddAccountScreen() },
                     openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
                     openUnifiedFolder = { openUnifiedInbox() },
                     openManageFolders = { launchManageFoldersScreen() },
@@ -744,14 +746,25 @@ open class MessageList :
         ManageFoldersActivity.launch(this, account!!)
     }
 
-    fun openRealAccount(accountId: String) {
-        val account = accountManager.getAccount(accountId) ?: return
-        val folderId = defaultFolderProvider.getDefaultFolder(account)
+    private fun launchAddAccountScreen() {
+        FeatureLauncherActivity.launch(
+            context = this,
+            target = FeatureLauncherTarget.AccountSetup,
+        )
+    }
 
-        val search = LocalMessageSearch()
-        search.addAllowedFolder(folderId)
-        search.addAccountUuid(account.uuid)
-        actionDisplaySearch(this, search, noThreading = false, newTask = false)
+    fun openRealAccount(accountId: String) {
+        if (accountId == UnifiedDisplayAccount.UNIFIED_ACCOUNT_ID) {
+            openUnifiedInbox()
+        } else {
+            val account = accountManager.getAccount(accountId) ?: return
+            val folderId = defaultFolderProvider.getDefaultFolder(account)
+
+            val search = LocalMessageSearch()
+            search.addAllowedFolder(folderId)
+            search.addAccountUuid(account.uuid)
+            actionDisplaySearch(this, search, noThreading = false, newTask = false)
+        }
     }
 
     private fun performSearch(search: LocalMessageSearch) {
@@ -1500,7 +1513,6 @@ open class MessageList :
                     !generalSettingsManager.getSettings().isShowUnifiedInbox -> drawer.deselect()
 
                 search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
-                else -> drawer.deselect()
             }
         } ?: logger.warn(TAG) { "Couldn't select folder for $accountUuid as LocalSearch is null." }
     }

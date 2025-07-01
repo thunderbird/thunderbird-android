@@ -10,8 +10,8 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_ACCOUNT
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_FOLDER
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.MAIL_DISPLAY_ACCOUNT
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.UNIFIED_FOLDER
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.createAccountList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.createDisplayFolderList
@@ -37,8 +37,8 @@ internal fun DrawerContentWithAccountPreview() {
     PreviewWithTheme {
         DrawerContent(
             state = DrawerContract.State(
-                accounts = persistentListOf(DISPLAY_ACCOUNT),
-                selectedAccountId = DISPLAY_ACCOUNT.id,
+                accounts = persistentListOf(MAIL_DISPLAY_ACCOUNT),
+                selectedAccountId = MAIL_DISPLAY_ACCOUNT.id,
                 folders = persistentListOf(),
             ),
             onEvent = {},
@@ -53,7 +53,7 @@ internal fun DrawerContentWithFoldersPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(
-                    DISPLAY_ACCOUNT,
+                    MAIL_DISPLAY_ACCOUNT,
                 ),
                 selectedAccountId = null,
                 folders = persistentListOf(
@@ -73,9 +73,9 @@ internal fun DrawerContentWithSelectedFolderPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(
-                    DISPLAY_ACCOUNT,
+                    MAIL_DISPLAY_ACCOUNT,
                 ),
-                selectedAccountId = DISPLAY_ACCOUNT.id,
+                selectedAccountId = MAIL_DISPLAY_ACCOUNT.id,
                 folders = persistentListOf(
                     UNIFIED_FOLDER,
                     DISPLAY_FOLDER,
@@ -94,9 +94,9 @@ internal fun DrawerContentWithSelectedUnifiedFolderPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(
-                    DISPLAY_ACCOUNT,
+                    MAIL_DISPLAY_ACCOUNT,
                 ),
-                selectedAccountId = DISPLAY_ACCOUNT.id,
+                selectedAccountId = MAIL_DISPLAY_ACCOUNT.id,
                 folders = persistentListOf(
                     UNIFIED_FOLDER,
                     DISPLAY_FOLDER,
@@ -117,9 +117,9 @@ internal fun DrawerContentSingleAccountPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(
-                    DISPLAY_ACCOUNT,
+                    MAIL_DISPLAY_ACCOUNT,
                 ),
-                selectedAccountId = DISPLAY_ACCOUNT.id,
+                selectedAccountId = MAIL_DISPLAY_ACCOUNT.id,
                 folders = displayFolders,
                 selectedFolderId = displayFolders[0].id,
                 config = DrawerConfig(
@@ -142,9 +142,9 @@ internal fun DrawerContentSingleAccountWithAccountSelectionPreview() {
         DrawerContent(
             state = DrawerContract.State(
                 accounts = persistentListOf(
-                    DISPLAY_ACCOUNT,
+                    MAIL_DISPLAY_ACCOUNT,
                 ),
-                selectedAccountId = DISPLAY_ACCOUNT.id,
+                selectedAccountId = MAIL_DISPLAY_ACCOUNT.id,
                 folders = displayFolders,
                 selectedFolderId = displayFolders[0].id,
                 config = DrawerConfig(

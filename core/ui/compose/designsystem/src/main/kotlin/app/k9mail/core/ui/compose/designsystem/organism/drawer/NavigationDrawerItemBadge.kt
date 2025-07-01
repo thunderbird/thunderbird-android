@@ -28,15 +28,15 @@ fun NavigationDrawerItemBadge(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        TextLabelLarge(
+            text = label,
+        )
         if (imageVector != null) {
             Icon(
                 imageVector = imageVector,
                 modifier = Modifier.size(MainTheme.sizes.iconSmall)
-                    .padding(end = MainTheme.spacings.quarter),
+                    .padding(start = MainTheme.spacings.quarter),
             )
         }
-        TextLabelLarge(
-            text = label,
-        )
     }
 }

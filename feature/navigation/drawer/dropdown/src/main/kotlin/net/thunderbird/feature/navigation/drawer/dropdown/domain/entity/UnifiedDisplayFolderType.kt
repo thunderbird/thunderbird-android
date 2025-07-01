@@ -5,7 +5,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown.domain.entity
  *
  * The id is unique for each unified folder type.
  */
-internal enum class DisplayUnifiedFolderType(
+internal enum class UnifiedDisplayFolderType(
     val id: String,
 ) {
     INBOX("unified_inbox"),

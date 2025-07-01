@@ -1,8 +1,6 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui.folder
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 
@@ -98,19 +96,6 @@ internal fun FolderListItemBadgeWith1000CountsPreview() {
             unreadCount = 1000,
             starredCount = 1000,
             showStarredCount = true,
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun FolderListItemBadgeWithExpandableStatePreview() {
-    PreviewWithThemes {
-        FolderListItemBadge(
-            unreadCount = 1000,
-            starredCount = 1000,
-            showStarredCount = true,
-            expandableState = remember { mutableStateOf(false) },
         )
     }
 }

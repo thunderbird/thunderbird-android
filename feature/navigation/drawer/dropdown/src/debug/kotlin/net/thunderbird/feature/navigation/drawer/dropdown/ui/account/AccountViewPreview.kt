@@ -3,52 +3,28 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_ACCOUNT
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.MAIL_DISPLAY_ACCOUNT
 
 @Composable
 @Preview(showBackground = true)
 internal fun AccountViewPreview() {
     PreviewWithThemes {
         AccountView(
-            account = DISPLAY_ACCOUNT,
+            account = MAIL_DISPLAY_ACCOUNT,
             onClick = {},
-            showAvatar = false,
+            showAccountSelection = true,
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-internal fun AccountViewWithColorPreview() {
+internal fun AccountViewWithoutAccountPreview() {
     PreviewWithThemes {
         AccountView(
-            account = DISPLAY_ACCOUNT,
+            account = MAIL_DISPLAY_ACCOUNT,
             onClick = {},
-            showAvatar = false,
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun AccountViewWithLongDisplayName() {
-    PreviewWithThemes {
-        AccountView(
-            account = DISPLAY_ACCOUNT,
-            onClick = {},
-            showAvatar = false,
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-internal fun AccountViewWithLongEmailPreview() {
-    PreviewWithThemes {
-        AccountView(
-            account = DISPLAY_ACCOUNT,
-            onClick = {},
-            showAvatar = false,
+            showAccountSelection = false,
         )
     }
 }

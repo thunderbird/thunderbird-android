@@ -4,8 +4,8 @@ import app.k9mail.legacy.message.controller.MessageCountsProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.api.MessageSearchField
 import net.thunderbird.feature.search.api.SearchAttribute
@@ -14,20 +14,20 @@ internal class UnifiedFolderRepository(
     private val messageCountsProvider: MessageCountsProvider,
 ) : DomainContract.UnifiedFolderRepository {
 
-    override fun getDisplayUnifiedFolderFlow(unifiedFolderType: DisplayUnifiedFolderType): Flow<DisplayUnifiedFolder> {
+    override fun getUnifiedDisplayFolderFlow(unifiedFolderType: UnifiedDisplayFolderType): Flow<UnifiedDisplayFolder> {
         return messageCountsProvider.getMessageCountsFlow(createUnifiedFolderSearch(unifiedFolderType)).map {
-            DisplayUnifiedFolder(
+            UnifiedDisplayFolder(
                 id = UNIFIED_INBOX_ID,
-                unifiedType = DisplayUnifiedFolderType.INBOX,
+                unifiedType = UnifiedDisplayFolderType.INBOX,
                 unreadMessageCount = it.unread,
                 starredMessageCount = it.starred,
             )
         }
     }
 
-    private fun createUnifiedFolderSearch(unifiedFolderType: DisplayUnifiedFolderType): LocalMessageSearch {
+    private fun createUnifiedFolderSearch(unifiedFolderType: UnifiedDisplayFolderType): LocalMessageSearch {
         return when (unifiedFolderType) {
-            DisplayUnifiedFolderType.INBOX -> return createUnifiedInboxSearch()
+            UnifiedDisplayFolderType.INBOX -> return createUnifiedInboxSearch()
         }
     }
 

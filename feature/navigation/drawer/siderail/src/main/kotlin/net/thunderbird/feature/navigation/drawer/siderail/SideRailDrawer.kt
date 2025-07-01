@@ -79,6 +79,7 @@ class SideRailDrawer(
     override fun selectUnifiedInbox() {
         drawerState.update {
             it.copy(
+                selectedAccountUuid = "unified_account",
                 selectedFolderId = DisplayUnifiedFolderType.INBOX.id,
             )
         }
