@@ -168,4 +168,20 @@ public abstract class Message implements Part, Body {
         }
         return 0;
     }
+
+    /*
+     * Returns true if any address in this message uses a non-ASCII
+     * character in either the localpart or the domain, and false if
+     * all addresses use only ASCII.
+     */
+    public boolean usesAnyUnicodeAddresses() {
+        for (final Address a : getFrom())
+            if (a.needsUnicode())
+                return true;
+        for (RecipientType t : RecipientType.values())
+            for (final Address r : getRecipients(t))
+                if (r.needsUnicode())
+                    return true;
+        return false;
+    }
 }

@@ -67,6 +67,7 @@ class SmtpTransport(
     private var outputStream: OutputStream? = null
     private var responseParser: SmtpResponseParser? = null
     private var is8bitEncodingAllowed = false
+    private var areUnicodeAddressesAllowed = false
     private var isEnhancedStatusCodesProvided = false
     private var largestAcceptableMessage = 0
     private var retryOAuthWithNewToken = false
@@ -106,6 +107,7 @@ class SmtpTransport(
             var extensions = sendHello(SMTP_HELLO_NAME)
 
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME")
+            areUnicodeAddressesAllowed = extensions.containsKey("SMTPUTF8")
             isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES")
             isPipeliningSupported = extensions.containsKey("PIPELINING")
 
@@ -345,7 +347,12 @@ class SmtpTransport(
 
         var entireMessageSent = false
         try {
-            val mailFrom = constructSmtpMailFromCommand(message.from, is8bitEncodingAllowed)
+            val mailFrom =
+                constructSmtpMailFromCommand(
+                    message.from,
+                    is8bitEncodingAllowed,
+                    message.usesAnyUnicodeAddresses(),
+                )
             if (isPipeliningSupported) {
                 val pipelinedCommands = buildList {
                     add(mailFrom)
@@ -394,14 +401,15 @@ class SmtpTransport(
         }
     }
 
-    private fun constructSmtpMailFromCommand(from: Array<Address>, is8bitEncodingAllowed: Boolean): String {
+    private fun constructSmtpMailFromCommand(
+        from: Array<Address>,
+        is8bitEncodingAllowed: Boolean,
+        canUseSmtputf8: Boolean,
+    ): String {
         val fromAddress = from.first().address
-        return if (is8bitEncodingAllowed) {
-            String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress)
-        } else {
-            Log.d("Server does not support 8-bit transfer encoding")
-            String.format("MAIL FROM:<%s>", fromAddress)
-        }
+        val smtputf8 = if (areUnicodeAddressesAllowed && canUseSmtputf8) " SMTPUTF8" else ""
+        val eightbit = if (is8bitEncodingAllowed) " BODY=8BITMIME" else ""
+        return String.format(Locale.US, "MAIL FROM:<%s>%s%s", fromAddress, smtputf8, eightbit)
     }
 
     private fun ensureClosed() {

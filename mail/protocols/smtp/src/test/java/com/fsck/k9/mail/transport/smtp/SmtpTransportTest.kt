@@ -687,6 +687,61 @@ class SmtpTransportTest {
     }
 
     @Test
+    fun `sendMessage() with unicode recipient and supporting server`() {
+        val message = createMessageWithUnicodeRecipient()
+        val server = createServerAndSetupForPlainAuthentication("SMTPUTF8").apply {
+            expect("MAIL FROM:<user@localhost> SMTPUTF8")
+            output("250 OK")
+            expect("RCPT TO:<user2@dømi.example>")
+            output("250 OK")
+            expect("DATA")
+            output("354 End data with <CR><LF>.<CR><LF>")
+            expect("[message data]")
+            expect(".")
+            output("250 OK: queued as 12345")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
+
+        transport.sendMessage(message)
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `sendMessage() with unicode recipient and plain server`() {
+        val message = createMessageWithUnicodeRecipient()
+        val server = createServerAndSetupForPlainAuthentication("8BITMIME").apply {
+            expect("MAIL FROM:<user@localhost> BODY=8BITMIME")
+            output("250 OK")
+            // Many servers reject this as nonstandard, but some
+            // accept it. The purpose of this commit is to change the
+            // behaviour when SMTPUTF8 is supported. Therefore this
+            // test checks that Thunderbird behaves as previously when
+            // the server does not support SMTPUTF8.
+            expect("RCPT TO:<user2@dømi.example>")
+            output("250 OK")
+            expect("DATA")
+            output("354 End data with <CR><LF>.<CR><LF>")
+            expect("[message data]")
+            expect(".")
+            output("250 OK: queued as 12345")
+            expect("QUIT")
+            output("221 BYE")
+            closeConnection()
+        }
+        val transport = startServerAndCreateSmtpTransport(server)
+
+        transport.sendMessage(message)
+
+        server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
     fun `sendMessage() with message too large should throw`() {
         val message = createDefaultMessageBuilder()
             .setHasAttachments(true)
@@ -934,6 +989,13 @@ class SmtpTransportTest {
         return TestMessageBuilder()
             .from("user@localhost")
             .to("user2@localhost", "user3@localhost")
+            .build()
+    }
+
+    private fun createMessageWithUnicodeRecipient(): Message {
+        return TestMessageBuilder()
+            .from("user@localhost")
+            .to("user2@dømi.example")
             .build()
     }
 
