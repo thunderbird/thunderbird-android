@@ -30,6 +30,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.legacy.message.controller.MessageReference
@@ -62,6 +63,11 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.AccountManager
@@ -231,6 +237,21 @@ class MessageListFragment :
         }
 
         adapter = createMessageListAdapter()
+
+        generalSettingsManager.getSettingsFlow()
+            /**
+             * Skips the first emitted item from the settings flow,
+             * since the initial value of `showingThreadedList` is taken
+             * from the fragment's arguments rather than the flow.
+             */
+            .drop(1)
+            .map { it.isThreadedViewEnabled }
+            .distinctUntilChanged()
+            .onEach {
+                showingThreadedList = it
+                loadMessageList(forceUpdate = true)
+            }
+            .launchIn(lifecycleScope)
 
         isInitialized = true
     }
