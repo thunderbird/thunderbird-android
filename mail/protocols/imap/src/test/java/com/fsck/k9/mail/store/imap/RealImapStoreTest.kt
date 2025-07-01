@@ -235,7 +235,7 @@ class RealImapStoreTest {
         assertThat(folders).isNotNull()
         assertThat(folders.map { it.serverId }).containsExactly("INBOX", "INBOX.FolderOne", "INBOX.FolderTwo")
         assertThat(folders.map { it.name }).containsExactly("INBOX", "FolderOne", "FolderTwo")
-        assertThat(folders.map { it.oldServerId }).containsExactly("INBOX", "FolderOne", "FolderTwo")
+        assertThat(folders.map { it.serverId }).containsExactly("INBOX", "FolderOne", "FolderTwo")
     }
 
     @Test
@@ -256,7 +256,7 @@ class RealImapStoreTest {
         assertThat(folders).isNotNull()
         assertThat(folders.map { it.serverId }).containsExactly("INBOX", "INBOX.FolderOne", "FolderTwo")
         assertThat(folders.map { it.name }).containsExactly("INBOX", "FolderOne", "FolderTwo")
-        assertThat(folders.mapNotNull { it.oldServerId }).containsExactly("INBOX", "FolderOne")
+        assertThat(folders.mapNotNull { it.serverId }).containsExactly("INBOX", "FolderOne")
     }
 
     @Test

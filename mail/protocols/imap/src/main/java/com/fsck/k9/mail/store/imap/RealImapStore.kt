@@ -156,7 +156,6 @@ internal open class RealImapStore(
             }
 
             val name = getFolderDisplayName(serverId)
-            val oldServerId = getOldServerId(serverId)
 
             val type = when {
                 listResponse.hasAttribute("\\Archive") -> FolderType.ARCHIVE
@@ -170,12 +169,12 @@ internal open class RealImapStore(
 
             val existingItem = folderMap[serverId]
             if (existingItem == null || existingItem.type == FolderType.REGULAR) {
-                folderMap[serverId] = FolderListItem(serverId, name, type, oldServerId)
+                folderMap[serverId] = FolderListItem(serverId, name, type)
             }
         }
 
         return buildList {
-            add(FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX, RealImapFolder.INBOX))
+            add(FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX))
             addAll(folderMap.values)
         }
     }
@@ -194,17 +193,6 @@ internal open class RealImapStore(
 
         val folderNameWithoutPrefix = removePrefixFromFolderName(decodedFolderName)
         return folderNameWithoutPrefix ?: decodedFolderName
-    }
-
-    private fun getOldServerId(serverId: String): String? {
-        val decodedFolderName = try {
-            folderNameCodec.decode(serverId)
-        } catch (e: CharacterCodingException) {
-            // Previous versions of K-9 Mail ignored folders with invalid UTF-7 encoding
-            return null
-        }
-
-        return removePrefixFromFolderName(decodedFolderName)
     }
 
     private fun removePrefixFromFolderName(folderName: String): String? {

@@ -36,8 +36,8 @@ internal class CommandRefreshFolderList(
 }
 
 private fun List<FolderListItem>.toLegacyFolderList(): List<LegacyFolderListItem> {
-    return this.filterNot { it.oldServerId == null }
-        .map { LegacyFolderListItem(it.oldServerId!!, it.name, it.type) }
+    return this
+        .map { LegacyFolderListItem(it.serverId, it.name, it.type) }
 }
 
 private data class LegacyFolderListItem(
