@@ -1,4 +1,4 @@
-package net.thunderbird.feature.search.api
+package net.thunderbird.feature.search.legacy.api
 
 /**
  * Represents the attributes that can be used to match search conditions.

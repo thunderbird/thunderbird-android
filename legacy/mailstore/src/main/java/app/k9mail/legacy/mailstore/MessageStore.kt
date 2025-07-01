@@ -7,7 +7,7 @@ import com.fsck.k9.mail.MessagingException
 import java.util.Date
 import kotlin.jvm.Throws
 import net.thunderbird.feature.mail.folder.api.FolderDetails
-import net.thunderbird.feature.search.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
 /**
  * Functions for accessing and modifying locally stored messages.

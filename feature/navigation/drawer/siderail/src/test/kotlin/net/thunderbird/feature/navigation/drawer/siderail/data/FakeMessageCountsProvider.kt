@@ -5,8 +5,8 @@ import app.k9mail.legacy.message.controller.MessageCountsProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchAccount
 
 internal class FakeMessageCountsProvider(
     private val messageCounts: MessageCounts,

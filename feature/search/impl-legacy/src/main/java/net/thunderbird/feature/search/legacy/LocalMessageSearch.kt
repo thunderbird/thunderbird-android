@@ -1,11 +1,11 @@
-package net.thunderbird.feature.search
+package net.thunderbird.feature.search.legacy
 
 import android.os.Parcel
 import android.os.Parcelable
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.api.MessageSearchSpecification
-import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchCondition
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.MessageSearchSpecification
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.SearchCondition
 
 /**
  * This class represents a local search.

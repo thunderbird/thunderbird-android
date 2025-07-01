@@ -1,4 +1,4 @@
-package net.thunderbird.feature.search
+package net.thunderbird.feature.search.legacy
 
 import assertk.assertThat
 import assertk.assertions.contains
@@ -8,9 +8,9 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchCondition
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.SearchCondition
 import org.junit.Test
 
 class LocalMessageSearchTest {

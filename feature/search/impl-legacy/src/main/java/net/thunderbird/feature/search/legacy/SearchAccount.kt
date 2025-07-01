@@ -1,8 +1,8 @@
-package net.thunderbird.feature.search
+package net.thunderbird.feature.search.legacy
 
 import net.thunderbird.feature.mail.account.api.BaseAccount
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
 
 /**
  * This class is basically a wrapper around a LocalSearch. It allows to expose it as an account.

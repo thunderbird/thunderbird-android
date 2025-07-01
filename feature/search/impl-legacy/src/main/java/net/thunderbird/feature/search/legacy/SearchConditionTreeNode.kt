@@ -1,10 +1,10 @@
-package net.thunderbird.feature.search
+package net.thunderbird.feature.search.legacy
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchFieldType
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.SearchCondition
+import net.thunderbird.feature.search.legacy.api.SearchFieldType
 
 /**
  * Represents a node in a boolean expression tree for evaluating search conditions.

@@ -1,4 +1,4 @@
-package net.thunderbird.feature.search
+package net.thunderbird.feature.search.legacy
 
 import assertk.assertFailure
 import assertk.assertThat
@@ -7,11 +7,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import kotlinx.parcelize.Parcelize
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchField
-import net.thunderbird.feature.search.api.SearchFieldType
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.SearchCondition
+import net.thunderbird.feature.search.legacy.api.SearchField
+import net.thunderbird.feature.search.legacy.api.SearchFieldType
 import org.junit.Test
 
 class SearchConditionTreeNodeTest {

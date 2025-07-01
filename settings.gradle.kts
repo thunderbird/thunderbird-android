@@ -129,7 +129,7 @@ include(
 )
 
 include(
-    ":feature:search",
+    ":feature:search:impl-legacy",
 )
 
 include(

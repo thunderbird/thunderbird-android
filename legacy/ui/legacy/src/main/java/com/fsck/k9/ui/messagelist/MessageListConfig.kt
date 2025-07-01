@@ -2,7 +2,7 @@ package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.message.controller.MessageReference
 import net.thunderbird.core.android.account.SortType
-import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 data class MessageListConfig(
     val search: LocalMessageSearch,

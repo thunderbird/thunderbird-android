@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "net.thunderbird.feature.search"
+    namespace = "net.thunderbird.feature.search.legacy"
 }
 
 dependencies {

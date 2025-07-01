@@ -1,4 +1,4 @@
-package net.thunderbird.feature.search.sql
+package net.thunderbird.feature.search.legacy.sql
 
 import assertk.assertFailure
 import assertk.assertThat
@@ -6,12 +6,13 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlinx.parcelize.Parcelize
-import net.thunderbird.feature.search.SearchConditionTreeNode
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchCondition
-import net.thunderbird.feature.search.api.SearchField
-import net.thunderbird.feature.search.api.SearchFieldType
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.SearchCondition
+import net.thunderbird.feature.search.legacy.api.SearchField
+import net.thunderbird.feature.search.legacy.api.SearchFieldType
+import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 import org.junit.Test
 
 class SqlWhereClauseTest {

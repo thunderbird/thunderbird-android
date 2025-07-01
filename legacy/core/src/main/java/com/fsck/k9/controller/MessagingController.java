@@ -85,7 +85,7 @@ import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.feature.search.LocalMessageSearch;
+import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import net.thunderbird.core.logging.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

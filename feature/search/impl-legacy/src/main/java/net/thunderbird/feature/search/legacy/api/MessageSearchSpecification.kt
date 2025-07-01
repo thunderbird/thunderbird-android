@@ -1,7 +1,7 @@
-package net.thunderbird.feature.search.api
+package net.thunderbird.feature.search.legacy.api
 
 import android.os.Parcelable
-import net.thunderbird.feature.search.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
 /**
  * Represents a search specification that defines the accounts and conditions
