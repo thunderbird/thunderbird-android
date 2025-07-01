@@ -45,6 +45,7 @@ internal class RealImapConnection(
     private val settings: ImapSettings,
     private val socketFactory: TrustedSocketFactory,
     private val oauthTokenProvider: OAuth2TokenProvider?,
+    private val folderNameCodec: FolderNameCodec,
     override val connectionGeneration: Int,
     private val socketConnectTimeout: Int = SOCKET_CONNECT_TIMEOUT,
     private val socketReadTimeout: Int = SOCKET_READ_TIMEOUT,
@@ -206,7 +207,7 @@ internal class RealImapConnection(
 
     private fun setUpStreamsAndParser(input: InputStream, output: OutputStream) {
         inputStream = PeekableInputStream(BufferedInputStream(input, BUFFER_SIZE))
-        responseParser = ImapResponseParser(inputStream)
+        responseParser = ImapResponseParser(inputStream, folderNameCodec)
         imapOutputStream = BufferedOutputStream(output, BUFFER_SIZE)
     }
 
@@ -674,6 +675,10 @@ internal class RealImapConnection(
         val hierarchyDelimiterValid = response.isString(2)
 
         return isListResponse && hierarchyDelimiterValid
+    }
+
+    override fun canSendUTF8QuotedStrings(): Boolean {
+        return isUtf8AcceptCapable // later: or IMAP4Rev2 is enabled
     }
 
     override fun hasCapability(capability: String): Boolean {

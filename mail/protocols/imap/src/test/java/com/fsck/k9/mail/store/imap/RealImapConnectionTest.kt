@@ -1185,6 +1185,7 @@ class RealImapConnectionTest {
             settings,
             socketFactory,
             oAuth2TokenProvider,
+            FolderNameCodec(),
             connectionGeneration,
             SOCKET_CONNECT_TIMEOUT,
             SOCKET_READ_TIMEOUT,

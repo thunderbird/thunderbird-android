@@ -599,7 +599,7 @@ class ImapResponseParserTest {
         val byteArrayInputStream = ByteArrayInputStream(response.toByteArray(Charsets.UTF_8))
         peekableInputStream = PeekableInputStream(byteArrayInputStream)
 
-        return ImapResponseParser(peekableInputStream)
+        return ImapResponseParser(peekableInputStream, FolderNameCodec())
     }
 
     private fun assertThatAllInputWasConsumed() {

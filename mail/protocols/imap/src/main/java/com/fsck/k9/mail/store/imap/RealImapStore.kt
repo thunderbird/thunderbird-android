@@ -281,6 +281,7 @@ internal open class RealImapStore(
             StoreImapSettings(),
             trustedSocketFactory,
             oauthTokenProvider,
+            folderNameCodec,
             connectionGeneration,
         )
     }

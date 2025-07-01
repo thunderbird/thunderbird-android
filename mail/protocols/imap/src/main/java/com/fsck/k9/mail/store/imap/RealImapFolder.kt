@@ -96,11 +96,7 @@ internal class RealImapFolder(
     @get:Throws(MessagingException::class)
     private val encodedName: String
         get() {
-            return if (connection?.isUtf8AcceptCapable == true) {
-                prefixedName
-            } else {
-                folderNameCodec.encode(prefixedName)
-            }
+            return folderNameCodec.encode(prefixedName)
         }
 
     @Throws(MessagingException::class, IOException::class)
@@ -295,11 +291,7 @@ internal class RealImapFolder(
 
         val uids = messages.map { it.uid.toLong() }.toSet()
         val encodedDestinationFolderName =
-            if (connection!!.isUtf8AcceptCapable) {
-                folder.prefixedName
-            } else {
-                folderNameCodec.encode(folder.prefixedName)
-            }
+            folderNameCodec.encode(folder.prefixedName)
         val escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName)
 
         return try {
@@ -335,11 +327,7 @@ internal class RealImapFolder(
 
         val uids = messages.map { it.uid.toLong() }.toSet()
         val encodedDestinationFolderName =
-            if (connection!!.isUtf8AcceptCapable) {
-                folder.prefixedName
-            } else {
-                folderNameCodec.encode(folder.prefixedName)
-            }
+            folderNameCodec.encode(folder.prefixedName)
         val escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName)
 
         return try {
