@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
 /**
@@ -35,8 +36,8 @@ fun PreviewWithThemeLightDark(
     useRow: Boolean = false,
     useScrim: Boolean = false,
     scrimAlpha: Float = 0.8f,
-    scrimPadding: PaddingValues = PaddingValues(MainTheme.spacings.triple),
-    arrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(MainTheme.spacings.triple),
+    scrimPadding: PaddingValues = PaddingValues(24.dp),
+    arrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(24.dp),
     content: @Composable () -> Unit,
 ) {
     val movableContent = remember {
