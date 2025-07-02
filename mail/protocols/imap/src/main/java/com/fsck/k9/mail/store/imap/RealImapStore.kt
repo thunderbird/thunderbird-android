@@ -18,6 +18,8 @@ import java.util.Deque
 import java.util.LinkedList
 import net.thunderbird.core.logging.legacy.Log
 
+private const val LAST_ASCII_CODE = 127
+
 internal open class RealImapStore(
     private val serverSettings: ServerSettings,
     override val config: ImapStoreConfig,
@@ -154,7 +156,6 @@ internal open class RealImapStore(
             }
 
             val name = getFolderDisplayName(serverId)
-            val oldServerId = getOldServerId(serverId)
 
             val type = when {
                 listResponse.hasAttribute("\\Archive") -> FolderType.ARCHIVE
@@ -168,19 +169,23 @@ internal open class RealImapStore(
 
             val existingItem = folderMap[serverId]
             if (existingItem == null || existingItem.type == FolderType.REGULAR) {
-                folderMap[serverId] = FolderListItem(serverId, name, type, oldServerId)
+                folderMap[serverId] = FolderListItem(serverId, name, type)
             }
         }
 
         return buildList {
-            add(FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX, RealImapFolder.INBOX))
+            add(FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX))
             addAll(folderMap.values)
         }
     }
 
     private fun getFolderDisplayName(serverId: String): String {
         val decodedFolderName = try {
-            folderNameCodec.decode(serverId)
+            if (serverId.all { it.code <= LAST_ASCII_CODE }) {
+                folderNameCodec.decode(serverId)
+            } else {
+                serverId
+            }
         } catch (e: CharacterCodingException) {
             Log.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s", serverId)
             serverId
@@ -188,17 +193,6 @@ internal open class RealImapStore(
 
         val folderNameWithoutPrefix = removePrefixFromFolderName(decodedFolderName)
         return folderNameWithoutPrefix ?: decodedFolderName
-    }
-
-    private fun getOldServerId(serverId: String): String? {
-        val decodedFolderName = try {
-            folderNameCodec.decode(serverId)
-        } catch (e: CharacterCodingException) {
-            // Previous versions of K-9 Mail ignored folders with invalid UTF-7 encoding
-            return null
-        }
-
-        return removePrefixFromFolderName(decodedFolderName)
     }
 
     private fun removePrefixFromFolderName(folderName: String): String? {
@@ -287,6 +281,7 @@ internal open class RealImapStore(
             StoreImapSettings(),
             trustedSocketFactory,
             oauthTokenProvider,
+            folderNameCodec,
             connectionGeneration,
         )
     }

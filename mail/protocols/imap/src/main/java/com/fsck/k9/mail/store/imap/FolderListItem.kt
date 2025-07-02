@@ -6,5 +6,4 @@ data class FolderListItem(
     val serverId: String,
     val name: String,
     val type: FolderType,
-    val oldServerId: String?,
 )

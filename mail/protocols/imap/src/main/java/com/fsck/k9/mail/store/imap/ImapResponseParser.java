@@ -22,14 +22,15 @@ class ImapResponseParser {
     private boolean utf8Accept;
     private FolderNameCodec folderNameCodec;
 
-    public ImapResponseParser(PeekableInputStream in) {
+    public ImapResponseParser(PeekableInputStream in, FolderNameCodec c) {
         this.inputStream = in;
         this.utf8Accept = false;
-        this.folderNameCodec = new FolderNameCodec();
+        this.folderNameCodec = c;
     }
 
     public void setUtf8Accepted(final boolean yes) {
         utf8Accept = yes;
+        folderNameCodec.setUtf8Accept(true);
     }
 
     public ImapResponse readResponse() throws IOException {
@@ -417,7 +418,7 @@ class ImapResponseParser {
             read += count;
         }
 
-        return new String(data, "US-ASCII");
+        return new String(data, "UTF8");
     }
 
     private String parseQuoted() throws IOException {
