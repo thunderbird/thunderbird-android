@@ -11,7 +11,6 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.ui.NotificationStyle
-import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.impl.intent.SystemNotificationIntentCreator
 import net.thunderbird.feature.notification.impl.ui.action.NotificationActionCreator
 import org.koin.core.component.KoinComponent
@@ -33,16 +32,16 @@ internal class AndroidSystemNotificationNotifier(
     private val logger: Logger,
     private val context: Context,
     notificationIntentCreators: Lazy<List<SystemNotificationIntentCreator<SystemNotification>>> = inject(
-        List::class.java,
-        named<SystemNotificationIntentCreator.TypeQualifier>(),
+        clazz = List::class.java,
+        qualifier = named<SystemNotificationIntentCreator.TypeQualifier>(),
     ),
-    actionCreators: Lazy<List<NotificationActionCreator<NotificationAction>>> = inject(
-        List::class.java,
-        named<NotificationActionCreator.TypeQualifier>(),
+    notificationActionCreator: Lazy<NotificationActionCreator<SystemNotification>> = inject(
+        clazz = NotificationActionCreator::class.java,
+        qualifier = named(NotificationActionCreator.TypeQualifier.System),
     ),
 ) : SystemNotificationNotifier, KoinComponent {
     private val notificationIntentCreators by notificationIntentCreators
-    private val actionCreators by actionCreators
+    private val notificationActionCreator by notificationActionCreator
     private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
 
     override suspend fun show(
@@ -50,7 +49,8 @@ internal class AndroidSystemNotificationNotifier(
         notification: SystemNotification,
     ) {
         logger.debug(TAG) { "show() called with: id = $id, notification = $notification" }
-        notificationManager.notify(id.value, notification.toAndroidNotification())
+        val androidNotification = notification.toAndroidNotification()
+        notificationManager.notify(id.value, androidNotification)
     }
 
     override fun dispose() {
@@ -75,20 +75,21 @@ internal class AndroidSystemNotificationNotifier(
 
                 notificationIntentCreators
                     .firstOrNull { it.accept(this@toAndroidNotification) }
-                    ?.let { creator -> setContentIntent(creator.create(this@toAndroidNotification)) }
+                    ?.let { creator -> setContentIntent(creator.create(notification = this@toAndroidNotification)) }
 
                 setNotificationStyle(notification = this@toAndroidNotification)
 
-//                TODO: Create Actions.
                 if (actions.isNotEmpty()) {
                     for (action in actions) {
-                        val notificationAction = actionCreators
-                            .single { it.accept(action) }
-                            .create(action)
+                        val notificationAction = notificationActionCreator
+                            .create(notification = this@toAndroidNotification, action)
 
                         addAction(
+                            /* icon = */
                             notificationAction.icon,
+                            /* title = */
                             notificationAction.title,
+                            /* intent = */
                             notificationAction.pendingIntent,
                         )
                     }

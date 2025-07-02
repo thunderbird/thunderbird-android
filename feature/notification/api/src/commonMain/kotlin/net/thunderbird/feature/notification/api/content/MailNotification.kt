@@ -3,7 +3,6 @@ package net.thunderbird.feature.notification.api.content
 import net.thunderbird.core.common.exception.rootCauseMassage
 import net.thunderbird.core.common.io.KmpIgnoredOnParcel
 import net.thunderbird.core.common.io.KmpParcelize
-import net.thunderbird.feature.notification.api.LockscreenNotificationAppearance
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -189,7 +188,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
         abstract val messagesNotificationChannelSuffix: String
 
         @KmpIgnoredOnParcel
-        override val channel: NotificationChannel = NotificationChannel.Messages(
+        override val channel: NotificationChannel get() = NotificationChannel.Messages(
             accountUuid = accountUuid,
             suffix = messagesNotificationChannelSuffix,
         )
@@ -208,13 +207,10 @@ sealed class MailNotification : AppNotification(), SystemNotification {
          *
          * @property accountUuid The UUID of the account that received the email.
          * @property accountName The display name of the account that received the email.
-         * @property messagesNotificationChannelSuffix The suffix for the messages notification channel.
          * @property summary A short summary of the email content.
          * @property sender The sender of the email.
          * @property subject The subject of the email.
          * @property preview A preview of the email content.
-         * @property group The notification group this notification belongs to, if any.
-         * @property lockscreenNotificationAppearance Specifies how this notification should appear on the lockscreen.
          */
         @KmpParcelize
         data class SingleMail(
@@ -226,8 +222,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             val sender: String,
             val subject: String,
             val preview: String,
-            override val group: NotificationGroup?,
-            override val lockscreenNotificationAppearance: LockscreenNotificationAppearance,
             @KmpIgnoredOnParcel
             override val icon: NotificationIcon = NotificationIcons.NewMailSingleMail,
         ) : NewMail() {
