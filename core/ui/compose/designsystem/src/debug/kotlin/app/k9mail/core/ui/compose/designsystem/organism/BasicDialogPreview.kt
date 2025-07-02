@@ -29,7 +29,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 @PreviewLightDarkLandscape
 @Composable
 private fun BasicDialogPreview() {
-    PreviewWithThemeLightDark(
+    PreviewWithThemesLightDark(
         useRow = true,
         useScrim = true,
         scrimPadding = PaddingValues(32.dp),
@@ -115,7 +115,7 @@ private fun BasicDialogPreview() {
 @PreviewLightDarkLandscape
 @Composable
 private fun PreviewOnlySupportingText() {
-    PreviewWithThemeLightDark(
+    PreviewWithThemesLightDark(
         useRow = true,
         useScrim = true,
         scrimPadding = PaddingValues(32.dp),

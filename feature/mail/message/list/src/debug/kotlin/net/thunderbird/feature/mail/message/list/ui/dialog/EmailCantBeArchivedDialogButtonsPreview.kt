@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.PreviewLightDarkLandscape
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
+import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -24,7 +24,7 @@ import net.thunderbird.feature.mail.message.list.R
 @PreviewLightDarkLandscape
 @Composable
 private fun EmailCantBeArchivedDialogButtonsPreview() {
-    PreviewWithThemeLightDark(
+    PreviewWithThemesLightDark(
         useRow = true,
         useScrim = true,
         scrimPadding = PaddingValues(32.dp),
