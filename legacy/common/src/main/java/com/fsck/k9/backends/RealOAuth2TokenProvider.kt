@@ -17,10 +17,18 @@ import net.thunderbird.core.logging.legacy.Log
 class RealOAuth2TokenProvider(
     context: Context,
     private val authStateStorage: AuthStateStorage,
-
 ) : OAuth2TokenProvider {
     private val authService = AuthorizationService(context)
     private var requestFreshToken = false
+
+    override val primaryEmail: String?
+        get() {
+            return parseAuthState()
+                .parsedIdToken
+                ?.additionalClaims
+                ?.get("email")
+                ?.toString()
+        }
 
     @Suppress("TooGenericExceptionCaught")
     override fun getToken(timeoutMillis: Long): String {
@@ -28,9 +36,7 @@ class RealOAuth2TokenProvider(
         var token: String? = null
         var exception: AuthorizationException? = null
 
-        val authState = authStateStorage.getAuthorizationState()?.let { AuthState.jsonDeserialize(it) }
-            ?: throw AuthenticationFailedException("Login required")
-
+        val authState = parseAuthState()
         if (requestFreshToken) {
             authState.needsTokenRefresh = true
         }
@@ -84,5 +90,12 @@ class RealOAuth2TokenProvider(
 
     override fun invalidateToken() {
         requestFreshToken = true
+    }
+
+    private fun parseAuthState(): AuthState {
+        return authStateStorage
+            .getAuthorizationState()
+            ?.let { AuthState.jsonDeserialize(it) }
+            ?: throw AuthenticationFailedException("Login required")
     }
 }

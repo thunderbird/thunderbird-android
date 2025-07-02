@@ -549,10 +549,16 @@ class SmtpTransport(
     }
 
     private fun saslOAuth(method: OAuthMethod) {
+        Log.d("saslOAuth() called with: method = $method")
         retryOAuthWithNewToken = true
+
+        val primaryEmail = oauthTokenProvider?.primaryEmail
+        val primaryUsername = primaryEmail ?: username
+
         try {
-            attempOAuth(method, username)
+            attempOAuth(method, primaryUsername)
         } catch (negativeResponse: NegativeSmtpReplyException) {
+            Log.w(negativeResponse, "saslOAuth: failed to authenticate.")
             if (negativeResponse.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 throw negativeResponse
             }
@@ -562,7 +568,7 @@ class SmtpTransport(
             if (!retryOAuthWithNewToken) {
                 handlePermanentOAuthFailure(method, negativeResponse)
             } else {
-                handleTemporaryOAuthFailure(method, username, negativeResponse)
+                handleTemporaryOAuthFailure(method, primaryUsername, negativeResponse)
             }
         }
     }
