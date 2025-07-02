@@ -20,8 +20,6 @@ val settingsUiModule = module {
         GeneralSettingsViewModel(
             logFileWriter = get(),
             syncDebugFileLogSink = get<FileLogSink>(named("syncDebug")),
-            notificationSender = get(),
-            logger = get(),
         )
     }
     factory {

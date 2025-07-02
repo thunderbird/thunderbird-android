@@ -1,8 +1,12 @@
 package com.fsck.k9.ui.settings.general
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
+import com.fsck.k9.ui.BuildConfig
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -10,16 +14,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.logging.LogFileWriter
 import net.thunderbird.core.logging.file.FileLogSink
-import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.feature.notification.api.content.MailNotification
-import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 class GeneralSettingsViewModel(
     private val logFileWriter: LogFileWriter,
     private val syncDebugFileLogSink: FileLogSink,
-    private val notificationSender: NotificationSender,
-    private val logger: Logger,
 ) : ViewModel() {
     private var snackbarJob: Job? = null
     private val uiStateFlow = MutableStateFlow<GeneralSettingsUiState>(GeneralSettingsUiState.Idle)
@@ -74,17 +73,9 @@ class GeneralSettingsViewModel(
         uiStateFlow.value = uiState
     }
 
-    fun onNotificationSend() {
-        viewModelScope.launch {
-            notificationSender.send(
-                notification = MailNotification.Sending(
-                    accountNumber = 1,
-                    accountUuid = "e50d9f92-c895-456d-b9ca-1e817ab53124",
-                    accountDisplayName = "Any name?",
-                ),
-            ).collect { result ->
-                logger.debug { "onNotificationSend() called with: result = $result" }
-            }
+    fun onOpenSecretDebugScreen(context: Context) {
+        if (BuildConfig.DEBUG) {
+            FeatureLauncherActivity.launch(context = context, target = FeatureLauncherTarget.SecretDebugSettings)
         }
     }
 
