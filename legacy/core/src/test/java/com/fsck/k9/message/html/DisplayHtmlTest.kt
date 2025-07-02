@@ -9,7 +9,8 @@ import org.jsoup.Jsoup
 import org.junit.Test
 
 class DisplayHtmlTest {
-    val displayHtml = DisplayHtml(HtmlSettings(useDarkMode = false, useFixedWidthFont = false))
+    val htmlSettings = HtmlSettings(useDarkMode = false, useFixedWidthFont = false)
+    val displayHtml = DisplayHtml(htmlSettings)
 
     @Test
     fun wrapMessageContent_addsViewportMetaElement() {
@@ -26,19 +27,10 @@ class DisplayHtmlTest {
     }
 
     @Test
-    fun wrapMessageContent_addsPreCSS() {
+    fun wrapMessageContent_addsPreCSSStyles() {
         val html = displayHtml.wrapMessageContent("Some text")
 
-        assertThat(html).containsHtmlElement("head > style")
-    }
-
-    @Test
-    fun wrapMessageContent_putsMessageContentInBody() {
-        val content = "Some text"
-
-        val html = displayHtml.wrapMessageContent(content)
-
-        assertThat(html).bodyText().isEqualTo(content)
+        assertThat(html).containsHtmlElement("head > style", 3)
     }
 
     @Test
@@ -50,6 +42,39 @@ class DisplayHtmlTest {
             "word-break: break-word;",
             "overflow-wrap: break-word;",
         )
+    }
+
+    @Test
+    fun wrapMessageContent_addsPreCSS() {
+        val html = displayHtml.wrapMessageContent("test")
+        val expectedFont = if (htmlSettings.useFixedWidthFont) "monospace" else "sans-serif"
+
+        assertThat(html).containsStyleRulesFor(
+            selector = "pre.${EmailTextToHtml.K9MAIL_CSS_CLASS}",
+            "white-space: pre-wrap;",
+            "word-wrap: break-word;",
+            "font-family: $expectedFont;",
+            "margin-top: 0px;",
+        )
+    }
+
+    @Test
+    fun wrapMessageContent_addsSignatureStyleRules() {
+        val html = displayHtml.wrapMessageContent("test")
+
+        assertThat(html).containsStyleRulesFor(
+            selector = ".k9mail-signature",
+            "opacity: 0.5;",
+        )
+    }
+
+    @Test
+    fun wrapMessageContent_putsMessageContentInBody() {
+        val content = "Some text"
+
+        val html = displayHtml.wrapMessageContent(content)
+
+        assertThat(html).bodyText().isEqualTo(content)
     }
 
     private fun Assert<String>.containsStyleRulesFor(selector: String, vararg expectedRules: String) = given { html ->
@@ -70,8 +95,8 @@ class DisplayHtmlTest {
         }
     }
 
-    private fun Assert<String>.containsHtmlElement(cssQuery: String) = given { actual ->
-        assertThat(actual).htmlElements(cssQuery).hasSize(1)
+    private fun Assert<String>.containsHtmlElement(cssQuery: String, expectedCount: Int = 1) = given { actual ->
+        assertThat(actual).htmlElements(cssQuery).hasSize(expectedCount)
     }
 
     private fun Assert<String>.htmlElements(cssQuery: String) = transform { html ->
