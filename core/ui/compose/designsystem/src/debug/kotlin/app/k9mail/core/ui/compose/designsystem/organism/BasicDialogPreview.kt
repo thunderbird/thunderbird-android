@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.PreviewLightDarkLandscape
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
+import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -32,8 +32,8 @@ private fun BasicDialogPreview() {
     PreviewWithThemeLightDark(
         useRow = true,
         useScrim = true,
-        scrimPadding = PaddingValues(MainTheme.spacings.quadruple),
-        arrangement = Arrangement.spacedBy(MainTheme.spacings.triple),
+        scrimPadding = PaddingValues(32.dp),
+        arrangement = Arrangement.spacedBy(24.dp),
     ) {
         BasicDialogContent(
             headline = {
@@ -118,8 +118,8 @@ private fun PreviewOnlySupportingText() {
     PreviewWithThemeLightDark(
         useRow = true,
         useScrim = true,
-        scrimPadding = PaddingValues(MainTheme.spacings.quadruple),
-        arrangement = Arrangement.spacedBy(MainTheme.spacings.triple),
+        scrimPadding = PaddingValues(32.dp),
+        arrangement = Arrangement.spacedBy(24.dp),
     ) {
         BasicDialogContent(
             headline = {
