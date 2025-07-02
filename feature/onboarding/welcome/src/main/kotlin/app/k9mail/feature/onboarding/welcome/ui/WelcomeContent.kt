@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.common.padding.calculateResponsiveWidthPadding
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
@@ -27,7 +28,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextDisplayMedium
 import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFooter
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.onboarding.welcome.R
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
@@ -47,25 +47,25 @@ internal fun WelcomeContent(
     Surface(
         modifier = modifier,
     ) {
-        ResponsiveContent {
-            LazyColumnWithHeaderFooter(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                header = {
-                    WelcomeHeaderSection(title = appName)
-                },
-                footer = {
-                    WelcomeFooterSection(
-                        showImportButton = showImportButton,
-                        onStartClick = onStartClick,
-                        onImportClick = onImportClick,
-                    )
-                },
-                content = {
-                    item { WelcomeMessageItem() }
-                },
-            )
-        }
+        LazyColumnWithHeaderFooter(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentPadding = calculateResponsiveWidthPadding(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            header = {
+                WelcomeHeaderSection(title = appName)
+            },
+            footer = {
+                WelcomeFooterSection(
+                    showImportButton = showImportButton,
+                    onStartClick = onStartClick,
+                    onImportClick = onImportClick,
+                )
+            },
+            content = {
+                item { WelcomeMessageItem() }
+            },
+        )
     }
 }
 
