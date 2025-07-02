@@ -2,6 +2,7 @@ package com.fsck.k9.notification
 
 import net.thunderbird.core.android.account.LegacyAccount
 
+// TODO(#9416): Migrate logic from NotificationIds to NotificationIdFactory
 object NotificationIds {
     const val PUSH_NOTIFICATION_ID = 1
     const val BACKGROUND_WORK_NOTIFICATION_ID = 2
