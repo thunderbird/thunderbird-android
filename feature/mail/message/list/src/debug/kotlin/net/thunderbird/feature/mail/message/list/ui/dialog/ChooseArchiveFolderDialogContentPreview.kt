@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.PreviewLightDarkLandscape
-import app.k9mail.core.ui.compose.designsystem.PreviewWithThemeLightDark
+import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.mail.folder.api.FolderType
@@ -63,7 +63,7 @@ private class ChooseArchiveFolderDialogContentParamsCol :
 private fun ChooseArchiveFolderDialogContentPreview(
     @PreviewParameter(ChooseArchiveFolderDialogContentParamsCol::class) state: State.ChooseArchiveFolder,
 ) {
-    PreviewWithThemeLightDark(
+    PreviewWithThemesLightDark(
         useRow = true,
         useScrim = true,
         scrimPadding = PaddingValues(32.dp),
