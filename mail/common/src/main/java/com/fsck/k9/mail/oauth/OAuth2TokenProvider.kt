@@ -11,6 +11,19 @@ interface OAuth2TokenProvider {
     }
 
     /**
+     * Fetch the primary email found in the id_token additional claims,
+     * if it is available.
+     *
+     * > Some providers, like Microsoft, require this as they need the primary account email to be the username,
+     * not the email the user entered
+     *
+     * @return the primary email present in the id_token, otherwise null.
+     */
+    val primaryEmail: String?
+        @Throws(AuthenticationFailedException::class)
+        get
+
+    /**
      * Fetch a token. No guarantees are provided for validity.
      */
     @Throws(AuthenticationFailedException::class)
