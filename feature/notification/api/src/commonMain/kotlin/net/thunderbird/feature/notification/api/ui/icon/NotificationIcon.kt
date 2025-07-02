@@ -1,6 +1,10 @@
 package net.thunderbird.feature.notification.api.ui.icon
 
 import androidx.compose.ui.graphics.vector.ImageVector
+import net.thunderbird.core.common.io.KmpIgnoredOnParcel
+import net.thunderbird.core.common.io.KmpParcelable
+import net.thunderbird.core.common.io.KmpParcelize
+import net.thunderbird.core.common.io.KmpRawValue
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.SystemNotification
 
@@ -13,10 +17,11 @@ import net.thunderbird.feature.notification.api.content.SystemNotification
  * @property systemNotificationIcon The icon to be used for system notifications.
  * @property inAppNotificationIcon The icon to be used for in-app notifications.
  */
+@KmpParcelize
 data class NotificationIcon(
-    private val systemNotificationIcon: SystemNotificationIcon? = null,
-    private val inAppNotificationIcon: ImageVector? = null,
-) {
+    private val systemNotificationIcon: @KmpRawValue SystemNotificationIcon? = null,
+    @KmpIgnoredOnParcel private val inAppNotificationIcon: ImageVector? = null,
+) : KmpParcelable {
 
     init {
         check(systemNotificationIcon != null || inAppNotificationIcon != null) {
@@ -59,12 +64,3 @@ data class NotificationIcon(
         }
     }
 }
-
-/**
- * Represents an icon for a system notification.
- *
- * This is an expect class, meaning its actual implementation is provided by platform-specific modules.
- * On Android, this would typically wrap a drawable resource ID.
- * On other platforms, it might represent a file path or another platform-specific icon identifier.
- */
-expect class SystemNotificationIcon
