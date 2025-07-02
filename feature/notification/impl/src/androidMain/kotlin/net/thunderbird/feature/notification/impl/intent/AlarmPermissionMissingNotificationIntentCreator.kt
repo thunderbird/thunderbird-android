@@ -19,7 +19,7 @@ class AlarmPermissionMissingNotificationIntentCreator(
 ) :
     SystemNotificationIntentCreator<PushServiceNotification.AlarmPermissionMissing> {
     override fun accept(notification: SystemNotification): Boolean =
-        Build.VERSION.SDK_INT < Build.VERSION_CODES.S &&
+        Build.VERSION.SDK_INT > Build.VERSION_CODES.S &&
             notification is PushServiceNotification.AlarmPermissionMissing
 
     @RequiresApi(Build.VERSION_CODES.S)

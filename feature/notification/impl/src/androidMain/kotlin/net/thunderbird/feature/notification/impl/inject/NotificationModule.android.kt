@@ -6,8 +6,12 @@ import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.impl.intent.AlarmPermissionMissingNotificationIntentCreator
 import net.thunderbird.feature.notification.impl.intent.SystemNotificationIntentCreator
+import net.thunderbird.feature.notification.impl.intent.action.DefaultNotificationActionIntentCreator
+import net.thunderbird.feature.notification.impl.intent.action.NotificationActionIntentCreator
 import net.thunderbird.feature.notification.impl.receiver.InAppNotificationNotifier
 import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNotifier
+import net.thunderbird.feature.notification.impl.ui.action.DefaultSystemNotificationActionCreator
+import net.thunderbird.feature.notification.impl.ui.action.NotificationActionCreator
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
@@ -43,6 +47,21 @@ internal actual val platformFeatureNotificationModule: Module = module {
                 context = androidApplication(),
                 logger = get(),
             ),
+        )
+    }
+
+    single<List<NotificationActionIntentCreator<*>>>(named<NotificationActionIntentCreator.TypeQualifier>()) {
+        listOf(
+            DefaultNotificationActionIntentCreator(
+                logger = get(),
+            ),
+        )
+    }
+
+    single<NotificationActionCreator<SystemNotification>>(named(NotificationActionCreator.TypeQualifier.System)) {
+        DefaultSystemNotificationActionCreator(
+            logger = get(),
+            actionIntentCreators = get(named<NotificationActionIntentCreator.TypeQualifier>()),
         )
     }
 }

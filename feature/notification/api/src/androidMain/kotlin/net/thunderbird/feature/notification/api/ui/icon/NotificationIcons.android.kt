@@ -43,13 +43,13 @@ internal actual val NotificationIcons.MailSendFailed: NotificationIcon
 
 internal actual val NotificationIcons.NewMailSingleMail: NotificationIcon
     get() = NotificationIcon(
-        systemNotificationIcon = R.drawable.ic_sync_animated,
+        systemNotificationIcon = R.drawable.ic_new_email,
         inAppNotificationIcon = Icons.Outlined.Sync,
     )
 
 internal actual val NotificationIcons.NewMailSummaryMail: NotificationIcon
     get() = NotificationIcon(
-        systemNotificationIcon = R.drawable.ic_sync_animated,
+        systemNotificationIcon = R.drawable.ic_new_email,
         inAppNotificationIcon = Icons.Outlined.Sync,
     )
 

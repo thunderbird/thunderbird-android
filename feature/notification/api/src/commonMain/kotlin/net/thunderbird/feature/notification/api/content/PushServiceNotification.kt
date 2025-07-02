@@ -5,6 +5,8 @@ import net.thunderbird.core.common.io.KmpParcelize
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.action.icon.DisablePushAction
+import net.thunderbird.feature.notification.api.ui.action.icon.NotificationActionIcons
 import net.thunderbird.feature.notification.api.ui.icon.AlarmPermissionMissing
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
@@ -193,5 +195,6 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
 private suspend fun buildNotificationActions(): Set<NotificationAction> = setOf(
     NotificationAction.CustomAction(
         title = getString(resource = Res.string.push_info_disable_push_action),
+        icon = NotificationActionIcons.DisablePushAction,
     ),
 )

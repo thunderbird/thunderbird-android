@@ -14,5 +14,5 @@ data class AndroidNotificationAction(
     @DrawableRes
     val icon: Int,
     val title: String,
-    val pendingIntent: PendingIntent,
+    val pendingIntent: PendingIntent?,
 )

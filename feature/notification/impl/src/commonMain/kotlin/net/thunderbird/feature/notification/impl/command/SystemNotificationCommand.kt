@@ -34,7 +34,7 @@ internal class SystemNotificationCommand(
     }
 
     private fun canExecuteCommand(): Boolean {
-        val isBackgrounded = false // TODO: Verify if the app is backgrounded.
+        val isBackgrounded = false // TODO(#9391): Verify if the app is backgrounded.
         val shouldAlwaysShow = when (notification.severity) {
             NotificationSeverity.Fatal, NotificationSeverity.Critical -> true
             else -> false
