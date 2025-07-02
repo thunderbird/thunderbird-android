@@ -4,9 +4,9 @@ import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
-import net.thunderbird.feature.notification.resources.Res
-import net.thunderbird.feature.notification.resources.notification_authentication_error_text
-import net.thunderbird.feature.notification.resources.notification_authentication_error_title
+import net.thunderbird.feature.notification.resources.api.Res
+import net.thunderbird.feature.notification.resources.api.notification_authentication_error_text
+import net.thunderbird.feature.notification.resources.api.notification_authentication_error_title
 import org.jetbrains.compose.resources.getString
 
 /**
@@ -27,7 +27,7 @@ data class AuthenticationErrorNotification private constructor(
         NotificationAction.UpdateServerSettings,
     )
 
-    override val lockscreenNotification: SystemNotification = copy(contentText = null)
+    override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
 
     companion object {
         /**

@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.impl.command
 
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
@@ -11,6 +12,7 @@ import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNoti
  * A factory for creating a set of notification commands based on a given notification.
  */
 internal class NotificationCommandFactory(
+    private val logger: Logger,
     private val systemNotificationNotifier: SystemNotificationNotifier,
     private val inAppNotificationNotifier: InAppNotificationNotifier,
 ) {
@@ -28,6 +30,7 @@ internal class NotificationCommandFactory(
         if (notification is SystemNotification) {
             commands.add(
                 SystemNotificationCommand(
+                    logger = logger,
                     notification = notification,
                     notifier = systemNotificationNotifier,
                 ),
@@ -37,6 +40,7 @@ internal class NotificationCommandFactory(
         if (notification is InAppNotification) {
             commands.add(
                 InAppNotificationCommand(
+                    logger = logger,
                     notification = notification,
                     notifier = inAppNotificationNotifier,
                 ),

@@ -4,9 +4,9 @@ import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
-import net.thunderbird.feature.notification.resources.Res
-import net.thunderbird.feature.notification.resources.notification_certificate_error_public
-import net.thunderbird.feature.notification.resources.notification_certificate_error_text
+import net.thunderbird.feature.notification.resources.api.Res
+import net.thunderbird.feature.notification.resources.api.notification_certificate_error_public
+import net.thunderbird.feature.notification.resources.api.notification_certificate_error_text
 import org.jetbrains.compose.resources.getString
 
 /**
@@ -26,7 +26,7 @@ data class CertificateErrorNotification private constructor(
     override val severity: NotificationSeverity = NotificationSeverity.Fatal
     override val actions: Set<NotificationAction> = setOf(NotificationAction.UpdateServerSettings)
 
-    override val lockscreenNotification: SystemNotification = copy(
+    override val lockscreenNotification: SystemNotification get() = copy(
         contentText = lockScreenTitle,
     )
 
