@@ -555,9 +555,8 @@
             />
 
         <Preference
-            android:key="debug_send_test_notifications"
-            android:title="Send Test Notifications"
-            android:summary="Send test notifications to verify if they are correctly working" />
+            android:key="debug_secret_debug_screen"
+            android:title="Open Secret debug screen" />
 
     </PreferenceScreen>
 

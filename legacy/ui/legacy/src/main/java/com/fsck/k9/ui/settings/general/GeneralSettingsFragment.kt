@@ -64,13 +64,13 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
                 }
             }
 
-        findPreference<Preference>("debug_send_test_notifications")?.apply {
+        findPreference<Preference>("debug_secret_debug_screen")?.apply {
             if (!BuildConfig.DEBUG) {
                 remove()
                 onPreferenceClickListener = null
             } else {
                 onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
-                    viewModel.onNotificationSend()
+                    viewModel.onOpenSecretDebugScreen(requireContext())
 
                     true
                 }

@@ -18,8 +18,6 @@ val settingsUiModule = module {
     viewModel {
         GeneralSettingsViewModel(
             logFileWriter = get(),
-            notificationSender = get(),
-            logger = get(),
         )
     }
     factory {
