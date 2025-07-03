@@ -60,6 +60,10 @@ class MessageHelperTest : RobolectricTest() {
                 isThreadedViewEnabled = false,
                 isUseMessageViewFixedWidthFont = false,
                 isAutoFitWidth = false,
+                isQuietTime = false,
+                isQuietTimeEnabled = false,
+                quietTimeEnds = "7:00",
+                quietTimeStarts = "7:00",
             ),
         )
     }

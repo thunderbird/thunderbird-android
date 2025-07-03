@@ -10,9 +10,11 @@ import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 class K9NotificationStrategy(
     private val contactRepository: ContactRepository,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) : NotificationStrategy {
 
     @Suppress("ReturnCount")
@@ -22,7 +24,7 @@ class K9NotificationStrategy(
         message: LocalMessage,
         isOldMessage: Boolean,
     ): Boolean {
-        if (!K9.isNotificationDuringQuietTimeEnabled && K9.isQuietTime) {
+        if (!K9.isNotificationDuringQuietTimeEnabled && generalSettingsManager.getSettings().isQuietTime) {
             Log.v("No notification: Quiet time is active")
             return false
         }
