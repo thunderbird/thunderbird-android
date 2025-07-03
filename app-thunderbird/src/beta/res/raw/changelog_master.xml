@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="11.0b5" versioncode="18" date="2025-07-03">
+        <change>TalkBack did not clearly announce contact picture tap action</change>
+        <change>IMAP push could fail after losing and regaining network connection</change>
+        <change>Fastmail OAuth expired quickly, causing frequent login prompts</change>
+        <change>Some providers blocked SMTP connections when HELO hostname was 127.0.0.1</change>
+    </release>
     <release version="11.0b4" versioncode="17" date="2025-06-24">
         <change>Don't cover download complete message with navigation bar</change>
         <change>Avoid a crash related to the drawer when device orientation changes</change>
