@@ -177,7 +177,7 @@ internal class RealImapFolderIdler(
                 try {
                     connection.sendContinuation("DONE")
                 } catch (e: IOException) {
-                    Log.v(e, "%s: IOException while sending DONE", logTag)
+                    Timber.v(e, "%s: IOException while sending DONE", logTag)
                     throw e
                 }
             }
