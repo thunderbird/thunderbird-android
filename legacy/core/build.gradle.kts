@@ -7,11 +7,14 @@ dependencies {
     api(projects.mail.common)
     api(projects.backend.api)
     api(projects.library.htmlCleaner)
+    api(libs.android.material)
     api(projects.core.mail.mailserver)
     api(projects.core.android.common)
     api(projects.core.android.account)
     api(projects.core.preference.impl)
     api(projects.core.android.logging)
+    api(projects.core.logging.implFile)
+    api(projects.core.logging.implComposite)
     api(projects.core.android.network)
     api(projects.feature.mail.folder.api)
     api(projects.feature.account.storage.legacy)
@@ -26,6 +29,7 @@ dependencies {
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
     implementation(projects.feature.telemetry.api)
     implementation(projects.core.featureflag)
+    implementation(projects.core.logging.implComposite)
 
     api(libs.androidx.annotation)
 
