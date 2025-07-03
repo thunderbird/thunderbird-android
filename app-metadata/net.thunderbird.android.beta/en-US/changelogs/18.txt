@@ -1,0 +1,4 @@
+Thunderbird for Android version 11.0b5, based on K-9 Mail. Changes include:
+- TalkBack did not clearly announce contact picture tap action
+- IMAP push could fail after losing and regaining network connection
+- Fastmail OAuth expired quickly, causing frequent login prompts
