@@ -33,6 +33,7 @@ data class GeneralSettings(
     val isThreadedViewEnabled: Boolean,
     val isUseMessageViewFixedWidthFont: Boolean,
     val isAutoFitWidth: Boolean,
+    val isHideUserAgent: Boolean,
 )
 
 enum class BackgroundSync {

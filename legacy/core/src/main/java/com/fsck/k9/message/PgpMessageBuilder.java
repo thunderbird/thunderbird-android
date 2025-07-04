@@ -37,6 +37,7 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
@@ -67,15 +68,26 @@ public class PgpMessageBuilder extends MessageBuilder {
         AutocryptOperations autocryptOperations = AutocryptOperations.getInstance();
         AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor = AutocryptOpenPgpApiInteractor.getInstance();
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-        return new PgpMessageBuilder(messageIdGenerator, boundaryGenerator, autocryptOperations,
-                autocryptOpenPgpApiInteractor, resourceProvider);
+        GeneralSettingsManager settingsManager = DI.get(GeneralSettingsManager.class);
+        return new PgpMessageBuilder(
+            messageIdGenerator,
+            boundaryGenerator,
+            autocryptOperations,
+            autocryptOpenPgpApiInteractor,
+            resourceProvider,
+            settingsManager
+        );
     }
 
     @VisibleForTesting
-    PgpMessageBuilder(MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator,
-            AutocryptOperations autocryptOperations, AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor,
-            CoreResourceProvider resourceProvider) {
-        super(messageIdGenerator, boundaryGenerator, resourceProvider);
+    PgpMessageBuilder(MessageIdGenerator messageIdGenerator,
+        BoundaryGenerator boundaryGenerator,
+        AutocryptOperations autocryptOperations,
+        AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor,
+        CoreResourceProvider resourceProvider,
+        GeneralSettingsManager settingsManager
+    ) {
+        super(messageIdGenerator, boundaryGenerator, resourceProvider, settingsManager);
 
         this.autocryptOperations = autocryptOperations;
         this.autocryptOpenPgpApiInteractor = autocryptOpenPgpApiInteractor;
@@ -124,18 +136,18 @@ public class PgpMessageBuilder extends MessageBuilder {
     private void addAutocryptHeaderIfAvailable(long openPgpKeyId) {
         Address address = currentProcessedMimeMessage.getFrom()[0];
         byte[] keyData = autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(
-                openPgpApi, openPgpKeyId, address.getAddress());
+            openPgpApi, openPgpKeyId, address.getAddress());
         if (keyData != null) {
             autocryptOperations.addAutocryptHeaderToMessage(currentProcessedMimeMessage, keyData,
-                    address.getAddress(), cryptoStatus.isSenderPreferEncryptMutual());
+                address.getAddress(), cryptoStatus.isSenderPreferEncryptMutual());
         }
     }
 
     private void addDraftStateHeader() {
         AutocryptDraftStateHeader autocryptDraftStateHeader =
-                AutocryptDraftStateHeader.fromCryptoStatus(cryptoStatus);
+            AutocryptDraftStateHeader.fromCryptoStatus(cryptoStatus);
         currentProcessedMimeMessage.setHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER,
-                autocryptDraftStateHeader.toHeaderValue());
+            autocryptDraftStateHeader.toHeaderValue());
     }
 
     @Override
@@ -149,7 +161,8 @@ public class PgpMessageBuilder extends MessageBuilder {
     private void startOrContinueBuildMessage(@Nullable Intent pgpApiIntent) {
         try {
             boolean shouldSign = cryptoStatus.isSigningEnabled() && !isDraft();
-            boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled() || (isDraft() && cryptoStatus.isEncryptAllDrafts());
+            boolean shouldEncrypt =
+                cryptoStatus.isEncryptionEnabled() || (isDraft() && cryptoStatus.isEncryptAllDrafts());
             boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled() && !isDraft();
 
             if (!shouldSign && !shouldEncrypt) {
@@ -158,7 +171,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             }
 
             boolean isSimpleTextMessage =
-                    MimeUtility.isSameMimeType("text/plain", currentProcessedMimeMessage.getMimeType());
+                MimeUtility.isSameMimeType("text/plain", currentProcessedMimeMessage.getMimeType());
             if (isPgpInlineMode && !isSimpleTextMessage) {
                 throw new MessagingException("Attachments are not supported in PGP/INLINE format!");
             }
@@ -188,7 +201,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             }
 
             PendingIntent returnedPendingIntent = launchOpenPgpApiIntent(pgpApiIntent, messageContentBodyPart,
-                    shouldEncrypt || isPgpInlineMode, shouldEncrypt || !isPgpInlineMode, isPgpInlineMode);
+                shouldEncrypt || isPgpInlineMode, shouldEncrypt || !isPgpInlineMode, isPgpInlineMode);
             if (returnedPendingIntent != null) {
                 queueMessageBuildPendingIntent(returnedPendingIntent, REQUEST_USER_INTERACTION);
                 return;
@@ -219,7 +232,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         String[] subjects = currentProcessedMimeMessage.getHeader(MimeHeader.SUBJECT);
         if (subjects.length > 0) {
             messageContentBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                    messageContentBodyPart.getContentType() + "; protected-headers=\"v1\"");
+                messageContentBodyPart.getContentType() + "; protected-headers=\"v1\"");
             messageContentBodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
             currentProcessedMimeMessage.setSubject(REPLACEMENT_SUBJECT);
         }
@@ -258,7 +271,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     @NonNull
     private Intent buildOpenPgpApiIntent(boolean shouldSign, boolean shouldEncrypt, boolean encryptToSelfOnly,
-            boolean isPgpInlineMode) {
+        boolean isPgpInlineMode) {
         Intent pgpApiIntent;
 
         Long openPgpKeyId = cryptoStatus.getOpenPgpKeyId();
@@ -268,7 +281,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             long[] selfEncryptIds = { openPgpKeyId };
             pgpApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, selfEncryptIds);
 
-            if(!encryptToSelfOnly) {
+            if (!encryptToSelfOnly) {
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
 //                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
             }
@@ -285,7 +298,8 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     private PendingIntent launchOpenPgpApiIntent(@NonNull Intent openPgpIntent, MimeBodyPart bodyPart,
-            boolean captureOutputPart, boolean capturedOutputPartIs7Bit, boolean writeBodyContentOnly) throws MessagingException {
+        boolean captureOutputPart, boolean capturedOutputPartIs7Bit, boolean writeBodyContentOnly)
+        throws MessagingException {
         OpenPgpDataSource dataSource = createOpenPgpDataSourceFromBodyPart(bodyPart, writeBodyContentOnly);
 
         BinaryTempFileBody pgpResultTempBody = null;
@@ -293,7 +307,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         if (captureOutputPart) {
             try {
                 pgpResultTempBody = new BinaryTempFileBody(
-                        capturedOutputPartIs7Bit ? MimeUtil.ENC_7BIT : MimeUtil.ENC_8BIT);
+                    capturedOutputPartIs7Bit ? MimeUtil.ENC_7BIT : MimeUtil.ENC_8BIT);
                 outputStream = pgpResultTempBody.getOutputStream();
                 // OpenKeychain/BouncyCastle at this point use the system newline for formatting, which is LF on android.
                 // we need this to be CRLF, so we convert the data after receiving.
@@ -349,8 +363,8 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     @NonNull
     private OpenPgpDataSource createOpenPgpDataSourceFromBodyPart(final MimeBodyPart bodyPart,
-            final boolean writeBodyContentOnly)
-            throws MessagingException {
+        final boolean writeBodyContentOnly)
+        throws MessagingException {
         return new OpenPgpDataSource() {
             @Override
             public void writeTo(OutputStream os) throws IOException {
@@ -370,8 +384,8 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     private void mimeBuildMessage(
-            @NonNull Intent result, @NonNull MimeBodyPart bodyPart, @Nullable BinaryTempFileBody pgpResultTempBody)
-            throws MessagingException {
+        @NonNull Intent result, @NonNull MimeBodyPart bodyPart, @Nullable BinaryTempFileBody pgpResultTempBody)
+        throws MessagingException {
         if (pgpResultTempBody == null) {
             boolean shouldHaveResultPart = cryptoStatus.isPgpInlineModeEnabled() || cryptoStatus.isEncryptionEnabled();
             if (shouldHaveResultPart) {
@@ -404,13 +418,13 @@ public class PgpMessageBuilder extends MessageBuilder {
         multipartSigned.setSubType("signed");
         multipartSigned.addBodyPart(signedBodyPart);
         multipartSigned.addBodyPart(
-                MimeBodyPart.create(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT),
-                        "application/pgp-signature; name=\"signature.asc\""));
+            MimeBodyPart.create(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT),
+                "application/pgp-signature; name=\"signature.asc\""));
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartSigned);
 
         String contentType = String.format(
-                "multipart/signed; boundary=\"%s\";\r\n  protocol=\"application/pgp-signature\"",
-                multipartSigned.getBoundary());
+            "multipart/signed; boundary=\"%s\";\r\n  protocol=\"application/pgp-signature\"",
+            multipartSigned.getBoundary());
         if (result.hasExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG)) {
             String micAlgParameter = result.getStringExtra(OpenPgpApi.RESULT_SIGNATURE_MICALG);
             contentType += String.format("; micalg=\"%s\"", micAlgParameter);
@@ -424,14 +438,15 @@ public class PgpMessageBuilder extends MessageBuilder {
         MimeMultipart multipartEncrypted = createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         multipartEncrypted.addBodyPart(MimeBodyPart.create(new TextBody("Version: 1"), "application/pgp-encrypted"));
-        MimeBodyPart encryptedPart = MimeBodyPart.create(encryptedBodyPart, "application/octet-stream; name=\"encrypted.asc\"");
+        MimeBodyPart encryptedPart =
+            MimeBodyPart.create(encryptedBodyPart, "application/octet-stream; name=\"encrypted.asc\"");
         encryptedPart.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "inline; filename=\"encrypted.asc\"");
         multipartEncrypted.addBodyPart(encryptedPart);
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartEncrypted);
 
         String contentType = String.format(
-                "multipart/encrypted; boundary=\"%s\";\r\n  protocol=\"application/pgp-encrypted\"",
-                multipartEncrypted.getBoundary());
+            "multipart/encrypted; boundary=\"%s\";\r\n  protocol=\"application/pgp-encrypted\"",
+            multipartEncrypted.getBoundary());
         currentProcessedMimeMessage.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
     }
 
