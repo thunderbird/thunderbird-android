@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Dp
 
 @Immutable
 data class ThemeSizes(
+    val tiny: Dp,
     val smaller: Dp,
     val small: Dp,
     val medium: Dp,

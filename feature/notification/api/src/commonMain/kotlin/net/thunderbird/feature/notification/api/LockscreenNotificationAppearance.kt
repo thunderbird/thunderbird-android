@@ -1,9 +1,13 @@
 package net.thunderbird.feature.notification.api
 
+import net.thunderbird.core.common.io.KmpParcelable
+import net.thunderbird.core.common.io.KmpParcelize
+
 /**
  * Defines the appearance of notifications on the lock screen.
  */
-sealed interface LockscreenNotificationAppearance {
+@KmpParcelize
+sealed interface LockscreenNotificationAppearance : KmpParcelable {
     /**
      * No notifications are shown on the lock screen.
      */

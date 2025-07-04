@@ -4,6 +4,7 @@ import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.theme2.ThemeSizes
 
 val defaultThemeSizes = ThemeSizes(
+    tiny = 1.dp,
     smaller = 8.dp,
     small = 16.dp,
     medium = 32.dp,

@@ -14,6 +14,7 @@ import app.k9mail.feature.launcher.FeatureLauncherExternalContract.AccountSetupF
 import app.k9mail.feature.onboarding.main.navigation.OnboardingNavigation
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
+import net.thunderbird.feature.debugSettings.navigation.SecretDebugSettingsNavigation
 import org.koin.compose.koinInject
 
 @Composable
@@ -27,6 +28,7 @@ fun FeatureLauncherNavHost(
     accountSetupNavigation: AccountSetupNavigation = koinInject(),
     onboardingNavigation: OnboardingNavigation = koinInject(),
     fundingNavigation: FundingNavigation = koinInject(),
+    secretDebugSettingsNavigation: SecretDebugSettingsNavigation = koinInject(),
 ) {
     val activity = LocalActivity.current as ComponentActivity
 
@@ -73,6 +75,12 @@ fun FeatureLauncherNavHost(
         )
 
         fundingNavigation.registerRoutes(
+            navGraphBuilder = this,
+            onBack = onBack,
+            onFinish = { onBack() },
+        )
+
+        secretDebugSettingsNavigation.registerRoutes(
             navGraphBuilder = this,
             onBack = onBack,
             onFinish = { onBack() },

@@ -15,7 +15,11 @@ import org.koin.dsl.module
 val settingsUiModule = module {
     viewModel { SettingsViewModel(accountManager = get()) }
 
-    viewModel { GeneralSettingsViewModel(logFileWriter = get()) }
+    viewModel {
+        GeneralSettingsViewModel(
+            logFileWriter = get(),
+        )
+    }
     factory {
         GeneralSettingsDataStore(
             jobManager = get(),

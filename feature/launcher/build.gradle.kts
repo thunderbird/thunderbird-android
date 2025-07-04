@@ -22,4 +22,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
 
     testImplementation(projects.core.ui.compose.testing)
+
+    implementation(projects.feature.debugSettings)
 }
