@@ -92,7 +92,9 @@ class GeneralSettingsDataStore(
             "sync_debug_logging" -> K9.isSyncLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
-            "left_right_gesture_navigation" -> setIsUseLeftRightGestureNavigation(isUseLeftRightGestureNavigation = value)
+            "left_right_gesture_navigation" -> setIsUseLeftRightGestureNavigation(
+                isUseLeftRightGestureNavigation = value,
+            )
             "enable_telemetry" -> setTelemetryEnabled(value)
             else -> return
         }

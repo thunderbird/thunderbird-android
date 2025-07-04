@@ -12,19 +12,17 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import app.k9mail.legacy.message.controller.MessageReference
-import com.fsck.k9.K9
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MessageListViewModel
-import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * A fragment that uses [ViewPager2] to allow the user to swipe between messages.
  *
  * Individual messages are displayed using a [MessageViewFragment].
  */
-class MessageViewContainerFragment: Fragment() {
+class MessageViewContainerFragment : Fragment() {
     var isActive: Boolean = false
         set(value) {
             field = value
@@ -73,7 +71,8 @@ class MessageViewContainerFragment: Fragment() {
 
         showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
 
-        isUseLeftRightGestureNavigation = arguments?.getBoolean(ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION) ?: isUseLeftRightGestureNavigation
+        isUseLeftRightGestureNavigation =
+            arguments?.getBoolean(ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION) ?: isUseLeftRightGestureNavigation
 
         adapter = MessageViewContainerAdapter(this, showAccountChip)
     }
@@ -121,7 +120,9 @@ class MessageViewContainerFragment: Fragment() {
             // Reduce horizontal fling speed to make page swipes less sensitive and prevent accidental swipes.
             rv.onFlingListener = object : RecyclerView.OnFlingListener() {
                 override fun onFling(velocityX: Int, velocityY: Int): Boolean {
-                    val adjustedVelocityX = (velocityX * 0.5f).toInt().coerceIn(-4000, 4000)
+                    val scaledVelocity = (velocityX * VIEW_PAGER_FLING_VELOCITY_SCALE).toInt()
+                    val adjustedVelocityX = scaledVelocity.coerceIn(VIEW_PAGER_MIN_FLING_VELOCITY_X, VIEW_PAGER_MAX_FLING_VELOCITY_X)
+
                     return rv.fling(adjustedVelocityX, velocityY)
                 }
             }
@@ -309,6 +310,10 @@ class MessageViewContainerFragment: Fragment() {
     }
 
     companion object {
+        private const val VIEW_PAGER_FLING_VELOCITY_SCALE = 0.5f
+        private const val VIEW_PAGER_MIN_FLING_VELOCITY_X = -4000
+        private const val VIEW_PAGER_MAX_FLING_VELOCITY_X = 4000
+
         private const val ARG_REFERENCE = "reference"
         private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
 
@@ -319,12 +324,12 @@ class MessageViewContainerFragment: Fragment() {
         fun newInstance(
             reference: MessageReference,
             showAccountChip: Boolean,
-            isUseLeftRightGestureNavigation: Boolean
+            isUseLeftRightGestureNavigation: Boolean,
         ): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
                 ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
-                ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION to isUseLeftRightGestureNavigation
+                ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION to isUseLeftRightGestureNavigation,
             )
         }
     }
