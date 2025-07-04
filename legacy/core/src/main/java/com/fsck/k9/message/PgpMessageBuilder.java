@@ -37,6 +37,7 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.OpenPgpError;
@@ -67,15 +68,16 @@ public class PgpMessageBuilder extends MessageBuilder {
         AutocryptOperations autocryptOperations = AutocryptOperations.getInstance();
         AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor = AutocryptOpenPgpApiInteractor.getInstance();
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+        GeneralSettingsManager settingsManager = DI.get(GeneralSettingsManager.class);
         return new PgpMessageBuilder(messageIdGenerator, boundaryGenerator, autocryptOperations,
-                autocryptOpenPgpApiInteractor, resourceProvider);
+                autocryptOpenPgpApiInteractor, resourceProvider, settingsManager);
     }
 
     @VisibleForTesting
     PgpMessageBuilder(MessageIdGenerator messageIdGenerator, BoundaryGenerator boundaryGenerator,
             AutocryptOperations autocryptOperations, AutocryptOpenPgpApiInteractor autocryptOpenPgpApiInteractor,
-            CoreResourceProvider resourceProvider) {
-        super(messageIdGenerator, boundaryGenerator, resourceProvider);
+            CoreResourceProvider resourceProvider, GeneralSettingsManager settingsManager) {
+        super(messageIdGenerator, boundaryGenerator, resourceProvider, settingsManager);
 
         this.autocryptOperations = autocryptOperations;
         this.autocryptOpenPgpApiInteractor = autocryptOpenPgpApiInteractor;

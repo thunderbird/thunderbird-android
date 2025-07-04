@@ -10,4 +10,9 @@ class DefaultPrivacySettingsManager(
         val privacySettings = preferenceManager.getConfig()
         preferenceManager.save(privacySettings.copy(isHideTimeZone = isHideTimeZone))
     }
+
+    override fun setIsHideUserAgent(isHideUserAgent: Boolean) {
+        val privacySettings = preferenceManager.getConfig()
+        preferenceManager.save(privacySettings.copy(isHideUserAgent = isHideUserAgent))
+    }
 }

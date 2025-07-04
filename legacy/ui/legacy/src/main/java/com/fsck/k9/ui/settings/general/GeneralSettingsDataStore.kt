@@ -46,7 +46,7 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> generalSettingsManager.getSettings().isAutoFitWidth
             "quiet_time_enabled" -> generalSettingsManager.getSettings().isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
-            "privacy_hide_useragent" -> K9.isHideUserAgent
+            "privacy_hide_useragent" -> generalSettingsManager.getSettings().privacy.isHideUserAgent
             "privacy_hide_timezone" -> generalSettingsManager.getSettings().privacy.isHideTimeZone
             "debug_logging" -> K9.isDebugLoggingEnabled
             "sync_debug_logging" -> K9.isSyncLoggingEnabled
@@ -86,7 +86,7 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> setIsAutoFitWidth(isAutoFitWidth = value)
             "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
-            "privacy_hide_useragent" -> K9.isHideUserAgent = value
+            "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sync_debug_logging" -> K9.isSyncLoggingEnabled = value
@@ -385,6 +385,13 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.setIsHideTimeZone(
             isHideTimeZone = isHideTimeZone,
+        )
+    }
+
+    private fun setIsHideUserAgent(isHideUserAgent: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsHideUserAgent(
+            isHideUserAgent = isHideUserAgent,
         )
     }
 

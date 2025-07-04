@@ -197,9 +197,6 @@ object K9 : KoinComponent {
 
     var isNotificationDuringQuietTimeEnabled = true
 
-    @JvmStatic
-    var isHideUserAgent = false
-
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
@@ -296,7 +293,6 @@ object K9 : KoinComponent {
             storage.getEnum("messageViewPostDeleteAction", PostRemoveNavigation.ReturnToMessageList)
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
-        isHideUserAgent = storage.getBoolean("hideUserAgent", false)
 
         isConfirmDelete = storage.getBoolean("confirmDelete", false)
         isConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true)
@@ -369,7 +365,6 @@ object K9 : KoinComponent {
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
-        editor.putBoolean("hideUserAgent", isHideUserAgent)
 
         editor.putString("language", k9Language)
 
