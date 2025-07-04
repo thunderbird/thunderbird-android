@@ -50,6 +50,7 @@ class BuildSwipeActionsTest {
             isThreadedViewEnabled = false,
             isUseMessageViewFixedWidthFont = false,
             isAutoFitWidth = false,
+            isHideUserAgent = false,
         )
 
     @Test
@@ -429,6 +430,10 @@ private class FakeGeneralSettingsManager(
     )
 
     override fun setIsAutoFitWidth(isAutoFitWidth: Boolean) = error(
+        "not implemented",
+    )
+
+    override fun setIsHideUserAgent(isHideUserAgent: Boolean) = error(
         "not implemented",
     )
 }
