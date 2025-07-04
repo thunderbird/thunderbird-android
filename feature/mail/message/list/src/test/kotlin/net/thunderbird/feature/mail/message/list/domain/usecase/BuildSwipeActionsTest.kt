@@ -57,8 +57,10 @@ class BuildSwipeActionsTest {
             quietTimeEnds = "7:00",
             isQuietTime = false,
             isQuietTimeEnabled = false,
-            privacy = PrivacySettings(isHideTimeZone = false),
-
+            privacy = PrivacySettings(
+                isHideTimeZone = false,
+                isHideUserAgent = false,
+            ),
         )
 
     @Test
@@ -455,6 +457,10 @@ private class FakeGeneralSettingsManager(
     )
 
     override fun setIsHideTimeZone(isHideTimeZone: Boolean) = error(
+        "not implemented",
+    )
+
+    override fun setIsHideUserAgent(isHideUserAgent: Boolean) = error(
         "not implemented",
     )
 }

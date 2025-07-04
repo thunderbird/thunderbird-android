@@ -58,7 +58,10 @@ class SummaryNotificationDataCreatorTest {
         quietTimeStarts = "0:00",
         quietTimeEnds = "23:59",
         isQuietTimeEnabled = false,
-        privacy = PrivacySettings(isHideTimeZone = false),
+        privacy = PrivacySettings(
+            isHideTimeZone = false,
+            isHideUserAgent = false,
+        ),
     )
     private val notificationDataCreator = SummaryNotificationDataCreator(
         singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),

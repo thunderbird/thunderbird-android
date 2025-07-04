@@ -30,7 +30,10 @@ class QuoteDateFormatterTest {
         messageViewTheme = SubTheme.USE_GLOBAL,
         messageComposeTheme = SubTheme.USE_GLOBAL,
         fixedMessageViewTheme = false,
-        privacy = PrivacySettings(isHideTimeZone = false),
+        privacy = PrivacySettings(
+            isHideTimeZone = false,
+            isHideUserAgent = false,
+        ),
         isAutoFitWidth = false,
         isThreadedViewEnabled = false,
         isUseMessageViewFixedWidthFont = false,
