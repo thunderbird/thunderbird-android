@@ -12,7 +12,8 @@ import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.common.action.SwipeAction
@@ -257,6 +258,7 @@ object K9 : KoinComponent {
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
 
+    @OptIn(ExperimentalTime::class)
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {

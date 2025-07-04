@@ -12,12 +12,14 @@ import android.text.format.DateUtils.FORMAT_SHOW_YEAR
 import java.util.Calendar
 import java.util.Calendar.DAY_OF_WEEK
 import java.util.Calendar.YEAR
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * Formatter to describe timestamps as a time relative to now.
  */
+@OptIn(ExperimentalTime::class)
 class RelativeDateTimeFormatter(
     private val context: Context,
     private val clock: Clock,
@@ -42,6 +44,7 @@ private fun Long.toCalendar(): Calendar {
     return calendar
 }
 
+@OptIn(ExperimentalTime::class)
 private fun Instant.toCalendar(): Calendar {
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = this.toEpochMilliseconds()
