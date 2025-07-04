@@ -32,4 +32,5 @@ interface GeneralSettingsManager {
     fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean)
     fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean)
     fun setIsAutoFitWidth(isAutoFitWidth: Boolean)
+    fun setIsHideUserAgent(isHideUserAgent: Boolean)
 }

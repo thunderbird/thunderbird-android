@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import kotlinx.coroutines.flow.Flow;
 import net.thunderbird.core.android.testing.RobolectricTest;
 import net.thunderbird.core.android.account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
@@ -31,6 +33,11 @@ import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.logging.testing.TestLogger;
+import net.thunderbird.core.preference.AppTheme;
+import net.thunderbird.core.preference.BackgroundSync;
+import net.thunderbird.core.preference.GeneralSettings;
+import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.core.preference.SubTheme;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -198,6 +205,154 @@ public class MessageBuilderTest extends RobolectricTest {
     private CoreResourceProvider resourceProvider = new TestCoreResourceProvider();
     private Callback callback;
 
+    private final GeneralSettingsManager fakeSettingsManager = new GeneralSettingsManager() {
+        @NonNull
+        @Override
+        public GeneralSettings getSettings() {
+            return new GeneralSettings(
+                BackgroundSync.NEVER,
+                false,
+                AppTheme.FOLLOW_SYSTEM,
+                SubTheme.USE_GLOBAL,
+                SubTheme.USE_GLOBAL,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+            );
+        }
+
+        @NonNull
+        @Override
+        public Flow<GeneralSettings> getSettingsFlow() {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setShowRecentChanges(boolean showRecentChanges) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setAppTheme(@NonNull AppTheme appTheme) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setMessageViewTheme(@NonNull SubTheme subTheme) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setMessageComposeTheme(@NonNull SubTheme subTheme) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setFixedMessageViewTheme(boolean fixedMessageViewTheme) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsShowUnifiedInbox(boolean isShowUnifiedInbox) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsShowStarredCount(boolean isShowStarredCount) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsShowMessageListStars(boolean isShowMessageListStars) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsShowAnimations(boolean isShowAnimations) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsShowCorrespondentNames(boolean isShowCorrespondentNames) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setSetupArchiveShouldNotShowAgain(boolean shouldShowSetupArchiveFolderDialog) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsMessageListSenderAboveSubject(boolean isMessageListSenderAboveSubject) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsShowContactName(boolean isShowContactName) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsShowContactPicture(boolean isShowContactPicture) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsChangeContactNameColor(boolean isChangeContactNameColor) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsColorizeMissingContactPictures(boolean isColorizeMissingContactPictures) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsUseBackgroundAsUnreadIndicator(boolean isUseBackgroundAsUnreadIndicator) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsShowComposeButtonOnMessageList(boolean isShowComposeButtonOnMessageList) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsThreadedViewEnabled(boolean isThreadedViewEnabled) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsUseMessageViewFixedWidthFont(boolean isUseMessageViewFixedWidthFont) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsAutoFitWidth(boolean isAutoFitWidth) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void setIsHideUserAgent(boolean isHideUserAgent) {
+            throw new UnsupportedOperationException("not implemented");
+        }
+    };
+
 
     @Before
     public void setUp() throws Exception {
@@ -345,12 +500,13 @@ public class MessageBuilderTest extends RobolectricTest {
 
     @Test
     public void buildWithException_shouldThrow() throws MessagingException {
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider) {
-            @Override
-            protected void buildMessageInternal() {
-                queueMessageBuildException(new MessagingException("expected error"));
-            }
-        };
+        MessageBuilder messageBuilder =
+            new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, fakeSettingsManager) {
+                @Override
+                protected void buildMessageInternal() {
+                    queueMessageBuildException(new MessagingException("expected error"));
+                }
+            };
 
         messageBuilder.buildAsync(callback);
 
@@ -361,7 +517,7 @@ public class MessageBuilderTest extends RobolectricTest {
     @Test
     public void buildWithException_detachAndReattach_shouldThrow() throws MessagingException {
         Callback anotherCallback = mock(Callback.class);
-        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider) {
+        MessageBuilder messageBuilder = new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, fakeSettingsManager) {
             @Override
             protected void buildMessageInternal() {
                 queueMessageBuildException(new MessagingException("expected error"));
@@ -393,7 +549,8 @@ public class MessageBuilderTest extends RobolectricTest {
         return outputStream.toString();
     }
 
-    private Attachment createAttachmentWithContent(final String mimeType, final String filename, String content) throws Exception {
+    private Attachment createAttachmentWithContent(final String mimeType, final String filename, String content)
+        throws Exception {
         final byte[] bytes = content.getBytes();
         final File tempFile = File.createTempFile("pre", ".tmp");
         tempFile.deleteOnExit();
@@ -436,33 +593,33 @@ public class MessageBuilderTest extends RobolectricTest {
 
     private MessageBuilder createSimpleMessageBuilder() {
         Identity identity = createIdentity();
-        return new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider)
-                .setSubject(TEST_SUBJECT)
-                .setSentDate(SENT_DATE)
-                .setHideTimeZone(true)
-                .setReplyTo(TEST_REPLY_TO)
-                .setTo(Arrays.asList(TEST_TO))
-                .setCc(Arrays.asList(TEST_CC))
-                .setBcc(Arrays.asList(TEST_BCC))
-                .setInReplyTo("inreplyto")
-                .setReferences("references")
-                .setRequestReadReceipt(false)
-                .setIdentity(identity)
-                .setMessageFormat(SimpleMessageFormat.TEXT)
-                .setText(TEST_MESSAGE_TEXT)
-                .setAttachments(new ArrayList<>())
-                .setSignature("signature")
-                .setQuoteStyle(QuoteStyle.PREFIX)
-                .setQuotedTextMode(QuotedTextMode.NONE)
-                .setQuotedText("quoted text")
-                .setQuotedHtmlContent(new InsertableHtmlContent())
-                .setReplyAfterQuote(false)
-                .setSignatureBeforeQuotedText(false)
-                .setIdentityChanged(false)
-                .setSignatureChanged(false)
-                .setCursorPosition(0)
-                .setMessageReference(null)
-                .setDraft(false);
+        return new SimpleMessageBuilder(messageIdGenerator, boundaryGenerator, resourceProvider, fakeSettingsManager)
+            .setSubject(TEST_SUBJECT)
+            .setSentDate(SENT_DATE)
+            .setHideTimeZone(true)
+            .setReplyTo(TEST_REPLY_TO)
+            .setTo(Arrays.asList(TEST_TO))
+            .setCc(Arrays.asList(TEST_CC))
+            .setBcc(Arrays.asList(TEST_BCC))
+            .setInReplyTo("inreplyto")
+            .setReferences("references")
+            .setRequestReadReceipt(false)
+            .setIdentity(identity)
+            .setMessageFormat(SimpleMessageFormat.TEXT)
+            .setText(TEST_MESSAGE_TEXT)
+            .setAttachments(new ArrayList<>())
+            .setSignature("signature")
+            .setQuoteStyle(QuoteStyle.PREFIX)
+            .setQuotedTextMode(QuotedTextMode.NONE)
+            .setQuotedText("quoted text")
+            .setQuotedHtmlContent(new InsertableHtmlContent())
+            .setReplyAfterQuote(false)
+            .setSignatureBeforeQuotedText(false)
+            .setIdentityChanged(false)
+            .setSignatureChanged(false)
+            .setCursorPosition(0)
+            .setMessageReference(null)
+            .setDraft(false);
     }
 
     private MessageBuilder createHtmlMessageBuilder() {
@@ -471,12 +628,12 @@ public class MessageBuilderTest extends RobolectricTest {
 
     private Identity createIdentity() {
         return new Identity(
-                "test identity",
-                TEST_IDENTITY_ADDRESS.getPersonal(),
-                TEST_IDENTITY_ADDRESS.getAddress(),
-                null,
-                false,
-                null
+            "test identity",
+            TEST_IDENTITY_ADDRESS.getPersonal(),
+            TEST_IDENTITY_ADDRESS.getAddress(),
+            null,
+            false,
+            null
         );
     }
 }
