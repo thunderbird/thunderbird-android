@@ -14,6 +14,7 @@ import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettings
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -174,6 +175,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     quietTimeStarts = "7:00",
                     quietTimeEnds = "7:00",
                     isQuietTimeEnabled = false,
+                    privacy = PrivacySettings(isHideTimeZone = false),
                 )
             },
         )
