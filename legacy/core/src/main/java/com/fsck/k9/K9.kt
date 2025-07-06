@@ -200,9 +200,6 @@ object K9 : KoinComponent {
     @JvmStatic
     var isHideUserAgent = false
 
-    @JvmStatic
-    var isHideTimeZone = false
-
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
@@ -300,7 +297,6 @@ object K9 : KoinComponent {
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
         isHideUserAgent = storage.getBoolean("hideUserAgent", false)
-        isHideTimeZone = storage.getBoolean("hideTimeZone", false)
 
         isConfirmDelete = storage.getBoolean("confirmDelete", false)
         isConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true)
@@ -374,7 +370,6 @@ object K9 : KoinComponent {
         editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
         editor.putBoolean("hideUserAgent", isHideUserAgent)
-        editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
 

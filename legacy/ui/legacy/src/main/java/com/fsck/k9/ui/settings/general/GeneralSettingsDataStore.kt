@@ -47,7 +47,7 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> generalSettingsManager.getSettings().isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.isHideUserAgent
-            "privacy_hide_timezone" -> K9.isHideTimeZone
+            "privacy_hide_timezone" -> generalSettingsManager.getSettings().privacy.isHideTimeZone
             "debug_logging" -> K9.isDebugLoggingEnabled
             "sync_debug_logging" -> K9.isSyncLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
@@ -87,7 +87,7 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.isHideUserAgent = value
-            "privacy_hide_timezone" -> K9.isHideTimeZone = value
+            "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sync_debug_logging" -> K9.isSyncLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
@@ -378,6 +378,13 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.setIsQuietTimeEnabled(
             isQuietTimeEnabled = isQuietTimeEnabled,
+        )
+    }
+
+    private fun setIsHideTimeZone(isHideTimeZone: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.setIsHideTimeZone(
+            isHideTimeZone = isHideTimeZone,
         )
     }
 

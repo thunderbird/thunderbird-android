@@ -21,6 +21,7 @@ import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettingsManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -47,12 +48,15 @@ internal const val KEY_QUIET_TIME_ENABLED = "quietTimeEnabled"
  * The [GeneralSettings] instance managed by this class is updated with state from [K9] when [K9.saveSettingsAsync] is
  * called.
  */
+// TODO(#9432): Split GeneralSettings and GeneralSettingsManager in smaller classes/interfaces
+@Suppress("TooManyFunctions")
 internal class RealGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
     private val changePublisher: PreferenceChangePublisher,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : GeneralSettingsManager {
+    private val privacySettingsManager: PrivacySettingsManager,
+) : GeneralSettingsManager, PrivacySettingsManager by privacySettingsManager {
     private val settingsFlow = MutableSharedFlow<GeneralSettings>(replay = 1)
     private var generalSettings: GeneralSettings? = null
     val clock = DI.get<Clock>()
@@ -229,6 +233,13 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isQuietTimeEnabled = isQuietTimeEnabled).persist()
     }
 
+    override fun setIsHideTimeZone(isHideTimeZone: Boolean) {
+        privacySettingsManager.setIsHideTimeZone(isHideTimeZone)
+        getSettings()
+            .copy(privacy = privacySettings)
+            .persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -295,6 +306,7 @@ internal class RealGeneralSettingsManager(
             quietTimeStarts = storage.getStringOrDefault(KEY_QUIET_TIME_STARTS, "21:00"),
             isQuietTimeEnabled = storage.getBoolean(KEY_QUIET_TIME_ENABLED, false),
             isQuietTime = getIsQuietTime(),
+            privacy = privacySettingsManager.privacySettings,
         )
 
         updateSettingsFlow(settings)
