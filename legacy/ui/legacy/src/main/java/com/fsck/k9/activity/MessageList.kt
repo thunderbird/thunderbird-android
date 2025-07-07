@@ -1466,6 +1466,7 @@ open class MessageList :
             if (account == null && search.accountUuids.size == 1) {
                 account = accountManager.getAccount(search.accountUuids.elementAt(0))
             }
+            singleFolderMode = true
         }
 
         configureDrawer()
