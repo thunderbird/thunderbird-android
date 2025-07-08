@@ -15,6 +15,7 @@ import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
 import org.junit.After
 import org.junit.Before
@@ -57,6 +58,7 @@ class SummaryNotificationDataCreatorTest {
         quietTimeStarts = "0:00",
         quietTimeEnds = "23:59",
         isQuietTimeEnabled = false,
+        privacy = PrivacySettings(isHideTimeZone = false),
     )
     private val notificationDataCreator = SummaryNotificationDataCreator(
         singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),

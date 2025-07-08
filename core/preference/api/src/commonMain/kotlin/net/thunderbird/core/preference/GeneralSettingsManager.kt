@@ -1,13 +1,14 @@
 package net.thunderbird.core.preference
 
 import kotlinx.coroutines.flow.Flow
+import net.thunderbird.core.preference.privacy.PrivacySettingsManager
 
 /**
  * Retrieve and modify general settings.
  *
  * TODO: Add more settings as needed.
  */
-interface GeneralSettingsManager {
+interface GeneralSettingsManager : PrivacySettingsManager {
     fun getSettings(): GeneralSettings
     fun getSettingsFlow(): Flow<GeneralSettings>
 
