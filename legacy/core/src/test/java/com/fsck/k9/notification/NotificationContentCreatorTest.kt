@@ -170,6 +170,10 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     isThreadedViewEnabled = false,
                     isUseMessageViewFixedWidthFont = false,
                     isAutoFitWidth = false,
+                    isQuietTime = false,
+                    quietTimeStarts = "7:00",
+                    quietTimeEnds = "7:00",
+                    isQuietTimeEnabled = false,
                 )
             },
         )

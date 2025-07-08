@@ -9,16 +9,17 @@ import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
-import com.fsck.k9.K9
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 class NotificationHelper(
     private val context: Context,
     private val notificationManager: NotificationManagerCompat,
     private val notificationChannelManager: NotificationChannelManager,
     private val resourceProvider: NotificationResourceProvider,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun getContext(): Context {
         return context
@@ -77,7 +78,7 @@ class NotificationHelper(
             .setContentIntent(notificationSettingsPendingIntent)
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setCategory(NotificationCompat.CATEGORY_ERROR)
-            .setErrorAppearance()
+            .setErrorAppearance(generalSettingsManager = generalSettingsManager)
             .build()
 
         val notificationId = NotificationIds.getNewMailSummaryNotificationId(account)
@@ -94,17 +95,20 @@ class NotificationHelper(
     }
 }
 
-internal fun NotificationCompat.Builder.setErrorAppearance(): NotificationCompat.Builder = apply {
-    setSilent(true)
+internal fun NotificationCompat.Builder.setErrorAppearance(
+    generalSettingsManager: GeneralSettingsManager,
+): NotificationCompat.Builder =
+    apply {
+        setSilent(true)
 
-    if (!K9.isQuietTime) {
-        setLights(
-            NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR,
-            NotificationHelper.NOTIFICATION_LED_FAST_ON_TIME,
-            NotificationHelper.NOTIFICATION_LED_FAST_OFF_TIME,
-        )
+        if (!generalSettingsManager.getSettings().isQuietTime) {
+            setLights(
+                NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR,
+                NotificationHelper.NOTIFICATION_LED_FAST_ON_TIME,
+                NotificationHelper.NOTIFICATION_LED_FAST_OFF_TIME,
+            )
+        }
     }
-}
 
 internal fun NotificationCompat.Builder.setAppearance(
     silent: Boolean,

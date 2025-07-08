@@ -32,4 +32,7 @@ interface GeneralSettingsManager {
     fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean)
     fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean)
     fun setIsAutoFitWidth(isAutoFitWidth: Boolean)
+    fun setQuietTimeEnds(quietTimeEnds: String)
+    fun setQuietTimeStarts(quietTimeStarts: String)
+    fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean)
 }

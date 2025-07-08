@@ -2,15 +2,17 @@ package com.fsck.k9.notification
 
 import com.fsck.k9.K9
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 private const val MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5
 
 internal class SummaryNotificationDataCreator(
     private val singleMessageNotificationDataCreator: SingleMessageNotificationDataCreator,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun createSummaryNotificationData(data: NotificationData, silent: Boolean): SummaryNotificationData {
         val timestamp = data.latestTimestamp
-        val shouldBeSilent = silent || K9.isQuietTime
+        val shouldBeSilent = silent || generalSettingsManager.getSettings().isQuietTime
         return if (data.isSingleMessageNotification) {
             createSummarySingleNotificationData(data, timestamp, shouldBeSilent)
         } else {
