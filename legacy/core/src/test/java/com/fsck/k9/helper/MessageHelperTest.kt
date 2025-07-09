@@ -65,7 +65,10 @@ class MessageHelperTest : RobolectricTest() {
                 isQuietTimeEnabled = false,
                 quietTimeEnds = "7:00",
                 quietTimeStarts = "7:00",
-                privacy = PrivacySettings(isHideTimeZone = false),
+                privacy = PrivacySettings(
+                    isHideTimeZone = false,
+                    isHideUserAgent = false,
+                ),
             ),
         )
     }

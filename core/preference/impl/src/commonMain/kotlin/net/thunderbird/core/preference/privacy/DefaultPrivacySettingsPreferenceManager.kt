@@ -65,12 +65,14 @@ class DefaultPrivacySettingsPreferenceManager(
 
     private fun loadConfig(): PrivacySettings = PrivacySettings(
         isHideTimeZone = storage.getBoolean(KEY_HIDE_TIME_ZONE, false),
+        isHideUserAgent = storage.getBoolean(KEY_HIDE_USER_AGENT, false),
     )
 
     private fun writeConfig(config: PrivacySettings) {
         scope.launch(ioDispatcher) {
             mutex.withLock {
                 storageEditor.putBoolean(KEY_HIDE_TIME_ZONE, config.isHideTimeZone)
+                storageEditor.putBoolean(KEY_HIDE_USER_AGENT, config.isHideUserAgent)
                 storageEditor.commit()
             }
         }
@@ -78,5 +80,6 @@ class DefaultPrivacySettingsPreferenceManager(
 
     companion object {
         private const val KEY_HIDE_TIME_ZONE = "hideTimeZone"
+        private const val KEY_HIDE_USER_AGENT = "hideUserAgent"
     }
 }

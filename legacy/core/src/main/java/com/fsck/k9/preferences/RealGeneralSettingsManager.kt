@@ -240,6 +240,13 @@ internal class RealGeneralSettingsManager(
             .persist()
     }
 
+    override fun setIsHideUserAgent(isHideUserAgent: Boolean) {
+        privacySettingsManager.setIsHideUserAgent(isHideUserAgent)
+        getSettings()
+            .copy(privacy = privacySettings)
+            .persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)

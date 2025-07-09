@@ -175,7 +175,10 @@ class NotificationContentCreatorTest : RobolectricTest() {
                     quietTimeStarts = "7:00",
                     quietTimeEnds = "7:00",
                     isQuietTimeEnabled = false,
-                    privacy = PrivacySettings(isHideTimeZone = false),
+                    privacy = PrivacySettings(
+                        isHideTimeZone = false,
+                        isHideUserAgent = false,
+                    ),
                 )
             },
         )

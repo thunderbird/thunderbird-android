@@ -34,6 +34,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import org.apache.james.mime4j.util.MimeUtil;
 
 
@@ -72,11 +73,17 @@ public abstract class MessageBuilder {
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
 
+    private GeneralSettingsManager settingsManager;
+
     protected MessageBuilder(MessageIdGenerator messageIdGenerator,
-            BoundaryGenerator boundaryGenerator, CoreResourceProvider resourceProvider) {
+            BoundaryGenerator boundaryGenerator,
+            CoreResourceProvider resourceProvider,
+            GeneralSettingsManager settingsManager
+        ) {
         this.messageIdGenerator = messageIdGenerator;
         this.boundaryGenerator = boundaryGenerator;
         this.resourceProvider = resourceProvider;
+        this.settingsManager = settingsManager;
     }
 
     /**
@@ -110,7 +117,7 @@ public abstract class MessageBuilder {
             message.setHeader("Return-Receipt-To", from.toEncodedString());
         }
 
-        if (!K9.isHideUserAgent()) {
+        if (!settingsManager.getSettings().getPrivacy().isHideUserAgent()) {
             String encodedUserAgent = MimeHeaderEncoder.encode("User-Agent", resourceProvider.userAgent());
             message.setHeader("User-Agent", encodedUserAgent);
         }
