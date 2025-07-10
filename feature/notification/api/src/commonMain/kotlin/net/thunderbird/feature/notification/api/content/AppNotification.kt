@@ -4,12 +4,14 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import net.thunderbird.core.common.io.KmpParcelable
 import net.thunderbird.feature.notification.api.LockscreenNotificationAppearance
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
-import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
+import net.thunderbird.feature.notification.api.ui.NotificationStyle
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 
 /**
  * Represents a notification that can be displayed to the user.
@@ -17,29 +19,31 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
  * This interface defines the common properties that all notifications must have.
  * Must not be directly implemented. You must extend [AppNotification] instead.
  *
- * @property id The unique identifier of the notification.
  * @property title The title of the notification.
  * @property accessibilityText The text to be used for accessibility purposes.
  * @property contentText The main content text of the notification, can be null.
+ * @property subText Additional text displayed below the content text, can be null.
  * @property severity The severity level of the notification.
  * @property createdAt The date and time when the notification was created.
  * @property actions A set of actions that can be performed on the notification.
  * @property authenticationRequired Indicates whether authentication is required to view the notification.
  * @property channel The notification channel to which this notification belongs.
  * @property group The notification group to which this notification belongs, can be null.
+ * @property icon The notification icon.
  * @see AppNotification
  */
-sealed interface Notification {
-    val id: NotificationId
+sealed interface Notification : KmpParcelable {
     val title: String
     val accessibilityText: String
     val contentText: String?
+    val subText: String? get() = null
     val severity: NotificationSeverity
     val createdAt: LocalDateTime
     val actions: Set<NotificationAction>
     val authenticationRequired: Boolean
     val channel: NotificationChannel
     val group: NotificationGroup?
+    val icon: NotificationIcon
 }
 
 /**
@@ -67,24 +71,34 @@ sealed class AppNotification : Notification {
  * Represents a notification displayed by the system, **requiring user permission**.
  * This type of notification can appear on the lock screen.
  *
+ * @property accountNumber The account number associated with this notification.
  * @property lockscreenNotification The notification to display on the lock screen.
  * Override if you need to hide any content when showing this notification in the lockscreen.
  * By default, this is the same as the notification itself.
+ * @property systemNotificationStyle The style of the system notification.
+ * Defaults to [NotificationStyle.System.Undefined].
  * @property lockscreenNotificationAppearance The appearance of the notification on the lockscreen.
  * By default, the notification is [LockscreenNotificationAppearance.Public].
  * @see LockscreenNotificationAppearance
+ * @see NotificationStyle.System
+ * @see net.thunderbird.feature.notification.api.ui.builder.notificationStyle
  */
 sealed interface SystemNotification : Notification {
+    val accountNumber: Int
     val lockscreenNotification: SystemNotification get() = this
+
+    val systemNotificationStyle: NotificationStyle.System get() = NotificationStyle.System.Undefined
+
     val lockscreenNotificationAppearance: LockscreenNotificationAppearance
         get() = LockscreenNotificationAppearance.Public
 }
 
 /**
- *
  * Represents a notification displayed within the application.
  *
  * In-app notifications are typically less intrusive than system notifications and **do not require**
  * system notification permissions to be displayed.
  */
-sealed interface InAppNotification : Notification
+sealed interface InAppNotification : Notification {
+    val inAppNotificationStyle: NotificationStyle.InApp get() = NotificationStyle.InApp.Undefined
+}

@@ -2,7 +2,8 @@ package com.fsck.k9.notification
 
 import net.thunderbird.core.android.account.LegacyAccount
 
-internal object NotificationIds {
+// TODO(#9416): Migrate logic from NotificationIds to NotificationIdFactory
+object NotificationIds {
     const val PUSH_NOTIFICATION_ID = 1
     const val BACKGROUND_WORK_NOTIFICATION_ID = 2
 
@@ -59,8 +60,12 @@ internal object NotificationIds {
     }
 
     private fun getBaseNotificationId(account: LegacyAccount): Int {
+        return getBaseNotificationId(accountNumber = account.accountNumber)
+    }
+
+    fun getBaseNotificationId(accountNumber: Int): Int {
         /* skip notification ID 0 */
         return 1 + NUMBER_OF_GENERAL_NOTIFICATIONS +
-            account.accountNumber * NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT
+            accountNumber * NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT
     }
 }
