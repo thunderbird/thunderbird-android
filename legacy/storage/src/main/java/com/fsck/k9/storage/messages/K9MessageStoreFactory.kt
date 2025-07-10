@@ -30,6 +30,7 @@ class K9MessageStoreFactory(
             storageFilesProvider,
             basicPartInfoExtractor,
             generalSettingsManager,
+            account.id,
         )
         val notifierMessageStore = NotifierMessageStore(messageStore, localStore)
         return ListenableMessageStore(notifierMessageStore)

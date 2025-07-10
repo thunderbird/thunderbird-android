@@ -69,6 +69,7 @@ fun SQLiteDatabase.readFolders(): List<FolderEntry> {
                 status = cursor.getStringOrNull("status"),
                 flaggedCount = cursor.getIntOrNull("flagged_count"),
                 moreMessages = cursor.getStringOrNull("more_messages"),
+                accountId = cursor.getStringOrNull("account_id"),
             )
         }
     }
@@ -92,4 +93,5 @@ data class FolderEntry(
     val status: String?,
     val flaggedCount: Int?,
     val moreMessages: String?,
+    val accountId: String? = null,
 )
