@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.core.logging.implComposite)
     implementation(projects.core.logging.implConsole)
     implementation(projects.core.logging.implLegacy)
+    implementation(projects.core.logging.implFile)
 
     implementation(projects.core.featureflag)
     implementation(projects.core.ui.legacy.theme2.common)
@@ -40,6 +41,7 @@ dependencies {
     implementation(projects.mail.protocols.imap)
 
     implementation(libs.androidx.work.runtime)
+    implementation(libs.androidx.lifecycle.process)
 
     testImplementation(projects.feature.account.fake)
 }
