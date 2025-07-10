@@ -85,6 +85,8 @@ internal class RealImapFolderIdler(
                 doneSent = false
             }
 
+            connection.setSocketDefaultReadTimeout()
+
             val tag = connection.sendCommand("IDLE", false)
 
             synchronized(this) {
@@ -142,6 +144,8 @@ internal class RealImapFolderIdler(
             }
         } while (!stopIdle)
 
+        connection.setSocketDefaultReadTimeout()
+
         return result
     }
 
@@ -170,7 +174,12 @@ internal class RealImapFolderIdler(
             if (connection.isConnected) {
                 doneSent = true
                 connection.setSocketDefaultReadTimeout()
-                connection.sendContinuation("DONE")
+                try {
+                    connection.sendContinuation("DONE")
+                } catch (e: IOException) {
+                    Timber.v(e, "%s: IOException while sending DONE", logTag)
+                    throw e
+                }
             }
         }
     }

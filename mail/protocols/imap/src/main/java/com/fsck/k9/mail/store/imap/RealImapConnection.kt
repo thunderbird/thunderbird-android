@@ -385,7 +385,7 @@ internal class RealImapConnection(
         val oauthTokenProvider = checkNotNull(oauthTokenProvider)
         val responseParser = checkNotNull(responseParser)
 
-        val token = oauthTokenProvider.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT)
+        val token = oauthTokenProvider.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
 
         val authString = method.buildInitialClientResponse(settings.username, token)
         val tag = sendSaslIrCommand(method.command, authString, true)
@@ -811,15 +811,20 @@ internal class RealImapConnection(
     @Synchronized
     @Throws(IOException::class)
     override fun sendContinuation(continuation: String) {
-        val outputStream = checkNotNull(imapOutputStream)
+        try {
+            val outputStream = checkNotNull(imapOutputStream)
 
-        outputStream.write(continuation.toByteArray())
-        outputStream.write('\r'.code)
-        outputStream.write('\n'.code)
-        outputStream.flush()
+            outputStream.write(continuation.toByteArray())
+            outputStream.write('\r'.code)
+            outputStream.write('\n'.code)
+            outputStream.flush()
 
-        if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
-            Timber.v("%s>>> %s", logId, continuation)
+            if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_IMAP) {
+                Timber.v("%s>>> %s", logId, continuation)
+            }
+        } catch (e: IOException) {
+            close()
+            throw e
         }
     }
 

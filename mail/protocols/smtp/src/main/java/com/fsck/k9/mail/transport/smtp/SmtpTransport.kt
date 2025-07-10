@@ -30,7 +30,6 @@ import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.net.Inet6Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -45,6 +44,10 @@ private const val SOCKET_SEND_MESSAGE_READ_TIMEOUT = 5 * 60 * 1000 // 5 minutes
 
 private const val SMTP_CONTINUE_REQUEST = 334
 private const val SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535
+
+// We use "ehlo.thunderbird.net" for privacy reasons,
+// see https://ehlo.thunderbird.net/
+public const val SMTP_HELLO_NAME = "ehlo.thunderbird.net"
 
 class SmtpTransport(
     serverSettings: ServerSettings,
@@ -100,8 +103,7 @@ class SmtpTransport(
 
             readGreeting()
 
-            val helloName = buildHostnameToReport()
-            var extensions = sendHello(helloName)
+            var extensions = sendHello(SMTP_HELLO_NAME)
 
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME")
             isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES")
@@ -123,7 +125,7 @@ class SmtpTransport(
                     outputStream = BufferedOutputStream(tlsSocket.getOutputStream(), 1024)
 
                     // Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically, Exim.
-                    extensions = sendHello(helloName)
+                    extensions = sendHello(SMTP_HELLO_NAME)
                     secureConnection = true
                 } else {
                     throw MissingCapabilityException("STARTTLS")
@@ -256,18 +258,6 @@ class SmtpTransport(
         if (K9MailLib.isDebug()) {
             val omitText = sensitive && !K9MailLib.isDebugSensitive()
             Timber.v("%s", smtpResponse.toLogString(omitText, linePrefix = "SMTP <<< "))
-        }
-    }
-
-    private fun buildHostnameToReport(): String {
-        val localAddress = socket!!.localAddress
-
-        // We use local IP statically for privacy reasons,
-        // see https://github.com/thunderbird/thunderbird-android/pull/3798
-        return if (localAddress is Inet6Address) {
-            "[IPv6:::1]"
-        } else {
-            "[127.0.0.1]"
         }
     }
 
@@ -551,22 +541,21 @@ class SmtpTransport(
     }
 
     private fun saslOAuth(method: OAuthMethod) {
-        checkNotNull(oauthTokenProvider) {
-            "Can't perform saslOAuth with a null OAuthTokenProvider."
-        }
+        Timber.d("saslOAuth() called with: method = $method")
         retryOAuthWithNewToken = true
 
-        val primaryEmail = oauthTokenProvider.primaryEmail
+        val primaryEmail = oauthTokenProvider?.primaryEmail
         val primaryUsername = primaryEmail ?: username
 
         try {
             attempOAuth(method, primaryUsername)
         } catch (negativeResponse: NegativeSmtpReplyException) {
+            Timber.w(negativeResponse, "saslOAuth: failed to authenticate.")
             if (negativeResponse.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 throw negativeResponse
             }
 
-            oauthTokenProvider.invalidateToken()
+            oauthTokenProvider!!.invalidateToken()
 
             if (!retryOAuthWithNewToken) {
                 handlePermanentOAuthFailure(method, negativeResponse)
@@ -612,7 +601,7 @@ class SmtpTransport(
     }
 
     private fun attempOAuth(method: OAuthMethod, username: String) {
-        val token = oauthTokenProvider!!.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT)
+        val token = oauthTokenProvider!!.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
         val authString = method.buildInitialClientResponse(username, token)
 
         val response = executeSensitiveCommand("%s %s", method.command, authString)

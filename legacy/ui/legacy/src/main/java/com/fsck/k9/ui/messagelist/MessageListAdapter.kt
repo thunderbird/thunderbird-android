@@ -371,12 +371,18 @@ class MessageListAdapter internal constructor(
         val isActive = isActiveMessage(messageListItem)
 
         if (appearance.showContactPicture) {
+            holder.contactPictureClickArea.isSelected = isSelected
             if (isSelected) {
                 holder.contactPicture.isVisible = false
                 holder.selected.isVisible = true
             } else {
                 holder.selected.isVisible = false
                 holder.contactPicture.isVisible = true
+            }
+            holder.contactPictureClickArea.contentDescription = if (isSelected) {
+                res.getString(R.string.swipe_action_deselect)
+            } else {
+                res.getString(R.string.swipe_action_select)
             }
         }
 
