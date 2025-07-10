@@ -181,7 +181,7 @@ class MessageListFragment :
     private var initialMessageListLoad = true
 
     private val isUnifiedInbox: Boolean
-        get() = localSearch.id == SearchAccount.UNIFIED_INBOX
+        get() = localSearch.id == SearchAccount.UNIFIED_FOLDERS
 
     private val isNewMessagesView: Boolean
         get() = localSearch.id == SearchAccount.NEW_MESSAGES

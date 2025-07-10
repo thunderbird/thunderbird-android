@@ -63,7 +63,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     fun unifiedInbox() {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 1,
-            accountUuid = SearchAccount.UNIFIED_INBOX,
+            accountUuid = SearchAccount.UNIFIED_FOLDERS,
             folderId = null,
         )
 
@@ -166,8 +166,8 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     private fun createCoreResourceProvider(): CoreResourceProvider = mock {
-        on { searchUnifiedInboxTitle() } doReturn UNIFIED_INBOX_NAME
-        on { searchUnifiedInboxDetail() } doReturn UNIFIED_INBOX_DETAIL
+        on { searchUnifiedFoldersTitle() } doReturn UNIFIED_INBOX_NAME
+        on { searchUnifiedFoldersDetail() } doReturn UNIFIED_INBOX_DETAIL
     }
 
     companion object {

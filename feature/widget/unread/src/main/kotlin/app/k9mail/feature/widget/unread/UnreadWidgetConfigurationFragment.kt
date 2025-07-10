@@ -112,7 +112,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         selectedFolderId = null
         selectedFolderDisplayName = null
         unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
-        if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid) {
+        if (SearchAccount.UNIFIED_FOLDERS == selectedAccountUuid) {
             handleSearchAccount()
         } else {
             handleRegularAccount()
@@ -120,7 +120,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     }
 
     private fun handleSearchAccount() {
-        if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid) {
+        if (SearchAccount.UNIFIED_FOLDERS == selectedAccountUuid) {
             unreadAccount.setSummary(R.string.unread_widget_unified_inbox_account_summary)
         }
         unreadFolderEnabled.isEnabled = false

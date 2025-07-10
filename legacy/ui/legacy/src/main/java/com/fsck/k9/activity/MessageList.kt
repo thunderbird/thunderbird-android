@@ -419,7 +419,7 @@ open class MessageList :
         if (action == ACTION_SHORTCUT) {
             // Handle shortcut intents
             val specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER)
-            if (specialFolder == SearchAccount.UNIFIED_INBOX) {
+            if (specialFolder == SearchAccount.UNIFIED_FOLDERS) {
                 return LaunchData(search = createSearchAccount().relatedSearch)
             }
 
@@ -787,7 +787,7 @@ open class MessageList :
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
                 if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-                    if (search!!.id != SearchAccount.UNIFIED_INBOX) {
+                    if (search!!.id != SearchAccount.UNIFIED_FOLDERS) {
                         openUnifiedInbox()
                     } else {
                         super.onBackPressed()
@@ -1485,18 +1485,18 @@ open class MessageList :
 
                 // Don't select any item in the drawer because the Unified Inbox is displayed,
                 // but not listed in the drawer
-                search.id == SearchAccount.UNIFIED_INBOX &&
+                search.id == SearchAccount.UNIFIED_FOLDERS &&
                     !generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox -> drawer.deselect()
 
-                search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
+                search.id == SearchAccount.UNIFIED_FOLDERS -> drawer.selectUnifiedInbox()
             }
         } ?: logger.warn(TAG) { "Couldn't select folder for $accountUuid as LocalSearch is null." }
     }
 
     private fun createSearchAccount(): SearchAccount {
-        return SearchAccount.createUnifiedInboxAccount(
-            unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-            unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+        return SearchAccount.createUnifiedFoldersSearch(
+            title = coreResourceProvider.searchUnifiedFoldersTitle(),
+            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )
     }
 
@@ -1580,9 +1580,9 @@ open class MessageList :
             account: LegacyAccount,
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
-                val search = SearchAccount.createUnifiedInboxAccount(
-                    unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-                    unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+                val search = SearchAccount.createUnifiedFoldersSearch(
+                    title = coreResourceProvider.searchUnifiedFoldersTitle(),
+                    detail = coreResourceProvider.searchUnifiedFoldersDetail(),
                 ).relatedSearch
 
                 putExtra(EXTRA_ACCOUNT, account.uuid)
@@ -1647,9 +1647,9 @@ open class MessageList :
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
                 if (openInUnifiedInbox) {
-                    val search = SearchAccount.createUnifiedInboxAccount(
-                        unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-                        unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+                    val search = SearchAccount.createUnifiedFoldersSearch(
+                        title = coreResourceProvider.searchUnifiedFoldersTitle(),
+                        detail = coreResourceProvider.searchUnifiedFoldersDetail(),
                     ).relatedSearch
                     putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }

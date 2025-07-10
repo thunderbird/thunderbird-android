@@ -24,7 +24,7 @@ class UnreadWidgetDataProvider(
     private val coreResourceProvider: CoreResourceProvider,
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
-        if (SearchAccount.UNIFIED_INBOX == accountUuid) {
+        if (SearchAccount.UNIFIED_FOLDERS == accountUuid) {
             loadSearchAccountData(configuration)
         } else if (folderId != null) {
             loadFolderData(configuration)
@@ -43,9 +43,9 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getSearchAccount(accountUuid: String): SearchAccount = when (accountUuid) {
-        SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount(
-            unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-            unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+        SearchAccount.UNIFIED_FOLDERS -> SearchAccount.createUnifiedFoldersSearch(
+            title = coreResourceProvider.searchUnifiedFoldersTitle(),
+            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )
         else -> throw AssertionError("SearchAccount expected")
     }
