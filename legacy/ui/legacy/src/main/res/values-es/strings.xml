@@ -903,4 +903,13 @@ Puedes guardar este mensaje y usarlo como copia de seguridad de tu clave secreta
     <string name="empty_spam_action">Vaciar Spam</string>
     <string name="dialog_confirm_empty_spam_title">Confirmar vaciado de Spam</string>
     <string name="dialog_confirm_empty_spam_message">¿Desea vaciar la carpeta de spam?</string>
+    <string name="camera_permission_denied">No se ha concedido el acceso a la cámara, no se pueden sacar fotos</string>
+    <string name="attach_file">Adjuntar archivo</string>
+    <string name="open_camera">Sacar una foto</string>
+    <string name="debug_enable_sync_debug_logging_title">Activar registros de depuración de sincronización</string>
+    <string name="debug_enable_sync_debug_logging_summary">Registra los datos de sincronización durante 24 horas</string>
+    <string name="debug_sync_export_logs_title">Exportar registros de sincronización</string>
+    <string name="swipe_action_archive_folder_not_set">Configurar carpeta de archivo</string>
+    <string name="swipe_action_change_swipe_gestures">Cambiar \nGestos al deslizar</string>
+    <string name="archiving_not_available_for_this_account">El archivamiento no está disponible para esta cuenta.</string>
 </resources>

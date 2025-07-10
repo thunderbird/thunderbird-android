@@ -3,5 +3,5 @@
     <string name="onboarding_welcome_start_button">Започни</string>
     <string name="onboarding_welcome_import_button">Увези подешавања</string>
     <string name="onboarding_welcome_text">Имејл апликација отвореног кода, фокусирана на приватност и без огласа, за Android.</string>
-    <string name="onboarding_welcome_developed_by">Развијен од стране наменског тима MZLA Technologies и глобалне заједнице волонтера. Део породице Mozilla.</string>
+    <string name="onboarding_welcome_developed_by">Развијено од стране посвећеног тима у MZLA Technologies и глобалне заједнице волонтера. Део је Mozilla породице.</string>
 </resources>

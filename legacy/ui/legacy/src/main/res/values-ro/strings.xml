@@ -903,4 +903,13 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="empty_spam_action">Golire Spam</string>
     <string name="dialog_confirm_empty_spam_title">Confirmă golirea spam-ului</string>
     <string name="dialog_confirm_empty_spam_message">Doriți să goliți dosarul de spam?</string>
+    <string name="camera_permission_denied">Accesul la cameră a fost refuzat, nu se pot face fotografii</string>
+    <string name="open_camera">Deschide camera</string>
+    <string name="attach_file">Atașează fișier</string>
+    <string name="debug_enable_sync_debug_logging_title">Activează jurnalizarea de depanare a sincronizării</string>
+    <string name="debug_sync_export_logs_title">Exportă jurnalele de sincronizare</string>
+    <string name="debug_enable_sync_debug_logging_summary">Înregistrarea informațiilor de diagnosticare sincronizate timp de 24 de ore</string>
+    <string name="swipe_action_archive_folder_not_set">Configurați dosarul de arhivă</string>
+    <string name="archiving_not_available_for_this_account">Arhivarea nu este disponibilă pentru acest cont.</string>
+    <string name="swipe_action_change_swipe_gestures">Schimbare \nGesturi de glisare</string>
 </resources>

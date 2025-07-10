@@ -2,8 +2,10 @@
 
 package com.fsck.k9.preferences
 
+import app.k9mail.legacy.di.DI
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
+import com.fsck.k9.QuietTimeChecker
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundSync
@@ -18,6 +21,7 @@ import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettingsManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -30,6 +34,10 @@ internal const val KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR = "isUseBackgroundAsUn
 internal const val KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST = "showComposeButtonOnMessageList"
 internal const val KEY_THREAD_VIEW_ENABLED = "isThreadedViewEnabled"
 internal const val KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT = "messageViewFixedWidthFont"
+internal const val KEY_AUTO_FIT_WIDTH = "autofitWidth"
+internal const val KEY_QUIET_TIME_ENDS = "quietTimeEnds"
+internal const val KEY_QUIET_TIME_STARTS = "quietTimeStarts"
+internal const val KEY_QUIET_TIME_ENABLED = "quietTimeEnabled"
 
 /**
  * Retrieve and modify general settings.
@@ -40,14 +48,18 @@ internal const val KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT = "messageViewFixedWidthFon
  * The [GeneralSettings] instance managed by this class is updated with state from [K9] when [K9.saveSettingsAsync] is
  * called.
  */
+// TODO(#9432): Split GeneralSettings and GeneralSettingsManager in smaller classes/interfaces
+@Suppress("TooManyFunctions")
 internal class RealGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
     private val changePublisher: PreferenceChangePublisher,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) : GeneralSettingsManager {
+    private val privacySettingsManager: PrivacySettingsManager,
+) : GeneralSettingsManager, PrivacySettingsManager by privacySettingsManager {
     private val settingsFlow = MutableSharedFlow<GeneralSettings>(replay = 1)
     private var generalSettings: GeneralSettings? = null
+    val clock = DI.get<Clock>()
 
     @Deprecated("This only exists for collaboration with the K9 class")
     val storage: Storage
@@ -209,6 +221,36 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isUseMessageViewFixedWidthFont = isUseMessageViewFixedWidthFont).persist()
     }
 
+    override fun setIsAutoFitWidth(isAutoFitWidth: Boolean) {
+        getSettings().copy(isAutoFitWidth = isAutoFitWidth).persist()
+    }
+
+    override fun setQuietTimeEnds(quietTimeEnds: String) {
+        getSettings().copy(quietTimeEnds = quietTimeEnds).persist()
+    }
+
+    override fun setQuietTimeStarts(quietTimeStarts: String) {
+        getSettings().copy(quietTimeStarts = quietTimeStarts).persist()
+    }
+
+    override fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean) {
+        getSettings().copy(isQuietTimeEnabled = isQuietTimeEnabled).persist()
+    }
+
+    override fun setIsHideTimeZone(isHideTimeZone: Boolean) {
+        privacySettingsManager.setIsHideTimeZone(isHideTimeZone)
+        getSettings()
+            .copy(privacy = privacySettings)
+            .persist()
+    }
+
+    override fun setIsHideUserAgent(isHideUserAgent: Boolean) {
+        privacySettingsManager.setIsHideUserAgent(isHideUserAgent)
+        getSettings()
+            .copy(privacy = privacySettings)
+            .persist()
+    }
+
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -231,6 +273,10 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, settings.isShowComposeButtonOnMessageList)
         editor.putBoolean(KEY_THREAD_VIEW_ENABLED, settings.isThreadedViewEnabled)
         editor.putBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, settings.isUseMessageViewFixedWidthFont)
+        editor.putBoolean(KEY_AUTO_FIT_WIDTH, settings.isAutoFitWidth)
+        editor.putString(KEY_QUIET_TIME_ENDS, settings.quietTimeEnds)
+        editor.putString(KEY_QUIET_TIME_STARTS, settings.quietTimeStarts)
+        editor.putBoolean(KEY_QUIET_TIME_ENABLED, settings.isQuietTimeEnabled)
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
@@ -268,11 +314,39 @@ internal class RealGeneralSettingsManager(
             isShowComposeButtonOnMessageList = storage.getBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, true),
             isThreadedViewEnabled = storage.getBoolean(KEY_THREAD_VIEW_ENABLED, true),
             isUseMessageViewFixedWidthFont = storage.getBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, false),
+            isAutoFitWidth = storage.getBoolean(KEY_AUTO_FIT_WIDTH, true),
+            quietTimeEnds = storage.getStringOrDefault(KEY_QUIET_TIME_ENDS, "7:00"),
+            quietTimeStarts = storage.getStringOrDefault(KEY_QUIET_TIME_STARTS, "21:00"),
+            isQuietTimeEnabled = storage.getBoolean(KEY_QUIET_TIME_ENABLED, false),
+            isQuietTime = getIsQuietTime(),
+            privacy = privacySettingsManager.privacySettings,
         )
 
         updateSettingsFlow(settings)
 
         return settings
+    }
+
+    private fun getIsQuietTime(): Boolean {
+        val (isQuietTimeEnabled, quietTimeStarts, quietTimeEnds) = generalSettings?.let { settings ->
+            Triple(
+                settings.isQuietTimeEnabled,
+                settings.quietTimeStarts,
+                settings.quietTimeEnds,
+            )
+        } ?: run {
+            Triple(
+                storage.getBoolean(KEY_QUIET_TIME_ENABLED, false),
+                storage.getStringOrDefault(KEY_QUIET_TIME_STARTS, "21:00"),
+                storage.getStringOrDefault(KEY_QUIET_TIME_ENDS, "7:00"),
+            )
+        }
+
+        if (isQuietTimeEnabled) {
+            return false
+        }
+        val quietTimeChecker = QuietTimeChecker(clock, quietTimeStarts, quietTimeEnds)
+        return quietTimeChecker.isQuietTime
     }
 }
 

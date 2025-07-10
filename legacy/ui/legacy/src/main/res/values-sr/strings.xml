@@ -685,7 +685,7 @@
     <string name="messageview_decrypt_retry">Покушај поново</string>
     <string name="messageview_decrypt_incomplete">Шифрована порука мора бити преузета за дешифровање.</string>
     <string name="messageview_crypto_error_title">Грешка дешифровања имејла</string>
-    <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
+    <string name="recipient_error_non_ascii">Посебни знакови тренутно нису подржани!</string>
     <string name="recipient_error_parse_failed">Грешка у рашчлањивању адресе!</string>
     <string name="account_settings_crypto_hide_sign_only">Сакриј нешифроване потписе</string>
     <string name="account_settings_crypto_hide_sign_only_on">Биће приказани само шифровани потписи</string>
@@ -898,4 +898,13 @@
     <string name="empty_spam_action">Очисти непожељно</string>
     <string name="dialog_confirm_empty_spam_title">Потврда чишћења непожељног</string>
     <string name="dialog_confirm_empty_spam_message">Желите ли да очистите непожељно?</string>
+    <string name="open_camera">Отвори камеру</string>
+    <string name="attach_file">Приложи фајл</string>
+    <string name="camera_permission_denied">Дозвола за камеру одбијена! Није могуће снимити фотографију</string>
+    <string name="debug_enable_sync_debug_logging_title">Омогући евидентирање отклањања грешака у синхронизацији</string>
+    <string name="debug_enable_sync_debug_logging_summary">Евидентирајте дијагностичке информације синхронизације 24 сата</string>
+    <string name="debug_sync_export_logs_title">Извоз евиденција синхронизације</string>
+    <string name="swipe_action_archive_folder_not_set">Подесите архивски фолдер</string>
+    <string name="archiving_not_available_for_this_account">Архивирање није доступно за овај налог.</string>
+    <string name="swipe_action_change_swipe_gestures">Промена \nпокрета превлачења</string>
 </resources>

@@ -1,5 +1,7 @@
 package net.thunderbird.core.preference
 
+import net.thunderbird.core.preference.privacy.PrivacySettings
+
 /**
  * Stores a snapshot of the app's general settings.
  *
@@ -33,6 +35,12 @@ data class GeneralSettings(
     val isShowComposeButtonOnMessageList: Boolean,
     val isThreadedViewEnabled: Boolean,
     val isUseMessageViewFixedWidthFont: Boolean,
+    val isAutoFitWidth: Boolean,
+    val quietTimeEnds: String,
+    val quietTimeStarts: String,
+    val isQuietTimeEnabled: Boolean,
+    val isQuietTime: Boolean,
+    val privacy: PrivacySettings,
 )
 
 enum class BackgroundSync {

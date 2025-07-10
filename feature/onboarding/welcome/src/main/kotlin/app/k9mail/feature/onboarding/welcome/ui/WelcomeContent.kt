@@ -30,6 +30,7 @@ import app.k9mail.core.ui.compose.designsystem.template.LazyColumnWithHeaderFoot
 import app.k9mail.core.ui.compose.designsystem.template.ResponsiveContent
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.onboarding.welcome.R
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 
 private const val CIRCLE_COLOR = 0xFFEEEEEE
 private const val CIRCLE_SIZE_DP = 200
@@ -210,6 +211,7 @@ private fun WelcomeFooter(
         ButtonFilled(
             text = stringResource(id = R.string.onboarding_welcome_start_button),
             onClick = onStartClick,
+            modifier = Modifier.testTagAsResourceId("onboarding_welcome_start_button"),
         )
         if (showImportButton) {
             ButtonText(

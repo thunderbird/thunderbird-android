@@ -9,4 +9,5 @@
     <string name="account_oauth_loading_message">Saioa hasi OAuth erabiliaz</string>
     <string name="account_oauth_sign_in_description">Posta elektronikoaren hornitzailearenera bidaliko zaitugu saioa hasteko. Aplikazioari sarbidea baimendu behar diozu zure e-mail kontuan.</string>
     <string name="account_oauth_sign_in_button">Saioa hasi</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">laguntza artikulua</string>
 </resources>

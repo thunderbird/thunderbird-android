@@ -896,4 +896,13 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="empty_spam_action">Spam leeren</string>
     <string name="dialog_confirm_empty_spam_title">Leeren des Spams bestätigen</string>
     <string name="dialog_confirm_empty_spam_message">Möchtest du den Spam leeren?</string>
+    <string name="camera_permission_denied">Kameraberechtigung verweigert! Fotoaufnahme nicht möglich</string>
+    <string name="open_camera">Kamera öffnen</string>
+    <string name="attach_file">Datei anhängen</string>
+    <string name="debug_sync_export_logs_title">Synchronisationsprotokolle exportieren</string>
+    <string name="debug_enable_sync_debug_logging_title">Synchronisation des Fehlerprotokolls aktivieren</string>
+    <string name="debug_enable_sync_debug_logging_summary">Diagnoseinformationen zur Synchronisation für 24 Stunden protokollieren</string>
+    <string name="swipe_action_change_swipe_gestures">Ändere \nWischgesten</string>
+    <string name="archiving_not_available_for_this_account">Archivierung ist für dieses Konto nicht verfügbar.</string>
+    <string name="swipe_action_archive_folder_not_set">Archivordner einrichten</string>
 </resources>

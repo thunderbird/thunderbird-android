@@ -8,4 +8,5 @@
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sinkronkan semua akun</string>
     <string name="navigation_drawer_dropdown_action_show_accounts">Tampilkan akun</string>
     <string name="navigation_drawer_dropdown_action_hide_accounts">Sembunyikan akun</string>
+    <string name="navigation_drawer_dropdown_avount_view_selection_title">Daftar akun</string>
 </resources>

@@ -63,7 +63,7 @@
     <string name="search_results">Otsingu tulemused</string>
     <string name="new_messages_title">Uued kirjad</string>
     <string name="folders_action">Halda kaustu</string>
-    <string name="account_settings_action">Konto sätted</string>
+    <string name="account_settings_action">Konto seadistused</string>
     <string name="remove_account_action">Eemalda konto</string>
     <string name="mark_as_read_action">Märgi loetuks</string>
     <string name="send_alternate_action">Jaga</string>
@@ -88,7 +88,7 @@
     <string name="empty_trash_action">Tühjenda prügikast</string>
     <string name="expunge_action">Pühi ära</string>
     <string name="about_action">Teave</string>
-    <string name="prefs_title">Sätted</string>
+    <string name="prefs_title">Seadistused</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
     <string name="general_no_subject">(teemata)</string>
     <string name="general_no_sender">Saatja puudub</string>
@@ -117,9 +117,9 @@
     <string name="notification_action_spam">Rämps</string>
     <string name="notification_certificate_error_public">Sertifikaadiviga</string>
     <string name="notification_certificate_error_title">Sertifikaadi viga kontol <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_certificate_error_text">Kontrolli serveri sätteid</string>
+    <string name="notification_certificate_error_text">Kontrolli serveri seadistusi</string>
     <string name="notification_authentication_error_title">Autentimine ebaõnnestus</string>
-    <string name="notification_authentication_error_text">Autentimine ebaõnnestus konto <xliff:g id="account">%s</xliff:g> puhul. Uuenda serveri seadeid.</string>
+    <string name="notification_authentication_error_text">Autentimine ebaõnnestus konto <xliff:g id="account">%s</xliff:g> puhul. Uuenda serveri seadistusi.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Viga teavitusel</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -302,7 +302,7 @@
     <string name="account_setup_options_mail_display_count_all">kõik kirjad</string>
     <string name="move_copy_cannot_copy_unsynced_message">Serveriga sünkroniseerimata kirja pole võimalik kopeerida ega teisaldada</string>
     <string name="account_settings_push_advanced_title">Täpsemalt</string>
-    <string name="account_settings_title_fmt">Konto sätted</string>
+    <string name="account_settings_title_fmt">Konto seadistused</string>
     <string name="account_settings_notify_label">Uue sõnumi teated</string>
     <string name="account_settings_notify_sync_label">Sünkroniseerimise teated</string>
     <string name="account_settings_email_label">Sinu e-posti aadress</string>
@@ -344,7 +344,7 @@
     <string name="account_settings_quote_style_header">Päis (nagu Outlook)</string>
     <string name="account_settings_upload_sent_messages_label">Laadi üles saadetud kirjad</string>
     <string name="account_settings_upload_sent_messages_summary">Pärast saatmist tõsta kirjad saadetud kirjade kausta </string>
-    <string name="account_settings_general_title">Üldised sätted</string>
+    <string name="account_settings_general_title">Üldised seadistused</string>
     <string name="account_settings_reading_mail">Meili lugemine</string>
     <string name="account_settings_sync">Meili toomine</string>
     <string name="account_settings_folders">Kaustad</string>
@@ -395,7 +395,7 @@
     <string name="account_settings_sync_remote_deletetions_label">Süngi serveris kustutamised</string>
     <string name="account_settings_sync_remote_deletetions_summary">Eemalda kirjad kui need serveris kustutatud</string>
     <string name="account_settings_openpgp_missing">OpenPGP rakendus puudub - kas see on eemaldatud?</string>
-    <string name="folder_settings_title">Kausta sätted</string>
+    <string name="folder_settings_title">Kausta seadistused</string>
     <string name="folder_settings_in_top_group_label">Näita tipp grupis</string>
     <string name="folder_settings_clear_local_folder_action">Puhasta kohalikud kirjad</string>
     <string name="account_settings_incoming_label">Sissetuleva meili server</string>
@@ -429,7 +429,7 @@
     <string name="account_settings_notification_light_cyan">rohekassinine</string>
     <string name="account_settings_notification_light_magenta">fuksia</string>
     <string name="account_settings_composition_title">Kirja koostamise valikud</string>
-    <string name="account_settings_composition_label">Sõnumi koostamise vaikeseaded</string>
+    <string name="account_settings_composition_label">Sõnumi koostamise vaikeseadistused</string>
     <string name="account_settings_composition_summary">Määra oma vaikimisi Kellelt, BCC ja allkiri</string>
     <string name="account_settings_identities_label">Halda identiteete</string>
     <string name="account_settings_identities_summary">Seadista alternatiivsed \'Kellelt\'-aadressid ja allkirjad</string>
@@ -442,7 +442,7 @@
     <string name="manage_identities_edit_action">Muuda</string>
     <string name="manage_identities_move_up_action">Liiguta ülesse</string>
     <string name="manage_identities_move_down_action">Liiguta alla</string>
-    <string name="manage_identities_move_top_action">Liiguta ülesse / tee vaikesätteks</string>
+    <string name="manage_identities_move_top_action">Liiguta üles / tee vaikeseadistusteks</string>
     <string name="manage_identities_remove_action">Eemalda</string>
     <string name="edit_identity_description_label">Identiteedi kirjeldus</string>
     <string name="edit_identity_description_hint">(Valikuline)</string>
@@ -490,7 +490,7 @@
     <string name="setting_theme_dark">Tume</string>
     <string name="setting_theme_light">Hele</string>
     <string name="setting_theme_follow_system">Kasuta süsteemi vaikeseätet</string>
-    <string name="display_preferences">Kuvaseaded</string>
+    <string name="display_preferences">Kuvaseadistused</string>
     <string name="global_preferences">Üldine</string>
     <string name="debug_preferences">Silumine</string>
     <string name="privacy_preferences">Privaatsus</string>
@@ -503,7 +503,7 @@
     <string name="settings_message_theme_label">Kirjade vaate teema</string>
     <string name="settings_compose_theme_label">Koostaja teema</string>
     <string name="settings_language_label">Keel</string>
-    <string name="preference_search_no_results">Sätteid ei leitud</string>
+    <string name="preference_search_no_results">Seadistusi ei leidunud</string>
     <string name="settings_message_theme_selection_label">Fikseeritud kirja teema</string>
     <string name="settings_message_theme_selection_summary_off">Vali kirjavaate teema kirja vaadates</string>
     <string name="settings_message_theme_selection_summary_on">Kasuta fikseeritud kirjavaate teemat</string>
@@ -590,11 +590,11 @@
     <string name="dialog_attachment_progress_title">Laadib manuseid</string>
     <string name="settings_list_backup_category">Varundus</string>
     <string name="settings_list_miscellaneous_category">Muu</string>
-    <string name="settings_export_title">Ekspordi sätted</string>
+    <string name="settings_export_title">Ekspordi seadistused</string>
     <string name="settings_export_button">Ekspordi</string>
     <string name="settings_export_share_button">Jaga</string>
-    <string name="settings_export_progress_text">Ekspordib sätteid…</string>
-    <string name="settings_export_success_generic">Sätted edukalt eksporditud</string>
+    <string name="settings_export_progress_text">Seadistused on eksportimisel…</string>
+    <string name="settings_export_success_generic">Seadistused on edukalt eksporditud</string>
     <string name="settings_export_failure">Sätete eksportimine ebaõnnestus</string>
     <string name="webview_empty_message">Teksti ei ole</string>
     <string name="webview_contextmenu_link_view_action">Ava link</string>
@@ -677,10 +677,10 @@
     <string name="address_type_other">Muu</string>
     <string name="address_type_mobile">Mobiilne</string>
     <string name="compose_error_no_draft_folder">Mustandite kausta pole konfigureeritud sellele kontole!</string>
-    <string name="compose_error_no_key_configured">Ühtegi võtit pole selle konto jaoks konfigureeritud! Kontrolli oma sätteid.</string>
-    <string name="error_crypto_provider_incompatible">Krüpto pakkuja kasutab ühildumatut versiooni. Palun kontrolli oma seadeid!</string>
-    <string name="error_crypto_provider_connect">Ei suuda ühenduda krüpto pakkujaga, kontrolli oma seadeid või klõpsa uuesti proovimiseks krüpto ikoonil!</string>
-    <string name="error_crypto_provider_ui_required">Otspunktkrüpteerimise algatamine ebaõnnestus, palun kontrolli sätteid</string>
+    <string name="compose_error_no_key_configured">Ühtegi võtit pole selle konto jaoks konfigureeritud! Kontrolli oma seadistusi.</string>
+    <string name="error_crypto_provider_incompatible">Krüptoteenuse pakkuja kasutab ühildumatut versiooni. Palun kontrolli oma seadistusi!</string>
+    <string name="error_crypto_provider_connect">Ei suuda ühenduda krüptoteenuse pakkujaga, kontrolli oma seadistusi või klõpsa uuesti proovimiseks krüpto ikoonil!</string>
+    <string name="error_crypto_provider_ui_required">Otspunktkrüpteerimise algatamine ebaõnnestus, palun kontrolli seadistusi</string>
     <string name="error_crypto_inline_attach">PGP/INLINE režiim ei toeta manuseid!</string>
     <string name="enable_inline_pgp">Võimada PGP/INLINE</string>
     <string name="disable_inline_pgp">Blokeeri PGP/INLINE</string>
@@ -750,7 +750,7 @@
     <string name="unsigned_text_divider_label">Allkirjastamata tekst</string>
     <string name="crypto_no_provider_title">See e-kiri on krüpteeritud</string>
     <string name="crypto_no_provider_message">Selle kirja krüptimisel on kasutusel OpenPGP.\nKirjalugemsieks palun paigalda ja seadista sobilik OpenPGP rakendus.</string>
-    <string name="crypto_no_provider_button">Ava sätted</string>
+    <string name="crypto_no_provider_button">Ava seadistused</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">Krüpteerimine poe võimalik</string>
@@ -769,7 +769,7 @@
     <string name="dialog_autocrypt_mutual_description_1">Tavapäraselt krüptitakse kiri, kui sa sellise valiku teed või vastad krüptitud kirjale.</string>
     <string name="dialog_autocrypt_mutual_description_2">Kui kirja saatja ning saaja kasutavad Autocrypt-standardi kahepoolset režiimi, siis krüptimine on vaikimisi kasutusel.</string>
     <string name="dialog_autocrypt_mutual_learn_more">Lisateavet <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">leiad siit</a>.</string>
-    <string name="general_settings_title">Üldised sätted</string>
+    <string name="general_settings_title">Üldised seadistused</string>
     <string name="dialog_openkeychain_info_title">OpenPGP rakendus paigaldamata</string>
     <string name="dialog_openkeychain_info_install">Paigalda</string>
     <string name="account_settings_crypto_encrypt_subject">Krüpti ka kirja pealkiri</string>
@@ -898,4 +898,13 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="dialog_confirm_empty_spam_title">Kinnita rämpsposti kausta tühjendamine</string>
     <string name="dialog_confirm_empty_spam_message">Kas kindlasti soovid rämpsposti kausta tühjendada?</string>
     <string name="empty_spam_action">Tühjenda rämpsposti kaust</string>
+    <string name="attach_file">Lisa fail manusena</string>
+    <string name="open_camera">Ava kaamera</string>
+    <string name="camera_permission_denied">Puuduvad õigused kaamera kasutamiseks! Pildistada pole võimalik</string>
+    <string name="debug_enable_sync_debug_logging_title">Luba sünkroniseerimisandmete logimine</string>
+    <string name="debug_sync_export_logs_title">Ekspordi sünkroniseerimislogid</string>
+    <string name="debug_enable_sync_debug_logging_summary">Logi diagnostilised sünkroniseerimisandmed viimase 24 tunni kohta</string>
+    <string name="swipe_action_archive_folder_not_set">Määra arhiivikaust</string>
+    <string name="swipe_action_change_swipe_gestures">Muuda \nViiped</string>
+    <string name="archiving_not_available_for_this_account">Selle kasutajakonto jaoks pole arhiveerimine saadaval.</string>
 </resources>

@@ -8,22 +8,22 @@ import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
 @Preview(showBackground = true)
 internal fun SettingListPreview() {
     PreviewWithTheme {
-        SettingList(
-            onAccountSelectorClick = {},
+        FolderSettingList(
             onManageFoldersClick = {},
-            showAccountSelector = false,
+            onSettingsClick = {},
+            isUnifiedAccount = false,
         )
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-internal fun SettingListShowAccountSelectorPreview() {
+internal fun SettingListWithUnifiedAccountPreview() {
     PreviewWithTheme {
-        SettingList(
-            onAccountSelectorClick = {},
+        FolderSettingList(
             onManageFoldersClick = {},
-            showAccountSelector = true,
+            onSettingsClick = {},
+            isUnifiedAccount = true,
         )
     }
 }

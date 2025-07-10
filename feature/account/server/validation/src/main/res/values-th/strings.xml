@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_validation_error_authentication">ผิดพลาดในการรับรองความถูกต้อง</string>
+    <string name="account_server_validation_error_network">เกิดข้อผิดพลาดของเครือข่าย</string>
+    <string name="account_server_validation_error_server">เกิดข้อผิดพลาดของเซิร์ฟเวอร์</string>
+    <string name="account_server_validation_error_unknown">เกิดข้อผิดพลาดที่ไม่ทราบ</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">ไม่สามารถเข้าถึงใบรับรองไคลเอนต์ได้</string>
+    <string name="account_server_validation_error_details">รายละเอียด:\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">กำลังตรวจสอบตั้งค่าเซิร์ฟเวอร์ขาเข้า…</string>
+    <string name="account_server_validation_incoming_loading_error">ตรวจสอบการตั้งค่าเซิร์ฟเวอร์ขาเข้าล้มเหลว</string>
+    <string name="account_server_validation_incoming_success">ตรวจสอบการตั้งค่าเซิร์ฟเวอร์ขาเข้าแล้ว</string>
+    <string name="account_server_validation_outgoing_loading_message">กำลังตรวจสอบการตั้งค่าเซิร์ฟเวอร์ขาออก…</string>
+    <string name="account_server_validation_error_client_certificate_expired">ใบรับรองไคลเอนต์ไม่ถูกต้องอีกต่อไป</string>
+    <string name="account_server_validation_outgoing_loading_error">ตรวจสอบตั้งค่าเซิร์ฟเวอร์ขาออกล้มเหลว</string>
+    <string name="account_server_validation_outgoing_success">ตรวจสอบการตั้งค่าเซิร์ฟเวอร์ขาออกแล้ว</string>
+    <string name="account_server_validation_sign_in">กรุณาลงชื่อเข้าใช้</string>
+    <string name="account_server_validation_error_missing_server_capability_details">เซิร์ฟเวอร์ขาดความสามารถนี้:\n%s</string>
+</resources>

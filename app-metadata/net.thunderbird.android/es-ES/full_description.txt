@@ -1,4 +1,4 @@
-Thunderbird es una completa aplicación de correo electrónico que respeta tu privacidad. Puedes manejar múltiples cuentas de correo desde su vista unificada, mejorando tu productividad. Al ser enteramente de código abierto y creada por un equipo de desarrollo, junto a una comunidad global de voluntarios, con Thunderbird tus datos no están en venta. Nos financiamos con el apoyo económico de usuarios como tú, por lo que nunca verás publicidad en tu bandeja de entrada.
+Thunderbird es una completa aplicación de correo electrónico que respeta tu privacidad. Puedes gestionar varias cuentas de correo a la vez desde su vista unificada, mejorando tu productividad. Al ser enteramente de código abierto y creada por un equipo de desarrollo junto a una comunidad global de voluntarios, con Thunderbird tus datos no están en venta. Nos financiamos con el apoyo económico de usuarios como tú, por lo que nunca verás publicidad en tu bandeja de entrada.
 
 <b>Ventajas</b>
 <ul>

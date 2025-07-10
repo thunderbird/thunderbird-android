@@ -46,4 +46,21 @@
     <string name="notification_authentication_error_title">Falha na autenticação</string>
     <string name="notification_authentication_error_text">Falha na autenticação para <xliff:g id="account">%s</xliff:g>. Atualize as suas definições do servidor.</string>
     <string name="notification_notify_error_title">Erro de notificação</string>
+    <string name="folder_list_show_hidden_folders">Mostrar pastas escondidas</string>
+    <string name="dialog_confirm_empty_spam_title">Confirmar esvaziamento do spam</string>
+    <string name="settings_list_action_support">Apoie o <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="settings_ui_data_collection">Coleta de dados</string>
+    <string name="settings_ui_telemetry_title">Dados de uso e técnicos</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte de largura fixa ao exibir mensagens de texto simples</string>
+    <string name="save_attachment_action">Gravar anexo</string>
+    <string name="empty_spam_action">Esvaziar spam</string>
+    <string name="folder_settings_sync_label">Ativar sincronização</string>
+    <string name="load_more_messages_fmt">Carregar mais <xliff:g id="messages_to_load">%d</xliff:g> mensagens</string>
+    <string name="folder_settings_push_label">Ativar Push</string>
+    <string name="folder_settings_notifications_label">Notificações</string>
+    <string name="volume_navigation_title_short">Navegação com o botão de volume</string>
+    <string name="volume_navigation_summary">Navegue entre as mensagens usando os botões de volume</string>
+    <string name="settings_ui_telemetry_description">Partilha dados de desempenho, uso, hardware e personalização desta app com a Mozilla, para nos ajudar a melhorar o Thunderbird</string>
+    <string name="dialog_confirm_empty_spam_message">Deseja esvaziar a pasta de spam?</string>
+    <string name="folder_settings_visible_label">Mostrar pasta</string>
 </resources>

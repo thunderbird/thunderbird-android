@@ -4,7 +4,7 @@ El K-9 Mail és un client de correu electrònic de codi obert que funciona bàsi
 
 * Admet diversos comptes
 * Safata d'entrada unificada
-* Respecte de la privadesa (sense seguiment de cap mena, només es connecta al vostre proveïdor de correu electrònic)
+* Respecta la privadesa (sense seguiment de cap mena, només es connecta al vostre proveïdor de correu electrònic)
 * Sincronització automàtica de fons o notificacions «push»
 * Cerca local i del costat del servidor
 * Xifratge de correu electrònic OpenPGP (PGP/MIME)
@@ -20,5 +20,5 @@ Si teniu problemes amb el K-9 Mail, demaneu ajuda al nostre <a href="https://for
 <b>Voleu ajudar?</b>
 
 El K-9 Mail és un projecte desenvolupat per la comunitat. Si esteu interessat a ajudar a millorar l'aplicació, uniu-vos a nosaltres!
-Podeu trobar el nostre rastrejador d'errors, el codi font i la wiki a <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a> .
+Podeu trobar el nostre rastrejador d'errors, el codi font i la wiki a <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
 Sempre estem encantats de donar la benvinguda a nous desenvolupadors, dissenyadors, documentalistes, traductors, triadors d'errors i amics.

@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Iniciar sessão via OAuth</string>
     <string name="account_oauth_sign_in_description">Iremos encaminhar para o seu fornecedor de e-mail para iniciar sessão. Tem de permitir à aplicação o acesso à sua conta.</string>
     <string name="account_oauth_sign_in_button">Iniciar sessão</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">artigo de apoio</string>
+    <string name="account_oauth_google_sign_in_support_text">Se estiver com problemas ao entrar com Google, consulte o nosso {placeHolder}.</string>
 </resources>

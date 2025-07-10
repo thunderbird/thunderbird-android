@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">Gi tilgang til å tilby kontaktforslag, og vise kontaktnavn og -bilder.</string>
-    <string name="onboarding_permissions_notifications_description">Skru på merknader så du ikke går glipp av noen e-poster.</string>
-    <string name="onboarding_permissions_notifications_title">Merknader</string>
+    <string name="onboarding_permissions_contacts_description">Gi tilgang til å tilby kontaktforslag, og vise kontakters navn og -bilder.</string>
+    <string name="onboarding_permissions_notifications_description">Skru på varsler så du ikke går glipp av noen e-poster.</string>
+    <string name="onboarding_permissions_notifications_title">Varsler</string>
     <string name="onboarding_permissions_screen_title">Tilpass opplevelsen</string>
     <string name="onboarding_permissions_contacts_title">Kontakter</string>
     <string name="onboarding_permissions_allow_button">Tillat</string>

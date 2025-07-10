@@ -23,10 +23,10 @@
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <string name="changelog_snackbar_button_text">Wyświetl</string>
     <!--General strings that include the app name-->
-    <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%1$s</xliff:g>\" zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Konto „<xliff:g id="account">%1$s</xliff:g>” zostanie usunięte z <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <!--=== General strings ==================================================================-->
     <string name="authors">Autorzy</string>
-    <string name="about_title">O aplikacji <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_title">O aplikacji <xliff:g id="app_name">%s</xliff:g></string>
     <string name="accounts_title">Konta</string>
     <string name="compose_title_compose">Nowa wiadomość</string>
     <string name="compose_title_reply">Odpowiedz</string>
@@ -207,7 +207,7 @@
     <string name="global_settings_confirm_actions_title">Potwierdź czynności</string>
     <string name="global_settings_confirm_actions_summary">Pokaż potwierdzające okno dialogowe, gdy wykonujesz wybrane czynności</string>
     <string name="global_settings_confirm_action_delete">Usuń</string>
-    <string name="global_settings_confirm_action_delete_starred">Usuń oznaczoną gwiazdką (w widoku wiadomości)</string>
+    <string name="global_settings_confirm_action_delete_starred">Usuń oznaczoną gwiazdką (w widoku wiadomości)</string>
     <string name="global_settings_confirm_action_spam">Spam</string>
     <string name="global_settings_confirm_menu_discard">Odrzuć wiadomość</string>
     <string name="global_settings_confirm_menu_mark_all_read">Oznacz wszystkie wiadomości jako przeczytane</string>
@@ -642,10 +642,10 @@
         <item quantity="other">Pobieram %d wyników</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Pobieram %1$d z %2$d wyniku</item>
-        <item quantity="few">Pobieram %1$d z %2$d wyników</item>
-        <item quantity="many">Pobieram %1$d z %2$d wyników</item>
-        <item quantity="other">Pobieram %1$d z %2$d wyników</item>
+        <item quantity="one">Pobieram %1$d z %2$d wyniku</item>
+        <item quantity="few">Pobieram %1$d z %2$d wyników</item>
+        <item quantity="many">Pobieram %1$d z %2$d wyników</item>
+        <item quantity="other">Pobieram %1$d z %2$d wyników</item>
     </plurals>
     <string name="remote_search_error">Wyszukiwanie na serwerze nie powiodło się</string>
     <string name="account_settings_search">Wyszukiwanie</string>
@@ -657,7 +657,7 @@
     <string name="global_settings_threaded_view_summary">Grupuj wiadomości według wątków</string>
     <string name="upgrade_databases_title">Aktualizacja baz</string>
     <string name="upgrade_databases_unspecified">Aktualizacja baz…</string>
-    <string name="upgrade_database_format">Aktualizacja bazy konta \"<xliff:g id="account">%s</xliff:g>\"</string>
+    <string name="upgrade_database_format">Aktualizacja bazy konta „<xliff:g id="account">%s</xliff:g>”</string>
     <string name="global_settings_splitview_mode_label">Użyj widoku podzielonego ekranu</string>
     <string name="global_settings_splitview_always">Zawsze</string>
     <string name="global_settings_splitview_never">Nigdy</string>
@@ -713,7 +713,7 @@
     <string name="openpgp_dialog_sign_only_text">W tym trybie Twój klucz PGP zostanie użyty do utworzenia podpisu kryptograficznego niezaszyfrowanej wiadomości e-mail.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Nie szyfruje to wiadomości e-mail, ale sprawdza, czy została wysłana z Twojego klucza.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Podpisy mogą ulec uszkodzeniu przy wysyłaniu do list mailingowych.</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">W przypadku niektórych klientów, podpisy mogą być wyświetlane jako załączniki „signature.asc” .</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">W przypadku niektórych klientów, podpisy mogą być wyświetlane jako załączniki „signature.asc” .</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Zaszyfrowane wiadomości są zawsze opatrzone podpisem.</string>
     <string name="crypto_msg_title_plaintext">Tekst jawny</string>
     <string name="crypto_msg_unencrypted_sign_error">podpis „end-to-end” zawiera błąd</string>
@@ -734,7 +734,7 @@
     <string name="crypto_msg_encrypted_incomplete">musisz w pełni pobrać wiadomość, aby odszyfrować</string>
     <string name="crypto_msg_encrypted_no_provider">ale żadna aplikacja kryptograficzna nie jest skonfigurowana</string>
     <string name="crypto_msg_title_encrypted_unsigned">Zaszyfrowana</string>
-    <string name="crypto_msg_encrypted_unsigned">ale nie „end-to-end”</string>
+    <string name="crypto_msg_encrypted_unsigned">ale nie jest „end-to-end”</string>
     <string name="crypto_msg_title_encrypted_signed_e2e">Zaszyfrowana „end-to-end”</string>
     <string name="crypto_msg_encrypted_sign_verified">od znanego nadawcy</string>
     <string name="crypto_msg_title_encrypted_signed">Zaszyfrowana</string>
@@ -758,7 +758,7 @@
     <string name="account_settings_crypto_hide_sign_only">Ukryj niezaszyfrowane podpisy</string>
     <string name="account_settings_crypto_hide_sign_only_on">Tylko zaszyfrowane podpisy będą widoczne</string>
     <string name="account_settings_crypto_hide_sign_only_off">Wszystkie podpisy będą widoczne</string>
-    <string name="error_sign_only_no_encryption">Szyfrowanie nie jest dostępne w trybie sign-only!</string>
+    <string name="error_sign_only_no_encryption">Szyfrowanie nie jest dostępne w trybie sign-only!</string>
     <string name="unsigned_text_divider_label">Niepodpisany tekst</string>
     <string name="crypto_no_provider_title">Ta wiadomość e-mail jest zaszyfrowana</string>
     <string name="crypto_no_provider_message">Ta wiadomość e-mail została zaszyfrowana z użyciem OpenPGP.\n Aby ją odczytać, należy zainstalować i skonfigurować zgodną aplikację OpenPGP.</string>
@@ -811,7 +811,7 @@
     <string name="push_notification_state_wait_network">Uśpione, dopóki sieć nie będzie dostępna</string>
     <string name="push_notification_info">Stuknij, aby dowiedzieć się więcej.</string>
     <string name="push_info_title">Informacje push</string>
-    <string name="push_info_notification_explanation_text">Podczas korzystania z funkcji push, <xliff:g id="app_name">%1$s</xliff:g> utrzymuje połączenie z serwerem pocztowym. Android wymaga wyświetlania ciągłego, gdy aplikacja jest aktywna w tle. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="push_info_notification_explanation_text">Podczas korzystania z funkcji push <xliff:g id="app_name">%1$s</xliff:g> utrzymuje połączenie z serwerem pocztowym. Android wymaga wyświetlania ciągłego, gdy aplikacja jest aktywna w tle. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="push_info_configure_notification_text">Jednak Android pozwala również ukryć powiadomienie.</string>
     <string name="push_info_learn_more_text">Dowiedz się więcej</string>
     <string name="push_info_configure_notification_action">Skonfiguruj powiadomienie</string>
@@ -872,7 +872,7 @@
     <!--A user visible label for the email address copied to the clipboard-->
     <string name="clipboard_label_email_address">Adres e-mail</string>
     <!--A user visible label for the name and email address copied to the clipboard-->
-    <string name="clipboard_label_name_and_email_address">Imię, nazwisko i adres e-mail</string>
+    <string name="clipboard_label_name_and_email_address">Imię, nazwisko i adres e-mail</string>
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <string name="background_work_notification_remove_account">Usuwanie konta…</string>
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
@@ -903,4 +903,13 @@
     <string name="empty_spam_action">Opróżnij spam</string>
     <string name="dialog_confirm_empty_spam_title">Potwierdź opróżnienie spamu</string>
     <string name="dialog_confirm_empty_spam_message">Czy chcesz opróżnić folder spamu?</string>
+    <string name="open_camera">Otwórz aparat</string>
+    <string name="attach_file">Dołącz plik</string>
+    <string name="camera_permission_denied">Odmowa dostępu do aparatu! Nie można zrobić zdjęcia</string>
+    <string name="debug_enable_sync_debug_logging_summary">Rejestruj informacje diagnostyczne synchronizacji przez 24 godziny</string>
+    <string name="debug_sync_export_logs_title">Eksportuj dzienniki synchronizacji</string>
+    <string name="debug_enable_sync_debug_logging_title">Włącz rejestrowanie debugowania synchronizacji</string>
+    <string name="swipe_action_change_swipe_gestures">Zmień \ngesty przesunięcia</string>
+    <string name="archiving_not_available_for_this_account">Archiwizacja nie jest dostępna dla tego konta.</string>
+    <string name="swipe_action_archive_folder_not_set">Skonfiguruj folder archiwum</string>
 </resources>

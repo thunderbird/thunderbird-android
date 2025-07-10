@@ -4,4 +4,16 @@
     <string name="account_server_validation_error_network">Σφάλμα δικτύου</string>
     <string name="account_server_validation_error_unknown">Άγνωστο σφάλμα</string>
     <string name="account_server_validation_error_server">Σφάλμα διακομιστή</string>
+    <string name="account_server_validation_error_client_certificate_expired">Το πιστοποιητικό πελάτη δεν είναι πλέον έγκυρο</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">Δεν ήταν δυνατή η πρόσβαση στο πιστοποιητικό πελάτη</string>
+    <string name="account_server_validation_outgoing_loading_error">Αποτυχία ελέγχου των ρυθμίσεων του διακομιστή εξερχομένων</string>
+    <string name="account_server_validation_error_details">Λεπτομέρειες:\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Ο διακομιστής στερείται αυτής της δυνατότητας:\n%s</string>
+    <string name="account_server_validation_incoming_loading_message">Έλεγχος ρυθμίσεων διακομιστή εισερχομένων…</string>
+    <string name="account_server_validation_incoming_loading_error">Αποτυχία ελέγχου των ρυθμίσεων του διακομιστή εισερχομένων</string>
+    <string name="account_server_validation_outgoing_loading_message">Έλεγχος ρυθμίσεων διακομιστή εξερχομένων…</string>
+    <string name="account_server_validation_sign_in">Πραγματοποιήστε σύνδεση</string>
+    <string name="account_server_validation_incoming_success">Οι ρυθμίσεις του διακομιστή εισερχομένων επαληθεύτηκαν</string>
+    <string name="account_server_validation_outgoing_success">Οι ρυθμίσεις του διακομιστή εξερχομένων επαληθεύτηκαν</string>
+    <string name="account_server_validation_error_missing_server_capability">Έλλειψη δυνατότητας διακομιστή</string>
 </resources>

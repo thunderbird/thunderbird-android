@@ -2,12 +2,12 @@
 # env:
 #     NAME: Alice
 
-appId: com.fsck.k9.debug
+appId: net.thunderbird.android.debug
 ---
 
 ## Open contact
 - tapOn:
-    id: "com.fsck.k9.debug:id/name"
+    id: "net.thunderbird.android.debug:id/name"
     text: ${NAME}
 
 ## Delete contact
@@ -17,4 +17,3 @@ appId: com.fsck.k9.debug
     index: 1
 - tapOn:
     id: "android:id/button1"
-

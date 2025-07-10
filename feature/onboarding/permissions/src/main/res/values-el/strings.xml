@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_notifications_description">Ενεργοποιήστε τις ειδοποιήσεις για να μην χάνετε κανένα email.</string>
+    <string name="onboarding_permissions_notifications_description">Ενεργοποιήστε τις ειδοποιήσεις για να μη χάσετε κανένα email.</string>
     <string name="onboarding_permissions_notifications_title">Ειδοποιήσεις</string>
     <string name="onboarding_permissions_screen_title">Βελτιώστε την εμπειρία</string>
     <string name="onboarding_permissions_contacts_title">Επαφές</string>
     <string name="onboarding_permissions_skip_button">Παράλειψη</string>
     <string name="onboarding_permissions_contacts_description">Επιτρέψτε την πρόσβαση για να λαμβάνετε προτάσεις επαφών και για να εμφανίζονται τα ονόματα / φωτογραφίες.</string>
-    <string name="onboarding_permissions_allow_button">Επιτρέψτε</string>
+    <string name="onboarding_permissions_allow_button">Αποδοχή</string>
 </resources>

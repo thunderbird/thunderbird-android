@@ -1,14 +1,16 @@
 package com.fsck.k9.message.quote
 
-import com.fsck.k9.K9
 import java.text.DateFormat
 import java.util.Date
 import java.util.TimeZone
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * Convert a date into a locale-specific date string suitable for use in a header for a quoted message.
  */
-class QuoteDateFormatter {
+class QuoteDateFormatter(
+    private val generalSettingsManager: GeneralSettingsManager,
+) {
 
     fun format(date: Date): String {
         return try {
@@ -21,7 +23,7 @@ class QuoteDateFormatter {
 
     private fun createDateFormat(): DateFormat {
         return DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE).apply {
-            if (K9.isHideTimeZone) {
+            if (generalSettingsManager.getSettings().privacy.isHideTimeZone) {
                 timeZone = TimeZone.getTimeZone("UTC")
             }
         }

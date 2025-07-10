@@ -23,7 +23,7 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jeg stoler på dette oppsettet</string>
     <string name="account_setup_options_display_name_error_required">Navnet ditt kreves.</string>
     <string name="account_setup_error_network">Nettverksfeil. Vennligst sjekk tilkoblingen din og prøv på nytt.</string>
-    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dette er ikke gjenkjent som en gyldig e-postadresse.</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dette gjenkjennes ikke som en gyldig e-postadresse.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldri</string>
     <string name="account_setup_auto_discovery_loading_message">Finner oppsett …</string>
     <string name="account_setup_options_section_sync_options">Synkroniseringsalternativer</string>

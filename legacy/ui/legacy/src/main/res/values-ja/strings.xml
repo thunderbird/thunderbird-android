@@ -889,4 +889,12 @@
     <string name="dialog_confirm_empty_spam_message">本当に迷惑メールフォルダーを空にしますか？</string>
     <string name="empty_spam_action">迷惑メールフォルダーを空にする</string>
     <string name="dialog_confirm_empty_spam_title">迷惑メールフォルダーを空にするか確認してください</string>
+    <string name="open_camera">カメラを開く</string>
+    <string name="attach_file">ファイルを添付</string>
+    <string name="camera_permission_denied">カメラの権限が拒否されました！写真を撮影できません</string>
+    <string name="debug_enable_sync_debug_logging_title">同期のデバッグログを有効にする</string>
+    <string name="debug_enable_sync_debug_logging_summary">24 時間の同期の診断情報をログに記録します</string>
+    <string name="debug_sync_export_logs_title">同期ログをエクスポート</string>
+    <string name="swipe_action_archive_folder_not_set">アーカイブフォルダーを設定してください</string>
+    <string name="archiving_not_available_for_this_account">このアカウントではアーカイブは利用できません。</string>
 </resources>

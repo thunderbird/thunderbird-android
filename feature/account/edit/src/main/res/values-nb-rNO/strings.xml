@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_edit_save_server_settings_loading_message">Lagrer serverinnstillinger…</string>
-    <string name="account_edit_save_server_settings_error_message">Mislyktes i å lagre serverinnstillinger</string>
-    <string name="account_edit_save_server_settings_success_message">Serverinnstillingene er lagret</string>
+    <string name="account_edit_save_server_settings_error_message">Feil ved lagring av tjenerinnstillinger</string>
+    <string name="account_edit_save_server_settings_success_message">Tjenerinnstillingene er lagret</string>
 </resources>

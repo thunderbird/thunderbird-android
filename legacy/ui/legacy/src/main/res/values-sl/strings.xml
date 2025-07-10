@@ -906,4 +906,7 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="push_info_notification_explanation_text">Ko uporabljate potisna sporočila, <xliff:g id="app_name">%1$s</xliff:g> vzdržuje povezavo s poštnim strežnikom. Android zahteva prikaz obvestila, ko je aplikacija aktivna v ozadju. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="about_app_authors_thunderbird">Thunderbirdova mobilna ekipa</string>
     <string name="expand_content_description">Razširi</string>
+    <string name="dialog_confirm_empty_spam_title">Potrdite izpraznitev neželene pošte</string>
+    <string name="dialog_confirm_empty_spam_message">Ali želite izprazniti mapo z neželeno pošto?</string>
+    <string name="empty_spam_action">Izprazni neželeno pošto</string>
 </resources>

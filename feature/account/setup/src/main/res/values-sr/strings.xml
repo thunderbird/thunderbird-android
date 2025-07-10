@@ -14,7 +14,7 @@
     <string name="account_setup_special_folders_success_message">Сви посебни фолдери су аутоматски конфигурисани од стране сервера.</string>
     <string name="account_setup_special_folders_drafts_folder_label">Фолдер нацрта</string>
     <string name="account_setup_special_folders_sent_folder_label">Фолдер послатих</string>
-    <string name="account_setup_special_folders_spam_folder_label">Фолдер нежељених</string>
+    <string name="account_setup_special_folders_spam_folder_label">Фолдер непожељног</string>
     <string name="account_setup_special_folders_trash_folder_label">Фолдер смећа</string>
     <string name="account_setup_options_section_display_options">Прикажи опције</string>
     <string name="account_setup_options_account_name_label">Име налога</string>

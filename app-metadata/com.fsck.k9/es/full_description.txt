@@ -1,24 +1,24 @@
-K-9 Mail es un cliente de correo electrónico de código abierto que funciona básicamente con todos los proveedores de correo electrónico.
+K-9 Mail es un cliente de correo electrónico libre y de código abierto que funciona con casi todos los proveedores de correo del mundo.
 
 <b>Funciones</b>
 
 * Soporta múltiples cuentas
 * Bandeja de entrada unificada
-* Privacidad amigable (sin seguimiento en absoluto, sólo se conecta a su proveedor de correo electrónico)
-* Sincronización automática de fondo o notificaciones push
-* Búsqueda local y del lado del servidor
-* Cifrado de correo electrónico OpenPGP (PGP/MIME)
+* Nos importa tu privacidad (no hay seguimiento, sólo nos conectamos a tu proveedor de correo electrónico)
+* Sincroniza tu bandeja de entrada al instante, a intervalos regulares o de forma manual
+* Búsqueda local y remota en el servidor
+* Cifrado de correo electrónico OpenPG (PGP/MIME)
 
 Instala la aplicación <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> para cifrar/descifrar tus correos electrónicos usando OpenPGP.
 
 
-<b>apoyo</b>
+<b>Apóyanos</b>
 
-Si tienes problemas con K-9 Mail, pide ayuda en nuestro foro <a href="https://forum.k9mail.app">soporte</a>.
+Si tienes problemas con K-9 Mail pide ayuda en nuestro foro de <a href="https://forum.k9mail.app">soporte</a>.
 
 
 <b>¿Quieres ayudar?</b>
 
 K-9 Mail es un proyecto desarrollado por la comunidad. Si estás interesado en ayudar a mejorar la aplicación, ¡únete a nosotros!
-Puedes encontrar nuestro rastreador de errores, código fuente y wiki en <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
-Siempre estamos encantados de dar la bienvenida a nuevos desarrolladores, diseñadores, documentadores, traductores, evaluadores de errores y amigos.
+Puedes informar de errores, ver el código fuente y la wiki en <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Siempre estamos encantados de dar la bienvenida a nuevos desarrolladores, diseñadores, gente que mejore la documentación, traductores, probadores y amigos.

@@ -24,6 +24,8 @@ additional-css = ["assets/theme/last-changed.css", "assets/theme/navigation.css"
 
 [preprocessor]
 
+[preprocessor.alerts]
+
 [preprocessor.external-links]
 
 [preprocessor.last-changed]

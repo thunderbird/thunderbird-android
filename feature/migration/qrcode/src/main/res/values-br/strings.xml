@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Ret eo kaout ar c\'hamera</string>
+    <string name="migration_qrcode_permission_denied_message">Kit da arventennoù Android, pouezit war an aotreoù, hag aotreit haeziñ gant ar c\'hamera.</string>
+</resources>

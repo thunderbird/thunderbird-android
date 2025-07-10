@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_drawer_dropdown_action_manage_folders">ማህደሮችን ማስተዳደር</string>
+    <string name="navigation_drawer_dropdown_action_sync_all_accounts">ሁሉንም አካውንቶች አሳይ</string>
+    <string name="navigation_drawer_dropdown_action_show_accounts">አካውንቶችን አሳይ</string>
+    <string name="navigation_drawer_dropdown_action_hide_accounts">አካውንቶችን ደብቅ</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">ጠቅላላ መልእክት ማስቀመጫ</string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+ ዘጠና ዘጠኝ እና ከዛ በላይ</string>
+</resources>

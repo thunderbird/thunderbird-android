@@ -892,4 +892,17 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
     <string name="volume_navigation_summary">Nabigatu mezuen artean bolumen-teklak erabiliz mezuen ikuspegian</string>
     <string name="folder_settings_push_label">Gaitu Push</string>
     <string name="settings_list_action_support"><xliff:g id="app_name">%s</xliff:g> laguntza</string>
+    <string name="open_camera">Kamera ireki</string>
+    <string name="attach_file">Erantsi fitxategia</string>
+    <string name="camera_permission_denied">Kameraren baimena ukatuta! Ezin da argazkirik atera</string>
+    <string name="empty_spam_action">Hustu spama</string>
+    <string name="debug_enable_sync_debug_logging_title">Gaitu sinkronizazioaren arazketa erregistroak</string>
+    <string name="debug_enable_sync_debug_logging_summary">Erregistratu sinkronizazio diagnostikoen informazioa 24 orduz</string>
+    <string name="debug_sync_export_logs_title">Esportatu sinkronizazio erregistroak</string>
+    <string name="dialog_confirm_empty_spam_title">Berretsi spamaren hustuketa</string>
+    <string name="dialog_confirm_empty_spam_message">Hustu nahi duzu spam karpeta?</string>
+    <string name="expand_content_description">Hedatu</string>
+    <string name="swipe_action_archive_folder_not_set">Ezarri artxibo-karpeta</string>
+    <string name="swipe_action_change_swipe_gestures">Aldatu \nHatza pasatzeko keinuak</string>
+    <string name="archiving_not_available_for_this_account">Artxibatzea ez dago erabilgarri kontu honetarako.</string>
 </resources>

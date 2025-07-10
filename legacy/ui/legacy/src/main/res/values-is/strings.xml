@@ -898,4 +898,7 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="dialog_confirm_empty_spam_message">Viltu tæma ruslpóstmöppuna?</string>
     <string name="empty_spam_action">Tæma ruslpóst</string>
     <string name="dialog_confirm_empty_spam_title">Staðfesta eyðingu ruslpósts</string>
+    <string name="open_camera">Opna myndavél</string>
+    <string name="attach_file">Hengja við skrá</string>
+    <string name="camera_permission_denied">Heimild til að nota myndavél var hafnað! Tekst ekki að taka mynd</string>
 </resources>

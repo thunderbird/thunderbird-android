@@ -13,8 +13,8 @@
     <string name="user_forum_title">Uživatelské fórum</string>
     <string name="about_libraries">Softwarové knihovny</string>
     <string name="license">Licence</string>
-    <string name="changelog_title">Soupis změn</string>
-    <string name="changelog_loading_error">Nelze nahrát soupis změn.</string>
+    <string name="changelog_title">Seznam změn</string>
+    <string name="changelog_loading_error">Nepodařilo se nahrát seznam změn.</string>
     <string name="changelog_version_title">Verze %s</string>
     <string name="changelog_recent_changes_title">Co je nového</string>
     <string name="changelog_show_recent_changes">Po aktualizaci aplikace zobrazovat nejnovější změny</string>
@@ -106,7 +106,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nová zpráva</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nové zprávy</item>
-        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> pro účet <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Odpovědět</string>
@@ -283,7 +283,7 @@
     <string name="account_setup_options_mail_check_frequency_3hour">Každé 3 hodiny</string>
     <string name="account_setup_options_mail_check_frequency_6hour">Každých 6 hodin</string>
     <string name="account_setup_options_mail_check_frequency_12hour">Každých 12 hodin</string>
-    <string name="account_setup_options_mail_check_frequency_24hour">Každé 24 hodiny</string>
+    <string name="account_setup_options_mail_check_frequency_24hour">Každých 24 hodin</string>
     <string name="idle_refresh_period_label">Obnovit připojení IDLE</string>
     <string name="idle_refresh_period_2min">Každé 2 minuty</string>
     <string name="idle_refresh_period_3min">Každé 3 minuty</string>
@@ -644,7 +644,7 @@
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Stahování %1$d z %2$d výsledku</item>
         <item quantity="few">Stahování %1$d ze %2$d výsledků</item>
-        <item quantity="many">Stahování %1$d z %2$d výsledků</item>
+        <item quantity="other">Stahování %1$d z %2$d výsledků</item>
     </plurals>
     <string name="remote_search_error">Vzdálené vyhledávání se nezdařilo</string>
     <string name="account_settings_search">Hledání</string>
@@ -910,4 +910,13 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="empty_spam_action">Vysypat nevyžádané</string>
     <string name="dialog_confirm_empty_spam_title">Potvrdit vysypání nevyžádaných</string>
     <string name="dialog_confirm_empty_spam_message">Opravdu chcete vyprázdnit složku Nevyžádané?</string>
+    <string name="camera_permission_denied">Přístup k fotoaparátu zamítnut! Nepodařilo se pořídit fotografii</string>
+    <string name="attach_file">Přiložit soubor</string>
+    <string name="open_camera">Otevřít fotoaparát</string>
+    <string name="debug_enable_sync_debug_logging_title">Povolit ladicí protokolování synchronizace</string>
+    <string name="debug_enable_sync_debug_logging_summary">Zaznamenávat diagnostické informace o synchronizaci na 24 hodin</string>
+    <string name="debug_sync_export_logs_title">Exportovat protokoly synchronizace</string>
+    <string name="swipe_action_change_swipe_gestures">Změnit\ngesta posunutí</string>
+    <string name="archiving_not_available_for_this_account">Archivování není u tohoto účtu dostupné.</string>
+    <string name="swipe_action_archive_folder_not_set">Nastavte složku Archiv</string>
 </resources>

@@ -2,8 +2,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="settings_import_title">Importer innstillinger</string>
     <string name="settings_import_pick_document_button">Velg fil</string>
-    <string name="settings_import_button">Importer</string>
-    <string name="settings_import_success_generic">Innstillinger importert med hell</string>
+    <string name="settings_import_button">Importér</string>
+    <string name="settings_import_success_generic">Innstillinger korrekt importert</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Vennligst skriv inn passord</string>
     <string name="settings_import_authorization_required">Logg inn</string>
@@ -13,11 +13,11 @@
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_read_failure">Klarte ikke avlese innstillingsfil</string>
     <string name="settings_import_partial_failure">Klarte ikke importere noen innstillinger</string>
-    <string name="settings_import_status_success">Importert med hell</string>
-    <string name="settings_import_status_password_required">Passord er påkrevd</string>
-    <string name="settings_import_status_log_in_required">Innlogging kreves</string>
+    <string name="settings_import_status_success">Importert korrekt</string>
+    <string name="settings_import_status_password_required">Passord påkreves</string>
+    <string name="settings_import_status_log_in_required">Innlogging påkreves</string>
     <string name="settings_import_status_not_imported">Ikke importert</string>
-    <string name="settings_import_status_error">Importfeil</string>
+    <string name="settings_import_status_error">Feil ved importering</string>
     <string name="settings_import_later_button">Senere</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
     <string name="settings_importing">Importerer innstillinger …</string>
@@ -29,16 +29,16 @@
     <string name="settings_import_outgoing_server_password_hint">Passord for utgående tjener</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Bruk samme passord for utgående tjener</string>
     <string name="settings_import_server_name_format">Tjenernavn: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">Logg inn og innvilg programmet tilgang til e-postene dine for å bruke denne e-postkontoen med K-9 Mail.</string>
+    <string name="settings_import_oauth_description">Logg inn og gi programmet tilgang til e-postene dine for å bruke denne e-postkontoen.</string>
     <string name="settings_import_oauth_sign_in">Logg inn</string>
     <string name="settings_import_oauth_sign_in_with_google">Logg inn med Google</string>
-    <string name="settings_import_oauth_error_oauth_flow_canceled">Identitetsbekreftelse avbrutt</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Identitetsbekreftelse mislyktes med følgende feil: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_canceled">Autorisering avbrutt</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autorisering mislyktes med følgende feil: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 støttes ikke med denne tilbyderen.</string>
-    <string name="settings_import_oauth_error_browser_not_found">Fant ikke noen nettleser å bruke for å innvilge tilgang til kontoen din.</string>
+    <string name="settings_import_oauth_error_browser_not_found">Kunne ikke finne nettleser å bruke for å innvilge tilgang til kontoen din.</string>
     <string name="settings_import_general_settings_item">Generelle innstillinger</string>
-    <string name="settings_import_pick_app_button">Importer fra app</string>
-    <string name="settings_import_pick_app_dialog_title">Importer fra app</string>
+    <string name="settings_import_pick_app_button">Importér fra app</string>
+    <string name="settings_import_pick_app_dialog_title">Importér fra app</string>
     <string name="settings_import_scan_qr_code_button">Skann QR-kode</string>
     <string name="settings_import_app_version_not_supported">Appversjonen støttes ikke.</string>
 </resources>

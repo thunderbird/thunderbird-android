@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_with_google_button">Inicia la sessió amb Google</string>
+    <string name="account_oauth_sign_in_with_google_button">Iniciar sessió amb Google</string>
     <string name="account_oauth_loading_error">Ha fallat l\'inici de sessió amb OAuth</string>
     <string name="account_oauth_error_failed">L\'autorització ha fallat amb l\'error següent: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">L\'aplicació no ha pogut trobar un navegador per a concedir accés al vostre compte.</string>
     <string name="account_oauth_error_not_supported">Actualment, OAuth 2.0 no és compatible amb aquest proveïdor.</string>
     <string name="account_oauth_error_canceled">Autorització cancel·lada</string>
-    <string name="account_oauth_loading_message">Inicia la sessió utilitzant OAuth</string>
-    <string name="account_oauth_sign_in_description">Us redirigirem al vostre proveïdor de correu per a iniciar la sessió. Heu de concedir accés a l\'aplicació al vostre compte de correu electrònic.</string>
-    <string name="account_oauth_sign_in_button">Inicia la sessió</string>
+    <string name="account_oauth_loading_message">Iniciar sessió utilitzant OAuth</string>
+    <string name="account_oauth_sign_in_description">Us redigirem al seu proveïdor de correu per a iniciar la sessió. Heu de concedir accés a l\'aplicació per a poder accedir a les dades.</string>
+    <string name="account_oauth_sign_in_button">Iniciar sessió</string>
+    <string name="account_oauth_google_sign_in_support_text">Si experimentes problemes iniciant sessió amb Google, consulta el nostre {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">article de suport</string>
 </resources>

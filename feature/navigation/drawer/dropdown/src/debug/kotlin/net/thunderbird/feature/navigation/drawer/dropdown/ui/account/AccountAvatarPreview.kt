@@ -3,14 +3,14 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.account
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_ACCOUNT
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.MAIL_DISPLAY_ACCOUNT
 
 @Composable
 @Preview(showBackground = true)
 internal fun AccountAvatarPreview() {
     PreviewWithThemes {
         AccountAvatar(
-            account = DISPLAY_ACCOUNT,
+            account = MAIL_DISPLAY_ACCOUNT,
             onClick = {},
             selected = false,
         )
@@ -22,7 +22,7 @@ internal fun AccountAvatarPreview() {
 internal fun AccountAvatarWithUnreadCountPreview() {
     PreviewWithThemes {
         AccountAvatar(
-            account = DISPLAY_ACCOUNT.copy(
+            account = MAIL_DISPLAY_ACCOUNT.copy(
                 unreadMessageCount = 12,
             ),
             onClick = {},
@@ -36,7 +36,7 @@ internal fun AccountAvatarWithUnreadCountPreview() {
 internal fun AccountAvatarWithUnreadCountMaxedPreview() {
     PreviewWithThemes {
         AccountAvatar(
-            account = DISPLAY_ACCOUNT.copy(
+            account = MAIL_DISPLAY_ACCOUNT.copy(
                 unreadMessageCount = 100,
             ),
             onClick = {},
@@ -50,7 +50,7 @@ internal fun AccountAvatarWithUnreadCountMaxedPreview() {
 internal fun AccountAvatarSelectedPreview() {
     PreviewWithThemes {
         AccountAvatar(
-            account = DISPLAY_ACCOUNT.copy(
+            account = MAIL_DISPLAY_ACCOUNT.copy(
                 color = 0xFFFF0000.toInt(),
             ),
             onClick = {},

@@ -2,7 +2,7 @@
 <resources>
     <string name="designsystem_atom_password_textfield_hide_password">Ocultar contraseña</string>
     <string name="designsystem_molecule_email_address_input_label">Dirección de correo</string>
-    <string name="designsystem_atom_password_textfield_show_password">Ver contraseña</string>
+    <string name="designsystem_atom_password_textfield_show_password">Mostrar contraseña</string>
     <string name="designsystem_molecule_error_view_button_retry">Reintentar</string>
     <string name="designsystem_molecule_password_input_label">Contraseña</string>
 </resources>

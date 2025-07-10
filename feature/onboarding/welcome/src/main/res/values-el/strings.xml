@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Start</string>
-    <string name="onboarding_welcome_import_button">Ynstellingen ymportearje</string>
-    <string name="onboarding_welcome_developed_by">Φτιαγμένο από μια ειδική ομάδα στην MZLA Technologies και μια παγκόσμια κοινότητα εθελοντών. Μέλος της οικογένειας Mozilla.</string>
-    <string name="onboarding_welcome_text">Ανοιχτού κώδικα, με έμφαση στην ιδιωτικότητα και χωρίς διαφημίσεις εφαρμογή ηλ. ταχυδρομείου</string>
+    <string name="onboarding_welcome_start_button">Έναρξη</string>
+    <string name="onboarding_welcome_import_button">Εισαγωγή ρυθμίσεων</string>
+    <string name="onboarding_welcome_developed_by">Φτιαγμένο από μια ειδική ομάδα της MZLA Technologies και μια παγκόσμια κοινότητα εθελοντών. Μέλος της οικογένειας της Mozilla.</string>
+    <string name="onboarding_welcome_text">Μια εφαρμογή ηλεκτρονικού ταχυδρομείου ανοικτού κώδικα, με έμφαση στο απόρρητο και χωρίς διαφημίσεις για Android.</string>
 </resources>

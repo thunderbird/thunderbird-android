@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="special_mailbox_name_drafts">ડ્રાફ્ટ</string>
+    <string name="special_mailbox_name_sent">મોકલેલ્યા</string>
+    <string name="special_mailbox_name_trash">કચરો</string>
+    <string name="special_mailbox_name_inbox">ઇંબૉક્સ</string>
+    <string name="special_mailbox_name_outbox">આઇટબૉક્સ</string>
+</resources>

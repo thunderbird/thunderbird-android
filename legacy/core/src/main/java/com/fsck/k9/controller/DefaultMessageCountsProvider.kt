@@ -21,9 +21,9 @@ import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.feature.search.ConditionsTreeNode
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.SearchConditionTreeNode
 
 internal class DefaultMessageCountsProvider(
     private val accountManager: AccountManager,
@@ -32,7 +32,7 @@ internal class DefaultMessageCountsProvider(
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : MessageCountsProvider {
     override fun getMessageCounts(account: LegacyAccount): MessageCounts {
-        val search = LocalSearch().apply {
+        val search = LocalMessageSearch().apply {
             excludeSpecialFolders(account)
             limitToDisplayableFolders()
         }
@@ -44,7 +44,7 @@ internal class DefaultMessageCountsProvider(
         return getMessageCounts(searchAccount.relatedSearch)
     }
 
-    override fun getMessageCounts(search: LocalSearch): MessageCounts {
+    override fun getMessageCounts(search: LocalMessageSearch): MessageCounts {
         val accounts = search.getAccounts(accountManager)
 
         var unreadCount = 0
@@ -73,7 +73,7 @@ internal class DefaultMessageCountsProvider(
         }
     }
 
-    override fun getMessageCountsFlow(search: LocalSearch): Flow<MessageCounts> {
+    override fun getMessageCountsFlow(search: LocalMessageSearch): Flow<MessageCounts> {
         return callbackFlow {
             send(getMessageCounts(search))
 
@@ -93,7 +93,7 @@ internal class DefaultMessageCountsProvider(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun getMessageCounts(account: LegacyAccount, conditions: ConditionsTreeNode?): MessageCounts {
+    private fun getMessageCounts(account: LegacyAccount, conditions: SearchConditionTreeNode?): MessageCounts {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
             return MessageCounts(

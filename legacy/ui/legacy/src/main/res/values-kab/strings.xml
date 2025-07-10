@@ -63,4 +63,14 @@
     <string name="folder_settings_notifications_label">Ilɣa</string>
     <string name="notifications_title">Ilɣa</string>
     <string name="account_settings_vibrate_pattern_default">Amezwer</string>
+    <string name="general_settings_swipe_action_none">Ula d yiwen</string>
+    <string name="settings_language_label">Tutlayt</string>
+    <string name="expunge_action">Kkes</string>
+    <string name="version">Lqem</string>
+    <string name="message_compose_quote_header_send_date">Yettwazen:</string>
+    <string name="general_settings_swipe_action_move">Smutti</string>
+    <string name="setting_language_system">Tutlayt tamezwarut n unagraw</string>
+    <string name="about_website_title">Asmel Web</string>
+    <string name="compose_title_forward">Seḍfeṛ</string>
+    <string name="forward_action">Seḍfeṛ</string>
 </resources>

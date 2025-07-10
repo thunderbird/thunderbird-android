@@ -7,7 +7,7 @@ interface OAuth2TokenProvider {
         /**
          * A default timeout value to use when fetching tokens.
          */
-        const val OAUTH2_TIMEOUT = 30000L
+        const val OAUTH2_TIMEOUT: Int = 30000
     }
 
     /**

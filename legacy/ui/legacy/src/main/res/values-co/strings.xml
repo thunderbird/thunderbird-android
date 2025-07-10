@@ -188,7 +188,7 @@
     <string name="global_settings_privacy_hide_timezone_detail">Impiegà UTC invece di u fusu orariu lucale in l’intestature di messaghju è di risposta</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">Per a nutificazione d’un messaghju unicu</string>
     <string name="global_settings_notification_quick_delete_always">Sempre</string>
-    <string name="global_settings_lock_screen_notification_visibility_title">Nutificazioni di l’ammarchjunata di screnu</string>
+    <string name="global_settings_lock_screen_notification_visibility_title">Nutificazioni di u screnu d’ammarchjunata</string>
     <string name="global_settings_lock_screen_notification_visibility_app_name">Nome di l’appiecazione</string>
     <string name="global_settings_lock_screen_notification_visibility_message_count">Numeru di messaghji novi</string>
     <string name="global_settings_lock_screen_notification_visibility_senders">Numeru di messaghji è speditori</string>
@@ -834,4 +834,7 @@
     <string name="dialog_confirm_empty_spam_message">Vulete viutà u cartulare di i merzaghji ?</string>
     <string name="empty_spam_action">Squassà i merzaghji</string>
     <string name="dialog_confirm_empty_spam_title">Cunfirmà à squassatura di i merzaghji</string>
+    <string name="attach_file">Assucià un schedariu</string>
+    <string name="open_camera">Apre l’apparechju-fotò</string>
+    <string name="camera_permission_denied">U permessu d’accede à l’apparechju-fotò hè statu ricusatu. Impussibule di piglià una fotò</string>
 </resources>

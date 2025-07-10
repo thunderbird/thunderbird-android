@@ -30,6 +30,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.legacy.message.controller.MessageReference
@@ -62,6 +63,11 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.AccountManager
@@ -77,7 +83,7 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.feature.search.LocalMessageSearch
 import net.thunderbird.feature.search.SearchAccount
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -165,7 +171,7 @@ class MessageListFragment :
     private var rememberedSelected: Set<Long>? = null
     private var lastMessageClick = 0L
 
-    lateinit var localSearch: LocalSearch
+    lateinit var localSearch: LocalMessageSearch
         private set
     var isSingleAccountMode = false
         private set
@@ -232,6 +238,21 @@ class MessageListFragment :
 
         adapter = createMessageListAdapter()
 
+        generalSettingsManager.getSettingsFlow()
+            /**
+             * Skips the first emitted item from the settings flow,
+             * since the initial value of `showingThreadedList` is taken
+             * from the fragment's arguments rather than the flow.
+             */
+            .drop(1)
+            .map { it.isThreadedViewEnabled }
+            .distinctUntilChanged()
+            .onEach {
+                showingThreadedList = it
+                loadMessageList(forceUpdate = true)
+            }
+            .launchIn(lifecycleScope)
+
         isInitialized = true
     }
 
@@ -253,7 +274,7 @@ class MessageListFragment :
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
-        localSearch = BundleCompat.getParcelable(arguments, ARG_SEARCH, LocalSearch::class.java)!!
+        localSearch = BundleCompat.getParcelable(arguments, ARG_SEARCH, LocalMessageSearch::class.java)!!
 
         allAccounts = localSearch.searchAllAccounts()
         val searchAccounts = localSearch.getAccounts(accountManager).also(::updateAccountList)
@@ -2229,7 +2250,11 @@ class MessageListFragment :
         private const val STATE_ACTIVE_MESSAGE = "activeMessage"
         private const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
 
-        fun newInstance(search: LocalSearch, isThreadDisplay: Boolean, threadedList: Boolean): MessageListFragment {
+        fun newInstance(
+            search: LocalMessageSearch,
+            isThreadDisplay: Boolean,
+            threadedList: Boolean,
+        ): MessageListFragment {
             return MessageListFragment().apply {
                 arguments = bundleOf(
                     ARG_SEARCH to search,

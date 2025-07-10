@@ -36,8 +36,10 @@ class TestMessage extends MimeMessage {
             case TO:
                 return to;
             case CC:
-                return new Address[0];
             case BCC:
+            case X_ORIGINAL_TO:
+            case DELIVERED_TO:
+            case X_ENVELOPE_TO:
                 return new Address[0];
         }
 

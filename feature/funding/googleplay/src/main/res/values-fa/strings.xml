@@ -26,7 +26,7 @@
     <string name="funding_googleplay_contribution_reminder_positive_button">آری</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">اکنون خیر</string>
     <string name="funding_googleplay_contribution_list_empty_title">مشارکت درون‌برنامه‌ای در حال حاضر در دسترس نیست.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">جهت راه‌های دیگر حمایت از تاندربرد، از <xliff:g id="link_text">%s</xliff:g> بازدید نمایید</string>
+    <string name="funding_googleplay_contribution_list_empty_message">جهت راه‌های دیگر حمایت از تاندربرد، از <xliff:g id="link_text">%s</xliff:g> بازدید نمایید.</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">پرداخت در حال حاضر در دسترس نیست</string>
     <string name="funding_googleplay_contribution_error_show_more">نمایش جزییات بیشتر</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">نادیده گرفتن خطا</string>

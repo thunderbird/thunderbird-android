@@ -34,6 +34,7 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openUnifiedFolder = { counter.openUnifiedFolderCount++ },
                 openManageFolders = { counter.openManageFoldersCount++ },
                 openSettings = { counter.openSettingsCount++ },
+                openAddAccount = { counter.openAddAccountCount++ },
                 closeDrawer = { counter.closeDrawerCount++ },
                 featureFlagProvider = FakeFeatureFlagProvider(isEnabled = true),
                 viewModel = viewModel,
@@ -42,7 +43,7 @@ internal class DrawerViewKtTest : ComposeTest() {
 
         assertThat(counter).isEqualTo(verifyCounter)
 
-        viewModel.effect(Effect.OpenAccount(FakeData.DISPLAY_ACCOUNT.id))
+        viewModel.effect(Effect.OpenAccount(FakeData.MAIL_DISPLAY_ACCOUNT.id))
 
         verifyCounter.openAccountCount++
         assertThat(counter).isEqualTo(verifyCounter)
@@ -66,6 +67,9 @@ internal class DrawerViewKtTest : ComposeTest() {
 
         verifyCounter.closeDrawerCount++
         viewModel.effect(Effect.CloseDrawer)
+
+        verifyCounter.openAddAccountCount++
+        viewModel.effect(Effect.OpenAddAccount)
     }
 
     @Test
@@ -85,6 +89,7 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openUnifiedFolder = { },
                 openManageFolders = { },
                 openSettings = { },
+                openAddAccount = { },
                 closeDrawer = { },
                 featureFlagProvider = FakeFeatureFlagProvider(isEnabled = true),
                 viewModel = viewModel,
@@ -123,6 +128,7 @@ internal class DrawerViewKtTest : ComposeTest() {
                 openUnifiedFolder = {},
                 openManageFolders = {},
                 openSettings = {},
+                openAddAccount = {},
                 closeDrawer = {},
                 featureFlagProvider = FakeFeatureFlagProvider(isEnabled = true),
                 viewModel = viewModel,
@@ -157,6 +163,7 @@ internal class DrawerViewKtTest : ComposeTest() {
         var openUnifiedFolderCount: Int = 0,
         var openManageFoldersCount: Int = 0,
         var openSettingsCount: Int = 0,
+        var openAddAccountCount: Int = 0,
         var closeDrawerCount: Int = 0,
     )
 }

@@ -19,6 +19,7 @@ import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettings
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.doReturn
@@ -60,6 +61,15 @@ class MessageHelperTest : RobolectricTest() {
                 isShowComposeButtonOnMessageList = false,
                 isThreadedViewEnabled = false,
                 isUseMessageViewFixedWidthFont = false,
+                isAutoFitWidth = false,
+                isQuietTime = false,
+                isQuietTimeEnabled = false,
+                quietTimeEnds = "7:00",
+                quietTimeStarts = "7:00",
+                privacy = PrivacySettings(
+                    isHideTimeZone = false,
+                    isHideUserAgent = false,
+                ),
             ),
         )
     }

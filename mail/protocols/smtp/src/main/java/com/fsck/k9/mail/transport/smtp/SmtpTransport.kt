@@ -29,7 +29,6 @@ import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.net.Inet6Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -45,6 +44,10 @@ private const val SOCKET_SEND_MESSAGE_READ_TIMEOUT = 5 * 60 * 1000 // 5 minutes
 
 private const val SMTP_CONTINUE_REQUEST = 334
 private const val SMTP_AUTHENTICATION_FAILURE_ERROR_CODE = 535
+
+// We use "ehlo.thunderbird.net" for privacy reasons,
+// see https://ehlo.thunderbird.net/
+public const val SMTP_HELLO_NAME = "ehlo.thunderbird.net"
 
 class SmtpTransport(
     serverSettings: ServerSettings,
@@ -64,6 +67,7 @@ class SmtpTransport(
     private var outputStream: OutputStream? = null
     private var responseParser: SmtpResponseParser? = null
     private var is8bitEncodingAllowed = false
+    private var areUnicodeAddressesAllowed = false
     private var isEnhancedStatusCodesProvided = false
     private var largestAcceptableMessage = 0
     private var retryOAuthWithNewToken = false
@@ -100,10 +104,10 @@ class SmtpTransport(
 
             readGreeting()
 
-            val helloName = buildHostnameToReport()
-            var extensions = sendHello(helloName)
+            var extensions = sendHello(SMTP_HELLO_NAME)
 
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME")
+            areUnicodeAddressesAllowed = extensions.containsKey("SMTPUTF8")
             isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES")
             isPipeliningSupported = extensions.containsKey("PIPELINING")
 
@@ -123,7 +127,7 @@ class SmtpTransport(
                     outputStream = BufferedOutputStream(tlsSocket.getOutputStream(), 1024)
 
                     // Now resend the EHLO. Required by RFC2487 Sec. 5.2, and more specifically, Exim.
-                    extensions = sendHello(helloName)
+                    extensions = sendHello(SMTP_HELLO_NAME)
                     secureConnection = true
                 } else {
                     throw MissingCapabilityException("STARTTLS")
@@ -259,18 +263,6 @@ class SmtpTransport(
         }
     }
 
-    private fun buildHostnameToReport(): String {
-        val localAddress = socket!!.localAddress
-
-        // We use local IP statically for privacy reasons,
-        // see https://github.com/thunderbird/thunderbird-android/pull/3798
-        return if (localAddress is Inet6Address) {
-            "[IPv6:::1]"
-        } else {
-            "[127.0.0.1]"
-        }
-    }
-
     private fun parseOptionalSizeValue(sizeParameters: List<String>?) {
         if (sizeParameters != null && sizeParameters.isNotEmpty()) {
             val sizeParameter = sizeParameters.first()
@@ -355,7 +347,12 @@ class SmtpTransport(
 
         var entireMessageSent = false
         try {
-            val mailFrom = constructSmtpMailFromCommand(message.from, is8bitEncodingAllowed)
+            val mailFrom =
+                constructSmtpMailFromCommand(
+                    message.from,
+                    is8bitEncodingAllowed,
+                    message.usesAnyUnicodeAddresses(),
+                )
             if (isPipeliningSupported) {
                 val pipelinedCommands = buildList {
                     add(mailFrom)
@@ -404,14 +401,15 @@ class SmtpTransport(
         }
     }
 
-    private fun constructSmtpMailFromCommand(from: Array<Address>, is8bitEncodingAllowed: Boolean): String {
+    private fun constructSmtpMailFromCommand(
+        from: Array<Address>,
+        is8bitEncodingAllowed: Boolean,
+        canUseSmtputf8: Boolean,
+    ): String {
         val fromAddress = from.first().address
-        return if (is8bitEncodingAllowed) {
-            String.format("MAIL FROM:<%s> BODY=8BITMIME", fromAddress)
-        } else {
-            Log.d("Server does not support 8-bit transfer encoding")
-            String.format("MAIL FROM:<%s>", fromAddress)
-        }
+        val smtputf8 = if (areUnicodeAddressesAllowed && canUseSmtputf8) " SMTPUTF8" else ""
+        val eightbit = if (is8bitEncodingAllowed) " BODY=8BITMIME" else ""
+        return String.format(Locale.US, "MAIL FROM:<%s>%s%s", fromAddress, smtputf8, eightbit)
     }
 
     private fun ensureClosed() {
@@ -551,22 +549,21 @@ class SmtpTransport(
     }
 
     private fun saslOAuth(method: OAuthMethod) {
-        checkNotNull(oauthTokenProvider) {
-            "Can't perform saslOAuth with a null OAuthTokenProvider."
-        }
+        Log.d("saslOAuth() called with: method = $method")
         retryOAuthWithNewToken = true
 
-        val primaryEmail = oauthTokenProvider.primaryEmail
+        val primaryEmail = oauthTokenProvider?.primaryEmail
         val primaryUsername = primaryEmail ?: username
 
         try {
             attempOAuth(method, primaryUsername)
         } catch (negativeResponse: NegativeSmtpReplyException) {
+            Log.w(negativeResponse, "saslOAuth: failed to authenticate.")
             if (negativeResponse.replyCode != SMTP_AUTHENTICATION_FAILURE_ERROR_CODE) {
                 throw negativeResponse
             }
 
-            oauthTokenProvider.invalidateToken()
+            oauthTokenProvider!!.invalidateToken()
 
             if (!retryOAuthWithNewToken) {
                 handlePermanentOAuthFailure(method, negativeResponse)
@@ -612,7 +609,7 @@ class SmtpTransport(
     }
 
     private fun attempOAuth(method: OAuthMethod, username: String) {
-        val token = oauthTokenProvider!!.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT)
+        val token = oauthTokenProvider!!.getToken(OAuth2TokenProvider.OAUTH2_TIMEOUT.toLong())
         val authString = method.buildInitialClientResponse(username, token)
 
         val response = executeSensitiveCommand("%s %s", method.command, authString)

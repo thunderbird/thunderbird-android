@@ -1,1 +1,1 @@
-Thunderbird er en 100% åpenkildekodet og privatlivsfokusert e-postapp.
+Thunderbird er en 100% personvernsfokusert e-postapp, basert på åpen kildekode.

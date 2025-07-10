@@ -239,7 +239,7 @@
     <string name="general_settings_ui_density_default">Per defecte</string>
     <string name="general_settings_ui_density_relaxed">Relaxada</string>
     <string name="global_settings_privacy_hide_useragent">Amaga el client de correu</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Suprimeix el nom K-9 User-Agent de les capçaleres del missatge</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Esborrar la marca de l\'agent de l\'usuari de les capçaleres del missatge (el destinatari no veurà quin programa de correu s\'ha usat)</string>
     <string name="global_settings_privacy_hide_timezone">Amaga el fus horari</string>
     <string name="global_settings_privacy_hide_timezone_detail">Fes servir UTC en comptes del fus horari local a les capçaleres dels missatges i a la capçalera de resposta</string>
     <string name="global_settings_notification_quick_delete_title">Mostra el botó de \'Suprimir\'</string>
@@ -898,4 +898,14 @@
     <string name="save_attachment_action">Desa l\'adjunt</string>
     <string name="volume_navigation_title_short">Navegació amb els botons de volum</string>
     <string name="volume_navigation_summary">Navegueu entre missatges mitjançant les tecles de volum a la vista de missatges</string>
+    <string name="dialog_confirm_empty_spam_title">Confirmar buidat de Spam</string>
+    <string name="dialog_confirm_empty_spam_message">Desitgeu buildar la carpeta de spam?</string>
+    <string name="expand_content_description">Expandir</string>
+    <string name="empty_spam_action">Buidar Spam</string>
+    <string name="open_camera">Obrir Càmera</string>
+    <string name="attach_file">Adjuntar fitxer</string>
+    <string name="camera_permission_denied">Permisos de l\'ús de la càmera denegats. No s\'ha pogut fer la foto</string>
+    <string name="debug_enable_sync_debug_logging_title">Activar sincronització de registres de depuració</string>
+    <string name="debug_enable_sync_debug_logging_summary">El registre sincronitza informació de diagnòstic durant 24 hores</string>
+    <string name="debug_sync_export_logs_title">Exportar registres de sincronització</string>
 </resources>

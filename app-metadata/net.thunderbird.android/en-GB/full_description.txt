@@ -1,0 +1,31 @@
+Thunderbird is a powerful, privacy-focused email app. Effortlessly manage multiple email accounts from one app, with a Unified Inbox option for maximum productivity. Built on Open Source technology and supported by a dedicated team of developers alongside a global community of volunteers, Thunderbird never treats your private data as a product. Supported solely by financial contributions from our users, so you never have to see ads mixed in with your emails again.
+
+<b>What you can do</b>
+<ul>
+  <li>Ditch multiple apps and webmail. Use one app, with an optional Unified Inbox, to power through your day.</li>
+  <li>Enjoy a privacy-friendly email client that never collects or sells your personal data. We directly connect you to your email provider. That’s it!</li>
+  <li>Take your privacy to the next level by using OpenPGP email encryption (PGP/MIME) with the “OpenKeychain” app, to encrypt and decrypt your messages.</li>
+  <li>Choose to sync your email instantly, at set intervals, or on-demand. However you want to check your email, it’s up to you!</li>
+  <li>Find your important messages using both local and server-side search.</li>
+</ul>
+
+<b>Compatibility</b>
+<ul>
+  <li>Thunderbird works with IMAP and POP3 protocols, supporting a wide range of email providers, including Gmail, Outlook, Yahoo Mail, iCloud, and more.</li>
+</ul>
+
+<b>Why use Thunderbird</b>
+<ul>
+  <li>The trusted name in email for over 20 years - now on Android.</li>
+  <li>Thunderbird is fully funded by voluntary contributions from our users. We don’t mine your personal data. You are never the product.</li>
+  <li>Made by a team that is as efficiency-minded as you are. We want you to spend minimal time using the app while getting maximum in return.</li>
+  <li>With contributors from all over the world, Thunderbird for Android has been translated into more than 20 languages.</li>
+  <li>Supported by MZLA Technologies Corporation, a wholly owned subsidiary of the Mozilla Foundation.</li>
+</ul>
+
+<b>Open Source and Community</b>
+<ul>
+  <li>Thunderbird is free and open source, which means its code is available to see, modify, use and share freely. Its license also ensures that it will be free forever. You can think of Thunderbird as a gift from thousands of contributors to you.</li>
+  <li>We develop in the open with regular, transparent updates on our blog and mailing lists.</li>
+  <li>Our user support is powered by our global community. Find the answers you need, or step into the role of a contributor - whether it’s answering questions, translating the app, or telling your friends and family about Thunderbird.</li>
+</ul>

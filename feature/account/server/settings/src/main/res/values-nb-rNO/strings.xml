@@ -10,7 +10,7 @@
     <string name="account_server_settings_incoming_imap_namespace_label">Oppdag IMAP-navnerom automatisk</string>
     <string name="account_server_settings_incoming_top_bar_title">Innkommende tjenerinnstillinger</string>
     <string name="account_server_settings_authentication_password_cleartext">Normalt passord</string>
-    <string name="account_server_settings_authentication_label">Identitetsbekreftelse</string>
+    <string name="account_server_settings_authentication_label">Autentisering</string>
     <string name="account_server_settings_connection_security_none">Ingen</string>
     <string name="account_server_settings_port_label">Port</string>
     <string name="account_server_settings_incoming_imap_compression_label">Bruk sammenpakking</string>

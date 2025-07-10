@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Nisjani</string>
+    <string name="onboarding_welcome_start_button">Fillojani</string>
     <string name="onboarding_welcome_import_button">Importoni rregullime</string>
     <string name="onboarding_welcome_text">Një aplikacion Android për email, me burim të hapët, i përqendruar në privatësi dhe pa reklama.</string>
-    <string name="onboarding_welcome_developed_by">Krijuar nga një ekip enkas prej MZLA Technologies dhe një bashkësi globale vullnetarësh. Pjesë e familjes Mozilla.</string>
+    <string name="onboarding_welcome_developed_by">I zhvilluar nga një ekip i përkushtuar te MZLA Technologies dhe një bashkësi mbarëbotërore vullnetarësh. Pjesë e familjes Mozilla.</string>
 </resources>

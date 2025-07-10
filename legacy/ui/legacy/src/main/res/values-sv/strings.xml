@@ -898,4 +898,13 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="dialog_confirm_empty_spam_message">Vill du tömma skräppostmappen?</string>
     <string name="empty_spam_action">Töm skräppost</string>
     <string name="dialog_confirm_empty_spam_title">Bekräfta töm skräppost</string>
+    <string name="open_camera">Öppna kamera</string>
+    <string name="attach_file">Bifoga fil</string>
+    <string name="camera_permission_denied">Kamerabehörighet nekad! Det gick inte att ta foto</string>
+    <string name="debug_sync_export_logs_title">Exportera synkroniseringsloggar</string>
+    <string name="debug_enable_sync_debug_logging_title">Aktivera felsökningsloggning för synkronisering</string>
+    <string name="debug_enable_sync_debug_logging_summary">Logga diagnostisk information om synkronisering i 24 timmar</string>
+    <string name="swipe_action_archive_folder_not_set">Konfigurera arkivmapp</string>
+    <string name="swipe_action_change_swipe_gestures">Ändra \nsvepgester</string>
+    <string name="archiving_not_available_for_this_account">Arkivering är inte tillgängligt för det här kontot.</string>
 </resources>

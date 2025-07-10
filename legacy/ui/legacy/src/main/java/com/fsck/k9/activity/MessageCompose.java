@@ -118,8 +118,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
-import net.thunderbird.feature.search.LocalSearch;
+import net.thunderbird.feature.search.LocalMessageSearch;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
 import net.thunderbird.core.logging.legacy.Log;
@@ -191,6 +192,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final Preferences preferences = DI.get(Preferences.class);
+    private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
 
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
 
@@ -643,7 +645,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
-                .setHideTimeZone(K9.isHideTimeZone())
+                .setHideTimeZone(generalSettingsManager.getPrivacySettings().isHideTimeZone())
                 .setInReplyTo(repliedToMessageId)
                 .setReferences(referencedMessageIds)
                 .setRequestReadReceipt(requestReadReceipt)
@@ -1078,7 +1080,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void openDefaultFolder() {
         long folderId = defaultFolderProvider.getDefaultFolder(account);
-        LocalSearch search = new LocalSearch();
+        LocalMessageSearch search = new LocalMessageSearch();
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folderId);
         MessageList.actionDisplaySearch(this, search, false, true);

@@ -8,10 +8,10 @@
     <string name="unread_widget_folder_enabled_summary">Εμφάνιση του αριθμού μη αναγνωσμένων μηνυμάτων ενός μόνο φακέλου</string>
     <string name="unread_widget_folder_title">Φάκελος</string>
     <string name="unread_widget_folder_summary">Ο φάκελος για τον οποίον να εμφανίζεται ο αριθμός μη αναγνωσμένων μηνυμάτων</string>
-    <string name="unread_widget_action_done">Ολοκληρώθηκε</string>
+    <string name="unread_widget_action_done">Τέλος</string>
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">Δεν έχει επιλεγεί λογαριασμός</string>
     <string name="unread_widget_folder_not_selected">Δεν έχει επιλεγεί φάκελος</string>
-    <string name="unread_widget_choose_account_title">Επιλογή Λογαριασμού</string>
+    <string name="unread_widget_choose_account_title">Επιλογή λογαριασμού</string>
     <string name="unread_widget_label">Πλήθος μη αναγνωσμένων</string>
 </resources>

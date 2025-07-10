@@ -42,7 +42,7 @@ class TbOnboardingMigrationScreenKtTest : ComposeTest() {
             )
         }
 
-        composeTestRule.onNodeWithTag("AddAccountButton")
+        composeTestRule.onNodeWithTag("onboarding_migration_new_account_button")
             .performScrollTo()
             .performClick()
 

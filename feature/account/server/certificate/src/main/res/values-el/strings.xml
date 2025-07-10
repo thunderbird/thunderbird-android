@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">Προειδοποίηση</string>
-    <string name="account_server_certificate_unknown_error_subtitle">Σφάλμα πιστοποίησης</string>
-    <string name="account_server_certificate_button_back">Πηγαίνετε πίσω (προτείνεται)</string>
-    <string name="account_server_certificate_button_advanced">Προχωρημένα</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Σφάλμα πιστοποιητικού</string>
+    <string name="account_server_certificate_button_back">Επιστροφή (προτείνεται)</string>
+    <string name="account_server_certificate_button_advanced">Σύνθετα</string>
     <string name="account_server_certificate_button_continue">Αποδοχή κινδύνου και συνέχεια</string>
     <string name="account_server_certificate_section_title">Πιστοποιητικό διακομιστή</string>
     <string name="account_server_certificate_issuer">Εκδότης</string>
     <string name="account_server_certificate_fingerprints_section">Αποτυπώματα</string>
+    <string name="account_server_certificate_unknown_error_description_format">Η εφαρμογή εντόπισε μια πιθανή απειλή ασφαλείας και δεν προχώρησε στη σύνδεση με το <xliff:g id="serverName">%s</xliff:g>.\nΕάν συνεχίσετε, οι επιτιθέμενοι ενδέχεται να αποπειραθούν να υποκλέψουν πληροφορίες, όπως τον κωδικό πρόσβασης ή τα email σας.</string>
+    <string name="account_server_certificate_not_valid_before">Μη έγκυρο πριν από</string>
+    <string name="account_server_certificate_not_valid_after">Μη έγκυρο μετά από</string>
+    <string name="account_server_certificate_subject">Θέμα</string>
+    <string name="account_server_certificate_subject_alternative_names">Subject alternative names (SAN)</string>
 </resources>

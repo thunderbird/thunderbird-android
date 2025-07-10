@@ -85,7 +85,7 @@ import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.feature.search.LocalSearch;
+import net.thunderbird.feature.search.LocalMessageSearch;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import net.thunderbird.core.logging.legacy.Log;
@@ -2505,7 +2505,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
-    public void clearNotifications(LocalSearch search) {
+    public void clearNotifications(LocalMessageSearch search) {
         put("clearNotifications", null, () -> {
             notificationOperations.clearNotifications(search);
         });

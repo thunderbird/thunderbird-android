@@ -9,4 +9,6 @@
     <string name="account_oauth_error_failed">Otorisasi gagal akibat galat berikut: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 saat ini tidak didukung oleh penyedia ini.</string>
     <string name="account_oauth_error_browser_not_available">Aplikasi ini tidak menemukan peramban yang bisa digunakan untuk memberikan akses ke akun Anda.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">bantuan</string>
+    <string name="account_oauth_google_sign_in_support_text">Jika Anda mengalami masalah saat masuk dengan Google, silakan baca {placeHolder}.</string>
 </resources>

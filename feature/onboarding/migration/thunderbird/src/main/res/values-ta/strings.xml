@@ -11,6 +11,6 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">தண்டர்பேர்ட் டெச்க்டாப்பில், செல்லுங்கள்:</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">ச்பேச் கருவிப்பட்டியில் ‘அமைப்புகள்’ (கீழ் இடது)</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">‘மொபைலுக்கு ஏற்றுமதி’ என்பதைத் தேர்ந்தெடுக்கவும்</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">இறக்குமதிக்கு தண்டர்பேர்ட் டெச்க்டாப் 128 இன் அண்மைக் கால பதிப்பு தேவைப்படுகிறது.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">இறக்குமதிக்கு தண்டர்பேர்ட் டெச்க்டாப் 128 இன் அண்மைக் கால பதிப்பு தேவைப்படுகிறது.<xliff:g id="link_text">%s</xliff:g></string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">தண்டர்பேர்டைப் புதுப்பிப்பது எப்படி என்பதை அறிக.</string>
 </resources>

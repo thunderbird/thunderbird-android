@@ -309,4 +309,23 @@ public class Address implements Serializable {
             return s;
         }
     }
+
+    /**
+     *  Returns true if either the localpart or the domain of this
+     *  address contains any non-ASCII characters, and false if all
+     *  characters used are within ASCII.
+     *
+     *  Note that this returns false for an address such as "Naïve
+     *  Assumption &lt;naive.assumption@example.com&gt;", because both
+     *  localpart and domain are all-ASCII. There's an ï there, but
+     *  it's not in either localpart or domain.
+     */
+    public boolean needsUnicode() {
+        if (mAddress == null)
+            return false;
+        int i = mAddress.length()-1;
+        while (i >= 0 && mAddress.charAt(i) < 128)
+            i--;
+        return i >= 0;
+    }
 }

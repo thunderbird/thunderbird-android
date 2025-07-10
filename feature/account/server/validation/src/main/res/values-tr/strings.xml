@@ -13,9 +13,7 @@
     <string name="account_server_validation_error_server">Sunucu hatası</string>
     <string name="account_server_validation_error_missing_server_capability">Eksik sunucu özelliği</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">İstemci sertifikasına erişilemedi</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Sunucuda aşağıdaki özellik eksik:
-\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Sunucuda aşağıdaki özellik eksik: \n%s</string>
     <string name="account_server_validation_error_client_certificate_expired">İstemci sertifikası artık geçerli değil</string>
-    <string name="account_server_validation_error_details">Ayrıntılar:
-\n%s</string>
+    <string name="account_server_validation_error_details">Ayrıntılar: \n%s</string>
 </resources>

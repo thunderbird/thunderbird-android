@@ -31,6 +31,7 @@ import com.fsck.k9.message.signature.HtmlSignatureRemover;
 import com.fsck.k9.message.signature.TextSignatureRemover;
 import net.thunderbird.core.android.account.QuoteStyle;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 public class QuotedMessagePresenter {
@@ -42,6 +43,7 @@ public class QuotedMessagePresenter {
     private static final int UNKNOWN_LENGTH = 0;
 
     private final TextQuoteCreator textQuoteCreator = DI.get(TextQuoteCreator.class);
+    private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
     private final QuotedMessageMvpView view;
     private final MessageCompose messageCompose;
 
@@ -111,7 +113,7 @@ public class QuotedMessagePresenter {
             }
 
             // Add the HTML reply header to the top of the content.
-            quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(messageViewInfo.message, content, quoteStyle);
+            quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(messageViewInfo.message, content, quoteStyle, generalSettingsManager);
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
             view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),

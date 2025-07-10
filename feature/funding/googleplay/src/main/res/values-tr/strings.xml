@@ -9,14 +9,32 @@
     <string name="funding_googleplay_contribution_footer_payment_button">Ödemeye geç</string>
     <string name="funding_googleplay_contribution_footer_manage_button">Aylık ödemeyi değiştir</string>
     <string name="funding_googleplay_contribution_title">Thunderbird’ü Destekleyin</string>
-    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Thunderbird’ü yaşatmamıza yardım edin</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Yeni bir bağış daha yapın</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Bağışlarınız vergiden düşülemez.</string>
     <string name="funding_googleplay_contribution_list_empty_title">Şu anda uygulama içi bağış yapılamıyor.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">Thunderbird\'ü nasıl destekleyebileceğinizi öğrenmek için <xliff:g id="link_text">%s</xliff:g>\'i ziyaret edin.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Thunderbird\'ü nasıl destekleyebileceğinizi öğrenmek için <xliff:g id="link_text">%s</xliff:g> sayfasını ziyaret edin.</string>
     <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Şu anda ödeme yapılamıyor</string>
     <string name="funding_googleplay_contribution_list_error_retry_button">Yeniden dene</string>
     <string name="funding_googleplay_contribution_error_show_more">Ayrıntıları göster</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Hatayı kapat</string>
     <string name="funding_googleplay_contribution_error_unknown">Bilinmeyen hata</string>
     <string name="funding_googleplay_contribution_error_purchase_failed">Satın alma başarısız oldu.</string>
+    <string name="funding_googleplay_contribution_header_thank_you">Hepimizden içten bir teşekkür!</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Desteğiniz bizi ileri itiyor! En ufak katkılar bile değişim adına küçük dalgalar yaratarak ilerleyebilir, ve aramızda olmanıza çok minnettarız.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Bağışlarınız Thunderbird\'ün gelişimini ileri taşıyor ve desteğiniz için gerçekten minnettarız.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_title">Değerli Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Temel Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Sıradışı Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_title">Önemli Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_title">Ezber Bozan Katkı</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Şu anda bağış yapılamıyor.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_title">Büyük Katkı</string>
+    <string name="funding_googleplay_contribution_reminder_title">Thunderbird’ü destekle</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Reklam göstermiyoruz.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Verilerinizi satmıyoruz.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Sadece sizin gibi kullanıcılar tarafından finanse ediliyoruz.</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Evet</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Şimdi değil</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird ücretsiz ve açık kaynaklıdır.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">Harika şeyler yapmamıza yardım ediyorsunuz! Bu seviyede katkıda bulunarak, büyümeye devam etmemize izin vererek anlamlı adımlar atmamıza yardımcı olursunuz.</string>
 </resources>

@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_button">Увайсці</string>
+    <string name="account_oauth_sign_in_description">Мы перанакіруем вас на старонку вашага пастаўшчыка паслуг электроннай пошты для ўваходу. Вам трэба даць праграме доступ да вашага ўліковага запісу электроннай пошты.</string>
+</resources>

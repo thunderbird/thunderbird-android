@@ -2,4 +2,6 @@
 <resources>
     <string name="onboarding_welcome_start_button">Iniciar</string>
     <string name="onboarding_welcome_import_button">Importar configurações</string>
+    <string name="onboarding_welcome_text">Uma app de email para Android, de código aberto, sem anúncios e com foco na privacidade.</string>
+    <string name="onboarding_welcome_developed_by">Desenvolvido por uma equipa dedicada na MZLA Technologies e uma comunidade global de voluntários. Parte da família Mozilla.</string>
 </resources>

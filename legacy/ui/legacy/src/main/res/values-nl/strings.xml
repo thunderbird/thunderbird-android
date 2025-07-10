@@ -299,7 +299,7 @@
     <string name="account_setup_options_mail_display_count_5000">5000 berichten</string>
     <string name="account_setup_options_mail_display_count_10000">10000 berichten</string>
     <string name="account_setup_options_mail_display_count_all">alle berichten</string>
-    <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen, omdat deze niet is gesynchroniseerd met de server</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Kan bericht niet kopiëren of verplaatsen, omdat deze niet met de server is gesynchroniseerd</string>
     <string name="account_settings_push_advanced_title">Geavanceerd</string>
     <string name="account_settings_title_fmt">Accountinstellingen</string>
     <string name="account_settings_notify_label">Nieuwe e-mailmelding</string>
@@ -892,4 +892,13 @@
     <string name="dialog_confirm_empty_spam_message">Wilt u de spammap legen?</string>
     <string name="empty_spam_action">Spam legen</string>
     <string name="dialog_confirm_empty_spam_title">Spam legen bevestigen</string>
+    <string name="attach_file">Bestand toevoegen</string>
+    <string name="camera_permission_denied">Cameratoegang geweigerd! Niet mogelijk om een foto te maken</string>
+    <string name="open_camera">Camera openen</string>
+    <string name="debug_sync_export_logs_title">Synchronisatielogboeken exporteren</string>
+    <string name="debug_enable_sync_debug_logging_title">Debuglogging synchronisatie inschakelen</string>
+    <string name="debug_enable_sync_debug_logging_summary">Log 24 uur diagnostische informatie over synchronisatie</string>
+    <string name="swipe_action_archive_folder_not_set">Archiefmap instellen</string>
+    <string name="swipe_action_change_swipe_gestures">Veegacties \naanpassen</string>
+    <string name="archiving_not_available_for_this_account">Archivering is voor deze account niet beschikbaar.</string>
 </resources>

@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_error_network">Fazi rouedad. Mar plij, gwiriañ stad hor c\'hennask ha klaskit en-dro.</string>
+    <string name="account_setup_error_unknown">Fazi dianav</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">Chomlec\'h postel rekis.</string>
+</resources>
