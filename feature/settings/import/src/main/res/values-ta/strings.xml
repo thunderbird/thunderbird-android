@@ -26,7 +26,7 @@
     <string name="settings_import_oauth_description">இந்த மின்னஞ்சல் கணக்கைப் பயன்படுத்த, நீங்கள் உள்நுழைந்து உங்கள் மின்னஞ்சல்களுக்கான பயன்பாட்டு அணுகலை வழங்க வேண்டும்.</string>
     <string name="settings_import_oauth_sign_in_with_google">Google உடன் உள்நுழைக</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">ஏற்பு ரத்து செய்யப்பட்டது</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">பின்வரும் பிழையுடன் ஏற்பு தோல்வியடைந்தது: &lt;xliff: g ஐடி = \"பிழை\"&gt;%s &lt;/xliff: g&gt;</string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">பின்வரும் பிழையுடன் ஏற்பு தோல்வியடைந்தது: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAUTH 2.0 தற்போது இந்த வழங்குநருடன் ஆதரிக்கப்படவில்லை.</string>
     <string name="settings_import_oauth_error_browser_not_found">உங்கள் கணக்கிற்கு அணுகலை வழங்க பயன்படுத்த உலாவியை பயன்பாட்டால் கண்டுபிடிக்க முடியவில்லை.</string>
     <string name="settings_import_app_version_not_supported">பயன்பாட்டு பதிப்பு ஆதரிக்கப்படவில்லை.</string>
