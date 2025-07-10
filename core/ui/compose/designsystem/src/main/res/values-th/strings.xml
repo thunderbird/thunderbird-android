@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">ซ่อนรหัสผ่าน</string>
+    <string name="designsystem_atom_password_textfield_show_password">แสดงรหัสผ่าน</string>
+    <string name="designsystem_molecule_email_address_input_label">ที่อยู่อีเมล์</string>
+    <string name="designsystem_molecule_password_input_label">รหัสผ่าน</string>
+    <string name="designsystem_molecule_error_view_button_retry">ลองใหม่</string>
+</resources>

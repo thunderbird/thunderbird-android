@@ -23,8 +23,8 @@
     <string name="archive_action">காப்பகம் செலுத்து</string>
     <string name="spam_action">பயனற்ற</string>
     <string name="forward_action">முன் அனுப்பு</string>
-    <string name="move_action">அனுப்பு</string>
-    <string name="refile_action">மீண்டும் நிரப்பு</string>
+    <string name="move_action">நகர்த்து</string>
+    <string name="refile_action">மீண்டும் நிரப்பு…</string>
     <string name="done_action">முடி</string>
     <string name="discard_action">வேண்டாம்</string>
     <string name="save_draft_action">வரைவாக சேமி</string>
@@ -95,7 +95,7 @@
     <string name="message_compose_quote_header_cc">நகல்:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> எழுதியது:</string>
     <string name="message_compose_error_no_recipients">ஒரு பெறுநராவது குறி.</string>
-    <string name="error_contact_address_not_found">இந்த தொடர்புக்கு அஞ்சல் இல்லை</string>
+    <string name="error_contact_address_not_found">இந்தத் தொடர்புக்கு அஞ்சல் இல்லை.</string>
     <string name="message_compose_attachments_skipped_toast">சில இணைப்புகள் பதிவிறக்கம் இல்லாததால், இணைக்க முடியாது.</string>
     <string name="message_compose_description_delete_quoted_text">மேர்கோள் வரிகள் நீக்கு</string>
     <string name="message_compose_description_edit_quoted_text">மேர்கோள் வரிகள் மாற்று</string>
@@ -126,7 +126,7 @@
     <!--Name of the swipe action to move a message to the spam folder-->
     <string name="general_settings_swipe_action_spam">பயனற்றது</string>
     <!--Name of the swipe action to move a message to another folder-->
-    <string name="general_settings_swipe_action_move">அனுப்பு</string>
+    <string name="general_settings_swipe_action_move">நகர்த்து</string>
     <!--Title of the setting to specify the density of the message list-->
     <string name="global_settings_notification_quick_delete_never">ஒருபொழுதும்</string>
     <string name="global_settings_notification_quick_delete_always">எப்பொழுதும்</string>
@@ -165,7 +165,7 @@
     <string name="account_settings_search">தேடல்</string>
     <string name="action_remote_search">வழங்கியில் தேடு</string>
     <string name="upgrade_databases_title">தரவுத்தளங்கள் மேம்படுகிறது</string>
-    <string name="upgrade_databases_unspecified">தரவுத்தளங்கள் மேம்படுகிறது</string>
+    <string name="upgrade_databases_unspecified">தரவுத்தளங்கள் மேம்படுகிறது…</string>
     <string name="global_settings_splitview_mode_label">திரையை வெட்டிக்காட்டு</string>
     <string name="global_settings_splitview_always">எப்பொழுதும்</string>
     <string name="global_settings_splitview_never">ஒருபொழுதும்</string>
@@ -258,8 +258,8 @@
     <string name="idle_refresh_period_2min">ஒவ்வொரு 2 நிமிடங்களுக்கும்</string>
     <string name="account_setup_options_mail_display_count_250">250 செய்திகள்</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="one">&lt;xliff: g ஐடி = \"new_message_count\"&gt;%d &lt;/xliff: g&gt; புதிய செய்தி</item>
-        <item quantity="other">&lt;xliff: g ஐடி = \"new_message_count\"&gt;%d &lt;/xliff: g&gt; புதிய செய்திகள்</item>
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> புதிய செய்தி</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> புதிய செய்திகள்</item>
     </plurals>
     <string name="about_app_authors_k9">கே -9 நாய் நடப்பவர்கள்</string>
     <string name="about_app_authors_thunderbird">தண்டர்பேர்ட் மொபைல் குழு</string>
@@ -397,7 +397,7 @@
         <item quantity="other">இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்ட முகவரிகள்</item>
     </plurals>
     <string name="copy_subject_to_clipboard">பொருள் உரை இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்டது</string>
-    <string name="size_format_gigabytes">%.1F சிபி</string>
+    <string name="size_format_gigabytes">%.1f சீபி</string>
     <string name="size_format_kilobytes">%.1f KB</string>
     <string name="notification_channel_miscellaneous_title">மற்றவை</string>
     <string name="version">பதிப்பு</string>
@@ -900,4 +900,13 @@
     <string name="setting_theme_global">பயன்பாட்டு கருப்பொருளைப் பயன்படுத்தவும்</string>
     <string name="global_settings_show_contact_picture_summary">செய்தி பட்டியலில் தொடர்பு படங்களைக் காட்டு</string>
     <string name="loading_attachment">இணைப்பை ஏற்றுகிறது…</string>
+    <string name="open_camera">திறந்த கேமரா</string>
+    <string name="attach_file">கோப்பை இணைக்கவும்</string>
+    <string name="camera_permission_denied">கேமரா இசைவு மறுக்கப்பட்டது! புகைப்படம் எடுக்க முடியவில்லை</string>
+    <string name="debug_enable_sync_debug_logging_title">ஒத்திசைவு பிழைத்திருத்த பதிவை இயக்கவும்</string>
+    <string name="debug_enable_sync_debug_logging_summary">பதிவு ஒத்திசைவு கண்டறியும் தகவல்களை 24 மணி நேரம்</string>
+    <string name="debug_sync_export_logs_title">ஏற்றுமதி ஒத்திசைவு பதிவுகள்</string>
+    <string name="swipe_action_archive_folder_not_set">காப்பக கோப்புறையை அமைக்கவும்</string>
+    <string name="swipe_action_change_swipe_gestures">மாற்றம் \nசைகைகளை ச்வைப் செய்யுங்கள்</string>
+    <string name="archiving_not_available_for_this_account">இந்த கணக்கிற்கு காப்பகம் கிடைக்கவில்லை.</string>
 </resources>

@@ -1,0 +1,24 @@
+Tha K-9 Mail na chlian puist-d le còd fosgailte a dh’obraicheas cha mhòr le solaraiche puist sam bith.
+
+<b>Gleusan</b>
+
+* Taic ri iomadh cunntas
+* Bogsa a-steach co-aonaichte
+* Math a thaobh prìobhaideachd (gun tracadh sam bith, cha dèan e ach do cheangal ris an t-solaraiche phuist agad)
+* Sioncronachadh fèin-obrachail sa chùlaibh no brathan push
+* Lorg ionadail no air taobh an fhrithealaiche
+* Crioptachadh puist-d OpenPGP (PGP/MIME)
+
+Stàlaich aplacaid <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Easy PGP</a> airson am post-d agad a chrioptachadh/dhì-chrioptachadh le OpenPGP.
+
+
+<b>Taic</b>
+
+Ma tha duilgheadas agad le K-9 Mail, buail air <a href="https://forum.k9mail.app">fòram na taice</a> againn.
+
+
+<b>Airson taic a chumail ris a’ phròiseact?</b>
+
+’S e pròiseact coimhearsnachd a th’ ann an K-9 Mail. Ma tha thu airson làmh-chuideachaidh a chumail rinn, siuthad!
+Chì thu tracaiche nam buga, an còd is an uici aig <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Tha fàilte ro luchd-leasachaidh ’s dealbhaidh, daoine a nì docamaideadh no triaghais air bugaichean, eadar-theangadairean agus caraidean an-còmhnaidh.

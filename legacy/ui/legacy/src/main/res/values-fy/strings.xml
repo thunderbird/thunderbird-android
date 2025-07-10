@@ -299,7 +299,7 @@
     <string name="account_setup_options_mail_display_count_5000">5000 berjochten</string>
     <string name="account_setup_options_mail_display_count_10000">10000 berjochten</string>
     <string name="account_setup_options_mail_display_count_all">alle berjochten</string>
-    <string name="move_copy_cannot_copy_unsynced_message">Kin berjocht net kopiearje of ferpleatse, omdat dizze net syngronisearre is mei de server</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Kin berjocht net kopiearje of ferpleatse, omdat dizze net mei de server syngronisearre is</string>
     <string name="account_settings_push_advanced_title">Avansearre</string>
     <string name="account_settings_title_fmt">Accountynstellingen</string>
     <string name="account_settings_notify_label">Nije e-mailmelding</string>
@@ -892,4 +892,13 @@
     <string name="dialog_confirm_empty_spam_title">Spam leegje befêstigje</string>
     <string name="dialog_confirm_empty_spam_message">Wolle jo de spammap leegje?</string>
     <string name="empty_spam_action">Spam leegje</string>
+    <string name="camera_permission_denied">Kameratagong wegere! Net mooglik om in foto te meitsjen</string>
+    <string name="attach_file">Bestân tafoegje</string>
+    <string name="open_camera">Kamera iepenje</string>
+    <string name="debug_enable_sync_debug_logging_title">Debuglogging syngronisaasje ynskeakelje</string>
+    <string name="debug_enable_sync_debug_logging_summary">Log 24 oeren diagnostyske ynformaasje oer syngronisaasje</string>
+    <string name="debug_sync_export_logs_title">Syngronisaasjelochboeken eksportearje</string>
+    <string name="swipe_action_change_swipe_gestures">Feiaksjes \noanpasse</string>
+    <string name="swipe_action_archive_folder_not_set">Argyfmap ynstelle</string>
+    <string name="archiving_not_available_for_this_account">Argivearring is foar dizze account net beskikber.</string>
 </resources>

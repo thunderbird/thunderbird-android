@@ -1,2 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="designsystem_atom_password_textfield_hide_password">Kuzhat ger-tremen</string>
+    <string name="designsystem_atom_password_textfield_show_password">Diskouez ger-tremen</string>
+    <string name="designsystem_molecule_email_address_input_label">Chomlec\'h postel</string>
+</resources>

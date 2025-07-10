@@ -637,7 +637,7 @@
     <string name="account_settings_quote_prefix_label">Sitert tekst-prefiks</string>
     <string name="account_settings_crypto">Ende-til-ende kryptering</string>
     <string name="account_settings_crypto_summary_config">Konfigurerer…</string>
-    <string name="account_settings_crypto_encrypt_all_drafts">Lagre alle utkast enkryptert</string>
+    <string name="account_settings_crypto_encrypt_all_drafts">Lagre alle utkast kryptert</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle utkast vil bli lagra ukryptert</string>
     <string name="account_settings_autodownload_message_size_8">8 KiB</string>
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
@@ -834,7 +834,7 @@
     <string name="openpgp_enabled_error_msg">Nokre av mottakarane støttar ikkje denne funksjonen!</string>
     <string name="disable_encryption">Deaktiver kryptering</string>
     <string name="dialog_autocrypt_mutual_description_1">Meldingar vil normalt sett krypterast etter eige val, eller når ein svarer på krypterte meldingar.</string>
-    <string name="dialog_autocrypt_mutual_description_2">Om både avsendar og mottakar aktiverer gjensidig modus, vil kryptering blir slådd på som standard.</string>
+    <string name="dialog_autocrypt_mutual_description_2">Om både avsendar og mottakar aktiverer gjensidig modus, vil kryptering bli slått på som standard.</string>
     <string name="ac_transfer_intro">Ein Autocrypt oppsett-melding deler ditt ende-til-ende oppsett med andre einingar på ein sikker måte.</string>
     <string name="ac_transfer_error_send">Ein feil oppstod under sending av meldinga. Ver vennleg og sjekk nettverkstilkopling og utgåande tenar-konfigurasjon.</string>
     <string name="push_info_notification_explanation_text">Under bruk av dytting, held <xliff:g id="app_name">%1$s</xliff:g> ein forbindelse med e-posttenaren. Android påkrev vising av ein pågåande notifikasjon medan appen er aktiv i bakgrunnen. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
@@ -897,4 +897,13 @@
     <string name="dialog_confirm_empty_spam_message">Ønskjer du å tømme søppelpostmappa?</string>
     <string name="dialog_confirm_empty_spam_title">Stadfest tømming av søppelpost</string>
     <string name="expand_content_description">Utvid</string>
+    <string name="open_camera">Opne kamera</string>
+    <string name="attach_file">Legg med fil</string>
+    <string name="camera_permission_denied">Kameraløyve avslått! Kan ikkje ta bilete</string>
+    <string name="swipe_action_archive_folder_not_set">Sett opp Arkivmappe</string>
+    <string name="swipe_action_change_swipe_gestures">Endre\nSveipehandlingar</string>
+    <string name="archiving_not_available_for_this_account">Arkivering er ikkje tilgjengeleg for denne kontoen.</string>
+    <string name="debug_enable_sync_debug_logging_title">Aktiver feilsøkingslogging for synkronisering</string>
+    <string name="debug_enable_sync_debug_logging_summary">Logg informasjon frå synkroniseringdiagnostikk i 24 timar</string>
+    <string name="debug_sync_export_logs_title">Eksporter synkroniseringslogg</string>
 </resources>

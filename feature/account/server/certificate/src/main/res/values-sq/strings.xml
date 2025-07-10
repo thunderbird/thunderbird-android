@@ -6,7 +6,7 @@
     <string name="account_server_certificate_fingerprints_section">Shenja gishtash</string>
     <string name="account_server_certificate_warning_title">Kujdes</string>
     <string name="account_server_certificate_unknown_error_subtitle">Gabim dëshmie</string>
-    <string name="account_server_certificate_button_back">Shkon mbrapsht (e rekomanduar)</string>
+    <string name="account_server_certificate_button_back">Shko mbrapsht (e rekomanduar)</string>
     <string name="account_server_certificate_button_advanced">Të mëtejshme</string>
     <string name="account_server_certificate_button_continue">Pranojeni rrezikun dhe vazhdoni</string>
     <string name="account_server_certificate_section_title">Dëshmi shërbyesi</string>

@@ -3,5 +3,5 @@
     <string name="onboarding_welcome_start_button">Başlayın</string>
     <string name="onboarding_welcome_import_button">Ayarları içe aktar</string>
     <string name="onboarding_welcome_text">Android için açık kaynaklı, gizlilik odaklı ve reklamsız bir e-posta istemcisi.</string>
-    <string name="onboarding_welcome_developed_by">MZLA Technologies ekibi ve dünyanın her yanındaki gönüllüler tarafından geliştirildi, Mozilla güvencesiyle sunuldu.</string>
+    <string name="onboarding_welcome_developed_by">MZLA Technologies\'de özel bir ekip ve küresel bir gönüllü topluluğu tarafından geliştirildi. Mozilla ailesinin bir parçası.</string>
 </resources>

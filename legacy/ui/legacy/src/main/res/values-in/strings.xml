@@ -203,7 +203,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">Bawaan</string>
     <string name="global_settings_privacy_hide_useragent">Sembunyikan klien surat</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Buang Agen Pengguna K-9 dari tajuk surat</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Hapus Agen Pengguna K-9 dari tajuk surat</string>
     <string name="global_settings_privacy_hide_timezone">Sembunyikan zona waktu</string>
     <string name="global_settings_privacy_hide_timezone_detail">Gunakan UTC, bukan zona waktu lokal di tajuk surat dan tajuk balasan</string>
     <string name="global_settings_notification_quick_delete_title">Tampilkan tombol \'Hapus\'</string>
@@ -882,4 +882,16 @@
     <string name="folder_settings_visible_label">Tampilkan folder</string>
     <string name="folder_list_show_hidden_folders">Tampilkan folder tersembunyi</string>
     <string name="folder_settings_notifications_label">Notifikasi</string>
+    <string name="folder_settings_push_label">Aktifkan Push</string>
+    <string name="settings_list_action_support">Mendukung <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="dialog_confirm_empty_spam_title">Konfirmasikan spam kosong</string>
+    <string name="settings_ui_telemetry_title">Data penggunaan dan teknis</string>
+    <string name="dialog_confirm_empty_spam_message">Apakah Anda ingin mengosongkan folder spam?</string>
+    <string name="settings_ui_telemetry_description">Berbagi data perfoma, penggunaan, perangkat keras, dan personalisasi mengenai aplikasi ini dengan Mozilla untuk membantu kami membuat Thunderbird lebih baik</string>
+    <string name="empty_spam_action">Kosongkan Spam</string>
+    <string name="volume_navigation_summary">Menavigasi di antara pesan memakai tombol volume pada tampilan pesan</string>
+    <string name="expand_content_description">Memperluas</string>
+    <string name="attach_file">Lampirkan Berkas</string>
+    <string name="camera_permission_denied">Izin Kamera Ditolak! Tidak bisa mengambil foto</string>
+    <string name="open_camera">Buka Kamera</string>
 </resources>

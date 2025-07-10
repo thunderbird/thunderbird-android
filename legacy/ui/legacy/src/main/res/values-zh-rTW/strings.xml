@@ -891,4 +891,7 @@
     <string name="dialog_confirm_empty_spam_title">確認清空垃圾郵件</string>
     <string name="dialog_confirm_empty_spam_message">您想清空垃圾郵件資料夾嗎？</string>
     <string name="expand_content_description">展開</string>
+    <string name="open_camera">打開相機</string>
+    <string name="attach_file">添加附件</string>
+    <string name="camera_permission_denied">相機權限已被拒絕！無法拍攝照片</string>
 </resources>

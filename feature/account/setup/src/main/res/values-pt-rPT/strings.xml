@@ -27,7 +27,7 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Eu confio nesta configuração</string>
     <string name="account_setup_options_display_name_error_required">O seu nome é obrigatório.</string>
     <string name="account_setup_create_account_error">Ocorreu um erro ao tentar criar a conta</string>
-    <string name="account_setup_error_network">Rede</string>
+    <string name="account_setup_error_network">Erro de rede. Verifique o estado da sua conexão e tente novamente.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Não reconhecido como um endereço de email válido.</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>
     <string name="account_setup_auto_discovery_loading_message">A procurar configuração…</string>

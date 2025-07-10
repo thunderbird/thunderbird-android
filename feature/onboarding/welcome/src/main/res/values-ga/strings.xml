@@ -3,5 +3,5 @@
     <string name="onboarding_welcome_start_button">Cuir tús leis</string>
     <string name="onboarding_welcome_import_button">Socruithe a allmhairiú</string>
     <string name="onboarding_welcome_text">Aip ríomhphoist foinse oscailte, atá dírithe ar phríobháideachas agus saor ó fhógraí do Android.</string>
-    <string name="onboarding_welcome_developed_by">Arna fhorbairt ag foireann thiomanta ag MZLA Technologies agus pobal domhanda oibrithe deonacha. Cuid de theaghlach Mozilla.</string>
+    <string name="onboarding_welcome_developed_by">Forbartha ag foireann dhíograiseach ag MZLA Technologies agus pobal domhanda oibrithe deonacha. Cuid de theaghlach Mozilla.</string>
 </resources>
