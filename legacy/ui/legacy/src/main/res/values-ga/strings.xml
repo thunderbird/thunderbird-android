@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="about_app_authors_k9">Na Siúlóirí Madraí K-9</string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="about_app_authors_thunderbird">Foireann Soghluaiste Thunderbird</string>
     <string name="source_code">Cód foinseach</string>
     <string name="get_help_title">Faigh cabhair</string>
     <string name="authors">Údair</string>
@@ -264,7 +264,7 @@
     <string name="message_view_status_attachment_not_saved">Ní féidir iatán a shábháil.</string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="message_view_me_text">mise</string>
-    <string name="message_view_sender_label">trí% 1$s</string>
+    <string name="message_view_sender_label">trí %1$s</string>
     <string name="from_same_sender">Tuilleadh ón seoltóir seo</string>
     <string name="message_discarded_toast">Teachtaireacht curtha i leataobh</string>
     <string name="message_saved_toast">Sábháladh an teachtaireacht mar dhréacht</string>
@@ -782,7 +782,7 @@
     <string name="ac_transfer_finish">Le críochnú, oscail an teachtaireacht ar do ghléas eile agus cuir isteach an cód socraithe.</string>
     <string name="ac_transfer_show_code">Taispeáin Cód Suiteála</string>
     <string name="ac_transfer_msg_subject">Uathchriptigh Teachtaireacht Suiteála</string>
-    <string name="ac_transfer_msg_body">Tá gach faisnéis sa teachtaireacht seo chun do shocruithe Autocrypt a aistriú mar aon le d\'eochair rúnda go slán ó do ghléas bunaidh. Chun do ghléas nua a chumrú le haghaidh Autocrypt, lean na treoracha ba chóir do do ghléas nua a chur i láthair. Is féidir leat an teachtaireacht seo a choinneáil agus é a úsáid mar chúltaca do d\'eochair rúnda. Más mian leat é seo a dhéanamh, ba chóir duit an pasfhocal a scríobh síos agus é a stóráil go daingean.</string>
+    <string name="ac_transfer_msg_body">Tá gach faisnéis sa teachtaireacht seo chun do shocruithe Autocrypt a aistriú mar aon le d\'eochair rúnda go slán ó do ghléas bunaidh. Chun do ghléas nua a chumrú le haghaidh Autocrypt, lean na treoracha ba chóir le do ghléas nua a chur i láthair. Is féidir leat an teachtaireacht seo a choinneáil agus é a úsáid mar chúltaca do d\'eochair rúnda. Más mian leat é seo a dhéanamh, ba chóir duit an pasfhocal a scríobh síos agus é a stóráil go daingean.</string>
     <string name="ac_transfer_error_send">Tharla earráid agus an teachtaireacht á seoladh. Seiceáil do nascacht líonra agus cumraíocht freastalaí atá ag dul as oifig.</string>
     <string name="switch_on">Maidir le</string>
     <string name="switch_off">As</string>
@@ -848,4 +848,13 @@
     <string name="empty_spam_action">Spam Folamh</string>
     <string name="dialog_confirm_empty_spam_title">Deimhnigh turscar folamh</string>
     <string name="dialog_confirm_empty_spam_message">Ar mhaith leat an fillteán turscair a fholmhú?</string>
+    <string name="open_camera">Oscail an Ceamara</string>
+    <string name="attach_file">Ceangail Comhad</string>
+    <string name="camera_permission_denied">Cead Ceamara Diúltaithe! Ní féidir grianghraf a thógáil</string>
+    <string name="debug_sync_export_logs_title">Easpórtáil logaí sioncrónaithe</string>
+    <string name="debug_enable_sync_debug_logging_summary">Faisnéis dhiagnóiseach sioncrónaithe logála ar feadh 24 uair an chloig</string>
+    <string name="debug_enable_sync_debug_logging_title">Cumasaigh logáil dífhabhtaithe sioncrónaithe</string>
+    <string name="swipe_action_archive_folder_not_set">Socraigh Fillteán Cartlainne</string>
+    <string name="swipe_action_change_swipe_gestures">Athraigh\nGothaí Svaidhpe</string>
+    <string name="archiving_not_available_for_this_account">Níl cartlannú ar fáil don chuntas seo.</string>
 </resources>

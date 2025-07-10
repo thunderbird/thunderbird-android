@@ -1,2 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_setup_error_unknown">Tuccḍa tarussint</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Awal n uɛeddi yettwasra.</string>
+    <string name="account_setup_special_folders_folder_none">Ula yiwen</string>
+    <string name="account_setup_special_folders_folder_automatic">Awurman (%s)</string>
+    <string name="account_setup_options_account_name_label">Isem n umiḍan</string>
+    <string name="account_setup_options_display_name_label">Isem-ik·im</string>
+    <string name="account_setup_options_email_signature_label">Azmul n imayl</string>
+    <string name="account_setup_options_email_check_frequency_never">Werǧin</string>
+    <string name="account_setup_options_show_notifications_label">Sken-d ilɣa</string>
+    <string name="account_setup_create_account_creating">Asnulfu n umiḍan…</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Twila s wudem awurman</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Twila s ufus</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Ẓreg twila</string>
+    <string name="account_setup_options_section_display_options">Tixtiṛiyin n ubeqqeḍ</string>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">%d n yizen</item>
+        <item quantity="other">%d n yiznan</item>
+    </plurals>
+</resources>

@@ -3,7 +3,7 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_title">是否已在使用 Thunderbird 電腦版？</string>
     <string name="onboarding_migration_thunderbird_new_account_button_text">新增電子郵件</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">匯入設定</string>
-    <string name="onboarding_migration_thunderbird_new_account_title">New to Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">是 Thunderbird 新手嗎？</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">前往 Thunderbird 電腦版的：</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">設定（在畫面左下角）</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">透過掃描 QR Code 輕鬆匯入帳戶設定。</string>

@@ -31,4 +31,5 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Para visualizar a sua palavra-chave aqui, ative o bloqueio de ecrã neste dispositivo.</string>
     <string name="account_server_settings_server_label">Servidor</string>
     <string name="account_server_settings_security_label">Segurança</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Enviar informações do cliente</string>
 </resources>

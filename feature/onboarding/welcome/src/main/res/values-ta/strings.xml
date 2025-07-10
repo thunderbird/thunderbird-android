@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_welcome_text">ஆண்ட்ராய்டு க்கான திறந்த மூல, தனியுரிமை-மையப்படுத்தப்பட்ட மற்றும் விளம்பரமில்லாத மின்னஞ்சல் பயன்பாடு.</string>
+    <string name="onboarding_welcome_text">ஆண்ட்ராய்டுக்கான திறந்த மூல, தனியுரிமை-மையப்படுத்தப்பட்ட மற்றும் விளம்பரமில்லாத மின்னஞ்சல் பயன்பாடு.</string>
     <string name="onboarding_welcome_import_button">அமைப்புகளை இறக்குமதி செய்யுங்கள்</string>
-    <string name="onboarding_welcome_developed_by">MZLA டெக்னாலசிசில் ஒரு பிரத்யேக குழு மற்றும் தன்னார்வலர்களின் உலகளாவிய சமூகத்தால் உருவாக்கப்பட்டது. மொசில்லா குடும்பத்தின் ஒரு பகுதி.</string>
+    <string name="onboarding_welcome_developed_by">மொசில்லா டெக்னாலசிசில் ஒரு பிரத்யேக குழு மற்றும் தன்னார்வலர்களின் உலகளாவிய சமூகத்தால் உருவாக்கப்பட்டது. மொசில்லா குடும்பத்தின் ஒரு பகுதி.</string>
     <string name="onboarding_welcome_start_button">தொடங்கவும்</string>
 </resources>

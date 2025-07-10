@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_common_button_next">Endavant</string>
+    <string name="account_common_button_next">Següent</string>
     <string name="account_common_button_back">Enrere</string>
     <string name="account_common_error_server_message">El servidor ha retornat en següent missatge:
 \n%s</string>

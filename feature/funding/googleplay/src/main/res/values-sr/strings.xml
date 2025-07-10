@@ -42,7 +42,7 @@
     <string name="funding_googleplay_contribution_tfa_recurring_m_title">Значајан месечни допринос</string>
     <string name="funding_googleplay_contribution_reminder_title">Подржите Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Да</string>
-    <string name="funding_googleplay_contribution_reminder_message">Придружите се нашој мисији да створимо најбоље могуће искуство е-поште које поштује приватност.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Придружите се нашој мисији да створимо најбоље могуће искуство имејла које поштује приватност.</string>
     <string name="funding_googleplay_contribution_list_disclaimer">Доприноси се не одбијају од пореза као добротворне донације.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_s_description">Помажете нам да остваримо велике ствари! Доприносом на овом нивоу, помажете нам да предузмемо значајне кораке напред, омогућавајући нам да наставимо да растемо.</string>
     <string name="funding_googleplay_contribution_error_dismiss_button">Одбаци грешку</string>

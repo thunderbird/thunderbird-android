@@ -886,4 +886,13 @@
     <string name="dialog_confirm_empty_spam_title">确认清空垃圾邮件</string>
     <string name="empty_spam_action">清空垃圾邮件</string>
     <string name="dialog_confirm_empty_spam_message">是否要清空垃圾邮件文件夹？</string>
+    <string name="open_camera">打开相机</string>
+    <string name="attach_file">附加文件</string>
+    <string name="camera_permission_denied">相机权限被拒绝！无法拍照</string>
+    <string name="debug_enable_sync_debug_logging_summary">记录 24 小时的同步诊断信息</string>
+    <string name="debug_sync_export_logs_title">导出同步记录</string>
+    <string name="debug_enable_sync_debug_logging_title">启用同步调试记录</string>
+    <string name="swipe_action_change_swipe_gestures">更改 \n滑动手势</string>
+    <string name="archiving_not_available_for_this_account">此账号无法使用归档功能。</string>
+    <string name="swipe_action_archive_folder_not_set">设置归档文件夹</string>
 </resources>

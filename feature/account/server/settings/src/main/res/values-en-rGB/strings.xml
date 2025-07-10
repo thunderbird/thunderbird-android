@@ -30,4 +30,6 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">To view your password here, enable screen lock on this device.</string>
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Security</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Invalid IP or hostname</string>
+    <string name="account_server_settings_incoming_imap_send_client_info_label">Send client information</string>
 </resources>

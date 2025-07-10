@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_welcome_start_button">Comenzar</string>
+    <string name="onboarding_welcome_start_button">Пачаць</string>
     <string name="onboarding_welcome_import_button">Importar ajustes</string>
+    <string name="onboarding_welcome_text">Праграма электроннай пошты з адкрытым зыходным кодам для Android, арыентаваная на прыватнасць і без рэкламы.</string>
 </resources>

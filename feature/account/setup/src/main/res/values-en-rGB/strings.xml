@@ -27,7 +27,7 @@
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">I trust this configuration</string>
     <string name="account_setup_options_display_name_error_required">Display name is required.</string>
     <string name="account_setup_create_account_error">An error occurred while trying to create the account</string>
-    <string name="account_setup_error_network">Network</string>
+    <string name="account_setup_error_network">Network error. Please check your connection status and try again.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">This is not recognised as a valid email address.</string>
     <string name="account_setup_options_email_check_frequency_never">Never</string>
     <string name="account_setup_auto_discovery_loading_message">Finding email details</string>

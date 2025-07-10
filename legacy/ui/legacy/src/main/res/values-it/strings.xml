@@ -14,7 +14,7 @@
     <string name="about_libraries">Librerie</string>
     <string name="license">Licenza</string>
     <string name="changelog_title">Registro modifiche</string>
-    <string name="changelog_loading_error">Impossibile caricare il registro delle modifiche</string>
+    <string name="changelog_loading_error">Impossibile caricare il registro delle modifiche.</string>
     <string name="changelog_version_title">Versione %s</string>
     <string name="changelog_recent_changes_title">Cosa c\'è di nuovo</string>
     <string name="changelog_show_recent_changes">Mostra le modifiche recenti quando l\'app viene aggiornata</string>
@@ -898,4 +898,8 @@
     <string name="empty_spam_action">Spam vuota</string>
     <string name="dialog_confirm_empty_spam_title">Conferma spam vuota</string>
     <string name="dialog_confirm_empty_spam_message">Vuoi svuotare la cartella spam?</string>
+    <string name="camera_permission_denied">Autorizzazione fotocamera negata! Impossibile scattare foto</string>
+    <string name="attach_file">Allega il file</string>
+    <string name="debug_sync_export_logs_title">Esporta i registri di sincronizzazione</string>
+    <string name="archiving_not_available_for_this_account">L\'archiviazione non è disponibile per questo account.</string>
 </resources>

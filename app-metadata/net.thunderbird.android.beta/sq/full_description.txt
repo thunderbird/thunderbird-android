@@ -11,7 +11,7 @@ Thunderbird-i është një aplikacion email-esh i fuqishëm, i përqendruar te p
   <li>Të hidhni tej aplikacione të shumta dhe “webmail”. Përdorni një aplikacion, me një “Të marrë të Njësuar” opsional, përgjatë ditës.</li>
   <li>Të shijoni një klient email dashamirës ndaj privatësisë, që nuk mbledh, apo shet kurrë të dhënat tuaja personale. Ju lidhim drejtpërdrejt me shërbimin tuaj email. Kaq!</li>
   <li>Shpjereni privatësinë tuaj një shkallë më lart, duke përdorur fshehtëzim OpenPGP email-esh (PGP/MIME) me aplikacionin “OpenKeychain”, për të fshehtëzuar dhe shfshehtëzuar mesazhet tuaj.</li>
-  <li>Zgjidhni njëkohësimin në çast të email-it tuaj, në intervale të caktuar, ose sipas dëshirës. Si dëshironi të shihni për email-e, e keni ju në dorë!</li>
+  <li>Zgjidhni njëkohësimin në çast të email-it tuaj, në intervale të caktuar, ose sipas dëshirës. Se si dëshironi të shihni për email-e, e keni ju në dorë!</li>
   <li>Gjeni mesazhe të rëndësishëm, duke përdorur si kërkim vendor, ashtu edhe më anë shërbyesi.</li>
 </ul>
 

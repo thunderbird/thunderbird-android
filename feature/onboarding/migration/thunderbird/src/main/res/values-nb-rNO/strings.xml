@@ -4,13 +4,13 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importer innstillinger</string>
     <string name="onboarding_migration_thunderbird_new_account_title">Er du ny til Thunderbird?</string>
     <string name="onboarding_migration_thunderbird_new_account_button_text">Legg til en E-postkonto nå</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">«Innstillinger» i Områder-verktøylinjen (nederst til venstre)</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Velg «Eksporter til Mobile»</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Innstillinger\' i Områder-verktøylinjen (nederst til venstre)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Velg \'Eksporter til Mobil\'</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Importering krever den nyeste versjonen av Thunderbird 128 for PC. <xliff:g id="link_text">%s</xliff:g></string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Lær hvordan man oppdaterer Thunderbird.</string>
     <string name="onboarding_migration_thunderbird_import_title">Flytter du fra en annen app eller enhet?</string>
     <string name="onboarding_migration_thunderbird_import_button_text">Importér kontoinnstillingene dine nå</string>
     <string name="onboarding_migration_thunderbird_link_open_error">Ingen apper ble funnet som kunne åpne lenken.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_text">Importér kontoinnstillingene enkelt ved å skanne en QR-kode.</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">På Thunderbird på PC, gå til:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">I Thunderbird på PC, gå til:</string>
 </resources>
