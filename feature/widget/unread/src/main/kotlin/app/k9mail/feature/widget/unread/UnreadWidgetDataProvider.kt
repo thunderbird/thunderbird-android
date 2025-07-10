@@ -25,7 +25,7 @@ class UnreadWidgetDataProvider(
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_FOLDERS == accountUuid) {
-            loadSearchAccountData(configuration)
+            loadUnifiedFoldersData(configuration)
         } else if (folderId != null) {
             loadFolderData(configuration)
         } else {
@@ -33,8 +33,8 @@ class UnreadWidgetDataProvider(
         }
     }
 
-    private fun loadSearchAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
-        val searchAccount = getSearchAccount(configuration.accountUuid)
+    private fun loadUnifiedFoldersData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
+        val searchAccount = getUnifiedFoldersSearch(configuration.accountUuid)
         val title = searchAccount.name
         val unreadCount = messageCountsProvider.getMessageCounts(searchAccount).unread
         val clickIntent = MessageList.intentDisplaySearch(context, searchAccount.relatedSearch, false, true, true)
@@ -42,7 +42,7 @@ class UnreadWidgetDataProvider(
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getSearchAccount(accountUuid: String): SearchAccount = when (accountUuid) {
+    private fun getUnifiedFoldersSearch(accountUuid: String): SearchAccount = when (accountUuid) {
         SearchAccount.UNIFIED_FOLDERS -> SearchAccount.createUnifiedFoldersSearch(
             title = coreResourceProvider.searchUnifiedFoldersTitle(),
             detail = coreResourceProvider.searchUnifiedFoldersDetail(),

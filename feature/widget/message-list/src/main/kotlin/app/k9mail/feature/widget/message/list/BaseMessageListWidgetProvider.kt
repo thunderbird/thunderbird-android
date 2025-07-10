@@ -47,7 +47,7 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
         val composeAction = composeActionPendingIntent(context)
         views.setOnClickPendingIntent(R.id.new_message, composeAction)
 
-        val headerClickAction = viewUnifiedInboxPendingIntent(context)
+        val headerClickAction = viewUnifiedFoldersPendingIntent(context)
         views.setOnClickPendingIntent(R.id.top_controls, headerClickAction)
 
         appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -62,7 +62,7 @@ abstract class BaseMessageListWidgetProvider : AppWidgetProvider(), KoinComponen
         return PendingIntentCompat.getActivity(context, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT, true)!!
     }
 
-    private fun viewUnifiedInboxPendingIntent(context: Context): PendingIntent {
+    private fun viewUnifiedFoldersPendingIntent(context: Context): PendingIntent {
         val unifiedFoldersSearch = createUnifiedFoldersSearch(
             title = coreResourceProvider.searchUnifiedFoldersTitle(),
             detail = coreResourceProvider.searchUnifiedFoldersDetail(),

@@ -23,7 +23,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
     private val coreResourceProvider: CoreResourceProvider by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
 
-    private lateinit var unifiedInboxSearch: LocalMessageSearch
+    private lateinit var unifiedInboxFolders: LocalMessageSearch
 
     private var messageListItems = emptyList<MessageListItem>()
     private var senderAboveSubject = false
@@ -31,7 +31,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
     private var unreadTextColor = 0
 
     override fun onCreate() {
-        unifiedInboxSearch = SearchAccount.createUnifiedFoldersSearch(
+        unifiedInboxFolders = SearchAccount.createUnifiedFoldersSearch(
             title = coreResourceProvider.searchUnifiedFoldersTitle(),
             detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         ).relatedSearch
@@ -48,7 +48,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
     private fun loadMessageList() {
         // TODO: Use same sort order that is used for the Unified Inbox inside the app
         val messageListConfig = MessageListConfig(
-            search = unifiedInboxSearch,
+            search = unifiedInboxFolders,
             showingThreadedList = generalSettingsManager.getConfig()
                 .display
                 .inboxSettings

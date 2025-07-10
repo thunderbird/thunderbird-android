@@ -180,7 +180,7 @@ class MessageListFragment :
     private var isRemoteSearch = false
     private var initialMessageListLoad = true
 
-    private val isUnifiedInbox: Boolean
+    private val isUnifiedFolders: Boolean
         get() = localSearch.id == SearchAccount.UNIFIED_FOLDERS
 
     private val isNewMessagesView: Boolean
@@ -210,7 +210,7 @@ class MessageListFragment :
         }
 
     val isShowAccountChip: Boolean
-        get() = isUnifiedInbox || !isSingleAccountMode
+        get() = isUnifiedFolders || !isSingleAccountMode
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -587,7 +587,7 @@ class MessageListFragment :
 
     private fun setWindowTitle() {
         val title = when {
-            isUnifiedInbox -> getString(R.string.integrated_inbox_title)
+            isUnifiedFolders -> getString(R.string.integrated_inbox_title)
             isNewMessagesView -> getString(R.string.new_messages_title)
             isManualSearch -> getString(R.string.search_results)
             isThreadDisplay -> threadTitle ?: ""
@@ -596,7 +596,7 @@ class MessageListFragment :
         }
 
         val subtitle = account.let { account ->
-            if (account == null || isUnifiedInbox || accountManager.getAccounts().size == 1) {
+            if (account == null || isUnifiedFolders || accountManager.getAccounts().size == 1) {
                 null
             } else {
                 account.displayName

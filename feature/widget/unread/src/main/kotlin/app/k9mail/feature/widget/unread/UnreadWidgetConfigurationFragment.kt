@@ -113,13 +113,13 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         selectedFolderDisplayName = null
         unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
         if (SearchAccount.UNIFIED_FOLDERS == selectedAccountUuid) {
-            handleSearchAccount()
+            handleUnifiedFoldersSearch()
         } else {
-            handleRegularAccount()
+            handleRegularSearch()
         }
     }
 
-    private fun handleSearchAccount() {
+    private fun handleUnifiedFoldersSearch() {
         if (SearchAccount.UNIFIED_FOLDERS == selectedAccountUuid) {
             unreadAccount.setSummary(R.string.unread_widget_unified_inbox_account_summary)
         }
@@ -130,7 +130,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         selectedFolderDisplayName = null
     }
 
-    private fun handleRegularAccount() {
+    private fun handleRegularSearch() {
         val selectedAccount = preferences.getAccount(selectedAccountUuid!!)
             ?: error("Account $selectedAccountUuid not found")
 

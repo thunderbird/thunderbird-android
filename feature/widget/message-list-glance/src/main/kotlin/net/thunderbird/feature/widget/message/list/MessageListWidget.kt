@@ -68,13 +68,13 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
     }
 
     private fun openApp(context: Context) {
-        val unifiedInboxAccount = createUnifiedFoldersSearch(
+        val unifiedFoldersSearch = createUnifiedFoldersSearch(
             title = coreResourceProvider.searchUnifiedFoldersTitle(),
             detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )
         val intent = intentDisplaySearch(
             context = context,
-            search = unifiedInboxAccount.relatedSearch,
+            search = unifiedFoldersSearch.relatedSearch,
             noThreading = true,
             newTask = true,
             clearTop = true,

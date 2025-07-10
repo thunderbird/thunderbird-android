@@ -39,7 +39,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.search.isUnifiedInbox
+import com.fsck.k9.search.isUnifiedFolders
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
@@ -383,8 +383,8 @@ open class MessageList :
         }
 
         val launchData = decodeExtrasToLaunchData(intent)
-        // If Unified Inbox was disabled show default account instead
-        val search = if (launchData.search.isUnifiedInbox &&
+        // If Unified Folders was disabled show default account instead
+        val search = if (launchData.search.isUnifiedFolders &&
             !generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox
         ) {
             createDefaultLocalSearch()
@@ -392,9 +392,9 @@ open class MessageList :
             launchData.search
         }
 
-        // If no account has been specified, keep the currently active account when opening the Unified Inbox
+        // If no account has been specified, keep the currently active account when opening the Unified Folders
         val account = launchData.account
-            ?: account?.takeIf { launchData.search.isUnifiedInbox }
+            ?: account?.takeIf { launchData.search.isUnifiedFolders }
             ?: search.firstAccount()
 
         if (account == null) {
@@ -632,7 +632,7 @@ open class MessageList :
                     openAccount = { accountId -> openRealAccount(accountId) },
                     openAddAccount = { launchAddAccountScreen() },
                     openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
-                    openUnifiedFolder = { openUnifiedInbox() },
+                    openUnifiedFolder = { openUnifiedFolders() },
                     openManageFolders = { launchManageFoldersScreen() },
                     openSettings = { SettingsActivity.launch(this) },
                     createDrawerListener = { createDrawerListener() },
@@ -643,7 +643,7 @@ open class MessageList :
                     parent = this,
                     openAccount = { accountId -> openRealAccount(accountId) },
                     openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
-                    openUnifiedFolder = { openUnifiedInbox() },
+                    openUnifiedFolder = { openUnifiedFolders() },
                     openManageFolders = { launchManageFoldersScreen() },
                     openSettings = { SettingsActivity.launch(this) },
                     createDrawerListener = { createDrawerListener() },
@@ -698,7 +698,7 @@ open class MessageList :
         onMessageListDisplayed()
     }
 
-    private fun openUnifiedInbox() {
+    private fun openUnifiedFolders() {
         actionDisplaySearch(
             this,
             createSearchAccount().relatedSearch,
@@ -725,7 +725,7 @@ open class MessageList :
 
     fun openRealAccount(accountId: String) {
         if (accountId == UnifiedDisplayAccount.UNIFIED_ACCOUNT_ID) {
-            openUnifiedInbox()
+            openUnifiedFolders()
         } else {
             val account = accountManager.getAccount(accountId) ?: return
             val folderId = defaultFolderProvider.getDefaultFolder(account)
@@ -788,7 +788,7 @@ open class MessageList :
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
                 if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
                     if (search!!.id != SearchAccount.UNIFIED_FOLDERS) {
-                        openUnifiedInbox()
+                        openUnifiedFolders()
                     } else {
                         super.onBackPressed()
                     }
