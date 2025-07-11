@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.lifecycle.ProcessLifecycleOwner
-import app.k9mail.core.common.exception.ExceptionHandler
 import app.k9mail.feature.widget.message.list.MessageListWidgetManager
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.Core
@@ -24,6 +23,7 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import net.thunderbird.app.common.feature.LoggerLifecycleObserver
+import net.thunderbird.core.common.exception.ExceptionHandler
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.logging.legacy.Log
