@@ -104,6 +104,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> naujas laiškas</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nauji laiškai</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> naujų laiškų</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> daugiau paskyroje <xliff:g id="account">%2$s</xliff:g></string>
