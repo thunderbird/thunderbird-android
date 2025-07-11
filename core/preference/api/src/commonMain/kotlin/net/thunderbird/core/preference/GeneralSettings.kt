@@ -1,5 +1,6 @@
 package net.thunderbird.core.preference
 
+import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 
 /**
@@ -12,34 +13,32 @@ import net.thunderbird.core.preference.privacy.PrivacySettings
  * - [GeneralSettingsDescriptions]
  */
 // TODO: Move over settings from K9
+// TODO(#9432): Split in smaller classes per group of settings.
 data class GeneralSettings(
-    val backgroundSync: BackgroundSync,
-    val showRecentChanges: Boolean,
-    val appTheme: AppTheme,
-    val messageViewTheme: SubTheme,
-    val messageComposeTheme: SubTheme,
-    val fixedMessageViewTheme: Boolean,
-    val isShowUnifiedInbox: Boolean,
-    val isShowStarredCount: Boolean,
-    val isShowMessageListStars: Boolean,
-    val isShowAnimations: Boolean,
-    val isShowCorrespondentNames: Boolean,
-    val shouldShowSetupArchiveFolderDialog: Boolean,
-    val isMessageListSenderAboveSubject: Boolean,
-    val isShowContactName: Boolean,
-    val isShowContactPicture: Boolean,
-    val isChangeContactNameColor: Boolean,
-    val isColorizeMissingContactPictures: Boolean,
-    val isUseBackgroundAsUnreadIndicator: Boolean,
-    val isShowComposeButtonOnMessageList: Boolean,
-    val isThreadedViewEnabled: Boolean,
-    val isUseMessageViewFixedWidthFont: Boolean,
-    val isAutoFitWidth: Boolean,
-    val quietTimeEnds: String,
-    val quietTimeStarts: String,
-    val isQuietTimeEnabled: Boolean,
-    val isQuietTime: Boolean,
-    val privacy: PrivacySettings,
+    val backgroundSync: BackgroundSync = BackgroundSync.ALWAYS,
+    val showRecentChanges: Boolean = true,
+    val appTheme: AppTheme = AppTheme.FOLLOW_SYSTEM,
+    val messageViewTheme: SubTheme = SubTheme.USE_GLOBAL,
+    val messageComposeTheme: SubTheme = SubTheme.USE_GLOBAL,
+    val fixedMessageViewTheme: Boolean = true,
+    val isShowUnifiedInbox: Boolean = false,
+    val isShowStarredCount: Boolean = false,
+    val isShowMessageListStars: Boolean = true,
+    val isShowAnimations: Boolean = true,
+    val isShowCorrespondentNames: Boolean = true,
+    val shouldShowSetupArchiveFolderDialog: Boolean = true,
+    val isMessageListSenderAboveSubject: Boolean = false,
+    val isShowContactName: Boolean = false,
+    val isShowContactPicture: Boolean = true,
+    val isChangeContactNameColor: Boolean = true,
+    val isColorizeMissingContactPictures: Boolean = false,
+    val isUseBackgroundAsUnreadIndicator: Boolean = false,
+    val isShowComposeButtonOnMessageList: Boolean = true,
+    val isThreadedViewEnabled: Boolean = true,
+    val isUseMessageViewFixedWidthFont: Boolean = false,
+    val isAutoFitWidth: Boolean = true,
+    val notification: NotificationPreference = NotificationPreference(),
+    val privacy: PrivacySettings = PrivacySettings(),
 )
 
 enum class BackgroundSync {
