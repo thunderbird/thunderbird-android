@@ -5,9 +5,7 @@ import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangePublisher
-import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsManager
 import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsPreferenceManager
-import net.thunderbird.core.preference.privacy.PrivacySettingsManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
 import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.core.qualifier.named
@@ -32,18 +30,17 @@ val preferencesModule = module {
     factory<AccountManager<*>> { get<LegacyAccountManager>() }
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
+            logger = get(),
             storage = get<Preferences>().storage,
             storageEditor = get<Preferences>().createStorageEditor(),
-            changeBroker = get(),
         )
     }
-    single<PrivacySettingsManager> { DefaultPrivacySettingsManager(preferenceManager = get()) }
     single {
         RealGeneralSettingsManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changePublisher = get(),
-            privacySettingsManager = get(),
+            privacySettingsPreferenceManager = get(),
         )
     } bind GeneralSettingsManager::class
     single {
