@@ -18,7 +18,8 @@ import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.NotificationMessage
 import kotlin.test.assertNotNull
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundSync
@@ -38,6 +39,7 @@ private const val ACCOUNT_COLOR = 0xFF112233L.toInt()
 private const val FOLDER_ID = 42L
 private const val TIMESTAMP = 23L
 
+@OptIn(ExperimentalTime::class)
 class NewMailNotificationManagerTest {
     private val mockedNotificationMessages = mutableListOf<NotificationMessage>()
     private val account = createAccount()

@@ -1,10 +1,17 @@
 package com.fsck.k9
 
 import java.util.Calendar
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private const val MINUTES_PER_HOUR = 60
-class QuietTimeChecker(private val clock: Clock, quietTimeStart: String, quietTimeEnd: String) {
+class QuietTimeChecker
+@OptIn(ExperimentalTime::class)
+constructor(
+    private val clock: Clock,
+    quietTimeStart: String,
+    quietTimeEnd: String,
+) {
     private val quietTimeStart: Int = parseTime(quietTimeStart)
     private val quietTimeEnd: Int = parseTime(quietTimeEnd)
 
@@ -16,6 +23,7 @@ class QuietTimeChecker(private val clock: Clock, quietTimeStart: String, quietTi
             }
 
             val calendar = Calendar.getInstance()
+            @OptIn(ExperimentalTime::class)
             calendar.timeInMillis = clock.now().toEpochMilliseconds()
 
             val minutesSinceMidnight =

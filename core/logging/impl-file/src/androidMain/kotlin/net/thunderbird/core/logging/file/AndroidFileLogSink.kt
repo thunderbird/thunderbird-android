@@ -5,13 +5,14 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -63,6 +64,7 @@ open class AndroidFileLogSink(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun convertLongToTime(long: Long): String {
         val instant = Instant.fromEpochMilliseconds(long)
         val dateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())

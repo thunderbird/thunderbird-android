@@ -5,9 +5,12 @@ import app.k9mail.core.android.common.database.getIntOrThrow
 import app.k9mail.core.android.common.database.getLongOrThrow
 import app.k9mail.core.android.common.database.getStringOrNull
 import app.k9mail.core.android.common.database.getStringOrThrow
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
-class OutboxStateRepository(
+class OutboxStateRepository
+@OptIn(ExperimentalTime::class)
+constructor(
     private val database: LockableDatabase,
     private val clock: Clock,
 ) {
@@ -79,6 +82,7 @@ class OutboxStateRepository(
     }
 
     fun setSendAttemptError(messageId: Long, errorMessage: String) {
+        @OptIn(ExperimentalTime::class)
         val sendErrorTimestamp = clock.now().toEpochMilliseconds()
 
         database.execute(false) { db ->
@@ -93,6 +97,7 @@ class OutboxStateRepository(
     }
 
     fun setSendAttemptsExceeded(messageId: Long) {
+        @OptIn(ExperimentalTime::class)
         val sendErrorTimestamp = clock.now().toEpochMilliseconds()
 
         database.execute(false) { db ->

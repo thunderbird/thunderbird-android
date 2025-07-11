@@ -1,9 +1,11 @@
 package net.thunderbird.core.testing
 
+import kotlin.time.Clock
 import kotlin.time.Duration
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 class TestClock(
     private var currentTime: Instant = Clock.System.now(),
 ) : Clock {

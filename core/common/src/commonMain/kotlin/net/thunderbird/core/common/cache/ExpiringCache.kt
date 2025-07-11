@@ -1,9 +1,12 @@
 package net.thunderbird.core.common.cache
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
-class ExpiringCache<KEY : Any, VALUE : Any?>(
+class ExpiringCache<KEY : Any, VALUE : Any?>
+@OptIn(ExperimentalTime::class)
+constructor(
     private val clock: Clock,
     private val delegateCache: Cache<KEY, VALUE> = InMemoryCache(),
     private var lastClearTime: Instant = clock.now(),
@@ -26,6 +29,7 @@ class ExpiringCache<KEY : Any, VALUE : Any?>(
     }
 
     override fun clear() {
+        @OptIn(ExperimentalTime::class)
         lastClearTime = clock.now()
         delegateCache.clear()
     }
@@ -37,6 +41,7 @@ class ExpiringCache<KEY : Any, VALUE : Any?>(
     }
 
     private fun isExpired(): Boolean {
+        @OptIn(ExperimentalTime::class)
         return (clock.now() - lastClearTime).inWholeMilliseconds >= cacheTimeValidity
     }
 

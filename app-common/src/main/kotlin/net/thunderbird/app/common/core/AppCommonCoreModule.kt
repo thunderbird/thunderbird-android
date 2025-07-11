@@ -1,6 +1,7 @@
 package net.thunderbird.app.common.core
 
 import android.content.Context
+import kotlin.time.ExperimentalTime
 import net.thunderbird.app.common.BuildConfig
 import net.thunderbird.core.logging.DefaultLogger
 import net.thunderbird.core.logging.LogLevel
@@ -35,6 +36,7 @@ val appCommonCoreModule: Module = module {
     }
 
     single<Logger> {
+        @OptIn(ExperimentalTime::class)
         DefaultLogger(
             sink = get<CompositeLogSink>(),
         )
@@ -57,6 +59,7 @@ val appCommonCoreModule: Module = module {
     }
 
     single<Logger> (named(SYNC_DEBUG_LOG)) {
+        @OptIn(ExperimentalTime::class)
         DefaultLogger(
             sink = get<CompositeLogSink>(named(SYNC_DEBUG_LOG)),
         )
