@@ -76,6 +76,7 @@
         <item quantity="one">Nukopijuotas adresas į iškarpinę</item>
         <item quantity="few">Nukopijuoti adresai į iškarpinę</item>
         <item quantity="many">Nukopijuota adresų į iškarpinę</item>
+        <item quantity="other">Nukopijuota adresų į iškarpinę</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Nukopijuotas temos tekstas į iškarpinę</string>
     <string name="message_view_theme_action_dark">Perjungti į tamsią temą</string>
@@ -564,7 +565,8 @@
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laišką?</item>
         <item quantity="few">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
-        <item quantity="many">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
+        <item quantity="many">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškų?</item>
+        <item quantity="other">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškų?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Taip</string>
     <string name="dialog_confirm_delete_cancel_button">Ne</string>
@@ -579,6 +581,7 @@
         <item quantity="one">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laišką į brukalo aplanką?</item>
         <item quantity="few">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškus į brukalo aplanką?</item>
         <item quantity="many">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
+        <item quantity="other">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Taip</string>
     <string name="dialog_confirm_spam_cancel_button">Ne</string>

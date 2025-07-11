@@ -66,7 +66,8 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adresa bola skopírovaná do schránky</item>
         <item quantity="few">Adresy boli skopírované do schránky</item>
-        <item quantity="many">Adresy boli skopírované do schránky</item>
+        <item quantity="many">Adries bolo skopírovaných do schránky</item>
+        <item quantity="other">Adries bolo skopírovaných do schránky</item>
     </plurals>
     <string name="message_view_theme_action_dark">Prepnúť na tmavú tému</string>
     <string name="message_view_theme_action_light">Prepnúť na svetlú tému</string>
@@ -833,6 +834,7 @@
         <item quantity="one">Preberám %d výsledok</item>
         <item quantity="few">Preberám %d výsledky</item>
         <item quantity="many">Preberám %d výsledkov</item>
+        <item quantity="other">Preberám %d výsledkov</item>
     </plurals>
     <string name="folder_settings_sync_label">Povoliť synchronizáciu</string>
     <string name="folder_list_show_hidden_folders">Zobraziť skryté zložky</string>
@@ -840,6 +842,7 @@
         <item quantity="one">Preberám %1$d z %2$d výsledkov</item>
         <item quantity="few">Preberám %1$d z %2$d výsledkov</item>
         <item quantity="many">Preberám %1$d z %2$d výsledkov</item>
+        <item quantity="other">Preberám %1$d z %2$d výsledkov</item>
     </plurals>
     <string name="account_settings_crypto_hide_sign_only">Skryť nešifrované podpisy</string>
     <string name="crypto_msg_encrypted_no_provider">ale žiadna šifrovacia aplikácia nie je nastavená</string>

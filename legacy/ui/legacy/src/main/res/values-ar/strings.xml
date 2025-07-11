@@ -130,8 +130,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">إشعار خطأ</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">حدث خطأ أثناء محاولة إنشاء إشعار نظام برسالة جديدة. السبب على الأرجح هو فقدان صوت الإشعار.
-\nانقر لفتح إعدادات الإشعارات.</string>
+    <string name="notification_notify_error_text">حدث خطأ أثناء محاولة إنشاء إشعار نظام برسالة جديدة. السبب على الأرجح هو فقدان صوت الإشعار. \n\nانقر لفتح إعدادات الإشعارات.</string>
     <string name="notification_bg_sync_ticker">تفقد البريد: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">التحقق من البريد</string>
     <string name="notification_bg_send_ticker">إرسال البريد: <xliff:g id="account">%s</xliff:g></string>
@@ -679,7 +678,7 @@
     <string name="enable_sign_only">تفعيل تسجيل PGP فقط </string>
     <string name="disable_sign_only">تعطيل تسجيل PGP فقط </string>
     <string name="openpgp_inline_title">وضع PGP / INLINE </string>
-    <string name="openpgp_inline_text">تم إرسال البريد الإلكتروني بتنسيق PGP / INLINE. \ n يجب استخدام هذا فقط من أجل التوافق: </string>
+    <string name="openpgp_inline_text">تم إرسال البريد الإلكتروني بتنسيق PGP / INLINE.\n يجب استخدام هذا فقط من أجل التوافق:</string>
     <string name="openpgp_inline_plus_compat">يدعم بعض العملاء هذا التنسيق فقط </string>
     <string name="openpgp_inline_minus_transit">التوقيعات قد تنكسر أثناء العبور </string>
     <string name="openpgp_inline_minus_attach">الملفات المُرفقة غير مدعومة</string>
@@ -741,7 +740,7 @@
     <string name="error_sign_only_no_encryption">التشفير غير متوفر في وضع التسجيل فقط! </string>
     <string name="unsigned_text_divider_label">نص غير مُوَقَّع</string>
     <string name="crypto_no_provider_title">هذه الرسالة مُعماة</string>
-    <string name="crypto_no_provider_message">تم تشفير هذا البريد الإلكتروني باستخدام OpenPGP. \ n لقراءته ، تحتاج إلى تثبيت وتكوين تطبيق OpenPGP متوافق. </string>
+    <string name="crypto_no_provider_message">تم تشفير هذا البريد الإلكتروني باستخدام OpenPGP.\n لقراءته ، تحتاج إلى تثبيت وتكوين تطبيق OpenPGP متوافق.</string>
     <string name="crypto_no_provider_button">اذهب للاعدادات </string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->

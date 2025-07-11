@@ -2,6 +2,13 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">Arventennoù</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Merañ an teuliadoù</string>
-    <string name="navigation_drawer_dropdown_unified_inbox_title">Boest degemer unanet</string>
-    <string name="navigation_drawer_dropdown_avount_view_selection_title">Kont listenn</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">Boest degemer</string>
+    <string name="navigation_drawer_dropdown_avount_view_selection_title">Roll ar c\'hontoù</string>
+    <string name="navigation_drawer_dropdown_unified_account_title">Kont unanet</string>
+    <string name="navigation_drawer_dropdown_action_sync_all_accounts">Sinkronaat an holl gontoù</string>
+    <string name="navigation_drawer_dropdown_action_add_account">Ouzhpennañ ur gont</string>
+    <string name="navigation_drawer_dropdown_action_show_accounts">Diskwel ar c\'hontoù</string>
+    <string name="navigation_drawer_dropdown_action_hide_accounts">Kuzhat ar c\'hontoù</string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">&gt;99</string>
+    <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">&gt;1 k</string>
 </resources>
