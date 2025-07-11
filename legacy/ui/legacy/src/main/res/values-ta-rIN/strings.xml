@@ -62,7 +62,7 @@
     <string name="status_loading_more">அஞ்சல் ஏற்றப்படுகிறது \u2026</string>
     <string name="status_network_error">இணைப்பு பிழை</string>
     <string name="status_invalid_id_error">அஞ்சல் கிடைக்கவில்லை</string>
-    <string name="load_more_messages_fmt">&lt;Xliff வரை ஏற்றவும்: g ஐடி = \"messages_to_load\"&gt;%d &lt;/xliff: g&gt; மேலும்</string>
+    <string name="load_more_messages_fmt">வரை ஏற்றவும் <xliff:g id="messages_to_load">%d</xliff:g> மேலும்</string>
     <string name="notification_action_reply">பதில்</string>
     <string name="notification_action_mark_as_read">படித்ததாக குறி</string>
     <string name="notification_action_delete">அழி</string>
@@ -263,7 +263,7 @@
     </plurals>
     <string name="about_app_authors_k9">கே -9 நாய் நடப்பவர்கள்</string>
     <string name="about_app_authors_thunderbird">தண்டர்பேர்ட் மொபைல் குழு</string>
-    <string name="notification_authentication_error_text">&lt;Xliff: g ஐடி = \"கணக்கு\"&gt;%s &lt;/xliff: g&gt; க்கு ஏற்பு தோல்வியடைந்தது. உங்கள் சேவையக அமைப்புகளைப் புதுப்பிக்கவும்.</string>
+    <string name="notification_authentication_error_text"><xliff:g id="account">%s</xliff:g> க்கு ஏற்பு தோல்வியடைந்தது. உங்கள் சேவையக அமைப்புகளைப் புதுப்பிக்கவும்.</string>
     <string name="global_settings_messageview_autofit_width_label">தானாக பொருத்தப்பட்ட செய்திகள்</string>
     <string name="general_settings_post_remove_action_return_to_list">செய்தி பட்டியலுக்குத் திரும்பு</string>
     <string name="global_settings_confirm_action_delete_starred">நட்சத்திரமிட்டது (செய்தி பார்வையில்)</string>
@@ -326,7 +326,7 @@
     <string name="message_view_status_attachment_not_saved">இணைப்பைச் சேமிக்க முடியவில்லை.</string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="global_settings_flag_summary">நட்சத்திரங்கள் கொடியிடப்பட்ட செய்திகளைக் குறிக்கின்றன</string>
-    <string name="message_view_no_viewer">&lt;Xliff: g ஐடி = \"mimetype\"&gt;%s &lt;/xliff: g&gt; க்கான பார்வையாளரைக் கண்டுபிடிக்க முடியவில்லை.</string>
+    <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> க்கான பார்வையாளரைக் கண்டுபிடிக்க முடியவில்லை.</string>
     <string name="global_settings_sender_above_subject_label">பொருள் மேலே நிருபர்</string>
     <string name="message_view_sender_label">%1$s வழியாக</string>
     <string name="global_settings_sender_above_subject_summary">அதற்குக் கீழே இல்லாமல், பொருள் வரிக்கு மேலே நிருபர் பெயர்களைக் காண்பி</string>
@@ -390,7 +390,7 @@
     <string name="changelog_snackbar_text">இந்த வெளியீட்டில் புதியது என்ன என்பதைக் கண்டறியவும்</string>
     <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%1$s</xliff:g>\" கணக்கு <xliff:g id="app_name">%2$s</xliff:g> இலிருந்து அகற்றப்படும்.</string>
     <string name="authors">ஆசிரியர்கள்</string>
-    <string name="about_title">&lt;Xliff: g ஐடி = \"app_name\"&gt;%s &lt;/xliff: g&gt;</string>
+    <string name="about_title"><xliff:g id="app_name">%s</xliff:g></string>
     <string name="unsubscribe_action">குழுவிலகவும்</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">முகவரி இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்டது</item>
@@ -463,7 +463,7 @@
     <string name="dialog_confirm_delete_message">இந்த செய்தியை நீக்க விரும்புகிறீர்களா?</string>
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">இந்த செய்தியை நீக்க விரும்புகிறீர்களா?</item>
-        <item quantity="other">&lt;Xliff: g ஐடி = \"message_count\"&gt;%1$d &lt;/xliff: g&gt; செய்திகளை நீக்க விரும்புகிறீர்களா?</item>
+        <item quantity="other"><xliff:g id="message_count">%1$d</xliff:g> செய்திகளை நீக்க விரும்புகிறீர்களா?</item>
     </plurals>
     <string name="dialog_confirm_empty_trash_title">வெற்று குப்பைகளை உறுதிப்படுத்தவும்</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">ஆம்</string>
@@ -757,7 +757,7 @@
     <string name="dialog_confirm_spam_title">ச்பேம் கோப்புறைக்கு நகர்வதை உறுதிப்படுத்தவும்</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">இந்த செய்தியை ச்பேம் கோப்புறையில் நகர்த்த விரும்புகிறீர்களா?</item>
-        <item quantity="other">நீங்கள் உண்மையில் &lt;xliff: g ஐடி = \"message_count\"&gt;%1$d &lt;/xliff: g&gt; ச்பேம் கோப்புறையில் செய்திகளை நகர்த்த விரும்புகிறீர்களா?</item>
+        <item quantity="other">நீங்கள் உண்மையில் <xliff:g id="message_count">%1$d</xliff:g> ச்பேம் கோப்புறையில் செய்திகளை நகர்த்த விரும்புகிறீர்களா?</item>
     </plurals>
     <string name="dialog_confirm_spam_cancel_button">இல்லை</string>
     <string name="settings_list_backup_category">காப்புப்பிரதி</string>
