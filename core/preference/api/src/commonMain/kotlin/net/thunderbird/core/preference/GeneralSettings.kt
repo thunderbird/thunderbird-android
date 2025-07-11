@@ -1,5 +1,6 @@
 package net.thunderbird.core.preference
 
+import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 
 /**
@@ -36,10 +37,7 @@ data class GeneralSettings(
     val isThreadedViewEnabled: Boolean = true,
     val isUseMessageViewFixedWidthFont: Boolean = false,
     val isAutoFitWidth: Boolean = true,
-    val quietTimeEnds: String = "7:00",
-    val quietTimeStarts: String = "21:00",
-    val isQuietTimeEnabled: Boolean = false,
-    val isQuietTime: Boolean = false,
+    val notification: NotificationPreference = NotificationPreference(),
     val privacy: PrivacySettings = PrivacySettings(),
 )
 

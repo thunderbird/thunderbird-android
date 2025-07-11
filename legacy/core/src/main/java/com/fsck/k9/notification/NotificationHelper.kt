@@ -9,10 +9,14 @@ import android.provider.Settings
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
+import app.k9mail.legacy.di.DI
+import com.fsck.k9.QuietTimeChecker
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
+import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.notification.NotificationPreference
 
 class NotificationHelper(
     private val context: Context,
@@ -101,7 +105,7 @@ internal fun NotificationCompat.Builder.setErrorAppearance(
     apply {
         setSilent(true)
 
-        if (!generalSettingsManager.getSettings().isQuietTime) {
+        if (!generalSettingsManager.getSettings().notification.isQuietTime) {
             setLights(
                 NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR,
                 NotificationHelper.NOTIFICATION_LED_FAST_ON_TIME,
@@ -134,3 +138,14 @@ internal fun NotificationCompat.Builder.setAppearance(
         }
     }
 }
+
+internal val NotificationPreference.isQuietTime: Boolean
+    get() {
+        val clock = DI.get<Clock>()
+        val quietTimeChecker = QuietTimeChecker(
+            clock = clock,
+            quietTimeStart = quietTimeStarts,
+            quietTimeEnd = quietTimeEnds,
+        )
+        return quietTimeChecker.isQuietTime
+    }

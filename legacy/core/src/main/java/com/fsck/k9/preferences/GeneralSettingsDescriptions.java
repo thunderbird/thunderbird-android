@@ -40,6 +40,7 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider;
 import net.thunderbird.core.android.account.SortType;
 import net.thunderbird.core.common.action.SwipeAction;
 import net.thunderbird.core.preference.AppTheme;
+import net.thunderbird.core.preference.notification.NotificationPreferenceKt;
 import net.thunderbird.core.preference.privacy.PrivacySettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
 import net.thunderbird.core.preference.SubTheme;
@@ -157,13 +158,13 @@ class GeneralSettingsDescriptions {
                 new V(89, null)
         ));
         s.put("quietTimeEnabled", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new BooleanSetting(NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED))
         ));
         s.put("quietTimeEnds", Settings.versions(
-                new V(1, new TimeSetting("7:00"))
+                new V(1, new TimeSetting(NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_END))
         ));
         s.put("quietTimeStarts", Settings.versions(
-                new V(1, new TimeSetting("21:00"))
+                new V(1, new TimeSetting(NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_STARTS))
         ));
         s.put("registeredNameColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF00008F)),
