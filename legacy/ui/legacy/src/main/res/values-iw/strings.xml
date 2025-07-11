@@ -67,6 +67,7 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">כתובת הועתקה ללוח</item>
         <item quantity="two">כתובות הועתקו ללוח</item>
+        <item quantity="many">כתובות הועתקו ללוח</item>
         <item quantity="other">כתובות הועתקו ללוח</item>
     </plurals>
     <string name="copy_subject_to_clipboard">הנושא הועתק ללוח</string>
@@ -592,11 +593,13 @@
     <plurals name="remote_search_downloading">
         <item quantity="one">מביא תוצאה %d</item>
         <item quantity="two">מביא %d תוצאות</item>
+        <item quantity="many">מביא %d תוצאות</item>
         <item quantity="other">מביא %d תוצאות</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">מביא תוצאה %1$d מתוך %2$d</item>
         <item quantity="two">מביא %1$d תוצאות מתוך%2$d</item>
+        <item quantity="many">מביא %1$d תוצאות מתוך%2$d</item>
         <item quantity="other">מביא %1$d תוצאות מתוך%2$d</item>
     </plurals>
     <string name="upgrade_databases_unspecified">משדרג מסדי נתונים…</string>
@@ -699,6 +702,7 @@
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">בטוח שברצונך למחוק הודעה זו?</item>
         <item quantity="two">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
+        <item quantity="many">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
         <item quantity="other">בטוח שברצונך למחוק <xliff:g id="message_count">%1$d</xliff:g> הודעות?</item>
     </plurals>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
