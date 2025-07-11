@@ -5,6 +5,8 @@ import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangePublisher
+import net.thunderbird.core.preference.notification.DefaultNotificationPreferenceManager
+import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
 import net.thunderbird.feature.mail.account.api.AccountManager
@@ -35,12 +37,20 @@ val preferencesModule = module {
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
+    single<NotificationPreferenceManager> {
+        DefaultNotificationPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
     single {
         RealGeneralSettingsManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changePublisher = get(),
             privacySettingsPreferenceManager = get(),
+            notificationPreferenceManager = get(),
         )
     } bind GeneralSettingsManager::class
     single {
