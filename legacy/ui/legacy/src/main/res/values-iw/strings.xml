@@ -95,6 +95,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה</item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> עוד עלינו<xliff:g id="account">%2$s</xliff:g></string>
