@@ -8,10 +8,10 @@ import com.fsck.k9.preferences.SettingsFile.Server
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.UUID
+import net.thunderbird.core.logging.legacy.Log
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
-import timber.log.Timber
 
 /**
  * Parser for K-9 Mail's settings file format.
@@ -79,7 +79,7 @@ private class XmlSettingsParser(
                         if (generalSettings == null) {
                             generalSettings = readGlobalSettings()
                         } else {
-                            Timber.w("More than one '${SettingsExporter.GLOBAL_ELEMENT}' element!")
+                            Log.w("More than one '${SettingsExporter.GLOBAL_ELEMENT}' element!")
                             skipElement()
                         }
                     }
@@ -87,7 +87,7 @@ private class XmlSettingsParser(
                         if (accounts == null) {
                             accounts = readAccounts()
                         } else {
-                            Timber.w("More than one '${SettingsExporter.ACCOUNTS_ELEMENT}' element!")
+                            Log.w("More than one '${SettingsExporter.ACCOUNTS_ELEMENT}' element!")
                             skipElement()
                         }
                     }
@@ -128,7 +128,7 @@ private class XmlSettingsParser(
                         val value = readText()
 
                         if (settings.containsKey(key)) {
-                            Timber.w("Already read key \"%s\". Ignoring value \"%s\"", key, value)
+                            Log.w("Already read key \"%s\". Ignoring value \"%s\"", key, value)
                         } else {
                             settings[key] = value
                         }
@@ -155,7 +155,7 @@ private class XmlSettingsParser(
                         if (account == null) {
                             // Do nothing - readAccount() already logged a message
                         } else if (accounts.any { it.uuid == account.uuid }) {
-                            Timber.w("Duplicate account entries with UUID %s. Ignoring!", account.uuid)
+                            Log.w("Duplicate account entries with UUID %s. Ignoring!", account.uuid)
                         } else {
                             accounts.add(account)
                         }
@@ -226,7 +226,7 @@ private class XmlSettingsParser(
         try {
             UUID.fromString(uuid)
         } catch (e: IllegalArgumentException) {
-            Timber.w(e, "Invalid account UUID: %s", uuid)
+            Log.w(e, "Invalid account UUID: %s", uuid)
             return null
         }
 
@@ -405,7 +405,7 @@ private class XmlSettingsParser(
     }
 
     private fun skipElement() {
-        Timber.d("Skipping element '%s'", pullParser.name)
+        Log.d("Skipping element '%s'", pullParser.name)
         readElement { /* Do nothing */ }
     }
 

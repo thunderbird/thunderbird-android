@@ -20,8 +20,11 @@ import com.fsck.k9.mail.store.imap.FetchListener
 import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.testing.message.buildMessage
 import java.util.Date
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.apache.james.mime4j.dom.field.DateTimeField
 import org.apache.james.mime4j.field.DefaultFieldParser
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
@@ -44,6 +47,11 @@ class ImapSyncTest {
     private val imapSync = ImapSync(ACCOUNT_NAME, backendStorage, imapStore)
     private val syncListener = mock<SyncListener>()
     private val defaultSyncConfig = createSyncConfig()
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `sync of empty folder should notify listener`() {

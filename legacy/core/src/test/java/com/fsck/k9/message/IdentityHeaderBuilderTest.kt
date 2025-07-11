@@ -1,14 +1,14 @@
 package com.fsck.k9.message
 
 import android.net.Uri
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.QuoteStyle
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.isGreaterThan
 import com.fsck.k9.mail.internet.MimeHeaderChecker
 import com.fsck.k9.mail.internet.TextBody
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 

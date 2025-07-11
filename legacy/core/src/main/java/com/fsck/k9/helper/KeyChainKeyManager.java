@@ -21,7 +21,7 @@ import android.security.KeyChain;
 import android.security.KeyChainException;
 
 import com.fsck.k9.mail.MessagingException;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 /**
@@ -177,10 +177,10 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
                     return mAlias;
                 }
             }
-            Timber.w("Client certificate %s not issued by any of the requested issuers", mAlias);
+            Log.w("Client certificate %s not issued by any of the requested issuers", mAlias);
             return null;
         }
-        Timber.w("Client certificate %s does not match any of the requested key types", mAlias);
+        Log.w("Client certificate %s does not match any of the requested key types", mAlias);
         return null;
     }
 }

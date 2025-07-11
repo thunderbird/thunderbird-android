@@ -1,6 +1,5 @@
 package app.k9mail.feature.account.server.validation
 
-import app.k9mail.core.common.coreCommonModule
 import app.k9mail.feature.account.common.featureAccountCommonModule
 import app.k9mail.feature.account.oauth.featureAccountOAuthModule
 import app.k9mail.feature.account.server.certificate.featureAccountServerCertificateModule
@@ -11,7 +10,8 @@ import app.k9mail.feature.account.server.validation.ui.OutgoingServerValidationV
 import com.fsck.k9.mail.store.imap.ImapServerSettingsValidator
 import com.fsck.k9.mail.store.pop3.Pop3ServerSettingsValidator
 import com.fsck.k9.mail.transport.smtp.SmtpServerSettingsValidator
-import org.koin.androidx.viewmodel.dsl.viewModel
+import net.thunderbird.core.common.coreCommonModule
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 

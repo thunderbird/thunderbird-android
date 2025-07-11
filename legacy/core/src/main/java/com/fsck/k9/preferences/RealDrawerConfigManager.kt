@@ -9,14 +9,17 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import net.thunderbird.core.preferences.SettingsChangeBroker
-import net.thunderbird.core.preferences.SettingsChangeSubscriber
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangeSubscriber
+import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
 internal class RealDrawerConfigManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
-    private val changeBroker: SettingsChangeBroker,
+    private val changeBroker: PreferenceChangeBroker,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) : DrawerConfigManager {
     private val drawerConfigFlow = MutableSharedFlow<DrawerConfig>(replay = 1)
 
@@ -36,8 +39,8 @@ internal class RealDrawerConfigManager(
     private fun loadDrawerConfig(): DrawerConfig {
         return DrawerConfig(
             showAccountSelector = K9.isShowAccountSelector,
-            showStarredCount = K9.isShowStarredCount,
-            showUnifiedFolders = K9.isShowUnifiedInbox,
+            showStarredCount = generalSettingsManager.getSettings().isShowStarredCount,
+            showUnifiedFolders = generalSettingsManager.getSettings().isShowUnifiedInbox,
         )
     }
 
@@ -62,7 +65,7 @@ internal class RealDrawerConfigManager(
         return callbackFlow {
             send(loadDrawerConfig())
 
-            val subscriber = SettingsChangeSubscriber {
+            val subscriber = PreferenceChangeSubscriber {
                 drawerConfigFlow.tryEmit(loadDrawerConfig())
             }
 

@@ -1,7 +1,7 @@
 package app.k9mail.autodiscovery.autoconfig
 
 import app.k9mail.autodiscovery.api.AutoDiscoveryResult
-import app.k9mail.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.EmailAddress
 import okhttp3.HttpUrl
 
 /**

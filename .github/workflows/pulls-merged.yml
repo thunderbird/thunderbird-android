@@ -19,7 +19,7 @@ jobs:
     environment: botmobile
     steps:
       - name: App token generate
-        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5  # v2.0.2
+        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e  # v2.0.6
         if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:

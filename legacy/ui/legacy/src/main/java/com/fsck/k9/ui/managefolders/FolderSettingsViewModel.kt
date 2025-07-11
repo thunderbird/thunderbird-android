@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import app.k9mail.core.mail.folder.api.Folder
-import app.k9mail.core.mail.folder.api.FolderDetails
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.FolderDetails
 
 private const val NO_FOLDER_ID = 0L
 
@@ -45,7 +45,7 @@ class FolderSettingsViewModel(
             val account = loadAccount(accountUuid)
             val folderDetails = folderRepository.loadFolderDetails(account, folderId)
             if (folderDetails == null) {
-                Timber.w("Folder with ID $folderId not found")
+                Log.w("Folder with ID $folderId not found")
                 emit(FolderNotFound)
                 return@liveData
             }

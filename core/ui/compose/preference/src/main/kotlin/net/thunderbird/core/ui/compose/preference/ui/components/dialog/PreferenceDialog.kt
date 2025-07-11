@@ -37,5 +37,18 @@ internal fun PreferenceDialog(
                 modifier = modifier,
             )
         }
+
+        is PreferenceSetting.SingleChoiceCompact -> {
+            PreferenceDialogSingleChoiceCompactView(
+                preference = preference,
+                onConfirmClick = onConfirmClick,
+                onDismissClick = onDismissClick,
+                onDismissRequest = onDismissRequest,
+                modifier = modifier,
+            )
+        }
+
+        // No dialog needed
+        is PreferenceSetting.SingleChoice, is PreferenceSetting.Switch -> Unit
     }
 }

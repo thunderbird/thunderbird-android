@@ -97,7 +97,7 @@
     <string name="status_network_error">Erro de ligação</string>
     <string name="status_invalid_id_error">Mensagem não encontrada</string>
     <string name="status_loading_error">Erro ao carregar mensagem</string>
-    <string name="load_more_messages_fmt">Carregar mais <xliff:g id="messages_to_load">%d</xliff:g></string>
+    <string name="load_more_messages_fmt">Carregar mais <xliff:g id="messages_to_load">%d</xliff:g> mensagens</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_megabytes">%.1f MB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
@@ -199,7 +199,7 @@
     <string name="global_settings_registered_name_color_changed">Colorir nomes na sua lista de contactos</string>
     <string name="general_settings_contact_name_color_label">Cor do nome de contacto</string>
     <string name="global_settings_messageview_fixedwidth_label">Fontes de largura fixa</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Usar uma fonte de largura fixa quando forem visualizadas mensagens em texto simples</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte de largura fixa ao exibir mensagens de texto simples</string>
     <string name="global_settings_messageview_autofit_width_label">Ajustar automaticamente as mensagens</string>
     <string name="global_settings_messageview_autofit_width_summary">Encolher as mensagens para caberem no ecrã</string>
     <string name="global_settings_confirm_actions_title">Confirmar ações</string>
@@ -888,4 +888,20 @@ Pode manter esta mensagem e usá-la como uma cópia de segurança para a sua cha
     <string name="about_title">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Ao usar o Push, <xliff:g id="app_name">%1$s</xliff:g> mantém uma conexão ao servidor de e-mail. O Android requer que uma notificação seja mostrada enquanto a app é executada em segundo plano. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">A app OpenKeychain é necessária para ativar o apoio de criptografia de ponta a ponta.</string>
+    <string name="folder_settings_push_label">Ativar Push</string>
+    <string name="folder_settings_notifications_label">Notificações</string>
+    <string name="empty_spam_action">Esvaziar spam</string>
+    <string name="save_attachment_action">Gravar anexo</string>
+    <string name="folder_settings_visible_label">Mostrar pasta</string>
+    <string name="volume_navigation_title_short">Navegação com o botão de volume</string>
+    <string name="folder_settings_sync_label">Ativar sincronização</string>
+    <string name="settings_ui_data_collection">Coleta de dados</string>
+    <string name="settings_ui_telemetry_title">Dados de uso e técnicos</string>
+    <string name="folder_list_show_hidden_folders">Mostrar pastas escondidas</string>
+    <string name="settings_ui_telemetry_description">Partilha dados de desempenho, uso, hardware e personalização desta app com a Mozilla, para nos ajudar a melhorar o Thunderbird</string>
+    <string name="settings_list_action_support">Apoie o <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="volume_navigation_summary">Navegue entre as mensagens usando os botões de volume</string>
+    <string name="dialog_confirm_empty_spam_title">Confirmar esvaziamento do spam</string>
+    <string name="dialog_confirm_empty_spam_message">Deseja esvaziar a pasta de spam?</string>
+    <string name="expand_content_description">Expandir</string>
 </resources>

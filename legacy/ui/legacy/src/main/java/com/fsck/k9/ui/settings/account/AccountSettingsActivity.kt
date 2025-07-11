@@ -14,8 +14,8 @@ import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.base.extensions.fragmentTransaction
 import com.fsck.k9.ui.base.extensions.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.base.livedata.observeNotNull
+import net.thunderbird.core.logging.legacy.Log
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
     private val accountViewModel: AccountSettingsViewModel by viewModel()
@@ -34,7 +34,7 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
         initializeActionBar()
 
         if (!decodeArguments()) {
-            Timber.d("Invalid arguments")
+            Log.d("Invalid arguments")
             finish()
             return
         }
@@ -76,7 +76,7 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
     private fun loadAccount() {
         accountViewModel.getAccount(accountUuid).observe(this) { account ->
             if (account == null) {
-                Timber.w("Account with UUID %s not found", accountUuid)
+                Log.w("Account with UUID %s not found", accountUuid)
                 finish()
                 return@observe
             }

@@ -1,14 +1,14 @@
 package com.fsck.k9.controller
 
-import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.toFeatureFlagKey
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.controller.MessagingController.MessageActor
 import com.fsck.k9.controller.MessagingController.MoveOrCopyFlavor
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
-import timber.log.Timber
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.logging.legacy.Log
 
 internal class ArchiveOperations(
     private val messagingController: MessagingController,
@@ -44,11 +44,11 @@ internal class ArchiveOperations(
             val sourceFolderId = messageFolder.databaseId
             when (val archiveFolderId = account.archiveFolderId) {
                 null -> {
-                    Timber.v("No archive folder configured for account %s", account)
+                    Log.v("No archive folder configured for account %s", account)
                 }
 
                 sourceFolderId -> {
-                    Timber.v("Skipping messages already in archive folder")
+                    Log.v("Skipping messages already in archive folder")
                 }
 
                 else -> {

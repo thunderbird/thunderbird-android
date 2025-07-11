@@ -1,8 +1,8 @@
 package app.k9mail.featureflag
 
-import app.k9mail.core.featureflag.FeatureFlag
-import app.k9mail.core.featureflag.FeatureFlagFactory
-import app.k9mail.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlag
+import net.thunderbird.core.featureflag.FeatureFlagFactory
+import net.thunderbird.core.featureflag.toFeatureFlagKey
 
 class K9FeatureFlagFactory : FeatureFlagFactory {
     override fun createFeatureCatalog(): List<FeatureFlag> {
@@ -12,6 +12,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
             FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
             FeatureFlag("enable_dropdown_drawer".toFeatureFlagKey(), enabled = true),
+            FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = true),
         )
     }
 }

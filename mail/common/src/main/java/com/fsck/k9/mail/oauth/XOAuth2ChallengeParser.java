@@ -3,7 +3,7 @@ package com.fsck.k9.mail.oauth;
 
 import java.io.IOException;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.Base64;
 import com.squareup.moshi.JsonAdapter;
@@ -23,7 +23,7 @@ public class XOAuth2ChallengeParser {
         String decodedResponse = Base64.decode(response);
 
         if (K9MailLib.isDebug()) {
-            Timber.v("Challenge response: %s", decodedResponse);
+            Log.v("Challenge response: %s", decodedResponse);
         }
 
         try {
@@ -35,7 +35,7 @@ public class XOAuth2ChallengeParser {
                 return false;
             }
         } catch (IOException | JsonDataException e) {
-            Timber.e(e, "Error decoding JSON response from: %s. Response was: %s", host, decodedResponse);
+            Log.e(e, "Error decoding JSON response from: %s. Response was: %s", host, decodedResponse);
         }
 
         return true;

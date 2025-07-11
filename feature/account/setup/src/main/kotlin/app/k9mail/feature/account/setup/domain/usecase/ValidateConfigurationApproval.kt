@@ -1,8 +1,8 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 class ValidateConfigurationApproval : UseCase.ValidateConfigurationApproval {
     override fun execute(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationResult {

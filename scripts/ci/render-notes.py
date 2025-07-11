@@ -101,6 +101,7 @@ def render_notes(
             "template": "changelog_master.xml",
             "outfile": f"./app-{application}/src/{build_type}/res/raw/changelog_master.xml",
             "render_data": render_data["releases"][version],
+            "autoescape": True,
         },
         "changelog": {
             "template": "changelog.txt",
@@ -112,6 +113,7 @@ def render_notes(
             "template": "changelog_long.txt",
             "outfile": longform_file,
             "render_data": render_data["releases"][version],
+            "autoescape": True,
         },
     }
 
@@ -120,7 +122,7 @@ def render_notes(
     for render_file in render_files:
         with open(os.path.join(template_base, render_files[render_file]["template"]), "r") as file:
             template = file.read()
-        template = Template(template)
+        template = Template(template, autoescape=render_files[render_file].get("autoescape", False))
         rendered = template.render(render_files[render_file]["render_data"])
         if render_file == "changelog_master":
             if print_only:
@@ -142,16 +144,17 @@ def render_notes(
         elif render_file == "changelog" or render_file == "changelog_long":
             stripped = rendered.lstrip()
             maxlen = render_files[render_file].get("max_length", float("inf"))
+            if print_only:
+                print(f"\n==={render_files[render_file]['outfile']}===")
+                print(stripped)
+
             if len(stripped) > maxlen:
                 print(
                     f"Error: Maximum length of {maxlen} exceeded, {render_file} is {len(stripped)} characters"
                 )
                 sys.exit(1)
 
-            if print_only:
-                print(f"\n==={render_files[render_file]['outfile']}===")
-                print(stripped)
-            else:
+            if not print_only:
                 with open(render_files[render_file]["outfile"], "x") as file:
                     file.write(stripped)
 

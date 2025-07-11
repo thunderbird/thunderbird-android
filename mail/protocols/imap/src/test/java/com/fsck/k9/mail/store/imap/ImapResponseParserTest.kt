@@ -19,10 +19,18 @@ import com.fsck.k9.mail.filter.FixedLengthInputStream
 import com.fsck.k9.mail.filter.PeekableInputStream
 import java.io.ByteArrayInputStream
 import java.io.IOException
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
 import org.junit.Test
 
 class ImapResponseParserTest {
     private var peekableInputStream: PeekableInputStream? = null
+
+    @Before
+    fun setup() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `readResponse() with untagged OK response`() {
@@ -431,6 +439,35 @@ class ImapResponseParserTest {
         assertThat(response).index(1).isInstanceOf<ImapList>().containsExactly("""\HasNoChildren""")
         assertThat(response).index(2).isEqualTo(".")
         assertThat(response).index(3).isEqualTo("[FolderName]")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with LIST response containing folder name with UTF8`() {
+        val parser = createParserWithResponses(
+            """* LIST (\HasNoChildren) "." "萬里長城"""",
+            """* LIST (\HasNoChildren) "." "A&-B"""",
+        )
+        parser.setUtf8Accepted(true)
+
+        val response = parser.readResponse()
+        assertThat(response).hasSize(4)
+        assertThat(response).index(3).isEqualTo("萬里長城")
+
+        val response2 = parser.readResponse()
+        assertThat(response2).hasSize(4)
+        assertThat(response2).index(3).isEqualTo("A&-B")
+        assertThatAllInputWasConsumed()
+    }
+
+    @Test
+    fun `readResponse() with LIST response containing ambiguous folder name`() {
+        val parser = createParserWithResponses("""* LIST (\HasNoChildren) "." "A&-B"""")
+
+        val response = parser.readResponse()
+
+        assertThat(response).hasSize(4)
+        assertThat(response).index(3).isEqualTo("A&B")
         assertThatAllInputWasConsumed()
     }
 

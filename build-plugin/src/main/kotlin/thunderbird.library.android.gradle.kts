@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -13,13 +15,19 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = ThunderbirdProjectConfig.javaCompatibilityVersion.toString()
+        jvmTarget = ThunderbirdProjectConfig.Compiler.javaCompatibility.toString()
     }
 
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
         }
+    }
+}
+
+kotlin {
+    sourceSets.all {
+        languageSettings.enableLanguageFeature(LanguageFeature.WhenGuards.name)
     }
 }
 

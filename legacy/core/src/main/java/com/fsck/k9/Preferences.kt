@@ -2,17 +2,9 @@ package com.fsck.k9
 
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
-import app.k9mail.legacy.account.AccountDefaultsProvider
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.AccountRemovedListener
-import app.k9mail.legacy.account.AccountsChangeListener
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.preferences.StorageEditor
-import com.fsck.k9.preferences.StoragePersister
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArraySet
@@ -26,14 +18,23 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
-import net.thunderbird.core.preferences.Storage
-import timber.log.Timber
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.AccountRemovedListener
+import net.thunderbird.core.android.account.AccountsChangeListener
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.feature.account.storage.legacy.AccountDtoStorageHandler
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
-    private val accountPreferenceSerializer: AccountPreferenceSerializer,
+    private val legacyAccountStorageHandler: AccountDtoStorageHandler,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : AccountManager {
@@ -82,12 +83,15 @@ class Preferences internal constructor(
             val accounts = mutableMapOf<String, LegacyAccount>()
             val accountsInOrder = mutableListOf<LegacyAccount>()
 
-            val accountUuids = storage.getString("accountUuids", null)
+            val accountUuids = storage.getStringOrNull("accountUuids")
             if (!accountUuids.isNullOrEmpty()) {
                 accountUuids.split(",").forEach { uuid ->
                     val existingAccount = accountsMap?.get(uuid)
-                    val account = existingAccount ?: LegacyAccount(uuid, K9::isSensitiveDebugLoggingEnabled)
-                    accountPreferenceSerializer.loadAccount(account, storage)
+                    val account = existingAccount ?: LegacyAccount(
+                        uuid,
+                        K9::isSensitiveDebugLoggingEnabled,
+                    )
+                    legacyAccountStorageHandler.load(account, storage)
 
                     accounts[uuid] = account
                     accountsInOrder.add(account)
@@ -181,7 +185,8 @@ class Preferences internal constructor(
     }
 
     fun newAccount(accountUuid: String): LegacyAccount {
-        val account = LegacyAccount(accountUuid, K9::isSensitiveDebugLoggingEnabled)
+        val account =
+            LegacyAccount(accountUuid, K9::isSensitiveDebugLoggingEnabled)
         accountDefaultsProvider.applyDefaults(account)
 
         synchronized(accountLock) {
@@ -199,7 +204,7 @@ class Preferences internal constructor(
             accountsInOrder.remove(account)
 
             val storageEditor = createStorageEditor()
-            accountPreferenceSerializer.delete(storageEditor, storage, account)
+            legacyAccountStorageHandler.delete(account, storage, storageEditor)
             storageEditor.commit()
 
             if (account === newAccount) {
@@ -220,7 +225,7 @@ class Preferences internal constructor(
 
         synchronized(accountLock) {
             val editor = createStorageEditor()
-            accountPreferenceSerializer.save(editor, storage, account)
+            legacyAccountStorageHandler.save(account, storage, editor)
             editor.commit()
 
             loadAccounts()
@@ -240,7 +245,7 @@ class Preferences internal constructor(
             try {
                 localStoreProvider.getInstance(account).resetVisibleLimits(account.displayCount)
             } catch (e: MessagingException) {
-                Timber.e(e, "Failed to load LocalStore!")
+                Log.e(e, "Failed to load LocalStore!")
             }
         }
         account.resetChangeMarkers()
@@ -267,13 +272,28 @@ class Preferences internal constructor(
     override fun moveAccount(account: LegacyAccount, newPosition: Int) {
         synchronized(accountLock) {
             val storageEditor = createStorageEditor()
-            accountPreferenceSerializer.move(storageEditor, account, storage, newPosition)
+            moveToPosition(account, storage, storageEditor, newPosition)
             storageEditor.commit()
 
             loadAccounts()
         }
 
         notifyAccountsChangeListeners()
+    }
+
+    private fun moveToPosition(account: LegacyAccount, storage: Storage, editor: StorageEditor, newPosition: Int) {
+        val accountUuids = storage.getStringOrDefault("accountUuids", "").split(",").filter { it.isNotEmpty() }
+        val oldPosition = accountUuids.indexOf(account.uuid)
+        if (oldPosition == -1 || oldPosition == newPosition) return
+
+        val newAccountUuidsString = accountUuids.toMutableList()
+            .apply {
+                removeAt(oldPosition)
+                add(newPosition, account.uuid)
+            }
+            .joinToString(separator = ",")
+
+        editor.putString("accountUuids", newAccountUuidsString)
     }
 
     private fun notifyAccountsChangeListeners() {

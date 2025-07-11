@@ -29,4 +29,13 @@
     <string name="funding_googleplay_contribution_error_service_disconnected">Chan urrainnear tabhartas a thoirt an-dràsta fhèin.</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Thoir tabhartas aon turas</string>
     <string name="funding_googleplay_contribution_tfa_onetime_s_title">Tabhartas luachmhor</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Tha Thunderbird an-asgaidh ’s tha a chòd fosgailte.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Abair tabhartas! Tha thu air thoiseach mhòran ann a bhith a’ cur ris an iomairt againn ach an ruig sinn clachan-mìle cudromach is buaidh nas motha.</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">Chan ann an-dràsta</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">Is treise sinn do thaic! Le bhith gar cuideachadh aig an ìre seo, ’s urrainn dhuinn ceuman mòra a ghabhail air adhart airson sìor-fhàs a dhèanamh.</string>
+    <string name="funding_googleplay_contribution_reminder_title">Cùm taic ri Thunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">Tha</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">Cha seall sinn sanasachd.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">Cha reic sinn an dàta agad.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Tha am maoineachadh air fad againn a’ tighinn o luchd-cleachdaidh mar thu fhèin.</string>
 </resources>

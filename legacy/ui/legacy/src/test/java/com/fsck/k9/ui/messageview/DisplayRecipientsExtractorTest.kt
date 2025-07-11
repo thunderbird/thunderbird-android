@@ -1,17 +1,18 @@
 package com.fsck.k9.ui.messageview
 
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.testing.message.buildMessage
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
 import org.junit.Test
 
 private const val IDENTITY_ADDRESS = "me@domain.example"
 
 class DisplayRecipientsExtractorTest {
-    private val account = LegacyAccount("uuid").apply {
+    private val account = LegacyAccount(ACCOUNT_ID_RAW).apply {
         identities += Identity(
             email = IDENTITY_ADDRESS,
         )

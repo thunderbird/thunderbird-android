@@ -7,19 +7,21 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import java.util.concurrent.TimeUnit
 import kotlinx.datetime.Clock
-import timber.log.Timber
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.logging.legacy.Log
 
 class MailSyncWorkerManager(
     private val workManager: WorkManager,
     val clock: Clock,
+    val syncDebugLogger: Logger,
 ) {
 
     fun cancelMailSync(account: LegacyAccount) {
-        Timber.v("Canceling mail sync worker for %s", account)
+        Log.v("Canceling mail sync worker for %s", account)
         val uniqueWorkName = createUniqueWorkName(account.uuid)
         workManager.cancelUniqueWork(uniqueWorkName)
     }
@@ -28,8 +30,10 @@ class MailSyncWorkerManager(
         if (isNeverSyncInBackground()) return
 
         getSyncIntervalIfEnabled(account)?.let { syncIntervalMinutes ->
-            Timber.v("Scheduling mail sync worker for %s", account)
-            Timber.v("  sync interval: %d minutes", syncIntervalMinutes)
+            Log.v("Scheduling mail sync worker for %s", account)
+            Log.v("  sync interval: %d minutes", syncIntervalMinutes)
+            syncDebugLogger.info(null, null) { "Scheduling mail sync worker $account" }
+            syncDebugLogger.info(null, null) { "  sync interval: $syncIntervalMinutes minutes\"" }
 
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
@@ -37,10 +41,12 @@ class MailSyncWorkerManager(
                 .build()
 
             val lastSyncTime = account.lastSyncTime
-            Timber.v("  last sync time: %tc", lastSyncTime)
+            Log.v("  last sync time: %tc", lastSyncTime)
+            syncDebugLogger.info(null, null) { "last sync time: $lastSyncTime" }
 
             val initialDelay = calculateInitialDelay(lastSyncTime, syncIntervalMinutes)
-            Timber.v("  initial delay: %d ms", initialDelay)
+            Log.v("  initial delay: %d ms", initialDelay)
+            syncDebugLogger.info(null, null) { "  initial delay: $initialDelay ms" }
 
             val data = workDataOf(MailSyncWorker.EXTRA_ACCOUNT_UUID to account.uuid)
 
@@ -53,7 +59,11 @@ class MailSyncWorkerManager(
                 .build()
 
             val uniqueWorkName = createUniqueWorkName(account.uuid)
-            workManager.enqueueUniquePeriodicWork(uniqueWorkName, ExistingPeriodicWorkPolicy.REPLACE, mailSyncRequest)
+            workManager.enqueueUniquePeriodicWork(
+                uniqueWorkName,
+                ExistingPeriodicWorkPolicy.REPLACE,
+                mailSyncRequest,
+            )
         }
     }
 

@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
-import app.k9mail.legacy.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccount;
 
 
 /**

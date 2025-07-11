@@ -1,7 +1,6 @@
 package app.k9mail.feature.funding.googleplay.data
 
 import android.app.Activity
-import app.k9mail.core.common.cache.Cache
 import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
 import app.k9mail.feature.funding.googleplay.data.remote.startConnection
 import app.k9mail.feature.funding.googleplay.domain.DomainContract.BillingError
@@ -30,10 +29,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.core.common.cache.Cache
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.outcome.handleAsync
 import net.thunderbird.core.outcome.mapFailure
-import timber.log.Timber
 
 @Suppress("TooManyFunctions")
 internal class GoogleBillingClient(
@@ -42,6 +42,7 @@ internal class GoogleBillingClient(
     private val resultMapper: DataContract.Mapper.BillingResult,
     private val productCache: Cache<String, ProductDetails>,
     private val purchaseHandler: Remote.GoogleBillingPurchaseHandler,
+    private val logger: Logger,
     backgroundDispatcher: CoroutineContext = Dispatchers.IO,
 ) : DataContract.BillingClient, PurchasesUpdatedListener {
 
@@ -87,7 +88,9 @@ internal class GoogleBillingClient(
                 contribution
             }
         }.mapFailure { billingError, _ ->
-            Timber.e("Error loading one-time products: ${oneTimeProductsResult.billingResult.debugMessage}")
+            logger.error(message = {
+                "Error loading one-time products: ${oneTimeProductsResult.billingResult.debugMessage}"
+            })
             billingError
         }
     }
@@ -103,7 +106,9 @@ internal class GoogleBillingClient(
                 contribution
             }
         }.mapFailure { billingError, _ ->
-            Timber.e("Error loading recurring products: ${recurringProductsResult.billingResult.debugMessage}")
+            logger.error(message = {
+                "Error loading recurring products: ${recurringProductsResult.billingResult.debugMessage}"
+            })
             billingError
         }
     }
@@ -113,7 +118,9 @@ internal class GoogleBillingClient(
         return resultMapper.mapToOutcome(purchasesResult.billingResult) {
             purchaseHandler.handleOneTimePurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
-            Timber.e("Error loading one-time purchases: ${purchasesResult.billingResult.debugMessage}")
+            logger.error(message = {
+                "Error loading one-time purchases: ${purchasesResult.billingResult.debugMessage}"
+            })
             billingError
         }
     }
@@ -123,7 +130,9 @@ internal class GoogleBillingClient(
         return resultMapper.mapToOutcome(purchasesResult.billingResult) {
             purchaseHandler.handleRecurringPurchases(clientProvider, purchasesResult.purchasesList)
         }.mapFailure { billingError, _ ->
-            Timber.e("Error loading recurring purchases: ${purchasesResult.billingResult.debugMessage}")
+            logger.error(message = {
+                "Error loading recurring purchases: ${purchasesResult.billingResult.debugMessage}"
+            })
             billingError
         }
     }
@@ -144,11 +153,13 @@ internal class GoogleBillingClient(
                 val recentPurchase = productCache[recentPurchaseId]
                 productMapper.mapToOneTimeContribution(recentPurchase!!)
             } else {
-                Timber.e("No recent purchase found: ${purchasesResult.billingResult.debugMessage}")
+                logger.error(message = { "No recent purchase found: ${purchasesResult.billingResult.debugMessage}" })
                 null
             }
         }.mapFailure { billingError, _ ->
-            Timber.e("Error loading one-time purchase history: ${purchasesResult.billingResult.debugMessage}")
+            logger.error(message = {
+                "Error loading one-time purchase history: ${purchasesResult.billingResult.debugMessage}"
+            })
             billingError
         }
     }
@@ -210,7 +221,7 @@ internal class GoogleBillingClient(
         val billingResult = clientProvider.current.launchBillingFlow(activity, billingFlowParams)
         return resultMapper.mapToOutcome(billingResult) { }.mapFailure(
             transformFailure = { error, _ ->
-                Timber.e("Error launching billing flow: ${error.message}")
+                logger.error(message = { "Error launching billing flow: ${error.message}" })
                 error
             },
         )
@@ -232,9 +243,11 @@ internal class GoogleBillingClient(
                     }
                 },
                 onFailure = { error ->
-                    Timber.e(
-                        "Error onPurchasesUpdated: " +
-                            "${billingResult.responseCode}: ${billingResult.debugMessage}",
+                    logger.error(
+                        message = {
+                            "Error onPurchasesUpdated: " +
+                                "${billingResult.responseCode}: ${billingResult.debugMessage}"
+                        },
                     )
                     _purchasedContribution.value = Outcome.failure(error)
                 },

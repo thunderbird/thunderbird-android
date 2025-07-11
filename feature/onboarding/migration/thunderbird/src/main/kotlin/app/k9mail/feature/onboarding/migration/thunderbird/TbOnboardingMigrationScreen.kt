@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -33,7 +32,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonOutlined
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardFilled
@@ -45,8 +43,10 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.common.provider.BrandNameProvider
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import org.koin.compose.koinInject
-import timber.log.Timber
 
 @Composable
 internal fun TbOnboardingMigrationScreen(
@@ -86,7 +86,7 @@ internal fun TbOnboardingMigrationScreen(
                 ButtonOutlined(
                     text = stringResource(R.string.onboarding_migration_thunderbird_new_account_button_text),
                     onClick = onAddAccount,
-                    modifier = Modifier.testTag("AddAccountButton"),
+                    modifier = Modifier.testTagAsResourceId("onboarding_migration_new_account_button"),
                 )
             }
 
@@ -94,7 +94,7 @@ internal fun TbOnboardingMigrationScreen(
                 ButtonOutlined(
                     text = stringResource(R.string.onboarding_migration_thunderbird_import_button_text),
                     onClick = onImport,
-                    modifier = Modifier.testTag("ImportButton"),
+                    modifier = Modifier.testTagAsResourceId("ImportButton"),
                 )
             }
 
@@ -136,7 +136,7 @@ private fun AlreadyUsingThunderbirdCard(onQrCodeScan: () -> Unit) {
             text = stringResource(R.string.onboarding_migration_thunderbird_qr_code_import_button_text),
             onClick = onQrCodeScan,
             modifier = Modifier
-                .testTag("QrCodeImportButton")
+                .testTagAsResourceId("QrCodeImportButton")
                 .align(Alignment.CenterHorizontally),
         )
 
@@ -268,7 +268,7 @@ private fun Context.launchLearnHowToUpdateThunderbird() {
 
         startActivity(viewIntent)
     } catch (e: ActivityNotFoundException) {
-        Timber.d(e, "Failed to open URL")
+        Log.d(e, "Failed to open URL")
 
         Toast.makeText(
             this,

@@ -3,12 +3,10 @@ package app.k9mail.legacy.message.controller;
 
 
 import java.util.List;
-
 import android.content.Context;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
+import net.thunderbird.core.android.account.LegacyAccount;
 
 
 public interface MessagingListener {

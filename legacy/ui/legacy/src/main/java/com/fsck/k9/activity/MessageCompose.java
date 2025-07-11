@@ -35,13 +35,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -51,10 +49,9 @@ import androidx.core.os.BundleCompat;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import app.k9mail.legacy.account.LegacyAccount;
-import app.k9mail.legacy.account.MessageFormat;
+import net.thunderbird.core.android.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
-import app.k9mail.legacy.account.Identity;
+import net.thunderbird.core.android.account.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
@@ -119,12 +116,14 @@ import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
-import net.thunderbird.core.contact.ContactIntentHelper;
+import net.thunderbird.core.android.account.MessageFormat;
+import net.thunderbird.core.android.contact.ContactIntentHelper;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
-import net.thunderbird.feature.search.LocalSearch;
+import net.thunderbird.feature.search.LocalMessageSearch;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import static com.fsck.k9.activity.compose.AttachmentPresenter.REQUEST_CODE_ATTACHMENT_URI;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.CAMERA_PERMISSION_REQUEST_CODE;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.REQUEST_IMAGE_CAPTURE;
@@ -193,6 +192,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final Preferences preferences = DI.get(Preferences.class);
+    private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
 
     private final IntentDataMapper indentDataMapper = DI.get(IntentDataMapper.class);
 
@@ -444,7 +444,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 this.action = Action.EDIT_DRAFT;
             } else {
                 // This shouldn't happen
-                Timber.w("MessageCompose was started with an unsupported action");
+                Log.w("MessageCompose was started with an unsupported action");
                 this.action = Action.COMPOSE;
             }
         }
@@ -623,7 +623,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (cryptoStatus == null) {
-            Timber.w("Couldn't retrieve crypto status; not creating MessageBuilder!");
+            Log.w("Couldn't retrieve crypto status; not creating MessageBuilder!");
             return null;
         }
 
@@ -645,7 +645,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
-                .setHideTimeZone(K9.isHideTimeZone())
+                .setHideTimeZone(generalSettingsManager.getPrivacySettings().isHideTimeZone())
                 .setInReplyTo(repliedToMessageId)
                 .setReferences(referencedMessageIds)
                 .setRequestReadReceipt(requestReadReceipt)
@@ -788,7 +788,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if ((requestCode & REQUEST_MASK_MESSAGE_BUILDER) == REQUEST_MASK_MESSAGE_BUILDER) {
                 requestCode ^= REQUEST_MASK_MESSAGE_BUILDER;
                 if (currentMessageBuilder == null) {
-                    Timber.e("Got a message builder activity result for no message builder, " +
+                    Log.e("Got a message builder activity result for no message builder, " +
                             "this is an illegal state!");
                     return;
                 }
@@ -840,7 +840,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void onAccountChosen(LegacyAccount account, Identity identity) {
         if (!this.account.equals(account)) {
-            Timber.v("Switching account from %s to %s", this.account, account);
+            Log.v("Switching account from %s to %s", this.account, account);
 
             // on draft edit, make sure we don't keep previous message UID
             if (action == Action.EDIT_DRAFT) {
@@ -858,11 +858,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 // actual account switch
                 this.account = account;
 
-                Timber.v("Account switch, saving new draft in new account");
+                Log.v("Account switch, saving new draft in new account");
                 checkToSaveDraftImplicitly();
 
                 if (previousDraftId != null) {
-                    Timber.v("Account switch, deleting draft from previous account: %d", previousDraftId);
+                    Log.v("Account switch, deleting draft from previous account: %d", previousDraftId);
 
                     messagingController.deleteDraft(previousAccount, previousDraftId);
                 }
@@ -1080,7 +1080,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void openDefaultFolder() {
         long folderId = defaultFolderProvider.getDefaultFolder(account);
-        LocalSearch search = new LocalSearch();
+        LocalMessageSearch search = new LocalMessageSearch();
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folderId);
         MessageList.actionDisplaySearch(this, search, false, true);
@@ -1245,7 +1245,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     break;
                 }
                 default: {
-                    Timber.w("processSourceMessage() called with unsupported action");
+                    Log.w("processSourceMessage() called with unsupported action");
                     break;
                 }
             }
@@ -1254,7 +1254,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              * Let the user continue composing their message even if we have a problem processing
              * the source message. Log it as an error, though.
              */
-            Timber.e(e, "Error while processing source message: ");
+            Log.e(e, "Error while processing source message: ");
         } finally {
             relatedMessageProcessed = true;
             changesMadeSinceLastSave = false;
@@ -1296,7 +1296,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
         } else {
-            Timber.d("could not get Message-ID.");
+            Log.d("could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1326,7 +1326,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             repliedToMessageId = message.getMessageId();
             referencedMessageIds = repliedToMessageId;
         } else {
-            Timber.d("could not get Message-ID.");
+            Log.d("could not get Message-ID.");
         }
 
         // Quote the message and setup the UI.
@@ -1466,7 +1466,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 contacts.markAsContacted(message.getRecipients(RecipientType.BCC));
                 addFlagToReferencedMessage();
             } catch (Exception e) {
-                Timber.e(e, "Failed to mark contact as contacted.");
+                Log.e(e, "Failed to mark contact as contacted.");
             }
 
             messagingController.sendMessage(account, message, plaintextSubject, null);
@@ -1488,7 +1488,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
 
-                Timber.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
+                Log.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
 
                 messagingController.setFlag(account, folderId, sourceMessageUid, flag, true);
             }
@@ -1594,7 +1594,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onMessageBuildException(MessagingException me) {
-        Timber.e(me, "Error sending message");
+        Log.e(me, "Error sending message");
         Toast.makeText(MessageCompose.this,
                 getString(R.string.send_failed_reason, me.getLocalizedMessage()), Toast.LENGTH_LONG).show();
         sendMessageHasBeenTriggered = false;
@@ -1608,7 +1608,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
         } catch (SendIntentException e) {
-            Timber.e(e, "Error starting pending intent from builder!");
+            Log.e(e, "Error starting pending intent from builder!");
         }
     }
 
@@ -1617,7 +1617,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         try {
             OpenPgpIntentStarter.startIntentSenderForResult(this, pendingIntent.getIntentSender(), requestCode);
         } catch (SendIntentException e) {
-            Timber.e(e, "Error starting pending intent from builder!");
+            Log.e(e, "Error starting pending intent from builder!");
         }
     }
 
@@ -1634,7 +1634,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             } catch (MessagingException e) {
                 // Hm, if we couldn't populate the UI after source reprocessing, let's just delete it?
                 quotedMessagePresenter.showOrHideQuotedText(QuotedTextMode.HIDE);
-                Timber.e(e, "Could not re-process source message; deleting quoted text to be safe.");
+                Log.e(e, "Could not re-process source message; deleting quoted text to be safe.");
             }
             updateMessageFormat();
         } else {
@@ -1692,7 +1692,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
                 OpenPgpIntentStarter.startIntentSenderForResult(MessageCompose.this, intentSender, requestCode);
             } catch (SendIntentException e) {
-                Timber.e(e, "Irrecoverable error calling PendingIntent!");
+                Log.e(e, "Irrecoverable error calling PendingIntent!");
             }
 
             return true;

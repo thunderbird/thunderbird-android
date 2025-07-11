@@ -13,7 +13,6 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isTrue
 import assertk.assertions.message
 import assertk.assertions.prop
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
@@ -22,11 +21,12 @@ import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.mockserver.MockImapServer
-import com.fsck.k9.mail.testing.SystemOutLogger
 import com.fsck.k9.mail.testing.XOAuth2ChallengeParserTestData
 import com.fsck.k9.mail.testing.security.TestTrustedSocketFactory
 import java.io.IOException
 import java.net.UnknownHostException
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import okio.ByteString.Companion.encodeUtf8
 import org.junit.Before
 import org.junit.Test
@@ -51,8 +51,8 @@ class RealImapConnectionTest {
 
     @Before
     fun setUp() {
+        Log.logger = TestLogger()
         if (DEBUGGING) {
-            Timber.logger = SystemOutLogger()
             K9MailLib.setDebug(true)
             K9MailLib.setDebugSensitive(true)
         }
@@ -612,7 +612,10 @@ class RealImapConnectionTest {
                     "APPENDLIMIT=35651584",
             )
             output("2 OK")
-            simplePostAuthenticationDialog(tag = 3)
+            expect("3 ENABLE UTF8=ACCEPT")
+            output("* ENABLED")
+            output("3 OK")
+            simplePostAuthenticationDialog(tag = 4)
         }
         val imapConnection = startServerAndCreateImapConnection(server, authType = AuthType.PLAIN)
 
@@ -660,7 +663,7 @@ class RealImapConnectionTest {
 
     @Test(expected = IOException::class)
     fun `open() with connection error should throw`() {
-        val settings = createImapSettings(host = "127.1.2.3")
+        val settings = createImapSettings(host = "192.0.2.123")
         val imapConnection = createImapConnection(settings, socketFactory, oAuth2TokenProvider)
 
         imapConnection.open()
@@ -771,6 +774,42 @@ class RealImapConnectionTest {
             .hasMessage("Command: STARTTLS; response: #2# [NO]")
 
         server.verifyConnectionClosed()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with ENABLE capability should try to enable UTF8=ACCEPT`() {
+        val server = MockImapServer().apply {
+            simplePreAuthAndLoginDialog(postAuthCapabilities = "ENABLE")
+            expect("3 ENABLE UTF8=ACCEPT")
+            output("* ENABLED")
+            output("3 OK")
+            simplePostAuthenticationDialog(tag = 4)
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, useCompression = true)
+
+        imapConnection.open()
+        assertThat(imapConnection.isUtf8AcceptCapable).isFalse()
+
+        server.verifyConnectionStillOpen()
+        server.verifyInteractionCompleted()
+    }
+
+    @Test
+    fun `open() with ENABLE and UTF8=ACCEPT capabilities should enable UTF8=ACCEPT`() {
+        val server = MockImapServer().apply {
+            simplePreAuthAndLoginDialog(postAuthCapabilities = "ENABLE UTF8=ACCEPT")
+            expect("3 ENABLE UTF8=ACCEPT")
+            output("* ENABLED UTF8=ACCEPT")
+            output("3 OK")
+            simplePostAuthenticationDialog(tag = 4)
+        }
+        val imapConnection = startServerAndCreateImapConnection(server, useCompression = true)
+
+        imapConnection.open()
+        assertThat(imapConnection.isUtf8AcceptCapable).isTrue()
+
+        server.verifyConnectionStillOpen()
         server.verifyInteractionCompleted()
     }
 

@@ -4,12 +4,14 @@ import android.app.Notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import app.k9mail.legacy.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal open class CertificateErrorNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionCreator: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun showCertificateErrorNotification(account: LegacyAccount, incoming: Boolean) {
         val notificationId = NotificationIds.getCertificateErrorNotificationId(account, incoming)
@@ -30,7 +32,7 @@ internal open class CertificateErrorNotificationController(
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setPublicVersion(createLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_ERROR)
-            .setErrorAppearance()
+            .setErrorAppearance(generalSettingsManager = generalSettingsManager)
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }

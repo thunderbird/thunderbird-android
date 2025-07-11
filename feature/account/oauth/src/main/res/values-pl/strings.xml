@@ -7,7 +7,7 @@
     <string name="account_oauth_error_not_supported">Ten dostawca nie obsługuje obecnie protokołu OAuth 2.0.</string>
     <string name="account_oauth_error_canceled">Autoryzacja anulowana</string>
     <string name="account_oauth_loading_message">Logowanie przy użyciu OAuth</string>
-    <string name="account_oauth_sign_in_description">Przekierujemy Cię do Twojego dostawcy poczty e-mail, aby się zalogować. Musisz przyznać aplikacji dostęp do swojego konta e-mail.</string>
+    <string name="account_oauth_sign_in_description">Przekierujemy Cię do Twojego dostawcy poczty e-mail, żebyś się zalogował. Musisz przyznać aplikacji dostęp do swojego konta e-mail.</string>
     <string name="account_oauth_sign_in_button">Zaloguj się</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">artykułem pomocy</string>
     <string name="account_oauth_google_sign_in_support_text">Jeśli masz problemy z logowaniem się za pomocą konta Google, zapoznaj się z naszym {placeHolder}.</string>

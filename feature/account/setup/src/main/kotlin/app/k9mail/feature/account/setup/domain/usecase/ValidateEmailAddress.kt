@@ -1,13 +1,13 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
-import app.k9mail.core.common.mail.EmailAddressParserError
-import app.k9mail.core.common.mail.EmailAddressParserException
-import app.k9mail.core.common.mail.toEmailAddressOrNull
-import app.k9mail.core.common.mail.toUserEmailAddress
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
-import com.fsck.k9.logging.Timber
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.common.mail.EmailAddressParserError
+import net.thunderbird.core.common.mail.EmailAddressParserException
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
+import net.thunderbird.core.common.mail.toUserEmailAddress
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Validate an email address that the user wants to add to an account.
@@ -34,7 +34,7 @@ class ValidateEmailAddress : UseCase.ValidateEmailAddress {
                 ValidationResult.Failure(ValidateEmailAddressError.NotAllowed)
             }
         } catch (e: EmailAddressParserException) {
-            Timber.v(e, "Error parsing email address: %s", emailAddress)
+            Log.v(e, "Error parsing email address: %s", emailAddress)
 
             val validationError = when (e.error) {
                 EmailAddressParserError.AddressLiteralsNotSupported,

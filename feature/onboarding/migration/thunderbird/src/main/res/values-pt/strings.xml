@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">Já está a usar o Thunderbird no computador?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Selecione \'Exportar para dispositivo móvel\'</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Saiba como atualizar o Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Importe facilmente as suas configurações de conta lendo um código QR.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">No Thunderbird de computador, vá até:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\'Configurações\' na barra de ferramentas de espaços (inferior esquerdo)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Para importar é necessário a versão mais recente do Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Importar configurações</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Novo ao Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Adicionar uma conta de e-mail agora</string>
+    <string name="onboarding_migration_thunderbird_import_title">Mover de outra app ou dispositivo?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Importar as suas configurações de conta agora</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Nenhuma app encontrada para abrir a ligação.</string>
+</resources>

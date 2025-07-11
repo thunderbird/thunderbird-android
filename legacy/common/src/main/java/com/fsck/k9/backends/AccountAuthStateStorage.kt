@@ -1,8 +1,8 @@
 package com.fsck.k9.backends
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mail.oauth.AuthStateStorage
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 
 class AccountAuthStateStorage(
     private val accountManager: AccountManager,

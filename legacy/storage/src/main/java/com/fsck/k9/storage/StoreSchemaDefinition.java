@@ -7,7 +7,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import com.fsck.k9.storage.migrations.Migrations;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
@@ -34,14 +34,14 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 throw new Error("Exception while upgrading database", e);
             }
 
-            Timber.e(e, "Exception while upgrading database. Resetting the DB to v0");
+            Log.e(e, "Exception while upgrading database. Resetting the DB to v0");
             db.setVersion(0);
             upgradeDatabase(db);
         }
     }
 
     private void upgradeDatabase(final SQLiteDatabase db) {
-        Timber.i("Upgrading database from version %d to version %d", db.getVersion(), DB_VERSION);
+        Log.i("Upgrading database from version %d to version %d", db.getVersion(), DB_VERSION);
 
         db.beginTransaction();
         try {

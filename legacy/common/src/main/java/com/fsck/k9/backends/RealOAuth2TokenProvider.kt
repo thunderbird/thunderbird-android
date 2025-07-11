@@ -12,7 +12,7 @@ import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors
 import net.openid.appauth.AuthorizationException.GeneralErrors
 import net.openid.appauth.AuthorizationService
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class RealOAuth2TokenProvider(
     context: Context,
@@ -55,7 +55,7 @@ class RealOAuth2TokenProvider(
 
             latch.await(timeoutMillis, TimeUnit.MILLISECONDS)
         } catch (e: Exception) {
-            Timber.w(e, "Failed to fetch an access token. Clearing authorization state.")
+            Log.w(e, "Failed to fetch an access token. Clearing authorization state.")
 
             authStateStorage.updateAuthorizationState(authorizationState = null)
 

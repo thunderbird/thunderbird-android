@@ -23,8 +23,8 @@
     <string name="archive_action">காப்பகம் செலுத்து</string>
     <string name="spam_action">பயனற்ற</string>
     <string name="forward_action">முன் அனுப்பு</string>
-    <string name="move_action">அனுப்பு</string>
-    <string name="refile_action">மீண்டும் நிரப்பு</string>
+    <string name="move_action">நகர்த்து</string>
+    <string name="refile_action">மீண்டும் நிரப்பு…</string>
     <string name="done_action">முடி</string>
     <string name="discard_action">வேண்டாம்</string>
     <string name="save_draft_action">வரைவாக சேமி</string>
@@ -95,7 +95,7 @@
     <string name="message_compose_quote_header_cc">நகல்:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> எழுதியது:</string>
     <string name="message_compose_error_no_recipients">ஒரு பெறுநராவது குறி.</string>
-    <string name="error_contact_address_not_found">இந்த தொடர்புக்கு அஞ்சல் இல்லை</string>
+    <string name="error_contact_address_not_found">இந்தத் தொடர்புக்கு அஞ்சல் இல்லை.</string>
     <string name="message_compose_attachments_skipped_toast">சில இணைப்புகள் பதிவிறக்கம் இல்லாததால், இணைக்க முடியாது.</string>
     <string name="message_compose_description_delete_quoted_text">மேர்கோள் வரிகள் நீக்கு</string>
     <string name="message_compose_description_edit_quoted_text">மேர்கோள் வரிகள் மாற்று</string>
@@ -126,7 +126,7 @@
     <!--Name of the swipe action to move a message to the spam folder-->
     <string name="general_settings_swipe_action_spam">பயனற்றது</string>
     <!--Name of the swipe action to move a message to another folder-->
-    <string name="general_settings_swipe_action_move">அனுப்பு</string>
+    <string name="general_settings_swipe_action_move">நகர்த்து</string>
     <!--Title of the setting to specify the density of the message list-->
     <string name="global_settings_notification_quick_delete_never">ஒருபொழுதும்</string>
     <string name="global_settings_notification_quick_delete_always">எப்பொழுதும்</string>
@@ -165,7 +165,7 @@
     <string name="account_settings_search">தேடல்</string>
     <string name="action_remote_search">வழங்கியில் தேடு</string>
     <string name="upgrade_databases_title">தரவுத்தளங்கள் மேம்படுகிறது</string>
-    <string name="upgrade_databases_unspecified">தரவுத்தளங்கள் மேம்படுகிறது</string>
+    <string name="upgrade_databases_unspecified">தரவுத்தளங்கள் மேம்படுகிறது…</string>
     <string name="global_settings_splitview_mode_label">திரையை வெட்டிக்காட்டு</string>
     <string name="global_settings_splitview_always">எப்பொழுதும்</string>
     <string name="global_settings_splitview_never">ஒருபொழுதும்</string>
@@ -258,8 +258,8 @@
     <string name="idle_refresh_period_2min">ஒவ்வொரு 2 நிமிடங்களுக்கும்</string>
     <string name="account_setup_options_mail_display_count_250">250 செய்திகள்</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="one">&lt;xliff: g ஐடி = \"new_message_count\"&gt;%d &lt;/xliff: g&gt; புதிய செய்தி</item>
-        <item quantity="other">&lt;xliff: g ஐடி = \"new_message_count\"&gt;%d &lt;/xliff: g&gt; புதிய செய்திகள்</item>
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> புதிய செய்தி</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> புதிய செய்திகள்</item>
     </plurals>
     <string name="about_app_authors_k9">கே -9 நாய் நடப்பவர்கள்</string>
     <string name="about_app_authors_thunderbird">தண்டர்பேர்ட் மொபைல் குழு</string>
@@ -273,7 +273,7 @@
     <string name="size_format_megabytes">%.1f Mb</string>
     <string name="debug_export_logs_success">ஏற்றுமதி வெற்றிகரமாக. பதிவுகளில் முக்கியமான தகவல்கள் இருக்கலாம். நீங்கள் அவர்களை யாருக்கு அனுப்புகிறீர்கள் என்பதில் கவனமாக இருங்கள்.</string>
     <string name="debug_export_logs_failure">ஏற்றுமதி தோல்வியடைந்தது.</string>
-    <string name="message_compose_reply_header_fmt_with_date">&lt;Xliff: g ஐடி = \"sent_date\"&gt;%1$s &lt;/xliff: g&gt;, &lt;xliff: g ஐடி = \"sender\"&gt;%2$s &lt;/xliff: g&gt; எழுதப்பட்டது:</string>
+    <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> எழுதப்பட்டது:</string>
     <string name="message_compose_show_quoted_text_action">மேற்கோள் செய்த செய்தியைச் சேர்க்கவும்</string>
     <string name="global_settings_show_correspondent_names_label">நிருபர் பெயர்களைக் காட்டு</string>
     <string name="global_settings_show_contact_name_summary">கிடைக்கும்போது தொடர்புகளிலிருந்து பெறுநரின் பெயர்களைப் பயன்படுத்தவும்</string>
@@ -300,7 +300,7 @@
     <string name="account_setup_options_mail_display_count_50">50 செய்திகள்</string>
     <string name="account_setup_options_mail_display_count_100">100 செய்திகள்</string>
     <string name="account_setup_options_mail_display_count_1000">1000 செய்திகள்</string>
-    <string name="notification_additional_messages">+ &lt;xliff: g ஐடி = \"கூடுதல்_மெச்பேச்கள்\"&gt;%1$d &lt;/xliff: g&gt; &lt;xliff: g ஐடி = \"கணக்கு\"&gt;%2$s &lt;/xliff: g&gt; இல் மேலும்</string>
+    <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> <xliff:g id="account">%2$s</xliff:g> இல் மேலும்</string>
     <string name="account_setup_incoming_delete_policy_delete_label">சேவையகத்திலிருந்து நீக்கு</string>
     <string name="account_setup_options_mail_check_frequency_24hour">ஒவ்வொரு 24 மணி நேரமும்</string>
     <string name="general_settings_swipe_action_toggle_selection">தேர்வை மாற்றவும்</string>
@@ -371,7 +371,7 @@
     <string name="account_notify_contacts_mail_only_summary">அறியப்பட்ட தொடர்புகளின் செய்திகளுக்கு மட்டுமே அறிவிப்புகளைக் காட்டுங்கள்</string>
     <string name="account_settings_ignore_chat_messages_summary">மின்னஞ்சல் அரட்டையைச் சேர்ந்த செய்திகளுக்கான அறிவிப்புகளைக் காட்ட வேண்டாம்</string>
     <string name="empty_subject">பொருள் காலியாக உள்ளது, எப்படியும் அனுப்ப மீண்டும் சொடுக்கு செய்க</string>
-    <string name="message_view_recipients_format">பெறுநர் &lt;xliff: g ஐடி = \"பெறுநர்கள்\"&gt;%s &lt;/xliff: g&gt;</string>
+    <string name="message_view_recipients_format">பெறுநர் <xliff:g id="recipients">%s</xliff:g></string>
     <string name="notification_action_archive_all">அனைத்தையும் காப்பகப்படுத்துங்கள்</string>
     <string name="general_settings_post_remove_action_title">ஒரு செய்தியை நீக்கிவிட்ட பிறகு அல்லது நகர்த்திய பிறகு</string>
     <string name="global_settings_confirm_menu_discard">செய்தியை நிராகரிக்கவும்</string>
@@ -388,7 +388,7 @@
     <string name="changelog_version_title">பதிப்பு %s</string>
     <string name="changelog_recent_changes_title">புதியது என்ன</string>
     <string name="changelog_snackbar_text">இந்த வெளியீட்டில் புதியது என்ன என்பதைக் கண்டறியவும்</string>
-    <string name="account_delete_dlg_instructions_fmt">\"&lt;Xliff: g ஐடி =\" கணக்கு \"&gt;%1$s &lt;/xliff: g&gt;\" கணக்கு &lt;xliff: g ஐடி = \"app_name\"&gt;%2$s &lt;/xliff: g&gt; இலிருந்து அகற்றப்படும்.</string>
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%1$s</xliff:g>\" கணக்கு <xliff:g id="app_name">%2$s</xliff:g> இலிருந்து அகற்றப்படும்.</string>
     <string name="authors">ஆசிரியர்கள்</string>
     <string name="about_title">&lt;Xliff: g ஐடி = \"app_name\"&gt;%s &lt;/xliff: g&gt;</string>
     <string name="unsubscribe_action">குழுவிலகவும்</string>
@@ -397,7 +397,7 @@
         <item quantity="other">இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்ட முகவரிகள்</item>
     </plurals>
     <string name="copy_subject_to_clipboard">பொருள் உரை இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்டது</string>
-    <string name="size_format_gigabytes">%.1F சிபி</string>
+    <string name="size_format_gigabytes">%.1f சீபி</string>
     <string name="size_format_kilobytes">%.1f KB</string>
     <string name="notification_channel_miscellaneous_title">மற்றவை</string>
     <string name="version">பதிப்பு</string>
@@ -467,7 +467,7 @@
     </plurals>
     <string name="dialog_confirm_empty_trash_title">வெற்று குப்பைகளை உறுதிப்படுத்தவும்</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">ஆம்</string>
-    <string name="settings_list_action_support">உதவி &lt;xliff: g ஐடி = \"app_name\"&gt;%s &lt;/xliff: g&gt;</string>
+    <string name="settings_list_action_support">உதவி <xliff:g id="app_name">%s</xliff:g></string>
     <string name="enable_inline_pgp">பிசிபி/இன்லைன் இயக்கவும்</string>
     <string name="address_type_home">வீடு</string>
     <string name="address_type_work">வேலை</string>
@@ -817,7 +817,7 @@
     <string name="ac_transfer_finish">முடிக்க, உங்கள் மற்ற சாதனத்தில் செய்தியைத் திறந்து அமைவு குறியீட்டை உள்ளிடவும்.</string>
     <string name="ac_transfer_error_send">செய்தியை அனுப்பும்போது பிழை ஏற்பட்டது. உங்கள் பிணைய இணைப்பு மற்றும் வெளிச்செல்லும் சேவையக உள்ளமைவை சரிபார்க்கவும்.</string>
     <string name="push_info_title">செய்தி தள்ளுங்கள்</string>
-    <string name="push_info_notification_explanation_text">புச் பயன்படுத்தும் போது, &lt;xliff: g ஐடி = \"app_name\"&gt;%1$s &lt;/xliff: g&gt; அஞ்சல் சேவையகத்துடன் இணைப்பைப் பராமரிக்கிறது. பயன்பாடு பின்னணியில் செயலில் இருக்கும்போது ஆண்ட்ராய்டு க்கு தொடர்ச்சியான அறிவிப்பைக் காண்பிக்க வேண்டும். &lt;xliff: g ஐடி = \"atanal_extended_explanation\"&gt;%2$s &lt;/xliff: g&gt;</string>
+    <string name="push_info_notification_explanation_text">புச் பயன்படுத்தும் போது, <xliff:g id="app_name">%1$s</xliff:g> அஞ்சல் சேவையகத்துடன் இணைப்பைப் பராமரிக்கிறது. பயன்பாடு பின்னணியில் செயலில் இருக்கும்போது ஆண்ட்ராய்டு க்கு தொடர்ச்சியான அறிவிப்பைக் காண்பிக்க வேண்டும். <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="general_settings_show_compose_button_title">மிதக்கும் இசையமைப்புக் பொத்தானைக் காட்டு</string>
     <string name="action_copy_email_address">மின்னஞ்சல் முகவரியை நகலெடுக்கவும்</string>
     <string name="clipboard_label_name_and_email_address">பெயர் மற்றும் மின்னஞ்சல் முகவரி</string>
@@ -900,4 +900,13 @@
     <string name="setting_theme_global">பயன்பாட்டு கருப்பொருளைப் பயன்படுத்தவும்</string>
     <string name="global_settings_show_contact_picture_summary">செய்தி பட்டியலில் தொடர்பு படங்களைக் காட்டு</string>
     <string name="loading_attachment">இணைப்பை ஏற்றுகிறது…</string>
+    <string name="open_camera">திறந்த கேமரா</string>
+    <string name="attach_file">கோப்பை இணைக்கவும்</string>
+    <string name="camera_permission_denied">கேமரா இசைவு மறுக்கப்பட்டது! புகைப்படம் எடுக்க முடியவில்லை</string>
+    <string name="debug_enable_sync_debug_logging_title">ஒத்திசைவு பிழைத்திருத்த பதிவை இயக்கவும்</string>
+    <string name="debug_enable_sync_debug_logging_summary">பதிவு ஒத்திசைவு கண்டறியும் தகவல்களை 24 மணி நேரம்</string>
+    <string name="debug_sync_export_logs_title">ஏற்றுமதி ஒத்திசைவு பதிவுகள்</string>
+    <string name="swipe_action_archive_folder_not_set">காப்பக கோப்புறையை அமைக்கவும்</string>
+    <string name="swipe_action_change_swipe_gestures">மாற்றம் \nசைகைகளை ச்வைப் செய்யுங்கள்</string>
+    <string name="archiving_not_available_for_this_account">இந்த கணக்கிற்கு காப்பகம் கிடைக்கவில்லை.</string>
 </resources>

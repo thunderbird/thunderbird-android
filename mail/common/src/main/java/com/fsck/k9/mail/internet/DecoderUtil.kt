@@ -1,10 +1,10 @@
 package com.fsck.k9.mail.internet
 
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import java.io.ByteArrayInputStream
 import java.io.IOException
+import net.thunderbird.core.logging.legacy.Log
 import okio.Buffer
 import okio.ByteString
 import okio.ByteString.Companion.decodeBase64
@@ -136,7 +136,7 @@ internal object DecoderUtil {
         }
 
         if (encodedText.isEmpty()) {
-            Timber.w("Missing encoded text in encoded word: '%s'", body.substring(begin, end))
+            Log.w("Missing encoded text in encoded word: '%s'", body.substring(begin, end))
             return null
         }
 
@@ -145,7 +145,7 @@ internal object DecoderUtil {
         } else if (encoding.equals("B", ignoreCase = true)) {
             EncodedWord(charset, Encoding.B, decodeB(encodedText))
         } else {
-            Timber.w("Warning: Unknown encoding in encoded word '%s'", body.substring(begin, end))
+            Log.w("Warning: Unknown encoding in encoded word '%s'", body.substring(begin, end))
             null
         }
     }

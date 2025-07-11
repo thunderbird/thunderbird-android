@@ -2,13 +2,13 @@ package com.fsck.k9.ui.messagelist
 
 import net.thunderbird.feature.navigation.drawer.dropdown.navigationDropDownDrawerModule
 import net.thunderbird.feature.navigation.drawer.siderail.navigationSideRailDrawerModule
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val messageListUiModule = module {
     includes(navigationDropDownDrawerModule, navigationSideRailDrawerModule)
 
-    viewModel { MessageListViewModel(get()) }
+    viewModel { MessageListViewModel(messageListLiveDataFactory = get(), logger = get()) }
     factory { DefaultFolderProvider() }
     factory {
         MessageListLoader(
@@ -16,6 +16,7 @@ val messageListUiModule = module {
             localStoreProvider = get(),
             messageListRepository = get(),
             messageHelper = get(),
+            generalSettingsManager = get(),
         )
     }
     factory {

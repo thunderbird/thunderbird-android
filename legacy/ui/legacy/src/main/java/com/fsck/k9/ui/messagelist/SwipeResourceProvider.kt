@@ -8,26 +8,27 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.res.ResourcesCompat
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
-import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.color.MaterialColors
+import net.thunderbird.core.common.action.SwipeAction
 
 class SwipeResourceProvider(private val context: Context) {
 
-    fun getActionIcon(action: SwipeAction): Drawable {
-        return context.loadDrawable(
-            when (action) {
-                SwipeAction.None -> error("action == SwipeAction.None")
-                SwipeAction.ToggleSelection -> Icons.Outlined.CheckCircle
-                SwipeAction.ToggleRead -> Icons.Outlined.MarkEmailRead
-                SwipeAction.ToggleStar -> Icons.Filled.Star
-                SwipeAction.Archive -> Icons.Outlined.Archive
-                SwipeAction.Delete -> Icons.Outlined.Delete
-                SwipeAction.Spam -> Icons.Outlined.Report
-                SwipeAction.Move -> Icons.Outlined.DriveFileMove
-            },
-        )
+    fun getActionIcon(action: SwipeAction): Drawable? {
+        val drawableId = when (action) {
+            SwipeAction.None -> error("action == SwipeAction.None")
+            SwipeAction.ToggleSelection -> Icons.Outlined.CheckCircle
+            SwipeAction.ToggleRead -> Icons.Outlined.MarkEmailRead
+            SwipeAction.ToggleStar -> Icons.Filled.Star
+            SwipeAction.ArchiveDisabled -> null
+            SwipeAction.Archive, SwipeAction.ArchiveSetupArchiveFolder -> Icons.Outlined.Archive
+            SwipeAction.Delete -> Icons.Outlined.Delete
+            SwipeAction.Spam -> Icons.Outlined.Report
+            SwipeAction.Move -> Icons.Outlined.DriveFileMove
+        }
+
+        return drawableId?.let(context::loadDrawable)
     }
 
     fun getActionIconToggled(action: SwipeAction): Drawable? {
@@ -54,6 +55,10 @@ class SwipeResourceProvider(private val context: Context) {
                 SwipeAction.ToggleRead -> R.attr.messageListSwipeToggleReadColor
                 SwipeAction.ToggleStar -> R.attr.messageListSwipeToggleStarColor
                 SwipeAction.Archive -> R.attr.messageListSwipeArchiveColor
+
+                SwipeAction.ArchiveDisabled, SwipeAction.ArchiveSetupArchiveFolder ->
+                    com.google.android.material.R.attr.colorSurfaceContainerLowest
+
                 SwipeAction.Delete -> R.attr.messageListSwipeDeleteColor
                 SwipeAction.Spam -> R.attr.messageListSwipeSpamColor
                 SwipeAction.Move -> R.attr.messageListSwipeMoveColor
@@ -69,6 +74,8 @@ class SwipeResourceProvider(private val context: Context) {
                 SwipeAction.ToggleRead -> R.string.swipe_action_mark_as_read
                 SwipeAction.ToggleStar -> R.string.swipe_action_add_star
                 SwipeAction.Archive -> R.string.swipe_action_archive
+                SwipeAction.ArchiveSetupArchiveFolder -> R.string.swipe_action_archive_folder_not_set
+                SwipeAction.ArchiveDisabled -> R.string.swipe_action_change_swipe_gestures
                 SwipeAction.Delete -> R.string.swipe_action_delete
                 SwipeAction.Spam -> R.string.swipe_action_spam
                 SwipeAction.Move -> R.string.swipe_action_move
@@ -98,7 +105,7 @@ fun Context.resolveColorAttribute(attrId: Int): Int {
 
     val found = theme.resolveAttribute(attrId, typedValue, true)
     if (!found) {
-        error("Couldn't resolve attribute ($attrId)")
+        error("Couldn't resolve attribute (${resources.getResourceName(attrId)}")
     }
 
     return typedValue.data

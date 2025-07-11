@@ -1,9 +1,9 @@
 package net.thunderbird.android.provider
 
-import app.k9mail.core.ui.theme.api.ThemeProvider
 import net.thunderbird.android.R
+import net.thunderbird.core.ui.theme.api.ThemeProvider
 
-class TbThemeProvider : ThemeProvider {
+internal class TbThemeProvider : ThemeProvider {
     override val appThemeResourceId = R.style.Theme_Thunderbird_DayNight
     override val appLightThemeResourceId = R.style.Theme_Thunderbird_Light
     override val appDarkThemeResourceId = R.style.Theme_Thunderbird_Dark

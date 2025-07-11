@@ -19,6 +19,7 @@ import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
@@ -31,6 +32,7 @@ import java.io.IOException
 import java.nio.file.Files
 import java.util.Date
 import java.util.TimeZone
+import net.thunderbird.protocols.imap.folder.attributeName
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.After
@@ -53,6 +55,7 @@ import org.mockito.kotlin.never
 import org.mockito.kotlin.stub
 import org.mockito.kotlin.whenever
 
+@Suppress("MaxLineLength")
 class RealImapFolderTest {
     private val imapStoreConfig = FakeImapStoreConfig()
     private val internalImapStore = object : InternalImapStore {
@@ -248,7 +251,13 @@ class RealImapFolderTest {
 
     @Test
     fun create_withoutNegativeImapResponse_shouldReturnTrue() {
-        val imapFolder = createFolder("Folder")
+        val folderName = "Folder"
+        val imapFolder = createFolder(folderName)
+
+        val createResponses = listOf(
+            createImapResponse("* OK - CREATE completed"),
+        )
+        whenever(imapConnection.executeSimpleCommand("CREATE \"$folderName\"")).thenReturn(createResponses)
 
         val success = imapFolder.create()
 
@@ -839,6 +848,57 @@ class RealImapFolderTest {
         folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE)
 
         verify(messages[0]).setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n CHARSET=US-ASCII")
+    }
+
+    @Test
+    fun fetch_withStructureFetchProfile_shouldNotBreakOnUnicodeAddresses() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
+        val bodyStructure = // from RFC 3501 via Arnt and Abhijit
+            "* 1 FETCH (BODYSTRUCTURE ((\"text\" \"plain\" NIL " +
+                "NIL \"Part number 1\" \"7BIT\" 9 1 NIL NIL NIL NIL" +
+                ")(\"application\" \"octet-stream\" NIL NIL \"Part " +
+                "number 2\" \"BASE64\" 14 \"qWXKy9s0ny8E1/5/uzNhpg=" +
+                "=\" (\"attachment\" (\"filename\" \"foo.bar\" \"si" +
+                "ze\" \"8\")) NIL NIL)(\"message\" \"rfc822\" NIL N" +
+                "IL \"Part number 3\" \"7BIT\" 540 (\"Thu, 20 May 2" +
+                "004 14:28:50 +0200\" \"embedded rfc822 message\" (" +
+                "(\"Arnt Gulbrandsen\" NIL \"arnt\" \"ø.example\"))" +
+                " NIL NIL ((\"Abhijit Menon-Sen\" NIL \"ams\" \"ø.e" +
+                "xample\")) NIL NIL NIL NIL) ((\"text\" \"plain\" N" +
+                "IL NIL \"Part number 3.1\" \"7BIT\" 9 1 NIL (\"inl" +
+                "ine\" NIL) (\"en\" \"no\" \"de\") NIL)(\"applicati" +
+                "on\" \"octet-stream\" NIL NIL \"Part number 3.2\" " +
+                "\"BASE64\" 14 NIL NIL NIL NIL) \"mixed\" (\"bounda" +
+                "ry\" \"Y\") NIL NIL NIL) 24 NIL NIL NIL NIL)((\"im" +
+                "age\" \"gif\" NIL NIL \"Part number 4.1\" \"BASE64" +
+                "\" 0 NIL NIL NIL NIL)(\"message\" \"rfc822\" NIL N" +
+                "IL \"Part number 4.2\" \"7BIT\" 658 (\"Thu, 20 May" +
+                " 2004 14:28:50 +0200\" \"second embedded rfc822 me" +
+                "ssage\" ((\"Abhijit Menon-Sen\" NIL \"ams\" \"ø.ex" +
+                "ample\")) NIL NIL ((\"Arnt Gulbrandsen\" NIL \"arn" +
+                "t\" \"ø.example\")) NIL NIL NIL NIL) ((\"text\" \"" +
+                "plain\" NIL NIL \"Part number 4.2.1\" \"7BIT\" 9 1" +
+                " NIL NIL NIL NIL)((\"text\" \"plain\" NIL NIL \"Pa" +
+                "rt number 4.2.2.1\" \"7BIT\" 9 1 NIL NIL \"en\" NI" +
+                "L)(\"text\" \"richtext\" NIL NIL \"Part number 4.2" +
+                ".2.2\" \"7BIT\" 9 1 NIL NIL NIL NIL) \"alternative" +
+                "\" (\"boundary\" \"B\") NIL NIL NIL) \"mixed\" (\"" +
+                "boundary\" \"A\") NIL NIL NIL) 34 NIL NIL NIL NIL)" +
+                " \"mixed\" (\"boundary\" \"Z\") NIL NIL NIL) \"mix" +
+                "ed\" (\"boundary\" \"X\") NIL NIL NIL) UID 1)"
+        whenever(imapConnection.readResponse(anyOrNull()))
+            .thenReturn(createImapResponse(bodyStructure))
+            .thenReturn(createImapResponse("x OK"))
+        val messages = createImapMessages("1")
+        val fetchProfile = createFetchProfile(FetchProfile.Item.STRUCTURE)
+
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE)
+        // We don't really care what happens; the tests in Address and
+        // MIME4J take care of that. At this point we just care that
+        // it doesn't break parsing, cause an exception or anything
+        // like that.
     }
 
     @Test
@@ -1460,6 +1520,31 @@ class RealImapFolderTest {
         val message = folder.getMessage("uid")
 
         assertThat(message.uid).isEqualTo("uid")
+    }
+
+    @Test
+    fun `create() when folderType not in (REGULAR INBOX OUTBOX) and connection has CREATE_SPECIAL_USE capability, should call CREATE command with USE command and return true`() {
+        // Arrange
+        val types = FolderType.entries.filterNot { folderType ->
+            folderType == FolderType.REGULAR ||
+                folderType == FolderType.INBOX ||
+                folderType == FolderType.OUTBOX
+        }
+        imapConnection.stub {
+            on { hasCapability(Capabilities.CREATE_SPECIAL_USE) } doReturn true
+        }
+        val folderName = "New Folder"
+        val remoteFolder = createFolder(folderName)
+
+        for (folderType in types) {
+            // Act
+            remoteFolder.create(folderType = folderType)
+        }
+
+        // Assert
+        for (folderType in types) {
+            assertCommandIssued("CREATE \"$folderName\" (USE (${folderType.attributeName}))")
+        }
     }
 
     @Suppress("SameParameterValue")

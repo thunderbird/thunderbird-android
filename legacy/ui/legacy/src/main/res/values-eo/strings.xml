@@ -151,7 +151,7 @@
     <string name="error_contact_address_not_found">Neniu retpoŝtadreso trovita por tiu ĉi kontakto.</string>
     <string name="message_compose_attachments_skipped_toast">Iuj kunsendaĵoj ne povas esti plusenditaj, ĉar ili ne estas elŝutitaj.</string>
     <string name="message_compose_attachments_forward_toast">Tiu ĉi retletero ne povas esti plusendita, ĉar iuj kunsendaĵoj ne estas elŝutitaj.</string>
-    <string name="message_compose_show_quoted_text_action">Enhavi citatan mesaĝon</string>
+    <string name="message_compose_show_quoted_text_action">Enhavigi citatan mesaĝon</string>
     <string name="message_compose_description_delete_quoted_text">Forigi citatan tekston</string>
     <string name="message_compose_description_edit_quoted_text">Redakti citatan tekston</string>
     <string name="remove_attachment_action">Forigi kunsendaĵon</string>

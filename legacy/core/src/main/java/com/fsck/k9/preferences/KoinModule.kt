@@ -1,15 +1,20 @@
 package com.fsck.k9.preferences
 
-import app.k9mail.legacy.account.AccountManager
 import com.fsck.k9.Preferences
-import net.thunderbird.core.preferences.DefaultSettingsChangeBroker
-import net.thunderbird.core.preferences.GeneralSettingsManager
-import net.thunderbird.core.preferences.SettingsChangeBroker
-import net.thunderbird.core.preferences.SettingsChangePublisher
+import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.PreferenceChangeBroker
+import net.thunderbird.core.preference.PreferenceChangePublisher
+import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsManager
+import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsPreferenceManager
+import net.thunderbird.core.preference.privacy.PrivacySettingsManager
+import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
+import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
+import net.thunderbird.core.android.account.AccountManager as LegacyAccountManager
 
 val preferencesModule = module {
     factory {
@@ -23,12 +28,22 @@ val preferencesModule = module {
         )
     }
     factory { FolderSettingsProvider(folderRepository = get()) }
-    factory<AccountManager> { get<Preferences>() }
+    factory<LegacyAccountManager> { get<Preferences>() }
+    factory<AccountManager<*>> { get<LegacyAccountManager>() }
+    single<PrivacySettingsPreferenceManager> {
+        DefaultPrivacySettingsPreferenceManager(
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+            changeBroker = get(),
+        )
+    }
+    single<PrivacySettingsManager> { DefaultPrivacySettingsManager(preferenceManager = get()) }
     single {
         RealGeneralSettingsManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changePublisher = get(),
+            privacySettingsManager = get(),
         )
     } bind GeneralSettingsManager::class
     single {
@@ -36,6 +51,7 @@ val preferencesModule = module {
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changeBroker = get(),
+            generalSettingsManager = get(),
         )
     } bind DrawerConfigManager::class
 
@@ -64,12 +80,12 @@ val preferencesModule = module {
             preferences = get(),
             localFoldersCreator = get(),
             clock = get(),
-            serverSettingsSerializer = get(),
+            serverSettingsDtoSerializer = get(),
             context = get(),
         )
     }
 
-    factory { UnifiedInboxConfigurator(accountManager = get()) }
+    factory { UnifiedInboxConfigurator(accountManager = get(), generalSettingsManager = get()) }
 
     factory {
         SettingsImporter(
@@ -84,11 +100,11 @@ val preferencesModule = module {
         )
     }
 
-    single { DefaultSettingsChangeBroker() }
+    single { DefaultPreferenceChangeBroker() }
         .binds(
             arrayOf(
-                SettingsChangePublisher::class,
-                SettingsChangeBroker::class,
+                PreferenceChangePublisher::class,
+                PreferenceChangeBroker::class,
             ),
         )
 }

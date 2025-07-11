@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
 import app.k9mail.core.android.common.database.getStringOrThrow
 import app.k9mail.core.android.common.database.map
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 class DefaultStorageMigrationHelper : StorageMigrationHelper {
     override fun readAllValues(db: SQLiteDatabase): Map<String, String> {
@@ -12,7 +12,7 @@ class DefaultStorageMigrationHelper : StorageMigrationHelper {
             it.map { cursor ->
                 val key = cursor.getStringOrThrow(KEY_COLUMN)
                 val value = cursor.getStringOrThrow(VALUE_COLUMN)
-                Timber.d("Loading key '%s', value = '%s'", key, value)
+                Log.d("Loading key '%s', value = '%s'", key, value)
 
                 key to value
             }
@@ -31,7 +31,7 @@ class DefaultStorageMigrationHelper : StorageMigrationHelper {
         ).use { cursor ->
             if (cursor.moveToNext()) {
                 cursor.getStringOrThrow(VALUE_COLUMN).also { value ->
-                    Timber.d("Loading key '%s', value = '%s'", key, value)
+                    Log.d("Loading key '%s', value = '%s'", key, value)
                 }
             } else {
                 null
@@ -53,7 +53,7 @@ class DefaultStorageMigrationHelper : StorageMigrationHelper {
         val result = db.update(TABLE_NAME, values, "$KEY_COLUMN = ?", arrayOf(key))
 
         if (result == -1) {
-            Timber.e("Error writing key '%s', value = '%s'", key, value)
+            Log.e("Error writing key '%s', value = '%s'", key, value)
         }
     }
 
@@ -70,7 +70,7 @@ class DefaultStorageMigrationHelper : StorageMigrationHelper {
         val result = db.insert(TABLE_NAME, null, values)
 
         if (result == -1L) {
-            Timber.e("Error writing key '%s', value = '%s'", key, value)
+            Log.e("Error writing key '%s', value = '%s'", key, value)
         }
     }
 

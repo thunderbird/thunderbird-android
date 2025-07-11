@@ -4,7 +4,7 @@ import app.k9mail.feature.settings.import.ui.AuthViewModel
 import app.k9mail.feature.settings.import.ui.ImportAppFetcher
 import app.k9mail.feature.settings.import.ui.PickAppViewModel
 import app.k9mail.feature.settings.import.ui.SettingsImportViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureSettingsImportModule = module {

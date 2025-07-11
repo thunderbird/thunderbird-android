@@ -1,7 +1,7 @@
 plugins {
-    id(ThunderbirdPlugins.Library.androidCompose)
+    id(ThunderbirdPlugins.Library.kmpCompose)
 }
 
 android {
-    namespace = "app.k9mail.core.ui.theme.api"
+    namespace = "net.thunderbird.core.ui.theme.api"
 }

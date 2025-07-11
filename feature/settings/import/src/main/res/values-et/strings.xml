@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="settings_import_title">Impordi sätted</string>
+    <string name="settings_import_title">Impordi seadistused</string>
     <string name="settings_import_pick_document_button">Vali fail</string>
     <string name="settings_import_button">Impordi</string>
-    <string name="settings_import_success_generic">Sätted edukalt imporditud</string>
+    <string name="settings_import_success_generic">Seadistused on edukalt imporditud</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Palun sisesta salasõnad</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <string name="settings_import_authorization_required">Palun logi sisse</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Palun logi sisse ja sisesta salasõnad</string>
-    <string name="settings_import_failure">Sätete importimine ebaõnnestus</string>
-    <string name="settings_import_read_failure">Sätete faili lugemine ebaõnnestus</string>
-    <string name="settings_import_partial_failure">Mõnede sätete importimine ebaõnnestus</string>
+    <string name="settings_import_failure">Seadistuste importimine ei õnnestunud</string>
+    <string name="settings_import_read_failure">Seadistuste faili lugemine ei õnnestunud</string>
+    <string name="settings_import_partial_failure">Mõnede seadistuste importimine ei õnnestunud</string>
     <string name="settings_import_status_success">Importimine õnnestus</string>
     <string name="settings_import_status_password_required">Salasõna on vajalik</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->
@@ -20,7 +20,7 @@
     <string name="settings_import_status_not_imported">Ei imporditud</string>
     <string name="settings_import_status_error">Importimise viga</string>
     <string name="settings_import_later_button">Hiljem</string>
-    <string name="settings_importing">Sätete importimine…</string>
+    <string name="settings_importing">Seadistused on importimisel…</string>
     <plurals name="settings_import_password_prompt">
         <item quantity="one">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõna.</item>
         <item quantity="other">„<xliff:g id="account">%s</xliff:g>“ konto kasutamiseks palun sisesta serveri salasõnad.</item>
@@ -36,7 +36,7 @@
     <string name="settings_import_oauth_error_oauth_flow_failed">Autentimine ei õnnestunud ja tekkis järgnev viga: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">See teenusepakkuja ei võimalda OAuth 2.0 kasutamist.</string>
     <string name="settings_import_oauth_error_browser_not_found">Rakendus ei suutnud tuvastada veebibrauserit, mida saaks sinu kontole ligipääsu lubamiseks kasutada.</string>
-    <string name="settings_import_general_settings_item">Üldised sätted</string>
+    <string name="settings_import_general_settings_item">Üldised seadistused</string>
     <string name="settings_import_pick_app_button">Impordi rakendusest</string>
     <string name="settings_import_pick_app_dialog_title">Impordi rakendusest</string>
     <string name="settings_import_scan_qr_code_button">Skaneeri QR-koodi</string>

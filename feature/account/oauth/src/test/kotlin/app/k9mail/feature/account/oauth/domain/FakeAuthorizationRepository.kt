@@ -1,11 +1,11 @@
 package app.k9mail.feature.account.oauth.domain
 
 import android.content.Intent
-import app.k9mail.core.common.oauth.OAuthConfiguration
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationIntentResult
 import app.k9mail.feature.account.oauth.domain.entity.AuthorizationResult
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
+import net.thunderbird.core.common.oauth.OAuthConfiguration
 
 class FakeAuthorizationRepository(
     private val answerGetAuthorizationRequestIntent: AuthorizationIntentResult = AuthorizationIntentResult.NotSupported,

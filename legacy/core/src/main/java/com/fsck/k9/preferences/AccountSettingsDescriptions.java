@@ -6,18 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
-
 import android.content.Context;
-
-import app.k9mail.legacy.account.AccountDefaultsProvider;
-import app.k9mail.legacy.account.DeletePolicy;
-import app.k9mail.legacy.account.Expunge;
-import app.k9mail.legacy.account.FolderMode;
-import app.k9mail.legacy.account.MessageFormat;
-import app.k9mail.legacy.account.QuoteStyle;
-import app.k9mail.legacy.account.ShowPictures;
-import app.k9mail.legacy.account.SortType;
-import app.k9mail.legacy.account.SpecialFolderSelection;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
@@ -30,23 +19,34 @@ import com.fsck.k9.preferences.Settings.PseudoEnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
 import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo104;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo54;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo80;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo81;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo91;
+import net.thunderbird.core.android.account.AccountDefaultsProvider;
+import net.thunderbird.core.android.account.DeletePolicy;
+import net.thunderbird.core.android.account.Expunge;
+import net.thunderbird.core.android.account.FolderMode;
+import net.thunderbird.core.android.account.MessageFormat;
+import net.thunderbird.core.android.account.QuoteStyle;
+import net.thunderbird.core.android.account.ShowPictures;
+import net.thunderbird.core.android.account.SortType;
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto;
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection;
 import net.thunderbird.feature.notification.NotificationLight;
-
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_MESSAGE_READ_RECEIPT;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_QUOTED_TEXT_SHOWN;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_QUOTE_PREFIX;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_SORT_ASCENDING;
-import static app.k9mail.legacy.account.AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE;
 import static com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53.FOLDER_NONE;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_MESSAGE_FORMAT_AUTO;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_MESSAGE_READ_RECEIPT;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_QUOTED_TEXT_SHOWN;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_QUOTE_PREFIX;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_REPLY_AFTER_QUOTE;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_SORT_ASCENDING;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_STRIP_SIGNATURE;
+import static net.thunderbird.core.android.account.AccountDefaultsProvider.DEFAULT_VISIBLE_LIMIT;
 
 
 class AccountSettingsDescriptions {
@@ -89,7 +89,7 @@ class AccountSettingsDescriptions {
                 new V(1, new DeletePolicySetting(DeletePolicy.NEVER))
         ));
         s.put("displayCount", Settings.versions(
-                new V(1, new IntegerResourceSetting(K9.DEFAULT_VISIBLE_LIMIT,
+                new V(1, new IntegerResourceSetting(DEFAULT_VISIBLE_LIMIT,
                         R.array.display_count_values))
         ));
         s.put("draftsFolderName", Settings.versions(
@@ -291,6 +291,18 @@ class AccountSettingsDescriptions {
         s.put("sendClientInfo", Settings.versions(
                 new V(91, new BooleanSetting(true))
         ));
+        s.put("avatarType", Settings.versions(
+                new V(104, new EnumSetting<>(AvatarTypeDto.class, AvatarTypeDto.MONOGRAM))
+        ));
+        s.put("avatarMonogram", Settings.versions(
+            new V(104, new StringSetting("XX"))
+        ));
+        s.put("avatarImageUri", Settings.versions(
+            new V(104, new StringSetting(null))
+        ));
+        s.put("avatarIconName", Settings.versions(
+            new V(104, new StringSetting(null))
+        ));
         // note that there is no setting for openPgpProvider, because this will have to be set up together
         // with the actual provider after import anyways.
 
@@ -303,6 +315,7 @@ class AccountSettingsDescriptions {
         u.put(80, new AccountSettingsUpgraderTo80());
         u.put(81, new AccountSettingsUpgraderTo81());
         u.put(91, new AccountSettingsUpgraderTo91());
+        u.put(104, new AccountSettingsUpgraderTo104());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }

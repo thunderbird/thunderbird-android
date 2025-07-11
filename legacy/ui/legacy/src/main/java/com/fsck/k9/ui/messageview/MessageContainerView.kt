@@ -37,7 +37,7 @@ import com.fsck.k9.view.MessageWebView
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
 import com.fsck.k9.view.WebViewConfigProvider
 import com.google.android.material.textview.MaterialTextView
-import net.thunderbird.core.contact.ContactIntentHelper
+import net.thunderbird.core.android.contact.ContactIntentHelper
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named

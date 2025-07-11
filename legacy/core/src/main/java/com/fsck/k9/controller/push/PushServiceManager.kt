@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import java.util.concurrent.atomic.AtomicBoolean
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Manages starting and stopping [PushService].
@@ -13,30 +13,30 @@ internal class PushServiceManager(private val context: Context) {
     private var isServiceStarted = AtomicBoolean(false)
 
     fun start() {
-        Timber.v("PushServiceManager.start()")
+        Log.v("PushServiceManager.start()")
         if (isServiceStarted.compareAndSet(false, true)) {
             startService()
         } else {
-            Timber.v("..PushService already running")
+            Log.v("..PushService already running")
         }
     }
 
     fun stop() {
-        Timber.v("PushServiceManager.stop()")
+        Log.v("PushServiceManager.stop()")
         if (isServiceStarted.compareAndSet(true, false)) {
             stopService()
         } else {
-            Timber.v("..PushService is not running")
+            Log.v("..PushService is not running")
         }
     }
 
     fun setServiceStarted() {
-        Timber.v("PushServiceManager.setServiceStarted()")
+        Log.v("PushServiceManager.setServiceStarted()")
         isServiceStarted.set(true)
     }
 
     fun setServiceStopped() {
-        Timber.v("PushServiceManager.setServiceStopped()")
+        Log.v("PushServiceManager.setServiceStopped()")
         isServiceStarted.set(false)
     }
 
@@ -49,7 +49,7 @@ internal class PushServiceManager(private val context: Context) {
                 context.startService(intent)
             }
         } catch (e: Exception) {
-            Timber.e(e, "Exception while trying to start PushService")
+            Log.e(e, "Exception while trying to start PushService")
         }
     }
 
@@ -58,7 +58,7 @@ internal class PushServiceManager(private val context: Context) {
             val intent = Intent(context, PushService::class.java)
             context.stopService(intent)
         } catch (e: Exception) {
-            Timber.w(e, "Exception while trying to stop PushService")
+            Log.w(e, "Exception while trying to stop PushService")
         }
     }
 }

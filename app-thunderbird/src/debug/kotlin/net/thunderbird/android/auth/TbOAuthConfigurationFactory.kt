@@ -1,8 +1,8 @@
 package net.thunderbird.android.auth
 
-import app.k9mail.core.common.oauth.OAuthConfiguration
-import app.k9mail.core.common.oauth.OAuthConfigurationFactory
 import net.thunderbird.android.BuildConfig
+import net.thunderbird.core.common.oauth.OAuthConfiguration
+import net.thunderbird.core.common.oauth.OAuthConfigurationFactory
 
 @Suppress("ktlint:standard:max-line-length")
 class TbOAuthConfigurationFactory : OAuthConfigurationFactory {

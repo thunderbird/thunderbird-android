@@ -12,13 +12,11 @@ import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.TooltipCompat;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
@@ -42,12 +40,15 @@ import com.fsck.k9.ui.messageview.MessageViewRecipientFormatter;
 import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textview.MaterialTextView;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
     private static final int DEFAULT_SUBJECT_LINES = 3;
 
     private final MessageViewRecipientFormatter recipientFormatter = DI.get(MessageViewRecipientFormatter.class);
+    private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
     private final ReplyActionStrategy replyActionStrategy = DI.get(ReplyActionStrategy.class);
     private final MessageHelper messageHelper = DI.get(MessageHelper.class);
     private final FontSizes fontSizes = K9.getFontSizes();
@@ -209,7 +210,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             fromAddress = fromAddresses[0];
         }
 
-        if (K9.isShowContactPicture()) {
+        if (generalSettingsManager.getSettings().isShowContactPicture()) {
             contactPictureView.setVisibility(View.VISIBLE);
             if (fromAddress != null) {
                 ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();

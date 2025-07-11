@@ -1,6 +1,6 @@
 package com.fsck.k9.mail.internet;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 
@@ -83,7 +83,7 @@ public class CharsetSupport {
             }
 
             if (charset.matches(rule[0])) {
-                Timber.e("I don't know how to deal with the charset %s. Falling back to %s", charset, rule[1]);
+                Log.e("I don't know how to deal with the charset %s. Falling back to %s", charset, rule[1]);
                 charset = rule[1];
                 try {
                     supported = Charset.isSupported(charset);

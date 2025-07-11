@@ -6,7 +6,6 @@ dependencies {
     implementation(projects.legacy.core)
 
     implementation(libs.okio)
-    implementation(libs.timber)
 }
 
 android {

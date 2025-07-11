@@ -44,4 +44,14 @@
     <string name="funding_googleplay_contribution_tfa_onetime_xl_description">התמיכה שלך באמת מעוררת השראה! הודות לתרומתך המשמעותית, אנו מסוגלים לפרוץ גבולות, לחדש ולעשות צעדים משמעותיים לעבר המטרות שלנו.</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xs_title">תרומה חודשית חיונית</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">תרומה חודשית יוצאת דופן</string>
+    <string name="funding_googleplay_contribution_reminder_statement">Thunderbird היא אפלקציה חינמי וקוד פתוח.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_1">אנחנו לא מציגים פרסומות.</string>
+    <string name="funding_googleplay_contribution_reminder_statement_point_2">אנחנו לא מוכרים את המידע שלך.</string>
+    <string name="funding_googleplay_contribution_reminder_claim">אנו ממומנים אך ורק על ידי משתמשים כמוך.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">אתה עוזר לנו לחלום בגדול! תמיכתך מעצימה אותנו להשיג דברים יוצאי דופן.</string>
+    <string name="funding_googleplay_contribution_reminder_title">תמוך בThunderbird</string>
+    <string name="funding_googleplay_contribution_reminder_message">הצטרף למשימה שלנו ליצור את חוויית הדוא\"ל הטובה ביותר שמכבדת פרטיות, וניתנת להתאמה אישית.</string>
+    <string name="funding_googleplay_contribution_reminder_negative_button">לא כרגע</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">התמיכה שלך מעוררת השראה! ועוזרת לנו לפרוץ גבולות ולהשיג את המטרות שלנו.</string>
+    <string name="funding_googleplay_contribution_reminder_positive_button">כן</string>
 </resources>

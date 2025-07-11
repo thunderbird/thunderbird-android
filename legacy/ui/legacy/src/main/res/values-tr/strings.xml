@@ -888,7 +888,10 @@
     <string name="volume_navigation_summary">İleti görünümünde ses seviyesi tuşlarını kullanarak iletiler arasında dolaş</string>
     <string name="save_attachment_action">Eki kaydet</string>
     <string name="expand_content_description">Genişlet</string>
-    <string name="dialog_confirm_empty_spam_title">Spam\'ı temizlemeyi onayla</string>
-    <string name="empty_spam_action">Spam\'ı temizle</string>
+    <string name="dialog_confirm_empty_spam_title">Spam’i boşaltmayı onayla</string>
+    <string name="empty_spam_action">Spam’i boşalt</string>
     <string name="dialog_confirm_empty_spam_message">Spam klasörünü boşaltmak istiyor musunuz?</string>
+    <string name="attach_file">Dosya ekle</string>
+    <string name="open_camera">Kamerayı aç</string>
+    <string name="camera_permission_denied">Kamera izni reddedildi! Fotoğraf çekilemiyor</string>
 </resources>

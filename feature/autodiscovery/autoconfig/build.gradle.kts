@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.minidns.hla)
     compileOnly(libs.xmlpull)
 
+    testImplementation(projects.core.logging.testing)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.kxml2)
     testImplementation(libs.jsoup)

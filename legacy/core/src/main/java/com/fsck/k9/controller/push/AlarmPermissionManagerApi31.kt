@@ -9,7 +9,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.AlarmManagerCompat
 import androidx.core.content.ContextCompat
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Starting with Android 12 we have to check whether the app can schedule exact alarms.
@@ -40,7 +40,7 @@ internal class AlarmPermissionManagerApi31(
     @Synchronized
     override fun registerListener(listener: AlarmPermissionListener) {
         if (!isRegistered) {
-            Timber.v("Registering alarm permission listener")
+            Log.v("Registering alarm permission listener")
             isRegistered = true
             this.listener = listener
             ContextCompat.registerReceiver(context, receiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED)
@@ -50,7 +50,7 @@ internal class AlarmPermissionManagerApi31(
     @Synchronized
     override fun unregisterListener() {
         if (isRegistered) {
-            Timber.v("Unregistering alarm permission listener")
+            Log.v("Unregistering alarm permission listener")
             isRegistered = false
             listener = null
             context.unregisterReceiver(receiver)

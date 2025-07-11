@@ -1,6 +1,5 @@
 package app.k9mail.autodiscovery.autoconfig
 
-import app.k9mail.core.common.net.toDomain
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.containsExactlyInAnyOrder
@@ -12,6 +11,7 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import kotlin.test.Ignore
 import kotlin.test.Test
+import net.thunderbird.core.common.net.toDomain
 
 class MiniDnsMxResolverTest {
     private val resolver = MiniDnsMxResolver()

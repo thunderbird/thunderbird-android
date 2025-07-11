@@ -1,7 +1,5 @@
 package com.fsck.k9.notification
 
-import app.k9mail.core.testing.TestClock
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
@@ -21,6 +19,13 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.NotificationMessage
 import kotlin.test.assertNotNull
 import kotlinx.datetime.Instant
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettings
+import net.thunderbird.core.testing.TestClock
 import org.junit.Test
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
@@ -44,7 +49,43 @@ class NewMailNotificationManagerTest {
         createNotificationRepository(),
         BaseNotificationDataCreator(),
         SingleMessageNotificationDataCreator(),
-        SummaryNotificationDataCreator(SingleMessageNotificationDataCreator()),
+        SummaryNotificationDataCreator(
+            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
+            generalSettingsManager = mock {
+                on { getSettings() } doReturn GeneralSettings(
+                    backgroundSync = BackgroundSync.ALWAYS,
+                    showRecentChanges = true,
+                    appTheme = AppTheme.DARK,
+                    messageComposeTheme = SubTheme.DARK,
+                    isShowCorrespondentNames = true,
+                    fixedMessageViewTheme = true,
+                    messageViewTheme = SubTheme.DARK,
+                    isShowStarredCount = false,
+                    isShowUnifiedInbox = false,
+                    isShowMessageListStars = false,
+                    isShowAnimations = false,
+                    shouldShowSetupArchiveFolderDialog = false,
+                    isMessageListSenderAboveSubject = false,
+                    isShowContactName = false,
+                    isShowContactPicture = false,
+                    isChangeContactNameColor = false,
+                    isColorizeMissingContactPictures = false,
+                    isUseBackgroundAsUnreadIndicator = false,
+                    isShowComposeButtonOnMessageList = false,
+                    isThreadedViewEnabled = false,
+                    isUseMessageViewFixedWidthFont = false,
+                    isAutoFitWidth = false,
+                    isQuietTime = false,
+                    quietTimeStarts = "7:00",
+                    quietTimeEnds = "7:00",
+                    isQuietTimeEnabled = false,
+                    privacy = PrivacySettings(
+                        isHideTimeZone = false,
+                        isHideUserAgent = false,
+                    ),
+                )
+            },
+        ),
         clock,
     )
 

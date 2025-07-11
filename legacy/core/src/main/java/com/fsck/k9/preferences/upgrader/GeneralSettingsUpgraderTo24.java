@@ -4,8 +4,8 @@ package com.fsck.k9.preferences.upgrader;
 import java.util.Map;
 
 import com.fsck.k9.preferences.SettingsUpgrader;
-import net.thunderbird.core.preferences.AppTheme;
-import net.thunderbird.core.preferences.SubTheme;
+import net.thunderbird.core.preference.AppTheme;
+import net.thunderbird.core.preference.SubTheme;
 
 
 /**

@@ -12,9 +12,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import net.thunderbird.core.logging.legacy.Log
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import timber.log.Timber
 
 /**
  * Unread widget provider that displays the number of unread messages on the user's home screen.
@@ -99,7 +99,7 @@ abstract class BaseUnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
 
             remoteViews.setTextViewText(R.id.title, data.title)
         } catch (e: Exception) {
-            Timber.e(e, "Error getting widget configuration")
+            Log.e(e, "Error getting widget configuration")
         }
 
         if (clickIntent == null) {

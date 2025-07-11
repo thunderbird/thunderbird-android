@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_setup_error_network">เกิดข้อผิดพลาดของเครือข่าย โปรดตรวจสอบสถานะการเชื่อมต่อของคุณแล้วลองอีกครั้ง</string>
+    <string name="account_setup_error_unknown">ไม่ทราบข้อผิดพลาด</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_required">จำเป็นต้องมีที่อยู่อีเมล</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">ไม่อนุญาตให้ใช้ที่อยู่อีเมลนี้</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">ไม่รองรับที่อยู่อีเมลนี้</string>
+    <string name="account_setup_auto_discovery_validation_error_email_address_invalid">นี่ไม่ได้รับการยอมรับว่าเป็นที่อยู่อีเมลที่ถูกต้อง</string>
+    <string name="account_setup_auto_discovery_validation_error_password_required">จำเป็นต้องระบุรหัสผ่าน</string>
+    <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
+    <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>
+    <string name="account_setup_auto_discovery_loading_message">กำลังมองหาการกำหนดค่า…</string>
+    <string name="account_setup_auto_discovery_loading_error">ไม่สามารถโหลดการกำหนดค่าอีเมล์ได้</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">พบการกำหนดค่าแล้ว</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">ไม่พบการกำหนดค่า</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">ตั้งค่าอัตโนมัติ</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_untrusted">การตั้งค่านี้ไม่น่าเชื่อถือ</string>
+    <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">เราได้รับการตั้งค่าสำหรับเซิร์ฟเวอร์อีเมลของคุณผ่านการเชื่อมต่อที่ไม่ปลอดภัยเท่าที่เราต้องการ ซึ่งหมายความว่ามีโอกาสเล็กน้อยที่ใครบางคนอาจเปลี่ยนแปลงการตั้งค่านั้นได้ โปรดตรวจสอบตั้งค่าที่ให้มาอีกครั้งเพื่อให้แน่ใจว่าถูกต้อง</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">ตั้งค่าด้วยตนเอง</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">แก้ไขการกำหนดค่า</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">ฉันเชื่อมั่นในกำหนดค่านี้</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">จำเป็นต้องอนุมัติการกำหนดค่า</string>
+    <string name="account_setup_special_folders_form_description">กรุณาระบุโฟลเดอร์พิเศษสำหรับบัญชีของคุณ</string>
+    <string name="account_setup_special_folders_form_description_automatic">รายการ \"อัตโนมัติ\" จะติดตามการเปลี่ยนแปลงที่ทำโดยเซิร์ฟเวอร์โดยอัตโนมัติ ค่าเซิร์ฟเวอร์ปัจจุบันจะแสดงในวงเล็บ</string>
+    <string name="account_setup_special_folders_loading_message">กำลังดึงรายการโฟลเดอร์…</string>
+    <string name="account_setup_special_folders_error_message">ไม่สามารถดึงรายการโฟลเดอร์จากเซิร์ฟเวอร์ได้</string>
+    <string name="account_setup_special_folders_success_message">โฟลเดอร์พิเศษทั้งหมดได้รับการกำหนดค่าโดยอัตโนมัติโดยเซิร์ฟเวอร์</string>
+    <string name="account_setup_special_folders_archive_folder_label">โฟลเดอร์เก็บถาวร</string>
+    <string name="account_setup_special_folders_drafts_folder_label">โฟลเดอร์ฉบับร่าง</string>
+    <string name="account_setup_special_folders_sent_folder_label">โฟลเดอร์ที่ส่งแล้ว</string>
+    <string name="account_setup_special_folders_spam_folder_label">โฟลเดอร์สแปม</string>
+    <string name="account_setup_special_folders_trash_folder_label">โฟลเดอร์ถังขยะ</string>
+    <string name="account_setup_special_folders_folder_automatic">อัตโนมัติ (%s)</string>
+    <string name="account_setup_options_section_display_options">ตัวเลือกการแสดงผล</string>
+    <string name="account_setup_options_account_name_label">ชื่อบัญชี</string>
+    <string name="account_setup_options_account_name_error_blank">ชื่อบัญชีไม่สามารถเว้นว่างได้</string>
+    <string name="account_setup_options_display_name_label">ชื่อของคุณ</string>
+    <string name="account_setup_options_display_name_error_required">กรุณาระบุชื่อของคุณ</string>
+    <string name="account_setup_options_email_signature_label">ลายเซ็นอีเมล์</string>
+    <string name="account_setup_options_email_signature_error_blank">ชื่อลายเซ็นอีเมล์ไม่สามารถว่างเปล่าได้</string>
+    <string name="account_setup_options_section_sync_options">ตัวเลือกการซิงค์</string>
+    <string name="account_setup_options_account_check_frequency_label">ความถี่ตรวจสอบ</string>
+    <string name="account_setup_options_email_display_count_label">จำนวนข้อความที่แสดง</string>
+    <string name="account_setup_options_show_notifications_label">แสดงการแจ้งเตือน</string>
+    <string name="account_setup_create_account_creating">กำลังสร้างบัญชี…</string>
+</resources>

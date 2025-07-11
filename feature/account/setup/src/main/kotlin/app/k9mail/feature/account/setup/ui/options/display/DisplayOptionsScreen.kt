@@ -4,13 +4,13 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import app.k9mail.core.common.provider.BrandNameProvider
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.ViewModel
+import net.thunderbird.core.common.provider.BrandNameProvider
 
 @Composable
 internal fun DisplayOptionsScreen(

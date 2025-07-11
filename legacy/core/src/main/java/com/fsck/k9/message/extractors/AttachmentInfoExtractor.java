@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.helper.MimeTypeUtil;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.mail.Body;
@@ -94,7 +94,7 @@ public class AttachmentInfoExtractor {
             uri = DecryptedFileProvider.getUriForProvidedFile(
                     context, file, decryptedTempFileBody.getEncoding(), mimeType);
         } catch (IOException e) {
-            Timber.e(e, "Decrypted temp file (no longer?) exists!");
+            Log.e(e, "Decrypted temp file (no longer?) exists!");
             uri = null;
         }
         return uri;

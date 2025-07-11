@@ -1,6 +1,5 @@
 package com.fsck.k9.controller.push
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.api.BackendPusher
@@ -11,7 +10,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 
 internal class AccountPushController(
     private val backendManager: BackendManager,
@@ -35,25 +35,25 @@ internal class AccountPushController(
         }
 
         override fun onPushNotSupported() {
-            Timber.v("AccountPushController(%s) - Push not supported. Disabling Push for account.", account.uuid)
+            Log.v("AccountPushController(%s) - Push not supported. Disabling Push for account.", account.uuid)
             disablePush()
         }
     }
 
     fun start() {
-        Timber.v("AccountPushController(%s).start()", account.uuid)
+        Log.v("AccountPushController(%s).start()", account.uuid)
         startBackendPusher()
         startListeningForPushFolders()
     }
 
     fun stop() {
-        Timber.v("AccountPushController(%s).stop()", account.uuid)
+        Log.v("AccountPushController(%s).stop()", account.uuid)
         stopListeningForPushFolders()
         stopBackendPusher()
     }
 
     fun reconnect() {
-        Timber.v("AccountPushController(%s).reconnect()", account.uuid)
+        Log.v("AccountPushController(%s).reconnect()", account.uuid)
         backendPusher?.reconnect()
     }
 
@@ -83,7 +83,7 @@ internal class AccountPushController(
     }
 
     private fun updatePushFolders(folderServerIds: List<String>) {
-        Timber.v("AccountPushController(%s).updatePushFolders(): %s", account.uuid, folderServerIds)
+        Log.v("AccountPushController(%s).updatePushFolders(): %s", account.uuid, folderServerIds)
 
         backendPusher?.updateFolders(folderServerIds)
     }

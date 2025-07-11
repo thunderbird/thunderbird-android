@@ -10,7 +10,7 @@
     <string name="unread_widget_account_summary">படிக்காத எண்ணிக்கை காண்பிக்கப்பட வேண்டிய கணக்கு</string>
     <string name="unread_widget_unified_inbox_account_summary">ஒருங்கிணைந்த இன்பாக்ச்</string>
     <string name="unread_widget_folder_enabled_title">கோப்புறை எண்ணிக்கை</string>
-    <string name="unread_widget_title">&lt;xliff: g ஐடி = \"account_name\"&gt;%1$s &lt;/xliff: g&gt; - &lt;xliff: g ஐடி = \"folder_name\"&gt;%2$s &lt;/xliff: g&gt;</string>
+    <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">கணக்கு எதுவும் தேர்ந்தெடுக்கப்படவில்லை</string>
     <string name="unread_widget_folder_not_selected">கோப்புறை எதுவும் தேர்ந்தெடுக்கப்படவில்லை</string>
     <string name="unread_widget_action_done">முடிந்தது</string>

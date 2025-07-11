@@ -1,8 +1,8 @@
 package net.thunderbird.android.featureflag
 
-import app.k9mail.core.featureflag.FeatureFlag
-import app.k9mail.core.featureflag.FeatureFlagFactory
-import app.k9mail.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlag
+import net.thunderbird.core.featureflag.FeatureFlagFactory
+import net.thunderbird.core.featureflag.toFeatureFlagKey
 
 /**
  * Feature flags for Thunderbird (release)
@@ -15,6 +15,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = false),
             FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = false),
             FeatureFlag("enable_dropdown_drawer".toFeatureFlagKey(), enabled = false),
+            FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = false),
         )
     }
 }

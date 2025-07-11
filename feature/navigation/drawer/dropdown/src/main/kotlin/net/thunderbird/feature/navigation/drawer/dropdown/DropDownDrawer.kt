@@ -5,13 +5,15 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.api.R
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.createDisplayAccountFolderId
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.createMailDisplayAccountFolderId
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -21,6 +23,7 @@ internal data class FolderDrawerState(
     val selectedFolderId: String? = null,
 )
 
+@Suppress("LongParameterList")
 class DropDownDrawer(
     override val parent: AppCompatActivity,
     private val openAccount: (accountId: String) -> Unit,
@@ -28,10 +31,12 @@ class DropDownDrawer(
     private val openUnifiedFolder: () -> Unit,
     private val openManageFolders: () -> Unit,
     private val openSettings: () -> Unit,
+    private val openAddAccount: () -> Unit,
     createDrawerListener: () -> DrawerLayout.DrawerListener,
 ) : NavigationDrawer, KoinComponent {
 
     private val themeProvider: FeatureThemeProvider by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.navigation_drawer_layout)
     private val drawerContent: ComposeView = parent.findViewById(R.id.navigation_drawer_content)
@@ -52,6 +57,8 @@ class DropDownDrawer(
                     openUnifiedFolder = openUnifiedFolder,
                     openManageFolders = openManageFolders,
                     openSettings = openSettings,
+                    openAddAccount = openAddAccount,
+                    featureFlagProvider = featureFlagProvider,
                     closeDrawer = { close() },
                 )
             }
@@ -71,7 +78,7 @@ class DropDownDrawer(
         drawerState.update {
             it.copy(
                 selectedAccountUuid = accountUuid,
-                selectedFolderId = createDisplayAccountFolderId(accountUuid, folderId),
+                selectedFolderId = createMailDisplayAccountFolderId(accountUuid, folderId),
             )
         }
     }
@@ -79,7 +86,8 @@ class DropDownDrawer(
     override fun selectUnifiedInbox() {
         drawerState.update {
             it.copy(
-                selectedFolderId = DisplayUnifiedFolderType.INBOX.id,
+                selectedAccountUuid = UnifiedDisplayAccount.UNIFIED_ACCOUNT_ID,
+                selectedFolderId = UnifiedDisplayFolderType.INBOX.id,
             )
         }
     }

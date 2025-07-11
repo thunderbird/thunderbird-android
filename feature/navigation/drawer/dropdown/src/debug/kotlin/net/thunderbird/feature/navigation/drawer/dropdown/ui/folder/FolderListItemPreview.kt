@@ -3,9 +3,9 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui.folder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import app.k9mail.core.mail.folder.api.FolderType
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
+import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_FOLDER
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.FakeData.UNIFIED_FOLDER
@@ -16,7 +16,7 @@ internal fun FolderListItemPreview() {
     PreviewWithThemes {
         FolderListItem(
             displayFolder = DISPLAY_FOLDER,
-            selected = false,
+            selectedFolderId = "unknown",
             showStarredCount = false,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
@@ -30,7 +30,7 @@ internal fun FolderListItemSelectedPreview() {
     PreviewWithThemes {
         FolderListItem(
             displayFolder = DISPLAY_FOLDER,
-            selected = true,
+            selectedFolderId = DISPLAY_FOLDER.id,
             showStarredCount = false,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
@@ -44,7 +44,7 @@ internal fun FolderListItemWithStarredPreview() {
     PreviewWithThemes {
         FolderListItem(
             displayFolder = DISPLAY_FOLDER,
-            selected = false,
+            selectedFolderId = "unknown",
             showStarredCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
@@ -58,7 +58,7 @@ internal fun FolderListItemWithStarredSelectedPreview() {
     PreviewWithThemes {
         FolderListItem(
             displayFolder = DISPLAY_FOLDER,
-            selected = true,
+            selectedFolderId = DISPLAY_FOLDER.id,
             showStarredCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
@@ -76,7 +76,7 @@ internal fun FolderListItemWithInboxFolderPreview() {
                     type = FolderType.INBOX,
                 ),
             ),
-            selected = false,
+            selectedFolderId = "unknown",
             showStarredCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
@@ -90,7 +90,7 @@ internal fun FolderListItemWithUnifiedFolderPreview() {
     PreviewWithThemes {
         FolderListItem(
             displayFolder = UNIFIED_FOLDER,
-            selected = false,
+            selectedFolderId = "unknown",
             showStarredCount = false,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
@@ -105,8 +105,23 @@ internal fun FolderListItemWithUnifiedFolderSelectedPreview() {
         FolderListItem(
             displayFolder = UNIFIED_FOLDER,
             treeFolder = DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER,
-            selected = false,
+            selectedFolderId = UNIFIED_FOLDER.id,
             showStarredCount = false,
+            onClick = {},
+            folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun FolderListItemStarredCountPreview() {
+    PreviewWithThemes {
+        FolderListItem(
+            displayFolder = UNIFIED_FOLDER,
+            treeFolder = DISPLAY_TREE_FOLDER_WITH_UNIFIED_FOLDER,
+            selectedFolderId = null,
+            showStarredCount = true,
             onClick = {},
             folderNameFormatter = FolderNameFormatter(LocalContext.current.resources),
         )

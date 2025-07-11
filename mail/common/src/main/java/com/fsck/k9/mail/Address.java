@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.helper.Rfc822Token;
 import com.fsck.k9.mail.helper.Rfc822Tokenizer;
 import com.fsck.k9.mail.helper.TextUtils;
@@ -71,7 +71,7 @@ public class Address implements Serializable {
                     mPersonal = (personal == null) ? null : personal.trim();
                 }
             } else {
-                Timber.e("Invalid address: %s", address);
+                Log.e("Invalid address: %s", address);
             }
         } else {
             mAddress = address;
@@ -143,7 +143,7 @@ public class Address implements Serializable {
                 addresses.add(new Address(mailbox.getLocalPart() + "@" + mailbox.getDomain(), mailbox.getName(), false));
             }
         } catch (MimeException pe) {
-            Timber.e(pe, "MimeException in Address.parse()");
+            Log.e(pe, "MimeException in Address.parse()");
             // broken addresses are never added to the resulting array
         }
         return addresses.toArray(EMPTY_ADDRESS_ARRAY);
@@ -308,5 +308,24 @@ public class Address implements Serializable {
         } else {
             return s;
         }
+    }
+
+    /**
+     *  Returns true if either the localpart or the domain of this
+     *  address contains any non-ASCII characters, and false if all
+     *  characters used are within ASCII.
+     *
+     *  Note that this returns false for an address such as "Naïve
+     *  Assumption &lt;naive.assumption@example.com&gt;", because both
+     *  localpart and domain are all-ASCII. There's an ï there, but
+     *  it's not in either localpart or domain.
+     */
+    public boolean needsUnicode() {
+        if (mAddress == null)
+            return false;
+        int i = mAddress.length()-1;
+        while (i >= 0 && mAddress.charAt(i) < 128)
+            i--;
+        return i >= 0;
     }
 }

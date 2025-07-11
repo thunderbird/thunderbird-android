@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">Diorroerien K-9</string>
+    <string name="about_app_authors_k9">Ar bourmenerien K-9</string>
     <string name="app_license">Lañvaz Apache, Handelv 2.0</string>
     <string name="about_libraries">Levraouegoù</string>
     <string name="license">Lañvaz</string>
@@ -469,7 +469,7 @@
     <string name="font_size_medium">Etre</string>
     <string name="font_size_large">Bras</string>
     <string name="font_size_larger">Brasañ</string>
-    <string name="error_activity_not_found">N’eus bet kavet arload ebet evit ar gwezh-mañ</string>
+    <string name="error_activity_not_found">N’eus bet kavet arload ebet evit ar gwezh-mañ.</string>
     <string name="send_failed_reason">C’hwitadenn war ar c’has: %s</string>
     <string name="save_or_discard_draft_message_dlg_title">Enrollañ ar brouilhed?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Enrollañ pe dilezel ar gemennadenn?</string>
@@ -487,7 +487,7 @@
     <string name="dialog_confirm_delete_confirm_button">Ya</string>
     <string name="dialog_confirm_delete_cancel_button">Ket</string>
     <string name="dialog_confirm_mark_all_as_read_title">Merkañ an holl evel lennet</string>
-    <string name="dialog_confirm_mark_all_as_read_message">Fellout a ra deoc’h merkañ an holl gemennadennoù evel lennet?</string>
+    <string name="dialog_confirm_mark_all_as_read_message">Fellout a ra deoc’h merkañ an holl gemennadennoù evel lennet ?</string>
     <string name="dialog_confirm_empty_trash_title">Kadarnaat goullonderiñ ar c\'hest</string>
     <string name="dialog_confirm_empty_trash_message">Ha fellout a ra deoc\'h goullonderiñ teuliad ar c\'hest?</string>
     <string name="dialog_confirm_mark_all_as_read_confirm_button">Ya</string>
@@ -549,11 +549,11 @@
         <item quantity="other">O kerc’hat %da zisoc’hoù</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">O kerc’hat %1$dwar%2$da zisoc’hoù</item>
-        <item quantity="two">O kerc’hat %1$dwar%2$da zisoc’hoù</item>
-        <item quantity="few">O kerc’hat %1$dwar%2$da zisoc’hoù</item>
-        <item quantity="many">O kerc’hat %1$dwar%2$da zisoc’hoù</item>
-        <item quantity="other">O kerc’hat %1$dwar%2$da zisoc’hoù</item>
+        <item quantity="one">O kerc’hat %1$d war %2$d a zisoc’hoù</item>
+        <item quantity="two">O kerc’hat %1$d war %2$d a zisoc’hoù</item>
+        <item quantity="few">O kerc’hat %1$d war %2$d a zisoc’hoù</item>
+        <item quantity="many">O kerc’hat %1$d war %2$d a zisoc’hoù</item>
+        <item quantity="other">O kerc’hat %1$d war %2$d a zisoc’hoù</item>
     </plurals>
     <string name="remote_search_error">C’hwitadenn war ar c’hlask</string>
     <string name="account_settings_search">Klask</string>
@@ -914,4 +914,16 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <string name="push_notification_info">Stokit da zeskiñ muioc\'h.</string>
     <string name="action_compose_message_to">Skrivañ ur gemennadenn da</string>
     <string name="message_list_content_description_unread_prefix">amlennet, %s</string>
+    <string name="open_camera">Digeriñ ar c\'hamera</string>
+    <string name="attach_file">Kenstagañ restr</string>
+    <string name="camera_permission_denied">Nac\'het eo bet aotre ar c\'hamera ! N\'haller ket tennañ luc\'hskeudennoù</string>
+    <string name="empty_spam_action">Goullonderiñ al lastez</string>
+    <string name="debug_enable_sync_debug_logging_title">Kerzhlevr goubred diveugañ</string>
+    <string name="debug_enable_sync_debug_logging_summary">Enrollañ titouroù goubred deznaouioù evit 24 eur</string>
+    <string name="debug_sync_export_logs_title">Ezporzhiañ ar c\'herzhlevr goubred</string>
+    <string name="dialog_confirm_empty_spam_title">Kadarnaat goullonderiñ al lastez</string>
+    <string name="dialog_confirm_empty_spam_message">Ha fellout a ra deoc\'h goullonderiñ teuliad al lastez ?</string>
+    <string name="swipe_action_archive_folder_not_set">Kefluniañ an teuliad \"Dielloù\"</string>
+    <string name="swipe_action_change_swipe_gestures">Kemmañ\nRisklañ jestroù</string>
+    <string name="archiving_not_available_for_this_account">N\'eo ket hegez an diellaouiñ evit ar c\'hont-mañ.</string>
 </resources>

@@ -2,13 +2,13 @@ package app.k9mail.feature.funding.googleplay.ui.reminder
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.testing.TestLifecycleOwner
-import app.k9mail.core.testing.TestClock
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
+import net.thunderbird.core.testing.TestClock
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import org.junit.Rule
 
 class ActivityLifecycleObserverTest {

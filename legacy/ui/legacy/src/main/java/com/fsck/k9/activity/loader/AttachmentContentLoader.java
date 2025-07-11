@@ -13,7 +13,7 @@ import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.message.Attachment.LoadingState;
 import de.cketti.safecontentresolver.SafeContentResolver;
 import org.apache.commons.io.IOUtils;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 /**
  * Loader to fetch the content of an attachment.
@@ -56,7 +56,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             File file = File.createTempFile(FILENAME_PREFIX, null, context.getCacheDir());
             file.deleteOnExit();
 
-            Timber.v("Saving attachment to %s", file.getAbsolutePath());
+            Log.v("Saving attachment to %s", file.getAbsolutePath());
 
             InputStream in;
 
@@ -68,7 +68,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
                 in = safeContentResolver.openInputStream(sourceAttachment.uri);
             }
             if (in == null) {
-                Timber.w("Error opening attachment for reading: %s", sourceAttachment.uri);
+                Log.w("Error opening attachment for reading: %s", sourceAttachment.uri);
 
                 cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();
                 return cachedResultAttachment;
@@ -88,7 +88,7 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             cachedResultAttachment = sourceAttachment.deriveWithLoadComplete(file.getAbsolutePath());
             return cachedResultAttachment;
         } catch (Exception e) {
-            Timber.e(e, "Error saving attachment!");
+            Log.e(e, "Error saving attachment!");
         }
 
         cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();

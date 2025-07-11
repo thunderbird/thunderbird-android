@@ -1,14 +1,14 @@
-appId: com.fsck.k9.debug
+appId: net.thunderbird.android.debug
 ---
 
 - tapOn:
-    id: "com.fsck.k9.debug:id/participants_container"
+    id: "net.thunderbird.android.debug:id/participants_container"
 - swipe:
     from:
-      id: "com.fsck.k9.debug:id/message_details_list"
+      id: "net.thunderbird.android.debug:id/message_details_list"
     direction: UP
 - swipe:
     from:
-      id: "com.fsck.k9.debug:id/message_details_list"
+      id: "net.thunderbird.android.debug:id/message_details_list"
     direction: DOWN
     duration: 200

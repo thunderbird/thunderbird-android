@@ -18,65 +18,65 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 18
-        versionName = "11.0"
-
-        // Keep in sync with the resource string array "supported_languages"
-        resourceConfigurations.addAll(
-            listOf(
-                "ar",
-                "be",
-                "bg",
-                "ca",
-                "co",
-                "cs",
-                "cy",
-                "da",
-                "de",
-                "el",
-                "en",
-                "en_GB",
-                "eo",
-                "es",
-                "et",
-                "eu",
-                "fa",
-                "fi",
-                "fr",
-                "fy",
-                "ga",
-                "gl",
-                "hr",
-                "hu",
-                "in",
-                "is",
-                "it",
-                "iw",
-                "ja",
-                "ko",
-                "lt",
-                "lv",
-                "nb",
-                "nl",
-                "nn",
-                "pl",
-                "pt_BR",
-                "pt_PT",
-                "ro",
-                "ru",
-                "sl",
-                "sk",
-                "sq",
-                "sr",
-                "sv",
-                "tr",
-                "uk",
-                "vi",
-                "zh_CN",
-                "zh_TW",
-            ),
-        )
+        versionName = "12.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
+    }
+
+    androidResources {
+        // Keep in sync with the resource string array "supported_languages"
+        localeFilters += listOf(
+            "ar",
+            "be",
+            "bg",
+            "ca",
+            "co",
+            "cs",
+            "cy",
+            "da",
+            "de",
+            "el",
+            "en",
+            "en-rGB",
+            "eo",
+            "es",
+            "et",
+            "eu",
+            "fa",
+            "fi",
+            "fr",
+            "fy",
+            "ga",
+            "gl",
+            "hr",
+            "hu",
+            "in",
+            "is",
+            "it",
+            "iw",
+            "ja",
+            "ko",
+            "lt",
+            "lv",
+            "nb",
+            "nl",
+            "nn",
+            "pl",
+            "pt-rBR",
+            "pt-rPT",
+            "ro",
+            "ru",
+            "sl",
+            "sk",
+            "sq",
+            "sr",
+            "sv",
+            "tr",
+            "uk",
+            "vi",
+            "zh-rCN",
+            "zh-rTW",
+        )
     }
 
     signingConfigs {
@@ -118,7 +118,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b5"
+            versionNameSuffix = "b1"
 
             isMinifyEnabled = true
             isShrinkResources = true
@@ -185,11 +185,18 @@ android {
         resources {
             excludes += listOf(
                 "META-INF/*.kotlin_module",
-                "META-INF/*.version",
                 "kotlin/**",
                 "DebugProbesKt.bin",
             )
         }
+    }
+}
+
+androidComponents {
+    onVariants(selector().withBuildType("release")) { variant ->
+        variant.packaging.resources.excludes.addAll(
+            "META-INF/*.version",
+        )
     }
 }
 
@@ -209,9 +216,10 @@ dependencies {
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.legacy)
 
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
 
     implementation(projects.feature.account.settings.impl)
+    implementation(projects.feature.mail.message.list)
 
     implementation(projects.feature.widget.messageList)
     implementation(projects.feature.widget.messageListGlance)
@@ -243,7 +251,11 @@ dependencies {
     "betaImplementation"(libs.appauth)
     releaseImplementation(libs.appauth)
 
-    testImplementation(libs.robolectric)
+    // Required for DependencyInjectionTest
+    testImplementation(projects.feature.account.api)
+    testImplementation(projects.feature.account.common)
+    testImplementation(projects.plugins.openpgpApiLib.openpgpApi)
+    testImplementation(libs.appauth)
 }
 
 dependencyGuard {

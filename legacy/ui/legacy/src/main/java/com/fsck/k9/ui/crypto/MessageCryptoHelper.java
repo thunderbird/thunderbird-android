@@ -53,7 +53,7 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class MessageCryptoHelper {
@@ -252,7 +252,7 @@ public class MessageCryptoHelper {
                     @Override
                     public void onError(Exception e) {
                         // TODO actually handle (hand to ui, offer retry?)
-                        Timber.e(e, "Couldn't connect to OpenPgpService");
+                        Log.e(e, "Couldn't connect to OpenPgpService");
                     }
                 });
         openPgpServiceConnection.bindToService();
@@ -307,9 +307,9 @@ public class MessageCryptoHelper {
 
             throw new IllegalStateException("Unknown crypto part type: " + cryptoPartType);
         } catch (IOException e) {
-            Timber.e(e, "IOException");
+            Log.e(e, "IOException");
         } catch (MessagingException e) {
-            Timber.e(e, "MessagingException");
+            Log.e(e, "MessagingException");
         }
     }
 
@@ -318,12 +318,12 @@ public class MessageCryptoHelper {
         boolean hasInlineKeyData = autocryptOperations.addAutocryptPeerUpdateToIntentIfPresent(
                 (Message) currentCryptoPart.part, intent);
         if (hasInlineKeyData) {
-            Timber.d("Passing autocrypt data from plain mail to OpenPGP API");
+            Log.d("Passing autocrypt data from plain mail to OpenPGP API");
             // We don't care about the result here, so we just call this fire-and-forget wait to minimize delay
             openPgpApi.executeApiAsync(intent, null, null, new IOpenPgpCallback() {
                 @Override
                 public void onReturn(Intent result) {
-                    Timber.d("Autocrypt update OK!");
+                    Log.d("Autocrypt update OK!");
                 }
             });
         }
@@ -338,7 +338,7 @@ public class MessageCryptoHelper {
                 new IOpenPgpSinkResultCallback<MimeBodyPart>() {
             @Override
             public void onProgress(int current, int max) {
-                Timber.d("received progress status: %d / %d", current, max);
+                Log.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
 
@@ -369,7 +369,7 @@ public class MessageCryptoHelper {
                     TextBody body = new TextBody(new String(decryptedByteOutputStream.toByteArray()));
                     return new MimeBodyPart(body, "text/plain");
                 } catch (MessagingException e) {
-                    Timber.e(e, "MessagingException");
+                    Log.e(e, "MessagingException");
                 }
 
                 return null;
@@ -392,7 +392,7 @@ public class MessageCryptoHelper {
 
             @Override
             public void onProgress(int current, int max) {
-                Timber.d("received progress status: %d / %d", current, max);
+                Log.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
         });
@@ -414,7 +414,7 @@ public class MessageCryptoHelper {
 
             @Override
             public void onProgress(int current, int max) {
-                Timber.d("received progress status: %d / %d", current, max);
+                Log.d("received progress status: %d / %d", current, max);
                 callbackProgress(current, max);
             }
         });
@@ -427,10 +427,10 @@ public class MessageCryptoHelper {
                 try {
                     Multipart multipartSignedMultipart = (Multipart) signedPart.getBody();
                     BodyPart signatureBodyPart = multipartSignedMultipart.getBodyPart(0);
-                    Timber.d("signed data type: %s", signatureBodyPart.getMimeType());
+                    Log.d("signed data type: %s", signatureBodyPart.getMimeType());
                     signatureBodyPart.writeTo(os);
                 } catch (MessagingException e) {
-                    Timber.e(e, "Exception while writing message to crypto provider");
+                    Log.e(e, "Exception while writing message to crypto provider");
                 }
             }
         };
@@ -476,7 +476,7 @@ public class MessageCryptoHelper {
                         throw new IllegalStateException("part to stream must be encrypted or inline!");
                     }
                 } catch (MessagingException e) {
-                    Timber.e(e, "MessagingException while writing message to crypto provider");
+                    Log.e(e, "MessagingException while writing message to crypto provider");
                 }
             }
         };
@@ -492,7 +492,7 @@ public class MessageCryptoHelper {
                             DecryptedFileProvider.getFileFactory(context);
                     return MimePartStreamParser.parse(fileFactory, is);
                 } catch (MessagingException e) {
-                    Timber.e(e, "Something went wrong while parsing the decrypted MIME part");
+                    Log.e(e, "Something went wrong while parsing the decrypted MIME part");
                     //TODO: pass error to main thread and display error message to user
                     return null;
                 }
@@ -502,7 +502,7 @@ public class MessageCryptoHelper {
 
     private void onCryptoOperationReturned(MimeBodyPart decryptedPart) {
         if (currentCryptoResult == null) {
-            Timber.e("Internal error: we should have a result here!");
+            Log.e("Internal error: we should have a result here!");
             return;
         }
 
@@ -515,11 +515,11 @@ public class MessageCryptoHelper {
 
     private void handleCryptoOperationResult(MimeBodyPart outputPart) {
         int resultCode = currentCryptoResult.getIntExtra(OpenPgpApi.RESULT_CODE, INVALID_OPENPGP_RESULT_CODE);
-        Timber.d("OpenPGP API decryptVerify result code: %d", resultCode);
+        Log.d("OpenPGP API decryptVerify result code: %d", resultCode);
 
         switch (resultCode) {
             case INVALID_OPENPGP_RESULT_CODE: {
-                Timber.e("Internal error: no result code!");
+                Log.e("Internal error: no result code!");
                 break;
             }
             case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED: {
@@ -556,7 +556,7 @@ public class MessageCryptoHelper {
             OpenPgpApi.RESULT_ERROR,
             OpenPgpError.class
         );
-        Timber.w("OpenPGP API error: %s", error.getMessage());
+        Log.w("OpenPGP API error: %s", error.getMessage());
 
         onCryptoOperationFailed(error);
     }
@@ -603,12 +603,12 @@ public class MessageCryptoHelper {
         boolean hasInlineKeyData = autocryptOperations.addAutocryptGossipUpdateToIntentIfPresent(
                 currentMessage, outputPart, intent);
         if (hasInlineKeyData) {
-            Timber.d("Passing autocrypt data from plain mail to OpenPGP API");
+            Log.d("Passing autocrypt data from plain mail to OpenPGP API");
             // We don't care about the result here, so we just call this fire-and-forget wait to minimize delay
             openPgpApi.executeApiAsync(intent, null, null, new IOpenPgpCallback() {
                 @Override
                 public void onReturn(Intent result) {
-                    Timber.d("Autocrypt update OK!");
+                    Log.d("Autocrypt update OK!");
                 }
             });
         }
@@ -685,7 +685,7 @@ public class MessageCryptoHelper {
             partsToProcess.removeFirst();
             currentCryptoPart = null;
         } else {
-            Timber.e(new Throwable(), "Got to onCryptoFinished() with no part in processing!");
+            Log.e(new Throwable(), "Got to onCryptoFinished() with no part in processing!");
         }
         nextStep();
     }
@@ -749,7 +749,7 @@ public class MessageCryptoHelper {
 
             boolean hasCachedResult = queuedResult != null || queuedPendingIntent != null;
             if (hasCachedResult) {
-                Timber.d("Returning cached result or pending intent to reattached callback");
+                Log.d("Returning cached result or pending intent to reattached callback");
                 deliverResult();
             }
         }
@@ -788,7 +788,7 @@ public class MessageCryptoHelper {
         }
 
         if (callback == null) {
-            Timber.d("Keeping crypto helper result in queue for later delivery");
+            Log.d("Keeping crypto helper result in queue for later delivery");
             return;
         }
         if (queuedResult != null) {

@@ -8,14 +8,19 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.compose.preference.api.Preference
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 
+internal typealias AccountNameOutcome = Outcome<String, SettingsError>
 internal typealias AccountSettingsOutcome = Outcome<ImmutableList<Preference>, SettingsError>
 
 internal interface AccountSettingsDomainContract {
 
     interface UseCase {
+
+        fun interface GetAccountName {
+            operator fun invoke(accountId: AccountId): Flow<AccountNameOutcome>
+        }
 
         fun interface GetGeneralPreferences {
             operator fun invoke(accountId: AccountId): Flow<AccountSettingsOutcome>
@@ -43,7 +48,7 @@ internal interface AccountSettingsDomainContract {
             val colorTitle: () -> String
             val colorDescription: () -> String?
             val colorIcon: () -> ImageVector?
-            val colors: List<Int>
+            val colors: ImmutableList<Int>
         }
     }
 

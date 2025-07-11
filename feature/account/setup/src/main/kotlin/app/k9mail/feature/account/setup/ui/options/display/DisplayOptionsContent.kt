@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
@@ -26,6 +25,7 @@ import app.k9mail.feature.account.common.ui.item.defaultItemPadding
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 
 @Suppress("LongMethod")
 @Composable
@@ -40,7 +40,7 @@ internal fun DisplayOptionsContent(
 
     ResponsiveWidthContainer(
         modifier = Modifier
-            .testTag("DisplayOptionsContent")
+            .testTagAsResourceId("DisplayOptionsContent")
             .consumeWindowInsets(contentPadding)
             .padding(contentPadding)
             .then(modifier),
@@ -74,6 +74,7 @@ internal fun DisplayOptionsContent(
                     onTextChange = { onEvent(Event.OnAccountNameChanged(it)) },
                     label = stringResource(id = R.string.account_setup_options_account_name_label),
                     contentPadding = defaultItemPadding(),
+                    modifier = Modifier.testTagAsResourceId("account_setup_display_options_account_name_input"),
                 )
             }
 
@@ -85,6 +86,7 @@ internal fun DisplayOptionsContent(
                     label = stringResource(id = R.string.account_setup_options_display_name_label),
                     contentPadding = defaultItemPadding(),
                     isRequired = true,
+                    modifier = Modifier.testTagAsResourceId("account_setup_display_options_display_name_input"),
                 )
             }
 
@@ -96,6 +98,7 @@ internal fun DisplayOptionsContent(
                     label = stringResource(id = R.string.account_setup_options_email_signature_label),
                     contentPadding = defaultItemPadding(),
                     isSingleLine = false,
+                    modifier = Modifier.testTagAsResourceId("account_setup_display_options_signature_input"),
                 )
             }
 

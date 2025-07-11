@@ -6,34 +6,42 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.toEmailAddressOrNull
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9.contactNameColor
-import com.fsck.k9.K9.isChangeContactNameColor
-import com.fsck.k9.K9.isShowContactName
-import com.fsck.k9.K9.isShowCorrespondentNames
 import com.fsck.k9.mail.Address
 import java.util.regex.Pattern
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 class MessageHelper(
     private val resourceProvider: CoreResourceProvider,
     private val contactRepository: ContactRepository,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
 
     fun getSenderDisplayName(address: Address?): CharSequence {
         if (address == null) {
             return resourceProvider.contactUnknownSender()
         }
-        val repository = if (isShowContactName) contactRepository else null
-        return toFriendly(address, repository)
+        val repository = if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
+        return toFriendly(
+            address,
+            generalSettingsManager.getSettings().isShowCorrespondentNames,
+            generalSettingsManager.getSettings().isChangeContactNameColor,
+            repository,
+        )
     }
 
-    fun getRecipientDisplayNames(addresses: Array<Address>?): CharSequence {
+    fun getRecipientDisplayNames(
+        addresses: Array<Address>?,
+        isShowCorrespondentNames: Boolean,
+        isChangeContactNameColor: Boolean,
+    ): CharSequence {
         if (addresses == null || addresses.isEmpty()) {
             return resourceProvider.contactUnknownRecipient()
         }
-        val repository = if (isShowContactName) contactRepository else null
-        val recipients = toFriendly(addresses, repository)
+        val repository = if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
+        val recipients = toFriendly(addresses, isShowCorrespondentNames, isChangeContactNameColor, repository)
         return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(' ').append(recipients)
     }
 
@@ -60,7 +68,12 @@ class MessageHelper(
          * @param contacts A [Contacts] instance or `null`.
          * @return A "friendly" name for this [Address].
          */
-        fun toFriendly(address: Address, contactRepository: ContactRepository?): CharSequence {
+        fun toFriendly(
+            address: Address,
+            isShowCorrespondentNames: Boolean,
+            isChangeContactNameColor: Boolean,
+            contactRepository: ContactRepository?,
+        ): CharSequence {
             return toFriendly(
                 address,
                 contactRepository,
@@ -70,7 +83,12 @@ class MessageHelper(
             )
         }
 
-        fun toFriendly(addresses: Array<Address>?, contactRepository: ContactRepository?): CharSequence? {
+        fun toFriendly(
+            addresses: Array<Address>?,
+            isShowCorrespondentNames: Boolean,
+            isChangeContactNameColor: Boolean,
+            contactRepository: ContactRepository?,
+        ): CharSequence? {
             var repository = contactRepository
             if (addresses == null) {
                 return null
@@ -81,7 +99,14 @@ class MessageHelper(
             }
             val stringBuilder = SpannableStringBuilder()
             for (i in addresses.indices) {
-                stringBuilder.append(toFriendly(addresses[i], repository))
+                stringBuilder.append(
+                    toFriendly(
+                        addresses[i],
+                        isShowCorrespondentNames,
+                        isChangeContactNameColor,
+                        repository,
+                    ),
+                )
                 if (i < addresses.size - 1) {
                     stringBuilder.append(',')
                 }

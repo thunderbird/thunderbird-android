@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Outbox
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AllInbox
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Check
@@ -22,6 +23,8 @@ import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Inbox
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Report
 import androidx.compose.material.icons.outlined.Security
@@ -53,6 +56,9 @@ object Icons {
         val AccountCircle: ImageVector
             get() = MaterialIcons.Outlined.AccountCircle
 
+        val Add: ImageVector
+            get() = MaterialIcons.Outlined.Add
+
         val AllInbox: ImageVector
             get() = MaterialIcons.Outlined.AllInbox
 
@@ -61,6 +67,12 @@ object Icons {
 
         val ArrowBack: ImageVector
             get() = MaterialIcons.AutoMirrored.Outlined.ArrowBack
+
+        val KeyboardArrowDown: ImageVector
+            get() = MaterialIcons.Outlined.KeyboardArrowDown
+
+        val KeyboardArrowUp: ImageVector
+            get() = MaterialIcons.Outlined.KeyboardArrowUp
 
         val Check: ImageVector
             get() = MaterialIcons.Outlined.Check

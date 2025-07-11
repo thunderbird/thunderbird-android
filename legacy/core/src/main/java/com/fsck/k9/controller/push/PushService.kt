@@ -7,8 +7,8 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
 import com.fsck.k9.notification.PushNotificationManager
+import net.thunderbird.core.logging.legacy.Log
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 /**
  * Foreground service that is used to keep the app alive while listening for new emails (Push).
@@ -19,12 +19,12 @@ class PushService : Service() {
     private val pushController: PushController by inject()
 
     override fun onCreate() {
-        Timber.v("PushService.onCreate()")
+        Log.v("PushService.onCreate()")
         super.onCreate()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Timber.v("PushService.onStartCommand(%s)", intent)
+        Log.v("PushService.onStartCommand(%s)", intent)
         super.onStartCommand(intent, flags, startId)
 
         val isAutomaticRestart = intent == null
@@ -41,7 +41,7 @@ class PushService : Service() {
     }
 
     override fun onDestroy() {
-        Timber.v("PushService.onDestroy()")
+        Log.v("PushService.onDestroy()")
         pushNotificationManager.setForegroundServiceStopped()
         notifyServiceStopped()
         super.onDestroy()
@@ -54,7 +54,7 @@ class PushService : Service() {
             try {
                 startForeground()
             } catch (e: ForegroundServiceStartNotAllowedException) {
-                Timber.e(e, "Ignoring ForegroundServiceStartNotAllowedException during automatic restart.")
+                Log.e(e, "Ignoring ForegroundServiceStartNotAllowedException during automatic restart.")
 
                 // This works around what seems to be a bug in at least Android 14.
                 // See https://github.com/thunderbird/thunderbird-android/issues/7416 for more details.

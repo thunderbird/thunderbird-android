@@ -1,19 +1,15 @@
 package net.thunderbird.app.common.account
 
 import android.content.Context
-import app.k9mail.core.common.mail.Protocols
 import app.k9mail.feature.account.common.domain.entity.Account
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderSettings
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
-import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.SpecialFolderSelection
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.account.DeletePolicyProvider
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
@@ -25,17 +21,26 @@ import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 
 // TODO Move to feature/account/setup
-class AccountCreator(
+@Suppress("LongParameterList")
+internal class AccountCreator(
     private val accountColorPicker: AccountColorPicker,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val preferences: Preferences,
     private val context: Context,
     private val messagingController: MessagingController,
     private val deletePolicyProvider: DeletePolicyProvider,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val avatarMonogramCreator: AvatarMonogramCreator,
     private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountSetupExternalContract.AccountCreator {
 
     @Suppress("TooGenericExceptionCaught")
@@ -43,7 +48,7 @@ class AccountCreator(
         return try {
             withContext(coroutineDispatcher) { AccountCreatorResult.Success(create(account)) }
         } catch (e: Exception) {
-            Timber.e(e, "Error while creating new account")
+            Log.e(e, "Error while creating new account")
 
             AccountCreatorResult.Error(e.message ?: "Unknown create account error")
         }
@@ -53,6 +58,13 @@ class AccountCreator(
         val newAccount = preferences.newAccount(account.uuid)
 
         newAccount.email = account.emailAddress
+
+        newAccount.avatar = AvatarDto(
+            avatarType = AvatarTypeDto.MONOGRAM,
+            avatarMonogram = avatarMonogramCreator.create(account.options.accountName, account.emailAddress),
+            avatarImageUri = null,
+            avatarIconName = null,
+        )
 
         newAccount.setIncomingServerSettings(account.incomingServerSettings)
         newAccount.outgoingServerSettings = account.outgoingServerSettings

@@ -1,13 +1,13 @@
 package app.k9mail.feature.account.server.settings.ui.common.mapper
 
 import android.content.res.Resources
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
 import app.k9mail.feature.account.server.settings.R
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateImapPrefix.ValidateImapPrefixError
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePassword.ValidatePasswordError
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePort.ValidatePortError
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateServer.ValidateServerError
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateUsername.ValidateUsernameError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
 
 fun ValidationError.toResourceString(resources: Resources): String {
     return when (this) {

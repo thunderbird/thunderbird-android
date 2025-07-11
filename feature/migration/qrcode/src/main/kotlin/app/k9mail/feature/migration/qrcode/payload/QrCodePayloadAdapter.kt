@@ -3,7 +3,7 @@ package app.k9mail.feature.migration.qrcode.payload
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
     override fun fromJson(jsonReader: JsonReader): QrCodeData? {
@@ -12,7 +12,7 @@ internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
         val version = jsonReader.nextInt()
         if (version != 1) {
             // We don't even attempt to read something that is newer than version 1.
-            Timber.d("Unsupported version: %s", version)
+            Log.d("Unsupported version: %s", version)
             return null
         }
 
@@ -58,7 +58,7 @@ internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
         val hostname = jsonReader.nextString()
         val port = jsonReader.nextInt()
         val connectionSecurity = jsonReader.nextInt()
-        val authenticationType = jsonReader.nextInt()
+        val authentiLogionType = jsonReader.nextInt()
         val username = jsonReader.nextString()
         val accountName = if (jsonReader.hasNext()) jsonReader.nextString() else null
         val password = if (jsonReader.hasNext()) jsonReader.nextString() else null
@@ -71,7 +71,7 @@ internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
             hostname,
             port,
             connectionSecurity,
-            authenticationType,
+            authentiLogionType,
             username,
             accountName,
             password,
@@ -101,7 +101,7 @@ internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
         val hostname = jsonReader.nextString()
         val port = jsonReader.nextInt()
         val connectionSecurity = jsonReader.nextInt()
-        val authenticationType = jsonReader.nextInt()
+        val authentiLogionType = jsonReader.nextInt()
         val username = jsonReader.nextString()
         val password = if (jsonReader.hasNext()) jsonReader.nextString() else null
 
@@ -121,7 +121,7 @@ internal class QrCodePayloadAdapter : JsonAdapter<QrCodeData>() {
             hostname,
             port,
             connectionSecurity,
-            authenticationType,
+            authentiLogionType,
             username,
             password,
             identities,

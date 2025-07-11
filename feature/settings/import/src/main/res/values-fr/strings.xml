@@ -38,8 +38,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 n’est actuellement pas pris en charge par ce service.</string>
     <string name="settings_import_oauth_error_browser_not_found">L’appli n’a pas trouvé de navigateur pour accorder l’accès à votre compte.</string>
     <string name="settings_import_general_settings_item">Paramètres généraux</string>
-    <string name="settings_import_pick_app_button">Importer de l’appli</string>
-    <string name="settings_import_pick_app_dialog_title">Importer de l’appli</string>
+    <string name="settings_import_pick_app_button">Importer d’une appli</string>
+    <string name="settings_import_pick_app_dialog_title">Importer d’une appli</string>
     <string name="settings_import_scan_qr_code_button">Lire un code QR</string>
     <string name="settings_import_app_version_not_supported">La version de l’appli n’est pas prise en charge.</string>
 </resources>

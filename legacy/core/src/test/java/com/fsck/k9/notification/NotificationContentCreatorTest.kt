@@ -1,7 +1,6 @@
 package com.fsck.k9.notification
 
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import assertk.assertThat
@@ -9,7 +8,13 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettings
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -142,6 +147,40 @@ class NotificationContentCreatorTest : RobolectricTest() {
         return NotificationContentCreator(
             resourceProvider,
             contactRepository,
+            mock {
+                on { getSettings() } doReturn GeneralSettings(
+                    backgroundSync = BackgroundSync.ALWAYS,
+                    showRecentChanges = true,
+                    appTheme = AppTheme.DARK,
+                    messageComposeTheme = SubTheme.DARK,
+                    isShowCorrespondentNames = true,
+                    fixedMessageViewTheme = true,
+                    messageViewTheme = SubTheme.DARK,
+                    isShowStarredCount = false,
+                    isShowUnifiedInbox = false,
+                    isShowMessageListStars = false,
+                    isShowAnimations = false,
+                    shouldShowSetupArchiveFolderDialog = false,
+                    isMessageListSenderAboveSubject = false,
+                    isShowContactName = false,
+                    isShowContactPicture = false,
+                    isChangeContactNameColor = false,
+                    isColorizeMissingContactPictures = false,
+                    isUseBackgroundAsUnreadIndicator = false,
+                    isShowComposeButtonOnMessageList = false,
+                    isThreadedViewEnabled = false,
+                    isUseMessageViewFixedWidthFont = false,
+                    isAutoFitWidth = false,
+                    isQuietTime = false,
+                    quietTimeStarts = "7:00",
+                    quietTimeEnds = "7:00",
+                    isQuietTimeEnabled = false,
+                    privacy = PrivacySettings(
+                        isHideTimeZone = false,
+                        isHideUserAgent = false,
+                    ),
+                )
+            },
         )
     }
 

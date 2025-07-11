@@ -8,7 +8,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.password
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,7 +39,7 @@ fun TextFieldOutlinedPassword(
     Material3OutlinedTextField(
         value = value,
         onValueChange = stripLineBreaks(onValueChange),
-        modifier = modifier.applyLegacyPasswordSemantics(),
+        modifier = modifier.applyLegacyPasswordSemantics().semantics { contentType = ContentType.Password },
         enabled = isEnabled,
         label = selectLabel(label, isRequired),
         trailingIcon = selectTrailingIcon(
@@ -72,7 +74,7 @@ fun TextFieldOutlinedPassword(
     Material3OutlinedTextField(
         value = value,
         onValueChange = stripLineBreaks(onValueChange),
-        modifier = modifier.applyLegacyPasswordSemantics(),
+        modifier = modifier.applyLegacyPasswordSemantics().semantics { contentType = ContentType.Password },
         enabled = isEnabled,
         label = selectLabel(label, isRequired),
         trailingIcon = selectTrailingIcon(

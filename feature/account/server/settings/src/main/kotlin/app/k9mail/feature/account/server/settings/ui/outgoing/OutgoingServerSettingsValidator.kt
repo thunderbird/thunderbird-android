@@ -1,10 +1,10 @@
 package app.k9mail.feature.account.server.settings.ui.outgoing
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePassword
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePort
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateServer
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateUsername
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 
 internal class OutgoingServerSettingsValidator(
     private val serverValidator: ValidateServer = ValidateServer(),

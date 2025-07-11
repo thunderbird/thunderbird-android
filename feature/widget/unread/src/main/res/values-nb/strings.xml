@@ -5,7 +5,7 @@
     <string name="unread_widget_account_summary">Kontoen antall uleste meldinger skal vises for</string>
     <string name="unread_widget_unified_inbox_account_summary">Samlet innboks</string>
     <string name="unread_widget_folder_enabled_title">Mappeantall</string>
-    <string name="unread_widget_folder_enabled_summary">Vis antall uleste for bare én mappe</string>
+    <string name="unread_widget_folder_enabled_summary">Vis antall uleste for kun én mappe</string>
     <string name="unread_widget_folder_title">Mappe</string>
     <string name="unread_widget_folder_summary">Mappen antall uleste meldinger skal vises for</string>
     <string name="unread_widget_action_done">Ferdig</string>

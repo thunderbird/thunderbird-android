@@ -6,12 +6,12 @@ import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.toDatabaseFolderType
 
 internal class CreateFolderOperations(private val lockableDatabase: LockableDatabase) {
-    fun createFolders(folders: List<CreateFolderInfo>) {
+    fun createFolders(folders: List<CreateFolderInfo>): Set<Long> = buildSet {
         lockableDatabase.execute(true) { db ->
             for (folder in folders) {
                 val folderSettings = folder.settings
                 val values = ContentValues().apply {
-                    put("name", folder.name)
+                    put("name", folder.name.replace("\\[(Gmail|Google Mail)]/".toRegex(), ""))
                     put("visible_limit", folderSettings.visibleLimit)
                     put("integrate", folderSettings.integrate)
                     put("top_group", folderSettings.inTopGroup)
@@ -25,6 +25,8 @@ internal class CreateFolderOperations(private val lockableDatabase: LockableData
                 }
 
                 db.insert("folders", null, values)
+                    .takeIf { it != -1L }
+                    ?.let(::add)
             }
         }
     }

@@ -5,9 +5,9 @@ import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.ParserError
 import app.k9mail.autodiscovery.autoconfig.AutoconfigParserResult.Settings
 import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.ErrorResponse
 import app.k9mail.autodiscovery.autoconfig.HttpFetchResult.SuccessResponse
-import app.k9mail.core.common.mail.EmailAddress
-import com.fsck.k9.logging.Timber
 import java.io.IOException
+import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.logging.legacy.Log
 import okhttp3.HttpUrl
 
 internal class RealAutoconfigFetcher(
@@ -23,7 +23,7 @@ internal class RealAutoconfigFetcher(
                 is ErrorResponse -> AutoDiscoveryResult.NoUsableSettingsFound
             }
         } catch (e: IOException) {
-            Timber.d(e, "Error fetching Autoconfig from URL: %s", autoconfigUrl)
+            Log.d(e, "Error fetching Autoconfig from URL: %s", autoconfigUrl)
             AutoDiscoveryResult.NetworkError(e)
         }
     }
@@ -49,7 +49,7 @@ internal class RealAutoconfigFetcher(
                 }
             }
         } catch (e: AutoconfigParserException) {
-            Timber.d(e, "Failed to parse config from URL: %s", autoconfigUrl)
+            Log.d(e, "Failed to parse config from URL: %s", autoconfigUrl)
             AutoDiscoveryResult.NoUsableSettingsFound
         }
     }

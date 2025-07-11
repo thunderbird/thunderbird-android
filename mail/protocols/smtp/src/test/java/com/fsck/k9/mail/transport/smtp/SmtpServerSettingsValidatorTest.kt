@@ -18,7 +18,10 @@ import com.fsck.k9.mail.testing.security.SimpleTrustedSocketFactory
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
 import java.net.UnknownHostException
 import kotlin.test.Test
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import okio.ByteString.Companion.encodeUtf8
+import org.junit.Before
 
 private const val USERNAME = "user"
 private const val PASSWORD = "password"
@@ -33,6 +36,11 @@ class SmtpServerSettingsValidatorTest {
         trustedSocketFactory = trustedSocketFactory,
         oAuth2TokenProviderFactory = null,
     )
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `valid server settings with password should return Success`() {
