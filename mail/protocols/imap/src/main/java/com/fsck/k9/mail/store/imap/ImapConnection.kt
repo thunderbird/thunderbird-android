@@ -19,6 +19,8 @@ internal interface ImapConnection {
 
     fun close()
 
+    fun canSendUTF8QuotedStrings(): Boolean
+
     @Throws(IOException::class, MessagingException::class)
     fun hasCapability(capability: String): Boolean
 
