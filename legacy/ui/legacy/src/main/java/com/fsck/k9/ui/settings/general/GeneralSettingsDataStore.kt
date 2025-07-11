@@ -12,6 +12,7 @@ import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.update
 
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,
@@ -382,16 +383,24 @@ class GeneralSettingsDataStore(
 
     private fun setIsHideTimeZone(isHideTimeZone: Boolean) {
         skipSaveSettings = true
-        generalSettingsManager.setIsHideTimeZone(
-            isHideTimeZone = isHideTimeZone,
-        )
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                privacy = settings.privacy.copy(
+                    isHideTimeZone = isHideTimeZone,
+                )
+            )
+        }
     }
 
     private fun setIsHideUserAgent(isHideUserAgent: Boolean) {
         skipSaveSettings = true
-        generalSettingsManager.setIsHideUserAgent(
-            isHideUserAgent = isHideUserAgent,
-        )
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                privacy = settings.privacy.copy(
+                    isHideUserAgent = isHideUserAgent,
+                )
+            )
+        }
     }
 
     private fun appThemeToString(theme: AppTheme) = when (theme) {

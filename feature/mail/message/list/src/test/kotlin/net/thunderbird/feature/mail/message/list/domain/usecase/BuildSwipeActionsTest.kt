@@ -5,7 +5,6 @@ import assertk.assertThat
 import assertk.assertions.containsOnly
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
-import dev.mokkery.mock
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.uuid.ExperimentalUuidApi
@@ -21,7 +20,6 @@ import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.privacy.PrivacySettings
-import net.thunderbird.core.preference.privacy.PrivacySettingsManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.mail.message.list.fakes.FakeAccount
 import net.thunderbird.feature.mail.message.list.fakes.FakeAccountManager
@@ -57,10 +55,7 @@ class BuildSwipeActionsTest {
             quietTimeEnds = "7:00",
             isQuietTime = false,
             isQuietTimeEnabled = false,
-            privacy = PrivacySettings(
-                isHideTimeZone = false,
-                isHideUserAgent = false,
-            ),
+            privacy = PrivacySettings(),
         )
 
     @Test
@@ -373,7 +368,7 @@ class BuildSwipeActionsTest {
         accountsUuids: List<String>,
         storageValues: Map<String, String> = mapOf(),
     ): BuildSwipeActions = BuildSwipeActions(
-        generalSettingsManager = FakeGeneralSettingsManager(initialGeneralSettings, mock()),
+        generalSettingsManager = FakeGeneralSettingsManager(initialGeneralSettings),
         accountManager = FakeAccountManager(accounts = accountsUuids.map { FakeAccount(uuid = it) }),
         storage = FakeStorage(storageValues),
     )
@@ -381,12 +376,19 @@ class BuildSwipeActionsTest {
 
 private class FakeGeneralSettingsManager(
     initialGeneralSettings: GeneralSettings,
-    private val privacySettingsManager: PrivacySettingsManager,
-) : GeneralSettingsManager, PrivacySettingsManager by privacySettingsManager {
+) : GeneralSettingsManager {
     private val generalSettings = MutableStateFlow(initialGeneralSettings)
     override fun getSettings(): GeneralSettings = generalSettings.value
 
     override fun getSettingsFlow(): Flow<GeneralSettings> = generalSettings
+
+    override fun save(config: GeneralSettings) {
+        error("not implemented")
+    }
+
+    override fun getConfig(): GeneralSettings = generalSettings.value
+
+    override fun getConfigFlow(): Flow<GeneralSettings> = generalSettings
 
     override fun setShowRecentChanges(showRecentChanges: Boolean) = error("not implemented")
 
@@ -453,14 +455,6 @@ private class FakeGeneralSettingsManager(
     )
 
     override fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setIsHideTimeZone(isHideTimeZone: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setIsHideUserAgent(isHideUserAgent: Boolean) = error(
         "not implemented",
     )
 }

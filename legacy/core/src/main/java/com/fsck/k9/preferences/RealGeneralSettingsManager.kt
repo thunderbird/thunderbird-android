@@ -11,10 +11,17 @@ import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.datetime.Clock
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundSync
@@ -22,7 +29,7 @@ import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.SubTheme
-import net.thunderbird.core.preference.privacy.PrivacySettingsManager
+import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -55,6 +62,7 @@ internal class RealGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
     private val changePublisher: PreferenceChangePublisher,
+    private val privacySettingsPreferenceManager: PrivacySettingsPreferenceManager,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val privacySettingsManager: PrivacySettingsManager,
 ) : GeneralSettingsManager, PrivacySettingsManager by privacySettingsManager {
@@ -65,46 +73,54 @@ internal class RealGeneralSettingsManager(
     val storage: Storage
         get() = preferences.storage
 
+    @Deprecated(
+        message = "Use PreferenceManager<GeneralSettings>.getConfig() instead",
+        replaceWith = ReplaceWith(expression = "getConfig()"),
+    )
     @Synchronized
-    override fun getSettings(): GeneralSettings {
-        return generalSettings ?: loadGeneralSettings().also { generalSettings = it }
-    }
+    override fun getSettings(): GeneralSettings = generalSettings.value
 
-    override fun getSettingsFlow(): Flow<GeneralSettings> {
-        // Make sure to load settings now if they haven't been loaded already. This will also update settingsFlow.
-        getSettings()
+    @Deprecated(
+        message = "Use PreferenceManager<GeneralSettings>.getConfigFlow() instead",
+        replaceWith = ReplaceWith(expression = "getConfigFlow()"),
+    )
+    override fun getSettingsFlow(): Flow<GeneralSettings> = generalSettings
 
-        return settingsFlow.distinctUntilChanged()
-    }
+    override fun getConfig(): GeneralSettings = generalSettings.value
+
+    override fun getConfigFlow(): Flow<GeneralSettings> = generalSettings
 
     @Synchronized
     fun loadSettings() {
         K9.loadPrefs(preferences.storage)
-        generalSettings = loadGeneralSettings()
+        // TODO(#9232): Should be removed when K9 settings is completely migrated
+        k9GeneralSettingsFallback.update { loadGeneralSettings() }
     }
 
-    private fun updateSettingsFlow(settings: GeneralSettings) {
-        coroutineScope.launch {
-            settingsFlow.emit(settings)
-        }
-    }
-
-    @Deprecated("This only exists for collaboration with the K9 class")
+    @Deprecated(message = "This only exists for collaboration with the K9 class")
     fun saveSettingsAsync() {
         coroutineScope.launch(backgroundDispatcher) {
             val settings = updateGeneralSettingsWithStateFromK9()
-            settingsFlow.emit(settings)
+            save(config = settings)
+        }
+    }
 
-            saveSettings(settings)
+    override fun save(config: GeneralSettings) {
+        coroutineScope.launch(backgroundDispatcher) {
+            mutex.withLock {
+                saveSettings(settings = config)
+                privacySettingsPreferenceManager.save(config.privacy)
+            }
         }
     }
 
     @Synchronized
+    @Deprecated("This only exists for collaboration with the K9 class and should be removed after #9232")
     private fun updateGeneralSettingsWithStateFromK9(): GeneralSettings {
         return getSettings().copy(
             backgroundSync = K9.backgroundOps.toBackgroundSync(),
         ).also { generalSettings ->
-            this.generalSettings = generalSettings
+            k9GeneralSettingsFallback.update { generalSettings }
         }
     }
 
@@ -118,11 +134,12 @@ internal class RealGeneralSettingsManager(
         changePublisher.publish()
     }
 
+    @Deprecated(message = "This function is being used within the setters and must be deleted after #9432")
     @Synchronized
     private fun GeneralSettings.persist() {
-        generalSettings = this
-        updateSettingsFlow(this)
         saveSettingsAsync(this)
+        // TODO(#9432): Should be removed when K9 settings is completely migrated
+        k9GeneralSettingsFallback.update { this }
     }
 
     private fun saveSettingsAsync(generalSettings: GeneralSettings) {
@@ -233,20 +250,6 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isQuietTimeEnabled = isQuietTimeEnabled).persist()
     }
 
-    override fun setIsHideTimeZone(isHideTimeZone: Boolean) {
-        privacySettingsManager.setIsHideTimeZone(isHideTimeZone)
-        getSettings()
-            .copy(privacy = privacySettings)
-            .persist()
-    }
-
-    override fun setIsHideUserAgent(isHideUserAgent: Boolean) {
-        privacySettingsManager.setIsHideUserAgent(isHideUserAgent)
-        getSettings()
-            .copy(privacy = privacySettings)
-            .persist()
-    }
-
     private fun writeSettings(editor: StorageEditor, settings: GeneralSettings) {
         editor.putBoolean("showRecentChanges", settings.showRecentChanges)
         editor.putEnum("theme", settings.appTheme)
@@ -276,6 +279,10 @@ internal class RealGeneralSettingsManager(
 
     private fun loadGeneralSettings(): GeneralSettings {
         val storage = preferences.storage
+
+        val quietTimeEnds = storage.getStringOrDefault(KEY_QUIET_TIME_ENDS, "7:00")
+        val quietTimeStarts = storage.getStringOrDefault(KEY_QUIET_TIME_STARTS, "21:00")
+        val isQuietTimeEnabled = storage.getBoolean(KEY_QUIET_TIME_ENABLED, false)
 
         val settings = GeneralSettings(
             backgroundSync = K9.backgroundOps.toBackgroundSync(),
@@ -309,18 +316,23 @@ internal class RealGeneralSettingsManager(
             isThreadedViewEnabled = storage.getBoolean(KEY_THREAD_VIEW_ENABLED, true),
             isUseMessageViewFixedWidthFont = storage.getBoolean(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, false),
             isAutoFitWidth = storage.getBoolean(KEY_AUTO_FIT_WIDTH, true),
-            quietTimeEnds = storage.getStringOrDefault(KEY_QUIET_TIME_ENDS, "7:00"),
-            quietTimeStarts = storage.getStringOrDefault(KEY_QUIET_TIME_STARTS, "21:00"),
-            isQuietTimeEnabled = storage.getBoolean(KEY_QUIET_TIME_ENABLED, false),
-            isQuietTime = getIsQuietTime(),
-            privacy = privacySettingsManager.privacySettings,
+            quietTimeEnds = quietTimeEnds,
+            quietTimeStarts = quietTimeStarts,
+            isQuietTimeEnabled = isQuietTimeEnabled,
+            isQuietTime = getIsQuietTime(isQuietTimeEnabled, quietTimeStarts, quietTimeEnds),
         )
-
-        updateSettingsFlow(settings)
-
         return settings
     }
 
+    private fun getIsQuietTime(isQuietTimeEnabled: Boolean, quietTimeStarts: String, quietTimeEnds: String): Boolean {
+        if (!isQuietTimeEnabled) return false
+
+        val clock = DI.get<Clock>()
+        val quietTimeChecker = QuietTimeChecker(
+            clock = clock,
+            quietTimeStart = quietTimeStarts,
+            quietTimeEnd = quietTimeEnds,
+        )
     private fun getIsQuietTime(): Boolean {
         val (isQuietTimeEnabled, quietTimeStarts, quietTimeEnds) = generalSettings?.let { settings ->
             Triple(
