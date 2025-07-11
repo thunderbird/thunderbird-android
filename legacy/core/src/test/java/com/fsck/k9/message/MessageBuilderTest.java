@@ -38,7 +38,9 @@ import net.thunderbird.core.preference.BackgroundSync;
 import net.thunderbird.core.preference.GeneralSettings;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.SubTheme;
+import net.thunderbird.core.preference.notification.NotificationPreference;
 import net.thunderbird.core.preference.privacy.PrivacySettings;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -206,32 +208,6 @@ public class MessageBuilderTest extends RobolectricTest {
     private CoreResourceProvider resourceProvider = new TestCoreResourceProvider();
     private Callback callback;
     private final GeneralSettingsManager fakeSettingsManager = new GeneralSettingsManager() {
-        @Override
-        public void setIsHideTimeZone(boolean isHideTimeZone) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @NonNull
-        @Override
-        public PrivacySettings getPrivacySettings() {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsQuietTimeEnabled(boolean isQuietTimeEnabled) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setQuietTimeStarts(@NonNull String quietTimeStarts) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setQuietTimeEnds(@NonNull String quietTimeEnds) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
         @NonNull
         @Override
         public GeneralSettings getSettings() {
@@ -258,10 +234,7 @@ public class MessageBuilderTest extends RobolectricTest {
                 false,
                 false,
                 false,
-                "07:00",
-                "07:00",
-                false,
-                false,
+                new NotificationPreference(false, "07:00", "07:00"),
                 new PrivacySettings(false, false)
             );
         }
@@ -269,6 +242,21 @@ public class MessageBuilderTest extends RobolectricTest {
         @NonNull
         @Override
         public Flow<GeneralSettings> getSettingsFlow() {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public @NotNull GeneralSettings getConfig() {
+            return getSettings();
+        }
+
+        @Override
+        public @NotNull Flow<@NotNull GeneralSettings> getConfigFlow() {
+            throw new UnsupportedOperationException("not implemented");
+        }
+
+        @Override
+        public void save(@NotNull GeneralSettings config) {
             throw new UnsupportedOperationException("not implemented");
         }
 
@@ -374,11 +362,6 @@ public class MessageBuilderTest extends RobolectricTest {
 
         @Override
         public void setIsAutoFitWidth(boolean isAutoFitWidth) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsHideUserAgent(boolean isHideUserAgent) {
             throw new UnsupportedOperationException("not implemented");
         }
     };

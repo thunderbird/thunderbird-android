@@ -14,6 +14,7 @@ interface GeneralSettingsManager : PreferenceManager<GeneralSettings> {
         ),
     )
     fun getSettings(): GeneralSettings
+
     @Deprecated(
         message = "Use PreferenceManager<GeneralSettings>.getConfigFlow() instead",
         replaceWith = ReplaceWith(
@@ -44,7 +45,4 @@ interface GeneralSettingsManager : PreferenceManager<GeneralSettings> {
     fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean)
     fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean)
     fun setIsAutoFitWidth(isAutoFitWidth: Boolean)
-    fun setQuietTimeEnds(quietTimeEnds: String)
-    fun setQuietTimeStarts(quietTimeStarts: String)
-    fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean)
 }

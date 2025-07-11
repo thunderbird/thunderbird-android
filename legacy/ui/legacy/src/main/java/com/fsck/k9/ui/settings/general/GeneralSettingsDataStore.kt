@@ -44,7 +44,7 @@ class GeneralSettingsDataStore(
             "threaded_view" -> generalSettingsManager.getSettings().isThreadedViewEnabled
             "messageview_fixedwidth_font" -> generalSettingsManager.getSettings().isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> generalSettingsManager.getSettings().isAutoFitWidth
-            "quiet_time_enabled" -> generalSettingsManager.getSettings().isQuietTimeEnabled
+            "quiet_time_enabled" -> generalSettingsManager.getConfig().notification.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> generalSettingsManager.getSettings().privacy.isHideUserAgent
             "privacy_hide_timezone" -> generalSettingsManager.getSettings().privacy.isHideTimeZone
@@ -128,8 +128,8 @@ class GeneralSettingsDataStore(
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> K9.backgroundOps.name
-            "quiet_time_starts" -> generalSettingsManager.getSettings().quietTimeStarts
-            "quiet_time_ends" -> generalSettingsManager.getSettings().quietTimeEnds
+            "quiet_time_starts" -> generalSettingsManager.getConfig().notification.quietTimeStarts
+            "quiet_time_ends" -> generalSettingsManager.getConfig().notification.quietTimeEnds
             "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
             "message_list_sender_font" -> K9.fontSizes.messageListSender.toString()
             "message_list_date_font" -> K9.fontSizes.messageListDate.toString()
@@ -355,16 +355,24 @@ class GeneralSettingsDataStore(
 
     private fun setQuietTimeStarts(quietTimeStarts: String) {
         skipSaveSettings = true
-        generalSettingsManager.setQuietTimeStarts(
-            quietTimeStarts = quietTimeStarts,
-        )
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    quietTimeStarts = quietTimeStarts,
+                ),
+            )
+        }
     }
 
     private fun setQuietTimeEnds(quietTimeEnds: String) {
         skipSaveSettings = true
-        generalSettingsManager.setQuietTimeEnds(
-            quietTimeEnds = quietTimeEnds,
-        )
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    quietTimeEnds = quietTimeEnds,
+                ),
+            )
+        }
     }
 
     private fun setIsAutoFitWidth(isAutoFitWidth: Boolean) {
@@ -376,9 +384,13 @@ class GeneralSettingsDataStore(
 
     private fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean) {
         skipSaveSettings = true
-        generalSettingsManager.setIsQuietTimeEnabled(
-            isQuietTimeEnabled = isQuietTimeEnabled,
-        )
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    isQuietTimeEnabled = isQuietTimeEnabled,
+                ),
+            )
+        }
     }
 
     private fun setIsHideTimeZone(isHideTimeZone: Boolean) {
@@ -387,7 +399,7 @@ class GeneralSettingsDataStore(
             settings.copy(
                 privacy = settings.privacy.copy(
                     isHideTimeZone = isHideTimeZone,
-                )
+                ),
             )
         }
     }
@@ -398,7 +410,7 @@ class GeneralSettingsDataStore(
             settings.copy(
                 privacy = settings.privacy.copy(
                     isHideUserAgent = isHideUserAgent,
-                )
+                ),
             )
         }
     }

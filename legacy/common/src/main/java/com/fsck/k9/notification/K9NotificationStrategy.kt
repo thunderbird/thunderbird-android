@@ -1,16 +1,20 @@
 package com.fsck.k9.notification
 
 import app.k9mail.core.android.common.contact.ContactRepository
+import app.k9mail.legacy.di.DI
 import com.fsck.k9.K9
+import com.fsck.k9.QuietTimeChecker
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
+import kotlinx.datetime.Clock
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.notification.NotificationPreference
 
 class K9NotificationStrategy(
     private val contactRepository: ContactRepository,
@@ -24,7 +28,7 @@ class K9NotificationStrategy(
         message: LocalMessage,
         isOldMessage: Boolean,
     ): Boolean {
-        if (!K9.isNotificationDuringQuietTimeEnabled && generalSettingsManager.getSettings().isQuietTime) {
+        if (!K9.isNotificationDuringQuietTimeEnabled && generalSettingsManager.getConfig().notification.isQuietTime) {
             Log.v("No notification: Quiet time is active")
             return false
         }
@@ -76,4 +80,15 @@ class K9NotificationStrategy(
 
     private val Message.isChatMessage: Boolean
         get() = getHeader(K9MailLib.CHAT_HEADER).isNotEmpty()
+
+    private val NotificationPreference.isQuietTime: Boolean
+        get() {
+            val clock = DI.get<Clock>()
+            val quietTimeChecker = QuietTimeChecker(
+                clock = clock,
+                quietTimeStart = quietTimeStarts,
+                quietTimeEnd = quietTimeEnds,
+            )
+            return quietTimeChecker.isQuietTime
+        }
 }
