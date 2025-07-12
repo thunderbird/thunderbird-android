@@ -3,91 +3,62 @@ package com.fsck.k9.preferences
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
-import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.core.preference.PreferenceChangeBroker
-import net.thunderbird.core.preference.PreferenceChangeSubscriber
-import net.thunderbird.core.preference.storage.StorageEditor
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.update
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
 internal class RealDrawerConfigManager(
     private val preferences: Preferences,
-    private val coroutineScope: CoroutineScope,
-    private val changeBroker: PreferenceChangeBroker,
-    private val generalSettingsManager: GeneralSettingsManager,
+    coroutineScope: CoroutineScope,
+    private val displaySettingsPreferenceManager: DisplaySettingsPreferenceManager,
 ) : DrawerConfigManager {
-    private val drawerConfigFlow = MutableSharedFlow<DrawerConfig>(replay = 1)
-
-    init {
-        coroutineScope.launch {
-            asSettingsFlow().collect { config ->
-                drawerConfigFlow.emit(config)
-            }
+    private val showAccountSelector = MutableStateFlow(K9.isShowAccountSelector)
+    private val drawerConfig: StateFlow<DrawerConfig> = showAccountSelector
+        .combine(displaySettingsPreferenceManager.getConfigFlow()) { showAccSelector, displaySettings ->
+            DrawerConfig(
+                showAccountSelector = showAccSelector,
+                showStarredCount = displaySettings.isShowStarredCount,
+                showUnifiedFolders = displaySettings.isShowUnifiedInbox,
+            )
         }
-    }
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = DrawerConfig(
+                showAccountSelector = false,
+                showStarredCount = false,
+                showUnifiedFolders = false,
+            ),
+        )
 
     override fun save(config: DrawerConfig) {
-        saveDrawerConfig(config)
-        updateDrawerConfigFlow(config)
-    }
-
-    private fun loadDrawerConfig(): DrawerConfig {
-        return DrawerConfig(
-            showAccountSelector = K9.isShowAccountSelector,
-            showStarredCount = generalSettingsManager.getConfig().display.isShowStarredCount,
-            showUnifiedFolders = generalSettingsManager.getConfig().display.isShowUnifiedInbox,
-        )
-    }
-
-    private fun updateDrawerConfigFlow(config: DrawerConfig) {
-        coroutineScope.launch {
-            drawerConfigFlow.emit(config)
+        displaySettingsPreferenceManager.update {
+            it.copy(
+                isShowStarredCount = config.showStarredCount,
+                isShowUnifiedInbox = config.showUnifiedFolders,
+            )
         }
+
+        val editor = preferences.createStorageEditor()
+        K9.save(editor)
+        editor.putBoolean("showAccountSelector", config.showAccountSelector)
+        editor.commit()
+        showAccountSelector.update { config.showAccountSelector }
     }
 
     @Synchronized
     override fun getConfig(): DrawerConfig {
-        return loadDrawerConfig().also {
-            updateDrawerConfigFlow(it)
-        }
+        return drawerConfig.value
     }
 
     override fun getConfigFlow(): Flow<DrawerConfig> {
-        return drawerConfigFlow.distinctUntilChanged()
-    }
-
-    private fun asSettingsFlow(): Flow<DrawerConfig> {
-        return callbackFlow {
-            send(loadDrawerConfig())
-
-            val subscriber = PreferenceChangeSubscriber {
-                drawerConfigFlow.tryEmit(loadDrawerConfig())
-            }
-
-            changeBroker.subscribe(subscriber)
-
-            awaitClose {
-                changeBroker.unsubscribe(subscriber)
-            }
-        }
-    }
-
-    @Synchronized
-    private fun saveDrawerConfig(config: DrawerConfig) {
-        val editor = preferences.createStorageEditor()
-        K9.save(editor)
-        writeDrawerConfig(editor, config)
-        editor.commit()
-    }
-
-    private fun writeDrawerConfig(editor: StorageEditor, config: DrawerConfig) {
-        editor.putBoolean("showAccountSelector", config.showAccountSelector)
-        editor.putBoolean("showUnifiedInbox", config.showUnifiedFolders)
-        editor.putBoolean("showStarredCount", config.showStarredCount)
+        return drawerConfig
     }
 }
