@@ -39,8 +39,8 @@ internal class RealDrawerConfigManager(
     private fun loadDrawerConfig(): DrawerConfig {
         return DrawerConfig(
             showAccountSelector = K9.isShowAccountSelector,
-            showStarredCount = generalSettingsManager.getSettings().isShowStarredCount,
-            showUnifiedFolders = generalSettingsManager.getSettings().isShowUnifiedInbox,
+            showStarredCount = generalSettingsManager.getConfig().display.isShowStarredCount,
+            showUnifiedFolders = generalSettingsManager.getConfig().display.isShowUnifiedInbox,
         )
     }
 
