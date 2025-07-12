@@ -72,7 +72,7 @@ internal class NotificationContentCreator(
     @Suppress("ReturnCount")
     private fun getMessageSender(account: LegacyAccount, message: Message): String? {
         val localContactRepository =
-            if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
+            if (generalSettingsManager.getConfig().display.isShowContactName) contactRepository else null
         var isSelf = false
 
         val fromAddresses = message.from
@@ -81,8 +81,8 @@ internal class NotificationContentCreator(
             if (!isSelf) {
                 return MessageHelper.toFriendly(
                     fromAddresses.first(),
-                    generalSettingsManager.getSettings().isShowCorrespondentNames,
-                    generalSettingsManager.getSettings().isChangeContactNameColor,
+                    generalSettingsManager.getConfig().display.isShowCorrespondentNames,
+                    generalSettingsManager.getConfig().display.isChangeContactNameColor,
                     localContactRepository,
                 ).toString()
             }
@@ -94,8 +94,8 @@ internal class NotificationContentCreator(
             if (!recipients.isNullOrEmpty()) {
                 val recipientDisplayName = MessageHelper.toFriendly(
                     address = recipients.first(),
-                    isShowCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
-                    isChangeContactNameColor = generalSettingsManager.getSettings().isChangeContactNameColor,
+                    isShowCorrespondentNames = generalSettingsManager.getConfig().display.isShowCorrespondentNames,
+                    isChangeContactNameColor = generalSettingsManager.getConfig().display.isChangeContactNameColor,
                     contactRepository = localContactRepository,
                 ).toString()
                 return resourceProvider.recipientDisplayName(recipientDisplayName)

@@ -310,11 +310,7 @@ class GeneralSettingsDescriptions {
             new V(90,
                 new EnumSetting<>(PostMarkAsUnreadNavigation.class, PostMarkAsUnreadNavigation.ReturnToMessageList))
         ));
-        s.put(
-            RealGeneralSettingsManagerKt.KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
-            Settings.versions(
-                new V(105, new BooleanSetting(true))
-            )
+        s.put("shouldShowSetupArchiveFolderDialog", Settings.versions(new V(105, new BooleanSetting(true)))
         );
 
         // TODO: Add a way to properly support feature-specific settings.

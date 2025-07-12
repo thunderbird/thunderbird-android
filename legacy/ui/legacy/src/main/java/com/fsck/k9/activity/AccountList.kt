@@ -76,7 +76,7 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
     private fun populateListView(realAccounts: List<LegacyAccount>) {
         val accounts: MutableList<BaseAccount> = ArrayList()
 
-        if (generalSettingsManager.getSettings().isShowUnifiedInbox) {
+        if (generalSettingsManager.getConfig().display.isShowUnifiedInbox) {
             val unifiedInboxAccount: BaseAccount = createUnifiedInboxAccount(
                 unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
                 unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),

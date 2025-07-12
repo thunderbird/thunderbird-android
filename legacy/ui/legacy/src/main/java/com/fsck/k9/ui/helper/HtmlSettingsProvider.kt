@@ -11,7 +11,7 @@ class HtmlSettingsProvider(
 ) {
     fun createForMessageView() = HtmlSettings(
         useDarkMode = themeManager.messageViewTheme == Theme.DARK,
-        useFixedWidthFont = generalSettingsManager.getSettings().isUseMessageViewFixedWidthFont,
+        useFixedWidthFont = generalSettingsManager.getConfig().display.isUseMessageViewFixedWidthFont,
     )
 
     fun createForMessageCompose() = HtmlSettings(

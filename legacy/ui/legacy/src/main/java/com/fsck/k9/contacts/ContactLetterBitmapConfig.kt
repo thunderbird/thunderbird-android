@@ -13,7 +13,8 @@ class ContactLetterBitmapConfig(
     themeManager: ThemeManager,
     generalSettingsManager: GeneralSettingsManager,
 ) {
-    val hasDefaultBackgroundColor: Boolean = !generalSettingsManager.getSettings().isColorizeMissingContactPictures
+    val hasDefaultBackgroundColor: Boolean = !generalSettingsManager.getConfig()
+        .display.isColorizeMissingContactPictures
     val defaultBackgroundColor: Int
     val backgroundColors: IntArray
 

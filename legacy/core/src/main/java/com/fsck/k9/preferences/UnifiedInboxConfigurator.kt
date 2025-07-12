@@ -2,6 +2,7 @@ package com.fsck.k9.preferences
 
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.update
 
 /**
  * Configures the unified inbox after an account has been added.
@@ -12,7 +13,9 @@ class UnifiedInboxConfigurator(
 ) {
     fun configureUnifiedInbox() {
         if (accountManager.getAccounts().size == 2) {
-            generalSettingsManager.setIsShowUnifiedInbox(isShowUnifiedInbox = true)
+            generalSettingsManager.update { settings ->
+                settings.copy(display = settings.display.copy(isShowUnifiedInbox = true))
+            }
         }
     }
 }

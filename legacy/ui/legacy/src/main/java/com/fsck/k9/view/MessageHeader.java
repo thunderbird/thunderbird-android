@@ -210,7 +210,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             fromAddress = fromAddresses[0];
         }
 
-        if (generalSettingsManager.getSettings().isShowContactPicture()) {
+        if (generalSettingsManager.getConfig().getDisplay().isShowContactPicture()) {
             contactPictureView.setVisibility(View.VISIBLE);
             if (fromAddress != null) {
                 ContactPictureLoader contactsPictureLoader = ContactPicture.getContactPictureLoader();
