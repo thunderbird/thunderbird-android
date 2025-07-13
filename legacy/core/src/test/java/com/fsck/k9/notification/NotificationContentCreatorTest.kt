@@ -10,10 +10,9 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
-import net.thunderbird.core.preference.AppTheme
-import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
-import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import org.junit.Test
@@ -149,29 +148,9 @@ class NotificationContentCreatorTest : RobolectricTest() {
             resourceProvider,
             contactRepository,
             mock {
-                on { getSettings() } doReturn GeneralSettings(
-                    backgroundSync = BackgroundSync.ALWAYS,
-                    showRecentChanges = true,
-                    appTheme = AppTheme.DARK,
-                    messageComposeTheme = SubTheme.DARK,
-                    isShowCorrespondentNames = true,
-                    fixedMessageViewTheme = true,
-                    messageViewTheme = SubTheme.DARK,
-                    isShowStarredCount = false,
-                    isShowUnifiedInbox = false,
-                    isShowMessageListStars = false,
-                    isShowAnimations = false,
-                    shouldShowSetupArchiveFolderDialog = false,
-                    isMessageListSenderAboveSubject = false,
-                    isShowContactName = false,
-                    isShowContactPicture = false,
-                    isChangeContactNameColor = false,
-                    isColorizeMissingContactPictures = false,
-                    isUseBackgroundAsUnreadIndicator = false,
-                    isShowComposeButtonOnMessageList = false,
-                    isThreadedViewEnabled = false,
-                    isUseMessageViewFixedWidthFont = false,
-                    isAutoFitWidth = false,
+                on { getConfig() } doReturn GeneralSettings(
+                    network = NetworkSettings(),
+                    display = DisplaySettings(),
                     notification = NotificationPreference(),
                     privacy = PrivacySettings(),
                 )
