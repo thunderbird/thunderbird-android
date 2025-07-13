@@ -8,7 +8,7 @@ import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandle
 
 internal class GeneralSettingsWriter(
     private val preferences: Preferences,
-    private val generalSettingsManager: RealGeneralSettingsManager,
+    private val generalSettingsManager: DefaultGeneralSettingsManager,
 ) {
     fun write(settings: InternalSettingsMap): Boolean {
         // Convert general settings to the string representation used in preference storage

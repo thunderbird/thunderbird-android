@@ -8,11 +8,10 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -34,9 +33,7 @@ import net.thunderbird.core.preference.storage.Storage
  * The [GeneralSettings] instance managed by this class is updated with state from [K9] when [K9.saveSettingsAsync] is
  * called.
  */
-// TODO(#9432): Split GeneralSettings and GeneralSettingsManager in smaller classes/interfaces
-@Suppress("TooManyFunctions")
-internal class RealGeneralSettingsManager(
+internal class DefaultGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
     private val changePublisher: PreferenceChangePublisher,
@@ -47,13 +44,10 @@ internal class RealGeneralSettingsManager(
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GeneralSettingsManager {
     val mutex = Mutex()
-
-    // TODO(#9432): Should be removed when K9 settings is completely migrated
-    // This fallback is required until we finalize the split of the GeneralSettings class and Manager.
-    // The GeneralSettings must be composed by other smaller Managers flows.
-    private val k9GeneralSettingsFallback = MutableStateFlow(value = loadGeneralSettings())
-
-    private val generalSettings = MutableStateFlow(value = loadGeneralSettings())
+    private val generalSettings = privacySettingsPreferenceManager.getConfigFlow()
+        .map { privacy->
+            GeneralSettings(privacy = privacy)
+        }
         .combine(privacySettingsPreferenceManager.getConfigFlow()) { generalSettings, privacySettings ->
             generalSettings.copy(
                 privacy = privacySettings,
@@ -104,15 +98,12 @@ internal class RealGeneralSettingsManager(
     @Synchronized
     fun loadSettings() {
         K9.loadPrefs(preferences.storage)
-        // TODO(#9232): Should be removed when K9 settings is completely migrated
-        k9GeneralSettingsFallback.update { loadGeneralSettings() }
     }
 
     @Deprecated(message = "This only exists for collaboration with the K9 class")
     fun saveSettingsAsync() {
         coroutineScope.launch(backgroundDispatcher) {
-            val settings = updateGeneralSettingsWithStateFromK9()
-            save(config = settings)
+            save(config = getConfig())
         }
     }
 
@@ -129,23 +120,10 @@ internal class RealGeneralSettingsManager(
     }
 
     @Synchronized
-    @Deprecated("This only exists for collaboration with the K9 class and should be removed after #9232")
-    private fun updateGeneralSettingsWithStateFromK9(): GeneralSettings {
-        return getSettings().also { generalSettings ->
-            k9GeneralSettingsFallback.update { generalSettings }
-        }
-    }
-
-    @Synchronized
     private fun saveSettings() {
         val editor = preferences.createStorageEditor()
         K9.save(editor)
         editor.commit()
         changePublisher.publish()
-    }
-
-    private fun loadGeneralSettings(): GeneralSettings {
-        val settings = GeneralSettings()
-        return settings
     }
 }

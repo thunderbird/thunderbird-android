@@ -63,7 +63,7 @@ val preferencesModule = module {
         )
     }
     single {
-        RealGeneralSettingsManager(
+        DefaultGeneralSettingsManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changePublisher = get(),
@@ -74,7 +74,7 @@ val preferencesModule = module {
         )
     } bind GeneralSettingsManager::class
     single {
-        RealDrawerConfigManager(
+        DefaultDrawerConfigManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             displaySettingsPreferenceManager = get(),

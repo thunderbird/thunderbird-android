@@ -14,7 +14,7 @@ import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
 import net.thunderbird.core.preference.update
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
-internal class RealDrawerConfigManager(
+internal class DefaultDrawerConfigManager(
     private val preferences: Preferences,
     coroutineScope: CoroutineScope,
     private val displaySettingsPreferenceManager: DisplaySettingsPreferenceManager,

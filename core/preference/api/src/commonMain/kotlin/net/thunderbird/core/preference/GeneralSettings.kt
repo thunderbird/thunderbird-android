@@ -10,8 +10,6 @@ import net.thunderbird.core.preference.privacy.PrivacySettings
  *
  * When adding a setting here, make sure to also add it in these places:
  * - [GeneralSettingsManager] (write function)
- * - [RealGeneralSettingsManager.loadGeneralSettings]
- * - [RealGeneralSettingsManager.writeSettings]
  * - [GeneralSettingsDescriptions]
  */
 // TODO: Move over settings from K9
@@ -39,6 +37,7 @@ enum class SubTheme {
     DARK,
     USE_GLOBAL,
 }
+
 enum class BackgroundOps {
     ALWAYS,
     NEVER,
