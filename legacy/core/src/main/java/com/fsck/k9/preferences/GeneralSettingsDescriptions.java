@@ -12,8 +12,6 @@ import android.content.Context;
 import app.k9mail.feature.telemetry.api.TelemetryManager;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
 import com.fsck.k9.K9.PostRemoveNavigation;
@@ -40,10 +38,11 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider;
 import net.thunderbird.core.android.account.SortType;
 import net.thunderbird.core.common.action.SwipeAction;
 import net.thunderbird.core.preference.AppTheme;
+import net.thunderbird.core.preference.BackgroundOps;
+import net.thunderbird.core.preference.SubTheme;
 import net.thunderbird.core.preference.notification.NotificationPreferenceKt;
 import net.thunderbird.core.preference.privacy.PrivacySettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
-import net.thunderbird.core.preference.SubTheme;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
@@ -66,8 +65,8 @@ class GeneralSettingsDescriptions {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("backgroundOperations", Settings.versions(
-                new V(1, new EnumSetting<>(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)),
-                new V(83, new EnumSetting<>(K9.BACKGROUND_OPS.class, BACKGROUND_OPS.ALWAYS))
+                new V(1, new EnumSetting<>(BackgroundOps.class, BackgroundOps.WHEN_CHECKED_AUTO_SYNC)),
+                new V(83, new EnumSetting<>(BackgroundOps.class, BackgroundOps.ALWAYS))
         ));
         s.put("changeRegisteredNameColor", Settings.versions(
                 new V(1, new BooleanSetting(false))

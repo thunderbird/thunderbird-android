@@ -25,6 +25,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettingsManager
 
@@ -100,8 +101,8 @@ class PushController internal constructor(
     }
 
     private fun listenForBackgroundSyncChanges() {
-        generalSettingsManager.getSettingsFlow()
-            .map { it.backgroundSync }
+        generalSettingsManager.getConfigFlow()
+            .map { it.network.backgroundOps }
             .distinctUntilChanged()
             .onEach {
                 launchUpdatePushers()
@@ -162,7 +163,8 @@ class PushController internal constructor(
 
         val alarmPermissionMissing = !alarmPermissionManager.canScheduleExactAlarms()
         val backgroundSyncDisabledViaSystem = autoSyncManager.isAutoSyncDisabled
-        val backgroundSyncDisabledInApp = generalSettings.backgroundSync == BackgroundSync.NEVER
+        val backgroundSyncDisabledInApp =
+            generalSettings.network.backgroundOps.toBackgroundSync() == BackgroundSync.NEVER
         val networkNotAvailable = !connectivityManager.isNetworkAvailable()
         val realPushAccounts = getPushAccounts()
 
@@ -323,5 +325,13 @@ class PushController internal constructor(
                 }
             }
         }
+    }
+}
+
+fun BackgroundOps.toBackgroundSync(): BackgroundSync {
+    return when (this) {
+        BackgroundOps.ALWAYS -> BackgroundSync.ALWAYS
+        BackgroundOps.NEVER -> BackgroundSync.NEVER
+        BackgroundOps.WHEN_CHECKED_AUTO_SYNC -> BackgroundSync.FOLLOW_SYSTEM_AUTO_SYNC
     }
 }

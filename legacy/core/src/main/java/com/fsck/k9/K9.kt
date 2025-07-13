@@ -150,9 +150,6 @@ object K9 : KoinComponent {
     val fontSizes = FontSizes()
 
     @JvmStatic
-    var backgroundOps = BACKGROUND_OPS.ALWAYS
-
-    @JvmStatic
     var isConfirmDelete = false
 
     @JvmStatic
@@ -323,9 +320,6 @@ object K9 : KoinComponent {
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
             }
-
-        backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
-
         isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
         isMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true)
         isMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false)
@@ -360,7 +354,6 @@ object K9 : KoinComponent {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
         editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
-        editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putEnum("messageListDensity", messageListDensity)
@@ -461,13 +454,6 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-
-    @Suppress("ClassName")
-    enum class BACKGROUND_OPS {
-        ALWAYS,
-        NEVER,
-        WHEN_CHECKED_AUTO_SYNC,
-    }
 
     /**
      * Controls behaviour of delete button in notifications.

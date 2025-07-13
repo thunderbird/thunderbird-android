@@ -16,11 +16,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
 import net.thunderbird.core.preference.storage.Storage
@@ -43,6 +43,7 @@ internal class RealGeneralSettingsManager(
     private val privacySettingsPreferenceManager: PrivacySettingsPreferenceManager,
     private val notificationPreferenceManager: NotificationPreferenceManager,
     private val displaySettingsSettingsPreferenceManager: DisplaySettingsPreferenceManager,
+    private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GeneralSettingsManager {
     val mutex = Mutex()
@@ -52,7 +53,7 @@ internal class RealGeneralSettingsManager(
     // The GeneralSettings must be composed by other smaller Managers flows.
     private val k9GeneralSettingsFallback = MutableStateFlow(value = loadGeneralSettings())
 
-    private val generalSettings = k9GeneralSettingsFallback
+    private val generalSettings = MutableStateFlow(value = loadGeneralSettings())
         .combine(privacySettingsPreferenceManager.getConfigFlow()) { generalSettings, privacySettings ->
             generalSettings.copy(
                 privacy = privacySettings,
@@ -66,6 +67,11 @@ internal class RealGeneralSettingsManager(
         .combine(displaySettingsSettingsPreferenceManager.getConfigFlow()) { generalSettings, displaySettings ->
             generalSettings.copy(
                 display = displaySettings,
+            )
+        }
+        .combine(networkSettingsPreferenceManager.getConfigFlow()) { generalSettings, networkSettings ->
+            generalSettings.copy(
+                network = networkSettings,
             )
         }
         .stateIn(
@@ -117,6 +123,7 @@ internal class RealGeneralSettingsManager(
                 privacySettingsPreferenceManager.save(config.privacy)
                 notificationPreferenceManager.save(config.notification)
                 displaySettingsSettingsPreferenceManager.save(config.display)
+                networkSettingsPreferenceManager.save(config.network)
             }
         }
     }
@@ -124,9 +131,7 @@ internal class RealGeneralSettingsManager(
     @Synchronized
     @Deprecated("This only exists for collaboration with the K9 class and should be removed after #9232")
     private fun updateGeneralSettingsWithStateFromK9(): GeneralSettings {
-        return getSettings().copy(
-            backgroundSync = K9.backgroundOps.toBackgroundSync(),
-        ).also { generalSettings ->
+        return getSettings().also { generalSettings ->
             k9GeneralSettingsFallback.update { generalSettings }
         }
     }
@@ -140,17 +145,7 @@ internal class RealGeneralSettingsManager(
     }
 
     private fun loadGeneralSettings(): GeneralSettings {
-        val settings = GeneralSettings(
-            backgroundSync = K9.backgroundOps.toBackgroundSync(),
-        )
+        val settings = GeneralSettings()
         return settings
-    }
-}
-
-private fun K9.BACKGROUND_OPS.toBackgroundSync(): BackgroundSync {
-    return when (this) {
-        K9.BACKGROUND_OPS.ALWAYS -> BackgroundSync.ALWAYS
-        K9.BACKGROUND_OPS.NEVER -> BackgroundSync.NEVER
-        K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC -> BackgroundSync.FOLLOW_SYSTEM_AUTO_SYNC
     }
 }

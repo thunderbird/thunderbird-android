@@ -5,7 +5,7 @@ import org.koin.dsl.module
 internal val controllerPushModule = module {
     single { PushServiceManager(context = get()) }
     single { BootCompleteManager(context = get()) }
-    single { AutoSyncManager(context = get()) }
+    single { AutoSyncManager(context = get(), generalSettingsManager = get()) }
     single {
         AccountPushControllerFactory(
             backendManager = get(),
