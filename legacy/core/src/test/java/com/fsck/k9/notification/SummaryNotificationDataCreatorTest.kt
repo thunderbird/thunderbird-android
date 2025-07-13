@@ -9,13 +9,14 @@ import assertk.assertions.isFalse
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import com.fsck.k9.K9
+import java.util.Calendar
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preference.AppTheme
-import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
-import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
@@ -33,36 +34,20 @@ private val TIMESTAMP = 0L
 @OptIn(ExperimentalTime::class)
 class SummaryNotificationDataCreatorTest {
     private val account = createAccount()
+    private val testClock = TestClock()
     private var generalSettings = GeneralSettings(
-        backgroundSync = BackgroundSync.ALWAYS,
-        showRecentChanges = true,
-        appTheme = AppTheme.DARK,
-        messageComposeTheme = SubTheme.DARK,
-        isShowCorrespondentNames = true,
-        fixedMessageViewTheme = true,
-        messageViewTheme = SubTheme.DARK,
-        isShowStarredCount = false,
-        isShowUnifiedInbox = false,
-        isShowMessageListStars = false,
-        isShowAnimations = false,
-        shouldShowSetupArchiveFolderDialog = false,
-        isMessageListSenderAboveSubject = false,
-        isShowContactName = false,
-        isShowContactPicture = false,
-        isChangeContactNameColor = false,
-        isColorizeMissingContactPictures = false,
-        isUseBackgroundAsUnreadIndicator = false,
-        isShowComposeButtonOnMessageList = false,
-        isThreadedViewEnabled = false,
-        isUseMessageViewFixedWidthFont = false,
-        isAutoFitWidth = false,
-        notification = NotificationPreference(),
+        display = DisplaySettings(),
+        network = NetworkSettings(),
+        notification = NotificationPreference(
+            quietTimeStarts = "23:00",
+            quietTimeEnds = "00:00",
+        ),
         privacy = PrivacySettings(),
     )
     private val notificationDataCreator = SummaryNotificationDataCreator(
         singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
         generalSettingsManager = mock {
-            on { getSettings() } doReturn generalSettings
+            on { getConfig() } doReturn generalSettings
         },
     )
 
@@ -71,7 +56,7 @@ class SummaryNotificationDataCreatorTest {
         startKoin {
             modules(
                 module {
-                    single<Clock> { TestClock() }
+                    single<Clock> { testClock }
                 },
             )
         }
@@ -97,13 +82,14 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `single notification during quiet time`() {
+        setClockTo("23:01")
         setQuietTime(true)
         val notificationData = createNotificationData()
 
         val result = SummaryNotificationDataCreator(
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
             generalSettingsManager = mock {
-                on { getSettings() } doReturn generalSettings.copy(
+                on { getConfig() } doReturn generalSettings.copy(
                     notification = generalSettings.notification.copy(isQuietTimeEnabled = true),
                 )
             },
@@ -132,13 +118,14 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `inbox-style notification during quiet time`() {
+        setClockTo("23:01")
         setQuietTime(true)
         val notificationData = createNotificationDataWithMultipleMessages()
 
         val result = SummaryNotificationDataCreator(
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
             generalSettingsManager = mock {
-                on { getSettings() } doReturn generalSettings.copy(
+                on { getConfig() } doReturn generalSettings.copy(
                     notification = generalSettings.notification.copy(isQuietTimeEnabled = true),
                 )
             },
@@ -332,5 +319,15 @@ class SummaryNotificationDataCreatorTest {
             }
         }
         return createNotificationData(contentList)
+    }
+
+    private fun setClockTo(time: String) {
+        val (hourOfDay, minute) = time.split(':').map { it.toInt() }
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendar.set(Calendar.MINUTE, minute)
+
+        testClock.changeTimeTo(Instant.fromEpochMilliseconds(calendar.timeInMillis))
     }
 }

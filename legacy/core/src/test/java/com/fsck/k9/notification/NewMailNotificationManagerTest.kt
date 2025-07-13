@@ -18,17 +18,22 @@ import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.NotificationMessage
 import kotlin.test.assertNotNull
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.preference.AppTheme
-import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
-import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import net.thunderbird.core.testing.TestClock
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.GlobalContext.stopKoin
+import org.koin.dsl.module
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -55,36 +60,35 @@ class NewMailNotificationManagerTest {
         SummaryNotificationDataCreator(
             singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
             generalSettingsManager = mock {
-                on { getSettings() } doReturn GeneralSettings(
-                    backgroundSync = BackgroundSync.ALWAYS,
-                    showRecentChanges = true,
-                    appTheme = AppTheme.DARK,
-                    messageComposeTheme = SubTheme.DARK,
-                    isShowCorrespondentNames = true,
-                    fixedMessageViewTheme = true,
-                    messageViewTheme = SubTheme.DARK,
-                    isShowStarredCount = false,
-                    isShowUnifiedInbox = false,
-                    isShowMessageListStars = false,
-                    isShowAnimations = false,
-                    shouldShowSetupArchiveFolderDialog = false,
-                    isMessageListSenderAboveSubject = false,
-                    isShowContactName = false,
-                    isShowContactPicture = false,
-                    isChangeContactNameColor = false,
-                    isColorizeMissingContactPictures = false,
-                    isUseBackgroundAsUnreadIndicator = false,
-                    isShowComposeButtonOnMessageList = false,
-                    isThreadedViewEnabled = false,
-                    isUseMessageViewFixedWidthFont = false,
-                    isAutoFitWidth = false,
-                    notification = NotificationPreference(),
+                on { getConfig() } doReturn GeneralSettings(
+                    display = DisplaySettings(),
+                    network = NetworkSettings(),
+                    notification = NotificationPreference(
+                        quietTimeStarts = "23:00",
+                        quietTimeEnds = "00:00",
+                    ),
                     privacy = PrivacySettings(),
                 )
             },
         ),
         clock,
     )
+
+    @Before
+    fun setUp() {
+        startKoin {
+            modules(
+                module {
+                    single<Clock> { TestClock() }
+                },
+            )
+        }
+    }
+
+    @After
+    fun tearDown() {
+        stopKoin()
+    }
 
     @Test
     fun `add first notification`() {

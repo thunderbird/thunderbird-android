@@ -6,11 +6,10 @@ import java.time.ZonedDateTime
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import net.thunderbird.core.preference.AppTheme
-import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 import org.junit.After
@@ -25,28 +24,8 @@ class QuoteDateFormatterTest {
     private var originalTimeZone: TimeZone? = null
     private val generalSettingsManager: GeneralSettingsManager = mock()
     private val fakeGeneralSettings = GeneralSettings(
-        backgroundSync = BackgroundSync.NEVER,
-        showRecentChanges = false,
-        appTheme = AppTheme.FOLLOW_SYSTEM,
-        messageViewTheme = SubTheme.USE_GLOBAL,
-        messageComposeTheme = SubTheme.USE_GLOBAL,
-        fixedMessageViewTheme = false,
-        isAutoFitWidth = false,
-        isThreadedViewEnabled = false,
-        isUseMessageViewFixedWidthFont = false,
-        isShowContactPicture = false,
-        isMessageListSenderAboveSubject = false,
-        isChangeContactNameColor = false,
-        isColorizeMissingContactPictures = false,
-        shouldShowSetupArchiveFolderDialog = false,
-        isShowContactName = false,
-        isShowUnifiedInbox = false,
-        isShowStarredCount = false,
-        isShowComposeButtonOnMessageList = false,
-        isUseBackgroundAsUnreadIndicator = false,
-        isShowCorrespondentNames = false,
-        isShowAnimations = false,
-        isShowMessageListStars = false,
+        display = DisplaySettings(),
+        network = NetworkSettings(),
         notification = NotificationPreference(),
         privacy = PrivacySettings(),
 
