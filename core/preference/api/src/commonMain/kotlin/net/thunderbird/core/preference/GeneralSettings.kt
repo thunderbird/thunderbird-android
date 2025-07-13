@@ -1,6 +1,7 @@
 package net.thunderbird.core.preference
 
 import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
 
@@ -15,7 +16,7 @@ import net.thunderbird.core.preference.privacy.PrivacySettings
  */
 // TODO: Move over settings from K9
 data class GeneralSettings(
-    val backgroundSync: BackgroundSync = BackgroundSync.ALWAYS,
+    val network: NetworkSettings = NetworkSettings(),
     val notification: NotificationPreference = NotificationPreference(),
     val display: DisplaySettings = DisplaySettings(),
     val privacy: PrivacySettings = PrivacySettings(),
@@ -37,4 +38,9 @@ enum class SubTheme {
     LIGHT,
     DARK,
     USE_GLOBAL,
+}
+enum class BackgroundOps {
+    ALWAYS,
+    NEVER,
+    WHEN_CHECKED_AUTO_SYNC,
 }

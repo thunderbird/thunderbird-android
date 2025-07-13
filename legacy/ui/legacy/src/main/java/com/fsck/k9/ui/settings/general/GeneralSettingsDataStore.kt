@@ -10,6 +10,7 @@ import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.update
@@ -137,7 +138,7 @@ class GeneralSettingsDataStore(
             "splitview_mode" -> K9.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
-            "background_ops" -> K9.backgroundOps.name
+            "background_ops" -> generalSettingsManager.getConfig().network.backgroundOps.name
             "quiet_time_starts" -> generalSettingsManager.getConfig().notification.quietTimeStarts
             "quiet_time_ends" -> generalSettingsManager.getConfig().notification.quietTimeEnds
             "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
@@ -490,9 +491,12 @@ class GeneralSettingsDataStore(
     }
 
     private fun setBackgroundOps(value: String) {
-        val newBackgroundOps = K9.BACKGROUND_OPS.valueOf(value)
-        if (newBackgroundOps != K9.backgroundOps) {
-            K9.backgroundOps = newBackgroundOps
+        val newBackgroundOps = BackgroundOps.valueOf(value)
+        if (newBackgroundOps != generalSettingsManager.getConfig().network.backgroundOps) {
+            skipSaveSettings = true
+            generalSettingsManager.update { settings ->
+                settings.copy(network = settings.network.copy(backgroundOps = newBackgroundOps))
+            }
             jobManager.scheduleAllMailJobs()
         }
     }

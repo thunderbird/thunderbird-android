@@ -8,6 +8,8 @@ import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.display.DefaultDisplaySettingsPreferenceManager
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
+import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.DefaultNotificationPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsPreferenceManager
@@ -54,6 +56,13 @@ val preferencesModule = module {
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
+    single<NetworkSettingsPreferenceManager> {
+        DefaultNetworkSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
     single {
         RealGeneralSettingsManager(
             preferences = get(),
@@ -62,6 +71,7 @@ val preferencesModule = module {
             privacySettingsPreferenceManager = get(),
             notificationPreferenceManager = get(),
             displaySettingsSettingsPreferenceManager = get(),
+            networkSettingsPreferenceManager = get(),
         )
     } bind GeneralSettingsManager::class
     single {

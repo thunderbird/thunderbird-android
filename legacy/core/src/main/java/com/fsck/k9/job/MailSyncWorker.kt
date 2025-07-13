@@ -4,17 +4,19 @@ import android.content.ContentResolver
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.AuthType
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.BackgroundOps
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 // IMPORTANT: Update K9WorkerFactory when moving this class and the FQCN no longer starts with "com.fsck.k9".
 class MailSyncWorker(
     private val messagingController: MessagingController,
     private val preferences: Preferences,
+    private val generalSettingsManager: GeneralSettingsManager,
     context: Context,
     parameters: WorkerParameters,
 ) : Worker(context, parameters) {
@@ -57,10 +59,10 @@ class MailSyncWorker(
     }
 
     private fun isBackgroundSyncDisabled(): Boolean {
-        return when (K9.backgroundOps) {
-            K9.BACKGROUND_OPS.NEVER -> true
-            K9.BACKGROUND_OPS.ALWAYS -> false
-            K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC -> !ContentResolver.getMasterSyncAutomatically()
+        return when (generalSettingsManager.getConfig().network.backgroundOps) {
+            BackgroundOps.NEVER -> true
+            BackgroundOps.ALWAYS -> false
+            BackgroundOps.WHEN_CHECKED_AUTO_SYNC -> !ContentResolver.getMasterSyncAutomatically()
         }
     }
 
