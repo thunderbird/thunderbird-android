@@ -12,7 +12,8 @@ import androidx.core.app.PendingIntentCompat
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.QuietTimeChecker
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -139,6 +140,7 @@ internal fun NotificationCompat.Builder.setAppearance(
     }
 }
 
+@OptIn(ExperimentalTime::class)
 internal val NotificationPreference.isQuietTime: Boolean
     get() {
         val clock = DI.get<Clock>()

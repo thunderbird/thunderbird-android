@@ -33,7 +33,7 @@ class UnifiedInboxConfiguratorTest {
         startKoin {
             modules(
                 module {
-                    single { generalSettingsManager } // No need for RealGeneralSettingsManager here
+                    single { generalSettingsManager } // No need for DefaultGeneralSettingsManager here
                 },
             )
         }

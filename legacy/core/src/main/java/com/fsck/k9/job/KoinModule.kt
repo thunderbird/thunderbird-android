@@ -26,6 +26,7 @@ val jobModule = module {
             workManager = get(),
             clock = get(),
             syncDebugLogger = get<Logger>(named("syncDebug")),
+            generalSettingsManager = get(),
         )
     }
     factory { (parameters: WorkerParameters) ->

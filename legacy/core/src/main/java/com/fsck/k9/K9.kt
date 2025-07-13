@@ -10,7 +10,7 @@ import com.fsck.k9.K9.setDatabasesUpToDate
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
-import com.fsck.k9.preferences.RealGeneralSettingsManager
+import com.fsck.k9.preferences.DefaultGeneralSettingsManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.common.action.SwipeAction
@@ -30,7 +30,7 @@ import timber.log.Timber.DebugTree
 
 // TODO "Use GeneralSettingsManager and GeneralSettings instead"
 object K9 : KoinComponent {
-    private val generalSettingsManager: RealGeneralSettingsManager by inject()
+    private val generalSettingsManager: DefaultGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val syncDebugCompositeSink: CompositeLogSink by inject(named("syncDebug"))

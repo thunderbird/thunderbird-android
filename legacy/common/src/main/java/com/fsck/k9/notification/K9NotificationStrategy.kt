@@ -9,7 +9,8 @@ import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.core.logging.legacy.Log
@@ -81,6 +82,7 @@ class K9NotificationStrategy(
     private val Message.isChatMessage: Boolean
         get() = getHeader(K9MailLib.CHAT_HEADER).isNotEmpty()
 
+    @OptIn(ExperimentalTime::class)
     private val NotificationPreference.isQuietTime: Boolean
         get() {
             val clock = DI.get<Clock>()
