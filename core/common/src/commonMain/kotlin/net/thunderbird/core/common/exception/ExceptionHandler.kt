@@ -1,4 +1,4 @@
-package app.k9mail.core.common.exception
+package net.thunderbird.core.common.exception
 
 import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.logging.file.FileLogSink
