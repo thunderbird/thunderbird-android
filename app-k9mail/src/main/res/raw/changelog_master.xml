@@ -5,6 +5,32 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="11.0" versioncode="39025" date="2025-07-14">
+        <change>Improved drawer navigation with a folder hierarchy</change>
+        <change>Improve dark mode emails with algorithmic darkening</change>
+        <change>Welcome screen logo layout improved</change>
+        <change>Improved compatibility with some ISPs by using ehlo.thunderbird.net as the EHLO identifier</change>
+        <change>Selection now shown on active items by adjusting color priority</change>
+        <change>Folder settings now use switches instead of checkboxes</change>
+        <change>Adjust theming colors to improve contrast (message list improvements still outstanding)</change>
+        <change>Messages are now marked read by default when archiving</change>
+        <change>Font size config preference is removed in favor of OS and density settings</change>
+        <change>Account setup issues with outlook.com and hotmail.com resolved</change>
+        <change>Keyboard navigation bugs resolved</change>
+        <change>Star and attachment icon colors corrected</change>
+        <change>Paste of recipient lists into compose field now correctly parsed</change>
+        <change>Back button now returns to Drafts folder when editing a draft</change>
+        <change>Unified inbox appears when two or more accounts are configured</change>
+        <change>Dark and light mode switching issues resolved</change>
+        <change>Scroll indicator removed following review feedback</change>
+        <change>System navigation bar did not correctly blend with message content</change>
+        <change>"New Mail Notifications" setting did not persist</change>
+        <change>Navigation drawer "Show Unified inbox" setting did not work</change>
+        <change>Avoid crashes when selecting folders, fetching emails, adjusting accounts, or changing device orientation</change>
+        <change>Sharing multiple selected images from gallery only selected last image</change>
+        <change>TalkBack did not clearly announce contact picture tap action</change>
+        <change>Improved IMAP push stability when switching network connections</change>
+    </release>
     <release version="10.1" versioncode="39024" date="2025-06-24">
         <change>Attach all images when sharing from gallery, not just the last</change>
         <change>Show the full changelog when it contains special characters</change>
