@@ -1,0 +1,7 @@
+Thunderbird for Android version 12.0b1, based on K-9 Mail. Changes include:
+- Support Android IME autofill for password managers
+- Add support for avatars in account settings
+- Long words and links in email messages did not wrap properly
+- Swipe right to archive failed if archive folder did not exist
+- In Unified Inbox, tapping non-main account email redirected to main inbox
+- Crash could occur when adding Gmail account after removing primary Gmail account

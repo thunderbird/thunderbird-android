@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="12.0b1" versioncode="19" date="2025-07-14">
+        <change>Improve support for SMTPUTF8 and other UTF-8 email standards (RFC 6531, 6855)</change>
+        <change>Support Android&#39;s IME autofill for password managers when adding new account</change>
+        <change>Add support for avatars in account settings</change>
+        <change>Long words and links in email messages did not wrap properly</change>
+        <change>Swipe right to archive failed if the archive folder did not exist</change>
+        <change>Edit Text dialogs in Account Settings did not automatically request focus</change>
+        <change>Account Settings did not display account name</change>
+        <change>In Unified Inbox, tapping a non-main account email redirected to the main inbox</change>
+        <change>In dark system mode with light message theme, navigation bar was not clearly visible</change>
+        <change>Threaded View toggle did not automatically update the Threaded View display</change>
+        <change>Gmail prefixes were shown in the folder structure</change>
+        <change>Crash could occur when adding Gmail account after removing primary Gmail account</change>
+    </release>
     <release version="11.0b5" versioncode="18" date="2025-07-03">
         <change>TalkBack did not clearly announce contact picture tap action</change>
         <change>IMAP push could fail after losing and regaining network connection</change>
