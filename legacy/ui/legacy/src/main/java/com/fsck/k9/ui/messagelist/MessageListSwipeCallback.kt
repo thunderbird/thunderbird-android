@@ -352,20 +352,24 @@ class MessageListSwipeCallback(
         resourceProvider: SwipeResourceProvider,
         isLeft: Boolean,
     ): Map<String, SwipeActionConfig> {
-        return accounts.associate { account ->
-            val swipeAction = requireNotNull(swipeActions[account.uuid]) {
-                "No swipe actions found for account (${account.uuid})"
-            }.let { (swipeActionLeft, swipeActionRight) ->
-                if (isLeft) swipeActionLeft else swipeActionRight
+        return accounts
+            .mapNotNull { account ->
+                swipeActions[account.uuid]
+                    ?.let { (swipeActionLeft, swipeActionRight) ->
+                        if (isLeft) swipeActionLeft else swipeActionRight
+                    }
+                    ?.takeIf { swipeAction -> swipeAction != SwipeAction.None }
+                    ?.let { swipeAction -> account.uuid to swipeAction }
             }
-            account.uuid to SwipeActionConfig(
-                colorRoles = resourceProvider.getActionColorRoles(swipeAction),
-                icon = resourceProvider.getActionIcon(swipeAction),
-                iconToggled = resourceProvider.getActionIconToggled(swipeAction),
-                actionName = resourceProvider.getActionName(swipeAction),
-                actionNameToggled = resourceProvider.getActionNameToggled(swipeAction),
-            )
-        }
+            .associate { (uuid, swipeAction) ->
+                uuid to SwipeActionConfig(
+                    colorRoles = resourceProvider.getActionColorRoles(swipeAction),
+                    icon = resourceProvider.getActionIcon(swipeAction),
+                    iconToggled = resourceProvider.getActionIconToggled(swipeAction),
+                    actionName = resourceProvider.getActionName(swipeAction),
+                    actionNameToggled = resourceProvider.getActionNameToggled(swipeAction),
+                )
+            }
     }
 
     private fun isToggled(swipeAction: SwipeAction, item: MessageListItem): Boolean {
