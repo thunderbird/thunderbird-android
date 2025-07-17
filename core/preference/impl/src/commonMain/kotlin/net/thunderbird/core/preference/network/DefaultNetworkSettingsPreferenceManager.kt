@@ -11,13 +11,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
-import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.core.preference.storage.putEnum
 
 private const val TAG = "DefaultNetworkSettingsPreferenceManager"
+
 class DefaultNetworkSettingsPreferenceManager(
     private val logger: Logger,
     private val storage: Storage,
@@ -38,7 +38,7 @@ class DefaultNetworkSettingsPreferenceManager(
     }
 
     private fun loadConfig(): NetworkSettings = NetworkSettings(
-        backgroundOps = storage.getEnumOrDefault(KEY_BG_OPS, BackgroundOps.ALWAYS),
+        backgroundOps = storage.getEnumOrDefault(KEY_BG_OPS, NETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS),
     )
 
     private fun writeConfig(config: NetworkSettings) {
@@ -51,9 +51,5 @@ class DefaultNetworkSettingsPreferenceManager(
                 }
             }
         }
-    }
-
-    companion object {
-        private const val KEY_BG_OPS = "backgroundOperations"
     }
 }

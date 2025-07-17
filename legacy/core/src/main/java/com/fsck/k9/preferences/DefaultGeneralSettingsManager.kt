@@ -43,7 +43,7 @@ internal class DefaultGeneralSettingsManager(
 ) : GeneralSettingsManager {
     val mutex = Mutex()
     private val generalSettings = privacySettingsPreferenceManager.getConfigFlow()
-        .map { privacy->
+        .map { privacy ->
             GeneralSettings(privacy = privacy)
         }
         .combine(privacySettingsPreferenceManager.getConfigFlow()) { generalSettings, privacySettings ->

@@ -18,7 +18,7 @@ private const val TAG = "DefaultNotificationPreferenceManager"
 
 class DefaultNotificationPreferenceManager(
     private val logger: Logger,
-    private val storage: Storage,
+    storage: Storage,
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
@@ -50,18 +50,15 @@ class DefaultNotificationPreferenceManager(
             mutex.withLock {
                 storageEditor.putString(KEY_QUIET_TIME_ENDS, config.quietTimeEnds)
                 storageEditor.putString(KEY_QUIET_TIME_STARTS, config.quietTimeStarts)
-                storageEditor.putBoolean(KEY_QUIET_TIME_ENABLED, config.isQuietTimeEnabled)
+                storageEditor.putBoolean(
+                    KEY_QUIET_TIME_ENABLED,
+                    config.isQuietTimeEnabled,
+                )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
             }
             configState.update { config }
         }
-    }
-
-    companion object {
-        private const val KEY_QUIET_TIME_ENDS = "quietTimeEnds"
-        private const val KEY_QUIET_TIME_STARTS = "quietTimeStarts"
-        private const val KEY_QUIET_TIME_ENABLED = "quietTimeEnabled"
     }
 }
