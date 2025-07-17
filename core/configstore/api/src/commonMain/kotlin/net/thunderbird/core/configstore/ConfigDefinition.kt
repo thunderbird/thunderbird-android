@@ -15,6 +15,11 @@ package net.thunderbird.core.configstore
 interface ConfigDefinition<T> {
 
     /**
+     * The version of the configuration.
+     */
+    val version: Int
+
+    /**
      * The id of the configuration.
      *
      * It is used by the [net.thunderbird.core.configstore.backend.ConfigBackendProvider] to retrieve the correct configuration backend.
@@ -37,4 +42,9 @@ interface ConfigDefinition<T> {
      * These keys are used to store and retrieve values in the configuration store.
      */
     val keys: List<ConfigKey<*>>
+
+    /**
+     * The migration strategy for the configuration.
+     */
+    val migration: ConfigMigration
 }

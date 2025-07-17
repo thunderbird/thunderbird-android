@@ -3,17 +3,16 @@ package net.thunderbird.core.configstore
 /**
  * Represents a unique identifier for a configuration.
  *
- * @property value The string value of the configuration ID.
- * @throws IllegalArgumentException if the value is blank or contains invalid characters.
+ * @property backend The backend identifier for the configuration.
+ * @property feature The feature identifier for the configuration.
+ * @throws IllegalArgumentException if the values are blank or contain invalid characters.
  */
-@JvmInline
-value class ConfigId(val value: String) {
+data class ConfigId(
+    val backend: String,
+    val feature: String,
+) {
     init {
-        require(value.isNotBlank()) {
-            "ConfigId cannot be blank"
-        }
-        require(value.matches(Regex("^[a-zA-Z0-9_]+$"))) {
-            "ConfigId must only contain alphanumeric characters or underscores"
-        }
+        require(backend.matches(Regex("^[a-zA-Z0-9_]+$"))) { "Invalid backend name: $backend" }
+        require(feature.matches(Regex("^[a-zA-Z0-9_]+$"))) { "Invalid feature name: $feature" }
     }
 }

@@ -51,6 +51,7 @@ class DefaultDataStoreConfigBackend(
                     is ConfigKey.BooleanKey -> if (value is Boolean) {
                         preferences[booleanPreferencesKey(key.name)] = value
                     }
+
                     is ConfigKey.IntKey -> if (value is Int) preferences[intPreferencesKey(key.name)] = value
                     is ConfigKey.StringKey -> if (value is String) preferences[stringPreferencesKey(key.name)] = value
                     is ConfigKey.LongKey -> if (value is Long) preferences[longPreferencesKey(key.name)] = value
@@ -63,5 +64,32 @@ class DefaultDataStoreConfigBackend(
 
     override suspend fun clear() {
         dataStore.edit { it.clear() }
+    }
+
+    override suspend fun readVersion(versionKey: String): Int {
+        return dataStore.data.map { preferences ->
+            preferences[intPreferencesKey(versionKey)] ?: 0
+        }.first()
+    }
+
+    override suspend fun writeVersion(versionKey: String, version: Int) {
+        dataStore.edit { preferences ->
+            preferences[intPreferencesKey(versionKey)] = version
+        }
+    }
+
+    override suspend fun removeKeys(keys: Set<ConfigKey<*>>) {
+        dataStore.edit { preferences ->
+            for (key in keys) {
+                when (key) {
+                    is ConfigKey.BooleanKey -> preferences.remove(booleanPreferencesKey(key.name))
+                    is ConfigKey.IntKey -> preferences.remove(intPreferencesKey(key.name))
+                    is ConfigKey.StringKey -> preferences.remove(stringPreferencesKey(key.name))
+                    is ConfigKey.LongKey -> preferences.remove(longPreferencesKey(key.name))
+                    is ConfigKey.FloatKey -> preferences.remove(floatPreferencesKey(key.name))
+                    is ConfigKey.DoubleKey -> preferences.remove(doublePreferencesKey(key.name))
+                }
+            }
+        }
     }
 }

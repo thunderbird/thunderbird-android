@@ -32,4 +32,9 @@ interface ConfigBackend {
      * Clears the stored configuration.
      */
     suspend fun clear()
+
+    suspend fun readVersion(versionKey: String): Int
+    suspend fun writeVersion(versionKey: String, version: Int)
+
+    suspend fun removeKeys(keys: Set<ConfigKey<*>>)
 }

@@ -8,48 +8,78 @@ import kotlin.test.assertFailsWith
 class ConfigIdTest {
 
     @Test
-    fun `should create ConfigId with valid value`() {
+    fun `should create ConfigId with valid backend and feature`() {
         // Arrange
-        val value = "valid_id"
+        val backend = "valid_backend"
+        val feature = "valid_feature"
 
         // Act
-        val configId = ConfigId(value)
+        val configId = ConfigId(backend, feature)
 
         // Assert
-        assertThat(configId.value).isEqualTo(value)
+        assertThat(configId.backend).isEqualTo(backend)
+        assertThat(configId.feature).isEqualTo(feature)
     }
 
     @Test
-    fun `should throw IllegalArgumentException when value is blank`() {
+    fun `should throw IllegalArgumentException when backend is blank`() {
         // Arrange
-        val value = ""
+        val backend = ""
+        val feature = "valid_feature"
 
         // Act & Assert
         assertFailsWith<IllegalArgumentException> {
-            ConfigId(value)
+            ConfigId(backend, feature)
         }
     }
 
     @Test
-    fun `should throw IllegalArgumentException when value contains invalid characters`() {
+    fun `should throw IllegalArgumentException when feature is blank`() {
         // Arrange
-        val value = "invalid-id"
+        val backend = "valid_backend"
+        val feature = ""
 
         // Act & Assert
         assertFailsWith<IllegalArgumentException> {
-            ConfigId(value)
+            ConfigId(backend, feature)
         }
     }
 
     @Test
-    fun `should allow alphanumeric characters and underscores`() {
+    fun `should throw IllegalArgumentException when backend contains invalid characters`() {
         // Arrange
-        val value = "valid_id_123"
+        val backend = "invalid-backend"
+        val feature = "valid_feature"
+
+        // Act & Assert
+        assertFailsWith<IllegalArgumentException> {
+            ConfigId(backend, feature)
+        }
+    }
+
+    @Test
+    fun `should throw IllegalArgumentException when feature contains invalid characters`() {
+        // Arrange
+        val backend = "valid_backend"
+        val feature = "invalid-feature"
+
+        // Act & Assert
+        assertFailsWith<IllegalArgumentException> {
+            ConfigId(backend, feature)
+        }
+    }
+
+    @Test
+    fun `should allow alphanumeric characters and underscores in backend and feature`() {
+        // Arrange
+        val backend = "valid_backend_123"
+        val feature = "valid_feature_456"
 
         // Act
-        val configId = ConfigId(value)
+        val configId = ConfigId(backend, feature)
 
         // Assert
-        assertThat(configId.value).isEqualTo(value)
+        assertThat(configId.backend).isEqualTo(backend)
+        assertThat(configId.feature).isEqualTo(feature)
     }
 }

@@ -142,6 +142,65 @@ class DefaultDataStoreConfigBackendTest {
         assertThat(preferences.asMap().isEmpty()).isEqualTo(true)
     }
 
+    @Test
+    fun `readVersion should return 0 when version key is not set`() = runTest {
+        // Act
+        val version = testSubject.readVersion("version_key")
+
+        // Assert
+        assertThat(version).isEqualTo(0)
+    }
+
+    @Test
+    fun `readVersion should return stored version`() = runTest {
+        // Arrange
+        fakeDataStore.updateData { preferences ->
+            preferences.toMutablePreferences().apply {
+                this[intPreferencesKey("version_key")] = 5
+            }
+        }
+
+        // Act
+        val version = testSubject.readVersion("version_key")
+
+        // Assert
+        assertThat(version).isEqualTo(5)
+    }
+
+    @Test
+    fun `writeVersion should store version in preferences`() = runTest {
+        // Act
+        testSubject.writeVersion("version_key", 10)
+
+        // Assert
+        val preferences = fakeDataStore.data.first()
+        assertThat(preferences[intPreferencesKey("version_key")]).isEqualTo(10)
+    }
+
+    @Test
+    fun `removeKeys should delete specified keys from preferences`() = runTest {
+        // Arrange
+        val stringKey = ConfigKey.StringKey("string_key")
+        val booleanKey = ConfigKey.BooleanKey("boolean_key")
+
+        fakeDataStore.updateData { preferences ->
+            preferences.toMutablePreferences().apply {
+                this[stringPreferencesKey("string_key")] = "string value"
+                this[intPreferencesKey("int_key")] = 123
+                this[booleanPreferencesKey("boolean_key")] = true
+            }
+        }
+
+        // Act
+        testSubject.removeKeys(setOf(stringKey, booleanKey))
+
+        // Assert
+        val preferences = fakeDataStore.data.first()
+        assertThat(preferences[stringPreferencesKey("string_key")]).isNull()
+        assertThat(preferences[booleanPreferencesKey("boolean_key")]).isNull()
+        assertThat(preferences[intPreferencesKey("int_key")]).isEqualTo(123)
+    }
+
     private class FakeDataStore : DataStore<Preferences> {
         private val emptyPreferences = emptyPreferences()
         private val dataFlow = MutableStateFlow(emptyPreferences)

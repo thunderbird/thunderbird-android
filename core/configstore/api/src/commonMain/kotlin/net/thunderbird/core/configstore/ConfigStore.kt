@@ -14,7 +14,7 @@ interface ConfigStore<T> {
      *
      * @param T The type of the configuration.
      */
-    val config: Flow<T?>
+    val config: Flow<T>
 
     /**
      * Updates the stored configuration by applying the provided transformation function

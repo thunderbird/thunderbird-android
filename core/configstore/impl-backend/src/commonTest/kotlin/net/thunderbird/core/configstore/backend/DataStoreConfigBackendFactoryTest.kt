@@ -50,7 +50,7 @@ class DataStoreConfigBackendFactoryTest {
         dataStore.clear()
 
         // Assert
-        assertThat(fileManager.lastRequestedFileName).isEqualTo("test_id.preferences_pb")
+        assertThat(fileManager.lastRequestedFileName).isEqualTo("test_backend.preferences_pb")
     }
 
     private class FakeConfigBackendFileManager(private val fileLocation: File) : ConfigBackendFileManager {
