@@ -27,6 +27,9 @@ dependencies {
     implementation(projects.core.logging.implLegacy)
     implementation(projects.core.logging.implFile)
 
+    implementation(projects.core.configstore.api)
+    implementation(projects.core.configstore.implBackend)
+
     implementation(projects.core.featureflag)
     implementation(projects.core.ui.legacy.theme2.common)
 

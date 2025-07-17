@@ -150,6 +150,7 @@ include(
     ":core:architecture:api",
     ":core:common",
     ":core:configstore:api",
+    ":core:configstore:impl-backend",
     ":core:featureflag",
     ":core:logging:api",
     ":core:logging:impl-composite",
