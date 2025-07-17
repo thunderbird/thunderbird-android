@@ -15,6 +15,7 @@ import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 
 private const val TAG = "DefaultPrivacySettingsPreferenceManager"
+
 class DefaultPrivacySettingsPreferenceManager(
     private val logger: Logger,
     private val storage: Storage,
@@ -56,10 +57,5 @@ class DefaultPrivacySettingsPreferenceManager(
                 }
             }
         }
-    }
-
-    companion object {
-        private const val KEY_HIDE_TIME_ZONE = "hideTimeZone"
-        private const val KEY_HIDE_USER_AGENT = "hideUserAgent"
     }
 }
