@@ -4,7 +4,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import kotlin.test.Test
-import kotlin.test.assertFailsWith
 import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
@@ -35,7 +34,7 @@ class DefaultAccountAvatarDataMapperTest {
     }
 
     @Test
-    fun `toDomain should throw IllegalArgumentException for invalid AvatarDto`() {
+    fun `toDomain should return default monogram for invalid AvatarDto`() {
         val avatarTypeDtos = AvatarTypeDto.entries
 
         avatarTypeDtos.forEach { type ->
@@ -47,9 +46,11 @@ class DefaultAccountAvatarDataMapperTest {
                 avatarIconName = null,
             )
 
-            assertFailsWith<IllegalArgumentException> {
-                testSubject.toDomain(dto)
-            }
+            // Act
+            val result = testSubject.toDomain(dto)
+
+            // Assert
+            assertDomainMonogram(result, AccountAvatar.Monogram("XX"))
         }
     }
 
@@ -74,17 +75,17 @@ class DefaultAccountAvatarDataMapperTest {
         }
     }
 
-    private fun assertDomainMonogram(actual: AccountAvatar.Monogram, expected: AccountAvatar) {
+    private fun assertDomainMonogram(actual: AccountAvatar, expected: AccountAvatar) {
         require(expected is AccountAvatar.Monogram) { "Expected AccountAvatar to be of type Monogram" }
         assertThat(actual).isEqualTo(expected)
     }
 
-    private fun assertDomainImage(actual: AccountAvatar.Image, expected: AccountAvatar) {
+    private fun assertDomainImage(actual: AccountAvatar, expected: AccountAvatar) {
         require(expected is AccountAvatar.Image) { "Expected AccountAvatar to be of type Image" }
         assertThat(actual).isEqualTo(expected)
     }
 
-    private fun assertDomainIcon(actual: AccountAvatar.Icon, expected: AccountAvatar) {
+    private fun assertDomainIcon(actual: AccountAvatar, expected: AccountAvatar) {
         require(expected is AccountAvatar.Icon) { "Expected AccountAvatar to be of type Icon" }
         assertThat(actual).isEqualTo(expected)
     }
