@@ -34,14 +34,30 @@ class GeneralSettingsViewModel(
         }
     }
 
-    fun fileExport(contentUri: Uri) {
+    fun fileExport(contentUri: String) {
         viewModelScope.launch {
             setExportingState()
             try {
-                syncDebugFileLogSink.export(contentUri.toString())
+                syncDebugFileLogSink.export(contentUri)
                 showSnackbar(GeneralSettingsUiState.Success)
             } catch (e: Exception) {
-                Log.e(e, "Failed to write log to URI: %s", contentUri)
+                Log.e(e, "Failed to write log to URI")
+                showSnackbar(GeneralSettingsUiState.Failure)
+            }
+        }
+    }
+
+    fun showExportSnackbar(isSuccess: Boolean) {
+        viewModelScope.launch {
+            setExportingState()
+            try {
+                if (isSuccess) {
+                    showSnackbar(GeneralSettingsUiState.Success)
+                } else {
+                    showSnackbar(GeneralSettingsUiState.Failure)
+                }
+            } catch (e: Exception) {
+                Log.e(e, "Failed to write log to URI")
                 showSnackbar(GeneralSettingsUiState.Failure)
             }
         }
