@@ -5,23 +5,20 @@ import assertk.assertThat
 import assertk.assertions.containsOnly
 import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
-import dev.mokkery.mock
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.core.preference.AppTheme
-import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.network.NetworkSettings
+import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
-import net.thunderbird.core.preference.privacy.PrivacySettingsManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.mail.message.list.fakes.FakeAccount
 import net.thunderbird.feature.mail.message.list.fakes.FakeAccountManager
@@ -31,36 +28,10 @@ import net.thunderbird.feature.mail.message.list.fakes.FakeAccountManager
 class BuildSwipeActionsTest {
     private val defaultGeneralSettings
         get() = GeneralSettings(
-            backgroundSync = BackgroundSync.NEVER,
-            showRecentChanges = false,
-            appTheme = AppTheme.FOLLOW_SYSTEM,
-            messageViewTheme = SubTheme.USE_GLOBAL,
-            messageComposeTheme = SubTheme.USE_GLOBAL,
-            fixedMessageViewTheme = false,
-            isShowUnifiedInbox = false,
-            isShowStarredCount = false,
-            isShowMessageListStars = false,
-            isShowAnimations = false,
-            isShowCorrespondentNames = false,
-            shouldShowSetupArchiveFolderDialog = false,
-            isMessageListSenderAboveSubject = false,
-            isShowContactName = false,
-            isShowContactPicture = false,
-            isChangeContactNameColor = false,
-            isColorizeMissingContactPictures = false,
-            isUseBackgroundAsUnreadIndicator = false,
-            isShowComposeButtonOnMessageList = false,
-            isThreadedViewEnabled = false,
-            isUseMessageViewFixedWidthFont = false,
-            isAutoFitWidth = false,
-            quietTimeStarts = "7:00",
-            quietTimeEnds = "7:00",
-            isQuietTime = false,
-            isQuietTimeEnabled = false,
-            privacy = PrivacySettings(
-                isHideTimeZone = false,
-                isHideUserAgent = false,
-            ),
+            display = DisplaySettings(),
+            network = NetworkSettings(),
+            notification = NotificationPreference(),
+            privacy = PrivacySettings(),
         )
 
     @Test
@@ -275,7 +246,9 @@ class BuildSwipeActionsTest {
         val uuid = Uuid.random().toHexString()
         val uuids = setOf(uuid)
         val testSubject = createTestSubject(
-            initialGeneralSettings = defaultGeneralSettings.copy(shouldShowSetupArchiveFolderDialog = true),
+            initialGeneralSettings = defaultGeneralSettings.copy(
+                display = defaultGeneralSettings.display.copy(shouldShowSetupArchiveFolderDialog = true),
+            ),
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
                 SwipeActions.KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive.name,
@@ -314,7 +287,9 @@ class BuildSwipeActionsTest {
             uuidWithArchiveFolder,
         )
         val testSubject = createTestSubject(
-            initialGeneralSettings = defaultGeneralSettings.copy(shouldShowSetupArchiveFolderDialog = true),
+            initialGeneralSettings = defaultGeneralSettings.copy(
+                display = defaultGeneralSettings.display.copy(shouldShowSetupArchiveFolderDialog = true),
+            ),
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
                 SwipeActions.KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive.name,
@@ -373,7 +348,7 @@ class BuildSwipeActionsTest {
         accountsUuids: List<String>,
         storageValues: Map<String, String> = mapOf(),
     ): BuildSwipeActions = BuildSwipeActions(
-        generalSettingsManager = FakeGeneralSettingsManager(initialGeneralSettings, mock()),
+        generalSettingsManager = FakeGeneralSettingsManager(initialGeneralSettings),
         accountManager = FakeAccountManager(accounts = accountsUuids.map { FakeAccount(uuid = it) }),
         storage = FakeStorage(storageValues),
     )
@@ -381,88 +356,19 @@ class BuildSwipeActionsTest {
 
 private class FakeGeneralSettingsManager(
     initialGeneralSettings: GeneralSettings,
-    private val privacySettingsManager: PrivacySettingsManager,
-) : GeneralSettingsManager, PrivacySettingsManager by privacySettingsManager {
+) : GeneralSettingsManager {
     private val generalSettings = MutableStateFlow(initialGeneralSettings)
     override fun getSettings(): GeneralSettings = generalSettings.value
 
     override fun getSettingsFlow(): Flow<GeneralSettings> = generalSettings
 
-    override fun setShowRecentChanges(showRecentChanges: Boolean) = error("not implemented")
-
-    override fun setAppTheme(appTheme: AppTheme) = error("not implemented")
-
-    override fun setMessageViewTheme(subTheme: SubTheme) = error("not implemented")
-
-    override fun setMessageComposeTheme(subTheme: SubTheme) = error("not implemented")
-
-    override fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) = error("not implemented")
-
-    override fun setIsShowUnifiedInbox(isShowUnifiedInbox: Boolean) = error("not implemented")
-
-    override fun setIsShowStarredCount(isShowStarredCount: Boolean) = error("not implemented")
-
-    override fun setIsShowMessageListStars(isShowMessageListStars: Boolean) = error("not implemented")
-
-    override fun setIsShowAnimations(isShowAnimations: Boolean) = error("not implemented")
-
-    override fun setIsShowCorrespondentNames(isShowCorrespondentNames: Boolean) = error("not implemented")
-
-    override fun setSetupArchiveShouldNotShowAgain(shouldShowSetupArchiveFolderDialog: Boolean) {
-        generalSettings.update { it.copy(shouldShowSetupArchiveFolderDialog = shouldShowSetupArchiveFolderDialog) }
+    override fun save(config: GeneralSettings) {
+        error("not implemented")
     }
 
-    override fun setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject: Boolean) = error("not implemented")
+    override fun getConfig(): GeneralSettings = generalSettings.value
 
-    override fun setIsShowContactName(isShowContactName: Boolean) = error("not implemented")
-
-    override fun setIsShowContactPicture(isShowContactPicture: Boolean) = error("not implemented")
-
-    override fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) = error("not implemented")
-
-    override fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setIsUseBackgroundAsUnreadIndicator(
-        isUseBackgroundAsUnreadIndicator: Boolean,
-    ) = error("not implemented")
-
-    override fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setIsAutoFitWidth(isAutoFitWidth: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setQuietTimeEnds(quietTimeEnds: String) = error(
-        "not implemented",
-    )
-
-    override fun setQuietTimeStarts(quietTimeStarts: String) = error(
-        "not implemented",
-    )
-
-    override fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setIsHideTimeZone(isHideTimeZone: Boolean) = error(
-        "not implemented",
-    )
-
-    override fun setIsHideUserAgent(isHideUserAgent: Boolean) = error(
-        "not implemented",
-    )
+    override fun getConfigFlow(): Flow<GeneralSettings> = generalSettings
 }
 
 private class FakeStorage(

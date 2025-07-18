@@ -41,7 +41,7 @@ internal class K9NotificationActionCreator(
 
     override fun createViewMessagePendingIntent(messageReference: MessageReference): PendingIntent {
         val openInUnifiedInbox =
-            generalSettingsManager.getSettings().isShowUnifiedInbox && isIncludedInUnifiedInbox(messageReference)
+            generalSettingsManager.getConfig().display.isShowUnifiedInbox && isIncludedInUnifiedInbox(messageReference)
         val intent = createMessageViewIntent(messageReference, openInUnifiedInbox)
 
         return PendingIntentCompat.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT, false)!!
@@ -58,7 +58,7 @@ internal class K9NotificationActionCreator(
     ): PendingIntent {
         val folderIds = extractFolderIds(messageReferences)
 
-        val intent = if (generalSettingsManager.getSettings().isShowUnifiedInbox &&
+        val intent = if (generalSettingsManager.getConfig().display.isShowUnifiedInbox &&
             areAllIncludedInUnifiedInbox(account, folderIds)
         ) {
             createUnifiedInboxIntent(account)

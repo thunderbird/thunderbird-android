@@ -28,8 +28,8 @@ internal class MessageListItemMapper(
         val displayName = if (showRecipients) {
             messageHelper.getRecipientDisplayNames(
                 addresses = toAddresses.toTypedArray(),
-                isShowCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
-                isChangeContactNameColor = generalSettingsManager.getSettings().isChangeContactNameColor,
+                isShowCorrespondentNames = generalSettingsManager.getConfig().display.isShowCorrespondentNames,
+                isChangeContactNameColor = generalSettingsManager.getConfig().display.isChangeContactNameColor,
             ).toString()
         } else {
             messageHelper.getSenderDisplayName(displayAddress).toString()

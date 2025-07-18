@@ -23,11 +23,11 @@ class MessageHelper(
         if (address == null) {
             return resourceProvider.contactUnknownSender()
         }
-        val repository = if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
+        val repository = if (generalSettingsManager.getConfig().display.isShowContactName) contactRepository else null
         return toFriendly(
             address,
-            generalSettingsManager.getSettings().isShowCorrespondentNames,
-            generalSettingsManager.getSettings().isChangeContactNameColor,
+            generalSettingsManager.getConfig().display.isShowCorrespondentNames,
+            generalSettingsManager.getConfig().display.isChangeContactNameColor,
             repository,
         )
     }
@@ -40,7 +40,7 @@ class MessageHelper(
         if (addresses == null || addresses.isEmpty()) {
             return resourceProvider.contactUnknownRecipient()
         }
-        val repository = if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
+        val repository = if (generalSettingsManager.getConfig().display.isShowContactName) contactRepository else null
         val recipients = toFriendly(addresses, isShowCorrespondentNames, isChangeContactNameColor, repository)
         return SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(' ').append(recipients)
     }
