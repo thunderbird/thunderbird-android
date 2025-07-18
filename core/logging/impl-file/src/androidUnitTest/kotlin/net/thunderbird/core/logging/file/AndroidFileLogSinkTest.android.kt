@@ -5,10 +5,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import java.io.File
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -44,6 +45,8 @@ class AndroidFileLogSinkTest {
             coroutineContext = UnconfinedTestDispatcher(),
         )
     }
+
+    @OptIn(ExperimentalTime::class)
     fun timeSetup(timeStamp: Long): String {
         val instant = Instant.fromEpochMilliseconds(timeStamp)
         val dateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())

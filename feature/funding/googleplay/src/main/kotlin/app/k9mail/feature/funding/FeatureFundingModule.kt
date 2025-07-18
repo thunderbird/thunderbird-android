@@ -21,6 +21,7 @@ import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminder
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderContract
 import app.k9mail.feature.funding.googleplay.ui.reminder.FundingReminderDialog
 import com.android.billingclient.api.ProductDetails
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.common.cache.InMemoryCache
 import org.koin.core.module.dsl.viewModel
@@ -38,12 +39,14 @@ val featureFundingModule = module {
     }
 
     single<FundingReminderContract.ActivityLifecycleObserver> {
+        @OptIn(ExperimentalTime::class)
         ActivityLifecycleObserver(
             settings = get(),
         )
     }
 
     single<FundingReminderContract.Reminder> {
+        @OptIn(ExperimentalTime::class)
         FundingReminder(
             settings = get(),
             fragmentObserver = get(),
