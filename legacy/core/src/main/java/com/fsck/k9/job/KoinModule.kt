@@ -5,6 +5,8 @@ import androidx.work.WorkManager
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.logging.composite.CompositeLogSink
+import net.thunderbird.core.logging.file.FileLogSink
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -17,6 +19,7 @@ val jobModule = module {
             workManager = get(),
             accountManager = get(),
             mailSyncWorkerManager = get(),
+            syncDebugFileLogManager = get(),
         )
     }
     factory {
@@ -24,5 +27,16 @@ val jobModule = module {
     }
     factory { (parameters: WorkerParameters) ->
         MailSyncWorker(messagingController = get(), preferences = get(), context = get(), parameters)
+    }
+    factory {
+        FileLogLimitWorkManager(workManager = get())
+    }
+    factory { (parameters: WorkerParameters) ->
+        SyncDebugWorker(
+            context = get(),
+            fileLogSink = get<FileLogSink>(named("syncDebug")),
+            syncDebugCompositeSink = get<CompositeLogSink>(named("syncDebug")),
+            parameters,
+        )
     }
 }

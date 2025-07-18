@@ -12,6 +12,7 @@ import androidx.work.WorkerParameters
 import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import com.fsck.k9.account.AccountRemoverWorker
 import com.fsck.k9.job.MailSyncWorker
+import com.fsck.k9.job.SyncDebugWorker
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.message.html.DisplayHtml
 import com.fsck.k9.message.html.HtmlSettings
@@ -55,6 +56,7 @@ class DependencyInjectionTest {
                 definition<DisplayHtml>(HtmlSettings::class),
                 definition<K9WebViewClient>(AttachmentResolver::class, MessageWebView.OnPageFinishedListener::class),
                 definition<MailSyncWorker>(WorkerParameters::class),
+                definition<SyncDebugWorker>(WorkerParameters::class),
                 definition<OpenPgpApiManager>(LifecycleOwner::class),
                 definition<SetupArchiveFolderDialogContract.ViewModel>(SetupArchiveFolderDialogContract.State::class),
             ),
