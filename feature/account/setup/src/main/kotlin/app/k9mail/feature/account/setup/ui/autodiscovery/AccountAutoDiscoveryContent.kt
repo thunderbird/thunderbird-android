@@ -14,12 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import app.k9mail.core.ui.compose.common.padding.responsiveWidthPadding
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingView
 import app.k9mail.core.ui.compose.designsystem.molecule.input.EmailAddressInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.PasswordInput
-import app.k9mail.core.ui.compose.designsystem.template.ResponsiveWidthContainer
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.account.common.ui.AppTitleTopHeader
 import app.k9mail.feature.account.common.ui.WizardNavigationBar
@@ -43,39 +43,36 @@ internal fun AccountAutoDiscoveryContent(
 ) {
     val scrollState = rememberScrollState()
 
-    ResponsiveWidthContainer(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .testTagAsResourceId("AccountAutoDiscoveryContent")
             .then(modifier),
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(scrollState)
+                .responsiveWidthPadding()
+                .imePadding(),
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(scrollState)
-                    .imePadding(),
-            ) {
-                AppTitleTopHeader(
-                    title = brandName,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                AutoDiscoveryContent(
-                    state = state,
-                    onEvent = onEvent,
-                    oAuthViewModel = oAuthViewModel,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-            }
-
-            WizardNavigationBar(
-                onNextClick = { onEvent(Event.OnNextClicked) },
-                onBackClick = { onEvent(Event.OnBackClicked) },
-                state = WizardNavigationBarState(showNext = state.isNextButtonVisible),
+            AppTitleTopHeader(
+                title = brandName,
             )
+            Spacer(modifier = Modifier.weight(1f))
+            AutoDiscoveryContent(
+                state = state,
+                onEvent = onEvent,
+                oAuthViewModel = oAuthViewModel,
+            )
+            Spacer(modifier = Modifier.weight(1f))
         }
+
+        WizardNavigationBar(
+            onNextClick = { onEvent(Event.OnNextClicked) },
+            onBackClick = { onEvent(Event.OnBackClicked) },
+            state = WizardNavigationBarState(showNext = state.isNextButtonVisible),
+        )
     }
 }
 
