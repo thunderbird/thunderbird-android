@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
@@ -29,6 +31,8 @@ class MessageViewContainerFragment : Fragment() {
         }
 
     private var showAccountChip: Boolean = true
+
+    private var isUseLeftRightGestureNavigation: Boolean = true
 
     lateinit var messageReference: MessageReference
         private set
@@ -68,6 +72,9 @@ class MessageViewContainerFragment : Fragment() {
 
         showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
 
+        isUseLeftRightGestureNavigation =
+            arguments?.getBoolean(ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION) ?: isUseLeftRightGestureNavigation
+
         adapter = MessageViewContainerAdapter(this, showAccountChip)
     }
 
@@ -88,7 +95,7 @@ class MessageViewContainerFragment : Fragment() {
         val pageMargin = resources.getDimension(R.dimen.message_view_pager_page_margin).toInt()
 
         viewPager = view.findViewById(R.id.message_viewpager)
-        viewPager.isUserInputEnabled = true
+        viewPager.isUserInputEnabled = isUseLeftRightGestureNavigation
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         viewPager.setPageTransformer(MarginPageTransformer(pageMargin))
         viewPager.registerOnPageChangeCallback(
@@ -107,6 +114,13 @@ class MessageViewContainerFragment : Fragment() {
                     }
                 }
             },
+        )
+
+        val recyclerView = viewPager.getChildAt(0) as? RecyclerView
+        recyclerView?.reduceHorizontalDragSensitivity(
+            viewPager = viewPager,
+            threshold = VIEW_PAGER_SWIPE_THRESHOLD,
+            velocityThreshold = VIEW_PAGER_SWIPE_VELOCITY_THRESHOLD,
         )
 
         return view
@@ -291,16 +305,72 @@ class MessageViewContainerFragment : Fragment() {
     }
 
     companion object {
+        private const val VIEW_PAGER_SWIPE_THRESHOLD = 0.4f
+        private const val VIEW_PAGER_SWIPE_VELOCITY_THRESHOLD = 0.8f
+
         private const val ARG_REFERENCE = "reference"
         private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
 
         private const val STATE_MESSAGE_REFERENCE = "messageReference"
 
-        fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewContainerFragment {
+        private const val ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION = "isUseLeftRightGestureNavigation"
+
+        fun newInstance(
+            reference: MessageReference,
+            showAccountChip: Boolean,
+            isUseLeftRightGestureNavigation: Boolean,
+        ): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
                 ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
+                ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION to isUseLeftRightGestureNavigation,
             )
         }
     }
+}
+
+/**
+ * Reduces the sensitivity of horizontal drag gestures.
+ *
+ * This is a workaround for the issue where ViewPager2 triggers a swipe when the user is scrolling vertically in
+ * a WebView. By increasing the swipe threshold and swipe velocity threshold, we can make it harder for the
+ * ViewPager2 to trigger a swipe.
+ *
+ * Note: This is a hack that relies on the internal implementation of ViewPager2, which uses a RecyclerView.
+ * This might break in future versions of ViewPager2.
+ *
+ * @see <a href="https://issuetracker.google.com/issues/123006042">Issue 123006042</a>
+ */
+private fun RecyclerView.reduceHorizontalDragSensitivity(
+    viewPager: ViewPager2,
+    threshold: Float,
+    velocityThreshold: Float,
+) {
+    val itemTouchHelper = ItemTouchHelper(
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder,
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when (direction) {
+                    ItemTouchHelper.LEFT -> viewPager.currentItem = viewPager.currentItem + 1
+                    ItemTouchHelper.RIGHT -> viewPager.currentItem = viewPager.currentItem - 1
+                }
+            }
+
+            override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+                return threshold
+            }
+
+            override fun getSwipeVelocityThreshold(defaultValue: Float): Float {
+                return velocityThreshold
+            }
+        },
+    )
+    itemTouchHelper.attachToRecyclerView(this)
 }

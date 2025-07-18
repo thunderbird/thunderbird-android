@@ -193,6 +193,10 @@ internal class RealGeneralSettingsManager(
         getSettings().copy(isShowContactPicture = isShowContactPicture).persist()
     }
 
+    override fun setIsUseLeftRightGestureNavigation(isUseLeftRightGestureNavigation: Boolean) {
+        getSettings().copy(isUseLeftRightGestureNavigation = isUseLeftRightGestureNavigation).persist()
+    }
+
     override fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) {
         getSettings().copy(isChangeContactNameColor = isChangeContactNameColor).persist()
     }
@@ -262,6 +266,7 @@ internal class RealGeneralSettingsManager(
         editor.putBoolean("messageListSenderAboveSubject", settings.isMessageListSenderAboveSubject)
         editor.putBoolean("showContactName", settings.isShowContactName)
         editor.putBoolean("showContactPicture", settings.isShowContactPicture)
+        editor.putBoolean("useLeftRightGestureNavigation", settings.isUseLeftRightGestureNavigation)
         editor.putBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, settings.isChangeContactNameColor)
         editor.putBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, settings.isColorizeMissingContactPictures)
         editor.putBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, settings.isUseBackgroundAsUnreadIndicator)
@@ -303,6 +308,7 @@ internal class RealGeneralSettingsManager(
             isShowContactName = storage.getBoolean("showContactName", false),
             isShowContactPicture = storage.getBoolean("showContactPicture", true),
             isColorizeMissingContactPictures = storage.getBoolean(KEY_COLORIZE_MISSING_CONTACT_PICTURE, true),
+            isUseLeftRightGestureNavigation = storage.getBoolean("useLeftRightGestureNavigation", true),
             isChangeContactNameColor = storage.getBoolean(KEY_CHANGE_REGISTERED_NAME_COLOR, false),
             isUseBackgroundAsUnreadIndicator = storage.getBoolean(KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR, false),
             isShowComposeButtonOnMessageList = storage.getBoolean(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, true),
