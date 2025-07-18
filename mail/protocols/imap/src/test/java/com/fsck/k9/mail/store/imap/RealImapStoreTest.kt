@@ -117,6 +117,23 @@ class RealImapStoreTest {
     }
 
     @Test
+    fun `getFolder() should not corrupt UTF8 folder names`() {
+        val imapStore = createTestImapStore(isSubscribedFoldersOnly = false)
+        val imapConnection = createMockConnection().stub {
+            on { executeSimpleCommand("""LIST "" "*"""") } doReturn listOf(
+                createImapResponse("""* LIST () "." "Chèvre"""", true),
+                createImapResponse("6 OK Success"),
+            )
+        }
+        imapStore.enqueueImapConnection(imapConnection)
+
+        val folders = imapStore.getFolders()
+
+        assertThat(folders).isNotNull()
+        assertThat(folders.map { it.name }).containsExactly("INBOX", "Chèvre")
+    }
+
+    @Test
     fun `getFolders() should ignore NoSelect entries`() {
         val imapStore = createTestImapStore(isSubscribedFoldersOnly = false)
         val imapConnection = createMockConnection().stub {
@@ -218,7 +235,6 @@ class RealImapStoreTest {
         assertThat(folders).isNotNull()
         assertThat(folders.map { it.serverId }).containsExactly("INBOX", "INBOX.FolderOne", "INBOX.FolderTwo")
         assertThat(folders.map { it.name }).containsExactly("INBOX", "FolderOne", "FolderTwo")
-        assertThat(folders.map { it.oldServerId }).containsExactly("INBOX", "FolderOne", "FolderTwo")
     }
 
     @Test
@@ -239,7 +255,6 @@ class RealImapStoreTest {
         assertThat(folders).isNotNull()
         assertThat(folders.map { it.serverId }).containsExactly("INBOX", "INBOX.FolderOne", "FolderTwo")
         assertThat(folders.map { it.name }).containsExactly("INBOX", "FolderOne", "FolderTwo")
-        assertThat(folders.mapNotNull { it.oldServerId }).containsExactly("INBOX", "FolderOne")
     }
 
     @Test

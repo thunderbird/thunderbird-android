@@ -21,9 +21,14 @@ public class ImapResponseHelper {
     }
 
     public static ImapResponse createImapResponse(String response) throws IOException {
+        return createImapResponse(response, false);
+    }
+
+    public static ImapResponse createImapResponse(String response, boolean utf8) throws IOException {
         String input = response + "\r\n";
         PeekableInputStream inputStream = new PeekableInputStream(new ByteArrayInputStream(input.getBytes()));
-        ImapResponseParser parser = new ImapResponseParser(inputStream);
+        ImapResponseParser parser = new ImapResponseParser(inputStream, new FolderNameCodec());
+        parser.setUtf8Accepted(utf8);
 
         return parser.readResponse();
     }
