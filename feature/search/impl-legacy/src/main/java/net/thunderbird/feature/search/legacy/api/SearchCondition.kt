@@ -1,7 +1,7 @@
 package net.thunderbird.feature.search.legacy.api
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 
 /**
  * Represents a search condition describing what to search for in a specific field
@@ -11,9 +11,10 @@ import kotlinx.parcelize.Parcelize
  * @param attribute The attribute to apply to the field (e.g., contains, equals, starts with)
  * @param value The value to match against the field and attribute
  */
-@Parcelize
+@Serializable
 data class SearchCondition(
     @JvmField
+    @Contextual
     val field: SearchField,
 
     @JvmField
@@ -21,4 +22,4 @@ data class SearchCondition(
 
     @JvmField
     val value: String,
-) : Parcelable
+)

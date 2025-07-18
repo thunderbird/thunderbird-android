@@ -5,19 +5,16 @@ import assertk.assertThat
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
-import kotlinx.parcelize.Parcelize
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 import net.thunderbird.feature.search.legacy.api.SearchCondition
 import net.thunderbird.feature.search.legacy.api.SearchField
 import net.thunderbird.feature.search.legacy.api.SearchFieldType
-import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 import org.junit.Test
 
 class SqlWhereClauseTest {
 
-    @Parcelize
     data class TestSearchField(
         override val fieldName: String,
         override val fieldType: SearchFieldType,

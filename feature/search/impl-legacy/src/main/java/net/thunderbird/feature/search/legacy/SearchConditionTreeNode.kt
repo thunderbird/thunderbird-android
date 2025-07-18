@@ -1,7 +1,6 @@
 package net.thunderbird.feature.search.legacy
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 import net.thunderbird.feature.search.legacy.api.SearchCondition
 import net.thunderbird.feature.search.legacy.api.SearchFieldType
@@ -54,13 +53,15 @@ import net.thunderbird.feature.search.legacy.api.SearchFieldType
  * @see SearchCondition
  * @see LocalMessageSearch
  */
-@Parcelize
+@Serializable
 class SearchConditionTreeNode private constructor(
     val operator: Operator,
     val condition: SearchCondition? = null,
     var left: SearchConditionTreeNode? = null,
     var right: SearchConditionTreeNode? = null,
-) : Parcelable {
+) {
+
+    @Serializable
     enum class Operator {
         AND,
         NOT,

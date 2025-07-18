@@ -6,7 +6,6 @@ import assertk.assertions.contains
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
-import kotlinx.parcelize.Parcelize
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 import net.thunderbird.feature.search.legacy.api.SearchCondition
@@ -16,7 +15,6 @@ import org.junit.Test
 
 class SearchConditionTreeNodeTest {
 
-    @Parcelize
     data class TestSearchField(
         override val fieldName: String,
         override val fieldType: SearchFieldType,

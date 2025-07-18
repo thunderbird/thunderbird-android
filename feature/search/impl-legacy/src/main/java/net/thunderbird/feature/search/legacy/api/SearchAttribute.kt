@@ -1,8 +1,11 @@
 package net.thunderbird.feature.search.legacy.api
 
+import kotlinx.serialization.Serializable
+
 /**
  * Represents the attributes that can be used to match search conditions.
  */
+@Serializable
 enum class SearchAttribute {
     /**
      * The value must be contained within the field.

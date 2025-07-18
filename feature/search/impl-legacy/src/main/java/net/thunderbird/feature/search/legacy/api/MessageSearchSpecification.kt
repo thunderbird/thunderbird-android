@@ -1,6 +1,5 @@
 package net.thunderbird.feature.search.legacy.api
 
-import android.os.Parcelable
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
 /**
@@ -11,7 +10,7 @@ import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
  * including which accounts to search and the conditions that must be met
  * for messages to be included in the search results.
  */
-interface MessageSearchSpecification : Parcelable {
+interface MessageSearchSpecification {
     /**
      * Get all the uuids of accounts this search acts on.
      * @return Set of uuids.

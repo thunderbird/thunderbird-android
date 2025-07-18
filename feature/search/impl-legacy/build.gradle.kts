@@ -1,6 +1,6 @@
 plugins {
     id(ThunderbirdPlugins.Library.android)
-    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -9,4 +9,5 @@ android {
 
 dependencies {
     implementation(projects.feature.mail.account.api)
+    implementation(libs.kotlinx.serialization.json)
 }

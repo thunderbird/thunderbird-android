@@ -1,7 +1,6 @@
 package net.thunderbird.feature.search.legacy
 
-import android.os.Parcel
-import android.os.Parcelable
+import kotlinx.serialization.Serializable
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.MessageSearchSpecification
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
@@ -17,17 +16,16 @@ import net.thunderbird.feature.search.legacy.api.SearchCondition
  * TODO conflicting conditions check on add
  * TODO duplicate condition checking?
  * TODO assign each node a unique id that's used to retrieve it from the leafset and remove.
- *
  */
+@Serializable
 @Suppress("TooManyFunctions")
 class LocalMessageSearch : MessageSearchSpecification {
     var id: String = ""
-
     var isManualSearch: Boolean = false
 
     // since the uuid isn't in the message table it's not in the tree neither
-    private val mAccountUuids: MutableSet<String> = HashSet()
-    private var mConditions: SearchConditionTreeNode? = null
+    private val accountUuidSet: MutableSet<String> = HashSet()
+    private var conditionsRoot: SearchConditionTreeNode? = null
 
     /**
      * Gets the leafset of the related condition tree.
@@ -38,19 +36,13 @@ class LocalMessageSearch : MessageSearchSpecification {
         private set
 
     /**
-     * Use this only if the search won't be saved. Saved searches need
-     * a name!
-     */
-    constructor()
-
-    /**
      * Add a new account to the search. When no accounts are
      * added manually we search all accounts on the device.
      *
      * @param uuid Uuid of the account to be added.
      */
     fun addAccountUuid(uuid: String) {
-        mAccountUuids.add(uuid)
+        accountUuidSet.add(uuid)
     }
 
     /**
@@ -73,8 +65,8 @@ class LocalMessageSearch : MessageSearchSpecification {
      * @return New top AND node, new root.
      */
     fun and(condition: SearchCondition): SearchConditionTreeNode {
-        val tmp = SearchConditionTreeNode.Builder(condition).build()
-        return and(tmp)
+        val node = SearchConditionTreeNode.Builder(condition).build()
+        return and(node)
     }
 
     /**
@@ -87,16 +79,13 @@ class LocalMessageSearch : MessageSearchSpecification {
     fun and(node: SearchConditionTreeNode): SearchConditionTreeNode {
         leafSet.addAll(node.getLeafSet())
 
-        if (mConditions == null) {
-            mConditions = node
-            return node
-        }
+        conditionsRoot = conditionsRoot?.let {
+            SearchConditionTreeNode.Builder(it)
+                .and(node)
+                .build()
+        } ?: node
 
-        mConditions = SearchConditionTreeNode.Builder(mConditions!!)
-            .and(node)
-            .build()
-
-        return mConditions!!
+        return conditionsRoot!!
     }
 
     /**
@@ -107,8 +96,8 @@ class LocalMessageSearch : MessageSearchSpecification {
      * @return New top OR node, new root.
      */
     fun or(condition: SearchCondition): SearchConditionTreeNode {
-        val tmp = SearchConditionTreeNode.Builder(condition).build()
-        return or(tmp)
+        val node = SearchConditionTreeNode.Builder(condition).build()
+        return or(node)
     }
 
     /**
@@ -121,16 +110,13 @@ class LocalMessageSearch : MessageSearchSpecification {
     fun or(node: SearchConditionTreeNode): SearchConditionTreeNode {
         leafSet.addAll(node.getLeafSet())
 
-        if (mConditions == null) {
-            mConditions = node
-            return node
-        }
+        conditionsRoot = conditionsRoot?.let {
+            SearchConditionTreeNode.Builder(it)
+                .or(node)
+                .build()
+        } ?: node
 
-        mConditions = SearchConditionTreeNode.Builder(mConditions!!)
-            .or(node)
-            .build()
-
-        return mConditions!!
+        return conditionsRoot!!
     }
 
     /**
@@ -147,112 +133,75 @@ class LocalMessageSearch : MessageSearchSpecification {
          *          - do and on root of it & rest of search
          *          - do or between folder nodes
          */
-        mConditions = and(SearchCondition(MessageSearchField.FOLDER, SearchAttribute.EQUALS, folderId.toString()))
+        conditionsRoot = and(SearchCondition(MessageSearchField.FOLDER, SearchAttribute.EQUALS, folderId.toString()))
     }
 
-    val folderIds: MutableList<Long>
-        /*
-         * TODO make this more advanced!
-         * This is a temporary solution that does NOT WORK for
-         * real searches because of possible extra conditions to a folder requirement.
-         */
-        get() {
-            val results: MutableList<Long> = ArrayList()
-            for (node in this.leafSet) {
-                if (node.condition!!.field === MessageSearchField.FOLDER &&
-                    node.condition.attribute == SearchAttribute.EQUALS
-                ) {
-                    results.add(node.condition.value.toLong())
-                }
+    /**
+     * TODO make this more advanced!
+     * This is a temporary solution that does NOT WORK for
+     * real searches because of possible extra conditions to a folder requirement.
+     */
+    val folderIds: List<Long>
+        get() = leafSet
+            .mapNotNull { node ->
+                node.condition?.takeIf {
+                    it.field == MessageSearchField.FOLDER && it.attribute == SearchAttribute.EQUALS
+                }?.value?.toLong()
             }
-            return results
-        }
+
+    /**
+     * Safely gets a folder ID at the specified index, returning null if the index is out of bounds.
+     * This helps prevent IndexOutOfBoundsException when accessing folder IDs.
+     *
+     * @param index The index of the folder ID to get
+     * @return The folder ID at the specified index, or null if the index is out of bounds
+     */
+    fun getFolderIdAtIndexOrNull(index: Int): Long? {
+        return folderIds.getOrNull(index)
+    }
 
     /**
      * TODO THIS HAS TO GO!!!!
      * very dirty fix for remotesearch support atm
      */
     val remoteSearchArguments: String?
-        get() {
-            val leafSet = this.leafSet
-
-            for (node in leafSet) {
-                if (node.condition!!.field === MessageSearchField.SUBJECT ||
-                    node.condition.field === MessageSearchField.SENDER
-                ) {
-                    return node.condition.value
-                }
-            }
-            return null
+        get() = leafSet.firstNotNullOfOrNull { node ->
+            node.condition?.takeIf {
+                it.field == MessageSearchField.SUBJECT || it.field == MessageSearchField.SENDER
+            }?.value
         }
 
+    /**
+     * Returns all the account uuids that this search will try to match against. Might be an empty array, in which
+     * case all accounts should be included in the search.
+     */
     override val accountUuids: Set<String>
-        /**
-         * Returns all the account uuids that this search will try to match against. Might be an empty array, in which
-         * case all accounts should be included in the search.
-         */
-        get() = HashSet<String>(mAccountUuids)
+        get() = accountUuidSet.toSet()
 
     /**
      * Returns whether or not to search all accounts.
      *
      * @return `true` if all accounts should be searched.
      */
-    fun searchAllAccounts(): Boolean {
-        return (mAccountUuids.isEmpty())
-    }
+    fun searchAllAccounts(): Boolean = accountUuidSet.isEmpty()
 
+    /**
+     * Get the condition tree.
+     *
+     * @return The root node of the related conditions tree.
+     */
     override val conditions: SearchConditionTreeNode
-        /**
-         * Get the condition tree.
-         *
-         * @return The root node of the related conditions tree.
-         */
-        get() = mConditions ?: SearchConditionTreeNode.Builder(
+        get() = conditionsRoot ?: SearchConditionTreeNode.Builder(
             SearchCondition(MessageSearchField.SUBJECT, SearchAttribute.CONTAINS, ""),
         ).build()
 
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    override fun writeToParcel(dest: Parcel, flags: Int) {
-        dest.writeString(id)
-        dest.writeByte((if (this.isManualSearch) 1 else 0).toByte())
-        dest.writeStringList(ArrayList<String?>(mAccountUuids))
-        dest.writeParcelable(mConditions, flags)
-    }
-
-    constructor(input: Parcel) {
-        id = input.readString() ?: ""
-        this.isManualSearch = (input.readByte().toInt() == 1)
-        mAccountUuids.addAll(input.createStringArrayList()!!)
-        mConditions = input.readParcelable<SearchConditionTreeNode?>(LocalMessageSearch::class.java.getClassLoader())
-        if (mConditions != null) {
-            this.leafSet = mConditions!!.getLeafSet() as MutableSet<SearchConditionTreeNode>
-        }
-    }
-
-    override fun toString(): String {
-        return "LocalSearch(" +
-            "id='" + id + '\'' +
-            ", mManualSearch=" + this.isManualSearch +
-            ", mAccountUuids=" + mAccountUuids +
-            ", mConditions=" + mConditions +
-            ", mLeafSet=" + this.leafSet +
-            ')'
-    }
-
-    companion object {
-        @JvmField
-        val CREATOR: Parcelable.Creator<LocalMessageSearch> = object : Parcelable.Creator<LocalMessageSearch> {
-            override fun createFromParcel(`in`: Parcel): LocalMessageSearch {
-                return LocalMessageSearch(`in`)
-            }
-
-            override fun newArray(size: Int): Array<LocalMessageSearch?> {
-                return arrayOfNulls(size)
-            }
-        }
+    override fun toString(): String = buildString {
+        append("LocalSearch(")
+        append("id='").append(id).append("', ")
+        append("isManualSearch=").append(isManualSearch).append(", ")
+        append("accountUuidSet=").append(accountUuidSet).append(", ")
+        append("conditionsRoot=").append(conditionsRoot).append(", ")
+        append("leafSet=").append(leafSet)
+        append(")")
     }
 }

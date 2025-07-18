@@ -1,11 +1,9 @@
 package net.thunderbird.feature.search.legacy.api
 
-import android.os.Parcelable
-
 /**
  * Represents a field that can be searched.
  */
-interface SearchField : Parcelable {
+interface SearchField {
     /**
      * The name of the field.
      */
