@@ -17,7 +17,10 @@ val settingsUiModule = module {
     viewModel { SettingsViewModel(accountManager = get()) }
 
     viewModel {
-        GeneralSettingsViewModel(logFileWriter = get(), syncDebugFileLogSink = get<FileLogSink>(named("syncDebug")))
+        GeneralSettingsViewModel(
+            logFileWriter = get(),
+            syncDebugFileLogSink = get<FileLogSink>(named("syncDebug")),
+        )
     }
     factory {
         GeneralSettingsDataStore(
