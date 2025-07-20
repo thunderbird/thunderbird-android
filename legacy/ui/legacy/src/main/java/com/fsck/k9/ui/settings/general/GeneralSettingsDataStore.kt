@@ -164,7 +164,10 @@ class GeneralSettingsDataStore(
         if (value == null) return
 
         when (key) {
-            "language" -> appLanguageManager.setAppLanguage(value)
+            "language" -> {
+                skipSaveSettings = true
+                appLanguageManager.setAppLanguage(value)
+            }
             "theme" -> setTheme(value)
             "message_compose_theme" -> setMessageComposeTheme(value)
             "messageViewTheme" -> setMessageViewTheme(value)

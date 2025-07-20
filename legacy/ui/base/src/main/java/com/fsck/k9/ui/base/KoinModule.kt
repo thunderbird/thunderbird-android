@@ -14,6 +14,6 @@ val uiBaseModule = module {
             appCoroutineScope = get(named("AppCoroutineScope")),
         )
     }
-    single { AppLanguageManager(systemLocaleManager = get()) }
+    single { AppLanguageManager(systemLocaleManager = get(), displaySettingsPreferenceManager = get()) }
     single { SystemLocaleManager(context = get()) }
 }

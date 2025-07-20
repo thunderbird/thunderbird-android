@@ -23,5 +23,6 @@ const val KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT = "messageViewFixedWidthFont"
 const val KEY_AUTO_FIT_WIDTH = "autofitWidth"
 const val KEY_MESSAGE_LIST_SENDER_ABOVE_SUBJECT = "messageListSenderAboveSubject"
 const val KEY_SHOW_CONTACT_PICTURE = "showContactPicture"
+const val KEY_APP_LANGUAGE = "language"
 
 interface DisplaySettingsPreferenceManager : PreferenceManager<DisplaySettings>

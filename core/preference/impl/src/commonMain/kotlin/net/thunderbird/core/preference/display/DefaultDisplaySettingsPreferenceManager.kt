@@ -119,6 +119,10 @@ class DefaultDisplaySettingsPreferenceManager(
             KEY_SHOW_CONTACT_PICTURE,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE,
         ),
+        appLanguage = storage.getStringOrDefault(
+            KEY_APP_LANGUAGE,
+            DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE,
+        ),
     )
 
     private fun writeConfig(config: DisplaySettings) {
@@ -185,6 +189,7 @@ class DefaultDisplaySettingsPreferenceManager(
                     config.isUseMessageViewFixedWidthFont,
                 )
                 storageEditor.putBoolean(KEY_AUTO_FIT_WIDTH, config.isAutoFitWidth)
+                storageEditor.putString(KEY_APP_LANGUAGE, config.appLanguage)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
