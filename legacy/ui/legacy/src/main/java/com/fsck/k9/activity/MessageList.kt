@@ -145,9 +145,6 @@ open class MessageList :
     private val isShowAccountChip: Boolean
         get() = messageListFragment?.isShowAccountChip ?: true
 
-    private val isUseLeftRightGestureNavigation: Boolean
-        get() = generalSettingsManager.getSettings().isUseLeftRightGestureNavigation
-
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -1136,7 +1133,6 @@ open class MessageList :
             val fragment = MessageViewContainerFragment.newInstance(
                 reference = messageReference,
                 showAccountChip = isShowAccountChip,
-                isUseLeftRightGestureNavigation = isUseLeftRightGestureNavigation,
             )
             supportFragmentManager.commitNow {
                 replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)

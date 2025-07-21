@@ -363,12 +363,6 @@
             android:summary="@string/volume_navigation_summary"
             />
 
-        <CheckBoxPreference
-            android:key="left_right_gesture_navigation"
-            android:summary="@string/left_right_gestures_summary"
-            android:title="@string/left_right_gestures_title_short"
-            />
-
         <ListPreference
             android:dialogTitle="@string/general_settings_post_remove_action_title"
             android:entries="@array/post_remove_navigation_entries"

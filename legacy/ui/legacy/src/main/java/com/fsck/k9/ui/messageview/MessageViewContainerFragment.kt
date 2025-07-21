@@ -32,8 +32,6 @@ class MessageViewContainerFragment : Fragment() {
 
     private var showAccountChip: Boolean = true
 
-    private var isUseLeftRightGestureNavigation: Boolean = true
-
     lateinit var messageReference: MessageReference
         private set
 
@@ -72,9 +70,6 @@ class MessageViewContainerFragment : Fragment() {
 
         showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
 
-        isUseLeftRightGestureNavigation =
-            arguments?.getBoolean(ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION) ?: isUseLeftRightGestureNavigation
-
         adapter = MessageViewContainerAdapter(this, showAccountChip)
     }
 
@@ -95,7 +90,7 @@ class MessageViewContainerFragment : Fragment() {
         val pageMargin = resources.getDimension(R.dimen.message_view_pager_page_margin).toInt()
 
         viewPager = view.findViewById(R.id.message_viewpager)
-        viewPager.isUserInputEnabled = isUseLeftRightGestureNavigation
+        viewPager.isUserInputEnabled = true
         viewPager.offscreenPageLimit = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT
         viewPager.setPageTransformer(MarginPageTransformer(pageMargin))
         viewPager.registerOnPageChangeCallback(
@@ -313,17 +308,13 @@ class MessageViewContainerFragment : Fragment() {
 
         private const val STATE_MESSAGE_REFERENCE = "messageReference"
 
-        private const val ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION = "isUseLeftRightGestureNavigation"
-
         fun newInstance(
             reference: MessageReference,
             showAccountChip: Boolean,
-            isUseLeftRightGestureNavigation: Boolean,
         ): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
                 ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
-                ARG_IS_USE_LEFT_RIGHT_GESTURE_NAVIGATION to isUseLeftRightGestureNavigation,
             )
         }
     }

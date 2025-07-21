@@ -55,7 +55,6 @@ class MessageHelperTest : RobolectricTest() {
                 isShowContactName = false,
                 isShowContactPicture = false,
                 isChangeContactNameColor = false,
-                isUseLeftRightGestureNavigation = true,
                 isColorizeMissingContactPictures = false,
                 isUseBackgroundAsUnreadIndicator = false,
                 isShowComposeButtonOnMessageList = false,
