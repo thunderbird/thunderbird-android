@@ -19,7 +19,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
-import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -204,24 +203,7 @@ open class MessageList :
         initializeFragments()
         displayViews()
         initializeFunding()
-        initializeInsets()
-    }
-
-    private fun initializeInsets() {
-        initializeDrawerContentInsets()
-        initializeToolbarInsets()
         initializeContainerInsets()
-    }
-
-    private fun initializeToolbarInsets() {
-        val toolbar = findViewById<View>(R.id.toolbar)
-
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(systemBars() or displayCutout())
-            v.setPadding(insets.left, 0, insets.right, 0)
-
-            windowsInsets
-        }
     }
 
     private fun initializeContainerInsets() {
@@ -230,17 +212,6 @@ open class MessageList :
         ViewCompat.setOnApplyWindowInsetsListener(container) { v, windowsInsets ->
             val insets = windowsInsets.getInsets(displayCutout() or navigationBars())
             v.setPadding(insets.left, 0, insets.right, insets.bottom)
-
-            windowsInsets
-        }
-    }
-
-    private fun initializeDrawerContentInsets() {
-        val toolbar = findViewById<View>(R.id.drawer_content)
-
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(systemBars() or displayCutout())
-            v.setPadding(0, insets.top, 0, 0)
 
             windowsInsets
         }
