@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
+
 plugins {
     id(ThunderbirdPlugins.Library.kmpCompose)
 }
@@ -8,6 +10,10 @@ kotlin {
             implementation(projects.core.common)
             implementation(projects.core.outcome)
         }
+    }
+
+    sourceSets.all {
+        languageSettings.enableLanguageFeature(LanguageFeature.ExpectActualClasses.name)
     }
 }
 
