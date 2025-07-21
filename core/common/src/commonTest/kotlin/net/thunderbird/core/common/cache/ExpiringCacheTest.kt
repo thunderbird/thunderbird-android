@@ -6,6 +6,7 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.common.cache.ExpiringCache
 import net.thunderbird.core.common.cache.InMemoryCache
@@ -13,8 +14,10 @@ import net.thunderbird.core.testing.TestClock
 
 class ExpiringCacheTest {
 
+    @OptIn(ExperimentalTime::class)
     private val clock = TestClock()
 
+    @OptIn(ExperimentalTime::class)
     private val testSubject: Cache<String, String> = ExpiringCache(clock, InMemoryCache())
 
     @Test
