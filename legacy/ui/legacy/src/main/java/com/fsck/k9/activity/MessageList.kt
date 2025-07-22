@@ -1424,11 +1424,11 @@ open class MessageList :
         this.search = search
         singleFolderMode = false
 
+        val folderIds = search.folderIds
         if (search.searchAllAccounts()) {
             val accountUuids = search.accountUuids
             if (accountUuids.size == 1) {
                 account = accountManager.getAccount(accountUuids.elementAt(0))
-                val folderIds = search.folderIds
                 singleFolderMode = folderIds.size == 1
             } else {
                 account = null
@@ -1437,7 +1437,7 @@ open class MessageList :
             if (account == null && search.accountUuids.size == 1) {
                 account = accountManager.getAccount(search.accountUuids.elementAt(0))
             }
-            singleFolderMode = true
+            singleFolderMode = folderIds.size == 1
         }
 
         configureDrawer()
