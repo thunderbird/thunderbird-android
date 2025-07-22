@@ -10,16 +10,36 @@ class DefaultAccountAvatarDataMapper : AccountAvatarDataMapper {
     override fun toDomain(dto: AvatarDto): AccountAvatar {
         return when (dto.avatarType) {
             AvatarTypeDto.MONOGRAM -> AccountAvatar.Monogram(
-                value = dto.avatarMonogram ?: throw IllegalArgumentException("Monogram value is required"),
+                value = dto.avatarMonogram ?: DEFAULT_MONOGRAM,
             )
 
-            AvatarTypeDto.IMAGE -> AccountAvatar.Image(
-                uri = dto.avatarImageUri ?: throw IllegalArgumentException("Image URI is required"),
-            )
+            AvatarTypeDto.IMAGE -> {
+                val uri = dto.avatarImageUri
 
-            AvatarTypeDto.ICON -> AccountAvatar.Icon(
-                name = dto.avatarIconName ?: throw IllegalArgumentException("Icon type is required"),
-            )
+                if (uri.isNullOrEmpty()) {
+                    AccountAvatar.Monogram(
+                        value = DEFAULT_MONOGRAM,
+                    )
+                } else {
+                    AccountAvatar.Image(
+                        uri = uri,
+                    )
+                }
+            }
+
+            AvatarTypeDto.ICON -> {
+                val name = dto.avatarIconName
+
+                if (name.isNullOrEmpty()) {
+                    AccountAvatar.Monogram(
+                        value = DEFAULT_MONOGRAM,
+                    )
+                } else {
+                    AccountAvatar.Icon(
+                        name = name,
+                    )
+                }
+            }
         }
     }
 
@@ -34,5 +54,9 @@ class DefaultAccountAvatarDataMapper : AccountAvatarDataMapper {
             avatarImageUri = if (domain is AccountAvatar.Image) domain.uri else null,
             avatarIconName = if (domain is AccountAvatar.Icon) domain.name else null,
         )
+    }
+
+    private companion object {
+        const val DEFAULT_MONOGRAM = "XX"
     }
 }
