@@ -1,5 +1,5 @@
 plugins {
-    id(ThunderbirdPlugins.Library.android)
+    id(ThunderbirdPlugins.Library.kmp)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -7,7 +7,12 @@ android {
     namespace = "net.thunderbird.feature.search.legacy"
 }
 
-dependencies {
-    implementation(projects.feature.mail.account.api)
-    implementation(libs.kotlinx.serialization.json)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.feature.mail.account.api)
+
+            implementation(libs.kotlinx.serialization.json)
+        }
+    }
 }
