@@ -50,10 +50,9 @@ class ImapFolderFetcher internal constructor(
         return try {
             store.getFolders()
                 .asSequence()
-                .filterNot { it.oldServerId == null }
                 .map { folder ->
                     RemoteFolder(
-                        serverId = FolderServerId(folder.oldServerId!!),
+                        serverId = FolderServerId(folder.serverId),
                         displayName = folder.name,
                         type = folder.type,
                     )

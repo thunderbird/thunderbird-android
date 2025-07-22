@@ -380,6 +380,25 @@ class RealImapFolderTest {
     }
 
     @Test
+    fun `moveMessages() with MOVE and UTF8=ACCEPT extensions`() {
+        val folderNameCodec = FolderNameCodec()
+        folderNameCodec.acceptUtf8Encoding = true
+        val sourceFolder = RealImapFolder(internalImapStore, testConnectionManager, "Folder", folderNameCodec)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapConnection.stub {
+            on { hasCapability(Capabilities.MOVE) } doReturn true
+        }
+        val destinationFolder = createFolder("la vache dit møø")
+        val messages = listOf(createImapMessage("1"))
+        setupMoveResponses("x OK [COPYUID 23 1 101] Success")
+        sourceFolder.open(OpenMode.READ_WRITE)
+
+        val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
+
+        assertCommandWithIdsIssued("UID MOVE 1 \"la vache dit møø\"")
+    }
+
+    @Test
     fun moveMessages_shouldCopyMessages() {
         val sourceFolder = createFolder("Folder")
         prepareImapFolderForOpen(OpenMode.READ_WRITE)
