@@ -1,13 +1,6 @@
 package net.thunderbird.feature.search.legacy.api
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.modules.SerializersModule
 
 /**
  * Represents a field that can be searched in messages.
@@ -47,27 +40,4 @@ enum class MessageSearchField(
     READ("read", SearchFieldType.NUMBER),
     FLAGGED("flagged", SearchFieldType.NUMBER),
     VISIBLE("visible", SearchFieldType.NUMBER),
-    ;
-
-    companion object {
-        val searchSerializersModule = SerializersModule {
-            contextual(SearchField::class, MessageSearchFieldAsSearchFieldSerializer)
-        }
-    }
-}
-
-object MessageSearchFieldAsSearchFieldSerializer : KSerializer<SearchField> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("SearchField", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: SearchField) {
-        val enumValue = value as? MessageSearchField
-            ?: throw IllegalArgumentException("Only MessageSearchField is supported")
-        encoder.encodeString(enumValue.name)
-    }
-
-    override fun deserialize(decoder: Decoder): SearchField {
-        val name = decoder.decodeString()
-        return MessageSearchField.valueOf(name)
-    }
 }

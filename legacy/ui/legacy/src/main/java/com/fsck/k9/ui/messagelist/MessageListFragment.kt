@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
-import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -86,6 +85,7 @@ import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
+import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -277,7 +277,10 @@ class MessageListFragment :
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
-        localSearch = BundleCompat.getParcelable(arguments, ARG_SEARCH, LocalMessageSearch::class.java)!!
+
+        localSearch = arguments.getByteArray(ARG_SEARCH)?.let {
+            LocalMessageSearchSerializer.deserialize(it)
+        }!!
 
         allAccounts = localSearch.searchAllAccounts()
         val searchAccounts = localSearch.getAccounts(accountManager).also(::updateAccountList)
@@ -2259,9 +2262,11 @@ class MessageListFragment :
             isThreadDisplay: Boolean,
             threadedList: Boolean,
         ): MessageListFragment {
+            val searchBytes = LocalMessageSearchSerializer.serialize(search)
+
             return MessageListFragment().apply {
                 arguments = bundleOf(
-                    ARG_SEARCH to search,
+                    ARG_SEARCH to searchBytes,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,
                     ARG_THREADED_LIST to threadedList,
                 )

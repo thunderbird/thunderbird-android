@@ -59,7 +59,6 @@ import com.fsck.k9.ui.settings.SettingsActivity
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
-import kotlinx.serialization.json.Json
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -76,6 +75,7 @@ import net.thunderbird.feature.search.legacy.SearchAccount
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
 import net.thunderbird.feature.search.legacy.api.SearchCondition
+import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -525,8 +525,9 @@ open class MessageList :
 
             if (messageReference != null) {
                 val search = if (intent.hasByteArrayExtra(EXTRA_SEARCH)) {
-                    val search = convertToLocalMessageSearch(intent.getByteArrayExtra(EXTRA_SEARCH))
-                    search ?: messageReference.toLocalSearch()
+                    intent.getByteArrayExtra(EXTRA_SEARCH)?.let {
+                        LocalMessageSearchSerializer.deserialize(it)
+                    } ?: messageReference.toLocalSearch()
                 } else {
                     messageReference.toLocalSearch()
                 }
@@ -539,7 +540,9 @@ open class MessageList :
             }
         } else if (intent.hasByteArrayExtra(EXTRA_SEARCH)) {
             // regular LocalSearch object was passed
-            val search = convertToLocalMessageSearch(intent.getByteArrayExtra(EXTRA_SEARCH))
+            val search = intent.getByteArrayExtra(EXTRA_SEARCH)?.let {
+                LocalMessageSearchSerializer.deserialize(it)
+            }
             val noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false)
             val account = intent.getStringExtra(EXTRA_ACCOUNT)?.let { accountUuid ->
                 accountManager.getAccount(accountUuid)
@@ -1572,7 +1575,7 @@ open class MessageList :
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
                 if (search != null) {
-                    putExtra(EXTRA_SEARCH, convertToByteArray(search))
+                    putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }
                 putExtra(EXTRA_NO_THREADING, noThreading)
 
@@ -1582,23 +1585,6 @@ open class MessageList :
                 if (newTask) addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         }
-
-        private val json = Json {
-            serializersModule = MessageSearchField.searchSerializersModule
-        }
-
-        private fun convertToByteArray(search: LocalMessageSearch): ByteArray? {
-            val searchString = json.encodeToString(search)
-            return searchString.toByteArray()
-        }
-
-        private fun convertToLocalMessageSearch(searchBytes: ByteArray?): LocalMessageSearch? {
-            return searchBytes?.let {
-                val searchString = String(it)
-                json.decodeFromString<LocalMessageSearch>(searchString)
-            }
-        }
-
         fun createUnifiedInboxIntent(
             context: Context,
             account: LegacyAccount,
@@ -1610,7 +1596,7 @@ open class MessageList :
                 ).relatedSearch
 
                 putExtra(EXTRA_ACCOUNT, account.uuid)
-                putExtra(EXTRA_SEARCH, convertToByteArray(search))
+                putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 putExtra(EXTRA_NO_THREADING, false)
 
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -1675,7 +1661,7 @@ open class MessageList :
                         unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
                         unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
                     ).relatedSearch
-                    putExtra(EXTRA_SEARCH, convertToByteArray(search))
+                    putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }
 
                 putExtra(EXTRA_MESSAGE_VIEW_ONLY, messageViewOnly)
