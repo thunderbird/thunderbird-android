@@ -24,12 +24,13 @@ internal fun PermissionDeniedContent(
 ) {
     ResponsiveContent(
         modifier = Modifier.testTagAsResourceId("PermissionDeniedContent"),
-    ) {
+    ) { contentPadding ->
         Column(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(MainTheme.spacings.double),
+                .padding(MainTheme.spacings.double)
+                .padding(contentPadding),
         ) {
             TextTitleLarge(text = stringResource(R.string.migration_qrcode_permission_denied_title))
             Spacer(modifier = Modifier.height(MainTheme.spacings.double))

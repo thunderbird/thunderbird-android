@@ -44,11 +44,12 @@ internal fun DisplayOptionsContent(
             .consumeWindowInsets(contentPadding)
             .padding(contentPadding)
             .then(modifier),
-    ) {
+    ) { contentPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .imePadding(),
+            contentPadding = contentPadding,
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         ) {
