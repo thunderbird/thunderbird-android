@@ -1101,7 +1101,10 @@ open class MessageList :
             displayMode = DisplayMode.MESSAGE_LIST
             MessageActions.actionEditDraft(this, messageReference)
         } else {
-            val fragment = MessageViewContainerFragment.newInstance(messageReference, isShowAccountChip)
+            val fragment = MessageViewContainerFragment.newInstance(
+                reference = messageReference,
+                showAccountChip = isShowAccountChip,
+            )
             supportFragmentManager.commitNow {
                 replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)
             }

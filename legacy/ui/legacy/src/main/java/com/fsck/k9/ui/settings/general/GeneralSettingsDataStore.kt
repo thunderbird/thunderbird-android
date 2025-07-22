@@ -39,7 +39,6 @@ class GeneralSettingsDataStore(
 
             "messagelist_background_as_unread_indicator" -> generalSettingsManager.getSettings()
                 .isUseBackgroundAsUnreadIndicator
-
             "show_compose_button" -> generalSettingsManager.getSettings().isShowComposeButtonOnMessageList
             "threaded_view" -> generalSettingsManager.getSettings().isThreadedViewEnabled
             "messageview_fixedwidth_font" -> generalSettingsManager.getSettings().isUseMessageViewFixedWidthFont
