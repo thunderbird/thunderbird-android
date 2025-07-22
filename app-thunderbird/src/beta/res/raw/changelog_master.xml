@@ -2,7 +2,7 @@
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
     <release version="12.0b2" versioncode="20" date="2025-07-22">
-        <change>Application crashed on startup if left or right swipe gesture was set to &#34;None&#34;</change>
+        <change>Application crashed on startup if left or right swipe gesture was set to 'None'</change>
     </release>
     <release version="12.0b1" versioncode="19" date="2025-07-14">
         <change>Improve support for SMTPUTF8 and other UTF-8 email standards (RFC 6531, 6855)</change>
