@@ -153,7 +153,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
 
         holder.vName.setText(recipient.getDisplayNameOrAddress(
-            generalSettingsManager.getSettings().isShowCorrespondentNames()
+            generalSettingsManager.getConfig().getDisplay().isShowCorrespondentNames()
         ));
         if (tokenTextSize != FONT_DEFAULT) {
             holder.vName.setTextSize(TypedValue.COMPLEX_UNIT_SP, tokenTextSize);

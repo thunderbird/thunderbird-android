@@ -38,7 +38,9 @@ import net.thunderbird.core.preference.BackgroundSync;
 import net.thunderbird.core.preference.GeneralSettings;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.SubTheme;
+import net.thunderbird.core.preference.notification.NotificationPreference;
 import net.thunderbird.core.preference.privacy.PrivacySettings;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -206,64 +208,10 @@ public class MessageBuilderTest extends RobolectricTest {
     private CoreResourceProvider resourceProvider = new TestCoreResourceProvider();
     private Callback callback;
     private final GeneralSettingsManager fakeSettingsManager = new GeneralSettingsManager() {
-        @Override
-        public void setIsHideTimeZone(boolean isHideTimeZone) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @NonNull
-        @Override
-        public PrivacySettings getPrivacySettings() {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsQuietTimeEnabled(boolean isQuietTimeEnabled) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setQuietTimeStarts(@NonNull String quietTimeStarts) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setQuietTimeEnds(@NonNull String quietTimeEnds) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
         @NonNull
         @Override
         public GeneralSettings getSettings() {
-            return new GeneralSettings(
-                BackgroundSync.NEVER,
-                false,
-                AppTheme.FOLLOW_SYSTEM,
-                SubTheme.USE_GLOBAL,
-                SubTheme.USE_GLOBAL,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                "07:00",
-                "07:00",
-                false,
-                false,
-                new PrivacySettings(false, false)
-            );
+            return new GeneralSettings();
         }
 
         @NonNull
@@ -273,112 +221,17 @@ public class MessageBuilderTest extends RobolectricTest {
         }
 
         @Override
-        public void setShowRecentChanges(boolean showRecentChanges) {
+        public @NotNull GeneralSettings getConfig() {
+            return getSettings();
+        }
+
+        @Override
+        public @NotNull Flow<@NotNull GeneralSettings> getConfigFlow() {
             throw new UnsupportedOperationException("not implemented");
         }
 
         @Override
-        public void setAppTheme(@NonNull AppTheme appTheme) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setMessageViewTheme(@NonNull SubTheme subTheme) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setMessageComposeTheme(@NonNull SubTheme subTheme) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setFixedMessageViewTheme(boolean fixedMessageViewTheme) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsShowUnifiedInbox(boolean isShowUnifiedInbox) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsShowStarredCount(boolean isShowStarredCount) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsShowMessageListStars(boolean isShowMessageListStars) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsShowAnimations(boolean isShowAnimations) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsShowCorrespondentNames(boolean isShowCorrespondentNames) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setSetupArchiveShouldNotShowAgain(boolean shouldShowSetupArchiveFolderDialog) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsMessageListSenderAboveSubject(boolean isMessageListSenderAboveSubject) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsShowContactName(boolean isShowContactName) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsShowContactPicture(boolean isShowContactPicture) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsChangeContactNameColor(boolean isChangeContactNameColor) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsColorizeMissingContactPictures(boolean isColorizeMissingContactPictures) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsUseBackgroundAsUnreadIndicator(boolean isUseBackgroundAsUnreadIndicator) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsShowComposeButtonOnMessageList(boolean isShowComposeButtonOnMessageList) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsThreadedViewEnabled(boolean isThreadedViewEnabled) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsUseMessageViewFixedWidthFont(boolean isUseMessageViewFixedWidthFont) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsAutoFitWidth(boolean isAutoFitWidth) {
-            throw new UnsupportedOperationException("not implemented");
-        }
-
-        @Override
-        public void setIsHideUserAgent(boolean isHideUserAgent) {
+        public void save(@NotNull GeneralSettings config) {
             throw new UnsupportedOperationException("not implemented");
         }
     };

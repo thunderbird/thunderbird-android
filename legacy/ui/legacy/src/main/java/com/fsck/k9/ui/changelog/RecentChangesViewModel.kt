@@ -24,8 +24,8 @@ class RecentChangesViewModel(
     }.asLiveData()
 
     private fun getShowRecentChangesFlow(): Flow<Boolean> {
-        return generalSettingsManager.getSettingsFlow()
-            .map { generalSettings -> generalSettings.showRecentChanges }
+        return generalSettingsManager.getConfigFlow()
+            .map { generalSettings -> generalSettings.display.showRecentChanges }
             .distinctUntilChanged()
     }
 

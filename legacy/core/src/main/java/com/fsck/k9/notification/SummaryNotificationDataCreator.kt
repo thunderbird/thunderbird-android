@@ -12,7 +12,7 @@ internal class SummaryNotificationDataCreator(
 ) {
     fun createSummaryNotificationData(data: NotificationData, silent: Boolean): SummaryNotificationData {
         val timestamp = data.latestTimestamp
-        val shouldBeSilent = silent || generalSettingsManager.getSettings().isQuietTime
+        val shouldBeSilent = silent || generalSettingsManager.getConfig().notification.isQuietTime
         return if (data.isSingleMessageNotification) {
             createSummarySingleNotificationData(data, timestamp, shouldBeSilent)
         } else {

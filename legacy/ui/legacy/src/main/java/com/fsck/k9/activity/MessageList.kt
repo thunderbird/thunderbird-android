@@ -294,7 +294,7 @@ open class MessageList :
             val messageListFragment = MessageListFragment.newInstance(
                 search!!,
                 false,
-                generalSettingsManager.getSettings().isThreadedViewEnabled && !noThreading,
+                generalSettingsManager.getConfig().display.isThreadedViewEnabled && !noThreading,
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment)
             fragmentTransaction.commitNow()
@@ -396,7 +396,9 @@ open class MessageList :
 
         val launchData = decodeExtrasToLaunchData(intent)
         // If Unified Inbox was disabled show default account instead
-        val search = if (launchData.search.isUnifiedInbox && !generalSettingsManager.getSettings().isShowUnifiedInbox) {
+        val search = if (launchData.search.isUnifiedInbox &&
+            !generalSettingsManager.getConfig().display.isShowUnifiedInbox
+        ) {
             createDefaultLocalSearch()
         } else {
             launchData.search
@@ -547,7 +549,7 @@ open class MessageList :
         }
 
         // Default action
-        val search = if (generalSettingsManager.getSettings().isShowUnifiedInbox) {
+        val search = if (generalSettingsManager.getConfig().display.isShowUnifiedInbox) {
             createSearchAccount().relatedSearch
         } else {
             createDefaultLocalSearch()
@@ -751,7 +753,7 @@ open class MessageList :
         val messageListFragment = MessageListFragment.newInstance(
             search,
             false,
-            generalSettingsManager.getSettings().isThreadedViewEnabled,
+            generalSettingsManager.getConfig().display.isThreadedViewEnabled,
         )
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment)
 
@@ -787,7 +789,7 @@ open class MessageList :
             collapseSearchView()
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
-                if (generalSettingsManager.getSettings().isShowUnifiedInbox) {
+                if (generalSettingsManager.getConfig().display.isShowUnifiedInbox) {
                     if (search!!.id != SearchAccount.UNIFIED_INBOX) {
                         openUnifiedInbox()
                     } else {
@@ -1485,7 +1487,7 @@ open class MessageList :
                 // Don't select any item in the drawer because the Unified Inbox is displayed,
                 // but not listed in the drawer
                 search.id == SearchAccount.UNIFIED_INBOX &&
-                    !generalSettingsManager.getSettings().isShowUnifiedInbox -> drawer.deselect()
+                    !generalSettingsManager.getConfig().display.isShowUnifiedInbox -> drawer.deselect()
 
                 search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
             }

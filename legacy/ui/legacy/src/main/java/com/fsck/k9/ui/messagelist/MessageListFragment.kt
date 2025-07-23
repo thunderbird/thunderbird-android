@@ -248,7 +248,7 @@ class MessageListFragment :
              * from the fragment's arguments rather than the flow.
              */
             .drop(1)
-            .map { it.isThreadedViewEnabled }
+            .map { it.display.isThreadedViewEnabled }
             .distinctUntilChanged()
             .onEach {
                 showingThreadedList = it
@@ -410,7 +410,7 @@ class MessageListFragment :
     }
 
     private fun initializeFloatingActionButton(view: View) {
-        isShowFloatingActionButton = generalSettingsManager.getSettings().isShowComposeButtonOnMessageList
+        isShowFloatingActionButton = generalSettingsManager.getConfig().display.isShowComposeButtonOnMessageList
         if (isShowFloatingActionButton) {
             enableFloatingActionButton(view)
         } else {
@@ -706,11 +706,11 @@ class MessageListFragment :
         get() = MessageListAppearance(
             fontSizes = K9.fontSizes,
             previewLines = K9.messageListPreviewLines,
-            stars = !isOutbox && generalSettingsManager.getSettings().isShowMessageListStars,
-            senderAboveSubject = generalSettingsManager.getSettings().isMessageListSenderAboveSubject,
-            showContactPicture = generalSettingsManager.getSettings().isShowContactPicture,
+            stars = !isOutbox && generalSettingsManager.getConfig().display.isShowMessageListStars,
+            senderAboveSubject = generalSettingsManager.getConfig().display.isMessageListSenderAboveSubject,
+            showContactPicture = generalSettingsManager.getConfig().display.isShowContactPicture,
             showingThreadedList = showingThreadedList,
-            backGroundAsReadIndicator = generalSettingsManager.getSettings().isUseBackgroundAsUnreadIndicator,
+            backGroundAsReadIndicator = generalSettingsManager.getConfig().display.isUseBackgroundAsUnreadIndicator,
             showAccountChip = isShowAccountChip,
             density = K9.messageListDensity,
         )
