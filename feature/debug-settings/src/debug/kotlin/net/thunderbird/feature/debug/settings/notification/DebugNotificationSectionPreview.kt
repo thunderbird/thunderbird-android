@@ -65,7 +65,7 @@ private fun PreviewSingleMailNotification() {
                 DebugNotificationSectionContract.State(
                     accounts = accounts,
                     selectedAccount = accounts.first(),
-                    selectedSystemNotificationType = MailNotification.NewMail.SingleMail::class,
+                    selectedSystemNotificationType = MailNotification.NewMailSingleMail::class,
                 ),
             )
         }

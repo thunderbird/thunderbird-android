@@ -155,18 +155,71 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     }
 
     /**
-     * Represents a notification for new mail.
+     * Represents a notification for a single new email.
      *
-     * @property accountUuid The UUID of the account associated with this notification.
-     * @property messagesNotificationChannelSuffix The suffix for the notification channel.
-     * @property channel The notification channel for this notification.
-     * @property actions The set of actions available for this notification.
+     * @property id The unique identifier for this notification.
+     * @property accountUuid The UUID of the account that received the email.
+     * @property accountName The display name of the account that received the email.
+     * @property messagesNotificationChannelSuffix The suffix for the messages notification channel.
+     * @property summary A short summary of the email content.
+     * @property sender The sender of the email.
+     * @property subject The subject of the email.
+     * @property preview A preview of the email content.
+     * @property group The notification group this notification belongs to, if any.
+     * @property lockscreenNotificationAppearance Specifies how this notification should appear on the lockscreen.
      */
-    sealed class NewMail : MailNotification() {
-        abstract val accountUuid: String
-        abstract val messagesNotificationChannelSuffix: String
+    data class NewMailSingleMail(
+        override val id: NotificationId,
+        val accountUuid: String,
+        val accountName: String,
+        val messagesNotificationChannelSuffix: String,
+        val summary: String,
+        val sender: String,
+        val subject: String,
+        val preview: String,
+        override val group: NotificationGroup?,
+        override val icon: NotificationIcon = NotificationIcons.NewMailSingleMail,
+    ) : MailNotification() {
+        override val title: String = sender
+        override val contentText: String = subject
 
-        override val channel: NotificationChannel get() = NotificationChannel.Messages(
+        override val channel: NotificationChannel = NotificationChannel.Messages(
+            accountUuid = accountUuid,
+            suffix = messagesNotificationChannelSuffix,
+        )
+
+        override val actions: Set<NotificationAction> = setOf(
+            NotificationAction.Reply,
+            NotificationAction.MarkAsRead,
+            NotificationAction.Delete,
+            NotificationAction.Archive,
+            NotificationAction.MarkAsSpam,
+        )
+    }
+
+    /**
+     * Represents a summary notification for new mail.
+     *
+     * @property id The unique identifier for this notification.
+     * @property accountUuid The UUID of the account.
+     * @property accountName The display name of the account.
+     * @property messagesNotificationChannelSuffix The suffix for the messages notification channel.
+     * @property title The title of the notification.
+     * @property contentText The content text of the notification, or null if there is no content text.
+     * @property group The notification group this summary belongs to.
+     */
+    @ConsistentCopyVisibility
+    data class NewMailSummaryMail private constructor(
+        override val id: NotificationId,
+        val accountUuid: String,
+        val accountName: String,
+        val messagesNotificationChannelSuffix: String,
+        override val title: String,
+        override val contentText: String?,
+        override val group: NotificationGroup,
+        override val icon: NotificationIcon = NotificationIcons.NewMailSummaryMail,
+    ) : MailNotification() {
+        override val channel: NotificationChannel = NotificationChannel.Messages(
             accountUuid = accountUuid,
             suffix = messagesNotificationChannelSuffix,
         )
@@ -179,102 +232,49 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             NotificationAction.MarkAsSpam,
         )
 
-        /**
-         * Represents a notification for a single new email.
-         *
-         * @property id The unique identifier for this notification.
-         * @property accountUuid The UUID of the account that received the email.
-         * @property accountName The display name of the account that received the email.
-         * @property messagesNotificationChannelSuffix The suffix for the messages notification channel.
-         * @property summary A short summary of the email content.
-         * @property sender The sender of the email.
-         * @property subject The subject of the email.
-         * @property preview A preview of the email content.
-         * @property group The notification group this notification belongs to, if any.
-         * @property lockscreenNotificationAppearance Specifies how this notification should appear on the lockscreen.
-         */
-        data class SingleMail(
-            override val id: NotificationId,
-            override val accountUuid: String,
-            val accountName: String,
-            override val messagesNotificationChannelSuffix: String,
-            val summary: String,
-            val sender: String,
-            val subject: String,
-            val preview: String,
-            override val group: NotificationGroup?,
-            override val icon: NotificationIcon = NotificationIcons.NewMailSingleMail,
-        ) : NewMail() {
-            override val title: String = sender
-            override val contentText: String = subject
-        }
-
-        /**
-         * Represents a summary notification for new mail.
-         *
-         * @property id The unique identifier for this notification.
-         * @property accountUuid The UUID of the account.
-         * @property accountName The display name of the account.
-         * @property messagesNotificationChannelSuffix The suffix for the messages notification channel.
-         * @property title The title of the notification.
-         * @property contentText The content text of the notification, or null if there is no content text.
-         * @property group The notification group this summary belongs to.
-         */
-        @ConsistentCopyVisibility
-        data class SummaryMail private constructor(
-            override val id: NotificationId,
-            override val accountUuid: String,
-            val accountName: String,
-            override val messagesNotificationChannelSuffix: String,
-            override val title: String,
-            override val contentText: String?,
-            override val group: NotificationGroup,
-            override val icon: NotificationIcon = NotificationIcons.NewMailSummaryMail,
-        ) : NewMail() {
-            companion object {
-                /**
-                 * Creates a [SummaryMail] notification.
-                 *
-                 * @param id The unique identifier for this notification.
-                 * @param accountUuid The UUID of the account.
-                 * @param accountDisplayName The display name of the account.
-                 * @param messagesNotificationChannelSuffix The suffix for the messages notification channel.
-                 * @param newMessageCount The number of new messages.
-                 * @param additionalMessagesCount The number of additional messages (not shown in individual
-                 * notifications).
-                 * @param group The notification group this summary belongs to.
-                 * @return A [SummaryMail] notification.
-                 */
-                suspend operator fun invoke(
-                    id: NotificationId,
-                    accountUuid: String,
-                    accountDisplayName: String,
-                    messagesNotificationChannelSuffix: String,
-                    newMessageCount: Int,
-                    additionalMessagesCount: Int,
-                    group: NotificationGroup,
-                ): SummaryMail = SummaryMail(
-                    id = id,
-                    accountUuid = accountUuid,
-                    accountName = accountDisplayName,
-                    messagesNotificationChannelSuffix = messagesNotificationChannelSuffix,
-                    title = getPluralString(
-                        Res.plurals.notification_new_messages_title,
-                        newMessageCount,
-                        newMessageCount,
-                    ),
-                    contentText = if (additionalMessagesCount > 0) {
-                        getString(
-                            Res.string.notification_additional_messages,
-                            additionalMessagesCount,
-                            accountDisplayName,
-                        )
-                    } else {
-                        accountDisplayName
-                    },
-                    group = group,
-                )
-            }
+        companion object {
+            /**
+             * Creates a [NewMailSummaryMail] notification.
+             *
+             * @param id The unique identifier for this notification.
+             * @param accountUuid The UUID of the account.
+             * @param accountDisplayName The display name of the account.
+             * @param messagesNotificationChannelSuffix The suffix for the messages notification channel.
+             * @param newMessageCount The number of new messages.
+             * @param additionalMessagesCount The number of additional messages (not shown in individual
+             * notifications).
+             * @param group The notification group this summary belongs to.
+             * @return A [NewMailSummaryMail] notification.
+             */
+            suspend operator fun invoke(
+                id: NotificationId,
+                accountUuid: String,
+                accountDisplayName: String,
+                messagesNotificationChannelSuffix: String,
+                newMessageCount: Int,
+                additionalMessagesCount: Int,
+                group: NotificationGroup,
+            ): NewMailSummaryMail = NewMailSummaryMail(
+                id = id,
+                accountUuid = accountUuid,
+                accountName = accountDisplayName,
+                messagesNotificationChannelSuffix = messagesNotificationChannelSuffix,
+                title = getPluralString(
+                    Res.plurals.notification_new_messages_title,
+                    newMessageCount,
+                    newMessageCount,
+                ),
+                contentText = if (additionalMessagesCount > 0) {
+                    getString(
+                        Res.string.notification_additional_messages,
+                        additionalMessagesCount,
+                        accountDisplayName,
+                    )
+                } else {
+                    accountDisplayName
+                },
+                group = group,
+            )
         }
     }
 }

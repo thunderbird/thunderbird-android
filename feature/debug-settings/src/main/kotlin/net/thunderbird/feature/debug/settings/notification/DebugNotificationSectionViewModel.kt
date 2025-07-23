@@ -49,8 +49,8 @@ internal class DebugNotificationSectionViewModel(
                         add(CertificateErrorNotification::class)
                         add(FailedToCreateNotification::class)
                         add(MailNotification.Fetching::class)
-                        add(MailNotification.NewMail.SingleMail::class)
-                        add(MailNotification.NewMail.SummaryMail::class)
+                        add(MailNotification.NewMailSingleMail::class)
+                        add(MailNotification.NewMailSummaryMail::class)
                         add(MailNotification.SendFailed::class)
                         add(MailNotification.Sending::class)
                         add(PushServiceNotification.AlarmPermissionMissing::class)
@@ -218,13 +218,13 @@ internal class DebugNotificationSectionViewModel(
             folderName = state.folderName,
         )
 
-        MailNotification.NewMail.SingleMail::class -> state.buildSingleMailNotification(
+        MailNotification.NewMailSingleMail::class -> state.buildSingleMailNotification(
             notificationId = notificationId,
             selectedAccount = selectedAccount,
             accountDisplay = accountDisplay,
         )
 
-        MailNotification.NewMail.SummaryMail::class -> MailNotification.NewMail.SummaryMail(
+        MailNotification.NewMailSummaryMail::class -> MailNotification.NewMailSummaryMail(
             id = notificationId,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
@@ -276,7 +276,7 @@ internal class DebugNotificationSectionViewModel(
         notificationId: NotificationId,
         selectedAccount: BaseAccount,
         accountDisplay: String,
-    ): MailNotification.NewMail.SingleMail? = MailNotification.NewMail.SingleMail(
+    ): MailNotification.NewMailSingleMail? = MailNotification.NewMailSingleMail(
         id = notificationId,
         accountUuid = selectedAccount.uuid,
         accountName = accountDisplay,
