@@ -31,7 +31,6 @@ import org.jetbrains.compose.resources.getString
  */
 sealed class MailNotification : AppNotification(), SystemNotification {
     override val severity: NotificationSeverity = NotificationSeverity.Information
-    override val authenticationRequired: Boolean = true
 
     data class Fetching(
         override val id: NotificationId,
@@ -41,7 +40,10 @@ sealed class MailNotification : AppNotification(), SystemNotification {
         override val channel: NotificationChannel,
         override val icon: NotificationIcon = NotificationIcons.MailFetching,
     ) : MailNotification() {
-        override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
+        override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
+            SystemNotification.LockscreenNotification(
+                notification = copy(contentText = null),
+            )
 
         companion object {
             /**
@@ -91,7 +93,10 @@ sealed class MailNotification : AppNotification(), SystemNotification {
         override val channel: NotificationChannel,
         override val icon: NotificationIcon = NotificationIcons.MailSending,
     ) : MailNotification() {
-        override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
+        override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
+            SystemNotification.LockscreenNotification(
+                notification = copy(contentText = null),
+            )
 
         companion object {
             /**
@@ -127,10 +132,11 @@ sealed class MailNotification : AppNotification(), SystemNotification {
         override val icon: NotificationIcon = NotificationIcons.MailSendFailed,
     ) : MailNotification(), InAppNotification {
         override val severity: NotificationSeverity = NotificationSeverity.Critical
-        override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
-        override val actions: Set<NotificationAction> = setOf(
-            NotificationAction.Retry,
-        )
+        override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
+            SystemNotification.LockscreenNotification(
+                notification = copy(contentText = null),
+            )
+        override val actions: Set<NotificationAction> = setOf(NotificationAction.Retry)
 
         companion object {
             /**
@@ -166,7 +172,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
      * @property subject The subject of the email.
      * @property preview A preview of the email content.
      * @property group The notification group this notification belongs to, if any.
-     * @property lockscreenNotificationAppearance Specifies how this notification should appear on the lockscreen.
      */
     data class NewMailSingleMail(
         override val id: NotificationId,
@@ -187,6 +192,9 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             accountUuid = accountUuid,
             suffix = messagesNotificationChannelSuffix,
         )
+
+        override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
+            SystemNotification.LockscreenNotification(notification = copy())
 
         override val actions: Set<NotificationAction> = setOf(
             NotificationAction.Reply,

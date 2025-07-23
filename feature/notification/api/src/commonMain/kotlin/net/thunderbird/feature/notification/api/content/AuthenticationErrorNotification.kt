@@ -31,7 +31,10 @@ data class AuthenticationErrorNotification private constructor(
         NotificationAction.UpdateServerSettings,
     )
 
-    override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
+    override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
+        SystemNotification.LockscreenNotification(
+            notification = copy(contentText = null),
+        )
 
     companion object {
         /**

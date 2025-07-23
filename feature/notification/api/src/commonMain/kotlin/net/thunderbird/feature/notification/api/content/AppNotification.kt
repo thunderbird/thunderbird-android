@@ -26,9 +26,6 @@ import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
  * @property severity The severity level of the notification.
  * @property createdAt The date and time when the notification was created.
  * @property actions A set of actions that can be performed on the notification.
- * @property authenticationRequired Indicates whether authentication is required to view the notification.
- * @property channel The notification channel to which this notification belongs.
- * @property group The notification group to which this notification belongs, can be null.
  * @property icon The notification icon.
  * @see AppNotification
  */
@@ -40,9 +37,6 @@ sealed interface Notification {
     val severity: NotificationSeverity
     val createdAt: LocalDateTime
     val actions: Set<NotificationAction>
-    val authenticationRequired: Boolean
-    val channel: NotificationChannel
-    val group: NotificationGroup?
     val icon: NotificationIcon
 }
 
@@ -54,9 +48,6 @@ sealed interface Notification {
  * Defaults to the notification's title.
  * @property createdAt The timestamp when the notification was created. Defaults to the current UTC time.
  * @property actions A set of actions that can be performed on the notification. Defaults to an empty set.
- * @property authenticationRequired Whether authentication is required to interact with the notification.
- * Defaults to false.
- * @property group The notification group this notification belongs to, if any. Defaults to null.
  * @see Notification
  */
 sealed class AppNotification : Notification {
@@ -65,25 +56,45 @@ sealed class AppNotification : Notification {
     @OptIn(ExperimentalTime::class)
     override val createdAt: LocalDateTime = Clock.System.now().toLocalDateTime(timeZone = TimeZone.UTC)
     override val actions: Set<NotificationAction> = emptySet()
-    override val authenticationRequired: Boolean = false
-    override val group: NotificationGroup? = null
 }
 
 /**
  * Represents a notification displayed by the system, **requiring user permission**.
  * This type of notification can appear on the lock screen.
  *
- * @property lockscreenNotification The notification to display on the lock screen.
- * Override if you need to hide any content when showing this notification in the lockscreen.
- * By default, this is the same as the notification itself.
- * @property lockscreenNotificationAppearance The appearance of the notification on the lockscreen.
- * By default, the notification is [LockscreenNotificationAppearance.Public].
+ * @property subText Additional text displayed below the content text, can be null.
+ * @property channel The notification channel to which this notification belongs.
+ * @property group The notification group to which this notification belongs, can be null.
  * @see LockscreenNotificationAppearance
  */
 sealed interface SystemNotification : Notification {
-    val lockscreenNotification: SystemNotification get() = this
-    val lockscreenNotificationAppearance: LockscreenNotificationAppearance
-        get() = LockscreenNotificationAppearance.Public
+    val subText: String? get() = null
+    val channel: NotificationChannel
+    val group: NotificationGroup? get() = null
+
+    /**
+     * Converts this notification to a [LockscreenNotification].
+     *
+     * This function should be overridden by subclasses that can be displayed on the lockscreen.
+     * If the notification should not be displayed on the lockscreen, this function should return `null`.
+     *
+     * @return The [LockscreenNotification] representation of this notification, or `null` if it should not be
+     * displayed on the lockscreen.
+     */
+    fun asLockscreenNotification(): LockscreenNotification? = null
+
+    /**
+     * Represents a notification that can be displayed on the lock screen.
+     *
+     * @property notification The system notification to be displayed.
+     * @property lockscreenNotificationAppearance The appearance of the notification on the lock screen.
+     * Defaults to [LockscreenNotificationAppearance.Public].
+     */
+    data class LockscreenNotification(
+        val notification: SystemNotification,
+        val lockscreenNotificationAppearance: LockscreenNotificationAppearance =
+            LockscreenNotificationAppearance.Public,
+    )
 }
 
 /**
