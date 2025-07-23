@@ -2,7 +2,7 @@
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
     <release version="12.0b3" versioncode="21" date="2025-07-22">
-        <change>Application crashed on startup if left or right swipe gesture was set to &#39;None&#39;</change>
+        <change>Application crashed on startup if left or right swipe gesture was set to 'None'</change>
     </release>
     <release version="12.0b2" versioncode="20" date="2025-07-22">
         <change>Application crashed on startup if left or right swipe gesture was set to 'None'</change>
