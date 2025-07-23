@@ -12,6 +12,8 @@ import net.thunderbird.feature.notification.api.ui.icon.NewMailSingleMail
 import net.thunderbird.feature.notification.api.ui.icon.NewMailSummaryMail
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
+import net.thunderbird.feature.notification.api.ui.style.SystemNotificationStyle
+import net.thunderbird.feature.notification.api.ui.style.systemNotificationStyle
 import net.thunderbird.feature.notification.resources.api.Res
 import net.thunderbird.feature.notification.resources.api.notification_additional_messages
 import net.thunderbird.feature.notification.resources.api.notification_bg_send_ticker
@@ -126,6 +128,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             SystemNotification.LockscreenNotification(
                 notification = copy(contentText = null),
             )
+
         override val actions: Set<NotificationAction> = setOf(NotificationAction.Retry)
 
         companion object {
@@ -188,6 +191,9 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             NotificationAction.Archive,
             NotificationAction.MarkAsSpam,
         )
+        override val systemNotificationStyle: SystemNotificationStyle = systemNotificationStyle {
+            bigText(preview)
+        }
     }
 
     /**
