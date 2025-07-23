@@ -3,7 +3,6 @@ package net.thunderbird.feature.notification.api.content
 import net.thunderbird.core.common.exception.rootCauseMassage
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
-import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.MailFetching
@@ -33,7 +32,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     override val severity: NotificationSeverity = NotificationSeverity.Information
 
     data class Fetching(
-        override val id: NotificationId,
         override val title: String,
         override val accessibilityText: String,
         override val contentText: String?,
@@ -49,21 +47,18 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             /**
              * Creates a [Fetching] notification.
              *
-             * @param id The unique identifier for this notification.
              * @param accountUuid The UUID of the account being fetched.
              * @param accountDisplayName The display name of the account being fetched.
              * @param folderName The name of the folder being fetched, or null if fetching all folders.
              * @return A [Fetching] notification.
              */
             suspend operator fun invoke(
-                id: NotificationId,
                 accountUuid: String,
                 accountDisplayName: String,
                 folderName: String?,
             ): Fetching {
                 val title = getString(resource = Res.string.notification_bg_sync_title)
                 return Fetching(
-                    id = id,
                     title = title,
                     accessibilityText = folderName?.let { folderName ->
                         getString(
@@ -86,7 +81,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     }
 
     data class Sending(
-        override val id: NotificationId,
         override val title: String,
         override val accessibilityText: String,
         override val contentText: String?,
@@ -102,17 +96,14 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             /**
              * Creates a [Sending] notification.
              *
-             * @param id The unique identifier for this notification.
              * @param accountUuid The UUID of the account sending the message.
              * @param accountDisplayName The display name of the account sending the message.
              * @return A [Sending] notification.
              */
             suspend operator fun invoke(
-                id: NotificationId,
                 accountUuid: String,
                 accountDisplayName: String,
             ): Sending = Sending(
-                id = id,
                 title = getString(resource = Res.string.notification_bg_send_title),
                 accessibilityText = getString(
                     resource = Res.string.notification_bg_send_ticker,
@@ -125,7 +116,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     }
 
     data class SendFailed(
-        override val id: NotificationId,
         override val title: String,
         override val contentText: String?,
         override val channel: NotificationChannel,
@@ -142,17 +132,14 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             /**
              * Creates a [SendFailed] notification.
              *
-             * @param id The unique identifier for this notification.
              * @param accountUuid The UUID of the account sending the message.
              * @param exception The exception that occurred during sending.
              * @return A [SendFailed] notification.
              */
             suspend operator fun invoke(
-                id: NotificationId,
                 accountUuid: String,
                 exception: Exception,
             ): SendFailed = SendFailed(
-                id = id,
                 title = getString(resource = Res.string.send_failure_subject),
                 contentText = exception.rootCauseMassage,
                 channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),
@@ -163,7 +150,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     /**
      * Represents a notification for a single new email.
      *
-     * @property id The unique identifier for this notification.
      * @property accountUuid The UUID of the account that received the email.
      * @property accountName The display name of the account that received the email.
      * @property messagesNotificationChannelSuffix The suffix for the messages notification channel.
@@ -174,7 +160,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
      * @property group The notification group this notification belongs to, if any.
      */
     data class NewMailSingleMail(
-        override val id: NotificationId,
         val accountUuid: String,
         val accountName: String,
         val messagesNotificationChannelSuffix: String,
@@ -208,7 +193,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     /**
      * Represents a summary notification for new mail.
      *
-     * @property id The unique identifier for this notification.
      * @property accountUuid The UUID of the account.
      * @property accountName The display name of the account.
      * @property messagesNotificationChannelSuffix The suffix for the messages notification channel.
@@ -218,7 +202,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
      */
     @ConsistentCopyVisibility
     data class NewMailSummaryMail private constructor(
-        override val id: NotificationId,
         val accountUuid: String,
         val accountName: String,
         val messagesNotificationChannelSuffix: String,
@@ -244,7 +227,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             /**
              * Creates a [NewMailSummaryMail] notification.
              *
-             * @param id The unique identifier for this notification.
              * @param accountUuid The UUID of the account.
              * @param accountDisplayName The display name of the account.
              * @param messagesNotificationChannelSuffix The suffix for the messages notification channel.
@@ -255,7 +237,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
              * @return A [NewMailSummaryMail] notification.
              */
             suspend operator fun invoke(
-                id: NotificationId,
                 accountUuid: String,
                 accountDisplayName: String,
                 messagesNotificationChannelSuffix: String,
@@ -263,7 +244,6 @@ sealed class MailNotification : AppNotification(), SystemNotification {
                 additionalMessagesCount: Int,
                 group: NotificationGroup,
             ): NewMailSummaryMail = NewMailSummaryMail(
-                id = id,
                 accountUuid = accountUuid,
                 accountName = accountDisplayName,
                 messagesNotificationChannelSuffix = messagesNotificationChannelSuffix,

@@ -1,7 +1,6 @@
 package net.thunderbird.feature.notification.api.content
 
 import net.thunderbird.feature.notification.api.NotificationChannel
-import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.icon.FailedToCreate
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
@@ -19,7 +18,6 @@ import org.jetbrains.compose.resources.getString
  */
 @ConsistentCopyVisibility
 data class FailedToCreateNotification private constructor(
-    override val id: NotificationId,
     override val title: String,
     override val contentText: String?,
     override val channel: NotificationChannel,
@@ -32,17 +30,14 @@ data class FailedToCreateNotification private constructor(
         /**
          * Creates a [FailedToCreateNotification] instance.
          *
-         * @param id The unique identifier for this notification.
          * @param accountUuid The UUID of the account associated with the failed notification.
          * @param failedNotification The original [AppNotification] that failed to be created.
          * @return A [FailedToCreateNotification] instance.
          */
         suspend operator fun invoke(
-            id: NotificationId,
             accountUuid: String,
             failedNotification: AppNotification,
         ): FailedToCreateNotification = FailedToCreateNotification(
-            id = id,
             title = getString(resource = Res.string.notification_notify_error_title),
             contentText = getString(resource = Res.string.notification_notify_error_text),
             channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),

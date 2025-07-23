@@ -2,7 +2,6 @@ package net.thunderbird.feature.debug.settings.notification
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -20,7 +19,6 @@ import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationGroupKey
-import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification
 import net.thunderbird.feature.notification.api.content.CertificateErrorNotification
 import net.thunderbird.feature.notification.api.content.FailedToCreateNotification
@@ -163,7 +161,6 @@ internal class DebugNotificationSectionViewModel(
 
         val notification = buildNotification(
             notificationType = notificationType,
-            notificationId = NotificationId(Random.nextInt()),
             selectedAccount = selectedAccount,
             accountDisplay = accountDisplay,
             state = state,
@@ -184,48 +181,40 @@ internal class DebugNotificationSectionViewModel(
     @Suppress("CyclomaticComplexMethod", "LongMethod")
     private suspend fun buildNotification(
         notificationType: KClass<out Notification>?,
-        notificationId: NotificationId,
         selectedAccount: BaseAccount,
         accountDisplay: String,
         state: State,
     ): Notification? = when (notificationType) {
         AuthenticationErrorNotification::class -> AuthenticationErrorNotification(
-            id = notificationId,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
         )
 
         CertificateErrorNotification::class -> CertificateErrorNotification(
-            id = notificationId,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
         )
 
         FailedToCreateNotification::class -> FailedToCreateNotification(
-            id = notificationId,
             accountUuid = selectedAccount.uuid,
             failedNotification = AuthenticationErrorNotification(
-                id = notificationId,
                 accountUuid = selectedAccount.uuid,
                 accountDisplayName = accountDisplay,
             ),
         )
 
         MailNotification.Fetching::class -> MailNotification.Fetching(
-            id = notificationId,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
             folderName = state.folderName,
         )
 
         MailNotification.NewMailSingleMail::class -> state.buildSingleMailNotification(
-            notificationId = notificationId,
             selectedAccount = selectedAccount,
             accountDisplay = accountDisplay,
         )
 
         MailNotification.NewMailSummaryMail::class -> MailNotification.NewMailSummaryMail(
-            id = notificationId,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
             messagesNotificationChannelSuffix = "",
@@ -238,46 +227,32 @@ internal class DebugNotificationSectionViewModel(
         )
 
         MailNotification.SendFailed::class -> MailNotification.SendFailed(
-            id = notificationId,
             accountUuid = selectedAccount.uuid,
             exception = Exception("What a failure"),
         )
 
         MailNotification.Sending::class -> MailNotification.Sending(
-            id = notificationId,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
         )
 
-        PushServiceNotification.AlarmPermissionMissing::class -> PushServiceNotification.AlarmPermissionMissing(
-            id = notificationId,
-        )
+        PushServiceNotification.AlarmPermissionMissing::class -> PushServiceNotification.AlarmPermissionMissing()
 
-        PushServiceNotification.Initializing::class -> PushServiceNotification.Initializing(
-            id = notificationId,
-        )
+        PushServiceNotification.Initializing::class -> PushServiceNotification.Initializing()
 
-        PushServiceNotification.Listening::class -> PushServiceNotification.Listening(
-            id = notificationId,
-        )
+        PushServiceNotification.Listening::class -> PushServiceNotification.Listening()
 
-        PushServiceNotification.WaitBackgroundSync::class -> PushServiceNotification.WaitBackgroundSync(
-            id = notificationId,
-        )
+        PushServiceNotification.WaitBackgroundSync::class -> PushServiceNotification.WaitBackgroundSync()
 
-        PushServiceNotification.WaitNetwork::class -> PushServiceNotification.WaitNetwork(
-            id = notificationId,
-        )
+        PushServiceNotification.WaitNetwork::class -> PushServiceNotification.WaitNetwork()
 
         else -> null
     }
 
     private fun State.buildSingleMailNotification(
-        notificationId: NotificationId,
         selectedAccount: BaseAccount,
         accountDisplay: String,
     ): MailNotification.NewMailSingleMail? = MailNotification.NewMailSingleMail(
-        id = notificationId,
         accountUuid = selectedAccount.uuid,
         accountName = accountDisplay,
         messagesNotificationChannelSuffix = "",
