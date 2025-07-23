@@ -13,8 +13,8 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
-import net.thunderbird.feature.notification.api.command.NotificationCommand.CommandOutcome.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.CommandOutcome.Success
+import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
+import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.sender.NotificationSender
 
