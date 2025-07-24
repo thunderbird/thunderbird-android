@@ -1,12 +1,12 @@
 package net.thunderbird.feature.notification.api
 
-import net.thunderbird.feature.notification.resources.Res
-import net.thunderbird.feature.notification.resources.notification_channel_messages_description
-import net.thunderbird.feature.notification.resources.notification_channel_messages_title
-import net.thunderbird.feature.notification.resources.notification_channel_miscellaneous_description
-import net.thunderbird.feature.notification.resources.notification_channel_miscellaneous_title
-import net.thunderbird.feature.notification.resources.notification_channel_push_description
-import net.thunderbird.feature.notification.resources.notification_channel_push_title
+import net.thunderbird.feature.notification.resources.api.Res
+import net.thunderbird.feature.notification.resources.api.notification_channel_messages_description
+import net.thunderbird.feature.notification.resources.api.notification_channel_messages_title
+import net.thunderbird.feature.notification.resources.api.notification_channel_miscellaneous_description
+import net.thunderbird.feature.notification.resources.api.notification_channel_miscellaneous_title
+import net.thunderbird.feature.notification.resources.api.notification_channel_push_description
+import net.thunderbird.feature.notification.resources.api.notification_channel_push_title
 import org.jetbrains.compose.resources.StringResource
 
 /**

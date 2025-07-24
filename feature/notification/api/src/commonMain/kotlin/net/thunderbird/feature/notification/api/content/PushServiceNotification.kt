@@ -4,15 +4,15 @@ import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
-import net.thunderbird.feature.notification.resources.Res
-import net.thunderbird.feature.notification.resources.push_info_disable_push_action
-import net.thunderbird.feature.notification.resources.push_notification_grant_alarm_permission
-import net.thunderbird.feature.notification.resources.push_notification_info
-import net.thunderbird.feature.notification.resources.push_notification_state_alarm_permission_missing
-import net.thunderbird.feature.notification.resources.push_notification_state_initializing
-import net.thunderbird.feature.notification.resources.push_notification_state_listening
-import net.thunderbird.feature.notification.resources.push_notification_state_wait_background_sync
-import net.thunderbird.feature.notification.resources.push_notification_state_wait_network
+import net.thunderbird.feature.notification.resources.api.Res
+import net.thunderbird.feature.notification.resources.api.push_info_disable_push_action
+import net.thunderbird.feature.notification.resources.api.push_notification_grant_alarm_permission
+import net.thunderbird.feature.notification.resources.api.push_notification_info
+import net.thunderbird.feature.notification.resources.api.push_notification_state_alarm_permission_missing
+import net.thunderbird.feature.notification.resources.api.push_notification_state_initializing
+import net.thunderbird.feature.notification.resources.api.push_notification_state_listening
+import net.thunderbird.feature.notification.resources.api.push_notification_state_wait_background_sync
+import net.thunderbird.feature.notification.resources.api.push_notification_state_wait_network
 import org.jetbrains.compose.resources.getString
 
 /**

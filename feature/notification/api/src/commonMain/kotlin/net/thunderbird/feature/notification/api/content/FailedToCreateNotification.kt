@@ -3,9 +3,9 @@ package net.thunderbird.feature.notification.api.content
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
-import net.thunderbird.feature.notification.resources.Res
-import net.thunderbird.feature.notification.resources.notification_notify_error_text
-import net.thunderbird.feature.notification.resources.notification_notify_error_title
+import net.thunderbird.feature.notification.resources.api.Res
+import net.thunderbird.feature.notification.resources.api.notification_notify_error_text
+import net.thunderbird.feature.notification.resources.api.notification_notify_error_title
 import org.jetbrains.compose.resources.getString
 
 /**

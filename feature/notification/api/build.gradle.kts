@@ -17,5 +17,5 @@ android {
 
 compose.resources {
     publicResClass = false
-    packageOfResClass = "net.thunderbird.feature.notification.resources"
+    packageOfResClass = "net.thunderbird.feature.notification.resources.api"
 }
