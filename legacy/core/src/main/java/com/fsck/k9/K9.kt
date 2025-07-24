@@ -144,9 +144,6 @@ object K9 : KoinComponent {
     var isSensitiveDebugLoggingEnabled: Boolean = false
 
     @JvmStatic
-    var k9Language = ""
-
-    @JvmStatic
     val fontSizes = FontSizes()
 
     @JvmStatic
@@ -329,8 +326,6 @@ object K9 : KoinComponent {
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
 
-        k9Language = storage.getStringOrDefault("language", "")
-
         swipeRightAction = storage.getEnum(
             key = SwipeActions.KEY_SWIPE_ACTION_RIGHT,
             defaultValue = SwipeAction.ToggleSelection,
@@ -362,8 +357,6 @@ object K9 : KoinComponent {
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
-
-        editor.putString("language", k9Language)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
         editor.putBoolean("confirmDiscardMessage", isConfirmDiscardMessage)

@@ -61,6 +61,7 @@ import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES;
 import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_ANIMATION;
+import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_APP_LANGUAGE;
 import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_AUTO_FIT_WIDTH;
 import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_CHANGE_REGISTERED_NAME_COLOR;
 import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_COLORIZE_MISSING_CONTACT_PICTURE;
@@ -181,7 +182,7 @@ class GeneralSettingsDescriptions {
             new V(1, new BooleanSetting(false)),
             new V(69, null)
         ));
-        s.put("language", Settings.versions(
+        s.put(KEY_APP_LANGUAGE, Settings.versions(
             new V(1, new LanguageSetting())
         ));
         s.put("messageListPreviewLines", Settings.versions(

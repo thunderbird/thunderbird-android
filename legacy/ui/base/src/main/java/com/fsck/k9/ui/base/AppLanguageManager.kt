@@ -1,7 +1,6 @@
 package com.fsck.k9.ui.base
 
 import android.content.res.Resources
-import com.fsck.k9.K9
 import com.fsck.k9.ui.base.extensions.currentLocale
 import com.fsck.k9.ui.base.locale.SystemLocaleChangeListener
 import com.fsck.k9.ui.base.locale.SystemLocaleManager
@@ -11,6 +10,8 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.update
 
 /**
  * Manages app language changes.
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 class AppLanguageManager(
     private val systemLocaleManager: SystemLocaleManager,
     private val coroutineScope: CoroutineScope = MainScope(),
+    private val displaySettingsPreferenceManager: DisplaySettingsPreferenceManager,
 ) {
     private var currentOverrideLocale: Locale? = null
     private val _overrideLocale = MutableSharedFlow<Locale?>(replay = 1)
@@ -35,21 +37,22 @@ class AppLanguageManager(
     }
 
     fun init() {
-        setLocale(K9.k9Language)
+        setLocale(getAppLanguage())
     }
 
     fun getOverrideLocale(): Locale? = currentOverrideLocale
 
     fun getAppLanguage(): String {
-        return K9.k9Language
+        return displaySettingsPreferenceManager.getConfig().appLanguage
     }
 
     fun setAppLanguage(appLanguage: String) {
-        if (appLanguage == K9.k9Language) {
+        if (appLanguage == getAppLanguage()) {
             return
         }
-
-        K9.k9Language = appLanguage
+        displaySettingsPreferenceManager.update { displaySettings ->
+            displaySettings.copy(appLanguage = appLanguage)
+        }
 
         setLocale(appLanguage)
     }
