@@ -155,7 +155,7 @@ private fun SystemNotificationSection(
                 onOptionChange = onOptionChange,
                 onClick = onClick,
             )
-            AnimatedVisibility(state.selectedSystemNotificationType == MailNotification.NewMail.SingleMail::class) {
+            AnimatedVisibility(state.selectedSystemNotificationType == MailNotification.NewMailSingleMail::class) {
                 Column {
                     TextInput(
                         onTextChange = onSenderChange,

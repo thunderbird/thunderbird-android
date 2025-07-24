@@ -3,8 +3,6 @@ package net.thunderbird.feature.notification.impl.command
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.command.NotificationCommand
-import net.thunderbird.feature.notification.api.command.NotificationCommand.CommandOutcome.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.CommandOutcome.Success
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 

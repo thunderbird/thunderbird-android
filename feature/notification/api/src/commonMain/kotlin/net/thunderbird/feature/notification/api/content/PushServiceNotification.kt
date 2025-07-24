@@ -1,7 +1,6 @@
 package net.thunderbird.feature.notification.api.content
 
 import net.thunderbird.feature.notification.api.NotificationChannel
-import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.AlarmPermissionMissing
@@ -36,7 +35,6 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
      */
     @ConsistentCopyVisibility
     data class Initializing private constructor(
-        override val id: NotificationId,
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
@@ -46,11 +44,9 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
             /**
              * Creates an [Initializing] notification.
              *
-             * @param id The ID of the notification.
              * @return An [Initializing] notification.
              */
-            suspend operator fun invoke(id: NotificationId): Initializing = Initializing(
-                id = id,
+            suspend operator fun invoke(): Initializing = Initializing(
                 title = getString(resource = Res.string.push_notification_state_initializing),
                 contentText = getString(resource = Res.string.push_notification_info),
                 actions = buildNotificationActions(),
@@ -64,7 +60,6 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
      */
     @ConsistentCopyVisibility
     data class Listening private constructor(
-        override val id: NotificationId,
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
@@ -74,11 +69,9 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
             /**
              * Creates a new [Listening] push service notification.
              *
-             * @param id The ID of the notification.
              * @return A new [Listening] notification.
              */
-            suspend operator fun invoke(id: NotificationId): Listening = Listening(
-                id = id,
+            suspend operator fun invoke(): Listening = Listening(
                 title = getString(resource = Res.string.push_notification_state_listening),
                 contentText = getString(resource = Res.string.push_notification_info),
                 actions = buildNotificationActions(),
@@ -92,7 +85,6 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
      */
     @ConsistentCopyVisibility
     data class WaitBackgroundSync private constructor(
-        override val id: NotificationId,
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
@@ -102,11 +94,9 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
             /**
              * Creates a [WaitBackgroundSync] notification.
              *
-             * @param id The ID of the notification.
              * @return A [WaitBackgroundSync] notification.
              */
-            suspend operator fun invoke(id: NotificationId): WaitBackgroundSync = WaitBackgroundSync(
-                id = id,
+            suspend operator fun invoke(): WaitBackgroundSync = WaitBackgroundSync(
                 title = getString(resource = Res.string.push_notification_state_wait_background_sync),
                 contentText = getString(resource = Res.string.push_notification_info),
                 actions = buildNotificationActions(),
@@ -120,7 +110,6 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
      */
     @ConsistentCopyVisibility
     data class WaitNetwork private constructor(
-        override val id: NotificationId,
         override val title: String,
         override val contentText: String?,
         override val actions: Set<NotificationAction>,
@@ -130,11 +119,9 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
             /**
              * Creates a [WaitNetwork] notification.
              *
-             * @param id The ID of the notification.
              * @return A [WaitNetwork] notification.
              */
-            suspend operator fun invoke(id: NotificationId): WaitNetwork = WaitNetwork(
-                id = id,
+            suspend operator fun invoke(): WaitNetwork = WaitNetwork(
                 title = getString(resource = Res.string.push_notification_state_wait_network),
                 contentText = getString(resource = Res.string.push_notification_info),
                 actions = buildNotificationActions(),
@@ -152,7 +139,6 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
      */
     @ConsistentCopyVisibility
     data class AlarmPermissionMissing private constructor(
-        override val id: NotificationId,
         override val title: String,
         override val contentText: String?,
         override val icon: NotificationIcon = NotificationIcons.AlarmPermissionMissing,
@@ -163,11 +149,9 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
             /**
              * Creates an [AlarmPermissionMissing] notification.
              *
-             * @param id The ID of the notification.
              * @return An [AlarmPermissionMissing] instance.
              */
-            suspend operator fun invoke(id: NotificationId): AlarmPermissionMissing = AlarmPermissionMissing(
-                id = id,
+            suspend operator fun invoke(): AlarmPermissionMissing = AlarmPermissionMissing(
                 title = getString(resource = Res.string.push_notification_state_alarm_permission_missing),
                 contentText = getString(resource = Res.string.push_notification_grant_alarm_permission),
             )

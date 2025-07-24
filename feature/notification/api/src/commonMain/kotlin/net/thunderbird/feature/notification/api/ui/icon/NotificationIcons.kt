@@ -54,14 +54,14 @@ internal expect val NotificationIcons.MailSendFailed: NotificationIcon
 /**
  * Represents the icon for the "New Mail (Single)" notification.
  *
- * @see net.thunderbird.feature.notification.api.content.MailNotification.NewMail.SingleMail
+ * @see net.thunderbird.feature.notification.api.content.MailNotification.NewMailSingleMail
  */
 internal expect val NotificationIcons.NewMailSingleMail: NotificationIcon
 
 /**
  * Represents the icon for the "New Mail Summary" notification.
  *
- * @see net.thunderbird.feature.notification.api.content.MailNotification.NewMail.SummaryMail
+ * @see net.thunderbird.feature.notification.api.content.MailNotification.NewMailSummaryMail
  */
 internal expect val NotificationIcons.NewMailSummaryMail: NotificationIcon
 
