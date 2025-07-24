@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
@@ -98,6 +99,7 @@ fun SubtitleTopAppBarWithBackButton(
                 onClick = onBackClick,
                 imageVector = Icons.Outlined.ArrowBack,
                 modifier = Modifier.testTagAsResourceId("SubtitleTopAppBarBackButton"),
+                contentDescription = stringResource(androidx.appcompat.R.string.abc_action_bar_up_description),
             )
         },
         actions = actions,

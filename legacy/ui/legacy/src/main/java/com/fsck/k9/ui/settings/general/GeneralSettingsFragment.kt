@@ -14,6 +14,7 @@ import androidx.preference.PreferenceScreen
 import androidx.work.WorkInfo
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.job.K9JobManager
+import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.observe
@@ -98,6 +99,19 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
                 }
             }
 
+        findPreference<Preference>("debug_secret_debug_screen")?.apply {
+            if (!BuildConfig.DEBUG) {
+                remove()
+                onPreferenceClickListener = null
+            } else {
+                onPreferenceClickListener = Preference.OnPreferenceClickListener { preference ->
+                    viewModel.onOpenSecretDebugScreen(requireContext())
+
+                    true
+                }
+            }
+        }
+
         initializeDataCollection()
 
         viewModel.uiState.observe(this) { uiState ->
@@ -175,6 +189,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
             .also { snackbar = it }
             .show()
     }
+
     private fun formatFileExportUriString(): String {
         val now = Calendar.getInstance()
         return String.format(

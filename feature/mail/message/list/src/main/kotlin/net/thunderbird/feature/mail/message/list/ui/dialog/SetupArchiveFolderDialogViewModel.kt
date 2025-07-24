@@ -11,6 +11,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.outcome.handleAsync
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.update
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.R
 import net.thunderbird.feature.mail.message.list.domain.CreateArchiveFolderOutcome
@@ -30,7 +31,7 @@ internal class SetupArchiveFolderDialogViewModel(
     private val resourceManager: StringsResourceManager,
     private val generalSettingsManager: GeneralSettingsManager,
 ) : ViewModel(
-    initialState = if (generalSettingsManager.getSettings().shouldShowSetupArchiveFolderDialog) {
+    initialState = if (generalSettingsManager.getConfig().display.shouldShowSetupArchiveFolderDialog) {
         State.EmailCantBeArchived()
     } else {
         State.Closed(isDoNotShowDialogAgainChecked = true)
@@ -125,7 +126,13 @@ internal class SetupArchiveFolderDialogViewModel(
 
     private fun onDismissClicked() {
         viewModelScope.launch {
-            generalSettingsManager.setSetupArchiveShouldNotShowAgain(state.value.isDoNotShowDialogAgainChecked.not())
+            generalSettingsManager.update { settings ->
+                settings.copy(
+                    display = settings.display.copy(
+                        shouldShowSetupArchiveFolderDialog = state.value.isDoNotShowDialogAgainChecked.not(),
+                    ),
+                )
+            }
             updateState { State.Closed() }
 
             emitEffect(Effect.DismissDialog)

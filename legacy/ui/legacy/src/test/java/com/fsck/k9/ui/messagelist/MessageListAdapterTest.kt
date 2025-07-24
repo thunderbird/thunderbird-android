@@ -24,6 +24,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.google.android.material.textview.MaterialTextView
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.testing.TestClock
@@ -413,6 +414,7 @@ class MessageListAdapterTest : RobolectricTest() {
             density,
         )
 
+        @OptIn(ExperimentalTime::class)
         return MessageListAdapter(
             theme = context.theme,
             res = context.resources,

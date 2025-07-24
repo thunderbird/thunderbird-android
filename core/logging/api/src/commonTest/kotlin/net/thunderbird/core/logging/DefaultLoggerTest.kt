@@ -5,9 +5,11 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import net.thunderbird.core.testing.TestClock
 
+@OptIn(ExperimentalTime::class)
 class DefaultLoggerTest {
 
     @Test

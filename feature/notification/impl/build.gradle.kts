@@ -7,6 +7,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.core.common)
             implementation(projects.core.outcome)
+            implementation(projects.core.logging.api)
             implementation(projects.feature.notification.api)
         }
     }
@@ -18,5 +19,5 @@ android {
 
 compose.resources {
     publicResClass = false
-    packageOfResClass = "net.thunderbird.feature.notification.resources"
+    packageOfResClass = "net.thunderbird.feature.notification.resources.impl"
 }

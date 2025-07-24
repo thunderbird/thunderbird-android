@@ -1,8 +1,12 @@
 package com.fsck.k9.ui.settings.general
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
+import com.fsck.k9.ui.BuildConfig
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -15,8 +19,7 @@ import net.thunderbird.core.logging.legacy.Log
 class GeneralSettingsViewModel(
     private val logFileWriter: LogFileWriter,
     private val syncDebugFileLogSink: FileLogSink,
-) :
-    ViewModel() {
+) : ViewModel() {
     private var snackbarJob: Job? = null
     private val uiStateFlow = MutableStateFlow<GeneralSettingsUiState>(GeneralSettingsUiState.Idle)
     val uiState: Flow<GeneralSettingsUiState> = uiStateFlow
@@ -84,6 +87,12 @@ class GeneralSettingsViewModel(
 
     private fun sendUiState(uiState: GeneralSettingsUiState) {
         uiStateFlow.value = uiState
+    }
+
+    fun onOpenSecretDebugScreen(context: Context) {
+        if (BuildConfig.DEBUG) {
+            FeatureLauncherActivity.launch(context = context, target = FeatureLauncherTarget.SecretDebugSettings)
+        }
     }
 
     companion object {

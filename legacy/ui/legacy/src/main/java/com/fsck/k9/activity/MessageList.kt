@@ -19,7 +19,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
-import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -204,24 +203,7 @@ open class MessageList :
         initializeFragments()
         displayViews()
         initializeFunding()
-        initializeInsets()
-    }
-
-    private fun initializeInsets() {
-        initializeDrawerContentInsets()
-        initializeToolbarInsets()
         initializeContainerInsets()
-    }
-
-    private fun initializeToolbarInsets() {
-        val toolbar = findViewById<View>(R.id.toolbar)
-
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(systemBars() or displayCutout())
-            v.setPadding(insets.left, 0, insets.right, 0)
-
-            windowsInsets
-        }
     }
 
     private fun initializeContainerInsets() {
@@ -230,17 +212,6 @@ open class MessageList :
         ViewCompat.setOnApplyWindowInsetsListener(container) { v, windowsInsets ->
             val insets = windowsInsets.getInsets(displayCutout() or navigationBars())
             v.setPadding(insets.left, 0, insets.right, insets.bottom)
-
-            windowsInsets
-        }
-    }
-
-    private fun initializeDrawerContentInsets() {
-        val toolbar = findViewById<View>(R.id.drawer_content)
-
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(systemBars() or displayCutout())
-            v.setPadding(0, insets.top, 0, 0)
 
             windowsInsets
         }
@@ -323,7 +294,7 @@ open class MessageList :
             val messageListFragment = MessageListFragment.newInstance(
                 search!!,
                 false,
-                generalSettingsManager.getSettings().isThreadedViewEnabled && !noThreading,
+                generalSettingsManager.getConfig().display.isThreadedViewEnabled && !noThreading,
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment)
             fragmentTransaction.commitNow()
@@ -425,7 +396,9 @@ open class MessageList :
 
         val launchData = decodeExtrasToLaunchData(intent)
         // If Unified Inbox was disabled show default account instead
-        val search = if (launchData.search.isUnifiedInbox && !generalSettingsManager.getSettings().isShowUnifiedInbox) {
+        val search = if (launchData.search.isUnifiedInbox &&
+            !generalSettingsManager.getConfig().display.isShowUnifiedInbox
+        ) {
             createDefaultLocalSearch()
         } else {
             launchData.search
@@ -576,7 +549,7 @@ open class MessageList :
         }
 
         // Default action
-        val search = if (generalSettingsManager.getSettings().isShowUnifiedInbox) {
+        val search = if (generalSettingsManager.getConfig().display.isShowUnifiedInbox) {
             createSearchAccount().relatedSearch
         } else {
             createDefaultLocalSearch()
@@ -780,7 +753,7 @@ open class MessageList :
         val messageListFragment = MessageListFragment.newInstance(
             search,
             false,
-            generalSettingsManager.getSettings().isThreadedViewEnabled,
+            generalSettingsManager.getConfig().display.isThreadedViewEnabled,
         )
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment)
 
@@ -816,7 +789,7 @@ open class MessageList :
             collapseSearchView()
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
-                if (generalSettingsManager.getSettings().isShowUnifiedInbox) {
+                if (generalSettingsManager.getConfig().display.isShowUnifiedInbox) {
                     if (search!!.id != SearchAccount.UNIFIED_INBOX) {
                         openUnifiedInbox()
                     } else {
@@ -1130,7 +1103,10 @@ open class MessageList :
             displayMode = DisplayMode.MESSAGE_LIST
             MessageActions.actionEditDraft(this, messageReference)
         } else {
-            val fragment = MessageViewContainerFragment.newInstance(messageReference, isShowAccountChip)
+            val fragment = MessageViewContainerFragment.newInstance(
+                reference = messageReference,
+                showAccountChip = isShowAccountChip,
+            )
             supportFragmentManager.commitNow {
                 replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)
             }
@@ -1453,11 +1429,11 @@ open class MessageList :
         this.search = search
         singleFolderMode = false
 
+        val folderIds = search.folderIds
         if (search.searchAllAccounts()) {
             val accountUuids = search.accountUuids
             if (accountUuids.size == 1) {
                 account = accountManager.getAccount(accountUuids.elementAt(0))
-                val folderIds = search.folderIds
                 singleFolderMode = folderIds.size == 1
             } else {
                 account = null
@@ -1466,7 +1442,7 @@ open class MessageList :
             if (account == null && search.accountUuids.size == 1) {
                 account = accountManager.getAccount(search.accountUuids.elementAt(0))
             }
-            singleFolderMode = true
+            singleFolderMode = folderIds.size == 1
         }
 
         configureDrawer()
@@ -1511,7 +1487,7 @@ open class MessageList :
                 // Don't select any item in the drawer because the Unified Inbox is displayed,
                 // but not listed in the drawer
                 search.id == SearchAccount.UNIFIED_INBOX &&
-                    !generalSettingsManager.getSettings().isShowUnifiedInbox -> drawer.deselect()
+                    !generalSettingsManager.getConfig().display.isShowUnifiedInbox -> drawer.deselect()
 
                 search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
             }

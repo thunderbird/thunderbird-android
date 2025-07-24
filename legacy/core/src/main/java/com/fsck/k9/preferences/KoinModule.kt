@@ -1,13 +1,18 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangePublisher
-import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsManager
+import net.thunderbird.core.preference.display.DefaultDisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
+import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
+import net.thunderbird.core.preference.notification.DefaultNotificationPreferenceManager
+import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsPreferenceManager
-import net.thunderbird.core.preference.privacy.PrivacySettingsManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
 import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.core.qualifier.named
@@ -32,26 +37,48 @@ val preferencesModule = module {
     factory<AccountManager<*>> { get<LegacyAccountManager>() }
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
+            logger = get(),
             storage = get<Preferences>().storage,
             storageEditor = get<Preferences>().createStorageEditor(),
-            changeBroker = get(),
         )
     }
-    single<PrivacySettingsManager> { DefaultPrivacySettingsManager(preferenceManager = get()) }
+    single<NotificationPreferenceManager> {
+        DefaultNotificationPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
+    single<DisplaySettingsPreferenceManager> {
+        DefaultDisplaySettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
+    single<NetworkSettingsPreferenceManager> {
+        DefaultNetworkSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
     single {
-        RealGeneralSettingsManager(
+        DefaultGeneralSettingsManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changePublisher = get(),
-            privacySettingsManager = get(),
+            privacySettingsPreferenceManager = get(),
+            notificationPreferenceManager = get(),
+            displaySettingsSettingsPreferenceManager = get(),
+            networkSettingsPreferenceManager = get(),
         )
     } bind GeneralSettingsManager::class
     single {
-        RealDrawerConfigManager(
+        DefaultDrawerConfigManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
-            changeBroker = get(),
-            generalSettingsManager = get(),
+            displaySettingsPreferenceManager = get(),
         )
     } bind DrawerConfigManager::class
 
@@ -76,6 +103,7 @@ val preferencesModule = module {
     }
 
     factory {
+        @OptIn(ExperimentalTime::class)
         AccountSettingsWriter(
             preferences = get(),
             localFoldersCreator = get(),

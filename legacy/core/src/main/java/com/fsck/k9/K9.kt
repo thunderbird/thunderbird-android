@@ -10,7 +10,7 @@ import com.fsck.k9.K9.setDatabasesUpToDate
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
-import com.fsck.k9.preferences.RealGeneralSettingsManager
+import com.fsck.k9.preferences.DefaultGeneralSettingsManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.common.action.SwipeAction
@@ -30,7 +30,7 @@ import timber.log.Timber.DebugTree
 
 // TODO "Use GeneralSettingsManager and GeneralSettings instead"
 object K9 : KoinComponent {
-    private val generalSettingsManager: RealGeneralSettingsManager by inject()
+    private val generalSettingsManager: DefaultGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val syncDebugCompositeSink: CompositeLogSink by inject(named("syncDebug"))
@@ -148,9 +148,6 @@ object K9 : KoinComponent {
 
     @JvmStatic
     val fontSizes = FontSizes()
-
-    @JvmStatic
-    var backgroundOps = BACKGROUND_OPS.ALWAYS
 
     @JvmStatic
     var isConfirmDelete = false
@@ -323,9 +320,6 @@ object K9 : KoinComponent {
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
             }
-
-        backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
-
         isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
         isMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true)
         isMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false)
@@ -360,7 +354,6 @@ object K9 : KoinComponent {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
         editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
-        editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putEnum("messageListDensity", messageListDensity)
@@ -461,13 +454,6 @@ object K9 : KoinComponent {
     const val MAX_SEND_ATTEMPTS = 5
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
-
-    @Suppress("ClassName")
-    enum class BACKGROUND_OPS {
-        ALWAYS,
-        NEVER,
-        WHEN_CHECKED_AUTO_SYNC,
-    }
 
     /**
      * Controls behaviour of delete button in notifications.

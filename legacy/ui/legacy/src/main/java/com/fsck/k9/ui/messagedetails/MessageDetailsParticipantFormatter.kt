@@ -66,9 +66,9 @@ internal fun createMessageDetailsParticipantFormatter(
 ): MessageDetailsParticipantFormatter {
     return RealMessageDetailsParticipantFormatter(
         contactNameProvider = contactNameProvider,
-        showContactNames = generalSettingsManager.getSettings().isShowContactName,
+        showContactNames = generalSettingsManager.getConfig().display.isShowContactName,
         contactNameColor = if (
-            generalSettingsManager.getSettings().isChangeContactNameColor
+            generalSettingsManager.getConfig().display.isChangeContactNameColor
         ) {
             K9.contactNameColor
         } else {

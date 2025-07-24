@@ -8,6 +8,7 @@ import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.funding.api.FundingRoute
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 import net.thunderbird.feature.account.settings.api.AccountSettingsRoute
+import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 
 sealed class FeatureLauncherTarget(
     val deepLinkUri: Uri,
@@ -36,5 +37,9 @@ sealed class FeatureLauncherTarget(
     data object Onboarding : FeatureLauncherTarget(
         deepLinkUri = OnboardingRoute.Onboarding().route().toUri(),
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK,
+    )
+
+    data object SecretDebugSettings : FeatureLauncherTarget(
+        deepLinkUri = SecretDebugSettingsRoute.Notification.route().toUri(),
     )
 }

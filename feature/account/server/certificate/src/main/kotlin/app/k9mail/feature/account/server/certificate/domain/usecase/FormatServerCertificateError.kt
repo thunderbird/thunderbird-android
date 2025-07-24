@@ -7,12 +7,14 @@ import app.k9mail.feature.account.server.certificate.domain.entity.ServerCertifi
 import java.security.cert.X509Certificate
 import java.text.DateFormat
 import java.util.Date
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import okio.ByteString
 import okio.HashingSink
 import okio.blackholeSink
 import okio.buffer
 
+@OptIn(ExperimentalTime::class)
 class FormatServerCertificateError(
     private val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.SHORT),
 ) : UseCase.FormatServerCertificateError {

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
+
 plugins {
     id(ThunderbirdPlugins.Library.kmpCompose)
 }
@@ -9,6 +11,10 @@ kotlin {
             implementation(projects.core.outcome)
         }
     }
+
+    sourceSets.all {
+        languageSettings.enableLanguageFeature(LanguageFeature.ExpectActualClasses.name)
+    }
 }
 
 android {
@@ -17,5 +23,5 @@ android {
 
 compose.resources {
     publicResClass = false
-    packageOfResClass = "net.thunderbird.feature.notification.resources"
+    packageOfResClass = "net.thunderbird.feature.notification.resources.api"
 }

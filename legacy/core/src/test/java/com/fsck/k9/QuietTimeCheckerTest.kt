@@ -4,10 +4,12 @@ import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import java.util.Calendar
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import net.thunderbird.core.testing.TestClock
 import org.junit.Test
 
+@OptIn(ExperimentalTime::class)
 class QuietTimeCheckerTest {
     private val clock = TestClock()
 

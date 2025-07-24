@@ -1,21 +1,27 @@
 package net.thunderbird.feature.notification.api.content
 
 import net.thunderbird.core.common.exception.rootCauseMassage
-import net.thunderbird.feature.notification.api.LockscreenNotificationAppearance
 import net.thunderbird.feature.notification.api.NotificationChannel
 import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
-import net.thunderbird.feature.notification.resources.Res
-import net.thunderbird.feature.notification.resources.notification_additional_messages
-import net.thunderbird.feature.notification.resources.notification_bg_send_ticker
-import net.thunderbird.feature.notification.resources.notification_bg_send_title
-import net.thunderbird.feature.notification.resources.notification_bg_sync_text
-import net.thunderbird.feature.notification.resources.notification_bg_sync_ticker
-import net.thunderbird.feature.notification.resources.notification_bg_sync_title
-import net.thunderbird.feature.notification.resources.notification_new_messages_title
-import net.thunderbird.feature.notification.resources.send_failure_subject
+import net.thunderbird.feature.notification.api.ui.icon.MailFetching
+import net.thunderbird.feature.notification.api.ui.icon.MailSendFailed
+import net.thunderbird.feature.notification.api.ui.icon.MailSending
+import net.thunderbird.feature.notification.api.ui.icon.NewMailSingleMail
+import net.thunderbird.feature.notification.api.ui.icon.NewMailSummaryMail
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
+import net.thunderbird.feature.notification.resources.api.Res
+import net.thunderbird.feature.notification.resources.api.notification_additional_messages
+import net.thunderbird.feature.notification.resources.api.notification_bg_send_ticker
+import net.thunderbird.feature.notification.resources.api.notification_bg_send_title
+import net.thunderbird.feature.notification.resources.api.notification_bg_sync_text
+import net.thunderbird.feature.notification.resources.api.notification_bg_sync_ticker
+import net.thunderbird.feature.notification.resources.api.notification_bg_sync_title
+import net.thunderbird.feature.notification.resources.api.notification_new_messages_title
+import net.thunderbird.feature.notification.resources.api.send_failure_subject
 import org.jetbrains.compose.resources.getPluralString
 import org.jetbrains.compose.resources.getString
 
@@ -33,8 +39,9 @@ sealed class MailNotification : AppNotification(), SystemNotification {
         override val accessibilityText: String,
         override val contentText: String?,
         override val channel: NotificationChannel,
+        override val icon: NotificationIcon = NotificationIcons.MailFetching,
     ) : MailNotification() {
-        override val lockscreenNotification: SystemNotification = copy(contentText = null)
+        override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
 
         companion object {
             /**
@@ -82,8 +89,9 @@ sealed class MailNotification : AppNotification(), SystemNotification {
         override val accessibilityText: String,
         override val contentText: String?,
         override val channel: NotificationChannel,
+        override val icon: NotificationIcon = NotificationIcons.MailSending,
     ) : MailNotification() {
-        override val lockscreenNotification: SystemNotification = copy(contentText = null)
+        override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
 
         companion object {
             /**
@@ -116,9 +124,10 @@ sealed class MailNotification : AppNotification(), SystemNotification {
         override val title: String,
         override val contentText: String?,
         override val channel: NotificationChannel,
+        override val icon: NotificationIcon = NotificationIcons.MailSendFailed,
     ) : MailNotification(), InAppNotification {
         override val severity: NotificationSeverity = NotificationSeverity.Critical
-        override val lockscreenNotification: SystemNotification = copy(contentText = null)
+        override val lockscreenNotification: SystemNotification get() = copy(contentText = null)
         override val actions: Set<NotificationAction> = setOf(
             NotificationAction.Retry,
         )
@@ -157,7 +166,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
         abstract val accountUuid: String
         abstract val messagesNotificationChannelSuffix: String
 
-        override val channel: NotificationChannel = NotificationChannel.Messages(
+        override val channel: NotificationChannel get() = NotificationChannel.Messages(
             accountUuid = accountUuid,
             suffix = messagesNotificationChannelSuffix,
         )
@@ -194,7 +203,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             val subject: String,
             val preview: String,
             override val group: NotificationGroup?,
-            override val lockscreenNotificationAppearance: LockscreenNotificationAppearance,
+            override val icon: NotificationIcon = NotificationIcons.NewMailSingleMail,
         ) : NewMail() {
             override val title: String = sender
             override val contentText: String = subject
@@ -220,6 +229,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             override val title: String,
             override val contentText: String?,
             override val group: NotificationGroup,
+            override val icon: NotificationIcon = NotificationIcons.NewMailSummaryMail,
         ) : NewMail() {
             companion object {
                 /**

@@ -645,7 +645,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
-                .setHideTimeZone(generalSettingsManager.getPrivacySettings().isHideTimeZone())
+                .setHideTimeZone(generalSettingsManager.getConfig().getPrivacy().isHideTimeZone())
                 .setInReplyTo(repliedToMessageId)
                 .setReferences(referencedMessageIds)
                 .setRequestReadReceipt(requestReadReceipt)

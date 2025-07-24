@@ -1,6 +1,7 @@
 package net.thunderbird.feature.notification.api.content
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -10,6 +11,7 @@ import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 
 /**
  * Represents a notification that can be displayed to the user.
@@ -27,6 +29,7 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
  * @property authenticationRequired Indicates whether authentication is required to view the notification.
  * @property channel The notification channel to which this notification belongs.
  * @property group The notification group to which this notification belongs, can be null.
+ * @property icon The notification icon.
  * @see AppNotification
  */
 sealed interface Notification {
@@ -40,6 +43,7 @@ sealed interface Notification {
     val authenticationRequired: Boolean
     val channel: NotificationChannel
     val group: NotificationGroup?
+    val icon: NotificationIcon
 }
 
 /**
@@ -57,6 +61,8 @@ sealed interface Notification {
  */
 sealed class AppNotification : Notification {
     override val accessibilityText: String = title
+
+    @OptIn(ExperimentalTime::class)
     override val createdAt: LocalDateTime = Clock.System.now().toLocalDateTime(timeZone = TimeZone.UTC)
     override val actions: Set<NotificationAction> = emptySet()
     override val authenticationRequired: Boolean = false
