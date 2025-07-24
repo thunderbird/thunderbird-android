@@ -1,6 +1,8 @@
 package net.thunderbird.feature.notification.impl.inject
 
+import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.sender.NotificationSender
+import net.thunderbird.feature.notification.impl.DefaultNotificationRegistry
 import net.thunderbird.feature.notification.impl.command.NotificationCommandFactory
 import net.thunderbird.feature.notification.impl.receiver.InAppNotificationNotifier
 import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNotifier
@@ -29,4 +31,6 @@ val featureNotificationModule = module {
             commandFactory = get(),
         )
     }
+
+    single<NotificationRegistry> { DefaultNotificationRegistry() }
 }
