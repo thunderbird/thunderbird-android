@@ -21,6 +21,8 @@ val featureNotificationModule = module {
     factory<NotificationCommandFactory> {
         NotificationCommandFactory(
             logger = get(),
+            notificationRegistry = get(),
+            featureFlagProvider = get(),
             systemNotificationNotifier = get(),
             inAppNotificationNotifier = get(),
         )

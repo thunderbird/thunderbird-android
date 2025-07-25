@@ -1,6 +1,8 @@
 package net.thunderbird.feature.notification.impl.command
 
+import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
@@ -13,6 +15,8 @@ import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNoti
  */
 internal class NotificationCommandFactory(
     private val logger: Logger,
+    private val featureFlagProvider: FeatureFlagProvider,
+    private val notificationRegistry: NotificationRegistry,
     private val systemNotificationNotifier: SystemNotificationNotifier,
     private val inAppNotificationNotifier: InAppNotificationNotifier,
 ) {
@@ -31,6 +35,8 @@ internal class NotificationCommandFactory(
             commands.add(
                 SystemNotificationCommand(
                     logger = logger,
+                    featureFlagProvider = featureFlagProvider,
+                    notificationRegistry = notificationRegistry,
                     notification = notification,
                     notifier = systemNotificationNotifier,
                 ),
