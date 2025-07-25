@@ -107,14 +107,14 @@ class GeneralSettingsDescriptions {
          * and use that for whatever you add here.
          */
 
-        s.put(KEY_ANIMATION, Settings.versions(
+        s.put("animations", Settings.versions(
             new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION))
         ));
-        s.put(KEY_BG_OPS, Settings.versions(
+        s.put("backgroundOperations", Settings.versions(
             new V(1, new EnumSetting<>(BackgroundOps.class, BackgroundOps.WHEN_CHECKED_AUTO_SYNC)),
             new V(83, new EnumSetting<>(BackgroundOps.class, NetworkSettingsKt.getNETWORK_SETTINGS_DEFAULT_BACKGROUND_OPS()))
         ));
-        s.put(KEY_CHANGE_REGISTERED_NAME_COLOR, Settings.versions(
+        s.put("changeRegisteredNameColor", Settings.versions(
             new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR))
         ));
         s.put("confirmDelete", Settings.versions(
@@ -182,16 +182,16 @@ class GeneralSettingsDescriptions {
             new V(1, new BooleanSetting(false)),
             new V(69, null)
         ));
-        s.put(KEY_APP_LANGUAGE, Settings.versions(
+        s.put("language", Settings.versions(
             new V(1, new LanguageSetting())
         ));
         s.put("messageListPreviewLines", Settings.versions(
             new V(1, new IntegerRangeSetting(0, 6, 2))
         ));
-        s.put(KEY_SHOW_MESSAGE_LIST_STARS, Settings.versions(
+        s.put("messageListStars", Settings.versions(
             new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_MESSAGE_LIST_STAR))
         ));
-        s.put(KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT, Settings.versions(
+        s.put("messageViewFixedWidthFont", Settings.versions(
             new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT))
         ));
         s.put("messageViewReturnToList", Settings.versions(
@@ -202,26 +202,26 @@ class GeneralSettingsDescriptions {
             new V(1, new BooleanSetting(false)),
             new V(89, null)
         ));
-        s.put(KEY_QUIET_TIME_ENABLED, Settings.versions(
+        s.put("quietTimeEnabled", Settings.versions(
             new V(1, new BooleanSetting(NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED))
         ));
-        s.put(KEY_QUIET_TIME_ENDS, Settings.versions(
+        s.put("quietTimeEnds", Settings.versions(
             new V(1, new TimeSetting(NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_END))
         ));
-        s.put(KEY_QUIET_TIME_STARTS, Settings.versions(
+        s.put("quietTimeStarts", Settings.versions(
             new V(1, new TimeSetting(NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_STARTS))
         ));
         s.put("registeredNameColor", Settings.versions(
             new V(1, new ColorSetting(0xFF00008F)),
             new V(79, new ColorSetting(0xFF1093F5))
         ));
-        s.put(KEY_SHOW_CONTACT_NAME, Settings.versions(
+        s.put("showContactName", Settings.versions(
             new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME))
         ));
-        s.put(KEY_SHOW_CORRESPONDENT_NAMES, Settings.versions(
+        s.put("showCorrespondentNames", Settings.versions(
             new V(1, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES))
         ));
-        s.put(KEY_SHOW_UNIFIED_INBOX, Settings.versions(
+        s.put("showUnifiedInbox", Settings.versions(
             new V(69, new BooleanSetting(true)),
             new V(101, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_UNIFIED_INBOX))
         ));
@@ -234,11 +234,11 @@ class GeneralSettingsDescriptions {
         s.put("sortAscending", Settings.versions(
             new V(10, new BooleanSetting(AccountDefaultsProvider.DEFAULT_SORT_ASCENDING))
         ));
-        s.put(KEY_THEME, Settings.versions(
+        s.put("theme", Settings.versions(
             new V(1, new LegacyThemeSetting(AppTheme.LIGHT)),
             new V(58, new ThemeSetting(DisplaySettingsKt.getDISPLAY_SETTINGS_DEFAULT_APP_THEME()))
         ));
-        s.put(KEY_MESSAGE_VIEW_THEME, Settings.versions(
+        s.put("messageViewTheme", Settings.versions(
             new V(16, new LegacyThemeSetting(AppTheme.LIGHT)),
             new V(24, new SubThemeSetting(DisplaySettingsKt.getDISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_THEME()))
         ));
@@ -255,19 +255,19 @@ class GeneralSettingsDescriptions {
         s.put("splitViewMode", Settings.versions(
             new V(23, new EnumSetting<>(SplitViewMode.class, SplitViewMode.NEVER))
         ));
-        s.put(KEY_MESSAGE_COMPOSE_THEME, Settings.versions(
+        s.put("messageComposeTheme", Settings.versions(
             new V(24, new SubThemeSetting(DisplaySettingsKt.getDISPLAY_SETTINGS_DEFAULT_MESSAGE_COMPOSE_THEME()))
         ));
-        s.put(KEY_FIXED_MESSAGE_VIEW_THEME, Settings.versions(
+        s.put("fixedMessageViewTheme", Settings.versions(
             new V(24, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME))
         ));
-        s.put(KEY_SHOW_CONTACT_PICTURE, Settings.versions(
+        s.put("showContactPicture", Settings.versions(
             new V(25, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE))
         ));
-        s.put(KEY_AUTO_FIT_WIDTH, Settings.versions(
+        s.put("autofitWidth", Settings.versions(
             new V(28, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH))
         ));
-        s.put(KEY_COLORIZE_MISSING_CONTACT_PICTURE, Settings.versions(
+        s.put("colorizeMissingContactPictures", Settings.versions(
             new V(29, new BooleanSetting(true))
         ));
         s.put("messageViewDeleteActionVisible", Settings.versions(
@@ -288,10 +288,10 @@ class GeneralSettingsDescriptions {
         s.put("fontSizeMessageViewContentPercent", Settings.versions(
             new V(31, new IntegerRangeSetting(40, 250, 100))
         ));
-        s.put(KEY_HIDE_USER_AGENT, Settings.versions(
+        s.put("hideUserAgent", Settings.versions(
             new V(32, new BooleanSetting(PRIVACY_SETTINGS_DEFAULT_HIDE_USER_AGENT))
         ));
-        s.put(KEY_HIDE_TIME_ZONE, Settings.versions(
+        s.put("hideTimeZone", Settings.versions(
             new V(32, new BooleanSetting(PRIVACY_SETTINGS_DEFAULT_HIDE_TIME_ZONE))
         ));
         s.put("lockScreenNotificationVisibility", Settings.versions(
@@ -301,7 +301,7 @@ class GeneralSettingsDescriptions {
         s.put("confirmDeleteFromNotification", Settings.versions(
             new V(38, new BooleanSetting(true))
         ));
-        s.put(KEY_MESSAGE_LIST_SENDER_ABOVE_SUBJECT, Settings.versions(
+        s.put("messageListSenderAboveSubject", Settings.versions(
             new V(38, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT))
         ));
         s.put("notificationQuickDelete", Settings.versions(
@@ -327,10 +327,10 @@ class GeneralSettingsDescriptions {
             new V(49, new BooleanSetting(false)),
             new V(56, null)
         ));
-        s.put(KEY_SHOW_RECENT_CHANGES, Settings.versions(
+        s.put("showRecentChanges", Settings.versions(
             new V(73, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES))
         ));
-        s.put(KEY_SHOW_STAR_COUNT, Settings.versions(
+        s.put("showStarredCount", Settings.versions(
             new V(75, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_STAR_COUNT))
         ));
         s.put("swipeRightAction", Settings.versions(
@@ -339,7 +339,7 @@ class GeneralSettingsDescriptions {
         s.put("swipeLeftAction", Settings.versions(
             new V(83, new EnumSetting<>(SwipeAction.class, SwipeAction.ToggleRead))
         ));
-        s.put(KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST, Settings.versions(
+        s.put("showComposeButtonOnMessageList", Settings.versions(
             new V(85, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST))
         ));
         s.put("messageListDensity", Settings.versions(
@@ -355,7 +355,7 @@ class GeneralSettingsDescriptions {
             new V(90,
                 new EnumSetting<>(PostMarkAsUnreadNavigation.class, PostMarkAsUnreadNavigation.ReturnToMessageList))
         ));
-        s.put(KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG, Settings.versions(
+        s.put("shouldShowSetupArchiveFolderDialog", Settings.versions(
             new V(105, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG)))
         );
 
