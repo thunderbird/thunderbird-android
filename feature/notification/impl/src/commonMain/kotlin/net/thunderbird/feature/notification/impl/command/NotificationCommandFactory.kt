@@ -35,6 +35,8 @@ internal class NotificationCommandFactory(
             commands.add(
                 SystemNotificationCommand(
                     logger = logger,
+                    featureFlagProvider = featureFlagProvider,
+                    notificationRegistry = notificationRegistry,
                     notification = notification,
                     notifier = systemNotificationNotifier,
                 ),
