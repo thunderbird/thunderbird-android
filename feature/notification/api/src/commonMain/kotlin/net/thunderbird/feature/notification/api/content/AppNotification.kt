@@ -11,6 +11,8 @@ import net.thunderbird.feature.notification.api.NotificationGroup
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
+import net.thunderbird.feature.notification.api.ui.style.SystemNotificationStyle
 
 /**
  * Represents a notification that can be displayed to the user.
@@ -62,12 +64,17 @@ sealed class AppNotification : Notification {
  * @property subText Additional text displayed below the content text, can be null.
  * @property channel The notification channel to which this notification belongs.
  * @property group The notification group to which this notification belongs, can be null.
+ * @property systemNotificationStyle The style of the system notification.
+ * Defaults to [SystemNotificationStyle.Undefined].
  * @see LockscreenNotificationAppearance
+ * @see SystemNotificationStyle
+ * @see net.thunderbird.feature.notification.api.ui.style.systemNotificationStyle
  */
 sealed interface SystemNotification : Notification {
     val subText: String? get() = null
     val channel: NotificationChannel
     val group: NotificationGroup? get() = null
+    val systemNotificationStyle: SystemNotificationStyle get() = SystemNotificationStyle.Undefined
 
     /**
      * Converts this notification to a [LockscreenNotification].
@@ -95,10 +102,16 @@ sealed interface SystemNotification : Notification {
 }
 
 /**
- *
  * Represents a notification displayed within the application.
  *
  * In-app notifications are typically less intrusive than system notifications and **do not require**
  * system notification permissions to be displayed.
+ *
+ * @property inAppNotificationStyle The style of the in-app notification.
+ * Defaults to [InAppNotificationStyle.Undefined].
+ * @see InAppNotificationStyle
+ * @see net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
  */
-sealed interface InAppNotification : Notification
+sealed interface InAppNotification : Notification {
+    val inAppNotificationStyle: InAppNotificationStyle get() = InAppNotificationStyle.Undefined
+}
