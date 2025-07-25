@@ -8,6 +8,7 @@ import java.util.UUID
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.INCOMING_SERVER_SETTINGS_KEY
@@ -20,12 +21,13 @@ constructor(
     private val preferences: Preferences,
     private val localFoldersCreator: SpecialLocalFoldersCreator,
     private val clock: Clock,
+    private val generalSettingsManager: GeneralSettingsManager,
     serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
     private val context: Context,
 ) {
-    private val identitySettingsWriter = IdentitySettingsWriter()
-    private val folderSettingsWriter = FolderSettingsWriter()
-    private val serverSettingsWriter = ServerSettingsWriter(serverSettingsDtoSerializer)
+    private val identitySettingsWriter = IdentitySettingsWriter(generalSettingsManager)
+    private val folderSettingsWriter = FolderSettingsWriter(generalSettingsManager)
+    private val serverSettingsWriter = ServerSettingsWriter(serverSettingsDtoSerializer, generalSettingsManager)
 
     fun write(account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
         val editor = preferences.createStorageEditor()
@@ -38,17 +40,29 @@ constructor(
         val accountName = getUniqueAccountName(originalAccountName)
         val writtenAccount = AccountDescription(accountName, accountUuid)
 
-        editor.putStringWithLogging("$accountUuid.$ACCOUNT_DESCRIPTION_KEY", accountName)
+        editor.putStringWithLogging(
+            "$accountUuid.$ACCOUNT_DESCRIPTION_KEY",
+            accountName,
+            generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+        )
 
         // Convert account settings to the string representation used in preference storage
         val stringSettings = AccountSettingsDescriptions.convert(account.settings)
 
         for ((accountKey, value) in stringSettings) {
-            editor.putStringWithLogging("$accountUuid.$accountKey", value)
+            editor.putStringWithLogging(
+                "$accountUuid.$accountKey",
+                value,
+                generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            )
         }
 
         val newAccountNumber = preferences.generateAccountNumber().toString()
-        editor.putStringWithLogging("$accountUuid.accountNumber", newAccountNumber)
+        editor.putStringWithLogging(
+            "$accountUuid.accountNumber",
+            newAccountNumber,
+            generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+        )
 
         // When deleting an account and then restoring it using settings import, the same account UUID will be used.
         // To avoid reusing a previously existing notification channel ID, we need to make sure to use a unique value
@@ -58,6 +72,7 @@ constructor(
         editor.putStringWithLogging(
             key = "$accountUuid.messagesNotificationChannelVersion",
             value = messageNotificationChannelVersion,
+            isDebugLoggingEnabled = generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
         )
 
         serverSettingsWriter.writeServerSettings(
@@ -98,7 +113,11 @@ constructor(
         val newAccountUuids = oldAccountUuids + accountUuid
 
         val newAccountUuidString = newAccountUuids.joinToString(separator = ",")
-        editor.putStringWithLogging("accountUuids", newAccountUuidString)
+        editor.putStringWithLogging(
+            "accountUuids",
+            newAccountUuidString,
+            generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+        )
     }
 
     private fun writeIdentities(
