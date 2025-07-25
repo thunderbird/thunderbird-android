@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.LocalDateTime
@@ -75,17 +76,19 @@ open class AndroidFileLogSink(
         val outputStream = FileOutputStream(logFile, true)
         val sink = outputStream.asSink()
         var content: String
-        mutex.withLock {
-            content = accumulatedLogs.joinToString("\n", postfix = "\n")
-            accumulatedLogs.clear()
-        }
         try {
+            mutex.withLock {
+                content = accumulatedLogs.joinToString("\n", postfix = "\n")
+                accumulatedLogs.clear()
+            }
             val buffer = Buffer()
             val contentBytes = content.toByteArray(Charsets.UTF_8)
             buffer.write(contentBytes)
             sink.write(buffer, buffer.size)
 
             sink.flush()
+        } catch (e: Exception) {
+            throw e
         } finally {
             sink.close()
             outputStream.close()
@@ -93,11 +96,13 @@ open class AndroidFileLogSink(
     }
 
     override suspend fun flushAndCloseBuffer() {
-        writeToLogFile()
+        if (accumulatedLogs.isNotEmpty()) {
+            writeToLogFile()
+        }
     }
 
     override fun export(uriString: String) {
-        coroutineScope.launch {
+        runBlocking {
             if (accumulatedLogs.isNotEmpty()) {
                 writeToLogFile()
             }
