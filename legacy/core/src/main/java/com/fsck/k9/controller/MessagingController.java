@@ -28,6 +28,10 @@ import android.os.SystemClock;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import app.k9mail.legacy.di.DI;
+import app.k9mail.legacy.mailstore.FolderDetailsAccessor;
+import app.k9mail.legacy.mailstore.MessageStore;
+import app.k9mail.legacy.mailstore.MessageStoreManager;
+import app.k9mail.legacy.mailstore.SaveMessageData;
 import app.k9mail.legacy.message.controller.MessageReference;
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker;
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry;
@@ -66,17 +70,13 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
-import app.k9mail.legacy.mailstore.FolderDetailsAccessor;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.MessageListCache;
-import app.k9mail.legacy.mailstore.MessageStore;
-import app.k9mail.legacy.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
-import app.k9mail.legacy.mailstore.SaveMessageData;
 import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
@@ -85,11 +85,11 @@ import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import net.thunderbird.core.logging.Logger;
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import net.thunderbird.core.logging.legacy.Log;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.controller.Preconditions.requireNotNull;
@@ -765,7 +765,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     Log.e(e, "Unexpected exception with command '%s', removing command from queue", commandName);
                     localStore.removePendingCommand(processingCommand);
 
-                    if (K9.DEVELOPER_MODE) {
+                    if (BuildConfig.DEBUG) {
                         throw new AssertionError("Unexpected exception while processing pending command", e);
                     }
                 }

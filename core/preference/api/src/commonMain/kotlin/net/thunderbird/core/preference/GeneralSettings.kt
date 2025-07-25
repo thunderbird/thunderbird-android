@@ -1,5 +1,6 @@
 package net.thunderbird.core.preference
 
+import net.thunderbird.core.preference.debugging.DebuggingSettings
 import net.thunderbird.core.preference.display.DisplaySettings
 import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
@@ -18,6 +19,7 @@ data class GeneralSettings(
     val notification: NotificationPreference = NotificationPreference(),
     val display: DisplaySettings = DisplaySettings(),
     val privacy: PrivacySettings = PrivacySettings(),
+    val debugging: DebuggingSettings = DebuggingSettings(),
 )
 
 enum class BackgroundSync {

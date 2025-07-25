@@ -8,8 +8,20 @@ import assertk.assertions.prop
 import com.fsck.k9.preferences.Settings.BooleanSetting
 import com.fsck.k9.preferences.Settings.StringSetting
 import kotlin.test.Test
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.preference.GeneralSettings
+import org.junit.Before
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 class AccountSettingsUpgraderTest {
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
+
     @Suppress("LongMethod")
     @Test
     fun `with combined settings upgrader`() {
@@ -33,6 +45,7 @@ class AccountSettingsUpgraderTest {
                 ),
             ),
             upgraders = emptyMap(),
+            generalSettingsManager = mock { on { getConfig() } doReturn GeneralSettings() },
         )
         val combinedUpgraders = mapOf(
             2 to {
@@ -58,6 +71,7 @@ class AccountSettingsUpgraderTest {
             settingsDescriptions = accountSettingsDescriptions,
             upgraders = emptyMap(),
             combinedUpgraders = combinedUpgraders,
+            generalSettingsManager = mock { on { getConfig() } doReturn GeneralSettings() },
         )
         val account = ValidatedSettings.Account(
             uuid = "irrelevant",
@@ -109,6 +123,7 @@ class AccountSettingsUpgraderTest {
         return IdentitySettingsUpgrader(
             settingsDescriptions = emptyMap(),
             upgraders = emptyMap(),
+            generalSettingsManager = mock { on { getConfig() } doReturn GeneralSettings() },
         )
     }
 
@@ -116,6 +131,7 @@ class AccountSettingsUpgraderTest {
         return ServerSettingsUpgrader(
             settingsDescriptions = emptyMap(),
             upgraders = emptyMap(),
+            generalSettingsManager = mock { on { getConfig() } doReturn GeneralSettings() },
         )
     }
 

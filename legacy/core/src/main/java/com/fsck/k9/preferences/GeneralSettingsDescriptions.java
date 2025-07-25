@@ -39,6 +39,7 @@ import net.thunderbird.core.android.account.SortType;
 import net.thunderbird.core.common.action.SwipeAction;
 import net.thunderbird.core.preference.AppTheme;
 import net.thunderbird.core.preference.BackgroundOps;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.SubTheme;
 import net.thunderbird.core.preference.display.DisplaySettingsKt;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
@@ -72,6 +73,7 @@ class GeneralSettingsDescriptions {
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     private static final TelemetryManager telemetryManager = DI.get(TelemetryManager.class);
+    private static final GeneralSettingsManager generalSettingManager = DI.get(GeneralSettingsManager.class);
 
     static {
         Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
@@ -358,7 +360,7 @@ class GeneralSettingsDescriptions {
     }
 
     public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
-        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings, generalSettingManager);
     }
 
     public static Map<String, String> convert(Map<String, Object> settings) {

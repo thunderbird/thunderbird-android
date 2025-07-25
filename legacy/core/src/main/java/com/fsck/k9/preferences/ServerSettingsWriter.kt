@@ -10,11 +10,13 @@ import com.fsck.k9.preferences.ServerSettingsDescriptions.HOST
 import com.fsck.k9.preferences.ServerSettingsDescriptions.PASSWORD
 import com.fsck.k9.preferences.ServerSettingsDescriptions.PORT
 import com.fsck.k9.preferences.ServerSettingsDescriptions.USERNAME
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
 
 internal class ServerSettingsWriter(
     private val serverSettingsDtoSerializer: ServerSettingsDtoSerializer,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun writeServerSettings(
         editor: StorageEditor,
@@ -23,7 +25,11 @@ internal class ServerSettingsWriter(
     ) {
         val serverSettings = createServerSettings(server)
         val serverSettingsJson = serverSettingsDtoSerializer.serialize(serverSettings)
-        editor.putStringWithLogging(key, serverSettingsJson)
+        editor.putStringWithLogging(
+            key,
+            serverSettingsJson,
+            generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+        )
     }
 
     private fun createServerSettings(server: ValidatedSettings.Server): ServerSettings {

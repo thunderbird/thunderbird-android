@@ -17,6 +17,7 @@ import net.thunderbird.core.logging.legacy.DebugLogConfigurator
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
+import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
@@ -32,6 +33,7 @@ import net.thunderbird.core.preference.storage.Storage
  * The [GeneralSettings] instance managed by this class is updated with state from [K9] when [K9.saveSettingsAsync] is
  * called.
  */
+@Suppress("LongParameterList")
 internal class DefaultGeneralSettingsManager(
     private val preferences: Preferences,
     private val coroutineScope: CoroutineScope,
@@ -40,6 +42,8 @@ internal class DefaultGeneralSettingsManager(
     private val notificationPreferenceManager: NotificationPreferenceManager,
     private val displaySettingsSettingsPreferenceManager: DisplaySettingsPreferenceManager,
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
+    private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
+    private val debugLogConfigurator: DebugLogConfigurator,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GeneralSettingsManager {
     val mutex = Mutex()
@@ -66,6 +70,13 @@ internal class DefaultGeneralSettingsManager(
             generalSettings.copy(
                 network = networkSettings,
             )
+        }
+        .combine(debuggingSettingsPreferenceManager.getConfigFlow()) { generalSettings, debuggingSettings ->
+            generalSettings.copy(
+                debugging = debuggingSettings,
+            ).also {
+                debugLogConfigurator.updateLoggingStatus(debuggingSettings.isDebugLoggingEnabled)
+            }
         }
         .stateIn(
             scope = coroutineScope,
@@ -114,6 +125,7 @@ internal class DefaultGeneralSettingsManager(
                 notificationPreferenceManager.save(config.notification)
                 displaySettingsSettingsPreferenceManager.save(config.display)
                 networkSettingsPreferenceManager.save(config.network)
+                debuggingSettingsPreferenceManager.save(config.debugging)
             }
         }
     }
