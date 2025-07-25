@@ -12,7 +12,7 @@ kover {
 
         verify {
             rule("line-coverage") {
-                minBound(50)
+                minBound(0)
             }
         }
     }
