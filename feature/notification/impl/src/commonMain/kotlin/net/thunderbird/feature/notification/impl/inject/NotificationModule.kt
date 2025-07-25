@@ -1,6 +1,8 @@
 package net.thunderbird.feature.notification.impl.inject
 
 import net.thunderbird.feature.notification.api.NotificationRegistry
+import net.thunderbird.feature.notification.api.content.InAppNotification
+import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.api.sender.NotificationSender
 import net.thunderbird.feature.notification.impl.DefaultNotificationRegistry
 import net.thunderbird.feature.notification.impl.command.NotificationCommandFactory
@@ -16,15 +18,17 @@ internal expect val platformFeatureNotificationModule: Module
 val featureNotificationModule = module {
     includes(platformFeatureNotificationModule)
 
-    factory { InAppNotificationNotifier() }
+    factory<NotificationNotifier<InAppNotification>>(named<InAppNotificationNotifier>()) {
+        InAppNotificationNotifier()
+    }
 
     factory<NotificationCommandFactory> {
         NotificationCommandFactory(
             logger = get(),
-            notificationRegistry = get(),
             featureFlagProvider = get(),
+            notificationRegistry = get(),
             systemNotificationNotifier = get(named<SystemNotificationNotifier>()),
-            inAppNotificationNotifier = get(),
+            inAppNotificationNotifier = get(named<InAppNotificationNotifier>()),
         )
     }
 

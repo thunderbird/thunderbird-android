@@ -18,7 +18,7 @@ internal class NotificationCommandFactory(
     private val featureFlagProvider: FeatureFlagProvider,
     private val notificationRegistry: NotificationRegistry,
     private val systemNotificationNotifier: NotificationNotifier<SystemNotification>,
-    private val inAppNotificationNotifier: InAppNotificationNotifier,
+    private val inAppNotificationNotifier: NotificationNotifier<InAppNotification>,
 ) {
     /**
      * Creates a set of [NotificationCommand]s for the given [notification].
@@ -47,6 +47,8 @@ internal class NotificationCommandFactory(
             commands.add(
                 InAppNotificationCommand(
                     logger = logger,
+                    featureFlagProvider = featureFlagProvider,
+                    notificationRegistry = notificationRegistry,
                     notification = notification,
                     notifier = inAppNotificationNotifier,
                 ),
