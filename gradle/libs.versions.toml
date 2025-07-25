@@ -86,6 +86,7 @@ kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDateTime = "0.7.1"
 kotlinxIoCore = "0.8.0"
 kotlinxSerialization = "1.9.0"
+kover = "0.9.4"
 ktlint = "1.5.0"
 ktor = "3.3.3"
 kxml2 = "1.0"
@@ -128,6 +129,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinBom" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlinBom" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinBom" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinBom" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
