@@ -23,8 +23,6 @@ val featureNotificationModule = module {
 
     single<NotificationRegistry> { DefaultNotificationRegistry() }
 
-    factory { SystemNotificationNotifier() }
-
     single { InAppNotificationEventBus() }
         .bind(InAppNotificationReceiver::class)
 
@@ -41,7 +39,7 @@ val featureNotificationModule = module {
             logger = get(),
             featureFlagProvider = get(),
             notificationRegistry = get(),
-            systemNotificationNotifier = get(),
+            systemNotificationNotifier = get(named<SystemNotificationNotifier>()),
             inAppNotificationNotifier = get(named<InAppNotificationNotifier>()),
         )
     }

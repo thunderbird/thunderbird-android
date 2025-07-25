@@ -1,6 +1,7 @@
 package net.thunderbird.feature.notification.impl.intent.action
 
 import android.app.PendingIntent
+import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
 /**
@@ -11,14 +12,17 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
  *
  * @param TNotificationAction The type of [NotificationAction] this creator can handle.
  */
-internal interface NotificationActionIntentCreator<in TNotificationAction : NotificationAction> {
+internal interface NotificationActionIntentCreator<
+    in TNotification : Notification,
+    in TNotificationAction : NotificationAction,
+    > {
     /**
      * Determines whether this [NotificationActionIntentCreator] can create an intent for the given [action].
      *
      * @param action The [NotificationAction] to check.
      * @return `true` if this creator can handle the [action], `false` otherwise.
      */
-    fun accept(action: NotificationAction): Boolean
+    fun accept(notification: Notification, action: NotificationAction): Boolean
 
     /**
      * Creates a [PendingIntent] for the given notification action.
@@ -26,7 +30,7 @@ internal interface NotificationActionIntentCreator<in TNotificationAction : Noti
      * @param action The notification action to create an intent for.
      * @return The created [PendingIntent], or `null` if the action is not supported or an error occurs.
      */
-    fun create(action: TNotificationAction): PendingIntent?
+    fun create(notification: TNotification, action: TNotificationAction): PendingIntent?
 
     object TypeQualifier
 }
