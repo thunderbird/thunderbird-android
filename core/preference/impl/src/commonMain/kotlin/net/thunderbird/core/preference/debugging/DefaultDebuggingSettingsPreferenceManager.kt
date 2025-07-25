@@ -40,6 +40,10 @@ class DefaultDebuggingSettingsPreferenceManager(
             KEY_ENABLE_DEBUG_LOGGING,
             DEBUGGING_SETTINGS_DEFAULT_IS_DEBUGGING_LOGGING_ENABLED,
         ),
+        isSyncLoggingEnabled = storage.getBoolean(
+            KEY_ENABLE_SYNC_DEBUG_LOGGING,
+            DEBUGGING_SETTINGS_DEFAULT_IS_SYNC_LOGGING_ENABLED,
+        ),
     )
 
     private fun writeConfig(config: DebuggingSettings) {
@@ -47,6 +51,7 @@ class DefaultDebuggingSettingsPreferenceManager(
         scope.launch(ioDispatcher) {
             mutex.withLock {
                 storageEditor.putBoolean(KEY_ENABLE_DEBUG_LOGGING, config.isDebugLoggingEnabled)
+                storageEditor.putBoolean(KEY_ENABLE_SYNC_DEBUG_LOGGING, config.isSyncLoggingEnabled)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
