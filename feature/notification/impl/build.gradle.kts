@@ -10,6 +10,15 @@ kotlin {
             implementation(projects.core.logging.api)
             implementation(projects.feature.notification.api)
         }
+        commonTest.dependencies {
+            implementation(projects.core.logging.testing)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.androidx.test.core)
+            implementation(libs.mockito.core)
+            implementation(libs.mockito.kotlin)
+            implementation(libs.robolectric)
+        }
     }
 }
 
