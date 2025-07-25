@@ -30,7 +30,7 @@ fun AppTitleTopHeader(
                 bottom = MainTheme.spacings.default,
             )
             .then(modifier),
-    ) {
+    ) { contentPadding ->
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -38,6 +38,7 @@ fun AppTitleTopHeader(
                     start = MainTheme.spacings.half,
                     end = MainTheme.spacings.quadruple,
                 )
+                .padding(contentPadding)
                 .then(modifier),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,

@@ -88,8 +88,8 @@ private fun ButtonBar(
                     top = MainTheme.spacings.half,
                     bottom = MainTheme.spacings.half,
                 ),
-        ) {
-            Column(modifier = Modifier.animateContentSize()) {
+        ) { contentPadding ->
+            Column(modifier = Modifier.animateContentSize().padding(contentPadding)) {
                 ButtonFilled(
                     text = stringResource(R.string.account_server_certificate_button_back),
                     onClick = { dispatch(Event.OnBackClicked) },

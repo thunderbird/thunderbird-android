@@ -27,14 +27,15 @@ internal fun ContributionContent(
         modifier = modifier
             .testTagAsResourceId("ContributionContent")
             .padding(contentPadding),
-    ) {
+    ) { contentPadding ->
         val scrollState = rememberScrollState()
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = MainTheme.spacings.quadruple)
-                .verticalScroll(scrollState),
+                .verticalScroll(scrollState)
+                .padding(contentPadding),
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.triple),
         ) {

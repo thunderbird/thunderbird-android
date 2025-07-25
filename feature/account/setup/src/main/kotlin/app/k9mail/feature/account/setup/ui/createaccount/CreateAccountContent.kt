@@ -24,7 +24,7 @@ internal fun CreateAccountContent(
             .padding(contentPadding)
             .testTagAsResourceId("CreateAccountContent")
             .then(modifier),
-    ) {
+    ) { contentPadding ->
         ContentLoadingErrorView(
             state = state,
             loading = {
@@ -42,7 +42,7 @@ internal fun CreateAccountContent(
                     message = stringResource(R.string.account_setup_create_account_created),
                 )
             },
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(contentPadding),
         )
     }
 }

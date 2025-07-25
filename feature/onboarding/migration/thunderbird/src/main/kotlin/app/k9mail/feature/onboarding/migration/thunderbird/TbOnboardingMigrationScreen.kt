@@ -62,11 +62,12 @@ internal fun TbOnboardingMigrationScreen(
         modifier = Modifier
             .fillMaxSize()
             .then(modifier),
-    ) {
+    ) { contentPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState),
+                .verticalScroll(scrollState)
+                .padding(contentPadding),
         ) {
             AppTitleTopHeader(
                 title = brandNameProvider.brandName,

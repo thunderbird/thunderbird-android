@@ -1,17 +1,12 @@
 package app.k9mail.core.ui.compose.designsystem.template
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass.Compact
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass.Expanded
-import app.k9mail.core.ui.compose.common.window.WindowSizeClass.Medium
-import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
+import app.k9mail.core.ui.compose.common.padding.calculateResponsiveWidthPadding
 
 /**
  * A container that adjusts its width depending on the screen size.
@@ -35,28 +30,14 @@ import app.k9mail.core.ui.compose.common.window.getWindowSizeInfo
 @Composable
 fun ResponsiveWidthContainer(
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    content: @Composable (paddingValues: PaddingValues) -> Unit,
 ) {
-    val windowSizeInfo = getWindowSizeInfo()
-
-    val responsiveModifier = when (windowSizeInfo.screenWidthSizeClass) {
-        Compact -> Modifier.fillMaxWidth()
-
-        Medium -> Modifier.requiredWidth(WindowSizeClass.COMPACT_MAX_WIDTH.dp)
-
-        Expanded -> Modifier.requiredWidth(WindowSizeClass.MEDIUM_MAX_WIDTH.dp)
-    }
-
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .then(modifier),
         contentAlignment = Alignment.TopCenter,
     ) {
-        Box(
-            modifier = responsiveModifier,
-        ) {
-            content()
-        }
+        content(calculateResponsiveWidthPadding())
     }
 }
