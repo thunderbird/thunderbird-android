@@ -23,7 +23,7 @@ data class FakeNotification(
     ),
     override val channel: NotificationChannel = NotificationChannel.Messages(
         accountUuid = "",
-        suffix = ""
+        suffix = "",
     ),
 ) : AppNotification(), SystemNotification, InAppNotification
 
@@ -41,6 +41,6 @@ data class FakeSystemOnlyNotification(
     ),
     override val channel: NotificationChannel = NotificationChannel.Messages(
         accountUuid = "",
-        suffix = ""
+        suffix = "",
     ),
 ) : AppNotification(), SystemNotification
