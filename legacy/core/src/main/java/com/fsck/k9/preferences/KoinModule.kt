@@ -2,6 +2,7 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
 import kotlin.time.ExperimentalTime
+import net.thunderbird.core.logging.legacy.DebugLogConfigurator
 import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
