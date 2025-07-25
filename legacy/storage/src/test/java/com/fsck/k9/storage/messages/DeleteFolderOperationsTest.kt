@@ -10,6 +10,7 @@ import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.storage.RobolectricTest
 import org.junit.After
 import org.junit.Test
+import org.mockito.kotlin.mock
 
 class DeleteFolderOperationsTest : RobolectricTest() {
     private val messagePartDirectory = createRandomTempDirectory()
@@ -19,7 +20,7 @@ class DeleteFolderOperationsTest : RobolectricTest() {
         override fun getAttachmentDirectory() = messagePartDirectory
     }
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider)
+    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
     private val deleteFolderOperations = DeleteFolderOperations(lockableDatabase, attachmentFileManager)
 
     @After

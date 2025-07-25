@@ -23,6 +23,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 
 

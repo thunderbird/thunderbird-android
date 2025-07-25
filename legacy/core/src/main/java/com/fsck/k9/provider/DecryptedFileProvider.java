@@ -20,10 +20,13 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import android.text.TextUtils;
+
+import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.util.FileFactory;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -37,6 +40,7 @@ public class DecryptedFileProvider extends FileProvider {
 
     private static String AUTHORITY;
     private static DecryptedFileProviderCleanupReceiver cleanupReceiver = null;
+    private static final GeneralSettingsManager generalSettingManager = DI.get(GeneralSettingsManager.class);
 
 
     @Override
@@ -90,7 +94,7 @@ public class DecryptedFileProvider extends FileProvider {
                     allFilesDeleted = false;
                 }
             } else {
-                if (K9.isDebugLoggingEnabled()) {
+                if (generalSettingManager.getConfig().getDebugging().isDebugLoggingEnabled()) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
                     Log.e("Not deleting temp file (for another %s minutes)", timeLeftStr);
