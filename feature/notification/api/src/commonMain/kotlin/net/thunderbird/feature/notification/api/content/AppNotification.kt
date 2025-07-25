@@ -49,7 +49,7 @@ sealed interface Notification {
  * @property actions A set of actions that can be performed on the notification. Defaults to an empty set.
  * @see Notification
  */
-sealed class AppNotification : Notification {
+abstract class AppNotification : Notification {
     override val accessibilityText: String = title
 
     @OptIn(ExperimentalTime::class)
@@ -70,7 +70,7 @@ sealed class AppNotification : Notification {
  * @see SystemNotificationStyle
  * @see net.thunderbird.feature.notification.api.ui.style.systemNotificationStyle
  */
-sealed interface SystemNotification : Notification {
+interface SystemNotification : Notification {
     val subText: String? get() = null
     val channel: NotificationChannel
     val group: NotificationGroup? get() = null
@@ -112,6 +112,6 @@ sealed interface SystemNotification : Notification {
  * @see InAppNotificationStyle
  * @see net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
  */
-sealed interface InAppNotification : Notification {
+interface InAppNotification : Notification {
     val inAppNotificationStyle: InAppNotificationStyle get() = InAppNotificationStyle.Undefined
 }
