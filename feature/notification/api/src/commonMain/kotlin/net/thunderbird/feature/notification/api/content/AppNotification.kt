@@ -49,7 +49,7 @@ sealed interface Notification {
  * @property actions A set of actions that can be performed on the notification. Defaults to an empty set.
  * @see Notification
  */
-sealed class AppNotification : Notification {
+abstract class AppNotification : Notification {
     override val accessibilityText: String = title
 
     @OptIn(ExperimentalTime::class)
