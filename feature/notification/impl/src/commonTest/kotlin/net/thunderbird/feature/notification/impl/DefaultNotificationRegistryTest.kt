@@ -11,7 +11,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.notification.api.NotificationId
-import net.thunderbird.feature.notification.impl.fake.FakeNotification
+import net.thunderbird.feature.notification.testing.fake.FakeNotification
 
 @Suppress("MaxLineLength")
 class DefaultNotificationRegistryTest {

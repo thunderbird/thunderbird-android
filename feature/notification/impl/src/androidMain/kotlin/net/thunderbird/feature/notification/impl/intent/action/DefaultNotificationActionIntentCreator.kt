@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import androidx.core.app.PendingIntentCompat
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
 private const val TAG = "DefaultNotificationActionIntentCreator"
@@ -21,11 +22,11 @@ private const val TAG = "DefaultNotificationActionIntentCreator"
 internal class DefaultNotificationActionIntentCreator(
     private val logger: Logger,
     private val applicationContext: Context,
-) : NotificationActionIntentCreator<NotificationAction> {
-    override fun accept(action: NotificationAction): Boolean = true
+) : NotificationActionIntentCreator<Notification, NotificationAction> {
+    override fun accept(notification: Notification, action: NotificationAction): Boolean = true
 
-    override fun create(action: NotificationAction): PendingIntent? {
-        logger.debug(TAG) { "create() called with: action = $action" }
+    override fun create(notification: Notification, action: NotificationAction): PendingIntent? {
+        logger.debug(TAG) { "create() called with: notification = $notification, action = $action" }
         val packageManager = applicationContext.packageManager
         val launchIntent = requireNotNull(
             packageManager.getLaunchIntentForPackage(applicationContext.packageName),

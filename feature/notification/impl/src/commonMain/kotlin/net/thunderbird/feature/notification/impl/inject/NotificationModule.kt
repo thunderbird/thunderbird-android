@@ -8,6 +8,7 @@ import net.thunderbird.feature.notification.impl.receiver.InAppNotificationNotif
 import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNotifier
 import net.thunderbird.feature.notification.impl.sender.DefaultNotificationSender
 import org.koin.core.module.Module
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 internal expect val platformFeatureNotificationModule: Module
@@ -15,7 +16,6 @@ internal expect val platformFeatureNotificationModule: Module
 val featureNotificationModule = module {
     includes(platformFeatureNotificationModule)
 
-    factory { SystemNotificationNotifier() }
     factory { InAppNotificationNotifier() }
 
     factory<NotificationCommandFactory> {
@@ -23,7 +23,7 @@ val featureNotificationModule = module {
             logger = get(),
             notificationRegistry = get(),
             featureFlagProvider = get(),
-            systemNotificationNotifier = get(),
+            systemNotificationNotifier = get(named<SystemNotificationNotifier>()),
             inAppNotificationNotifier = get(),
         )
     }

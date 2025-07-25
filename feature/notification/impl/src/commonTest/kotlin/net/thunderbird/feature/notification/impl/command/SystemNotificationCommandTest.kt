@@ -27,8 +27,8 @@ import net.thunderbird.feature.notification.api.command.NotificationCommandExcep
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
-import net.thunderbird.feature.notification.impl.fake.FakeNotification
-import net.thunderbird.feature.notification.impl.fake.FakeSystemOnlyNotification
+import net.thunderbird.feature.notification.testing.fake.FakeNotification
+import net.thunderbird.feature.notification.testing.fake.FakeSystemOnlyNotification
 
 @Suppress("MaxLineLength")
 class SystemNotificationCommandTest {

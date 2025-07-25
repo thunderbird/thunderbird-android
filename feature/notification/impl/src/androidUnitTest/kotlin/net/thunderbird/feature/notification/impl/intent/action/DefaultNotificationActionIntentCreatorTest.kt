@@ -14,6 +14,7 @@ import assertk.assertions.isTrue
 import assertk.assertions.prop
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.testing.fake.FakeNotification
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mockStatic
@@ -49,7 +50,7 @@ class DefaultNotificationActionIntentCreatorTest {
 
         // Act
         val accepted = multipleActions.fold(initial = true) { accepted, action ->
-            accepted and testSubject.accept(action)
+            accepted and testSubject.accept(notification = FakeNotification(), action)
         }
 
         // Assert
@@ -95,7 +96,7 @@ class DefaultNotificationActionIntentCreatorTest {
             val testSubject = createTestSubject(context)
 
             // Act
-            testSubject.create(NotificationAction.Tap)
+            testSubject.create(notification = FakeNotification(), action = NotificationAction.Tap)
 
             // Assert
             pendingIntentCompat.verify {
