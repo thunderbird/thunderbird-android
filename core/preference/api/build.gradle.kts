@@ -4,4 +4,7 @@ plugins {
 
 android {
     namespace = "net.thunderbird.core.preference"
+    buildFeatures {
+        buildConfig = true
+    }
 }
