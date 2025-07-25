@@ -8,7 +8,6 @@ import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
-import net.thunderbird.feature.notification.impl.receiver.InAppNotificationNotifier
 
 /**
  * A factory for creating a set of notification commands based on a given notification.
