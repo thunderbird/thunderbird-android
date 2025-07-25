@@ -12,7 +12,6 @@ import dev.mokkery.verify.VerifyMode.Companion.exactly
 import dev.mokkery.verifySuspend
 import kotlin.random.Random
 import kotlin.test.Test
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
@@ -28,7 +27,6 @@ import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.impl.fake.FakeNotification
-import net.thunderbird.feature.notification.impl.fake.FakeSystemOnlyNotification
 
 @Suppress("MaxLineLength")
 class InAppNotificationCommandTest {
