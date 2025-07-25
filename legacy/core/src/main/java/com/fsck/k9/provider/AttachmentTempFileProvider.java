@@ -18,9 +18,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.K9;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import okio.ByteString;
 import org.apache.commons.io.IOUtils;
 
@@ -30,6 +32,7 @@ public class AttachmentTempFileProvider extends FileProvider {
     private static final long FILE_DELETE_THRESHOLD_MILLISECONDS = 3 * 60 * 1000;
     private static final Object tempFileWriteMonitor = new Object();
     private static final Object cleanupReceiverMonitor = new Object();
+    private static final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
 
     private static String AUTHORITY;
     private static AttachmentTempFileProviderCleanupReceiver cleanupReceiver = null;
@@ -111,7 +114,7 @@ public class AttachmentTempFileProvider extends FileProvider {
                     allFilesDeleted = false;
                 }
             } else {
-                if (K9.isDebugLoggingEnabled()) {
+                if (generalSettingsManager.getConfig().getDebugging().isDebugLoggingEnabled()) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
                     Log.e("Not deleting temp file (for another %s minutes)", timeLeftStr);

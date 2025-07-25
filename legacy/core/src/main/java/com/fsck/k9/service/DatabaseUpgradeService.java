@@ -17,6 +17,8 @@ import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.preference.GeneralSettingsManager;
+
 
 /**
  * Service used to upgrade the accounts' databases and/or track the progress of the upgrade.

@@ -10,8 +10,20 @@ import assertk.fail
 import com.fsck.k9.preferences.Settings.BooleanSetting
 import com.fsck.k9.preferences.Settings.StringSetting
 import kotlin.test.Test
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.preference.GeneralSettings
+import org.junit.Before
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 class SettingsUpgradeHelperTest {
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
+
     @Test
     fun `upgrade() with new setting being added`() {
         val version = 1
@@ -33,6 +45,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
+            mock { on { getConfig() } doReturn GeneralSettings() },
         )
 
         assertThat(result).isEqualTo(
@@ -65,6 +78,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
+            mock { on { getConfig() } doReturn GeneralSettings() },
         )
 
         assertThat(result).isEqualTo(
@@ -101,6 +115,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
+            mock { on { getConfig() } doReturn GeneralSettings() },
         )
 
         assertThat(result).isEqualTo(
@@ -133,6 +148,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
+            mock { on { getConfig() } doReturn GeneralSettings() },
         )
 
         assertThat(result).isEqualTo(
@@ -162,6 +178,7 @@ class SettingsUpgradeHelperTest {
                 upgraders,
                 settingsDescriptions,
                 settings,
+                mock { on { getConfig() } doReturn GeneralSettings() },
             )
         }.isInstanceOf<AssertionError>()
             .hasMessage("First version of a setting must be non-null!")
@@ -192,6 +209,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
+            mock { on { getConfig() } doReturn GeneralSettings() },
         )
 
         assertThat(result).isEqualTo(
@@ -234,6 +252,7 @@ class SettingsUpgradeHelperTest {
             upgraders,
             settingsDescriptions,
             settings,
+            mock { on { getConfig() } doReturn GeneralSettings() },
         )
 
         assertThat(result).isEqualTo(
