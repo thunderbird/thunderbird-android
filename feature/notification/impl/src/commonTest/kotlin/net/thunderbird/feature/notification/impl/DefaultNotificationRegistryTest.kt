@@ -1,7 +1,5 @@
 package net.thunderbird.feature.notification.impl
 
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
 import assertk.assertThat
 import assertk.assertions.containsAtLeast
 import assertk.assertions.hasSize
@@ -13,9 +11,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.notification.api.NotificationId
-import net.thunderbird.feature.notification.api.NotificationSeverity
-import net.thunderbird.feature.notification.api.content.AppNotification
-import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.impl.fake.FakeNotification
 
 @Suppress("MaxLineLength")
 class DefaultNotificationRegistryTest {
@@ -176,18 +172,4 @@ class DefaultNotificationRegistryTest {
             // Assert
             assertThat(registry[notification]).isNull()
         }
-
-    data class FakeNotification(
-        override val title: String = "fake title",
-        override val contentText: String? = "fake content",
-        override val severity: NotificationSeverity = NotificationSeverity.Information,
-        override val icon: NotificationIcon = NotificationIcon(
-            inAppNotificationIcon = ImageVector.Builder(
-                defaultWidth = 0.dp,
-                defaultHeight = 0.dp,
-                viewportWidth = 0f,
-                viewportHeight = 0f,
-            ).build(),
-        ),
-    ) : AppNotification()
 }

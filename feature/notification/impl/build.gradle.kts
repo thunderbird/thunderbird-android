@@ -1,11 +1,13 @@
 plugins {
     id(ThunderbirdPlugins.Library.kmpCompose)
+    alias(libs.plugins.dev.mokkery)
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.common)
+            implementation(projects.core.featureflag)
             implementation(projects.core.outcome)
             implementation(projects.core.logging.api)
             implementation(projects.feature.notification.api)
