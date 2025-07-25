@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.impl.receiver
 
+import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 
@@ -11,7 +12,11 @@ import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
  * as part of GitHub Issue #9245.
  */
 internal class InAppNotificationNotifier : NotificationNotifier<InAppNotification> {
-    override fun show(notification: InAppNotification) {
+    override suspend fun show(id: NotificationId, notification: InAppNotification) {
+        TODO("Implementation on GitHub Issue #9245")
+    }
+
+    override fun dispose() {
         TODO("Implementation on GitHub Issue #9245")
     }
 }

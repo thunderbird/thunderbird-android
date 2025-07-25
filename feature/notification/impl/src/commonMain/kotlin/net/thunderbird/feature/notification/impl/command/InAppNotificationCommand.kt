@@ -19,7 +19,7 @@ internal class InAppNotificationCommand(
     notification: InAppNotification,
     notifier: NotificationNotifier<InAppNotification>,
 ) : NotificationCommand<InAppNotification>(notification, notifier) {
-    override fun execute(): Outcome<Success<InAppNotification>, Failure<InAppNotification>> {
+    override suspend fun execute(): Outcome<Success<InAppNotification>, Failure<InAppNotification>> {
         logger.debug {
             "TODO: Implementation on GitHub Issue #9245. Notification = $notification."
         }

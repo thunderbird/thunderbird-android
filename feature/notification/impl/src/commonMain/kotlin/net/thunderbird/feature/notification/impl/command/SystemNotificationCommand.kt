@@ -17,7 +17,7 @@ internal class SystemNotificationCommand(
     notification: SystemNotification,
     notifier: NotificationNotifier<SystemNotification>,
 ) : NotificationCommand<SystemNotification>(notification, notifier) {
-    override fun execute(): Outcome<Success<SystemNotification>, Failure<SystemNotification>> {
+    override suspend fun execute(): Outcome<Success<SystemNotification>, Failure<SystemNotification>> {
         logger.debug {
             "TODO: Implementation on GitHub Issue #9245. Notification = $notification."
         }
