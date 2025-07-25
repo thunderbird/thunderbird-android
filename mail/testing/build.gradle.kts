@@ -3,11 +3,6 @@ plugins {
     alias(libs.plugins.android.lint)
 }
 
-val testCoverageEnabled: Boolean by extra
-if (testCoverageEnabled) {
-    apply(plugin = "jacoco")
-}
-
 dependencies {
     api(projects.mail.common)
     api(projects.core.common)
