@@ -50,7 +50,8 @@ val jobModule = module {
             baseLogger = get<Logger>(),
             fileLogSink = get<FileLogSink>(named("syncDebug")),
             syncDebugCompositeSink = get<CompositeLogSink>(named("syncDebug")),
-            parameters,
+            generalSettingsManager = get(),
+            parameters = parameters,
         )
     }
 }
