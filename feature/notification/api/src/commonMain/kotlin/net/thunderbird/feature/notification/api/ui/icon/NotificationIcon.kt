@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
  * @property inAppNotificationIcon The icon to be used for in-app notifications.
  */
 data class NotificationIcon(
-    private val systemNotificationIcon: SystemNotificationIcon? = null,
-    private val inAppNotificationIcon: ImageVector? = null,
+    val systemNotificationIcon: SystemNotificationIcon? = null,
+    val inAppNotificationIcon: ImageVector? = null,
 ) {
 
     init {
