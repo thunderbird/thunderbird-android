@@ -12,6 +12,7 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.AccountManager;
 import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 public class MlfUtils {
