@@ -15,7 +15,7 @@ import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import java.util.Date
 import net.thunderbird.feature.mail.folder.api.FolderDetails
-import net.thunderbird.feature.search.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
 class K9MessageStore(
     database: LockableDatabase,

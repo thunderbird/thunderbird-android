@@ -43,7 +43,6 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.helper.ParcelableUtil
 import com.fsck.k9.search.isUnifiedInbox
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
@@ -71,12 +70,12 @@ import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchAccount
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.api.MessageSearchSpecification
-import net.thunderbird.feature.search.api.SearchAttribute
-import net.thunderbird.feature.search.api.SearchCondition
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchAccount
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.SearchCondition
+import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -526,7 +525,9 @@ open class MessageList :
 
             if (messageReference != null) {
                 val search = if (intent.hasByteArrayExtra(EXTRA_SEARCH)) {
-                    ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalMessageSearch.CREATOR)
+                    intent.getByteArrayExtra(EXTRA_SEARCH)?.let {
+                        LocalMessageSearchSerializer.deserialize(it)
+                    } ?: messageReference.toLocalSearch()
                 } else {
                     messageReference.toLocalSearch()
                 }
@@ -539,13 +540,20 @@ open class MessageList :
             }
         } else if (intent.hasByteArrayExtra(EXTRA_SEARCH)) {
             // regular LocalSearch object was passed
-            val search = ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalMessageSearch.CREATOR)
+            val search = intent.getByteArrayExtra(EXTRA_SEARCH)?.let {
+                LocalMessageSearchSerializer.deserialize(it)
+            }
             val noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false)
             val account = intent.getStringExtra(EXTRA_ACCOUNT)?.let { accountUuid ->
                 accountManager.getAccount(accountUuid)
             }
 
-            return LaunchData(search = search, account = account, noThreading = noThreading)
+            return if (search == null) {
+                Log.e("No search data found in intent extras.")
+                LaunchData(createDefaultLocalSearch())
+            } else {
+                LaunchData(search = search, account = account, noThreading = noThreading)
+            }
         }
 
         // Default action
@@ -1227,7 +1235,7 @@ open class MessageList :
         showMessageViewPlaceHolder()
 
         val tmpSearch = LocalMessageSearch().apply {
-            setId(search?.id)
+            id = search?.id ?: "ShowThread-${account.uuid}-$threadRootId"
             addAccountUuid(account.uuid)
             and(MessageSearchField.THREAD_ID, threadRootId.toString(), SearchAttribute.EQUALS)
         }
@@ -1479,10 +1487,12 @@ open class MessageList :
 
         search?.let { search ->
             when {
-                singleFolderMode -> drawer.selectFolder(
-                    accountUuid = search.accountUuids.elementAt(0),
-                    folderId = search.folderIds[0],
-                )
+                singleFolderMode -> search.getFolderIdAtIndexOrNull(0)?.let { folderId ->
+                    drawer.selectFolder(
+                        accountUuid = search.accountUuids.elementAt(0),
+                        folderId = folderId,
+                    )
+                }
 
                 // Don't select any item in the drawer because the Unified Inbox is displayed,
                 // but not listed in the drawer
@@ -1547,7 +1557,7 @@ open class MessageList :
         @JvmOverloads
         fun actionDisplaySearch(
             context: Context,
-            search: MessageSearchSpecification?,
+            search: LocalMessageSearch?,
             noThreading: Boolean,
             newTask: Boolean,
             clearTop: Boolean = true,
@@ -1558,13 +1568,15 @@ open class MessageList :
         @JvmStatic
         fun intentDisplaySearch(
             context: Context?,
-            search: MessageSearchSpecification?,
+            search: LocalMessageSearch?,
             noThreading: Boolean,
             newTask: Boolean,
             clearTop: Boolean,
         ): Intent {
             return Intent(context, MessageList::class.java).apply {
-                putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
+                if (search != null) {
+                    putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
+                }
                 putExtra(EXTRA_NO_THREADING, noThreading)
 
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -1573,7 +1585,6 @@ open class MessageList :
                 if (newTask) addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         }
-
         fun createUnifiedInboxIntent(
             context: Context,
             account: LegacyAccount,
@@ -1585,7 +1596,7 @@ open class MessageList :
                 ).relatedSearch
 
                 putExtra(EXTRA_ACCOUNT, account.uuid)
-                putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
+                putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 putExtra(EXTRA_NO_THREADING, false)
 
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -1650,7 +1661,7 @@ open class MessageList :
                         unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
                         unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
                     ).relatedSearch
-                    putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search))
+                    putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }
 
                 putExtra(EXTRA_MESSAGE_VIEW_ONLY, messageViewOnly)

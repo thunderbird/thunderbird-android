@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolderType
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
 
 internal class UnifiedFolderRepositoryTest {
 

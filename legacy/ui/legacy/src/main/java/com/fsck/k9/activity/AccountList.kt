@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
-import net.thunderbird.feature.search.SearchAccount.Companion.createUnifiedInboxAccount
+import net.thunderbird.feature.search.legacy.SearchAccount
 import org.koin.android.ext.android.inject
 
 /**
@@ -77,7 +77,7 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
         val accounts: MutableList<BaseAccount> = ArrayList()
 
         if (generalSettingsManager.getConfig().display.isShowUnifiedInbox) {
-            val unifiedInboxAccount: BaseAccount = createUnifiedInboxAccount(
+            val unifiedInboxAccount: BaseAccount = SearchAccount.createUnifiedInboxAccount(
                 unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
                 unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
             )

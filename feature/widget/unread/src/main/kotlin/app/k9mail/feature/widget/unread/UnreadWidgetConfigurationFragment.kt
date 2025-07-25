@@ -16,7 +16,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.takisoft.preferencex.PreferenceFragmentCompat
-import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.legacy.SearchAccount
 import org.koin.android.ext.android.inject
 
 @Suppress("TooManyFunctions")

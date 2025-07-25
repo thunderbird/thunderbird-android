@@ -10,8 +10,8 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderNotFoundException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.toFolderType
-import net.thunderbird.feature.search.SearchConditionTreeNode
-import net.thunderbird.feature.search.sql.SqlWhereClause
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 
 internal class RetrieveFolderOperations(private val lockableDatabase: LockableDatabase) {
     fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {

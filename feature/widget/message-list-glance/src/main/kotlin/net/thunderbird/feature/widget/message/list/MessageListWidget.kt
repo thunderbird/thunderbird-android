@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.SearchAccount.Companion.createUnifiedInboxAccount
+import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedInboxAccount
 import net.thunderbird.feature.widget.message.list.ui.MessageListWidgetContent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

@@ -26,6 +26,7 @@ dependencies {
     // TODO: Remove AccountOauth dependency
     implementation(projects.feature.account.oauth)
     implementation(projects.feature.funding.api)
+    implementation(projects.feature.search.implLegacy)
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
     implementation(projects.feature.mail.message.list)
