@@ -71,7 +71,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_useragent" -> generalSettingsManager.getConfig().privacy.isHideUserAgent
             "privacy_hide_timezone" -> generalSettingsManager.getConfig().privacy.isHideTimeZone
             "debug_logging" -> generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
-            "sync_debug_logging" -> K9.isSyncLoggingEnabled
+            "sync_debug_logging" -> generalSettingsManager.getConfig().debugging.isSyncLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation
             "enable_telemetry" -> K9.isTelemetryEnabled
@@ -111,7 +111,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
-            "sync_debug_logging" -> K9.isSyncLoggingEnabled = value
+            "sync_debug_logging" -> setIsSyncLoggingEnabled(isSyncLoggingEnabled = value)
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
             "enable_telemetry" -> setTelemetryEnabled(value)
@@ -474,6 +474,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 debugging = settings.debugging.copy(
                     isDebugLoggingEnabled = isDebugLoggingEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setIsSyncLoggingEnabled(isSyncLoggingEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                debugging = settings.debugging.copy(
+                    isSyncLoggingEnabled = isSyncLoggingEnabled,
                 ),
             )
         }

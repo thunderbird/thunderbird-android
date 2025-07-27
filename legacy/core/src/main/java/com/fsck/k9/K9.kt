@@ -16,14 +16,11 @@ import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
-import net.thunderbird.core.logging.composite.CompositeLogSink
-import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.core.qualifier.named
 import timber.log.Timber
 
 // TODO "Use GeneralSettingsManager and GeneralSettings instead"
@@ -31,8 +28,6 @@ object K9 : KoinComponent {
     private val generalSettingsManager: DefaultGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
-    private val syncDebugCompositeSink: CompositeLogSink by inject(named("syncDebug"))
-    private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
 
     /**
      * Name of the [SharedPreferences] file used to store the last known version of the
@@ -117,13 +112,6 @@ object K9 : KoinComponent {
             setDatabasesUpToDate(false)
         }
     }
-
-    @JvmStatic
-    var isSyncLoggingEnabled: Boolean = false
-        set(debug) {
-            field = debug
-            updateSyncLogging()
-        }
 
     @JvmStatic
     var isSensitiveDebugLoggingEnabled: Boolean = false
@@ -261,7 +249,6 @@ object K9 : KoinComponent {
     @JvmStatic
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
-        isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
@@ -330,7 +317,6 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
@@ -377,14 +363,6 @@ object K9 : KoinComponent {
         editor.putLong("fundingActivityCounterInMillis", fundingActivityCounterInMillis)
 
         fontSizes.save(editor)
-    }
-
-    private fun updateSyncLogging() {
-        if (isSyncLoggingEnabled) {
-            syncDebugCompositeSink.manager.add(syncDebugFileLogSink)
-        } else {
-            syncDebugCompositeSink.manager.remove(syncDebugFileLogSink)
-        }
     }
 
     @JvmStatic

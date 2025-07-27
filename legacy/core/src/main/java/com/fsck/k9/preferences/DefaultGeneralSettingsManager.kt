@@ -75,6 +75,7 @@ internal class DefaultGeneralSettingsManager(
                 debugging = debuggingSettings,
             ).also {
                 debugLogConfigurator.updateLoggingStatus(debuggingSettings.isDebugLoggingEnabled)
+                debugLogConfigurator.updateSyncLogging(debuggingSettings.isSyncLoggingEnabled)
             }
         }
         .stateIn(

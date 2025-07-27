@@ -73,7 +73,10 @@ val preferencesModule = module {
         )
     }
     single<DebugLogConfigurator> {
-        DebugLogConfigurator()
+        DebugLogConfigurator(
+            syncDebugCompositeSink = get(named("syncDebug")),
+            syncDebugFileLogSink = get(named("syncDebug")),
+        )
     }
     single {
         DefaultGeneralSettingsManager(
