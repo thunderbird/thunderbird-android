@@ -1,5 +1,7 @@
 package net.thunderbird.feature.notification.api.ui.style
 
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import net.thunderbird.feature.notification.api.ui.style.builder.InAppNotificationStyleBuilder
 
 /**
@@ -7,72 +9,62 @@ import net.thunderbird.feature.notification.api.ui.style.builder.InAppNotificati
  *
  * In-app notifications are displayed within the application itself to provide immediate
  * feedback or information.
- *
- * TODO(#9312): The subtypes of [InAppNotificationStyle] Style might change after designer's feedback.
  */
-enum class InAppNotificationStyle {
-    /**
-     * Represents an undefined in-app notification style.
-     * This can be used as a default or placeholder when no specific style is applicable.
-     */
-    Undefined,
+sealed interface InAppNotificationStyle {
+    companion object {
+        /**
+         * Represents an undefined in-app notification style.
+         * This can be used as a default or placeholder when no specific style is applicable.
+         */
+        val Undefined: List<InAppNotificationStyle> = emptyList()
+    }
 
     /**
-     * Represents a fatal error notification that cannot be dismissed by the user.
-     *
-     * This type of notification typically indicates a fatal issue that requires user attention
-     * and prevents normal operation of the application.
+     * @see InAppNotificationStyleBuilder.bannerInline
      */
-    Fatal,
+    data object BannerInlineNotification : InAppNotificationStyle
 
     /**
-     * Represents a critical in-app notification style.
-     *
-     * This style is used for important messages that require user attention but do not
-     * necessarily halt the application's functionality like a [Fatal] error.
+     * @see InAppNotificationStyleBuilder.bannerGlobal
      */
-    Critical,
+    data object BannerGlobalNotification : InAppNotificationStyle
 
     /**
-     * Represents a temporary in-app notification style.
-     *
-     * This style is typically used for notifications that are displayed briefly and then dismissed
-     * automatically or by user interaction.
+     * @see [InAppNotificationStyleBuilder.snackbar]
      */
-    Temporary,
+    data class SnackbarNotification(
+        val duration: Duration = 10.seconds,
+    ) : InAppNotificationStyle
 
     /**
-     * Represents a general warning notification.
+     * @see [InAppNotificationStyleBuilder.bottomSheet]
      */
-    Warning,
+    data object BottomSheetNotification : InAppNotificationStyle
 
     /**
-     * Represents an in-app notification that displays general information.
-     *
-     * This style is typically used for notifications that convey important updates or messages
-     * that don't fit into more specific categories like errors or successes.
+     * @see [InAppNotificationStyleBuilder.dialog]
      */
-    Information,
+    data object DialogNotification : InAppNotificationStyle
 }
 
 /**
  * Configures the in-app notification style.
  *
- * @param builder A lambda function with [InAppNotificationStyleBuilder] as its receiver,
- * used to configure the system notification style.
- *
  * Example:
  * ```
- * inAppNotificationStyle {
- *     severity(NotificationSeverity.Fatal)
+ * inAppNotificationStyles {
+ *     snackbar(duration = 30.seconds)
+ *     bottomSheet()
  * }
  * ```
  *
- * TODO(#9312): The subtypes of [InAppNotificationStyle] Style might change after designer's feedback.
+ * @param builder A lambda function with [InAppNotificationStyleBuilder] as its receiver,
+ * used to configure the system notification style.
+ * @return a list of [InAppNotificationStyle]
  */
 @NotificationStyleMarker
-fun inAppNotificationStyle(
+fun inAppNotificationStyles(
     builder: @NotificationStyleMarker InAppNotificationStyleBuilder.() -> Unit,
-): InAppNotificationStyle {
+): List<InAppNotificationStyle> {
     return InAppNotificationStyleBuilder().apply(builder).build()
 }
