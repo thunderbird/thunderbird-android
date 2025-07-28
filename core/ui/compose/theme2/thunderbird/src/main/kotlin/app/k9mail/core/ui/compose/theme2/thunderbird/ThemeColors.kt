@@ -52,8 +52,8 @@ internal val lightThemeColorScheme = ThemeColorScheme(
 
     success = Color(color = 0xFF194E2C),
     onSuccess = Color(color = 0xFFFFFFFF),
-    successContainer = Color(color = 0xFF1D783B),
-    onSuccessContainer = Color(color = 0xFFFFFFFF),
+    successContainer = Color(color = 0xFFF4F9F4),
+    onSuccessContainer = Color(color = 0xFF194E2C),
 
     warning = Color(color = 0xFF713F12),
     onWarning = Color(color = 0xFFFEFAE8),
@@ -110,8 +110,8 @@ internal val darkThemeColorScheme = ThemeColorScheme(
 
     success = Color(color = 0xFF8EE7AA),
     onSuccess = Color(color = 0xFF082B16),
-    successContainer = Color(color = 0xFFC0F2CF),
-    onSuccessContainer = Color(color = 0xFF082B16),
+    successContainer = Color(color = 0xFF082B16),
+    onSuccessContainer = Color(color = 0xFF8EE7AA),
 
     warning = Color(color = 0xFFFEE78A),
     onWarning = Color(color = 0xFF411107),
