@@ -50,7 +50,7 @@ internal val lightThemeColorScheme = ThemeColorScheme(
     infoContainer = Color(color = 0xFFF0F8FF),
     onInfoContainer = Color(color = 0xFF004F9B),
 
-    success = Color(color = 0xFF194E2C),
+    success = Color(color = 0xFF1D783B),
     onSuccess = Color(color = 0xFFFFFFFF),
     successContainer = Color(color = 0xFFF4F9F4),
     onSuccessContainer = Color(color = 0xFF194E2C),
@@ -108,7 +108,7 @@ internal val darkThemeColorScheme = ThemeColorScheme(
     infoContainer = Color(color = 0xFF262C40),
     onInfoContainer = Color(color = 0xFFBEE6FF),
 
-    success = Color(color = 0xFF8EE7AA),
+    success = Color(color = 0xFFDEFAE7),
     onSuccess = Color(color = 0xFF082B16),
     successContainer = Color(color = 0xFF082B16),
     onSuccessContainer = Color(color = 0xFF8EE7AA),
