@@ -45,10 +45,10 @@ internal val lightThemeColorScheme = ThemeColorScheme(
 
     scrim = Color.Black,
 
-    info = Color(color = 0xFFCAA204),
+    info = Color(color = 0xFF004F9B),
     onInfo = Color(color = 0xFFFFFFFF),
-    infoContainer = Color(color = 0xFFFACC15),
-    onInfoContainer = Color(color = 0xFFFFFFFF),
+    infoContainer = Color(color = 0xFFF0F8FF),
+    onInfoContainer = Color(color = 0xFF004F9B),
 
     success = Color(color = 0xFF194E2C),
     onSuccess = Color(color = 0xFFFFFFFF),
@@ -103,10 +103,10 @@ internal val darkThemeColorScheme = ThemeColorScheme(
 
     scrim = Color.Black,
 
-    info = Color(color = 0xFFFDD847),
-    onInfo = Color(color = 0xFF423606),
-    infoContainer = Color(color = 0xFFFEE78A),
-    onInfoContainer = Color(color = 0xFF423606),
+    info = Color(color = 0xFFBEE6FF),
+    onInfo = Color(color = 0xFF002E41),
+    infoContainer = Color(color = 0xFF262C40),
+    onInfoContainer = Color(color = 0xFFBEE6FF),
 
     success = Color(color = 0xFF8EE7AA),
     onSuccess = Color(color = 0xFF082B16),
