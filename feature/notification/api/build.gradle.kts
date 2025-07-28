@@ -10,6 +10,9 @@ kotlin {
             implementation(projects.core.common)
             implementation(projects.core.outcome)
         }
+        commonTest.dependencies {
+            implementation(projects.feature.notification.testing)
+        }
     }
 
     sourceSets.all {
