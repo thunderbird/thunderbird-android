@@ -38,6 +38,10 @@ internal open class TestImapConnection(val timeout: Long, override val connectio
         isConnected = false
     }
 
+    override fun canSendUTF8QuotedStrings(): Boolean {
+        return false // to be mocked where appropriate
+    }
+
     override fun hasCapability(capability: String): Boolean {
         throw UnsupportedOperationException("not implemented")
     }
