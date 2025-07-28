@@ -2,7 +2,15 @@ plugins {
     id("org.jetbrains.kotlinx.kover")
 }
 
+/**
+ * To enable Kover provide the `enableKover` property by adding `./gradlew koverHtmlReport -PenableKover`.
+ */
+
 kover {
+    if (!hasProperty("enableKover")) {
+        disable()
+    }
+
     reports {
         filters {
             excludes {
