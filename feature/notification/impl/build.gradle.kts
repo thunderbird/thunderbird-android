@@ -12,6 +12,7 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(projects.core.logging.testing)
+            implementation(projects.feature.notification.testing)
         }
         androidUnitTest.dependencies {
             implementation(libs.androidx.test.core)
