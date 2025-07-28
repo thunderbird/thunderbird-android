@@ -19,10 +19,10 @@ internal val lightThemeColorScheme = ThemeColorScheme(
     tertiaryContainer = Color(color = 0xFF7B35B8),
     onTertiaryContainer = Color(color = 0xFFFFFFFF),
 
-    error = Color(color = 0xFFA0000E),
+    error = Color(color = 0xFF7F1D1D),
     onError = Color(color = 0xFFFFFFFF),
-    errorContainer = Color(color = 0xFFDC2626),
-    onErrorContainer = Color(color = 0xFFFFFFFF),
+    errorContainer = Color(color = 0xFFFEF2F2),
+    onErrorContainer = Color(color = 0xFF7F1D1D),
 
     surfaceDim = Color(color = 0xFFDCD9D9),
     surface = Color(color = 0xFFFCF8F8),
@@ -77,10 +77,10 @@ internal val darkThemeColorScheme = ThemeColorScheme(
     tertiaryContainer = Color(color = 0xFFDCD0E6),
     onTertiaryContainer = Color(color = 0xFF443C4E),
 
-    error = Color(color = 0xFFFFB4AB),
-    onError = Color(color = 0xFF690005),
-    errorContainer = Color(color = 0xFF93000A),
-    onErrorContainer = Color(color = 0xFFFFDAD6),
+    error = Color(color = 0xFFFCA5A5),
+    onError = Color(color = 0xFF450A0A),
+    errorContainer = Color(color = 0xFF7F1D1D),
+    onErrorContainer = Color(color = 0xFFFEF2F2),
 
     surfaceDim = Color(color = 0xFF131314),
     surface = Color(color = 0xFF131314),
