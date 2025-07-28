@@ -45,4 +45,15 @@
 
     <string name="push_info_disable_push_action">Disable Push</string>
 
+    <string name="notification_action_reply">Reply</string>
+    <string name="notification_action_mark_as_read">Mark Read</string>
+    <string name="notification_action_mark_all_as_read">Mark All Read</string>
+    <string name="notification_action_delete">Delete</string>
+    <string name="notification_action_delete_all">Delete All</string>
+    <string name="notification_action_archive">Archive</string>
+    <string name="notification_action_archive_all">Archive All</string>
+    <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_retry">Retry</string>
+    <string name="notification_action_update_server_settings">Update Server Settings</string>
+
 </resources>
