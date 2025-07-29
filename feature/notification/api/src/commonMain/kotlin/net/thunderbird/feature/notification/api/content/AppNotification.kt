@@ -104,14 +104,11 @@ interface SystemNotification : Notification {
 /**
  * Represents a notification displayed within the application.
  *
- * In-app notifications are typically less intrusive than system notifications and **do not require**
- * system notification permissions to be displayed.
- *
- * @property inAppNotificationStyle The style of the in-app notification.
+ * @property inAppNotificationStyles The styles of the in-app notification.
  * Defaults to [InAppNotificationStyle.Undefined].
  * @see InAppNotificationStyle
- * @see net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
+ * @see net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
  */
 interface InAppNotification : Notification {
-    val inAppNotificationStyle: InAppNotificationStyle get() = InAppNotificationStyle.Undefined
+    val inAppNotificationStyles: List<InAppNotificationStyle> get() = InAppNotificationStyle.Undefined
 }

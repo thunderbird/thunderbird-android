@@ -1,116 +1,246 @@
 package net.thunderbird.feature.notification.api.ui.style
 
 import assertk.assertThat
+import assertk.assertions.containsExactly
 import assertk.assertions.hasMessage
-import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import kotlin.test.assertFails
-import net.thunderbird.feature.notification.api.NotificationSeverity
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 @Suppress("MaxLineLength")
 class InAppNotificationStyleTest {
     @Test
-    fun `inAppNotificationStyle dsl should create a fatal in-app notification style when NotificationSeverity Fatal is provided`() {
+    fun `inAppNotificationStyle dsl should create a banner inline in-app notification style`() {
         // Arrange
-        val expected = InAppNotificationStyle.Fatal
+        val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.BannerInlineNotification)
 
         // Act
-        val inAppStyle = inAppNotificationStyle {
-            severity(NotificationSeverity.Fatal)
+        val inAppStyles = inAppNotificationStyles {
+            bannerInline()
         }
 
         // Assert
-        assertThat(inAppStyle)
-            .isInstanceOf<InAppNotificationStyle>()
-            .isEqualTo(expected)
+        assertThat(inAppStyles).containsExactly(elements = expectedStyles)
     }
 
     @Test
-    fun `inAppNotificationStyle dsl should create a critical in-app notification style when NotificationSeverity Critical is provided`() {
+    fun `inAppNotificationStyle dsl should create a banner global in-app notification style`() {
         // Arrange
-        val expected = InAppNotificationStyle.Critical
+        val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.BannerGlobalNotification)
 
         // Act
-        val inAppStyle = inAppNotificationStyle {
-            severity(NotificationSeverity.Critical)
+        val inAppStyles = inAppNotificationStyles {
+            bannerGlobal()
         }
 
         // Assert
-        assertThat(inAppStyle)
-            .isInstanceOf<InAppNotificationStyle>()
-            .isEqualTo(expected)
+        assertThat(inAppStyles).containsExactly(elements = expectedStyles)
     }
 
     @Test
-    fun `inAppNotificationStyle dsl should create a temporary in-app notification style when NotificationSeverity Temporary is provided`() {
+    fun `inAppNotificationStyle dsl should create a snackbar in-app notification style`() {
         // Arrange
-        val expected = InAppNotificationStyle.Temporary
+        val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.SnackbarNotification())
 
         // Act
-        val inAppStyle = inAppNotificationStyle {
-            severity(NotificationSeverity.Temporary)
+        val inAppStyles = inAppNotificationStyles {
+            snackbar()
         }
 
         // Assert
-        assertThat(inAppStyle)
-            .isInstanceOf<InAppNotificationStyle>()
-            .isEqualTo(expected)
+        assertThat(inAppStyles).containsExactly(elements = expectedStyles)
     }
 
     @Test
-    fun `inAppNotificationStyle dsl should create a warning in-app notification style when NotificationSeverity Warning is provided`() {
+    fun `inAppNotificationStyle dsl should create a snackbar with 30 seconds duration in-app notification style`() {
         // Arrange
-        val expected = InAppNotificationStyle.Warning
+        val duration = 30.seconds
+        val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.SnackbarNotification(duration))
 
         // Act
-        val inAppStyle = inAppNotificationStyle {
-            severity(NotificationSeverity.Warning)
+        val inAppStyles = inAppNotificationStyles {
+            snackbar(duration = duration)
         }
 
         // Assert
-        assertThat(inAppStyle)
-            .isInstanceOf<InAppNotificationStyle>()
-            .isEqualTo(expected)
+        assertThat(inAppStyles).containsExactly(elements = expectedStyles)
     }
 
     @Test
-    fun `inAppNotificationStyle dsl should create a information in-app notification style when NotificationSeverity Information is provided`() {
+    fun `inAppNotificationStyle dsl should create a bottomSheet in-app notification style`() {
         // Arrange
-        val expected = InAppNotificationStyle.Information
+        val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.BottomSheetNotification)
 
         // Act
-        val inAppStyle = inAppNotificationStyle {
-            severity(NotificationSeverity.Information)
+        val inAppStyles = inAppNotificationStyles {
+            bottomSheet()
         }
 
         // Assert
-        assertThat(inAppStyle)
-            .isInstanceOf<InAppNotificationStyle>()
-            .isEqualTo(expected)
+        assertThat(inAppStyles).containsExactly(elements = expectedStyles)
     }
 
     @Test
-    fun `inAppNotificationStyle dsl should throw IllegalArgumentException when severity method is called multiple times within inAppNotification dsl`() {
-        // Arrange & Act
-        val exception = assertFails {
-            inAppNotificationStyle {
-                severity(severity = NotificationSeverity.Fatal)
-                severity(severity = NotificationSeverity.Critical)
+    fun `inAppNotificationStyle dsl should create a dialog in-app notification style`() {
+        // Arrange
+        val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.DialogNotification)
+
+        // Act
+        val inAppStyles = inAppNotificationStyles {
+            dialog()
+        }
+
+        // Assert
+        assertThat(inAppStyles).containsExactly(elements = expectedStyles)
+    }
+
+    @Test
+    fun `inAppNotificationStyle dsl should create multiple styles in-app notification style`() {
+        // Arrange
+        val expectedStyles = arrayOf(
+            InAppNotificationStyle.BannerInlineNotification,
+            InAppNotificationStyle.BannerGlobalNotification,
+            InAppNotificationStyle.SnackbarNotification(),
+            InAppNotificationStyle.BottomSheetNotification,
+            InAppNotificationStyle.DialogNotification,
+        )
+
+        // Act
+        val inAppStyles = inAppNotificationStyles {
+            bannerInline()
+            bannerGlobal()
+            snackbar()
+            bottomSheet()
+            dialog()
+        }
+
+        // Assert
+        assertThat(inAppStyles).containsExactly(elements = expectedStyles)
+    }
+
+    @Test
+    fun `inAppNotificationStyle dsl should throw IllegalStateException when bannerInline style is added multiple times`() {
+        // Arrange
+        val expectedErrorMessage =
+            "An in-app notification can only have at most one type of ${
+                InAppNotificationStyle.BannerInlineNotification::class.simpleName
+            } style"
+
+        // Act
+        val actual = assertFails {
+            inAppNotificationStyles {
+                bannerInline()
+                bannerInline()
+                bannerInline()
             }
         }
 
         // Assert
-        assertThat(exception)
-            .isInstanceOf<IllegalArgumentException>()
-            .hasMessage("In-App Notifications must have only one severity.")
+        assertThat(actual)
+            .isInstanceOf<IllegalStateException>()
+            .hasMessage(expectedErrorMessage)
+    }
+
+    @Test
+    fun `inAppNotificationStyle dsl should throw IllegalStateException when bannerGlobal style is added multiple times`() {
+        // Arrange
+        val expectedErrorMessage =
+            "An in-app notification can only have at most one type of ${
+                InAppNotificationStyle.BannerGlobalNotification::class.simpleName
+            } style"
+
+        // Act
+        val actual = assertFails {
+            inAppNotificationStyles {
+                bannerGlobal()
+                bannerGlobal()
+                bannerGlobal()
+            }
+        }
+
+        // Assert
+        assertThat(actual)
+            .isInstanceOf<IllegalStateException>()
+            .hasMessage(expectedErrorMessage)
+    }
+
+    @Test
+    fun `inAppNotificationStyle dsl should throw IllegalStateException when snackbar style is added multiple times`() {
+        // Arrange
+        val expectedErrorMessage =
+            "An in-app notification can only have at most one type of ${
+                InAppNotificationStyle.SnackbarNotification::class.simpleName
+            } style"
+
+        // Act
+        val actual = assertFails {
+            inAppNotificationStyles {
+                snackbar()
+                snackbar(duration = 1.minutes)
+                snackbar(duration = 1.hours)
+            }
+        }
+
+        // Assert
+        assertThat(actual)
+            .isInstanceOf<IllegalStateException>()
+            .hasMessage(expectedErrorMessage)
+    }
+
+    @Test
+    fun `inAppNotificationStyle dsl should throw IllegalStateException when bottomSheet style is added multiple times`() {
+        // Arrange
+        val expectedErrorMessage =
+            "An in-app notification can only have at most one type of ${
+                InAppNotificationStyle.BottomSheetNotification::class.simpleName
+            } style"
+
+        // Act
+        val actual = assertFails {
+            inAppNotificationStyles {
+                bottomSheet()
+                bottomSheet()
+                bottomSheet()
+            }
+        }
+
+        // Assert
+        assertThat(actual)
+            .isInstanceOf<IllegalStateException>()
+            .hasMessage(expectedErrorMessage)
+    }
+
+    @Test
+    fun `inAppNotificationStyle dsl should throw IllegalStateException when dialog style is added multiple times`() {
+        // Arrange
+        val expectedErrorMessage =
+            "An in-app notification can only have at most one type of ${
+                InAppNotificationStyle.DialogNotification::class.simpleName
+            } style"
+
+        // Act
+        val actual = assertFails {
+            inAppNotificationStyles {
+                dialog()
+                dialog()
+                dialog()
+            }
+        }
+
+        // Assert
+        assertThat(actual)
+            .isInstanceOf<IllegalStateException>()
+            .hasMessage(expectedErrorMessage)
     }
 
     @Test
     fun `inAppNotificationStyle dsl should throw IllegalStateException when in-app notification style is called without any style configuration`() {
         // Arrange & Act
         val exception = assertFails {
-            inAppNotificationStyle {
+            inAppNotificationStyles {
                 // intentionally empty.
             }
         }
@@ -118,6 +248,6 @@ class InAppNotificationStyleTest {
         // Assert
         assertThat(exception)
             .isInstanceOf<IllegalStateException>()
-            .hasMessage("You must add severity of the in-app notification.")
+            .hasMessage("You must add at least one in-app notification style.")
     }
 }
