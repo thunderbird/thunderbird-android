@@ -14,6 +14,9 @@ kotlin {
         commonTest.dependencies {
             implementation(projects.feature.notification.testing)
         }
+        androidMain.dependencies {
+            implementation(projects.core.ui.compose.designsystem)
+        }
     }
 
     sourceSets.all {
