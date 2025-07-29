@@ -1,6 +1,6 @@
 # Releases
 
-Thunderbird for Android follows a release train model to ensure timely and predictable releases. This model allows for regular feature rollouts, stability improvements, and bug fixes.
+Hello Thunderbird for Android follows a release train model to ensure timely and predictable releases. This model allows for regular feature rollouts, stability improvements, and bug fixes.
 
 ## Branches in the Release Train Model
 
