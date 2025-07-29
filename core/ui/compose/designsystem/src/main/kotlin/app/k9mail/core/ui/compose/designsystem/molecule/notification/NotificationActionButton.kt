@@ -1,4 +1,4 @@
-package net.thunderbird.feature.notification.api.ui.component.molecule
+package app.k9mail.core.ui.compose.designsystem.molecule.notification
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -9,8 +9,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import app.k9mail.core.ui.compose.designsystem.atom.icon.outlined.OpenInNew
+import app.k9mail.core.ui.compose.theme2.LocalContentColor
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import net.thunderbird.feature.notification.api.ui.icon.atom.OpenInNew
 
 @Composable
 fun NotificationActionButton(
@@ -23,7 +25,7 @@ fun NotificationActionButton(
         if (isExternalLink) {
             movableContentOf {
                 Icon(
-                    imageVector = OpenInNew,
+                    imageVector = Icons.Outlined.OpenInNew,
                     modifier = Modifier.size(MainTheme.sizes.iconSmall),
                 )
                 Spacer(modifier = Modifier.width(MainTheme.spacings.default))
@@ -37,5 +39,6 @@ fun NotificationActionButton(
         onClick = onClick,
         leadingIcon = leadingIcon,
         modifier = modifier,
+        color = LocalContentColor.current,
     )
 }

@@ -1,10 +1,10 @@
-package net.thunderbird.feature.notification.api.ui.component.molecule
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
+import app.k9mail.core.ui.compose.designsystem.molecule.notification.NotificationActionButton
 import app.k9mail.core.ui.compose.theme2.MainTheme
 
 @PreviewLightDark

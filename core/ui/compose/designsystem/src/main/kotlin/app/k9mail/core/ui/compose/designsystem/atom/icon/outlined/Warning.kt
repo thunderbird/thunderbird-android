@@ -1,19 +1,20 @@
-package net.thunderbird.feature.notification.api.ui.icon.atom
+package app.k9mail.core.ui.compose.designsystem.atom.icon.outlined
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 
-@Suppress("MagicNumber", "MaxLineLength")
-internal val Warning: ImageVector
+@Suppress("MagicNumber", "UnusedReceiverParameter")
+val Icons.Outlined.Warning: ImageVector
     get() {
         val current = _warning
         if (current != null) return current
 
         return ImageVector.Builder(
-            name = "net.thunderbird.feature.notification.api.ui.icon.atom.Warning",
+            name = "app.k9mail.core.ui.compose.designsystem.atom.icon.outlined.Warning",
             defaultWidth = 24.0.dp,
             defaultHeight = 24.0.dp,
             viewportWidth = 960.0f,

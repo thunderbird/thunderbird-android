@@ -1,13 +1,14 @@
-package net.thunderbird.feature.notification.api.ui.icon.atom
+package app.k9mail.core.ui.compose.designsystem.atom.icon.outlined
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 
-@Suppress("MagicNumber")
-internal val OpenInNew: ImageVector
+@Suppress("MagicNumber", "UnusedReceiverParameter")
+internal val Icons.Outlined.OpenInNew: ImageVector
     get() {
         val current = _openInNew
         if (current != null) return current
