@@ -1,35 +1,39 @@
 package app.k9mail.core.ui.compose.designsystem.atom.card
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.material3.Card as Material3Card
 
 @Composable
-fun CardFilled(
+fun CardOutlined(
     modifier: Modifier = Modifier,
-    shape: Shape = CardDefaults.shape,
-    colors: CardColors = CardDefaults.cardColors(),
-    elevation: CardElevation = CardDefaults.cardElevation(),
     onClick: (() -> Unit)? = null,
+    shape: Shape = CardDefaults.outlinedShape,
+    colors: CardColors = CardDefaults.outlinedCardColors(),
+    elevation: CardElevation = CardDefaults.outlinedCardElevation(),
+    border: BorderStroke = CardDefaults.outlinedCardBorder(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     if (onClick != null) {
-        Material3Card(
+        OutlinedCard(
             onClick = onClick,
             modifier = modifier,
             shape = shape,
             colors = colors.toMaterial3CardColors(),
             elevation = elevation.toMaterial3CardElevation(),
+            border = border,
             content = content,
         )
     } else {
-        Material3Card(
+        OutlinedCard(
             modifier = modifier,
             shape = shape,
             colors = colors.toMaterial3CardColors(),
             elevation = elevation.toMaterial3CardElevation(),
+            border = border,
             content = content,
         )
     }
