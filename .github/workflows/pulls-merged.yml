@@ -5,7 +5,7 @@ name: PR Merged Actions
 # Don't add any steps that act on external code.
 on:
   pull_request_target:
-    branches: [main]
+    branches: [main, beta, release]
     types: [closed]
 
 permissions:
@@ -32,16 +32,24 @@ jobs:
           PR_NUMBER: ${{  github.event.pull_request.number  }}
           GH_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
         run: |
-          # The furthest open milestone in the future should be current main
-          gh api repos/$GITHUB_REPOSITORY/milestones --jq '
-                map(select(.state == "open" and .due_on != null))
+          # There should be exactly 3 milestones open at all times
+          TARGET_BRANCH="${{ github.base_ref }}"
+          case "$TARGET_BRANCH" in
+            main) milestone_index=0 ;;
+            beta) milestone_index=1 ;;
+            release) milestone_index=2 ;;
+          esac
+          echo "$milestone_index"
+          gh api repos/$GITHUB_REPOSITORY/milestones --jq "
+                map(select(.state == \"open\" and .due_on != null))
                 | sort_by(.due_on) | reverse
-                | .[0] | { number, title }
+                | .[${milestone_index}] | { number, title }
                 | to_entries
-                | map(.key + "=" + (.value|tostring)) | join("\n")' | tee -a $GITHUB_OUTPUT
+                | map(.key + \"=\" + (.value|tostring)) | join(\"\n\")" | tee -a $GITHUB_OUTPUT
 
       - name: Thank you
         if: |
+          github.base_ref == 'main' &&
           github.event.pull_request.author_association != 'OWNER' &&
           github.event.pull_request.author_association != 'MEMBER' &&
           github.event.pull_request.author_association != 'COLLABORATOR' &&
