@@ -292,9 +292,9 @@ org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0
 org.jetbrains:annotations:26.0.2
 org.jsoup:jsoup:1.19.1
 org.jspecify:jspecify:1.0.0
-org.minidns:minidns-client:1.0.5
-org.minidns:minidns-core:1.0.5
-org.minidns:minidns-dnssec:1.0.5
-org.minidns:minidns-hla:1.0.5
-org.minidns:minidns-iterative-resolver:1.0.5
+org.minidns:minidns-client:1.1.1
+org.minidns:minidns-core:1.1.1
+org.minidns:minidns-dnssec:1.1.1
+org.minidns:minidns-hla:1.1.1
+org.minidns:minidns-iterative-resolver:1.1.1
 org.slf4j:slf4j-api:1.7.36
