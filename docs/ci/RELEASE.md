@@ -191,7 +191,8 @@ The app-k9mail/src/main/res/raw/changelog_master.xml should not include any beta
 
 ## Branch Uplifts
 
-If the urgency of a fix requires it to be included in the Beta or Release channel before the next merge, the uplift process is followed. If possible, uplifts should be avoided and patches should “ride the train” instead, following the merge day cycle.
+If the urgency of a fix requires it to be included in the Beta or Release channel before the next merge, the uplift process is followed.
+If possible, uplifts should be avoided and patches should “ride the train” instead, following the merge day cycle.
 
 ### Uplift Criteria
 
@@ -210,15 +211,14 @@ Release uplifts should additionally:
 
 ### Uplift Process
 
-1. The requestor adds the "task: uplift to beta" or "task: uplift to release" label to a merged pull request.
-2. The requestor makes a comment in the associated issue with the Approval Request Comment template filled out.
-3. The release driver reviews all uplift requests and, retaining the label for approved uplifts and removing the label for rejected uplifts.
-4. The release driver runs the Uplift Merges action for the specified target branch, which will remove the label, adjust the milestone, cherry-pick the commits, and push to the target branch.
+1. The requestor creates a pull request against the target uplift branch.
+2. The requestor adds a comment to the pull request with the Approval Request template filled out.
+3. The release driver reviews the uplift request, merging if approved, or closing with a comment if rejected.
 
 Template for uplift requests:
 
 ```sh
-[Approval Request Comment]
+[Approval Request]
 Original Issue/Pull request:
 Regression caused by (issue #):
 User impact if declined:
