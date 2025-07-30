@@ -275,11 +275,11 @@ org.jetbrains.kotlinx:kotlinx-io-bytestring-jvm:0.8.0
 org.jetbrains.kotlinx:kotlinx-io-bytestring:0.8.0
 org.jetbrains.kotlinx:kotlinx-io-core-jvm:0.8.0
 org.jetbrains.kotlinx:kotlinx-io-core:0.8.0
-org.jetbrains.kotlinx:kotlinx-serialization-bom:1.8.1
-org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.8.1
-org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.1
-org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.8.1
-org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1
+org.jetbrains.kotlinx:kotlinx-serialization-bom:1.9.0
+org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.9.0
+org.jetbrains.kotlinx:kotlinx-serialization-core:1.9.0
+org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.9.0
+org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0
 org.jetbrains:annotations:26.0.2
 org.jsoup:jsoup:1.19.1
 org.jspecify:jspecify:1.0.0
