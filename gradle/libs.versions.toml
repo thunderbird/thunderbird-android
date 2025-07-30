@@ -105,7 +105,7 @@ safeContentResolver = "1.0.0"
 searchPreference = "v2.3.0"
 spotlessPlugin = "7.0.4"
 timber = "5.0.1"
-turbine = "1.2.0"
+turbine = "1.2.1"
 xmlpull = "1.0"
 zxing = "3.5.3"
 
