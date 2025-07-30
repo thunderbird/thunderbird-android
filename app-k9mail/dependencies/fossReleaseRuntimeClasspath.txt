@@ -184,8 +184,8 @@ com.mikepenz:fastadapter-extensions-utils:5.7.0
 com.mikepenz:fastadapter:5.7.0
 com.squareup.moshi:moshi:1.15.2
 com.squareup.okhttp3:okhttp:4.12.0
-com.squareup.okio:okio-jvm:3.12.0
-com.squareup.okio:okio:3.12.0
+com.squareup.okio:okio-jvm:3.16.0
+com.squareup.okio:okio:3.16.0
 com.takisoft.colorpicker:colorpicker:1.0.0
 com.takisoft.datetimepicker:datetimepicker:1.0.2
 com.takisoft.preferencex:preferencex-colorpicker:1.1.0
