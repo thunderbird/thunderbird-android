@@ -169,7 +169,7 @@ co.touchlab:stately-strict:2.1.0
 com.android.billingclient:billing-ktx:7.1.1
 com.android.billingclient:billing:7.1.1
 com.beetstra.jutf7:jutf7:1.0.0
-com.github.ByteHamster:SearchPreference:v2.3.0
+com.github.ByteHamster:SearchPreference:2.7.3
 com.github.bumptech.glide:annotations:4.16.0
 com.github.bumptech.glide:disklrucache:4.16.0
 com.github.bumptech.glide:gifdecoder:4.16.0
