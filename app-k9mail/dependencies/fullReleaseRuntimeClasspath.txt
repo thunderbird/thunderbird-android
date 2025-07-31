@@ -252,8 +252,8 @@ org.jetbrains.compose.annotation-internal:annotation:1.8.2
 org.jetbrains.compose.collection-internal:collection:1.8.2
 org.jetbrains.compose.components:components-resources-android:1.8.2
 org.jetbrains.compose.components:components-resources:1.8.2
-org.jetbrains.compose.components:components-ui-tooling-preview-android:1.8.1
-org.jetbrains.compose.components:components-ui-tooling-preview:1.8.1
+org.jetbrains.compose.components:components-ui-tooling-preview-android:1.8.2
+org.jetbrains.compose.components:components-ui-tooling-preview:1.8.2
 org.jetbrains.compose.foundation:foundation-layout:1.8.2
 org.jetbrains.compose.foundation:foundation:1.8.2
 org.jetbrains.compose.runtime:runtime-saveable:1.8.2
@@ -261,7 +261,7 @@ org.jetbrains.compose.runtime:runtime:1.8.2
 org.jetbrains.compose.ui:ui-geometry:1.8.2
 org.jetbrains.compose.ui:ui-graphics:1.8.2
 org.jetbrains.compose.ui:ui-text:1.8.2
-org.jetbrains.compose.ui:ui-tooling-preview:1.8.1
+org.jetbrains.compose.ui:ui-tooling-preview:1.8.2
 org.jetbrains.compose.ui:ui-unit:1.8.2
 org.jetbrains.compose.ui:ui-util:1.8.2
 org.jetbrains.compose.ui:ui:1.8.2
