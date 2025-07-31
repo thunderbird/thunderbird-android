@@ -12,6 +12,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AllInbox
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Close
@@ -76,6 +77,9 @@ object Icons {
 
         val Check: ImageVector
             get() = MaterialIcons.Outlined.Check
+
+        val CheckCircle: ImageVector
+            get() = MaterialIcons.Outlined.CheckCircle
 
         val ChevronLeft: ImageVector
             get() = MaterialIcons.Outlined.ChevronLeft
