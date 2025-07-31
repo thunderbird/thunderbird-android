@@ -14,7 +14,7 @@ internal class JvmFileLogSink(
         event.throwable?.printStackTrace()
     }
 
-    override fun export(uriString: String) {
+    override suspend fun export(uriString: String) {
         // TODO: Implementation https://github.com/thunderbird/thunderbird-android/issues/9435
     }
 

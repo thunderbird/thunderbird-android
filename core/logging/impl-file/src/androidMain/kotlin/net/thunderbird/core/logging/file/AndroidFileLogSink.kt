@@ -75,17 +75,19 @@ open class AndroidFileLogSink(
         val outputStream = FileOutputStream(logFile, true)
         val sink = outputStream.asSink()
         var content: String
-        mutex.withLock {
-            content = accumulatedLogs.joinToString("\n", postfix = "\n")
-            accumulatedLogs.clear()
-        }
         try {
+            mutex.withLock {
+                content = accumulatedLogs.joinToString("\n", postfix = "\n")
+                accumulatedLogs.clear()
+            }
             val buffer = Buffer()
             val contentBytes = content.toByteArray(Charsets.UTF_8)
             buffer.write(contentBytes)
             sink.write(buffer, buffer.size)
 
             sink.flush()
+        } catch (e: Exception) {
+            throw e
         } finally {
             sink.close()
             outputStream.close()
@@ -93,36 +95,36 @@ open class AndroidFileLogSink(
     }
 
     override suspend fun flushAndCloseBuffer() {
-        writeToLogFile()
+        if (accumulatedLogs.isNotEmpty()) {
+            writeToLogFile()
+        }
     }
 
-    override fun export(uriString: String) {
-        coroutineScope.launch {
-            if (accumulatedLogs.isNotEmpty()) {
-                writeToLogFile()
-            }
+    override suspend fun export(uriString: String) {
+        if (accumulatedLogs.isNotEmpty()) {
+            writeToLogFile()
+        }
+        try {
+            val sink = fileSystemManager.openSink(uriString, "wt")
+                ?: error("Error opening contentUri for writing")
+
+            copyInternalFileToExternal(sink)
+
+            // Clear the log file after export
+            val outputStream = FileOutputStream(logFile)
+            val clearSink = outputStream.asSink()
+
             try {
-                val sink = fileSystemManager.openSink(uriString, "wt")
-                    ?: error("Error opening contentUri for writing")
-
-                copyInternalFileToExternal(sink)
-
-                // Clear the log file after export
-                val outputStream = FileOutputStream(logFile)
-                val clearSink = outputStream.asSink()
-
-                try {
-                    // Write empty string to clear the file
-                    val buffer = Buffer()
-                    clearSink.write(buffer, 0)
-                    clearSink.flush()
-                } finally {
-                    clearSink.close()
-                    outputStream.close()
-                }
-            } catch (e: Exception) {
-                throw e
+                // Write empty string to clear the file
+                val buffer = Buffer()
+                clearSink.write(buffer, 0)
+                clearSink.flush()
+            } finally {
+                clearSink.close()
+                outputStream.close()
             }
+        } catch (e: Exception) {
+            throw e
         }
     }
 
