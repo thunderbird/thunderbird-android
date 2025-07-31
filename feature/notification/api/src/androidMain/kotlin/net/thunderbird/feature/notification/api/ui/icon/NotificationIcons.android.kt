@@ -1,9 +1,11 @@
 package net.thunderbird.feature.notification.api.ui.icon
 
+import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import app.k9mail.core.ui.compose.designsystem.atom.icon.outlined.Warning
 import net.thunderbird.feature.notification.api.R
 import net.thunderbird.feature.notification.api.ui.icon.atom.Notification
-import net.thunderbird.feature.notification.api.ui.icon.atom.Warning
 
+private val Warning = Icons.Outlined.Warning
 internal actual val NotificationIcons.AuthenticationError: NotificationIcon
     get() = NotificationIcon(
         systemNotificationIcon = R.drawable.ic_warning,
