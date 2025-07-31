@@ -153,8 +153,8 @@ androidx.window.extensions.core:core:1.0.0
 androidx.window:window-core-android:1.3.0
 androidx.window:window-core:1.3.0
 androidx.window:window:1.3.0
-androidx.work:work-runtime-ktx:2.10.1
-androidx.work:work-runtime:2.10.1
+androidx.work:work-runtime-ktx:2.10.3
+androidx.work:work-runtime:2.10.3
 co.touchlab:stately-concurrency-jvm:2.1.0
 co.touchlab:stately-concurrency:2.1.0
 co.touchlab:stately-concurrent-collections-jvm:2.1.0
