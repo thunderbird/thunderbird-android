@@ -14,9 +14,10 @@
 androidBilling = "7.1.1"
 androidDesugar = "2.1.5"
 androidMaterial = "1.12.0"
-# AGP and tools should be updated together
-androidGradlePlugin = "8.10.1"
-androidTools = "31.10.1"
+# AGP and tools should be updated together.
+# Also, make sure AGP version is compatible with both AS and IntelliJ IDEA.
+androidGradlePlugin = "8.11.1"
+androidTools = "31.11.1"
 androidxActivity = "1.10.1"
 androidxAnnotation = "1.9.1"
 androidxAppCompat = "1.7.1"
