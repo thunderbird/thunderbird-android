@@ -1,6 +1,5 @@
 package com.fsck.k9.job
 
-import androidx.lifecycle.LiveData
 import androidx.work.BackoffPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
@@ -9,11 +8,12 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.flow.Flow
 
 class FileLogLimitWorkManager(
     private val workManager: WorkManager,
 ) {
-    fun scheduleFileLogTimeLimit(contentUriString: String): LiveData<WorkInfo?> {
+    fun scheduleFileLogTimeLimit(contentUriString: String): Flow<WorkInfo?> {
         val data = workDataOf("exportUriString" to contentUriString)
         val workRequest: OneTimeWorkRequest =
             OneTimeWorkRequestBuilder<SyncDebugWorker>()
@@ -23,7 +23,7 @@ class FileLogLimitWorkManager(
                 .setBackoffCriteria(BackoffPolicy.LINEAR, INITIAL_BACKOFF_DELAY_MINUTES, TimeUnit.MINUTES)
                 .build()
         workManager.enqueueUniqueWork(SYNC_TAG, ExistingWorkPolicy.REPLACE, workRequest)
-        return workManager.getWorkInfoByIdLiveData(workRequest.id)
+        return workManager.getWorkInfoByIdFlow(workRequest.id)
     }
 
     fun cancelFileLogTimeLimit() {

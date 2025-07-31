@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
-import androidx.lifecycle.Observer
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
@@ -24,6 +23,7 @@ import com.takisoft.preferencex.PreferenceFragmentCompat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import kotlinx.coroutines.flow.FlowCollector
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import org.koin.android.ext.android.inject
@@ -61,11 +61,11 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
                 )
                 jobManager.scheduleDebugLogLimit(contentUri.toString()).observe(
                     this,
-                    Observer { workInfo: WorkInfo? ->
+                    FlowCollector { workInfo: WorkInfo? ->
                         if (workInfo != null) {
-                            if (workInfo.state === WorkInfo.State.SUCCEEDED) {
+                            if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                                 viewModel.showExportSnackbar(true)
-                            } else if (workInfo.state === WorkInfo.State.FAILED) {
+                            } else if (workInfo.state == WorkInfo.State.FAILED) {
                                 viewModel.showExportSnackbar(false)
                             }
                         }

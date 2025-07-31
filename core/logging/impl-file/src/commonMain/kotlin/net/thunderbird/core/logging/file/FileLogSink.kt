@@ -9,7 +9,7 @@ interface FileLogSink : LogSink {
      * @param uriString The [String] for the URI to export the log to
      *
      **/
-    fun export(uriString: String)
+    suspend fun export(uriString: String)
 
     /**
      * On a crash or close, flushes buffer to file fo avoid log loss

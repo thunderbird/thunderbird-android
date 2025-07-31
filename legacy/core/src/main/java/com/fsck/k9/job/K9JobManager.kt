@@ -1,8 +1,8 @@
 package com.fsck.k9.job
 
-import androidx.lifecycle.LiveData
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
+import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
@@ -13,7 +13,7 @@ class K9JobManager(
     private val mailSyncWorkerManager: MailSyncWorkerManager,
     private val syncDebugFileLogManager: FileLogLimitWorkManager,
 ) {
-    fun scheduleDebugLogLimit(contentUriString: String): LiveData<WorkInfo?> {
+    fun scheduleDebugLogLimit(contentUriString: String): Flow<WorkInfo?> {
         return syncDebugFileLogManager.scheduleFileLogTimeLimit(contentUriString)
     }
 

@@ -47,6 +47,7 @@ val jobModule = module {
     factory { (parameters: WorkerParameters) ->
         SyncDebugWorker(
             context = get(),
+            baseLogger = get<Logger>(),
             fileLogSink = get<FileLogSink>(named("syncDebug")),
             syncDebugCompositeSink = get<CompositeLogSink>(named("syncDebug")),
             parameters,

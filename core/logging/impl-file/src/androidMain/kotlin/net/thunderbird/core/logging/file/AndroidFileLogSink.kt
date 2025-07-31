@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.datetime.LocalDateTime
@@ -101,33 +100,31 @@ open class AndroidFileLogSink(
         }
     }
 
-    override fun export(uriString: String) {
-        runBlocking {
-            if (accumulatedLogs.isNotEmpty()) {
-                writeToLogFile()
-            }
+    override suspend fun export(uriString: String) {
+        if (accumulatedLogs.isNotEmpty()) {
+            writeToLogFile()
+        }
+        try {
+            val sink = fileSystemManager.openSink(uriString, "wt")
+                ?: error("Error opening contentUri for writing")
+
+            copyInternalFileToExternal(sink)
+
+            // Clear the log file after export
+            val outputStream = FileOutputStream(logFile)
+            val clearSink = outputStream.asSink()
+
             try {
-                val sink = fileSystemManager.openSink(uriString, "wt")
-                    ?: error("Error opening contentUri for writing")
-
-                copyInternalFileToExternal(sink)
-
-                // Clear the log file after export
-                val outputStream = FileOutputStream(logFile)
-                val clearSink = outputStream.asSink()
-
-                try {
-                    // Write empty string to clear the file
-                    val buffer = Buffer()
-                    clearSink.write(buffer, 0)
-                    clearSink.flush()
-                } finally {
-                    clearSink.close()
-                    outputStream.close()
-                }
-            } catch (e: Exception) {
-                throw e
+                // Write empty string to clear the file
+                val buffer = Buffer()
+                clearSink.write(buffer, 0)
+                clearSink.flush()
+            } finally {
+                clearSink.close()
+                outputStream.close()
             }
+        } catch (e: Exception) {
+            throw e
         }
     }
 

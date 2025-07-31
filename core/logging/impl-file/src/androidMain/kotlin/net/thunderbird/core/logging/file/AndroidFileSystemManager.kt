@@ -16,8 +16,8 @@ class AndroidFileSystemManager(
         try {
             val uri: Uri = uriString.toUri()
             return contentResolver.openOutputStream(uri, mode)?.asSink()
-        } catch (e: SecurityException) {
-            throw e
+        } catch (_: SecurityException) {
+//            throw e
         }
         return null
     }
