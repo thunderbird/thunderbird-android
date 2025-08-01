@@ -2,7 +2,9 @@ package com.fsck.k9.ui.messagelist;
 
 
 import java.util.List;
+
 import android.text.TextUtils;
+
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.Utility;

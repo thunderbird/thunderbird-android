@@ -7,6 +7,7 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 
 public class LocalStoreTest {
@@ -22,7 +23,7 @@ public class LocalStoreTest {
 
     @Test
     public void findPartById__withRootLocalMessage() throws Exception {
-        LocalMessage searchRoot = new LocalMessage(null, "uid", null);
+        LocalMessage searchRoot = new LocalMessage(null, "uid", null, mock());
         searchRoot.setMessagePartId(123L);
 
         Part part = LocalStore.findPartById(searchRoot, 123L);

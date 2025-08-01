@@ -11,18 +11,18 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import app.k9mail.legacy.di.DI;
-import com.fsck.k9.helper.MimeTypeUtil;
-import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.LegacyAccount;
-import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
+import com.fsck.k9.mailstore.LocalStoreProvider;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.logging.legacy.Log;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 
 

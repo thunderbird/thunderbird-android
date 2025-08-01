@@ -317,7 +317,7 @@ public abstract class MessageBuilder {
      *         original message.
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat simpleMessageFormat) {
-        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(text);
+        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(text, settingsManager);
 
         /*
          * Find out if we need to include the original message as quoted text.
