@@ -26,6 +26,7 @@ import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.mock
 
 class SaveMessageOperationsTest : RobolectricTest() {
     private val messagePartDirectory = createRandomTempDirectory()
@@ -35,7 +36,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
         override fun getAttachmentDirectory() = messagePartDirectory
     }
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider)
+    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
     private val basicPartInfoExtractor = BasicPartInfoExtractor()
     private val threadMessageOperations = ThreadMessageOperations()
     private val saveMessageOperations = SaveMessageOperations(

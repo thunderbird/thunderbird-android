@@ -1,8 +1,8 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.K9
 import com.fsck.k9.preferences.Settings.SettingsDescription
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal object SettingsUpgradeHelper {
     /**
@@ -25,8 +25,16 @@ internal object SettingsUpgradeHelper {
         upgraders: Map<Int, SettingsUpgrader>,
         settingsDescriptions: SettingsDescriptions,
         settings: Map<String, Any?>,
+        generalSettingsManager: GeneralSettingsManager,
     ): Map<String, Any?> {
-        return upgradeToVersion(Settings.VERSION, version, upgraders, settingsDescriptions, settings)
+        return upgradeToVersion(
+            Settings.VERSION,
+            version,
+            upgraders,
+            settingsDescriptions,
+            settings,
+            generalSettingsManager,
+        )
     }
 
     fun upgradeToVersion(
@@ -35,13 +43,14 @@ internal object SettingsUpgradeHelper {
         upgraders: Map<Int, SettingsUpgrader>,
         settingsDescriptions: SettingsDescriptions,
         settings: Map<String, Any?>,
+        generalSettingsManager: GeneralSettingsManager,
     ): Map<String, Any?> {
         val upgradedSettings = settings.toMutableMap()
 
         for (toVersion in version + 1..targetVersion) {
             upgraders[toVersion]?.upgrade(upgradedSettings)
 
-            upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion)
+            upgradeSettingsGeneric(settingsDescriptions, upgradedSettings, toVersion, generalSettingsManager)
         }
 
         return upgradedSettings
@@ -51,6 +60,7 @@ internal object SettingsUpgradeHelper {
         settingsDescriptions: SettingsDescriptions,
         mutableSettings: MutableMap<String, Any?>,
         toVersion: Int,
+        generalSettingsManager: GeneralSettingsManager,
     ) {
         for ((settingName, versionedSettingsDescriptions) in settingsDescriptions) {
             val isNewlyAddedSetting = versionedSettingsDescriptions.firstKey() == toVersion
@@ -63,7 +73,7 @@ internal object SettingsUpgradeHelper {
                 val settingDescription = versionedSettingsDescriptions[toVersion]
                     ?: throw AssertionError("First version of a setting must be non-null!")
 
-                upgradeSettingInsertDefault(mutableSettings, settingName, settingDescription)
+                upgradeSettingInsertDefault(mutableSettings, settingName, settingDescription, generalSettingsManager)
             }
 
             val highestVersion = versionedSettingsDescriptions.lastKey()
@@ -81,11 +91,12 @@ internal object SettingsUpgradeHelper {
         mutableSettings: MutableMap<String, Any?>,
         settingName: String,
         settingDescription: SettingsDescription<T>,
+        generalSettingsManager: GeneralSettingsManager,
     ) {
         val defaultValue = settingDescription.getDefaultValue()
         mutableSettings[settingName] = defaultValue
 
-        if (K9.isDebugLoggingEnabled) {
+        if (generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled) {
             val prettyValue = settingDescription.toPrettyString(defaultValue)
             Log.v("Added new setting '%s' with default value '%s'", settingName, prettyValue)
         }

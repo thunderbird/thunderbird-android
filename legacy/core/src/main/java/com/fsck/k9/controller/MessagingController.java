@@ -85,6 +85,7 @@ import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import net.thunderbird.core.logging.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -144,6 +145,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     public static MessagingController getInstance(Context context) {
         return DI.get(MessagingController.class);
     }
+    private final GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
 
 
     MessagingController(
@@ -765,7 +767,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     Log.e(e, "Unexpected exception with command '%s', removing command from queue", commandName);
                     localStore.removePendingCommand(processingCommand);
 
-                    if (K9.DEVELOPER_MODE) {
+                    if (BuildConfig.DEBUG) {
                         throw new AssertionError("Unexpected exception while processing pending command", e);
                     }
                 }

@@ -3,9 +3,10 @@ package com.fsck.k9.preferences
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
+import org.mockito.kotlin.mock
 
 class ServerSettingsUpgraderTest {
-    private val upgrader = ServerSettingsUpgrader()
+    private val upgrader = ServerSettingsUpgrader(generalSettingsManager = mock())
 
     @Test
     fun `upgrade from version 1 to 92`() {
