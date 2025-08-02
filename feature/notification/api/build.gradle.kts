@@ -14,6 +14,10 @@ kotlin {
         commonTest.dependencies {
             implementation(projects.feature.notification.testing)
         }
+        jvmTest.dependencies {
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.bundles.shared.jvm.test)
+        }
     }
 
     sourceSets.all {
@@ -23,6 +27,11 @@ kotlin {
 
 android {
     namespace = "net.thunderbird.feature.notification.api"
+}
+
+java {
+    sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaVersion
+    targetCompatibility = ThunderbirdProjectConfig.Compiler.javaVersion
 }
 
 compose.resources {
