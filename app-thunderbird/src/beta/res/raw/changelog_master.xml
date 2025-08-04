@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="12.0b5" versioncode="23" date="2025-08-04">
+        <change>Crash occurred when attempting to access account general settings</change>
+    </release>
     <release version="12.0b4" versioncode="22" date="2025-07-28">
         <change>Testing drawer UI improvements in this beta, feedback on bugs is welcome</change>
         <change>Testing new account settings page in this beta, feedback on bugs is welcome</change>
