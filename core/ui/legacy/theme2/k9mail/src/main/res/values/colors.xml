@@ -79,8 +79,8 @@
     <color name="darkSurfaceDim">#131314</color>
     <color name="darkSurface">#131314</color>
     <color name="darkSurfaceBright">#39393A</color>
-    <color name="darkOnSurface">#E5E2E3</color>
-    <color name="darkOnSurfaceVariant">#C5C6CC</color>
+    <color name="darkOnSurface">#ECECEC</color>
+    <color name="darkOnSurfaceVariant">#8C8C8C</color>
 
     <color name="darkSurfaceContainerLowest">#0E0E0F</color>
     <color name="darkSurfaceContainerLow">#1B1B1C</color>
