@@ -25,7 +25,7 @@ interface CoreResourceProvider {
     fun searchUnifiedInboxTitle(): String
     fun searchUnifiedInboxDetail(): String
 
-    val iconPushNotification: Int
+    // val iconPushNotification: Int
     fun pushNotificationText(notificationState: PushNotificationState): String
     fun pushNotificationInfoText(): String
     fun pushNotificationGrantAlarmPermissionText(): String

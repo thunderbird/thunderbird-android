@@ -3,6 +3,9 @@ package com.fsck.k9.notification
 import android.app.Notification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
+import app.k9mail.legacy.account.Account
+import com.fsck.k9.logging.Timber
 import com.fsck.k9.mailstore.LocalFolder
 import net.thunderbird.core.android.account.LegacyAccount
 
@@ -10,6 +13,7 @@ internal class SyncNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionBuilder: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
+    private val iconResourceProvider: NotificationIconResourceProvider,
 ) {
     fun showSendingNotification(account: LegacyAccount) {
         val accountName = account.displayName
@@ -55,7 +59,7 @@ internal class SyncNotificationController(
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
-            .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setSmallIcon(iconResourceProvider.pushNotificationIcon)
             .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
@@ -65,6 +69,7 @@ internal class SyncNotificationController(
             .setContentIntent(showMessageListPendingIntent)
             .setPublicVersion(createFetchingMailLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
+        Timber.d("[PushNotificationManager] Using icon: ${iconResourceProvider.pushNotificationIcon}")
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
@@ -76,7 +81,7 @@ internal class SyncNotificationController(
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
-            .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setSmallIcon(iconResourceProvider.pushNotificationIcon)
             .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)

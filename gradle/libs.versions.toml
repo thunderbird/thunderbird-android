@@ -108,6 +108,7 @@ timber = "5.0.1"
 turbine = "1.2.0"
 xmlpull = "1.0"
 zxing = "3.5.3"
+coreKtx = "1.6.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -277,6 +278,7 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version.ref = "xmlpull" }
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtx" }
 
 [bundles]
 shared-kmp-common = [

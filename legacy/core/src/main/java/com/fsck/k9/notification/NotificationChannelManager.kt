@@ -19,7 +19,7 @@ class NotificationChannelManager(
     private val accountManager: AccountManager,
     private val backgroundExecutor: Executor,
     private val notificationManager: NotificationManager,
-    private val resourceProvider: NotificationResourceProvider,
+    val resourceProvider: NotificationResourceProvider,
     private val notificationLightDecoder: NotificationLightDecoder,
 ) {
     val pushChannelId = "push"

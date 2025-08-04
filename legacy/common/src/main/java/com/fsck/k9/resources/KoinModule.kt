@@ -5,6 +5,12 @@ import com.fsck.k9.autocrypt.AutocryptStringProvider
 import org.koin.dsl.module
 
 val resourcesModule = module {
+//    single<NotificationIconResourceProvider> {
+//        K9CoreResourceProvider(
+//            context = get(),
+//        )
+//    }
+
     single<CoreResourceProvider> {
         K9CoreResourceProvider(
             context = get(),
