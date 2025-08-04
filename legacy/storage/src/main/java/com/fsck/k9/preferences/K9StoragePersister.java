@@ -23,7 +23,7 @@ import net.thunderbird.core.preference.storage.StoragePersister;
 import net.thunderbird.core.preference.storage.StorageUpdater;
 
 public class K9StoragePersister implements StoragePersister {
-    private static final int DB_VERSION = 27;
+    private static final int DB_VERSION = 28;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
