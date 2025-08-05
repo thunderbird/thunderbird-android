@@ -1,33 +1,31 @@
-package com.fsck.k9.mail.filter;
+package com.fsck.k9.mail.filter
 
-import java.io.FilterOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.FilterOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
-public class SmtpDataStuffing extends FilterOutputStream {
-    private static final int STATE_NORMAL = 0;
-    private static final int STATE_CR = 1;
-    private static final int STATE_CRLF = 2;
+class SmtpDataStuffing(out: OutputStream?) : FilterOutputStream(out) {
+    private var state: Int = STATE_CRLF
 
-    private int state = STATE_CRLF;
-
-    public SmtpDataStuffing(OutputStream out) {
-        super(out);
+    @Throws(IOException::class)
+    override fun write(oneByte: Int) {
+        if (oneByte == '\r'.code) {
+            state = STATE_CR
+        } else if ((state == STATE_CR) && (oneByte == '\n'.code)) {
+            state = STATE_CRLF
+        } else if ((state == STATE_CRLF) && (oneByte == '.'.code)) {
+            // Read <CR><LF><DOT> so this line needs an additional period.
+            super.write('.'.code)
+            state = STATE_NORMAL
+        } else {
+            state = STATE_NORMAL
+        }
+        super.write(oneByte)
     }
 
-    @Override
-    public void write(int oneByte) throws IOException {
-        if (oneByte == '\r') {
-            state = STATE_CR;
-        } else if ((state == STATE_CR) && (oneByte == '\n')) {
-            state = STATE_CRLF;
-        } else if ((state == STATE_CRLF) && (oneByte == '.')) {
-            // Read <CR><LF><DOT> so this line needs an additional period.
-            super.write('.');
-            state = STATE_NORMAL;
-        } else {
-            state = STATE_NORMAL;
-        }
-        super.write(oneByte);
+    companion object {
+        private const val STATE_NORMAL = 0
+        private const val STATE_CR = 1
+        private const val STATE_CRLF = 2
     }
 }
