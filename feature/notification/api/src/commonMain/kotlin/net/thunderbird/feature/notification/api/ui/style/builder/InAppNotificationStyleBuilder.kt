@@ -68,9 +68,9 @@ class InAppNotificationStyleBuilder internal constructor() {
      * a [DialogNotification] in these cases)
      */
     @NotificationStyleMarker
-    fun bannerGlobal() {
+    fun bannerGlobal(priority: Int = 0) {
         checkSingleStyleEntry<BannerGlobalNotification>()
-        styles += BannerGlobalNotification
+        styles += BannerGlobalNotification(priority = priority)
     }
 
     /**
