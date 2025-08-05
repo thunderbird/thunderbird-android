@@ -14,10 +14,17 @@ kotlin {
         commonTest.dependencies {
             implementation(projects.feature.notification.testing)
         }
+        androidMain.dependencies {
+            implementation(projects.core.ui.compose.designsystem)
+            implementation(projects.core.ui.compose.theme2.common)
+        }
     }
 
     sourceSets.all {
-        languageSettings.enableLanguageFeature(LanguageFeature.ExpectActualClasses.name)
+        languageSettings.apply {
+            enableLanguageFeature(LanguageFeature.ExpectActualClasses.name)
+            enableLanguageFeature(LanguageFeature.WhenGuards.name)
+        }
     }
 }
 

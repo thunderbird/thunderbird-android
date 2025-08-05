@@ -9,6 +9,7 @@ enum class CatalogOrganismPage(
 ) : CatalogPage {
     APP_BAR("App Bars"),
     DIALOG("Dialogs"),
+    BANNER("Banners"),
     ;
 
     override fun toString(): String {
