@@ -32,7 +32,7 @@ object BannerNotificationCardDefaults {
     /**
      * The default behaviour for the [BannerInlineNotificationCard]
      */
-    val behaviour = BannerInlineNotificationCardBehaviour.Expanded
+    val bannerInlineBehaviour = BannerInlineNotificationCardBehaviour.Expanded
 
     /**
      * Creates a [CardColors] for an error banner inline notification card.

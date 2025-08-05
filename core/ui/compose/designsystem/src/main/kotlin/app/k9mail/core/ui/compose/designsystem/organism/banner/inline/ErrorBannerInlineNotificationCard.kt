@@ -16,7 +16,7 @@ import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificatio
  *  typically buttons, laid out in a [RowScope].
  * @param modifier Optional [Modifier] to be applied to the composable.
  * @param behaviour Optional [BannerInlineNotificationCardBehaviour] to customize the appearance
- *  and behavior of the notification card. Defaults to [BannerNotificationCardDefaults.behaviour].
+ *  and behavior of the notification card. Defaults to [BannerNotificationCardDefaults.bannerInlineBehaviour].
  */
 @Composable
 fun ErrorBannerInlineNotificationCard(
@@ -24,7 +24,7 @@ fun ErrorBannerInlineNotificationCard(
     supportingText: CharSequence,
     actions: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
-    behaviour: BannerInlineNotificationCardBehaviour = BannerNotificationCardDefaults.behaviour,
+    behaviour: BannerInlineNotificationCardBehaviour = BannerNotificationCardDefaults.bannerInlineBehaviour,
 ) {
     BannerInlineNotificationCard(
         icon = { Icon(imageVector = Icons.Outlined.Report) },
