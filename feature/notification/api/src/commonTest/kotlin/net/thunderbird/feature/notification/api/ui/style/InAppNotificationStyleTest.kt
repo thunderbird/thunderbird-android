@@ -70,20 +70,6 @@ class InAppNotificationStyleTest {
     }
 
     @Test
-    fun `inAppNotificationStyle dsl should create a bottomSheet in-app notification style`() {
-        // Arrange
-        val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.BottomSheetNotification)
-
-        // Act
-        val inAppStyles = inAppNotificationStyles {
-            bottomSheet()
-        }
-
-        // Assert
-        assertThat(inAppStyles).containsExactly(elements = expectedStyles)
-    }
-
-    @Test
     fun `inAppNotificationStyle dsl should create a dialog in-app notification style`() {
         // Arrange
         val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.DialogNotification)
@@ -104,7 +90,6 @@ class InAppNotificationStyleTest {
             InAppNotificationStyle.BannerInlineNotification,
             InAppNotificationStyle.BannerGlobalNotification,
             InAppNotificationStyle.SnackbarNotification(),
-            InAppNotificationStyle.BottomSheetNotification,
             InAppNotificationStyle.DialogNotification,
         )
 
@@ -113,7 +98,6 @@ class InAppNotificationStyleTest {
             bannerInline()
             bannerGlobal()
             snackbar()
-            bottomSheet()
             dialog()
         }
 
@@ -181,52 +165,6 @@ class InAppNotificationStyleTest {
                 snackbar()
                 snackbar(duration = 1.minutes)
                 snackbar(duration = 1.hours)
-            }
-        }
-
-        // Assert
-        assertThat(actual)
-            .isInstanceOf<IllegalStateException>()
-            .hasMessage(expectedErrorMessage)
-    }
-
-    @Test
-    fun `inAppNotificationStyle dsl should throw IllegalStateException when bottomSheet style is added multiple times`() {
-        // Arrange
-        val expectedErrorMessage =
-            "An in-app notification can only have at most one type of ${
-                InAppNotificationStyle.BottomSheetNotification::class.simpleName
-            } style"
-
-        // Act
-        val actual = assertFails {
-            inAppNotificationStyles {
-                bottomSheet()
-                bottomSheet()
-                bottomSheet()
-            }
-        }
-
-        // Assert
-        assertThat(actual)
-            .isInstanceOf<IllegalStateException>()
-            .hasMessage(expectedErrorMessage)
-    }
-
-    @Test
-    fun `inAppNotificationStyle dsl should throw IllegalStateException when dialog style is added multiple times`() {
-        // Arrange
-        val expectedErrorMessage =
-            "An in-app notification can only have at most one type of ${
-                InAppNotificationStyle.DialogNotification::class.simpleName
-            } style"
-
-        // Act
-        val actual = assertFails {
-            inAppNotificationStyles {
-                dialog()
-                dialog()
-                dialog()
             }
         }
 
