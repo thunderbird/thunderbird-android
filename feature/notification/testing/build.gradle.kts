@@ -9,6 +9,7 @@ android {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.core.outcome)
             api(projects.feature.notification.api)
         }
     }
