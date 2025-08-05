@@ -51,7 +51,7 @@ internal fun BannerInlineNotificationCard(
     colors: CardColors = BannerNotificationCardDefaults.errorCardColors(),
     border: BorderStroke = BannerNotificationCardDefaults.errorCardBorder(),
     shape: Shape = BannerNotificationCardDefaults.bannerInlineShape,
-    behaviour: BannerInlineNotificationCardBehaviour = BannerNotificationCardDefaults.behaviour,
+    behaviour: BannerInlineNotificationCardBehaviour = BannerNotificationCardDefaults.bannerInlineBehaviour,
 ) {
     val maxLines = when (behaviour) {
         BannerInlineNotificationCardBehaviour.Clipped -> 2

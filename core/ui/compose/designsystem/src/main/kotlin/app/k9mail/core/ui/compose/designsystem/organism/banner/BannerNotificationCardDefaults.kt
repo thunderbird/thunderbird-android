@@ -5,11 +5,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardColors
 import app.k9mail.core.ui.compose.designsystem.atom.card.CardDefaults
+import app.k9mail.core.ui.compose.designsystem.organism.banner.global.BannerGlobalNotificationCard
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.BannerInlineNotificationCard
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.BannerInlineNotificationCardBehaviour
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -18,6 +20,9 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
  * Contains the default values used by [BannerInlineNotificationCard] and [BannerGlobalNotificationCard] types
  */
 object BannerNotificationCardDefaults {
+    /** The default shape of the [BannerGlobalNotificationCard] */
+    val bannerGlobalShape: Shape = RectangleShape
+
     /** The default shape of the [BannerInlineNotificationCard] */
     val bannerInlineShape: Shape
         @ReadOnlyComposable
@@ -27,7 +32,7 @@ object BannerNotificationCardDefaults {
     /**
      * The default behaviour for the [BannerInlineNotificationCard]
      */
-    val behaviour = BannerInlineNotificationCardBehaviour.Expanded
+    val bannerInlineBehaviour = BannerInlineNotificationCardBehaviour.Expanded
 
     /**
      * Creates a [CardColors] for an error banner inline notification card.
