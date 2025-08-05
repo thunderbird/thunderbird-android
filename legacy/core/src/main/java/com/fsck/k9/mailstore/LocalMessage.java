@@ -15,7 +15,7 @@ import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.MimeType;
 import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.MimeMessage;

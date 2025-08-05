@@ -23,7 +23,7 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.Header;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.MimeType;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
@@ -38,6 +38,7 @@ import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
 import org.jetbrains.annotations.NotNull;
+import net.thunderbird.core.common.exception.MessagingException;
 
 
 /**
@@ -161,7 +162,7 @@ public class MimeMessage extends Message {
      *
      * @see #mSentDate
      * @param sentDate
-     * @throws com.fsck.k9.mail.MessagingException
+     * @throws net.thunderbird.core.common.exception.MessagingException
      */
     public void addSentDate(Date sentDate, boolean hideTimeZone) {
         if (mDateFormat == null) {

@@ -1,7 +1,7 @@
 package com.fsck.k9.backend.pop3
 
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.store.pop3.Pop3Store
 
 internal class CommandSetFlag(private val pop3Store: Pop3Store) {

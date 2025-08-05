@@ -3,7 +3,7 @@ package net.thunderbird.feature.mail.message.list.domain.usecase
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.createFolder
 import com.fsck.k9.backend.api.updateFolders
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.folders.FolderServerId
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

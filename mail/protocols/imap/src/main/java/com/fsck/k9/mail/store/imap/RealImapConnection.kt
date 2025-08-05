@@ -6,7 +6,7 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.K9MailLib
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT
 import com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT

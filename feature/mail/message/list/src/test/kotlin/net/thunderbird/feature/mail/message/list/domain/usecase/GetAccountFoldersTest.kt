@@ -10,7 +10,7 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEmpty
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi

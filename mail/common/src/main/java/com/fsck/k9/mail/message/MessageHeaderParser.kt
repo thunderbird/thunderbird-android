@@ -1,6 +1,6 @@
 package com.fsck.k9.mail.message
 
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import java.io.IOException
 import java.io.InputStream
 import org.apache.james.mime4j.MimeException

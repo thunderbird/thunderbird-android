@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.james.mime4j.util.MimeUtil;
+import net.thunderbird.core.common.exception.MessagingException;
 
 public abstract class Multipart implements Body {
     private Part mParent;

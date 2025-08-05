@@ -8,7 +8,7 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageRetrievalListener
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream
 import com.fsck.k9.mail.internet.MimeBodyPart

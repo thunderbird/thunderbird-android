@@ -12,7 +12,7 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.Message
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.filter.Base64

@@ -1,6 +1,6 @@
 package net.thunderbird.feature.mail.message.list.domain.usecase
 
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

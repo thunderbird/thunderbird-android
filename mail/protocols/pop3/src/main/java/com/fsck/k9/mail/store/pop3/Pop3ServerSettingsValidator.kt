@@ -5,7 +5,7 @@ import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ClientCertificateError.CertificateExpired
 import com.fsck.k9.mail.ClientCertificateError.RetrievalFailure
 import com.fsck.k9.mail.ClientCertificateException
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.AuthStateStorage

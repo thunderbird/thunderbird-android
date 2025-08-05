@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.RawDataBody;
 import com.fsck.k9.mail.internet.SizeAware;
 

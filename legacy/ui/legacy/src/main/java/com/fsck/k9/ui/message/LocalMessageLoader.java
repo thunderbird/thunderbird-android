@@ -8,7 +8,7 @@ import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.logging.legacy.Log;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 
 

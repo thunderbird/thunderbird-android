@@ -9,7 +9,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageDownloadState
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.SaveMessageDataCreator

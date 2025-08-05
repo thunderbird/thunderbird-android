@@ -5,7 +5,7 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import dev.mokkery.matcher.any
 import dev.mokkery.matcher.matching
 import dev.mokkery.spy

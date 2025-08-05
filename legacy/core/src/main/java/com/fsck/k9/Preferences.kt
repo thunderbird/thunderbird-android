@@ -3,7 +3,7 @@ package com.fsck.k9
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
 import app.k9mail.legacy.di.DI
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
 import java.util.LinkedList
 import java.util.UUID

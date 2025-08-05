@@ -9,7 +9,7 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.MessageRetrievalListener
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.store.pop3.Pop3Commands.STAT_COMMAND
 import com.fsck.k9.mail.testing.crlf

@@ -1,6 +1,6 @@
 package com.fsck.k9.mail.store.imap;
 
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 
 import org.junit.Test;
 

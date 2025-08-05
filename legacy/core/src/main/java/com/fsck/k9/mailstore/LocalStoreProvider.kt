@@ -2,7 +2,7 @@ package com.fsck.k9.mailstore
 
 import android.content.Context
 import app.k9mail.legacy.di.DI
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import java.util.concurrent.ConcurrentHashMap
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.GeneralSettingsManager

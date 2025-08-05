@@ -3,7 +3,7 @@ package app.k9mail.legacy.mailstore
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import java.util.Date
 import kotlin.jvm.Throws
 import net.thunderbird.feature.mail.folder.api.FolderDetails

@@ -9,7 +9,7 @@ import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor

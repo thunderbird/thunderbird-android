@@ -25,7 +25,7 @@ import com.fsck.k9.autocrypt.AutocryptOperations
 import com.fsck.k9.autocrypt.AutocryptOperationsHelper.assertMessageHasAutocryptHeader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.BoundaryGenerator
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MessageIdGenerator
 import com.fsck.k9.mail.internet.MimeMessage

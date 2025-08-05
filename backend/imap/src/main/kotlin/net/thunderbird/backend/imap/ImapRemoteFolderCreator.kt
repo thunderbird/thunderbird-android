@@ -2,7 +2,7 @@ package net.thunderbird.backend.imap
 
 import com.fsck.k9.backend.imap.ImapBackend
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.store.imap.ImapStore
 import kotlinx.coroutines.CoroutineDispatcher

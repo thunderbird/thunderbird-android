@@ -5,7 +5,7 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory

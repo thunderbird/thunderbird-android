@@ -21,7 +21,7 @@ import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessageRetrievalListener
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MimeHeader

@@ -2,7 +2,7 @@ package app.k9mail.legacy.mailstore
 
 import app.k9mail.legacy.mailstore.FolderTypeMapper.folderTypeOf
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel

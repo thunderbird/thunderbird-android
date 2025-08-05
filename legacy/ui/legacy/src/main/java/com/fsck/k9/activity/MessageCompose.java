@@ -91,7 +91,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;

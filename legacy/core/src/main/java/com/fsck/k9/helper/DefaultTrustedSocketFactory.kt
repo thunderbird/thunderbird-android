@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.SSLCertificateSocketFactory
 import android.os.Build
 import android.text.TextUtils
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import java.io.IOException

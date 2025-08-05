@@ -48,7 +48,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity

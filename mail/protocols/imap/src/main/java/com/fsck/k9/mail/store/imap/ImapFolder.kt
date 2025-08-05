@@ -6,7 +6,7 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageRetrievalListener
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.Part
 import java.io.IOException
 import java.util.Date

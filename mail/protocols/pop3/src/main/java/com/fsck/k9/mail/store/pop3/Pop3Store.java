@@ -7,7 +7,7 @@ import java.util.Map;
 import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import org.jetbrains.annotations.NotNull;
