@@ -37,11 +37,6 @@ sealed interface InAppNotificationStyle {
     ) : InAppNotificationStyle
 
     /**
-     * @see [InAppNotificationStyleBuilder.bottomSheet]
-     */
-    data object BottomSheetNotification : InAppNotificationStyle
-
-    /**
      * @see [InAppNotificationStyleBuilder.dialog]
      */
     data object DialogNotification : InAppNotificationStyle
