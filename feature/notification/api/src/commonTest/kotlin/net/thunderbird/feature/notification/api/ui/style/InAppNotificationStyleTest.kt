@@ -29,7 +29,9 @@ class InAppNotificationStyleTest {
     @Test
     fun `inAppNotificationStyle dsl should create a banner global in-app notification style`() {
         // Arrange
-        val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.BannerGlobalNotification)
+        val expectedStyles = arrayOf<InAppNotificationStyle>(
+            InAppNotificationStyle.BannerGlobalNotification(priority = 0),
+        )
 
         // Act
         val inAppStyles = inAppNotificationStyles {
@@ -88,7 +90,7 @@ class InAppNotificationStyleTest {
         // Arrange
         val expectedStyles = arrayOf(
             InAppNotificationStyle.BannerInlineNotification,
-            InAppNotificationStyle.BannerGlobalNotification,
+            InAppNotificationStyle.BannerGlobalNotification(priority = 0),
             InAppNotificationStyle.SnackbarNotification(),
             InAppNotificationStyle.DialogNotification,
         )
