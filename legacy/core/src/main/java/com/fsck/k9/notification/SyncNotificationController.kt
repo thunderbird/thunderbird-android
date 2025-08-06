@@ -4,10 +4,9 @@ import android.app.Notification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
-import app.k9mail.legacy.account.Account
-import com.fsck.k9.logging.Timber
 import com.fsck.k9.mailstore.LocalFolder
 import net.thunderbird.core.android.account.LegacyAccount
+import timber.log.Timber
 
 internal class SyncNotificationController(
     private val notificationHelper: NotificationHelper,

@@ -1,5 +1,4 @@
 package com.fsck.k9.notification
-
 import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
@@ -12,7 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.PendingIntentCompat
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.logging.Timber
+import timber.log.Timber
 
 private const val PUSH_INFO_ACTION = "app.k9mail.action.PUSH_INFO"
 

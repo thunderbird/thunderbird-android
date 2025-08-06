@@ -2,22 +2,21 @@ package app.k9mail
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.notification.NotificationChannelManager
 import org.koin.java.KoinJavaComponent.inject
 
 class DebugNotificationActivity : Activity() {
 
-    private val iconProvider: Lazy<NotificationIconResourceProvider> =
-        inject(NotificationIconResourceProvider::class.java)
-    private val channelManager: Lazy<NotificationChannelManager> =
-        inject(NotificationChannelManager::class.java)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Log.d("DebugNotifActivity", "onCreate called")
 
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -32,11 +31,22 @@ class DebugNotificationActivity : Activity() {
         val button = Button(this).apply {
             text = "Trigger Notification"
             setOnClickListener {
-                NotificationTester.showTestPushNotification(
-                    context = this@DebugNotificationActivity,
-                    iconProvider = iconProvider,
-                    channelManager = channelManager,
-                )
+                try {
+                    val iconProvider: Lazy<NotificationIconResourceProvider> =
+                        inject(NotificationIconResourceProvider::class.java)
+                    val channelManager: Lazy<NotificationChannelManager> =
+                        inject(NotificationChannelManager::class.java)
+
+                    NotificationTester.showTestPushNotification(
+                        context = this@DebugNotificationActivity,
+                        iconProvider = iconProvider,
+                        channelManager = channelManager,
+                    )
+                    Toast.makeText(this@DebugNotificationActivity, "Notification sent!", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Log.e("DebugNotifActivity", "Failed to inject dependencies", e)
+                    Toast.makeText(this@DebugNotificationActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
@@ -44,5 +54,7 @@ class DebugNotificationActivity : Activity() {
         layout.addView(button)
 
         setContentView(layout)
+
+        Log.d("DebugNotifActivity", "Activity setup complete")
     }
 }
