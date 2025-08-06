@@ -28,6 +28,22 @@ internal class GeneralResourceProvider(
         )
     }
 
+    override val profileIndicatorTitle: () -> String = {
+        context.getString(R.string.account_settings_general_profile_indicator_title)
+    }
+
+    override val profileIndicatorMonogram: () -> String = {
+        context.getString(R.string.account_settings_general_profile_indicator_monogram)
+    }
+
+    override val profileIndicatorImage: () -> String = {
+        context.getString(R.string.account_settings_general_profile_indicator_image)
+    }
+
+    override val profileIndicatorIcon: () -> String = {
+        context.getString(R.string.account_settings_general_profile_indicator_icon)
+    }
+
     override val nameTitle: () -> String = {
         context.getString(R.string.account_settings_general_name_title)
     }

@@ -1,13 +1,16 @@
 package net.thunderbird.feature.account.settings.impl.domain.usecase
 
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.CompactOption
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
@@ -36,6 +39,8 @@ internal class GetGeneralSettings(
     }
 
     private fun generateSettings(accountId: AccountId, profile: AccountProfile): Settings {
+        val profileIndicatorOptions = generateProfileIndicatorOptions(profile.id)
+
         return persistentListOf(
             SettingDecoration.Custom(
                 id = GeneralPreference.PROFILE.generateId(accountId),
@@ -43,6 +48,12 @@ internal class GetGeneralSettings(
                     name = profile.name,
                     color = profile.color,
                 ),
+            ),
+            SettingValue.CompactSelectSingleOption(
+                id = GeneralPreference.PROFILE_INDICATOR.generateId(accountId),
+                title = resourceProvider.profileIndicatorTitle,
+                value = selectProfileIndicatorOption(profile, profileIndicatorOptions),
+                options = profileIndicatorOptions,
             ),
             SettingValue.Text(
                 id = GeneralPreference.NAME.generateId(accountId),
@@ -61,4 +72,44 @@ internal class GetGeneralSettings(
             ),
         )
     }
+
+    private fun selectProfileIndicatorOption(profile: AccountProfile, options: List<CompactOption>): CompactOption {
+        return when (profile.avatar) {
+            is AccountAvatar.Monogram -> options.first {
+                it.id == generateMonogramId(profile.id.asRaw())
+            }
+            is AccountAvatar.Image -> options.first {
+                it.id == generateImageId(profile.id.asRaw())
+            }
+            is AccountAvatar.Icon -> options.first {
+                it.id == generateIconId(profile.id.asRaw())
+            }
+        }
+    }
+
+    private fun generateProfileIndicatorOptions(accountId: AccountId): ImmutableList<CompactOption> {
+        return persistentListOf(
+            CompactOption(
+                id = generateMonogramId(accountId.asRaw()),
+                title = resourceProvider.profileIndicatorMonogram,
+            ),
+            CompactOption(
+                id = generateImageId(accountId.asRaw()),
+                title = resourceProvider.profileIndicatorImage,
+            ),
+            CompactOption(
+                id = generateIconId(accountId.asRaw()),
+                title = resourceProvider.profileIndicatorIcon,
+            ),
+        )
+    }
+
+    private fun generateMonogramId(accountId: String): String =
+        "$accountId-profile-indicator-monogram"
+
+    private fun generateImageId(accountId: String): String =
+        "$accountId-profile-indicator-image"
+
+    private fun generateIconId(accountId: String): String =
+        "$accountId-profile-indicator-icon"
 }
