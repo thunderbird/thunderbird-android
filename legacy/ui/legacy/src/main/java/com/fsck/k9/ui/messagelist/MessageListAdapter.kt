@@ -33,6 +33,9 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.fsck.k9.ui.messagelist.item.FooterViewHolder
+import com.fsck.k9.ui.messagelist.item.MessageListViewHolder
+import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.fsck.k9.ui.resolveColorAttribute
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.max

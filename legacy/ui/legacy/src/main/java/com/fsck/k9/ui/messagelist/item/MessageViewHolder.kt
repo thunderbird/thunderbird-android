@@ -1,12 +1,9 @@
-package com.fsck.k9.ui.messagelist
+package com.fsck.k9.ui.messagelist.item
 
 import android.view.View
 import android.widget.ImageView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.fsck.k9.ui.R
 import com.google.android.material.textview.MaterialTextView
-
-sealed class MessageListViewHolder(view: View) : ViewHolder(view)
 
 class MessageViewHolder(view: View) : MessageListViewHolder(view) {
     var uniqueId: Long = -1L
@@ -23,8 +20,4 @@ class MessageViewHolder(view: View) : MessageListViewHolder(view) {
     val starClickArea: View = view.findViewById(R.id.star_click_area)
     val attachment: ImageView = view.findViewById(R.id.attachment)
     val status: ImageView = view.findViewById(R.id.status)
-}
-
-class FooterViewHolder(view: View) : MessageListViewHolder(view) {
-    val text: MaterialTextView = view.findViewById(R.id.main_text)
 }
