@@ -8,23 +8,16 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import androidx.annotation.DimenRes
-import androidx.constraintlayout.widget.Guideline
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import app.k9mail.legacy.message.controller.MessageReference
-import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
-import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.item.FooterViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageListViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolderColors
-import kotlin.math.max
 
 private const val FOOTER_ID = 1L
 
@@ -40,16 +33,6 @@ class MessageListAdapter internal constructor(
     private val appearance: MessageListAppearance,
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
-
-    private val compactVerticalPadding = res.getDimensionPixelSize(R.dimen.messageListCompactVerticalPadding)
-    private val compactTextViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListCompactTextViewMargin)
-    private val compactLineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListCompactLineSpacingMultiplier)
-    private val defaultVerticalPadding = res.getDimensionPixelSize(R.dimen.messageListDefaultVerticalPadding)
-    private val defaultTextViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListDefaultTextViewMargin)
-    private val defaultLineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListDefaultLineSpacingMultiplier)
-    private val relaxedVerticalPadding = res.getDimensionPixelSize(R.dimen.messageListRelaxedVerticalPadding)
-    private val relaxedTextViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListRelaxedTextViewMargin)
-    private val relaxedLineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListRelaxedLineSpacingMultiplier)
 
     val colors: MessageViewHolderColors = MessageViewHolderColors.resolveColors(theme)
 
@@ -150,13 +133,6 @@ class MessageListAdapter internal constructor(
     private val footerPosition: Int
         get() = if (hasFooter) lastMessagePosition + 1 else NO_POSITION
 
-    private inline val subjectViewFontSize: Int
-        get() = if (appearance.senderAboveSubject) {
-            appearance.fontSizes.messageListSender
-        } else {
-            appearance.fontSizes.messageListSubject
-        }
-
     private val messageClickedListener = OnClickListener { view: View ->
         val messageListItem = getItemFromView(view) ?: return@OnClickListener
         listItemListener.onMessageClicked(messageListItem)
@@ -232,96 +208,26 @@ class MessageListAdapter internal constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageListViewHolder {
         return when (viewType) {
             TYPE_MESSAGE -> createMessageViewHolder(parent)
-            TYPE_FOOTER -> createFooterViewHolder(parent)
+            TYPE_FOOTER -> FooterViewHolder.create(layoutInflater, parent, footerClickListener)
             else -> error("Unsupported type: $viewType")
         }
     }
 
-    private fun createMessageViewHolder(parent: ViewGroup?): MessageViewHolder {
-        val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
-        view.setOnClickListener(messageClickedListener)
-        view.setOnLongClickListener(messageLongClickedListener)
-
-        val holder = MessageViewHolder(
-            view = view,
+    private fun createMessageViewHolder(parent: ViewGroup?): MessageViewHolder =
+        MessageViewHolder.create(
+            layoutInflater = layoutInflater,
+            parent = parent,
             appearance = appearance,
             res = res,
             contactsPictureLoader = contactsPictureLoader,
             relativeDateTimeFormatter = relativeDateTimeFormatter,
             colors = colors,
             theme = theme,
+            onClickListener = messageClickedListener,
+            onLongClickListener = messageLongClickedListener,
+            contactPictureContainerClickListener = contactPictureContainerClickListener,
+            starClickListener = starClickListener,
         )
-
-        val contactPictureClickArea = view.findViewById<View>(R.id.contact_picture_click_area)
-        if (appearance.showContactPicture) {
-            contactPictureClickArea.setOnClickListener(contactPictureContainerClickListener)
-        } else {
-            contactPictureClickArea.isVisible = false
-            holder.selectedView.isVisible = false
-            holder.contactPictureView.isVisible = false
-        }
-
-        holder.chipView.isVisible = appearance.showAccountChip
-
-        appearance.fontSizes.setViewTextSize(holder.subjectView, subjectViewFontSize)
-        appearance.fontSizes.setViewTextSize(holder.dateView, appearance.fontSizes.messageListDate)
-
-        // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-        holder.previewView.maxLines = max(appearance.previewLines, 1)
-        appearance.fontSizes.setViewTextSize(holder.previewView, appearance.fontSizes.messageListPreview)
-        appearance.fontSizes.setViewTextSize(
-            holder.threadCountView,
-            appearance.fontSizes.messageListSubject,
-        ) // thread count is next to subject
-
-        holder.starView.isVisible = appearance.stars
-        holder.starClickAreaView.isVisible = appearance.stars
-        holder.starClickAreaView.setOnClickListener(starClickListener)
-
-        applyDensityValue(holder, appearance.density)
-
-        view.tag = holder
-
-        return holder
-    }
-
-    private fun applyDensityValue(holder: MessageViewHolder, density: UiDensity) {
-        val verticalPadding: Int
-        val textViewMarginTop: Int
-        val lineSpacingMultiplier: Float
-        when (density) {
-            UiDensity.Compact -> {
-                verticalPadding = compactVerticalPadding
-                textViewMarginTop = compactTextViewMarginTop
-                lineSpacingMultiplier = compactLineSpacingMultiplier
-            }
-
-            UiDensity.Default -> {
-                verticalPadding = defaultVerticalPadding
-                textViewMarginTop = defaultTextViewMarginTop
-                lineSpacingMultiplier = defaultLineSpacingMultiplier
-            }
-
-            UiDensity.Relaxed -> {
-                verticalPadding = relaxedVerticalPadding
-                textViewMarginTop = relaxedTextViewMarginTop
-                lineSpacingMultiplier = relaxedLineSpacingMultiplier
-            }
-        }
-
-        holder.itemView.findViewById<Guideline>(R.id.top_guideline).setGuidelineBegin(verticalPadding)
-        holder.itemView.findViewById<Guideline>(R.id.bottom_guideline).setGuidelineEnd(verticalPadding)
-        holder.previewView.apply {
-            setMarginTop(textViewMarginTop)
-            setLineSpacing(lineSpacingExtra, lineSpacingMultiplier)
-        }
-    }
-
-    private fun createFooterViewHolder(parent: ViewGroup): MessageListViewHolder {
-        val view = layoutInflater.inflate(R.layout.message_list_item_footer, parent, false)
-        view.setOnClickListener(footerClickListener)
-        return FooterViewHolder(view)
-    }
 
     override fun onBindViewHolder(holder: MessageListViewHolder, position: Int) {
         when (val viewType = getItemViewType(position)) {
@@ -416,12 +322,6 @@ class MessageListAdapter internal constructor(
         val messageViewHolder = view.tag as MessageViewHolder
         return getItemById(messageViewHolder.uniqueId)
     }
-}
-
-private fun Resources.getFloatCompat(@DimenRes resId: Int) = ResourcesCompat.getFloat(this, resId)
-
-private fun View.setMarginTop(margin: Int) {
-    (layoutParams as? ViewGroup.MarginLayoutParams)?.topMargin = margin
 }
 
 private class MessageListDiffCallback(

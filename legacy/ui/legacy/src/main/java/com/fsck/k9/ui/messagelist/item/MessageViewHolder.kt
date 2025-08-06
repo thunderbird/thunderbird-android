@@ -8,14 +8,19 @@ import android.text.SpannableStringBuilder
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.DimenRes
+import androidx.constraintlayout.widget.Guideline
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.FontSizes
+import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
@@ -25,6 +30,7 @@ import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.messagelist.MlfUtils
 import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
+import kotlin.math.max
 
 class MessageViewHolder(
     view: View,
@@ -247,5 +253,115 @@ class MessageViewHolder(
         } else {
             null
         }
+    }
+
+    companion object {
+
+        @Suppress("LongParameterList")
+        fun create(
+            layoutInflater: LayoutInflater,
+            parent: ViewGroup?,
+            appearance: MessageListAppearance,
+            theme: Resources.Theme,
+            res: Resources,
+            contactsPictureLoader: ContactPictureLoader,
+            relativeDateTimeFormatter: RelativeDateTimeFormatter,
+            colors: MessageViewHolderColors,
+            onClickListener: View.OnClickListener,
+            onLongClickListener: View.OnLongClickListener,
+            contactPictureContainerClickListener: View.OnClickListener,
+            starClickListener: View.OnClickListener,
+        ): MessageViewHolder {
+            val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
+            view.setOnClickListener(onClickListener)
+            view.setOnLongClickListener(onLongClickListener)
+
+            val holder = MessageViewHolder(
+                view = view,
+                appearance = appearance,
+                theme = theme,
+                res = res,
+                contactsPictureLoader = contactsPictureLoader,
+                relativeDateTimeFormatter = relativeDateTimeFormatter,
+                colors = colors,
+            )
+
+            applyFontSizes(holder, appearance.fontSizes, appearance.senderAboveSubject)
+            applyDensityValue(holder, appearance.density, res)
+
+            if (appearance.showContactPicture) {
+                holder.contactPictureClickArea.setOnClickListener(contactPictureContainerClickListener)
+            } else {
+                holder.contactPictureClickArea.isVisible = false
+                holder.selectedView.isVisible = false
+                holder.contactPictureView.isVisible = false
+            }
+
+            holder.chipView.isVisible = appearance.showAccountChip
+
+            // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
+            holder.previewView.maxLines = max(appearance.previewLines, 1)
+            appearance.fontSizes.setViewTextSize(holder.previewView, appearance.fontSizes.messageListPreview)
+            appearance.fontSizes.setViewTextSize(
+                holder.threadCountView,
+                appearance.fontSizes.messageListSubject,
+            ) // thread count is next to subject
+
+            holder.starView.isVisible = appearance.stars
+            holder.starClickAreaView.isVisible = appearance.stars
+            holder.starClickAreaView.setOnClickListener(starClickListener)
+
+            view.tag = holder
+
+            return holder
+        }
+
+        private fun applyFontSizes(holder: MessageViewHolder, fontSizes: FontSizes, senderAboveSubject: Boolean) {
+            if (senderAboveSubject) {
+                fontSizes.setViewTextSize(holder.subjectView, fontSizes.messageListSender)
+            } else {
+                fontSizes.setViewTextSize(holder.subjectView, fontSizes.messageListSubject)
+            }
+
+            fontSizes.setViewTextSize(holder.dateView, fontSizes.messageListDate)
+        }
+
+        private fun applyDensityValue(holder: MessageViewHolder, density: UiDensity, res: Resources) {
+            val verticalPadding: Int
+            val textViewMarginTop: Int
+            val lineSpacingMultiplier: Float
+            when (density) {
+                UiDensity.Compact -> {
+                    verticalPadding = res.getDimensionPixelSize(R.dimen.messageListCompactVerticalPadding)
+                    textViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListCompactTextViewMargin)
+                    lineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListCompactLineSpacingMultiplier)
+                }
+
+                UiDensity.Default -> {
+                    verticalPadding = res.getDimensionPixelSize(R.dimen.messageListDefaultVerticalPadding)
+                    textViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListDefaultTextViewMargin)
+                    lineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListDefaultLineSpacingMultiplier)
+                }
+
+                UiDensity.Relaxed -> {
+                    verticalPadding = res.getDimensionPixelSize(R.dimen.messageListRelaxedVerticalPadding)
+                    textViewMarginTop = res.getDimensionPixelSize(R.dimen.messageListRelaxedTextViewMargin)
+                    lineSpacingMultiplier = res.getFloatCompat(R.dimen.messageListRelaxedLineSpacingMultiplier)
+                }
+            }
+
+            holder.itemView.findViewById<Guideline>(R.id.top_guideline).setGuidelineBegin(verticalPadding)
+            holder.itemView.findViewById<Guideline>(R.id.bottom_guideline).setGuidelineEnd(verticalPadding)
+            holder.previewView.apply {
+                setMarginTop(textViewMarginTop)
+                setLineSpacing(lineSpacingExtra, lineSpacingMultiplier)
+            }
+        }
+
+        private fun View.setMarginTop(margin: Int) {
+            (layoutParams as? ViewGroup.MarginLayoutParams)?.topMargin = margin
+        }
+
+        private fun Resources.getFloatCompat(@DimenRes resId: Int) = ResourcesCompat.getFloat(this, resId)
     }
 }
