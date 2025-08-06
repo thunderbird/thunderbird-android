@@ -1,23 +1,251 @@
 package com.fsck.k9.ui.messagelist.item
 
+import android.content.res.Resources
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isVisible
+import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
+import com.fsck.k9.FontSizes
+import com.fsck.k9.contacts.ContactPictureLoader
+import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.fsck.k9.ui.messagelist.MessageListAppearance
+import com.fsck.k9.ui.messagelist.MessageListItem
+import com.fsck.k9.ui.messagelist.MlfUtils
 import com.google.android.material.textview.MaterialTextView
+import java.util.Locale
 
-class MessageViewHolder(view: View) : MessageListViewHolder(view) {
+class MessageViewHolder(
+    view: View,
+    private val appearance: MessageListAppearance,
+    private val theme: Resources.Theme,
+    private val res: Resources,
+    private val contactsPictureLoader: ContactPictureLoader,
+    private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
+    private val colors: MessageViewHolderColors,
+) : MessageListViewHolder(view) {
+
     var uniqueId: Long = -1L
 
-    val selected: View = view.findViewById(R.id.selected)
-    val contactPicture: ImageView = view.findViewById(R.id.contact_picture)
+    val selectedView: View = view.findViewById(R.id.selected)
+    val contactPictureView: ImageView = view.findViewById(R.id.contact_picture)
     val contactPictureClickArea: View = view.findViewById(R.id.contact_picture_click_area)
-    val subject: MaterialTextView = view.findViewById(R.id.subject)
-    val preview: MaterialTextView = view.findViewById(R.id.preview)
-    val date: MaterialTextView = view.findViewById(R.id.date)
-    val chip: ImageView = view.findViewById(R.id.account_color_chip)
-    val threadCount: MaterialTextView = view.findViewById(R.id.thread_count)
-    val star: ImageView = view.findViewById(R.id.star)
-    val starClickArea: View = view.findViewById(R.id.star_click_area)
-    val attachment: ImageView = view.findViewById(R.id.attachment)
-    val status: ImageView = view.findViewById(R.id.status)
+    val subjectView: MaterialTextView = view.findViewById(R.id.subject)
+    val previewView: MaterialTextView = view.findViewById(R.id.preview)
+    val dateView: MaterialTextView = view.findViewById(R.id.date)
+    val chipView: ImageView = view.findViewById(R.id.account_color_chip)
+    val threadCountView: MaterialTextView = view.findViewById(R.id.thread_count)
+    val starView: ImageView = view.findViewById(R.id.star)
+    val starClickAreaView: View = view.findViewById(R.id.star_click_area)
+    val attachmentView: ImageView = view.findViewById(R.id.attachment)
+    val statusView: ImageView = view.findViewById(R.id.status)
+
+    @Suppress("LongMethod", "CyclomaticComplexMethod")
+    fun bind(messageListItem: MessageListItem, isActive: Boolean, isSelected: Boolean) {
+        if (appearance.showContactPicture) {
+            contactPictureClickArea.isSelected = isSelected
+            if (isSelected) {
+                contactPictureView.isVisible = false
+                selectedView.isVisible = true
+            } else {
+                selectedView.isVisible = false
+                contactPictureView.isVisible = true
+            }
+            contactPictureClickArea.contentDescription = if (isSelected) {
+                res.getString(R.string.swipe_action_deselect)
+            } else {
+                res.getString(R.string.swipe_action_select)
+            }
+        }
+
+        uniqueId = messageListItem.uniqueId
+
+        with(messageListItem) {
+            val foregroundColor = selectForegroundColor(isSelected, isRead, isActive)
+            val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
+            val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
+            val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
+            val subject = MlfUtils.buildSubject(subject, res.getString(R.string.general_no_subject), displayThreadCount)
+
+            if (appearance.showAccountChip) {
+                val accountChipDrawable = chipView.drawable.mutate()
+                DrawableCompat.setTint(accountChipDrawable, account.chipColor)
+                chipView.setImageDrawable(accountChipDrawable)
+            }
+
+            if (appearance.stars) {
+                starView.isSelected = isStarred
+                if (isStarred) {
+                    starView.clearColorFilter()
+                } else {
+                    starView.setColorFilter(foregroundColor)
+                }
+                starClickAreaView.contentDescription = if (isStarred) {
+                    res.getString(R.string.unflag_action)
+                } else {
+                    res.getString(R.string.flag_action)
+                }
+            }
+
+            if (appearance.showContactPicture && contactPictureView.isVisible) {
+                setContactPicture(contactPictureView, displayAddress)
+            }
+            itemView.setBackgroundColor(selectBackgroundColor(isSelected, isRead, isActive))
+            updateWithThreadCount(displayThreadCount)
+            val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
+            val messageStringBuilder = SpannableStringBuilder(beforePreviewText)
+            if (appearance.previewLines > 0) {
+                val preview = getPreview(isMessageEncrypted, previewText)
+                if (preview.isNotEmpty()) {
+                    messageStringBuilder.append(" – ").append(preview)
+                }
+            }
+            previewView.setTextColor(foregroundColor)
+            previewView.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
+
+            formatPreviewText(previewView, beforePreviewText, isRead, isActive, isSelected)
+
+            subjectView.typeface = Typeface.create(subjectView.typeface, maybeBoldTypeface)
+            subjectView.setTextColor(foregroundColor)
+
+            val firstLineText = if (appearance.senderAboveSubject) displayName else subject
+            subjectView.text = firstLineText
+
+            subjectView.contentDescription = if (isRead) {
+                null
+            } else {
+                res.getString(R.string.message_list_content_description_unread_prefix, firstLineText)
+            }
+
+            dateView.typeface = Typeface.create(dateView.typeface, maybeBoldTypeface)
+            dateView.setTextColor(foregroundColor)
+            dateView.text = displayDate
+            attachmentView.isVisible = hasAttachments
+            attachmentView.setColorFilter(foregroundColor)
+
+            val statusHolder = buildStatusHolder(isForwarded, isAnswered)
+            if (statusHolder != null) {
+                statusView.setImageDrawable(statusHolder)
+                statusView.isVisible = true
+            } else {
+                statusView.isVisible = false
+            }
+        }
+    }
+
+    private fun getPreview(isMessageEncrypted: Boolean, previewText: String): String {
+        return if (isMessageEncrypted) {
+            res.getString(R.string.preview_encrypted)
+        } else {
+            previewText
+        }
+    }
+
+    private fun setContactPicture(contactPictureView: ImageView, displayAddress: Address?) {
+        if (displayAddress != null) {
+            contactsPictureLoader.setContactPicture(contactPictureView, displayAddress)
+        } else {
+            contactPictureView.setImageResource(Icons.Outlined.Check)
+        }
+    }
+
+    private fun updateWithThreadCount(count: Int) {
+        if (count > 1) {
+            threadCountView.text = String.format(Locale.US, "%d", count)
+            threadCountView.isVisible = true
+        } else {
+            threadCountView.isVisible = false
+        }
+    }
+
+    private fun formatPreviewText(
+        preview: MaterialTextView,
+        beforePreviewText: CharSequence,
+        messageRead: Boolean,
+        active: Boolean,
+        selected: Boolean,
+    ) {
+        val previewText = preview.text as Spannable
+        val textColor = selectPreviewTextColor(active, selected)
+
+        val beforePreviewLength = beforePreviewText.length
+        addBeforePreviewSpan(previewText, beforePreviewLength, messageRead)
+
+        previewText.setSpan(
+            ForegroundColorSpan(textColor),
+            beforePreviewLength,
+            previewText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE,
+        )
+    }
+
+    private fun addBeforePreviewSpan(text: Spannable, length: Int, messageRead: Boolean) {
+        val fontSize = if (appearance.senderAboveSubject) {
+            appearance.fontSizes.messageListSubject
+        } else {
+            appearance.fontSizes.messageListSender
+        }
+
+        if (fontSize != FontSizes.FONT_DEFAULT) {
+            val span = AbsoluteSizeSpan(fontSize, true)
+            text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        if (!messageRead) {
+            val span = StyleSpan(Typeface.BOLD)
+            text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+    }
+
+    private fun selectForegroundColor(selected: Boolean, read: Boolean, active: Boolean): Int {
+        return when {
+            selected -> colors.selected
+            active -> colors.active
+            read -> colors.read
+            !read -> colors.unread
+            else -> colors.regular
+        }
+    }
+
+    private fun selectBackgroundColor(selected: Boolean, read: Boolean, active: Boolean): Int {
+        val backGroundAsReadIndicator = appearance.backGroundAsReadIndicator
+        return when {
+            selected -> colors.selectedBackground
+            active -> colors.activeBackground
+            backGroundAsReadIndicator && read -> colors.readBackground
+            backGroundAsReadIndicator && !read -> colors.unreadBackground
+            else -> colors.regularBackground
+        }
+    }
+
+    private fun selectPreviewTextColor(active: Boolean, selected: Boolean): Int {
+        return when {
+            selected -> colors.previewSelectedText
+            active -> colors.previewActiveText
+            else -> colors.previewText
+        }
+    }
+
+    private fun buildStatusHolder(forwarded: Boolean, answered: Boolean): Drawable? {
+        return if (forwarded && answered) {
+            ResourcesCompat.getDrawable(res, Icons.Outlined.CompareArrows, theme)!!
+        } else if (answered) {
+            ResourcesCompat.getDrawable(res, Icons.Outlined.Reply, theme)!!
+        } else if (forwarded) {
+            ResourcesCompat.getDrawable(res, Icons.Outlined.Forward, theme)!!
+        } else {
+            null
+        }
+    }
 }
