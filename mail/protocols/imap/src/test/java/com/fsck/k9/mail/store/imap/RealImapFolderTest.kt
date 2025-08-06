@@ -32,6 +32,8 @@ import java.io.IOException
 import java.nio.file.Files
 import java.util.Date
 import java.util.TimeZone
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.protocols.imap.folder.attributeName
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
@@ -73,6 +75,7 @@ class RealImapFolderTest {
     fun setUp() {
         tempDirectory = Files.createTempDirectory("RealImapFolderTest").toFile()
         BinaryTempFileBody.setTempDirectory(tempDirectory)
+        Log.logger = TestLogger()
     }
 
     @After
