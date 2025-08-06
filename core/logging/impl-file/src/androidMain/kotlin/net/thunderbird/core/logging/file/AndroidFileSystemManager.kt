@@ -13,12 +13,7 @@ class AndroidFileSystemManager(
     private val contentResolver: ContentResolver,
 ) : FileSystemManager {
     override fun openSink(uriString: String, mode: String): RawSink? {
-        try {
-            val uri: Uri = uriString.toUri()
-            return contentResolver.openOutputStream(uri, mode)?.asSink()
-        } catch (_: SecurityException) {
-//            throw e
-        }
-        return null
+        val uri: Uri = uriString.toUri()
+        return contentResolver.openOutputStream(uri, mode)?.asSink()
     }
 }

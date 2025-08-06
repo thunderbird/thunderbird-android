@@ -3,7 +3,6 @@ package net.thunderbird.core.logging.file
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -48,19 +47,15 @@ open class AndroidFileLogSink(
     }
 
     override fun log(event: LogEvent) {
-        try {
-            coroutineScope.launch {
-                mutex.withLock {
-                    accumulatedLogs.add(
-                        "${convertLongToTime(event.timestamp)} priority = ${event.level}, ${event.message}",
-                    )
-                }
-                if (accumulatedLogs.size > LOG_BUFFER_COUNT) {
-                    writeToLogFile()
-                }
+        coroutineScope.launch {
+            mutex.withLock {
+                accumulatedLogs.add(
+                    "${convertLongToTime(event.timestamp)} priority = ${event.level}, ${event.message}",
+                )
             }
-        } catch (e: Exception) {
-            throw IOException("Failed to log event", e)
+            if (accumulatedLogs.size > LOG_BUFFER_COUNT) {
+                writeToLogFile()
+            }
         }
     }
 
@@ -86,8 +81,6 @@ open class AndroidFileLogSink(
             sink.write(buffer, buffer.size)
 
             sink.flush()
-        } catch (e: Exception) {
-            throw e
         } finally {
             sink.close()
             outputStream.close()
@@ -104,52 +97,44 @@ open class AndroidFileLogSink(
         if (accumulatedLogs.isNotEmpty()) {
             writeToLogFile()
         }
+        val sink = fileSystemManager.openSink(uriString, "wt")
+            ?: error("Error opening contentUri for writing")
+
+        copyInternalFileToExternal(sink)
+
+        // Clear the log file after export
+        val outputStream = FileOutputStream(logFile)
+        val clearSink = outputStream.asSink()
+
         try {
-            val sink = fileSystemManager.openSink(uriString, "wt")
-                ?: error("Error opening contentUri for writing")
-
-            copyInternalFileToExternal(sink)
-
-            // Clear the log file after export
-            val outputStream = FileOutputStream(logFile)
-            val clearSink = outputStream.asSink()
-
-            try {
-                // Write empty string to clear the file
-                val buffer = Buffer()
-                clearSink.write(buffer, 0)
-                clearSink.flush()
-            } finally {
-                clearSink.close()
-                outputStream.close()
-            }
-        } catch (e: Exception) {
-            throw e
+            // Write empty string to clear the file
+            val buffer = Buffer()
+            clearSink.write(buffer, 0)
+            clearSink.flush()
+        } finally {
+            clearSink.close()
+            outputStream.close()
         }
     }
 
     private fun copyInternalFileToExternal(sink: RawSink) {
+        val inputStream = FileInputStream(logFile)
+
         try {
-            val inputStream = FileInputStream(logFile)
+            val buffer = Buffer()
+            val byteArray = ByteArray(BUFFER_SIZE)
+            var bytesRead: Int
 
-            try {
-                val buffer = Buffer()
-                val byteArray = ByteArray(BUFFER_SIZE)
-                var bytesRead: Int
-
-                while (inputStream.read(byteArray).also { bytesRead = it } != -1) {
-                    buffer.write(byteArray, 0, bytesRead)
-                    sink.write(buffer, buffer.size)
-                    buffer.clear()
-                }
-
-                sink.flush()
-            } finally {
-                inputStream.close()
-                sink.close()
+            while (inputStream.read(byteArray).also { bytesRead = it } != -1) {
+                buffer.write(byteArray, 0, bytesRead)
+                sink.write(buffer, buffer.size)
+                buffer.clear()
             }
-        } catch (e: IOException) {
-            throw e
+
+            sink.flush()
+        } finally {
+            inputStream.close()
+            sink.close()
         }
     }
 }
