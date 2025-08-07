@@ -33,6 +33,7 @@ import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
 import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -62,6 +63,7 @@ public class LocalFolder {
 
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
+    private GeneralSettingsManager generalSettingsManager;
 
 
     private String status = null;
@@ -83,23 +85,24 @@ public class LocalFolder {
     private boolean localOnly = false;
 
 
-    public LocalFolder(LocalStore localStore, String serverId) {
-        this(localStore, serverId, null);
+    public LocalFolder(LocalStore localStore, String serverId, GeneralSettingsManager generalSettingsManager) {
+        this(localStore, serverId, null, generalSettingsManager);
     }
 
-    public LocalFolder(LocalStore localStore, String serverId, String name) {
-        this(localStore, serverId, name, FolderType.REGULAR);
+    public LocalFolder(LocalStore localStore, String serverId, String name, GeneralSettingsManager generalSettingsManager) {
+        this(localStore, serverId, name, FolderType.REGULAR, generalSettingsManager);
     }
 
-    public LocalFolder(LocalStore localStore, String serverId, String name, FolderType type) {
+    public LocalFolder(LocalStore localStore, String serverId, String name, FolderType type, GeneralSettingsManager generalSettingsManager) {
         this.localStore = localStore;
         this.serverId = serverId;
         this.name = name;
         this.type = type;
+        this.generalSettingsManager = generalSettingsManager;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
     }
 
-    public LocalFolder(LocalStore localStore, long databaseId) {
+    public LocalFolder(LocalStore localStore, long databaseId, GeneralSettingsManager generalSettingsManager) {
         super();
         this.localStore = localStore;
         this.databaseId = databaseId;
@@ -476,7 +479,7 @@ public class LocalFolder {
             @Override
             public LocalMessage doDbWork(final SQLiteDatabase db) throws MessagingException {
                 open();
-                LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this);
+                LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this, generalSettingsManager);
                 Cursor cursor = null;
 
                 try {
@@ -505,7 +508,7 @@ public class LocalFolder {
     public LocalMessage getMessage(long messageId) throws MessagingException {
         return localStore.getDatabase().execute(false, db -> {
             open();
-            LocalMessage message = new LocalMessage(localStore, messageId, LocalFolder.this);
+            LocalMessage message = new LocalMessage(localStore, messageId, LocalFolder.this, generalSettingsManager);
 
             Cursor cursor = db.rawQuery(
                     "SELECT " +
@@ -1107,7 +1110,7 @@ public class LocalFolder {
                 String messagePartId = cursor.getString(0);
                 File file = localStore.getAttachmentFile(messagePartId);
                 if (file.exists()) {
-                    if (!file.delete() && K9.isDebugLoggingEnabled()) {
+                    if (!file.delete() && generalSettingsManager.getConfig().getDebugging().isDebugLoggingEnabled()) {
                         Log.d("Couldn't delete message part file: %s", file.getAbsolutePath());
                     }
                 }

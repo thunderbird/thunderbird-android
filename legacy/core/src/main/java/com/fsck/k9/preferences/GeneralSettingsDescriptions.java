@@ -39,6 +39,7 @@ import net.thunderbird.core.android.account.SortType;
 import net.thunderbird.core.common.action.SwipeAction;
 import net.thunderbird.core.preference.AppTheme;
 import net.thunderbird.core.preference.BackgroundOps;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.SubTheme;
 import net.thunderbird.core.preference.display.DisplaySettingsKt;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
@@ -60,37 +61,11 @@ import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_ANIMATION;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_APP_LANGUAGE;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_AUTO_FIT_WIDTH;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_CHANGE_REGISTERED_NAME_COLOR;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_COLORIZE_MISSING_CONTACT_PICTURE;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_FIXED_MESSAGE_VIEW_THEME;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_MESSAGE_COMPOSE_THEME;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_MESSAGE_LIST_SENDER_ABOVE_SUBJECT;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_MESSAGE_VIEW_THEME;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOW_CONTACT_NAME;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOW_CONTACT_PICTURE;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOW_CORRESPONDENT_NAMES;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOW_MESSAGE_LIST_STARS;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOW_RECENT_CHANGES;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOW_STAR_COUNT;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_SHOW_UNIFIED_INBOX;
-import static net.thunderbird.core.preference.display.DisplaySettingsPreferenceManagerKt.KEY_THEME;
-import static net.thunderbird.core.preference.network.NetworkSettingsPreferenceManagerKt.KEY_BG_OPS;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_END;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_STARTS;
-import static net.thunderbird.core.preference.notification.NotificationPreferenceManagerKt.KEY_QUIET_TIME_ENABLED;
-import static net.thunderbird.core.preference.notification.NotificationPreferenceManagerKt.KEY_QUIET_TIME_ENDS;
-import static net.thunderbird.core.preference.notification.NotificationPreferenceManagerKt.KEY_QUIET_TIME_STARTS;
 import static net.thunderbird.core.preference.privacy.PrivacySettingsKt.PRIVACY_SETTINGS_DEFAULT_HIDE_TIME_ZONE;
 import static net.thunderbird.core.preference.privacy.PrivacySettingsKt.PRIVACY_SETTINGS_DEFAULT_HIDE_USER_AGENT;
-import static net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManagerKt.KEY_HIDE_TIME_ZONE;
-import static net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManagerKt.KEY_HIDE_USER_AGENT;
 
 
 class GeneralSettingsDescriptions {
@@ -98,6 +73,7 @@ class GeneralSettingsDescriptions {
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
     private static final TelemetryManager telemetryManager = DI.get(TelemetryManager.class);
+    private static final GeneralSettingsManager generalSettingManager = DI.get(GeneralSettingsManager.class);
 
     static {
         Map<String, TreeMap<Integer, SettingsDescription<?>>> s = new LinkedHashMap<>();
@@ -384,7 +360,7 @@ class GeneralSettingsDescriptions {
     }
 
     public static Map<String, Object> upgrade(int version, Map<String, Object> validatedSettings) {
-        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings);
+        return SettingsUpgradeHelper.upgrade(version, UPGRADERS, SETTINGS, validatedSettings, generalSettingManager);
     }
 
     public static Map<String, String> convert(Map<String, Object> settings) {

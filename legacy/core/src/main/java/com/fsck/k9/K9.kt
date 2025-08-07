@@ -7,7 +7,6 @@ import com.fsck.k9.K9.DATABASE_VERSION_CACHE
 import com.fsck.k9.K9.areDatabasesUpToDate
 import com.fsck.k9.K9.checkCachedDatabaseVersion
 import com.fsck.k9.K9.setDatabasesUpToDate
-import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.DefaultGeneralSettingsManager
@@ -26,7 +25,6 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
 import timber.log.Timber
-import timber.log.Timber.DebugTree
 
 // TODO "Use GeneralSettingsManager and GeneralSettings instead"
 object K9 : KoinComponent {
@@ -35,12 +33,6 @@ object K9 : KoinComponent {
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val syncDebugCompositeSink: CompositeLogSink by inject(named("syncDebug"))
     private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
-
-    /**
-     * If this is `true`, various development settings will be enabled.
-     */
-    @JvmField
-    val DEVELOPER_MODE = BuildConfig.DEBUG
 
     /**
      * Name of the [SharedPreferences] file used to store the last known version of the
@@ -125,13 +117,6 @@ object K9 : KoinComponent {
             setDatabasesUpToDate(false)
         }
     }
-
-    @JvmStatic
-    var isDebugLoggingEnabled: Boolean = DEVELOPER_MODE
-        set(debug) {
-            field = debug
-            updateLoggingStatus()
-        }
 
     @JvmStatic
     var isSyncLoggingEnabled: Boolean = false
@@ -262,7 +247,7 @@ object K9 : KoinComponent {
     fun init(context: Context) {
         K9MailLib.setDebugStatus(
             object : K9MailLib.DebugStatus {
-                override fun enabled(): Boolean = isDebugLoggingEnabled
+                override fun enabled(): Boolean = generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
 
                 override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
             },
@@ -276,7 +261,6 @@ object K9 : KoinComponent {
     @JvmStatic
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
-        isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
@@ -346,7 +330,6 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
         editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
@@ -394,13 +377,6 @@ object K9 : KoinComponent {
         editor.putLong("fundingActivityCounterInMillis", fundingActivityCounterInMillis)
 
         fontSizes.save(editor)
-    }
-
-    private fun updateLoggingStatus() {
-        Timber.uprootAll()
-        if (isDebugLoggingEnabled) {
-            Timber.plant(DebugTree())
-        }
     }
 
     private fun updateSyncLogging() {

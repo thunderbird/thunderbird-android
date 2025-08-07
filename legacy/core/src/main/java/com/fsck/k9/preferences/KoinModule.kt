@@ -2,10 +2,13 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
 import kotlin.time.ExperimentalTime
+import net.thunderbird.core.logging.legacy.DebugLogConfigurator
 import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangePublisher
+import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
+import net.thunderbird.core.preference.debugging.DefaultDebuggingSettingsPreferenceManager
 import net.thunderbird.core.preference.display.DefaultDisplaySettingsPreferenceManager
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
 import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
@@ -63,6 +66,16 @@ val preferencesModule = module {
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
+    single<DebuggingSettingsPreferenceManager> {
+        DefaultDebuggingSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
+    single<DebugLogConfigurator> {
+        DebugLogConfigurator()
+    }
     single {
         DefaultGeneralSettingsManager(
             preferences = get(),
@@ -72,6 +85,8 @@ val preferencesModule = module {
             notificationPreferenceManager = get(),
             displaySettingsSettingsPreferenceManager = get(),
             networkSettingsPreferenceManager = get(),
+            debuggingSettingsPreferenceManager = get(),
+            debugLogConfigurator = get(),
         )
     } bind GeneralSettingsManager::class
     single {
@@ -90,15 +105,16 @@ val preferencesModule = module {
 
     factory { AccountSettingsValidator() }
 
-    factory { IdentitySettingsUpgrader() }
-    factory { FolderSettingsUpgrader() }
-    factory { ServerSettingsUpgrader() }
+    factory { IdentitySettingsUpgrader(generalSettingsManager = get()) }
+    factory { FolderSettingsUpgrader(generalSettingsManager = get()) }
+    factory { ServerSettingsUpgrader(generalSettingsManager = get()) }
 
     factory {
         AccountSettingsUpgrader(
             identitySettingsUpgrader = get(),
             folderSettingsUpgrader = get(),
             serverSettingsUpgrader = get(),
+            generalSettingsManager = get(),
         )
     }
 
@@ -110,6 +126,7 @@ val preferencesModule = module {
             clock = get(),
             serverSettingsDtoSerializer = get(),
             context = get(),
+            generalSettingsManager = get(),
         )
     }
 

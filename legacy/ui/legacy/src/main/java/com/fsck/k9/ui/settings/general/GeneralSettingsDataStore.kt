@@ -33,33 +33,44 @@ class GeneralSettingsDataStore(
             "messagelist_stars" -> generalSettingsManager.getConfig().display.isShowMessageListStars
             "messagelist_show_correspondent_names" -> generalSettingsManager.getConfig()
                 .display.isShowCorrespondentNames
+
             "messagelist_sender_above_subject" -> generalSettingsManager.getConfig()
                 .display.isMessageListSenderAboveSubject
+
             "messagelist_show_contact_name" -> generalSettingsManager.getConfig()
                 .display.isShowContactName
+
             "messagelist_change_contact_name_color" -> generalSettingsManager.getConfig()
                 .display.isChangeContactNameColor
+
             "messagelist_show_contact_picture" -> generalSettingsManager.getConfig()
                 .display.isShowContactPicture
+
             "messagelist_colorize_missing_contact_pictures" -> generalSettingsManager.getConfig()
                 .display.isColorizeMissingContactPictures
 
             "messagelist_background_as_unread_indicator" -> generalSettingsManager.getConfig()
                 .display.isUseBackgroundAsUnreadIndicator
+
             "show_compose_button" -> generalSettingsManager.getConfig()
                 .display.isShowComposeButtonOnMessageList
+
             "threaded_view" -> generalSettingsManager.getConfig()
                 .display.isThreadedViewEnabled
+
             "messageview_fixedwidth_font" -> generalSettingsManager.getConfig()
                 .display.isUseMessageViewFixedWidthFont
+
             "messageview_autofit_width" -> generalSettingsManager.getConfig()
                 .display.isAutoFitWidth
+
             "quiet_time_enabled" -> generalSettingsManager.getConfig()
                 .notification.isQuietTimeEnabled
+
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> generalSettingsManager.getConfig().privacy.isHideUserAgent
             "privacy_hide_timezone" -> generalSettingsManager.getConfig().privacy.isHideTimeZone
-            "debug_logging" -> K9.isDebugLoggingEnabled
+            "debug_logging" -> generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
             "sync_debug_logging" -> K9.isSyncLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation
@@ -99,7 +110,7 @@ class GeneralSettingsDataStore(
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
-            "debug_logging" -> K9.isDebugLoggingEnabled = value
+            "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
             "sync_debug_logging" -> K9.isSyncLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
@@ -168,6 +179,7 @@ class GeneralSettingsDataStore(
                 skipSaveSettings = true
                 appLanguageManager.setAppLanguage(value)
             }
+
             "theme" -> setTheme(value)
             "message_compose_theme" -> setMessageComposeTheme(value)
             "messageViewTheme" -> setMessageViewTheme(value)
@@ -451,6 +463,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 privacy = settings.privacy.copy(
                     isHideTimeZone = isHideTimeZone,
+                ),
+            )
+        }
+    }
+
+    private fun setIsDebugLoggingEnabled(isDebugLoggingEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                debugging = settings.debugging.copy(
+                    isDebugLoggingEnabled = isDebugLoggingEnabled,
                 ),
             )
         }
