@@ -71,10 +71,10 @@ class MessageListAdapter internal constructor(
     private val activeItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSecondaryContainer)
     private val selectedItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurfaceVariant)
     private val regularItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurface)
-    private val readItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurfaceVariant)
+    private val readItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOutline)
     private val unreadItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurface)
 
-    private val previewTextColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurfaceVariant)
+    private val previewTextColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOutline)
     private val previewActiveTextColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSecondary)
 
     private val compactVerticalPadding = res.getDimensionPixelSize(R.dimen.messageListCompactVerticalPadding)
