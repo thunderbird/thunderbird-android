@@ -11,6 +11,9 @@ dependencies {
 
     implementation(libs.androidx.webkit)
 
+    implementation(libs.core.ktx)
+    implementation(projects.core.ui.legacy.theme2.k9mail)
     testImplementation(projects.core.testing)
     testImplementation(libs.robolectric)
+    testImplementation(projects.legacy.core)
 }

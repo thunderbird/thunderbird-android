@@ -21,7 +21,6 @@ import org.koin.dsl.module
 
 val appModule = module {
     includes(appCommonModule)
-
     includes(widgetModule)
     includes(featureModule)
     includes(providerModule)

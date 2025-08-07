@@ -23,5 +23,24 @@
                 />
         </receiver>
 
+        <receiver
+            android:name="app.k9mail.DebugNotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.fsck.k9.DEBUG_PUSH_NOTIFICATION"/>
+            </intent-filter>
+        </receiver>
+
+        <activity android:name="app.k9mail.DebugNotificationActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
+
+
+
 </manifest>

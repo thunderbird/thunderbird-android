@@ -2,6 +2,7 @@ package com.fsck.k9.notification
 
 import android.app.Notification
 import androidx.core.app.NotificationCompat
+import timber.log.Timber
 
 internal class LockScreenNotificationCreator(
     private val notificationHelper: NotificationHelper,
@@ -49,6 +50,9 @@ internal class LockScreenNotificationCreator(
         val account = baseNotificationData.account
         val newMessagesCount = baseNotificationData.newMessagesCount
         val title = resourceProvider.newMessagesTitle(newMessagesCount)
+
+        Timber.tag("NotificationDebug").d("Creating public notification in Thunderbird")
+        Timber.tag("NotificationDebug").d("Using icon resource ID: ${resourceProvider.iconNewMail}")
 
         return notificationHelper.createNotificationBuilder(account, NotificationChannelManager.ChannelType.MESSAGES)
             .setSmallIcon(resourceProvider.iconNewMail)

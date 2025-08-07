@@ -9,6 +9,7 @@ import net.thunderbird.core.common.provider.BrandNameProvider
 internal class K9AppNameProvider(
     context: Context,
 ) : AppNameProvider, BrandNameProvider, FilePrefixProvider {
+
     override val appName: String by lazy {
         context.getString(R.string.app_name)
     }
