@@ -5,10 +5,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.feature.account.setup.R
 
+@Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
 enum class AutoDiscoveryResultHeaderState(
     val icon: ImageVector,
-    @StringRes val titleResourceId: Int,
-    @StringRes val subtitleResourceId: Int,
+    @param:StringRes val titleResourceId: Int,
+    @param:StringRes val subtitleResourceId: Int,
     val isExpandable: Boolean,
 ) {
     NoSettings(

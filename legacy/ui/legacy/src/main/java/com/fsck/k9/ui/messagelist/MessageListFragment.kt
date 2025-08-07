@@ -2226,7 +2226,8 @@ class MessageListFragment :
         MOVE,
     }
 
-    private enum class Error(@StringRes val errorText: Int) {
+    @Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
+    private enum class Error(@param:StringRes val errorText: Int) {
         FolderNotFound(R.string.message_list_error_folder_not_found),
     }
 

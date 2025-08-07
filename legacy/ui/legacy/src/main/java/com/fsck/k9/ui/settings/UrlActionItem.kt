@@ -8,11 +8,12 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
+@Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
 internal class UrlActionItem(
     override var identifier: Long,
     val text: String,
     val url: String,
-    @DrawableRes val icon: Int,
+    @param:DrawableRes val icon: Int,
 ) : AbstractItem<UrlActionItem.ViewHolder>() {
     override val type = R.id.settings_list_url_item
 
