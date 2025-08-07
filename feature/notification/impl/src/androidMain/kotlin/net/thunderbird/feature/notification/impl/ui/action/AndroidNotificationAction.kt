@@ -11,7 +11,7 @@ import androidx.annotation.DrawableRes
  * @property pendingIntent The [PendingIntent] to be executed when the action is triggered.
  */
 data class AndroidNotificationAction(
-    @DrawableRes
+    @param:DrawableRes
     val icon: Int?,
     val title: String?,
     val pendingIntent: PendingIntent?,

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.internal.config.LanguageFeature
-
 plugins {
     id(ThunderbirdPlugins.Library.kmpCompose)
     alias(libs.plugins.dev.mokkery)
@@ -25,9 +23,11 @@ kotlin {
     }
 
     sourceSets.all {
-        languageSettings.apply {
-            enableLanguageFeature(LanguageFeature.ExpectActualClasses.name)
-            enableLanguageFeature(LanguageFeature.WhenGuards.name)
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                "-Xexpect-actual-classes",
+                "-Xwhen-guards",
+            )
         }
     }
 }
