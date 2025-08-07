@@ -1,5 +1,6 @@
 package com.fsck.k9.ui.settings.general
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,7 +10,9 @@ import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceScreen
+import androidx.work.WorkInfo
 import app.k9mail.feature.telemetry.api.TelemetryManager
+import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
@@ -20,17 +23,18 @@ import com.takisoft.preferencex.PreferenceFragmentCompat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import kotlinx.coroutines.flow.FlowCollector
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.component.inject
 
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val viewModel: GeneralSettingsViewModel by viewModel()
     private val dataStore: GeneralSettingsDataStore by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
+    private val jobManager: K9JobManager by inject()
 
     private var rootKey: String? = null
     private var currentUiState: GeneralSettingsUiState? = null
@@ -45,7 +49,28 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val exportSyncDebugLogsResultContract =
         registerForActivityResult(CreateDocument("text/plain")) { contentUri ->
             if (contentUri != null) {
-                viewModel.fileExport(contentUri)
+                viewModel.fileExport(contentUri.toString())
+            }
+        }
+    private val choseFileSyncDebugLogsResultContract =
+        registerForActivityResult(CreateDocument("text/plain")) { contentUri ->
+            if (contentUri != null) {
+                context?.contentResolver?.takePersistableUriPermission(
+                    contentUri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+                )
+                jobManager.scheduleDebugLogLimit(contentUri.toString()).observe(
+                    this,
+                    FlowCollector { workInfo: WorkInfo? ->
+                        if (workInfo != null) {
+                            if (workInfo.state == WorkInfo.State.SUCCEEDED) {
+                                viewModel.showExportSnackbar(true)
+                            } else if (workInfo.state == WorkInfo.State.FAILED) {
+                                viewModel.showExportSnackbar(false)
+                            }
+                        }
+                    },
+                )
             }
         }
 
@@ -56,7 +81,10 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.general_settings, rootKey)
         val listener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (!(newValue as Boolean)) {
+                jobManager.cancelDebugLogLimit()
                 exportSyncDebugLogsResultContract.launch(formatFileExportUriString())
+            } else {
+                choseFileSyncDebugLogsResultContract.launch(formatFileExportUriString())
             }
             true
         }

@@ -135,12 +135,11 @@ class AndroidFileLogSinkTest {
         )
         testSubject.log(event)
         runBlocking {
+            // Act
             testSubject.flushAndCloseBuffer()
+            val exportUri = "content://test/export.txt"
+            testSubject.export(exportUri)
         }
-
-        // Act
-        val exportUri = "content://test/export.txt"
-        testSubject.export(exportUri)
 
         // Arrange
         val exportedContent = fileManager.exportedContent
@@ -182,9 +181,10 @@ class AndroidFileLogSinkTest {
         assertThat(logFile.exists()).isEqualTo(true)
         assertThat(logFile.readText())
             .isEqualTo(logString1)
-
-        val exportUri = "content://test/export.txt"
-        testSubject.export(exportUri)
+        runBlocking {
+            val exportUri = "content://test/export.txt"
+            testSubject.export(exportUri)
+        }
 
         // Arrange
         val exportedContent = fileManager.exportedContent

@@ -6,14 +6,13 @@ import net.thunderbird.core.logging.LogSink
 interface FileLogSink : LogSink {
     /**
      * Exports from the logging method to the requested external file
-     *
      * @param uriString The [String] for the URI to export the log to
      *
      **/
-    fun export(uriString: String)
+    suspend fun export(uriString: String)
 
     /**
-     * On a crash, flushes buffer to file fo avoid log loss
+     * On a crash or close, flushes buffer to file fo avoid log loss
      *
      **/
     suspend fun flushAndCloseBuffer()

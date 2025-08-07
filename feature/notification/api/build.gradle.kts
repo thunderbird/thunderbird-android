@@ -14,15 +14,31 @@ kotlin {
         commonTest.dependencies {
             implementation(projects.feature.notification.testing)
         }
+        androidMain.dependencies {
+            implementation(projects.core.ui.compose.designsystem)
+            implementation(projects.core.ui.compose.theme2.common)
+        }
+        jvmTest.dependencies {
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.bundles.shared.jvm.test)
+        }
     }
 
     sourceSets.all {
-        languageSettings.enableLanguageFeature(LanguageFeature.ExpectActualClasses.name)
+        languageSettings.apply {
+            enableLanguageFeature(LanguageFeature.ExpectActualClasses.name)
+            enableLanguageFeature(LanguageFeature.WhenGuards.name)
+        }
     }
 }
 
 android {
     namespace = "net.thunderbird.feature.notification.api"
+}
+
+java {
+    sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaVersion
+    targetCompatibility = ThunderbirdProjectConfig.Compiler.javaVersion
 }
 
 compose.resources {

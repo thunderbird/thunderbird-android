@@ -13,6 +13,7 @@ import okio.sink
 import okio.source
 import org.junit.After
 import org.junit.Test
+import org.mockito.kotlin.mock
 
 class CopyMessageOperationsTest : RobolectricTest() {
     private val messagePartDirectory = createRandomTempDirectory()
@@ -22,7 +23,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
         override fun getAttachmentDirectory() = messagePartDirectory
     }
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider)
+    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, mock())
     private val threadMessageOperations = ThreadMessageOperations()
     private val copyMessageOperations = CopyMessageOperations(
         lockableDatabase,

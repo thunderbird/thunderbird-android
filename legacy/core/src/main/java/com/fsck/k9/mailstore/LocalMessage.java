@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
+import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
@@ -23,6 +24,7 @@ import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 public class LocalMessage extends MimeMessage {
@@ -40,18 +42,20 @@ public class LocalMessage extends MimeMessage {
     private PreviewType previewType;
     private boolean headerNeedsUpdating = false;
     private LocalFolder mFolder;
+    private GeneralSettingsManager generalSettingsManager;
 
-
-    LocalMessage(LocalStore localStore, String uid, LocalFolder folder) {
+    LocalMessage(LocalStore localStore, String uid, LocalFolder folder, GeneralSettingsManager generalSettingsManager) {
         this.localStore = localStore;
         this.mUid = uid;
         this.mFolder = folder;
+        this.generalSettingsManager = generalSettingsManager;
     }
 
-    LocalMessage(LocalStore localStore, long databaseId, LocalFolder folder) {
+    LocalMessage(LocalStore localStore, long databaseId, LocalFolder folder, GeneralSettingsManager generalSettingsManager) {
         this.localStore = localStore;
         this.databaseId = databaseId;
         this.mFolder = folder;
+        this.generalSettingsManager = generalSettingsManager;
     }
 
 
@@ -102,7 +106,7 @@ public class LocalMessage extends MimeMessage {
         }
 
         if (this.mFolder == null) {
-            LocalFolder f = new LocalFolder(this.localStore, cursor.getInt(LocalStore.MSG_INDEX_FOLDER_ID));
+            LocalFolder f = new LocalFolder(this.localStore, cursor.getInt(LocalStore.MSG_INDEX_FOLDER_ID), generalSettingsManager);
             f.open();
             this.mFolder = f;
         }
@@ -323,7 +327,7 @@ public class LocalMessage extends MimeMessage {
     }
 
     public void debugClearLocalData() throws MessagingException {
-        if (!K9.DEVELOPER_MODE) {
+        if (!BuildConfig.DEBUG) {
             throw new AssertionError("method must only be used in developer mode!");
         }
 

@@ -8,6 +8,10 @@ android {
 
 kotlin {
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.timber)
+        }
+
         commonMain.dependencies {
             api(projects.core.logging.api)
             api(libs.androidx.annotation)
