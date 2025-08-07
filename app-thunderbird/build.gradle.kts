@@ -5,11 +5,6 @@ plugins {
     id("thunderbird.quality.badging")
 }
 
-val testCoverageEnabled: Boolean by extra
-if (testCoverageEnabled) {
-    apply(plugin = "jacoco")
-}
-
 android {
     namespace = "net.thunderbird.android"
 
@@ -91,6 +86,9 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-SNAPSHOT"
+
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
 
             isMinifyEnabled = false
             isShrinkResources = false
