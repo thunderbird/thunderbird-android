@@ -3,7 +3,6 @@ package com.fsck.k9
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
 import app.k9mail.legacy.di.DI
-import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
 import java.util.LinkedList
 import java.util.UUID
@@ -24,6 +23,7 @@ import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor

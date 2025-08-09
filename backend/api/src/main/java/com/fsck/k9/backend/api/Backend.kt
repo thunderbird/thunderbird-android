@@ -3,8 +3,8 @@ package com.fsck.k9.backend.api
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
-import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.Part
+import net.thunderbird.core.common.exception.MessagingException
 
 interface Backend {
     val supportsFlags: Boolean

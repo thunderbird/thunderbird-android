@@ -1,9 +1,9 @@
 package com.fsck.k9.mail.internet
 
 import com.fsck.k9.mail.Message
-import net.thunderbird.core.common.exception.MessagingException
 import java.io.ByteArrayInputStream
 import java.io.IOException
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 import okio.Buffer
 import okio.ByteString

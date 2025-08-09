@@ -1,9 +1,9 @@
 package com.fsck.k9.mail.store.imap
 
-import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import net.thunderbird.core.common.exception.MessagingException
 
 interface ImapStore {
     @Throws(MessagingException::class)

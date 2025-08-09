@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.testing.security
 
-import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import java.io.IOException
 import java.net.Socket
@@ -9,6 +8,7 @@ import java.security.NoSuchAlgorithmException
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
+import net.thunderbird.core.common.exception.MessagingException
 
 /**
  * A test trusted socket factory that creates sockets that trust only a predefined server certificate

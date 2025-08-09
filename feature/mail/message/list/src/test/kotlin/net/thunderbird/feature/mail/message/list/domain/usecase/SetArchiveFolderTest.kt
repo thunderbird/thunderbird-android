@@ -5,7 +5,6 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import net.thunderbird.core.common.exception.MessagingException
 import dev.mokkery.matcher.any
 import dev.mokkery.matcher.matching
 import dev.mokkery.spy
@@ -15,6 +14,7 @@ import kotlin.random.Random
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.FolderType

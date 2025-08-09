@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.SSLCertificateSocketFactory
 import android.os.Build
 import android.text.TextUtils
-import net.thunderbird.core.common.exception.MessagingException
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import java.io.IOException
@@ -17,6 +16,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocket
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.common.net.HostNameUtils.isLegalIPAddress
 import net.thunderbird.core.logging.legacy.Log
 
