@@ -1,5 +1,4 @@
 package net.thunderbird.android
-
 import app.k9mail.feature.widget.shortcut.LauncherShortcutActivity
 import com.fsck.k9.AppConfig
 import com.fsck.k9.DefaultAppConfig

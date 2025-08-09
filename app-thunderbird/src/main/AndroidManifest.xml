@@ -7,7 +7,7 @@
 
     <application
         android:name=".ThunderbirdApp"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_app_logo"
         android:label="@string/app_name"
         android:theme="@style/Theme.Thunderbird.Startup"
         >

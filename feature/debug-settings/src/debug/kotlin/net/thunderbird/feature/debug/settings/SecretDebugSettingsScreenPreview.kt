@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +28,11 @@ private fun SecretDebugSettingsScreenPreview() {
         single<InAppNotificationStream> {
             object : InAppNotificationStream {
                 override val notifications: StateFlow<Set<InAppNotification>> = MutableStateFlow(emptySet())
+            }
+        }
+        single<NotificationIconResourceProvider> {
+            object : NotificationIconResourceProvider {
+                override val pushNotificationIcon: Int = 0
             }
         }
         single<DebugNotificationSectionViewModel> {
@@ -55,6 +61,7 @@ private fun SecretDebugSettingsScreenPreview() {
                         error("not implemented")
                 },
                 inAppNotificationStream = get(),
+                notificationIconResourceProvider = get(),
             )
         }
     } WithContent {

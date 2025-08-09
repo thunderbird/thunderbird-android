@@ -14,6 +14,7 @@ val featureDebugSettingsModule = module {
             accountManager = get(),
             notificationSender = get(),
             inAppNotificationStream = get(),
+            notificationIconResourceProvider = get(),
         )
     }
 }
