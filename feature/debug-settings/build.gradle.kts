@@ -16,4 +16,5 @@ dependencies {
     implementation(projects.core.outcome)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.notification.api)
+    implementation(projects.core.android.common)
 }
