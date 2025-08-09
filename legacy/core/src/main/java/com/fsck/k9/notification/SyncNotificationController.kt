@@ -3,6 +3,7 @@ package com.fsck.k9.notification
 import android.app.Notification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.mailstore.LocalFolder
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -12,6 +13,7 @@ internal class SyncNotificationController(
     private val actionBuilder: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
     private val outboxFolderManager: OutboxFolderManager,
+    private val iconResourceProvider: NotificationIconResourceProvider,
 ) {
     fun showSendingNotification(account: LegacyAccountDto) {
         val accountName = account.displayName
@@ -60,7 +62,7 @@ internal class SyncNotificationController(
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
-            .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setSmallIcon(iconResourceProvider.pushNotificationIcon)
             .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
@@ -70,7 +72,6 @@ internal class SyncNotificationController(
             .setContentIntent(showMessageListPendingIntent)
             .setPublicVersion(createFetchingMailLockScreenNotification(account))
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
-
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
@@ -81,7 +82,7 @@ internal class SyncNotificationController(
 
         val notificationBuilder = notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
-            .setSmallIcon(resourceProvider.iconCheckingMail)
+            .setSmallIcon(iconResourceProvider.pushNotificationIcon)
             .setColor(account.chipColor)
             .setWhen(System.currentTimeMillis())
             .setOngoing(true)
