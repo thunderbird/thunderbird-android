@@ -1,10 +1,10 @@
 package net.thunderbird.feature.mail.message.list.domain.usecase
 
-import com.fsck.k9.mail.MessagingException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.backend.api.BackendStorageFactory
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount

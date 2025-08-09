@@ -20,7 +20,7 @@ import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStore.AttachmentInfo;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;

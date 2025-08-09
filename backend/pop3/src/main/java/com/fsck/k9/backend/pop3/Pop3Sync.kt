@@ -10,7 +10,6 @@ import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.MessageRetrievalListener
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.store.pop3.Pop3Folder
 import com.fsck.k9.mail.store.pop3.Pop3Message
 import com.fsck.k9.mail.store.pop3.Pop3Store
@@ -19,6 +18,7 @@ import java.util.ArrayList
 import java.util.Date
 import java.util.HashMap
 import java.util.concurrent.atomic.AtomicInteger
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 
 @Suppress("TooManyFunctions")

@@ -2,7 +2,7 @@ package net.thunderbird.core.common.exception
 
 open class MessagingException(
     override val message: String?,
-    private val isPermanentFailure: Boolean,
+    val isPermanentFailure: Boolean,
     override val cause: Throwable?,
 ) : Exception(message, cause) {
 

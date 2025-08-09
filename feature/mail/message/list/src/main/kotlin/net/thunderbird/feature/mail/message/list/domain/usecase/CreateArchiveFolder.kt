@@ -3,7 +3,6 @@ package net.thunderbird.feature.mail.message.list.domain.usecase
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.createFolder
 import com.fsck.k9.backend.api.updateFolders
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.folders.FolderServerId
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +12,7 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount

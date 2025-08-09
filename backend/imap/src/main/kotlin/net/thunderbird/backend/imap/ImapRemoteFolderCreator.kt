@@ -2,7 +2,6 @@ package net.thunderbird.backend.imap
 
 import com.fsck.k9.backend.imap.ImapBackend
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.store.imap.ImapStore
 import kotlinx.coroutines.CoroutineDispatcher
@@ -11,6 +10,7 @@ import kotlinx.coroutines.withContext
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.mail.account.api.BaseAccount

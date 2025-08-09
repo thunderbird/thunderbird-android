@@ -1,10 +1,10 @@
 package com.fsck.k9.mail.ssl
 
-import com.fsck.k9.mail.MessagingException
 import java.io.IOException
 import java.net.Socket
 import java.security.KeyManagementException
 import java.security.NoSuchAlgorithmException
+import net.thunderbird.core.common.exception.MessagingException
 
 interface TrustedSocketFactory {
     @Throws(

@@ -12,7 +12,6 @@ import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.Message
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.filter.Base64
@@ -22,6 +21,7 @@ import com.fsck.k9.mail.testing.XOAuth2ChallengeParserTestData
 import com.fsck.k9.mail.testing.message.TestMessageBuilder
 import com.fsck.k9.mail.testing.security.TestTrustedSocketFactory
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before

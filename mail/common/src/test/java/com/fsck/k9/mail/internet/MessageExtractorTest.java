@@ -2,7 +2,7 @@ package com.fsck.k9.mail.internet;
 
 
 import com.fsck.k9.mail.Body;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.BinaryMemoryBody;
 import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.logging.testing.TestLogger;

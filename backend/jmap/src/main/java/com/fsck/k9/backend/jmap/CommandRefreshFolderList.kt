@@ -5,7 +5,7 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import rs.ltt.jmap.client.JmapClient
 import rs.ltt.jmap.client.api.ErrorResponseException
 import rs.ltt.jmap.client.api.InvalidSessionResourceException

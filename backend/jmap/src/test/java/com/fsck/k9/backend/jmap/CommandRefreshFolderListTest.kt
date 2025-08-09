@@ -13,7 +13,7 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
 import org.junit.Test

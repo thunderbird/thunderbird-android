@@ -6,6 +6,8 @@ import java.security.MessageDigest;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import okio.ByteString;
+import net.thunderbird.core.common.exception.MessagingException;
+
 
 
 public class Authentication {

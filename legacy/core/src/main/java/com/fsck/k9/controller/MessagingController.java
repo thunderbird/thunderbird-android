@@ -65,7 +65,7 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.power.PowerManager;

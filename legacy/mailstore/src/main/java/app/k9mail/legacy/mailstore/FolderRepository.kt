@@ -2,7 +2,6 @@ package app.k9mail.legacy.mailstore
 
 import app.k9mail.legacy.mailstore.FolderTypeMapper.folderTypeOf
 import app.k9mail.legacy.mailstore.RemoteFolderTypeMapper.toFolderType
-import com.fsck.k9.mail.MessagingException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -14,6 +13,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.mail.folder.api.RemoteFolder

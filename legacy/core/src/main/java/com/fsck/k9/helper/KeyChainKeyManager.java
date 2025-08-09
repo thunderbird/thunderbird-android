@@ -20,7 +20,7 @@ import android.content.Context;
 import android.security.KeyChain;
 import android.security.KeyChainException;
 
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.core.logging.legacy.Log;
 
 

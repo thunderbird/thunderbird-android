@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteException;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 

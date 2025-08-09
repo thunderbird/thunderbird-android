@@ -1,8 +1,8 @@
 package com.fsck.k9.mail.store.imap
 
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.filter.FixedLengthInputStream
 import java.io.IOException
+import net.thunderbird.core.common.exception.MessagingException
 
 const val LITERAL_HANDLED = 1
 

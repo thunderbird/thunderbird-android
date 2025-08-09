@@ -10,7 +10,7 @@ import java.io.OutputStreamWriter;
 
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.BoundaryGenerator;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Multipart;
 
 public class MimeMultipart extends Multipart {

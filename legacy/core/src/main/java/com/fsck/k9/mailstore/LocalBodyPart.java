@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore;
 
 
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 
 

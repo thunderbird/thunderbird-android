@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import okio.BufferedSink;
 import okio.Okio;
