@@ -26,9 +26,6 @@ class TestCoreResourceProvider : CoreResourceProvider {
     override fun searchUnifiedInboxTitle() = "Unified Inbox"
     override fun searchUnifiedInboxDetail() = "All messages in unified folders"
 
-    override val iconPushNotification: Int
-        get() = throw UnsupportedOperationException("not implemented")
-
     override fun pushNotificationText(notificationState: PushNotificationState): String {
         throw UnsupportedOperationException("not implemented")
     }

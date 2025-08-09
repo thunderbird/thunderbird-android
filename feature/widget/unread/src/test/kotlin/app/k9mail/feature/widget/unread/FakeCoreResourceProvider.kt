@@ -64,9 +64,6 @@ class FakeCoreResourceProvider : CoreResourceProvider {
         throw UnsupportedOperationException("not implemented")
     }
 
-    override val iconPushNotification: Int
-        get() = throw UnsupportedOperationException("not implemented")
-
     override fun pushNotificationText(notificationState: PushNotificationState): String {
         throw UnsupportedOperationException("not implemented")
     }
