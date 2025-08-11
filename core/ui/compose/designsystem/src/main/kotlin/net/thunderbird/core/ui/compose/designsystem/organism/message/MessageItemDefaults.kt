@@ -152,6 +152,24 @@ object MessageItemDefaults {
         contentColor = contentColor,
         subjectColor = subjectColor,
     )
+
+    /**
+     * Creates a [MessageItemColors] that represent a message item that is currently a junk message.
+     *
+     * @param containerColor The container color of this [MessageItem].
+     * @param contentColor The content color of this [MessageItem].
+     * @param subjectColor The subject color of this [MessageItem].
+     */
+    @Composable
+    fun junkMessageItemColors(
+        containerColor: Color = MainTheme.colors.surfaceContainerLow,
+        contentColor: Color = MainTheme.colors.onSurface,
+        subjectColor: Color = MainTheme.colors.onSurfaceVariant,
+    ): MessageItemColors = MessageItemColors(
+        containerColor = containerColor,
+        contentColor = contentColor,
+        subjectColor = subjectColor,
+    )
 }
 
 /**
