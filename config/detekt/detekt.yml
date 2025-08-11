@@ -815,7 +815,8 @@ Compose:
       LocalThemeShapes,
       LocalThemeSizes,
       LocalThemeSpacings,
-      LocalThemeTypography
+      LocalThemeTypography,
+      LocalDateTimeConfiguration
     ]
   ContentEmitterReturningValues:
     active: true
