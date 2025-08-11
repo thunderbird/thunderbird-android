@@ -29,6 +29,7 @@ android {
             "ar",
             "be",
             "bg",
+            "br",
             "ca",
             "co",
             "cs",
