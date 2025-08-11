@@ -64,17 +64,17 @@ class MessageListAdapter internal constructor(
     private val regularItemBackgroundColor: Int =
         theme.resolveColorAttribute(MaterialR.attr.colorSurface)
     private val readItemBackgroundColor: Int =
-        theme.resolveColorAttribute(MaterialR.attr.colorSurfaceContainer)
+        theme.resolveColorAttribute(MaterialR.attr.colorSurfaceContainerHigh)
     private val unreadItemBackgroundColor: Int =
         theme.resolveColorAttribute(MaterialR.attr.colorSurface)
 
     private val activeItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSecondaryContainer)
     private val selectedItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurfaceVariant)
     private val regularItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurface)
-    private val readItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurface)
+    private val readItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOutline)
     private val unreadItemColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurface)
 
-    private val previewTextColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSurfaceVariant)
+    private val previewTextColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOutline)
     private val previewActiveTextColor: Int = theme.resolveColorAttribute(MaterialR.attr.colorOnSecondary)
 
     private val compactVerticalPadding = res.getDimensionPixelSize(R.dimen.messageListCompactVerticalPadding)
@@ -533,12 +533,11 @@ class MessageListAdapter internal constructor(
     }
 
     private fun selectForegroundColor(selected: Boolean, read: Boolean, active: Boolean): Int {
-        val backGroundAsReadIndicator = appearance.backGroundAsReadIndicator
         return when {
             selected -> selectedItemColor
             active -> activeItemColor
-            backGroundAsReadIndicator && read -> readItemColor
-            backGroundAsReadIndicator && !read -> unreadItemColor
+            read -> readItemColor
+            !read -> unreadItemColor
             else -> regularItemColor
         }
     }
