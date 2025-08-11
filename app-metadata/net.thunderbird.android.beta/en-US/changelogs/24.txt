@@ -1,0 +1,4 @@
+Thunderbird for Android version 12.0b6, based on K-9 Mail. Changes include:
+- Enable edge-to-edge support on beta
+- Selected/read/unread message states were hard to distinguish visually
+- Crash occurred when attempting to access account general settings

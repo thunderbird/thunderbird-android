@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="12.0b6" versioncode="24" date="2025-08-11">
+        <change>Enable edge-to-edge support on beta</change>
+        <change>Selected/read/unread message states were hard to distinguish visually</change>
+        <change>Crash occurred when attempting to access account general settings</change>
+    </release>
     <release version="12.0b5" versioncode="23" date="2025-08-04">
         <change>Crash occurred when attempting to access account general settings</change>
     </release>
