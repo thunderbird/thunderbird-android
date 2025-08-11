@@ -150,9 +150,6 @@ object K9 : KoinComponent {
     var messageListPreviewLines = 2
 
     @JvmStatic
-    var isShowContactName = false
-
-    @JvmStatic
     var contactNameColor = 0xFF1093F5.toInt()
 
     var messageViewPostRemoveNavigation: PostRemoveNavigation = PostRemoveNavigation.ReturnToMessageList
