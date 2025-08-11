@@ -3,10 +3,14 @@ package com.fsck.k9.ui.base
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type.displayCutout
+import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.lifecycle.asLiveData
 import com.fsck.k9.controller.push.PushController
 import java.util.Locale
@@ -35,6 +39,8 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
     override fun onCreate(savedInstanceState: Bundle?) {
         initializeTheme()
         initializePushController()
+        enableEdgeToEdge()
+
         super.onCreate(savedInstanceState)
 
         setLayoutDirection()
@@ -75,6 +81,12 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
             ?: error("K9 layouts must provide a toolbar with id='toolbar'.")
 
         setSupportActionBar(toolbar)
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
+            val insets = windowsInsets.getInsets(systemBars() or displayCutout())
+            v.setPadding(insets.left, insets.top, insets.right, 0)
+
+            windowsInsets
+        }
     }
 
     protected fun recreateCompat() {
