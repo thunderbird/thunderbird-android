@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import net.thunderbird.core.common.exception.MessagingException;
+
 public interface Body {
     /**
      * Returns the raw data of the body, without transfer encoding etc applied.

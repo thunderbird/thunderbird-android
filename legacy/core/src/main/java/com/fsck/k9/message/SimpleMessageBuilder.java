@@ -7,7 +7,7 @@ import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.CoreResourceProvider;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.mail.BoundaryGenerator;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeMessage;
 import net.thunderbird.core.preference.GeneralSettingsManager;

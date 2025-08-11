@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import net.thunderbird.core.android.testing.RobolectricTest;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
 import org.junit.Before;

@@ -5,7 +5,6 @@ import com.fsck.k9.mail.CertificateValidationException
 import com.fsck.k9.mail.ClientCertificateError.CertificateExpired
 import com.fsck.k9.mail.ClientCertificateError.RetrievalFailure
 import com.fsck.k9.mail.ClientCertificateException
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.MissingCapabilityException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.AuthStateStorage
@@ -16,6 +15,7 @@ import com.fsck.k9.mail.server.ServerSettingsValidationResult.ClientCertificateE
 import com.fsck.k9.mail.server.ServerSettingsValidator
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import java.io.IOException
+import net.thunderbird.core.common.exception.MessagingException
 
 class ImapServerSettingsValidator(
     private val trustedSocketFactory: TrustedSocketFactory,
