@@ -8,8 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
@@ -42,7 +41,7 @@ internal fun DrawerContent(
 
     Surface(
         modifier = modifier
-            .windowInsetsPadding(WindowInsets.statusBars)
+//            .windowInsetsPadding(WindowInsets.safeContent)
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
             .testTagAsResourceId("DrawerContent"),
@@ -53,7 +52,7 @@ internal fun DrawerContent(
 
         Column(
             modifier = Modifier
-                .windowInsetsPadding(WindowInsets.navigationBars)
+                .windowInsetsPadding(WindowInsets.safeDrawing)
                 .windowInsetsPadding(horizontalInsetPadding),
         ) {
             selectedAccount?.let {
