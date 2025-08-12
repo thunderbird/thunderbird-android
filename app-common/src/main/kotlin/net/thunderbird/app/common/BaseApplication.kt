@@ -51,16 +51,16 @@ abstract class BaseApplication : Application(), WorkManagerConfiguration.Provide
     override fun attachBaseContext(base: Context?) {
         Core.earlyInit()
 
-        super.attachBaseContext(base)
-
         // Start Koin early so it is ready by the time content providers are initialized.
         DI.start(this, listOf(provideAppModule()))
+        Log.logger = logger
+
+        super.attachBaseContext(base)
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        Log.logger = logger
         K9.init(this)
         Core.init(this)
         initializeAppLanguage()
