@@ -27,7 +27,9 @@ sealed interface InAppNotificationStyle {
     /**
      * @see InAppNotificationStyleBuilder.bannerGlobal
      */
-    data object BannerGlobalNotification : InAppNotificationStyle
+    data class BannerGlobalNotification(
+        val priority: Int,
+    ) : InAppNotificationStyle
 
     /**
      * @see [InAppNotificationStyleBuilder.snackbar]
@@ -35,11 +37,6 @@ sealed interface InAppNotificationStyle {
     data class SnackbarNotification(
         val duration: Duration = 10.seconds,
     ) : InAppNotificationStyle
-
-    /**
-     * @see [InAppNotificationStyleBuilder.bottomSheet]
-     */
-    data object BottomSheetNotification : InAppNotificationStyle
 
     /**
      * @see [InAppNotificationStyleBuilder.dialog]
