@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -41,7 +42,6 @@ internal fun DrawerContent(
 
     Surface(
         modifier = modifier
-//            .windowInsetsPadding(WindowInsets.safeContent)
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
             .testTagAsResourceId("DrawerContent"),
