@@ -59,11 +59,11 @@ class TextToHtml private constructor(
     }
 
     private fun appendHtmlPrefix() {
-        html.append("""<div dir="auto">""")
+        html.append("""<span dir="auto">""")
     }
 
     private fun appendHtmlSuffix() {
-        html.append("</div>")
+        html.append("</span>")
     }
 
     private fun appendHtmlEncoded(startIndex: Int, endIndex: Int) {
