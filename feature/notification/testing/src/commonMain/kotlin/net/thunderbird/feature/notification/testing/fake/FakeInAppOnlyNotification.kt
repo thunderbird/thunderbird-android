@@ -5,7 +5,9 @@ import androidx.compose.ui.unit.dp
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.content.AppNotification
 import net.thunderbird.feature.notification.api.content.InAppNotification
+import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
+import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
 
 data class FakeInAppOnlyNotification(
     override val title: String = "fake title",
@@ -19,4 +21,6 @@ data class FakeInAppOnlyNotification(
             viewportHeight = 0f,
         ).build(),
     ),
+    override val inAppNotificationStyles: List<InAppNotificationStyle> = listOf(),
+    override val actions: Set<NotificationAction> = setOf(),
 ) : AppNotification(), InAppNotification
