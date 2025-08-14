@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.abs

@@ -29,7 +29,7 @@ public class MlfUtils {
         account.setLastSelectedFolderId(folderId);
     }
 
-    static String buildSubject(String subjectFromCursor, String emptySubject, int threadCount) {
+    public static String buildSubject(String subjectFromCursor, String emptySubject, int threadCount) {
         if (TextUtils.isEmpty(subjectFromCursor)) {
             return emptySubject;
         } else if (threadCount > 1) {
