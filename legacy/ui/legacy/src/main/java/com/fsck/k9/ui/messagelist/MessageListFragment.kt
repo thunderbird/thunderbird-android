@@ -17,11 +17,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
-import androidx.core.view.insets.GradientProtection
-import androidx.core.view.insets.ProtectionLayout
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -333,15 +330,6 @@ class MessageListFragment :
                     typedValued,
                     true,
                 )
-                view.findViewById<ProtectionLayout>(R.id.protection_layout)
-                    .setProtections(
-                        listOf(
-                            GradientProtection(
-                                WindowInsetsCompat.Side.BOTTOM,
-                                typedValued.data,
-                            ),
-                        ),
-                    )
 
                 setFragmentResultListener(
                     SetupArchiveFolderDialogFragmentFactory.RESULT_CODE_DISMISS_REQUEST_KEY,
@@ -432,7 +420,7 @@ class MessageListFragment :
             v.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 val fabMargin = view.resources.getDimensionPixelSize(R.dimen.floatingActionButtonMargin)
 
-                bottomMargin = fabMargin + insets.bottom
+                bottomMargin = fabMargin
                 rightMargin = fabMargin + insets.right
                 leftMargin = fabMargin + insets.left
             }
