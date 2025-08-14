@@ -6,6 +6,7 @@ import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.BannerGlobalNotification
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.BannerInlineNotification
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.DialogNotification
+import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.SnackbarNotification
 import net.thunderbird.feature.notification.api.ui.style.NotificationStyleMarker
 
 /**
@@ -67,9 +68,9 @@ class InAppNotificationStyleBuilder internal constructor() {
      * a [DialogNotification] in these cases)
      */
     @NotificationStyleMarker
-    fun bannerGlobal() {
+    fun bannerGlobal(priority: Int = 0) {
         checkSingleStyleEntry<BannerGlobalNotification>()
-        styles += BannerGlobalNotification
+        styles += BannerGlobalNotification(priority = priority)
     }
 
     /**
@@ -89,28 +90,8 @@ class InAppNotificationStyleBuilder internal constructor() {
      */
     @NotificationStyleMarker
     fun snackbar(duration: Duration = 10.seconds) {
-        checkSingleStyleEntry<InAppNotificationStyle.SnackbarNotification>()
-        styles += InAppNotificationStyle.SnackbarNotification(duration)
-    }
-
-    /**
-     * Use to inform the user about a required permission needed to enable or complete a key feature of the app.
-     *
-     * ### USAGE GUIDELINES
-     *
-     * #### Use for:
-     * - Requesting background activity permission from the user
-     * - Clearly and succinctly explaining why the permission is needed and how it affects the app experience
-     *
-     * #### Do not use for:
-     * - Displaying errors
-     * - Requesting contacts permission, as it does not critically impact app functionality
-     * - Requesting notification permission, which should follow the system-standard prompt or alternative pattern
-     */
-    @NotificationStyleMarker
-    fun bottomSheet() {
-        checkSingleStyleEntry<InAppNotificationStyle.BottomSheetNotification>()
-        styles += InAppNotificationStyle.BottomSheetNotification
+        checkSingleStyleEntry<SnackbarNotification>()
+        styles += SnackbarNotification(duration)
     }
 
     /**
