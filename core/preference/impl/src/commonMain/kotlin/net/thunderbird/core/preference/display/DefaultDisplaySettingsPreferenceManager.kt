@@ -123,6 +123,10 @@ class DefaultDisplaySettingsPreferenceManager(
             KEY_APP_LANGUAGE,
             DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE,
         ),
+        splitViewMode = storage.getEnumOrDefault(
+            KEY_SPLIT_VIEW_MODE,
+            DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE,
+        ),
     )
 
     private fun writeConfig(config: DisplaySettings) {
@@ -190,6 +194,7 @@ class DefaultDisplaySettingsPreferenceManager(
                 )
                 storageEditor.putBoolean(KEY_AUTO_FIT_WIDTH, config.isAutoFitWidth)
                 storageEditor.putString(KEY_APP_LANGUAGE, config.appLanguage)
+                storageEditor.putEnum(KEY_SPLIT_VIEW_MODE, config.splitViewMode)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

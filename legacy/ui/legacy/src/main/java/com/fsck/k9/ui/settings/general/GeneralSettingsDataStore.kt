@@ -12,6 +12,7 @@ import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.update
 
@@ -146,7 +147,7 @@ class GeneralSettingsDataStore(
             "message_compose_theme" -> subThemeToString(generalSettingsManager.getConfig().display.messageComposeTheme)
             "messageViewTheme" -> subThemeToString(generalSettingsManager.getConfig().display.messageViewTheme)
             "messagelist_preview_lines" -> K9.messageListPreviewLines.toString()
-            "splitview_mode" -> K9.splitViewMode.name
+            "splitview_mode" -> generalSettingsManager.getConfig().display.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> generalSettingsManager.getConfig().network.backgroundOps.name
@@ -184,7 +185,7 @@ class GeneralSettingsDataStore(
             "message_compose_theme" -> setMessageComposeTheme(value)
             "messageViewTheme" -> setMessageViewTheme(value)
             "messagelist_preview_lines" -> K9.messageListPreviewLines = value.toInt()
-            "splitview_mode" -> K9.splitViewMode = K9.SplitViewMode.valueOf(value)
+            "splitview_mode" -> setSplitViewModel(SplitViewMode.valueOf(value.uppercase()))
             "notification_quick_delete" -> {
                 K9.notificationQuickDeleteBehaviour = K9.NotificationQuickDelete.valueOf(value)
             }
@@ -299,6 +300,12 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
             settings.copy(display = settings.display.copy(messageViewTheme = stringToSubTheme(subThemeString)))
+        }
+    }
+    private fun setSplitViewModel(mode: SplitViewMode) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(display = settings.display.copy(splitViewMode = mode))
         }
     }
 
