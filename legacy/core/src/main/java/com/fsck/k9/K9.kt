@@ -171,11 +171,6 @@ object K9 : KoinComponent {
     var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
-    @get:Synchronized
-    @set:Synchronized
-    @JvmStatic
-    var splitViewMode = SplitViewMode.NEVER
-
     @JvmStatic
     var isMessageViewArchiveActionVisible = false
 
@@ -279,8 +274,6 @@ object K9 : KoinComponent {
             LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
-        splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
-
         featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
@@ -336,8 +329,6 @@ object K9 : KoinComponent {
 
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
-
-        editor.putEnum("splitViewMode", splitViewMode)
 
         editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
         editor.putBoolean("messageViewDeleteActionVisible", isMessageViewDeleteActionVisible)
@@ -414,15 +405,6 @@ object K9 : KoinComponent {
         MESSAGE_COUNT,
         APP_NAME,
         NOTHING,
-    }
-
-    /**
-     * Controls when to use the message list split view.
-     */
-    enum class SplitViewMode {
-        ALWAYS,
-        NEVER,
-        WHEN_IN_LANDSCAPE,
     }
 
     /**

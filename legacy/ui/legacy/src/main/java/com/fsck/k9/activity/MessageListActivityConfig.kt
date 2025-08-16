@@ -5,6 +5,7 @@ import com.fsck.k9.UiDensity
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 
 data class MessageListActivityConfig(
@@ -23,7 +24,7 @@ data class MessageListActivityConfig(
     val messageViewTheme: SubTheme,
     val messageListPreviewLines: Int,
     val messageListDensity: UiDensity,
-    val splitViewMode: K9.SplitViewMode,
+    val splitViewMode: SplitViewMode,
     val fontSizeMessageListSubject: Int,
     val fontSizeMessageListSender: Int,
     val fontSizeMessageListDate: Int,
@@ -59,7 +60,7 @@ data class MessageListActivityConfig(
                 messageViewTheme = settings.display.messageViewTheme,
                 messageListPreviewLines = K9.messageListPreviewLines,
                 messageListDensity = K9.messageListDensity,
-                splitViewMode = K9.splitViewMode,
+                splitViewMode = settings.display.splitViewMode,
                 fontSizeMessageListSubject = K9.fontSizes.messageListSubject,
                 fontSizeMessageListSender = K9.fontSizes.messageListSender,
                 fontSizeMessageListDate = K9.fontSizes.messageListDate,

@@ -1,6 +1,7 @@
 package net.thunderbird.core.preference.display
 
 import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 
 const val DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME = true
@@ -26,6 +27,8 @@ const val DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT = false
 const val DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH = true
 const val DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE = ""
 
+val DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE = SplitViewMode.NEVER
+
 data class DisplaySettings(
     val fixedMessageViewTheme: Boolean = DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME,
     val isShowUnifiedInbox: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_SHOW_UNIFIED_INBOX,
@@ -49,4 +52,5 @@ data class DisplaySettings(
     val isUseMessageViewFixedWidthFont: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT,
     val isAutoFitWidth: Boolean = DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH,
     val appLanguage: String = DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE,
+    val splitViewMode: SplitViewMode = DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE,
 )

@@ -24,5 +24,6 @@ const val KEY_AUTO_FIT_WIDTH = "autofitWidth"
 const val KEY_MESSAGE_LIST_SENDER_ABOVE_SUBJECT = "messageListSenderAboveSubject"
 const val KEY_SHOW_CONTACT_PICTURE = "showContactPicture"
 const val KEY_APP_LANGUAGE = "language"
+const val KEY_SPLIT_VIEW_MODE = "splitViewMode"
 
 interface DisplaySettingsPreferenceManager : PreferenceManager<DisplaySettings>
