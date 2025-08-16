@@ -1,55 +1,45 @@
-package com.fsck.k9.fragment;
+package com.fsck.k9.fragment
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
+import android.app.Dialog
+import android.app.ProgressDialog
+import android.content.DialogInterface
+import android.os.Bundle
+import androidx.fragment.app.DialogFragment
 
+class ProgressDialogFragment : DialogFragment() {
 
-public class ProgressDialogFragment extends DialogFragment {
-    protected static final String ARG_TITLE = "title";
-    protected static final String ARG_MESSAGE = "message";
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val args = requireArguments()
+        val title = args.getString(ARG_TITLE)
+        val message = args.getString(ARG_MESSAGE)
 
-    public static ProgressDialogFragment newInstance(String title, String message) {
-        ProgressDialogFragment fragment = new ProgressDialogFragment();
-
-        Bundle args = new Bundle();
-        args.putString(ARG_TITLE, title);
-        args.putString(ARG_MESSAGE, message);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
-
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        String title = args.getString(ARG_TITLE);
-        String message = args.getString(ARG_MESSAGE);
-
-        ProgressDialog dialog = new ProgressDialog(getActivity());
-        dialog.setIndeterminate(true);
-        dialog.setTitle(title);
-        dialog.setMessage(message);
-
-        return dialog;
-    }
-
-    @Override
-    public void onCancel(DialogInterface dialog) {
-        Activity activity = getActivity();
-        if (activity != null && activity instanceof CancelListener) {
-            CancelListener listener = (CancelListener) activity;
-            listener.onProgressCancel(this);
+        return ProgressDialog(requireActivity()).apply {
+            isIndeterminate = true
+            setTitle(title)
+            setMessage(message)
         }
-
-        super.onCancel(dialog);
     }
 
-    public interface CancelListener {
-        void onProgressCancel(ProgressDialogFragment fragment);
+    override fun onCancel(dialog: DialogInterface) {
+        (activity as? CancelListener)?.onProgressCancel(this)
+        super.onCancel(dialog)
+    }
+
+    interface CancelListener {
+        fun onProgressCancel(fragment: ProgressDialogFragment)
+    }
+
+    companion object {
+        private const val ARG_TITLE = "title"
+        private const val ARG_MESSAGE = "message"
+
+        fun newInstance(title: String?, message: String?): ProgressDialogFragment {
+            return ProgressDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_TITLE, title)
+                    putString(ARG_MESSAGE, message)
+                }
+            }
+        }
     }
 }
