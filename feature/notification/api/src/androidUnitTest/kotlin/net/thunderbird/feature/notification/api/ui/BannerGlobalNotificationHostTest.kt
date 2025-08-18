@@ -38,7 +38,7 @@ import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
 
-const val BUTTON_NOTIFICATION_TEST_TAG = "button_notification_test_tag"
+private const val BUTTON_NOTIFICATION_TEST_TAG = "button_notification_test_tag"
 
 class BannerGlobalNotificationHostTest : ComposeTest() {
     @Test
