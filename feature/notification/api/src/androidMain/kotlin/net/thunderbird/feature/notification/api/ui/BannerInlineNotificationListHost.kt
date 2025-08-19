@@ -18,6 +18,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS
+import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.action.ResolvedNotificationActionButton
@@ -101,15 +102,21 @@ private fun BannerInlineNotificationListHostLayout(
             .testTagAsResourceId(TEST_TAG_BANNER_INLINE_LIST),
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
     ) {
-        displayableNotifications.forEach { banner ->
+        displayableNotifications.forEachIndexed { index, banner ->
             ErrorBannerInlineNotificationCard(
                 title = banner.title,
                 supportingText = banner.supportingText,
                 actions = {
-                    banner.actions.forEach { action ->
+                    banner.actions.forEachIndexed { actionIndex, action ->
                         ResolvedNotificationActionButton(
                             action = action,
                             onActionClick = onActionClick,
+                            modifier = Modifier.testTagAsResourceId(
+                                tag = BannerInlineNotificationListHostDefaults.testTagBannerInlineListItemAction(
+                                    index = index,
+                                    actionIndex = actionIndex,
+                                ),
+                            ),
                         )
                     }
                 },
@@ -129,6 +136,7 @@ private fun BannerInlineNotificationListHostLayout(
                             resource = Res.string.banner_inline_notification_open_notifications,
                         ),
                         onClick = onOpenErrorNotificationsClick,
+                        modifier = Modifier.testTagAsResourceId(TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION),
                     )
                 },
                 modifier = Modifier.testTagAsResourceId(TEST_TAG_CHECK_ERROR_NOTIFICATIONS),
@@ -141,4 +149,8 @@ object BannerInlineNotificationListHostDefaults {
     internal const val TEST_TAG_HOST_PARENT = "banner_inline_notification_host"
     internal const val TEST_TAG_BANNER_INLINE_LIST = "banner_inline_notification_list"
     internal const val TEST_TAG_CHECK_ERROR_NOTIFICATIONS = "check_notifications_composable"
+    internal const val TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION = "check_notifications_action"
+
+    internal fun testTagBannerInlineListItemAction(index: Int, actionIndex: Int) =
+        "banner_inline_notification_list_item_action_${index}_$actionIndex"
 }
