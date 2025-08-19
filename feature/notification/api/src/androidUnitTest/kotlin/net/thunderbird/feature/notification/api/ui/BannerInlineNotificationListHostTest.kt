@@ -9,22 +9,15 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.SemanticsNodeInteractionCollection
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasClickAction
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasTextExactly
-import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onChildren
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.printToString
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificationCardDefaults.TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
 import app.k9mail.core.ui.compose.testing.onNodeWithText
@@ -32,10 +25,16 @@ import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
+import net.thunderbird.feature.notification.api.ui.util.assertBannerInline
+import net.thunderbird.feature.notification.api.ui.util.assertBannerInlineList
+import net.thunderbird.feature.notification.api.ui.util.printSemanticTree
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
 import org.jetbrains.compose.resources.PreviewContextConfigurationEffect
@@ -78,134 +77,12 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
 
         // Assert
         printSemanticTree()
-        onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
-            .assertIsDisplayed()
-
-        val listHost = onNodeWithTag(
-            BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST,
-            useUnmergedTree = true,
-        ).assertIsDisplayed()
-
-        listHost
-            .onChildren()
-            .assertCountEquals(1)
-
-        listHost.assertBannerInline(
-            index = 0,
-            title = title,
-            supportingText = supportingText,
-            assertActions = {
-                assertCountEquals(1)
-                val actionButton = filterToOne(
-                    matcher = SemanticsMatcher.expectValue(
-                        key = SemanticsProperties.Role,
-                        expectedValue = Role.Button,
-                    ) and hasClickAction(),
-                ).assertIsDisplayed()
-
-                actionButton
-                    .onChildren()
-                    .filterToOne(hasTextExactly(action.title))
-                    .assertIsDisplayed()
-            },
-        )
-
-        onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS)
-            .assertIsNotDisplayed()
-    }
-
-    @Test
-    fun `should display banner inline notification list with all banners when there are 2 notifications`() =
-        runComposeTest {
-            // Arrange
-            val notification1 = createNotification(title = "Notification 1", supportingText = "The supporting text")
-            val notification2 = createNotification(title = "Notification 2", supportingText = "The supporting text")
-            val notifications = listOf(notification1, notification2)
-
-            mainClock.autoAdvance = false
-            setContentWithPreviewAndResources {
-                TestSubject(notifications = notifications)
-            }
-
-            // Act
-            onNodeWithTag(BUTTON_NOTIFICATION_TEST_TAG).performClick()
-
-            // Advance Animation
-            mainClock.advanceTimeBy(1000L)
-
-            // Assert
-            printSemanticTree()
-            onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
-                .assertIsDisplayed()
-
-            val listHost = onNodeWithTag(
-                BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST,
-                useUnmergedTree = true,
-            ).assertIsDisplayed()
-
-            listHost
-                .onChildren()
-                .assertCountEquals(2)
-
-            listHost.assertBannerInline(
+        assertBannerInlineList(size = 1) {
+            assertIsDisplayed()
+            assertBannerInline(
                 index = 0,
-                title = notification1.title,
-                supportingText = requireNotNull(notification1.contentText),
-                assertActions = { assertCountEquals(2) },
-            )
-
-            listHost.assertBannerInline(
-                index = 1,
-                title = notification2.title,
-                supportingText = requireNotNull(notification2.contentText),
-                assertActions = { assertCountEquals(2) },
-            )
-        }
-
-    @Test
-    fun `should display banner inline notification list with check notification banner when there are more than 2 notifications`() =
-        runComposeTest {
-            // Arrange
-            val notification1 = createNotification(title = "Notification 1", supportingText = "The supporting text")
-            val notification2 = createNotification(title = "Notification 2", supportingText = "The supporting text")
-            val notification3 = createNotification(title = "Notification 3", supportingText = "The supporting text")
-            val notifications = listOf(notification1, notification2, notification3)
-            mainClock.autoAdvance = false
-            setContentWithPreviewAndResources {
-                TestSubject(notifications = notifications)
-            }
-
-            // Act
-            onNodeWithTag(BUTTON_NOTIFICATION_TEST_TAG).performClick()
-
-            // Advance Animation
-            mainClock.advanceTimeBy(1000L)
-
-            // Assert
-            printSemanticTree()
-            onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
-                .assertIsDisplayed()
-
-            val listHost = onNodeWithTag(
-                BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST,
-                useUnmergedTree = true,
-            ).assertIsDisplayed()
-
-            listHost
-                .onChildren()
-                .assertCountEquals(2)
-
-            listHost.assertBannerInline(
-                index = 0,
-                title = notification1.title,
-                supportingText = requireNotNull(notification1.contentText),
-                assertActions = { assertCountEquals(2) },
-            )
-
-            listHost.assertBannerInline(
-                index = 1,
-                title = "Check Error Notifications",
-                supportingText = "Some messages need your attention.",
+                title = title,
+                supportingText = supportingText,
                 assertActions = {
                     assertCountEquals(1)
                     val actionButton = filterToOne(
@@ -217,10 +94,105 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
 
                     actionButton
                         .onChildren()
-                        .filterToOne(hasTextExactly("Open notifications"))
+                        .filterToOne(hasTextExactly(action.title))
                         .assertIsDisplayed()
                 },
             )
+        }
+
+        onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS)
+            .assertIsNotDisplayed()
+    }
+
+    @Test
+    fun `should display banner inline notification list with all banners when there are 2 notifications`() =
+        runComposeTest {
+            // Arrange
+            val notification1 = createNotification(title = "Notification 1", supportingText = "The supporting text")
+            val notification2 = createNotification(title = "Notification 2", supportingText = "The supporting text")
+            val notifications = persistentListOf(notification1, notification2)
+
+            mainClock.autoAdvance = false
+            setContentWithPreviewAndResources {
+                TestSubject(notifications = notifications)
+            }
+
+            // Act
+            onNodeWithTag(BUTTON_NOTIFICATION_TEST_TAG).performClick()
+
+            // Advance Animation
+            mainClock.advanceTimeBy(1000L)
+
+            // Assert
+            printSemanticTree()
+            assertBannerInlineList(size = 2) {
+                assertIsDisplayed()
+                assertBannerInline(
+                    index = 0,
+                    title = notification1.title,
+                    supportingText = requireNotNull(notification1.contentText),
+                    assertActions = { assertCountEquals(2) },
+                )
+
+                assertBannerInline(
+                    index = 1,
+                    title = notification2.title,
+                    supportingText = requireNotNull(notification2.contentText),
+                    assertActions = { assertCountEquals(2) },
+                )
+            }
+        }
+
+    @Test
+    fun `should display banner inline notification list with check notification banner when there are more than 2 notifications`() =
+        runComposeTest {
+            // Arrange
+            val notification1 = createNotification(title = "Notification 1", supportingText = "The supporting text")
+            val notification2 = createNotification(title = "Notification 2", supportingText = "The supporting text")
+            val notification3 = createNotification(title = "Notification 3", supportingText = "The supporting text")
+            val notifications = persistentListOf(notification1, notification2, notification3)
+            mainClock.autoAdvance = false
+            setContentWithPreviewAndResources {
+                TestSubject(notifications = notifications)
+            }
+
+            // Act
+            onNodeWithTag(BUTTON_NOTIFICATION_TEST_TAG).performClick()
+
+            // Advance Animation
+            mainClock.advanceTimeBy(1000L)
+
+            // Assert
+            printSemanticTree()
+            assertBannerInlineList(size = 2) {
+                assertIsDisplayed()
+                assertBannerInline(
+                    index = 0,
+                    title = notification1.title,
+                    supportingText = requireNotNull(notification1.contentText),
+                    assertActions = { assertCountEquals(2) },
+                )
+
+                assertBannerInline(
+                    index = 1,
+                    title = "Check Error Notifications",
+                    supportingText = "Some messages need your attention.",
+                    assertActions = {
+                        assertCountEquals(1)
+                        val actionButton = filterToOne(
+                            matcher = SemanticsMatcher.expectValue(
+                                key = SemanticsProperties.Role,
+                                expectedValue = Role.Button,
+                            ) and hasClickAction(),
+                        ).assertIsDisplayed()
+
+                        actionButton
+                            .onChildren()
+                            .filterToOne(hasTextExactly("Open notifications"))
+                            .assertIsDisplayed()
+                    },
+                )
+            }
         }
 
     @Test
@@ -234,7 +206,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
         val actionClicked = mutableStateOf<NotificationAction?>(value = null)
         setContentWithTheme {
             TestSubject(
-                notifications = listOf(notification),
+                notifications = persistentListOf(notification),
                 onActionClick = { notification -> actionClicked.value = notification },
             )
         }
@@ -247,24 +219,15 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
 
         // Assert
         printSemanticTree()
-        onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
-            .assertIsDisplayed()
-
-        val listHost = onNodeWithTag(
-            BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST,
-            useUnmergedTree = true,
-        ).assertIsDisplayed()
-
-        listHost
-            .onChildren()
-            .assertCountEquals(1)
-
-        listHost.assertBannerInline(
-            index = 0,
-            title = title,
-            supportingText = supportingText,
-            assertActions = { assertCountEquals(1) },
-        )
+        assertBannerInlineList(size = 1) {
+            assertIsDisplayed()
+            assertBannerInline(
+                index = 0,
+                title = title,
+                supportingText = supportingText,
+                assertActions = { assertCountEquals(1) },
+            )
+        }
 
         assertThat(actionClicked.value)
             .isEqualTo(action)
@@ -279,7 +242,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
                     title = "Notification $index",
                     supportingText = "The supporting text",
                 )
-            }
+            }.toPersistentList()
             val openErrorNotificationsActionTitle = "Open notifications"
             val openErrorNotificationsClicked = mutableStateOf(false)
             mainClock.autoAdvance = false
@@ -298,79 +261,40 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
 
             // Assert
             printSemanticTree()
-            onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
-                .assertIsDisplayed()
+            assertBannerInlineList(size = 2) {
+                assertIsDisplayed()
+                assertBannerInline(
+                    index = 0,
+                    title = notifications.first().title,
+                    supportingText = requireNotNull(notifications.first().contentText),
+                    assertActions = { assertCountEquals(2) },
+                )
 
-            val listHost = onNodeWithTag(
-                BannerInlineNotificationListHostDefaults.TEST_TAG_BANNER_INLINE_LIST,
-                useUnmergedTree = true,
-            ).assertIsDisplayed()
+                assertBannerInline(
+                    index = 1,
+                    title = "Check Error Notifications",
+                    supportingText = "Some messages need your attention.",
+                    assertActions = {
+                        assertCountEquals(1)
+                        val actionButton = filterToOne(
+                            matcher = SemanticsMatcher.expectValue(
+                                key = SemanticsProperties.Role,
+                                expectedValue = Role.Button,
+                            ) and hasClickAction(),
+                        ).assertIsDisplayed()
 
-            listHost
-                .onChildren()
-                .assertCountEquals(2)
-
-            listHost.assertBannerInline(
-                index = 0,
-                title = notifications.first().title,
-                supportingText = requireNotNull(notifications.first().contentText),
-                assertActions = { assertCountEquals(2) },
-            )
-
-            listHost.assertBannerInline(
-                index = 1,
-                title = "Check Error Notifications",
-                supportingText = "Some messages need your attention.",
-                assertActions = {
-                    assertCountEquals(1)
-                    val actionButton = filterToOne(
-                        matcher = SemanticsMatcher.expectValue(
-                            key = SemanticsProperties.Role,
-                            expectedValue = Role.Button,
-                        ) and hasClickAction(),
-                    ).assertIsDisplayed()
-
-                    actionButton
-                        .onChildren()
-                        .filterToOne(hasTextExactly(openErrorNotificationsActionTitle))
-                        .assertIsDisplayed()
-                },
-            )
+                        actionButton
+                            .onChildren()
+                            .filterToOne(hasTextExactly(openErrorNotificationsActionTitle))
+                            .assertIsDisplayed()
+                    },
+                )
+            }
         }
-
-    private fun printSemanticTree(root: SemanticsNodeInteraction = composeTestRule.onRoot(useUnmergedTree = true)) {
-        println("-----")
-        println("Semantic tree:")
-        println(root.printToString())
-        println("-----")
-        println()
-    }
-
-    private fun SemanticsNodeInteraction.assertBannerInline(
-        index: Int,
-        title: String,
-        supportingText: String,
-        assertActions: SemanticsNodeInteractionCollection.() -> Unit = {},
-    ) {
-        val banner = onChildAt(index)
-        val children = banner.onChildren()
-        children
-            .filterToOne(hasTextExactly(title))
-            .assertIsDisplayed()
-
-        children
-            .filterToOne(hasTextExactly(supportingText))
-            .assertIsDisplayed()
-
-        children
-            .filterToOne(hasTestTag(TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW))
-            .onChildren()
-            .assertActions()
-    }
 
     @Composable
     private fun TestSubject(
-        notifications: List<FakeInAppOnlyNotification>,
+        notifications: ImmutableList<FakeInAppOnlyNotification>,
         modifier: Modifier = Modifier,
         onActionClick: (NotificationAction) -> Unit = {},
         onOpenErrorNotificationsClick: () -> Unit = {},

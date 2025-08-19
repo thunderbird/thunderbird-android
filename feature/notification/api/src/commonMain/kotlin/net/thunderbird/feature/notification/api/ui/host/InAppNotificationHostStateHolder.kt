@@ -26,6 +26,7 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
     fun showInAppNotification(
         notification: InAppNotification,
     ) {
+        println("showInAppNotification: $notification")
         val newData = notification.toInAppNotificationData()
         // TODO(#9572): If global is already present, show the one with the highest priority
         //              show the previous one back once the higher priority has fixed and the
