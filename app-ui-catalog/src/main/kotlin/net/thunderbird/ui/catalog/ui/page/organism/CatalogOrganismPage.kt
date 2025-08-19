@@ -10,6 +10,7 @@ enum class CatalogOrganismPage(
     APP_BAR("App Bars"),
     DIALOG("Dialogs"),
     BANNER("Banners"),
+    SNACKBAR("Snackbars", isFullScreen = true),
     ;
 
     override fun toString(): String {
