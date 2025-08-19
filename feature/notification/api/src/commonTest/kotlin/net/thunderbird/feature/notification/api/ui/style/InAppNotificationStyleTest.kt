@@ -6,9 +6,6 @@ import assertk.assertions.hasMessage
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import kotlin.test.assertFails
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
 
 @Suppress("MaxLineLength")
 class InAppNotificationStyleTest {
@@ -59,7 +56,7 @@ class InAppNotificationStyleTest {
     @Test
     fun `inAppNotificationStyle dsl should create a snackbar with 30 seconds duration in-app notification style`() {
         // Arrange
-        val duration = 30.seconds
+        val duration = SnackbarDuration.Short
         val expectedStyles = arrayOf<InAppNotificationStyle>(InAppNotificationStyle.SnackbarNotification(duration))
 
         // Act
@@ -165,8 +162,8 @@ class InAppNotificationStyleTest {
         val actual = assertFails {
             inAppNotificationStyles {
                 snackbar()
-                snackbar(duration = 1.minutes)
-                snackbar(duration = 1.hours)
+                snackbar(duration = SnackbarDuration.Short)
+                snackbar(duration = SnackbarDuration.Long)
             }
         }
 
