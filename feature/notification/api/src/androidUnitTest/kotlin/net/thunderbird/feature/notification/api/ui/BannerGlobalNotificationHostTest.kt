@@ -33,7 +33,7 @@ import kotlin.test.Test
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
-import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostState
+import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
@@ -358,7 +358,7 @@ class BannerGlobalNotificationHostTest : ComposeTest() {
         onActionClick: (NotificationAction) -> Unit,
         modifier: Modifier = Modifier,
     ) {
-        val state = rememberInAppNotificationHostState()
+        val state = rememberInAppNotificationHostStateHolder()
         Column(modifier = modifier) {
             ButtonText(
                 text = "Trigger Notification",

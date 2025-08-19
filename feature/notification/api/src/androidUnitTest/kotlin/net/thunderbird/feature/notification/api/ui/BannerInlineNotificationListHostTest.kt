@@ -34,7 +34,7 @@ import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
-import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostState
+import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
@@ -54,7 +54,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
         mainClock.autoAdvance = false
         setContentWithTheme {
             Column {
-                val state = rememberInAppNotificationHostState()
+                val state = rememberInAppNotificationHostStateHolder()
                 ButtonText(
                     text = "Trigger Notification",
                     onClick = {
@@ -376,7 +376,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
         onOpenErrorNotificationsClick: () -> Unit = {},
     ) {
         Column(modifier = modifier) {
-            val state = rememberInAppNotificationHostState()
+            val state = rememberInAppNotificationHostStateHolder()
             ButtonText(
                 text = "Trigger Notification",
                 onClick = {
