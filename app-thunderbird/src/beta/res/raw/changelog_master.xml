@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="12.0b7" versioncode="25" date="2025-08-18">
+        <change>Edge-to-edge support regressed various screens when using 3-button navigation</change>
+    </release>
     <release version="12.0b6" versioncode="24" date="2025-08-11">
         <change>Enable edge-to-edge support on beta</change>
         <change>Selected/read/unread message states were hard to distinguish visually</change>
