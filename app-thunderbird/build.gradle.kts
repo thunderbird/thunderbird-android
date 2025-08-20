@@ -17,7 +17,7 @@ android {
         applicationId = "net.thunderbird.android"
         testApplicationId = "net.thunderbird.android.tests"
 
-        versionCode = 13
+        versionCode = 12
         versionName = "11.0"
 
         // Keep in sync with the resource string array "supported_languages"
