@@ -44,7 +44,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationReceiver
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
-import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
+import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.api.ui.util.assertBannerInline
 import net.thunderbird.feature.notification.api.ui.util.assertBannerInlineList
 import net.thunderbird.feature.notification.api.ui.util.printSemanticTree
@@ -174,7 +174,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             // Arrange
             val event = InAppNotificationEvent.Show(
                 notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 ),
             )
             val receiver = FakeInAppNotificationReceiver()
@@ -207,7 +207,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             val action = createFakeNotificationAction(actionTitle)
             val event = InAppNotificationEvent.Show(
                 notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                     actions = setOf(action),
                 ),
             )
@@ -254,7 +254,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             // Arrange
             val event = InAppNotificationEvent.Show(
                 notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 ),
             )
             val receiver = FakeInAppNotificationReceiver()
@@ -281,7 +281,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             // Arrange
             val event = InAppNotificationEvent.Show(
                 notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                     actions = setOf(createFakeNotificationAction("Action")),
                 ),
             )
@@ -314,7 +314,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             val notification = FakeInAppOnlyNotification(
                 title = "The notification",
                 contentText = "The content",
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(createFakeNotificationAction("Action")),
             )
             val event = InAppNotificationEvent.Show(notification = notification)
@@ -355,7 +355,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             val notification = FakeInAppOnlyNotification(
                 title = "The notification",
                 contentText = "The content",
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(createFakeNotificationAction("Action")),
             )
             val event = InAppNotificationEvent.Show(notification = notification)
@@ -376,7 +376,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                     InAppNotificationEvent.Show(
                         notification = FakeInAppOnlyNotification(
                             title = "Notification $it",
-                            inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                            inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                             actions = setOf(createFakeNotificationAction("Action")),
                         ),
                     ),
@@ -426,7 +426,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             val action = createFakeNotificationAction(actionTitle)
             val event = InAppNotificationEvent.Show(
                 notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                     actions = setOf(action),
                 ),
             )
@@ -494,7 +494,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                     InAppNotificationEvent.Show(
                         notification = FakeInAppOnlyNotification(
                             title = "Notification $it",
-                            inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                            inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                             actions = setOf(createFakeNotificationAction("Action")),
                         ),
                     ),
@@ -527,7 +527,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             // Arrange
             val event = InAppNotificationEvent.Show(
                 notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 ),
             )
             val receiver = FakeInAppNotificationReceiver()
@@ -562,7 +562,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             // Arrange
             val event = InAppNotificationEvent.Show(
                 notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                     actions = setOf(createFakeNotificationAction("Action")),
                 ),
             )
@@ -595,7 +595,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             // Arrange
             val event = InAppNotificationEvent.Show(
                 notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyles = inAppNotificationStyles { snackbar() },
+                    inAppNotificationStyle = inAppNotificationStyle { snackbar() },
                     actions = setOf(createFakeNotificationAction("Action")),
                 ),
             )

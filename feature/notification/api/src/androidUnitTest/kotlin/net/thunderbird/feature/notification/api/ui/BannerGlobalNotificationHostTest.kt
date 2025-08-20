@@ -31,7 +31,7 @@ import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
-import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
+import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.api.ui.util.printSemanticTree
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
@@ -380,7 +380,7 @@ class BannerGlobalNotificationHostTest : ComposeTest() {
         title = title,
         contentText = contentText,
         severity = severity,
-        inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+        inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
         actions = action?.let { setOf(it) }.orEmpty(),
     )
 }
