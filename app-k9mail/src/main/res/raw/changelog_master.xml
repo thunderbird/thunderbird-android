@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="11.1" versioncode="39026" date="2025-08-18">
+        <change>Selected/read/unread message states were hard to distinguish visually</change>
+    </release>
     <release version="11.0" versioncode="39025" date="2025-07-14">
         <change>Improved drawer navigation with a folder hierarchy</change>
         <change>Improve dark mode emails with algorithmic darkening</change>

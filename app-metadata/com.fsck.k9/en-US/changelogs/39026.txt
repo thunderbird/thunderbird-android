@@ -1,0 +1,1 @@
+- Selected/read/unread message states were hard to distinguish visually
