@@ -6,6 +6,7 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.AuthenticationError
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
+import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.resources.api.Res
 import net.thunderbird.feature.notification.resources.api.notification_authentication_error_text
 import net.thunderbird.feature.notification.resources.api.notification_authentication_error_title
@@ -28,6 +29,7 @@ data class AuthenticationErrorNotification private constructor(
         NotificationAction.Retry,
         NotificationAction.UpdateServerSettings,
     )
+    override val inAppNotificationStyle = inAppNotificationStyle { bannerInline() }
 
     override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
         SystemNotification.LockscreenNotification(
