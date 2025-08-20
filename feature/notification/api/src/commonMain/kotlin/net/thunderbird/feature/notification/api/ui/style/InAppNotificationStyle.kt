@@ -9,13 +9,11 @@ import net.thunderbird.feature.notification.api.ui.style.builder.InAppNotificati
  * feedback or information.
  */
 sealed interface InAppNotificationStyle {
-    companion object {
-        /**
-         * Represents an undefined in-app notification style.
-         * This can be used as a default or placeholder when no specific style is applicable.
-         */
-        val Undefined: List<InAppNotificationStyle> = emptyList()
-    }
+    /**
+     * Represents an undefined in-app notification style.
+     * This can be used as a default or placeholder when no specific style is applicable.
+     */
+    data object Undefined : InAppNotificationStyle
 
     /**
      * @see InAppNotificationStyleBuilder.bannerInline
@@ -49,9 +47,12 @@ enum class SnackbarDuration { Short, Long, Indefinite }
  *
  * Example:
  * ```
- * inAppNotificationStyles {
+ * inAppNotificationStyle {
+ *     bannerInline()
+ * }
+ *
+ * inAppNotificationStyle {
  *     snackbar(duration = 30.seconds)
- *     bottomSheet()
  * }
  * ```
  *
@@ -60,8 +61,8 @@ enum class SnackbarDuration { Short, Long, Indefinite }
  * @return a list of [InAppNotificationStyle]
  */
 @NotificationStyleMarker
-fun inAppNotificationStyles(
+fun inAppNotificationStyle(
     builder: @NotificationStyleMarker InAppNotificationStyleBuilder.() -> Unit,
-): List<InAppNotificationStyle> {
+): InAppNotificationStyle {
     return InAppNotificationStyleBuilder().apply(builder).build()
 }
