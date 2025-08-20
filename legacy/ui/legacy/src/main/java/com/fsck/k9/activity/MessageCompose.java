@@ -1780,7 +1780,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             }
 
-            ProgressDialogFragment fragment = ProgressDialogFragment.newInstance(title,
+            ProgressDialogFragment fragment = ProgressDialogFragment.Companion.newInstance(title,
                     getString(R.string.fetching_attachment_dialog_message));
             fragment.show(getSupportFragmentManager(), FRAGMENT_WAITING_FOR_ATTACHMENT);
         }
