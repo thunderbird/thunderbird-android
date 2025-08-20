@@ -1,0 +1,2 @@
+Thunderbird for Android version 11.1, based on K-9 Mail. Changes include:
+- Selected/read/unread message states were hard to distinguish visually
