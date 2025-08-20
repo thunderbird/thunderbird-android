@@ -8,22 +8,29 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.fsck.k9.ui.messagelist.item.BannerInlineListInAppNotificationViewHolder
 import com.fsck.k9.ui.messagelist.item.FooterViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageListViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolderColors
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.FeatureFlagResult
 
 private const val FOOTER_ID = 1L
 
 private const val TYPE_MESSAGE = 0
 private const val TYPE_FOOTER = 1
+private const val TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST = 2
 
+@Suppress("LongParameterList")
 class MessageListAdapter internal constructor(
     private val theme: Theme,
     private val res: Resources,
@@ -32,6 +39,7 @@ class MessageListAdapter internal constructor(
     private val listItemListener: MessageListItemActionListener,
     private val appearance: MessageListAppearance,
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
 
     val colors: MessageViewHolderColors = MessageViewHolderColors.resolveColors(theme)
@@ -161,6 +169,9 @@ class MessageListAdapter internal constructor(
         listItemListener.onToggleMessageSelection(messageListItem)
     }
 
+    private val isInAppNotificationEnabled: Boolean
+        get() = featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications) == FeatureFlagResult.Enabled
+
     init {
         setHasStableIds(true)
     }
@@ -176,7 +187,11 @@ class MessageListAdapter internal constructor(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position <= lastMessagePosition) TYPE_MESSAGE else TYPE_FOOTER
+        return when {
+            position == 0 && isInAppNotificationEnabled -> TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST
+            position <= lastMessagePosition -> TYPE_MESSAGE
+            else -> TYPE_FOOTER
+        }
     }
 
     private fun getItem(position: Int): MessageListItem = messages[position]
@@ -209,6 +224,9 @@ class MessageListAdapter internal constructor(
         return when (viewType) {
             TYPE_MESSAGE -> createMessageViewHolder(parent)
             TYPE_FOOTER -> FooterViewHolder.create(layoutInflater, parent, footerClickListener)
+            TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST if isInAppNotificationEnabled ->
+                BannerInlineListInAppNotificationViewHolder(view = ComposeView(context = parent.context))
+
             else -> error("Unsupported type: $viewType")
         }
     }
@@ -231,6 +249,9 @@ class MessageListAdapter internal constructor(
 
     override fun onBindViewHolder(holder: MessageListViewHolder, position: Int) {
         when (val viewType = getItemViewType(position)) {
+            TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST if isInAppNotificationEnabled ->
+                (holder as BannerInlineListInAppNotificationViewHolder).bind()
+
             TYPE_MESSAGE -> {
                 val messageListItem = getItem(position)
                 val messageViewHolder = holder as MessageViewHolder

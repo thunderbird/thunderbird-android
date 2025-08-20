@@ -76,6 +76,7 @@ import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
@@ -118,6 +119,7 @@ class MessageListFragment :
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccountDto> by inject {
         parametersOf(preferences.storage)
     }
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -317,6 +319,7 @@ class MessageListFragment :
             listItemListener = this,
             appearance = messageListAppearance,
             relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock),
+            featureFlagProvider = featureFlagProvider,
         ).apply {
             activeMessage = this@MessageListFragment.activeMessage
         }
