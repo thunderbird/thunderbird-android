@@ -1,9 +1,0 @@
-- Improved drawer navigation
-- Improve dark mode emails
-- Welcome screen layout improved
-- Improved compatibility with some ISPs
-- Selection now shown by adjusting color priority
-- Folder settings now use switches instead of checkboxes
-- Messages now marked read by default when archiving
-- Font size config preference removed in favor of OS and density settings
-- Avoid crashes in various scenarios
