@@ -85,8 +85,14 @@ import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
+import net.thunderbird.core.featureflag.FeatureFlagResult.Enabled;
+import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
 import net.thunderbird.core.logging.Logger;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification;
+import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
+import net.thunderbird.feature.notification.api.sender.NotificationSender;
+import net.thunderbird.feature.notification.api.sender.compat.NotificationSenderCompat;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -135,7 +141,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final DraftOperations draftOperations;
     private final NotificationOperations notificationOperations;
     private final ArchiveOperations archiveOperations;
+    private final FeatureFlagProvider featureFlagProvider;
     private final Logger syncDebugLogger;
+    private final NotificationSenderCompat notificationSender;
 
 
     private volatile boolean stopped = false;
@@ -159,7 +167,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         LocalDeleteOperationDecider localDeleteOperationDecider,
         List<ControllerExtension> controllerExtensions,
         FeatureFlagProvider featureFlagProvider,
-        Logger syncDebugLogger
+        Logger syncDebugLogger,
+        NotificationSender notificationSender
     ) {
         this.context = context;
         this.notificationController = notificationController;
@@ -171,7 +180,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.saveMessageDataCreator = saveMessageDataCreator;
         this.specialLocalFoldersCreator = specialLocalFoldersCreator;
         this.localDeleteOperationDecider = localDeleteOperationDecider;
+        this.featureFlagProvider = featureFlagProvider;
         this.syncDebugLogger = syncDebugLogger;
+        this.notificationSender = new NotificationSenderCompat(notificationSender);
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -691,7 +702,28 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             migrateAccountToOAuth(account);
         }
 
-        notificationController.showAuthenticationErrorNotification(account, incoming);
+        if (FeatureFlagProviderCompat.provide(featureFlagProvider, "display_in_app_notifications") ==
+            Enabled.INSTANCE) {
+            Log.d("handleAuthenticationFailure: sending in-app notification");
+            final AuthenticationErrorNotification notification = NotificationFactoryCoroutineCompat.create(
+                continuation ->
+                    AuthenticationErrorNotification.Companion.invoke(
+                        account.getUuid(),
+                        account.getDisplayName(),
+                        continuation
+                    )
+            );
+
+            notificationSender.send(notification, outcome -> {
+                Log.v("notificationSender outcome = " + outcome);
+            });
+        }
+
+        if (FeatureFlagProviderCompat.provide(featureFlagProvider,
+            "use_notification_sender_for_system_notifications") != Enabled.INSTANCE) {
+            Log.d("handleAuthenticationFailure: sending system notification via old notification controller");
+            notificationController.showAuthenticationErrorNotification(account, incoming);
+        }
     }
 
     private void migrateAccountToOAuth(LegacyAccountDto account) {
