@@ -46,11 +46,11 @@ data class AuthenticationErrorNotification private constructor(
             accountUuid: String,
             accountDisplayName: String,
         ): AuthenticationErrorNotification = AuthenticationErrorNotification(
-            title = getString(
-                resource = Res.string.notification_authentication_error_title,
+            title = getString(resource = Res.string.notification_authentication_error_title),
+            contentText = getString(
+                resource = Res.string.notification_authentication_error_text,
                 accountDisplayName,
             ),
-            contentText = getString(resource = Res.string.notification_authentication_error_text),
             channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),
         )
     }
