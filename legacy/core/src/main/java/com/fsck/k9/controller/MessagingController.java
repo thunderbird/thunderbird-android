@@ -2571,6 +2571,18 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
     }
 
+    public void checkAuthenticationProblem(LegacyAccount account) {
+        // checking incoming server configuration
+        if (isAuthenticationProblem(account, true)) {
+            handleAuthenticationFailure(account, true);
+            return;
+        }
+        // checking outgoing server configuration
+        if (isAuthenticationProblem(account, false)) {
+            handleAuthenticationFailure(account, false);
+        }
+    }
+
     private boolean isAuthenticationProblem(LegacyAccount account, boolean incoming) {
         ServerSettings serverSettings = incoming ?
                 account.getIncomingServerSettings() : account.getOutgoingServerSettings();
