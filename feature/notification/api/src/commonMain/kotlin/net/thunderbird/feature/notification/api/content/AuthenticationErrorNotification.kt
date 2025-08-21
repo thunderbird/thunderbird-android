@@ -19,6 +19,7 @@ import org.jetbrains.compose.resources.getString
  */
 @ConsistentCopyVisibility
 data class AuthenticationErrorNotification private constructor(
+    override val accountUuid: String,
     override val title: String,
     override val contentText: String?,
     override val channel: NotificationChannel,
@@ -48,6 +49,7 @@ data class AuthenticationErrorNotification private constructor(
             accountUuid: String,
             accountDisplayName: String,
         ): AuthenticationErrorNotification = AuthenticationErrorNotification(
+            accountUuid = accountUuid,
             title = getString(resource = Res.string.notification_authentication_error_title),
             contentText = getString(
                 resource = Res.string.notification_authentication_error_text,
