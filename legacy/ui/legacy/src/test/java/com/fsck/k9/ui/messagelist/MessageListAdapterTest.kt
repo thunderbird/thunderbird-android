@@ -27,6 +27,7 @@ import com.google.android.material.textview.MaterialTextView
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.testing.TestClock
 import org.junit.Test
 import org.mockito.kotlin.mock
@@ -423,6 +424,7 @@ class MessageListAdapterTest : RobolectricTest() {
             listItemListener = listItemListener,
             appearance = appearance,
             relativeDateTimeFormatter = RelativeDateTimeFormatter(context, TestClock()),
+            featureFlagProvider = { FeatureFlagResult.Disabled },
         )
     }
 

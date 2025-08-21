@@ -10,7 +10,7 @@ import net.thunderbird.feature.notification.api.content.Notification
 /**
  * Responsible for sending notifications by creating and executing the appropriate commands.
  */
-interface NotificationSender {
+fun interface NotificationSender {
     /**
      * Sends a notification by creating and executing the appropriate commands.
      *
