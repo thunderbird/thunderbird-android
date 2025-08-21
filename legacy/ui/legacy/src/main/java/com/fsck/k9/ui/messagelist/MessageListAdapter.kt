@@ -50,6 +50,7 @@ class MessageListAdapter internal constructor(
             val oldMessageList = field
 
             field = value
+            accountUuids = value.map { it.account.uuid }.toSet()
             messagesMap = value.associateBy { it.uniqueId }
 
             if (selected.isNotEmpty()) {
@@ -64,6 +65,7 @@ class MessageListAdapter internal constructor(
         }
 
     private var messagesMap = emptyMap<Long, MessageListItem>()
+    private var accountUuids = emptySet<String>()
 
     var activeMessage: MessageReference? = null
         set(value) {
@@ -225,7 +227,13 @@ class MessageListAdapter internal constructor(
             TYPE_MESSAGE -> createMessageViewHolder(parent)
             TYPE_FOOTER -> FooterViewHolder.create(layoutInflater, parent, footerClickListener)
             TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST if isInAppNotificationEnabled ->
-                BannerInlineListInAppNotificationViewHolder(view = ComposeView(context = parent.context))
+                BannerInlineListInAppNotificationViewHolder(
+                    view = ComposeView(context = parent.context),
+                    eventFilter = { event ->
+                        val accountUuid = event.notification.accountUuid
+                        accountUuid != null && accountUuid in accountUuids
+                    },
+                )
 
             else -> error("Unsupported type: $viewType")
         }
