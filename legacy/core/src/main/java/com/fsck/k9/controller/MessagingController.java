@@ -65,7 +65,6 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageDownloadState;
-import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.power.PowerManager;
@@ -84,6 +83,7 @@ import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccountDto;
+import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.FeatureFlagResult.Enabled;
 import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
@@ -710,6 +710,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     AuthenticationErrorNotification.Companion.invoke(
                         account.getUuid(),
                         account.getDisplayName(),
+                        incoming,
                         continuation
                     )
             );

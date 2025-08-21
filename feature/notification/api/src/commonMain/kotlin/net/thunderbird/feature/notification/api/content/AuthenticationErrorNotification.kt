@@ -19,6 +19,7 @@ import org.jetbrains.compose.resources.getString
  */
 @ConsistentCopyVisibility
 data class AuthenticationErrorNotification private constructor(
+    val isIncomingServerError: Boolean,
     override val accountUuid: String,
     override val title: String,
     override val contentText: String?,
@@ -27,8 +28,11 @@ data class AuthenticationErrorNotification private constructor(
 ) : AppNotification(), SystemNotification, InAppNotification {
     override val severity: NotificationSeverity = NotificationSeverity.Fatal
     override val actions: Set<NotificationAction> = setOf(
-        NotificationAction.Retry,
-        NotificationAction.UpdateServerSettings,
+        if (isIncomingServerError) {
+            NotificationAction.UpdateIncomingServerSettings(accountUuid)
+        } else {
+            NotificationAction.UpdateOutgoingServerSettings(accountUuid)
+        },
     )
     override val inAppNotificationStyle = inAppNotificationStyle { bannerInline() }
 
@@ -48,7 +52,9 @@ data class AuthenticationErrorNotification private constructor(
         suspend operator fun invoke(
             accountUuid: String,
             accountDisplayName: String,
+            isIncomingServerError: Boolean,
         ): AuthenticationErrorNotification = AuthenticationErrorNotification(
+            isIncomingServerError = isIncomingServerError,
             accountUuid = accountUuid,
             title = getString(resource = Res.string.notification_authentication_error_title),
             contentText = getString(

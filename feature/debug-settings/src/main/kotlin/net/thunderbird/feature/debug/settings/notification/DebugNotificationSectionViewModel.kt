@@ -201,11 +201,13 @@ internal class DebugNotificationSectionViewModel(
         state: State,
     ): Notification? = when (notificationType) {
         AuthenticationErrorNotification::class -> AuthenticationErrorNotification(
+            isIncomingServerError = true,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
         )
 
         CertificateErrorNotification::class -> CertificateErrorNotification(
+            isIncomingServerError = true,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
         )
@@ -213,6 +215,7 @@ internal class DebugNotificationSectionViewModel(
         FailedToCreateNotification::class -> FailedToCreateNotification(
             accountUuid = selectedAccount.uuid,
             failedNotification = AuthenticationErrorNotification(
+                isIncomingServerError = true,
                 accountUuid = selectedAccount.uuid,
                 accountDisplayName = accountDisplay,
             ),

@@ -93,9 +93,16 @@ sealed class NotificationAction {
     /**
      * Action to prompt the user to update server settings, typically when authentication fails.
      */
-    data object UpdateServerSettings : NotificationAction() {
+    data class UpdateIncomingServerSettings(val accountUuid: String) : NotificationAction() {
         override val icon: NotificationIcon = NotificationActionIcons.UpdateServerSettings
+        override val titleResource: StringResource = Res.string.notification_action_update_server_settings
+    }
 
+    /**
+     * Action to prompt the user to update server settings, typically when authentication fails.
+     */
+    data class UpdateOutgoingServerSettings(val accountUuid: String) : NotificationAction() {
+        override val icon: NotificationIcon = NotificationActionIcons.UpdateServerSettings
         override val titleResource: StringResource = Res.string.notification_action_update_server_settings
     }
 
