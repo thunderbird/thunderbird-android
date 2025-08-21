@@ -38,6 +38,9 @@ import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.common.mail.Protocols;
 import net.thunderbird.core.logging.Logger;
+import net.thunderbird.core.outcome.Outcome;
+import net.thunderbird.feature.notification.api.sender.NotificationSender;
+import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,6 +130,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
         preferences = Preferences.getPreferences();
         featureFlagProvider = key -> Disabled.INSTANCE;
 
+        final NotificationSender notificationSender = notification ->
+            (flowCollector, continuation) ->
+                Outcome.Companion.success(new FakeInAppOnlyNotification());
+
         controller = new MessagingController(
             appContext,
             notificationController,
@@ -140,7 +147,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
             new LocalDeleteOperationDecider(),
             Collections.<ControllerExtension>emptyList(),
             featureFlagProvider,
-            syncLogger
+            syncLogger,
+            notificationSender
         );
 
         configureAccount();
