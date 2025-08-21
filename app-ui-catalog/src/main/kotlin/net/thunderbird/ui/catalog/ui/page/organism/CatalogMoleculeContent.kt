@@ -8,6 +8,8 @@ import net.thunderbird.ui.catalog.ui.page.common.PagedContent
 import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.APP_BAR
 import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.BANNER
 import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.DIALOG
+import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.SNACKBAR
+import net.thunderbird.ui.catalog.ui.page.organism.items.SnackbarItems
 import net.thunderbird.ui.catalog.ui.page.organism.items.appBarItems
 import net.thunderbird.ui.catalog.ui.page.organism.items.bannerItems
 import net.thunderbird.ui.catalog.ui.page.organism.items.dialogItems
@@ -28,9 +30,15 @@ fun CatalogOrganismContent(
                 APP_BAR -> appBarItems()
                 DIALOG -> dialogItems()
                 BANNER -> bannerItems()
+                SNACKBAR -> Unit
             }
         },
-        onRenderFullScreenPage = {},
+        onRenderFullScreenPage = {
+            when (it) {
+                SNACKBAR -> SnackbarItems()
+                else -> Unit
+            }
+        },
         onEvent = onEvent,
     )
 }
