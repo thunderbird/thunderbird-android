@@ -496,6 +496,10 @@ class MessageListFragment :
                                 DisplayInAppNotificationFlag.SnackbarNotifications,
                             ),
                             onSnackbarNotificationEvent = ::onSnackbarInAppNotificationEvent,
+                            eventFilter = { event ->
+                                val accountUuid = event.notification.accountUuid
+                                accountUuid != null && accounts.any { it.uuid == accountUuid }
+                            },
                             modifier = Modifier
                                 .animateContentSize()
                                 .onSizeChanged { size ->
