@@ -42,6 +42,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val actions: Set<NotificationAction>,
         override val icon: NotificationIcon = NotificationIcons.PushServiceInitializing,
     ) : PushServiceNotification() {
+        override val accountUuid: String? = null
+
         companion object {
             /**
              * Creates an [Initializing] notification.
@@ -67,6 +69,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val actions: Set<NotificationAction>,
         override val icon: NotificationIcon = NotificationIcons.PushServiceListening,
     ) : PushServiceNotification() {
+        override val accountUuid: String? = null
+
         companion object {
             /**
              * Creates a new [Listening] push service notification.
@@ -92,6 +96,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val actions: Set<NotificationAction>,
         override val icon: NotificationIcon = NotificationIcons.PushServiceWaitBackgroundSync,
     ) : PushServiceNotification() {
+        override val accountUuid: String? = null
+
         companion object {
             /**
              * Creates a [WaitBackgroundSync] notification.
@@ -117,6 +123,8 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val actions: Set<NotificationAction>,
         override val icon: NotificationIcon = NotificationIcons.PushServiceWaitNetwork,
     ) : PushServiceNotification() {
+        override val accountUuid: String? = null
+
         companion object {
             /**
              * Creates a [WaitNetwork] notification.
@@ -145,6 +153,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
         override val contentText: String?,
         override val icon: NotificationIcon = NotificationIcons.AlarmPermissionMissing,
     ) : PushServiceNotification(), InAppNotification {
+        override val accountUuid: String? = null
         override val severity: NotificationSeverity = NotificationSeverity.Critical
 
         companion object {

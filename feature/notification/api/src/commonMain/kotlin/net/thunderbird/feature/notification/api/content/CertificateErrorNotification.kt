@@ -20,6 +20,7 @@ import org.jetbrains.compose.resources.getString
  */
 @ConsistentCopyVisibility
 data class CertificateErrorNotification private constructor(
+    override val accountUuid: String,
     override val title: String,
     override val contentText: String,
     val lockScreenTitle: String,
@@ -46,6 +47,7 @@ data class CertificateErrorNotification private constructor(
             accountUuid: String,
             accountDisplayName: String,
         ): CertificateErrorNotification = CertificateErrorNotification(
+            accountUuid = accountUuid,
             title = getString(resource = Res.string.notification_certificate_error_title, accountDisplayName),
             lockScreenTitle = getString(resource = Res.string.notification_certificate_error_public),
             contentText = getString(resource = Res.string.notification_certificate_error_text),
