@@ -15,6 +15,7 @@ import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.layout.SubcomposeMeasureScope
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.constrainHeight
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastMaxBy
@@ -73,10 +74,17 @@ internal fun InAppNotificationHostLayout(
         // In case the maxHeight is not defined (for example when no content is passed to the content lambda),
         // we manually calculate the layout height to avoid a crash caused by the pre-condition check
         // of the layout function.
-        val layoutHeight = if (constraints.maxHeight == Constraints.Infinity) {
-            bannerGlobalHeight + bannerInlineListHeight.roundToInt() + mainContentHeight
-        } else {
-            constraints.maxHeight
+        val layoutHeight = when {
+            constraints.minHeight == 0 ||
+                constraints.maxHeight == Constraints.Infinity -> {
+                constraints.constrainHeight(
+                    bannerGlobalHeight + bannerInlineListHeight.roundToInt() + mainContentHeight,
+                )
+            }
+
+            else -> {
+                constraints.maxHeight
+            }
         }
 
         layout(layoutWidth, layoutHeight) {
