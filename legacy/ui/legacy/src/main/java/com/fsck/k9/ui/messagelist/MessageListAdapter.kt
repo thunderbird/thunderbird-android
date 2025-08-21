@@ -12,6 +12,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
@@ -23,6 +25,7 @@ import com.fsck.k9.ui.messagelist.item.MessageViewHolderColors
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
 private const val FOOTER_ID = 1L
 
@@ -232,6 +235,23 @@ class MessageListAdapter internal constructor(
                     eventFilter = { event ->
                         val accountUuid = event.notification.accountUuid
                         accountUuid != null && accountUuid in accountUuids
+                    },
+                    onNotificationActionClick = { action ->
+                        when (action) {
+                            is NotificationAction.UpdateIncomingServerSettings ->
+                                FeatureLauncherActivity.launch(
+                                    context = parent.context,
+                                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountUuid),
+                                )
+
+                            is NotificationAction.UpdateOutgoingServerSettings ->
+                                FeatureLauncherActivity.launch(
+                                    context = parent.context,
+                                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountUuid),
+                                )
+
+                            else -> Unit
+                        }
                     },
                 )
 
