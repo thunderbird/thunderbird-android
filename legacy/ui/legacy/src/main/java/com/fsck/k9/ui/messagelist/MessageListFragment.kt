@@ -1687,6 +1687,11 @@ class MessageListFragment :
             adapter.restoreSelected(it)
         }
 
+        messageListItems
+            .map { it.account }
+            .toSet()
+            .forEach(messagingController::checkAuthenticationProblem)
+
         resetActionMode()
         computeBatchDirection()
 
