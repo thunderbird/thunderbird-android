@@ -18,6 +18,7 @@ import org.jetbrains.compose.resources.getString
  */
 @ConsistentCopyVisibility
 data class FailedToCreateNotification private constructor(
+    override val accountUuid: String,
     override val title: String,
     override val contentText: String?,
     override val channel: NotificationChannel,
@@ -38,6 +39,7 @@ data class FailedToCreateNotification private constructor(
             accountUuid: String,
             failedNotification: AppNotification,
         ): FailedToCreateNotification = FailedToCreateNotification(
+            accountUuid = accountUuid,
             title = getString(resource = Res.string.notification_notify_error_title),
             contentText = getString(resource = Res.string.notification_notify_error_text),
             channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),
