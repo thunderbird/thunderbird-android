@@ -6,7 +6,7 @@ class TextToHtml private constructor(
     private val text: CharSequence,
     private val html: StringBuilder,
     private val retainOriginalWhitespace: Boolean,
-    private val divOrSpan: TODO
+    private val htmlTag: HTMLTag
 ) {
     fun appendAsHtmlFragment() {
         appendHtmlPrefix()
@@ -60,11 +60,11 @@ class TextToHtml private constructor(
     }
 
     private fun appendHtmlPrefix() {
-        html.append("""<${divOrSpan.html} dir="auto">""")
+        html.append("""<${htmlTag.html} dir="auto">""")
     }
 
     private fun appendHtmlSuffix() {
-        html.append("</${divOrSpan.html}>")
+        html.append("</${htmlTag.html}>")
     }
 
     private fun appendHtmlEncoded(startIndex: Int, endIndex: Int) {
@@ -148,13 +148,13 @@ class TextToHtml private constructor(
 
         @JvmStatic
         fun appendAsHtmlFragment(html: StringBuilder, text: CharSequence, retainOriginalWhitespace: Boolean) {
-            TextToHtml(text, html, retainOriginalWhitespace, TODO.DIV).appendAsHtmlFragment()
+            TextToHtml(text, html, retainOriginalWhitespace, HTMLTag.DIV).appendAsHtmlFragment()
         }
 
         @JvmStatic
-        fun toHtmlFragment(text: CharSequence, retainOriginalWhitespace: Boolean, divOrSpan: TODO): String {
+        fun toHtmlFragment(text: CharSequence, retainOriginalWhitespace: Boolean, htmlTag: HTMLTag): String {
             val html = StringBuilder(text.length + TEXT_TO_HTML_EXTRA_BUFFER_LENGTH)
-            TextToHtml(text, html, retainOriginalWhitespace, divOrSpan).appendAsHtmlFragment()
+            TextToHtml(text, html, retainOriginalWhitespace, htmlTag).appendAsHtmlFragment()
             return html.toString()
         }
     }

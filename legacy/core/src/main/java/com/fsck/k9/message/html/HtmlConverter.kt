@@ -47,12 +47,8 @@ object HtmlConverter {
      */
     @JvmStatic
     @JvmOverloads
-    fun textToHtmlFragment(text: String, divOrSpan: TODO = TODO.DIV): String {
-        return TextToHtml.toHtmlFragment(text, retainOriginalWhitespace = false, divOrSpan)
+    fun textToHtmlFragment(text: String, htmlTag: HTMLTag = HTMLTag.DIV): String {
+        return TextToHtml.toHtmlFragment(text, retainOriginalWhitespace = false, htmlTag)
     }
 }
 
-enum class TODO(val html: String) {
-    DIV("div"),
-    SPAN("span")
-}

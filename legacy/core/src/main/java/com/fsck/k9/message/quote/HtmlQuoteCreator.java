@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import com.fsck.k9.CoreResourceProvider;
 import app.k9mail.legacy.di.DI;
-import com.fsck.k9.message.html.TODO;
+import com.fsck.k9.message.html.HTMLTag;
 import net.thunderbird.core.android.account.QuoteStyle;
 import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Address;
@@ -69,7 +69,7 @@ public class HtmlQuoteCreator {
             insertable.insertIntoQuotedFooter(footer);
         } else if (quoteStyle == QuoteStyle.HEADER) {
 
-            TODO span = TODO.SPAN;
+            HTMLTag span = HTMLTag.SPAN; //Fixes #9236
 
             StringBuilder header = new StringBuilder();
             header.append("<div style='font-size:10.0pt;font-family:\"Tahoma\",\"sans-serif\";padding:3.0pt 0in 0in 0in'>\r\n");
