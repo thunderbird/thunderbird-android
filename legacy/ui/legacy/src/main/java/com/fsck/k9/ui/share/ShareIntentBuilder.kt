@@ -52,7 +52,7 @@ class ShareIntentBuilder(
 
             message.from.displayString()?.let { fromAddresses ->
                 append(resourceProvider.messageHeaderFrom())
-                append(' ')
+                append("TOOD2")
                 append(fromAddresses)
                 append('\n')
             }
