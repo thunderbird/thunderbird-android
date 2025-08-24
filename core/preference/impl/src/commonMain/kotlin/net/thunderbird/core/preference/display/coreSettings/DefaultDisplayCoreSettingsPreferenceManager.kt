@@ -27,20 +27,20 @@ class DefaultDisplayCoreSettingsPreferenceManager(
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
 ) : DisplayCoreSettingsPreferenceManager {
 
-    private val configState: MutableStateFlow<DisplayCoreSetting> = MutableStateFlow(value = loadConfig())
+    private val configState: MutableStateFlow<DisplayCoreSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
 
-    override fun getConfig(): DisplayCoreSetting = configState.value
+    override fun getConfig(): DisplayCoreSettings = configState.value
 
-    override fun getConfigFlow(): Flow<DisplayCoreSetting> = configState
+    override fun getConfigFlow(): Flow<DisplayCoreSettings> = configState
 
-    override fun save(config: DisplayCoreSetting) {
+    override fun save(config: DisplayCoreSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
         writeConfig(config)
         configState.update { config }
     }
 
-    private fun loadConfig(): DisplayCoreSetting = DisplayCoreSetting(
+    private fun loadConfig(): DisplayCoreSettings = DisplayCoreSettings(
         fixedMessageViewTheme = storage.getBoolean(
             KEY_FIXED_MESSAGE_VIEW_THEME,
             DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME,
@@ -64,7 +64,7 @@ class DefaultDisplayCoreSettingsPreferenceManager(
         ),
     )
 
-    private fun writeConfig(config: DisplayCoreSetting) {
+    private fun writeConfig(config: DisplayCoreSettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
