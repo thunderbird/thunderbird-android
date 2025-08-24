@@ -55,14 +55,14 @@ class TextQuoteCreator(
 
             originalMessage.from.displayString()?.let { fromAddresses ->
                 append(resourceProvider.messageHeaderFrom())
-                append("TODO")
+                append(" ")
                 append(fromAddresses)
                 append(CRLF)
             }
 
             if (sentDate.isNotEmpty()) {
                 append(resourceProvider.messageHeaderDate())
-                append("TODO")
+                append(" ")
                 append(sentDate)
                 append(CRLF)
             }

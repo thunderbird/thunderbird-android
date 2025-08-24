@@ -6,7 +6,7 @@ class TextToHtml private constructor(
     private val text: CharSequence,
     private val html: StringBuilder,
     private val retainOriginalWhitespace: Boolean,
-    private val htmlTag: HTMLTag
+    private val htmlTag: HTMLTag = HTMLTag.DIV
 ) {
     fun appendAsHtmlFragment() {
         appendHtmlPrefix()
@@ -148,7 +148,7 @@ class TextToHtml private constructor(
 
         @JvmStatic
         fun appendAsHtmlFragment(html: StringBuilder, text: CharSequence, retainOriginalWhitespace: Boolean) {
-            TextToHtml(text, html, retainOriginalWhitespace, HTMLTag.DIV).appendAsHtmlFragment()
+            TextToHtml(text, html, retainOriginalWhitespace).appendAsHtmlFragment()
         }
 
         @JvmStatic
