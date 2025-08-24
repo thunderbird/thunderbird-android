@@ -11,6 +11,8 @@ import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceMana
 import net.thunderbird.core.preference.debugging.DefaultDebuggingSettingsPreferenceManager
 import net.thunderbird.core.preference.display.DefaultDisplaySettingsPreferenceManager
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.display.coreSettings.DefaultDisplayCoreSettingsPreferenceManager
+import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
 import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.DefaultNotificationPreferenceManager
@@ -52,11 +54,19 @@ val preferencesModule = module {
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
+    single<DisplayCoreSettingsPreferenceManager>{
+        DefaultDisplayCoreSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
     single<DisplaySettingsPreferenceManager> {
         DefaultDisplaySettingsPreferenceManager(
             logger = get(),
             storage = get<Preferences>().storage,
             storageEditor = get<Preferences>().createStorageEditor(),
+            coreSettingsPreferenceManager = get(),
         )
     }
     single<NetworkSettingsPreferenceManager> {
@@ -87,6 +97,7 @@ val preferencesModule = module {
             privacySettingsPreferenceManager = get(),
             notificationPreferenceManager = get(),
             displaySettingsSettingsPreferenceManager = get(),
+            displayCoreSettingsPreferenceManager = get(),
             networkSettingsPreferenceManager = get(),
             debuggingSettingsPreferenceManager = get(),
             debugLogConfigurator = get(),

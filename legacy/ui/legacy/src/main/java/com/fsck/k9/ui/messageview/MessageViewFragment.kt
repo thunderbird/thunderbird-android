@@ -319,7 +319,7 @@ class MessageViewFragment :
         menu.findItem(R.id.compose).isVisible = true
 
         val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
-        if (generalSettingsManager.getConfig().display.fixedMessageViewTheme) {
+        if (generalSettingsManager.getConfig().display.coreSetting.fixedMessageViewTheme) {
             toggleTheme.isVisible = false
         } else {
             // Set title of menu item to switch to dark/light theme

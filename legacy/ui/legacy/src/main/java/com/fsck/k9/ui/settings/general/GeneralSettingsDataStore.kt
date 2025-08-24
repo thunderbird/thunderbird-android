@@ -27,7 +27,7 @@ class GeneralSettingsDataStore(
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
-            "fixed_message_view_theme" -> generalSettingsManager.getConfig().display.fixedMessageViewTheme
+            "fixed_message_view_theme" -> generalSettingsManager.getConfig().display.coreSetting.fixedMessageViewTheme
             "animations" -> generalSettingsManager.getConfig().display.isShowAnimations
             "show_unified_inbox" -> generalSettingsManager.getConfig().display.isShowUnifiedInbox
             "show_starred_count" -> generalSettingsManager.getConfig().display.isShowStarredCount
@@ -143,11 +143,17 @@ class GeneralSettingsDataStore(
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
             "language" -> appLanguageManager.getAppLanguage()
-            "theme" -> appThemeToString(generalSettingsManager.getConfig().display.appTheme)
-            "message_compose_theme" -> subThemeToString(generalSettingsManager.getConfig().display.messageComposeTheme)
-            "messageViewTheme" -> subThemeToString(generalSettingsManager.getConfig().display.messageViewTheme)
+            "theme" -> appThemeToString(generalSettingsManager.getConfig().display.coreSetting.appTheme)
+            "message_compose_theme" -> subThemeToString(
+                generalSettingsManager.getConfig().display.coreSetting.messageComposeTheme,
+            )
+
+            "messageViewTheme" -> subThemeToString(
+                generalSettingsManager.getConfig().display.coreSetting.messageViewTheme,
+            )
+
             "messagelist_preview_lines" -> K9.messageListPreviewLines.toString()
-            "splitview_mode" -> generalSettingsManager.getConfig().display.splitViewMode.name
+            "splitview_mode" -> generalSettingsManager.getConfig().display.coreSetting.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> generalSettingsManager.getConfig().network.backgroundOps.name
@@ -285,34 +291,69 @@ class GeneralSettingsDataStore(
     private fun setTheme(value: String) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(appTheme = stringToAppTheme(value)))
+            settings.copy(
+                display = settings.display.copy(
+                    coreSetting = settings.display.coreSetting.copy(
+                        appTheme = stringToAppTheme(value),
+                    ),
+                ),
+            )
         }
     }
 
     private fun setMessageComposeTheme(subThemeString: String) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(messageComposeTheme = stringToSubTheme(subThemeString)))
+            settings.copy(
+                display = settings.display.copy(
+                    coreSetting = settings.display.coreSetting.copy(
+                        messageComposeTheme = stringToSubTheme(
+                            subThemeString,
+                        ),
+                    ),
+                ),
+            )
         }
     }
 
     private fun setMessageViewTheme(subThemeString: String) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(messageViewTheme = stringToSubTheme(subThemeString)))
+            settings.copy(
+                display = settings.display.copy(
+                    coreSetting = settings.display.coreSetting.copy(
+                        messageViewTheme = stringToSubTheme(
+                            subThemeString,
+                        ),
+                    ),
+                ),
+            )
         }
     }
+
     private fun setSplitViewModel(mode: SplitViewMode) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(splitViewMode = mode))
+            settings.copy(
+                display = settings.display.copy(
+                    coreSetting = settings.display.coreSetting.copy(
+                        splitViewMode = mode
+                    )
+                )
+            )
         }
     }
 
     private fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(fixedMessageViewTheme = fixedMessageViewTheme))
+            settings.copy(
+                display = settings.display.copy(
+                    coreSetting = settings.display.coreSetting.copy(
+                        fixedMessageViewTheme = fixedMessageViewTheme,
+                    ),
+                ),
+            )
         }
     }
 

@@ -11,6 +11,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.display.coreSettings.DefaultDisplayCoreSettingsPreferenceManager
+import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -24,6 +26,7 @@ class DefaultDisplaySettingsPreferenceManager(
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
+    private val coreSettingsPreferenceManager: DisplayCoreSettingsPreferenceManager
 ) : DisplaySettingsPreferenceManager {
     private val configState: MutableStateFlow<DisplaySettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
@@ -33,15 +36,13 @@ class DefaultDisplaySettingsPreferenceManager(
 
     override fun save(config: DisplaySettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
+        coreSettingsPreferenceManager.save(config.coreSetting)
         writeConfig(config)
         configState.update { config }
     }
 
     private fun loadConfig(): DisplaySettings = DisplaySettings(
-        fixedMessageViewTheme = storage.getBoolean(
-            KEY_FIXED_MESSAGE_VIEW_THEME,
-            DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME,
-        ),
+        coreSetting = coreSettingsPreferenceManager.getConfig(),
         isShowUnifiedInbox = storage.getBoolean(
             KEY_SHOW_UNIFIED_INBOX,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_UNIFIED_INBOX,
@@ -49,15 +50,6 @@ class DefaultDisplaySettingsPreferenceManager(
         showRecentChanges = storage.getBoolean(
             KEY_SHOW_RECENT_CHANGES,
             DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES,
-        ),
-        appTheme = storage.getEnumOrDefault(KEY_THEME, DISPLAY_SETTINGS_DEFAULT_APP_THEME),
-        messageViewTheme = storage.getEnumOrDefault(
-            KEY_MESSAGE_VIEW_THEME,
-            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_THEME,
-        ),
-        messageComposeTheme = storage.getEnumOrDefault(
-            KEY_MESSAGE_COMPOSE_THEME,
-            DISPLAY_SETTINGS_DEFAULT_MESSAGE_COMPOSE_THEME,
         ),
         shouldShowSetupArchiveFolderDialog = storage.getBoolean(
             KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
@@ -119,30 +111,12 @@ class DefaultDisplaySettingsPreferenceManager(
             KEY_SHOW_CONTACT_PICTURE,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE,
         ),
-        appLanguage = storage.getStringOrDefault(
-            KEY_APP_LANGUAGE,
-            DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE,
-        ),
-        splitViewMode = storage.getEnumOrDefault(
-            KEY_SPLIT_VIEW_MODE,
-            DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE,
-        ),
     )
 
     private fun writeConfig(config: DisplaySettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putEnum(KEY_THEME, config.appTheme)
-                storageEditor.putEnum(KEY_MESSAGE_VIEW_THEME, config.messageViewTheme)
-                storageEditor.putEnum(
-                    KEY_MESSAGE_COMPOSE_THEME,
-                    config.messageComposeTheme,
-                )
-                storageEditor.putBoolean(
-                    KEY_FIXED_MESSAGE_VIEW_THEME,
-                    config.fixedMessageViewTheme,
-                )
                 storageEditor.putBoolean(KEY_SHOW_UNIFIED_INBOX, config.isShowUnifiedInbox)
                 storageEditor.putBoolean(
                     KEY_CHANGE_REGISTERED_NAME_COLOR,
@@ -193,8 +167,6 @@ class DefaultDisplaySettingsPreferenceManager(
                     config.isUseMessageViewFixedWidthFont,
                 )
                 storageEditor.putBoolean(KEY_AUTO_FIT_WIDTH, config.isAutoFitWidth)
-                storageEditor.putString(KEY_APP_LANGUAGE, config.appLanguage)
-                storageEditor.putEnum(KEY_SPLIT_VIEW_MODE, config.splitViewMode)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

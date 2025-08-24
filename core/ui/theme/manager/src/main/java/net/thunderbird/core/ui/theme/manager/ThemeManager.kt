@@ -31,28 +31,28 @@ class ThemeManager(
         get() = generalSettingsManager.getConfig()
 
     override val appTheme: Theme
-        get() = when (generalSettings.display.appTheme) {
+        get() = when (generalSettings.display.coreSetting.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
             AppTheme.FOLLOW_SYSTEM -> getSystemTheme()
         }
 
     override val messageViewTheme: Theme
-        get() = resolveTheme(generalSettings.display.messageViewTheme)
+        get() = resolveTheme(generalSettings.display.coreSetting.messageViewTheme)
 
     override val messageComposeTheme: Theme
-        get() = resolveTheme(generalSettings.display.messageComposeTheme)
+        get() = resolveTheme(generalSettings.display.coreSetting.messageComposeTheme)
 
     @get:StyleRes
     override val appThemeResourceId: Int = themeProvider.appThemeResourceId
 
     @get:StyleRes
     override val messageViewThemeResourceId: Int
-        get() = getSubThemeResourceId(generalSettings.display.messageViewTheme)
+        get() = getSubThemeResourceId(generalSettings.display.coreSetting.messageViewTheme)
 
     @get:StyleRes
     override val messageComposeThemeResourceId: Int
-        get() = getSubThemeResourceId(generalSettings.display.messageComposeTheme)
+        get() = getSubThemeResourceId(generalSettings.display.coreSetting.messageComposeTheme)
 
     @get:StyleRes
     override val dialogThemeResourceId: Int = themeProvider.dialogThemeResourceId
@@ -62,7 +62,7 @@ class ThemeManager(
 
     fun init() {
         generalSettingsManager.getSettingsFlow()
-            .map { it.display.appTheme }
+            .map { it.display.coreSetting.appTheme }
             .distinctUntilChanged()
             .onEach {
                 updateAppTheme(it)
@@ -82,11 +82,23 @@ class ThemeManager(
     fun toggleMessageViewTheme() {
         if (messageViewTheme === Theme.DARK) {
             generalSettingsManager.update { settings ->
-                settings.copy(display = settings.display.copy(messageViewTheme = SubTheme.LIGHT))
+                settings.copy(
+                    display = settings.display.copy(
+                        coreSetting = settings.display.coreSetting.copy(
+                            messageViewTheme = SubTheme.LIGHT
+                        )
+                    )
+                )
             }
         } else {
             generalSettingsManager.update { settings ->
-                settings.copy(display = settings.display.copy(messageViewTheme = SubTheme.DARK))
+                settings.copy(
+                    display = settings.display.copy(
+                        coreSetting = settings.display.coreSetting.copy(
+                            messageViewTheme = SubTheme.DARK
+                        )
+                    )
+                )
             }
         }
     }

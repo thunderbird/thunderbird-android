@@ -327,7 +327,7 @@ open class MessageList :
     }
 
     private fun useSplitView(): Boolean {
-        val splitViewMode = generalSettingsManager.getConfig().display.splitViewMode
+        val splitViewMode = generalSettingsManager.getConfig().display.coreSetting.splitViewMode
         val orientation = resources.configuration.orientation
         return splitViewMode === SplitViewMode.ALWAYS ||
             splitViewMode === SplitViewMode.WHEN_IN_LANDSCAPE &&

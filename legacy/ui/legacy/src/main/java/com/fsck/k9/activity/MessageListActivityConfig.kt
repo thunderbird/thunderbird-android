@@ -45,7 +45,7 @@ data class MessageListActivityConfig(
         ): MessageListActivityConfig {
             val settings = generalSettingsManager.getConfig()
             return MessageListActivityConfig(
-                appTheme = settings.display.appTheme,
+                appTheme = settings.display.coreSetting.appTheme,
                 isShowUnifiedInbox = settings.display.isShowUnifiedInbox,
                 isShowMessageListStars = settings.display.isShowMessageListStars,
                 isShowCorrespondentNames = settings.display.isShowCorrespondentNames,
@@ -57,10 +57,10 @@ data class MessageListActivityConfig(
                 isUseBackgroundAsUnreadIndicator = settings.display.isUseBackgroundAsUnreadIndicator,
                 isShowComposeButton = settings.display.isShowComposeButtonOnMessageList,
                 contactNameColor = K9.contactNameColor,
-                messageViewTheme = settings.display.messageViewTheme,
+                messageViewTheme = settings.display.coreSetting.messageViewTheme,
                 messageListPreviewLines = K9.messageListPreviewLines,
                 messageListDensity = K9.messageListDensity,
-                splitViewMode = settings.display.splitViewMode,
+                splitViewMode = settings.display.coreSetting.splitViewMode,
                 fontSizeMessageListSubject = K9.fontSizes.messageListSubject,
                 fontSizeMessageListSender = K9.fontSizes.messageListSender,
                 fontSizeMessageListDate = K9.fontSizes.messageListDate,
