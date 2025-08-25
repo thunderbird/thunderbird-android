@@ -3,6 +3,8 @@ package net.thunderbird.app.common.core
 import android.content.Context
 import kotlin.time.ExperimentalTime
 import net.thunderbird.app.common.core.logging.DefaultLogLevelManager
+import net.thunderbird.core.common.inject.getList
+import net.thunderbird.core.common.inject.singleListOf
 import net.thunderbird.core.logging.DefaultLogger
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogLevelManager
@@ -23,16 +25,14 @@ val appCommonCoreModule: Module = module {
         DefaultLogLevelManager()
     }.bind<LogLevelProvider>()
 
-    single<List<LogSink>> {
-        listOf(
-            ConsoleLogSink(level = LogLevel.VERBOSE),
-        )
-    }
+    singleListOf<LogSink>(
+        { ConsoleLogSink(level = LogLevel.VERBOSE) },
+    )
 
     single<CompositeLogSink> {
         CompositeLogSink(
             logLevelProvider = get(),
-            sinks = get(),
+            sinks = getList(),
         )
     }
 
@@ -46,7 +46,7 @@ val appCommonCoreModule: Module = module {
     single<CompositeLogSink>(named(SYNC_DEBUG_LOG)) {
         CompositeLogSink(
             logLevelProvider = get(),
-            sinks = get(),
+            sinks = getList(),
         )
     }
 
