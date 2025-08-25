@@ -104,6 +104,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `single notification with quiet time disabled`() {
+        setClockTo("23:01")
         setQuietTime(false)
         val notificationData = createNotificationData()
 
