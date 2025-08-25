@@ -54,7 +54,7 @@ class TestApp : Application() {
         val fileSink: FileLogSink = mock<FileLogSink>()
 
         val compositeSink: CompositeLogSink = CompositeLogSink(
-            level = LogLevel.DEBUG,
+            logLevelProvider = { LogLevel.DEBUG },
             manager = sinkManager,
             sinks = listOf(fileSink),
         )

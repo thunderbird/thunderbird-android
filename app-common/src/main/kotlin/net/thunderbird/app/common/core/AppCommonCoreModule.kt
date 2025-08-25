@@ -37,7 +37,7 @@ val appCommonCoreModule: Module = module {
 
     single<CompositeLogSink> {
         CompositeLogSink(
-            level = get(),
+            logLevelProvider = get(),
             sinks = get(),
         )
     }
@@ -51,7 +51,7 @@ val appCommonCoreModule: Module = module {
 
     single<CompositeLogSink>(named(SYNC_DEBUG_LOG)) {
         CompositeLogSink(
-            level = get(),
+            logLevelProvider = get(),
             sinks = get(),
         )
     }
