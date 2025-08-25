@@ -62,7 +62,7 @@ data class BannerGlobalVisual(
                     },
                     severity = notification.severity,
                     action = notification
-                        .actions
+                        .actionsWithoutTap
                         .let { actions ->
                             check(actions.size in 0..1) {
                                 "A notification with a BannerGlobalNotification style must have at zero or one action"
@@ -125,7 +125,7 @@ data class BannerInlineVisual(
                     supportingText = checkContentText(notification.contentText),
                     severity = notification.severity,
                     actions = notification
-                        .actions
+                        .actionsWithoutTap
                         .let { actions ->
                             check(actions.size in 1..2) {
                                 "A notification with a BannerInlineNotification style must have at one or two actions"
@@ -197,7 +197,7 @@ data class SnackbarVisual(
                     message = checkNotNull(notification.contentText) {
                         "A notification with a SnackbarNotification style must have a contentText not null"
                     },
-                    action = checkNotNull(notification.actions.singleOrNull()) {
+                    action = checkNotNull(notification.actionsWithoutTap.singleOrNull()) {
                         "A notification with a SnackbarNotification style must have exactly one action"
                     },
                     duration = style.duration,
@@ -219,3 +219,8 @@ private inline fun <
             transform(style)
         }
 }
+
+private val InAppNotification.actionsWithoutTap: Set<NotificationAction>
+    get() = actions
+        .filterNot { it is NotificationAction.Tap }
+        .toSet()
