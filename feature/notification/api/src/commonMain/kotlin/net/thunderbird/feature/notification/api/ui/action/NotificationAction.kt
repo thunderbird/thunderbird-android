@@ -95,7 +95,7 @@ sealed class NotificationAction {
     /**
      * Action to prompt the user to update server settings, typically when authentication fails.
      */
-    data class UpdateIncomingServerSettings(val accountUuid: String) : NotificationAction() {
+    data class UpdateIncomingServerSettings(val accountUuid: String, val accountNumber: Int) : NotificationAction() {
         override val icon: NotificationIcon = NotificationActionIcons.UpdateServerSettings
         override val titleResource: StringResource = Res.string.notification_action_update_server_settings
     }
@@ -103,7 +103,7 @@ sealed class NotificationAction {
     /**
      * Action to prompt the user to update server settings, typically when authentication fails.
      */
-    data class UpdateOutgoingServerSettings(val accountUuid: String) : NotificationAction() {
+    data class UpdateOutgoingServerSettings(val accountUuid: String, val accountNumber: Int) : NotificationAction() {
         override val icon: NotificationIcon = NotificationActionIcons.UpdateServerSettings
         override val titleResource: StringResource = Res.string.notification_action_update_server_settings
     }

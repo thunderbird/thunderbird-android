@@ -5,6 +5,7 @@ import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.impl.intent.action.AlarmPermissionMissingNotificationTapActionIntentCreator
 import net.thunderbird.feature.notification.impl.intent.action.DefaultNotificationActionIntentCreator
 import net.thunderbird.feature.notification.impl.intent.action.NotificationActionIntentCreator
+import net.thunderbird.feature.notification.impl.intent.action.UpdateServerSettingsNotificationActionIntentCreator
 import net.thunderbird.feature.notification.impl.receiver.AndroidSystemNotificationNotifier
 import net.thunderbird.feature.notification.impl.receiver.SystemNotificationNotifier
 import net.thunderbird.feature.notification.impl.ui.action.DefaultSystemNotificationActionCreator
@@ -19,6 +20,10 @@ internal actual val platformFeatureNotificationModule: Module = module {
     single<List<NotificationActionIntentCreator<*, *>>>(named<NotificationActionIntentCreator.TypeQualifier>()) {
         listOf(
             AlarmPermissionMissingNotificationTapActionIntentCreator(
+                context = androidApplication(),
+                logger = get(),
+            ),
+            UpdateServerSettingsNotificationActionIntentCreator(
                 context = androidApplication(),
                 logger = get(),
             ),
