@@ -71,34 +71,9 @@ internal class RealImapFolder(
     }
 
     @get:Throws(MessagingException::class)
-    private val prefixedName: String
-        get() {
-            var prefixedName = ""
-            if (!INBOX.equals(serverId, ignoreCase = true)) {
-                val connection = synchronized(this) {
-                    this.connection ?: connectionManager.getConnection()
-                }
-
-                try {
-                    connection.open()
-                } catch (ioe: IOException) {
-                    throw MessagingException("Unable to get IMAP prefix", ioe)
-                } finally {
-                    if (this.connection == null) {
-                        connectionManager.releaseConnection(connection)
-                    }
-                }
-                prefixedName = internalImapStore.getCombinedPrefix()
-            }
-            prefixedName += serverId
-
-            return prefixedName
-        }
-
-    @get:Throws(MessagingException::class)
     private val encodedName: String
         get() {
-            return folderNameCodec.encode(prefixedName)
+            return folderNameCodec.encode(serverId)
         }
 
     @Throws(MessagingException::class, IOException::class)
@@ -307,7 +282,7 @@ internal class RealImapFolder(
 
         val uids = messages.map { it.uid.toLong() }.toSet()
         val encodedDestinationFolderName =
-            folderNameCodec.encode(folder.prefixedName)
+            folderNameCodec.encode(folder.serverId)
         val escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName)
 
         return try {
@@ -343,7 +318,7 @@ internal class RealImapFolder(
 
         val uids = messages.map { it.uid.toLong() }.toSet()
         val encodedDestinationFolderName =
-            folderNameCodec.encode(folder.prefixedName)
+            folderNameCodec.encode(folder.serverId)
         val escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName)
 
         return try {
