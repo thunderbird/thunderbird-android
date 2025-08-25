@@ -8,11 +8,13 @@ import net.thunderbird.ui.catalog.ui.page.common.PagedContent
 import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.APP_BAR
 import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.BANNER
 import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.DIALOG
+import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.MESSAGE_ITEM
 import net.thunderbird.ui.catalog.ui.page.organism.CatalogOrganismPage.SNACKBAR
 import net.thunderbird.ui.catalog.ui.page.organism.items.SnackbarItems
 import net.thunderbird.ui.catalog.ui.page.organism.items.appBarItems
 import net.thunderbird.ui.catalog.ui.page.organism.items.bannerItems
 import net.thunderbird.ui.catalog.ui.page.organism.items.dialogItems
+import net.thunderbird.ui.catalog.ui.page.organism.items.message.messageItems
 
 @Composable
 fun CatalogOrganismContent(
@@ -30,6 +32,7 @@ fun CatalogOrganismContent(
                 APP_BAR -> appBarItems()
                 DIALOG -> dialogItems()
                 BANNER -> bannerItems()
+                MESSAGE_ITEM -> messageItems()
                 SNACKBAR -> Unit
             }
         },
