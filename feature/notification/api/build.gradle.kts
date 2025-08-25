@@ -16,6 +16,11 @@ kotlin {
             implementation(projects.core.ui.compose.designsystem)
             implementation(projects.core.ui.compose.theme2.common)
         }
+        androidUnitTest.dependencies {
+            implementation(projects.core.ui.compose.testing)
+            implementation(libs.bundles.shared.jvm.test.compose)
+            implementation(libs.bundles.shared.jvm.android.compose.debug)
+        }
         jvmTest.dependencies {
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.bundles.shared.jvm.test)
@@ -34,6 +39,11 @@ kotlin {
 
 android {
     namespace = "net.thunderbird.feature.notification.api"
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 java {
