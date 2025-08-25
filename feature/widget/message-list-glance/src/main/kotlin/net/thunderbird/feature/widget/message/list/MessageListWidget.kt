@@ -49,7 +49,7 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
                     val messageListConfig = MessageListConfig(
                         search = unifiedInboxSearch,
                         showingThreadedList = generalSettingsManager.getConfig()
-                            .display.isThreadedViewEnabled,
+                            .display.inboxSettings.isThreadedViewEnabled,
                         sortType = SortType.SORT_DATE,
                         sortAscending = false,
                         sortDateAscending = false,

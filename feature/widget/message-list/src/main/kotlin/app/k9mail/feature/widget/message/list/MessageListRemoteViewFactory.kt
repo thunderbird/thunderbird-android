@@ -36,7 +36,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
             unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
         ).relatedSearch
 
-        senderAboveSubject = generalSettingsManager.getConfig().display.isMessageListSenderAboveSubject
+        senderAboveSubject = generalSettingsManager.getConfig().display.inboxSettings.isMessageListSenderAboveSubject
         readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read)
         unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread)
     }
@@ -49,7 +49,10 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
         // TODO: Use same sort order that is used for the Unified Inbox inside the app
         val messageListConfig = MessageListConfig(
             search = unifiedInboxSearch,
-            showingThreadedList = generalSettingsManager.getConfig().display.isThreadedViewEnabled,
+            showingThreadedList = generalSettingsManager.getConfig()
+                .display
+                .inboxSettings
+                .isThreadedViewEnabled,
             sortType = SortType.SORT_DATE,
             sortAscending = false,
             sortDateAscending = false,

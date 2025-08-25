@@ -7,6 +7,7 @@ import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettings
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -29,7 +30,15 @@ class UnifiedInboxConfiguratorTest {
     fun setUp() {
         accountManager = mock(AccountManager::class.java)
         generalSettingsManager =
-            FakeGeneralSettingsManager(GeneralSettings(display = DisplaySettings(isShowUnifiedInbox = false)))
+            FakeGeneralSettingsManager(
+                GeneralSettings(
+                    display = DisplaySettings(
+                        inboxSettings = DisplayInboxSettings(
+                            isShowUnifiedInbox = false,
+                        ),
+                    ),
+                ),
+            )
         configurator = UnifiedInboxConfigurator(accountManager, generalSettingsManager)
 
         startKoin {
@@ -55,7 +64,7 @@ class UnifiedInboxConfiguratorTest {
         configurator.configureUnifiedInbox()
 
         // Then
-        assertThat(generalSettingsManager.getConfig().display.isShowUnifiedInbox).isEqualTo(true)
+        assertThat(generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox).isEqualTo(true)
     }
 
     @Test
@@ -67,7 +76,7 @@ class UnifiedInboxConfiguratorTest {
         configurator.configureUnifiedInbox()
 
         // Then
-        assertThat(generalSettingsManager.getConfig().display.isShowUnifiedInbox).isEqualTo(false)
+        assertThat(generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox).isEqualTo(false)
     }
 
     @Test
@@ -79,7 +88,7 @@ class UnifiedInboxConfiguratorTest {
         configurator.configureUnifiedInbox()
 
         // Then
-        assertThat(generalSettingsManager.getConfig().display.isShowUnifiedInbox).isEqualTo(false)
+        assertThat(generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox).isEqualTo(false)
     }
 }
 

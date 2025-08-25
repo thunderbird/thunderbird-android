@@ -14,7 +14,13 @@ class UnifiedInboxConfigurator(
     fun configureUnifiedInbox() {
         if (accountManager.getAccounts().size == 2) {
             generalSettingsManager.update { settings ->
-                settings.copy(display = settings.display.copy(isShowUnifiedInbox = true))
+                settings.copy(
+                    display = settings.display.copy(
+                        inboxSettings = settings.display.inboxSettings.copy(
+                            isShowUnifiedInbox = true,
+                        ),
+                    ),
+                )
             }
         }
     }

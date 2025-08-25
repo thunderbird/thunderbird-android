@@ -19,6 +19,8 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
 import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
+import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
@@ -41,6 +43,8 @@ internal class DefaultGeneralSettingsManager(
     private val privacySettingsPreferenceManager: PrivacySettingsPreferenceManager,
     private val notificationPreferenceManager: NotificationPreferenceManager,
     private val displaySettingsSettingsPreferenceManager: DisplaySettingsPreferenceManager,
+    private val displayCoreSettingsPreferenceManager: DisplayCoreSettingsPreferenceManager,
+    private val displayInboxSettingsPreferenceManager: DisplayInboxSettingsPreferenceManager,
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
     private val debugLogConfigurator: DebugLogConfigurator,
@@ -64,6 +68,16 @@ internal class DefaultGeneralSettingsManager(
         .combine(displaySettingsSettingsPreferenceManager.getConfigFlow()) { generalSettings, displaySettings ->
             generalSettings.copy(
                 display = displaySettings,
+            )
+        }
+        .combine(displayCoreSettingsPreferenceManager.getConfigFlow()) { generalSettings, coreSettings ->
+            generalSettings.copy(
+                display = generalSettings.display.copy(coreSettings = coreSettings),
+            )
+        }
+        .combine(displayInboxSettingsPreferenceManager.getConfigFlow()) { generalSettings, inboxSettings ->
+            generalSettings.copy(
+                display = generalSettings.display.copy(inboxSettings = inboxSettings),
             )
         }
         .combine(networkSettingsPreferenceManager.getConfigFlow()) { generalSettings, networkSettings ->
@@ -125,6 +139,8 @@ internal class DefaultGeneralSettingsManager(
                 privacySettingsPreferenceManager.save(config.privacy)
                 notificationPreferenceManager.save(config.notification)
                 displaySettingsSettingsPreferenceManager.save(config.display)
+                displayCoreSettingsPreferenceManager.save(config.display.coreSettings)
+                displayInboxSettingsPreferenceManager.save(config.display.inboxSettings)
                 networkSettingsPreferenceManager.save(config.network)
                 debuggingSettingsPreferenceManager.save(config.debugging)
             }
