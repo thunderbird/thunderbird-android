@@ -710,6 +710,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                     AuthenticationErrorNotification.Companion.invoke(
                         account.getUuid(),
                         account.getDisplayName(),
+                        account.getAccountNumber(),
                         incoming,
                         continuation
                     )
