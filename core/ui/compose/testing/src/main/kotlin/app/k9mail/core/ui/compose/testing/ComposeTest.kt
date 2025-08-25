@@ -15,6 +15,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.test.espresso.Espresso
 import app.k9mail.core.ui.compose.theme2.thunderbird.ThunderbirdTheme2
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.EmptyCoroutineContext
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -30,6 +33,13 @@ open class ComposeTest {
 
     fun runComposeTest(testContent: ComposeContentTestRule.() -> Unit) = with(composeTestRule) {
         testContent()
+    }
+
+    fun runComposeTestSuspend(
+        context: CoroutineContext = EmptyCoroutineContext,
+        testContent: suspend ComposeContentTestRule.() -> Unit,
+    ) = runTest(context) {
+        composeTestRule.testContent()
     }
 }
 
