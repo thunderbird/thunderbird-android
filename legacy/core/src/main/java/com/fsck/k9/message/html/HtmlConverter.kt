@@ -46,7 +46,9 @@ object HtmlConverter {
      * Convert a plain text string into an HTML fragment.
      */
     @JvmStatic
-    fun textToHtmlFragment(text: String): String {
-        return TextToHtml.toHtmlFragment(text, retainOriginalWhitespace = false)
+    @JvmOverloads
+    fun textToHtmlFragment(text: String, htmlTag: HTMLTag = HTMLTag.DIV): String {
+        return TextToHtml.toHtmlFragment(text, retainOriginalWhitespace = false, htmlTag)
     }
 }
+
