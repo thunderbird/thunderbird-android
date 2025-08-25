@@ -44,7 +44,7 @@ class TestApp : Application() {
         val fileSink: FileLogSink = org.mockito.kotlin.mock<FileLogSink>()
 
         val compositeSink: CompositeLogSink = CompositeLogSink(
-            level = LogLevel.DEBUG,
+            logLevelProvider = { LogLevel.DEBUG },
             manager = sinkManager,
             sinks = listOf(fileSink),
         )

@@ -2,9 +2,13 @@ package net.thunderbird.app.common.core
 
 import android.content.Context
 import kotlin.time.ExperimentalTime
-import net.thunderbird.app.common.BuildConfig
+import net.thunderbird.app.common.core.logging.DefaultLogLevelManager
+import net.thunderbird.core.common.inject.getList
+import net.thunderbird.core.common.inject.singleListOf
 import net.thunderbird.core.logging.DefaultLogger
 import net.thunderbird.core.logging.LogLevel
+import net.thunderbird.core.logging.LogLevelManager
+import net.thunderbird.core.logging.LogLevelProvider
 import net.thunderbird.core.logging.LogSink
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.composite.CompositeLogSink
@@ -13,25 +17,22 @@ import net.thunderbird.core.logging.file.AndroidFileSystemManager
 import net.thunderbird.core.logging.file.FileLogSink
 import org.koin.core.module.Module
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val appCommonCoreModule: Module = module {
-    single<LogLevel> {
-        if (BuildConfig.DEBUG) LogLevel.VERBOSE else LogLevel.INFO
-    }
+    single<LogLevelManager> {
+        DefaultLogLevelManager()
+    }.bind<LogLevelProvider>()
 
-    single<List<LogSink>> {
-        listOf(
-            ConsoleLogSink(
-                level = get(),
-            ),
-        )
-    }
+    singleListOf<LogSink>(
+        { ConsoleLogSink(level = LogLevel.VERBOSE) },
+    )
 
     single<CompositeLogSink> {
         CompositeLogSink(
-            level = get(),
-            sinks = get(),
+            logLevelProvider = get(),
+            sinks = getList(),
         )
     }
 
@@ -44,8 +45,8 @@ val appCommonCoreModule: Module = module {
 
     single<CompositeLogSink>(named(SYNC_DEBUG_LOG)) {
         CompositeLogSink(
-            level = get(),
-            sinks = get(),
+            logLevelProvider = get(),
+            sinks = getList(),
         )
     }
 
@@ -58,7 +59,7 @@ val appCommonCoreModule: Module = module {
         )
     }
 
-    single<Logger> (named(SYNC_DEBUG_LOG)) {
+    single<Logger>(named(SYNC_DEBUG_LOG)) {
         @OptIn(ExperimentalTime::class)
         DefaultLogger(
             sink = get<CompositeLogSink>(named(SYNC_DEBUG_LOG)),

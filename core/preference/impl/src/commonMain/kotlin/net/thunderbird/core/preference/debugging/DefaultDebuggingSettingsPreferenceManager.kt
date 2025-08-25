@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.core.logging.LogLevel
+import net.thunderbird.core.logging.LogLevelManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
@@ -20,6 +22,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     private val logger: Logger,
     private val storage: Storage,
     private val storageEditor: StorageEditor,
+    private val logLevelManager: LogLevelManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
 ) : DebuggingSettingsPreferenceManager {
@@ -32,7 +35,7 @@ class DefaultDebuggingSettingsPreferenceManager(
     override fun save(config: DebuggingSettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
         writeConfig(config)
-        configState.update { config }
+        configState.update { config.also(::updateDebugLogLevel) }
     }
 
     private fun loadConfig(): DebuggingSettings = DebuggingSettings(
@@ -44,7 +47,7 @@ class DefaultDebuggingSettingsPreferenceManager(
             KEY_ENABLE_SYNC_DEBUG_LOGGING,
             DEBUGGING_SETTINGS_DEFAULT_IS_SYNC_LOGGING_ENABLED,
         ),
-    )
+    ).also(::updateDebugLogLevel)
 
     private fun writeConfig(config: DebuggingSettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
@@ -56,6 +59,14 @@ class DefaultDebuggingSettingsPreferenceManager(
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
             }
+        }
+    }
+
+    private fun updateDebugLogLevel(config: DebuggingSettings) {
+        if (config.isDebugLoggingEnabled) {
+            logLevelManager.override(LogLevel.DEBUG)
+        } else {
+            logLevelManager.restoreDefault()
         }
     }
 }
