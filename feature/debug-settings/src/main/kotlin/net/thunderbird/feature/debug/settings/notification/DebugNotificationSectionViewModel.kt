@@ -204,12 +204,14 @@ internal class DebugNotificationSectionViewModel(
             isIncomingServerError = true,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
+            accountNumber = 0,
         )
 
         CertificateErrorNotification::class -> CertificateErrorNotification(
             isIncomingServerError = true,
             accountUuid = selectedAccount.uuid,
             accountDisplayName = accountDisplay,
+            accountNumber = 0,
         )
 
         FailedToCreateNotification::class -> FailedToCreateNotification(
@@ -218,6 +220,7 @@ internal class DebugNotificationSectionViewModel(
                 isIncomingServerError = true,
                 accountUuid = selectedAccount.uuid,
                 accountDisplayName = accountDisplay,
+                accountNumber = 0,
             ),
         )
 
