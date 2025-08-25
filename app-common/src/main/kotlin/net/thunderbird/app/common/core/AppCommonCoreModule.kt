@@ -23,15 +23,9 @@ val appCommonCoreModule: Module = module {
         DefaultLogLevelManager()
     }.bind<LogLevelProvider>()
 
-    single<LogLevel> {
-        get<LogLevelProvider>().current()
-    }
-
     single<List<LogSink>> {
         listOf(
-            ConsoleLogSink(
-                level = get(),
-            ),
+            ConsoleLogSink(level = LogLevel.VERBOSE),
         )
     }
 
