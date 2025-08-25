@@ -61,6 +61,7 @@ class K9OAuthConfigurationFactory : OAuthConfigurationFactory {
         return listOf(
             "outlook.office365.com",
             "smtp.office365.com",
+            "smtp-mail.outlook.com",
         ) to OAuthConfiguration(
             clientId = "e647013a-ada4-4114-b419-e43d250f99c5",
             scopes = listOf(
