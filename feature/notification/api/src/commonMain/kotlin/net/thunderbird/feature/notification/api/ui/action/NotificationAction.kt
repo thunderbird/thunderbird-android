@@ -39,10 +39,12 @@ sealed class NotificationAction {
      *
      * All [SystemNotification] will have this action implicitly, even if not specified in the
      * [SystemNotification.actions] set.
+     *
+     * @property override The action that will override the tap action for this notification.
      */
-    data object Tap : NotificationAction() {
-        override val icon: NotificationIcon? = null
-        override val titleResource: StringResource? = null
+    data class Tap(val override: NotificationAction? = null) : NotificationAction() {
+        override val icon: NotificationIcon? = override?.icon
+        override val titleResource: StringResource? = override?.titleResource
     }
 
     /**

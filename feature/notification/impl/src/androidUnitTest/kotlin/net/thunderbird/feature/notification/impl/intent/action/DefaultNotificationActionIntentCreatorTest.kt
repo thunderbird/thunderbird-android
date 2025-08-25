@@ -34,7 +34,7 @@ class DefaultNotificationActionIntentCreatorTest {
     fun `accept should return true for any type of notification action`() {
         // Arrange
         val multipleActions = listOf(
-            NotificationAction.Tap,
+            NotificationAction.Tap(),
             NotificationAction.Reply,
             NotificationAction.MarkAsRead,
             NotificationAction.Delete,
@@ -96,7 +96,7 @@ class DefaultNotificationActionIntentCreatorTest {
             val testSubject = createTestSubject(context)
 
             // Act
-            testSubject.create(notification = FakeNotification(), action = NotificationAction.Tap)
+            testSubject.create(notification = FakeNotification(), action = NotificationAction.Tap())
 
             // Assert
             pendingIntentCompat.verify {
