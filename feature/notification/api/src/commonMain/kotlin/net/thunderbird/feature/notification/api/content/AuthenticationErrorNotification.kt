@@ -21,19 +21,22 @@ import org.jetbrains.compose.resources.getString
 data class AuthenticationErrorNotification private constructor(
     val isIncomingServerError: Boolean,
     override val accountUuid: String,
+    val accountNumber: Int,
     override val title: String,
     override val contentText: String?,
     override val channel: NotificationChannel,
     override val icon: NotificationIcon = NotificationIcons.AuthenticationError,
 ) : AppNotification(), SystemNotification, InAppNotification {
     override val severity: NotificationSeverity = NotificationSeverity.Fatal
-    override val actions: Set<NotificationAction> = setOf(
-        if (isIncomingServerError) {
-            NotificationAction.UpdateIncomingServerSettings(accountUuid)
+    override val actions: Set<NotificationAction> = buildSet {
+        val action = if (isIncomingServerError) {
+            NotificationAction.UpdateIncomingServerSettings(accountUuid, accountNumber)
         } else {
-            NotificationAction.UpdateOutgoingServerSettings(accountUuid)
-        },
-    )
+            NotificationAction.UpdateOutgoingServerSettings(accountUuid, accountNumber)
+        }
+        add(action)
+        add(NotificationAction.Tap(override = action))
+    }
     override val inAppNotificationStyle = inAppNotificationStyle { bannerInline() }
 
     override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
@@ -52,10 +55,12 @@ data class AuthenticationErrorNotification private constructor(
         suspend operator fun invoke(
             accountUuid: String,
             accountDisplayName: String,
+            accountNumber: Int,
             isIncomingServerError: Boolean,
         ): AuthenticationErrorNotification = AuthenticationErrorNotification(
             isIncomingServerError = isIncomingServerError,
             accountUuid = accountUuid,
+            accountNumber = accountNumber,
             title = getString(resource = Res.string.notification_authentication_error_title),
             contentText = getString(
                 resource = Res.string.notification_authentication_error_text,
