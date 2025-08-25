@@ -73,3 +73,10 @@ if branch == "beta":
             replace_matching_line(ours, search_term, new_line)
     else:
         raise SystemExit(f"Search term '{search_term}' not found in theirs file.")
+elif branch == "release":
+    search_term = r"versionNameSuffix = \"b[1-9]\""
+    found_line = find_matching_line(theirs, search_term)
+    if found_line:
+        replace_matching_line(ours, search_term, "")
+    else:
+        raise SystemExit(f"Search term '{search_term}' not found in theirs file.")
