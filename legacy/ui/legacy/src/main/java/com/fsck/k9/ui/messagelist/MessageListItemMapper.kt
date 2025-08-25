@@ -53,6 +53,7 @@ class MessageListItemMapper(
             message.messageServerId,
             message.id,
             message.threadRoot,
+            message.size,
         )
     }
 

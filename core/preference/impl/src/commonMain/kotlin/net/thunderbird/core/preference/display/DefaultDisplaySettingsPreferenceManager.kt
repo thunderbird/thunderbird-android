@@ -119,6 +119,10 @@ class DefaultDisplaySettingsPreferenceManager(
             KEY_SHOW_CONTACT_PICTURE,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE,
         ),
+        isShowMessageSize = storage.getBoolean(
+            KEY_SHOW_MESSAGE_SIZE,
+            DISPLAY_SETTINGS_DEFAULT_IS_SHOW_MESSAGE_SIZE,
+        ),
         appLanguage = storage.getStringOrDefault(
             KEY_APP_LANGUAGE,
             DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE,
@@ -175,6 +179,10 @@ class DefaultDisplaySettingsPreferenceManager(
                 storageEditor.putBoolean(
                     KEY_SHOW_CONTACT_PICTURE,
                     config.isShowContactPicture,
+                )
+                storageEditor.putBoolean(
+                    KEY_SHOW_MESSAGE_SIZE,
+                    config.isShowMessageSize,
                 )
                 storageEditor.putBoolean(
                     KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR,

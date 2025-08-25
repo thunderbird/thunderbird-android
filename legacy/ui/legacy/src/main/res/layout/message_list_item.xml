@@ -131,9 +131,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
-        app:layout_constraintEnd_toStartOf="@+id/date"
+        app:layout_constraintEnd_toStartOf="@+id/size"
         app:layout_constraintTop_toTopOf="@+id/top_guideline"
         app:srcCompat="@drawable/ic_attachment"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:singleLine="true"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:visibility="gone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/subject"
+        app:layout_constraintEnd_toStartOf="@+id/date"
+        app:layout_goneMarginEnd="@dimen/messageListHorizontalPadding"
+        tools:text="1.2MB"
+        tools:visibility="visible"
         />
 
     <com.google.android.material.textview.MaterialTextView
@@ -192,7 +208,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="subject,date,thread_count,status,attachment,account_color_chip"
+        app:constraint_referenced_ids="subject,date,thread_count,status,attachment,account_color_chip,size"
         />
 
     <androidx.constraintlayout.widget.Barrier

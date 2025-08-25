@@ -410,6 +410,7 @@ class MessageListRepositoryTest {
                     override val hasAttachments = false
                     override val threadRoot = message.threadRoot
                     override val threadCount = 0
+                    override val size = 1024L
                 },
             )
         }

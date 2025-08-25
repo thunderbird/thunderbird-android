@@ -47,6 +47,9 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_picture" -> generalSettingsManager.getConfig()
                 .display.isShowContactPicture
 
+            "messagelist_show_message_size" -> generalSettingsManager.getConfig()
+                .display.isShowMessageSize
+
             "messagelist_colorize_missing_contact_pictures" -> generalSettingsManager.getConfig()
                 .display.isColorizeMissingContactPictures
 
@@ -95,6 +98,7 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_name" -> setIsShowContactName(isShowContactName = value)
             "messagelist_change_contact_name_color" -> setIsChangeContactNameColor(isChangeContactNameColor = value)
             "messagelist_show_contact_picture" -> setIsShowContactPicture(isShowContactPicture = value)
+            "messagelist_show_message_size" -> setIsShowMessageSize(isShowMessageSize = value)
             "messagelist_colorize_missing_contact_pictures" -> setIsColorizeMissingContactPictures(
                 isColorizeMissingContactPictures = value,
             )
@@ -371,6 +375,13 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
             settings.copy(display = settings.display.copy(isShowContactPicture = isShowContactPicture))
+        }
+    }
+
+    private fun setIsShowMessageSize(isShowMessageSize: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(display = settings.display.copy(isShowMessageSize = isShowMessageSize))
         }
     }
 
