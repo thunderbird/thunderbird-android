@@ -3,7 +3,7 @@
     <string name="unread_widget_select_account">Показывать количество непрочитанных для…</string>
     <string name="unread_widget_account_title">Учётная запись</string>
     <string name="unread_widget_account_summary">Учётная запись для отображения счётчика непрочитанных</string>
-    <string name="unread_widget_unified_inbox_account_summary">Общие \"Входящие\"</string>
+    <string name="unread_widget_unified_inbox_account_summary">Общие входящие</string>
     <string name="unread_widget_folder_enabled_title">Счётчик папок</string>
     <string name="unread_widget_folder_enabled_summary">Показывать счётчик непрочитанных только для одной папки</string>
     <string name="unread_widget_folder_title">Папка</string>

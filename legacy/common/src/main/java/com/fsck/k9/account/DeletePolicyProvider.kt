@@ -1,7 +1,7 @@
 package com.fsck.k9.account
 
-import app.k9mail.core.common.mail.Protocols
-import app.k9mail.legacy.account.DeletePolicy
+import net.thunderbird.core.android.account.DeletePolicy
+import net.thunderbird.core.common.mail.Protocols
 
 /**
  * Decides which [DeletePolicy] an account uses by default.

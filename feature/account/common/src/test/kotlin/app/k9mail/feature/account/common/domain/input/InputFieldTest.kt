@@ -1,7 +1,5 @@
 package app.k9mail.feature.account.common.domain.input
 
-import app.k9mail.core.common.domain.usecase.validation.ValidationError
-import app.k9mail.core.common.domain.usecase.validation.ValidationResult
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
@@ -12,6 +10,8 @@ import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import assertk.assertions.prop
+import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized

@@ -6,13 +6,13 @@ import java.util.regex.Pattern;
 
 import com.fsck.k9.CoreResourceProvider;
 import app.k9mail.legacy.di.DI;
-import timber.log.Timber;
-
-import app.k9mail.legacy.account.QuoteStyle;
+import net.thunderbird.core.android.account.QuoteStyle;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.message.html.HtmlConverter;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
 public class HtmlQuoteCreator {
@@ -43,11 +43,11 @@ public class HtmlQuoteCreator {
      * @return Modified insertable message.
      */
     public static InsertableHtmlContent quoteOriginalHtmlMessage(Message originalMessage,
-            String messageBody, QuoteStyle quoteStyle) {
+            String messageBody, QuoteStyle quoteStyle, GeneralSettingsManager generalSettingsManager) {
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
-        String sentDate = new QuoteDateFormatter().format(originalMessage.getSentDate());
+        String sentDate = new QuoteDateFormatter(generalSettingsManager).format(originalMessage.getSentDate());
         String fromAddress = Address.toString(originalMessage.getFrom());
         if (quoteStyle == QuoteStyle.PREFIX) {
             StringBuilder header = new StringBuilder();
@@ -145,7 +145,7 @@ public class HtmlQuoteCreator {
             hasBodyTag = true;
         }
 
-        Timber.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
+        Log.d("Open: hasHtmlTag:%s hasHeadTag:%s hasBodyTag:%s", hasHtmlTag, hasHeadTag, hasBodyTag);
 
         // Given our inspections, let's figure out where to start our content.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just after it.
@@ -196,7 +196,7 @@ public class HtmlQuoteCreator {
             hasBodyEndTag = true;
         }
 
-        Timber.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
+        Log.d("Close: hasHtmlEndTag:%s hasBodyEndTag:%s", hasHtmlEndTag, hasBodyEndTag);
 
         // Now figure out where to put our footer.
         // This is the ideal case -- there's a BODY tag and we insert ourselves just before it.

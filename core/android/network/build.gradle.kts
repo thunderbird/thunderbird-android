@@ -9,7 +9,8 @@ android {
 dependencies {
     api(projects.core.common)
 
-    implementation(libs.timber)
+    implementation(projects.core.logging.api)
+    implementation(projects.core.logging.implLegacy)
 
     testImplementation(projects.core.testing)
     testImplementation(libs.robolectric)

@@ -20,12 +20,21 @@ package com.fsck.k9.mail.store.imap;
 
 import java.util.List;
 
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.logging.testing.TestLogger;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 
 
 public class ImapUtilityTest  {
+
+    @Before
+    public void setUp() {
+        Log.logger = new TestLogger();
+    }
+
     @Test
     public void testGetImapSequenceValues() {
         String[] expected;

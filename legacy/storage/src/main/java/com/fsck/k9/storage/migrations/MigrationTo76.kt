@@ -3,10 +3,10 @@ package com.fsck.k9.storage.migrations
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.core.android.common.database.map
-import app.k9mail.core.common.mail.Protocols
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.mailstore.MigrationsHelper
-import timber.log.Timber
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.common.mail.Protocols
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Clean up special local folders
@@ -29,24 +29,24 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
     fun cleanUpSpecialLocalFolders() {
         val account = migrationsHelper.account
 
-        Timber.v("Cleaning up Outbox folder")
+        Log.v("Cleaning up Outbox folder")
         val outboxFolderId =
             account.outboxFolderId ?: createFolder("Outbox", "K9MAIL_INTERNAL_OUTBOX", OUTBOX_FOLDER_TYPE)
         deleteOtherOutboxFolders(outboxFolderId)
         account.outboxFolderId = outboxFolderId
 
         if (account.isPop3()) {
-            Timber.v("Cleaning up Drafts folder")
+            Log.v("Cleaning up Drafts folder")
             val draftsFolderId = account.draftsFolderId ?: createFolder("Drafts", "Drafts", DRAFTS_FOLDER_TYPE)
             moveMessages(DRAFTS_FOLDER_TYPE, draftsFolderId)
             account.draftsFolderId = draftsFolderId
 
-            Timber.v("Cleaning up Sent folder")
+            Log.v("Cleaning up Sent folder")
             val sentFolderId = account.sentFolderId ?: createFolder("Sent", "Sent", SENT_FOLDER_TYPE)
             moveMessages(SENT_FOLDER_TYPE, sentFolderId)
             account.sentFolderId = sentFolderId
 
-            Timber.v("Cleaning up Trash folder")
+            Log.v("Cleaning up Trash folder")
             val trashFolderId = account.trashFolderId ?: createFolder("Trash", "Trash", TRASH_FOLDER_TYPE)
             moveMessages(TRASH_FOLDER_TYPE, trashFolderId)
             account.trashFolderId = trashFolderId
@@ -56,7 +56,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
     }
 
     private fun createFolder(name: String, serverId: String, type: String): Long {
-        Timber.v("  Creating new local folder (name=$name, serverId=$serverId, type=$type)…")
+        Log.v("  Creating new local folder (name=$name, serverId=$serverId, type=$type)…")
         val values = ContentValues().apply {
             put("name", name)
             put("visible_limit", 25)
@@ -71,7 +71,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         }
 
         val folderId = db.insert("folders", null, values)
-        Timber.v("    Created folder with ID $folderId")
+        Log.v("    Created folder with ID $folderId")
 
         return folderId
     }
@@ -106,18 +106,18 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
     }
 
     private fun moveMessages(sourceFolderId: Long, destinationFolderId: Long) {
-        Timber.v("  Moving messages from folder [$sourceFolderId] to folder [$destinationFolderId]…")
+        Log.v("  Moving messages from folder [$sourceFolderId] to folder [$destinationFolderId]…")
 
         val values = ContentValues().apply {
             put("folder_id", destinationFolderId)
         }
         val rows = db.update("messages", values, "folder_id = ?", arrayOf(sourceFolderId.toString()))
 
-        Timber.v("    $rows messages moved.")
+        Log.v("    $rows messages moved.")
     }
 
     private fun deleteFolder(folderId: Long) {
-        Timber.v("  Deleting folder [$folderId]")
+        Log.v("  Deleting folder [$folderId]")
         db.delete("folders", "id = ?", arrayOf(folderId.toString()))
     }
 

@@ -10,8 +10,6 @@ import java.util.TreeMap;
 import android.content.Context;
 
 import app.k9mail.feature.telemetry.api.TelemetryManager;
-import app.k9mail.legacy.account.SortType;
-import app.k9mail.legacy.account.AccountDefaultsProvider;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
@@ -20,7 +18,6 @@ import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
 import com.fsck.k9.K9.PostRemoveNavigation;
 import com.fsck.k9.K9.SplitViewMode;
-import com.fsck.k9.SwipeAction;
 import com.fsck.k9.UiDensity;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
@@ -39,9 +36,12 @@ import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo58;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo69;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo79;
 import com.fsck.k9.preferences.upgrader.GeneralSettingsUpgraderTo89;
-import net.thunderbird.core.preferences.AppTheme;
-import net.thunderbird.core.preferences.Storage;
-import net.thunderbird.core.preferences.SubTheme;
+import net.thunderbird.core.android.account.AccountDefaultsProvider;
+import net.thunderbird.core.android.account.SortType;
+import net.thunderbird.core.common.action.SwipeAction;
+import net.thunderbird.core.preference.AppTheme;
+import net.thunderbird.core.preference.storage.Storage;
+import net.thunderbird.core.preference.SubTheme;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
@@ -84,6 +84,9 @@ class GeneralSettingsDescriptions {
         ));
         s.put("enableDebugLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
+        ));
+        s.put("enableSyncDebugLogging", Settings.versions(
+            new V(103, new BooleanSetting(false))
         ));
         s.put("enableSensitiveLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -305,6 +308,12 @@ class GeneralSettingsDescriptions {
             new V(90,
                 new EnumSetting<>(PostMarkAsUnreadNavigation.class, PostMarkAsUnreadNavigation.ReturnToMessageList))
         ));
+        s.put(
+            RealGeneralSettingsManagerKt.KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
+            Settings.versions(
+                new V(105, new BooleanSetting(true))
+            )
+        );
 
         // TODO: Add a way to properly support feature-specific settings.
         if (telemetryManager.isTelemetryFeatureIncluded()) {
@@ -341,7 +350,7 @@ class GeneralSettingsDescriptions {
     static Map<String, String> getGlobalSettings(Storage storage) {
         Map<String, String> result = new HashMap<>();
         for (String key : SETTINGS.keySet()) {
-            String value = storage.getString(key, null);
+            String value = storage.getStringOrNull(key);
             if (value != null) {
                 result.put(key, value);
             }

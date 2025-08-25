@@ -1,0 +1,2 @@
+Thunderbird for Android version 12.0b7, based on K-9 Mail. Changes include:
+- Edge-to-edge support regressed various screens when using 3-button navigation

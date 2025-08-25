@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.core.content.ContextCompat
 import com.fsck.k9.K9
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 /**
  * Listen for changes to the system's auto sync setting.
@@ -36,7 +36,7 @@ internal class AutoSyncManager(private val context: Context) {
     @Synchronized
     fun registerListener(listener: AutoSyncListener) {
         if (!isRegistered) {
-            Timber.v("Registering auto sync listener")
+            Log.v("Registering auto sync listener")
             isRegistered = true
             this.listener = listener
             ContextCompat.registerReceiver(context, receiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED)
@@ -46,7 +46,7 @@ internal class AutoSyncManager(private val context: Context) {
     @Synchronized
     fun unregisterListener() {
         if (isRegistered) {
-            Timber.v("Unregistering auto sync listener")
+            Log.v("Unregistering auto sync listener")
             isRegistered = false
             context.unregisterReceiver(receiver)
         }

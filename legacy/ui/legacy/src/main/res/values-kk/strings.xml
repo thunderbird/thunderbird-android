@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="clipboard_label_email_address">Электрондық пошта адресі</string>
     <string name="action_add_to_contacts">Контакттарға қосу</string>
     <string name="background_work_notification_remove_account">Тіркелгіні өшіруде…</string>
@@ -11,4 +11,22 @@
     <string name="app_license">Apache лицензиясы, 2.0 нұсқасы</string>
     <string name="about_website_title">Сайт</string>
     <string name="get_help_title">Көмек алу</string>
+    <string name="authors">Авторлар</string>
+    <string name="open_camera">Камераны ашу</string>
+    <string name="attach_file">Файл қосу</string>
+    <string name="user_forum_title">Қолданушылар форумы</string>
+    <string name="about_libraries">Кітапханалар</string>
+    <string name="license">Лицензия</string>
+    <string name="changelog_title">Өзгерістер журналы</string>
+    <string name="changelog_loading_error">Өзгерістер журналы жүктелмеді.</string>
+    <string name="changelog_version_title">Нұсқа %s</string>
+    <string name="changelog_recent_changes_title">Жаңалықтар</string>
+    <string name="changelog_show_recent_changes">Қолданба жаңартылған кезде соңғы өзгерістерді көрсету</string>
+    <string name="changelog_snackbar_button_text">Көрсету</string>
+    <string name="about_project_title">Ашық бастапқы код жобасы</string>
+    <string name="camera_permission_denied">Камераға рұқсат берілмеді! Фото түсіру мүмкін емес</string>
+    <string name="changelog_snackbar_text">Бұл шығарылымдағы жаңа мүмкіндіктерді біліңіз</string>
+    <string name="account_delete_dlg_instructions_fmt">\"<xliff:g id="account">%1$s</xliff:g>\" есептік жазбасы <xliff:g id="app_name">%2$s</xliff:g> қолданбасынан жойылады.</string>
+    <string name="about_app_authors_thunderbird">Thunderbird мобильдік әзірлеу тобы</string>
+    <string name="about_app_authors_k9">K-9 ит серуендетушілері</string>
 </resources>

@@ -13,6 +13,7 @@ internal open class TestImapConnection(val timeout: Long, override val connectio
     override val outputStream: OutputStream
         get() = TODO("Not yet implemented")
     override val isUidPlusCapable: Boolean = true
+    override val isUtf8AcceptCapable: Boolean = false
     override var isIdleCapable: Boolean = true
         protected set
 
@@ -35,6 +36,10 @@ internal open class TestImapConnection(val timeout: Long, override val connectio
 
     override fun close() {
         isConnected = false
+    }
+
+    override fun canSendUTF8QuotedStrings(): Boolean {
+        return false // to be mocked where appropriate
     }
 
     override fun hasCapability(capability: String): Boolean {

@@ -886,7 +886,7 @@
     <string name="folder_settings_push_label">به کار انداختن ارسال</string>
     <string name="folder_settings_notifications_label">آگاهی‌ها</string>
     <string name="settings_ui_telemetry_title">داده‌های فنی و استفاده</string>
-    <string name="settings_ui_telemetry_description">هم‌رسانی داده‌های کارایی، استفاده، سخت‌افزار و شخصی‌سازی این کاره با موزیلا برای کمک به بهتر کردن تاندربرد</string>
+    <string name="settings_ui_telemetry_description">هم‌رسانی داده‌های کارایی، استفاده، سخت‌افزار و شخصی‌سازی این برنامه با موزیلا برای کمک به بهتر کردن تاندربرد</string>
     <string name="settings_ui_data_collection">جمع‌آوری داده</string>
     <string name="folder_settings_sync_label">فعال‌سازی همگام‌سازی</string>
     <string name="folder_list_show_hidden_folders">نمایش پوشه‌های مخفی</string>
@@ -899,4 +899,13 @@
     <string name="empty_spam_action">خالی‌کردن هرزنامه</string>
     <string name="dialog_confirm_empty_spam_title">تایید خالی‌کردن هرزنامه</string>
     <string name="dialog_confirm_empty_spam_message">آیا می‌خواهید پوشه هرزنامه را خالی کنید؟</string>
+    <string name="open_camera">باز کردن دوربین</string>
+    <string name="attach_file">ضمیمه کردن پرونده</string>
+    <string name="camera_permission_denied">دسترسی دوربین رد شد! امکان گرفتن تصویر نیست</string>
+    <string name="debug_enable_sync_debug_logging_summary">ثبت داده‌های گزارش عیب‌یابی همگام‌سازی برای ۲۴ ساعت</string>
+    <string name="debug_sync_export_logs_title">برون‌برد گزارش‌های همگام‌سازی</string>
+    <string name="debug_enable_sync_debug_logging_title">فعال‌سازی ثبت گزارش عیب‌یابی همگام‌سازی</string>
+    <string name="swipe_action_archive_folder_not_set">راه‌اندازی پوشه بایگانی</string>
+    <string name="swipe_action_change_swipe_gestures">تغییر \nژست‌های کشیدن</string>
+    <string name="archiving_not_available_for_this_account">بایگانی کردن برای این حساب در دسترس نیست.</string>
 </resources>

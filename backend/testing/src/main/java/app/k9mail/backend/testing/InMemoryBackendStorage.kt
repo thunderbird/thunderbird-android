@@ -35,13 +35,20 @@ class InMemoryBackendStorage : BackendStorage {
     }
 
     private inner class InMemoryBackendFolderUpdater : BackendFolderUpdater {
-        override fun createFolders(folders: List<FolderInfo>) {
-            folders.forEach { folder ->
-                if (this@InMemoryBackendStorage.folders.containsKey(folder.serverId)) {
-                    error("Folder ${folder.serverId} already present")
-                }
+        override fun createFolders(folders: List<FolderInfo>): Set<Long> {
+            var count = this@InMemoryBackendStorage.folders.size.toLong()
+            return buildSet {
+                folders.forEach { folder ->
+                    if (this@InMemoryBackendStorage.folders.containsKey(folder.serverId)) {
+                        error("Folder ${folder.serverId} already present")
+                    }
 
-                this@InMemoryBackendStorage.folders[folder.serverId] = InMemoryBackendFolder(folder.name, folder.type)
+                    this@InMemoryBackendStorage.folders[folder.serverId] = InMemoryBackendFolder(
+                        name = folder.name,
+                        type = folder.type,
+                    )
+                    add(count++)
+                }
             }
         }
 

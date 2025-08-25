@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.messagedetails
 
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val messageDetailsUiModule = module {
@@ -18,8 +18,14 @@ val messageDetailsUiModule = module {
             folderNameFormatter = get(),
         )
     }
-    factory { ContactSettingsProvider() }
+    factory { ContactSettingsProvider(generalSettingsManager = get()) }
     factory { AddToContactsLauncher() }
     factory { ShowContactLauncher() }
-    factory { createMessageDetailsParticipantFormatter(contactNameProvider = get(), resources = get()) }
+    factory {
+        createMessageDetailsParticipantFormatter(
+            contactNameProvider = get(),
+            resources = get(),
+            generalSettingsManager = get(),
+        )
+    }
 }

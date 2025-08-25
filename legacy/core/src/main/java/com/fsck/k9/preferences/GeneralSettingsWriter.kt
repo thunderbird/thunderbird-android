@@ -1,9 +1,10 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.AccountPreferenceSerializer
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler
 
 internal class GeneralSettingsWriter(
     private val preferences: Preferences,
@@ -24,13 +25,13 @@ internal class GeneralSettingsWriter(
         }
 
         return if (editor.commit()) {
-            Timber.v("Committed general settings to the preference storage.")
+            Log.v("Committed general settings to the preference storage.")
 
             generalSettingsManager.loadSettings()
 
             true
         } else {
-            Timber.v("Failed to commit general settings to the preference storage")
+            Log.v("Failed to commit general settings to the preference storage")
             false
         }
     }
@@ -44,14 +45,14 @@ internal fun StorageEditor.putStringWithLogging(key: String, value: String?) {
         var outputValue = value
         if (!K9.isSensitiveDebugLoggingEnabled &&
             (
-                key.endsWith("." + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY) ||
-                    key.endsWith("." + AccountPreferenceSerializer.INCOMING_SERVER_SETTINGS_KEY)
+                key.endsWith("." + LegacyAccountStorageHandler.OUTGOING_SERVER_SETTINGS_KEY) ||
+                    key.endsWith("." + LegacyAccountStorageHandler.INCOMING_SERVER_SETTINGS_KEY)
                 )
         ) {
             outputValue = "*sensitive*"
         }
 
-        Timber.v("Setting %s=%s", key, outputValue)
+        Log.v("Setting %s=%s", key, outputValue)
     }
 
     putString(key, value)

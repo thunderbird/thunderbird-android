@@ -1,0 +1,2 @@
+Thunderbird for Android version 12.0b5, based on K-9 Mail. Changes include:
+- Crash occurred when attempting to access account general settings

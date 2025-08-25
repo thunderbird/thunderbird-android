@@ -1,30 +1,32 @@
 package com.fsck.k9.ui.messagelist
 
-import app.k9mail.legacy.account.LegacyAccount
-import app.k9mail.legacy.account.SortType
 import app.k9mail.legacy.mailstore.MessageListRepository
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
-import com.fsck.k9.search.SqlQueryBuilder
 import com.fsck.k9.search.getAccounts
-import net.thunderbird.feature.search.LocalSearch
-import net.thunderbird.feature.search.api.SearchField
-import timber.log.Timber
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.api.MessageSearchField
+import net.thunderbird.feature.search.sql.SqlWhereClause
 
 class MessageListLoader(
     private val preferences: Preferences,
     private val localStoreProvider: LocalStoreProvider,
     private val messageListRepository: MessageListRepository,
     private val messageHelper: MessageHelper,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
 
     fun getMessageList(config: MessageListConfig): MessageListInfo {
         return try {
             getMessageListInfo(config)
         } catch (e: Exception) {
-            Timber.e(e, "Error while fetching message list")
+            Log.e(e, "Error while fetching message list")
 
             // TODO: Return an error object instead of an empty list
             MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false)
@@ -48,16 +50,18 @@ class MessageListLoader(
         val accountUuid = account.uuid
         val threadId = getThreadId(config.search)
         val sortOrder = buildSortOrder(config)
-        val mapper = MessageListItemMapper(messageHelper, account)
+        val mapper = MessageListItemMapper(messageHelper, account, generalSettingsManager)
 
         return when {
             threadId != null -> {
                 messageListRepository.getThread(accountUuid, threadId, sortOrder, mapper)
             }
+
             config.showingThreadedList -> {
                 val (selection, selectionArgs) = buildSelection(account, config)
                 messageListRepository.getThreadedMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
             }
+
             else -> {
                 val (selection, selectionArgs) = buildSelection(account, config)
                 messageListRepository.getMessages(accountUuid, selection, selectionArgs, sortOrder, mapper)
@@ -77,7 +81,12 @@ class MessageListLoader(
             queryArgs.add(activeMessage.folderId.toString())
         }
 
-        SqlQueryBuilder.buildWhereClause(config.search.conditions, query, queryArgs)
+        val whereClause = SqlWhereClause.Builder()
+            .withConditions(config.search.conditions)
+            .build()
+
+        query.append(whereClause.selection)
+        queryArgs.addAll(whereClause.selectionArgs)
 
         if (selectActive) {
             query.append(')')
@@ -89,9 +98,9 @@ class MessageListLoader(
         return selection to selectionArgs
     }
 
-    private fun getThreadId(search: LocalSearch): Long? {
+    private fun getThreadId(search: LocalMessageSearch): Long? {
         return search.leafSet.firstOrNull {
-            it.condition.field == SearchField.THREAD_ID
+            it.condition?.field == MessageSearchField.THREAD_ID
         }?.condition?.value?.toLong()
     }
 
@@ -104,7 +113,6 @@ class MessageListLoader(
             SortType.SORT_SUBJECT -> "${MessageColumns.SUBJECT} COLLATE NOCASE"
             SortType.SORT_UNREAD -> MessageColumns.READ
             SortType.SORT_DATE -> MessageColumns.DATE
-            else -> MessageColumns.DATE
         }
 
         val sortDirection = if (config.sortAscending) " ASC" else " DESC"
@@ -126,27 +134,33 @@ class MessageListLoader(
             SortType.SORT_DATE -> {
                 compareBy(config.sortAscending) { it.messageDate }
             }
+
             SortType.SORT_ARRIVAL -> {
                 compareBy(config.sortAscending) { it.internalDate }
             }
+
             SortType.SORT_SUBJECT -> {
                 compareStringBy<MessageListItem>(config.sortAscending) { it.subject.orEmpty() }
                     .thenByDate(config)
             }
+
             SortType.SORT_SENDER -> {
                 compareStringBy<MessageListItem>(config.sortAscending) { it.displayName.toString() }
                     .thenByDate(config)
             }
+
             SortType.SORT_UNREAD -> {
                 compareBy<MessageListItem>(config.sortAscending) {
                     config.sortOverrides[it.messageReference]?.isRead ?: it.isRead
                 }.thenByDate(config)
             }
+
             SortType.SORT_FLAGGED -> {
                 compareBy<MessageListItem>(!config.sortAscending) {
                     config.sortOverrides[it.messageReference]?.isStarred ?: it.isStarred
                 }.thenByDate(config)
             }
+
             SortType.SORT_ATTACHMENT -> {
                 compareBy<MessageListItem>(!config.sortAscending) { it.hasAttachments }
                     .thenByDate(config)

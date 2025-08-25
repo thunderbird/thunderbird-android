@@ -1,9 +1,19 @@
 plugins {
-    id(ThunderbirdPlugins.Library.jvm)
-    alias(libs.plugins.android.lint)
+    id(ThunderbirdPlugins.Library.kmp)
 }
 
-dependencies {
-    implementation(libs.assertk)
-    implementation(libs.turbine)
+android {
+    namespace = "net.thunderbird.core.testing"
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlin.test.junit)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.assertk)
+            implementation(libs.turbine)
+        }
+    }
 }

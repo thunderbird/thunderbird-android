@@ -2,31 +2,29 @@ package net.thunderbird.feature.navigation.drawer.dropdown.ui
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import app.k9mail.core.mail.folder.api.Folder
-import app.k9mail.core.mail.folder.api.FolderType
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccountFolder
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.mail.folder.api.Folder
+import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayTreeFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolder
-import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayUnifiedFolderType
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolder
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayFolderType
 
 internal object FakeData {
 
-    const val ACCOUNT_UUID = "uuid"
     const val DISPLAY_NAME = "Account Name"
     const val EMAIL_ADDRESS = "test@example.com"
 
-    const val LONG_TEXT = "loremipsumdolorsitametconsetetursadipscingelitr" +
-        "seddiamnonumyeirmodtemporinviduntutlaboreetdoloremagnaaliquyameratseddiamvoluptua"
-
     val ACCOUNT = LegacyAccount(
-        uuid = ACCOUNT_UUID,
+        uuid = ACCOUNT_ID_RAW,
     ).apply {
         identities = ArrayList()
 
@@ -41,8 +39,13 @@ internal object FakeData {
         email = EMAIL_ADDRESS
     }
 
-    val DISPLAY_ACCOUNT = DisplayAccount(
-        id = ACCOUNT_UUID,
+    val UNIFIED_DISPLAY_ACCOUNT = UnifiedDisplayAccount(
+        unreadMessageCount = 224,
+        starredMessageCount = 42,
+    )
+
+    val MAIL_DISPLAY_ACCOUNT = MailDisplayAccount(
+        id = ACCOUNT_ID_RAW,
         name = DISPLAY_NAME,
         email = EMAIL_ADDRESS,
         color = Color.Red.toArgb(),
@@ -57,8 +60,8 @@ internal object FakeData {
         isLocalOnly = false,
     )
 
-    val DISPLAY_FOLDER = DisplayAccountFolder(
-        accountId = ACCOUNT_UUID,
+    val DISPLAY_FOLDER = MailDisplayFolder(
+        accountId = ACCOUNT_ID_RAW,
         folder = FOLDER,
         isInTopGroup = false,
         unreadMessageCount = 14,
@@ -89,9 +92,9 @@ internal object FakeData {
         children = persistentListOf(),
     )
 
-    val UNIFIED_FOLDER = DisplayUnifiedFolder(
+    val UNIFIED_FOLDER = UnifiedDisplayFolder(
         id = "unified_inbox",
-        unifiedType = DisplayUnifiedFolderType.INBOX,
+        unifiedType = UnifiedDisplayFolderType.INBOX,
         unreadMessageCount = 123,
         starredMessageCount = 567,
     )
@@ -143,9 +146,9 @@ internal object FakeData {
         ),
     )
 
-    fun createAccountList(): PersistentList<DisplayAccount> {
+    fun createAccountList(): PersistentList<MailDisplayAccount> {
         return persistentListOf(
-            DisplayAccount(
+            MailDisplayAccount(
                 id = "account1",
                 name = "job@example.com",
                 email = "job@example.com",
@@ -153,7 +156,7 @@ internal object FakeData {
                 unreadMessageCount = 2,
                 starredMessageCount = 0,
             ),
-            DisplayAccount(
+            MailDisplayAccount(
                 id = "account2",
                 name = "Jodie Doe",
                 email = "jodie@example.com",
@@ -161,7 +164,7 @@ internal object FakeData {
                 unreadMessageCount = 12,
                 starredMessageCount = 0,
             ),
-            DisplayAccount(
+            MailDisplayAccount(
                 id = "account3",
                 name = "John Doe",
                 email = "john@example.com",

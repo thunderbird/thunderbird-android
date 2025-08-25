@@ -4,12 +4,13 @@ import android.content.res.Resources
 import android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * Get the display name for a participant to be shown in the message details screen.
@@ -61,11 +62,18 @@ internal class RealMessageDetailsParticipantFormatter(
 internal fun createMessageDetailsParticipantFormatter(
     contactNameProvider: ContactNameProvider,
     resources: Resources,
+    generalSettingsManager: GeneralSettingsManager,
 ): MessageDetailsParticipantFormatter {
     return RealMessageDetailsParticipantFormatter(
         contactNameProvider = contactNameProvider,
-        showContactNames = K9.isShowContactName,
-        contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
+        showContactNames = generalSettingsManager.getSettings().isShowContactName,
+        contactNameColor = if (
+            generalSettingsManager.getSettings().isChangeContactNameColor
+        ) {
+            K9.contactNameColor
+        } else {
+            null
+        },
         meText = resources.getString(R.string.message_view_me_text),
     )
 }

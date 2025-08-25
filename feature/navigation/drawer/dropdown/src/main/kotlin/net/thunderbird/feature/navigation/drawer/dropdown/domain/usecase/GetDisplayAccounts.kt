@@ -1,7 +1,5 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
 
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.MessageListChangedListener
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.message.controller.MessageCounts
@@ -16,8 +14,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 
 internal class GetDisplayAccounts(
     private val accountManager: AccountManager,
@@ -27,7 +29,7 @@ internal class GetDisplayAccounts(
 ) : UseCase.GetDisplayAccounts {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun invoke(): Flow<List<DisplayAccount>> {
+    override fun invoke(showUnifiedAccount: Boolean): Flow<List<DisplayAccount>> {
         return accountManager.getAccountsFlow()
             .flatMapLatest { accounts ->
                 val messageCountsFlows: List<Flow<MessageCounts>> = accounts.map { account ->
@@ -35,8 +37,8 @@ internal class GetDisplayAccounts(
                 }
 
                 combine(messageCountsFlows) { messageCountsList ->
-                    messageCountsList.mapIndexed { index, messageCounts ->
-                        DisplayAccount(
+                    val displayAccounts = messageCountsList.mapIndexed { index, messageCounts ->
+                        MailDisplayAccount(
                             id = accounts[index].uuid,
                             name = accounts[index].displayName,
                             email = accounts[index].email,
@@ -45,8 +47,23 @@ internal class GetDisplayAccounts(
                             starredMessageCount = messageCounts.starred,
                         )
                     }
+
+                    if (showUnifiedAccount) {
+                        withUnifiedAccount(displayAccounts)
+                    } else {
+                        displayAccounts
+                    }
                 }
             }
+    }
+
+    private fun withUnifiedAccount(accounts: List<DisplayAccount>): List<DisplayAccount> {
+        val unified = UnifiedDisplayAccount(
+            unreadMessageCount = accounts.sumOf { it.unreadMessageCount },
+            starredMessageCount = accounts.sumOf { it.starredMessageCount },
+        )
+
+        return listOf(unified) + accounts
     }
 
     private fun getMessageCountsFlow(account: LegacyAccount): Flow<MessageCounts> {

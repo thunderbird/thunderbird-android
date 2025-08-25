@@ -4,8 +4,6 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Parcelable
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.QuoteStyle
 import assertk.Assert
 import assertk.all
 import assertk.assertThat
@@ -48,6 +46,17 @@ import com.fsck.k9.message.quote.InsertableHtmlContent
 import com.fsck.k9.view.RecipientSelectView
 import java.io.OutputStream
 import java.util.Date
+import kotlinx.coroutines.flow.Flow
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.QuoteStyle
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettings
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.Before
 import org.junit.Test
@@ -93,6 +102,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     @Before
     @Throws(Exception::class)
     fun setUp() {
+        Log.logger = TestLogger()
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.getApplication().cacheDir)
         `when`(autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
             .thenReturn(AUTOCRYPT_KEY_MATERIAL)
@@ -771,6 +781,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                 AutocryptOperations.getInstance(),
                 autocryptOpenPgpApiInteractor,
                 resourceProvider,
+                fakeGeneralSettingsManager,
             )
             builder.setOpenPgpApi(openPgpApi)
 
@@ -833,6 +844,106 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                     else -> assertThat(intentExtra, name).isEqualTo(expectedExtra)
                 }
             }
+        }
+
+        private val fakeGeneralSettingsManager = object : GeneralSettingsManager {
+            override fun getSettings() = GeneralSettings(
+                backgroundSync = BackgroundSync.NEVER,
+                showRecentChanges = false,
+                appTheme = AppTheme.FOLLOW_SYSTEM,
+                messageViewTheme = SubTheme.USE_GLOBAL,
+                messageComposeTheme = SubTheme.USE_GLOBAL,
+                fixedMessageViewTheme = false,
+                isShowUnifiedInbox = false,
+                isShowStarredCount = false,
+                isShowMessageListStars = false,
+                isShowAnimations = false,
+                isShowCorrespondentNames = false,
+                shouldShowSetupArchiveFolderDialog = false,
+                isMessageListSenderAboveSubject = false,
+                isShowContactName = false,
+                isShowContactPicture = false,
+                isChangeContactNameColor = false,
+                isColorizeMissingContactPictures = false,
+                isUseBackgroundAsUnreadIndicator = false,
+                isShowComposeButtonOnMessageList = false,
+                isThreadedViewEnabled = false,
+                isUseMessageViewFixedWidthFont = false,
+                isAutoFitWidth = false,
+                privacy = PrivacySettings(isHideUserAgent = false, isHideTimeZone = false),
+                quietTimeEnds = "07:00",
+                quietTimeStarts = "07:00",
+                isQuietTimeEnabled = false,
+                isQuietTime = false,
+            )
+
+            override fun getSettingsFlow(): Flow<GeneralSettings> = error("not implemented")
+
+            override fun setShowRecentChanges(showRecentChanges: Boolean) = error("not implemented")
+
+            override fun setAppTheme(appTheme: AppTheme) = error("not implemented")
+
+            override fun setMessageViewTheme(subTheme: SubTheme) = error("not implemented")
+
+            override fun setMessageComposeTheme(subTheme: SubTheme) = error("not implemented")
+
+            override fun setFixedMessageViewTheme(fixedMessageViewTheme: Boolean) = error("not implemented")
+
+            override fun setIsShowUnifiedInbox(isShowUnifiedInbox: Boolean) = error("not implemented")
+
+            override fun setIsShowStarredCount(isShowStarredCount: Boolean) = error("not implemented")
+
+            override fun setIsShowMessageListStars(isShowMessageListStars: Boolean) = error("not implemented")
+
+            override fun setIsShowAnimations(isShowAnimations: Boolean) = error("not implemented")
+
+            override fun setIsShowCorrespondentNames(isShowCorrespondentNames: Boolean) = error("not implemented")
+
+            override fun setSetupArchiveShouldNotShowAgain(shouldShowSetupArchiveFolderDialog: Boolean) = error(
+                "not implemented",
+            )
+
+            override fun setIsMessageListSenderAboveSubject(isMessageListSenderAboveSubject: Boolean) = error(
+                "not implemented",
+            )
+
+            override fun setIsShowContactName(isShowContactName: Boolean) = error("not implemented")
+
+            override fun setIsShowContactPicture(isShowContactPicture: Boolean) = error("not implemented")
+
+            override fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) = error("not implemented")
+
+            override fun setIsColorizeMissingContactPictures(isColorizeMissingContactPictures: Boolean) = error(
+                "not implemented",
+            )
+
+            override fun setIsUseBackgroundAsUnreadIndicator(isUseBackgroundAsUnreadIndicator: Boolean) = error(
+                "not implemented",
+            )
+
+            override fun setIsShowComposeButtonOnMessageList(isShowComposeButtonOnMessageList: Boolean) = error(
+                "not implemented",
+            )
+
+            override fun setIsThreadedViewEnabled(isThreadedViewEnabled: Boolean) = error("not implemented")
+
+            override fun setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont: Boolean) = error(
+                "not implemented",
+            )
+
+            override fun setIsAutoFitWidth(isAutoFitWidth: Boolean) = error("not implemented")
+            override fun setQuietTimeEnds(quietTimeEnds: String) = error("not implemented")
+
+            override fun setQuietTimeStarts(quietTimeStarts: String) = error("not implemented")
+
+            override fun setIsQuietTimeEnabled(isQuietTimeEnabled: Boolean) = error("not implemented")
+
+            override val privacySettings: PrivacySettings
+                get() = error("not implemented")
+
+            override fun setIsHideTimeZone(isHideTimeZone: Boolean) = error("not implemented")
+
+            override fun setIsHideUserAgent(isHideUserAgent: Boolean) = error("not implemented")
         }
     }
 }

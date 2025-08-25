@@ -1,6 +1,8 @@
 package com.fsck.k9.view;
 
-import com.fsck.k9.K9;
+
+import app.k9mail.legacy.di.DI;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,9 +10,10 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ViewAnimator;
 
+
 /**
- * A {@link ViewAnimator} that animates between two child views using different animations
- * depending on which view is displayed.
+ * A {@link ViewAnimator} that animates between two child views using different animations depending on which view is
+ * displayed.
  */
 public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     private Animation mFirstInAnimation;
@@ -18,6 +21,8 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     private Animation mSecondInAnimation;
     private Animation mSecondOutAnimation;
     private OnSwitchCompleteListener mListener;
+
+    private GeneralSettingsManager generalSettingsManager = DI.get(GeneralSettingsManager.class);
 
 
     public ViewSwitcher(Context context) {
@@ -51,7 +56,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     private void setupAnimations(Animation in, Animation out) {
-        if (K9.isShowAnimations()) {
+        if (generalSettingsManager.getSettings().isShowAnimations()) {
             setInAnimation(in);
             setOutAnimation(out);
             out.setAnimationListener(this);
@@ -62,7 +67,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     private void handleSwitchCompleteCallback() {
-        if (!K9.isShowAnimations()) {
+        if (!generalSettingsManager.getSettings().isShowAnimations()) {
             onAnimationEnd(null);
         }
     }
@@ -120,12 +125,19 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
         // unused
     }
 
+    public GeneralSettingsManager getGeneralSettingsManager() {
+        return generalSettingsManager;
+    }
+
+    public void setGeneralSettingsManager(GeneralSettingsManager generalSettingsManager) {
+        this.generalSettingsManager = generalSettingsManager;
+    }
+
     public interface OnSwitchCompleteListener {
         /**
          * This method will be called after the switch (including animation) has ended.
          *
-         * @param displayedChild
-         *         Contains the zero-based index of the child view that is now displayed.
+         * @param displayedChild Contains the zero-based index of the child view that is now displayed.
          */
         void onSwitchComplete(int displayedChild);
     }

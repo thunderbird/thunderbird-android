@@ -22,10 +22,10 @@
     <string name="settings_import_later_button">Później</string>
     <string name="settings_importing">Importowanie ustawień…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasło.</item>
-        <item quantity="few">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasła.</item>
-        <item quantity="many">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasła.</item>
-        <item quantity="other">Aby móc skorzystać z konta \"<xliff:g id="account">%s</xliff:g>\", trzeba podać hasła.</item>
+        <item quantity="one">Aby móc skorzystać z konta „<xliff:g id="account">%s</xliff:g>”, trzeba podać hasło.</item>
+        <item quantity="few">Aby móc skorzystać z konta „<xliff:g id="account">%s</xliff:g>”, trzeba podać hasła.</item>
+        <item quantity="many">Aby móc skorzystać z konta „<xliff:g id="account">%s</xliff:g>”, trzeba podać hasła.</item>
+        <item quantity="other">Aby móc skorzystać z konta „<xliff:g id="account">%s</xliff:g>”, trzeba podać hasła.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Hasło serwera poczty przychodzącej</string>
     <string name="settings_import_outgoing_server_password_hint">Hasło serwera poczty wychodzącej</string>
@@ -35,7 +35,7 @@
     <string name="settings_import_oauth_sign_in">Zaloguj się</string>
     <string name="settings_import_oauth_sign_in_with_google">Zaloguj się przez Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Autoryzacja anulowana</string>
-    <string name="settings_import_oauth_error_oauth_flow_failed">Autoryzacja nie powiodła się z następującym błędem: <xliff:g id="error">%s</xliff:g></string>
+    <string name="settings_import_oauth_error_oauth_flow_failed">Autoryzacja nie powiodła się z powodu następującego błędu: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">Ten dostawca nie obsługuje obecnie protokołu OAuth 2.0.</string>
     <string name="settings_import_oauth_error_browser_not_found">Aplikacja nie mogła znaleźć przeglądarki, za pomocą której można uzyskać dostęp do Twojego konta.</string>
     <string name="settings_import_general_settings_item">Ustawienia ogólne</string>

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
@@ -19,10 +19,18 @@ class ImapResponseParser {
     private PeekableInputStream inputStream;
     private ImapResponse response;
     private Exception exception;
+    private boolean utf8Accept;
+    private FolderNameCodec folderNameCodec;
 
-
-    public ImapResponseParser(PeekableInputStream in) {
+    public ImapResponseParser(PeekableInputStream in, FolderNameCodec folderNameCodec) {
         this.inputStream = in;
+        this.utf8Accept = false;
+        this.folderNameCodec = folderNameCodec;
+    }
+
+    public void setUtf8Accepted(final boolean yes) {
+        utf8Accept = yes;
+        folderNameCodec.setAcceptUtf8Encoding(yes);
     }
 
     public ImapResponse readResponse() throws IOException {
@@ -87,11 +95,11 @@ class ImapResponseParser {
             response = readResponse();
 
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
-                Timber.v("%s<<<%s", logId, response);
+                Log.v("%s<<<%s", logId, response);
             }
 
             if (response.getTag() != null && !response.getTag().equalsIgnoreCase(tag)) {
-                Timber.w("After sending tag %s, got tag response from previous command %s for %s", tag, response, logId);
+                Log.w("After sending tag %s, got tag response from previous command %s for %s", tag, response, logId);
 
                 Iterator<ImapResponse> responseIterator = responses.iterator();
 
@@ -195,6 +203,14 @@ class ImapResponseParser {
         response.add(delimiter);
         expect(' ');
         String name = parseString();
+        if (utf8Accept) {
+            // RFCs 9051 and 9755 allow UTF8 in folder names. "The
+            // "UTF8=ACCEPT" capability indicates that the server
+            // ... can provide UTF-8 responses to the "LIST" and
+            // "LSUB" commands."
+        } else {
+            name = folderNameCodec.decode(name);
+        }
         response.add(name);
         expect('\r');
         expect('\n');
@@ -386,7 +402,7 @@ class ImapResponseParser {
                 }
                 return "EXCEPTION";
             }
-            
+
             if (result != null) {
                 return result;
             }
@@ -402,7 +418,7 @@ class ImapResponseParser {
             read += count;
         }
 
-        return new String(data, "US-ASCII");
+        return new String(data, "UTF8");
     }
 
     private String parseQuoted() throws IOException {
@@ -435,7 +451,7 @@ class ImapResponseParser {
             return null;
         }
     }
-    
+
     private void parseNil() throws IOException {
         expect('N');
         expect('I');

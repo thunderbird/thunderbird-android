@@ -3,7 +3,7 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import app.k9mail.core.ui.compose.common.mvi.observe
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf

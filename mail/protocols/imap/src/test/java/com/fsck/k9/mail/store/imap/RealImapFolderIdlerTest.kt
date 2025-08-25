@@ -14,6 +14,9 @@ import java.net.SocketException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
 import org.junit.Test
 
 private const val FOLDER_SERVER_ID = "folder"
@@ -37,6 +40,11 @@ class RealImapFolderIdlerTest {
         FOLDER_SERVER_ID,
         idleRefreshTimeoutProvider,
     )
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `new message during IDLE`() {

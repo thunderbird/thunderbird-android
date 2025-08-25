@@ -7,7 +7,7 @@ import app.k9mail.legacy.message.extractors.PreviewResult
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.search.SqlQueryBuilder
+import net.thunderbird.feature.search.sql.SqlWhereClause
 
 internal class RetrieveMessageListOperations(private val lockableDatabase: LockableDatabase) {
 
@@ -67,7 +67,11 @@ ORDER BY $sortOrder
         sortOrder: String,
         mapper: MessageMapper<out T?>,
     ): List<T> {
-        val orderBy = SqlQueryBuilder.addPrefixToSelection(AGGREGATED_MESSAGES_COLUMNS, "aggregated.", sortOrder)
+        val orderBy = SqlWhereClause.addPrefixToSelection(
+            AGGREGATED_MESSAGES_COLUMNS,
+            "aggregated.",
+            sortOrder,
+        )
 
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(

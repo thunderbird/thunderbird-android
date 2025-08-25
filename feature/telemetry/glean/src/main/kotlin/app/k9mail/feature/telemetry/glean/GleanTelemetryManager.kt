@@ -16,7 +16,7 @@ class GleanTelemetryManager(
     override fun isTelemetryFeatureIncluded(): Boolean = true
 
     override fun setEnabled(enable: Boolean) {
-        Glean.setUploadEnabled(enable)
+        Glean.setCollectionEnabled(enable)
     }
 
     override fun init(uploadEnabled: Boolean, releaseChannel: String?, versionCode: Int, versionName: String) {

@@ -909,4 +909,13 @@
     <string name="dialog_confirm_empty_spam_message">Очистити теку зі спамом?</string>
     <string name="empty_spam_action">Очистити спам</string>
     <string name="dialog_confirm_empty_spam_title">Підтвердити очищення спаму</string>
+    <string name="camera_permission_denied">Доступ до камери відхилено! Не вдалося зробити фото</string>
+    <string name="attach_file">Додати файл</string>
+    <string name="open_camera">Відкрити камеру</string>
+    <string name="debug_enable_sync_debug_logging_title">Увімкнути журнал налагодження синхронізації</string>
+    <string name="debug_enable_sync_debug_logging_summary">Записувати діагностичну інформацію синхронізації за 24 години</string>
+    <string name="debug_sync_export_logs_title">Експорт журналів синхронізації</string>
+    <string name="archiving_not_available_for_this_account">Архівування недоступне для цього облікового запису.</string>
+    <string name="swipe_action_archive_folder_not_set">Налаштувати папку архіву</string>
+    <string name="swipe_action_change_swipe_gestures">Зміна \nжестів проведення пальцем</string>
 </resources>

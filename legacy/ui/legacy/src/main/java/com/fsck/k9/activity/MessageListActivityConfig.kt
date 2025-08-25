@@ -1,11 +1,11 @@
 package com.fsck.k9.activity
 
 import com.fsck.k9.K9
-import com.fsck.k9.SwipeAction
 import com.fsck.k9.UiDensity
-import net.thunderbird.core.preferences.AppTheme
-import net.thunderbird.core.preferences.GeneralSettingsManager
-import net.thunderbird.core.preferences.SubTheme
+import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.SubTheme
 
 data class MessageListActivityConfig(
     val appTheme: AppTheme,
@@ -35,6 +35,7 @@ data class MessageListActivityConfig(
     val fontSizeMessageViewContentAsPercent: Int,
     val swipeRightAction: SwipeAction,
     val swipeLeftAction: SwipeAction,
+    val generalSettingsManager: GeneralSettingsManager,
 ) {
 
     companion object {
@@ -44,16 +45,16 @@ data class MessageListActivityConfig(
             val settings = generalSettingsManager.getSettings()
             return MessageListActivityConfig(
                 appTheme = settings.appTheme,
-                isShowUnifiedInbox = K9.isShowUnifiedInbox,
-                isShowMessageListStars = K9.isShowMessageListStars,
-                isShowCorrespondentNames = K9.isShowCorrespondentNames,
-                isMessageListSenderAboveSubject = K9.isMessageListSenderAboveSubject,
-                isShowContactName = K9.isShowContactName,
-                isChangeContactNameColor = K9.isChangeContactNameColor,
-                isShowContactPicture = K9.isShowContactPicture,
-                isColorizeMissingContactPictures = K9.isColorizeMissingContactPictures,
-                isUseBackgroundAsUnreadIndicator = K9.isUseBackgroundAsUnreadIndicator,
-                isShowComposeButton = K9.isShowComposeButtonOnMessageList,
+                isShowUnifiedInbox = settings.isShowUnifiedInbox,
+                isShowMessageListStars = settings.isShowMessageListStars,
+                isShowCorrespondentNames = settings.isShowCorrespondentNames,
+                isMessageListSenderAboveSubject = settings.isMessageListSenderAboveSubject,
+                isShowContactName = settings.isShowContactName,
+                isChangeContactNameColor = settings.isChangeContactNameColor,
+                isShowContactPicture = settings.isShowContactPicture,
+                isColorizeMissingContactPictures = settings.isColorizeMissingContactPictures,
+                isUseBackgroundAsUnreadIndicator = settings.isUseBackgroundAsUnreadIndicator,
+                isShowComposeButton = settings.isShowComposeButtonOnMessageList,
                 contactNameColor = K9.contactNameColor,
                 messageViewTheme = settings.messageViewTheme,
                 messageListPreviewLines = K9.messageListPreviewLines,
@@ -70,6 +71,7 @@ data class MessageListActivityConfig(
                 fontSizeMessageViewContentAsPercent = K9.fontSizes.messageViewContentAsPercent,
                 swipeRightAction = K9.swipeRightAction,
                 swipeLeftAction = K9.swipeLeftAction,
+                generalSettingsManager = generalSettingsManager,
             )
         }
     }

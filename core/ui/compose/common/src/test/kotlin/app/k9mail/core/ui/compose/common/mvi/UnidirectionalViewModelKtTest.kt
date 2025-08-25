@@ -3,7 +3,6 @@ package app.k9mail.core.ui.compose.common.mvi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.testing.ComposeTest
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.setContent
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test
 

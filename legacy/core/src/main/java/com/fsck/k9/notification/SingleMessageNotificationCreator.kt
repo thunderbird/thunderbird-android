@@ -3,7 +3,7 @@ package com.fsck.k9.notification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
 internal class SingleMessageNotificationCreator(
@@ -43,7 +43,7 @@ internal class SingleMessageNotificationCreator(
             .build()
 
         if (isGroupSummary) {
-            Timber.v(
+            Log.v(
                 "Creating single summary notification (silent=%b): %s",
                 singleNotificationData.isSilent,
                 notification,

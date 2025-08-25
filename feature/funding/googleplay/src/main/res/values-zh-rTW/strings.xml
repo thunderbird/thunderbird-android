@@ -9,7 +9,7 @@
     <string name="funding_googleplay_contribution_list_disclaimer">此捐款不能作為慈善捐款免稅。</string>
     <string name="funding_googleplay_contribution_list_empty_message">造訪 <xliff:g id="link_text">%s</xliff:g> 以了解更多支援 Thunderbird 的方法。</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xs_description">您的支持使我們前進！每一份貢獻都會帶來改變－謝謝！</string>
-    <string name="funding_googleplay_contribution_error_dismiss_button">Dismiss error</string>
+    <string name="funding_googleplay_contribution_error_dismiss_button">關閉錯誤訊息</string>
     <string name="funding_googleplay_contribution_error_unknown">未知的錯誤</string>
     <string name="funding_googleplay_contribution_tfa_onetime_l_title">Major Contribution</string>
     <string name="funding_googleplay_contribution_tfa_onetime_s_title">Valued Contribution</string>
@@ -27,7 +27,7 @@
     <string name="funding_googleplay_contribution_list_empty_title">目前無法進行 App 內捐款。</string>
     <string name="funding_googleplay_contribution_error_show_more">顯示詳細資訊</string>
     <string name="funding_googleplay_contribution_error_service_disconnected">目前無法提供捐款。</string>
-    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Essential Contribution</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_title">關鍵貢獻</string>
     <string name="funding_googleplay_contribution_tfa_onetime_l_description">您是我們能夠做到這些事情的一個重要原因！感謝您的慷慨，我們可以承擔更大的專案並共同達到新的里程碑。</string>
     <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Essential Monthly Contribution</string>
     <string name="funding_googleplay_contribution_footer_manage_button">修改每月付款</string>

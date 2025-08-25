@@ -24,9 +24,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
-
 import androidx.core.database.CursorKt;
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.mailstore.MessageListRepository;
 import app.k9mail.legacy.mailstore.MoreMessages;
@@ -47,17 +45,18 @@ import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
-import com.fsck.k9.search.SqlQueryBuilder;
+import net.thunderbird.feature.search.sql.SqlWhereClause;
 import kotlinx.datetime.Clock;
-import net.thunderbird.feature.search.LocalSearch;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.feature.search.LocalMessageSearch;
 import net.thunderbird.feature.search.api.SearchAttribute;
-import net.thunderbird.feature.search.api.SearchField;
+import net.thunderbird.feature.search.api.MessageSearchField;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 /**
  * <pre>
@@ -335,16 +334,16 @@ public class LocalStore {
         });
     }
 
-    public List<LocalMessage> searchForMessages(LocalSearch search) throws MessagingException {
-        StringBuilder query = new StringBuilder();
-        List<String> queryArgs = new ArrayList<>();
-        SqlQueryBuilder.buildWhereClause(search.getConditions(), query, queryArgs);
+    public List<LocalMessage> searchForMessages(LocalMessageSearch search) throws MessagingException {
+        SqlWhereClause whereClause = new SqlWhereClause.Builder()
+            .withConditions(search.getConditions())
+            .build();
 
         // Avoid "ambiguous column name" error by prefixing "id" with the message table name
-        String where = SqlQueryBuilder.addPrefixToSelection(new String[] { "id" },
-                "messages.", query.toString());
+        String where = SqlWhereClause.Companion.addPrefixToSelection(new String[] { "id" },
+                "messages.", whereClause.getSelection());
 
-        String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
+        String[] selectionArgs = whereClause.getSelectionArgs().toArray(new String[0]);
 
         String sqlQuery = "SELECT " + GET_MESSAGES_COLS + "FROM messages " +
                 "LEFT JOIN threads ON (threads.message_id = messages.id) " +
@@ -354,7 +353,7 @@ public class LocalStore {
                 ((!TextUtils.isEmpty(where)) ? " AND (" + where + ")" : "") +
                 " ORDER BY date DESC";
 
-        Timber.d("Query = %s", sqlQuery);
+        Log.d("Query = %s", sqlQuery);
 
         return getMessages(null, sqlQuery, selectionArgs);
     }
@@ -389,7 +388,7 @@ public class LocalStore {
                         messages.add(message);
                     }
                 } catch (Exception e) {
-                    Timber.d(e, "Got an exception");
+                    Log.d(e, "Got an exception");
                 } finally {
                     Utility.closeQuietly(cursor);
                 }
@@ -405,8 +404,8 @@ public class LocalStore {
     public List<LocalMessage> getMessagesInThread(final long rootId) throws MessagingException {
         String rootIdString = Long.toString(rootId);
 
-        LocalSearch search = new LocalSearch();
-        search.and(SearchField.THREAD_ID, rootIdString, SearchAttribute.EQUALS);
+        LocalMessageSearch search = new LocalMessageSearch();
+        search.and(MessageSearchField.THREAD_ID, rootIdString, SearchAttribute.EQUALS);
 
         return searchForMessages(search);
     }

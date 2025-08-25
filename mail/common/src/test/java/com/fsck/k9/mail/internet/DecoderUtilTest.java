@@ -1,6 +1,9 @@
 package com.fsck.k9.mail.internet;
 
 
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.logging.testing.TestLogger;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -9,6 +12,10 @@ import static org.junit.Assert.assertEquals;
 public class DecoderUtilTest {
     private static final String INVALID = "=?utf-8?Q??=";
 
+    @Before
+    public void setUp() {
+        Log.logger = new TestLogger();
+    }
 
     @Test
     public void decodeEncodedWords_withInvalidEncodedWord_shouldReturnInputText() {

@@ -98,14 +98,14 @@
     <string name="status_invalid_id_error">Le courriel est introuvable</string>
     <string name="status_loading_error">Erreur de chargement du courriel</string>
     <string name="load_more_messages_fmt">Charger jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
-    <string name="size_format_gigabytes">%.1f Go</string>
-    <string name="size_format_megabytes">%.1f Mo</string>
-    <string name="size_format_kilobytes">%.1f ko</string>
-    <string name="size_format_bytes">%d o</string>
+    <string name="size_format_gigabytes">%.1f Go</string>
+    <string name="size_format_megabytes">%.1f Mo</string>
+    <string name="size_format_kilobytes">%.1f ko</string>
+    <string name="size_format_bytes">%d o</string>
     <plurals name="notification_new_messages_title">
-        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nouveau courriel</item>
+        <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nouveau courriel</item>
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> de nouveaux courriels</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nouveaux courriels</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nouveaux courriels</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> de plus sur <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Répondre</string>
@@ -290,16 +290,16 @@
     <string name="idle_refresh_period_36min">Toutes les 36 minutes</string>
     <string name="idle_refresh_period_48min">Toutes les 48 minutes</string>
     <string name="idle_refresh_period_60min">Toutes les 60 minutes</string>
-    <string name="account_setup_options_mail_display_count_10">10 courriels</string>
+    <string name="account_setup_options_mail_display_count_10">10 courriels</string>
     <string name="account_setup_options_mail_display_count_25">25 courriels</string>
-    <string name="account_setup_options_mail_display_count_50">50 courriels</string>
-    <string name="account_setup_options_mail_display_count_100">100 courriels</string>
-    <string name="account_setup_options_mail_display_count_250">250 courriels</string>
-    <string name="account_setup_options_mail_display_count_500">500 courriels</string>
-    <string name="account_setup_options_mail_display_count_1000">1 000 courriels</string>
-    <string name="account_setup_options_mail_display_count_2500">2 500 courriels</string>
-    <string name="account_setup_options_mail_display_count_5000">5 000 courriels</string>
-    <string name="account_setup_options_mail_display_count_10000">10 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_50">50 courriels</string>
+    <string name="account_setup_options_mail_display_count_100">100 courriels</string>
+    <string name="account_setup_options_mail_display_count_250">250 courriels</string>
+    <string name="account_setup_options_mail_display_count_500">500 courriels</string>
+    <string name="account_setup_options_mail_display_count_1000">1 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_2500">2 500 courriels</string>
+    <string name="account_setup_options_mail_display_count_5000">5 000 courriels</string>
+    <string name="account_setup_options_mail_display_count_10000">10 000 courriels</string>
     <string name="account_setup_options_mail_display_count_all">tous les courriels</string>
     <string name="move_copy_cannot_copy_unsynced_message">Impossible de copier ou déplacer un courriel qui n’est pas synchronisé avec le serveur</string>
     <string name="account_settings_push_advanced_title">Avancé</string>
@@ -365,33 +365,33 @@
     <string name="account_settings_color_summary">La note de couleur du compte utilisée dans la liste des dossiers et des comptes</string>
     <string name="account_settings_mail_display_count_label">Taille du dossier local</string>
     <string name="account_settings_autodownload_message_size_label">Récupérer les courriels jusqu’à</string>
-    <string name="account_settings_autodownload_message_size_1">1 Kio</string>
-    <string name="account_settings_autodownload_message_size_2">2 Kio</string>
-    <string name="account_settings_autodownload_message_size_4">4 Kio</string>
-    <string name="account_settings_autodownload_message_size_8">8 Kio</string>
-    <string name="account_settings_autodownload_message_size_16">16 Kio</string>
-    <string name="account_settings_autodownload_message_size_32">32 Kio</string>
-    <string name="account_settings_autodownload_message_size_64">64 Kio</string>
-    <string name="account_settings_autodownload_message_size_128">128 Kio</string>
-    <string name="account_settings_autodownload_message_size_256">256 Kio</string>
-    <string name="account_settings_autodownload_message_size_512">512 Kio</string>
-    <string name="account_settings_autodownload_message_size_1024">1 Mio</string>
-    <string name="account_settings_autodownload_message_size_2048">2 Mio</string>
-    <string name="account_settings_autodownload_message_size_5120">5 Mio</string>
-    <string name="account_settings_autodownload_message_size_10240">10 Mio</string>
+    <string name="account_settings_autodownload_message_size_1">1 Kio</string>
+    <string name="account_settings_autodownload_message_size_2">2 Kio</string>
+    <string name="account_settings_autodownload_message_size_4">4 Kio</string>
+    <string name="account_settings_autodownload_message_size_8">8 Kio</string>
+    <string name="account_settings_autodownload_message_size_16">16 Kio</string>
+    <string name="account_settings_autodownload_message_size_32">32 Kio</string>
+    <string name="account_settings_autodownload_message_size_64">64 Kio</string>
+    <string name="account_settings_autodownload_message_size_128">128 Kio</string>
+    <string name="account_settings_autodownload_message_size_256">256 Kio</string>
+    <string name="account_settings_autodownload_message_size_512">512 Kio</string>
+    <string name="account_settings_autodownload_message_size_1024">1 Mio</string>
+    <string name="account_settings_autodownload_message_size_2048">2 Mio</string>
+    <string name="account_settings_autodownload_message_size_5120">5 Mio</string>
+    <string name="account_settings_autodownload_message_size_10240">10 Mio</string>
     <string name="account_settings_autodownload_message_size_any">n’importe quelle taille</string>
     <string name="account_settings_message_age_label">Synchroniser les courriels</string>
     <string name="account_settings_message_age_any">pour toutes les dates</string>
     <string name="account_settings_message_age_0">d’aujourd’hui</string>
-    <string name="account_settings_message_age_1">des 2 derniers jours</string>
-    <string name="account_settings_message_age_2">des 3 derniers jours</string>
+    <string name="account_settings_message_age_1">des 2 derniers jours</string>
+    <string name="account_settings_message_age_2">des 3 derniers jours</string>
     <string name="account_settings_message_age_7">de la dernière semaine</string>
-    <string name="account_settings_message_age_14">des 2 dernières semaines</string>
-    <string name="account_settings_message_age_21">des 3 dernières semaines</string>
+    <string name="account_settings_message_age_14">des 2 dernières semaines</string>
+    <string name="account_settings_message_age_21">des 3 dernières semaines</string>
     <string name="account_settings_message_age_1_month">du dernier mois</string>
-    <string name="account_settings_message_age_2_months">des 2 derniers mois</string>
-    <string name="account_settings_message_age_3_months">des 3 derniers mois</string>
-    <string name="account_settings_message_age_6_months">des 6 derniers mois</string>
+    <string name="account_settings_message_age_2_months">des 2 derniers mois</string>
+    <string name="account_settings_message_age_3_months">des 3 derniers mois</string>
+    <string name="account_settings_message_age_6_months">des 6 derniers mois</string>
     <string name="account_settings_message_age_1_year">de la dernière année</string>
     <string name="account_settings_sync_remote_deletetions_label">Synchroniser les suppressions sur le serveur</string>
     <string name="account_settings_sync_remote_deletetions_summary">Supprimer les courriels quand ils sont supprimés sur le serveur</string>
@@ -410,11 +410,11 @@
     <string name="account_settings_vibrate_enable">Vibration</string>
     <string name="account_settings_vibrate_pattern_label">Profil de vibration</string>
     <string name="account_settings_vibrate_pattern_default">Par défaut</string>
-    <string name="account_settings_vibrate_pattern_1">1er profil</string>
-    <string name="account_settings_vibrate_pattern_2">2e profil</string>
-    <string name="account_settings_vibrate_pattern_3">3e profil</string>
-    <string name="account_settings_vibrate_pattern_4">4e profil</string>
-    <string name="account_settings_vibrate_pattern_5">5e profil</string>
+    <string name="account_settings_vibrate_pattern_1">1er profil</string>
+    <string name="account_settings_vibrate_pattern_2">2e profil</string>
+    <string name="account_settings_vibrate_pattern_3">3e profil</string>
+    <string name="account_settings_vibrate_pattern_4">4e profil</string>
+    <string name="account_settings_vibrate_pattern_5">5e profil</string>
     <string name="account_settings_vibrate_times">Nombre de vibrations</string>
     <string name="account_settings_vibrate_summary_disabled">Désactivée</string>
     <string name="account_settings_ringtone">Sonnerie de nouveaux courriels</string>
@@ -433,7 +433,7 @@
     <string name="account_settings_composition_label">Valeurs de rédaction par défaut</string>
     <string name="account_settings_composition_summary">Définir les valeurs par défaut pour De, Cci et pour la signature</string>
     <string name="account_settings_identities_label">Gérer les identités</string>
-    <string name="account_settings_identities_summary">Définir des adresses « De » et signatures de substitution</string>
+    <string name="account_settings_identities_summary">Définir des adresses « De » et signatures de substitution</string>
     <string name="manage_identities_title">Gérer les identités</string>
     <string name="manage_identities_context_menu_title">Gérer l’identité</string>
     <string name="edit_identity_title">Modifier l’identité</string>
@@ -515,14 +515,14 @@
     <string name="background_ops_auto_sync_only">Quand la synchronisation automatique est activée</string>
     <string name="batch_select_all">Tout sélectionner</string>
     <string name="account_setup_push_limit_label">Maximum de dossiers à vérifier avec le poussé</string>
-    <string name="account_setup_push_limit_5">5 dossiers</string>
-    <string name="account_setup_push_limit_10">10 dossiers</string>
+    <string name="account_setup_push_limit_5">5 dossiers</string>
+    <string name="account_setup_push_limit_10">10 dossiers</string>
     <string name="account_setup_push_limit_25">25 dossiers</string>
-    <string name="account_setup_push_limit_50">50 dossiers</string>
-    <string name="account_setup_push_limit_100">100 dossiers</string>
-    <string name="account_setup_push_limit_250">250 dossiers</string>
-    <string name="account_setup_push_limit_500">500 dossiers</string>
-    <string name="account_setup_push_limit_1000">1 000 dossiers</string>
+    <string name="account_setup_push_limit_50">50 dossiers</string>
+    <string name="account_setup_push_limit_100">100 dossiers</string>
+    <string name="account_setup_push_limit_250">250 dossiers</string>
+    <string name="account_setup_push_limit_500">500 dossiers</string>
+    <string name="account_setup_push_limit_1000">1 000 dossiers</string>
     <string name="animations_title">Animation</string>
     <string name="animations_summary">Utiliser des effets visuels voyants</string>
     <string name="show_unified_inbox_title">Afficher la boîte de réception unifiée</string>
@@ -572,7 +572,7 @@
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Voulez-vous supprimer ce courriel ?</item>
         <item quantity="many">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
-        <item quantity="other">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
+        <item quantity="other">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Oui</string>
     <string name="dialog_confirm_delete_cancel_button">Non</string>
@@ -586,7 +586,7 @@
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Voulez-vous déplacer ce courriel vers le dossier des pourriels ?</item>
         <item quantity="many">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossier des pourriels ?</item>
-        <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossier des pourriels ?</item>
+        <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossier des pourriels ?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Oui</string>
     <string name="dialog_confirm_spam_cancel_button">Non</string>
@@ -627,7 +627,7 @@
     <string name="account_settings_remote_search_num_results_entries_100">100</string>
     <string name="account_settings_remote_search_num_results_entries_250">250</string>
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
-    <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
+    <string name="account_settings_remote_search_num_results_entries_1000">1 000</string>
     <string name="account_settings_remote_search_num_label">Limite de recherche sur le serveur</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
     <plurals name="remote_search_downloading">
@@ -650,7 +650,7 @@
     <string name="global_settings_threaded_view_summary">Grouper les courriels par discussion</string>
     <string name="upgrade_databases_title">Mettre les bases de données à niveau</string>
     <string name="upgrade_databases_unspecified">Mise à niveau des bases de données…</string>
-    <string name="upgrade_database_format">Mise à niveau de la base de données du compte « <xliff:g id="account">%s</xliff:g> »</string>
+    <string name="upgrade_database_format">Mise à niveau de la base de données du compte « <xliff:g id="account">%s</xliff:g> »</string>
     <string name="global_settings_splitview_mode_label">Partager l’écran</string>
     <string name="global_settings_splitview_always">Toujours</string>
     <string name="global_settings_splitview_never">Jamais</string>
@@ -706,7 +706,7 @@
     <string name="openpgp_dialog_sign_only_text">Dans ce mode, votre clé PGP est utilisée pour signer cryptographiquement un courriel non chiffré.</string>
     <string name="openpgp_dialog_sign_only_plus_verified">Ce mode ne chiffre pas le courriel, mais le certifie avec votre clé.</string>
     <string name="openpgp_dialog_sign_only_minus_break">Les signatures pourraient se briser si elles sont envoyées à des listes de diffusion.</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">Dans certaines applis de courriel, les signatures pourraient être affichées en tant que fichiers joints « signature.asc ».</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">Dans certaines applis de courriel, les signatures pourraient être affichées en tant que fichiers joints « signature.asc ».</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">Les courriels chiffrés comprennent toujours une signature.</string>
     <string name="crypto_msg_title_plaintext">Texte brut</string>
     <string name="crypto_msg_unencrypted_sign_error">la signature de bout en bout comportait une erreur</string>
@@ -779,7 +779,7 @@
     <string name="dialog_openkeychain_info_install">Installer</string>
     <string name="account_settings_crypto_encrypt_subject">Chiffrer l’objet des courriels</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pourrait ne pas être pris en charge par certains destinataires</string>
-    <string name="toast_account_not_found">Erreur interne : le compte est invalide</string>
+    <string name="toast_account_not_found">Erreur interne : le compte est invalide !</string>
     <string name="toast_openpgp_provider_error">Erreur de connexion à %s</string>
     <string name="ac_transfer_setting_title">Envoyer un courriel de configuration Autocrypt</string>
     <string name="ac_transfer_setting_summary">Partager en toute sécurité la configuration du chiffrement de bout de bout avec d’autres appareils</string>
@@ -837,7 +837,7 @@
     <!--Title of the toolbar that is displayed when the message details bottom sheet has been expanded-->
     <string name="message_details_toolbar_title">Détails du courriel</string>
     <!--Displayed when an email is missing the 'Date' header field and no date can be displayed in the message details bottom sheet.-->
-    <string name="message_details_missing_date">L’en-tête « Date » manque</string>
+    <string name="message_details_missing_date">L’en-tête « Date » manque</string>
     <!--Title of the "From" section in the message details bottom sheet. This should probably be the same as the string 'recipient_from'.-->
     <string name="message_details_from_section_title">De</string>
     <!--Title of the "Sender" section in the message details bottom sheet. This refers to the 'Sender' header. Be careful with translations.-->
@@ -879,7 +879,7 @@
     <string name="push_notification_grant_alarm_permission">Touchez pour accorder l’autorisation.</string>
     <string name="about_title">À propos de <xliff:g id="app_name">%s</xliff:g></string>
     <string name="about_app_authors_thunderbird">L’équipe Thunderbird pour appareils mobiles</string>
-    <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="account_delete_dlg_instructions_fmt">Le compte « <xliff:g id="account">%1$s</xliff:g> » sera supprimé de <xliff:g id="app_name">%2$s</xliff:g>.</string>
     <string name="push_info_notification_explanation_text">Si le poussé est utilisé, <xliff:g id="app_name">%1$s</xliff:g> maintient une connexion vers le serveur de courriel. Android exige d’afficher une notification continue quand l’appli est active en arrière-plan. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="dialog_openkeychain_info_text">L’appli OpenKeychain est nécessaire pour prendre en charge le chiffrement de bout en bout.</string>
     <string name="folder_settings_notifications_label">Notifications</string>
@@ -898,4 +898,13 @@
     <string name="empty_spam_action">Supprimer les pourriels/indésirables</string>
     <string name="dialog_confirm_empty_spam_title">Confirmer la suppression des pourriels</string>
     <string name="dialog_confirm_empty_spam_message">Voulez-vous vider le dossier des pourriels ?</string>
+    <string name="attach_file">Joindre un fichier</string>
+    <string name="camera_permission_denied">L’autorisation d’accès à l’appareil photo a été refusée. Impossible de prendre une photo</string>
+    <string name="open_camera">Ouvrir l’appareil photo</string>
+    <string name="debug_enable_sync_debug_logging_title">Activer la journalisation de débogage de la synchronisation</string>
+    <string name="debug_enable_sync_debug_logging_summary">Journaliser les données de diagnostic de synchronisation pendant 24 heures</string>
+    <string name="debug_sync_export_logs_title">Exporter les journaux de synchronisation</string>
+    <string name="swipe_action_archive_folder_not_set">Configurer le dossier d’archivage</string>
+    <string name="swipe_action_change_swipe_gestures">Changer\nles gestes de balayage</string>
+    <string name="archiving_not_available_for_this_account">L’archivage n’est pas proposé pour ce compte.</string>
 </resources>

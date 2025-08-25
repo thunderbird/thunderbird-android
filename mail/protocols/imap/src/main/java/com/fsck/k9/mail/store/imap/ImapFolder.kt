@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.imap
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.MessagingException
@@ -92,6 +93,14 @@ interface ImapFolder {
 
     @Throws(MessagingException::class)
     fun expungeUids(uids: List<String>)
+
+    /**
+     * Creates this folder on the IMAP server.
+     *
+     * @throws MessagingException when fails to create folder on IMAP server.
+     */
+    @Throws(MessagingException::class)
+    fun create(folderType: FolderType = FolderType.REGULAR): Boolean
 }
 
 interface FetchListener {

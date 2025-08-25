@@ -11,7 +11,7 @@ Thunderbird је моћна имејл апликација фокусирана
 
 <b>Компатибилност</b>
 <ul>
- <li>Thunderbird ради са IMAP и POP3 протоколима, подржавајући широк спектар добављача е-поште, укључујући Gmail, Outlook, Yahoo Mail, iCloud и још много тога.</li>
+ <li>Thunderbird ради са IMAP и POP3 протоколима, подржавајући широк спектар пружаоца имејла, укључујући Gmail, Outlook, Yahoo Mail, iCloud и још много тога.</li>
 </ul>
 
 <b>Зашто користити Thunerbird</b>

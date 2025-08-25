@@ -1,6 +1,5 @@
 package com.fsck.k9.storage.messages
 
-import app.k9mail.core.mail.folder.api.FolderDetails
 import app.k9mail.legacy.mailstore.CreateFolderInfo
 import app.k9mail.legacy.mailstore.FolderMapper
 import app.k9mail.legacy.mailstore.MessageMapper
@@ -10,11 +9,13 @@ import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
+import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import java.util.Date
-import net.thunderbird.feature.search.ConditionsTreeNode
+import net.thunderbird.feature.mail.folder.api.FolderDetails
+import net.thunderbird.feature.search.SearchConditionTreeNode
 
 class K9MessageStore(
     database: LockableDatabase,
@@ -138,9 +139,9 @@ class K9MessageStore(
         deleteMessageOperations.destroyMessages(folderId, messageServerIds)
     }
 
-    override fun createFolders(folders: List<CreateFolderInfo>) {
+    @Throws(MessagingException::class)
+    override fun createFolders(folders: List<CreateFolderInfo>): Set<Long> =
         createFolderOperations.createFolders(folders)
-    }
 
     override fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
         return retrieveFolderOperations.getFolder(folderId, mapper)
@@ -182,11 +183,11 @@ class K9MessageStore(
         return retrieveFolderOperations.getUnreadMessageCount(folderId)
     }
 
-    override fun getUnreadMessageCount(conditions: ConditionsTreeNode?): Int {
+    override fun getUnreadMessageCount(conditions: SearchConditionTreeNode?): Int {
         return retrieveFolderOperations.getUnreadMessageCount(conditions)
     }
 
-    override fun getStarredMessageCount(conditions: ConditionsTreeNode?): Int {
+    override fun getStarredMessageCount(conditions: SearchConditionTreeNode?): Int {
         return retrieveFolderOperations.getStarredMessageCount(conditions)
     }
 

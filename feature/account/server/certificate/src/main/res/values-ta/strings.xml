@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_unknown_error_subtitle">சான்றிதழ் பிழை</string>
-    <string name="account_server_certificate_unknown_error_description_format">பயன்பாடு சாத்தியமான பாதுகாப்பு அச்சுறுத்தலைக் கண்டறிந்தது மற்றும் &lt;xliff: g ஐடி = \"servername\"&gt;%s &lt;/xliff: g&gt; உடன் தொடர்ந்து இணைக்கப்படவில்லை.\n நீங்கள் தொடர்ந்தால், தாக்குதல் நடத்தியவர்கள் உங்கள் கடவுச்சொல் அல்லது மின்னஞ்சல்கள் போன்ற தகவல்களைத் திருட முயற்சி செய்யலாம்.</string>
+    <string name="account_server_certificate_unknown_error_description_format">பயன்பாடு சாத்தியமான பாதுகாப்பு அச்சுறுத்தலைக் கண்டறிந்தது மற்றும் <xliff:g id="serverName">%s</xliff:g> உடன் தொடர்ந்து இணைக்கப்படவில்லை.\n நீங்கள் தொடர்ந்தால், தாக்குதல் நடத்தியவர்கள் உங்கள் கடவுச்சொல் அல்லது மின்னஞ்சல்கள் போன்ற தகவல்களைத் திருட முயற்சி செய்யலாம்.</string>
     <string name="account_server_certificate_button_back">திரும்பிச் செல்லுங்கள் (பரிந்துரைக்கப்படுகிறது)</string>
     <string name="account_server_certificate_button_continue">ஆபத்தை ஏற்றுக்கொண்டு தொடரவும்</string>
     <string name="account_server_certificate_section_title">சேவையக சான்றிதழ்</string>

@@ -13,10 +13,9 @@ import android.os.AsyncTask;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.Headers;
-import timber.log.Timber;
-
-import app.k9mail.legacy.account.QuoteStyle;
-import app.k9mail.legacy.account.Identity;
+import net.thunderbird.core.android.account.Identity;
+import net.thunderbird.core.android.account.QuoteStyle;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.Address;
@@ -35,6 +34,7 @@ import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 import org.apache.james.mime4j.util.MimeUtil;
 
 
@@ -73,11 +73,17 @@ public abstract class MessageBuilder {
     private boolean isDraft;
     private boolean isPgpInlineEnabled;
 
+    private GeneralSettingsManager settingsManager;
+
     protected MessageBuilder(MessageIdGenerator messageIdGenerator,
-            BoundaryGenerator boundaryGenerator, CoreResourceProvider resourceProvider) {
+            BoundaryGenerator boundaryGenerator,
+            CoreResourceProvider resourceProvider,
+            GeneralSettingsManager settingsManager
+        ) {
         this.messageIdGenerator = messageIdGenerator;
         this.boundaryGenerator = boundaryGenerator;
         this.resourceProvider = resourceProvider;
+        this.settingsManager = settingsManager;
     }
 
     /**
@@ -111,7 +117,7 @@ public abstract class MessageBuilder {
             message.setHeader("Return-Receipt-To", from.toEncodedString());
         }
 
-        if (!K9.isHideUserAgent()) {
+        if (!settingsManager.getSettings().getPrivacy().isHideUserAgent()) {
             String encodedUserAgent = MimeHeaderEncoder.encode("User-Agent", resourceProvider.userAgent());
             message.setHeader("User-Agent", encodedUserAgent);
         }
@@ -615,7 +621,7 @@ public abstract class MessageBuilder {
     final protected void deliverResult() {
         synchronized (callbackLock) {
             if (asyncCallback == null) {
-                Timber.d("Keeping message builder result in queue for later delivery");
+                Log.d("Keeping message builder result in queue for later delivery");
                 return;
             }
             if (queuedMimeMessage != null) {

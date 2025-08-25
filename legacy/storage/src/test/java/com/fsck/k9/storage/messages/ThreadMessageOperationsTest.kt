@@ -6,11 +6,19 @@ import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.fsck.k9.storage.RobolectricTest
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import org.junit.Before
 import org.junit.Test
 
 class ThreadMessageOperationsTest : RobolectricTest() {
     private val sqliteDatabase = createDatabase()
     private val threadMessageOperations = ThreadMessageOperations()
+
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
 
     @Test
     fun `insert message without existing thread`() {

@@ -3,6 +3,8 @@ package net.thunderbird.feature.account.settings.impl.domain.usecase
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 
 internal class FakeGeneralResourceProvider : ResourceProvider.GeneralResourceProvider {
@@ -18,5 +20,5 @@ internal class FakeGeneralResourceProvider : ResourceProvider.GeneralResourcePro
     override val colorTitle: () -> String = { "Color" }
     override val colorDescription: () -> String? = { null }
     override val colorIcon: () -> ImageVector? = { null }
-    override val colors: List<Int> = listOf(0xFF0000, 0x00FF00, 0x0000FF)
+    override val colors: ImmutableList<Int> = persistentListOf(0xFF0000, 0x00FF00, 0x0000FF)
 }

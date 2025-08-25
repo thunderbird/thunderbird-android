@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;
@@ -149,7 +149,7 @@ public class MimeMessage extends Message {
                 DateTimeField field = (DateTimeField) DefaultFieldParser.parse("Date: " + dateHeaderBody);
                 mSentDate = field.getDate();
             } catch (Exception e) {
-                Timber.d(e, "Couldn't parse Date header field");
+                Log.d(e, "Couldn't parse Date header field");
             }
         }
         return mSentDate;

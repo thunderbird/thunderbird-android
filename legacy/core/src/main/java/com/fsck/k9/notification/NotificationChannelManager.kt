@@ -8,12 +8,12 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import java.util.concurrent.Executor
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
-import timber.log.Timber
 
 class NotificationChannelManager(
     private val accountManager: AccountManager,
@@ -181,7 +181,7 @@ class NotificationChannelManager(
         val oldNotificationChannel = notificationManager.getNotificationChannel(oldChannelId)
 
         if (oldNotificationChannel.matches(account)) {
-            Timber.v("Not recreating NotificationChannel. The current one already matches the app's settings.")
+            Log.v("Not recreating NotificationChannel. The current one already matches the app's settings.")
             return
         }
 
@@ -198,9 +198,9 @@ class NotificationChannelManager(
             setPropertiesFrom(account)
         }
 
-        Timber.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
-        Timber.v("Old NotificationChannel: %s", oldNotificationChannel)
-        Timber.v("New NotificationChannel: %s", newNotificationChannel)
+        Log.v("Recreating NotificationChannel(%s => %s)", oldChannelId, newChannelId)
+        Log.v("Old NotificationChannel: %s", oldNotificationChannel)
+        Log.v("New NotificationChannel: %s", newNotificationChannel)
         notificationManager.createNotificationChannel(newNotificationChannel)
 
         // To avoid a race condition we first create the new NotificationChannel, point the Account to it,

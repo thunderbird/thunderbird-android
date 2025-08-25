@@ -1,7 +1,7 @@
 package com.fsck.k9.message;
 
 
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.message.html.HtmlConverter;
@@ -50,7 +50,7 @@ class TextBodyBuilder {
             InsertableHtmlContent quotedHtmlContent = getQuotedTextHtml();
 
             if (K9.isDebugLoggingEnabled()) {
-                Timber.d("insertable: %s", quotedHtmlContent.toDebugString());
+                Log.d("insertable: %s", quotedHtmlContent.toDebugString());
             }
 
             // Convert the text to HTML

@@ -6,17 +6,15 @@ import app.k9mail.autodiscovery.autoconfig.AutoconfigUrlConfig
 import app.k9mail.autodiscovery.autoconfig.createIspDbAutoconfigDiscovery
 import app.k9mail.autodiscovery.autoconfig.createMxLookupAutoconfigDiscovery
 import app.k9mail.autodiscovery.autoconfig.createProviderAutoconfigDiscovery
-import app.k9mail.core.common.mail.toUserEmailAddress
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.parameters.arguments.argument
 import com.github.ajalt.clikt.parameters.options.flag
 import com.github.ajalt.clikt.parameters.options.option
-import kotlin.time.DurationUnit.MILLISECONDS
-import kotlin.time.toDuration
+import kotlin.time.measureTimedValue
 import kotlinx.coroutines.runBlocking
+import net.thunderbird.core.common.mail.toUserEmailAddress
 import okhttp3.OkHttpClient.Builder
-import org.koin.core.time.measureDurationForResult
 
 class AutoDiscoveryCli : CliktCommand() {
     private val httpsOnly by option(help = "Only perform Autoconfig lookups using HTTPS").flag()
@@ -36,7 +34,7 @@ class AutoDiscoveryCli : CliktCommand() {
             includeEmailAddress = includeEmailAddress,
         )
 
-        val (discoveryResult, durationInMillis) = measureDurationForResult {
+        val (discoveryResult, duration) = measureTimedValue {
             runAutoDiscovery(config)
         }
 
@@ -48,7 +46,7 @@ class AutoDiscoveryCli : CliktCommand() {
         }
 
         echo()
-        echo("Duration: ${durationInMillis.toDuration(MILLISECONDS)}")
+        echo("Duration: ${duration.inWholeMilliseconds}")
     }
 
     private fun runAutoDiscovery(config: AutoconfigUrlConfig): AutoDiscoveryResult {

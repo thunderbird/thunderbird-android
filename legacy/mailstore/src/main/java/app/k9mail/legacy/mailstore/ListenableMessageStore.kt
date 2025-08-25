@@ -1,15 +1,16 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.core.mail.folder.api.FolderDetails
 import java.util.concurrent.CopyOnWriteArraySet
+import net.thunderbird.feature.mail.folder.api.FolderDetails
 
 @Suppress("TooManyFunctions")
 class ListenableMessageStore(private val messageStore: MessageStore) : MessageStore by messageStore {
     private val folderSettingsListener = CopyOnWriteArraySet<FolderSettingsChangedListener>()
 
-    override fun createFolders(folders: List<CreateFolderInfo>) {
-        messageStore.createFolders(folders)
-        notifyFolderSettingsChanged()
+    override fun createFolders(folders: List<CreateFolderInfo>): Set<Long> {
+        return messageStore.createFolders(folders).also {
+            notifyFolderSettingsChanged()
+        }
     }
 
     override fun deleteFolders(folderServerIds: List<String>) {

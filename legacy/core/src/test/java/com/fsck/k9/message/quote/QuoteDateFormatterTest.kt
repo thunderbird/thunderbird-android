@@ -2,25 +2,70 @@ package com.fsck.k9.message.quote
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.fsck.k9.K9
 import java.time.ZonedDateTime
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettings
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 class QuoteDateFormatterTest {
     private lateinit var originalLocale: Locale
     private var originalTimeZone: TimeZone? = null
-    private val quoteDateFormatter = QuoteDateFormatter()
+    private val generalSettingsManager: GeneralSettingsManager = mock()
+    private val fakeGeneralSettings = GeneralSettings(
+        backgroundSync = BackgroundSync.NEVER,
+        showRecentChanges = false,
+        appTheme = AppTheme.FOLLOW_SYSTEM,
+        messageViewTheme = SubTheme.USE_GLOBAL,
+        messageComposeTheme = SubTheme.USE_GLOBAL,
+        fixedMessageViewTheme = false,
+        privacy = PrivacySettings(
+            isHideTimeZone = false,
+            isHideUserAgent = false,
+        ),
+        isAutoFitWidth = false,
+        isThreadedViewEnabled = false,
+        isUseMessageViewFixedWidthFont = false,
+        isShowContactPicture = false,
+        isMessageListSenderAboveSubject = false,
+        isChangeContactNameColor = false,
+        isColorizeMissingContactPictures = false,
+        shouldShowSetupArchiveFolderDialog = false,
+        isShowContactName = false,
+        isShowUnifiedInbox = false,
+        isShowStarredCount = false,
+        isShowComposeButtonOnMessageList = false,
+        isUseBackgroundAsUnreadIndicator = false,
+        isShowCorrespondentNames = false,
+        isShowAnimations = false,
+        isShowMessageListStars = false,
+        isQuietTime = false,
+        isQuietTimeEnabled = false,
+        quietTimeStarts = "7:00",
+        quietTimeEnds = "7:00",
+
+    )
+    private val quoteDateFormatter = QuoteDateFormatter(
+        generalSettingsManager = generalSettingsManager,
+    )
 
     @Before
     fun setUp() {
         originalLocale = Locale.getDefault()
         originalTimeZone = TimeZone.getDefault()
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+02:00"))
+        whenever(generalSettingsManager.getSettings()) doReturn fakeGeneralSettings
     }
 
     @After
@@ -31,7 +76,8 @@ class QuoteDateFormatterTest {
 
     @Test
     fun hideTimeZoneEnabled_UsLocale() {
-        K9.isHideTimeZone = true
+        whenever(generalSettingsManager.getSettings()) doReturn
+            fakeGeneralSettings.copy(privacy = fakeGeneralSettings.privacy.copy(isHideTimeZone = true))
         Locale.setDefault(Locale.US)
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
@@ -41,7 +87,8 @@ class QuoteDateFormatterTest {
 
     @Test
     fun hideTimeZoneEnabled_GermanyLocale() {
-        K9.isHideTimeZone = true
+        whenever(generalSettingsManager.getSettings()) doReturn
+            fakeGeneralSettings.copy(privacy = fakeGeneralSettings.privacy.copy(isHideTimeZone = true))
         Locale.setDefault(Locale.GERMANY)
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
@@ -51,7 +98,6 @@ class QuoteDateFormatterTest {
 
     @Test
     fun hideTimeZoneDisabled_UsLocale() {
-        K9.isHideTimeZone = false
         Locale.setDefault(Locale.US)
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
@@ -61,7 +107,6 @@ class QuoteDateFormatterTest {
 
     @Test
     fun hideTimeZoneDisabled_GermanyLocale() {
-        K9.isHideTimeZone = false
         Locale.setDefault(Locale.GERMANY)
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())

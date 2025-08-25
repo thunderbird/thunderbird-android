@@ -2,7 +2,6 @@ package app.k9mail.core.ui.compose.designsystem.atom.textfield
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -13,6 +12,7 @@ import androidx.compose.ui.test.performTextInput
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import assertk.assertFailure
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
@@ -46,7 +46,7 @@ class CommonTextFieldTest(
     fun `should be enabled by default`() = runComposeTest {
         setContent {
             testSubject(
-                Modifier.testTag(testSubjectName),
+                Modifier.testTagAsResourceId(testSubjectName),
                 TextFieldConfig(
                     label = null,
                     isEnabled = null,
@@ -63,7 +63,7 @@ class CommonTextFieldTest(
     fun `should be disabled when enabled is false`() = runComposeTest {
         setContent {
             testSubject(
-                Modifier.testTag(testSubjectName),
+                Modifier.testTagAsResourceId(testSubjectName),
                 TextFieldConfig(
                     label = null,
                     isEnabled = false,
@@ -80,7 +80,7 @@ class CommonTextFieldTest(
     fun `should show label when label is not null`() = runComposeTest {
         setContent {
             testSubject(
-                Modifier.testTag(testSubjectName),
+                Modifier.testTagAsResourceId(testSubjectName),
                 TextFieldConfig(
                     label = LABEL,
                     isEnabled = null,
@@ -97,7 +97,7 @@ class CommonTextFieldTest(
     fun `should show asterisk when isRequired is true`() = runComposeTest {
         setContent {
             testSubject(
-                Modifier.testTag(testSubjectName),
+                Modifier.testTagAsResourceId(testSubjectName),
                 TextFieldConfig(
                     label = LABEL,
                     isEnabled = null,
@@ -114,7 +114,7 @@ class CommonTextFieldTest(
     fun `should not show asterisk when isRequired is false`() = runComposeTest {
         setContent {
             testSubject(
-                Modifier.testTag(testSubjectName),
+                Modifier.testTagAsResourceId(testSubjectName),
                 TextFieldConfig(
                     label = LABEL,
                     isEnabled = null,
@@ -131,7 +131,7 @@ class CommonTextFieldTest(
     fun `should not allow editing when isReadOnly is true`() = runComposeTest {
         setContent {
             testSubject(
-                Modifier.testTag(testSubjectName),
+                Modifier.testTagAsResourceId(testSubjectName),
                 TextFieldConfig(
                     label = LABEL,
                     isEnabled = null,

@@ -1,6 +1,5 @@
 package net.thunderbird.feature.account.settings.impl.ui.general
 
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import app.k9mail.core.ui.compose.testing.mvi.MviContext
 import app.k9mail.core.ui.compose.testing.mvi.MviTurbines
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
@@ -12,14 +11,20 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.StandardTestDispatcher
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.core.ui.compose.preference.api.Preference
 import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
-import net.thunderbird.feature.account.api.AccountId
+import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
+import org.junit.Before
 import org.junit.Rule
 
 class GeneralSettingsViewModelTest {
@@ -27,9 +32,27 @@ class GeneralSettingsViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule(StandardTestDispatcher())
 
+    @Before
+    fun setUp() {
+        Log.logger = TestLogger()
+    }
+
+    @Test
+    fun `should load account name`() = runMviTest {
+        val accountId = AccountIdFactory.create()
+        val initialState = State(
+            subtitle = null,
+            preferences = persistentListOf(),
+        )
+
+        generalSettingsRobot(accountId, initialState, persistentListOf()) {
+            verifyAccountNameLoaded()
+        }
+    }
+
     @Test
     fun `should load general settings`() = runMviTest {
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),
@@ -43,7 +66,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should navigate back when back is pressed`() = runMviTest {
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),
@@ -59,7 +82,7 @@ class GeneralSettingsViewModelTest {
 
     @Test
     fun `should update preference when changed`() = runMviTest {
-        val accountId = AccountId.create()
+        val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
             preferences = persistentListOf(),
@@ -101,6 +124,9 @@ private class GeneralSettingsRobot(
     private val viewModel: GeneralSettingsContract.ViewModel by lazy {
         GeneralSettingsViewModel(
             accountId = accountId,
+            getAccountName = {
+                flowOf(Outcome.success("Subtitle"))
+            },
             getGeneralPreferences = {
                 preferencesState.map {
                     println("Loading preferences: $it")
@@ -130,6 +156,14 @@ private class GeneralSettingsRobot(
         turbines = mviContext.turbinesWithInitialStateCheck(
             initialState = initialState,
             viewModel = viewModel,
+        )
+    }
+
+    suspend fun verifyAccountNameLoaded() {
+        assertThat(turbines.awaitStateItem()).isEqualTo(
+            initialState.copy(
+                subtitle = "Subtitle",
+            ),
         )
     }
 

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 public class Utility {
 
@@ -44,22 +44,6 @@ public class Utility {
             }
         }
         return false;
-    }
-
-    /**
-     * Combines the given array of Objects into a single String using
-     * each Object's toString() method and the separator character
-     * between each part.
-     *
-     * @param parts
-     * @param separator
-     * @return new String
-     */
-    public static String combine(Object[] parts, char separator) {
-        if (parts == null) {
-            return null;
-        }
-        return TextUtils.join(String.valueOf(separator), parts);
     }
 
     /**
@@ -178,12 +162,12 @@ public class Utility {
         while (imgMatches.find()) {
             String uriScheme = imgMatches.group(1);
             if (uriScheme.equals("http") || uriScheme.equals("https")) {
-                Timber.d("External images found");
+                Log.d("External images found");
                 return true;
             }
         }
 
-        Timber.d("No external images.");
+        Log.d("No external images.");
         return false;
     }
 

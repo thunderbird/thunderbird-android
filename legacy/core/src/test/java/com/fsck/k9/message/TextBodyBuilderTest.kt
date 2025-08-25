@@ -3,6 +3,8 @@ package com.fsck.k9.message
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.message.quote.InsertableHtmlContent
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -153,6 +155,7 @@ class TextBodyBuilderTest(val testData: TestData) {
     private val toTest: TextBodyBuilder
 
     init {
+        Log.logger = TestLogger()
         toTest = TextBodyBuilder(MESSAGE_TEXT)
         toTest.setAppendSignature(testData.appendSignature)
         toTest.setIncludeQuotedText(testData.includeQuotedText)

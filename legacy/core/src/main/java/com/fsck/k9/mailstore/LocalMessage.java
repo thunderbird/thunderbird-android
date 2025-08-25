@@ -6,13 +6,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Date;
 import java.util.Objects;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.VisibleForTesting;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.Address;
@@ -24,7 +21,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
-import timber.log.Timber;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class LocalMessage extends MimeMessage {
@@ -78,7 +76,7 @@ public class LocalMessage extends MimeMessage {
 
                 catch (Exception e) {
                     if (!"X_BAD_FLAG".equals(flag)) {
-                        Timber.w("Unable to parse flag %s", flag);
+                        Log.w("Unable to parse flag %s", flag);
                     }
                 }
             }
@@ -132,7 +130,7 @@ public class LocalMessage extends MimeMessage {
         if (header != null) {
             MessageHeaderParser.parse(new ByteArrayInputStream(header), this::addRawHeader);
         } else {
-            Timber.d("No headers available for this message!");
+            Log.d("No headers available for this message!");
         }
 
         headerNeedsUpdating = false;

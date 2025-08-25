@@ -1,8 +1,8 @@
 package com.fsck.k9.message
 
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.Message
+import net.thunderbird.core.android.account.LegacyAccount
 
 /**
  * Figures out which reply actions are available to the user.

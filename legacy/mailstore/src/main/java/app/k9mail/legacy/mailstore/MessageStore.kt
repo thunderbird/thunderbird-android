@@ -1,11 +1,13 @@
 package app.k9mail.legacy.mailstore
 
-import app.k9mail.core.mail.folder.api.FolderDetails
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
+import com.fsck.k9.mail.MessagingException
 import java.util.Date
-import net.thunderbird.feature.search.ConditionsTreeNode
+import kotlin.jvm.Throws
+import net.thunderbird.feature.mail.folder.api.FolderDetails
+import net.thunderbird.feature.search.SearchConditionTreeNode
 
 /**
  * Functions for accessing and modifying locally stored messages.
@@ -174,7 +176,8 @@ interface MessageStore {
     /**
      * Create folders.
      */
-    fun createFolders(folders: List<CreateFolderInfo>)
+    @Throws(MessagingException::class)
+    fun createFolders(folders: List<CreateFolderInfo>): Set<Long>
 
     /**
      * Retrieve information about a folder.
@@ -198,6 +201,7 @@ interface MessageStore {
      * @param mapper A function to map the values read from the store to a domain-specific object.
      * @return A list of values returned by [mapper].
      */
+    @Throws(MessagingException::class)
     fun <T> getFolders(excludeLocalOnly: Boolean, mapper: FolderMapper<T>): List<T>
 
     /**
@@ -235,16 +239,19 @@ interface MessageStore {
     /**
      * Retrieve the number of unread messages matching [conditions].
      */
-    fun getUnreadMessageCount(conditions: ConditionsTreeNode?): Int
+    fun getUnreadMessageCount(conditions: SearchConditionTreeNode?): Int
 
     /**
      * Retrieve the number of starred messages matching [conditions].
      */
-    fun getStarredMessageCount(conditions: ConditionsTreeNode?): Int
+    fun getStarredMessageCount(conditions: SearchConditionTreeNode?): Int
 
     /**
      * Update a folder's name and type.
+     *
+     * @throws MessagingException in case it fails changing the folder in the local database.
      */
+    @Throws(MessagingException::class)
     fun changeFolder(folderServerId: String, name: String, type: FolderType)
 
     /**

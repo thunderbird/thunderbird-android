@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.input.NumberInput
 import app.k9mail.core.ui.compose.designsystem.molecule.input.SelectInput
@@ -90,6 +91,7 @@ internal fun LazyListScope.outgoingFormItems(
                 isRequired = true,
                 contentPadding = defaultItemPadding(),
                 keyboardOptions = KeyboardOptions(autoCorrect = false),
+                contentType = ContentType.Username + ContentType.EmailAddress,
             )
         }
     }

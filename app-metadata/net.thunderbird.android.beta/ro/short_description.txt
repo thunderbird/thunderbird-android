@@ -1,1 +1,1 @@
-Thunderbird este o aplicație de email cu 100% cod-sursă deschis, axată pe confidențialitate.
+Thunderbird: aplicație de poștă cu cod-sursă deschis, axată pe confidențialitate

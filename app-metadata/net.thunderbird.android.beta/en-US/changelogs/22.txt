@@ -1,0 +1,5 @@
+Thunderbird for Android version 12.0b4, based on K-9 Mail. Changes include:
+- Testing drawer UI improvements
+- Testing new account settings page
+- Crash could occur when clicking on a message thread
+- Unicode folder names were malformed when using server supporting UTF-8

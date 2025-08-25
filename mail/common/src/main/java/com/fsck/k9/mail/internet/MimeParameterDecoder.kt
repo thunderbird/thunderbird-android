@@ -244,7 +244,8 @@ object MimeParameterDecoder {
 
         parameterSections.forEachIndexed { index, parameterSection ->
             if (parameterSection.section != index ||
-                !isExtendedValue && parameterSection is ExtendedValueParameterSection
+                !isExtendedValue &&
+                parameterSection is ExtendedValueParameterSection
             ) {
                 return false
             }

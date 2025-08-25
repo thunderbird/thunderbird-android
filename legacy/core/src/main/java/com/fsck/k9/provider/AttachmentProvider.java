@@ -17,9 +17,8 @@ import androidx.annotation.Nullable;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import timber.log.Timber;
-
-import app.k9mail.legacy.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
@@ -99,12 +98,12 @@ public class AttachmentProvider extends ContentProvider {
             final LegacyAccount account = Preferences.getPreferences().getAccount(accountUuid);
             attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(account).getAttachmentInfo(id);
         } catch (MessagingException e) {
-            Timber.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
+            Log.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
             return null;
         }
 
         if (attachmentInfo == null) {
-            Timber.d("No attachment info for ID: %s", id);
+            Log.d("No attachment info for ID: %s", id);
             return null;
         }
 
@@ -155,7 +154,7 @@ public class AttachmentProvider extends ContentProvider {
                 type = attachmentInfo.type;
             }
         } catch (MessagingException e) {
-            Timber.e(e, "Unable to retrieve LocalStore for %s", account);
+            Log.e(e, "Unable to retrieve LocalStore for %s", account);
             type = MimeTypeUtil.DEFAULT_ATTACHMENT_MIME_TYPE;
         }
 
@@ -167,15 +166,15 @@ public class AttachmentProvider extends ContentProvider {
         try {
             OpenPgpDataSource openPgpDataSource = getAttachmentDataSource(accountUuid, attachmentId);
             if (openPgpDataSource == null) {
-                Timber.e("Error getting data source for attachment (part doesn't exist?)");
+                Log.e("Error getting data source for attachment (part doesn't exist?)");
                 return null;
             }
             return openPgpDataSource.startPumpThread();
         } catch (MessagingException e) {
-            Timber.e(e, "Error getting InputStream for attachment");
+            Log.e(e, "Error getting InputStream for attachment");
             return null;
         } catch (IOException e) {
-            Timber.e(e, "Error creating ParcelFileDescriptor");
+            Log.e(e, "Error creating ParcelFileDescriptor");
             return null;
         }
     }

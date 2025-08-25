@@ -1,34 +1,40 @@
 package net.thunderbird.app.common.account
 
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
-import app.k9mail.legacy.account.AccountDefaultsProvider
-import app.k9mail.legacy.account.LegacyAccountWrapperManager
-import net.thunderbird.app.common.account.data.CommonAccountProfileLocalDataSource
-import net.thunderbird.app.common.account.data.CommonLegacyAccountWrapperManager
+import net.thunderbird.app.common.account.data.DefaultAccountProfileLocalDataSource
+import net.thunderbird.app.common.account.data.DefaultLegacyAccountWrapperManager
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccountWrapperManager
+import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 import net.thunderbird.feature.account.core.featureAccountCoreModule
+import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyModule
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
 internal val appCommonAccountModule = module {
     includes(
         featureAccountCoreModule,
+        featureAccountStorageLegacyModule,
     )
 
     single<LegacyAccountWrapperManager> {
-        CommonLegacyAccountWrapperManager(
+        DefaultLegacyAccountWrapperManager(
             accountManager = get(),
+            accountDataMapper = get(),
         )
     }
 
     single<AccountProfileLocalDataSource> {
-        CommonAccountProfileLocalDataSource(
+        DefaultAccountProfileLocalDataSource(
             accountManager = get(),
+            dataMapper = get(),
         )
     }
 
     single<AccountDefaultsProvider> {
-        CommonAccountDefaultsProvider(
+        DefaultAccountDefaultsProvider(
             resourceProvider = get(),
             featureFlagProvider = get(),
         )
@@ -41,6 +47,10 @@ internal val appCommonAccountModule = module {
         )
     }
 
+    factory<AvatarMonogramCreator> {
+        DefaultAvatarMonogramCreator()
+    }
+
     factory<AccountSetupExternalContract.AccountCreator> {
         AccountCreator(
             accountColorPicker = get(),
@@ -49,6 +59,7 @@ internal val appCommonAccountModule = module {
             context = androidApplication(),
             deletePolicyProvider = get(),
             messagingController = get(),
+            avatarMonogramCreator = get(),
             unifiedInboxConfigurator = get(),
         )
     }

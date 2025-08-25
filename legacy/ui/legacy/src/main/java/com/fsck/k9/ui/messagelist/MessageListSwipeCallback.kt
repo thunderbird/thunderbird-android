@@ -10,25 +10,34 @@ import android.view.View
 import android.view.View.MeasureSpec
 import android.widget.ImageView
 import androidx.core.graphics.withTranslation
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
-import com.fsck.k9.SwipeAction
 import com.fsck.k9.ui.R
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.abs
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountWrapper
+import net.thunderbird.core.architecture.data.DataMapper
+import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.feature.mail.message.list.domain.DomainContract
 
 @SuppressLint("InflateParams")
+@Suppress("LongParameterList")
 class MessageListSwipeCallback(
     context: Context,
-    resourceProvider: SwipeResourceProvider,
+    private val resourceProvider: SwipeResourceProvider,
     private val swipeActionSupportProvider: SwipeActionSupportProvider,
-    private val swipeRightAction: SwipeAction,
-    private val swipeLeftAction: SwipeAction,
+    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount>,
     private val adapter: MessageListAdapter,
     private val listener: MessageListSwipeListener,
+    accounts: List<LegacyAccountWrapper>,
+    private val legacyAccountWrapperDataMapper: DataMapper<LegacyAccountWrapper, LegacyAccount>,
 ) : ItemTouchHelper.Callback() {
+    private var swipeActions: Map<String, SwipeActions> = emptyMap()
     private val swipePadding = context.resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()
     private val swipeThreshold = context.resources.getDimension(R.dimen.messageListSwipeThreshold)
     private val backgroundColorPaint = Paint()
@@ -39,11 +48,12 @@ class MessageListSwipeCallback(
     private val swipeLeftLayout: View
     private val swipeLeftIcon: ImageView
     private val swipeLeftText: MaterialTextView
-    private val swipeRightConfig: SwipeActionConfig?
-    private val swipeLeftConfig: SwipeActionConfig?
+    private val swipeRightConfig: MutableMap<String, SwipeActionConfig> = mutableMapOf()
+    private val swipeLeftConfig: MutableMap<String, SwipeActionConfig> = mutableMapOf()
 
     private var maxSwipeRightDistance: Int = -1
     private var maxSwipeLeftDistance: Int = -1
+    private var activeSwipingMessageListItem: MessageListItem? = null
 
     init {
         val layoutInflater = LayoutInflater.from(context)
@@ -57,18 +67,26 @@ class MessageListSwipeCallback(
         swipeLeftIcon = swipeLeftLayout.findViewById(R.id.swipe_action_icon)
         swipeLeftText = swipeLeftLayout.findViewById(R.id.swipe_action_text)
 
-        swipeRightConfig = setupSwipeAction(swipeRightAction, resourceProvider)
-        swipeLeftConfig = setupSwipeAction(swipeLeftAction, resourceProvider)
+        invalidateSwipeActions(accounts)
     }
 
     override fun isFlingEnabled(): Boolean {
         return false
     }
 
+    private val MessageListItem.swipeActions: SwipeActions
+        get() {
+            val swipeActions = this@MessageListSwipeCallback.swipeActions
+            return requireNotNull(swipeActions[account.uuid]) {
+                "Could not find swipe actions for account ${account.uuid}. swipeActions = $swipeActions"
+            }
+        }
+
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
         if (viewHolder !is MessageViewHolder) return 0
 
         val item = adapter.getItemById(viewHolder.uniqueId) ?: return 0
+        val (swipeLeftAction, swipeRightAction) = item.swipeActions
 
         var swipeFlags = 0
         if (swipeActionSupportProvider.isActionSupported(item, swipeRightAction)) {
@@ -91,10 +109,12 @@ class MessageListSwipeCallback(
 
     override fun onSwipeStarted(viewHolder: ViewHolder, direction: Int) {
         val item = viewHolder.messageListItem ?: return
+        activeSwipingMessageListItem = item
 
         // Mark view to prevent MessageListItemAnimator from interfering with swipe animations
         viewHolder.markAsSwiped(true)
 
+        val (swipeLeftAction, swipeRightAction) = item.swipeActions
         val swipeAction = when (direction) {
             ItemTouchHelper.RIGHT -> swipeRightAction
             ItemTouchHelper.LEFT -> swipeLeftAction
@@ -107,6 +127,7 @@ class MessageListSwipeCallback(
     override fun onSwipeDirectionChanged(viewHolder: ViewHolder, direction: Int) {
         val item = viewHolder.messageListItem ?: return
 
+        val (swipeLeftAction, swipeRightAction) = item.swipeActions
         val swipeAction = when (direction) {
             ItemTouchHelper.RIGHT -> swipeRightAction
             ItemTouchHelper.LEFT -> swipeLeftAction
@@ -119,6 +140,7 @@ class MessageListSwipeCallback(
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         val item = viewHolder.messageListItem ?: return
 
+        val (swipeLeftAction, swipeRightAction) = item.swipeActions
         when (direction) {
             ItemTouchHelper.RIGHT -> listener.onSwipeAction(item, swipeRightAction)
             ItemTouchHelper.LEFT -> listener.onSwipeAction(item, swipeLeftAction)
@@ -130,6 +152,7 @@ class MessageListSwipeCallback(
         val item = viewHolder.messageListItem ?: return
 
         listener.onSwipeEnded(item)
+        activeSwipingMessageListItem = null
     }
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {
@@ -157,12 +180,12 @@ class MessageListSwipeCallback(
 
         if (dX != 0F) {
             canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
+                val holder = viewHolder as MessageViewHolder
+                val item = adapter.getItemById(holder.uniqueId) ?: return@withTranslation
                 if (isCurrentlyActive || !success) {
-                    val holder = viewHolder as MessageViewHolder
-                    val item = adapter.getItemById(holder.uniqueId) ?: return@withTranslation
                     drawLayout(dX, viewWidth, viewHeight, item)
                 } else {
-                    drawBackground(dX, viewWidth, viewHeight)
+                    drawBackground(dX, viewWidth, viewHeight, item)
                 }
             }
         }
@@ -170,13 +193,13 @@ class MessageListSwipeCallback(
         super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive, success)
     }
 
-    private fun Canvas.drawBackground(dX: Float, width: Int, height: Int) {
+    private fun Canvas.drawBackground(dX: Float, width: Int, height: Int, item: MessageListItem) {
         val swipeActionConfig = if (dX > 0) swipeRightConfig else swipeLeftConfig
-        if (swipeActionConfig == null) {
-            error("drawBackground() called despite swipeActionConfig == null")
+        if (swipeActionConfig[item.accountWrapper.uuid] == null) {
+            error("drawBackground() called despite swipeActionConfig[item.accountWrapper] == null")
         }
 
-        backgroundColorPaint.color = swipeActionConfig.backgroundColor
+        backgroundColorPaint.color = swipeActionConfig.getValue(item.accountWrapper.uuid).backgroundColor
         drawRect(
             0F,
             0F,
@@ -189,12 +212,14 @@ class MessageListSwipeCallback(
     private fun Canvas.drawLayout(dX: Float, width: Int, height: Int, item: MessageListItem) {
         val swipeRight = dX > 0
         val swipeThresholdReached = abs(dX) > swipeThreshold
+        val account = item.accountWrapper
 
-        val swipeActionConfig = if (swipeRight) swipeRightConfig else swipeLeftConfig
+        val swipeActionConfig = if (swipeRight) swipeRightConfig[account.uuid] else swipeLeftConfig[account.uuid]
         if (swipeActionConfig == null) {
             error("drawLayout() called despite swipeActionConfig == null")
         }
 
+        val (swipeLeftAction, swipeRightAction) = item.swipeActions
         val swipeLayout = if (swipeRight) swipeRightLayout else swipeLeftLayout
         val swipeAction = if (swipeRight) swipeRightAction else swipeLeftAction
         val swipeIcon = if (swipeRight) swipeRightIcon else swipeLeftIcon
@@ -206,9 +231,9 @@ class MessageListSwipeCallback(
         swipeLayout.setBackgroundColor(backgroundColor)
 
         val icon = getIcon(swipeAction, item, swipeActionConfig)
-        icon.setTint(foregroundColor)
-
+        icon?.setTint(foregroundColor)
         swipeIcon.setImageDrawable(icon)
+        swipeIcon.isVisible = icon != null
 
         val isSelected = adapter.isSelected(item)
         swipeText.text = getActionName(swipeAction, item, isSelected, swipeActionConfig)
@@ -245,7 +270,7 @@ class MessageListSwipeCallback(
         swipeAction: SwipeAction,
         item: MessageListItem,
         swipeActionConfig: SwipeActionConfig,
-    ) = if (isToggled(swipeAction, item)) {
+    ): Drawable? = if (isToggled(swipeAction, item)) {
         swipeActionConfig.iconToggled ?: error("action has no toggled icon")
     } else {
         swipeActionConfig.icon
@@ -278,11 +303,16 @@ class MessageListSwipeCallback(
     }
 
     override fun shouldAnimateOut(direction: Int): Boolean {
-        return when (direction) {
-            ItemTouchHelper.RIGHT -> swipeRightAction.removesItem
-            ItemTouchHelper.LEFT -> swipeLeftAction.removesItem
+        val swipeActions = activeSwipingMessageListItem
+            ?.let { swipeActions[it.account.uuid] } ?: return false
+
+        val swipeAction = when (direction) {
+            ItemTouchHelper.RIGHT -> swipeActions.rightAction
+            ItemTouchHelper.LEFT -> swipeActions.leftAction
             else -> error("Unsupported direction")
         }
+
+        return swipeAction.removesItem
     }
 
     override fun getAnimationDuration(
@@ -295,21 +325,51 @@ class MessageListSwipeCallback(
         return (super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy) * percentage).toLong()
     }
 
-    private fun setupSwipeAction(
-        swipeAction: SwipeAction,
-        resourceProvider: SwipeResourceProvider,
-    ): SwipeActionConfig? {
-        return if (swipeAction == SwipeAction.None) {
-            null
-        } else {
-            SwipeActionConfig(
-                colorRoles = resourceProvider.getActionColorRoles(swipeAction),
-                icon = resourceProvider.getActionIcon(swipeAction),
-                iconToggled = resourceProvider.getActionIconToggled(swipeAction),
-                actionName = resourceProvider.getActionName(swipeAction),
-                actionNameToggled = resourceProvider.getActionNameToggled(swipeAction),
-            )
+    fun invalidateSwipeActions(accounts: List<LegacyAccountWrapper>) {
+        swipeActions = buildSwipeActions(accounts)
+        swipeLeftConfig.apply {
+            clear()
+            putAll(setupSwipeActionConfig(accounts = accounts, resourceProvider = resourceProvider, isLeft = true))
         }
+        swipeRightConfig.apply {
+            clear()
+            putAll(setupSwipeActionConfig(accounts = accounts, resourceProvider = resourceProvider, isLeft = false))
+        }
+    }
+
+    fun buildSwipeActions(accounts: List<LegacyAccountWrapper>): Map<String, SwipeActions> {
+        return buildSwipeActions(
+            accountUuids = accounts.map { it.uuid }.toSet(),
+            isIncomingServerPop3 = { account ->
+                legacyAccountWrapperDataMapper.toDomain(account).isIncomingServerPop3()
+            },
+            hasArchiveFolder = { account -> legacyAccountWrapperDataMapper.toDomain(account).hasArchiveFolder() },
+        )
+    }
+
+    private fun setupSwipeActionConfig(
+        accounts: List<LegacyAccountWrapper>,
+        resourceProvider: SwipeResourceProvider,
+        isLeft: Boolean,
+    ): Map<String, SwipeActionConfig> {
+        return accounts
+            .mapNotNull { account ->
+                swipeActions[account.uuid]
+                    ?.let { (swipeActionLeft, swipeActionRight) ->
+                        if (isLeft) swipeActionLeft else swipeActionRight
+                    }
+                    ?.takeIf { swipeAction -> swipeAction != SwipeAction.None }
+                    ?.let { swipeAction -> account.uuid to swipeAction }
+            }
+            .associate { (uuid, swipeAction) ->
+                uuid to SwipeActionConfig(
+                    colorRoles = resourceProvider.getActionColorRoles(swipeAction),
+                    icon = resourceProvider.getActionIcon(swipeAction),
+                    iconToggled = resourceProvider.getActionIconToggled(swipeAction),
+                    actionName = resourceProvider.getActionName(swipeAction),
+                    actionNameToggled = resourceProvider.getActionNameToggled(swipeAction),
+                )
+            }
     }
 
     private fun isToggled(swipeAction: SwipeAction, item: MessageListItem): Boolean {
@@ -322,6 +382,9 @@ class MessageListSwipeCallback(
 
     private val ViewHolder.messageListItem: MessageListItem?
         get() = (this as? MessageViewHolder)?.uniqueId?.let { adapter.getItemById(it) }
+
+    private val MessageListItem.accountWrapper: LegacyAccountWrapper
+        get() = legacyAccountWrapperDataMapper.toDomain(account)
 }
 
 fun interface SwipeActionSupportProvider {
@@ -337,7 +400,7 @@ interface MessageListSwipeListener {
 
 private data class SwipeActionConfig(
     private val colorRoles: ColorRoles,
-    val icon: Drawable,
+    val icon: Drawable?,
     val iconToggled: Drawable? = null,
     val actionName: String,
     val actionNameToggled: String? = null,

@@ -53,5 +53,5 @@
     <string name="funding_googleplay_contribution_tfa_onetime_l_title">பெரிய பங்களிப்பு</string>
     <string name="funding_googleplay_contribution_tfa_recurring_s_title">மதிப்புமிக்க மாத பங்களிப்பு</string>
     <string name="funding_googleplay_contribution_tfa_recurring_l_description">நாங்கள் செய்வதை நாங்கள் செய்ய ஒரு பெரிய காரணம்! உங்கள் தாராள மனப்பான்மை புதிய மைல்கற்களை அடைய எங்களுக்கு உதவுகிறது.</string>
-    <string name="funding_googleplay_contribution_list_empty_message">&lt;Xliff: g ஐடி = \"link_text\"&gt;%s &lt;/xliff: g&gt; ஐப் பார்வையிடவும். தண்டர்பேர்டை ஆதரிப்பதற்கான கூடுதல் வழிகள்.</string>
+    <string name="funding_googleplay_contribution_list_empty_message"><xliff:g id="link_text">%s</xliff:g> ஐப் பார்வையிடவும். தண்டர்பேர்டை ஆதரிப்பதற்கான கூடுதல் வழிகள்.</string>
 </resources>

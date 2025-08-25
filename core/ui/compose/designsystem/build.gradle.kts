@@ -14,6 +14,7 @@ dependencies {
     debugApi(projects.core.ui.compose.theme2.k9mail)
     debugApi(projects.core.ui.compose.theme2.thunderbird)
 
+    implementation(libs.androidx.autofill)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.layout)

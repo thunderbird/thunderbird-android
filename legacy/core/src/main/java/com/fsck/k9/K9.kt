@@ -2,21 +2,29 @@ package com.fsck.k9
 
 import android.content.Context
 import android.content.SharedPreferences
-import app.k9mail.core.featureflag.FeatureFlagProvider
-import app.k9mail.core.featureflag.toFeatureFlagKey
 import app.k9mail.feature.telemetry.api.TelemetryManager
-import app.k9mail.legacy.account.AccountDefaultsProvider
-import app.k9mail.legacy.account.SortType
-import app.k9mail.legacy.di.DI
+import com.fsck.k9.K9.DATABASE_VERSION_CACHE
+import com.fsck.k9.K9.areDatabasesUpToDate
+import com.fsck.k9.K9.checkCachedDatabaseVersion
+import com.fsck.k9.K9.setDatabasesUpToDate
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.RealGeneralSettingsManager
-import com.fsck.k9.preferences.StorageEditor
-import kotlinx.datetime.Clock
-import net.thunderbird.core.preferences.Storage
+import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.SortType
+import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.logging.composite.CompositeLogSink
+import net.thunderbird.core.logging.file.FileLogSink
+import net.thunderbird.core.preference.storage.Storage
+import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.core.qualifier.named
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -25,6 +33,8 @@ object K9 : KoinComponent {
     private val generalSettingsManager: RealGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
+    private val syncDebugCompositeSink: CompositeLogSink by inject(named("syncDebug"))
+    private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -124,6 +134,13 @@ object K9 : KoinComponent {
         }
 
     @JvmStatic
+    var isSyncLoggingEnabled: Boolean = false
+        set(debug) {
+            field = debug
+            updateSyncLogging()
+        }
+
+    @JvmStatic
     var isSensitiveDebugLoggingEnabled: Boolean = false
 
     @JvmStatic
@@ -134,9 +151,6 @@ object K9 : KoinComponent {
 
     @JvmStatic
     var backgroundOps = BACKGROUND_OPS.ALWAYS
-
-    @JvmStatic
-    var isShowAnimations = true
 
     @JvmStatic
     var isConfirmDelete = false
@@ -166,31 +180,13 @@ object K9 : KoinComponent {
     var messageListDensity: UiDensity = UiDensity.Default
 
     @JvmStatic
-    var isShowMessageListStars = true
-
-    @JvmStatic
     var messageListPreviewLines = 2
-
-    @JvmStatic
-    var isShowCorrespondentNames = true
-
-    @JvmStatic
-    var isMessageListSenderAboveSubject = false
 
     @JvmStatic
     var isShowContactName = false
 
     @JvmStatic
-    var isChangeContactNameColor = false
-
-    @JvmStatic
     var contactNameColor = 0xFF1093F5.toInt()
-
-    @JvmStatic
-    var isShowContactPicture = true
-
-    @JvmStatic
-    var isUseMessageViewFixedWidthFont = false
 
     var messageViewPostRemoveNavigation: PostRemoveNavigation = PostRemoveNavigation.ReturnToMessageList
 
@@ -201,27 +197,9 @@ object K9 : KoinComponent {
     var isUseVolumeKeysForNavigation = false
 
     @JvmStatic
-    var isShowUnifiedInbox = false
-
-    @JvmStatic
     var isShowAccountSelector = true
 
-    @JvmStatic
-    var isShowStarredCount = false
-
-    @JvmStatic
-    var isAutoFitWidth: Boolean = false
-
-    var isQuietTimeEnabled = false
     var isNotificationDuringQuietTimeEnabled = true
-    var quietTimeStarts: String? = null
-    var quietTimeEnds: String? = null
-
-    @JvmStatic
-    var isHideUserAgent = false
-
-    @JvmStatic
-    var isHideTimeZone = false
 
     @get:Synchronized
     @set:Synchronized
@@ -229,24 +207,10 @@ object K9 : KoinComponent {
     var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
-    @JvmStatic
-    var isUseBackgroundAsUnreadIndicator = false
-
-    @get:Synchronized
-    @set:Synchronized
-    var isShowComposeButtonOnMessageList = true
-
-    @get:Synchronized
-    @set:Synchronized
-    @JvmStatic
-    var isThreadedViewEnabled = true
-
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
     var splitViewMode = SplitViewMode.NEVER
-
-    var isColorizeMissingContactPictures = true
 
     @JvmStatic
     var isMessageViewArchiveActionVisible = false
@@ -286,17 +250,6 @@ object K9 : KoinComponent {
     var fundingReminderShownTimestamp: Long = 0
     var fundingActivityCounterInMillis: Long = 0
 
-    val isQuietTime: Boolean
-        get() {
-            if (!isQuietTimeEnabled) {
-                return false
-            }
-
-            val clock = DI.get<Clock>()
-            val quietTimeChecker = QuietTimeChecker(clock, quietTimeStarts, quietTimeEnds)
-            return quietTimeChecker.isQuietTime
-        }
-
     @Synchronized
     @JvmStatic
     fun isSortAscending(sortType: SortType): Boolean {
@@ -320,7 +273,6 @@ object K9 : KoinComponent {
                 override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
             },
         )
-        com.fsck.k9.logging.Timber.logger = TimberLogger()
 
         checkCachedDatabaseVersion(context)
 
@@ -331,36 +283,20 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
+        isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
-        isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
-        isShowUnifiedInbox = storage.getBoolean("showUnifiedInbox", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
-        isShowStarredCount = storage.getBoolean("showStarredCount", false)
-        isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
-        isShowMessageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
-        isAutoFitWidth = storage.getBoolean("autofitWidth", true)
-
-        isQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false)
         isNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true)
-        quietTimeStarts = storage.getString("quietTimeStarts", "21:00")
-        quietTimeEnds = storage.getString("quietTimeEnds", "7:00")
 
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
-        isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true)
-        isShowContactName = storage.getBoolean("showContactName", false)
-        isShowContactPicture = storage.getBoolean("showContactPicture", true)
-        isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
-        isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         messageViewPostRemoveNavigation =
             storage.getEnum("messageViewPostDeleteAction", PostRemoveNavigation.ReturnToMessageList)
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
-        isHideUserAgent = storage.getBoolean("hideUserAgent", false)
-        isHideTimeZone = storage.getBoolean("hideTimeZone", false)
 
         isConfirmDelete = storage.getBoolean("confirmDelete", false)
         isConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true)
@@ -383,18 +319,12 @@ object K9 : KoinComponent {
 
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
 
-        isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", false)
-        isShowComposeButtonOnMessageList = storage.getBoolean("showComposeButtonOnMessageList", true)
-        isThreadedViewEnabled = storage.getBoolean("threadedView", true)
-
         featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
             }
 
         backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
-
-        isColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true)
 
         isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
         isMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true)
@@ -405,10 +335,16 @@ object K9 : KoinComponent {
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
 
-        k9Language = storage.getString("language", "")
+        k9Language = storage.getStringOrDefault("language", "")
 
-        swipeRightAction = storage.getEnum("swipeRightAction", SwipeAction.ToggleSelection)
-        swipeLeftAction = storage.getEnum("swipeLeftAction", SwipeAction.ToggleRead)
+        swipeRightAction = storage.getEnum(
+            key = SwipeActions.KEY_SWIPE_ACTION_RIGHT,
+            defaultValue = SwipeAction.ToggleSelection,
+        )
+        swipeLeftAction = storage.getEnum(
+            key = SwipeActions.KEY_SWIPE_ACTION_LEFT,
+            defaultValue = SwipeAction.ToggleRead,
+        )
 
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             isTelemetryEnabled = storage.getBoolean("enableTelemetry", true)
@@ -422,33 +358,17 @@ object K9 : KoinComponent {
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
+        editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
-        editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
-        editor.putBoolean("autofitWidth", isAutoFitWidth)
-        editor.putBoolean("quietTimeEnabled", isQuietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
-        editor.putString("quietTimeStarts", quietTimeStarts)
-        editor.putString("quietTimeEnds", quietTimeEnds)
-
         editor.putEnum("messageListDensity", messageListDensity)
-        editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
-        editor.putBoolean("showUnifiedInbox", isShowUnifiedInbox)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
-        editor.putBoolean("showStarredCount", isShowStarredCount)
-        editor.putBoolean("messageListStars", isShowMessageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
-        editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)
-        editor.putBoolean("showContactName", isShowContactName)
-        editor.putBoolean("showContactPicture", isShowContactPicture)
-        editor.putBoolean("changeRegisteredNameColor", isChangeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
-        editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
         editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
-        editor.putBoolean("hideUserAgent", isHideUserAgent)
-        editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
 
@@ -465,11 +385,7 @@ object K9 : KoinComponent {
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
-        editor.putBoolean("useBackgroundAsUnreadIndicator", isUseBackgroundAsUnreadIndicator)
-        editor.putBoolean("showComposeButtonOnMessageList", isShowComposeButtonOnMessageList)
-        editor.putBoolean("threadedView", isThreadedViewEnabled)
         editor.putEnum("splitViewMode", splitViewMode)
-        editor.putBoolean("colorizeMissingContactPictures", isColorizeMissingContactPictures)
 
         editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
         editor.putBoolean("messageViewDeleteActionVisible", isMessageViewDeleteActionVisible)
@@ -480,8 +396,8 @@ object K9 : KoinComponent {
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
 
-        editor.putEnum("swipeRightAction", swipeRightAction)
-        editor.putEnum("swipeLeftAction", swipeLeftAction)
+        editor.putEnum(key = SwipeActions.KEY_SWIPE_ACTION_RIGHT, value = swipeRightAction)
+        editor.putEnum(key = SwipeActions.KEY_SWIPE_ACTION_LEFT, value = swipeLeftAction)
 
         if (telemetryManager.isTelemetryFeatureIncluded()) {
             editor.putBoolean("enableTelemetry", isTelemetryEnabled)
@@ -501,6 +417,14 @@ object K9 : KoinComponent {
         }
     }
 
+    private fun updateSyncLogging() {
+        if (isSyncLoggingEnabled) {
+            syncDebugCompositeSink.manager.add(syncDebugFileLogSink)
+        } else {
+            syncDebugCompositeSink.manager.remove(syncDebugFileLogSink)
+        }
+    }
+
     @JvmStatic
     fun saveSettingsAsync() {
         generalSettingsManager.saveSettingsAsync()
@@ -508,14 +432,9 @@ object K9 : KoinComponent {
 
     private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
         return try {
-            val value = getString(key, null)
-            if (value != null) {
-                enumValueOf(value)
-            } else {
-                defaultValue
-            }
+            getEnumOrDefault(key, defaultValue)
         } catch (e: Exception) {
-            Timber.e("Couldn't read setting '%s'. Using default value instead.", key)
+            Timber.e(e, "Couldn't read setting '%s'. Using default value instead.", key)
             defaultValue
         }
     }
@@ -527,13 +446,6 @@ object K9 : KoinComponent {
     const val LOCAL_UID_PREFIX = "K9LOCAL:"
 
     const val IDENTITY_HEADER = K9MailLib.IDENTITY_HEADER
-
-    /**
-     * Specifies how many messages will be shown in a folder by default. This number is set
-     * on each new folder and can be incremented with "Load more messages..." by the
-     * VISIBLE_LIMIT_INCREMENT
-     */
-    const val DEFAULT_VISIBLE_LIMIT = 25
 
     /**
      * The maximum size of an attachment we're willing to download (either View or Save)

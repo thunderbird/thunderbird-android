@@ -3,7 +3,7 @@ package net.thunderbird.core.android.network
 import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkRequest
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 import android.net.ConnectivityManager as SystemConnectivityManager
 
 @Suppress("DEPRECATION")
@@ -16,12 +16,12 @@ internal class ConnectivityManagerApi21(
 
     private val networkCallback = object : NetworkCallback() {
         override fun onAvailable(network: Network) {
-            Timber.v("Network available: $network")
+            Log.v("Network available: $network")
             notifyIfConnectivityHasChanged()
         }
 
         override fun onLost(network: Network) {
-            Timber.v("Network lost: $network")
+            Log.v("Network lost: $network")
             notifyIfConnectivityHasChanged()
         }
 

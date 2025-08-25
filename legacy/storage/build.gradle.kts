@@ -5,19 +5,20 @@ plugins {
 dependencies {
     api(libs.koin.core)
 
+    implementation(projects.core.logging.api)
+
     implementation(projects.legacy.core)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.timber)
     implementation(libs.mime4j.core)
     implementation(libs.commons.io)
     implementation(libs.moshi)
 
+    testImplementation(projects.core.logging.testing)
     testImplementation(projects.mail.testing)
-    testImplementation(projects.legacy.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(libs.robolectric)
     testImplementation(libs.commons.io)
-    testImplementation(projects.core.featureflags)
+    testImplementation(projects.core.featureflag)
 }
 
 android {

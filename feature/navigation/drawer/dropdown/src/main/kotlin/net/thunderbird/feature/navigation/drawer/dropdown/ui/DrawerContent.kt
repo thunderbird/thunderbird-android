@@ -1,35 +1,35 @@
 package net.thunderbird.feature.navigation.drawer.dropdown.ui
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.DividerHorizontal
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
+import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.Event
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerContract.State
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountList
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.AccountView
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.account.getDisplayCutOutHorizontalInsetPadding
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.DRAWER_WIDTH
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getAdditionalWidth
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.folder.FolderList
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.SettingList
-
-// As long as we use DrawerLayout, we don't have to worry about screens narrower than DRAWER_WIDTH. DrawerLayout will
-// automatically limit the width of the content view so there's still room for a scrim with minimum tap width.
-private val DRAWER_WIDTH = 360.dp
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.AccountSettingList
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.setting.FolderSettingList
 
 @Composable
 internal fun DrawerContent(
@@ -41,53 +41,49 @@ internal fun DrawerContent(
 
     Surface(
         modifier = modifier
-            .windowInsetsPadding(WindowInsets.statusBars)
             .width(DRAWER_WIDTH + additionalWidth)
             .fillMaxHeight()
-            .testTag("DrawerContent"),
+            .testTagAsResourceId("DrawerContent"),
+        color = MainTheme.colors.surfaceContainerLow,
     ) {
         val selectedAccount = state.accounts.firstOrNull { it.id == state.selectedAccountId }
-        Column {
+        val horizontalInsetPadding = getDisplayCutOutHorizontalInsetPadding()
+
+        Column(
+            modifier = Modifier
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .windowInsetsPadding(horizontalInsetPadding),
+        ) {
             selectedAccount?.let {
                 AccountView(
                     account = selectedAccount,
-                    onClick = { onEvent(Event.OnAccountViewClick(selectedAccount)) },
-                    showAvatar = state.config.showAccountSelector,
+                    onClick = { onEvent(Event.OnAccountSelectorClick) },
+                    showAccountSelection = state.showAccountSelection,
                 )
 
                 DividerHorizontal()
             }
-            Row {
-                AnimatedVisibility(
-                    visible = state.config.showAccountSelector,
-                ) {
-                    AccountList(
-                        accounts = state.accounts,
+            AnimatedContent(
+                targetState = state.showAccountSelection,
+                label = "AccountSelectorVisibility",
+                transitionSpec = {
+                    if (targetState) {
+                        slideInVertically { -it } togetherWith slideOutVertically { it }
+                    } else {
+                        slideInVertically { it } togetherWith slideOutVertically { -it }
+                    }
+                },
+            ) { targetState ->
+                if (targetState) {
+                    AccountContent(
+                        state = state,
+                        onEvent = onEvent,
                         selectedAccount = selectedAccount,
-                        onAccountClick = { onEvent(Event.OnAccountClick(it)) },
-                        onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
-                        onSettingsClick = { onEvent(Event.OnSettingsClick) },
                     )
-                }
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxSize(),
-                ) {
-                    FolderList(
-                        rootFolder = state.rootFolder,
-                        selectedFolder = state.folders.firstOrNull { it.id == state.selectedFolderId },
-                        onFolderClick = { folder ->
-                            onEvent(Event.OnFolderClick(folder))
-                        },
-                        showStarredCount = state.config.showStarredCount,
-                        modifier = Modifier.weight(1f),
-                    )
-                    DividerHorizontal()
-                    SettingList(
-                        onAccountSelectorClick = { onEvent(Event.OnAccountSelectorClick) },
-                        onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
-                        showAccountSelector = state.config.showAccountSelector,
+                } else {
+                    FolderContent(
+                        state = state,
+                        onEvent = onEvent,
                     )
                 }
             }
@@ -96,17 +92,63 @@ internal fun DrawerContent(
 }
 
 @Composable
-fun getAdditionalWidth(): Dp {
-    val density = LocalDensity.current
-    val layoutDirection = LocalLayoutDirection.current
-    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-
-    return if (isRtl) {
-        WindowInsets.displayCutout.getRight(density = density, layoutDirection = layoutDirection)
-    } else {
-        WindowInsets.displayCutout.getLeft(density = density, layoutDirection = layoutDirection)
-    }.pxToDp()
+private fun AccountContent(
+    state: State,
+    onEvent: (Event) -> Unit,
+    selectedAccount: DisplayAccount?,
+) {
+    Surface(
+        color = MainTheme.colors.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            AccountList(
+                accounts = state.accounts,
+                selectedAccount = selectedAccount,
+                onAccountClick = { onEvent(Event.OnAccountClick(it)) },
+                showStarredCount = state.config.showStarredCount,
+                modifier = Modifier.weight(1f),
+            )
+            DividerHorizontal()
+            AccountSettingList(
+                onAddAccountClick = { onEvent(Event.OnAddAccountClick) },
+                onSyncAllAccountsClick = { onEvent(Event.OnSyncAllAccounts) },
+            )
+        }
+    }
 }
 
 @Composable
-fun Int.pxToDp() = with(LocalDensity.current) { this@pxToDp.toDp() }
+private fun FolderContent(
+    state: State,
+    onEvent: (Event) -> Unit,
+) {
+    val isUnifiedAccount = remember(state.selectedAccountId) {
+        state.accounts.any { it.id == state.selectedAccountId && it is UnifiedDisplayAccount }
+    }
+
+    Surface(
+        color = MainTheme.colors.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            FolderList(
+                rootFolder = state.rootFolder,
+                selectedFolder = state.selectedFolder,
+                onFolderClick = { folder ->
+                    onEvent(Event.OnFolderClick(folder))
+                },
+                showStarredCount = state.config.showStarredCount,
+                modifier = Modifier.weight(1f),
+            )
+            DividerHorizontal()
+            FolderSettingList(
+                onManageFoldersClick = { onEvent(Event.OnManageFoldersClick) },
+                onSettingsClick = { onEvent(Event.OnSettingsClick) },
+                isUnifiedAccount = isUnifiedAccount,
+            )
+        }
+    }
+}

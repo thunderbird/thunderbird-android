@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Flag;
 
 
@@ -103,12 +103,12 @@ class ImapUtility {
                             }
                         }
                     } else {
-                        Timber.d("Invalid range: %s", range);
+                        Log.d("Invalid range: %s", range);
                     }
                 }
             }
         } catch (NumberFormatException e) {
-            Timber.d(e, "Invalid range value: %s", range);
+            Log.d(e, "Invalid range value: %s", range);
         }
 
         return list;
@@ -124,7 +124,7 @@ class ImapUtility {
             // do nothing
         }
 
-        Timber.d("Invalid UID value: %s", number);
+        Log.d("Invalid UID value: %s", number);
 
         return false;
     }

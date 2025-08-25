@@ -168,10 +168,14 @@
 
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
+    <string name="debug_enable_sync_debug_logging_title">Enable sync debug logging</string>
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
+    <string name="debug_enable_sync_debug_logging_summary">Log sync diagnostic information for 24 hours</string>
+
     <string name="debug_enable_sensitive_logging_title">Log sensitive information</string>
     <string name="debug_enable_sensitive_logging_summary">May show passwords in logs.</string>
     <string name="debug_export_logs_title">Export logs</string>
+    <string name="debug_sync_export_logs_title">Export Sync logs</string>
     <string name="debug_export_logs_success">Export successful. Logs might contain sensitive information. Be careful who you send them to.</string>
     <string name="debug_export_logs_failure">Export failed.</string>
 
@@ -1023,6 +1027,8 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="swipe_action_remove_star">Remove star</string>
     <!-- Name of the swipe action to archive a message. Try to keep it short. -->
     <string name="swipe_action_archive">Archive</string>
+    <string name="swipe_action_archive_folder_not_set">Set Up Archive Folder</string>
+    <string name="swipe_action_change_swipe_gestures">Change \nSwipe Gestures</string>
     <!-- Name of the swipe action to delete a message. Try to keep it short. -->
     <string name="swipe_action_delete">Delete</string>
     <!-- Name of the swipe action to move a message to the Spam folder. Try to keep it short. -->
@@ -1084,4 +1090,5 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="settings_ui_telemetry_title">Usage and technical data</string>
     <!-- Description of the "Usage and technical data" setting used in the "data collection" section of the general settings screen -->
     <string name="settings_ui_telemetry_description">Shares performance, usage, hardware and customization data about this app with Mozilla to help us make Thunderbird better</string>
+    <string name="archiving_not_available_for_this_account">Archiving is not available for this account.</string>
 </resources>

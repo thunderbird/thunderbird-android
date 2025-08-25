@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.k9mail.legacy.message.controller.MessageReference;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class MessageReferenceHelper {
@@ -16,7 +16,7 @@ public class MessageReferenceHelper {
             if (messageReference != null) {
                 messageReferences.add(messageReference);
             } else {
-                Timber.w("Invalid message reference: %s", messageReferenceString);
+                Log.w("Invalid message reference: %s", messageReferenceString);
             }
         }
 

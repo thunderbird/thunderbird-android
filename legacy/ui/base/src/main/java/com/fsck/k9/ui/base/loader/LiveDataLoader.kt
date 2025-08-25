@@ -9,7 +9,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 const val LOADING_INDICATOR_DELAY = 500L
 
@@ -38,7 +38,7 @@ fun <T> liveDataLoader(block: CoroutineScope.() -> T): LiveData<LoaderState<T>> 
 
             LoaderState.Data(data)
         } catch (e: Exception) {
-            Timber.e(e, "Error loading data")
+            Log.e(e, "Error loading data")
             LoaderState.Error
         }
 

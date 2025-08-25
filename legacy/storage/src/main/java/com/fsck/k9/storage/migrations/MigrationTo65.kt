@@ -1,8 +1,8 @@
 package com.fsck.k9.storage.migrations
 
 import android.database.sqlite.SQLiteDatabase
-import app.k9mail.core.common.mail.Protocols
 import com.fsck.k9.mailstore.MigrationsHelper
+import net.thunderbird.core.common.mail.Protocols
 
 internal object MigrationTo65 {
     @JvmStatic

@@ -19,6 +19,6 @@ Za šifriranje pošte z OpenPGP-jem namestite <a href="https://f-droid.org/packa
 
 <b>Želite pomagati?</b>
 
-Pošta K-9 je projekt, ki ga razvija skupnost. Če bi radi pomagali pri izboljševanju programa, se nam prosimo pridružite!
+Pošta K-9 je projekt, ki ga razvija skupnost. Če bi radi pomagali pri izboljševanju programa, se nam pridružite!
 Naš sledilec hroščev, izvorno kodo in wiki najdete na <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
 Novi razvijalci, oblikovalci, pisalci dokumentov, prevajalci, sledilci hroščev in prijatelji so vedno dobrodošli.

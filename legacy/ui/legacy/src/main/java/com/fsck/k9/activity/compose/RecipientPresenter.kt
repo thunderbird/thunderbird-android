@@ -11,8 +11,6 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
-import app.k9mail.legacy.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.SendErrorState
@@ -32,12 +30,14 @@ import com.fsck.k9.message.MessageBuilder
 import com.fsck.k9.message.PgpMessageBuilder
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView.Recipient
-import net.thunderbird.core.contact.ContactIntentHelper
+import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.contact.ContactIntentHelper
+import net.thunderbird.core.logging.legacy.Log
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
-import timber.log.Timber
 
 private const val STATE_KEY_CC_SHOWN = "state:ccShown"
 private const val STATE_KEY_BCC_SHOWN = "state:bccShown"
@@ -565,7 +565,7 @@ class RecipientPresenter(
     fun onClickCryptoStatus() {
         when (openPgpApiManager.openPgpProviderState) {
             OpenPgpProviderState.UNCONFIGURED -> {
-                Timber.e("click on crypto status while unconfigured - this should not really happen?!")
+                Log.e("click on crypto status while unconfigured - this should not really happen?!")
             }
             OpenPgpProviderState.OK -> {
                 toggleEncryptionState(false)
@@ -584,7 +584,7 @@ class RecipientPresenter(
     private fun toggleEncryptionState(showGotIt: Boolean) {
         val currentCryptoStatus = currentCachedCryptoStatus
         if (currentCryptoStatus == null) {
-            Timber.e("click on crypto status while crypto status not available - should not really happen?!")
+            Log.e("click on crypto status while crypto status not available - should not really happen?!")
             return
         }
 

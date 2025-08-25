@@ -9,24 +9,26 @@ dependencies {
     api(projects.library.htmlCleaner)
     api(projects.core.mail.mailserver)
     api(projects.core.android.common)
-    api(projects.core.preferences)
+    api(projects.core.android.account)
+    api(projects.core.preference.impl)
     api(projects.core.android.logging)
+    api(projects.core.logging.implFile)
+    api(projects.core.logging.implComposite)
     api(projects.core.android.network)
-    api(projects.core.mail.folder.api)
-    api(projects.feature.folder.api)
+    api(projects.feature.mail.folder.api)
+    api(projects.feature.account.storage.legacy)
 
     api(projects.feature.search)
-    api(projects.core.account)
-    api(projects.legacy.account)
+    api(projects.feature.mail.account.api)
     api(projects.legacy.di)
     api(projects.legacy.mailstore)
     api(projects.legacy.message)
-    api(projects.feature.notification)
-    api(projects.legacy.search)
+    implementation(projects.feature.notification.api)
 
     implementation(projects.plugins.openpgpApiLib.openpgpApi)
     implementation(projects.feature.telemetry.api)
-    implementation(projects.core.featureflags)
+    implementation(projects.core.featureflag)
+    implementation(projects.core.logging.implComposite)
 
     api(libs.androidx.annotation)
 
@@ -45,18 +47,21 @@ dependencies {
 
     testApi(projects.core.testing)
     testApi(projects.core.android.testing)
+    testImplementation(projects.core.logging.testing)
     testImplementation(projects.feature.telemetry.noop)
     testImplementation(projects.mail.testing)
     testImplementation(projects.backend.imap)
     testImplementation(projects.mail.protocols.smtp)
     testImplementation(projects.legacy.storage)
-    testImplementation(projects.legacy.testing)
 
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.jdom2)
+
+    // test fakes
+    testImplementation(projects.feature.account.fake)
 }
 
 android {

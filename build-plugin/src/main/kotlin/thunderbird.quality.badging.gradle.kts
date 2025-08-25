@@ -37,7 +37,7 @@ androidComponents {
                 )
                 badging.set(
                     project.layout.buildDirectory.file(
-                        "outputs/apk_from_bundle/${variant.name}/${variant.name}-badging.txt",
+                        "outputs/badging/${variant.name}/${variant.name}-badging.txt",
                     ),
                 )
             }
@@ -81,7 +81,7 @@ abstract class GenerateBadgingTask : DefaultTask() {
     @get:OutputFile
     abstract val badging: RegularFileProperty
 
-    @get:PathSensitive(PathSensitivity.NONE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputFile
     abstract val apk: RegularFileProperty
 
@@ -112,7 +112,7 @@ abstract class GenerateBadgingTask : DefaultTask() {
         return ByteArrayInputStream(outputStream.toByteArray()).bufferedReader().use { reader ->
             reader.lineSequence().map { line ->
                 line.cleanBadgingLine()
-            }.joinToString("\n")
+            }.sorted().joinToString("\n")
         }
     }
 
@@ -122,6 +122,8 @@ abstract class GenerateBadgingTask : DefaultTask() {
                 .replace(Regex("versionCode='[^']*'"), "")
                 .replace(Regex("\\s+"), " ")
                 .trim()
+        } else if (trim().startsWith("uses-feature-not-required:")) {
+            trim()
         } else {
             this
         }
@@ -137,12 +139,12 @@ abstract class CheckBadgingTask : DefaultTask() {
     @get:OutputDirectory
     abstract val output: DirectoryProperty
 
-    @get:PathSensitive(PathSensitivity.NONE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:Optional
     @get:InputFile
     abstract val goldenBadging: RegularFileProperty
 
-    @get:PathSensitive(PathSensitivity.NONE)
+    @get:PathSensitive(PathSensitivity.RELATIVE)
     @get:InputFile
     abstract val generatedBadging: RegularFileProperty
 

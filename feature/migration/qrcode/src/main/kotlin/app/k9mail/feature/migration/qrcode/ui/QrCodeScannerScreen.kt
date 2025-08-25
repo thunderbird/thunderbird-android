@@ -15,8 +15,8 @@ import androidx.compose.ui.platform.LocalContext
 import app.k9mail.core.ui.compose.common.mvi.observe
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Effect
 import app.k9mail.feature.migration.qrcode.ui.QrCodeScannerContract.Event
+import net.thunderbird.core.logging.legacy.Log
 import org.koin.androidx.compose.koinViewModel
-import timber.log.Timber
 
 @Composable
 internal fun QrCodeScannerScreen(
@@ -58,7 +58,7 @@ private fun Context.goToAppInfoScreen() {
     try {
         startActivity(intent)
     } catch (e: ActivityNotFoundException) {
-        Timber.e(e, "Error opening Android's app settings")
+        Log.e(e, "Error opening Android's app settings")
     }
 }
 

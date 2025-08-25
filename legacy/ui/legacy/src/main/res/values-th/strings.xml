@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="open_camera">เปิดกล้อง</string>
+    <string name="attach_file">แนบไฟล์</string>
+    <string name="camera_permission_denied">ไม่ได้รับอนุญาติให้ถ่ายรูป! ไม่สามารถถ่ายรูปได้</string>
+    <string name="source_code">ซอร์สโค้ด</string>
+    <string name="app_license">ใบอนุญาต Apache เวอร์ชัน 2.0</string>
+    <string name="about_project_title">โครงการโอเพ่นซอร์ส</string>
+    <string name="about_website_title">เว็บไซต์</string>
+    <string name="get_help_title">รับความช่วยเหลือ</string>
+    <string name="license">ใบอนุญาต</string>
+    <string name="changelog_title">บันทึกการเปลี่ยนแปลง</string>
+    <string name="changelog_loading_error">ไม่สามารถโหลดบันทึกการเปลี่ยนแปลงได้</string>
+    <string name="changelog_version_title">เวอร์ชัน %s</string>
+    <string name="changelog_recent_changes_title">มีอะไรใหม่</string>
+    <string name="changelog_show_recent_changes">แสดงความเปลี่ยนแปลงเมื่อแอปได้รับการอัปเดต</string>
+    <string name="changelog_snackbar_text">ค้นหาสิ่งใหม่ในรุ่นนี้</string>
+    <string name="changelog_snackbar_button_text">แสดง</string>
+    <string name="account_delete_dlg_instructions_fmt">บัญชี \"<xliff:g id="account">%1$s</xliff:g>\" จะถูกลบออกจาก <xliff:g id="app_name">%2$s</xliff:g></string>
+    <string name="authors">ผู้เขียน</string>
+    <string name="about_title">เกี่ยวกับ <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="accounts_title">บัญชี</string>
+    <string name="compose_title_reply">ตอบกลับ</string>
+    <string name="compose_title_reply_all">ตอบกลับทั้งหมด</string>
+    <string name="compose_title_forward">ส่งต่อ</string>
+    <string name="compose_title_forward_as_attachment">ส่งต่อเป็นไฟล์แนบ</string>
+    <string name="choose_folder_title">เลือกโฟลเดอร์</string>
+    <string name="choose_folder_move_title">ย้ายไปที่…</string>
+    <string name="choose_folder_copy_title">คัดลอกไปยัง…</string>
+    <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> เลือกแล้ว</string>
+    <string name="send_action">ส่ง</string>
+    <string name="empty_subject">หัวเรื่องว่างเปล่า คลิกอีกครั้งเพื่อส่งต่อไป</string>
+    <string name="reply_action">ตอบกลับ</string>
+    <string name="reply_all_action">ตอบกลับทั้งหมด</string>
+    <string name="delete_action">ลบ</string>
+    <string name="archive_action">คลังเก็บ</string>
+    <string name="spam_action">สแปม</string>
+    <string name="forward_action">ส่งต่อ</string>
+    <string name="forward_as_attachment_action">ส่งต่อเป็นไฟล์แนบ</string>
+    <string name="edit_as_new_message_action">แก้ไขเป็นข้อความใหม่</string>
+    <string name="move_action">ย้าย</string>
+    <string name="move_to_drafts_action">ย้ายไปแบบร่าง</string>
+    <string name="done_action">เรียบร้อย</string>
+    <string name="discard_action">ทิ้ง</string>
+    <string name="save_draft_action">บันทึกเป็นฉบับร่าง</string>
+    <string name="check_mail_action">เช็คเมล์</string>
+    <string name="send_messages_action">ส่งข้อความ</string>
+    <string name="refresh_folders_action">รีเฟรชรายการโฟลเดอร์</string>
+    <string name="filter_folders_action">ค้นหาโฟลเดอร์</string>
+    <string name="add_account_action">เพิ่มบัญชี</string>
+    <string name="search_action">ค้นหา</string>
+    <string name="search_everywhere_action">ค้นหาทุกที่</string>
+    <string name="search_results">ผลการค้นหา</string>
+    <string name="new_messages_title">ข้อความใหม่</string>
+    <string name="folders_action">จัดการโฟลเดอร์</string>
+    <string name="account_settings_action">ตั้งค่าบัญชี</string>
+    <string name="remove_account_action">ลบบัญชี</string>
+    <string name="mark_as_read_action">ทำเครื่องหมายอ่านแล้ว</string>
+    <string name="send_alternate_action">แชร์</string>
+    <string name="send_alternate_chooser_title">เลือกผู้ส่ง</string>
+    <string name="about_app_authors_thunderbird">ทีมงาน Thunderbird Mobile</string>
+</resources>

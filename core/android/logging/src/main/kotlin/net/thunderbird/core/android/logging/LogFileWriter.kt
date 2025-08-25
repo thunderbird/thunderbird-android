@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.commons.io.IOUtils
-import timber.log.Timber
 
 interface LogFileWriter {
     suspend fun writeLogTo(contentUri: Uri)
@@ -19,19 +18,13 @@ class LogcatLogFileWriter(
 ) : LogFileWriter {
     override suspend fun writeLogTo(contentUri: Uri) {
         return withContext(coroutineDispatcher) {
-            writeLogBlocking(contentUri)
-        }
-    }
+            val outputStream = contentResolver.openOutputStream(contentUri, "wt")
+                ?: error("Error opening contentUri for writing")
 
-    private fun writeLogBlocking(contentUri: Uri) {
-        Timber.v("Writing logcat output to content URI: %s", contentUri)
-
-        val outputStream = contentResolver.openOutputStream(contentUri, "wt")
-            ?: error("Error opening contentUri for writing")
-
-        outputStream.use {
-            processExecutor.exec("logcat -d").use { inputStream ->
-                IOUtils.copy(inputStream, outputStream)
+            outputStream.use {
+                processExecutor.exec("logcat -d").use { inputStream ->
+                    IOUtils.copy(inputStream, outputStream)
+                }
             }
         }
     }

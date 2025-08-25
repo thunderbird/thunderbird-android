@@ -46,6 +46,7 @@ internal fun PreferenceViewWithDialog(
                     selectedIndex = index
                     showDialog = true
                 },
+                onPreferenceChange = onPreferenceChange,
                 modifier = Modifier.padding(innerPadding),
             )
         }

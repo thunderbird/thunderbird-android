@@ -1,7 +1,5 @@
 package com.fsck.k9.notification
 
-import app.k9mail.core.testing.TestClock
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import assertk.assertThat
 import assertk.assertions.contains
@@ -12,18 +10,65 @@ import assertk.assertions.isInstanceOf
 import assertk.assertions.isTrue
 import com.fsck.k9.K9
 import kotlinx.datetime.Clock
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.AppTheme
+import net.thunderbird.core.preference.BackgroundSync
+import net.thunderbird.core.preference.GeneralSettings
+import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.privacy.PrivacySettings
+import net.thunderbird.core.testing.TestClock
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 private val TIMESTAMP = 0L
 
 class SummaryNotificationDataCreatorTest {
     private val account = createAccount()
-    private val notificationDataCreator = SummaryNotificationDataCreator(SingleMessageNotificationDataCreator())
+    private var generalSettings = GeneralSettings(
+        backgroundSync = BackgroundSync.ALWAYS,
+        showRecentChanges = true,
+        appTheme = AppTheme.DARK,
+        messageComposeTheme = SubTheme.DARK,
+        isShowCorrespondentNames = true,
+        fixedMessageViewTheme = true,
+        messageViewTheme = SubTheme.DARK,
+        isShowStarredCount = false,
+        isShowUnifiedInbox = false,
+        isShowMessageListStars = false,
+        isShowAnimations = false,
+        shouldShowSetupArchiveFolderDialog = false,
+        isMessageListSenderAboveSubject = false,
+        isShowContactName = false,
+        isShowContactPicture = false,
+        isChangeContactNameColor = false,
+        isColorizeMissingContactPictures = false,
+        isUseBackgroundAsUnreadIndicator = false,
+        isShowComposeButtonOnMessageList = false,
+        isThreadedViewEnabled = false,
+        isUseMessageViewFixedWidthFont = false,
+        isAutoFitWidth = false,
+        isQuietTime = false,
+        quietTimeStarts = "0:00",
+        quietTimeEnds = "23:59",
+        isQuietTimeEnabled = false,
+        privacy = PrivacySettings(
+            isHideTimeZone = false,
+            isHideUserAgent = false,
+        ),
+    )
+    private val notificationDataCreator = SummaryNotificationDataCreator(
+        singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
+        generalSettingsManager = mock {
+            on { getSettings() } doReturn generalSettings
+        },
+    )
 
     @Before
     fun setUp() {
@@ -59,7 +104,12 @@ class SummaryNotificationDataCreatorTest {
         setQuietTime(true)
         val notificationData = createNotificationData()
 
-        val result = notificationDataCreator.createSummaryNotificationData(
+        val result = SummaryNotificationDataCreator(
+            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
+            generalSettingsManager = mock {
+                on { getSettings() } doReturn generalSettings.copy(isQuietTime = true, isQuietTimeEnabled = true)
+            },
+        ).createSummaryNotificationData(
             notificationData,
             silent = false,
         )
@@ -87,7 +137,12 @@ class SummaryNotificationDataCreatorTest {
         setQuietTime(true)
         val notificationData = createNotificationDataWithMultipleMessages()
 
-        val result = notificationDataCreator.createSummaryNotificationData(
+        val result = SummaryNotificationDataCreator(
+            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
+            generalSettingsManager = mock {
+                on { getSettings() } doReturn generalSettings.copy(isQuietTime = true, isQuietTimeEnabled = true)
+            },
+        ).createSummaryNotificationData(
             notificationData,
             silent = false,
         )
@@ -233,11 +288,7 @@ class SummaryNotificationDataCreatorTest {
     }
 
     private fun setQuietTime(quietTime: Boolean) {
-        K9.isQuietTimeEnabled = quietTime
-        if (quietTime) {
-            K9.quietTimeStarts = "0:00"
-            K9.quietTimeEnds = "23:59"
-        }
+        generalSettings = generalSettings.copy(isQuietTimeEnabled = quietTime)
     }
 
     private fun setDeleteAction(mode: K9.NotificationQuickDelete) {

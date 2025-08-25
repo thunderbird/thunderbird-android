@@ -1,6 +1,5 @@
 package com.fsck.k9.mailstore
 
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.FolderSettings
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertThat
@@ -8,6 +7,10 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.ServerSettings
+import net.thunderbird.core.android.account.LegacyAccount
 import org.junit.After
 import org.junit.Test
 import org.koin.core.component.inject
@@ -67,13 +70,29 @@ class K9BackendDefaultStorageTest : K9RobolectricTest() {
         // FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
         preferences.clearAccounts()
 
-        return preferences.newAccount()
+        return preferences.newAccount().apply {
+            incomingServerSettings = SERVER_SETTINGS
+            outgoingServerSettings = SERVER_SETTINGS
+        }
     }
 
     private fun createBackendStorage(): BackendStorage {
         val messageStore = messageStoreManager.getMessageStore(account)
         val folderSettingsProvider = createFolderSettingsProvider()
         return K9BackendStorage(messageStore, folderSettingsProvider, saveMessageDataCreator, emptyList())
+    }
+
+    companion object {
+        private val SERVER_SETTINGS = ServerSettings(
+            type = "irrelevant",
+            host = "irrelevant",
+            port = 993,
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "username",
+            password = null,
+            clientCertificateAlias = null,
+        )
     }
 }
 

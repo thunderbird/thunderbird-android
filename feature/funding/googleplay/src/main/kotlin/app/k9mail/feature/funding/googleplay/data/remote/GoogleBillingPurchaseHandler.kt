@@ -1,6 +1,5 @@
 package app.k9mail.feature.funding.googleplay.data.remote
 
-import app.k9mail.core.common.cache.Cache
 import app.k9mail.feature.funding.googleplay.data.DataContract
 import app.k9mail.feature.funding.googleplay.data.DataContract.Remote
 import app.k9mail.feature.funding.googleplay.domain.entity.Contribution
@@ -16,7 +15,8 @@ import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.consumePurchase
-import timber.log.Timber
+import net.thunderbird.core.common.cache.Cache
+import net.thunderbird.core.logging.Logger
 
 // TODO propagate errors via Outcome
 // TODO optimize purchase handling and reduce duplicate code
@@ -24,6 +24,7 @@ import timber.log.Timber
 internal class GoogleBillingPurchaseHandler(
     private val productCache: Cache<String, ProductDetails>,
     private val productMapper: DataContract.Mapper.Product,
+    private val logger: Logger,
 ) : Remote.GoogleBillingPurchaseHandler {
 
     override suspend fun handlePurchases(
@@ -100,13 +101,13 @@ internal class GoogleBillingPurchaseHandler(
                     // TODO success
                 } else {
                     // handle acknowledge error
-                    Timber.e("acknowledgePurchase failed")
+                    logger.error(message = { "acknowledgePurchase failed" })
                 }
             } else {
-                Timber.e("purchase already acknowledged")
+                logger.error(message = { "purchase already acknowledged" })
             }
         } else {
-            Timber.e("purchase not purchased")
+            logger.error(message = { "purchase not purchased" })
         }
     }
 

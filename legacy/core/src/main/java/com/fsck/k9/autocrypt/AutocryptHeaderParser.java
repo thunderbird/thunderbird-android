@@ -11,7 +11,7 @@ import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeUtility;
 import okio.ByteString;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 class AutocryptHeaderParser {
@@ -41,25 +41,25 @@ class AutocryptHeaderParser {
 
         String type = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_TYPE);
         if (type != null && !type.equals(AutocryptHeader.AUTOCRYPT_TYPE_1)) {
-            Timber.e("autocrypt: unsupported type parameter %s", type);
+            Log.e("autocrypt: unsupported type parameter %s", type);
             return null;
         }
 
         String base64KeyData = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_KEY_DATA);
         if (base64KeyData == null) {
-            Timber.e("autocrypt: missing key parameter");
+            Log.e("autocrypt: missing key parameter");
             return null;
         }
 
         ByteString byteString = ByteString.decodeBase64(base64KeyData);
         if (byteString == null) {
-            Timber.e("autocrypt: error parsing base64 data");
+            Log.e("autocrypt: error parsing base64 data");
             return null;
         }
 
         String to = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_ADDR);
         if (to == null) {
-            Timber.e("autocrypt: no to header!");
+            Log.e("autocrypt: no to header!");
             return null;
         }
 

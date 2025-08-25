@@ -33,5 +33,7 @@ internal object StorageMigrations {
         if (oldVersion < 24) StorageMigrationTo24(db, migrationsHelper).removeLegacyAuthenticationModes()
         if (oldVersion < 25) StorageMigrationTo25(db, migrationsHelper).convertToAuthTypeNone()
         if (oldVersion < 26) StorageMigrationTo26(db, migrationsHelper).fixIdentities()
+        if (oldVersion < 27) StorageMigrationTo27(db, migrationsHelper).addAvatarMonogram()
+        if (oldVersion < 28) StorageMigrationTo28(db, migrationsHelper).ensureAvatarSet()
     }
 }

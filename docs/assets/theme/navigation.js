@@ -1,4 +1,8 @@
 document.querySelectorAll('.sidebar-scrollbox .section a[href*="adr"]').forEach(el => {
+    if (el.getAttribute('href').includes('index.html')) {
+        return; // Skip processing for index.html
+    }
+
     let textNodes = [...el.childNodes].filter(node => node.nodeType === Node.TEXT_NODE && node.nodeValue.trim().length > 0);
 
     if (textNodes.length > 0) {

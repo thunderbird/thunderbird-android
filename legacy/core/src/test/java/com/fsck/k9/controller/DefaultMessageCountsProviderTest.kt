@@ -1,8 +1,6 @@
 package com.fsck.k9.controller
 
 import app.cash.turbine.test
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.mailstore.ListenableMessageStore
 import app.k9mail.legacy.mailstore.MessageStoreManager
 import app.k9mail.legacy.message.controller.MessageCounts
@@ -12,28 +10,30 @@ import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
-import net.thunderbird.feature.search.ConditionsTreeNode
-import net.thunderbird.feature.search.LocalSearch
+import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.SearchConditionTreeNode
 import org.junit.Test
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
-private const val ACCOUNT_UUID = "irrelevant"
 private const val UNREAD_COUNT = 2
 private const val STARRED_COUNT = 3
 
 class DefaultMessageCountsProviderTest {
 
-    private val account = LegacyAccount(ACCOUNT_UUID)
+    private val account = LegacyAccount(ACCOUNT_ID_RAW)
     private val accountManager = mock<AccountManager> {
         on { getAccounts() } doReturn listOf(account)
     }
     private val messageStore = mock<ListenableMessageStore> {
         on {
             getUnreadMessageCount(
-                anyOrNull<ConditionsTreeNode>(),
+                anyOrNull<SearchConditionTreeNode>(),
             )
         } doReturn UNREAD_COUNT
         on { getStarredMessageCount(anyOrNull()) } doReturn STARRED_COUNT
@@ -81,7 +81,7 @@ class DefaultMessageCountsProviderTest {
         val messageStore = mock<ListenableMessageStore> {
             on {
                 getUnreadMessageCount(
-                    anyOrNull<ConditionsTreeNode>(),
+                    anyOrNull<SearchConditionTreeNode>(),
                 )
             } doAnswer { currentCount }
             on { getStarredMessageCount(anyOrNull()) } doAnswer { currentCount }
@@ -94,7 +94,7 @@ class DefaultMessageCountsProviderTest {
             messageStoreManager = messageStoreManager,
             messagingControllerRegistry = registry,
         )
-        val search = LocalSearch().apply {
+        val search = LocalMessageSearch().apply {
             addAccountUuid(account.uuid)
         }
 

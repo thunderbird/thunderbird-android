@@ -28,9 +28,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
-import app.k9mail.core.ui.theme.api.Theme
-import app.k9mail.legacy.account.AccountManager
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
@@ -58,11 +55,14 @@ import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
-import net.thunderbird.core.preferences.GeneralSettingsManager
+import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
-import timber.log.Timber
 
 @Suppress("LargeClass")
 class MessageViewFragment :
@@ -209,7 +209,7 @@ class MessageViewFragment :
     }
 
     private fun loadMessage(messageReference: MessageReference) {
-        Timber.d("MessageViewFragment displaying message %s", messageReference)
+        Log.d("MessageViewFragment displaying message %s", messageReference)
 
         account = accountManager.getAccount(messageReference.accountUuid)
             ?: error("Account ${messageReference.accountUuid} not found")
@@ -953,7 +953,7 @@ class MessageViewFragment :
                     maskedRequestCode,
                 )
             } catch (e: SendIntentException) {
-                Timber.e(e, "Irrecoverable error calling PendingIntent!")
+                Log.e(e, "Irrecoverable error calling PendingIntent!")
             }
 
             return true

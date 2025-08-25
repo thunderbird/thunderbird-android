@@ -26,7 +26,7 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 /**
@@ -46,7 +46,7 @@ public class SingleLiveEvent<T> extends MutableLiveData<T> {
     public void observe(@NonNull LifecycleOwner owner, @NonNull final Observer<? super T> observer) {
 
         if (hasActiveObservers()) {
-            Timber.w("Multiple observers registered but only one will be notified of changes.");
+            Log.w("Multiple observers registered but only one will be notified of changes.");
         }
 
         // Observe the internal MutableLiveData

@@ -13,13 +13,12 @@ import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import com.fsck.k9.logging.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -118,7 +117,7 @@ class Pop3Connection {
             try {
                 return connectToAddress(address);
             } catch (IOException e) {
-                Timber.w(e, "Could not connect to %s", address);
+                Log.w(e, "Could not connect to %s", address);
                 connectException = e;
             }
         }
@@ -129,7 +128,7 @@ class Pop3Connection {
     private Socket connectToAddress(InetAddress address)
             throws IOException, MessagingException, NoSuchAlgorithmException, KeyManagementException {
         if (K9MailLib.isDebug() && K9MailLib.DEBUG_PROTOCOL_POP3) {
-            Timber.d("Connecting to %s as %s", settings.getHost(), address);
+            Log.d("Connecting to %s as %s", settings.getHost(), address);
         }
 
         InetSocketAddress socketAddress = new InetSocketAddress(address, settings.getPort());
@@ -342,9 +341,9 @@ class Pop3Connection {
         if (command != null) {
             if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
                 if (sensitive && !K9MailLib.isDebugSensitive()) {
-                    Timber.d(">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
+                    Log.d(">>> [Command Hidden, Enable Sensitive Debug Logging To Show]");
                 } else {
-                    Timber.d(">>> %s", command);
+                    Log.d(">>> %s", command);
                 }
             }
 
@@ -377,7 +376,7 @@ class Pop3Connection {
         } while ((d = in.read()) != -1);
         String ret = sb.toString();
         if (K9MailLib.isDebug() && DEBUG_PROTOCOL_POP3) {
-            Timber.d("<<< %s", ret);
+            Log.d("<<< %s", ret);
         }
         return ret;
     }

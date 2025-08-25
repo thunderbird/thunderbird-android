@@ -1,0 +1,2 @@
+Thunderbird for Android version 12.0b2, based on K-9 Mail. Changes include:
+- Application crashed on startup if left or right swipe gesture was set to "None"

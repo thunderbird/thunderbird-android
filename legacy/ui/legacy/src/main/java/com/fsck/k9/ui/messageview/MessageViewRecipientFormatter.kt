@@ -4,12 +4,13 @@ import android.content.res.Resources
 import android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import app.k9mail.legacy.account.Identity
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.K9
 import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * Get the display name for a recipient to be shown in the message view screen.
@@ -79,12 +80,19 @@ internal class RealMessageViewRecipientFormatter(
 internal fun createMessageViewRecipientFormatter(
     contactNameProvider: ContactNameProvider,
     resources: Resources,
+    generalSettingsManager: GeneralSettingsManager,
 ): MessageViewRecipientFormatter {
     return RealMessageViewRecipientFormatter(
         contactNameProvider = contactNameProvider,
-        showCorrespondentNames = K9.isShowCorrespondentNames,
-        showContactNames = K9.isShowContactName,
-        contactNameColor = if (K9.isChangeContactNameColor) K9.contactNameColor else null,
+        showCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
+        showContactNames = generalSettingsManager.getSettings().isShowContactName,
+        contactNameColor = if (
+            generalSettingsManager.getSettings().isChangeContactNameColor
+        ) {
+            K9.contactNameColor
+        } else {
+            null
+        },
         meText = resources.getString(R.string.message_view_me_text),
     )
 }

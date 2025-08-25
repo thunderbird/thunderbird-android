@@ -1,0 +1,42 @@
+appId: net.thunderbird.android.debug
+---
+- launchApp:
+    clearState: true
+
+## Welcome screen
+- tapOn:
+    id: "onboarding_welcome_start_button"
+
+## Already using Thunderbird screen
+- waitForAnimationToEnd:
+    timeout: 500
+- tapOn:
+    id: "onboarding_migration_new_account_button"
+
+- runFlow:
+    file: create_demo_account.yml
+    env:
+        EMAIL_ADDRESS: "demo@example.com"
+        ACCOUNT_NAME: "Demo Account"
+        DISPLAY_NAME: "Demo User"
+
+# Permissions
+- waitForAnimationToEnd:
+    timeout: 500
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_permissions_skip_button"
+    commands:
+      - tapOn:
+          id: "onboarding_permissions_skip_button"
+- runFlow:
+    when:
+      visible:
+        id: "onboarding_permissions_next_button"
+    commands:
+        - tapOn:
+            id: "onboarding_permissions_next_button"
+
+- waitForAnimationToEnd:
+    timeout: 500

@@ -14,7 +14,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import androidx.annotation.WorkerThread;
-import app.k9mail.legacy.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccount;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
@@ -26,7 +26,7 @@ import com.fsck.k9.mailstore.LocalPart;
 import com.fsck.k9.provider.AttachmentTempFileProvider;
 import com.fsck.k9.ui.R;
 import org.apache.commons.io.IOUtils;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 
 public class AttachmentController {
@@ -134,7 +134,7 @@ public class AttachmentController {
 
             return viewIntentFinder.getBestViewIntent(intentDataUri, attachment.displayName, attachment.mimeType);
         } catch (IOException e) {
-            Timber.e(e, "Error creating temp file for attachment!");
+            Log.e(e, "Error creating temp file for attachment!");
             return null;
         }
     }
@@ -164,7 +164,7 @@ public class AttachmentController {
             try {
                 context.startActivity(intent);
             } catch (ActivityNotFoundException e) {
-                Timber.e(e, "Could not display attachment of type %s", attachment.mimeType);
+                Log.e(e, "Could not display attachment of type %s", attachment.mimeType);
 
                 String message = context.getString(R.string.message_view_no_viewer, attachment.mimeType);
                 displayMessageToUser(message);
@@ -181,7 +181,7 @@ public class AttachmentController {
                 writeAttachment(documentUri);
                 return true;
             } catch (IOException e) {
-                Timber.e(e, "Error saving attachment");
+                Log.e(e, "Error saving attachment");
                 return false;
             }
         }

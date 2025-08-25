@@ -1,12 +1,12 @@
 package app.k9mail.core.ui.compose.common.mvi
 
 import app.cash.turbine.test
-import app.k9mail.core.ui.compose.testing.MainDispatcherRule
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test
 

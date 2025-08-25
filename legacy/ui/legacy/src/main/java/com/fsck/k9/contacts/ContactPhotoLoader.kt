@@ -5,8 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.core.common.mail.toEmailAddressOrNull
-import timber.log.Timber
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
+import net.thunderbird.core.logging.legacy.Log
 
 internal class ContactPhotoLoader(
     private val contentResolver: ContentResolver,
@@ -19,7 +19,7 @@ internal class ContactPhotoLoader(
                 BitmapFactory.decodeStream(inputStream)
             }
         } catch (e: Exception) {
-            Timber.e(e, "Couldn't load contact photo: $photoUri")
+            Log.e(e, "Couldn't load contact photo: $photoUri")
             null
         }
     }

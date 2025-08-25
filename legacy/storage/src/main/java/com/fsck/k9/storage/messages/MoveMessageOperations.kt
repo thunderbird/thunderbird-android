@@ -8,14 +8,14 @@ import app.k9mail.core.android.common.database.getStringOrNull
 import com.fsck.k9.K9
 import com.fsck.k9.mailstore.LockableDatabase
 import java.util.UUID
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 internal class MoveMessageOperations(
     private val database: LockableDatabase,
     private val threadMessageOperations: ThreadMessageOperations,
 ) {
     fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
-        Timber.d("Moving message [ID: $messageId] to folder [ID: $destinationFolderId]")
+        Log.d("Moving message [ID: $messageId] to folder [ID: $destinationFolderId]")
 
         return database.execute(true) { database ->
             val threadInfo =

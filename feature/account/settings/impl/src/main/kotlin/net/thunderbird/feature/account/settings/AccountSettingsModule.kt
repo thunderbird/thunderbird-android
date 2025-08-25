@@ -4,12 +4,13 @@ import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.account.settings.impl.DefaultAccountSettingsNavigation
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
+import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetGeneralPreferences
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGeneralPreferences
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralResourceProvider
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val featureAccountSettingsModule = module {
@@ -18,6 +19,12 @@ val featureAccountSettingsModule = module {
     factory<ResourceProvider.GeneralResourceProvider> {
         GeneralResourceProvider(
             context = androidContext(),
+        )
+    }
+
+    factory<UseCase.GetAccountName> {
+        GetAccountName(
+            repository = get(),
         )
     }
 
@@ -37,6 +44,7 @@ val featureAccountSettingsModule = module {
     viewModel { params ->
         GeneralSettingsViewModel(
             accountId = params.get(),
+            getAccountName = get(),
             getGeneralPreferences = get(),
             updateGeneralPreferences = get(),
         )

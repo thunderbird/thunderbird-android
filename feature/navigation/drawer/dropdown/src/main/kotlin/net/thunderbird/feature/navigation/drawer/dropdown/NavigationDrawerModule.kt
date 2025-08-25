@@ -11,8 +11,8 @@ import net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase.SaveDra
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase.SyncAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase.SyncAllAccounts
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.DrawerViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val navigationDropDownDrawerModule: Module = module {

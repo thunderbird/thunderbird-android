@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_settings_protocol_type_label">โปรโตคอล</string>
+    <string name="account_server_settings_server_label">เซิฟเวอร์</string>
+    <string name="account_server_settings_security_label">ความปลอดภัย</string>
+    <string name="account_server_settings_port_label">พอร์ต</string>
+    <string name="account_server_settings_username_label">ชื่อผู้ใช้</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_password_cleartext">รหัสผ่านปกติ</string>
+    <string name="account_server_settings_authentication_password_encrypted">เข้ารหัส รหัสผ่าน</string>
+    <string name="account_server_settings_authentication_label">การรับรองความถูกต้อง</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_incoming_top_bar_title">ตั้งค่าเซิร์ฟเวอร์ขาเข้า</string>
+    <string name="account_server_settings_incoming_imap_compression_label">ใช้การบีบอัด</string>
+    <string name="account_server_settings_outgoing_top_bar_title">ตั้งค่าเซิร์ฟเวอร์ขาออก</string>
+    <string name="account_server_settings_validation_error_server_required">จำเป็นต้องระบุชื่อเซิร์ฟเวอร์</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP หรือชื่อโฮสต์ไม่ถูกต้อง</string>
+    <string name="account_server_settings_validation_error_port_invalid">พอร์ตไม่ถูกต้อง (ต้องเป็น 1–65535)</string>
+    <string name="account_server_settings_validation_error_username_required">จำเป็นต้องมีชื่อผู้ใช้</string>
+    <string name="account_server_settings_validation_error_password_required">จำเป็นต้องระบุรหัสผ่าน</string>
+    <string name="account_server_settings_validation_error_imap_prefix_blank">คำนำหน้า IMAP ไม่สามารถว่างเปล่าได้</string>
+    <string name="account_server_settings_password_authentication_title">ยืนยันตัวตนของคุณ</string>
+    <string name="account_server_settings_password_authentication_subtitle">ปลดล็อคเพื่อดูรหัสผ่านของคุณ</string>
+    <string name="account_server_settings_password_authentication_screen_lock_required">หากต้องการดูรหัสผ่านของคุณที่นี่ โปรดเปิดใช้งานการล็อกหน้าจอบนอุปกรณ์นี้</string>
+    <string name="account_server_settings_connection_security_none">ไม่มีอะไร</string>
+</resources>

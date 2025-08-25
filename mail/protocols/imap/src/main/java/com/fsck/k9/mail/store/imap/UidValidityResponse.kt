@@ -9,7 +9,8 @@ internal class UidValidityResponse private constructor(val uidValidity: Long) {
             if (response.isTagged || !equalsIgnoreCase(response[0], Responses.OK) || !response.isList(1)) return null
 
             val responseTextList = response.getList(1)
-            if (responseTextList.size < 2 || !equalsIgnoreCase(responseTextList[0], Responses.UIDVALIDITY) ||
+            if (responseTextList.size < 2 ||
+                !equalsIgnoreCase(responseTextList[0], Responses.UIDVALIDITY) ||
                 !responseTextList.isLong(1)
             ) {
                 return null

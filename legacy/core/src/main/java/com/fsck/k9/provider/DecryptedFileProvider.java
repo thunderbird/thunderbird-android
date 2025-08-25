@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import android.text.TextUtils;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.util.FileFactory;
@@ -85,7 +85,7 @@ public class DecryptedFileProvider extends FileProvider {
             if (lastModified < deletionThreshold) {
                 boolean fileDeleted = tempFile.delete();
                 if (!fileDeleted) {
-                    Timber.e("Failed to delete temporary file");
+                    Log.e("Failed to delete temporary file");
                     // TODO really do this? might cause our service to stay up indefinitely if a file can't be deleted
                     allFilesDeleted = false;
                 }
@@ -93,7 +93,7 @@ public class DecryptedFileProvider extends FileProvider {
                 if (K9.isDebugLoggingEnabled()) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
-                    Timber.e("Not deleting temp file (for another %s minutes)", timeLeftStr);
+                    Log.e("Not deleting temp file (for another %s minutes)", timeLeftStr);
                 }
                 allFilesDeleted = false;
             }
@@ -106,7 +106,7 @@ public class DecryptedFileProvider extends FileProvider {
         File directory = new File(context.getCacheDir(), DECRYPTED_CACHE_DIRECTORY);
         if (!directory.exists()) {
             if (!directory.mkdir()) {
-                Timber.e("Error creating directory: %s", directory.getAbsolutePath());
+                Log.e("Error creating directory: %s", directory.getAbsolutePath());
             }
         }
 
@@ -138,7 +138,7 @@ public class DecryptedFileProvider extends FileProvider {
             decodedInputStream = new QuotedPrintableInputStream(inputStream);
         } else { // no or unknown encoding
             if (!TextUtils.isEmpty(encoding)) {
-                Timber.e("unsupported encoding, returning raw stream");
+                Log.e("unsupported encoding, returning raw stream");
             }
             return pfd;
         }
@@ -178,7 +178,7 @@ public class DecryptedFileProvider extends FileProvider {
                 return;
             }
 
-            Timber.d("Unregistering temp file cleanup receiver");
+            Log.d("Unregistering temp file cleanup receiver");
             context.unregisterReceiver(cleanupReceiver);
             cleanupReceiver = null;
         }
@@ -190,7 +190,7 @@ public class DecryptedFileProvider extends FileProvider {
                 return;
             }
 
-            Timber.d("Registering temp file cleanup receiver");
+            Log.d("Registering temp file cleanup receiver");
             cleanupReceiver = new DecryptedFileProviderCleanupReceiver();
 
             IntentFilter intentFilter = new IntentFilter();
@@ -207,7 +207,7 @@ public class DecryptedFileProvider extends FileProvider {
                 throw new IllegalArgumentException("onReceive called with action that isn't screen off!");
             }
 
-            Timber.d("Cleaning up temp files");
+            Log.d("Cleaning up temp files");
 
             boolean allFilesDeleted = deleteOldTemporaryFiles(context);
             if (allFilesDeleted) {

@@ -12,5 +12,5 @@
     <string name="account_server_certificate_warning_title">Ostrzeżenie</string>
     <string name="account_server_certificate_unknown_error_subtitle">Błąd certyfikatu</string>
     <string name="account_server_certificate_subject">Podmiot</string>
-    <string name="account_server_certificate_unknown_error_description_format">Aplikacja wykryła potencjalne zagrożenie bezpieczeństwa i nie nawiązała dalszego połączenia z <xliff:g id="serverName">%s</xliff:g>. \nJeśli będziesz kontynuować, osoby atakujące mogą spróbować ukraść informacje, takie jak Twoje hasło lub adresy e-mail.</string>
+    <string name="account_server_certificate_unknown_error_description_format">Aplikacja wykryła potencjalne zagrożenie bezpieczeństwa i nie nawiązała dalszego połączenia z <xliff:g id="serverName">%s</xliff:g>. \nJeśli będziesz kontynuować, osoby atakujące mogą spróbować ukraść informacje, takie jak hasło lub adresy e-mail.</string>
 </resources>

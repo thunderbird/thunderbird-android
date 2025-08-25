@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import app.k9mail.legacy.account.LegacyAccount;
 import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
+import net.thunderbird.core.android.account.LegacyAccount;
 
 
 class MemorizingMessagingListener extends SimpleMessagingListener {

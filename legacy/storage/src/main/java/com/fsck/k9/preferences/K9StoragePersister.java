@@ -15,19 +15,27 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.migration.DefaultStorageMigrationHelper;
 import com.fsck.k9.preferences.migration.StorageMigrations;
 import com.fsck.k9.preferences.migration.StorageMigrationHelper;
-import net.thunderbird.core.preferences.Storage;
-import timber.log.Timber;
-
+import net.thunderbird.core.logging.Logger;
+import net.thunderbird.core.preference.storage.InMemoryStorage;
+import net.thunderbird.core.preference.storage.Storage;
+import net.thunderbird.core.preference.storage.StorageEditor;
+import net.thunderbird.core.preference.storage.StoragePersister;
+import net.thunderbird.core.preference.storage.StorageUpdater;
 
 public class K9StoragePersister implements StoragePersister {
-    private static final int DB_VERSION = 26;
+    private static final int DB_VERSION = 28;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
+    private final Logger logger;
     private final StorageMigrationHelper migrationHelper = new DefaultStorageMigrationHelper();
 
-    public K9StoragePersister(Context context) {
+    public K9StoragePersister(
+        Context context,
+        Logger logger
+    ) {
         this.context = context;
+        this.logger = logger;
     }
 
     private SQLiteDatabase openDB() {
@@ -60,7 +68,7 @@ public class K9StoragePersister implements StoragePersister {
     }
 
     private void createStorageDatabase(SQLiteDatabase db) {
-        Timber.i("Creating Storage database");
+        logger.info(null, null, () -> "Creating Storage database");
 
         db.execSQL("DROP TABLE IF EXISTS preferences_storage");
         db.execSQL("CREATE TABLE preferences_storage " +
@@ -91,7 +99,7 @@ public class K9StoragePersister implements StoragePersister {
     @NonNull
     @Override
     public StorageEditor createStorageEditor(@NonNull StorageUpdater storageUpdater) {
-        return new K9StorageEditor(storageUpdater, this);
+        return new K9StorageEditor(storageUpdater, this, logger);
     }
 
     static class StoragePersistOperations {
@@ -141,13 +149,13 @@ public class K9StoragePersister implements StoragePersister {
     @Override
     public Storage loadValues() {
         long startTime = SystemClock.elapsedRealtime();
-        Timber.i("Loading preferences from DB into Storage");
+        logger.info(null, null, () -> "Loading preferences from DB into Storage");
 
         try (SQLiteDatabase database = openDB()) {
-            return new DefaultStorage(readAllValues(database));
+            return new InMemoryStorage(readAllValues(database), logger);
         } finally {
             long endTime = SystemClock.elapsedRealtime();
-            Timber.i("Preferences load took %d ms", endTime - startTime);
+            logger.info(null, null, () -> String.format("Preferences load took %d ms", endTime - startTime));
         }
     }
 
@@ -159,7 +167,7 @@ public class K9StoragePersister implements StoragePersister {
             while (cursor.moveToNext()) {
                 String key = cursor.getString(0);
                 String value = cursor.getString(1);
-                Timber.d("Loading key '%s', value = '%s'", key, value);
+                logger.debug(null, null, () -> String.format("Loading key '%s', value = '%s'", key, value));
                 loadedValues.put(key, value);
             }
         } finally {

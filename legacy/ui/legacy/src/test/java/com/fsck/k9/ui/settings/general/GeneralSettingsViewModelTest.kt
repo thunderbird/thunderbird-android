@@ -19,6 +19,9 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import net.thunderbird.core.android.logging.LogFileWriter
+import net.thunderbird.core.logging.file.FileLogSink
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -28,11 +31,15 @@ import org.mockito.kotlin.mock
 class GeneralSettingsViewModelTest {
     private val logFileWriter = TestLogFileWriter()
     private val contentUri = mock<Uri>()
-    private val viewModel = GeneralSettingsViewModel(logFileWriter)
+    private val viewModel = GeneralSettingsViewModel(
+        logFileWriter,
+        syncDebugFileLogSink = mock<FileLogSink>(),
+    )
     private val testCoroutineDispatcher = StandardTestDispatcher()
 
     @Before
     fun setUp() {
+        Log.logger = TestLogger()
         Dispatchers.setMain(testCoroutineDispatcher)
     }
 

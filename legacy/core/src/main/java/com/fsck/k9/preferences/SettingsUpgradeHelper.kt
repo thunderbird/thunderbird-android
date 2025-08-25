@@ -2,7 +2,7 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.K9
 import com.fsck.k9.preferences.Settings.SettingsDescription
-import timber.log.Timber
+import net.thunderbird.core.logging.legacy.Log
 
 internal object SettingsUpgradeHelper {
     /**
@@ -72,7 +72,7 @@ internal object SettingsUpgradeHelper {
 
             if (isRemovedSetting) {
                 mutableSettings.remove(settingName)
-                Timber.v("Removed setting '%s'", settingName)
+                Log.v("Removed setting '%s'", settingName)
             }
         }
     }
@@ -87,7 +87,7 @@ internal object SettingsUpgradeHelper {
 
         if (K9.isDebugLoggingEnabled) {
             val prettyValue = settingDescription.toPrettyString(defaultValue)
-            Timber.v("Added new setting '%s' with default value '%s'", settingName, prettyValue)
+            Log.v("Added new setting '%s' with default value '%s'", settingName, prettyValue)
         }
     }
 }

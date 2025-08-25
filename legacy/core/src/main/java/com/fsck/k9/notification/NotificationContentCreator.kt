@@ -2,16 +2,17 @@ package com.fsck.k9.notification
 
 import android.text.SpannableStringBuilder
 import app.k9mail.core.android.common.contact.ContactRepository
-import app.k9mail.legacy.account.LegacyAccount
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
-import com.fsck.k9.K9
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal class NotificationContentCreator(
     private val resourceProvider: NotificationResourceProvider,
     private val contactRepository: ContactRepository,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun createFromMessage(account: LegacyAccount, message: LocalMessage): NotificationContent {
         val sender = getMessageSender(account, message)
@@ -70,14 +71,20 @@ internal class NotificationContentCreator(
 
     @Suppress("ReturnCount")
     private fun getMessageSender(account: LegacyAccount, message: Message): String? {
-        val localContactRepository = if (K9.isShowContactName) contactRepository else null
+        val localContactRepository =
+            if (generalSettingsManager.getSettings().isShowContactName) contactRepository else null
         var isSelf = false
 
         val fromAddresses = message.from
         if (!fromAddresses.isNullOrEmpty()) {
             isSelf = account.isAnIdentity(fromAddresses)
             if (!isSelf) {
-                return MessageHelper.toFriendly(fromAddresses.first(), localContactRepository).toString()
+                return MessageHelper.toFriendly(
+                    fromAddresses.first(),
+                    generalSettingsManager.getSettings().isShowCorrespondentNames,
+                    generalSettingsManager.getSettings().isChangeContactNameColor,
+                    localContactRepository,
+                ).toString()
             }
         }
 
@@ -87,6 +94,8 @@ internal class NotificationContentCreator(
             if (!recipients.isNullOrEmpty()) {
                 val recipientDisplayName = MessageHelper.toFriendly(
                     address = recipients.first(),
+                    isShowCorrespondentNames = generalSettingsManager.getSettings().isShowCorrespondentNames,
+                    isChangeContactNameColor = generalSettingsManager.getSettings().isChangeContactNameColor,
                     contactRepository = localContactRepository,
                 ).toString()
                 return resourceProvider.recipientDisplayName(recipientDisplayName)

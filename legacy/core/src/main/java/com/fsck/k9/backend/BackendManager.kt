@@ -1,9 +1,9 @@
 package com.fsck.k9.backend
 
-import app.k9mail.legacy.account.LegacyAccount
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.mail.ServerSettings
 import java.util.concurrent.CopyOnWriteArraySet
+import net.thunderbird.core.android.account.LegacyAccount
 
 class BackendManager(private val backendFactories: Map<String, BackendFactory>) {
     private val backendCache = mutableMapOf<String, BackendContainer>()

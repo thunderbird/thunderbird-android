@@ -1,6 +1,5 @@
 package com.fsck.k9.autocrypt
 
-import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
@@ -13,8 +12,12 @@ import com.fsck.k9.mail.internet.MimeMultipart
 import com.fsck.k9.mail.internet.TextBody
 import com.fsck.k9.mailstore.BinaryMemoryBody
 import java.util.Date
+import net.thunderbird.core.preference.GeneralSettingsManager
 
-class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStringProvider) {
+class AutocryptTransferMessageCreator(
+    private val stringProvider: AutocryptStringProvider,
+    private val generalSettingsManager: GeneralSettingsManager,
+) {
     fun createAutocryptTransferMessage(data: ByteArray, address: Address): Message {
         try {
             val subjectText = stringProvider.transferMessageSubject()
@@ -41,7 +44,10 @@ class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStrin
             message.subject = subjectText
             message.setHeader("Autocrypt-Setup-Message", "v1")
             message.internalDate = nowDate
-            message.addSentDate(nowDate, K9.isHideTimeZone)
+            message.addSentDate(
+                nowDate,
+                generalSettingsManager.getSettings().privacy.isHideTimeZone,
+            )
             message.setFrom(address)
             message.setHeader("To", address.toEncodedString())
 

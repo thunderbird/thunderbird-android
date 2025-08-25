@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 public class ConfirmationDialogFragment extends DialogFragment implements OnClickListener,
         OnCancelListener {
@@ -108,7 +108,7 @@ public class ConfirmationDialogFragment extends DialogFragment implements OnClic
         try {
             mListener = (ConfirmationDialogFragmentListener) activity;
         } catch (ClassCastException e) {
-            Timber.d("%s did not implement ConfirmationDialogFragmentListener", activity);
+            Log.d("%s did not implement ConfirmationDialogFragmentListener", activity);
         }
     }
 

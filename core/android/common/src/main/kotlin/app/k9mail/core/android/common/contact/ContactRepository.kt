@@ -1,7 +1,7 @@
 package app.k9mail.core.android.common.contact
 
-import app.k9mail.core.common.cache.Cache
-import app.k9mail.core.common.mail.EmailAddress
+import net.thunderbird.core.common.cache.Cache
+import net.thunderbird.core.common.mail.EmailAddress
 
 interface ContactRepository {
 

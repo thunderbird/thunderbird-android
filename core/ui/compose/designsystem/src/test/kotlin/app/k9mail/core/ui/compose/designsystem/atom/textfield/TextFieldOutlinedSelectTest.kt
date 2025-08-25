@@ -1,7 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.atom.textfield
 
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -10,6 +9,7 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 
 private const val TEST_TAG = "TextFieldOutlinedSelect"
 
@@ -22,7 +22,7 @@ class TextFieldOutlinedSelectTest : ComposeTest() {
                 options = persistentListOf("option1", "option2"),
                 selectedOption = value,
                 onValueChange = { value = it },
-                modifier = Modifier.testTag(TEST_TAG),
+                modifier = Modifier.testTagAsResourceId(TEST_TAG),
             )
         }
 
@@ -39,7 +39,7 @@ class TextFieldOutlinedSelectTest : ComposeTest() {
                 options = persistentListOf("option1", "option2"),
                 selectedOption = "option1",
                 onValueChange = {},
-                modifier = Modifier.testTag(TEST_TAG),
+                modifier = Modifier.testTagAsResourceId(TEST_TAG),
                 isEnabled = false,
             )
         }
@@ -56,7 +56,7 @@ class TextFieldOutlinedSelectTest : ComposeTest() {
                 options = persistentListOf("option1", "option2"),
                 selectedOption = "option1",
                 onValueChange = {},
-                modifier = Modifier.testTag(TEST_TAG),
+                modifier = Modifier.testTagAsResourceId(TEST_TAG),
                 isReadOnly = true,
             )
         }

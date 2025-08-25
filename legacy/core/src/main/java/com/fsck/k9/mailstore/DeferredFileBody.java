@@ -12,7 +12,7 @@ import java.io.OutputStream;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import timber.log.Timber;
+import net.thunderbird.core.logging.legacy.Log;
 
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.RawDataBody;
@@ -69,11 +69,11 @@ public class DeferredFileBody implements RawDataBody, SizeAware {
     public InputStream getInputStream() throws MessagingException {
         try {
             if (file != null) {
-                Timber.d("Decrypted data is file-backed.");
+                Log.d("Decrypted data is file-backed.");
                 return new BufferedInputStream(new FileInputStream(file));
             }
             if (data != null) {
-                Timber.d("Decrypted data is memory-backed.");
+                Log.d("Decrypted data is memory-backed.");
                 return new ByteArrayInputStream(data);
             }
 
@@ -110,7 +110,7 @@ public class DeferredFileBody implements RawDataBody, SizeAware {
             throw new IllegalStateException("Data must be fully written before it can be read!");
         }
 
-        Timber.d("Writing body to file for attachment access");
+        Log.d("Writing body to file for attachment access");
 
         file = fileFactory.createFile();
         FileOutputStream fos = new FileOutputStream(file);

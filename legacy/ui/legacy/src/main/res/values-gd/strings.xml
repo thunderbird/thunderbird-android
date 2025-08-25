@@ -908,4 +908,13 @@
     <string name="message_list_content_description_unread_prefix">gun leughadh, %s</string>
     <string name="general_settings_swipe_actions_title">Gnìomhan grad-slaighdidh</string>
     <string name="message_list_error_folder_not_found">Cha d’fhuair sinn lorg air a’ phasgan</string>
+    <string name="open_camera">Fosgail an camara</string>
+    <string name="attach_file">Ceangail faidhle ris</string>
+    <string name="camera_permission_denied">Chaidh cead-inntrigidh dhan chamara a dhiùltadh ’s cha ghabh dealbh a thogail</string>
+    <string name="swipe_action_archive_folder_not_set">Suidhich pasgan na tasg-lainn</string>
+    <string name="swipe_action_change_swipe_gestures">Atharraich na gluasadan\ngrad-shlaighdidh</string>
+    <string name="debug_enable_sync_debug_logging_title">Cuir an comas logadh dì-bhugachadh an t-sioncronachaidh</string>
+    <string name="debug_enable_sync_debug_logging_summary">Dèan loga dhen fhiosrachadh diagnosachd fad 24 uair a thìde</string>
+    <string name="debug_sync_export_logs_title">Às-phortaich logaichean an t-sioncronachaidh</string>
+    <string name="message_view_me_text">domh-sa</string>
 </resources>

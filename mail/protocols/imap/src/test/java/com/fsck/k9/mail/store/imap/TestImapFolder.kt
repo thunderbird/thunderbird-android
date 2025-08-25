@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.imap
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.Part
@@ -125,6 +126,10 @@ internal open class TestImapFolder(
     }
 
     override fun expungeUids(uids: List<String>) {
+        throw UnsupportedOperationException("not implemented")
+    }
+
+    override fun create(folderType: FolderType): Boolean {
         throw UnsupportedOperationException("not implemented")
     }
 

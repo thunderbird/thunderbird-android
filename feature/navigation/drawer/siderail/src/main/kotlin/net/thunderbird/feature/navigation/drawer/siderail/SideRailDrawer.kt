@@ -5,9 +5,9 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import app.k9mail.core.ui.theme.api.FeatureThemeProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.api.R
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolderType
@@ -79,6 +79,7 @@ class SideRailDrawer(
     override fun selectUnifiedInbox() {
         drawerState.update {
             it.copy(
+                selectedAccountUuid = "unified_account",
                 selectedFolderId = DisplayUnifiedFolderType.INBOX.id,
             )
         }
