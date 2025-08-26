@@ -121,3 +121,32 @@ jobs:
 
       - name: Running Dependency Guard
         run: ./gradlew dependencyGuard
+
+  check-badging:
+    name: Quality - Badging
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Running K9 Badging
+        run: |
+          ./gradlew :app-k9mail:checkFossReleaseBadging \
+                    :app-k9mail:checkFullReleaseBadging \
+                    -x assemble \
+                    -x build
+
+      - name: Running Thunderbird Badging
+        run: |
+          ./gradlew :app-thunderbird:checkFossBetaBadging \
+                    :app-thunderbird:checkFossDailyBadging \
+                    :app-thunderbird:checkFossReleaseBadging \
+                    :app-thunderbird:checkFullBetaBadging \
+                    :app-thunderbird:checkFullDailyBadging \
+                    :app-thunderbird:checkFullReleaseBadging \
+                    -x assemble \
+                    -x build
