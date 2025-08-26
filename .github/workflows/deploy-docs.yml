@@ -34,7 +34,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Cargo cache
-        uses: actions-rust-lang/setup-rust-toolchain@fb51252c7ba57d633bc668f941da052e410add48  # v1.13.0
+        uses: actions-rust-lang/setup-rust-toolchain@ab6845274e2ff01cd4462007e1a9d9df1ab49f42  # v1.14.0
 
       - name: Install mdbook and extensions
         run: ./docs/install.sh
