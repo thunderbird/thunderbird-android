@@ -90,6 +90,7 @@ val preferencesModule = module {
             logger = get(),
             storage = get<Preferences>().storage,
             storageEditor = get<Preferences>().createStorageEditor(),
+            logLevelManager = get(),
         )
     }
     single<DebugLogConfigurator> {
