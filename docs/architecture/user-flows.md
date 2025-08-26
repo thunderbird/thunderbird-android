@@ -1,8 +1,7 @@
 # User Flows
 
-The user flows diagrams below illustrate typical paths users take through the application, helping developers understand how different components interact from a user perspective.
-
-For information about the repository structure and module organization, see the [Project Structure document](project-structure.md).
+The user flows diagrams below illustrate typical paths users take through the application, helping developers
+understand how different components interact from a user perspective.
 
 ## Mail
 
