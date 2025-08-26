@@ -22,6 +22,12 @@ theme = "assets/theme"
 additional-js = ["assets/theme/mermaid.min.js", "assets/theme/mermaid-init.js", "assets/theme/navigation.js", "assets/theme/pagetoc.js"]
 additional-css = ["assets/theme/last-changed.css", "assets/theme/navigation.css", "assets/theme/pagetoc.css"]
 
+[output.linkcheck]
+follow-web-links = false
+traverse-parent-directories = false
+warning-policy = "error"
+exclude = [ 'mozilla\.com', '0000-adr-template\.md' ]
+
 [preprocessor]
 
 [preprocessor.alerts]

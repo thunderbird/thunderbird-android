@@ -31,6 +31,7 @@ if $FORCE_UPDATE; then
     cargo install --force mdbook-alerts
     cargo install --force mdbook-external-links
     cargo install --force mdbook-last-changed
+    cargo install --force mdbook-linkcheck
     cargo install --force mdbook-mermaid
     cargo install --force mdbook-pagetoc
 else
@@ -38,6 +39,7 @@ else
     cargo install mdbook-alerts
     cargo install mdbook-external-links
     cargo install mdbook-last-changed
+    cargo install mdbook-linkcheck
     cargo install mdbook-mermaid
     cargo install mdbook-pagetoc
 fi
