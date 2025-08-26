@@ -10,22 +10,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
 import net.thunderbird.core.preference.update
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
 internal class DefaultDrawerConfigManager(
     private val preferences: Preferences,
     coroutineScope: CoroutineScope,
-    private val displaySettingsPreferenceManager: DisplaySettingsPreferenceManager,
+    private val displayInboxSettingsPreferenceManager: DisplayInboxSettingsPreferenceManager,
 ) : DrawerConfigManager {
     private val showAccountSelector = MutableStateFlow(K9.isShowAccountSelector)
     private val drawerConfig: StateFlow<DrawerConfig> = showAccountSelector
-        .combine(displaySettingsPreferenceManager.getConfigFlow()) { showAccSelector, displaySettings ->
+        .combine(displayInboxSettingsPreferenceManager.getConfigFlow()) { showAccSelector, displayInboxSettings ->
             DrawerConfig(
                 showAccountSelector = showAccSelector,
-                showStarredCount = displaySettings.isShowStarredCount,
-                showUnifiedFolders = displaySettings.isShowUnifiedInbox,
+                showStarredCount = displayInboxSettings.isShowStarredCount,
+                showUnifiedFolders = displayInboxSettings.isShowUnifiedInbox,
             )
         }
         .stateIn(
@@ -39,7 +39,7 @@ internal class DefaultDrawerConfigManager(
         )
 
     override fun save(config: DrawerConfig) {
-        displaySettingsPreferenceManager.update {
+        displayInboxSettingsPreferenceManager.update {
             it.copy(
                 isShowStarredCount = config.showStarredCount,
                 isShowUnifiedInbox = config.showUnifiedFolders,

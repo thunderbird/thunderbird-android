@@ -278,7 +278,11 @@ open class MessageList :
             val messageListFragment = MessageListFragment.newInstance(
                 search!!,
                 false,
-                generalSettingsManager.getConfig().display.isThreadedViewEnabled && !noThreading,
+                generalSettingsManager.getConfig()
+                    .display
+                    .inboxSettings
+                    .isThreadedViewEnabled &&
+                    !noThreading,
             )
             fragmentTransaction.add(R.id.message_list_container, messageListFragment)
             fragmentTransaction.commitNow()
@@ -327,7 +331,7 @@ open class MessageList :
     }
 
     private fun useSplitView(): Boolean {
-        val splitViewMode = generalSettingsManager.getConfig().display.splitViewMode
+        val splitViewMode = generalSettingsManager.getConfig().display.coreSettings.splitViewMode
         val orientation = resources.configuration.orientation
         return splitViewMode === SplitViewMode.ALWAYS ||
             splitViewMode === SplitViewMode.WHEN_IN_LANDSCAPE &&
@@ -381,7 +385,7 @@ open class MessageList :
         val launchData = decodeExtrasToLaunchData(intent)
         // If Unified Inbox was disabled show default account instead
         val search = if (launchData.search.isUnifiedInbox &&
-            !generalSettingsManager.getConfig().display.isShowUnifiedInbox
+            !generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox
         ) {
             createDefaultLocalSearch()
         } else {
@@ -542,7 +546,7 @@ open class MessageList :
         }
 
         // Default action
-        val search = if (generalSettingsManager.getConfig().display.isShowUnifiedInbox) {
+        val search = if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
             createSearchAccount().relatedSearch
         } else {
             createDefaultLocalSearch()
@@ -746,7 +750,7 @@ open class MessageList :
         val messageListFragment = MessageListFragment.newInstance(
             search,
             false,
-            generalSettingsManager.getConfig().display.isThreadedViewEnabled,
+            generalSettingsManager.getConfig().display.inboxSettings.isThreadedViewEnabled,
         )
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment)
 
@@ -782,7 +786,7 @@ open class MessageList :
             collapseSearchView()
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
-                if (generalSettingsManager.getConfig().display.isShowUnifiedInbox) {
+                if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
                     if (search!!.id != SearchAccount.UNIFIED_INBOX) {
                         openUnifiedInbox()
                     } else {
@@ -1482,7 +1486,7 @@ open class MessageList :
                 // Don't select any item in the drawer because the Unified Inbox is displayed,
                 // but not listed in the drawer
                 search.id == SearchAccount.UNIFIED_INBOX &&
-                    !generalSettingsManager.getConfig().display.isShowUnifiedInbox -> drawer.deselect()
+                    !generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox -> drawer.deselect()
 
                 search.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
             }
@@ -1570,6 +1574,7 @@ open class MessageList :
                 if (newTask) addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         }
+
         fun createUnifiedInboxIntent(
             context: Context,
             account: LegacyAccount,

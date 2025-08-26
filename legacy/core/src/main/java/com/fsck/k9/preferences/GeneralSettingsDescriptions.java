@@ -41,26 +41,25 @@ import net.thunderbird.core.preference.BackgroundOps;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.SplitViewMode;
 import net.thunderbird.core.preference.SubTheme;
-import net.thunderbird.core.preference.display.DisplaySettingsKt;
+import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsKt;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
-import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_CHANGE_CONTACT_NAME_COLOR;
-import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_ANIMATION;
-import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES;
-import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_MESSAGE_LIST_STAR;
-import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_STAR_COUNT;
-import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_UNIFIED_INBOX;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG;
 import static net.thunderbird.core.preference.display.DisplaySettingsKt.DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES;
+import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT;
+import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST;
+import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_MESSAGE_LIST_STAR;
+import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_STAR_COUNT;
+import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_SHOW_UNIFIED_INBOX;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_IS_QUIET_TIME_ENABLED;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_END;
 import static net.thunderbird.core.preference.notification.NotificationPreferenceKt.NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_STARTS;
@@ -212,11 +211,11 @@ class GeneralSettingsDescriptions {
         ));
         s.put("theme", Settings.versions(
             new V(1, new LegacyThemeSetting(AppTheme.LIGHT)),
-            new V(58, new ThemeSetting(DisplaySettingsKt.getDISPLAY_SETTINGS_DEFAULT_APP_THEME()))
+            new V(58, new ThemeSetting(DisplayCoreSettingsKt.getDISPLAY_SETTINGS_DEFAULT_APP_THEME()))
         ));
         s.put("messageViewTheme", Settings.versions(
             new V(16, new LegacyThemeSetting(AppTheme.LIGHT)),
-            new V(24, new SubThemeSetting(DisplaySettingsKt.getDISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_THEME()))
+            new V(24, new SubThemeSetting(DisplayCoreSettingsKt.getDISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_THEME()))
         ));
         s.put("useVolumeKeysForNavigation", Settings.versions(
             new V(1, new BooleanSetting(false))
@@ -232,10 +231,10 @@ class GeneralSettingsDescriptions {
             new V(23, new EnumSetting<>(SplitViewMode.class, SplitViewMode.NEVER))
         ));
         s.put("messageComposeTheme", Settings.versions(
-            new V(24, new SubThemeSetting(DisplaySettingsKt.getDISPLAY_SETTINGS_DEFAULT_MESSAGE_COMPOSE_THEME()))
+            new V(24, new SubThemeSetting(DisplayCoreSettingsKt.getDISPLAY_SETTINGS_DEFAULT_MESSAGE_COMPOSE_THEME()))
         ));
         s.put("fixedMessageViewTheme", Settings.versions(
-            new V(24, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME))
+            new V(24, new BooleanSetting(DisplayCoreSettingsKt.DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME))
         ));
         s.put("showContactPicture", Settings.versions(
             new V(25, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE))

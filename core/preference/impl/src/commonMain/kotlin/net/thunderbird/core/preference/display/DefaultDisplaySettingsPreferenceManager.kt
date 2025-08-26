@@ -11,10 +11,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
-import net.thunderbird.core.preference.storage.getEnumOrDefault
-import net.thunderbird.core.preference.storage.putEnum
 
 private const val TAG = "DefaultDisplaySettingsPreferenceManager"
 
@@ -24,6 +23,7 @@ class DefaultDisplaySettingsPreferenceManager(
     private val storageEditor: StorageEditor,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private var scope: CoroutineScope = CoroutineScope(SupervisorJob()),
+    private val coreSettingsPreferenceManager: DisplayCoreSettingsPreferenceManager,
 ) : DisplaySettingsPreferenceManager {
     private val configState: MutableStateFlow<DisplaySettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
@@ -33,31 +33,16 @@ class DefaultDisplaySettingsPreferenceManager(
 
     override fun save(config: DisplaySettings) {
         logger.debug(TAG) { "save() called with: config = $config" }
+        coreSettingsPreferenceManager.save(config.coreSettings)
         writeConfig(config)
         configState.update { config }
     }
 
     private fun loadConfig(): DisplaySettings = DisplaySettings(
-        fixedMessageViewTheme = storage.getBoolean(
-            KEY_FIXED_MESSAGE_VIEW_THEME,
-            DISPLAY_SETTINGS_DEFAULT_FIXED_MESSAGE_VIEW_THEME,
-        ),
-        isShowUnifiedInbox = storage.getBoolean(
-            KEY_SHOW_UNIFIED_INBOX,
-            DISPLAY_SETTINGS_DEFAULT_IS_SHOW_UNIFIED_INBOX,
-        ),
+        coreSettings = coreSettingsPreferenceManager.getConfig(),
         showRecentChanges = storage.getBoolean(
             KEY_SHOW_RECENT_CHANGES,
             DISPLAY_SETTINGS_DEFAULT_SHOW_RECENT_CHANGES,
-        ),
-        appTheme = storage.getEnumOrDefault(KEY_THEME, DISPLAY_SETTINGS_DEFAULT_APP_THEME),
-        messageViewTheme = storage.getEnumOrDefault(
-            KEY_MESSAGE_VIEW_THEME,
-            DISPLAY_SETTINGS_DEFAULT_MESSAGE_VIEW_THEME,
-        ),
-        messageComposeTheme = storage.getEnumOrDefault(
-            KEY_MESSAGE_COMPOSE_THEME,
-            DISPLAY_SETTINGS_DEFAULT_MESSAGE_COMPOSE_THEME,
         ),
         shouldShowSetupArchiveFolderDialog = storage.getBoolean(
             KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
@@ -75,14 +60,6 @@ class DefaultDisplaySettingsPreferenceManager(
             KEY_USE_BACKGROUND_AS_UNREAD_INDICATOR,
             DISPLAY_SETTINGS_DEFAULT_IS_USE_BACKGROUND_AS_INDICATOR,
         ),
-        isShowComposeButtonOnMessageList = storage.getBoolean(
-            KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST,
-            DISPLAY_SETTINGS_DEFAULT_IS_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST,
-        ),
-        isThreadedViewEnabled = storage.getBoolean(
-            KEY_THREAD_VIEW_ENABLED,
-            DISPLAY_SETTINGS_DEFAULT_IS_THREAD_VIEW_ENABLED,
-        ),
         isUseMessageViewFixedWidthFont = storage.getBoolean(
             KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT,
             DISPLAY_SETTINGS_DEFAULT_IS_USE_MESSAGE_VIEW_FIXED_WIDTH_FONT,
@@ -90,14 +67,6 @@ class DefaultDisplaySettingsPreferenceManager(
         isAutoFitWidth = storage.getBoolean(
             KEY_AUTO_FIT_WIDTH,
             DISPLAY_SETTINGS_DEFAULT_IS_AUTO_FIT_WIDTH,
-        ),
-        isShowStarredCount = storage.getBoolean(
-            KEY_SHOW_STAR_COUNT,
-            DISPLAY_SETTINGS_DEFAULT_IS_SHOW_STAR_COUNT,
-        ),
-        isShowMessageListStars = storage.getBoolean(
-            KEY_SHOW_MESSAGE_LIST_STARS,
-            DISPLAY_SETTINGS_DEFAULT_IS_SHOW_MESSAGE_LIST_STAR,
         ),
         isShowAnimations = storage.getBoolean(
             KEY_ANIMATION,
@@ -107,10 +76,6 @@ class DefaultDisplaySettingsPreferenceManager(
             KEY_SHOW_CORRESPONDENT_NAMES,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CORRESPONDENT_NAMES,
         ),
-        isMessageListSenderAboveSubject = storage.getBoolean(
-            KEY_MESSAGE_LIST_SENDER_ABOVE_SUBJECT,
-            DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT,
-        ),
         isShowContactName = storage.getBoolean(
             KEY_SHOW_CONTACT_NAME,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_NAME,
@@ -119,31 +84,12 @@ class DefaultDisplaySettingsPreferenceManager(
             KEY_SHOW_CONTACT_PICTURE,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE,
         ),
-        appLanguage = storage.getStringOrDefault(
-            KEY_APP_LANGUAGE,
-            DISPLAY_SETTINGS_DEFAULT_APP_LANGUAGE,
-        ),
-        splitViewMode = storage.getEnumOrDefault(
-            KEY_SPLIT_VIEW_MODE,
-            DISPLAY_SETTINGS_DEFAULT_SPLIT_VIEW_MODE,
-        ),
     )
 
     private fun writeConfig(config: DisplaySettings) {
         logger.debug(TAG) { "writeConfig() called with: config = $config" }
         scope.launch(ioDispatcher) {
             mutex.withLock {
-                storageEditor.putEnum(KEY_THEME, config.appTheme)
-                storageEditor.putEnum(KEY_MESSAGE_VIEW_THEME, config.messageViewTheme)
-                storageEditor.putEnum(
-                    KEY_MESSAGE_COMPOSE_THEME,
-                    config.messageComposeTheme,
-                )
-                storageEditor.putBoolean(
-                    KEY_FIXED_MESSAGE_VIEW_THEME,
-                    config.fixedMessageViewTheme,
-                )
-                storageEditor.putBoolean(KEY_SHOW_UNIFIED_INBOX, config.isShowUnifiedInbox)
                 storageEditor.putBoolean(
                     KEY_CHANGE_REGISTERED_NAME_COLOR,
                     config.isChangeContactNameColor,
@@ -156,19 +102,10 @@ class DefaultDisplaySettingsPreferenceManager(
                     KEY_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG,
                     config.shouldShowSetupArchiveFolderDialog,
                 )
-                storageEditor.putBoolean(KEY_SHOW_STAR_COUNT, config.isShowStarredCount)
                 storageEditor.putBoolean(KEY_SHOW_CONTACT_NAME, config.isShowContactName)
-                storageEditor.putBoolean(
-                    KEY_MESSAGE_LIST_SENDER_ABOVE_SUBJECT,
-                    config.isMessageListSenderAboveSubject,
-                )
                 storageEditor.putBoolean(
                     KEY_SHOW_CORRESPONDENT_NAMES,
                     config.isShowCorrespondentNames,
-                )
-                storageEditor.putBoolean(
-                    KEY_SHOW_MESSAGE_LIST_STARS,
-                    config.isShowMessageListStars,
                 )
                 storageEditor.putBoolean(KEY_SHOW_RECENT_CHANGES, config.showRecentChanges)
                 storageEditor.putBoolean(KEY_ANIMATION, config.isShowAnimations)
@@ -181,20 +118,10 @@ class DefaultDisplaySettingsPreferenceManager(
                     config.isUseBackgroundAsUnreadIndicator,
                 )
                 storageEditor.putBoolean(
-                    KEY_SHOW_COMPOSE_BUTTON_ON_MESSAGE_LIST,
-                    config.isShowComposeButtonOnMessageList,
-                )
-                storageEditor.putBoolean(
-                    KEY_THREAD_VIEW_ENABLED,
-                    config.isThreadedViewEnabled,
-                )
-                storageEditor.putBoolean(
                     KEY_MESSAGE_VIEW_FIXED_WIDTH_FONT,
                     config.isUseMessageViewFixedWidthFont,
                 )
                 storageEditor.putBoolean(KEY_AUTO_FIT_WIDTH, config.isAutoFitWidth)
-                storageEditor.putString(KEY_APP_LANGUAGE, config.appLanguage)
-                storageEditor.putEnum(KEY_SPLIT_VIEW_MODE, config.splitViewMode)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
