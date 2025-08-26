@@ -1,6 +1,7 @@
 package net.thunderbird.core.logging.composite
 
 import net.thunderbird.core.logging.LogLevel
+import net.thunderbird.core.logging.LogLevelProvider
 import net.thunderbird.core.logging.LogSink
 
 /**
@@ -22,15 +23,15 @@ interface CompositeLogSink : LogSink {
 /**
  * Creates a [CompositeLogSink] with the specified log level and manager.
  *
- * @param level The minimum [LogLevel] for messages to be logged.
+ * @param logLevelProvider The minimum [LogLevel] for messages to be logged.
  * @param manager The [CompositeLogSinkManager] that manages the collection of sinks.
  * @param sinks A list of [LogSink] instances to be managed by this composite sink.
  * @return A new instance of [CompositeLogSink].
  */
 fun CompositeLogSink(
-    level: LogLevel,
+    logLevelProvider: LogLevelProvider,
     manager: CompositeLogSinkManager = DefaultLogSinkManager(),
     sinks: List<LogSink> = emptyList(),
 ): CompositeLogSink {
-    return DefaultCompositeLogSink(level, manager, sinks)
+    return DefaultCompositeLogSink(logLevelProvider, manager, sinks)
 }
