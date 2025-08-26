@@ -6,6 +6,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
 ---
 
 - [Contributing](CONTRIBUTING.md)
+  - [Code Quality Guide](contributing/code-quality-guide.md)
   - [Git Commit Guide](contributing/git-commit-guide.md)
   - [Testing Guide](contributing/testing-guide.md)
   - [Java to Kotlin Conversion Guide](contributing/java-to-kotlin-conversion-guide.md)
