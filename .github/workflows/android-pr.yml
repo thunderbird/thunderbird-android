@@ -1,0 +1,123 @@
+name: Pull request checks
+on:
+  pull_request:
+    paths-ignore:
+      - '.idea/**'
+      - '.gitattributes'
+      - '.github/**.json'
+      - '.gitignore'
+      - '.gitmodules'
+      - '**.md'
+      - 'LICENSE'
+      - 'NOTICE'
+
+permissions:
+  contents: read
+
+jobs:
+  build-k9:
+    name: Build K9 application
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Build K9 application
+        run: ./gradlew :app-k9mail:assemble
+
+  build-thunderbird:
+    name: Build Thunderbird application
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Build Thunderbird application
+        run: ./gradlew :app-thunderbird:assemble
+
+  lint:
+    name: Quality - Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Running Android lint
+        run: ./gradlew lint
+
+  spotless:
+    name: Quality - Spotless
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Running spotless check
+        run: ./gradlew spotlessCheck
+
+  detekt:
+    name: Quality - Detekt
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Running Detekt
+        run: ./gradlew detekt
+
+      - name: Running Detekt including KMP
+        # As we were not verifying detekt in KMP sources before,
+        # this step is likely to fail.
+        continue-on-error: true
+        run: |
+          ./gradlew detektMetadataCommonMain
+          ./gradlew detektMetadataMain
+          ./gradlew detektMetadataCommonJvmMain
+
+  unit-test:
+    name: Quality - Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Running unit tests
+        run: ./gradlew test --parallel
+
+  dependency-guard:
+    name: Quality - Dependency Guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Running Dependency Guard
+        run: ./gradlew dependencyGuard
