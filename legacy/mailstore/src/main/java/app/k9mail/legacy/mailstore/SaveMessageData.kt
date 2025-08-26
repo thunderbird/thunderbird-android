@@ -14,4 +14,5 @@ data class SaveMessageData(
     val previewResult: PreviewResult,
     val textForSearchIndex: String? = null,
     val encryptionType: String?,
+    val size: Long? = null,
 )

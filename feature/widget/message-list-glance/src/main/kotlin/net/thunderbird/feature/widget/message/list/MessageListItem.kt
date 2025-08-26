@@ -19,4 +19,5 @@ internal data class MessageListItem(
     val sortInternalDate: Long,
     val sortIsStarred: Boolean,
     val sortDatabaseId: Long,
+    val sortSize: Long,
 )

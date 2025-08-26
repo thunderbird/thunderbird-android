@@ -593,6 +593,8 @@
     <string name="sort_unread_last">Read messages first</string>
     <string name="sort_attach_first">Messages with attachments first</string>
     <string name="sort_unattached_first">Messages without attachments first</string>
+    <string name="sort_largest_first">Largest messages first</string>
+    <string name="sort_smallest_first">Smallest messages first</string>
 
     <string name="sort_by">Sort by…</string>
     <string name="sort_by_date">Date</string>
@@ -602,6 +604,7 @@
     <string name="sort_by_flag">Star</string>
     <string name="sort_by_unread">Read/unread</string>
     <string name="sort_by_attach">Attachments</string>
+    <string name="sort_by_size">Size</string>
 
     <string name="account_delete_dlg_title">Remove Account</string>
 
@@ -828,6 +831,9 @@
 
     <string name="global_settings_show_contact_picture_label">Show contact pictures</string>
     <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>
+
+    <string name="global_settings_show_message_size_label">Show message sizes</string>
+    <string name="global_settings_show_message_size_summary">Show message sizes in the message list</string>
 
     <string name="mark_all_as_read">Mark all as read</string>
 

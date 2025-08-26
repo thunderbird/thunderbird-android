@@ -411,6 +411,7 @@ internal class SaveMessageOperations(
             put("message_id", message.messageId)
             put("mime_type", message.mimeType)
             put("encryption_type", messageData.encryptionType)
+            put("size", messageData.size)
 
             val previewResult = messageData.previewResult
             put("preview_type", previewResult.previewType.toDatabaseValue())

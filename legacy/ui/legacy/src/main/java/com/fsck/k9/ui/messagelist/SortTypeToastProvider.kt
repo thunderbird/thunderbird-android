@@ -7,6 +7,7 @@ import net.thunderbird.core.android.account.SortType.SORT_ATTACHMENT
 import net.thunderbird.core.android.account.SortType.SORT_DATE
 import net.thunderbird.core.android.account.SortType.SORT_FLAGGED
 import net.thunderbird.core.android.account.SortType.SORT_SENDER
+import net.thunderbird.core.android.account.SortType.SORT_SIZE
 import net.thunderbird.core.android.account.SortType.SORT_SUBJECT
 import net.thunderbird.core.android.account.SortType.SORT_UNREAD
 
@@ -21,6 +22,7 @@ class SortTypeToastProvider {
                 SORT_UNREAD -> R.string.sort_unread_first
                 SORT_FLAGGED -> R.string.sort_flagged_first
                 SORT_ATTACHMENT -> R.string.sort_attach_first
+                SORT_SIZE -> R.string.sort_smallest_first
             }
         } else {
             when (sortType) {
@@ -31,6 +33,7 @@ class SortTypeToastProvider {
                 SORT_UNREAD -> R.string.sort_unread_last
                 SORT_FLAGGED -> R.string.sort_flagged_last
                 SORT_ATTACHMENT -> R.string.sort_unattached_first
+                SORT_SIZE -> R.string.sort_largest_first
             }
         }
     }

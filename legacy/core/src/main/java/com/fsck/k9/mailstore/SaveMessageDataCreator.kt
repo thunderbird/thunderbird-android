@@ -36,6 +36,7 @@ class SaveMessageDataCreator(
                 previewResult = encryptionResult.previewResult,
                 textForSearchIndex = encryptionResult.textForSearchIndex,
                 encryptionType = encryptionResult.encryptionType,
+                size = message.size,
             )
         } else {
             SaveMessageData(
@@ -48,6 +49,7 @@ class SaveMessageDataCreator(
                 previewResult = messagePreviewCreator.createPreview(message),
                 textForSearchIndex = messageFulltextCreator.createFulltext(message),
                 encryptionType = null,
+                size = message.size,
             )
         }
     }

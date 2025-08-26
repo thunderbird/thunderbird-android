@@ -38,6 +38,7 @@ private fun generateMessageListItems(): ImmutableList<MessageListItem> {
             preview = "Preview 1",
             color = Color.BLUE,
             isRead = false,
+            size = 1L,
         ),
         generateMessageListItem(
             displayName = "Bob",
@@ -46,6 +47,7 @@ private fun generateMessageListItems(): ImmutableList<MessageListItem> {
             preview = "Preview 2",
             color = Color.RED,
             isRead = true,
+            size = 2L * 1024L,
         ),
         generateMessageListItem(
             displayName = "Charlie",
@@ -54,6 +56,7 @@ private fun generateMessageListItems(): ImmutableList<MessageListItem> {
             preview = "Preview 3",
             color = Color.RED,
             isRead = false,
+            size = 3L * 1024L * 1024L,
         ),
     )
 }
@@ -65,6 +68,7 @@ private fun generateMessageListItem(
     preview: String,
     color: Int,
     isRead: Boolean,
+    size: Long,
 ): MessageListItem {
     return MessageListItem(
         displayName = displayName,
@@ -82,5 +86,6 @@ private fun generateMessageListItem(
         sortInternalDate = 0,
         sortIsStarred = false,
         sortDatabaseId = 0,
+        sortSize = size,
     )
 }

@@ -8,4 +8,5 @@ enum class SortType(val isDefaultAscending: Boolean) {
     SORT_UNREAD(true),
     SORT_FLAGGED(true),
     SORT_ATTACHMENT(true),
+    SORT_SIZE(false),
 }

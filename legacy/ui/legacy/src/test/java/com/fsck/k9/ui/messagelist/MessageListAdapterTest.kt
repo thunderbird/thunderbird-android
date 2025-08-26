@@ -13,6 +13,7 @@ import androidx.core.view.isVisible
 import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isNotEqualTo
 import assertk.assertions.isNull
 import assertk.assertions.support.expected
 import com.fsck.k9.FontSizes
@@ -377,6 +378,56 @@ class MessageListAdapterTest : RobolectricTest() {
         assertThat(view.secondLineView.textSize).isEqualTo(22f)
     }
 
+    @Test
+    fun withShowMessageSize_shouldShowSizeView() {
+        val adapter = createAdapter(showMessageSize = true)
+
+        val view = adapter.createAndBindView()
+
+        assertThat(view.sizeView).isVisible()
+    }
+
+    @Test
+    fun withoutShowMessageSize_shouldHideSizeView() {
+        val adapter = createAdapter(showMessageSize = false)
+
+        val view = adapter.createAndBindView()
+
+        assertThat(view.sizeView).isGone()
+    }
+
+    @Test
+    fun messageSize_withZeroBytes_shouldHideSize() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 0L)
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView).isGone()
+    }
+
+    @Test
+    fun messageSize_withNegativeBytes_shouldHideSize() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = -100L)
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView).isGone()
+    }
+
+    @Test
+    fun messageSize_withValidSize_shouldShowFormattedSize() {
+        val adapter = createAdapter(showMessageSize = true)
+        val messageListItem = createMessageListItem(size = 1500L)
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertThat(view.sizeView).isVisible()
+        // Just verify it shows some formatted text - exact format is tested in SizeFormatterTest
+        assertThat(view.sizeView.textString).isNotEqualTo("")
+    }
+
     fun createFontSizes(
         subject: Int = FONT_DEFAULT,
         sender: Int = FONT_DEFAULT,
@@ -397,6 +448,7 @@ class MessageListAdapterTest : RobolectricTest() {
         stars: Boolean = true,
         senderAboveSubject: Boolean = false,
         showContactPicture: Boolean = true,
+        showMessageSize: Boolean = true,
         showingThreadedList: Boolean = true,
         backGroundAsReadIndicator: Boolean = false,
         showAccountChip: Boolean = false,
@@ -408,6 +460,7 @@ class MessageListAdapterTest : RobolectricTest() {
             stars,
             senderAboveSubject,
             showContactPicture,
+            showMessageSize,
             showingThreadedList,
             backGroundAsReadIndicator,
             showAccountChip,
@@ -448,6 +501,7 @@ class MessageListAdapterTest : RobolectricTest() {
         messageUid: String = "irrelevant",
         databaseId: Long = 0L,
         threadRoot: Long = 0L,
+        size: Long = 1024L,
     ): MessageListItem {
         return MessageListItem(
             account,
@@ -469,6 +523,7 @@ class MessageListAdapterTest : RobolectricTest() {
             messageUid,
             databaseId,
             threadRoot,
+            size,
         )
     }
 
@@ -489,6 +544,7 @@ class MessageListAdapterTest : RobolectricTest() {
     val View.secondLineView: MaterialTextView get() = findViewById(R.id.preview)
     val View.attachmentCountView: View get() = findViewById(R.id.attachment)
     val View.dateView: MaterialTextView get() = findViewById(R.id.date)
+    val View.sizeView: MaterialTextView get() = findViewById(R.id.size)
 
     private fun Assert<View>.isVisible() = given { actual ->
         if (!actual.isVisible) {
