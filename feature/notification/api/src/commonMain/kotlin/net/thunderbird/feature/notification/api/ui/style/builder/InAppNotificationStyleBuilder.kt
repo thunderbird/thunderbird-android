@@ -1,13 +1,12 @@
 package net.thunderbird.feature.notification.api.ui.style.builder
 
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.BannerGlobalNotification
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.BannerInlineNotification
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.DialogNotification
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.SnackbarNotification
 import net.thunderbird.feature.notification.api.ui.style.NotificationStyleMarker
+import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
 
 /**
  * Builder for creating [InAppNotificationStyle] instances.
@@ -89,7 +88,7 @@ class InAppNotificationStyleBuilder internal constructor() {
      * [BannerGlobalNotification] for that context)
      */
     @NotificationStyleMarker
-    fun snackbar(duration: Duration = 10.seconds) {
+    fun snackbar(duration: SnackbarDuration = SnackbarDuration.Short) {
         checkSingleStyleEntry<SnackbarNotification>()
         styles += SnackbarNotification(duration)
     }

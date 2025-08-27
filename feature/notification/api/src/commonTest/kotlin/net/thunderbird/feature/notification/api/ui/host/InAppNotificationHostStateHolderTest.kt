@@ -17,8 +17,6 @@ import assertk.assertions.isTrue
 import assertk.assertions.prop
 import kotlin.test.Test
 import kotlin.test.assertFails
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.seconds
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.feature.notification.api.NotificationSeverity
@@ -29,6 +27,7 @@ import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisua
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual.Companion.MAX_TITLE_LENGTH
 import net.thunderbird.feature.notification.api.ui.host.visual.InAppNotificationHostState
 import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
+import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
@@ -582,7 +581,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedContentText = "expected text"
             val expectedAction = createFakeNotificationAction()
             val expectedSeverity = NotificationSeverity.Warning
-            val expectedDuration = 1.hours
+            val expectedDuration = SnackbarDuration.Long
             val notification = FakeInAppOnlyNotification(
                 contentText = expectedContentText,
                 inAppNotificationStyles = inAppNotificationStyles { snackbar(expectedDuration) },
@@ -619,7 +618,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedContentText = "expected text"
             val expectedAction = createFakeNotificationAction()
             val expectedSeverity = NotificationSeverity.Warning
-            val expectedDuration = 1.hours
+            val expectedDuration = SnackbarDuration.Long
             val notification = FakeInAppOnlyNotification(
                 contentText = expectedContentText,
                 inAppNotificationStyles = inAppNotificationStyles { snackbar(expectedDuration) },
@@ -874,7 +873,7 @@ class InAppNotificationHostStateHolderTest {
     fun `dismiss should remove snackbar notification given a SnackbarVisual`() = runTest {
         // Arrange
         val notification = FakeInAppOnlyNotification(
-            inAppNotificationStyles = inAppNotificationStyles { snackbar(10.seconds) },
+            inAppNotificationStyles = inAppNotificationStyles { snackbar(SnackbarDuration.Short) },
             actions = setOf(createFakeNotificationAction()),
         )
         val visual = requireNotNull(SnackbarVisual.from(notification))
