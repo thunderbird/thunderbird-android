@@ -106,7 +106,6 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nová zpráva</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nové zprávy</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
     </plurals>
@@ -646,7 +645,6 @@
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">Stahování %1$d z %2$d výsledku</item>
         <item quantity="few">Stahování %1$d ze %2$d výsledků</item>
-        <item quantity="other">Stahování %1$d z %2$d výsledků</item>
         <item quantity="many">Stahování %1$d z %2$d výsledků</item>
         <item quantity="other">Stahování %1$d z %2$d výsledků</item>
     </plurals>
