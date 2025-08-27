@@ -20,6 +20,8 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
  * Contains the default values used by [BannerInlineNotificationCard] and [BannerGlobalNotificationCard] types
  */
 object BannerNotificationCardDefaults {
+    const val TEST_TAG_BANNER_INLINE_CARD_ACTION_ROW = "banner_inline_card_action_row"
+
     /** The default shape of the [BannerGlobalNotificationCard] */
     val bannerGlobalShape: Shape = RectangleShape
 
