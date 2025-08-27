@@ -907,4 +907,5 @@
     <string name="swipe_action_archive_folder_not_set">Configurer le dossier d’archivage</string>
     <string name="swipe_action_change_swipe_gestures">Changer\nles gestes de balayage</string>
     <string name="archiving_not_available_for_this_account">L’archivage n’est pas proposé pour ce compte.</string>
+    <string name="debug_open_secret_debug_screen">Ouvrir l’écran de débogage de Secret</string>
 </resources>

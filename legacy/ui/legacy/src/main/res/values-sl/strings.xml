@@ -909,4 +909,14 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
     <string name="dialog_confirm_empty_spam_title">Potrdite izpraznitev neželene pošte</string>
     <string name="dialog_confirm_empty_spam_message">Ali želite izprazniti mapo z neželeno pošto?</string>
     <string name="empty_spam_action">Izprazni neželeno pošto</string>
+    <string name="camera_permission_denied">Dovoljenje za fotoaparat je bilo zavrnjeno. Fotografije ni mogoče posneti.</string>
+    <string name="debug_enable_sync_debug_logging_title">Omogoči beleženje razhroščevanja usklajevanja</string>
+    <string name="debug_enable_sync_debug_logging_summary">Beleži diagnostične podatke usklajevanja 24 ur</string>
+    <string name="debug_sync_export_logs_title">Izvozi dnevnike usklajevanja</string>
+    <string name="debug_open_secret_debug_screen">Odpri skriti zaslon za razhroščevanje</string>
+    <string name="archiving_not_available_for_this_account">Za ta račun arhiviranje ni na voljo.</string>
+    <string name="open_camera">Odpri fotoaparat</string>
+    <string name="attach_file">Priloži datoteko</string>
+    <string name="swipe_action_archive_folder_not_set">Nastavi mapo za arhiviranje</string>
+    <string name="swipe_action_change_swipe_gestures">Spremeni\ndejanja potega</string>
 </resources>

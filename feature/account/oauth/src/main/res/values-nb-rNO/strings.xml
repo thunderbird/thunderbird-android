@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Logger inn med OAuth</string>
     <string name="account_oauth_sign_in_description">Du vil bli sendt til din e-posttilbyder for innlogging. Du må innvilge programmet tilgang til e-postkontoen din.</string>
     <string name="account_oauth_sign_in_button">Logg inn</string>
+    <string name="account_oauth_google_sign_in_support_text">Hvis du opplever problemer når du logger inn med Google, oppsøk vår {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">hjelpeartikkel</string>
 </resources>

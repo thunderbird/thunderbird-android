@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Already using Thunderbird on desktop?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Easily import your account settings by scanning a QR code.</string>
 </resources>

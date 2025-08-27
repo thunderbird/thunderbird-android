@@ -8,7 +8,7 @@
     <string name="account_setup_options_email_display_count_label">Anzahl der anzuzeigenden Nachrichten</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Manuell konfigurieren</string>
     <string name="account_setup_options_email_signature_error_blank">Name der E-Mail-Signatur darf nicht leer sein.</string>
-    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Es ist erforderlich, um die Konfiguration zu bestätigen.</string>
+    <string name="account_setup_auto_discovery_result_approval_error_approval_required">Es ist erforderlich, die Konfiguration zu bestätigen.</string>
     <string name="account_setup_auto_discovery_connection_security_start_tls">StartTLS</string>
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Wir haben die Konfiguration für deinen E-Mail-Server über eine Verbindung erhalten, die nicht so sicher ist, wie es wünschenswert wäre. Das bedeutet, dass eine geringe Möglichkeit besteht, dass jemand sie verändert haben könnte. Könntest du bitte die bereitgestellte Konfiguration noch einmal überprüfen, um sicherzustellen, dass sie so ist, wie sie sein sollte\?</string>
     <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Konfiguration bearbeiten</string>

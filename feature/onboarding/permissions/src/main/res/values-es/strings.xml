@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">Permitir el acceso para poder ofrecer sugerencias de los contactos y mostrar los nombres y las fotos de los mismos.</string>
+    <string name="onboarding_permissions_contacts_description">Concede el permiso para poder buscar destinatarios entre los contactos y que aparezcan sus nombres y fotos de perfil.</string>
     <string name="onboarding_permissions_notifications_description">Activa las notificaciones para no perderte ningún correo electrónico.</string>
     <string name="onboarding_permissions_notifications_title">Notificaciones</string>
     <string name="onboarding_permissions_screen_title">Mejorar la experiencia</string>

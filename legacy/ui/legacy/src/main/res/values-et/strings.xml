@@ -907,4 +907,5 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="swipe_action_archive_folder_not_set">Määra arhiivikaust</string>
     <string name="swipe_action_change_swipe_gestures">Muuda \nViiped</string>
     <string name="archiving_not_available_for_this_account">Selle kasutajakonto jaoks pole arhiveerimine saadaval.</string>
+    <string name="debug_open_secret_debug_screen">Ava salajane veaotsingu vaade</string>
 </resources>

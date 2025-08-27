@@ -3,7 +3,7 @@ Thunderbird er ein kraftfull, personvernfokusert e-postapp. Uanstrengt handering
 <b>Kva du kan gjere</b>
 <ul>
   <li>Dropp fleire appar og webmail. Bruk ein app, med ein valfri samla innboks, for å få deg gjennom dagen.</li>
-  <li>Nyt ein personversvennleg e-postklient som aldri samlar eller sel dine personlege data. Me koplar deg direkte til din e-posttenar. Det er det!</li>
+  <li>Nyt ein personvernsvennleg e-postklient som aldri samlar eller sel dine personlege data. Me koplar deg direkte til din e-posttenar. Det er det!</li>
   <li>Ta ditt personvern til neste nivå med å bruke OpenPGP e-postkryptering (PGP/MIME) med “OpenKeychain”-appen, for å kryptere og dekryptere meldingane dine.</li>
   <li>Vel å synkronisere dine e-postar umiddelbart, med faste intervall, eller etter førespurnad. Korleis du vil sjekke e-posten din er opp til deg!</li>
   <li>Finn dine viktige meldingar med å bruke både lokalt og tenar-side søk.</li>

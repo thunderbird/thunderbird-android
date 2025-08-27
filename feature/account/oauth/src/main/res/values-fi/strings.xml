@@ -9,4 +9,6 @@
     <string name="account_oauth_loading_message">Kirjaudu OAuthilla</string>
     <string name="account_oauth_sign_in_description">Ohjaamme sinut sähköpostin palveluntarjoajasi puoleen kirjautumista varten. Valtuuta sovelluksen pääsy sähköpostitilillesi.</string>
     <string name="account_oauth_sign_in_button">Kirjaudu sisään</string>
+    <string name="account_oauth_google_sign_in_support_text">Jos sinulla on ongelmia Google-tilillä sisäänkirjautumisessa, tutustu {placeHolder}:imme.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">tukiartikkeli</string>
 </resources>

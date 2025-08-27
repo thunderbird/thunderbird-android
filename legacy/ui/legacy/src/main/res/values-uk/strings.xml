@@ -918,4 +918,5 @@
     <string name="archiving_not_available_for_this_account">Архівування недоступне для цього облікового запису.</string>
     <string name="swipe_action_archive_folder_not_set">Налаштувати папку архіву</string>
     <string name="swipe_action_change_swipe_gestures">Зміна \nжестів проведення пальцем</string>
+    <string name="debug_open_secret_debug_screen">Відкрити екран налагодження таємниці</string>
 </resources>

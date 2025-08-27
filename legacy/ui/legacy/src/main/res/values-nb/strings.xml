@@ -13,7 +13,7 @@
     <string name="about_libraries">Bibliotek</string>
     <string name="license">Lisens</string>
     <string name="changelog_title">Endringslogg</string>
-    <string name="changelog_recent_changes_title">Hva er nytt?</string>
+    <string name="changelog_recent_changes_title">Hva er nytt</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
@@ -136,7 +136,7 @@
     <string name="message_compose_quote_header_cc">Kopi:</string>
     <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> skrev:</string>
     <string name="message_compose_reply_header_fmt_with_date">Den <xliff:g id="sent_date">%1$s</xliff:g>, skrev <xliff:g id="sender">%2$s</xliff:g>:</string>
-    <string name="message_compose_error_no_recipients">Du må legge til minst én mottaker</string>
+    <string name="message_compose_error_no_recipients">Du må legge til minst én mottaker.</string>
     <string name="compose_error_incomplete_recipient">Mottakerfelt inneholder mangelfull inndata!</string>
     <string name="error_contact_address_not_found">Ingen e-postadresse ble funnet for denne kontakten.</string>
     <string name="message_compose_attachments_skipped_toast">Noen vedlegg kunne ikke videresendes fordi de ikke har blitt lastet ned.</string>
@@ -148,7 +148,7 @@
     <string name="message_to_label">Til:</string>
     <string name="message_view_cc_label">Kopi:</string>
     <string name="message_view_bcc_label">Blindkopi:</string>
-    <string name="message_view_status_attachment_not_saved">Klarte ikke lagre vedlegg</string>
+    <string name="message_view_status_attachment_not_saved">Klarte ikke lagre vedlegg.</string>
     <!--Used to display the recipient list in the message view screen.-->
     <!--Displayed in the message view screen in front of the number of additional recipients (the ones that are not displayed).-->
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
@@ -171,7 +171,7 @@
     <string name="global_settings_registered_name_color_label">Fargelegg kontakter</string>
     <string name="global_settings_registered_name_color_changed">Fargelegg navn i kontaktlisten</string>
     <string name="global_settings_messageview_fixedwidth_label">Fastbreddeskrifter</string>
-    <string name="global_settings_messageview_fixedwidth_summary">Bruk fastbreddeskrift ved visning av meldinger i ren tekst.</string>
+    <string name="global_settings_messageview_fixedwidth_summary">Bruk fastbreddeskrift ved visning av meldinger i ren tekst</string>
     <string name="global_settings_messageview_autofit_width_label">Autojuster meldinger</string>
     <string name="global_settings_messageview_autofit_width_summary">Tilpass meldinger til skjermstørrelse</string>
     <string name="global_settings_confirm_actions_title">Bekreft handlinger</string>
@@ -201,7 +201,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">Forvalg</string>
     <string name="global_settings_privacy_hide_useragent">Skjul e-postklient</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Fjern K-9 -brukeragent fra meldingshoder</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Fjern brukeragent fra meldingshoder</string>
     <string name="global_settings_privacy_hide_timezone">Skjul tidssone</string>
     <string name="global_settings_privacy_hide_timezone_detail">Bruk UTC istedenfor lokal tidssone i meldings- og svar-hoder</string>
     <string name="global_settings_notification_quick_delete_title">Vis «Slett»-knappen</string>
@@ -372,7 +372,7 @@
     <string name="account_settings_composition_label">Komposisjonsstandard</string>
     <string name="account_settings_composition_summary">Angi forvalgt Avsender, Blindkopi og signatur</string>
     <string name="account_settings_identities_label">Behandle identiteter</string>
-    <string name="account_settings_identities_summary">Sett opp alternative «Fra»-adresser og signaturer.</string>
+    <string name="account_settings_identities_summary">Sett opp alternative «Fra»-adresser og signaturer</string>
     <string name="manage_identities_title">Behandle identiteter</string>
     <string name="manage_identities_context_menu_title">Behandle identitet</string>
     <string name="edit_identity_title">Rediger identitet</string>
@@ -445,7 +445,7 @@
     <string name="settings_language_label">Språk</string>
     <string name="preference_search_no_results">Ingen innstillinger funnet</string>
     <string name="settings_message_theme_selection_label">Fast meldingsdrakt</string>
-    <string name="settings_message_theme_selection_summary_off">Velg meldingsvisningstema for visning av meldinger.</string>
+    <string name="settings_message_theme_selection_summary_off">Velg meldingsvisningstema for visning av meldinger</string>
     <string name="settings_message_theme_selection_summary_on">Bruk fast meldingsvisningsdrakt</string>
     <string name="setting_language_system">Systemforvalg</string>
     <string name="background_ops_label">Bakgrunnssynkronisering</string>
@@ -874,7 +874,7 @@
     <string name="general_settings_post_mark_as_unread_action_title">Etter markering av melding som ulest</string>
     <string name="push_notification_state_alarm_permission_missing">Mangler tillatelse til å planlegge alarmer</string>
     <string name="push_notification_grant_alarm_permission">Trykk for å gi tillatelse.</string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobil Teamet</string>
+    <string name="about_app_authors_thunderbird">Thunderbird Mobile-teamet</string>
     <string name="volume_navigation_summary">Naviger gjennom meldinger ved å bruke volumknappene i meldingsvisning</string>
     <string name="settings_ui_telemetry_description">Deler data om ytelse, bruk, maskinvare og tilpasninger om denne appen med Mozilla for å hjelpe oss å gjøre Thunderbird bedre</string>
     <string name="save_attachment_action">Lagre vedlegg</string>
@@ -892,4 +892,17 @@
     <string name="settings_ui_telemetry_title">Bruksdata og tekniske data</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
     <string name="expand_content_description">Utvid</string>
+    <string name="open_camera">Åpne kamera</string>
+    <string name="attach_file">Legg til fil</string>
+    <string name="camera_permission_denied">Fikk ikke tilgang til kamera! Kan ikke ta bilde</string>
+    <string name="account_delete_dlg_instructions_fmt">Kontoen «<xliff:g id="account">%1$s</xliff:g>» vil bli fjernet fra <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="debug_enable_sync_debug_logging_title">Skru på feilsøkningslogging for synkronisering</string>
+    <string name="debug_enable_sync_debug_logging_summary">Logg diagnostisk informasjon om synkronisering i 24 timer</string>
+    <string name="debug_sync_export_logs_title">Eksporter synkroningersingslogger</string>
+    <string name="debug_open_secret_debug_screen">Åpne hemmelig feilsøkningsmeny</string>
+    <string name="folder_settings_push_label">Skru på dytting</string>
+    <string name="push_info_notification_explanation_text">Ved bruk av dytting vil <xliff:g id="app_name">%1$s</xliff:g> opprettholde en tilkobling til e-posttjeneren. Android krever visning av pågående merknad når programmet er aktivt i bakgrunnen. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="swipe_action_archive_folder_not_set">Sett opp arkivmappe</string>
+    <string name="swipe_action_change_swipe_gestures">Endre \nsveipehandlinger</string>
+    <string name="archiving_not_available_for_this_account">Arkivering er ikke tilgjengelig for denne kontoen.</string>
 </resources>

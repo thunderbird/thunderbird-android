@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="designsystem_atom_password_textfield_hide_password">Скрий паролата</string>
+    <string name="designsystem_atom_password_textfield_hide_password">Скриване на паролата</string>
     <string name="designsystem_molecule_email_address_input_label">Имейл адрес</string>
-    <string name="designsystem_atom_password_textfield_show_password">Покажи паролата</string>
+    <string name="designsystem_atom_password_textfield_show_password">Показване на паролата</string>
     <string name="designsystem_molecule_error_view_button_retry">Повторен опит</string>
     <string name="designsystem_molecule_password_input_label">Парола</string>
 </resources>

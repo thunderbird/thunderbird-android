@@ -35,7 +35,7 @@
     <string name="settings_import_oauth_sign_in_with_google">Connexion avec Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">L’autorisation a été annulée</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">Échec d’autorisation avec l’erreur suivante :<xliff:g id="error">%s</xliff:g></string>
-    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 n’est actuellement pas pris en charge par ce service.</string>
+    <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 n’est actuellement pas pris en charge par ce service.</string>
     <string name="settings_import_oauth_error_browser_not_found">L’appli n’a pas trouvé de navigateur pour accorder l’accès à votre compte.</string>
     <string name="settings_import_general_settings_item">Paramètres généraux</string>
     <string name="settings_import_pick_app_button">Importer d’une appli</string>

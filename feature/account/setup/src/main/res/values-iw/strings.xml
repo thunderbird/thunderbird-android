@@ -46,7 +46,6 @@
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="one">הודעה אחת</item>
         <item quantity="two">שתי הודעות</item>
-        <item quantity="many">%d הודעות</item>
         <item quantity="other">%d הודעות</item>
     </plurals>
     <string name="account_setup_options_show_notifications_label">הצג התראות</string>

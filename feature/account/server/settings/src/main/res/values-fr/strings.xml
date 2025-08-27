@@ -4,8 +4,8 @@
     <string name="account_server_settings_validation_error_username_required">Le nom d\'utilisateur est requis.</string>
     <string name="account_server_settings_outgoing_top_bar_title">Paramètres du serveur sortant</string>
     <string name="account_server_settings_validation_error_password_required">Le mot de passe est requis.</string>
-    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
-    <string name="account_server_settings_authentication_none">Aucune</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Aucun</string>
     <string name="account_server_settings_authentication_password_encrypted">Mot de passe chiffré</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Détection automatique de l\'espace de nommage IMAP</string>
     <string name="account_server_settings_incoming_top_bar_title">Paramètres du serveur entrant</string>

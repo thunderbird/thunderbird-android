@@ -902,4 +902,5 @@
     <string name="attach_file">Allega il file</string>
     <string name="debug_sync_export_logs_title">Esporta i registri di sincronizzazione</string>
     <string name="archiving_not_available_for_this_account">L\'archiviazione non è disponibile per questo account.</string>
+    <string name="swipe_action_archive_folder_not_set">Imposta la cartella di archivio</string>
 </resources>

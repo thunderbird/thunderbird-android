@@ -15,14 +15,14 @@
     <string name="account_server_settings_port_label">Port</string>
     <string name="account_server_settings_incoming_imap_compression_label">Tömörítés használata</string>
     <string name="account_server_settings_validation_error_port_required">A port megadása szükséges.</string>
-    <string name="account_server_settings_authentication_client_certificate">Klienstanúsítvány</string>
+    <string name="account_server_settings_authentication_client_certificate">Ügyféltanúsítvány</string>
     <string name="account_server_settings_incoming_imap_prefix_label">IMAP útvonalelőtag</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protokoll</string>
     <string name="account_server_settings_username_label">Felhasználónév</string>
     <string name="account_server_settings_validation_error_port_invalid">A port érvénytelen (legyen 1–65535 között).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
-    <string name="account_server_settings_client_certificate_label">Klienstanúsítvány</string>
+    <string name="account_server_settings_client_certificate_label">Ügyféltanúsítvány</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">Az IMAP előtag nem lehet üres.</string>
     <string name="account_server_settings_client_certificate_none_selected">Nincs</string>
     <string name="account_server_settings_server_label">Kiszolgáló</string>

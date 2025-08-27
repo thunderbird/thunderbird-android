@@ -921,4 +921,5 @@
     <string name="swipe_action_archive_folder_not_set">Настроить папку архива</string>
     <string name="swipe_action_change_swipe_gestures">Изменить \nжесты</string>
     <string name="archiving_not_available_for_this_account">Архивирование недоступно для этой учётной записи.</string>
+    <string name="debug_open_secret_debug_screen">Экран отладки Open Secret</string>
 </resources>

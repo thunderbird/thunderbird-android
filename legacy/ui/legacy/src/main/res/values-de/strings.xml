@@ -905,4 +905,5 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="swipe_action_change_swipe_gestures">Ändere \nWischgesten</string>
     <string name="archiving_not_available_for_this_account">Archivierung ist für dieses Konto nicht verfügbar.</string>
     <string name="swipe_action_archive_folder_not_set">Archivordner einrichten</string>
+    <string name="debug_open_secret_debug_screen">Geheime Fehleranalyse-Ansicht öffnen</string>
 </resources>

@@ -628,7 +628,7 @@
     <string name="remote_search_sending_query">Zoekopdracht naar server sturen</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">%d resultaat ophalen</item>
-        <item quantity="other">%d resultten ophalen</item>
+        <item quantity="other">%d resultaten ophalen</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
         <item quantity="one">%1$d van %2$d bericht ophalen</item>
@@ -901,4 +901,5 @@
     <string name="swipe_action_archive_folder_not_set">Archiefmap instellen</string>
     <string name="swipe_action_change_swipe_gestures">Veegacties \naanpassen</string>
     <string name="archiving_not_available_for_this_account">Archivering is voor deze account niet beschikbaar.</string>
+    <string name="debug_open_secret_debug_screen">Geheim debugscherm openen</string>
 </resources>

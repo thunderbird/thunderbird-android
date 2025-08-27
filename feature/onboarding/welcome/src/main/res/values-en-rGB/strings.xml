@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_welcome_start_button">Start</string>
+    <string name="onboarding_welcome_start_button">Get started</string>
     <string name="onboarding_welcome_import_button">Import settings</string>
+    <string name="onboarding_welcome_text">An open source, privacy-focused and ad-free email app for Android.</string>
 </resources>

@@ -3,13 +3,13 @@
     <string name="account_server_settings_validation_error_imap_prefix_blank">لا يمكن أن تكون بادئة IMAP فارغة.</string>
     <string name="account_server_settings_protocol_type_label">البروتوكول</string>
     <string name="account_server_settings_server_label">الخادم</string>
-    <string name="account_server_settings_security_label">الأمان</string>
+    <string name="account_server_settings_security_label">الحماية</string>
     <string name="account_server_settings_port_label">المنفذ</string>
     <string name="account_server_settings_authentication_label">المصادقة</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_authentication_password_cleartext">كلمة المرور العادية</string>
-    <string name="account_server_settings_authentication_password_encrypted">كلمة المرور المشفرة</string>
+    <string name="account_server_settings_authentication_password_encrypted">كلمة المرور مشفرة</string>
     <string name="account_server_settings_authentication_client_certificate">شهادة العميل</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_client_certificate_label">شهادة العميل</string>
