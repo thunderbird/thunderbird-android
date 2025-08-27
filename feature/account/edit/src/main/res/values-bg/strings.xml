@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="account_edit_save_server_settings_loading_message">Запазване на сървърните настройки…</string>
+    <string name="account_edit_save_server_settings_loading_message">Запазване настройките на сървъра…</string>
     <string name="account_edit_save_server_settings_error_message">Неуспешно запазване на сървърните настройки</string>
     <string name="account_edit_save_server_settings_success_message">Сървърните настройки запазени</string>
 </resources>

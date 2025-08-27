@@ -25,12 +25,16 @@
     <string name="settings_import_outgoing_server_password_hint">كلمة مرور خادم البريد الصادر </string>
     <string name="settings_import_use_same_password_for_outgoing_server">استخدم نفس كلمة المرور لخادم البريد الصادر </string>
     <string name="settings_import_server_name_format">اسم الخادم: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">لاستخدام حساب البريد الإلكتروني هذا مع K-9 Mail ، تحتاج إلى تسجيل الدخول ومنح التطبيق حق الوصول إلى رسائل البريد الإلكتروني الخاصة بك.</string>
+    <string name="settings_import_oauth_description">لاستخدام حساب البريد الإلكتروني هذا ، تحتاج إلى تسجيل الدخول ومنح التطبيق حق الوصول إلى رسائل البريد الإلكتروني الخاصة بك.</string>
     <string name="settings_import_oauth_sign_in">تسجيل الدخول</string>
     <string name="settings_import_oauth_sign_in_with_google">تسجيل الدخول بأستخدام جوجل</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">تم إلغاء التفويض </string>
     <string name="settings_import_oauth_error_oauth_flow_failed">فشل التفويض مع الخطأ التالي: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 غير مدعوم حاليًا مع هذا الموفر. </string>
-    <string name="settings_import_oauth_error_browser_not_found">تعذر على التطبيق العثور على متصفح لاستخدامه لمنح حق الوصول إلى حسابك </string>
+    <string name="settings_import_oauth_error_browser_not_found">تعذر على التطبيق العثور على متصفح لاستخدامه لمنح حق الوصول إلى حسابك.</string>
     <string name="settings_import_general_settings_item">الإعدادات العامة</string>
+    <string name="settings_import_scan_qr_code_button">مسح رمز الاستجابة السريعة</string>
+    <string name="settings_import_pick_app_button">الاستيراد من تطبيق</string>
+    <string name="settings_import_pick_app_dialog_title">الاستيراد من التطبيق</string>
+    <string name="settings_import_app_version_not_supported">إصدار التطبيق غير مدعوم.</string>
 </resources>

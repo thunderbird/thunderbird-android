@@ -921,4 +921,5 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="swipe_action_change_swipe_gestures">Změnit\ngesta posunutí</string>
     <string name="archiving_not_available_for_this_account">Archivování není u tohoto účtu dostupné.</string>
     <string name="swipe_action_archive_folder_not_set">Nastavte složku Archiv</string>
+    <string name="debug_open_secret_debug_screen">Otevřít tajnou ladicí obrazovku</string>
 </resources>

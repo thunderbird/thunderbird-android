@@ -914,4 +914,14 @@
     <string name="dialog_confirm_empty_spam_title">אמת שהספאם ריק</string>
     <string name="dialog_confirm_empty_spam_message">האם ברצונך לרוקן את תיקיית הספאם?</string>
     <string name="expand_content_description">הרחב</string>
+    <string name="open_camera">פתח מצלמה</string>
+    <string name="attach_file">צרף קובץ</string>
+    <string name="camera_permission_denied">הרשאת מצלמה נאסרה! לא ניתן לצלם תמונה</string>
+    <string name="debug_enable_sync_debug_logging_title">אפשר סנכרון רישום איתור באגים</string>
+    <string name="debug_enable_sync_debug_logging_summary">קבל מידע אבחון עבור 24 שעות</string>
+    <string name="debug_sync_export_logs_title">ייצא רישום סנכרון</string>
+    <string name="swipe_action_archive_folder_not_set">הגדרת תיקיית ארכיון</string>
+    <string name="swipe_action_change_swipe_gestures">שינוי \nמחוות החלקה</string>
+    <string name="archiving_not_available_for_this_account">ארכון לא זמין עבור חשבון זה.</string>
+    <string name="debug_open_secret_debug_screen">פתיחת מסך ניפוי שגיאות סודי</string>
 </resources>

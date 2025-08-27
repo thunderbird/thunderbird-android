@@ -14,9 +14,9 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Имейл адресът е задължителен.</string>
     <string name="account_setup_auto_discovery_loading_error">Неуспешно зареждане на имейл настройки</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Одобрявам тези настройки</string>
-    <string name="account_setup_error_network">Мрежова грешка. Моля проверете връзката си и опитайте отново.</string>
+    <string name="account_setup_error_network">Мрежова грешка. Моля, проверете състоянието на връзката си и опитайте отново.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Имейл адресът не беше разпознат като валиден.</string>
-    <string name="account_setup_auto_discovery_loading_message">Намиране на данни за имейла</string>
+    <string name="account_setup_auto_discovery_loading_message">Намиране на конфифурацията…</string>
     <string name="account_setup_options_account_name_error_blank">Името на акаунта не може да бъде празно.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_not_allowed">Този имейл адрес не е разрешен.</string>
     <string name="account_setup_options_account_check_frequency_label">Интервал на проверка</string>
@@ -28,10 +28,35 @@
     <string name="account_setup_create_account_creating">Създаване на акаунт…</string>
     <string name="account_setup_options_account_name_label">Име на акаунта</string>
     <string name="account_setup_options_display_name_label">Вашето име</string>
-    <string name="account_setup_options_display_name_error_required">Името за визуализация е задължително.</string>
+    <string name="account_setup_options_display_name_error_required">Име е задължително.</string>
     <string name="account_setup_create_account_error">Възникна грешка при създаването на акаунта</string>
     <string name="account_setup_options_email_check_frequency_never">Никога</string>
     <string name="account_setup_options_section_sync_options">Настройки за синхронизация</string>
     <string name="account_setup_options_show_notifications_label">Показване на известия</string>
     <string name="account_setup_options_section_display_options">Настройки за визуализация</string>
+    <plurals name="account_setup_options_email_check_frequency_minutes">
+        <item quantity="one">Всяка минута</item>
+        <item quantity="other">Всяка %d минута</item>
+    </plurals>
+    <plurals name="account_setup_options_email_check_frequency_hours">
+        <item quantity="one">Всеки час</item>
+        <item quantity="other">Всеки %d час</item>
+    </plurals>
+    <plurals name="account_setup_options_email_display_count_messages">
+        <item quantity="one">1 съобшение</item>
+        <item quantity="other">%d съобщения</item>
+    </plurals>
+    <string name="account_setup_auto_discovery_validation_error_password_required">Паролата е задължителна.</string>
+    <string name="account_setup_special_folders_form_description">Моля, посочете специалните папки за вашия профил.</string>
+    <string name="account_setup_special_folders_form_description_automatic">Въведеното „Автоматично“ ще следва автоматично промените, направени от сървъра. Текущата стойност на сървъра се показва в скоби.</string>
+    <string name="account_setup_special_folders_loading_message">Извличане на списъка с папки…</string>
+    <string name="account_setup_special_folders_error_message">Неуспешно извличане на списъка с папки от сървъра</string>
+    <string name="account_setup_special_folders_success_message">Всички специални папки са конфигурирани автоматично от сървъра.</string>
+    <string name="account_setup_special_folders_archive_folder_label">папка \"Архив\"</string>
+    <string name="account_setup_special_folders_drafts_folder_label">Папка \"Чернови\"</string>
+    <string name="account_setup_special_folders_sent_folder_label">папка \"Изпратени\"</string>
+    <string name="account_setup_special_folders_spam_folder_label">Папка \"Нежелана поща\"</string>
+    <string name="account_setup_special_folders_trash_folder_label">Папка \"Кошче\"</string>
+    <string name="account_setup_special_folders_folder_none">Никаква</string>
+    <string name="account_setup_special_folders_folder_automatic">Автоматично (%s)</string>
 </resources>

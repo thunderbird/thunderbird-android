@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">هل تستخدمُ ثَندَربِرْد على الحاسوب؟</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">استورد إعدادات حسابك بسهولة عن طريق مسح رمز الاستجابة السريعة ضوئياً.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">في ثندربرد للحاسوب، انتقل إلى:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">’الإعدادات‘ في شريط المساحات (أسفل اليسار)</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">حدد\'تصدير إلى الهاتف\'</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">يتطلب الاستيراد أحدث إصدار من سطح المكتب 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">تعرّف على كيفية تحديث ثندربرد.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">استيراد الإعدادات</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">جديد على ثندربرد؟</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">إضافة حساب بريدي الآن</string>
+    <string name="onboarding_migration_thunderbird_import_title">الانتقال من تطبيق أو جهاز آخر؟</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">استيراد إعدادات حسابك الآن</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">لم يتم العثور على تطبيق لفتح الرابط.</string>
 </resources>

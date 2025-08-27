@@ -12,4 +12,5 @@
     <string name="funding_googleplay_contribution_list_type_none_available">Ez dago ezer eskuragarririk</string>
     <string name="funding_googleplay_contribution_reminder_title">Lagundu Thunderbirdi</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird doakoa eta kode irekikoa da.</string>
+    <string name="funding_googleplay_contribution_list_type_one_time">Eman behin</string>
 </resources>

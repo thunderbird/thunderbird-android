@@ -837,4 +837,11 @@
     <string name="attach_file">Assucià un schedariu</string>
     <string name="open_camera">Apre l’apparechju-fotò</string>
     <string name="camera_permission_denied">U permessu d’accede à l’apparechju-fotò hè statu ricusatu. Impussibule di piglià una fotò</string>
+    <string name="debug_enable_sync_debug_logging_title">Attivà u ghjurnale di spannatura di a sincrunizazione</string>
+    <string name="debug_enable_sync_debug_logging_summary">Arregistrà l’infurmazioni di diagnosticu di a sincrunizazione per 24 ore</string>
+    <string name="debug_sync_export_logs_title">Espurtà i ghjurnali di sincrunizazione</string>
+    <string name="debug_open_secret_debug_screen">Apre u screnu sicretu di spannatura</string>
+    <string name="swipe_action_archive_folder_not_set">Cunfigurà u cartulare d’archiviera</string>
+    <string name="swipe_action_change_swipe_gestures">Cambià \nI gesti di spazzatura</string>
+    <string name="archiving_not_available_for_this_account">L’archiviera ùn hè micca dispunibule per stu contu.</string>
 </resources>

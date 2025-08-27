@@ -1,2 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="account_server_certificate_warning_title">Внимание</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Грешка със сертификатите</string>
+    <string name="account_server_certificate_unknown_error_description_format">Приложението откри потенциална заплаха за сигурността и не продължи свързването с <xliff:g id="serverName">%s</xliff:g>f:g&gt;.\nАко продължите, хакерите могат да се опитат да откраднат информация като паролата ви или пощата ви.</string>
+    <string name="account_server_certificate_button_back">Назад (препоръчително)</string>
+    <string name="account_server_certificate_button_advanced">Разширени</string>
+    <string name="account_server_certificate_button_continue">Приемане на риска и продължаване</string>
+    <string name="account_server_certificate_section_title">Сертификат на сървъра</string>
+    <string name="account_server_certificate_subject_alternative_names">Subject alternative names</string>
+    <string name="account_server_certificate_not_valid_before">Невалиден преди</string>
+    <string name="account_server_certificate_not_valid_after">невалиден след</string>
+    <string name="account_server_certificate_subject">Тема</string>
+    <string name="account_server_certificate_issuer">Издател</string>
+    <string name="account_server_certificate_fingerprints_section">отпечатък</string>
+</resources>

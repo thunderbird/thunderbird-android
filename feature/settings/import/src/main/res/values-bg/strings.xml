@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="settings_import_title">Внасяне настройки</string>
-    <string name="settings_import_pick_document_button">Избери файл</string>
+    <string name="settings_import_title">Внасяне на настройки</string>
+    <string name="settings_import_pick_document_button">Избор на файл</string>
     <string name="settings_import_button">Внасяне</string>
     <string name="settings_import_success_generic">Успешно импортирани настройки</string>
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
@@ -22,14 +22,14 @@
     <string name="settings_import_later_button">По късно</string>
     <string name="settings_importing">Настройки на внасянето…</string>
     <plurals name="settings_import_password_prompt">
-        <item quantity="one">За да можете да използвате профила \"<xliff:g id="account">%s</xliff:g>\" трябва да предоставите паролите на сървъра.</item>
+        <item quantity="one">За да можете да използвате профила \"<xliff:g id="account">%s</xliff:g>\" трябва да предоставите паролата на сървъра.</item>
         <item quantity="other">За да можете да използвате профила \"<xliff:g id="account">%s</xliff:g>\" трябва да предоставите паролите на сървъра.</item>
     </plurals>
     <string name="settings_import_incoming_server_password_hint">Парола за входящ сървър</string>
     <string name="settings_import_outgoing_server_password_hint">Парола за изходящ сървър</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Използвай същата парола  като на изходящия сървър</string>
     <string name="settings_import_server_name_format">Име на сървър: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">За да използвате този имейл с K-9 Поща, трябва да се впишете и да разрешите на приложението достъп до имейлите си.</string>
+    <string name="settings_import_oauth_description">За да използвате този профил, трябва да се впишете и да разрешите на приложението достъп до имейлите си.</string>
     <string name="settings_import_oauth_sign_in">Вписване</string>
     <string name="settings_import_oauth_sign_in_with_google">Вписване чрез Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Разрешение отменено</string>
@@ -37,4 +37,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 с този доставчик не се поддържа в момента.</string>
     <string name="settings_import_oauth_error_browser_not_found">Приложението не успя да открие браузър, който да използва за разрешаване на достъп до акаунта Ви.</string>
     <string name="settings_import_general_settings_item">Общи настройки</string>
+    <string name="settings_import_scan_qr_code_button">Сканиране на QR кода</string>
+    <string name="settings_import_pick_app_button">Внасяне от приложението</string>
+    <string name="settings_import_pick_app_dialog_title">Внасяне от приложението</string>
+    <string name="settings_import_app_version_not_supported">Тази версия не се поддържа.</string>
 </resources>

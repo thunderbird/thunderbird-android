@@ -912,4 +912,5 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="swipe_action_archive_folder_not_set">Configurați dosarul de arhivă</string>
     <string name="archiving_not_available_for_this_account">Arhivarea nu este disponibilă pentru acest cont.</string>
     <string name="swipe_action_change_swipe_gestures">Schimbare \nGesturi de glisare</string>
+    <string name="debug_open_secret_debug_screen">Deschide ecranul de depanare secret</string>
 </resources>

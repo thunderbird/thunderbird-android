@@ -27,10 +27,10 @@
     <string name="load_more_messages_fmt">Luchtaigh suas le <xliff:g id="messages_to_load">%d</xliff:g> sa bhreis</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> teachtaireacht nua</item>
-        <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> teachtaireacht nua</item>
-        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> teachtaireacht nua</item>
-        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> teachtaireacht nua</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> teachtaireacht nua</item>
+        <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> teachtaireachtaí nua</item>
+        <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> teachtaireachtaí nua</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> teachtaireachtaí nua</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> teachtaireachtaí nua</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> níos mó ar <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_delete_all">Scrios Gach Rud</string>
@@ -834,7 +834,7 @@
         <item quantity="other">An bhfuil tú cinnte gur mhaith leat <xliff:g id="message_count">%1$d</xliff:g> teachtaireachtaí a bhogadh go dtí an fillteán turscair?</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">%1$d torthaí á fháil as %2$d</item>
+        <item quantity="one">Ag fáil %1$d de %2$d torthaí</item>
         <item quantity="two">%1$d torthaí á fháil as %2$d</item>
         <item quantity="few">%1$d torthaí á fháil as %2$d</item>
         <item quantity="many">%1$d torthaí á fháil as %2$d</item>
@@ -857,4 +857,5 @@
     <string name="swipe_action_archive_folder_not_set">Socraigh Fillteán Cartlainne</string>
     <string name="swipe_action_change_swipe_gestures">Athraigh\nGothaí Svaidhpe</string>
     <string name="archiving_not_available_for_this_account">Níl cartlannú ar fáil don chuntas seo.</string>
+    <string name="debug_open_secret_debug_screen">Oscail an scáileán dífhabhtaithe Rúnda</string>
 </resources>

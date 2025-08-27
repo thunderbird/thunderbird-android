@@ -33,7 +33,7 @@
     <string name="settings_import_outgoing_server_password_hint">Cyfrinair gweinydd anfon</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Defnyddio\'r un cyfrinair i\'r gweinydd anfon</string>
     <string name="settings_import_server_name_format">Enw gweinydd: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">I ddefnyddio\'r cyfrif e-bost hwn â K-9 Mail, rhaid mewngofnodi a rhoi caniatâd i\'r ap gael mynediad at dy negeseuon e-bost.</string>
+    <string name="settings_import_oauth_description">I ddefnyddio\'r cyfrif e-bost hwn, rhaid mewngofnodi a rhoi caniatâd i\'r ap gael mynediad at dy negeseuon e-bost.</string>
     <string name="settings_import_oauth_sign_in">Mewngofnodi</string>
     <string name="settings_import_oauth_sign_in_with_google">Mewngofnodi gyda Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Diddymwyd awdurdodi</string>
@@ -41,4 +41,8 @@
     <string name="settings_import_oauth_error_oauth_not_supported">Ni chefnogir OAuth 2.0 ar hyn o bryd gyda\'r darparydd hwn.</string>
     <string name="settings_import_oauth_error_browser_not_found">Methodd yr ap hwn ddod o hyd i borwr i\'w ddefnyddio i roi mynediad at dy gyfrif.</string>
     <string name="settings_import_general_settings_item">Gosodiadau cyffredinol</string>
+    <string name="settings_import_scan_qr_code_button">Sganiwch y cod QR</string>
+    <string name="settings_import_pick_app_button">Mewnforio o\'r ap</string>
+    <string name="settings_import_pick_app_dialog_title">Mewnforio o\'r ap</string>
+    <string name="settings_import_app_version_not_supported">Nid yw\'r fersiwn yma o\'r ap yn cael ei gefnogi.</string>
 </resources>

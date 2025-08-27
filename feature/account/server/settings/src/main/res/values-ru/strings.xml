@@ -15,7 +15,7 @@
     <string name="account_server_settings_authentication_label">Аутентификация</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
-    <string name="account_server_settings_authentication_none">Ничего</string>
+    <string name="account_server_settings_authentication_none">Нет</string>
     <string name="account_server_settings_authentication_password_cleartext">Обычный пароль</string>
     <string name="account_server_settings_authentication_password_encrypted">Зашифрованный пароль</string>
     <string name="account_server_settings_authentication_client_certificate">Сертификат клиента</string>
