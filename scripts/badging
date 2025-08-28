@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./gradlew --quiet ":cli:badging-cli:installDist" < /dev/null && ./cli/badging-cli/build/install/badging-cli/bin/badging-cli "$@"
