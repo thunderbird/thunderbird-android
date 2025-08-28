@@ -11,6 +11,9 @@ on:
       - 'LICENSE'
       - 'NOTICE'
 
+env:
+  CI_CHECK_RELEASE_BUILDS: 'false'
+
 permissions:
   contents: read
 
