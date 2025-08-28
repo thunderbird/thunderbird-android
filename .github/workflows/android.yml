@@ -53,9 +53,51 @@ jobs:
       - name: Build (run full build and tests)
         run: ./gradlew build -x lint
 
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Copy CI gradle.properties
+        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
+
+      - name: Build Thunderbird Bundle
+        run: ./gradlew :app-thunderbird:bundleRelease :app-thunderbird:bundleBeta :app-thunderbird:bundleDaily
+
+      - name: Zip Thunderbird Bundles (excluding release)
+        run: zip -r thunderbird-bundles.zip app-thunderbird/build/outputs/bundle -x "app-thunderbird/build/outputs/bundle/release/*"
+
+      - name: Upload Thunderbird Bundles (excluding release)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: thunderbird-bundles
+          path: thunderbird-bundles.zip
+
+      - name: Build K-9 Mail Bundle
+        run: ./gradlew :app-k9mail:bundleRelease
+
+      - name: Zip K-9 Mail Bundles (excluding release)
+        run: zip -r k9mail-bundles.zip app-k9mail/build/outputs/bundle -x "app-k9mail/build/outputs/bundle/release/*"
+
+      - name: Upload K-9 Mail Bundles (excluding release)
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: k9mail-bundles
+          path: k9mail-bundles.zip
+
   quality-badging-thunderbird:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    needs: bundle
     strategy:
       matrix:
         flavor: [full, foss]
@@ -86,12 +128,22 @@ jobs:
           restore-keys: |
             thunderbird-cli-cache-
 
+      - name: Download Thunderbird Bundle
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: thunderbird-bundles
+          path: app-thunderbird/build/outputs/bundle
+
+      - name: Unzip Thunderbird Bundle
+        run: unzip app-thunderbird/build/outputs/bundle/thunderbird-bundles.zip -d app-thunderbird/build/outputs/bundle/release
+
       - name: Validate badging
-        run: ./scripts/badging --module app-thunderbird --flavor ${{ matrix.flavor }}  --build-type ${{ matrix.build-type }} --build
+        run: ./scripts/badging --module app-thunderbird --flavor ${{ matrix.flavor }}  --build-type ${{ matrix.build-type }}
 
   quality-badging-k9mail:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    needs: bundle
     strategy:
       matrix:
         flavor: [ full, foss ]
@@ -122,5 +174,14 @@ jobs:
           restore-keys: |
             thunderbird-cli-cache-
 
+      - name: Download K-9 Mail Bundle
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: k9mail-bundles
+          path: app-k9mail/build/outputs/bundle
+
+      - name: Unzip K-9 Mail Bundle
+        run: unzip app-k9mail/build/outputs/bundle/k9mail-bundles.zip -d app-k9mail/build/outputs/bundle/release
+
       - name: Validate badging
-        run: ./scripts/badging --module app-k9mail --flavor ${{ matrix.flavor }}  --build-type ${{ matrix.build-type }} --build
+        run: ./scripts/badging --module app-k9mail --flavor ${{ matrix.flavor }}  --build-type ${{ matrix.build-type }}
