@@ -22,7 +22,6 @@ dependencies {
     implementation(plugin(libs.plugins.detekt))
     implementation(plugin(libs.plugins.spotless))
 
-    implementation(libs.diff.utils)
     compileOnly(libs.android.tools.common)
 
     // This defines the used Kotlin version for all Plugin dependencies

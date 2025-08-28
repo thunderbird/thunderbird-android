@@ -36,10 +36,6 @@ module's `build.gradle.kts`.
 - `thunderbird.quality.spotless` - [Spotless - Code formatter](https://github.com/diffplug/spotless)
   with [Ktlint - Kotlin linter and formatter](https://pinterest.github.io/ktlint/)
   - Use `./gradlew spotlessCheck` to check for any issue and `./gradlew spotlessApply` to format your code
-- `thunderbird.quality.badging` - [Android Badging Check Plugin](https://github.com/android/nowinandroid/blob/main/build-logic/convention/src/main/kotlin/com/google/samples/apps/nowinandroid/Badging.kt)
-  - Use `./gradlew generate{VariantName}Badging` to generate badging file
-  - Use `./gradlew check{VariantName}Badging` to validate allowed badging
-  - Use `./gradlew update{VariantName}Badging` to update allowed badging
 
 ## Add new build plugin
 
