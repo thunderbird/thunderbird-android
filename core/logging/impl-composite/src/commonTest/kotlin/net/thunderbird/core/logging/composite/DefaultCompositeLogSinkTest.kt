@@ -19,7 +19,7 @@ class DefaultCompositeLogSinkTest {
 
         // Act
         DefaultCompositeLogSink(
-            level = LogLevel.INFO,
+            logLevelProvider = { LogLevel.INFO },
             manager = sinkManager,
             sinks = listOf(sink1, sink2),
         )
@@ -38,7 +38,7 @@ class DefaultCompositeLogSinkTest {
         val sinkManager = FakeCompositeLogSinkManager(mutableListOf(sink1, sink2))
 
         val testSubject = DefaultCompositeLogSink(
-            level = LogLevel.INFO,
+            logLevelProvider = { LogLevel.INFO },
             manager = sinkManager,
         )
 
@@ -60,7 +60,7 @@ class DefaultCompositeLogSinkTest {
         val sinkManager = FakeCompositeLogSinkManager(mutableListOf(sink1, sink2))
 
         val testSubject = DefaultCompositeLogSink(
-            level = LogLevel.WARN,
+            logLevelProvider = { LogLevel.WARN },
             manager = sinkManager,
         )
 
@@ -80,7 +80,7 @@ class DefaultCompositeLogSinkTest {
         val sinkManager = FakeCompositeLogSinkManager(mutableListOf(sink1, sink2))
 
         val testSubject = DefaultCompositeLogSink(
-            level = LogLevel.INFO,
+            logLevelProvider = { LogLevel.INFO },
             manager = sinkManager,
         )
 
