@@ -1,7 +1,5 @@
 package net.thunderbird.feature.notification.api.ui.style
 
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import net.thunderbird.feature.notification.api.ui.style.builder.InAppNotificationStyleBuilder
 
 /**
@@ -11,13 +9,11 @@ import net.thunderbird.feature.notification.api.ui.style.builder.InAppNotificati
  * feedback or information.
  */
 sealed interface InAppNotificationStyle {
-    companion object {
-        /**
-         * Represents an undefined in-app notification style.
-         * This can be used as a default or placeholder when no specific style is applicable.
-         */
-        val Undefined: List<InAppNotificationStyle> = emptyList()
-    }
+    /**
+     * Represents an undefined in-app notification style.
+     * This can be used as a default or placeholder when no specific style is applicable.
+     */
+    data object Undefined : InAppNotificationStyle
 
     /**
      * @see InAppNotificationStyleBuilder.bannerInline
@@ -35,7 +31,7 @@ sealed interface InAppNotificationStyle {
      * @see [InAppNotificationStyleBuilder.snackbar]
      */
     data class SnackbarNotification(
-        val duration: Duration = 10.seconds,
+        val duration: SnackbarDuration = SnackbarDuration.Short,
     ) : InAppNotificationStyle
 
     /**
@@ -44,14 +40,19 @@ sealed interface InAppNotificationStyle {
     data object DialogNotification : InAppNotificationStyle
 }
 
+enum class SnackbarDuration { Short, Long, Indefinite }
+
 /**
  * Configures the in-app notification style.
  *
  * Example:
  * ```
- * inAppNotificationStyles {
+ * inAppNotificationStyle {
+ *     bannerInline()
+ * }
+ *
+ * inAppNotificationStyle {
  *     snackbar(duration = 30.seconds)
- *     bottomSheet()
  * }
  * ```
  *
@@ -60,8 +61,8 @@ sealed interface InAppNotificationStyle {
  * @return a list of [InAppNotificationStyle]
  */
 @NotificationStyleMarker
-fun inAppNotificationStyles(
+fun inAppNotificationStyle(
     builder: @NotificationStyleMarker InAppNotificationStyleBuilder.() -> Unit,
-): List<InAppNotificationStyle> {
+): InAppNotificationStyle {
     return InAppNotificationStyleBuilder().apply(builder).build()
 }
