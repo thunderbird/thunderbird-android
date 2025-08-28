@@ -43,6 +43,20 @@ jobs:
       - name: Build Thunderbird application
         run: ./gradlew :app-thunderbird:assemble
 
+  build-app-ui-catalog:
+    name: Build App UI-catalog application
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Build App UI-catalog application in Debug mode
+        run: ./gradlew :app-ui-catalog:assembleDebug
+
   lint:
     name: Quality - Lint
     runs-on: ubuntu-latest
