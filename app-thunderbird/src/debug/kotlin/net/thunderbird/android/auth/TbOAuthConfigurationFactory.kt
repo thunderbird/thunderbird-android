@@ -61,6 +61,7 @@ class TbOAuthConfigurationFactory : OAuthConfigurationFactory {
         return listOf(
             "outlook.office365.com",
             "smtp.office365.com",
+            "smtp-mail.outlook.com",
         ) to OAuthConfiguration(
             clientId = "e6f8716e-299d-4ed9-bbf3-453f192f44e5",
             scopes = listOf(
