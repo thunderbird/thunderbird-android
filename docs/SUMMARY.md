@@ -6,6 +6,9 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
 ---
 
 - [Contributing](CONTRIBUTING.md)
+  - [Development Environment](contributing/development-environment.md)
+  - [Code Quality Guide](contributing/code-quality-guide.md)
+  - [Code Review Guide](contributing/code-review-guide.md)
   - [Git Commit Guide](contributing/git-commit-guide.md)
   - [Testing Guide](contributing/testing-guide.md)
   - [Java to Kotlin Conversion Guide](contributing/java-to-kotlin-conversion-guide.md)
@@ -33,6 +36,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
 - [Release](ci/README.md)
   - [Release Process](ci/RELEASE.md)
   - [Release Automation](ci/AUTOMATION.md)
+  - [Developer Release Checklist](release/developer-checklist.md)
   - [Manual Release (historical)](ci/HISTORICAL_RELEASE.md)
 - [Translations](translations.md)
 

@@ -1,7 +1,5 @@
 # Architecture Decision Records
 
-The [docs/architecture/adr](/docs/architecture/adr) folder contains the architecture decision records (ADRs) for our project.
-
 ADRs are short text documents that serve as a historical context for the architecture decisions we make over the
 course of the project.
 
