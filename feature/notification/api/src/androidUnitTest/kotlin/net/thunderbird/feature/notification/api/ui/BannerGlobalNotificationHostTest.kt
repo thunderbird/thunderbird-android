@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
-import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -19,9 +18,7 @@ import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onFirst
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.printToString
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.onNodeWithTag
@@ -33,12 +30,13 @@ import kotlin.test.Test
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
-import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostState
-import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
+import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
+import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
+import net.thunderbird.feature.notification.api.ui.util.printSemanticTree
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
 
-const val BUTTON_NOTIFICATION_TEST_TAG = "button_notification_test_tag"
+private const val BUTTON_NOTIFICATION_TEST_TAG = "button_notification_test_tag"
 
 class BannerGlobalNotificationHostTest : ComposeTest() {
     @Test
@@ -358,7 +356,7 @@ class BannerGlobalNotificationHostTest : ComposeTest() {
         onActionClick: (NotificationAction) -> Unit,
         modifier: Modifier = Modifier,
     ) {
-        val state = rememberInAppNotificationHostState()
+        val state = rememberInAppNotificationHostStateHolder()
         Column(modifier = modifier) {
             ButtonText(
                 text = "Trigger Notification",
@@ -382,14 +380,7 @@ class BannerGlobalNotificationHostTest : ComposeTest() {
         title = title,
         contentText = contentText,
         severity = severity,
-        inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+        inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
         actions = action?.let { setOf(it) }.orEmpty(),
     )
-
-    private fun printSemanticTree(root: SemanticsNodeInteraction = composeTestRule.onRoot(useUnmergedTree = true)) {
-        println()
-        println("Semantic tree:")
-        println(root.printToString())
-        println()
-    }
 }
