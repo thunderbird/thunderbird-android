@@ -23,33 +23,25 @@ Recommended knowledge (helpful, not strictly required):
 
 ## 🔧 Setting Up the Development Environment
 
-### 1. Fork the Repository
+### 1. Get the Source Code
 
-All contributions must be made from a fork.
+All contributions happen through a personal fork of the repository.
+
+- If you haven’t forked the project yet, see the [Contribution Workflow](contribution-workflow.md) for step-by-step instructions.
+- Once you have a fork, clone it to your machine and open it in Android Studio.
 
 1. Go to the [Thunderbird for Android repository](https://github.com/thunderbird/thunderbird-android)
 2. Click the **Fork** button in the top-right corner
 3. Create a fork under your GitHub account
 
-### 2. Clone Your Fork
-
-After forking the repository, clone your fork to your local machine:
-
-```bash
-git clone https://github.com/YOUR-USERNAME/thunderbird-android.git
-cd thunderbird-android
-```
-
-Replace `YOUR-USERNAME` with your GitHub username.
-
-### 3. Import the Project into Android Studio
+### 2. Import the Project into Android Studio
 
 1. Open Android Studio
 2. Select **Open an Existing Project**
 3. Navigate to the cloned repository and open it
 4. Wait for project sync and indexing
 
-### 4. Configure Android Studio
+### 3. Configure Android Studio
 
 For the best development experience, we recommend the following settings:
 

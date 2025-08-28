@@ -7,6 +7,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
 
 - [Contributing](CONTRIBUTING.md)
   - [Development Environment](contributing/development-environment.md)
+  - [Contribution Workflow](contributing/contribution-workflow.md)
   - [Code Quality Guide](contributing/code-quality-guide.md)
   - [Code Review Guide](contributing/code-review-guide.md)
   - [Git Commit Guide](contributing/git-commit-guide.md)

@@ -182,23 +182,15 @@ Security is critical. Always:
 
 ## 🧪 Testing
 
-Comprehensive testing is a critical aspect of code quality. The project uses a multi-layered testing approach:
+Comprehensive testing is a critical aspect of code quality.
 
-- **Unit Tests**: Test individual components in isolation
-- **Integration Tests**: Test interactions between components
-- **UI Tests**: Test the UI behavior and user flows
+Key expectations:
+- Write tests for new/changed code
+- Use meaningful, deterministic tests
+- Follow Arrange–Act–Assert pattern
+- Maintain high coverage
 
-See [Testing Guide](testing-guide.md) for more details.
-
-### Testing Best Practices
-
-- Write tests for all new code
-- Follow the **Arrange-Act-Assert** pattern in tests
-- Use descriptive test names that clearly indicate what is being tested
-- Prefer fake implementations over mocks for better test reliability
-- Keep tests independent (no global state)
-- Cover edge cases and error paths
-- Maintain a high test coverage
+👉 See [Testing Guide](testing-guide.md) for frameworks, patterns, and CI coverage rules.
 
 ## 🔄 Continuous Integration
 
@@ -212,3 +204,5 @@ The project uses GitHub Actions for continuous integration. Each pull request tr
 
 The CI configuration is defined in the `.github/workflows` directory. The main workflow file is `android.yml`, which
 defines the CI pipeline for Android builds.
+
+👉 See [Code Review Guide](code-review-guide.md) for PR expectations and etiquette.

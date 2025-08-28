@@ -6,66 +6,51 @@ Welcome to the Thunderbird for Android project! We're excited to have you here a
 
 Before you start contributing, please take a moment to familiarize yourself with the following:
 
-- **Mozilla Community Participation Guidelines:** [https://www.mozilla.org/en-US/about/governance/policies/participation/](https://www.mozilla.org/en-US/about/governance/policies/participation/)
-- **Frequently Asked Questions:** [https://forum.k9mail.app/c/faq](https://forum.k9mail.app/c/faq)
-- **Support Forum:** [https://forum.k9mail.app/](https://forum.k9mail.app/)
+- [Thunderbird Developer Portal](https://developer.thunderbird.net/)
+- [Mozilla Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
+- [Matrix (developer chat)](https://matrix.to/#/#tb-mobile-dev:mozilla.org)
+- [Frequently Asked Questions (historical K-9 forum)](https://forum.k9mail.app/c/faq)
+- [Support Forum (historical K-9 forum)](https://forum.k9mail.app/)
 
-## Bug Reports and Feature Requests
+Note: Some support resources currently point to the K-9 Mail forum due to the project’s history and ongoing migration.
+Where appropriate, we’ll update links to Thunderbird-specific channels.
 
-If you encounter a bug or have a feature request, please follow these steps:
+## Bug Reports and Feature Ideas
 
-- Search the [existing issues](https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue) to see if your issue or feature has already been reported.
-- If you can't find an existing issue, please [open a new issue](https://github.com/thunderbird/thunderbird-android/issues/new/choose) on GitHub.
+When you encounter a bug or have a feature request or idea  please do the following:
+
+**Bugs**:
+- Search for [existing issues](https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue) before filing a new one.
+- If you can't find an existing issue, please [open a new GitHub issue](https://github.com/thunderbird/thunderbird-android/issues/new/choose) using the appropriate template.
+
+**Feature Requests / Ideas:**
+
+We don’t track new ideas or feature requests in GitHub Issues.
+
+- Start a discussion in Mozilla Connect – Ideas
+- Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).
 
 ## Translations
 
-If you'd like to help to translate K-9 Mail / Thunderbird for Android, please visit the [Weblate - K-9 Mail/Thunderbird project](https://hosted.weblate.org/projects/tb-android/).
+If you'd like to help to translate Thunderbird for Android, please visit:
+
+- [Weblate - Thunderbird for Android](https://hosted.weblate.org/projects/tb-android/)
 
 ## Contributing Code
 
-Thank you for your willingness to contribute code! Here's how you can get started:
+Start with our project documentation:
 
-**1. Find an issue:**
+- [Development Environment](contributing/development-environment.md)
+- [Contribution Workflow](contributing/contribution-workflow.md)
+- [Development Guide](contributing/development-guide.md)
+- [Code Quality Guide](contributing/code-quality-guide.md)
+- [Code Review Guide](contributing/code-review-guide.md)
+- [Git Commit Guide](contributing/git-commit-guide.md)
+- [Testing Guide](contributing/testing-guide.md)
+- [Translations](translations.md)
 
-- Check the issue tracker for [open issues](https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue+is%3Aopen+-label%3Aunconfirmed+-label%3Atb-team).
-- Look for issues labeled [good first issue](https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue) for a good starting point.
-- Propose a new feature by [opening a new issue](https://github.com/thunderbird/thunderbird-android/issues/new/choose)
-- Avoid issues labeled [unconfirmed](https://github.com/thunderbird/thunderbird-android/labels/unconfirmed) or [tb-team](https://github.com/thunderbird/thunderbird-android/labels/tb-team) as they are not yet ready for contributions.
-
-**2. Discuss your plan:**
-
-- Leave a comment on the issue you want to work on, explaining what you plan to do. This helps avoid duplicate work and gets you feedback from the team.
-
-**3. Fork the repository:**
-
-- Create your own [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) of the Thunderbird for Android repository on GitHub.
-
-**4. Create a branch:**
-
-- Start a new branch from the `main` branch to keep your changes separate.
-- Name your branch descriptively (e.g., `fix-issue-123` or `add-feature-xyz`).
-
-**5. Make your changes:**
-
-- Write your code and commit it to your branch.
-- Follow our [Code Style Guidelines](https://github.com/thunderbird/thunderbird-android/wiki/CodeStyle)
-
-**6. Test your changes:**
-
-- Run the project's tests to make sure everything works and that your changes don't introduce any regressions.
-- If applicable, write new tests to cover your changes.
-
-**7. Push your changes:**
-
-- Upload your branch to your forked repository.
-
-**8. Open a pull request:**
-
-- Create a pull request to merge your changes into the main project.
-- Provide a clear and concise description of your changes, including:
-  - A reference to the issue you're addressing.
-  - A summary of the changes you made.
-  - Any relevant screenshots or testing results.
+👉 The **Contribution Workflow** explains the step-by-step process: finding an issue, forking the repo, creating a
+branch, making changes, testing, and opening a pull request.
 
 ## Thank You!
 
