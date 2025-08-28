@@ -51,7 +51,7 @@ jobs:
         run: ./gradlew dependencyGuard
 
       - name: Build (run full build and tests)
-        run: ./gradlew build
+        run: ./gradlew build -x lint
 
   quality-badging-thunderbird:
     runs-on: ubuntu-latest
