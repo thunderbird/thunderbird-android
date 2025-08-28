@@ -84,10 +84,10 @@ internal fun createMessageViewRecipientFormatter(
 ): MessageViewRecipientFormatter {
     return RealMessageViewRecipientFormatter(
         contactNameProvider = contactNameProvider,
-        showCorrespondentNames = generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-        showContactNames = generalSettingsManager.getConfig().display.isShowContactName,
+        showCorrespondentNames = generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+        showContactNames = generalSettingsManager.getConfig().display.visualSettings.isShowContactName,
         contactNameColor = if (
-            generalSettingsManager.getConfig().display.isChangeContactNameColor
+            generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor
         ) {
             K9.contactNameColor
         } else {

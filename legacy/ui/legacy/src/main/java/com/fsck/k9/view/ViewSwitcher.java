@@ -56,7 +56,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     private void setupAnimations(Animation in, Animation out) {
-        if (generalSettingsManager.getConfig().getDisplay().isShowAnimations()) {
+        if (generalSettingsManager.getConfig().getDisplay().getVisualSettings().isShowAnimations()) {
             setInAnimation(in);
             setOutAnimation(out);
             out.setAnimationListener(this);
@@ -67,7 +67,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     private void handleSwitchCompleteCallback() {
-        if (!generalSettingsManager.getConfig().getDisplay().isShowAnimations()) {
+        if (!generalSettingsManager.getConfig().getDisplay().getVisualSettings().isShowAnimations()) {
             onAnimationEnd(null);
         }
     }

@@ -15,6 +15,8 @@ import net.thunderbird.core.preference.display.coreSettings.DefaultDisplayCoreSe
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
 import net.thunderbird.core.preference.display.inboxSettings.DefaultDisplayInboxSettingsPreferenceManager
 import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
+import net.thunderbird.core.preference.display.visualSettings.DefaultDisplayVisualSettingsPreferenceManager
+import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
 import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.DefaultNotificationPreferenceManager
@@ -70,12 +72,21 @@ val preferencesModule = module {
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
+    single<DisplayVisualSettingsPreferenceManager> {
+        DefaultDisplayVisualSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
     single<DisplaySettingsPreferenceManager> {
         DefaultDisplaySettingsPreferenceManager(
             logger = get(),
             storage = get<Preferences>().storage,
             storageEditor = get<Preferences>().createStorageEditor(),
             coreSettingsPreferenceManager = get(),
+            inboxSettingsPreferenceManager = get(),
+            visualSettingsPreferenceManager = get(),
         )
     }
     single<NetworkSettingsPreferenceManager> {
@@ -109,6 +120,7 @@ val preferencesModule = module {
             displaySettingsSettingsPreferenceManager = get(),
             displayCoreSettingsPreferenceManager = get(),
             displayInboxSettingsPreferenceManager = get(),
+            displayVisualSettingsPreferenceManager = get(),
             networkSettingsPreferenceManager = get(),
             debuggingSettingsPreferenceManager = get(),
             debugLogConfigurator = get(),
