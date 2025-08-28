@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="funding_googleplay_contribution_title">Support Thunderbird</string>
+    <string name="funding_googleplay_contribution_header_title">Support Thunderbird</string>
 </resources>

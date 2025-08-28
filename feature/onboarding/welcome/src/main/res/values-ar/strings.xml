@@ -3,4 +3,5 @@
     <string name="onboarding_welcome_start_button">ابدأ</string>
     <string name="onboarding_welcome_import_button">Importovat nastavení</string>
     <string name="onboarding_welcome_text">تطبيقُ أندرويد مفتوحُ المصدر، يركّز على الخصوصيّة وخالٍ من الإعلانات.</string>
+    <string name="onboarding_welcome_developed_by">تم تطويره من قبل فريق متخصص في MZLA Technologies ومجتمع عالمي من المتطوعين. جزء من عائلة موزيلا.</string>
 </resources>

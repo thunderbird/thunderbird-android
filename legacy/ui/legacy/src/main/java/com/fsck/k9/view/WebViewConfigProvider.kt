@@ -16,7 +16,7 @@ class WebViewConfigProvider(
     private fun createWebViewConfig(theme: Theme): WebViewConfig {
         return WebViewConfig(
             useDarkMode = theme == Theme.DARK,
-            autoFitWidth = generalSettingsManager.getSettings().isAutoFitWidth,
+            autoFitWidth = generalSettingsManager.getConfig().display.isAutoFitWidth,
             textZoom = K9.fontSizes.messageViewContentAsPercent,
         )
     }

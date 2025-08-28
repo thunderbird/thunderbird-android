@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_server_certificate_warning_title">Warning</string>
+    <string name="account_server_certificate_unknown_error_subtitle">Certificate error</string>
+    <string name="account_server_certificate_unknown_error_description_format">The app detected a potential security threat and did not continue to connect to <xliff:g id="serverName">%s</xliff:g>.\nIf you continue, attackers could try to steal information like your password or emails.</string>
 </resources>

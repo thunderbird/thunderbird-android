@@ -3,8 +3,8 @@ package net.thunderbird.feature.notification.api.sender
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.command.NotificationCommand
-import net.thunderbird.feature.notification.api.command.NotificationCommand.CommandOutcome.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.CommandOutcome.Success
+import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
+import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
 import net.thunderbird.feature.notification.api.content.Notification
 
 /**

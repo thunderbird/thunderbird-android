@@ -5,13 +5,13 @@
     <string name="account_server_settings_outgoing_top_bar_title">Nastavení serveru odchozí pošty</string>
     <string name="account_server_settings_validation_error_password_required">Heslo je vyžadováno.</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
-    <string name="account_server_settings_authentication_none">Žádné</string>
+    <string name="account_server_settings_authentication_none">Žádný</string>
     <string name="account_server_settings_authentication_password_encrypted">Šifrované heslo</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Zjistit jmenný prostor IMAP automaticky</string>
     <string name="account_server_settings_incoming_top_bar_title">Nastavení serveru příchozí pošty</string>
     <string name="account_server_settings_authentication_password_cleartext">Normální heslo</string>
     <string name="account_server_settings_password_authentication_title">Ověřte svou identitu</string>
-    <string name="account_server_settings_authentication_label">Ověření</string>
+    <string name="account_server_settings_authentication_label">Autentifikace</string>
     <string name="account_server_settings_connection_security_none">Žádné</string>
     <string name="account_server_settings_port_label">Port</string>
     <string name="account_server_settings_incoming_imap_compression_label">Komprimovat</string>

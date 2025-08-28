@@ -34,9 +34,9 @@ internal fun ServerCertificateErrorContent(
     state: State,
     scrollState: ScrollState,
 ) {
-    ResponsiveWidthContainer(modifier = Modifier.padding(innerPadding)) {
+    ResponsiveWidthContainer(modifier = Modifier.padding(innerPadding)) { contentPadding ->
         Column(
-            modifier = Modifier.verticalScroll(scrollState),
+            modifier = Modifier.verticalScroll(scrollState).padding(contentPadding),
         ) {
             CertificateErrorOverview(state)
 

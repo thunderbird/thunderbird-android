@@ -6,6 +6,7 @@ import assertk.assertions.isFalse
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.testing.TestClock
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -28,7 +29,10 @@ class CacheTest(data: CacheTestData<Any, Any?>) {
         fun data(): Collection<CacheTestData<Any, Any?>> {
             return listOf(
                 CacheTestData("InMemoryCache") { InMemoryCache() },
-                CacheTestData("ExpiringCache") { ExpiringCache(TestClock(), InMemoryCache()) },
+                CacheTestData("ExpiringCache") {
+                    @OptIn(ExperimentalTime::class)
+                    ExpiringCache(TestClock(), InMemoryCache())
+                },
                 CacheTestData("SynchronizedCache") { SynchronizedCache(InMemoryCache()) },
             )
         }

@@ -2,7 +2,7 @@ package com.fsck.k9.mail.internet;
 
 import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 
 import org.apache.commons.io.IOUtils;
 

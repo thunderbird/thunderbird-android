@@ -1,8 +1,11 @@
 package com.fsck.k9.preferences
 
+import net.thunderbird.core.preference.GeneralSettingsManager
+
 internal class IdentitySettingsUpgrader(
     private val settingsDescriptions: SettingsDescriptions = IdentitySettingsDescriptions.SETTINGS,
     private val upgraders: Map<Int, SettingsUpgrader> = IdentitySettingsDescriptions.UPGRADERS,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun upgrade(
         targetVersion: Int,
@@ -19,6 +22,7 @@ internal class IdentitySettingsUpgrader(
             upgraders,
             settingsDescriptions,
             identity.settings,
+            generalSettingsManager,
         )
 
         return identity.copy(settings = upgradedSettings)

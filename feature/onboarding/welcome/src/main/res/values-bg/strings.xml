@@ -2,4 +2,6 @@
 <resources>
     <string name="onboarding_welcome_start_button">Начало</string>
     <string name="onboarding_welcome_import_button">Прехвърляне на настройки</string>
+    <string name="onboarding_welcome_text">Свободно приложение за електронна поща под Android и с отворен код.</string>
+    <string name="onboarding_welcome_developed_by">Разработено от екип от специалисти в MZLA Technologies и глобална общност от доброволци. Част от семейството на Mozilla.</string>
 </resources>

@@ -1,13 +1,25 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
+import kotlin.time.ExperimentalTime
+import net.thunderbird.core.logging.legacy.DebugLogConfigurator
 import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangeBroker
 import net.thunderbird.core.preference.PreferenceChangePublisher
-import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsManager
+import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceManager
+import net.thunderbird.core.preference.debugging.DefaultDebuggingSettingsPreferenceManager
+import net.thunderbird.core.preference.display.DefaultDisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
+import net.thunderbird.core.preference.display.coreSettings.DefaultDisplayCoreSettingsPreferenceManager
+import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
+import net.thunderbird.core.preference.display.inboxSettings.DefaultDisplayInboxSettingsPreferenceManager
+import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
+import net.thunderbird.core.preference.network.DefaultNetworkSettingsPreferenceManager
+import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
+import net.thunderbird.core.preference.notification.DefaultNotificationPreferenceManager
+import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsPreferenceManager
-import net.thunderbird.core.preference.privacy.PrivacySettingsManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
 import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.core.qualifier.named
@@ -32,26 +44,81 @@ val preferencesModule = module {
     factory<AccountManager<*>> { get<LegacyAccountManager>() }
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
+            logger = get(),
             storage = get<Preferences>().storage,
             storageEditor = get<Preferences>().createStorageEditor(),
-            changeBroker = get(),
         )
     }
-    single<PrivacySettingsManager> { DefaultPrivacySettingsManager(preferenceManager = get()) }
+    single<NotificationPreferenceManager> {
+        DefaultNotificationPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
+    single<DisplayCoreSettingsPreferenceManager> {
+        DefaultDisplayCoreSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
+    single<DisplayInboxSettingsPreferenceManager> {
+        DefaultDisplayInboxSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
+    single<DisplaySettingsPreferenceManager> {
+        DefaultDisplaySettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+            coreSettingsPreferenceManager = get(),
+        )
+    }
+    single<NetworkSettingsPreferenceManager> {
+        DefaultNetworkSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+        )
+    }
+    single<DebuggingSettingsPreferenceManager> {
+        DefaultDebuggingSettingsPreferenceManager(
+            logger = get(),
+            storage = get<Preferences>().storage,
+            storageEditor = get<Preferences>().createStorageEditor(),
+            logLevelManager = get(),
+        )
+    }
+    single<DebugLogConfigurator> {
+        DebugLogConfigurator(
+            syncDebugCompositeSink = get(named("syncDebug")),
+            syncDebugFileLogSink = get(named("syncDebug")),
+        )
+    }
     single {
-        RealGeneralSettingsManager(
+        DefaultGeneralSettingsManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             changePublisher = get(),
-            privacySettingsManager = get(),
+            privacySettingsPreferenceManager = get(),
+            notificationPreferenceManager = get(),
+            displaySettingsSettingsPreferenceManager = get(),
+            displayCoreSettingsPreferenceManager = get(),
+            displayInboxSettingsPreferenceManager = get(),
+            networkSettingsPreferenceManager = get(),
+            debuggingSettingsPreferenceManager = get(),
+            debugLogConfigurator = get(),
         )
     } bind GeneralSettingsManager::class
     single {
-        RealDrawerConfigManager(
+        DefaultDrawerConfigManager(
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
-            changeBroker = get(),
-            generalSettingsManager = get(),
+            displayInboxSettingsPreferenceManager = get(),
         )
     } bind DrawerConfigManager::class
 
@@ -63,25 +130,28 @@ val preferencesModule = module {
 
     factory { AccountSettingsValidator() }
 
-    factory { IdentitySettingsUpgrader() }
-    factory { FolderSettingsUpgrader() }
-    factory { ServerSettingsUpgrader() }
+    factory { IdentitySettingsUpgrader(generalSettingsManager = get()) }
+    factory { FolderSettingsUpgrader(generalSettingsManager = get()) }
+    factory { ServerSettingsUpgrader(generalSettingsManager = get()) }
 
     factory {
         AccountSettingsUpgrader(
             identitySettingsUpgrader = get(),
             folderSettingsUpgrader = get(),
             serverSettingsUpgrader = get(),
+            generalSettingsManager = get(),
         )
     }
 
     factory {
+        @OptIn(ExperimentalTime::class)
         AccountSettingsWriter(
             preferences = get(),
             localFoldersCreator = get(),
             clock = get(),
             serverSettingsDtoSerializer = get(),
             context = get(),
+            generalSettingsManager = get(),
         )
     }
 

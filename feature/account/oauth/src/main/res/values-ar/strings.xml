@@ -9,4 +9,6 @@
     <string name="account_oauth_error_canceled">تم إلغاء التفويض</string>
     <string name="account_oauth_error_not_supported">استخدام OAuth 2.0 مع هذا المزود غير مدعوم حاليًا.</string>
     <string name="account_oauth_error_failed">فشل التفويض مع الخطأ التالي: <xliff:g id="error">%s</xliff:g></string>
+    <string name="account_oauth_google_sign_in_support_text">إذا واجهت مشاكل عند تسجيل الدخول باستخدام جوجل، فيُرجى الرجوع إلى {placeHolder}.</string>
+    <string name="account_oauth_google_sign_in_support_text_link_text">مقالة الدعم</string>
 </resources>

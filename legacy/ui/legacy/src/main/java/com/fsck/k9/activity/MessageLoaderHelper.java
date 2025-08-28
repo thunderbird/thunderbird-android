@@ -23,7 +23,7 @@ import app.k9mail.legacy.message.controller.MessagingListener;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
 import com.fsck.k9.helper.RetainFragment;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
 import com.fsck.k9.mailstore.MessageViewInfo;

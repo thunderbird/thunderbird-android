@@ -53,13 +53,14 @@ internal fun PermissionsContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(innerPadding),
-        ) {
+        ) { contentPadding ->
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .verticalScroll(state = scrollState),
+                    .verticalScroll(state = scrollState)
+                    .padding(contentPadding),
             ) {
                 HeaderArea(brandName = brandName)
 
@@ -152,7 +153,7 @@ private fun BottomBar(
     ) {
         ResponsiveWidthContainer(
             modifier = Modifier.fillMaxWidth(),
-        ) {
+        ) { contentPadding ->
             Row(
                 modifier = Modifier
                     .padding(
@@ -161,7 +162,8 @@ private fun BottomBar(
                         top = MainTheme.spacings.default,
                         bottom = MainTheme.spacings.double,
                     )
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(contentPadding),
                 horizontalArrangement = Arrangement.End,
             ) {
                 Crossfade(

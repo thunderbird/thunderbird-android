@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="debug_settings_screen_title">Secret Debug Settings Screen</string>
+    <string name="debug_settings_notifications_loading">Loading…</string>
+    <string name="debug_settings_notifications_trigger_notification">Trigger notification</string>
+    <string name="debug_settings_notifications_single_mail_sender">Sender</string>
+    <string name="debug_settings_notifications_single_mail_subject">Subject</string>
+    <string name="debug_settings_notifications_single_mail_summary">Summary</string>
+    <string name="debug_settings_notifications_single_mail_preview">Preview</string>
+    <string name="debug_settings_notifications_common_notification_information">Common notification information</string>
+    <string name="debug_settings_notifications_in_app_notification">In-App notification</string>
+    <string name="debug_settings_notifications_title">Notifications</string>
+    <string name="debug_settings_notifications_system_notification">System notification</string>
+    <string name="debug_settings_notifications_preparing_notification">Preparing notification %1$s</string>
+    <string name="debug_settings_notification_status_log">Notification status log</string>
+    <string name="debug_settings_notifications_status">"Status: "</string>
+    <string name="debug_settings_notifications_clear_status_log">Clear status log</string>
+</resources>

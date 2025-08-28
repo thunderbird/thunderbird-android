@@ -3,7 +3,7 @@ package com.fsck.k9.mail.internet;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import org.apache.james.mime4j.util.MimeUtil;

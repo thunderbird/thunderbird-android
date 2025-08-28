@@ -12,8 +12,9 @@ import android.database.sqlite.SQLiteException;
 
 import com.fsck.k9.K9;
 import com.fsck.k9.helper.FileHelper;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.preference.GeneralSettingsManager;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -75,12 +76,14 @@ public class LockableDatabase {
     private ThreadLocal<Boolean> inTransaction = new ThreadLocal<>();
 
     private SchemaDefinition mSchemaDefinition;
+    private GeneralSettingsManager generalSettingsManager;
 
     public LockableDatabase(Context context, StorageFilesProvider storageFilesProvider,
-            SchemaDefinition schemaDefinition) {
+            SchemaDefinition schemaDefinition, GeneralSettingsManager generalSettingsManager) {
         this.context = context;
         this.storageFilesProvider = storageFilesProvider;
         this.mSchemaDefinition = schemaDefinition;
+        this.generalSettingsManager = generalSettingsManager;
     }
 
     /**
@@ -138,7 +141,7 @@ public class LockableDatabase {
         lockRead();
         final boolean doTransaction = transactional && inTransaction.get() == null;
         try {
-            final boolean debug = K9.isDebugLoggingEnabled();
+            final boolean debug = generalSettingsManager.getConfig().getDebugging().isDebugLoggingEnabled();
             if (doTransaction) {
                 inTransaction.set(Boolean.TRUE);
                 mDb.beginTransaction();

@@ -36,6 +36,7 @@ dependencies {
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.migration.provider)
     implementation(projects.feature.notification.api)
+    implementation(projects.feature.notification.impl)
     implementation(projects.feature.widget.messageList)
 
     implementation(projects.mail.protocols.imap)

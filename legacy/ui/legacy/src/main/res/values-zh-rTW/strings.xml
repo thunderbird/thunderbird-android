@@ -894,4 +894,11 @@
     <string name="open_camera">打開相機</string>
     <string name="attach_file">添加附件</string>
     <string name="camera_permission_denied">相機權限已被拒絕！無法拍攝照片</string>
+    <string name="debug_enable_sync_debug_logging_title">啓用同步調試記錄</string>
+    <string name="debug_enable_sync_debug_logging_summary">記錄24小時的同步診斷信息</string>
+    <string name="debug_sync_export_logs_title">導出同步日誌</string>
+    <string name="debug_open_secret_debug_screen">開啓隱藏偵錯畫面</string>
+    <string name="swipe_action_archive_folder_not_set">設置歸檔文件夾</string>
+    <string name="swipe_action_change_swipe_gestures">更改\n滑動手勢</string>
+    <string name="archiving_not_available_for_this_account">該帳號無法使用歸檔功能。</string>
 </resources>

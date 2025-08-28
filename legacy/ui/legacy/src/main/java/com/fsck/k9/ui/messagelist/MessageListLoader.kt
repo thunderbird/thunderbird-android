@@ -10,9 +10,9 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.sql.SqlWhereClause
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 
 class MessageListLoader(
     private val preferences: Preferences,

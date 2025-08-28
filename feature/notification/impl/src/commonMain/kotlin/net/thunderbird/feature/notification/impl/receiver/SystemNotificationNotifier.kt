@@ -10,8 +10,4 @@ import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
  * **Note:** The current implementation is a placeholder and needs to be completed
  * as part of GitHub Issue #9245.
  */
-internal class SystemNotificationNotifier : NotificationNotifier<SystemNotification> {
-    override fun show(notification: SystemNotification) {
-        TODO("Implementation on GitHub Issue #9245")
-    }
-}
+internal interface SystemNotificationNotifier : NotificationNotifier<SystemNotification>

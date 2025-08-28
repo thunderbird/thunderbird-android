@@ -43,10 +43,6 @@ dependencyResolutionManagement {
     }
 }
 
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
-}
-
 include(
     ":app-k9mail",
     ":app-thunderbird",
@@ -117,6 +113,7 @@ include(
 include(
     ":feature:notification:api",
     ":feature:notification:impl",
+    ":feature:notification:testing",
 )
 
 include(
@@ -129,7 +126,7 @@ include(
 )
 
 include(
-    ":feature:search",
+    ":feature:search:impl-legacy",
 )
 
 include(
@@ -246,6 +243,10 @@ include(
 
 include(
     ":quality:konsist",
+)
+
+include(
+    ":feature:debug-settings",
 )
 
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {

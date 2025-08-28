@@ -6,7 +6,7 @@
     <string name="account_server_validation_error_network">Hálózati hiba</string>
     <string name="account_server_validation_outgoing_success">A kimenő kiszolgáló beállításai érvényesek</string>
     <string name="account_server_validation_error_unknown">Ismeretlen hiba</string>
-    <string name="account_server_validation_sign_in">Bejelentkezés</string>
+    <string name="account_server_validation_sign_in">Jelentkezzen be</string>
     <string name="account_server_validation_outgoing_loading_error">A kimenő kiszolgáló beállítások ellenőrzése sikertelen volt</string>
     <string name="account_server_validation_incoming_success">A bejövő kiszolgáló beállításai érvényesek</string>
     <string name="account_server_validation_incoming_loading_error">A bejövő kiszolgáló beállítások ellenőrzése sikertelen volt</string>

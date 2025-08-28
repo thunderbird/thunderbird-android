@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.jetbrains.annotations.NotNull;
+import net.thunderbird.core.common.exception.MessagingException;
 
 
 public interface Part {

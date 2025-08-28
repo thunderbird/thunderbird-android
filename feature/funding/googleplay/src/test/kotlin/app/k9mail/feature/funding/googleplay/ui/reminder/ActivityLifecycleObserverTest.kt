@@ -5,12 +5,14 @@ import androidx.lifecycle.testing.TestLifecycleOwner
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Instant
 import net.thunderbird.core.testing.TestClock
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import org.junit.Rule
 
+@OptIn(ExperimentalTime::class)
 class ActivityLifecycleObserverTest {
 
     @get:Rule

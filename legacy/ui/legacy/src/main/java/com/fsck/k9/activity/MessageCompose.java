@@ -95,7 +95,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
@@ -124,7 +124,8 @@ import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
-import net.thunderbird.feature.search.LocalMessageSearch;
+import net.thunderbird.feature.search.legacy.LocalMessageSearch;
+import org.jetbrains.annotations.NotNull;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
 import net.thunderbird.core.logging.legacy.Log;
@@ -655,7 +656,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
-                .setHideTimeZone(generalSettingsManager.getPrivacySettings().isHideTimeZone())
+                .setHideTimeZone(generalSettingsManager.getConfig().getPrivacy().isHideTimeZone())
                 .setInReplyTo(repliedToMessageId)
                 .setReferences(referencedMessageIds)
                 .setRequestReadReceipt(requestReadReceipt)
@@ -1779,7 +1780,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             }
 
-            ProgressDialogFragment fragment = ProgressDialogFragment.newInstance(title,
+            ProgressDialogFragment fragment = ProgressDialogFragment.Companion.newInstance(title,
                     getString(R.string.fetching_attachment_dialog_message));
             fragment.show(getSupportFragmentManager(), FRAGMENT_WAITING_FOR_ATTACHMENT);
         }

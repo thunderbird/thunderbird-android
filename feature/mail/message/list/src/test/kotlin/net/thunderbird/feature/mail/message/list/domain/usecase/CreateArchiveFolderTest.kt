@@ -7,7 +7,6 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import com.fsck.k9.backend.api.FolderInfo
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.folders.FolderServerId
 import dev.mokkery.matcher.any
 import dev.mokkery.matcher.eq
@@ -23,6 +22,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.backend.api.folder.RemoteFolderCreationOutcome
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.FolderType

@@ -38,19 +38,20 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderType;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalFolder.DataLocation;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
-import net.thunderbird.feature.search.sql.SqlWhereClause;
-import kotlinx.datetime.Clock;
+import kotlin.time.Clock;
 import net.thunderbird.core.android.account.LegacyAccount;
-import net.thunderbird.feature.search.LocalMessageSearch;
-import net.thunderbird.feature.search.api.SearchAttribute;
-import net.thunderbird.feature.search.api.MessageSearchField;
+import net.thunderbird.core.preference.GeneralSettingsManager;
+import net.thunderbird.feature.search.legacy.LocalMessageSearch;
+import net.thunderbird.feature.search.legacy.api.SearchAttribute;
+import net.thunderbird.feature.search.legacy.api.MessageSearchField;
+import net.thunderbird.feature.search.legacy.sql.SqlWhereClause;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.codec.Base64InputStream;
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream;
@@ -165,28 +166,30 @@ public class LocalStore {
     private final LegacyAccount account;
     private final LockableDatabase database;
     private final OutboxStateRepository outboxStateRepository;
+    private GeneralSettingsManager generalSettingsManager;
 
-    static LocalStore createInstance(LegacyAccount account, Context context) throws MessagingException {
-        return new LocalStore(account, context);
+    static LocalStore createInstance(LegacyAccount account, Context context, GeneralSettingsManager generalSettingsManager) throws MessagingException {
+        return new LocalStore(account, context, generalSettingsManager);
     }
 
     /**
      * local://localhost/path/to/database/uuid.db
-     * This constructor is only used by {@link LocalStoreProvider#getInstance(LegacyAccount)}
+     * This constructor is only used by {@link LocalStoreProvider#getInstance(LegacyAccount,GeneralSettingsManager)}
      */
-    private LocalStore(final LegacyAccount account, final Context context) throws MessagingException {
+    private LocalStore(final LegacyAccount account, final Context context, final GeneralSettingsManager generalSettingsManager) throws MessagingException {
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
         StorageFilesProviderFactory storageFilesProviderFactory = DI.get(StorageFilesProviderFactory.class);
         storageFilesProvider = storageFilesProviderFactory.createStorageFilesProvider(account.getUuid());
 
         this.account = account;
+        this.generalSettingsManager = generalSettingsManager;
 
         SchemaDefinitionFactory schemaDefinitionFactory = DI.get(SchemaDefinitionFactory.class);
         RealMigrationsHelper migrationsHelper = new RealMigrationsHelper();
         SchemaDefinition schemaDefinition = schemaDefinitionFactory.createSchemaDefinition(migrationsHelper);
 
-        database = new LockableDatabase(context, storageFilesProvider, schemaDefinition);
+        database = new LockableDatabase(context, storageFilesProvider, schemaDefinition, generalSettingsManager);
         database.open();
 
         Clock clock = DI.get(Clock.class);
@@ -211,15 +214,15 @@ public class LocalStore {
     }
 
     public LocalFolder getFolder(String serverId) {
-        return new LocalFolder(this, serverId);
+        return new LocalFolder(this, serverId, generalSettingsManager);
     }
 
     public LocalFolder getFolder(long folderId) {
-        return new LocalFolder(this, folderId);
+        return new LocalFolder(this, folderId, generalSettingsManager);
     }
 
     public LocalFolder getFolder(String serverId, String name, FolderType type) {
-        return new LocalFolder(this, serverId, name, type);
+        return new LocalFolder(this, serverId, name, type, generalSettingsManager);
     }
 
     // TODO this takes about 260-300ms, seems slow.
@@ -239,7 +242,7 @@ public class LocalStore {
                             continue;
                         }
                         long folderId = cursor.getLong(FOLDER_ID_INDEX);
-                        LocalFolder folder = new LocalFolder(LocalStore.this, folderId);
+                        LocalFolder folder = new LocalFolder(LocalStore.this, folderId, generalSettingsManager);
                         folder.open(cursor);
 
                         folders.add(folder);
@@ -373,7 +376,7 @@ public class LocalStore {
                     cursor = db.rawQuery(queryString + " LIMIT 10", placeHolders);
 
                     while (cursor.moveToNext()) {
-                        LocalMessage message = new LocalMessage(LocalStore.this, null, folder);
+                        LocalMessage message = new LocalMessage(LocalStore.this, null, folder, generalSettingsManager);
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
@@ -382,7 +385,7 @@ public class LocalStore {
                     cursor = db.rawQuery(queryString + " LIMIT -1 OFFSET 10", placeHolders);
 
                     while (cursor.moveToNext()) {
-                        LocalMessage message = new LocalMessage(LocalStore.this, null, folder);
+                        LocalMessage message = new LocalMessage(LocalStore.this, null, folder, generalSettingsManager);
                         message.populateFromGetMessageCursor(cursor);
 
                         messages.add(message);
@@ -1000,7 +1003,7 @@ public class LocalStore {
                 while (cursor.moveToNext()) {
                     long folderId = cursor.getLong(MSG_INDEX_FOLDER_ID);
                     LocalFolder folder = getFolder(folderId);
-                    LocalMessage message = new LocalMessage(LocalStore.this, null, folder);
+                    LocalMessage message = new LocalMessage(LocalStore.this, null, folder, generalSettingsManager);
                     message.populateFromGetMessageCursor(cursor);
 
                     Integer notificationId = CursorKt.getIntOrNull(cursor, MSG_INDEX_NOTIFICATION_ID);

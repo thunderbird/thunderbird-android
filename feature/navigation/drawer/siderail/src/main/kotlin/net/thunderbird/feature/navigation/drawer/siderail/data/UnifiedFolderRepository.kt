@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.map
 import net.thunderbird.feature.navigation.drawer.siderail.domain.DomainContract
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolder
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayUnifiedFolderType
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.api.SearchAttribute
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.api.SearchAttribute
 
 internal class UnifiedFolderRepository(
     private val messageCountsProvider: MessageCountsProvider,

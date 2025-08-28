@@ -65,7 +65,7 @@
     <string name="account_setup_special_folders_error_message">فشل الحصول على قائمة المجلدات من الخادم</string>
     <string name="account_setup_special_folders_success_message">لقد تم إعداد جميع المجلدات الخاصة تلقائيًا بواسطة الخادم.</string>
     <string name="account_setup_special_folders_sent_folder_label">مجلد البريد المرسَل</string>
-    <string name="account_setup_special_folders_folder_none">لا شيء</string>
+    <string name="account_setup_special_folders_folder_none">بدون</string>
     <string name="account_setup_special_folders_folder_automatic">تلقائي (%s)</string>
     <string name="account_setup_options_email_signature_label">توقيع البريد الإلكتروني</string>
     <string name="account_setup_options_show_notifications_label">عرض الإشعارات</string>

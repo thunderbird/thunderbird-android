@@ -1,7 +1,7 @@
 package com.fsck.k9.mail.store.pop3;
 
 
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 
 
 /**

@@ -897,4 +897,6 @@
     <string name="debug_sync_export_logs_title">同期ログをエクスポート</string>
     <string name="swipe_action_archive_folder_not_set">アーカイブフォルダーを設定してください</string>
     <string name="archiving_not_available_for_this_account">このアカウントではアーカイブは利用できません。</string>
+    <string name="swipe_action_change_swipe_gestures">スワイプ操作の \n変更</string>
+    <string name="debug_open_secret_debug_screen">隠しデバッグ画面を開く</string>
 </resources>

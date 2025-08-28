@@ -14,7 +14,7 @@ dependencies {
     implementation(projects.core.android.account)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
-    implementation(projects.feature.search)
+    implementation(projects.feature.search.implLegacy)
 
     implementation(projects.mail.common)
 }

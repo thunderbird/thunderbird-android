@@ -8,7 +8,7 @@
     <string name="account_server_settings_authentication_label">Автентифікація</string>
     <string name="account_server_settings_username_label">Ім\'я користувача</string>
     <string name="account_server_settings_connection_security_none">Немає</string>
-    <string name="account_server_settings_authentication_none">Немає</string>
+    <string name="account_server_settings_authentication_none">Жоден</string>
     <string name="account_server_settings_authentication_password_cleartext">Звичайний пароль</string>
     <string name="account_server_settings_authentication_password_encrypted">Зашифрований пароль</string>
     <string name="account_server_settings_authentication_client_certificate">Сертифікат клієнта</string>

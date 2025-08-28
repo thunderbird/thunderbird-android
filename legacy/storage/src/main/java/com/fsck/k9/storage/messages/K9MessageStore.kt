@@ -9,20 +9,22 @@ import app.k9mail.legacy.mailstore.SaveMessageData
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import java.util.Date
+import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.mail.folder.api.FolderDetails
-import net.thunderbird.feature.search.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
 class K9MessageStore(
     database: LockableDatabase,
     storageFilesProvider: StorageFilesProvider,
     basicPartInfoExtractor: BasicPartInfoExtractor,
+    generalSettingsManager: GeneralSettingsManager,
 ) : MessageStore {
-    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider)
+    private val attachmentFileManager = AttachmentFileManager(storageFilesProvider, generalSettingsManager)
     private val threadMessageOperations = ThreadMessageOperations()
     private val saveMessageOperations = SaveMessageOperations(
         database,

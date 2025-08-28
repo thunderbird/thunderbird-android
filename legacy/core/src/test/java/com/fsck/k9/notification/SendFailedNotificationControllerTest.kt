@@ -5,15 +5,23 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
-import net.thunderbird.core.preference.AppTheme
-import net.thunderbird.core.preference.BackgroundSync
 import net.thunderbird.core.preference.GeneralSettings
-import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.network.NetworkSettings
+import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
+import net.thunderbird.core.testing.TestClock
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
+import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.GlobalContext.stopKoin
+import org.koin.dsl.module
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
@@ -40,39 +48,30 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
         resourceProvider = resourceProvider,
         generalSettingsManager = mock {
             on { getSettings() } doReturn GeneralSettings(
-                backgroundSync = BackgroundSync.ALWAYS,
-                showRecentChanges = true,
-                appTheme = AppTheme.DARK,
-                messageComposeTheme = SubTheme.DARK,
-                isShowCorrespondentNames = true,
-                fixedMessageViewTheme = true,
-                messageViewTheme = SubTheme.DARK,
-                isShowStarredCount = false,
-                isShowUnifiedInbox = false,
-                isShowMessageListStars = false,
-                isShowAnimations = false,
-                shouldShowSetupArchiveFolderDialog = false,
-                isMessageListSenderAboveSubject = false,
-                isShowContactName = false,
-                isShowContactPicture = false,
-                isChangeContactNameColor = false,
-                isColorizeMissingContactPictures = false,
-                isUseBackgroundAsUnreadIndicator = false,
-                isShowComposeButtonOnMessageList = false,
-                isThreadedViewEnabled = false,
-                isUseMessageViewFixedWidthFont = false,
-                isAutoFitWidth = false,
-                isQuietTime = false,
-                quietTimeStarts = "7:00",
-                quietTimeEnds = "7:00",
-                isQuietTimeEnabled = false,
-                privacy = PrivacySettings(
-                    isHideTimeZone = false,
-                    isHideUserAgent = false,
-                ),
+                display = DisplaySettings(),
+                network = NetworkSettings(),
+                notification = NotificationPreference(),
+                privacy = PrivacySettings(),
             )
         },
     )
+
+    @OptIn(ExperimentalTime::class)
+    @Before
+    fun setUp() {
+        startKoin {
+            modules(
+                module {
+                    single<Clock> { TestClock() }
+                },
+            )
+        }
+    }
+
+    @After
+    fun tearDown() {
+        stopKoin()
+    }
 
     @Test
     fun testShowSendFailedNotification() {

@@ -103,7 +103,7 @@
     <string name="size_format_bytes">%d B</string>
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
-        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> új üzenetek</item>
+        <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> új üzenet</item>
     </plurals>
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> további: <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Válasz</string>
@@ -897,4 +897,13 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="dialog_confirm_empty_spam_title">Levélszemét ürítésének megerősítése</string>
     <string name="dialog_confirm_empty_spam_message">Üríti a levélszemét mappát?</string>
     <string name="expand_content_description">Kibontás</string>
+    <string name="open_camera">Fényképezőgép Megnyitása</string>
+    <string name="attach_file">Fájl Csatolása</string>
+    <string name="camera_permission_denied">A kamerához való hozzáférés nincs engedélyezve! Nem készíthető fénykép</string>
+    <string name="debug_enable_sync_debug_logging_title">Sync debug logolás engedélyezése</string>
+    <string name="debug_enable_sync_debug_logging_summary">Log sync diagnosztikai információ az elmúlt 24 órából</string>
+    <string name="debug_sync_export_logs_title">Sync logok exportálása</string>
+    <string name="debug_open_secret_debug_screen">Titkos debug képernyő megnyitása</string>
+    <string name="swipe_action_archive_folder_not_set">Archívum mappa készítése</string>
+    <string name="archiving_not_available_for_this_account">Az archiválás nem elérhető ezen a fiókon.</string>
 </resources>

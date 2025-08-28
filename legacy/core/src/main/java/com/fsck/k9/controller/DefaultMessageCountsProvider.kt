@@ -21,9 +21,9 @@ import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchAccount
-import net.thunderbird.feature.search.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchAccount
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 
 internal class DefaultMessageCountsProvider(
     private val accountManager: AccountManager,

@@ -47,9 +47,10 @@ internal fun WelcomeContent(
     Surface(
         modifier = modifier,
     ) {
-        ResponsiveContent {
+        ResponsiveContent { contentPadding ->
             LazyColumnWithHeaderFooter(
                 modifier = Modifier.fillMaxSize(),
+                contentPadding = contentPadding,
                 verticalArrangement = Arrangement.SpaceEvenly,
                 header = {
                     WelcomeHeaderSection(title = appName)

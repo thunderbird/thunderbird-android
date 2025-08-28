@@ -11,7 +11,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.activity.MessageList.Companion.intentDisplaySearch
-import net.thunderbird.feature.search.SearchAccount.Companion.createUnifiedInboxAccount
+import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedInboxAccount
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

@@ -7,7 +7,7 @@
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
     <string name="settings_import_password_required">Ange lösenord</string>
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
-    <string name="settings_import_authorization_required">Logga in</string>
+    <string name="settings_import_authorization_required">Vänligen logga in</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">Logga in och ange lösenord</string>
     <string name="settings_import_failure">Det gick inte att importera inställningar</string>

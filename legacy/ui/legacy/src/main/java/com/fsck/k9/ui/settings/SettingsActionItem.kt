@@ -9,11 +9,12 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
+@Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
 internal class SettingsActionItem(
     override var identifier: Long,
     val text: String,
-    @IdRes val navigationAction: Int,
-    @DrawableRes val icon: Int,
+    @param:IdRes val navigationAction: Int,
+    @param:DrawableRes val icon: Int,
 ) : AbstractItem<SettingsActionItem.ViewHolder>() {
     override val type = R.id.settings_list_action_item
 

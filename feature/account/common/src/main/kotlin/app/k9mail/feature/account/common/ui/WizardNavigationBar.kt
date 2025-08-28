@@ -27,7 +27,7 @@ fun WizardNavigationBar(
         modifier = Modifier
             .fillMaxWidth()
             .then(modifier),
-    ) {
+    ) { contentPadding ->
         Row(
             modifier = Modifier
                 .padding(
@@ -36,6 +36,7 @@ fun WizardNavigationBar(
                     end = MainTheme.spacings.quadruple,
                     bottom = MainTheme.spacings.double,
                 )
+                .padding(contentPadding)
                 .fillMaxWidth(),
             horizontalArrangement = getHorizontalArrangement(state),
         ) {

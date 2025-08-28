@@ -130,7 +130,7 @@
     <string name="expunge_action">Izbrisati</string>
     <string name="status_invalid_id_error">Poruka nije pronađena</string>
     <string name="status_loading_error">Greška pri učitavanju poruke</string>
-    <string name="load_more_messages_fmt">Učitati \u0020do <xliff:g id="messages_to_load">%d</xliff:g> više</string>
+    <string name="load_more_messages_fmt">Učitati do <xliff:g id="messages_to_load">%d</xliff:g> više</string>
     <string name="size_format_gigabytes">%.1f GB</string>
     <string name="size_format_kilobytes">%.1f kB</string>
     <string name="size_format_bytes">%d B</string>

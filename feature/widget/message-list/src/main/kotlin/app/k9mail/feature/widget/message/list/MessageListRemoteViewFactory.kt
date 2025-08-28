@@ -12,8 +12,8 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.activity.MessageList
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchAccount
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -36,7 +36,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
             unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
         ).relatedSearch
 
-        senderAboveSubject = generalSettingsManager.getSettings().isMessageListSenderAboveSubject
+        senderAboveSubject = generalSettingsManager.getConfig().display.inboxSettings.isMessageListSenderAboveSubject
         readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read)
         unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread)
     }
@@ -49,7 +49,10 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
         // TODO: Use same sort order that is used for the Unified Inbox inside the app
         val messageListConfig = MessageListConfig(
             search = unifiedInboxSearch,
-            showingThreadedList = generalSettingsManager.getSettings().isThreadedViewEnabled,
+            showingThreadedList = generalSettingsManager.getConfig()
+                .display
+                .inboxSettings
+                .isThreadedViewEnabled,
             sortType = SortType.SORT_DATE,
             sortAscending = false,
             sortDateAscending = false,

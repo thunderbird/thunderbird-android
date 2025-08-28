@@ -11,8 +11,8 @@ import com.fsck.k9.activity.MessageList
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchAccount
 
 class UnreadWidgetDataProvider(
     private val context: Context,

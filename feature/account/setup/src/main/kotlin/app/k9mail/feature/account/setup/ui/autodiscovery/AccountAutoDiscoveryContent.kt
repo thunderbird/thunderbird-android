@@ -48,7 +48,7 @@ internal fun AccountAutoDiscoveryContent(
             .fillMaxSize()
             .testTagAsResourceId("AccountAutoDiscoveryContent")
             .then(modifier),
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -56,6 +56,7 @@ internal fun AccountAutoDiscoveryContent(
                 modifier = Modifier
                     .weight(1f)
                     .verticalScroll(scrollState)
+                    .padding(paddingValues)
                     .imePadding(),
             ) {
                 AppTitleTopHeader(

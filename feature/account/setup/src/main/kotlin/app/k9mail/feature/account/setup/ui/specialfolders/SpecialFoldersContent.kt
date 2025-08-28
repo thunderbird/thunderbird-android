@@ -33,8 +33,8 @@ fun SpecialFoldersContent(
             .testTagAsResourceId("SpecialFoldersContent")
             .padding(contentPadding)
             .then(modifier),
-    ) {
-        Column {
+    ) { contentPadding ->
+        Column(Modifier.padding(contentPadding)) {
             AppTitleTopHeader(
                 title = brandName,
             )

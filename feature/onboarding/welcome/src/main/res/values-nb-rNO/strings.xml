@@ -3,5 +3,5 @@
     <string name="onboarding_welcome_start_button">Kom i gang</string>
     <string name="onboarding_welcome_import_button">Importér innstillinger</string>
     <string name="onboarding_welcome_text">En privatlivsfokusert og reklamefri e-postapp for Android med åpen kildekode.</string>
-    <string name="onboarding_welcome_developed_by">Utviklet av et dedikert lag hos MZLA Technologies og et globalt samfunn av frivillige. En del av Mozilla-familien.</string>
+    <string name="onboarding_welcome_developed_by">Utviklet av et dedikert team hos MZLA Technologies og et globalt samfunn frivillige. En del av Mozilla-familien.</string>
 </resources>

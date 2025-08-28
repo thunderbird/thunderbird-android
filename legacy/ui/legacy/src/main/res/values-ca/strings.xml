@@ -908,4 +908,8 @@
     <string name="debug_enable_sync_debug_logging_title">Activar sincronització de registres de depuració</string>
     <string name="debug_enable_sync_debug_logging_summary">El registre sincronitza informació de diagnòstic durant 24 hores</string>
     <string name="debug_sync_export_logs_title">Exportar registres de sincronització</string>
+    <string name="archiving_not_available_for_this_account">Arxivar no està disponible per aquest compte.</string>
+    <string name="swipe_action_archive_folder_not_set">Establir carpeta d\'arxiu</string>
+    <string name="swipe_action_change_swipe_gestures">Gestos en lliscar</string>
+    <string name="debug_open_secret_debug_screen">Obrir la pantalla secreta per desenvolupadors</string>
 </resources>

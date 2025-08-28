@@ -901,4 +901,5 @@
     <string name="swipe_action_change_swipe_gestures">Feiaksjes \noanpasse</string>
     <string name="swipe_action_archive_folder_not_set">Argyfmap ynstelle</string>
     <string name="archiving_not_available_for_this_account">Argivearring is foar dizze account net beskikber.</string>
+    <string name="debug_open_secret_debug_screen">Geheim debugskerm iepenje</string>
 </resources>

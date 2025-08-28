@@ -39,7 +39,7 @@ internal fun PreferenceViewWithDialog(
         },
         modifier = modifier,
     ) { innerPadding ->
-        ResponsiveWidthContainer {
+        ResponsiveWidthContainer { contentPadding ->
             PreferenceList(
                 preferences = preferences,
                 onItemClick = { index, _ ->
@@ -47,7 +47,9 @@ internal fun PreferenceViewWithDialog(
                     showDialog = true
                 },
                 onPreferenceChange = onPreferenceChange,
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(contentPadding),
             )
         }
     }

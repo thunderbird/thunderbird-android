@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">是否已在使用 Thunderbird 電腦版？</string>
-    <string name="onboarding_migration_thunderbird_new_account_button_text">新增電子郵件</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">立即新增電子郵件帳戶</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">匯入設定</string>
     <string name="onboarding_migration_thunderbird_new_account_title">是 Thunderbird 新手嗎？</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">前往 Thunderbird 電腦版的：</string>

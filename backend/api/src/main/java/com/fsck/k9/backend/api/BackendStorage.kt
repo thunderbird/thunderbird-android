@@ -1,8 +1,8 @@
 package com.fsck.k9.backend.api
 
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.mail.MessagingException
 import java.io.Closeable
+import net.thunderbird.core.common.exception.MessagingException
 
 interface BackendStorage {
     fun getFolder(folderServerId: String): BackendFolder

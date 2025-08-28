@@ -16,6 +16,7 @@ fun ButtonText(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     color: Color? = null,
+    leadingIcon: (@Composable () -> Unit)? = null,
 ) {
     Material3TextButton(
         onClick = onClick,
@@ -25,6 +26,7 @@ fun ButtonText(
             contentColor = color ?: MainTheme.colors.primary,
         ),
     ) {
+        leadingIcon?.invoke()
         Material3Text(
             text = text,
             textAlign = TextAlign.Center,

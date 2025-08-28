@@ -24,7 +24,7 @@
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Client-Zertifikat</string>
     <string name="account_server_settings_validation_error_imap_prefix_blank">Präfix für IMAP darf nicht leer sein.</string>
-    <string name="account_server_settings_client_certificate_none_selected">Keines</string>
+    <string name="account_server_settings_client_certificate_none_selected">Kein</string>
     <string name="account_server_settings_server_label">Server</string>
     <string name="account_server_settings_security_label">Sicherheit</string>
     <string name="account_server_settings_password_authentication_title">Deine Identität bestätigen</string>

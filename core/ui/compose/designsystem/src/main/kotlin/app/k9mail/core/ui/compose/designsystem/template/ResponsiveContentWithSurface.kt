@@ -1,5 +1,6 @@
 package app.k9mail.core.ui.compose.designsystem.template
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
@@ -16,9 +17,9 @@ fun ResponsiveContentWithSurface(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    ResponsiveContent {
+    ResponsiveContent { contentPadding ->
         Surface(
-            modifier = modifier,
+            modifier = modifier.padding(contentPadding),
             color = MainTheme.colors.surface,
         ) {
             content()

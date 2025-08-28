@@ -1,6 +1,6 @@
 package com.fsck.k9.mail.transport.smtp
 
-import com.fsck.k9.mail.MessagingException
+import net.thunderbird.core.common.exception.MessagingException
 
 /**
  * Exception that is thrown when the server sends a negative reply (reply codes 4xx or 5xx).

@@ -65,7 +65,7 @@
     <string name="copy_action">העתק</string>
     <string name="show_headers_action">הצג כותרות</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">כתובת הועתקה ללוח‭</item>
+        <item quantity="one">כתובת הועתקה ללוח</item>
         <item quantity="two">כתובות הועתקו ללוח</item>
         <item quantity="many">כתובות הועתקו ללוח</item>
         <item quantity="other">כתובות הועתקו ללוח</item>
@@ -96,6 +96,7 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה</item>
         <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
     </plurals>
@@ -914,4 +915,14 @@
     <string name="dialog_confirm_empty_spam_title">אמת שהספאם ריק</string>
     <string name="dialog_confirm_empty_spam_message">האם ברצונך לרוקן את תיקיית הספאם?</string>
     <string name="expand_content_description">הרחב</string>
+    <string name="open_camera">פתח מצלמה</string>
+    <string name="attach_file">צרף קובץ</string>
+    <string name="camera_permission_denied">הרשאת מצלמה נאסרה! לא ניתן לצלם תמונה</string>
+    <string name="debug_enable_sync_debug_logging_title">אפשר סנכרון רישום איתור באגים</string>
+    <string name="debug_enable_sync_debug_logging_summary">קבל מידע אבחון עבור 24 שעות</string>
+    <string name="debug_sync_export_logs_title">ייצא רישום סנכרון</string>
+    <string name="swipe_action_archive_folder_not_set">הגדרת תיקיית ארכיון</string>
+    <string name="swipe_action_change_swipe_gestures">שינוי \nמחוות החלקה</string>
+    <string name="archiving_not_available_for_this_account">ארכון לא זמין עבור חשבון זה.</string>
+    <string name="debug_open_secret_debug_screen">פתיחת מסך ניפוי שגיאות סודי</string>
 </resources>

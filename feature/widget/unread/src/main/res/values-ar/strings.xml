@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">إظهار العدد غير المقروء لـ … </string>
     <string name="unread_widget_account_title">الحساب</string>
@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">لم يتم اختيار أي حساب</string>
     <string name="unread_widget_folder_not_selected">لم يتم اختيار أي مجلد</string>
     <string name="unread_widget_choose_account_title">إختر حساب</string>
+    <string name="unread_widget_label">عدد غير المقروء</string>
 </resources>

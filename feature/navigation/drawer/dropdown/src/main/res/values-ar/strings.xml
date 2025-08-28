@@ -2,10 +2,13 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">الإعدادات</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">إدارة المجلدات</string>
-    <string name="navigation_drawer_dropdown_unified_inbox_title">البريد الوارد الموحَّد</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">البريد الوارد</string>
     <string name="navigation_drawer_dropdown_action_hide_accounts">إخفاء الحسابات</string>
     <string name="navigation_drawer_dropdown_action_show_accounts">إظهار الحسابات</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1k+</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">مزامنة جميع الحسابات</string>
+    <string name="navigation_drawer_dropdown_avount_view_selection_title">قائمة الحسابات</string>
+    <string name="navigation_drawer_dropdown_unified_account_title">حساب موحد</string>
+    <string name="navigation_drawer_dropdown_action_add_account">إضافة حساب</string>
 </resources>

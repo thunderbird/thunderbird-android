@@ -22,7 +22,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -317,7 +317,7 @@ public abstract class MessageBuilder {
      *         original message.
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat simpleMessageFormat) {
-        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(text);
+        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(text, settingsManager);
 
         /*
          * Find out if we need to include the original message as quoted text.
