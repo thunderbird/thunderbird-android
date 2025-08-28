@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import java.util.concurrent.Executors
 import kotlin.time.ExperimentalTime
+import org.koin.core.scope.get
 import org.koin.dsl.module
 
 val coreNotificationModule = module {
@@ -53,7 +54,12 @@ val coreNotificationModule = module {
         )
     }
     single {
-        SyncNotificationController(notificationHelper = get(), actionBuilder = get(), resourceProvider = get())
+        SyncNotificationController(
+            notificationHelper = get(),
+            actionBuilder = get(),
+            resourceProvider = get(),
+            iconResourceProvider = get(),
+        )
     }
     single {
         SendFailedNotificationController(
@@ -121,6 +127,7 @@ val coreNotificationModule = module {
             resourceProvider = get(),
             notificationChannelManager = get(),
             notificationManager = get(),
+            iconResourceProvider = get(),
         )
     }
     single {
