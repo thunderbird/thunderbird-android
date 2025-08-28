@@ -75,6 +75,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
 
+      - name: Ensure .cache directory exists
+        run: mkdir -p $HOME/.cache/thunderbird-cli
+
+      - name: Cache .cache directory
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ${{ runner.home }}/.cache/thunderbird-cli
+          key: thunderbird-cli-cache-${{ github.ref }}
+          restore-keys: |
+            thunderbird-cli-cache-
+
       - name: Validate badging
         run: ./scripts/badging --module app-thunderbird --flavor ${{ matrix.flavor }}  --build-type ${{ matrix.build-type }} --build
 
@@ -99,6 +110,17 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+
+      - name: Ensure .cache directory exists
+        run: mkdir -p $HOME/.cache/thunderbird-cli
+
+      - name: Cache .cache directory
+        uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
+        with:
+          path: ${{ runner.home }}/.cache/thunderbird-cli
+          key: thunderbird-cli-cache-${{ github.ref }}
+          restore-keys: |
+            thunderbird-cli-cache-
 
       - name: Validate badging
         run: ./scripts/badging --module app-k9mail --flavor ${{ matrix.flavor }}  --build-type ${{ matrix.build-type }} --build
