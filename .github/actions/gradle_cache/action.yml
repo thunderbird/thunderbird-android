@@ -1,0 +1,14 @@
+name: Gradle cache
+description: Enable Gradle Wrapper caching (optimization)
+runs:
+  using: 'composite'
+  steps:
+    - name: Enable Gradle Wrapper caching
+      uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # 4.2.4
+      with:
+        path:
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
