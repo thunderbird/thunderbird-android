@@ -1,52 +1,30 @@
-package com.fsck.k9.mailstore;
+package com.fsck.k9.mailstore
 
+import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 
-import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
-import org.jetbrains.annotations.NotNull;
-
-
-public enum DatabasePreviewType {
+enum class DatabasePreviewType(
+    @JvmField val databaseValue: String,
+    @JvmField val previewType: PreviewType,
+) {
     NONE("none", PreviewType.NONE),
     TEXT("text", PreviewType.TEXT),
     ENCRYPTED("encrypted", PreviewType.ENCRYPTED),
-    ERROR("error", PreviewType.ERROR);
+    ERROR("error", PreviewType.ERROR),
+    ;
 
-
-    private final String databaseValue;
-    private final PreviewType previewType;
-
-
-    DatabasePreviewType(String databaseValue, PreviewType previewType) {
-        this.databaseValue = databaseValue;
-        this.previewType = previewType;
-    }
-
-    @NotNull
-    public static DatabasePreviewType fromDatabaseValue(String databaseValue) {
-        for (DatabasePreviewType databasePreviewType : values()) {
-            if (databasePreviewType.getDatabaseValue().equals(databaseValue)) {
-                return databasePreviewType;
-            }
+    companion object {
+        @JvmStatic
+        fun fromDatabaseValue(databaseValue: String): DatabasePreviewType {
+            return entries.find {
+                it.databaseValue == databaseValue
+            } ?: throw AssertionError("Unknown database value: $databaseValue")
         }
 
-        throw new AssertionError("Unknown database value: " + databaseValue);
-    }
-
-    public static DatabasePreviewType fromPreviewType(PreviewType previewType) {
-        for (DatabasePreviewType databasePreviewType : values()) {
-            if (databasePreviewType.previewType == previewType) {
-                return databasePreviewType;
-            }
+        @JvmStatic
+        fun fromPreviewType(previewType: PreviewType): DatabasePreviewType {
+            return entries.find {
+                it.previewType == previewType
+            } ?: throw AssertionError("Unknown preview type: $previewType")
         }
-
-        throw new AssertionError("Unknown preview type: " + previewType);
-    }
-
-    public String getDatabaseValue() {
-        return databaseValue;
-    }
-
-    public PreviewType getPreviewType() {
-        return previewType;
     }
 }
