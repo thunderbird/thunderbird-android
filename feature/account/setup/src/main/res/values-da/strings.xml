@@ -11,8 +11,6 @@
     <string name="account_setup_options_account_name_label">Konto navn</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguration fundet</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Email adresse er påkrævet.</string>
-    <string name="account_setup_options_display_name_label">Vist navn</string>
-    <string name="account_setup_options_display_name_error_required">Vist navn er påkrævet.</string>
     <string name="account_setup_error_network">Netværk</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Email adresse er ugyldig.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrig</string>

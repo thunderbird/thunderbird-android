@@ -20,7 +20,6 @@
     <string name="account_setup_options_section_display_options">화면 설정</string>
     <string name="account_setup_options_account_name_label">계정 이름</string>
     <string name="account_setup_special_folders_folder_automatic">자동 (%s)</string>
-    <string name="account_setup_options_display_name_error_required">당신의 이름은 필수입니다.</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="other">%d 분마다</item>
     </plurals>
@@ -31,7 +30,6 @@
     <string name="account_setup_special_folders_loading_message">폴더 리스트를 가져오는 중…</string>
     <string name="account_setup_special_folders_success_message">모든 특수 폴더는 서버에 의해 자동으로 구성됩니다.</string>
     <string name="account_setup_special_folders_folder_none">없음</string>
-    <string name="account_setup_options_display_name_label">당신의 이름</string>
     <string name="account_setup_options_email_display_count_label">표시할 메시지 수</string>
     <string name="account_setup_options_account_check_frequency_label">확인 빈도</string>
     <string name="account_setup_create_account_error">계정을 만들려는 동안 오류가 발생함</string>

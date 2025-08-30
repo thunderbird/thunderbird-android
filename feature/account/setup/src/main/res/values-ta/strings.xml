@@ -25,7 +25,6 @@
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">உள்ளமைவு காணப்படவில்லை</string>
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">கைமுறையாக உள்ளமைக்கவும்</string>
     <string name="account_setup_special_folders_form_description_automatic">\"தானியங்கி\" நுழைவு சேவையகத்தால் செய்யப்பட்ட மாற்றங்களை தானாகவே பின்பற்றும். தற்போதைய சேவையக மதிப்பு அடைப்புக்குறிக்குள் காட்டப்படும்.</string>
-    <string name="account_setup_options_display_name_error_required">உங்கள் பெயர் தேவை.</string>
     <string name="account_setup_options_section_sync_options">விருப்பங்களை ஒத்திசைக்கவும்</string>
     <string name="account_setup_create_account_creating">கணக்கை உருவாக்குதல்…</string>
     <string name="account_setup_error_unknown">தெரியாத பிழை</string>
@@ -43,7 +42,6 @@
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">உள்ளமைவுக்கு ஒப்புதல் அளிக்க வேண்டும்.</string>
     <string name="account_setup_special_folders_folder_automatic">தானியங்கி (%s)</string>
     <string name="account_setup_options_account_name_error_blank">கணக்கு பெயர் காலியாக இருக்க முடியாது.</string>
-    <string name="account_setup_options_display_name_label">உங்கள் பெயர்</string>
     <string name="account_setup_options_account_check_frequency_label">சோதனை அதிர்வெண்</string>
     <string name="account_setup_options_email_check_frequency_never">ஒருபோதும்</string>
     <plurals name="account_setup_options_email_display_count_messages">

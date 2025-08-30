@@ -8,8 +8,6 @@
     <string name="account_setup_special_folders_folder_none">כלום</string>
     <string name="account_setup_options_account_name_label">שם חשבון</string>
     <string name="account_setup_options_account_name_error_blank">שם חשבון אינו יכול להיות ריק.</string>
-    <string name="account_setup_options_display_name_label">שם תצוגה</string>
-    <string name="account_setup_options_display_name_error_required">דרוש שם תצוגה.</string>
     <string name="account_setup_options_email_signature_error_blank">שם חתימת דוא\"ל לא יכול להיות ריק.</string>
     <string name="account_setup_options_email_signature_label">חתימת דוא\"ל</string>
     <string name="account_setup_options_account_check_frequency_label">תדירות בדיקה</string>

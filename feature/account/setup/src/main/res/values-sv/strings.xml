@@ -15,10 +15,8 @@
     <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Konfiguration hittades inte</string>
     <string name="account_setup_options_account_name_label">Kontonamn</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguration hittades</string>
-    <string name="account_setup_options_display_name_label">Ditt namn</string>
     <string name="account_setup_auto_discovery_loading_error">Misslyckades att ladda e-postkonfiguration</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jag litar på denna konfiguration</string>
-    <string name="account_setup_options_display_name_error_required">Ditt namn krävs.</string>
     <string name="account_setup_error_network">Nätverksfel. Vänligen se över din uppkoppling och försök igen.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldrig</string>
     <string name="account_setup_auto_discovery_loading_message">Söker upp konfiguration…</string>

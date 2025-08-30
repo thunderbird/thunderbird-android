@@ -11,7 +11,6 @@
     <string name="account_setup_special_folders_drafts_folder_label">Malnetujo</string>
     <string name="account_setup_special_folders_folder_automatic">Aŭtomate (%s)</string>
     <string name="account_setup_options_account_name_label">Nomo de konto</string>
-    <string name="account_setup_options_display_name_label">Via nomo</string>
     <string name="account_setup_create_account_creating">Kreante konton…</string>
     <string name="account_setup_options_section_sync_options">Opcioj pri sinkronigado</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
@@ -39,7 +38,6 @@
     <string name="account_setup_options_section_display_options">Vidigan opcioj</string>
     <string name="account_setup_create_account_error">Eraro okazis dum provo krei la konton</string>
     <string name="account_setup_options_account_name_error_blank">La nomo konton ne povas esti malplena.</string>
-    <string name="account_setup_options_display_name_error_required">Via nomo necesas.</string>
     <string name="account_setup_options_email_signature_label">Retletera subskribo</string>
     <string name="account_setup_options_email_signature_error_blank">La retletera subskribo ne povas esti malplena.</string>
     <string name="account_setup_create_account_created">Konto sukcese kreita</string>

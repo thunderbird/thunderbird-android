@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Accountnamme</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguraasje fûn</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailadres is fereaske.</string>
-    <string name="account_setup_options_display_name_label">Jo namme</string>
     <string name="account_setup_auto_discovery_loading_error">Laden e-mailkonfiguraasje mislearre</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ik fertrou dizze konfiguraasje</string>
-    <string name="account_setup_options_display_name_error_required">Jo namme is fereaske.</string>
     <string name="account_setup_error_network">Netwerkflater. Kontrolearje jo netwurkferbining en probearje it opnij.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dit is net as in jildich e-mailadres werkend.</string>
     <string name="account_setup_options_email_check_frequency_never">Nea</string>

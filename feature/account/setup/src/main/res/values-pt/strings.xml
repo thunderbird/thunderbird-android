@@ -5,7 +5,6 @@
     <string name="account_setup_error_network">Erro de rede. Verifique o status da sua conexão e tente novamente.</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuração encontrada</string>
     <string name="account_setup_special_folders_folder_none">Nenhum</string>
-    <string name="account_setup_options_display_name_label">Seu nome</string>
     <string name="account_setup_options_email_signature_error_blank">A assinatura de e-mail não pode estar em branco.</string>
     <string name="account_setup_create_account_created">Conta criada com sucesso</string>
     <string name="account_setup_error_unknown">Erro desconhecido</string>
@@ -38,7 +37,6 @@
     <string name="account_setup_options_section_display_options">Opções de exibição</string>
     <string name="account_setup_options_account_name_label">Nome da conta</string>
     <string name="account_setup_options_account_name_error_blank">O nome da conta não pode estar em branco.</string>
-    <string name="account_setup_options_display_name_error_required">Seu nome é obrigatório.</string>
     <string name="account_setup_options_email_signature_label">Assinatura de e-mail</string>
     <string name="account_setup_options_section_sync_options">Opções de sincronização</string>
     <string name="account_setup_options_account_check_frequency_label">Frequência de verificação</string>

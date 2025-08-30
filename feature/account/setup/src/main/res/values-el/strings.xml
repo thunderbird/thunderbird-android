@@ -21,10 +21,8 @@
     <string name="account_setup_options_account_name_label">Όνομα λογαριασμού</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Η διαμόρφωση βρέθηκε</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Απαιτείται διεύθυνση email.</string>
-    <string name="account_setup_options_display_name_label">Το όνομά σας</string>
     <string name="account_setup_auto_discovery_loading_error">Η φόρτωση της διαμόρφωσης email απέτυχε</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Εμπιστεύομαι αυτήν τη διαμόρφωση</string>
-    <string name="account_setup_options_display_name_error_required">Το όνομά σας είναι απαραίτητο.</string>
     <string name="account_setup_create_account_error">Προέκυψε σφάλμα κατά την προσπάθεια δημιουργίας του λογαριασμού</string>
     <string name="account_setup_error_network">Σφάλμα δικτύου. Ελέγξτε την κατάσταση της σύνδεσής σας και προσπαθήστε ξανά.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Η διεύθυνση email δεν αναγνωρίζεται ως έγκυρη.</string>

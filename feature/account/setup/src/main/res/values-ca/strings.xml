@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Nom del compte</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">S\'ha trobat una configuració</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Cal l\'adreça de correu electrònic.</string>
-    <string name="account_setup_options_display_name_label">El teu nom</string>
     <string name="account_setup_auto_discovery_loading_error">Ha fallat la càrrega de la configuració de correu electrònic</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Confio en aquesta configuració</string>
-    <string name="account_setup_options_display_name_error_required">Es requereix el teu nom.</string>
     <string name="account_setup_error_network">Error de xarxa. Comproveu l\'estat de la vostra connexió i torneu-ho a provar.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">L\'adreça de correu electrònic no es reconeix com a vàlida.</string>
     <string name="account_setup_options_email_check_frequency_never">Mai</string>
