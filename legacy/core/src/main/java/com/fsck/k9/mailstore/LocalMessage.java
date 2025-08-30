@@ -98,7 +98,7 @@ public class LocalMessage extends MimeMessage {
 
         String previewTypeString = cursor.getString(LocalStore.MSG_INDEX_PREVIEW_TYPE);
         DatabasePreviewType databasePreviewType = DatabasePreviewType.fromDatabaseValue(previewTypeString);
-        previewType = databasePreviewType.getPreviewType();
+        previewType = databasePreviewType.previewType;
         if (previewType == PreviewType.TEXT) {
             preview = cursor.getString(LocalStore.MSG_INDEX_PREVIEW);
         } else {
@@ -293,7 +293,7 @@ public class LocalMessage extends MimeMessage {
             public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
                 ContentValues cv = new ContentValues();
                 cv.put("deleted", 1);
-                cv.put("preview_type", DatabasePreviewType.fromPreviewType(PreviewType.NONE).getDatabaseValue());
+                cv.put("preview_type", DatabasePreviewType.fromPreviewType(PreviewType.NONE).databaseValue);
                 cv.put("read", 0);
                 cv.put("flagged", 0);
                 cv.put("answered", 0);
