@@ -1,25 +1,24 @@
-package com.fsck.k9.message.extractors;
+package com.fsck.k9.message.extractors
 
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Part
+import com.fsck.k9.mail.internet.MessageExtractor
+import net.thunderbird.core.common.exception.MessagingException
 
-import java.util.ArrayList;
-import java.util.List;
+class AttachmentCounter {
+    @Throws(MessagingException::class)
+    fun getAttachmentCount(message: Message): Int {
+        val attachmentParts = ArrayList<Part>()
+        MessageExtractor.findViewablesAndAttachments(
+            message,
+            null,
+            attachmentParts,
+        )
 
-import com.fsck.k9.mail.Message;
-import net.thunderbird.core.common.exception.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
-
-
-public class AttachmentCounter {
-
-    public static AttachmentCounter newInstance() {
-        return new AttachmentCounter();
+        return attachmentParts.size
     }
 
-    public int getAttachmentCount(Message message) throws MessagingException {
-        List<Part> attachmentParts = new ArrayList<>();
-        MessageExtractor.findViewablesAndAttachments(message, null, attachmentParts);
-
-        return attachmentParts.size();
+    companion object {
+        fun newInstance() = AttachmentCounter()
     }
 }
