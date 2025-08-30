@@ -7,5 +7,6 @@ const val KEY_MESSAGE_VIEW_THEME = "messageViewTheme"
 const val KEY_MESSAGE_COMPOSE_THEME = "messageComposeTheme"
 const val KEY_APP_LANGUAGE = "language"
 const val KEY_SPLIT_VIEW_MODE = "splitViewMode"
+const val KEY_THEME = "theme"
 
 interface DisplayCoreSettingsPreferenceManager : PreferenceManager<DisplayCoreSettings>

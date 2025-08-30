@@ -29,7 +29,7 @@ class BuildSwipeActions(
         hasArchiveFolder: (BaseAccount) -> Boolean,
     ): Map<String, SwipeActions> {
         val shouldShowSetupArchiveFolderDialog = generalSettingsManager
-            .getConfig().display
+            .getConfig().display.miscSettings
             .shouldShowSetupArchiveFolderDialog
         return accountUuids
             .mapNotNull { uuid -> accountManager.getAccount(uuid) }
