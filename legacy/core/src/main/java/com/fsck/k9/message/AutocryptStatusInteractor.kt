@@ -1,143 +1,126 @@
-package com.fsck.k9.message;
+package com.fsck.k9.message
 
+import android.app.PendingIntent
+import android.content.Intent
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.WorkerThread
+import androidx.core.content.IntentCompat
+import java.io.InputStream
+import net.thunderbird.core.logging.legacy.Log.w
+import org.openintents.openpgp.OpenPgpError
+import org.openintents.openpgp.util.OpenPgpApi
 
-import java.io.InputStream;
-
-import android.app.PendingIntent;
-import android.content.Intent;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
-import androidx.annotation.WorkerThread;
-import androidx.core.content.IntentCompat;
-import org.openintents.openpgp.OpenPgpError;
-import org.openintents.openpgp.util.OpenPgpApi;
-import net.thunderbird.core.logging.legacy.Log;
-
-
-public class AutocryptStatusInteractor {
-    private static final AutocryptStatusInteractor INSTANCE = new AutocryptStatusInteractor();
-
-    public static AutocryptStatusInteractor getInstance() {
-        return INSTANCE;
-    }
-
-
+class AutocryptStatusInteractor {
     @WorkerThread
-    public RecipientAutocryptStatus retrieveCryptoProviderRecipientStatus(
-            OpenPgpApi openPgpApi, String[] recipientAddresses) {
-        Intent intent = new Intent(OpenPgpApi.ACTION_QUERY_AUTOCRYPT_STATUS);
-        intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, recipientAddresses);
+    fun retrieveCryptoProviderRecipientStatus(
+        openPgpApi: OpenPgpApi,
+        recipientAddresses: Array<String>,
+    ): RecipientAutocryptStatus {
+        val intent = Intent(OpenPgpApi.ACTION_QUERY_AUTOCRYPT_STATUS)
+        intent.putExtra(OpenPgpApi.EXTRA_USER_IDS, recipientAddresses)
 
-        Intent result = openPgpApi.executeApi(intent, (InputStream) null, null);
+        val result = openPgpApi.executeApi(intent, null as InputStream?, null)
 
-        switch (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
-            case OpenPgpApi.RESULT_CODE_SUCCESS:
-                RecipientAutocryptStatusType type = getRecipientAutocryptStatusFromIntent(result);
-                PendingIntent pendingIntent = IntentCompat.getParcelableExtra(
+        return when (result.getIntExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)) {
+            OpenPgpApi.RESULT_CODE_SUCCESS -> {
+                val type = getRecipientAutocryptStatusFromIntent(result)
+                val pendingIntent = IntentCompat.getParcelableExtra(
                     result,
                     OpenPgpApi.RESULT_INTENT,
-                    PendingIntent.class
-                );
-                return new RecipientAutocryptStatus(type, pendingIntent);
+                    PendingIntent::class.java,
+                )
+                RecipientAutocryptStatus(type, pendingIntent)
+            }
 
-            case OpenPgpApi.RESULT_CODE_ERROR:
-                OpenPgpError error = IntentCompat.getParcelableExtra(
+            OpenPgpApi.RESULT_CODE_ERROR -> {
+                val error = IntentCompat.getParcelableExtra(
                     result,
                     OpenPgpApi.RESULT_ERROR,
-                    OpenPgpError.class
-                );
+                    OpenPgpError::class.java,
+                )
                 if (error != null) {
-                    Log.w("OpenPGP API Error #%s: %s", error.getErrorId(), error.getMessage());
+                    w("OpenPGP API Error #%s: %s", error.getErrorId(), error.getMessage())
                 } else {
-                    Log.w("OpenPGP API Unknown Error");
+                    w("OpenPGP API Unknown Error")
                 }
-                return new RecipientAutocryptStatus(RecipientAutocryptStatusType.ERROR, null);
-            case OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED:
-                // should never happen, so treat as error!
-            default:
-                return new RecipientAutocryptStatus(RecipientAutocryptStatusType.ERROR, null);
+                RecipientAutocryptStatus(RecipientAutocryptStatusType.ERROR, null)
+            }
+
+            OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED -> return RecipientAutocryptStatus(
+                RecipientAutocryptStatusType.ERROR,
+                null,
+            )
+
+            else -> RecipientAutocryptStatus(RecipientAutocryptStatusType.ERROR, null)
         }
     }
 
-    @NonNull
-    private RecipientAutocryptStatusType getRecipientAutocryptStatusFromIntent(Intent result) {
-        boolean allKeysConfirmed = result.getBooleanExtra(OpenPgpApi.RESULT_KEYS_CONFIRMED, false);
-        int autocryptStatus =
-                result.getIntExtra(OpenPgpApi.RESULT_AUTOCRYPT_STATUS, OpenPgpApi.AUTOCRYPT_STATUS_UNAVAILABLE);
+    private fun getRecipientAutocryptStatusFromIntent(result: Intent): RecipientAutocryptStatusType {
+        val allKeysConfirmed = result.getBooleanExtra(OpenPgpApi.RESULT_KEYS_CONFIRMED, false)
+        val autocryptStatus =
+            result.getIntExtra(OpenPgpApi.RESULT_AUTOCRYPT_STATUS, OpenPgpApi.AUTOCRYPT_STATUS_UNAVAILABLE)
 
-        switch (autocryptStatus) {
-            case OpenPgpApi.AUTOCRYPT_STATUS_UNAVAILABLE:
-                return RecipientAutocryptStatusType.UNAVAILABLE;
-            case OpenPgpApi.AUTOCRYPT_STATUS_DISCOURAGE:
+        return when (autocryptStatus) {
+            OpenPgpApi.AUTOCRYPT_STATUS_UNAVAILABLE -> {
+                RecipientAutocryptStatusType.UNAVAILABLE
+            }
+
+            OpenPgpApi.AUTOCRYPT_STATUS_DISCOURAGE -> {
                 if (allKeysConfirmed) {
-                    return RecipientAutocryptStatusType.DISCOURAGE_CONFIRMED;
+                    RecipientAutocryptStatusType.DISCOURAGE_CONFIRMED
                 } else {
-                    return RecipientAutocryptStatusType.DISCOURAGE_UNCONFIRMED;
+                    RecipientAutocryptStatusType.DISCOURAGE_UNCONFIRMED
                 }
-            case OpenPgpApi.AUTOCRYPT_STATUS_AVAILABLE:
+            }
+
+            OpenPgpApi.AUTOCRYPT_STATUS_AVAILABLE -> {
                 if (allKeysConfirmed) {
-                    return RecipientAutocryptStatusType.AVAILABLE_CONFIRMED;
+                    RecipientAutocryptStatusType.AVAILABLE_CONFIRMED
                 } else {
-                    return RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED;
+                    RecipientAutocryptStatusType.AVAILABLE_UNCONFIRMED
                 }
-            case OpenPgpApi.AUTOCRYPT_STATUS_MUTUAL:
-                if (allKeysConfirmed) {
-                    return RecipientAutocryptStatusType.RECOMMENDED_CONFIRMED;
+            }
+
+            OpenPgpApi.AUTOCRYPT_STATUS_MUTUAL -> {
+                return if (allKeysConfirmed) {
+                    RecipientAutocryptStatusType.RECOMMENDED_CONFIRMED
                 } else {
-                    return RecipientAutocryptStatusType.RECOMMENDED_UNCONFIRMED;
+                    RecipientAutocryptStatusType.RECOMMENDED_UNCONFIRMED
                 }
-        }
+            }
 
-        throw new IllegalStateException("encountered bad autocrypt status number!");
-    }
-
-    public static class RecipientAutocryptStatus {
-        public final RecipientAutocryptStatusType type;
-        public final PendingIntent intent;
-
-        @VisibleForTesting
-        public RecipientAutocryptStatus(RecipientAutocryptStatusType type, PendingIntent intent) {
-            this.type = type;
-            this.intent = intent;
-        }
-
-        public boolean hasPendingIntent() {
-            return intent != null;
+            else -> error("encountered bad autocrypt status number!")
         }
     }
 
-    public enum RecipientAutocryptStatusType {
-        NO_RECIPIENTS (false, false, false),
-        UNAVAILABLE (false, false, false),
-        DISCOURAGE_UNCONFIRMED (true, false, false),
-        DISCOURAGE_CONFIRMED (true, true, false),
-        AVAILABLE_UNCONFIRMED (true, false, false),
-        AVAILABLE_CONFIRMED (true, true, false),
-        RECOMMENDED_UNCONFIRMED (true, false, true),
-        RECOMMENDED_CONFIRMED (true, true, true),
-        ERROR (false, false, false);
+    data class RecipientAutocryptStatus @VisibleForTesting constructor(
+        val type: RecipientAutocryptStatusType,
+        val intent: PendingIntent?,
+    ) {
+        fun hasPendingIntent() = intent != null
+    }
 
-        private final boolean canEncrypt;
-        private final boolean isConfirmed;
-        private final boolean isMutual;
+    enum class RecipientAutocryptStatusType(
+        val canEncrypt: Boolean,
+        val isConfirmed: Boolean,
+        val isMutual: Boolean,
+    ) {
+        NO_RECIPIENTS(false, false, false),
+        UNAVAILABLE(false, false, false),
 
-        RecipientAutocryptStatusType(boolean canEncrypt, boolean isConfirmed, boolean isMutual) {
-            this.canEncrypt = canEncrypt;
-            this.isConfirmed = isConfirmed;
-            this.isMutual = isMutual;
-        }
+        DISCOURAGE_UNCONFIRMED(true, false, false),
+        DISCOURAGE_CONFIRMED(true, true, false),
 
-        public boolean canEncrypt() {
-            return canEncrypt;
-        }
+        AVAILABLE_UNCONFIRMED(true, false, false),
+        AVAILABLE_CONFIRMED(true, true, false),
 
-        public boolean isConfirmed() {
-            return isConfirmed;
-        }
+        RECOMMENDED_UNCONFIRMED(true, false, true),
+        RECOMMENDED_CONFIRMED(true, true, true),
 
-        public boolean isMutual() {
-            return isMutual;
-        }
+        ERROR(false, false, false),
+    }
+
+    companion object {
+        val instance: AutocryptStatusInteractor = AutocryptStatusInteractor()
     }
 }
