@@ -46,7 +46,8 @@ class AutocryptStatusInteractor {
                 RecipientAutocryptStatus(RecipientAutocryptStatusType.ERROR, null)
             }
 
-            OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED -> return RecipientAutocryptStatus(
+            OpenPgpApi.RESULT_CODE_USER_INTERACTION_REQUIRED -> RecipientAutocryptStatus(
+
                 RecipientAutocryptStatusType.ERROR,
                 null,
             )

@@ -34,6 +34,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.refEq
 import org.mockito.kotlin.stubbing
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
@@ -303,7 +304,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         val openPgpApiMock = mock<OpenPgpApi>()
 
         stubbing(autocryptStatusInteractor) {
-            on { retrieveCryptoProviderRecipientStatus(eq(openPgpApiMock), any()) } doReturn autocryptStatusResult
+            on { retrieveCryptoProviderRecipientStatus(refEq(openPgpApiMock), any()) } doReturn autocryptStatusResult
         }
 
         stubbing(openPgpApiManager) {
