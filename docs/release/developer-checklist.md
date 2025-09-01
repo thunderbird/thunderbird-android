@@ -12,7 +12,7 @@ Do these as part of regular development:
 
 - Identify potential uplifts early
   - Label issues/PRs with `task: uplift to beta` or `task: uplift to release` when appropriate
-  - Add risk and user impact notes to the issue/PR; ensure the fix lands on `main` and bakes on Daily first — see [Branch Uplifts](../ci/RELEASE.md#branch-uplifts)
+  - Add risk and user impact notes to the issue/PR; ensure the fix lands on `main` and bakes on Daily first — see [Uplifts](../ci/RELEASE.md#uplifts) and [Uplift Criteria](../ci/RELEASE.md#uplift-criteria)
 - Strings and translations
   - Avoid late string changes; if unavoidable, keep them small, so translators can catch up
   - Prefer not changing localizable strings for uplifts
@@ -28,6 +28,11 @@ Do these as part of regular development:
     - Add the issue to the project sprint board and assign it to the current sprint
 
 ## Before main → beta (developer responsibilities)
+
+Note: A one-week [Soft Freeze](../ci/RELEASE.md#soft-freeze) occurs before merging `main` into `beta`.
+During soft freeze:
+- Avoid landing risky code changes
+- Do not enable feature flags that are currently disabled
 
 Goal: Changes on `main` are safe to expose to a broader audience.
 
@@ -48,7 +53,7 @@ Goal: Changes on `beta` are safe for general availability.
   - Verify flags align with [rules for release](../ci/RELEASE.md#feature-flags)
     - Features are disabled unless explicitly approved for release
     - Not-ready features remain disabled
-  - If changes are required, open a PR on `main` and request uplift to `beta` following the criteria in [Branch Uplifts](../ci/RELEASE.md#branch-uplifts)
+  - If changes are required, open a PR on `main` and request uplift to `beta` following the criteria in [Uplift Criteria](../ci/RELEASE.md#uplift-criteria)
 - Translations
   - No new string changes at this stage; confirm your changes don’t introduce them
 - Stability checks you can influence
@@ -62,7 +67,7 @@ Goal: Changes on `beta` are safe for general availability.
 - [ ] Tests added/updated; CI green on affected modules
 - [ ] No new localizable strings (or justified and coordinated)
 - [ ] Translations accounted for (Weblate PR merged or not required)
-- [ ] Uplift label and risk/impact notes added if proposing uplift ([criteria](../ci/RELEASE.md#branch-uplifts))
+- [ ] Uplift label and risk/impact notes added if proposing uplift ([criteria](../ci/RELEASE.md#uplift-criteria))
 
 ## After merges (what developers should verify)
 
