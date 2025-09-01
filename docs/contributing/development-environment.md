@@ -13,14 +13,6 @@ Before you begin, ensure you have the following installed:
 - **Gradle** - Use the Gradle wrapper included in this repo (`./gradlew`); no separate install required
 - **Android SDK & command-line tools** – Installed and managed via Android Studio SDK Manager
 
-Recommended knowledge (helpful, not strictly required):
-
-- **[Kotlin](https://kotlinlang.org/docs/home.html)** - Primary programming language for the project
-- **[Jetpack Compose](https://developer.android.com/jetpack/compose)** - UI toolkit used for Android
-- **[Kotlin Multiplatform](https://kotlinlang.org/docs/multiplatform.html)** - Shared code across modules where applicable
-- **[Android Development](https://developer.android.com/guide)** - Basic understanding of Android app development
-- **[GitHub](https://docs.github.com/en)** - For managing contributions and pull requests
-
 ## 🔧 Setting Up the Development Environment
 
 ### 1. Get the Source Code
