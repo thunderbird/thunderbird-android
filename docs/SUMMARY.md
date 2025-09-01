@@ -12,6 +12,8 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Code Review Guide](contributing/code-review-guide.md)
   - [Git Commit Guide](contributing/git-commit-guide.md)
   - [Testing Guide](contributing/testing-guide.md)
+  - [Translations](contributing/translations.md)
+  - [Managing Strings](contributing/managing-strings.md)
   - [Java to Kotlin Conversion Guide](contributing/java-to-kotlin-conversion-guide.md)
 - [Architecture](architecture/README.md)
   - [Module Organization](architecture/module-organization.md)
@@ -39,8 +41,6 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Release Automation](ci/AUTOMATION.md)
   - [Developer Release Checklist](release/developer-checklist.md)
   - [Manual Release (historical)](ci/HISTORICAL_RELEASE.md)
-- [Translations](translations.md)
-
 ---
 
 [How to Document](HOW-TO-DOCUMENT.md)

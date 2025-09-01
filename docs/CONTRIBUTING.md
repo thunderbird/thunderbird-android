@@ -30,9 +30,12 @@ We don’t track new ideas or feature requests in GitHub Issues.
 - Start a discussion in Mozilla Connect – Ideas
 - Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).
 
-## Translations
+## 🌐 Translations
 
 If you'd like to help to translate Thunderbird for Android, please visit:
+
+- **[Translations](contributing/translations.md)** – How to help localize Thunderbird for Android via Weblate.
+- **[Managing Strings](contributing/managing-strings.md)** – Developer guide for adding, changing, or removing strings and languages.
 
 - [Weblate - Thunderbird for Android](https://hosted.weblate.org/projects/tb-android/)
 
@@ -47,7 +50,7 @@ Start with our project documentation:
 - [Code Review Guide](contributing/code-review-guide.md)
 - [Git Commit Guide](contributing/git-commit-guide.md)
 - [Testing Guide](contributing/testing-guide.md)
-- [Translations](translations.md)
+- [Translations](contributing/translations.md)
 
 👉 The **Contribution Workflow** explains the step-by-step process: finding an issue, forking the repo, creating a
 branch, making changes, testing, and opening a pull request.

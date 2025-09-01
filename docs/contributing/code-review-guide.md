@@ -54,7 +54,7 @@ Paste this into your PR to self-check:
    - Provide `contentDescription` and TalkBack support.
    - Ensure sufficient contrast, touch targets and dynamic text sizing (up to 200%).
 8. **i18n**
-   - Follow strings policy: don’t modify translations here; avoid late string changes; see [translations](../translations.md).
+   - Follow strings policy: don’t modify translations here; avoid late string changes; see [managing strings](managing-strings.md).
    - No string concatenation with localized text; use placeholders.
 9. **Feature flags & release train awareness**
    - Gate incomplete features behind flags aligned with branch rules [Release - Feature Flags](../ci/RELEASE.md#feature-flags).

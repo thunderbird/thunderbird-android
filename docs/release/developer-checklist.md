@@ -16,7 +16,7 @@ Do these as part of regular development:
 - Strings and translations
   - Avoid late string changes; if unavoidable, keep them small, so translators can catch up
   - Prefer not changing localizable strings for uplifts
-  - Follow [Changing translations in this repository](../translations.md#changing-translations-in-this-repository) only when truly necessary
+  - Follow [Changing translations in this repository](../contributing/managing-strings.md#-changing-translations-in-the-repo) only when truly necessary
 - Quality signals you own
   - Watch crash/ANR reports and GitHub issues for your area of work and investigate regressions
 - Project management
