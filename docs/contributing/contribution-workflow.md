@@ -116,7 +116,7 @@ When making changes:
 
 Example of a good commit message:
 
-```
+```git
 fix(email): add validation for email input
 
 Add regex pattern for email validation.
@@ -191,7 +191,7 @@ Write a clear and concise description for your pull request:
 
 Example:
 
-```
+```markdown
 ## Title
 fix(email): add validation for email input
 
