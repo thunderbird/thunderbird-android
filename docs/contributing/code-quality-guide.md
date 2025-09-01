@@ -135,7 +135,7 @@ The project follows the [Kotlin style guide](https://developer.android.com/kotli
    - Use `UPPER_SNAKE_CASE` for constants and enum constants
    - Prefix interface implementations with `Default` or a specific name, e.g.:
    - `DefaultEmailRepository` implements `EmailRepository`
-   - `InMemoryCacge` implements `Cache`
+   - `InMemoryCache` implements `Cache`
 2. **Formatting**:
    - Use 4 spaces for indentation
    - Limit line length to 120 characters

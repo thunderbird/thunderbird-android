@@ -84,7 +84,7 @@ Replace `module-name` with the actual name of the module you want to build.
 ### Running on a Physical Device
 
 1. [Enable Developer Options and USB Debugging](https://developer.android.com/studio/debug/dev-options) on your device
-2. Connect your device to your computer vis USB and confirm trust dialog if prompted
+2. Connect your device to your computer via USB and confirm trust dialog if prompted
 3. Select your device from the device dropdown and click **Run**
 
 ## 🧪 Running Tests

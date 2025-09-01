@@ -27,7 +27,7 @@ Helpful background (not strictly required):
 
 ## 🐛 Bug Reports and Feature Ideas
 
-When you encounter a bug or have a feature request or idea  please do the following:
+When you encounter a bug or have a feature request or idea, please do the following:
 
 **Bugs**:
 - Search for [existing issues](https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue) before filing a new one.
