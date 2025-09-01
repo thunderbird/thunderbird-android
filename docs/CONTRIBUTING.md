@@ -1,4 +1,4 @@
-# Contributing to Thunderbird for Android
+# 🤝 Contributing to Thunderbird for Android
 
 Welcome to the Thunderbird for Android project! We're excited to have you here and welcome your contributions.
 
@@ -6,6 +6,7 @@ Welcome to the Thunderbird for Android project! We're excited to have you here a
 
 Before you start contributing, please take a moment to familiarize yourself with the following:
 
+- [About Thunderbird for Android](about.md).
 - [Thunderbird Developer Portal](https://developer.thunderbird.net/)
 - [Mozilla Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
 - [Matrix (developer chat)](https://matrix.to/#/#tb-mobile-dev:mozilla.org)
@@ -47,7 +48,7 @@ If you'd like to help to translate Thunderbird for Android, please visit:
 - **[Translations](contributing/translations.md)** – How to help localize Thunderbird for Android via Weblate.
 - **[Weblate - Thunderbird for Android project](https://hosted.weblate.org/projects/tb-android/)** - Translation platform where all localization happens.
 
-## Contributing Code
+## 🤝 Contributing Code
 
 This should give you a detailed overview on how to contribute code to the project. Use it as a reference for setup,
 development, testing, and review.

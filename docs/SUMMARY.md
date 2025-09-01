@@ -3,6 +3,7 @@
 This file is not intended for direct reading by users, but rather serves as a configuration file for the documentation
 generator, in this case, **mdbook**. It defines the structure and navigation of the documentation.
 
+[About Thunderbird for Android](about.md)
 ---
 
 - [Contributing](CONTRIBUTING.md)
