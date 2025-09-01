@@ -12,6 +12,7 @@ edition = "2018"
 [build]
 build-dir = "../book/docs/latest"
 create-missing = false
+use-default-preprocessors = false
 
 [output.html]
 git-repository-url = "https://github.com/thunderbird/thunderbird-android"
@@ -37,6 +38,8 @@ exclude = [ 'mozilla\.com', '0000-adr-template\.md' ]
 [preprocessor.last-changed]
 command = "mdbook-last-changed"
 renderer = ["html"]
+
+[preprocessor.links]
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
