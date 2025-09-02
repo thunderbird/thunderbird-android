@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="13.0b1" versioncode="26" date="2025-09-02">
+        <change>Added new design elements to Message List UI</change>
+        <change>Sync logging duration is now limited to 24 hours</change>
+        <change>Client certificate was not displayed in SMTP settings</change>
+        <change>Outlook headers included unnecessary newlines when replying to a message</change>
+        <change>&#34;Enable debug logging&#34; did not provide verbose logging</change>
+        <change>Scrolling in a short email could trigger left/right swipe</change>
+        <change>Scrolling only worked in center of Welcome and New Account screens (landscape)</change>
+    </release>
     <release version="12.0b7" versioncode="25" date="2025-08-18">
         <change>Edge-to-edge support regressed various screens when using 3-button navigation</change>
     </release>
