@@ -105,6 +105,7 @@ class DefaultLegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, L
             signatureUse = dto.signatureUse,
             signature = dto.signature,
             shouldMigrateToOAuth = dto.shouldMigrateToOAuth,
+            folderPathDelimiter = dto.folderPathDelimiter,
         )
     }
 
@@ -211,6 +212,7 @@ class DefaultLegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, L
             signatureUse = domain.signatureUse
             signature = domain.signature
             shouldMigrateToOAuth = domain.shouldMigrateToOAuth
+            folderPathDelimiter = domain.folderPathDelimiter
         }
     }
 

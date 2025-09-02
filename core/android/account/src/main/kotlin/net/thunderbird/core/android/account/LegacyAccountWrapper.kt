@@ -7,6 +7,7 @@ import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
 
@@ -114,6 +115,7 @@ data class LegacyAccountWrapper(
     val signatureUse: Boolean = identities[0].signatureUse,
     val signature: String? = identities[0].signature,
     val shouldMigrateToOAuth: Boolean = false,
+    val folderPathDelimiter: FolderPathDelimiter = "/",
 ) : Account, BaseAccount {
 
     override val uuid: String = id.asRaw()
