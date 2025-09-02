@@ -5,6 +5,27 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="12.0" versioncode="39027" date="2025-09-02">
+        <change>Improve support for SMTPUTF8 and other UTF-8 email standards (RFC 6531, 6855)</change>
+        <change>Support Android&#39;s IME autofill for password managers when adding new account</change>
+        <change>Add support for avatars in account settings</change>
+        <change>Enable edge-to-edge support</change>
+        <change>New account settings page</change>
+        <change>Long words and links in email messages did not wrap properly</change>
+        <change>Swipe right to archive failed if the archive folder did not exist</change>
+        <change>Edit Text dialogs in Account Settings did not automatically request focus</change>
+        <change>Account Settings did not display account name</change>
+        <change>In Unified Inbox, tapping a non-main account email redirected to the main inbox</change>
+        <change>In dark system mode with light message theme, navigation bar was not clearly visible</change>
+        <change>Threaded View toggle did not automatically update the Threaded View display</change>
+        <change>Gmail prefixes were shown in the folder structure</change>
+        <change>Crash could occur when adding Gmail account after removing primary Gmail account</change>
+        <change>Application crashed on startup if left or right swipe gesture was set to &#39;None&#39;</change>
+        <change>Crash could occur when clicking on a message thread</change>
+        <change>Unicode folder names were malformed when using server supporting UTF-8</change>
+        <change>Crash occurred when attempting to access account general settings</change>
+        <change>Users had to manually configure Outlook IMAP and SMTP</change>
+    </release>
     <release version="11.1" versioncode="39026" date="2025-08-18">
         <change>Selected/read/unread message states were hard to distinguish visually</change>
     </release>
