@@ -412,8 +412,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 return;
             }
 
-            Backend backend = getBackend(account);
-            backend.refreshFolderList();
+            final Backend backend = getBackend(account);
+            final String folderPathDelimiter = backend.refreshFolderList();
+            if (folderPathDelimiter != null &&
+                !folderPathDelimiter.isEmpty() &&
+                !folderPathDelimiter.equals(account.folderPathDelimiter())) {
+                account.setFolderPathDelimiter(folderPathDelimiter);
+            }
 
             long now = System.currentTimeMillis();
             Log.d("Folder list successfully refreshed @ %tc", now);

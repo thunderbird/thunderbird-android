@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
     api(projects.backend.api)
+    implementation(projects.feature.mail.folder.api)
 
     implementation(libs.kotlinx.serialization.json)
 

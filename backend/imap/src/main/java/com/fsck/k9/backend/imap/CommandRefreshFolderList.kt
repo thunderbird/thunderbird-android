@@ -6,15 +6,18 @@ import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.store.imap.FolderListItem
 import com.fsck.k9.mail.store.imap.ImapStore
+import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 
 internal class CommandRefreshFolderList(
     private val backendStorage: BackendStorage,
     private val imapStore: ImapStore,
 ) {
-    fun refreshFolderList() {
+    fun refreshFolderList(): FolderPathDelimiter? {
         // TODO: Start using the proper server ID.
         //  For now we still use the old server ID format (decoded, with prefix removed).
-        val foldersOnServer = imapStore.getFolders().toLegacyFolderList()
+        val folders = imapStore.getFolders()
+        val folderPathDelimiter = folders.firstOrNull { it.folderPathDelimiter != null }?.folderPathDelimiter
+        val foldersOnServer = folders.toLegacyFolderList()
         val oldFolderServerIds = backendStorage.getFolderServerIds()
 
         backendStorage.updateFolders {
@@ -32,6 +35,7 @@ internal class CommandRefreshFolderList(
             val removedFolderServerIds = oldFolderServerIds - newFolderServerIds
             deleteFolders(removedFolderServerIds)
         }
+        return folderPathDelimiter
     }
 }
 
