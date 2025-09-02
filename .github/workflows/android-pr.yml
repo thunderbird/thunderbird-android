@@ -17,6 +17,10 @@ env:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.pull_request.number || 'no-pr' }}
+  cancel-in-progress: true
+
 jobs:
   build-k9:
     name: Build K9 application
