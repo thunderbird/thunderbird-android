@@ -66,6 +66,7 @@ internal object FakeData {
         isInTopGroup = false,
         unreadMessageCount = 14,
         starredMessageCount = 5,
+        pathDelimiter = "/",
     )
 
     val DISPLAY_TREE_FOLDER = DisplayTreeFolder(
