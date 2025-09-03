@@ -106,7 +106,6 @@
     <plurals name="notification_new_messages_title">
         <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nová zpráva</item>
         <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nové zprávy</item>
-        <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
         <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
         <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových zpráv</item>
     </plurals>
