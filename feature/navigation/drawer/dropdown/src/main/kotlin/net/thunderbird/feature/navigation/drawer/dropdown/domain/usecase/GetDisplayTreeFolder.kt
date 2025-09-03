@@ -101,7 +101,7 @@ internal class GetDisplayTreeFolder(
     private fun createPlaceholderFolder(name: String, pathDelimiter: FolderPathDelimiter): MailDisplayFolder {
         placeholderCounter += 1
         return MailDisplayFolder(
-            accountId = "placeholder",
+            accountId = null,
             folder = Folder(
                 id = placeholderCounter,
                 name = name,
