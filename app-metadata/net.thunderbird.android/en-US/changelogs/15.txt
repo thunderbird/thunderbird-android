@@ -1,0 +1,2 @@
+Thunderbird for Android version 12.1, based on K-9 Mail. Changes include:
+- There are no Thunderbird changes requiring release notes in this release
