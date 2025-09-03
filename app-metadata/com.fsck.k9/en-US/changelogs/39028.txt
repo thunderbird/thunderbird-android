@@ -1,7 +1,0 @@
-- Support Android IME autofill for password managers
-- Add support for avatars in account settings
-- Enable edge-to-edge support
-- Long words and links in email messages did not wrap properly
-- Swipe right to archive failed if archive folder did not exist
-- Gmail prefixes were shown in the folder structure
-- Unicode folder names were malformed when using server supporting UTF-8
