@@ -199,7 +199,7 @@ class GetDisplayTreeFolderTest {
                     children = persistentListOf(
                         DisplayTreeFolder(
                             displayFolder = MailDisplayFolder(
-                                accountId = "placeholder",
+                                accountId = null,
                                 folder = Folder(
                                     id = 1L,
                                     name = "(Unnamed)/(Unnamed)",
@@ -238,7 +238,7 @@ class GetDisplayTreeFolderTest {
                 ),
                 DisplayTreeFolder(
                     displayFolder = MailDisplayFolder(
-                        accountId = "placeholder",
+                        accountId = null,
                         folder = Folder(id = 2, name = "valid1", type = FolderType.REGULAR, isLocalOnly = false),
                         isInTopGroup = true,
                         unreadMessageCount = 0,
@@ -250,7 +250,7 @@ class GetDisplayTreeFolderTest {
                     children = persistentListOf(
                         DisplayTreeFolder(
                             displayFolder = MailDisplayFolder(
-                                accountId = "placeholder",
+                                accountId = null,
                                 folder = Folder(
                                     id = 3L,
                                     name = "valid1/(Unnamed)",
@@ -321,7 +321,7 @@ class GetDisplayTreeFolderTest {
             children = persistentListOf(
                 createDisplayTreeFolder(
                     displayFolder = createDisplayAccountFolder(
-                        accountId = "placeholder",
+                        accountId = null,
                         folderId = 1L,
                         folderName = "folderLevel1",
                         unreadMessageCount = 0,
@@ -380,7 +380,7 @@ class GetDisplayTreeFolderTest {
             children = persistentListOf(
                 createDisplayTreeFolder(
                     displayFolder = createDisplayAccountFolder(
-                        accountId = "placeholder",
+                        accountId = null,
                         folderId = 1,
                         folderName = "level1",
                         unreadMessageCount = 0,
@@ -392,7 +392,7 @@ class GetDisplayTreeFolderTest {
                     children = persistentListOf(
                         createDisplayTreeFolder(
                             displayFolder = createDisplayAccountFolder(
-                                accountId = "placeholder",
+                                accountId = null,
                                 folderId = 2L,
                                 folderName = "level1/level2",
                                 unreadMessageCount = 0,
@@ -430,7 +430,7 @@ class GetDisplayTreeFolderTest {
             folderName: String,
             unreadMessageCount: Int,
             starredMessageCount: Int,
-            accountId: String = "accountId",
+            accountId: String? = "accountId",
         ): MailDisplayFolder {
             return MailDisplayFolder(
                 accountId = accountId,
