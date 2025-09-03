@@ -707,9 +707,10 @@ class MessageListFragment :
                 .display
                 .inboxSettings
                 .isMessageListSenderAboveSubject,
-            showContactPicture = generalSettingsManager.getConfig().display.isShowContactPicture,
+            showContactPicture = generalSettingsManager.getConfig().display.visualSettings.isShowContactPicture,
             showingThreadedList = showingThreadedList,
-            backGroundAsReadIndicator = generalSettingsManager.getConfig().display.isUseBackgroundAsUnreadIndicator,
+            backGroundAsReadIndicator = generalSettingsManager
+                .getConfig().display.visualSettings.isUseBackgroundAsUnreadIndicator,
             showAccountChip = isShowAccountChip,
             density = K9.messageListDensity,
         )

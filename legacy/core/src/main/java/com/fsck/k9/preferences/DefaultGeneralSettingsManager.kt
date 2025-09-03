@@ -21,6 +21,8 @@ import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceMana
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
 import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
+import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsPreferenceManager
+import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
@@ -45,6 +47,8 @@ internal class DefaultGeneralSettingsManager(
     private val displaySettingsSettingsPreferenceManager: DisplaySettingsPreferenceManager,
     private val displayCoreSettingsPreferenceManager: DisplayCoreSettingsPreferenceManager,
     private val displayInboxSettingsPreferenceManager: DisplayInboxSettingsPreferenceManager,
+    private val displayVisualSettingsPreferenceManager: DisplayVisualSettingsPreferenceManager,
+    private val displayMiscSettingsPreferenceManager: DisplayMiscSettingsPreferenceManager,
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
     private val debugLogConfigurator: DebugLogConfigurator,
@@ -78,6 +82,16 @@ internal class DefaultGeneralSettingsManager(
         .combine(displayInboxSettingsPreferenceManager.getConfigFlow()) { generalSettings, inboxSettings ->
             generalSettings.copy(
                 display = generalSettings.display.copy(inboxSettings = inboxSettings),
+            )
+        }
+        .combine(displayVisualSettingsPreferenceManager.getConfigFlow()) { generalSettings, visualSettings ->
+            generalSettings.copy(
+                display = generalSettings.display.copy(visualSettings = visualSettings),
+            )
+        }
+        .combine(displayMiscSettingsPreferenceManager.getConfigFlow()) { generalSettings, miscSettings ->
+            generalSettings.copy(
+                display = generalSettings.display.copy(miscSettings = miscSettings),
             )
         }
         .combine(networkSettingsPreferenceManager.getConfigFlow()) { generalSettings, networkSettings ->
@@ -141,6 +155,8 @@ internal class DefaultGeneralSettingsManager(
                 displaySettingsSettingsPreferenceManager.save(config.display)
                 displayCoreSettingsPreferenceManager.save(config.display.coreSettings)
                 displayInboxSettingsPreferenceManager.save(config.display.inboxSettings)
+                displayVisualSettingsPreferenceManager.save(config.display.visualSettings)
+                displayMiscSettingsPreferenceManager.save(config.display.miscSettings)
                 networkSettingsPreferenceManager.save(config.network)
                 debuggingSettingsPreferenceManager.save(config.debugging)
             }
