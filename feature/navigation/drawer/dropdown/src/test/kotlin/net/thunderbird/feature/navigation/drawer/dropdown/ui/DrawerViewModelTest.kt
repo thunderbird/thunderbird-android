@@ -334,7 +334,7 @@ internal class DrawerViewModelTest {
 
         assertThat(turbines.awaitEffectItem()).isEqualTo(
             Effect.OpenFolder(
-                accountId = displayFolders[1].accountId,
+                accountId = requireNotNull(displayFolders[1].accountId),
                 folderId = displayFolders[1].folder.id,
             ),
         )

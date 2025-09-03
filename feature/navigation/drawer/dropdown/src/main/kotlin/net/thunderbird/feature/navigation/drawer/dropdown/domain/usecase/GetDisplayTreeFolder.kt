@@ -90,7 +90,7 @@ internal class GetDisplayTreeFolder : UseCase.GetDisplayTreeFolder {
     private fun createPlaceholderFolder(name: String): MailDisplayFolder {
         placeholderCounter += 1
         return MailDisplayFolder(
-            accountId = "placeholder",
+            accountId = null,
             folder = Folder(
                 id = placeholderCounter,
                 name = name,
