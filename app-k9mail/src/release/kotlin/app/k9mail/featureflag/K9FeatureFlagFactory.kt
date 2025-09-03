@@ -12,7 +12,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("new_account_settings".toFeatureFlagKey(), enabled = false),
             FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = false),
             FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = false),
-            FeatureFlag("enable_dropdown_drawer".toFeatureFlagKey(), enabled = false),
+            FeatureFlag("enable_dropdown_drawer".toFeatureFlagKey(), enabled = true),
             FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = false),
             FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
