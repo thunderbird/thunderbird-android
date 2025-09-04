@@ -149,6 +149,8 @@ include(
 include(
     ":core:architecture:api",
     ":core:common",
+    ":core:configstore:api",
+    ":core:configstore:impl-backend",
     ":core:featureflag",
     ":core:logging:api",
     ":core:logging:impl-composite",
@@ -252,7 +254,7 @@ include(
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
     """
         Java 17+ is required to build Thunderbird for Android.
-        But it found an incompatible Java version ${{JavaVersion.current()}}.
+        But it found an incompatible Java version ${{ JavaVersion.current() }}.
 
         Java Home: [${System.getProperty("java.home")}]
 
