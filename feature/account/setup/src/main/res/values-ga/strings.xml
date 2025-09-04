@@ -10,8 +10,6 @@
     <string name="account_setup_special_folders_folder_none">Dada</string>
     <string name="account_setup_special_folders_folder_automatic">Uathoibríoch (%s)</string>
     <string name="account_setup_options_section_display_options">Roghanna taispeána</string>
-    <string name="account_setup_options_display_name_label">Do ainm</string>
-    <string name="account_setup_options_display_name_error_required">Tá d’ainm ag teastáil.</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">Gach nóiméad</item>
         <item quantity="two">Gach %d nóiméad</item>

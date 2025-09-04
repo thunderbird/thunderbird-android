@@ -24,8 +24,6 @@
     <string name="account_setup_options_account_name_label">Nama akun</string>
     <string name="account_setup_options_section_display_options">Pilihan tampilan</string>
     <string name="account_setup_options_account_name_error_blank">Nama akun tidak boleh kosong.</string>
-    <string name="account_setup_options_display_name_label">Nama Anda</string>
-    <string name="account_setup_options_display_name_error_required">Nama Anda diperlukan.</string>
     <string name="account_setup_options_email_signature_label">Tanda tangan surel</string>
     <string name="account_setup_options_email_signature_error_blank">Nama tanda tangan surel tidak boleh kosong.</string>
     <string name="account_setup_options_section_sync_options">Pilihan penyinkronan</string>

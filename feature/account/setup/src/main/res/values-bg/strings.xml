@@ -27,8 +27,6 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_not_supported">Този имейл адрес не се поддържа.</string>
     <string name="account_setup_create_account_creating">Създаване на акаунт…</string>
     <string name="account_setup_options_account_name_label">Име на акаунта</string>
-    <string name="account_setup_options_display_name_label">Вашето име</string>
-    <string name="account_setup_options_display_name_error_required">Име е задължително.</string>
     <string name="account_setup_create_account_error">Възникна грешка при създаването на акаунта</string>
     <string name="account_setup_options_email_check_frequency_never">Никога</string>
     <string name="account_setup_options_section_sync_options">Настройки за синхронизация</string>

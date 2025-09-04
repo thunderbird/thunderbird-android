@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Kontonavn</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Fant et oppsett</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-postadresse kreves.</string>
-    <string name="account_setup_options_display_name_label">Ditt navn</string>
     <string name="account_setup_auto_discovery_loading_error">Klarte ikke å laste inn e-postoppsett</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Jeg stoler på dette oppsettet</string>
-    <string name="account_setup_options_display_name_error_required">Navnet ditt kreves.</string>
     <string name="account_setup_error_network">Nettverksfeil. Vennligst sjekk tilkoblingen din og prøv på nytt.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dette gjenkjennes ikke som en gyldig e-postadresse.</string>
     <string name="account_setup_options_email_check_frequency_never">Aldri</string>

@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Název účtu</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Nastavení nalezeno</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailová adresa je vyžadována.</string>
-    <string name="account_setup_options_display_name_label">Vaše jméno</string>
     <string name="account_setup_auto_discovery_loading_error">Nastavení e-mailu se nepodařilo nahrát</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tomuto nastavení důvěřuji</string>
-    <string name="account_setup_options_display_name_error_required">Vaše jméno je vyžadováno.</string>
     <string name="account_setup_error_network">Chyba sítě. Zkontrolujte prosím stav svého připojení a zkuste to znovu.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Toto není rozeznáno jako platná e-mailová adresa.</string>
     <string name="account_setup_options_email_check_frequency_never">Nikdy</string>

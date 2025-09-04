@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Nume cont</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configurație găsită</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Este necesară adresa de e-mail.</string>
-    <string name="account_setup_options_display_name_label">Numele dvs.</string>
     <string name="account_setup_auto_discovery_loading_error">Nu s-a putut încărca configurația e-mailului</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Am încredere în această configurație</string>
-    <string name="account_setup_options_display_name_error_required">Numele este obligatoriu.</string>
     <string name="account_setup_error_network">Eroare de rețea. Verificați starea conexiunii și încercați din nou.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Aceasta nu este recunoscută ca o adresă de e-mail validă.</string>
     <string name="account_setup_options_email_check_frequency_never">Niciodată</string>

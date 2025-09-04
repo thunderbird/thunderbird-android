@@ -27,8 +27,6 @@
     <string name="account_setup_options_email_signature_label">Підпис е-пошти</string>
     <string name="account_setup_create_account_creating">Створення облікового запису…</string>
     <string name="account_setup_options_account_name_error_blank">Ім\'я облікового запису не може бути порожнім.</string>
-    <string name="account_setup_options_display_name_label">Ваше ім\'я</string>
-    <string name="account_setup_options_display_name_error_required">Потрібно вказати ім\'я.</string>
     <string name="account_setup_error_network">Помилка в мережі. Перевірте стан вашого з\'єднання та повторіть спробу.</string>
     <string name="account_setup_error_unknown">Невідома помилка</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Адреса е-пошти обов\'язкова.</string>

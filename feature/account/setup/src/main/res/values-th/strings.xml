@@ -34,8 +34,6 @@
     <string name="account_setup_options_section_display_options">ตัวเลือกการแสดงผล</string>
     <string name="account_setup_options_account_name_label">ชื่อบัญชี</string>
     <string name="account_setup_options_account_name_error_blank">ชื่อบัญชีไม่สามารถเว้นว่างได้</string>
-    <string name="account_setup_options_display_name_label">ชื่อของคุณ</string>
-    <string name="account_setup_options_display_name_error_required">กรุณาระบุชื่อของคุณ</string>
     <string name="account_setup_options_email_signature_label">ลายเซ็นอีเมล์</string>
     <string name="account_setup_options_email_signature_error_blank">ชื่อลายเซ็นอีเมล์ไม่สามารถว่างเปล่าได้</string>
     <string name="account_setup_options_section_sync_options">ตัวเลือกการซิงค์</string>

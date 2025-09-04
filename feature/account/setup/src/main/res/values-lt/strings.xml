@@ -10,8 +10,6 @@
     <string name="account_setup_special_folders_folder_none">Jokio</string>
     <string name="account_setup_special_folders_folder_automatic">Automatinis (%s)</string>
     <string name="account_setup_options_account_name_error_blank">Paskyros pavadinimas negali būti tuščias.</string>
-    <string name="account_setup_options_display_name_label">Jūsų vardas</string>
-    <string name="account_setup_options_display_name_error_required">Jūsų vardas būtinas.</string>
     <string name="account_setup_options_email_signature_error_blank">Laiškų parašo pavadinimas negali būti tuščias.</string>
     <string name="account_setup_options_email_signature_label">Laiškų parašas</string>
     <string name="account_setup_options_account_check_frequency_label">Tikrinimo dažnis</string>

@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">账号名称</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">找到配置</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">电子邮件地址是必需的。</string>
-    <string name="account_setup_options_display_name_label">您的名称</string>
     <string name="account_setup_auto_discovery_loading_error">加载电子邮件配置失败</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">我信任此配置</string>
-    <string name="account_setup_options_display_name_error_required">名称是必需的。</string>
     <string name="account_setup_error_network">网络错误。请检查您的连接状态，然后重试。</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">这不是有效的电子邮件地址。</string>
     <string name="account_setup_options_email_check_frequency_never">从不</string>

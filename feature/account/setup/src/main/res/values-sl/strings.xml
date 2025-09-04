@@ -47,8 +47,6 @@
     <string name="account_setup_options_section_display_options">Možnosti prikaza</string>
     <string name="account_setup_options_account_name_label">Ime računa</string>
     <string name="account_setup_options_account_name_error_blank">Ime računa ne sme biti prazno.</string>
-    <string name="account_setup_options_display_name_label">Vaše ime</string>
-    <string name="account_setup_options_display_name_error_required">Vaše ime je zahtevan podatek.</string>
     <string name="account_setup_options_email_signature_label">E-poštni podpis</string>
     <string name="account_setup_options_email_signature_error_blank">Ime podpisa ne sme biti prazno.</string>
     <string name="account_setup_options_section_sync_options">Možnosti uskaljevanja</string>

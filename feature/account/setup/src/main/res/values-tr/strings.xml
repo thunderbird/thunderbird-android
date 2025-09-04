@@ -16,10 +16,8 @@
     <string name="account_setup_options_account_name_label">Hesap adı</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Yapılandırma bulundu</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-posta adresi zorunludur.</string>
-    <string name="account_setup_options_display_name_label">Adınız</string>
     <string name="account_setup_auto_discovery_loading_error">E-posta yapılandırması yüklenemedi</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Bu yapılandırmaya güveniyorum</string>
-    <string name="account_setup_options_display_name_error_required">Adınız zorunludur.</string>
     <string name="account_setup_error_network">Ağ hatası. Lütfen bağlantı durumunuzu kontrol edip yeniden deneyin.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Bu geçerli bir e-posta adresi olarak tanınmıyor.</string>
     <string name="account_setup_auto_discovery_loading_message">Yapılandırma aranıyor…</string>
