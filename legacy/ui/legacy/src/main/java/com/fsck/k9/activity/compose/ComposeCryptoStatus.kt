@@ -89,7 +89,7 @@ data class ComposeCryptoStatus(
     private val displayTypeFromEnabledAutocryptStatus = when {
         !isEncryptionEnabled -> null
         recipientAutocryptStatusType == null -> CryptoStatusDisplayType.ERROR
-        !recipientAutocryptStatusType.canEncrypt() -> CryptoStatusDisplayType.ENABLED_ERROR
+        !recipientAutocryptStatusType.canEncrypt -> CryptoStatusDisplayType.ENABLED_ERROR
         recipientAutocryptStatusType.isConfirmed -> CryptoStatusDisplayType.ENABLED_TRUSTED
         else -> CryptoStatusDisplayType.ENABLED
     }
@@ -100,7 +100,7 @@ data class ComposeCryptoStatus(
     }
 
     private val displayTypeFromEncryptionAvailable = when {
-        recipientAutocryptStatusType?.canEncrypt() == true -> CryptoStatusDisplayType.AVAILABLE
+        recipientAutocryptStatusType?.canEncrypt == true -> CryptoStatusDisplayType.AVAILABLE
         else -> null
     }
 
@@ -135,7 +135,7 @@ data class ComposeCryptoStatus(
         else -> null
     }
 
-    fun allRecipientsCanEncrypt() = recipientAutocryptStatus?.type?.canEncrypt() == true
+    fun allRecipientsCanEncrypt() = recipientAutocryptStatus?.type?.canEncrypt == true
 
     fun canEncryptAndIsMutualDefault() =
         allRecipientsCanEncrypt() && isSenderPreferEncryptMutual && isRecipientsPreferEncryptMutual

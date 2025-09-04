@@ -329,7 +329,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         OpenPgpApiManager openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), this);
         recipientPresenter = new RecipientPresenter(getApplicationContext(), getSupportLoaderManager(),
                 openPgpApiManager, recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
-                AutocryptStatusInteractor.getInstance(), new ReplyToParser(),
+                AutocryptStatusInteractor.Companion.getInstance(), new ReplyToParser(),
                 DI.get(AutocryptDraftStateHeaderParser.class));
         recipientPresenter.asyncUpdateCryptoStatus();
 
