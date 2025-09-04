@@ -38,7 +38,7 @@ When you encounter a bug or have a feature request or idea, please do the follow
 
 We don’t track new ideas or feature requests in GitHub Issues.
 
-- Start a discussion in Mozilla Connect – Ideas
+- Start a discussion in [Mozilla Connect – Ideas](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android)
 - Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).
 
 ## 🌐 Translations

@@ -8,8 +8,6 @@ For full details, see:
 - [Testing Guide](testing-guide.md) - test strategy and frameworks
 - [Code Review Guide](code-review-guide.md) – review expectations
 
-- [UI Architecture](../architecture/ui-architecture.md) - Compose + MVI
-
 ## 📦 Modules
 
 - Follow [Module Organization](../architecture/module-organization.md) and [Module Structure](../architecture/module-structure.md)

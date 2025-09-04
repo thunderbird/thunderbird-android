@@ -55,7 +55,7 @@ Before coding:
 To contribute code, you'll need to work with your own fork of the repository:
 
 1. Go to the [Thunderbird for Android repository](https://github.com/thunderbird/thunderbird-android)
-2. Click the "Fork" button in the top-right corner
+2. Click the **Fork** button in the top-right corner
 3. Select your GitHub account as the destination for the fork
 4. Wait for GitHub to create your fork
 
@@ -104,8 +104,7 @@ When making changes:
 2. Keep your changes focused on the specific issue.
 3. Write clear, concise, and well-documented code
 4. Document non-obvious logic and update docs if needed.
-5. Update documentation if necessary
-6. Add or update tests (see [Testing Guide](testing-guide.md))
+5. Add or update tests (see [Testing Guide](testing-guide.md))
 
 ### ✍️ Commit Best Practices
 
@@ -217,7 +216,7 @@ This PR adds email validation to the login form. It:
 
 After submitting your pull request:
 
-1. Automated checks will run to verify your changes.
+1. Automated checks will run to verify your changes once approved by a maintainer.
 2. Maintainers and other contributors will review your code.
 3. They may suggest changes.
 4. Respond to feedback and make necessary changes.

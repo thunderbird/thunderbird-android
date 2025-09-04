@@ -29,7 +29,9 @@ Do these as part of regular development:
 
 ## Before main → beta (developer responsibilities)
 
-Note: A one-week [Soft Freeze](../ci/RELEASE.md#soft-freeze) occurs before merging `main` into `beta`.
+> [!NOTE]
+> A one-week [Soft Freeze](../ci/RELEASE.md#soft-freeze) occurs before merging `main` into `beta`.
+
 During soft freeze:
 - Avoid landing risky code changes
 - Do not enable feature flags that are currently disabled
@@ -61,13 +63,17 @@ Goal: Changes on `beta` are safe for general availability.
   - Investigate regressions and propose fixes if needed
   - Ensure your changes have been tested on beta and address any issues found
 
-## Optional: PR checklist snippet (paste into your PR description)
+## Optional: PR checklist snippet
 
+Paste the following snippet into your PR description to help reviewers and release drivers verify readiness for merge:
+
+```markdown
 - [ ] Feature flags set according to target branch rules ([beta](../ci/RELEASE.md#feature-flags) / [release](../ci/RELEASE.md#feature-flags))
 - [ ] Tests added/updated; CI green on affected modules
 - [ ] No new localizable strings (or justified and coordinated)
 - [ ] Translations accounted for (Weblate PR merged or not required)
 - [ ] Uplift label and risk/impact notes added if proposing uplift ([criteria](../ci/RELEASE.md#uplift-criteria))
+```
 
 ## After merges (what developers should verify)
 
@@ -75,4 +81,6 @@ Goal: Changes on `beta` are safe for general availability.
   - Watch crash/ANR and error reports for regressions related to your changes after rollout
   - Be prepared to propose/prepare a hotfix via the uplift process if necessary
 
-Note: Merge-day coordination (branch locks, Matrix announcements, running scripts) is handled by release drivers. See [Merge Process](../ci/RELEASE.md#merge-process) for details.
+> [!NOTE]
+> Merge-day coordination (branch locks, Matrix announcements, running scripts) is handled by release drivers. See [Merge Process](../ci/RELEASE.md#merge-process) for details.
+
