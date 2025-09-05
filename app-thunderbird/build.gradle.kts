@@ -238,7 +238,9 @@ dependencies {
 
     implementation(projects.feature.autodiscovery.api)
     debugImplementation(projects.backend.demo)
+    "dailyImplementation"(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
+    "dailyImplementation"(projects.feature.autodiscovery.demo)
 
     "fossImplementation"(projects.feature.funding.link)
 
