@@ -9,11 +9,13 @@ import androidx.core.database.getStringOrNull
 import com.fsck.k9.K9
 import com.fsck.k9.mailstore.LockableDatabase
 import java.util.UUID
+import net.thunderbird.feature.account.AccountId
 
 internal class CopyMessageOperations(
     private val lockableDatabase: LockableDatabase,
     private val attachmentFileManager: AttachmentFileManager,
     private val threadMessageOperations: ThreadMessageOperations,
+    private val accountId: AccountId,
 ) {
     fun copyMessage(messageId: Long, destinationFolderId: Long): Long {
         return lockableDatabase.execute(true) { database ->
@@ -196,6 +198,7 @@ ORDER BY message_parts.seq
             put("folder_id", destinationFolderId)
             put("uid", K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString())
             put("message_part_id", rootMessagePartId)
+            put("account_id", accountId.asRaw())
         }
     }
 

@@ -9,10 +9,12 @@ import com.fsck.k9.K9
 import com.fsck.k9.mailstore.LockableDatabase
 import java.util.UUID
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.account.AccountId
 
 internal class MoveMessageOperations(
     private val database: LockableDatabase,
     private val threadMessageOperations: ThreadMessageOperations,
+    private val accountId: AccountId,
 ) {
     fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
         Log.d("Moving message [ID: $messageId] to folder [ID: $destinationFolderId]")
@@ -90,6 +92,7 @@ internal class MoveMessageOperations(
                 put("forwarded", cursor.getIntOrNull("forwarded"))
                 put("message_part_id", cursor.getLongOrNull("message_part_id"))
                 put("encryption_type", cursor.getStringOrNull("encryption_type"))
+                put("account_id", accountId.asRaw())
             }
         }
 
