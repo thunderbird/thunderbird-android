@@ -149,13 +149,19 @@ Use the project's core logging API `net.thunderbird.core.logging.Logger`, which 
 Example with DI (Koin):
 
 ```kotlin
+private const val TAG = "ExampleActivity"
+
 class ExampleActivity : ComponentActivity() {
     private val logger: Logger by inject()
 
     fun doSomething() {
-        logger.debug(tag = "Example") { "Debug message" }
-        val exception = RuntimeException("Something went wrong")
-        logger.error(tag = "Example", throwable = exception) { "Error message" }
+        logger.debug(tag = TAG) { "Debug message" }
+        
+        try {
+            // Some code that might throw an exception
+        } catch (exception: Exception) {
+            logger.error(tag = TAG, throwable = exception) { "An error occurred" }
+        }
     }
 }
 ```

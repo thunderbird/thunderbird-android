@@ -51,6 +51,7 @@ For full details, see:
 - ✅ Keep module boundaries clean
 - ✅ Add or update tests for new/changed code
 - ✅ Run Spotless, Detekt, and Lint checks locally before committing
-- ❌ Don’t commit new code to `legacy:*` modules
+- ❌ Don’t commit new code to `legacy:*` modules, unless strictly necessary
 - ❌ Don’t bypass the architecture and layering (e.g., UI calling data sources directly)
+- ❌ Don’t introduce circular dependencies between modules
 

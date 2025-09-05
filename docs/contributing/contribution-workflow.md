@@ -176,13 +176,13 @@ To submit your changes for review:
    - Base branch: `main`
    - Head repo: your fork & branch
 4. Select your fork and branch as the source
-5. Click C**reate pull request**
+5. Click **Create pull request**
 
 ### Pull Request Description
 
 Write a clear and concise description for your pull request:
 
-1. Reference the issue number (e.g., "Fixes #123")
+1. Reference the issue number (e.g., "Fixes #123", "Resolves #456")
 2. Summarize the changes you made
 3. Explain your approach and any important decisions
 4. Include screenshots or videos for UI changes

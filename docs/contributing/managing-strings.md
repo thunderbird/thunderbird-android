@@ -9,7 +9,7 @@ Thunderbird for Android project.
 
 ## 📖 Approach
 
-* We use Android’s [resource system](https://developer.android.com/guide/topics/resources/localization) for localizing strings.
+* We use Android’s [resource system](https://developer.android.com/guide/topics/resources/localization) for localizing strings and Compose Multiplatform Resources for localizing strings in common code (Kotlin Multiplatform).
 * **Source language** is **English** (American English, represented as `en`).
 * **Source strings** are modified only in this repository (via pull requests).
 * **Translations** are managed exclusively in [Weblate](https://hosted.weblate.org/projects/tb-android/) and merged into the repository by the Thunderbird team.
@@ -17,7 +17,7 @@ Thunderbird for Android project.
 
 ## 🔄 Changing Source Strings
 
-Source strings are always stored in res/values/strings.xml (**English**, `en`).
+Source strings are always stored in `res/values/strings.xml` or (**English**, `en`).
 
 They must be managed carefully to avoid breaking existing translations.
 
@@ -34,7 +34,7 @@ formatting across all languages):
 3. Push Weblate changes (creates a PR).
 4. Merge the Weblate PR.
 5. Apply your mechanical change in a separate PR.
-6. Wait for Weblate sync to propagate.
+6. Wait for Weblate sync to propagate your merged PR.
 7. Unlock components in Weblate.
 
 This ensures translators do not work on outdated strings and avoids merge conflicts.
@@ -164,7 +164,7 @@ Steps:
 1. Go to [Add Component](https://hosted.weblate.org/create/component/?project=3696).
 2. Choose **From existing component**.
 3. Name your component.
-4. For **Component**, select **K-9 Mail/Thunderbird/ui-legacy**.
+4. For **Component**, select **Thunderbird for Android / K-9 Mail/ui-legacy**.
 5. Continue → Select **Specify configuration manually**.
 6. Set file format to **Android String Resource**.
 7. File mask: `path/to/module/src/main/res/values-*/strings.xml`
@@ -179,3 +179,5 @@ Android sometimes uses codes that differ from Weblate (e.g. Hebrew = `iw` in And
 
 Automation tools must map between systems.
 See [LanguageCodeLoader.kt](https://github.com/thunderbird/thunderbird-android/blob/main/cli/translation-cli/src/main/kotlin/net/thunderbird/cli/translation/LanguageCodeLoader.kt#L12-L13) for an example.
+
+You could find a more complete list of differences in the [Android documentation](https://developer.android.com/guide/topics/resources/localization#LocaleCodes) and [Unicode and internationalization support](https://developer.android.com/guide/topics/resources/internationalization)

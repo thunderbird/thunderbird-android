@@ -11,7 +11,6 @@ For the full release-driver process (branch locks, announcements, publishing), s
 Do these as part of regular development:
 
 - Identify potential uplifts early
-  - Label issues/PRs with `task: uplift to beta` or `task: uplift to release` when appropriate
   - Add risk and user impact notes to the issue/PR; ensure the fix lands on `main` and bakes on Daily first — see [Uplifts](../ci/RELEASE.md#uplifts) and [Uplift Criteria](../ci/RELEASE.md#uplift-criteria)
 - Strings and translations
   - Avoid late string changes; if unavoidable, keep them small, so translators can catch up
@@ -23,7 +22,7 @@ Do these as part of regular development:
   - Keep your issues in the project up to date (assignees, labels, status) and link PRs to issues
   - Ensure your issues are added to the [project sprint board](https://github.com/orgs/thunderbird/projects/20) and assigned to the current sprint
   - Review the sprint board regularly and pick up backlog items as capacity allows, especially bugs and regressions
-  - When reviewing external contributions
+  - When reviewing external contributions:
     - Add the issue to the appropriate parent issue if not done already (e.g. `[EPIC] Mobile Foundations QX 20XX`)
     - Add the issue to the project sprint board and assign it to the current sprint
 

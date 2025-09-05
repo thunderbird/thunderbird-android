@@ -67,8 +67,8 @@ development, testing, and review.
 
 ### 🔍 Reviews & Collaboration
 
-* **[Code Review Guide](contributing/code-review-guide.md)** – Expectations for PR authors and reviewers, review etiquette.
 * **[Git Commit Guide](contributing/git-commit-guide.md)** – How to write clear, Conventional Commit-style messages.
+* **[Code Review Guide](contributing/code-review-guide.md)** – Expectations for PR authors and reviewers, review etiquette.
 
 ### 🌐 Translations
 

@@ -25,8 +25,7 @@ To start translating Thunderbird for Android:
 
 - **Translate only on Weblate** - never edit translation directly in Git.
 - **Preserve technical placeholders and formatting:**
-  - Keep placeholders like `%s` or `%1$d` unchanged.
-  - Preserve Xliff formatting such as `<xliff:g id="...">...</xliff:g>`.
+  - Keep placeholders like `%1$s` or `%1$d` unchanged.
   - Match punctuation with the source string unless language rules require otherwise.
 - **Don’t change meaning** - if the English source string changes meaning, developers will create a new string key.
 
@@ -79,8 +78,10 @@ To propose a new language:
    Code: [e.g., fr, pt_BR]
    Any special notes: [Optional]
    ```
-3. The Thunderbird team will add the new language to Weblate.
+3. A team member will create the language in Weblate and confirm in the channel.
 4. Once it’s available, you can start translating immediately.
+
+Inclusion into the app follows our translation coverage policy, see [Adding or Removing Languages](#-adding-or-removing-languages).
 
 ## 🙏 Thank You!
 

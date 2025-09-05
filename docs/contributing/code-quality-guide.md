@@ -127,7 +127,7 @@ For Markdown we use Flexmark and no further configuration is needed.
 
 ### Kotlin Style Guide
 
-The project follows the [Kotlin style guide](https://developer.android.com/kotlin/style-guide) with some project-specific adaptations:
+The project follows the [Kotlin style guide](https://kotlinlang.org/docs/coding-conventions.html) with some project-specific adaptations:
 
 1. **Naming Conventions**:
    - Use `camelCase` for variables, functions, and methods
@@ -152,7 +152,7 @@ The project follows the [Kotlin style guide](https://developer.android.com/kotli
 ### Kotlin Best Practices
 
 - Prefer `val` (immutable) over `var` when possible
-- Use null-safety (`?.`, `?:`, `requireNotNull`)
+- Use null-safety (`?.`, `?:`, `requireNotNull`, `checkNotNull`)
 - Use extension functions to enhance existing classes
 - Leverage Kotlin's functional programming features (`map`, `filter`, etc.) for cleaner code
 - Use `data classes` for model objects
