@@ -85,6 +85,10 @@ class K9NotificationStrategy(
     @OptIn(ExperimentalTime::class)
     private val NotificationPreference.isQuietTime: Boolean
         get() {
+            if (!isQuietTimeEnabled) {
+                return false
+            }
+
             val clock = DI.get<Clock>()
             val quietTimeChecker = QuietTimeChecker(
                 clock = clock,
