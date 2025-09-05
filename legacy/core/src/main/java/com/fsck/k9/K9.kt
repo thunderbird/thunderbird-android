@@ -17,6 +17,8 @@ import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.core.logging.LogLevel
+import net.thunderbird.core.logging.LogLevelManager
 import net.thunderbird.core.logging.composite.CompositeLogSink
 import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.preference.storage.Storage
@@ -35,6 +37,7 @@ object K9 : KoinComponent {
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val syncDebugCompositeSink: CompositeLogSink by inject(named("syncDebug"))
     private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
+    private val loggerManager: LogLevelManager by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -413,7 +416,10 @@ object K9 : KoinComponent {
     private fun updateLoggingStatus() {
         Timber.uprootAll()
         if (isDebugLoggingEnabled) {
+            loggerManager.override(LogLevel.VERBOSE)
             Timber.plant(DebugTree())
+        } else {
+            loggerManager.restoreDefault()
         }
     }
 
