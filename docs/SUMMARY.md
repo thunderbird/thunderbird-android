@@ -3,11 +3,20 @@
 This file is not intended for direct reading by users, but rather serves as a configuration file for the documentation
 generator, in this case, **mdbook**. It defines the structure and navigation of the documentation.
 
+[About Thunderbird for Android](about.md)
+
 ---
 
 - [Contributing](CONTRIBUTING.md)
+  - [Development Environment](contributing/development-environment.md)
+  - [Contribution Workflow](contributing/contribution-workflow.md)
+  - [Development Guide](contributing/development-guide.md)
+  - [Code Quality Guide](contributing/code-quality-guide.md)
+  - [Code Review Guide](contributing/code-review-guide.md)
   - [Git Commit Guide](contributing/git-commit-guide.md)
   - [Testing Guide](contributing/testing-guide.md)
+  - [Translations](contributing/translations.md)
+  - [Managing Strings](contributing/managing-strings.md)
   - [Java to Kotlin Conversion Guide](contributing/java-to-kotlin-conversion-guide.md)
 - [Architecture](architecture/README.md)
   - [Module Organization](architecture/module-organization.md)
@@ -33,8 +42,8 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
 - [Release](ci/README.md)
   - [Release Process](ci/RELEASE.md)
   - [Release Automation](ci/AUTOMATION.md)
+  - [Developer Release Checklist](release/developer-checklist.md)
   - [Manual Release (historical)](ci/HISTORICAL_RELEASE.md)
-- [Translations](translations.md)
 
 ---
 
