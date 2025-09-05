@@ -155,7 +155,11 @@ private fun mapFolderName(
     parentPrefix: String? = "",
 ): String {
     return when (displayFolder) {
-        is MailDisplayFolder -> folderNameFormatter.displayName(displayFolder.folder).removePrefix("$parentPrefix/")
+        is MailDisplayFolder ->
+            folderNameFormatter
+                .displayName(displayFolder.folder)
+                .removePrefix("$parentPrefix${displayFolder.pathDelimiter}")
+
         is UnifiedDisplayFolder -> mapUnifiedFolderName(displayFolder)
         else -> throw IllegalArgumentException("Unknown display folder: $displayFolder")
     }

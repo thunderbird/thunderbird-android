@@ -83,6 +83,7 @@ internal class GetDisplayFoldersForAccountTest {
                 isInTopGroup = false,
                 unreadMessageCount = 0,
                 starredMessageCount = 0,
+                pathDelimiter = "/",
             ),
             LegacyDisplayFolder(
                 folder = FakeData.FOLDER.copy(
@@ -92,6 +93,7 @@ internal class GetDisplayFoldersForAccountTest {
                 isInTopGroup = false,
                 unreadMessageCount = 1,
                 starredMessageCount = 0,
+                pathDelimiter = "/",
             ),
         )
 
@@ -103,6 +105,7 @@ internal class GetDisplayFoldersForAccountTest {
             isInTopGroup = false,
             unreadMessageCount = 0,
             starredMessageCount = 0,
+            pathDelimiter = "/",
         )
 
         val DISPLAY_UNIFIED_FOLDER = DisplayUnifiedFolder(

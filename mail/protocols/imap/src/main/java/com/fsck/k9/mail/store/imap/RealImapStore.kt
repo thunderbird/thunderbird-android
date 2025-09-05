@@ -169,12 +169,12 @@ internal open class RealImapStore(
 
             val existingItem = folderMap[serverId]
             if (existingItem == null || existingItem.type == FolderType.REGULAR) {
-                folderMap[serverId] = FolderListItem(serverId, name, type)
+                folderMap[serverId] = FolderListItem(serverId, name, type, pathDelimiter)
             }
         }
 
         return buildList {
-            add(FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX))
+            add(FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX, pathDelimiter))
             addAll(folderMap.values)
         }
     }

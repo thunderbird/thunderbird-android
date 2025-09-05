@@ -49,6 +49,7 @@ class DefaultDisplayFolderRepository(
                 isInTopGroup = folder.isInTopGroup,
                 unreadMessageCount = folder.unreadMessageCount,
                 starredMessageCount = folder.starredMessageCount,
+                pathDelimiter = account.folderPathDelimiter,
             )
         }.sortedWith(sortForDisplay)
     }
