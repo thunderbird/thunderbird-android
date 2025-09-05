@@ -48,8 +48,8 @@ jobs:
       - name: Clean docs
         run: |
           rm -rf book/docs/latest/assets/draw.io
-          rm book/docs/latest/.gitignore
-          rm book/docs/latest/install.sh
+          rm -f book/docs/latest/.gitignore
+          rm -f book/docs/latest/install.sh
 
           # Restore mermaid.min.js, it has already been copied over to book/docs/latest
           git restore .
