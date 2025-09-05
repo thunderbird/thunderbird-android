@@ -11,6 +11,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.mail.account.api.BaseAccount
+import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
 
@@ -436,6 +437,11 @@ open class LegacyAccount(
     @get:Synchronized
     @set:Synchronized
     var shouldMigrateToOAuth = false
+
+    @get:JvmName("folderPathDelimiter")
+    @get:Synchronized
+    @set:Synchronized
+    var folderPathDelimiter: FolderPathDelimiter = "/"
 
     /**
      * @param automaticCheckIntervalMinutes or -1 for never.

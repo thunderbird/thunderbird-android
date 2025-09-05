@@ -13,6 +13,8 @@ dependencies {
     api(projects.mail.protocols.imap)
     api(projects.mail.protocols.smtp)
 
+    implementation(projects.feature.mail.folder.api)
+
     implementation(libs.kotlinx.coroutines.core)
 
     testImplementation(projects.core.logging.testing)

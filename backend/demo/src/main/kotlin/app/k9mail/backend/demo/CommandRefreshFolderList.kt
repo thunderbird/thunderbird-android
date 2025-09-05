@@ -3,13 +3,15 @@ package app.k9mail.backend.demo
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.updateFolders
+import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
+import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 
 internal class CommandRefreshFolderList(
     private val backendStorage: BackendStorage,
     private val demoStore: DemoStore,
 ) {
 
-    fun refreshFolderList() {
+    fun refreshFolderList(): FolderPathDelimiter? {
         val localFolderServerIds = backendStorage.getFolderServerIds().toSet()
 
         backendStorage.updateFolders {
@@ -25,5 +27,7 @@ internal class CommandRefreshFolderList(
             val folderServerIdsToRemove = (localFolderServerIds - remoteFolderServerIds).toList()
             deleteFolders(folderServerIdsToRemove)
         }
+
+        return FOLDER_DEFAULT_PATH_DELIMITER
     }
 }

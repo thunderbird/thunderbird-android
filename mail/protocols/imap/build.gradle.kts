@@ -11,6 +11,7 @@ if (testCoverageEnabled) {
 dependencies {
     api(projects.mail.common)
     implementation(projects.core.common)
+    implementation(projects.feature.mail.folder.api)
 
     implementation(libs.jzlib)
     implementation(libs.jutf7)

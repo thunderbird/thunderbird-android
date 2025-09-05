@@ -29,6 +29,7 @@ internal class GetDisplayFoldersForAccount(
                         isInTopGroup = displayFolder.isInTopGroup,
                         unreadMessageCount = displayFolder.unreadMessageCount,
                         starredMessageCount = displayFolder.starredMessageCount,
+                        pathDelimiter = displayFolder.pathDelimiter,
                     )
                 }
             }

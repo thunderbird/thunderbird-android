@@ -143,6 +143,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         assertThat(result.signatureUse).isEqualTo(defaultIdentities[0].signatureUse)
         assertThat(result.signature).isEqualTo(defaultIdentities[0].signature)
         assertThat(result.shouldMigrateToOAuth).isEqualTo(true)
+        assertThat(result.folderPathDelimiter).isEqualTo(".")
     }
 
     private companion object {
@@ -287,6 +288,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
                 signatureUse = defaultIdentities[0].signatureUse
                 signature = defaultIdentities[0].signature
                 shouldMigrateToOAuth = true
+                folderPathDelimiter = "."
             }
         }
 
@@ -402,6 +404,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
                 signatureUse = defaultIdentities[0].signatureUse,
                 signature = defaultIdentities[0].signature,
                 shouldMigrateToOAuth = true,
+                folderPathDelimiter = ".",
             )
         }
     }
