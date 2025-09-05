@@ -64,7 +64,7 @@ class DefaultDebuggingSettingsPreferenceManager(
 
     private fun updateDebugLogLevel(config: DebuggingSettings) {
         if (config.isDebugLoggingEnabled) {
-            logLevelManager.override(LogLevel.DEBUG)
+            logLevelManager.override(LogLevel.VERBOSE)
         } else {
             logLevelManager.restoreDefault()
         }
