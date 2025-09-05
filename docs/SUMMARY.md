@@ -40,6 +40,8 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
     - [Proposed]()
     - [Rejected]()
 - [User Guide]()
+  - [Setup]()
+    - [Installing ADB](user-guide/setup/installing-adb.md)
   - [Troubleshooting]()
     - [Collecting Debug Logs](user-guide/troubleshooting/collecting-debug-logs.md)
     - [Find your app version](user-guide/troubleshooting/find-your-app-version.md)
