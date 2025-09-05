@@ -11,6 +11,7 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual.Companion.MAX_SUPPORTING_TEXT_LENGTH
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual.Companion.MAX_TITLE_LENGTH
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
+import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
 
 sealed interface InAppNotificationVisual
 
@@ -170,7 +171,7 @@ data class BannerInlineVisual(
 data class SnackbarVisual(
     val message: String,
     val action: NotificationAction?,
-    val duration: Duration,
+    val duration: SnackbarDuration,
 ) : InAppNotificationVisual {
     internal companion object {
         /**

@@ -134,7 +134,7 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
 }
 
 @Composable
-fun rememberInAppNotificationHostState(
+fun rememberInAppNotificationHostStateHolder(
     enabled: ImmutableSet<DisplayInAppNotificationFlag> = DisplayInAppNotificationFlag.AllNotifications,
 ): InAppNotificationHostStateHolder {
     return remember { InAppNotificationHostStateHolder(enabled) }

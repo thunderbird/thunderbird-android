@@ -1,7 +1,5 @@
 package net.thunderbird.feature.notification.api.ui.style
 
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.seconds
 import net.thunderbird.feature.notification.api.ui.style.builder.InAppNotificationStyleBuilder
 
 /**
@@ -35,7 +33,7 @@ sealed interface InAppNotificationStyle {
      * @see [InAppNotificationStyleBuilder.snackbar]
      */
     data class SnackbarNotification(
-        val duration: Duration = 10.seconds,
+        val duration: SnackbarDuration = SnackbarDuration.Short,
     ) : InAppNotificationStyle
 
     /**
@@ -43,6 +41,8 @@ sealed interface InAppNotificationStyle {
      */
     data object DialogNotification : InAppNotificationStyle
 }
+
+enum class SnackbarDuration { Short, Long, Indefinite }
 
 /**
  * Configures the in-app notification style.
