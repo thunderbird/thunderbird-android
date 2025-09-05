@@ -54,4 +54,6 @@
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="other">%d 封邮件</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">您的名称</string>
+    <string name="account_setup_options_your_name_error_required">您的名称是必需的。</string>
 </resources>

@@ -63,4 +63,6 @@
         <item quantity="many">%d zpráv</item>
         <item quantity="other">%d zpráv</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Vaše jméno</string>
+    <string name="account_setup_options_your_name_error_required">Vaše jméno je vyžadováno.</string>
 </resources>

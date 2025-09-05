@@ -63,4 +63,6 @@
         <item quantity="many">%d wiadomości</item>
         <item quantity="other">%d wiadomości</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Imię i nazwisko</string>
+    <string name="account_setup_options_your_name_error_required">Imię i nazwisko jest wymagane.</string>
 </resources>

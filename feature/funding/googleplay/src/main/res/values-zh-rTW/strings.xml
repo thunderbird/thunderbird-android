@@ -49,4 +49,9 @@
     <string name="funding_googleplay_contribution_reminder_message">加入我們的使命，共同打造最尊重隱私、高度可定制的電子郵件體驗。</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">是</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">不是現在</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">每月基本支持</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">每月重大支持</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">每月主要支持</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">每月傑出支持</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">每月卓越支持</string>
 </resources>
