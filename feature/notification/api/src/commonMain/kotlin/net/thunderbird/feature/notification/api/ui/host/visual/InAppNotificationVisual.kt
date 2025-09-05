@@ -1,7 +1,6 @@
 package net.thunderbird.feature.notification.api.ui.host.visual
 
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.util.fastFilter
 import kotlin.time.Duration
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -56,7 +55,7 @@ data class BannerGlobalVisual(
          * @throws IllegalStateException fails the check validations.
          */
         fun from(notification: InAppNotification): BannerGlobalVisual? =
-            notification.toVisuals<InAppNotificationStyle.BannerGlobalNotification, BannerGlobalVisual> { style ->
+            notification.toVisual<InAppNotificationStyle.BannerGlobalNotification, BannerGlobalVisual> { style ->
                 BannerGlobalVisual(
                     message = checkNotNull(notification.contentText) {
                         "A notification with a BannerGlobalNotification style must have a contentText not null"
@@ -73,7 +72,7 @@ data class BannerGlobalVisual(
                         .firstOrNull(),
                     priority = style.priority,
                 )
-            }.singleOrNull()
+            }
     }
 }
 
@@ -119,8 +118,8 @@ data class BannerInlineVisual(
          * @return A list containing a [BannerInlineVisual] if the conversion is successful, an empty list otherwise.
          * @throws IllegalStateException if any of the validation checks fail.
          */
-        fun from(notification: InAppNotification): List<BannerInlineVisual> =
-            notification.toVisuals<InAppNotificationStyle.BannerInlineNotification, BannerInlineVisual> { style ->
+        fun from(notification: InAppNotification): BannerInlineVisual? =
+            notification.toVisual<InAppNotificationStyle.BannerInlineNotification, BannerInlineVisual> { style ->
                 BannerInlineVisual(
                     title = checkTitle(notification.title),
                     supportingText = checkContentText(notification.contentText),
@@ -193,7 +192,7 @@ data class SnackbarVisual(
          * when the style is [InAppNotificationStyle.SnackbarNotification].
          */
         fun from(notification: InAppNotification): SnackbarVisual? =
-            notification.toVisuals<InAppNotificationStyle.SnackbarNotification, SnackbarVisual> { style ->
+            notification.toVisual<InAppNotificationStyle.SnackbarNotification, SnackbarVisual> { style ->
                 SnackbarVisual(
                     message = checkNotNull(notification.contentText) {
                         "A notification with a SnackbarNotification style must have a contentText not null"
@@ -203,19 +202,19 @@ data class SnackbarVisual(
                     },
                     duration = style.duration,
                 )
-            }.singleOrNull()
+            }
     }
 }
 
 private inline fun <
     reified TStyle : InAppNotificationStyle,
     reified TVisual : InAppNotificationVisual,
-    > InAppNotification.toVisuals(
+    > InAppNotification.toVisual(
     transform: (TStyle) -> TVisual,
-): List<TVisual> {
-    return inAppNotificationStyles
-        .fastFilter { style -> style is TStyle }
-        .map { style ->
+): TVisual? {
+    return inAppNotificationStyle
+        .takeIf { style -> style is TStyle }
+        ?.let { style ->
             check(style is TStyle)
             transform(style)
         }

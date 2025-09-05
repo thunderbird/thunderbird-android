@@ -13,7 +13,7 @@ import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
  * This interface defines the methods available for configuring the style of an in-app notification.
  */
 class InAppNotificationStyleBuilder internal constructor() {
-    private var styles = mutableListOf<InAppNotificationStyle>()
+    private var style: InAppNotificationStyle = InAppNotificationStyle.Undefined
 
     /**
      * Use inline error banners to surface issues that must be resolved before the user can continue
@@ -39,7 +39,7 @@ class InAppNotificationStyleBuilder internal constructor() {
     @NotificationStyleMarker
     fun bannerInline() {
         checkSingleStyleEntry<BannerInlineNotification>()
-        styles += BannerInlineNotification
+        style = BannerInlineNotification
     }
 
     /**
@@ -69,7 +69,7 @@ class InAppNotificationStyleBuilder internal constructor() {
     @NotificationStyleMarker
     fun bannerGlobal(priority: Int = 0) {
         checkSingleStyleEntry<BannerGlobalNotification>()
-        styles += BannerGlobalNotification(priority = priority)
+        style = BannerGlobalNotification(priority = priority)
     }
 
     /**
@@ -90,7 +90,7 @@ class InAppNotificationStyleBuilder internal constructor() {
     @NotificationStyleMarker
     fun snackbar(duration: SnackbarDuration = SnackbarDuration.Short) {
         checkSingleStyleEntry<SnackbarNotification>()
-        styles += SnackbarNotification(duration)
+        style = SnackbarNotification(duration)
     }
 
     /**
@@ -112,7 +112,7 @@ class InAppNotificationStyleBuilder internal constructor() {
     @NotificationStyleMarker
     fun dialog() {
         checkSingleStyleEntry<DialogNotification>()
-        styles += DialogNotification
+        style = DialogNotification
     }
 
     /**
@@ -120,16 +120,17 @@ class InAppNotificationStyleBuilder internal constructor() {
      *
      * @return The constructed [InAppNotificationStyle].
      */
-    fun build(): List<InAppNotificationStyle> {
-        check(styles.isNotEmpty()) {
-            "You must add at least one in-app notification style."
+    fun build(): InAppNotificationStyle {
+        check(style != InAppNotificationStyle.Undefined) {
+            "You must pick one in-app notification style."
         }
-        return styles.takeUnless { it.isEmpty() } ?: InAppNotificationStyle.Undefined
+        return style
     }
 
     private inline fun <reified T> checkSingleStyleEntry() {
-        check(styles.none { it is T }) {
-            "An in-app notification can only have at most one type of ${T::class.simpleName} style"
+        check(style == InAppNotificationStyle.Undefined) {
+            "An in-app notification can only have one type of style. " +
+                "Current style is ${style::class.simpleName}, trying to set ${T::class.simpleName}."
         }
     }
 }

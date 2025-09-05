@@ -123,7 +123,9 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
     private fun InAppNotification.toInAppNotificationData(): InAppNotificationHostState =
         InAppNotificationHostStateImpl(
             bannerGlobalVisual = BannerGlobalVisual.from(notification = this),
-            bannerInlineVisuals = BannerInlineVisual.from(notification = this).toPersistentSet(),
+            bannerInlineVisuals = BannerInlineVisual.from(notification = this)
+                ?.let { persistentSetOf(it) }
+                ?: persistentSetOf(),
             snackbarVisual = SnackbarVisual.from(notification = this),
         )
 
