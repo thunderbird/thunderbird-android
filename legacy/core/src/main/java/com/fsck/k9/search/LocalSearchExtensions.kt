@@ -7,8 +7,8 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 
-val LocalMessageSearch.isUnifiedInbox: Boolean
-    get() = id == SearchAccount.UNIFIED_INBOX
+val LocalMessageSearch.isUnifiedFolders: Boolean
+    get() = id == SearchAccount.UNIFIED_FOLDERS
 
 val LocalMessageSearch.isNewMessages: Boolean
     get() = id == SearchAccount.NEW_MESSAGES

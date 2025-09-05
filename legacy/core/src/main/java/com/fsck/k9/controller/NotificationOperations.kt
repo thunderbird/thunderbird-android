@@ -4,7 +4,7 @@ import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isSingleFolder
-import com.fsck.k9.search.isUnifiedInbox
+import com.fsck.k9.search.isUnifiedFolders
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -15,8 +15,8 @@ internal class NotificationOperations(
     private val messageStoreManager: MessageStoreManager,
 ) {
     fun clearNotifications(search: LocalMessageSearch) {
-        if (search.isUnifiedInbox) {
-            clearUnifiedInboxNotifications()
+        if (search.isUnifiedFolders) {
+            clearUnifiedFoldersNotifications()
         } else if (search.isNewMessages) {
             clearAllNotifications()
         } else if (search.isSingleFolder) {
@@ -29,7 +29,7 @@ internal class NotificationOperations(
         }
     }
 
-    private fun clearUnifiedInboxNotifications() {
+    private fun clearUnifiedFoldersNotifications() {
         for (account in accountManager.getAccounts()) {
             val messageStore = messageStoreManager.getMessageStore(account)
 

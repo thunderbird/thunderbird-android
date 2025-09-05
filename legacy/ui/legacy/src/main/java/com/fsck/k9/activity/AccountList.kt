@@ -77,9 +77,9 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
         val accounts: MutableList<BaseAccount> = ArrayList()
 
         if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-            val unifiedInboxAccount: BaseAccount = SearchAccount.createUnifiedInboxAccount(
-                unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-                unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+            val unifiedInboxAccount: BaseAccount = SearchAccount.createUnifiedFoldersSearch(
+                title = coreResourceProvider.searchUnifiedFoldersTitle(),
+                detail = coreResourceProvider.searchUnifiedFoldersDetail(),
             )
             accounts.add(unifiedInboxAccount)
         }

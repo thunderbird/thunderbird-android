@@ -22,8 +22,8 @@ interface CoreResourceProvider {
     fun replyHeader(sender: String): String
     fun replyHeader(sender: String, sentDate: String): String
 
-    fun searchUnifiedInboxTitle(): String
-    fun searchUnifiedInboxDetail(): String
+    fun searchUnifiedFoldersTitle(): String
+    fun searchUnifiedFoldersDetail(): String
 
     val iconPushNotification: Int
     fun pushNotificationText(notificationState: PushNotificationState): String

@@ -28,24 +28,25 @@ class SearchAccount(
     val relatedSearch: LocalMessageSearch = search
 
     companion object {
-        const val UNIFIED_INBOX = "unified_inbox"
+        const val UNIFIED_FOLDERS = "unified_folders"
         const val NEW_MESSAGES = "new_messages"
 
         @JvmStatic
-        fun createUnifiedInboxAccount(
-            unifiedInboxTitle: String,
-            unifiedInboxDetail: String,
+        fun createUnifiedFoldersSearch(
+            title: String,
+            detail: String,
         ): SearchAccount {
             val tmpSearch = LocalMessageSearch().apply {
-                id = UNIFIED_INBOX
+                id = UNIFIED_FOLDERS
+                // The ingrate field is used to identify the unified folders.
                 and(MessageSearchField.INTEGRATE, "1", SearchAttribute.EQUALS)
             }
 
             return SearchAccount(
-                id = UNIFIED_INBOX,
+                id = UNIFIED_FOLDERS,
                 search = tmpSearch,
-                name = unifiedInboxTitle,
-                email = unifiedInboxDetail,
+                name = title,
+                email = detail,
             )
         }
     }

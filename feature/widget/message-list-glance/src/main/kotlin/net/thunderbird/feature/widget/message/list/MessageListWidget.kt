@@ -20,7 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedInboxAccount
+import net.thunderbird.feature.search.legacy.SearchAccount.Companion.createUnifiedFoldersSearch
 import net.thunderbird.feature.widget.message.list.ui.MessageListWidgetContent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -42,9 +42,9 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
 
             LaunchedEffect(Unit) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val unifiedInboxSearch = createUnifiedInboxAccount(
-                        unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-                        unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+                    val unifiedInboxSearch = createUnifiedFoldersSearch(
+                        title = coreResourceProvider.searchUnifiedFoldersTitle(),
+                        detail = coreResourceProvider.searchUnifiedFoldersDetail(),
                     ).relatedSearch
                     val messageListConfig = MessageListConfig(
                         search = unifiedInboxSearch,
@@ -68,13 +68,13 @@ internal class MessageListWidget : GlanceAppWidget(), KoinComponent {
     }
 
     private fun openApp(context: Context) {
-        val unifiedInboxAccount = createUnifiedInboxAccount(
-            unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-            unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+        val unifiedFoldersSearch = createUnifiedFoldersSearch(
+            title = coreResourceProvider.searchUnifiedFoldersTitle(),
+            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )
         val intent = intentDisplaySearch(
             context = context,
-            search = unifiedInboxAccount.relatedSearch,
+            search = unifiedFoldersSearch.relatedSearch,
             noThreading = true,
             newTask = true,
             clearTop = true,
