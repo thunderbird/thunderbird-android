@@ -10,6 +10,7 @@ import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
 
 data class FakeInAppOnlyNotification(
+    override val accountUuid: String? = null,
     override val title: String = "fake title",
     override val contentText: String? = "fake content",
     override val severity: NotificationSeverity = NotificationSeverity.Information,
@@ -21,6 +22,6 @@ data class FakeInAppOnlyNotification(
             viewportHeight = 0f,
         ).build(),
     ),
-    override val inAppNotificationStyles: List<InAppNotificationStyle> = listOf(),
+    override val inAppNotificationStyle: InAppNotificationStyle = InAppNotificationStyle.Undefined,
     override val actions: Set<NotificationAction> = setOf(),
 ) : AppNotification(), InAppNotification

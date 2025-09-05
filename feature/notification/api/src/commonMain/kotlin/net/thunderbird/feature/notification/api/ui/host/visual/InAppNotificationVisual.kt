@@ -1,7 +1,6 @@
 package net.thunderbird.feature.notification.api.ui.host.visual
 
 import androidx.compose.runtime.Stable
-import androidx.compose.ui.util.fastFilter
 import kotlin.time.Duration
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -56,14 +55,14 @@ data class BannerGlobalVisual(
          * @throws IllegalStateException fails the check validations.
          */
         fun from(notification: InAppNotification): BannerGlobalVisual? =
-            notification.toVisuals<InAppNotificationStyle.BannerGlobalNotification, BannerGlobalVisual> { style ->
+            notification.toVisual<InAppNotificationStyle.BannerGlobalNotification, BannerGlobalVisual> { style ->
                 BannerGlobalVisual(
                     message = checkNotNull(notification.contentText) {
                         "A notification with a BannerGlobalNotification style must have a contentText not null"
                     },
                     severity = notification.severity,
                     action = notification
-                        .actions
+                        .actionsWithoutTap
                         .let { actions ->
                             check(actions.size in 0..1) {
                                 "A notification with a BannerGlobalNotification style must have at zero or one action"
@@ -73,7 +72,7 @@ data class BannerGlobalVisual(
                         .firstOrNull(),
                     priority = style.priority,
                 )
-            }.singleOrNull()
+            }
     }
 }
 
@@ -119,14 +118,14 @@ data class BannerInlineVisual(
          * @return A list containing a [BannerInlineVisual] if the conversion is successful, an empty list otherwise.
          * @throws IllegalStateException if any of the validation checks fail.
          */
-        fun from(notification: InAppNotification): List<BannerInlineVisual> =
-            notification.toVisuals<InAppNotificationStyle.BannerInlineNotification, BannerInlineVisual> { style ->
+        fun from(notification: InAppNotification): BannerInlineVisual? =
+            notification.toVisual<InAppNotificationStyle.BannerInlineNotification, BannerInlineVisual> { style ->
                 BannerInlineVisual(
                     title = checkTitle(notification.title),
                     supportingText = checkContentText(notification.contentText),
                     severity = notification.severity,
                     actions = notification
-                        .actions
+                        .actionsWithoutTap
                         .let { actions ->
                             check(actions.size in 1..2) {
                                 "A notification with a BannerInlineNotification style must have at one or two actions"
@@ -193,30 +192,35 @@ data class SnackbarVisual(
          * when the style is [InAppNotificationStyle.SnackbarNotification].
          */
         fun from(notification: InAppNotification): SnackbarVisual? =
-            notification.toVisuals<InAppNotificationStyle.SnackbarNotification, SnackbarVisual> { style ->
+            notification.toVisual<InAppNotificationStyle.SnackbarNotification, SnackbarVisual> { style ->
                 SnackbarVisual(
                     message = checkNotNull(notification.contentText) {
                         "A notification with a SnackbarNotification style must have a contentText not null"
                     },
-                    action = checkNotNull(notification.actions.singleOrNull()) {
+                    action = checkNotNull(notification.actionsWithoutTap.singleOrNull()) {
                         "A notification with a SnackbarNotification style must have exactly one action"
                     },
                     duration = style.duration,
                 )
-            }.singleOrNull()
+            }
     }
 }
 
 private inline fun <
     reified TStyle : InAppNotificationStyle,
     reified TVisual : InAppNotificationVisual,
-    > InAppNotification.toVisuals(
+    > InAppNotification.toVisual(
     transform: (TStyle) -> TVisual,
-): List<TVisual> {
-    return inAppNotificationStyles
-        .fastFilter { style -> style is TStyle }
-        .map { style ->
+): TVisual? {
+    return inAppNotificationStyle
+        .takeIf { style -> style is TStyle }
+        ?.let { style ->
             check(style is TStyle)
             transform(style)
         }
 }
+
+private val InAppNotification.actionsWithoutTap: Set<NotificationAction>
+    get() = actions
+        .filterNot { it is NotificationAction.Tap }
+        .toSet()

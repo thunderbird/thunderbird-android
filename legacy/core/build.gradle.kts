@@ -15,6 +15,7 @@ dependencies {
     api(projects.core.logging.implFile)
     api(projects.core.logging.implComposite)
     api(projects.core.android.network)
+    api(projects.core.outcome)
     api(projects.feature.mail.folder.api)
     api(projects.feature.account.storage.legacy)
 
@@ -62,6 +63,7 @@ dependencies {
 
     // test fakes
     testImplementation(projects.feature.account.fake)
+    testImplementation(projects.feature.notification.testing)
 }
 
 android {
