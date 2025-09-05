@@ -25,7 +25,7 @@
     <string name="settings_import_outgoing_server_password_hint">Outgoing server password</string>
     <string name="settings_import_use_same_password_for_outgoing_server">Use same password for outgoing server</string>
     <string name="settings_import_server_name_format">Server name: <xliff:g id="hostname">%s</xliff:g></string>
-    <string name="settings_import_oauth_description">To use this email account with K-9 Mail, you need to sign in and grant the app access to your emails.</string>
+    <string name="settings_import_oauth_description">To use this email account, you need to sign in and grant the app access to your emails.</string>
     <string name="settings_import_oauth_sign_in">Sign in</string>
     <string name="settings_import_oauth_sign_in_with_google">Sign in with Google</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">Authorisation cancelled</string>
@@ -34,4 +34,7 @@
     <string name="settings_import_oauth_error_browser_not_found">The app couldn\'t find a browser to use for granting access to your account.</string>
     <string name="settings_import_general_settings_item">General settings</string>
     <string name="settings_import_scan_qr_code_button">Scan QR code</string>
+    <string name="settings_import_pick_app_button">Import from app</string>
+    <string name="settings_import_pick_app_dialog_title">Import from app</string>
+    <string name="settings_import_app_version_not_supported">App version not supported.</string>
 </resources>

@@ -407,7 +407,7 @@
     <string name="account_settings_outgoing_label">Serwer poczty wychodzącej</string>
     <string name="account_settings_outgoing_summary">Ustawienia serwera poczty wychodzącej (SMTP)</string>
     <string name="account_settings_description_label">Nazwa konta</string>
-    <string name="account_settings_name_label">Twoje imię i nazwisko</string>
+    <string name="account_settings_name_label">Imię i nazwisko</string>
     <string name="notifications_title">Powiadomienia</string>
     <string name="account_settings_vibration">Wibracja</string>
     <string name="account_settings_vibrate_enable">Wibruj</string>

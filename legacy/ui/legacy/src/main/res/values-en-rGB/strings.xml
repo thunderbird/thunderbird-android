@@ -902,4 +902,13 @@
     <string name="push_info_notification_explanation_text">When using Push, <xliff:g id="app_name">%1$s</xliff:g> maintains a connection to the mail server. Android requires displaying an ongoing notification while the app is active in the background. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="folder_settings_sync_label">Enable sync</string>
     <string name="folder_settings_visible_label">Show folder</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="attach_file">Attach File</string>
+    <string name="camera_permission_denied">Camera Permission Denied! Unable to take photo</string>
+    <string name="debug_enable_sync_debug_logging_title">Enable sync debug logging</string>
+    <string name="debug_enable_sync_debug_logging_summary">Log sync diagnostic information for 24 hours</string>
+    <string name="debug_sync_export_logs_title">Export Sync logs</string>
+    <string name="debug_open_secret_debug_screen">Open Secret debug screen</string>
+    <string name="swipe_action_archive_folder_not_set">Set Up Archive Folder</string>
+    <string name="archiving_not_available_for_this_account">Archiving is not available for this account.</string>
 </resources>

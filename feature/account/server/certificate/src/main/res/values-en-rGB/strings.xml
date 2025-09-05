@@ -3,4 +3,11 @@
     <string name="account_server_certificate_warning_title">Warning</string>
     <string name="account_server_certificate_unknown_error_subtitle">Certificate error</string>
     <string name="account_server_certificate_unknown_error_description_format">The app detected a potential security threat and did not continue to connect to <xliff:g id="serverName">%s</xliff:g>.\nIf you continue, attackers could try to steal information like your password or emails.</string>
+    <string name="account_server_certificate_button_back">Go back (recommended)</string>
+    <string name="account_server_certificate_button_advanced">Advanced</string>
+    <string name="account_server_certificate_subject">Subject</string>
+    <string name="account_server_certificate_issuer">Issuer</string>
+    <string name="account_server_certificate_fingerprints_section">Fingerprints</string>
+    <string name="account_server_certificate_section_title">Server certificate</string>
+    <string name="account_server_certificate_button_continue">Accept risk and continue</string>
 </resources>

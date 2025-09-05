@@ -4,11 +4,14 @@
     <string name="account_server_validation_error_authentication">Authentication error</string>
     <string name="account_server_validation_outgoing_loading_message">Checking outgoing server settings…</string>
     <string name="account_server_validation_error_network">Network error</string>
-    <string name="account_server_validation_outgoing_success">Outgoing server settings are valid</string>
+    <string name="account_server_validation_outgoing_success">Outgoing server settings verified</string>
     <string name="account_server_validation_error_unknown">Unknown error</string>
     <string name="account_server_validation_sign_in">Please sign in</string>
     <string name="account_server_validation_outgoing_loading_error">Checking outgoing server settings failed</string>
-    <string name="account_server_validation_incoming_success">Incoming server settings are valid</string>
+    <string name="account_server_validation_incoming_success">Incoming server settings verified</string>
     <string name="account_server_validation_incoming_loading_error">Checking incoming server settings failed</string>
     <string name="account_server_validation_error_server">Server error</string>
+    <string name="account_server_validation_error_missing_server_capability">Missing server capability</string>
+    <string name="account_server_validation_error_client_certificate_expired">The client certificate is no longer valid</string>
+    <string name="account_server_validation_error_client_certificate_retrieval_failure">The client certificate couldn\'t be accessed</string>
 </resources>

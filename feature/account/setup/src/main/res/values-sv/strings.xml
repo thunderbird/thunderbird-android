@@ -57,4 +57,6 @@
         <item quantity="one">Varje timme</item>
         <item quantity="other">Var %d timme</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Ditt namn</string>
+    <string name="account_setup_options_your_name_error_required">Ditt namn krävs.</string>
 </resources>

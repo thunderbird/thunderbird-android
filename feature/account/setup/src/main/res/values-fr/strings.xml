@@ -60,4 +60,6 @@
         <item quantity="many">%d de courriels</item>
         <item quantity="other">%d courriels</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Votre nom</string>
+    <string name="account_setup_options_your_name_error_required">Vous devez saisir votre nom.</string>
 </resources>

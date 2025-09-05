@@ -820,7 +820,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
     <string name="swipe_action_remove_star">Csillag eltávolítása</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Archívum</string>
+    <string name="swipe_action_archive">Archiválás</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
     <string name="swipe_action_delete">Törlés</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
@@ -852,7 +852,7 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <!--Displayed when loading the message details has failed-->
     <string name="message_details_loading_error">Hiba történt az üzenet részleteinek betöltése közben.</string>
     <!--Name of the action to add a person to contacts. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
-    <string name="action_add_to_contacts">Hozzáadás a Kapcsolatokhoz</string>
+    <string name="action_add_to_contacts">Hozzáadás a névjegyekhez</string>
     <!--Name of the action to compose a new message to a particular address. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
     <string name="action_compose_message_to">Üzenet írása, címzett</string>
     <!--Name of the action to copy an email address to the clipboard. Usually displayed in a menu or in a tooltip when long-pressing the associated icon.-->
@@ -891,19 +891,20 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
     <string name="folder_settings_visible_label">Mappa megjelenítése</string>
     <string name="settings_list_action_support">A <xliff:g id="app_name">%s</xliff:g> támogatása</string>
     <string name="save_attachment_action">Melléklet mentése</string>
-    <string name="volume_navigation_title_short">Hangerőszabályzó gombos navigáció</string>
+    <string name="volume_navigation_title_short">Hangerőszabályzó-gombos navigáció</string>
     <string name="volume_navigation_summary">Az üzenetnézetben a hangerőszabályzó gombokkal navigálhat az üzenetek között</string>
     <string name="empty_spam_action">Levélszemét ürítése</string>
     <string name="dialog_confirm_empty_spam_title">Levélszemét ürítésének megerősítése</string>
     <string name="dialog_confirm_empty_spam_message">Üríti a levélszemét mappát?</string>
     <string name="expand_content_description">Kibontás</string>
     <string name="open_camera">Fényképezőgép Megnyitása</string>
-    <string name="attach_file">Fájl Csatolása</string>
+    <string name="attach_file">Fájl mellékelése</string>
     <string name="camera_permission_denied">A kamerához való hozzáférés nincs engedélyezve! Nem készíthető fénykép</string>
     <string name="debug_enable_sync_debug_logging_title">Sync debug logolás engedélyezése</string>
     <string name="debug_enable_sync_debug_logging_summary">Log sync diagnosztikai információ az elmúlt 24 órából</string>
     <string name="debug_sync_export_logs_title">Sync logok exportálása</string>
-    <string name="debug_open_secret_debug_screen">Titkos debug képernyő megnyitása</string>
+    <string name="debug_open_secret_debug_screen">Titkos hibakeresési képernyő megnyitása</string>
     <string name="swipe_action_archive_folder_not_set">Archívum mappa készítése</string>
     <string name="archiving_not_available_for_this_account">Az archiválás nem elérhető ezen a fiókon.</string>
+    <string name="swipe_action_change_swipe_gestures">Csúsztatási \ngesztusok módosítása</string>
 </resources>

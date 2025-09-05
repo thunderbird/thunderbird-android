@@ -57,4 +57,6 @@
         <item quantity="one">Kord minutis</item>
         <item quantity="other">Iga %d minuti järel</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Sinu nimi</string>
+    <string name="account_setup_options_your_name_error_required">Sinu nimi peab olema sisestatud.</string>
 </resources>

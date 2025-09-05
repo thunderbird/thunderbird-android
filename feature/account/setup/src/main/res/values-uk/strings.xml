@@ -63,4 +63,6 @@
         <item quantity="many">%d повідомлень</item>
         <item quantity="other">%d повідомлень</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Ваше ім\'я</string>
+    <string name="account_setup_options_your_name_error_required">Ваше ім\'я обов\'язкове.</string>
 </resources>
