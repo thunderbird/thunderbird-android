@@ -13,8 +13,6 @@ internal class CommandRefreshFolderList(
     private val imapStore: ImapStore,
 ) {
     fun refreshFolderList(): FolderPathDelimiter? {
-        // TODO: Start using the proper server ID.
-        //  For now we still use the old server ID format (decoded, with prefix removed).
         val folders = imapStore.getFolders()
         val folderPathDelimiter = folders.firstOrNull { it.folderPathDelimiter != null }?.folderPathDelimiter
         val foldersOnServer = folders.toLegacyFolderList()
