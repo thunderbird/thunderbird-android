@@ -29,6 +29,7 @@ internal class ServerSettingsWriter(
             key,
             serverSettingsJson,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
     }
 

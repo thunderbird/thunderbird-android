@@ -74,7 +74,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> generalSettingsManager.getConfig().privacy.isHideTimeZone
             "debug_logging" -> generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
             "sync_debug_logging" -> generalSettingsManager.getConfig().debugging.isSyncLoggingEnabled
-            "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
+            "sensitive_logging" -> generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation
             "enable_telemetry" -> K9.isTelemetryEnabled
             else -> defValue
@@ -114,7 +114,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
             "sync_debug_logging" -> setIsSyncLoggingEnabled(isSyncLoggingEnabled = value)
-            "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
+            "sensitive_logging" -> setIsSensitiveLoggingEnabled(isSensitiveLoggingEnabled = value)
             "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
             "enable_telemetry" -> setTelemetryEnabled(value)
             else -> return
@@ -614,6 +614,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 debugging = settings.debugging.copy(
                     isSyncLoggingEnabled = isSyncLoggingEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setIsSensitiveLoggingEnabled(isSensitiveLoggingEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                debugging = settings.debugging.copy(
+                    isSensitiveLoggingEnabled = isSensitiveLoggingEnabled,
                 ),
             )
         }

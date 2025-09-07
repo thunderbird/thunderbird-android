@@ -25,10 +25,12 @@ import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.account.storage.legacy.AccountDtoStorageHandler
+import org.koin.java.KoinJavaComponent.inject
 
 @Suppress("MaxLineLength")
 class Preferences internal constructor(
@@ -38,6 +40,8 @@ class Preferences internal constructor(
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val accountDefaultsProvider: AccountDefaultsProvider,
 ) : AccountManager {
+
+    private val generalSettingsManager: GeneralSettingsManager by inject(GeneralSettingsManager::class.java)
     private val accountLock = Any()
     private val storageLock = Any()
 
@@ -89,7 +93,7 @@ class Preferences internal constructor(
                     val existingAccount = accountsMap?.get(uuid)
                     val account = existingAccount ?: LegacyAccount(
                         uuid,
-                        K9::isSensitiveDebugLoggingEnabled,
+                        { generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled },
                     )
                     legacyAccountStorageHandler.load(account, storage)
 
@@ -186,7 +190,7 @@ class Preferences internal constructor(
 
     fun newAccount(accountUuid: String): LegacyAccount {
         val account =
-            LegacyAccount(accountUuid, K9::isSensitiveDebugLoggingEnabled)
+            LegacyAccount(accountUuid, { generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled })
         accountDefaultsProvider.applyDefaults(account)
 
         synchronized(accountLock) {
