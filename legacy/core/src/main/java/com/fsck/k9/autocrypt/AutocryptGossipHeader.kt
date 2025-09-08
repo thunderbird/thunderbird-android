@@ -1,60 +1,25 @@
-package com.fsck.k9.autocrypt;
+package com.fsck.k9.autocrypt
 
-
-import java.util.Arrays;
-
-import androidx.annotation.NonNull;
-
-
-class AutocryptGossipHeader {
-    static final String AUTOCRYPT_GOSSIP_HEADER = "Autocrypt-Gossip";
-
-    private static final String AUTOCRYPT_PARAM_ADDR = "addr";
-    private static final String AUTOCRYPT_PARAM_KEY_DATA = "keydata";
-
-
-    @NonNull
-    final byte[] keyData;
-    @NonNull
-    final String addr;
-
-    AutocryptGossipHeader(@NonNull String addr, @NonNull byte[] keyData) {
-        this.addr = addr;
-        this.keyData = keyData;
+internal data class AutocryptGossipHeader(@JvmField val addr: String, @JvmField val keyData: ByteArray) {
+    fun toRawHeaderString() = buildString {
+        append(AUTOCRYPT_GOSSIP_HEADER).append(": ")
+        append(AUTOCRYPT_PARAM_ADDR).append('=').append(addr).append("; ")
+        append(AUTOCRYPT_PARAM_KEY_DATA).append('=')
+        append(AutocryptHeader.createFoldedBase64KeyData(keyData))
     }
 
-    String toRawHeaderString() {
-        StringBuilder builder = new StringBuilder();
+    override fun equals(other: Any?): Boolean =
+        other is AutocryptGossipHeader &&
+            addr == other.addr &&
+            keyData.contentEquals(other.keyData)
 
-        builder.append(AutocryptGossipHeader.AUTOCRYPT_GOSSIP_HEADER).append(": ");
-        builder.append(AutocryptGossipHeader.AUTOCRYPT_PARAM_ADDR).append('=').append(addr).append("; ");
-        builder.append(AutocryptGossipHeader.AUTOCRYPT_PARAM_KEY_DATA).append('=');
-        builder.append(AutocryptHeader.createFoldedBase64KeyData(keyData));
+    override fun hashCode(): Int =
+        31 * keyData.contentHashCode() + addr.hashCode()
 
-        return builder.toString();
-    }
+    companion object {
+        const val AUTOCRYPT_GOSSIP_HEADER: String = "Autocrypt-Gossip"
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        AutocryptGossipHeader that = (AutocryptGossipHeader) o;
-
-        if (!Arrays.equals(keyData, that.keyData)) {
-            return false;
-        }
-        return addr.equals(that.addr);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Arrays.hashCode(keyData);
-        result = 31 * result + addr.hashCode();
-        return result;
+        private const val AUTOCRYPT_PARAM_ADDR = "addr"
+        private const val AUTOCRYPT_PARAM_KEY_DATA = "keydata"
     }
 }
