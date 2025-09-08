@@ -344,6 +344,7 @@ class MessageListFragment :
             listItemListener = this,
             appearance = messageListAppearance,
             relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock),
+            themeProvider = featureThemeProvider,
             featureFlagProvider = featureFlagProvider,
         ).apply {
             activeMessage = this@MessageListFragment.activeMessage

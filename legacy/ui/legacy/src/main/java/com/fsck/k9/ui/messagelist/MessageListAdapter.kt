@@ -17,7 +17,9 @@ import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.fsck.k9.ui.messagelist.MessageListFeatureFlags.UseComposeForMessageListItems
 import com.fsck.k9.ui.messagelist.item.BannerInlineListInAppNotificationViewHolder
+import com.fsck.k9.ui.messagelist.item.ComposableMessageViewHolder
 import com.fsck.k9.ui.messagelist.item.FooterViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageListViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
@@ -25,6 +27,7 @@ import com.fsck.k9.ui.messagelist.item.MessageViewHolderColors
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
 private const val FOOTER_ID = 1L
@@ -42,6 +45,7 @@ class MessageListAdapter internal constructor(
     private val listItemListener: MessageListItemActionListener,
     private val appearance: MessageListAppearance,
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
+    private val themeProvider: FeatureThemeProvider,
     private val featureFlagProvider: FeatureFlagProvider,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
 
@@ -227,7 +231,15 @@ class MessageListAdapter internal constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageListViewHolder {
         return when (viewType) {
-            TYPE_MESSAGE -> createMessageViewHolder(parent)
+            TYPE_MESSAGE -> {
+                val result = featureFlagProvider.provide(UseComposeForMessageListItems)
+                if (result.isEnabled()) {
+                    createComposableMessageViewHolder(parent)
+                } else {
+                    createMessageViewHolder(parent)
+                }
+            }
+
             TYPE_FOOTER -> FooterViewHolder.create(layoutInflater, parent, footerClickListener)
             TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST if isInAppNotificationEnabled ->
                 BannerInlineListInAppNotificationViewHolder(
@@ -259,7 +271,7 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun createMessageViewHolder(parent: ViewGroup?): MessageViewHolder =
+    private fun createMessageViewHolder(parent: ViewGroup): MessageViewHolder =
         MessageViewHolder.create(
             layoutInflater = layoutInflater,
             parent = parent,
@@ -275,6 +287,12 @@ class MessageListAdapter internal constructor(
             starClickListener = starClickListener,
         )
 
+    private fun createComposableMessageViewHolder(parent: ViewGroup): MessageListViewHolder =
+        ComposableMessageViewHolder.create(
+            context = parent.context,
+            themeProvider = themeProvider,
+        )
+
     override fun onBindViewHolder(holder: MessageListViewHolder, position: Int) {
         when (val viewType = getItemViewType(position)) {
             TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST if isInAppNotificationEnabled ->
@@ -282,12 +300,22 @@ class MessageListAdapter internal constructor(
 
             TYPE_MESSAGE -> {
                 val messageListItem = getItem(position)
-                val messageViewHolder = holder as MessageViewHolder
-                messageViewHolder.bind(
-                    messageListItem = messageListItem,
-                    isActive = isActiveMessage(messageListItem),
-                    isSelected = isSelected(messageListItem),
-                )
+                val result = featureFlagProvider.provide(UseComposeForMessageListItems)
+                if (result.isEnabled()) {
+                    val messageViewHolder = holder as ComposableMessageViewHolder
+                    messageViewHolder.bind(
+                        item = messageListItem,
+                        isActive = isActiveMessage(messageListItem),
+                        isSelected = isSelected(messageListItem),
+                    )
+                } else {
+                    val messageViewHolder = holder as MessageViewHolder
+                    messageViewHolder.bind(
+                        messageListItem = messageListItem,
+                        isActive = isActiveMessage(messageListItem),
+                        isSelected = isSelected(messageListItem),
+                    )
+                }
             }
 
             TYPE_FOOTER -> {
@@ -368,8 +396,13 @@ class MessageListAdapter internal constructor(
     }
 
     private fun getItemFromView(view: View): MessageListItem? {
-        val messageViewHolder = view.tag as MessageViewHolder
-        return getItemById(messageViewHolder.uniqueId)
+        if (featureFlagProvider.provide(UseComposeForMessageListItems).isEnabled()) {
+            val messageViewHolder = view.tag as ComposableMessageViewHolder
+            return getItemById(messageViewHolder.uniqueId)
+        } else {
+            val messageViewHolder = view.tag as MessageViewHolder
+            return getItemById(messageViewHolder.uniqueId)
+        }
     }
 }
 

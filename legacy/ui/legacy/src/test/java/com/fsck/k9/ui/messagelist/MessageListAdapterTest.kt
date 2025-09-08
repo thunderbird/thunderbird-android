@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import assertk.Assert
@@ -31,8 +32,11 @@ import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.testing.TestClock
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
@@ -432,7 +436,8 @@ class MessageListAdapterTest : RobolectricTest() {
             listItemListener = listItemListener,
             appearance = appearance,
             relativeDateTimeFormatter = RelativeDateTimeFormatter(context, TestClock()),
-            featureFlagProvider = { FeatureFlagResult.Disabled },
+            themeProvider = FakeThemeProvider(),
+            featureFlagProvider = FakeFeatureFlagProvider(),
         )
     }
 
@@ -578,4 +583,24 @@ class MessageListAdapterTest : RobolectricTest() {
 
     private val MaterialTextView.textString: String
         get() = text.toString()
+
+    private class FakeThemeProvider : FeatureThemeProvider {
+        @Composable
+        override fun WithTheme(content: @Composable (() -> Unit)) {
+            content()
+        }
+
+        @Composable
+        override fun WithTheme(
+            darkTheme: Boolean,
+            content: @Composable (() -> Unit),
+        ) {
+            content()
+        }
+    }
+
+    private class FakeFeatureFlagProvider : FeatureFlagProvider {
+        // Disabled as the test is primarily concerned with the XML based UI
+        override fun provide(key: FeatureFlagKey): FeatureFlagResult = FeatureFlagResult.Disabled
+    }
 }

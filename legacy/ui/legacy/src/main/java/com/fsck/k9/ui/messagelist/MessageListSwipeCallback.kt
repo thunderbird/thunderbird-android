@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.messagelist.item.ComposableMessageViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.textview.MaterialTextView
@@ -81,9 +82,7 @@ class MessageListSwipeCallback(
         }
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
-        if (viewHolder !is MessageViewHolder) return 0
-
-        val item = adapter.getItemById(viewHolder.uniqueId) ?: return 0
+        val item = viewHolder.messageListItem ?: return 0
         val (swipeLeftAction, swipeRightAction) = item.swipeActions
 
         var swipeFlags = 0
@@ -178,8 +177,7 @@ class MessageListSwipeCallback(
 
         if (dX != 0F) {
             canvas.withTranslation(x = view.left.toFloat(), y = view.top.toFloat()) {
-                val holder = viewHolder as MessageViewHolder
-                val item = adapter.getItemById(holder.uniqueId) ?: return@withTranslation
+                val item = viewHolder.messageListItem ?: return@withTranslation
                 if (isCurrentlyActive || !success) {
                     drawLayout(dX, viewWidth, viewHeight, item)
                 } else {
@@ -377,7 +375,11 @@ class MessageListSwipeCallback(
     }
 
     private val ViewHolder.messageListItem: MessageListItem?
-        get() = (this as? MessageViewHolder)?.uniqueId?.let { adapter.getItemById(it) }
+        get() = when (this) {
+            is MessageViewHolder -> adapter.getItemById(uniqueId)
+            is ComposableMessageViewHolder -> adapter.getItemById(uniqueId)
+            else -> null
+        }
 }
 
 fun interface SwipeActionSupportProvider {
