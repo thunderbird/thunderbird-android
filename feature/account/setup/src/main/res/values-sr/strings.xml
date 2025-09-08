@@ -42,7 +42,7 @@
     <string name="account_setup_special_folders_loading_message">Прикупљање листе фолдера…</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Обавезно је одобрити конфигурацију.</string>
     <string name="account_setup_special_folders_error_message">Преузимање листе фолдера са сервера није успело</string>
-    <string name="account_setup_error_network">Мрежна грешка. Проверите статус ваше везе и покушајте поново.</string>
+    <string name="account_setup_error_network">Мрежна грешка. Проверите стање везе и покушајте поново.</string>
     <string name="account_setup_error_unknown">Непозната грешка</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Имејл адреса је обавезна.</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>

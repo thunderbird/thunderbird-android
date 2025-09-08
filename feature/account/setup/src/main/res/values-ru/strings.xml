@@ -63,4 +63,6 @@
         <item quantity="other">%d сообщений</item>
     </plurals>
     <string name="account_setup_auto_discovery_result_disclaimer_untrusted_configuration">Полученные настройки для вашего сервера электронной почты содержат недостаточно надёжные параметры соединения. Это означает, что есть риск того, что кто-то мог изменить настройки. Не могли бы вы ещё раз проверить полученные настройки и убедиться, что всё в порядке?</string>
+    <string name="account_setup_options_your_name_label">Ваше имя</string>
+    <string name="account_setup_options_your_name_error_required">Требуется указать имя.</string>
 </resources>

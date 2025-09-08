@@ -31,22 +31,22 @@
     <string name="compose_title_forward">Препрати</string>
     <string name="compose_title_forward_as_attachment">Препрати като прикачен файл</string>
     <string name="choose_folder_title">Избери Папка</string>
-    <string name="choose_folder_move_title">Премести в…</string>
-    <string name="choose_folder_copy_title">Копирай в…</string>
+    <string name="choose_folder_move_title">Преместване в…</string>
+    <string name="choose_folder_copy_title">Копиране в…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
     <string name="send_action">Изпрати</string>
     <string name="empty_subject">Полето Тема е празно, натиснете повторно ако искате да изпратите въпреки това</string>
     <string name="reply_action">Отговори</string>
     <string name="reply_all_action">Отговори до всички</string>
-    <string name="delete_action">Изтрий</string>
-    <string name="archive_action">Архивирай</string>
+    <string name="delete_action">Изтриване</string>
+    <string name="archive_action">Архивиране</string>
     <string name="spam_action">Спам</string>
     <string name="forward_action">Препрати</string>
     <string name="forward_as_attachment_action">Препрати като прикачен файл</string>
     <string name="edit_as_new_message_action">Редактирай като ново съобщение</string>
-    <string name="move_action">Премести</string>
-    <string name="move_to_drafts_action">Премести в Чернови</string>
-    <string name="refile_action">Премести…</string>
+    <string name="move_action">Преместване</string>
+    <string name="move_to_drafts_action">Преместване в Чернови</string>
+    <string name="refile_action">Преместване…</string>
     <string name="done_action">Готово</string>
     <string name="discard_action">Отхвърли</string>
     <string name="save_draft_action">Запази като чернова</string>
@@ -68,8 +68,8 @@
     <string name="send_alternate_chooser_title">Избери изпращащ</string>
     <string name="flag_action">Добави звезда</string>
     <string name="unflag_action">Премахни звезда</string>
-    <string name="copy_action">Копирай</string>
-    <string name="show_headers_action">Покажи заглавията</string>
+    <string name="copy_action">Копиране</string>
+    <string name="show_headers_action">Показване на заглавките</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Адресът е копиран</item>
         <item quantity="other">Адресите са копирани</item>
@@ -106,10 +106,10 @@
     <string name="notification_action_reply">Отговори</string>
     <string name="notification_action_mark_as_read">Маркирай като прочетено</string>
     <string name="notification_action_mark_all_as_read">Маркирате всички като прочетени</string>
-    <string name="notification_action_delete">Изтрий</string>
+    <string name="notification_action_delete">Изтриване</string>
     <string name="notification_action_delete_all">Изтрите всички</string>
-    <string name="notification_action_archive">Архивирайте</string>
-    <string name="notification_action_archive_all">Архивирай всички</string>
+    <string name="notification_action_archive">Архивиране</string>
+    <string name="notification_action_archive_all">Архивиране на всички</string>
     <string name="notification_action_spam">Спам</string>
     <string name="notification_certificate_error_public">Грешка в сертификата</string>
     <string name="notification_certificate_error_title">Грешка в сертификата на <xliff:g id="account">%s</xliff:g></string>
@@ -171,29 +171,29 @@
     <string name="from_same_sender">Още от този подател</string>
     <string name="message_discarded_toast">Съобщението е изтрито</string>
     <string name="message_saved_toast">Съобщението записано като чернова</string>
-    <string name="global_settings_flag_label">Покажи звездичките</string>
+    <string name="global_settings_flag_label">Показване на звездичките</string>
     <string name="global_settings_flag_summary">Звездичките показват маркирани съобщения</string>
     <string name="global_settings_preview_lines_label">Редове за преглед</string>
-    <string name="global_settings_show_correspondent_names_label">Покажи имената на кореспондентите</string>
-    <string name="global_settings_show_correspondent_names_summary">Покажи имената на кореспондентите вместо техните email адреси</string>
+    <string name="global_settings_show_correspondent_names_label">Имена на кореспондентите</string>
+    <string name="global_settings_show_correspondent_names_summary">Показване на имената на кореспондентите вместо техните email адреси</string>
     <string name="global_settings_sender_above_subject_label">Кореспондент над темата</string>
     <string name="global_settings_sender_above_subject_summary">Показване на имената на кореспондентите над полето Тема, вместо под него</string>
-    <string name="global_settings_show_contact_name_label">Покажи контактите</string>
-    <string name="global_settings_show_contact_name_summary">Използвай името на получателя от контактите, когато това е възможно</string>
-    <string name="global_settings_registered_name_color_label">Оцвети контактите</string>
-    <string name="global_settings_registered_name_color_changed">Оцветявай имената в контакт листа</string>
+    <string name="global_settings_show_contact_name_label">Показване на контактите</string>
+    <string name="global_settings_show_contact_name_summary">Използване на името на получателя от контактите, когато това е възможно</string>
+    <string name="global_settings_registered_name_color_label">Оцветяване на контактите</string>
+    <string name="global_settings_registered_name_color_changed">Оцветяваване на имената в списъка с контакти</string>
     <string name="global_settings_messageview_fixedwidth_label">Шрифт с фиксирана широчина</string>
     <string name="global_settings_messageview_fixedwidth_summary">Използване на равноширок шрифт при показване на съобщения само от текст</string>
     <string name="global_settings_messageview_autofit_width_label">Автоматично мащабиране</string>
     <string name="global_settings_messageview_autofit_width_summary">Смалява съобщението за да се събере на екрана</string>
     <string name="global_settings_confirm_actions_title">Потвърди операциите</string>
     <string name="global_settings_confirm_actions_summary">Показва прозорец за потвърждение при действие</string>
-    <string name="global_settings_confirm_action_delete">Изтрий</string>
-    <string name="global_settings_confirm_action_delete_starred">Изтрий тези със звездички (в самото съобщение)</string>
+    <string name="global_settings_confirm_action_delete">Изтриване</string>
+    <string name="global_settings_confirm_action_delete_starred">Изтриване на маркираните със звездички (в самото съобщение)</string>
     <string name="global_settings_confirm_action_spam">Спам</string>
-    <string name="global_settings_confirm_menu_discard">Изтрийте съобщението</string>
+    <string name="global_settings_confirm_menu_discard">Изтриване на съобщението</string>
     <string name="global_settings_confirm_menu_mark_all_read">Отбелязване на всички съобщения като прочетени</string>
-    <string name="global_settings_confirm_action_delete_notif">Изтрийте (от лентата с известия)</string>
+    <string name="global_settings_confirm_action_delete_notif">Изтриване (от лентата с известия)</string>
     <!--Title of the screen to configure swipe actions-->
     <!--Name of the setting to configure the right swipe action-->
     <!--Name of the setting to configure the left swipe action-->
@@ -203,20 +203,20 @@
     <!--Name of the swipe action to mark as message as read/unread-->
     <!--Name of the swipe action to add/remove a star-->
     <!--Name of the swipe action to archive a message-->
-    <string name="general_settings_swipe_action_archive">Архивирайте</string>
+    <string name="general_settings_swipe_action_archive">Архивиране</string>
     <!--Name of the swipe action to delete a message-->
-    <string name="general_settings_swipe_action_delete">Изтрий</string>
+    <string name="general_settings_swipe_action_delete">Изтриване</string>
     <!--Name of the swipe action to move a message to the spam folder-->
     <string name="general_settings_swipe_action_spam">Спам</string>
     <!--Name of the swipe action to move a message to another folder-->
-    <string name="general_settings_swipe_action_move">Премести</string>
+    <string name="general_settings_swipe_action_move">Преместване</string>
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">По подразбиране</string>
     <string name="global_settings_privacy_hide_useragent">Скриване на имейл програмата</string>
     <string name="global_settings_privacy_hide_useragent_detail">Премахване на User-Agent заглавката от съобщението</string>
     <string name="global_settings_privacy_hide_timezone">Скриване на времевата зона</string>
     <string name="global_settings_privacy_hide_timezone_detail">Използване на UTC вместо локално време в header-a и reply header-a</string>
-    <string name="global_settings_notification_quick_delete_title">Показвай бутон `Изтрий`</string>
+    <string name="global_settings_notification_quick_delete_title">Показване на бутон \'Изтриване\'</string>
     <string name="global_settings_notification_quick_delete_never">Никога</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">За отделни съобщения</string>
     <string name="global_settings_notification_quick_delete_always">Винаги</string>
@@ -276,7 +276,7 @@
     <string name="account_setup_options_mail_display_count_5000">5000 съобщения</string>
     <string name="account_setup_options_mail_display_count_10000">10000 съобщения</string>
     <string name="account_setup_options_mail_display_count_all">всички съобщения</string>
-    <string name="move_copy_cannot_copy_unsynced_message">Не може да копира или да премести съобщение, което не е синхронизирано със сървара</string>
+    <string name="move_copy_cannot_copy_unsynced_message">Не може да копира или да премести съобщение, което не е синхронизирано със сървъра</string>
     <string name="account_settings_push_advanced_title">Разширени</string>
     <string name="account_settings_title_fmt">Настройки на профила</string>
     <string name="account_settings_notify_label">Ново известие за поща</string>
@@ -285,7 +285,7 @@
     <string name="account_settings_notify_summary">Уведомявай в статус бара при ново съобщение</string>
     <string name="account_settings_notify_sync_summary">Уведомявай в статус бара при проверена поща</string>
     <string name="account_settings_notify_self_label">Включи изходяща поща</string>
-    <string name="account_settings_notify_self_summary">Покажи известия за съобщенията които изпращам</string>
+    <string name="account_settings_notify_self_summary">Показване на известия за съобщенията които изпращам</string>
     <string name="account_notify_contacts_mail_only_label">Само контакти</string>
     <string name="account_notify_contacts_mail_only_summary">Показвай известия само за съобщения от познати контакти</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Маркирай като прочетено, когато се отвори</string>
@@ -308,7 +308,7 @@
     <string name="account_settings_message_format_html">HTML (запазва картинките и форматирането)</string>
     <string name="account_settings_message_format_auto">Автоматично</string>
     <string name="account_settings_always_show_cc_bcc_label">Винаги показвай Сс/Всс</string>
-    <string name="account_settings_message_read_receipt_label">Покажи изпращача</string>
+    <string name="account_settings_message_read_receipt_label">Показване на изпращача</string>
     <string name="account_settings_message_read_receipt_summary">Винаги поисквай доклад за прочитане</string>
     <string name="account_settings_quote_style_label">Стил на цитата при отговор</string>
     <string name="account_settings_quote_style_prefix">Префикс (като в Gmail)</string>
@@ -384,9 +384,9 @@
     <string name="new_identity_action">Нова идентичност</string>
     <string name="account_settings_always_bcc_label">Всс всички съобщения до</string>
     <string name="manage_identities_edit_action">Редактирай</string>
-    <string name="manage_identities_move_up_action">Премести нагоре</string>
-    <string name="manage_identities_move_down_action">Премести надолу</string>
-    <string name="manage_identities_move_top_action">Премести най-отгоре / направи по подразбиране</string>
+    <string name="manage_identities_move_up_action">Преместване нагоре</string>
+    <string name="manage_identities_move_down_action">Преместване надолу</string>
+    <string name="manage_identities_move_top_action">Преместване най-отгоре / направи по подразбиране</string>
     <string name="manage_identities_remove_action">Премахни</string>
     <string name="edit_identity_description_label">Описание на идентичноста</string>
     <string name="edit_identity_description_hint">(По желание)</string>
@@ -398,7 +398,7 @@
     <string name="edit_identity_reply_to_hint">(По желание)</string>
     <string name="edit_identity_signature_label">Подпис</string>
     <string name="edit_identity_signature_hint">(По желание)</string>
-    <string name="account_settings_signature_use_label">Използвай подпис</string>
+    <string name="account_settings_signature_use_label">Използване на подпис</string>
     <string name="account_settings_signature_label">Подпис</string>
     <string name="default_identity_description">Първоначална идентичност</string>
     <string name="choose_identity_title">Избери идентичност</string>
@@ -430,10 +430,10 @@
     <string name="account_settings_signature__location_label">Позиция на подписа</string>
     <string name="account_settings_signature__location_before_quoted_text">Преди цитираното съобщение</string>
     <string name="account_settings_signature__location_after_quoted_text">След цитираното съобщение</string>
-    <string name="setting_theme_global">Използвай темата на приложението</string>
+    <string name="setting_theme_global">Използване на темата на приложението</string>
     <string name="setting_theme_dark">Тъмна</string>
     <string name="setting_theme_light">Светла</string>
-    <string name="setting_theme_follow_system">Използвайте системната настройка по подразбиране</string>
+    <string name="setting_theme_follow_system">Използване на системната настройка по подразбиране</string>
     <string name="display_preferences">Екран</string>
     <string name="global_preferences">Глобални</string>
     <string name="debug_preferences">Отстраняване на грешки</string>
@@ -448,9 +448,9 @@
     <string name="settings_compose_theme_label">Тема на композитора</string>
     <string name="settings_language_label">Език</string>
     <string name="preference_search_no_results">На са намерени настройки</string>
-    <string name="settings_message_theme_selection_label">Тема на фиксирани съобщения</string>
+    <string name="settings_message_theme_selection_label">Тема за фиксираните</string>
     <string name="settings_message_theme_selection_summary_off">Задава тема за изглед на съобщенията, в режим преглед</string>
-    <string name="settings_message_theme_selection_summary_on">Използване на тема с фиксиран размр на съобщението</string>
+    <string name="settings_message_theme_selection_summary_on">Използване на тема с фиксиран размер на съобщението</string>
     <string name="setting_language_system">Системни настройки</string>
     <string name="background_ops_label">Синхронизиране на заден план</string>
     <string name="background_ops_never">Никога</string>
@@ -467,8 +467,8 @@
     <string name="account_setup_push_limit_500">500 папки</string>
     <string name="account_setup_push_limit_1000">1000 папки</string>
     <string name="animations_title">Анимация</string>
-    <string name="animations_summary">Изпoлзване на ярки визулани ефекти</string>
-    <string name="show_unified_inbox_title">Покажи унифицирана папка Входящи</string>
+    <string name="animations_summary">Изпoлзване на ярки визуални ефекти</string>
+    <string name="show_unified_inbox_title">Показване на обединената входяща папка</string>
     <string name="integrated_inbox_title">Обща входяща кутия</string>
     <string name="integrated_inbox_detail">Всички съобщения в общата входяща кутия</string>
     <string name="folder_settings_include_in_integrated_inbox_label">Обедени</string>
@@ -524,8 +524,8 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Не</string>
     <string name="dialog_confirm_spam_title">Потвърдете преместването в папката за спам</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Наисина ли желаете да преместите това съобщение в папката за спам?</item>
-        <item quantity="other">Наистина ли желаете да преместите <xliff:g id="message_count">%1$d</xliff:g> съобщения в папката за спам?</item>
+        <item quantity="one">Наистина ли желаете да преместите това съобщение в папката за спам?</item>
+        <item quantity="other">Наистина ли желаете да преместите тези <xliff:g id="message_count">%1$d</xliff:g> съобщения в папката за спам?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Да</string>
     <string name="dialog_confirm_spam_cancel_button">Не</string>
@@ -543,7 +543,7 @@
     <string name="webview_contextmenu_link_share_action">Споделяне на връзка</string>
     <string name="webview_contextmenu_link_copy_action">Копиране на връзка</string>
     <string name="webview_contextmenu_link_clipboard_label">Връзка</string>
-    <string name="webview_contextmenu_link_text_copy_action">Копирай текста на връзката</string>
+    <string name="webview_contextmenu_link_text_copy_action">Копиране на текста на връзката</string>
     <string name="webview_contextmenu_link_text_clipboard_label">Текста на връзката</string>
     <string name="webview_contextmenu_image_title">Изображение</string>
     <string name="webview_contextmenu_image_view_action">Разглеждане на изображение</string>
@@ -581,8 +581,8 @@
     <string name="account_settings_search">Търсене</string>
     <string name="action_remote_search">Търсене на съобщения в сървъра</string>
     <string name="remote_search_unavailable_no_network">Нужна е връзка с мрежата, за да бъде извършено търсене в сървъра.</string>
-    <string name="global_settings_background_as_unread_indicator_label">Промяна на цвета след прочитане</string>
-    <string name="global_settings_background_as_unread_indicator_summary">Различвен фон ще показва, че съобщението е било прочетено</string>
+    <string name="global_settings_background_as_unread_indicator_label">Цвят след прочитане</string>
+    <string name="global_settings_background_as_unread_indicator_summary">Показаване на различен фон при прочетено съобщение</string>
     <string name="global_settings_threaded_view_label">Преглед по тема</string>
     <string name="global_settings_threaded_view_summary">Групиране на съобщения по разговор</string>
     <string name="upgrade_databases_title">Обновяване на базите данни</string>
@@ -593,13 +593,13 @@
     <string name="global_settings_splitview_never">Никога</string>
     <string name="global_settings_splitview_when_in_landscape">Когато е пейзажна ориентация</string>
     <string name="message_view_empty">Моля, изберете съобщение в ляво</string>
-    <string name="global_settings_show_contact_picture_label">Показване снимка на контакта</string>
+    <string name="global_settings_show_contact_picture_label">Снимка на контакта</string>
     <string name="global_settings_show_contact_picture_summary">Показване на снимка на контакта в списъка със съобщения</string>
     <string name="mark_all_as_read">Отбелязване на всички като прочетени</string>
-    <string name="global_settings_colorize_missing_contact_pictures_label">Оцветяване на снимките на контактите</string>
+    <string name="global_settings_colorize_missing_contact_pictures_label">Оцветяване на снимките</string>
     <string name="global_settings_colorize_missing_contact_pictures_summary">Оцветяване на контактите с липсващи снимки</string>
-    <string name="global_settings_messageview_visible_refile_actions_title">Действия с видими съобщения</string>
-    <string name="global_settings_messageview_visible_refile_actions_summary">Показване на избрание действия в менюто на съобщение</string>
+    <string name="global_settings_messageview_visible_refile_actions_title">Действия с видимите съобщения</string>
+    <string name="global_settings_messageview_visible_refile_actions_summary">Показване на избраните действия в менюто на съобщението</string>
     <string name="loading_attachment">Зареждане на прикачен файл…</string>
     <string name="fetching_attachment_dialog_title_send">Изпращане на съобщение</string>
     <string name="fetching_attachment_dialog_title_save">Запазване в чернови</string>
@@ -664,7 +664,7 @@
     <string name="crypto_msg_encrypted_no_provider">но няма настроена крипто приложение</string>
     <string name="crypto_msg_title_encrypted_unsigned">Криптирано</string>
     <string name="crypto_msg_encrypted_unsigned">но не е от край-до-край</string>
-    <string name="crypto_msg_title_encrypted_signed_e2e">Криптирано от край-до-край</string>
+    <string name="crypto_msg_title_encrypted_signed_e2e">Шифровано от край-до-край</string>
     <string name="crypto_msg_encrypted_sign_verified">от потвърден изпащач</string>
     <string name="crypto_msg_title_encrypted_signed">Криптирано</string>
     <string name="crypto_msg_encrypted_sign_unknown">от непознат ключ край-до-край</string>
@@ -690,7 +690,7 @@
     <string name="error_sign_only_no_encryption">Шифрирането не е възможно, когато се използва режима само подпис!</string>
     <string name="unsigned_text_divider_label">Неподписан текст</string>
     <string name="crypto_no_provider_title">Имейлът е криптиран</string>
-    <string name="crypto_no_provider_message">Този имейл е криптиран използвайки OpenPGP.\nЗа да го прочетете, трябва да инсталирате и настроите OpenPGP приложението.</string>
+    <string name="crypto_no_provider_message">Този имейл е шифрован използвайки OpenPGP.\nЗа да го прочетете, трябва да инсталирате и настроите OpenPGP приложението.</string>
     <string name="crypto_no_provider_button">Към настройки</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -761,9 +761,9 @@
     <!--Name of the swipe action to remove the star from a message. Try to keep it short.-->
     <string name="swipe_action_remove_star">Премахни звезда</string>
     <!--Name of the swipe action to archive a message. Try to keep it short.-->
-    <string name="swipe_action_archive">Архивирайте</string>
+    <string name="swipe_action_archive">Архивиране</string>
     <!--Name of the swipe action to delete a message. Try to keep it short.-->
-    <string name="swipe_action_delete">Изтрий</string>
+    <string name="swipe_action_delete">Изтриване</string>
     <!--Name of the swipe action to move a message to the Spam folder. Try to keep it short.-->
     <string name="swipe_action_spam">Спам</string>
     <!--Name of the swipe action to move a message. The ellipsis (…) indicates that there is another step (selecting a folder) before the action is performed. Try to keep it short.-->
@@ -792,11 +792,11 @@
     <string name="clipboard_label_email_address">Имейл адрес</string>
     <string name="notification_notify_error_title">Грешка при известие</string>
     <string name="unsubscribe_action">Отписване</string>
-    <string name="changelog_snackbar_button_text">Покажи</string>
+    <string name="changelog_snackbar_button_text">Показване</string>
     <string name="get_help_title">Помощ</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Остани на сегашното съобщение</string>
     <string name="general_settings_swipe_action_toggle_read">Отбележи като прочетено/непрочетено</string>
-    <string name="action_copy_email_address">Копирай имейл адрес</string>
+    <string name="action_copy_email_address">Копиране на имейл адрес</string>
     <string name="account_settings_autodownload_message_size_10240">10 МБ</string>
     <string name="message_view_me_text">мен</string>
     <string name="account_settings_notification_channels_label">Категории известия</string>
@@ -820,9 +820,9 @@
     <string name="general_settings_right_swipe_title">Жест надясно</string>
     <string name="clipboard_label_name_and_email_address">Име и имейл адрес</string>
     <string name="account_settings_notification_light_label">Светлина при известие</string>
-    <string name="general_settings_post_remove_action_show_previous_message">Покажи предишното съобщение</string>
+    <string name="general_settings_post_remove_action_show_previous_message">Показване на предишното съобщение</string>
     <string name="account_settings_notification_light_default_color">Цвят по подразбиране</string>
-    <string name="swipe_action_move">Премести…</string>
+    <string name="swipe_action_move">Преместване…</string>
     <string name="show_starred_count_title">Брой важни съобщения</string>
     <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
     <string name="debug_export_logs_success">Изнасянето е успешно. Журналите може да съдържат лична информация. Внимавайте кому ги пращате.</string>
@@ -830,10 +830,10 @@
 \n
 \nДокоснете тук, за да отворите настройките на известията.</string>
     <string name="debug_export_logs_title">Изнасяне на журналите</string>
-    <string name="general_settings_show_compose_button_title">Показване на плаващ бутон за създаване на съобщение</string>
+    <string name="general_settings_show_compose_button_title">Плаващ бутон за съобщение</string>
     <string name="general_settings_contact_name_color_label">Цвят на контакта</string>
     <string name="account_settings_notification_light_red">Червен</string>
-    <string name="action_copy_name_and_email_address">Копирай име и имейл адрес</string>
+    <string name="action_copy_name_and_email_address">Копиране на име и имейл адрес</string>
     <string name="message_view_recipients_format">до <xliff:g id="recipients">%s</xliff:g></string>
     <string name="account_settings_open_notification_settings_messages_summary">Настрой известията за нови съобщения</string>
     <string name="account_settings_notification_light_green">Зелен</string>
@@ -861,7 +861,7 @@
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="account_settings_notification_light_blue">Син</string>
     <string name="account_settings_autodownload_message_size_5120">5 МБ</string>
-    <string name="general_settings_post_remove_action_show_next_message">Покажи следващото съобщение</string>
+    <string name="general_settings_post_remove_action_show_next_message">Показване на следващото съобщение</string>
     <string name="general_settings_post_remove_action_title">След изтриване или преместване на съобщение</string>
     <string name="account_settings_notification_light_yellow">Жълт</string>
     <string name="account_settings_open_notification_settings_miscellaneous_summary">Настрой известия за грешки и промени в статуса</string>
