@@ -28,7 +28,7 @@ import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisua
 import net.thunderbird.feature.notification.api.ui.host.visual.InAppNotificationHostState
 import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
 import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
-import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
+import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
 
@@ -43,7 +43,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedSeverity = NotificationSeverity.Warning
             val notification = FakeInAppOnlyNotification(
                 contentText = expectedContentText,
-                inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 actions = setOf(expectedAction),
                 severity = expectedSeverity,
             )
@@ -79,7 +79,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedSeverity = NotificationSeverity.Warning
             val notification = FakeInAppOnlyNotification(
                 contentText = expectedContentText,
-                inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 actions = setOf(expectedAction),
                 severity = expectedSeverity,
             )
@@ -111,7 +111,7 @@ class InAppNotificationHostStateHolderTest {
         runTest {
             // Arrange
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 contentText = "not important in this test case",
                 actions = setOf(createFakeNotificationAction()),
             )
@@ -136,7 +136,7 @@ class InAppNotificationHostStateHolderTest {
             // Arrange
             val expectedMessage = "A notification with a BannerGlobalNotification style must have at zero or one action"
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 actions = setOf(
                     createFakeNotificationAction(title = "fake action 1"),
                     createFakeNotificationAction(title = "fake action 2"),
@@ -163,7 +163,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedMessage =
                 "A notification with a BannerGlobalNotification style must have a contentText not null"
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 contentText = null,
                 actions = setOf(createFakeNotificationAction()),
             )
@@ -190,7 +190,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedSeverity = NotificationSeverity.Warning
             val notification = FakeInAppOnlyNotification(
                 contentText = expectedContentText,
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(expectedAction),
                 severity = expectedSeverity,
             )
@@ -232,7 +232,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedSeverity = NotificationSeverity.Warning
             val notification = FakeInAppOnlyNotification(
                 contentText = expectedContentText,
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(expectedAction),
                 severity = expectedSeverity,
             )
@@ -270,7 +270,7 @@ class InAppNotificationHostStateHolderTest {
         runTest {
             // Arrange
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 contentText = "not important in this test case",
                 actions = setOf(createFakeNotificationAction()),
             )
@@ -297,7 +297,7 @@ class InAppNotificationHostStateHolderTest {
         val expectedSeverity = NotificationSeverity.Warning
         val notification = FakeInAppOnlyNotification(
             contentText = expectedContentText,
-            inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+            inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
             actions = setOf(expectedAction),
             severity = expectedSeverity,
         )
@@ -355,7 +355,7 @@ class InAppNotificationHostStateHolderTest {
                 FakeInAppOnlyNotification(
                     title = "fake title $index",
                     contentText = "fake notification $index",
-                    inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                     actions = setOf(getAction(index)),
                     severity = getSeverity(index),
                 )
@@ -402,7 +402,7 @@ class InAppNotificationHostStateHolderTest {
             // Arrange
             val expectedMessage = "A notification with a BannerInlineNotification style must have at one or two actions"
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 contentText = "not important in this test case",
             )
             val flags = persistentSetOf<DisplayInAppNotificationFlag>()
@@ -427,7 +427,7 @@ class InAppNotificationHostStateHolderTest {
                 "A notification with a BannerInlineNotification style must have a title length of 1 to " +
                     "$MAX_TITLE_LENGTH characters."
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 title = "", // empty
             )
             val flags = persistentSetOf<DisplayInAppNotificationFlag>()
@@ -452,7 +452,7 @@ class InAppNotificationHostStateHolderTest {
                 "A notification with a BannerInlineNotification style must have a title length of 1 to " +
                     "$MAX_TITLE_LENGTH characters."
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 title = "*".repeat(101),
             )
             val flags = persistentSetOf<DisplayInAppNotificationFlag>()
@@ -476,7 +476,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedMessage =
                 "A notification with a BannerInlineNotification style must have a contentText not null"
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 title = "fake title",
                 contentText = null,
             )
@@ -502,7 +502,7 @@ class InAppNotificationHostStateHolderTest {
                 "A notification with a BannerInlineNotification style must have a contentText length " +
                     "of 1 to $MAX_SUPPORTING_TEXT_LENGTH characters."
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 title = "fake title",
                 contentText = "", // empty
             )
@@ -528,7 +528,7 @@ class InAppNotificationHostStateHolderTest {
                 "A notification with a BannerInlineNotification style must have a contentText length of " +
                     "1 to $MAX_SUPPORTING_TEXT_LENGTH characters."
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 title = "fake title",
                 contentText = "*".repeat(201),
             )
@@ -552,7 +552,7 @@ class InAppNotificationHostStateHolderTest {
             // Arrange
             val expectedMessage = "A notification with a BannerInlineNotification style must have at one or two actions"
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 contentText = "not important in this test case",
                 actions = setOf(
                     createFakeNotificationAction(title = "fake action 1"),
@@ -584,7 +584,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedDuration = SnackbarDuration.Long
             val notification = FakeInAppOnlyNotification(
                 contentText = expectedContentText,
-                inAppNotificationStyles = inAppNotificationStyles { snackbar(expectedDuration) },
+                inAppNotificationStyle = inAppNotificationStyle { snackbar(expectedDuration) },
                 actions = setOf(expectedAction),
                 severity = expectedSeverity,
             )
@@ -621,7 +621,7 @@ class InAppNotificationHostStateHolderTest {
             val expectedDuration = SnackbarDuration.Long
             val notification = FakeInAppOnlyNotification(
                 contentText = expectedContentText,
-                inAppNotificationStyles = inAppNotificationStyles { snackbar(expectedDuration) },
+                inAppNotificationStyle = inAppNotificationStyle { snackbar(expectedDuration) },
                 actions = setOf(expectedAction),
                 severity = expectedSeverity,
             )
@@ -653,7 +653,7 @@ class InAppNotificationHostStateHolderTest {
         runTest {
             // Arrange
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { snackbar() },
+                inAppNotificationStyle = inAppNotificationStyle { snackbar() },
                 contentText = "not important in this test case",
                 actions = setOf(createFakeNotificationAction()),
             )
@@ -678,7 +678,7 @@ class InAppNotificationHostStateHolderTest {
             // Arrange
             val expectedMessage = "A notification with a SnackbarNotification style must have exactly one action"
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { snackbar() },
+                inAppNotificationStyle = inAppNotificationStyle { snackbar() },
                 contentText = "not important in this test case",
             )
             val flags = persistentSetOf<DisplayInAppNotificationFlag>()
@@ -701,7 +701,7 @@ class InAppNotificationHostStateHolderTest {
             // Arrange
             val expectedMessage = "A notification with a SnackbarNotification style must have exactly one action"
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { snackbar() },
+                inAppNotificationStyle = inAppNotificationStyle { snackbar() },
                 actions = setOf(
                     createFakeNotificationAction(title = "fake action 1"),
                     createFakeNotificationAction(title = "fake action 2"),
@@ -727,7 +727,7 @@ class InAppNotificationHostStateHolderTest {
             // Arrange
             val expectedMessage = "A notification with a SnackbarNotification style must have a contentText not null"
             val notification = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { snackbar() },
+                inAppNotificationStyle = inAppNotificationStyle { snackbar() },
                 contentText = null,
                 actions = setOf(createFakeNotificationAction()),
             )
@@ -749,7 +749,7 @@ class InAppNotificationHostStateHolderTest {
     fun `dismiss should remove bannerGlobal notification given a BannerGlobalVisual`() = runTest {
         // Arrange
         val notification = FakeInAppOnlyNotification(
-            inAppNotificationStyles = inAppNotificationStyles { bannerGlobal() },
+            inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
             actions = setOf(createFakeNotificationAction()),
         )
         val visual = requireNotNull(BannerGlobalVisual.from(notification))
@@ -777,11 +777,11 @@ class InAppNotificationHostStateHolderTest {
         val expectedSeverity = NotificationSeverity.Warning
         val notification = FakeInAppOnlyNotification(
             contentText = expectedContentText,
-            inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+            inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
             actions = setOf(expectedAction),
             severity = expectedSeverity,
         )
-        val visual = BannerInlineVisual.from(notification).first()
+        val visual = requireNotNull(BannerInlineVisual.from(notification))
         val flags = DisplayInAppNotificationFlag.AllNotifications
         val testSubject = InAppNotificationHostStateHolder(enabled = flags)
         testSubject.showInAppNotification(notification)
@@ -818,15 +818,15 @@ class InAppNotificationHostStateHolderTest {
 
             val expectedSize = 99
             val notificationToDismiss = FakeInAppOnlyNotification(
-                inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(createFakeNotificationAction()),
             )
-            val visualToDismiss = BannerInlineVisual.from(notificationToDismiss).first()
+            val visualToDismiss = requireNotNull(BannerInlineVisual.from(notificationToDismiss))
             val notifications = List(size = expectedSize) { index ->
                 FakeInAppOnlyNotification(
                     title = "fake title $index",
                     contentText = "fake notification $index",
-                    inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+                    inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                     actions = setOf(getAction(index)),
                     severity = getSeverity(index),
                 )
@@ -873,7 +873,7 @@ class InAppNotificationHostStateHolderTest {
     fun `dismiss should remove snackbar notification given a SnackbarVisual`() = runTest {
         // Arrange
         val notification = FakeInAppOnlyNotification(
-            inAppNotificationStyles = inAppNotificationStyles { snackbar(SnackbarDuration.Short) },
+            inAppNotificationStyle = inAppNotificationStyle { snackbar(SnackbarDuration.Short) },
             actions = setOf(createFakeNotificationAction()),
         )
         val visual = requireNotNull(SnackbarVisual.from(notification))

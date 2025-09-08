@@ -31,7 +31,7 @@ import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
-import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyles
+import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.api.ui.util.assertBannerInline
 import net.thunderbird.feature.notification.api.ui.util.assertBannerInlineList
 import net.thunderbird.feature.notification.api.ui.util.printSemanticTree
@@ -328,7 +328,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
             title = title,
             contentText = supportingText,
             actions = actions,
-            inAppNotificationStyles = inAppNotificationStyles { bannerInline() },
+            inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
         )
     }
 }

@@ -21,6 +21,6 @@ data class FakeInAppOnlyNotification(
             viewportHeight = 0f,
         ).build(),
     ),
-    override val inAppNotificationStyles: List<InAppNotificationStyle> = listOf(),
+    override val inAppNotificationStyle: InAppNotificationStyle = InAppNotificationStyle.Undefined,
     override val actions: Set<NotificationAction> = setOf(),
 ) : AppNotification(), InAppNotification
