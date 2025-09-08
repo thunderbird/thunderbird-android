@@ -4,14 +4,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountWrapperManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
 
-internal class DefaultLegacyAccountWrapperManager(
+internal class DefaultLegacyAccountManager(
     private val accountManager: AccountManager,
     private val accountDataMapper: DefaultLegacyAccountWrapperDataMapper,
-) : LegacyAccountWrapperManager {
+) : LegacyAccountManager {
 
     override fun getAll(): Flow<List<LegacyAccount>> {
         return accountManager.getAccountsFlow()

@@ -142,7 +142,7 @@ class DefaultAccountProfileLocalDataSourceTest {
             legacyAccount: LegacyAccount?,
         ): DefaultAccountProfileLocalDataSource {
             return DefaultAccountProfileLocalDataSource(
-                accountManager = FakeLegacyAccountWrapperManager(
+                accountManager = FakeLegacyAccountManager(
                     initialAccounts = if (legacyAccount != null) {
                         listOf(legacyAccount)
                     } else {

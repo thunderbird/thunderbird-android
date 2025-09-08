@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountWrapperManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 
-internal class FakeLegacyAccountWrapperManager(
+internal class FakeLegacyAccountManager(
     initialAccounts: List<LegacyAccount> = emptyList(),
-) : LegacyAccountWrapperManager {
+) : LegacyAccountManager {
 
     private val accountsState = MutableStateFlow(
         initialAccounts,
