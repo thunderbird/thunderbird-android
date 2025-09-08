@@ -1,14 +1,15 @@
 package com.fsck.k9.autocrypt;
 
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.thunderbird.core.android.testing.RobolectricTest;
-import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeMessage;
+import net.thunderbird.core.android.testing.RobolectricTest;
+import net.thunderbird.core.common.exception.MessagingException;
+import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.core.logging.testing.TestLogger;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
@@ -23,6 +24,7 @@ public class AutocryptHeaderParserTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
+        Log.logger = new TestLogger();
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.getApplication().getCacheDir());
     }
 
@@ -53,9 +55,9 @@ public class AutocryptHeaderParserTest extends RobolectricTest {
         AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
-        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);
-        assertEquals(0, autocryptHeader.parameters.size());
-        assertEquals(1225, autocryptHeader.keyData.length);
+        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.getAddr());
+        assertEquals(0, autocryptHeader.getParameters().size());
+        assertEquals(1225, autocryptHeader.getKeyData().length);
     }
 
     @Test
@@ -65,8 +67,8 @@ public class AutocryptHeaderParserTest extends RobolectricTest {
         AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
-        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);
-        assertEquals(0, autocryptHeader.parameters.size());
+        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.getAddr());
+        assertEquals(0, autocryptHeader.getParameters().size());
     }
 
     @Test
@@ -94,9 +96,9 @@ public class AutocryptHeaderParserTest extends RobolectricTest {
         AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
-        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.addr);
-        assertEquals(1, autocryptHeader.parameters.size());
-        assertEquals("ignore", autocryptHeader.parameters.get("_monkey"));
+        assertEquals("alice@testsuite.autocrypt.org", autocryptHeader.getAddr());
+        assertEquals(1, autocryptHeader.getParameters().size());
+        assertEquals("ignore", autocryptHeader.getParameters().get("_monkey"));
     }
 
     @Test
@@ -104,6 +106,7 @@ public class AutocryptHeaderParserTest extends RobolectricTest {
         MimeMessage message = parseFromResource("autocrypt/rsa2048-simple.eml");
         AutocryptHeader autocryptHeader = autocryptHeaderParser.getValidAutocryptHeader(message);
 
+        assertNotNull(autocryptHeader);
         String headerValue = autocryptHeader.toRawHeaderString();
         headerValue = headerValue.substring("Autocrypt: ".length());
         AutocryptHeader parsedAutocryptHeader = autocryptHeaderParser.parseAutocryptHeader(headerValue);
@@ -116,7 +119,7 @@ public class AutocryptHeaderParserTest extends RobolectricTest {
         return MimeMessage.parseMimeMessage(inputStream, false);
     }
 
-    private InputStream readFromResourceFile(String name) throws FileNotFoundException {
+    private InputStream readFromResourceFile(String name) {
         return getClass().getResourceAsStream("/" + name);
     }
 }
