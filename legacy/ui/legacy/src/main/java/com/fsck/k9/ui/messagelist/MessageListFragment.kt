@@ -69,8 +69,8 @@ import kotlinx.coroutines.flow.onEach
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.architecture.data.DataMapper
@@ -110,8 +110,8 @@ class MessageListFragment :
     @OptIn(ExperimentalTime::class)
     private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
-    private val legacyAccountWrapperDataMapper: DataMapper<
-        LegacyAccountWrapper,
+    private val legacyAccountDataMapper: DataMapper<
+        LegacyAccount,
         LegacyAccountDto,
         > by inject<DefaultLegacyAccountWrapperDataMapper>()
     private val preferences: Preferences by inject()
@@ -147,7 +147,7 @@ class MessageListFragment :
     private lateinit var adapter: MessageListAdapter
 
     private lateinit var accountUuids: Array<String>
-    private var accounts: List<LegacyAccountWrapper> = emptyList()
+    private var accounts: List<LegacyAccount> = emptyList()
     private var account: LegacyAccountDto? = null
     private var currentFolder: FolderInfoHolder? = null
     private var remoteSearchFuture: Future<*>? = null
@@ -467,7 +467,7 @@ class MessageListFragment :
                 adapter = adapter,
                 listener = swipeListener,
                 accounts = accounts,
-                legacyAccountWrapperDataMapper = legacyAccountWrapperDataMapper,
+                legacyAccountDataMapper = legacyAccountDataMapper,
             ).also { messageListSwipeCallback = it },
         )
         itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -546,7 +546,7 @@ class MessageListFragment :
     }
 
     private fun updateAccountList(accounts: List<LegacyAccountDto>) {
-        this.accounts = accounts.map(legacyAccountWrapperDataMapper::toDomain)
+        this.accounts = accounts.map(legacyAccountDataMapper::toDomain)
     }
 
     fun folderLoading(folderId: Long, loading: Boolean) {

@@ -12,14 +12,9 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
 
 /**
- * A immutable wrapper for the [LegacyAccountDto] class.
- *
  * This class is used to store the account data in a way that is safe to pass between threads.
- *
- * Use LegacyAccountWrapper.from(account) to create a wrapper from an account.
- * Use LegacyAccountWrapper.to(wrapper) to create an account from a wrapper.
  */
-data class LegacyAccountWrapper(
+data class LegacyAccount(
     val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
 
     // [Account]

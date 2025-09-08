@@ -24,7 +24,7 @@ class LegacyAccountWrapperTest {
         val expected = createAccountWrapper()
 
         // act
-        val result = LegacyAccountWrapper(
+        val result = LegacyAccount(
             isSensitiveDebugLoggingEnabled = isSensitiveDebugLoggingEnabled,
             id = ACCOUNT_ID,
             name = PROFILE_NAME,
@@ -93,8 +93,8 @@ class LegacyAccountWrapperTest {
         val notificationSettings = NotificationSettings()
 
         @Suppress("LongMethod")
-        fun createAccountWrapper(): LegacyAccountWrapper {
-            return LegacyAccountWrapper(
+        fun createAccountWrapper(): LegacyAccount {
+            return LegacyAccount(
                 isSensitiveDebugLoggingEnabled = isSensitiveDebugLoggingEnabled,
 
                 // [Account]

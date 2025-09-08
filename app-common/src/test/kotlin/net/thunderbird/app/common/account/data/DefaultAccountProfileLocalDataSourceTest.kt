@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_COLOR
 import net.thunderbird.account.fake.FakeAccountProfileData.PROFILE_NAME
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccountWrapper
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.profile.AccountAvatar
@@ -77,8 +77,8 @@ class DefaultAccountProfileLocalDataSourceTest {
             id: AccountId,
             displayName: String = PROFILE_NAME,
             color: Int = PROFILE_COLOR,
-        ): LegacyAccountWrapper {
-            return LegacyAccountWrapper(
+        ): LegacyAccount {
+            return LegacyAccount(
                 isSensitiveDebugLoggingEnabled = { true },
                 id = id,
                 name = displayName,
@@ -139,7 +139,7 @@ class DefaultAccountProfileLocalDataSourceTest {
         }
 
         private fun createTestSubject(
-            legacyAccount: LegacyAccountWrapper?,
+            legacyAccount: LegacyAccount?,
         ): DefaultAccountProfileLocalDataSource {
             return DefaultAccountProfileLocalDataSource(
                 accountManager = FakeLegacyAccountWrapperManager(
