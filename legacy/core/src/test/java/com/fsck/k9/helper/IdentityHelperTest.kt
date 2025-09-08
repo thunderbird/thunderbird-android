@@ -9,7 +9,7 @@ import com.fsck.k9.mail.internet.AddressHeaderBuilder
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.UUID
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
@@ -115,7 +115,7 @@ class IdentityHelperTest : RobolectricTest() {
         assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
     }
 
-    private fun createDummyAccount() = LegacyAccount(UUID.randomUUID().toString()).apply {
+    private fun createDummyAccount() = LegacyAccountDto(UUID.randomUUID().toString()).apply {
         replaceIdentities(
             listOf(
                 newIdentity("Default", DEFAULT_ADDRESS),

@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
 
@@ -35,7 +35,7 @@ class AccountStateLoader(
         return accountManager.getAccount(accountUuid)?.let { mapToAccountState(it) }
     }
 
-    private fun mapToAccountState(account: LegacyAccount): AccountState {
+    private fun mapToAccountState(account: LegacyAccountDto): AccountState {
         return AccountState(
             uuid = account.uuid,
             emailAddress = account.email,
@@ -46,7 +46,7 @@ class AccountStateLoader(
     }
 }
 
-private val LegacyAccount.incomingServerSettingsExtra: ServerSettings
+private val LegacyAccountDto.incomingServerSettingsExtra: ServerSettings
     get() = when (incomingServerSettings.type) {
         Protocols.IMAP -> toImapServerSettings()
         else -> incomingServerSettings

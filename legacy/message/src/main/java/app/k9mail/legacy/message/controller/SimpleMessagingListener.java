@@ -7,77 +7,77 @@ import java.util.List;
 import android.content.Context;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 
 
 public abstract class SimpleMessagingListener implements MessagingListener {
     @Override
-    public void synchronizeMailboxStarted(LegacyAccount account, long folderId) {
+    public void synchronizeMailboxStarted(LegacyAccountDto account, long folderId) {
     }
 
     @Override
-    public void synchronizeMailboxHeadersStarted(LegacyAccount account, String folderServerId) {
+    public void synchronizeMailboxHeadersStarted(LegacyAccountDto account, String folderServerId) {
     }
 
     @Override
-    public void synchronizeMailboxHeadersProgress(LegacyAccount account, String folderServerId, int completed, int total) {
+    public void synchronizeMailboxHeadersProgress(LegacyAccountDto account, String folderServerId, int completed, int total) {
     }
 
     @Override
-    public void synchronizeMailboxHeadersFinished(LegacyAccount account, String folderServerId, int totalMessagesInMailbox,
+    public void synchronizeMailboxHeadersFinished(LegacyAccountDto account, String folderServerId, int totalMessagesInMailbox,
             int numNewMessages) {
     }
 
     @Override
-    public void synchronizeMailboxProgress(LegacyAccount account, long folderId, int completed, int total) {
+    public void synchronizeMailboxProgress(LegacyAccountDto account, long folderId, int completed, int total) {
     }
 
     @Override
-    public void synchronizeMailboxNewMessage(LegacyAccount account, String folderServerId, Message message) {
+    public void synchronizeMailboxNewMessage(LegacyAccountDto account, String folderServerId, Message message) {
     }
 
     @Override
-    public void synchronizeMailboxRemovedMessage(LegacyAccount account, String folderServerId, String messageServerId) {
+    public void synchronizeMailboxRemovedMessage(LegacyAccountDto account, String folderServerId, String messageServerId) {
     }
 
     @Override
-    public void synchronizeMailboxFinished(LegacyAccount account, long folderId) {
+    public void synchronizeMailboxFinished(LegacyAccountDto account, long folderId) {
     }
 
     @Override
-    public void synchronizeMailboxFailed(LegacyAccount account, long folderId, String message) {
+    public void synchronizeMailboxFailed(LegacyAccountDto account, long folderId, String message) {
     }
 
     @Override
-    public void loadMessageRemoteFinished(LegacyAccount account, long folderId, String uid) {
+    public void loadMessageRemoteFinished(LegacyAccountDto account, long folderId, String uid) {
     }
 
     @Override
-    public void loadMessageRemoteFailed(LegacyAccount account, long folderId, String uid, Throwable t) {
+    public void loadMessageRemoteFailed(LegacyAccountDto account, long folderId, String uid, Throwable t) {
     }
 
     @Override
-    public void checkMailStarted(Context context, LegacyAccount account) {
+    public void checkMailStarted(Context context, LegacyAccountDto account) {
     }
 
     @Override
-    public void checkMailFinished(Context context, LegacyAccount account) {
+    public void checkMailFinished(Context context, LegacyAccountDto account) {
     }
 
     @Override
-    public void folderStatusChanged(LegacyAccount account, long folderId) {
+    public void folderStatusChanged(LegacyAccountDto account, long folderId) {
     }
 
     @Override
-    public void messageUidChanged(LegacyAccount account, long folderId, String oldUid, String newUid) {
+    public void messageUidChanged(LegacyAccountDto account, long folderId, String oldUid, String newUid) {
     }
 
     @Override
-    public void loadAttachmentFinished(LegacyAccount account, Message message, Part part) {
+    public void loadAttachmentFinished(LegacyAccountDto account, Message message, Part part) {
     }
 
     @Override
-    public void loadAttachmentFailed(LegacyAccount account, Message message, Part part, String reason) {
+    public void loadAttachmentFailed(LegacyAccountDto account, Message message, Part part, String reason) {
     }
 
     @Override

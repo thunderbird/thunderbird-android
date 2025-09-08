@@ -4,7 +4,7 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 
 class K9JobManager(
@@ -26,7 +26,7 @@ class K9JobManager(
         scheduleMailSync()
     }
 
-    fun scheduleMailSync(account: LegacyAccount) {
+    fun scheduleMailSync(account: LegacyAccountDto) {
         mailSyncWorkerManager.cancelMailSync(account)
         mailSyncWorkerManager.scheduleMailSync(account)
     }

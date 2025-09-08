@@ -12,7 +12,7 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationSettings
 
 /**
- * A immutable wrapper for the [LegacyAccount] class.
+ * A immutable wrapper for the [LegacyAccountDto] class.
  *
  * This class is used to store the account data in a way that is safe to pass between threads.
  *

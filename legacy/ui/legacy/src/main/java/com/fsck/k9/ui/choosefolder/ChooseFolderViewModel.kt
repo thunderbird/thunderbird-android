@@ -10,7 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ChooseFolderViewModel(
@@ -29,7 +29,7 @@ class ChooseFolderViewModel(
         return foldersFlow.asLiveData()
     }
 
-    fun setDisplayMode(account: LegacyAccount, showHiddenFolders: Boolean) {
+    fun setDisplayMode(account: LegacyAccountDto, showHiddenFolders: Boolean) {
         isShowHiddenFolders = showHiddenFolders
         viewModelScope.launch {
             inputFlow.emit(DisplayMode(account, showHiddenFolders))
@@ -37,4 +37,4 @@ class ChooseFolderViewModel(
     }
 }
 
-private data class DisplayMode(val account: LegacyAccount, val showHiddenFolders: Boolean)
+private data class DisplayMode(val account: LegacyAccountDto, val showHiddenFolders: Boolean)

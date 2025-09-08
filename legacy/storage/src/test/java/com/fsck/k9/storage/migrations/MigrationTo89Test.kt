@@ -10,7 +10,7 @@ import com.fsck.k9.storage.messages.createMessage
 import com.fsck.k9.storage.messages.readFolders
 import com.fsck.k9.storage.messages.readMessages
 import kotlin.test.Test
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.junit.After
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doReturn
@@ -50,15 +50,15 @@ class MigrationTo89Test {
         assertThat(messages[0].accountId).isEqualTo(ACCOUNT_UUID)
     }
 
-    private fun createAccount(): LegacyAccount {
+    private fun createAccount(): LegacyAccountDto {
         return mock {
             on { uuid } doReturn ACCOUNT_UUID
         }
     }
 
-    private fun createMigrationsHelper(account: LegacyAccount): MigrationsHelper {
+    private fun createMigrationsHelper(account: LegacyAccountDto): MigrationsHelper {
         return object : MigrationsHelper {
-            override fun getAccount(): LegacyAccount {
+            override fun getAccount(): LegacyAccountDto {
                 return account
             }
 

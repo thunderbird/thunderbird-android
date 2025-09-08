@@ -1,9 +1,9 @@
 package com.fsck.k9.ui.helper
 
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 object DisplayAddressHelper {
-    fun shouldShowRecipients(account: LegacyAccount, folderId: Long): Boolean {
+    fun shouldShowRecipients(account: LegacyAccountDto, folderId: Long): Boolean {
         return when (folderId) {
             account.inboxFolderId -> false
             account.archiveFolderId -> false

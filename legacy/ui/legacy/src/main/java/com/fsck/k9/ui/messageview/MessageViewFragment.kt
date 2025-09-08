@@ -56,7 +56,7 @@ import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.Theme
@@ -105,7 +105,7 @@ class MessageViewFragment :
     private var destinationFolderId: Long? = null
     private lateinit var fragmentListener: MessageViewFragmentListener
 
-    private lateinit var account: LegacyAccount
+    private lateinit var account: LegacyAccountDto
     lateinit var messageReference: MessageReference
     private var showAccountChip: Boolean = true
 

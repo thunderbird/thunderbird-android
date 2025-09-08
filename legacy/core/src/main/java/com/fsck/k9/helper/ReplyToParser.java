@@ -10,12 +10,12 @@ import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 
 
 public class ReplyToParser {
 
-    public ReplyToAddresses getRecipientsToReplyTo(Message message, LegacyAccount account) {
+    public ReplyToAddresses getRecipientsToReplyTo(Message message, LegacyAccountDto account) {
         Address[] candidateAddress;
 
         Address[] replyToAddresses = message.getReplyTo();
@@ -38,7 +38,7 @@ public class ReplyToParser {
         return new ReplyToAddresses(candidateAddress);
     }
 
-    public ReplyToAddresses getRecipientsToReplyAllTo(Message message, LegacyAccount account) {
+    public ReplyToAddresses getRecipientsToReplyAllTo(Message message, LegacyAccountDto account) {
         List<Address> replyToAddresses = Arrays.asList(getRecipientsToReplyTo(message, account).to);
 
         HashSet<Address> alreadyAddedAddresses = new HashSet<>(replyToAddresses);

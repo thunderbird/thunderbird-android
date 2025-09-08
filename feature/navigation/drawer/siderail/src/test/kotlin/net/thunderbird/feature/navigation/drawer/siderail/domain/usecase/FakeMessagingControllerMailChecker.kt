@@ -2,14 +2,14 @@ package net.thunderbird.feature.navigation.drawer.siderail.domain.usecase
 
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import app.k9mail.legacy.message.controller.MessagingListener
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 internal class FakeMessagingControllerMailChecker(
     val recordedParameters: MutableList<CheckMailParameters> = mutableListOf(),
     private val listenerExecutor: (MessagingListener?) -> Unit = {},
 ) : MessagingControllerMailChecker {
     override fun checkMail(
-        account: LegacyAccount?,
+        account: LegacyAccountDto?,
         ignoreLastCheckedTime: Boolean,
         useManualWakeLock: Boolean,
         notify: Boolean,
@@ -22,7 +22,7 @@ internal class FakeMessagingControllerMailChecker(
 }
 
 internal data class CheckMailParameters(
-    val account: LegacyAccount?,
+    val account: LegacyAccountDto?,
     val ignoreLastCheckedTime: Boolean,
     val useManualWakeLock: Boolean,
     val notify: Boolean,

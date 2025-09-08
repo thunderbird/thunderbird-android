@@ -10,7 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 internal class SettingsViewModel(
     private val accountManager: AccountManager,
@@ -18,7 +18,7 @@ internal class SettingsViewModel(
 ) : ViewModel() {
     val accounts = accountManager.getAccountsFlow().asLiveData()
 
-    fun moveAccount(account: LegacyAccount, newPosition: Int) {
+    fun moveAccount(account: LegacyAccountDto, newPosition: Int) {
         viewModelScope.launch(coroutineDispatcher) {
             // Delay saving the account so the animation is not disturbed
             delay(500)

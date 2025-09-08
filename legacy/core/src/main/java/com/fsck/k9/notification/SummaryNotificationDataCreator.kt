@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
 import com.fsck.k9.K9
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 
 private const val MAX_NUMBER_OF_MESSAGES_FOR_SUMMARY_NOTIFICATION = 5
@@ -55,7 +55,7 @@ internal class SummaryNotificationDataCreator(
         }
     }
 
-    private fun createSummaryWearNotificationActions(account: LegacyAccount): List<SummaryWearNotificationAction> {
+    private fun createSummaryWearNotificationActions(account: LegacyAccountDto): List<SummaryWearNotificationAction> {
         return buildList {
             add(SummaryWearNotificationAction.MarkAsRead)
 

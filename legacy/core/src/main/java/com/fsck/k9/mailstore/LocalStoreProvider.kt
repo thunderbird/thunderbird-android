@@ -3,7 +3,7 @@ package com.fsck.k9.mailstore
 import android.content.Context
 import app.k9mail.legacy.di.DI
 import java.util.concurrent.ConcurrentHashMap
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.preference.GeneralSettingsManager
 
@@ -12,7 +12,7 @@ class LocalStoreProvider {
     private val accountLocks = ConcurrentHashMap<String, Any>()
 
     @Throws(MessagingException::class)
-    fun getInstance(account: LegacyAccount): LocalStore {
+    fun getInstance(account: LegacyAccountDto): LocalStore {
         val context = DI.get(Context::class.java)
         val generalSettingsManager = DI.get(GeneralSettingsManager::class.java)
         val accountUuid = account.uuid
@@ -27,7 +27,7 @@ class LocalStoreProvider {
         }
     }
 
-    fun removeInstance(account: LegacyAccount) {
+    fun removeInstance(account: LegacyAccountDto) {
         val accountUuid = account.uuid
         localStores.remove(accountUuid)
     }

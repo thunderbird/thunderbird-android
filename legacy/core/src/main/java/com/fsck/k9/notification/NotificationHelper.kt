@@ -14,7 +14,7 @@ import com.fsck.k9.QuietTimeChecker
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.notification.NotificationPreference
@@ -34,12 +34,12 @@ class NotificationHelper(
         return notificationManager
     }
 
-    fun createNotificationBuilder(account: LegacyAccount, channelType: ChannelType): NotificationCompat.Builder {
+    fun createNotificationBuilder(account: LegacyAccountDto, channelType: ChannelType): NotificationCompat.Builder {
         val notificationChannel = notificationChannelManager.getChannelIdFor(account, channelType)
         return NotificationCompat.Builder(context, notificationChannel)
     }
 
-    fun notify(account: LegacyAccount, notificationId: Int, notification: Notification) {
+    fun notify(account: LegacyAccountDto, notificationId: Int, notification: Notification) {
         try {
             notificationManager.notify(notificationId, notification)
         } catch (e: SecurityException) {
@@ -59,7 +59,7 @@ class NotificationHelper(
         }
     }
 
-    private fun showNotifyErrorNotification(account: LegacyAccount) {
+    private fun showNotifyErrorNotification(account: LegacyAccountDto) {
         val title = resourceProvider.notifyErrorTitle()
         val text = resourceProvider.notifyErrorText()
 

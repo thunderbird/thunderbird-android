@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
@@ -31,7 +31,7 @@ internal class DefaultMessageCountsProvider(
     private val messagingControllerRegistry: MessagingControllerRegistry,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : MessageCountsProvider {
-    override fun getMessageCounts(account: LegacyAccount): MessageCounts {
+    override fun getMessageCounts(account: LegacyAccountDto): MessageCounts {
         val search = LocalMessageSearch().apply {
             excludeSpecialFolders(account)
             limitToDisplayableFolders()
@@ -59,7 +59,7 @@ internal class DefaultMessageCountsProvider(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    override fun getUnreadMessageCount(account: LegacyAccount, folderId: Long): Int {
+    override fun getUnreadMessageCount(account: LegacyAccountDto, folderId: Long): Int {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
             return if (folderId == account.outboxFolderId) {
@@ -78,7 +78,7 @@ internal class DefaultMessageCountsProvider(
             send(getMessageCounts(search))
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
-                override fun folderStatusChanged(account: LegacyAccount, folderId: Long) {
+                override fun folderStatusChanged(account: LegacyAccountDto, folderId: Long) {
                     trySendBlocking(getMessageCounts(search))
                 }
             }
@@ -93,7 +93,7 @@ internal class DefaultMessageCountsProvider(
     }
 
     @Suppress("TooGenericExceptionCaught")
-    private fun getMessageCounts(account: LegacyAccount, conditions: SearchConditionTreeNode?): MessageCounts {
+    private fun getMessageCounts(account: LegacyAccountDto, conditions: SearchConditionTreeNode?): MessageCounts {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
             return MessageCounts(

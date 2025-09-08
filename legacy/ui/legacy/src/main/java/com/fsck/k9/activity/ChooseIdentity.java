@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import net.thunderbird.core.android.account.Identity;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ChooseIdentity extends K9ListActivity {
     private final IdentityFormatter identityFormatter = DI.get(IdentityFormatter.class);
 
-    LegacyAccount mAccount;
+    LegacyAccountDto mAccount;
     ArrayAdapter<String> adapter;
 
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseIdentity_account";

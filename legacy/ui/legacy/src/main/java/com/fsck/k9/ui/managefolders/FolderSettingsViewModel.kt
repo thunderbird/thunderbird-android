@@ -10,7 +10,7 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
@@ -25,7 +25,7 @@ class FolderSettingsViewModel(
     private val actionLiveData = SingleLiveEvent<Action>()
     private var folderSettingsLiveData: LiveData<FolderSettingsResult>? = null
 
-    private lateinit var account: LegacyAccount
+    private lateinit var account: LegacyAccountDto
     private var folderId: Long = NO_FOLDER_ID
 
     val showClearFolderInMenu: Boolean
@@ -61,13 +61,13 @@ class FolderSettingsViewModel(
         }
     }
 
-    private suspend fun loadAccount(accountUuid: String): LegacyAccount {
+    private suspend fun loadAccount(accountUuid: String): LegacyAccountDto {
         return withContext(Dispatchers.IO) {
             preferences.getAccount(accountUuid) ?: error("Missing account: $accountUuid")
         }
     }
 
-    private suspend fun FolderRepository.loadFolderDetails(account: LegacyAccount, folderId: Long): FolderDetails? {
+    private suspend fun FolderRepository.loadFolderDetails(account: LegacyAccountDto, folderId: Long): FolderDetails? {
         return withContext(Dispatchers.IO) {
             getFolderDetails(account, folderId)
         }

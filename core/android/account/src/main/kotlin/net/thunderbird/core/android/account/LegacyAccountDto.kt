@@ -21,9 +21,9 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
-@Deprecated("Use LegacyAccountWrapper instead")
+@Deprecated("Use LegacyAccount instead")
 @Suppress("TooManyFunctions")
-open class LegacyAccount(
+open class LegacyAccountDto(
     override val uuid: String,
     val isSensitiveDebugLoggingEnabled: () -> Boolean = { false },
 ) : Account, BaseAccount {
@@ -618,7 +618,7 @@ open class LegacyAccount(
     }
 
     override fun equals(other: Any?): Boolean {
-        return if (other is LegacyAccount) {
+        return if (other is LegacyAccountDto) {
             other.uuid == uuid
         } else {
             super.equals(other)
@@ -629,7 +629,7 @@ open class LegacyAccount(
         return uuid.hashCode()
     }
 
-    companion object {
+    companion object Companion {
         /**
          * Fixed name of outbox - not actually displayed.
          */

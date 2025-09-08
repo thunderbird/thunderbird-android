@@ -15,13 +15,13 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.radiobutton.MaterialRadioButton
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.koin.android.ext.android.inject
 
 class AccountSetupComposition : K9Activity() {
     private val emailAddressValidator: EmailAddressValidator by inject()
 
-    private lateinit var account: LegacyAccount
+    private lateinit var account: LegacyAccountDto
 
     private lateinit var accountSignature: EditText
     private lateinit var accountEmail: EditText

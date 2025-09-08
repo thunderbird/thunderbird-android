@@ -3,13 +3,13 @@ package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
 import app.k9mail.legacy.ui.folder.DisplayFolder
 import app.k9mail.legacy.ui.folder.DisplayFolderRepository
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 internal class FakeDisplayFolderRepository(
     private val foldersFlow: Flow<List<DisplayFolder>>,
 ) : DisplayFolderRepository {
     override fun getDisplayFoldersFlow(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         includeHiddenFolders: Boolean,
     ): Flow<List<DisplayFolder>> {
         TODO("Not yet implemented")

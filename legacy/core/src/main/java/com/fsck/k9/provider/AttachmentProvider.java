@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.helper.MimeTypeUtil;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.logging.legacy.Log;
 import com.fsck.k9.Preferences;
 import net.thunderbird.core.common.exception.MessagingException;
@@ -95,7 +95,7 @@ public class AttachmentProvider extends ContentProvider {
 
         final AttachmentInfo attachmentInfo;
         try {
-            final LegacyAccount account = Preferences.getPreferences().getAccount(accountUuid);
+            final LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
             attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(account).getAttachmentInfo(id);
         } catch (MessagingException e) {
             Log.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
@@ -142,7 +142,7 @@ public class AttachmentProvider extends ContentProvider {
 
     private String getType(String accountUuid, String id, String mimeType) {
         String type;
-        final LegacyAccount account = Preferences.getPreferences().getAccount(accountUuid);
+        final LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
 
         try {
             final LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
@@ -181,7 +181,7 @@ public class AttachmentProvider extends ContentProvider {
 
     @Nullable
     private OpenPgpDataSource getAttachmentDataSource(String accountUuid, String attachmentId) throws MessagingException {
-        final LegacyAccount account = Preferences.getPreferences().getAccount(accountUuid);
+        final LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
         LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
         return localStore.getAttachmentDataSource(attachmentId);
     }

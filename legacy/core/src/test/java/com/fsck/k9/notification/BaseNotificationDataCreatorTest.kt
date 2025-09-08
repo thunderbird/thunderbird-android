@@ -8,7 +8,7 @@ import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationVibration
 import net.thunderbird.feature.notification.VibratePattern
@@ -211,8 +211,8 @@ class BaseNotificationDataCreatorTest {
         return NotificationData(account, activeNotifications, inactiveNotifications = emptyList())
     }
 
-    private fun createAccount(): LegacyAccount {
-        return LegacyAccount("00000000-0000-4000-0000-000000000000").apply {
+    private fun createAccount(): LegacyAccountDto {
+        return LegacyAccountDto("00000000-0000-4000-0000-000000000000").apply {
             name = "account name"
             replaceIdentities(listOf(Identity()))
         }

@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import app.k9mail.core.android.common.compat.BundleCompat;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.android.account.MessageFormat;
 import app.k9mail.legacy.di.DI;
 import com.fsck.k9.activity.MessageCompose;
@@ -54,11 +54,11 @@ public class QuotedMessagePresenter {
 
     private SimpleMessageFormat quotedTextFormat;
     private InsertableHtmlContent quotedHtmlContent;
-    private LegacyAccount account;
+    private LegacyAccountDto account;
 
 
     public QuotedMessagePresenter(
-            MessageCompose messageCompose, QuotedMessageMvpView quotedMessageMvpView, LegacyAccount account) {
+            MessageCompose messageCompose, QuotedMessageMvpView quotedMessageMvpView, LegacyAccountDto account) {
         this.messageCompose = messageCompose;
         this.view = quotedMessageMvpView;
         onSwitchAccount(account);
@@ -69,7 +69,7 @@ public class QuotedMessagePresenter {
         quotedMessageMvpView.setOnClickPresenter(this);
     }
 
-    public void onSwitchAccount(LegacyAccount account) {
+    public void onSwitchAccount(LegacyAccountDto account) {
         this.account = account;
     }
 

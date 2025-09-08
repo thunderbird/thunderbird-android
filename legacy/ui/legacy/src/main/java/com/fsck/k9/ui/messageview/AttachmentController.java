@@ -14,7 +14,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import androidx.annotation.WorkerThread;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingController;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
@@ -84,20 +84,20 @@ public class AttachmentController {
 
     private void downloadAttachment(LocalPart localPart, final Runnable attachmentDownloadedCallback) {
         String accountUuid = localPart.getAccountUuid();
-        LegacyAccount account = Preferences.getPreferences().getAccount(accountUuid);
+        LegacyAccountDto account = Preferences.getPreferences().getAccount(accountUuid);
         LocalMessage message = localPart.getMessage();
 
         messageViewFragment.showAttachmentLoadingDialog();
         controller.loadAttachment(account, message, attachment.part, new SimpleMessagingListener() {
             @Override
-            public void loadAttachmentFinished(LegacyAccount account, Message message, Part part) {
+            public void loadAttachmentFinished(LegacyAccountDto account, Message message, Part part) {
                 attachment.setContentAvailable();
                 messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
                 messageViewFragment.runOnMainThread(attachmentDownloadedCallback);
             }
 
             @Override
-            public void loadAttachmentFailed(LegacyAccount account, Message message, Part part, String reason) {
+            public void loadAttachmentFailed(LegacyAccountDto account, Message message, Part part, String reason) {
                 messageViewFragment.hideAttachmentLoadingDialogOnMainThread();
             }
         });

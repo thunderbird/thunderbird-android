@@ -7,7 +7,7 @@ import assertk.assertions.doesNotContain
 import assertk.assertions.isEmpty
 import assertk.assertions.isEqualTo
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.junit.Test
 
 class NotificationIdsTest {
@@ -100,7 +100,7 @@ class NotificationIdsTest {
         return listOf(NotificationIds.PUSH_NOTIFICATION_ID, NotificationIds.BACKGROUND_WORK_NOTIFICATION_ID)
     }
 
-    private fun getAccountNotificationIds(account: LegacyAccount): List<Int> {
+    private fun getAccountNotificationIds(account: LegacyAccountDto): List<Int> {
         return listOf(
             NotificationIds.getSendFailedNotificationId(account),
             NotificationIds.getCertificateErrorNotificationId(account, true),
@@ -112,14 +112,14 @@ class NotificationIdsTest {
         ) + getNewMessageNotificationIds(account)
     }
 
-    private fun getNewMessageNotificationIds(account: LegacyAccount): Array<Int> {
+    private fun getNewMessageNotificationIds(account: LegacyAccountDto): Array<Int> {
         return (0 until MAX_NUMBER_OF_NEW_MESSAGE_NOTIFICATIONS).map { index ->
             NotificationIds.getSingleMessageNotificationId(account, index)
         }.toTypedArray()
     }
 
-    private fun createAccount(accountNumber: Int): LegacyAccount {
-        return LegacyAccount(ACCOUNT_ID_RAW).apply {
+    private fun createAccount(accountNumber: Int): LegacyAccountDto {
+        return LegacyAccountDto(ACCOUNT_ID_RAW).apply {
             this.accountNumber = accountNumber
         }
     }

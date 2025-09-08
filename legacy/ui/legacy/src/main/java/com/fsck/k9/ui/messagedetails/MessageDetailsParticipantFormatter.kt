@@ -9,14 +9,14 @@ import com.fsck.k9.helper.ContactNameProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * Get the display name for a participant to be shown in the message details screen.
  */
 internal interface MessageDetailsParticipantFormatter {
-    fun getDisplayName(address: Address, account: LegacyAccount): CharSequence?
+    fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence?
 }
 
 internal class RealMessageDetailsParticipantFormatter(
@@ -25,7 +25,7 @@ internal class RealMessageDetailsParticipantFormatter(
     private val contactNameColor: Int?,
     private val meText: String,
 ) : MessageDetailsParticipantFormatter {
-    override fun getDisplayName(address: Address, account: LegacyAccount): CharSequence? {
+    override fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence? {
         val identity = account.findIdentity(address)
         if (identity != null) {
             return getIdentityName(identity, account)
@@ -38,7 +38,7 @@ internal class RealMessageDetailsParticipantFormatter(
         }
     }
 
-    private fun getIdentityName(identity: Identity, account: LegacyAccount): String {
+    private fun getIdentityName(identity: Identity, account: LegacyAccountDto): String {
         return if (account.identities.size == 1) {
             meText
         } else {

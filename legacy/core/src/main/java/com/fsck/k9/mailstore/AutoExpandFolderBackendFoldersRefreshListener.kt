@@ -2,14 +2,14 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 /**
  * Update an Account's auto-expand folder after the folder list has been refreshed.
  */
 class AutoExpandFolderBackendFoldersRefreshListener(
     private val preferences: Preferences,
-    private val account: LegacyAccount,
+    private val account: LegacyAccountDto,
     private val folderRepository: FolderRepository,
 ) : BackendFoldersRefreshListener {
     private var isFirstSync = false

@@ -9,7 +9,7 @@ import com.fsck.k9.mail.ServerSettings
 import kotlin.test.Test
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_OTHER_RAW
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.testing.TestLogger
@@ -76,8 +76,8 @@ class PreferencesTest {
         assertThat(currentAccountOne.name).isEqualTo("New name")
     }
 
-    private fun createAccount(accountId: String): LegacyAccount {
-        return LegacyAccount(
+    private fun createAccount(accountId: String): LegacyAccountDto {
+        return LegacyAccountDto(
             uuid = accountId,
             isSensitiveDebugLoggingEnabled = { false },
         ).apply {

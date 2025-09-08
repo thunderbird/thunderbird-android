@@ -12,7 +12,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -120,7 +120,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         assertThat(widgetData).isNull()
     }
 
-    private fun createAccount(): LegacyAccount = mock {
+    private fun createAccount(): LegacyAccountDto = mock {
         on { uuid } doReturn ACCOUNT_UUID
         on { displayName } doReturn ACCOUNT_NAME
     }
@@ -130,7 +130,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     private fun createMessageCountsProvider() = object : MessageCountsProvider {
-        override fun getMessageCounts(account: LegacyAccount): MessageCounts {
+        override fun getMessageCounts(account: LegacyAccountDto): MessageCounts {
             return MessageCounts(unread = ACCOUNT_UNREAD_COUNT, starred = 0)
         }
 
@@ -146,7 +146,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
             throw UnsupportedOperationException()
         }
 
-        override fun getUnreadMessageCount(account: LegacyAccount, folderId: Long): Int {
+        override fun getUnreadMessageCount(account: LegacyAccountDto, folderId: Long): Int {
             return FOLDER_UNREAD_COUNT
         }
     }

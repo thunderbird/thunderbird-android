@@ -6,7 +6,7 @@ import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalMessage
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal class NotificationContentCreator(
@@ -14,7 +14,7 @@ internal class NotificationContentCreator(
     private val contactRepository: ContactRepository,
     private val generalSettingsManager: GeneralSettingsManager,
 ) {
-    fun createFromMessage(account: LegacyAccount, message: LocalMessage): NotificationContent {
+    fun createFromMessage(account: LegacyAccountDto, message: LocalMessage): NotificationContent {
         val sender = getMessageSender(account, message)
 
         return NotificationContent(
@@ -70,7 +70,7 @@ internal class NotificationContentCreator(
     }
 
     @Suppress("ReturnCount")
-    private fun getMessageSender(account: LegacyAccount, message: Message): String? {
+    private fun getMessageSender(account: LegacyAccountDto, message: Message): String? {
         val localContactRepository =
             if (generalSettingsManager.getConfig().display.visualSettings.isShowContactName) contactRepository else null
         var isSelf = false

@@ -11,14 +11,14 @@ import net.thunderbird.feature.mail.account.api.AccountManager
         "app.k9mail.legacy.account.LegacyAccount",
     ),
 )
-interface AccountManager : AccountManager<LegacyAccount> {
-    override fun getAccounts(): List<LegacyAccount>
-    override fun getAccountsFlow(): Flow<List<LegacyAccount>>
-    override fun getAccount(accountUuid: String): LegacyAccount?
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?>
+interface AccountManager : AccountManager<LegacyAccountDto> {
+    override fun getAccounts(): List<LegacyAccountDto>
+    override fun getAccountsFlow(): Flow<List<LegacyAccountDto>>
+    override fun getAccount(accountUuid: String): LegacyAccountDto?
+    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto?>
     fun addAccountRemovedListener(listener: AccountRemovedListener)
-    override fun moveAccount(account: LegacyAccount, newPosition: Int)
+    override fun moveAccount(account: LegacyAccountDto, newPosition: Int)
     fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener)
     fun removeOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener)
-    override fun saveAccount(account: LegacyAccount)
+    override fun saveAccount(account: LegacyAccountDto)
 }

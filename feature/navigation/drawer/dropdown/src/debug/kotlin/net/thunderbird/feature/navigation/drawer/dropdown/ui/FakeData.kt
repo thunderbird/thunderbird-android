@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayFolder
@@ -23,7 +23,7 @@ internal object FakeData {
     const val DISPLAY_NAME = "Account Name"
     const val EMAIL_ADDRESS = "test@example.com"
 
-    val ACCOUNT = LegacyAccount(
+    val ACCOUNT = LegacyAccountDto(
         uuid = ACCOUNT_ID_RAW,
     ).apply {
         identities = ArrayList()

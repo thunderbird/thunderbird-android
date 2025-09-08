@@ -22,7 +22,7 @@ import com.fsck.k9.ui.base.livedata.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -34,7 +34,7 @@ class ManageFoldersFragment : Fragment() {
     private val preferences: Preferences by inject()
     private val folderIconProvider: FolderIconProvider by inject { parametersOf(requireActivity().theme) }
 
-    private lateinit var account: LegacyAccount
+    private lateinit var account: LegacyAccountDto
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {

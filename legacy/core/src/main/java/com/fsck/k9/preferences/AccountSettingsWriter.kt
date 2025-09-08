@@ -7,7 +7,7 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.util.UUID
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
@@ -170,7 +170,7 @@ constructor(
         error("Unexpected exit")
     }
 
-    private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccount>): Boolean {
+    private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccountDto>): Boolean {
         return accounts.any { it.displayName == name }
     }
 }

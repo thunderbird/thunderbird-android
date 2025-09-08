@@ -40,7 +40,7 @@ import com.fsck.k9.ui.messageview.MessageViewRecipientFormatter;
 import com.fsck.k9.ui.messageview.RecipientNamesView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.textview.MaterialTextView;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 
 
@@ -195,7 +195,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         starView.setOnClickListener(listener);
     }
 
-    public void populate(final Message message, final LegacyAccount account, boolean showStar, boolean showAccountChip) {
+    public void populate(final Message message, final LegacyAccountDto account, boolean showStar, boolean showAccountChip) {
         if (showAccountChip) {
             accountNameView.setVisibility(View.VISIBLE);
             accountNameView.setText(account.getDisplayName());
@@ -245,7 +245,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         setVisibility(View.VISIBLE);
     }
 
-    private void setRecipientNames(Message message, LegacyAccount account) {
+    private void setRecipientNames(Message message, LegacyAccountDto account) {
         DisplayRecipientsExtractor displayRecipientsExtractor = new DisplayRecipientsExtractor(recipientFormatter,
                 recipientNamesView.getMaxNumberOfRecipientNames());
 
@@ -255,7 +255,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 displayRecipients.getNumberOfRecipients());
     }
 
-    private void setReplyActions(Message message, LegacyAccount account) {
+    private void setReplyActions(Message message, LegacyAccountDto account) {
         ReplyActions replyActions = replyActionStrategy.getReplyActions(account, message);
         this.replyActions = replyActions;
 

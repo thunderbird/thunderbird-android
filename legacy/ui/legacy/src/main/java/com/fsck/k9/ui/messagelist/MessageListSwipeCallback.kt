@@ -19,7 +19,7 @@ import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.color.ColorRoles
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.abs
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountWrapper
 import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.core.common.action.SwipeAction
@@ -32,11 +32,11 @@ class MessageListSwipeCallback(
     context: Context,
     private val resourceProvider: SwipeResourceProvider,
     private val swipeActionSupportProvider: SwipeActionSupportProvider,
-    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount>,
+    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccountDto>,
     private val adapter: MessageListAdapter,
     private val listener: MessageListSwipeListener,
     accounts: List<LegacyAccountWrapper>,
-    private val legacyAccountWrapperDataMapper: DataMapper<LegacyAccountWrapper, LegacyAccount>,
+    private val legacyAccountWrapperDataMapper: DataMapper<LegacyAccountWrapper, LegacyAccountDto>,
 ) : ItemTouchHelper.Callback() {
     private var swipeActions: Map<String, SwipeActions> = emptyMap()
     private val swipePadding = context.resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()

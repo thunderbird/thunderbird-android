@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 
@@ -33,7 +33,7 @@ class DefaultDisplayFolderRepository(
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
-    private fun getDisplayFolders(account: LegacyAccount, includeHiddenFolders: Boolean): List<DisplayFolder> {
+    private fun getDisplayFolders(account: LegacyAccountDto, includeHiddenFolders: Boolean): List<DisplayFolder> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
         return messageStore.getDisplayFolders(
             includeHiddenFolders = includeHiddenFolders,
@@ -55,7 +55,7 @@ class DefaultDisplayFolderRepository(
     }
 
     override fun getDisplayFoldersFlow(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         includeHiddenFolders: Boolean,
     ): Flow<List<DisplayFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
@@ -64,7 +64,7 @@ class DefaultDisplayFolderRepository(
             send(getDisplayFolders(account, includeHiddenFolders))
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
-                override fun folderStatusChanged(statusChangedAccount: LegacyAccount, folderId: Long) {
+                override fun folderStatusChanged(statusChangedAccount: LegacyAccountDto, folderId: Long) {
                     if (statusChangedAccount.uuid == account.uuid) {
                         trySendBlocking(getDisplayFolders(account, includeHiddenFolders))
                     }

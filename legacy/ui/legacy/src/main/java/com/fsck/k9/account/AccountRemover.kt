@@ -6,7 +6,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 
 /**
@@ -42,7 +42,7 @@ class AccountRemover(
         Log.v("Finished removing account '%s'.", accountName)
     }
 
-    private fun removeLocalStore(account: LegacyAccount) {
+    private fun removeLocalStore(account: LegacyAccountDto) {
         try {
             val localStore = localStoreProvider.getInstance(account)
             localStore.delete()
@@ -55,7 +55,7 @@ class AccountRemover(
         localStoreProvider.removeInstance(account)
     }
 
-    private fun removeBackend(account: LegacyAccount) {
+    private fun removeBackend(account: LegacyAccountDto) {
         try {
             backendManager.removeBackend(account)
         } catch (e: Exception) {
@@ -63,7 +63,7 @@ class AccountRemover(
         }
     }
 
-    private fun removeCertificates(account: LegacyAccount) {
+    private fun removeCertificates(account: LegacyAccountDto) {
         try {
             localKeyStoreManager.deleteCertificates(account)
         } catch (e: Exception) {

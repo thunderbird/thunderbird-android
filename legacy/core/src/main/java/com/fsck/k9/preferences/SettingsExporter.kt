@@ -13,7 +13,7 @@ import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.IDENTITY_DESCRIPTION_KEY
@@ -125,7 +125,7 @@ class SettingsExporter(
     @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
     private fun writeAccount(
         serializer: XmlSerializer,
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         prefs: Map<String, Any>,
         includePasswords: Boolean,
     ) {
@@ -273,7 +273,7 @@ class SettingsExporter(
         serializer: XmlSerializer,
         keyPart: String,
         valueString: String,
-        account: LegacyAccount,
+        account: LegacyAccountDto,
     ) {
         val versionedSetting = AccountSettingsDescriptions.SETTINGS[keyPart]
         if (versionedSetting != null) {
@@ -298,7 +298,7 @@ class SettingsExporter(
     }
 
     private fun writeFolderNameSettings(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         folderRepository: FolderRepository,
         serializer: XmlSerializer,
     ) {

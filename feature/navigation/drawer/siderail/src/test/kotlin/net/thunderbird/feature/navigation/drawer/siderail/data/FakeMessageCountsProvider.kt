@@ -4,7 +4,7 @@ import app.k9mail.legacy.message.controller.MessageCounts
 import app.k9mail.legacy.message.controller.MessageCountsProvider
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 
@@ -13,7 +13,7 @@ internal class FakeMessageCountsProvider(
 ) : MessageCountsProvider {
     var recordedSearch: LocalMessageSearch = LocalMessageSearch()
 
-    override fun getMessageCounts(account: LegacyAccount): MessageCounts {
+    override fun getMessageCounts(account: LegacyAccountDto): MessageCounts {
         TODO("Not yet implemented")
     }
 
@@ -30,7 +30,7 @@ internal class FakeMessageCountsProvider(
         return flowOf(messageCounts)
     }
 
-    override fun getUnreadMessageCount(account: LegacyAccount, folderId: Long): Int {
+    override fun getUnreadMessageCount(account: LegacyAccountDto, folderId: Long): Int {
         TODO("Not yet implemented")
     }
 }
