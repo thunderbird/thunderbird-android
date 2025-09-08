@@ -1,5 +1,6 @@
 package net.thunderbird.android.featureflag
 
+import com.fsck.k9.ui.messagelist.MessageListFeatureFlags
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -19,6 +20,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = true),
             FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = true),
+            FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = true),
         )
     }
 }

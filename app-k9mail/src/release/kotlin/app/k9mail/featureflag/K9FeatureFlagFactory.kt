@@ -1,5 +1,6 @@
 package app.k9mail.featureflag
 
+import com.fsck.k9.ui.messagelist.MessageListFeatureFlags
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -20,6 +21,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = false),
             FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
+            FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
         )
     }
 }
