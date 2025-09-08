@@ -44,7 +44,7 @@ public class AutocryptOperations {
         }
 
         String messageFromAddress = currentMessage.getFrom()[0].getAddress();
-        if (!autocryptHeader.addr.equalsIgnoreCase(messageFromAddress)) {
+        if (!autocryptHeader.getAddr().equalsIgnoreCase(messageFromAddress)) {
             return false;
         }
 
@@ -53,7 +53,7 @@ public class AutocryptOperations {
         Date effectiveDate = messageDate.before(internalDate) ? messageDate : internalDate;
 
         AutocryptPeerUpdate data = AutocryptPeerUpdate.create(
-                autocryptHeader.keyData, effectiveDate, autocryptHeader.isPreferEncryptMutual);
+            autocryptHeader.getKeyData(), effectiveDate, autocryptHeader.isPreferEncryptMutual());
         intent.putExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_ID, messageFromAddress);
         intent.putExtra(OpenPgpApi.EXTRA_AUTOCRYPT_PEER_UPDATE, data);
         return true;

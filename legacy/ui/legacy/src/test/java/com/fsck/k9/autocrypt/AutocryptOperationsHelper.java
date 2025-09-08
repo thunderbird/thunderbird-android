@@ -16,8 +16,8 @@ public class AutocryptOperationsHelper {
         AutocryptHeader autocryptHeader = INSTANCE.getValidAutocryptHeader(message);
 
         assertNotNull(autocryptHeader);
-        assertEquals(addr, autocryptHeader.addr);
-        assertEquals(isPreferEncryptMutual, autocryptHeader.isPreferEncryptMutual);
-        assertArrayEquals(keyData, autocryptHeader.keyData);
+        assertEquals(addr, autocryptHeader.getAddr());
+        assertEquals(isPreferEncryptMutual, autocryptHeader.isPreferEncryptMutual());
+        assertArrayEquals(keyData, autocryptHeader.getKeyData());
     }
 }

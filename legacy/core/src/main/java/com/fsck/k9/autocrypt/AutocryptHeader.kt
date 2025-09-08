@@ -1,102 +1,78 @@
-package com.fsck.k9.autocrypt;
+package com.fsck.k9.autocrypt
 
+import okio.ByteString
 
-import java.util.Arrays;
-import java.util.Map;
+data class AutocryptHeader(
+    val parameters: Map<String, String>,
+    val addr: String,
+    val keyData: ByteArray,
+    val isPreferEncryptMutual: Boolean,
+) {
 
-import androidx.annotation.NonNull;
-
-import okio.ByteString;
-
-
-class AutocryptHeader {
-    static final String AUTOCRYPT_HEADER = "Autocrypt";
-
-    static final String AUTOCRYPT_PARAM_ADDR = "addr";
-    static final String AUTOCRYPT_PARAM_KEY_DATA = "keydata";
-
-    static final String AUTOCRYPT_PARAM_TYPE = "type";
-    static final String AUTOCRYPT_TYPE_1 = "1";
-
-    static final String AUTOCRYPT_PARAM_PREFER_ENCRYPT = "prefer-encrypt";
-    static final String AUTOCRYPT_PREFER_ENCRYPT_MUTUAL = "mutual";
-
-    private static final int HEADER_LINE_LENGTH = 76;
-
-
-    @NonNull
-    final byte[] keyData;
-    @NonNull
-    final String addr;
-    @NonNull
-    final Map<String,String> parameters;
-    final boolean isPreferEncryptMutual;
-
-    AutocryptHeader(@NonNull Map<String, String> parameters, @NonNull String addr,
-            @NonNull byte[] keyData, boolean isPreferEncryptMutual) {
-        this.parameters = parameters;
-        this.addr = addr;
-        this.keyData = keyData;
-        this.isPreferEncryptMutual = isPreferEncryptMutual;
-    }
-
-    String toRawHeaderString() {
+    fun toRawHeaderString(): String {
         // TODO we don't properly fold lines here. if we want to support parameters, we need to do that somehow
-        if (!parameters.isEmpty()) {
-            throw new UnsupportedOperationException("arbitrary parameters not supported");
+        if (parameters.isNotEmpty()) {
+            error("arbitrary parameters not supported")
         }
 
-        StringBuilder builder = new StringBuilder();
-        builder.append(AutocryptHeader.AUTOCRYPT_HEADER).append(": ");
-        builder.append(AutocryptHeader.AUTOCRYPT_PARAM_ADDR).append('=').append(addr).append("; ");
-        if (isPreferEncryptMutual) {
-            builder.append(AutocryptHeader.AUTOCRYPT_PARAM_PREFER_ENCRYPT)
-                    .append('=').append(AutocryptHeader.AUTOCRYPT_PREFER_ENCRYPT_MUTUAL).append("; ");
-        }
-        builder.append(AutocryptHeader.AUTOCRYPT_PARAM_KEY_DATA).append("=");
-        builder.append(createFoldedBase64KeyData(keyData));
-
-        return builder.toString();
-    }
-
-    static String createFoldedBase64KeyData(byte[] keyData) {
-        String base64KeyData = ByteString.of(keyData).base64();
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0, base64Length = base64KeyData.length(); i < base64Length; i += HEADER_LINE_LENGTH) {
-            if (i + HEADER_LINE_LENGTH <= base64Length) {
-                result.append("\r\n ");
-                result.append(base64KeyData, i, i + HEADER_LINE_LENGTH);
-            } else {
-                result.append("\r\n ");
-                result.append(base64KeyData, i, base64Length);
+        return buildString {
+            append(AUTOCRYPT_HEADER).append(": ")
+            append(AUTOCRYPT_PARAM_ADDR).append('=').append(addr).append("; ")
+            if (isPreferEncryptMutual) {
+                append(AUTOCRYPT_PARAM_PREFER_ENCRYPT)
+                    .append('=').append(AUTOCRYPT_PREFER_ENCRYPT_MUTUAL).append("; ")
             }
+            append(AUTOCRYPT_PARAM_KEY_DATA).append("=")
+            append(createFoldedBase64KeyData(keyData))
         }
-
-        return result.toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AutocryptHeader) return false
 
-        AutocryptHeader that = (AutocryptHeader) o;
-
-        return isPreferEncryptMutual == that.isPreferEncryptMutual && Arrays.equals(keyData, that.keyData)
-                && addr.equals(that.addr) && parameters.equals(that.parameters);
+        return isPreferEncryptMutual == other.isPreferEncryptMutual &&
+            keyData.contentEquals(other.keyData) &&
+            addr == other.addr &&
+            parameters == other.parameters
     }
 
-    @Override
-    public int hashCode() {
-        int result = Arrays.hashCode(keyData);
-        result = 31 * result + addr.hashCode();
-        result = 31 * result + parameters.hashCode();
-        result = 31 * result + (isPreferEncryptMutual ? 1 : 0);
-        return result;
+    override fun hashCode(): Int {
+        var result = keyData.contentHashCode()
+        result = 31 * result + addr.hashCode()
+        result = 31 * result + parameters.hashCode()
+        result = 31 * result + if (isPreferEncryptMutual) 1 else 0
+        return result
+    }
+
+    companion object {
+        const val AUTOCRYPT_HEADER = "Autocrypt"
+
+        const val AUTOCRYPT_PARAM_ADDR = "addr"
+        const val AUTOCRYPT_PARAM_KEY_DATA = "keydata"
+
+        const val AUTOCRYPT_PARAM_TYPE = "type"
+        const val AUTOCRYPT_TYPE_1 = "1"
+
+        const val AUTOCRYPT_PARAM_PREFER_ENCRYPT = "prefer-encrypt"
+        const val AUTOCRYPT_PREFER_ENCRYPT_MUTUAL = "mutual"
+
+        private const val HEADER_LINE_LENGTH = 76
+
+        fun createFoldedBase64KeyData(keyData: ByteArray): String {
+            val base64KeyData = ByteString.of(data = keyData).base64()
+            val result = StringBuilder()
+
+            for (i in base64KeyData.indices step HEADER_LINE_LENGTH) {
+                result.append("\r\n ")
+                if (i + HEADER_LINE_LENGTH <= base64KeyData.length) {
+                    result.append(base64KeyData, i, i + HEADER_LINE_LENGTH)
+                } else {
+                    result.append(base64KeyData, i, base64KeyData.length)
+                }
+            }
+
+            return result.toString()
+        }
     }
 }
