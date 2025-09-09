@@ -775,7 +775,7 @@ jobs:
       - name: Publish to GitHub Releases
         id: publish_gh
         if: ${{ contains(matrix.releaseTarget, 'github') }}
-        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8  # v2.3.2
+        uses: softprops/action-gh-release@6cbd405e2c4e67a21c47fa9e383d020e4e28b836  # v2.3.3
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
           target_commitish: ${{ steps.shanotes.outputs.app_sha }}
