@@ -86,7 +86,7 @@ class MessageViewHolder(
 
             if (appearance.showAccountChip) {
                 val accountChipDrawable = chipView.drawable.mutate()
-                DrawableCompat.setTint(accountChipDrawable, account.chipColor)
+                DrawableCompat.setTint(accountChipDrawable, account.profile.color)
                 chipView.setImageDrawable(accountChipDrawable)
             }
 

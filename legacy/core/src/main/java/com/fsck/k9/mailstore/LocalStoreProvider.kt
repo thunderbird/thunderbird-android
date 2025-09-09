@@ -3,9 +3,11 @@ package com.fsck.k9.mailstore
 import android.content.Context
 import app.k9mail.legacy.di.DI
 import java.util.concurrent.ConcurrentHashMap
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
 
 class LocalStoreProvider {
     private val localStores = ConcurrentHashMap<String, LocalStore>()
@@ -17,18 +19,36 @@ class LocalStoreProvider {
         val generalSettingsManager = DI.get(GeneralSettingsManager::class.java)
         val accountUuid = account.uuid
 
+        return getInstanceById(accountUuid) {
+            LocalStore.createInstance(account, context, generalSettingsManager)
+        }
+    }
+
+    @Throws
+    fun getInstanceByLegacyAccount(account: LegacyAccount): LocalStore {
+        val context = DI.get(Context::class.java)
+        val legacyAccountMapper = DefaultLegacyAccountWrapperDataMapper()
+        val generalSettingsManager = DI.get(GeneralSettingsManager::class.java)
+        val accountUuid = account.uuid
+        val accountDto = legacyAccountMapper.toDto(account)
+
+        return getInstanceById(accountUuid) {
+            LocalStore.createInstance(accountDto, context, generalSettingsManager)
+        }
+    }
+
+    private fun getInstanceById(uuid: String, create: () -> LocalStore): LocalStore {
         // Use per-account locks so DatabaseUpgradeService always knows which account database is currently upgraded.
-        synchronized(accountLocks.getOrPut(accountUuid) { Any() }) {
+        synchronized(accountLocks.getOrPut(uuid) { Any() }) {
             // Creating a LocalStore instance will create or upgrade the database if
             // necessary. This could take some time.
-            return localStores.getOrPut(accountUuid) {
-                LocalStore.createInstance(account, context, generalSettingsManager)
+            return localStores.getOrPut(uuid) {
+                create()
             }
         }
     }
 
-    fun removeInstance(account: LegacyAccountDto) {
-        val accountUuid = account.uuid
-        localStores.remove(accountUuid)
+    fun removeInstance(uuid: String) {
+        localStores.remove(uuid)
     }
 }
