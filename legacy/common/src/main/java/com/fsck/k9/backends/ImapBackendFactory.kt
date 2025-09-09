@@ -18,13 +18,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 
 @Suppress("LongParameterList")
 class ImapBackendFactory(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val powerManager: PowerManager,
     private val idleRefreshManager: IdleRefreshManager,
     private val backendStorageFactory: K9BackendStorageFactory,

@@ -56,9 +56,9 @@ import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.google.android.material.textview.MaterialTextView
 import kotlin.getValue
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
@@ -97,7 +97,7 @@ open class MessageList :
     OnSwitchCompleteListener {
 
     private val preferences: Preferences by inject()
-    private val accountManager: AccountManager by inject()
+    private val accountManager: LegacyAccountDtoManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()

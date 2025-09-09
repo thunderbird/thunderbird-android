@@ -14,14 +14,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.legacy.Log
 
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
 
 class SettingsExportViewModel(
-    val accountManager: AccountManager,
+    val accountManager: LegacyAccountDtoManager,
     val settingsExporter: SettingsExporter,
 ) : ViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsExportUiModel>()

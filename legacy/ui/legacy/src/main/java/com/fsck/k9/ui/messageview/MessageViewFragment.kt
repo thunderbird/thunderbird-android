@@ -55,8 +55,8 @@ import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.Theme
@@ -72,7 +72,7 @@ class MessageViewFragment :
 
     private val themeManager: ThemeManager by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
-    private val accountManager: AccountManager by inject()
+    private val accountManager: LegacyAccountDtoManager by inject()
     private val messagingController: MessagingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()

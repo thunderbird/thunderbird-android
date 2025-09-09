@@ -16,7 +16,7 @@ internal class SyncAccountTest {
             listener?.checkMailFinished(null, null)
         }
         val account = FakeData.ACCOUNT
-        val accountManager = FakeAccountManager(
+        val accountManager = FakeLegacyAccountDtoManager(
             accounts = listOf(account),
         )
         val messagingController = FakeMessagingControllerMailChecker(
