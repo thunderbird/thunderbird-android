@@ -1,6 +1,5 @@
 package com.fsck.k9.preferences
 
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.storage.StorageEditor
@@ -21,7 +20,12 @@ internal class GeneralSettingsWriter(
         mergedSettings.putAll(stringSettings)
 
         for ((key, value) in mergedSettings) {
-            editor.putStringWithLogging(key, value, generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled)
+            editor.putStringWithLogging(
+                key,
+                value,
+                generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+                generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
+            )
         }
 
         return if (editor.commit()) {
@@ -40,10 +44,15 @@ internal class GeneralSettingsWriter(
 /**
  * Write to a [StorageEditor] while logging what is written if debug logging is enabled.
  */
-internal fun StorageEditor.putStringWithLogging(key: String, value: String?, isDebugLoggingEnabled: Boolean) {
+internal fun StorageEditor.putStringWithLogging(
+    key: String,
+    value: String?,
+    isDebugLoggingEnabled: Boolean,
+    isSensitiveDebugLoggingEnabled: Boolean,
+) {
     if (isDebugLoggingEnabled) {
         var outputValue = value
-        if (!K9.isSensitiveDebugLoggingEnabled &&
+        if (!isSensitiveDebugLoggingEnabled &&
             (
                 key.endsWith("." + LegacyAccountStorageHandler.OUTGOING_SERVER_SETTINGS_KEY) ||
                     key.endsWith("." + LegacyAccountStorageHandler.INCOMING_SERVER_SETTINGS_KEY)

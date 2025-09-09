@@ -12,7 +12,12 @@ internal class FolderSettingsWriter(private val generalSettingsManager: GeneralS
         val prefix = "$accountUuid.${folder.name}."
         for ((folderKey, value) in stringSettings) {
             val key = prefix + folderKey
-            editor.putStringWithLogging(key, value, generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled)
+            editor.putStringWithLogging(
+                key,
+                value,
+                generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+                generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
+            )
         }
     }
 }
