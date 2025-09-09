@@ -2,10 +2,10 @@ package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mail.Address
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 
 data class MessageListItem(
-    val account: LegacyAccountDto,
+    val account: LegacyAccount,
     val subject: String?,
     val threadCount: Int,
     val messageDate: Long,

@@ -50,7 +50,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.search.getAccounts
+import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
@@ -73,7 +73,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import net.jcip.annotations.GuardedBy
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -89,6 +88,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
+import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
@@ -118,7 +118,7 @@ class MessageListFragment :
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingController by inject()
-    private val accountManager: AccountManager by inject()
+    private val accountManager: AccountManager<LegacyAccount> by inject()
     private val connectivityManager: ConnectivityManager by inject()
 
     @OptIn(ExperimentalTime::class)
@@ -129,7 +129,7 @@ class MessageListFragment :
         LegacyAccountDto,
         > by inject<DefaultLegacyAccountWrapperDataMapper>()
     private val preferences: Preferences by inject()
-    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccountDto> by inject {
+    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount> by inject {
         parametersOf(preferences.storage)
     }
     private val featureFlagProvider: FeatureFlagProvider by inject()
@@ -165,7 +165,20 @@ class MessageListFragment :
 
     private lateinit var accountUuids: Array<String>
     private var accounts: List<LegacyAccount> = emptyList()
-    private var account: LegacyAccountDto? = null
+
+    // The accountDto is derived from account for compatibility with legacy APIs. The two fields must be kept
+    // in sync.
+    private var accountDto: LegacyAccountDto? = null
+    private var account: LegacyAccount? = null
+        set(value) {
+            field = value
+            if (value != null && (accountDto == null || accountDto?.uuid != value.uuid)) {
+                accountDto = legacyAccountDataMapper.toDto(value)
+            } else {
+                accountDto = null
+            }
+        }
+
     private var currentFolder: FolderInfoHolder? = null
     private var remoteSearchFuture: Future<*>? = null
     private var extraSearchResults: List<String>? = null
@@ -277,7 +290,8 @@ class MessageListFragment :
     private fun restoreInstanceState(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) return
 
-        activeMessages = savedInstanceState.getStringArray(STATE_ACTIVE_MESSAGES)?.map { MessageReference.parse(it)!! }
+        activeMessages = savedInstanceState.getStringArray(STATE_ACTIVE_MESSAGES)
+            ?.map { MessageReference.parse(it)!! }
         restoreSelectedMessages(savedInstanceState)
         isRemoteSearch = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED)
         val messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE)
@@ -298,7 +312,9 @@ class MessageListFragment :
         }!!
 
         allAccounts = localSearch.searchAllAccounts()
-        val searchAccounts = localSearch.getAccounts(accountManager).also(::updateAccountList)
+        val searchAccounts = localSearch.getLegacyAccounts(accountManager).also {
+            accounts = it
+        }
         if (searchAccounts.size == 1) {
             isSingleAccountMode = true
             val singleAccount = searchAccounts[0]
@@ -314,7 +330,7 @@ class MessageListFragment :
         if (isSingleAccountMode && localSearch.folderIds.size == 1) {
             try {
                 val folderId = localSearch.folderIds[0]
-                currentFolder = getFolderInfoHolder(folderId, account!!)
+                currentFolder = getFolderInfoHolder(folderId)
                 isSingleFolderMode = true
             } catch (e: MessagingException) {
                 return Error.FolderNotFound
@@ -478,7 +494,6 @@ class MessageListFragment :
                 adapter = adapter,
                 listener = swipeListener,
                 accounts = accounts,
-                legacyAccountDataMapper = legacyAccountDataMapper,
             ).also { messageListSwipeCallback = it },
         )
         itemTouchHelper.attachToRecyclerView(recyclerView)
@@ -584,8 +599,8 @@ class MessageListFragment :
         if (isSingleAccountMode) {
             val account = this.account!!
             sortType = account.sortType
-            sortAscending = account.isSortAscending(sortType)
-            sortDateAscending = account.isSortAscending(SortType.SORT_DATE)
+            sortAscending = account.sortAscending[sortType] ?: sortType.isDefaultAscending
+            sortDateAscending = account.sortAscending[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending
         } else {
             sortType = K9.sortType
             sortAscending = K9.isSortAscending(sortType)
@@ -605,14 +620,10 @@ class MessageListFragment :
         )
 
         if (forceUpdate) {
-            updateAccountList(accounts = config.search.getAccounts(accountManager))
+            accounts = config.search.getLegacyAccounts(accountManager)
         }
 
         viewModel.loadMessageList(config, forceUpdate)
-    }
-
-    private fun updateAccountList(accounts: List<LegacyAccountDto>) {
-        this.accounts = accounts.map(legacyAccountDataMapper::toDomain)
     }
 
     fun folderLoading(folderId: Long, loading: Boolean) {
@@ -665,7 +676,7 @@ class MessageListFragment :
             if (account == null || isUnifiedFolders || accountManager.getAccounts().size == 1) {
                 null
             } else {
-                account.displayName
+                account.profile.name
             }
         }
 
@@ -685,7 +696,7 @@ class MessageListFragment :
 
         if (currentFolder.moreMessages && !localSearch.isManualSearch) {
             val folderId = currentFolder.databaseId
-            messagingController.loadMoreMessages(account, folderId)
+            messagingController.loadMoreMessages(accountDto, folderId)
         } else if (isRemoteSearch) {
             val additionalSearchResults = extraSearchResults ?: return
             if (additionalSearchResults.isEmpty()) return
@@ -703,7 +714,7 @@ class MessageListFragment :
             }
 
             messagingController.loadSearchResults(
-                account,
+                accountDto,
                 currentFolder.databaseId,
                 loadSearchResults,
                 activityListener,
@@ -742,7 +753,7 @@ class MessageListFragment :
         floatingActionButton = null
 
         if (isNewMessagesView && !requireActivity().isChangingConfigurations) {
-            messagingController.clearNewMessages(account)
+            messagingController.clearNewMessages(accountDto)
         }
 
         super.onDestroyView()
@@ -782,9 +793,9 @@ class MessageListFragment :
             density = K9.messageListDensity,
         )
 
-    private fun getFolderInfoHolder(folderId: Long, account: LegacyAccountDto): FolderInfoHolder {
-        val localFolder = MlfUtils.getOpenFolder(folderId, account)
-        return FolderInfoHolder(folderNameFormatter, localFolder, account)
+    private fun getFolderInfoHolder(folderId: Long): FolderInfoHolder {
+        val localFolder = MlfUtils.getOpenFolder(folderId, accountDto)
+        return FolderInfoHolder(folderNameFormatter, localFolder, account!!)
     }
 
     override fun onResume() {
@@ -852,19 +863,23 @@ class MessageListFragment :
     // FIXME: Don't save the changes in the UI thread
     private fun changeSort(sortType: SortType, sortAscending: Boolean?) {
         this.sortType = sortType
-
-        val account = account
+        val account = this.account
         if (account != null) {
-            account.sortType = this.sortType
-            if (sortAscending == null) {
-                this.sortAscending = account.isSortAscending(this.sortType)
-            } else {
-                this.sortAscending = sortAscending
-            }
-            account.setSortAscending(this.sortType, this.sortAscending)
-            sortDateAscending = account.isSortAscending(SortType.SORT_DATE)
+            val resolvedAscending = sortAscending ?: (account.sortAscending[sortType] ?: sortType.isDefaultAscending)
+            this.sortAscending = resolvedAscending
 
-            accountManager.saveAccount(account)
+            val newSortAscendingMap = account.sortAscending.toMutableMap().apply {
+                this[sortType] = resolvedAscending
+            }
+
+            this.sortDateAscending = newSortAscendingMap[SortType.SORT_DATE] ?: SortType.SORT_DATE.isDefaultAscending
+
+            val updatedAccount = account.copy(
+                sortType = sortType,
+                sortAscending = newSortAscendingMap,
+            )
+            accountManager.saveAccount(updatedAccount)
+            this.account = updatedAccount
         } else {
             K9.sortType = this.sortType
             if (sortAscending == null) {
@@ -915,7 +930,7 @@ class MessageListFragment :
 
     private fun onExpunge() {
         currentFolder?.let { folderInfoHolder ->
-            messagingController.expunge(account, folderInfoHolder.databaseId)
+            messagingController.expunge(accountDto, folderInfoHolder.databaseId)
         }
     }
 
@@ -1090,7 +1105,7 @@ class MessageListFragment :
     }
 
     private fun onSendPendingMessages() {
-        messagingController.sendPendingMessages(account, null)
+        messagingController.sendPendingMessages(accountDto, null)
     }
 
     private fun updateFooterText() {
@@ -1197,10 +1212,10 @@ class MessageListFragment :
         val account = messageListItem.account
         if (showingThreadedList && messageListItem.threadCount > 1) {
             val threadRootId = messageListItem.threadRoot
-            messagingController.setFlagForThreads(account, listOf(threadRootId), flag, newState)
+            messagingController.setFlagForThreads(accountDto, listOf(threadRootId), flag, newState)
         } else {
             val messageId = messageListItem.databaseId
-            messagingController.setFlag(account, listOf(messageId), flag, newState)
+            messagingController.setFlag(accountDto, listOf(messageId), flag, newState)
         }
 
         computeBatchDirection()
@@ -1209,9 +1224,9 @@ class MessageListFragment :
     private fun setFlagForSelected(flag: Flag, newState: Boolean) {
         if (adapter.selected.isEmpty()) return
 
-        val messageMap = mutableMapOf<LegacyAccountDto, MutableList<Long>>()
-        val threadMap = mutableMapOf<LegacyAccountDto, MutableList<Long>>()
-        val accounts = mutableSetOf<LegacyAccountDto>()
+        val messageMap = mutableMapOf<LegacyAccount, MutableList<Long>>()
+        val threadMap = mutableMapOf<LegacyAccount, MutableList<Long>>()
+        val accounts = mutableSetOf<LegacyAccount>()
 
         for (messageListItem in adapter.selectedMessages) {
             val account = messageListItem.account
@@ -1227,12 +1242,13 @@ class MessageListFragment :
         }
 
         for (account in accounts) {
+            val accountDto = legacyAccountDataMapper.toDto(account)
             messageMap[account]?.let { messageIds ->
-                messagingController.setFlag(account, messageIds, flag, newState)
+                messagingController.setFlag(accountDto, messageIds, flag, newState)
             }
 
             threadMap[account]?.let { threadRootIds ->
-                messagingController.setFlagForThreads(account, threadRootIds, flag, newState)
+                messagingController.setFlagForThreads(accountDto, threadRootIds, flag, newState)
             }
         }
 
@@ -1317,11 +1333,21 @@ class MessageListFragment :
             activeMessages = null
 
             if (messages.isNotEmpty()) {
-                MlfUtils.setLastSelectedFolder(accountManager, messages, destinationFolderId)
+                setLastSelectedFolder(messages, destinationFolderId)
             }
 
             action(destinationFolderId, messages)
         }
+    }
+
+    private fun setLastSelectedFolder(messages: List<MessageReference>, folderId: Long) {
+        val firstMessage = messages.firstOrNull() ?: return
+        val account = accountManager.getAccount(firstMessage.accountUuid) ?: return
+        accountManager.saveAccount(
+            account.copy(
+                lastSelectedFolderId = folderId,
+            ),
+        )
     }
 
     private fun onArchive(message: MessageReference) {
@@ -1340,7 +1366,7 @@ class MessageListFragment :
 
     private fun groupMessagesByAccount(
         messages: List<MessageReference>,
-    ): Map<LegacyAccountDto, List<MessageReference>> {
+    ): Map<LegacyAccount, List<MessageReference>> {
         return messages.groupBy { accountManager.getAccount(it.accountUuid)!! }
     }
 
@@ -1367,9 +1393,9 @@ class MessageListFragment :
 
         val account = accountManager.getAccount(messages.first().accountUuid)
         if (operation == FolderOperation.MOVE &&
-            !messagingController.isMoveCapable(account) ||
+            !messagingController.isMoveCapable(accountDto) ||
             operation == FolderOperation.COPY &&
-            !messagingController.isCopyCapable(account)
+            !messagingController.isCopyCapable(accountDto)
         ) {
             return false
         }
@@ -1413,22 +1439,42 @@ class MessageListFragment :
 
             if (operation == FolderOperation.MOVE) {
                 if (showingThreadedList) {
-                    messagingController.moveMessagesInThread(account, folderId, messagesInFolder, destinationFolderId)
+                    messagingController.moveMessagesInThread(
+                        accountDto,
+                        folderId,
+                        messagesInFolder,
+                        destinationFolderId,
+                    )
                 } else {
-                    messagingController.moveMessages(account, folderId, messagesInFolder, destinationFolderId)
+                    messagingController.moveMessages(
+                        accountDto,
+                        folderId,
+                        messagesInFolder,
+                        destinationFolderId,
+                    )
                 }
             } else {
                 if (showingThreadedList) {
-                    messagingController.copyMessagesInThread(account, folderId, messagesInFolder, destinationFolderId)
+                    messagingController.copyMessagesInThread(
+                        accountDto,
+                        folderId,
+                        messagesInFolder,
+                        destinationFolderId,
+                    )
                 } else {
-                    messagingController.copyMessages(account, folderId, messagesInFolder, destinationFolderId)
+                    messagingController.copyMessages(
+                        accountDto,
+                        folderId,
+                        messagesInFolder,
+                        destinationFolderId,
+                    )
                 }
             }
         }
     }
 
     private fun onMoveToDraftsFolder(messages: List<MessageReference>) {
-        messagingController.moveToDraftsFolder(account, currentFolder!!.databaseId, messages)
+        messagingController.moveToDraftsFolder(accountDto, currentFolder!!.databaseId, messages)
         activeMessages = null
     }
 
@@ -1450,11 +1496,11 @@ class MessageListFragment :
             }
 
             R.id.dialog_confirm_empty_spam -> {
-                messagingController.emptySpam(account, null)
+                messagingController.emptySpam(accountDto, null)
             }
 
             R.id.dialog_confirm_empty_trash -> {
-                messagingController.emptyTrash(account, null)
+                messagingController.emptyTrash(accountDto, null)
             }
         }
     }
@@ -1490,14 +1536,14 @@ class MessageListFragment :
     private fun checkMail() {
         if (isSingleAccountMode && isSingleFolderMode) {
             val folderId = currentFolder!!.databaseId
-            messagingController.synchronizeMailbox(account, folderId, false, activityListener)
-            messagingController.sendPendingMessages(account, activityListener)
+            messagingController.synchronizeMailbox(accountDto, folderId, false, activityListener)
+            messagingController.sendPendingMessages(accountDto, activityListener)
         } else if (allAccounts) {
             messagingController.checkMail(null, true, true, false, activityListener)
         } else {
             for (accountUuid in accountUuids) {
                 val account = accountManager.getAccount(accountUuid)
-                messagingController.checkMail(account, true, true, false, activityListener)
+                messagingController.checkMail(accountDto, true, true, false, activityListener)
             }
         }
     }
@@ -1619,7 +1665,7 @@ class MessageListFragment :
         get() {
             if (localSearch.isManualSearch || isOutbox) return false
 
-            return if (!messagingController.isMoveCapable(account)) {
+            return if (!messagingController.isMoveCapable(accountDto)) {
                 // For POP3 accounts only the Inbox is a remote folder.
                 isInbox
             } else {
@@ -1632,7 +1678,7 @@ class MessageListFragment :
 
     private fun shouldShowExpungeAction(): Boolean {
         val account = this.account ?: return false
-        return account.expungePolicy == Expunge.EXPUNGE_MANUALLY && messagingController.supportsExpunge(account)
+        return account.expungePolicy == Expunge.EXPUNGE_MANUALLY && messagingController.supportsExpunge(accountDto)
     }
 
     private fun onRemoteSearch() {
@@ -1645,7 +1691,7 @@ class MessageListFragment :
     }
 
     private val isRemoteSearchAllowed: Boolean
-        get() = isManualSearch && !isRemoteSearch && isSingleFolderMode && messagingController.isPushCapable(account)
+        get() = isManualSearch && !isRemoteSearch && isSingleFolderMode && messagingController.isPushCapable(accountDto)
 
     fun onSearchRequested(query: String): Boolean {
         val folderId = currentFolder?.databaseId
@@ -1821,7 +1867,7 @@ class MessageListFragment :
 
     private fun markAllAsRead() {
         if (isMarkAllAsReadSupported) {
-            messagingController.markAllMessagesRead(account, currentFolder!!.databaseId)
+            messagingController.markAllMessagesRead(accountDto, currentFolder!!.databaseId)
         }
     }
 
@@ -1924,6 +1970,8 @@ class MessageListFragment :
     }
 
     private val swipeActionSupportProvider = SwipeActionSupportProvider { item, action ->
+        val itemAccountDto = legacyAccountDataMapper.toDto(item.account)
+
         when (action) {
             SwipeAction.None -> false
             SwipeAction.ToggleSelection -> true
@@ -1934,7 +1982,7 @@ class MessageListFragment :
             }
 
             SwipeAction.Delete -> true
-            SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(item.account)
+            SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(itemAccountDto)
             SwipeAction.Spam -> !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId
         }
     }
@@ -2151,7 +2199,7 @@ class MessageListFragment :
             return true
         }
 
-        private fun setContextCapabilities(account: LegacyAccountDto?, menu: Menu) {
+        private fun setContextCapabilities(account: LegacyAccount?, menu: Menu) {
             if (!isSingleAccountMode || account == null) {
                 // We don't support cross-account copy/move operations right now
                 menu.findItem(R.id.move).isVisible = false
@@ -2181,11 +2229,11 @@ class MessageListFragment :
                     menu.findItem(R.id.move_to_drafts).isVisible = true
                 }
             } else {
-                if (!messagingController.isCopyCapable(account)) {
+                if (!messagingController.isCopyCapable(accountDto)) {
                     menu.findItem(R.id.copy).isVisible = false
                 }
 
-                if (!messagingController.isMoveCapable(account)) {
+                if (!messagingController.isMoveCapable(accountDto)) {
                     menu.findItem(R.id.move).isVisible = false
                     menu.findItem(R.id.archive).isVisible = false
                     menu.findItem(R.id.spam).isVisible = false
@@ -2305,11 +2353,11 @@ class MessageListFragment :
     interface MessageListFragmentListener {
         fun setMessageListProgressEnabled(enable: Boolean)
         fun setMessageListProgress(level: Int)
-        fun showThread(account: LegacyAccountDto, threadRootId: Long)
+        fun showThread(account: LegacyAccount, threadRootId: Long)
         fun openMessage(messageReference: MessageReference)
         fun setMessageListTitle(title: String, subtitle: String? = null)
-        fun onCompose(account: LegacyAccountDto?)
-        fun startSearch(query: String, account: LegacyAccountDto?, folderId: Long?): Boolean
+        fun onCompose(account: LegacyAccount?)
+        fun startSearch(query: String, account: LegacyAccount?, folderId: Long?): Boolean
         fun startSupportActionMode(callback: ActionMode.Callback): ActionMode?
         fun goBack()
 

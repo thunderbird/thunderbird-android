@@ -5,12 +5,12 @@ import app.k9mail.legacy.mailstore.MessageMapper
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.ui.helper.DisplayAddressHelper
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.GeneralSettingsManager
 
 class MessageListItemMapper(
     private val messageHelper: MessageHelper,
-    private val account: LegacyAccountDto,
+    private val account: LegacyAccount,
     private val generalSettingsManager: GeneralSettingsManager,
 ) : MessageMapper<MessageListItem> {
 
@@ -58,7 +58,7 @@ class MessageListItemMapper(
         )
     }
 
-    private fun createUniqueId(account: LegacyAccountDto, messageId: Long): Long {
+    private fun createUniqueId(account: LegacyAccount, messageId: Long): Long {
         return ((account.accountNumber + 1).toLong() shl 52) + messageId
     }
 }

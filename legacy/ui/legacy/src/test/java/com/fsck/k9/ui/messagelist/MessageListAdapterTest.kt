@@ -21,14 +21,22 @@ import com.fsck.k9.FontSizes.Companion.LARGE
 import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.google.android.material.textview.MaterialTextView
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.Identity
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.testing.TestClock
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.robolectric.Robolectric
@@ -429,9 +437,7 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun createMessageListItem(
-        account: LegacyAccountDto = LegacyAccountDto(
-            SOME_ACCOUNT_UUID,
-        ),
+        account: LegacyAccount = createLegacyAccount(),
         subject: String? = "irrelevant",
         threadCount: Int = 0,
         messageDate: Long = 0L,
@@ -471,6 +477,51 @@ class MessageListAdapterTest : RobolectricTest() {
             messageUid,
             databaseId,
             threadRoot,
+        )
+    }
+
+    private fun createLegacyAccount(): LegacyAccount {
+        return LegacyAccount(
+            id = AccountIdFactory.of(SOME_ACCOUNT_UUID),
+            name = "irrelevant",
+            email = "irrelevant@example.com",
+            profile = createProfile(),
+            incomingServerSettings = createServerSettings(),
+            outgoingServerSettings = createServerSettings(),
+            identities = listOf(
+                Identity(
+                    description = null,
+                    name = "irrelevant",
+                    email = "irrelevant@example.com",
+                ),
+            ),
+        )
+    }
+
+    private fun createProfile(): ProfileDto {
+        return ProfileDto(
+            id = AccountIdFactory.of(SOME_ACCOUNT_UUID),
+            name = "irrelevant",
+            color = 0xFF00FF,
+            avatar = AvatarDto(
+                avatarType = AvatarTypeDto.MONOGRAM,
+                avatarMonogram = "ab",
+                avatarImageUri = null,
+                avatarIconName = null,
+            ),
+        )
+    }
+
+    private fun createServerSettings(): ServerSettings {
+        return ServerSettings(
+            type = "imap",
+            host = "irrelevant",
+            port = 993,
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = "irrelevant",
+            password = "irrelevant",
+            clientCertificateAlias = null,
         )
     }
 

@@ -1,16 +1,13 @@
 package com.fsck.k9.ui.messagelist;
 
 
-import java.util.List;
 import android.text.TextUtils;
 import app.k9mail.legacy.di.DI;
-import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.Utility;
 import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.AccountManager;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 
 
@@ -21,12 +18,6 @@ public class MlfUtils {
         LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open();
         return localFolder;
-    }
-
-    static void setLastSelectedFolder(AccountManager accountManager, List<MessageReference> messages, long folderId) {
-        MessageReference firstMsg = messages.get(0);
-        LegacyAccountDto account = accountManager.getAccount(firstMsg.getAccountUuid());
-        account.setLastSelectedFolderId(folderId);
     }
 
     public static String buildSubject(String subjectFromCursor, String emptySubject, int threadCount) {

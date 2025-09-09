@@ -3,16 +3,17 @@ package com.fsck.k9.ui.messagelist
 import androidx.lifecycle.LiveData
 import app.k9mail.legacy.mailstore.MessageListChangedListener
 import app.k9mail.legacy.mailstore.MessageListRepository
-import com.fsck.k9.search.getAccountUuids
+import com.fsck.k9.search.getLegacyAccountUuids
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.feature.mail.account.api.AccountManager
 
 class MessageListLiveData(
     private val messageListLoader: MessageListLoader,
-    private val accountManager: AccountManager,
+    private val accountManager: AccountManager<LegacyAccount>,
     private val messageListRepository: MessageListRepository,
     private val coroutineScope: CoroutineScope,
     val config: MessageListConfig,
@@ -45,7 +46,7 @@ class MessageListLiveData(
 
     private fun registerMessageListChangedListenerAsync() {
         coroutineScope.launch(Dispatchers.IO) {
-            val accountUuids = config.search.getAccountUuids(accountManager)
+            val accountUuids = config.search.getLegacyAccountUuids(accountManager)
 
             for (accountUuid in accountUuids) {
                 messageListRepository.addListener(accountUuid, messageListChangedListener)
