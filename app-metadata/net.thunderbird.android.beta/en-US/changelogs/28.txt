@@ -1,0 +1,8 @@
+Thunderbird for Android version 13.0b1, based on K-9 Mail. Changes include:
+- Added new design elements to Message List UI
+- Sync logging duration is now limited to 24 hours
+- Client certificate was not displayed in SMTP settings
+- Outlook headers included unnecessary newlines when replying
+- "Enable debug logging" did not provide verbose logging
+- Scrolling in a short email could trigger left/right swipe
+- Scrolling only worked in center of Welcome and New Account screens (landscape)
