@@ -2,6 +2,7 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
 import kotlin.time.ExperimentalTime
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.legacy.DebugLogConfigurator
 import net.thunderbird.core.preference.DefaultPreferenceChangeBroker
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -32,7 +33,6 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
-import net.thunderbird.core.android.account.AccountManager as LegacyAccountManager
 
 val preferencesModule = module {
     factory {
@@ -46,8 +46,8 @@ val preferencesModule = module {
         )
     }
     factory { FolderSettingsProvider(folderRepository = get()) }
-    factory<LegacyAccountManager> { get<Preferences>() }
-    factory<AccountManager<*>> { get<LegacyAccountManager>() }
+    factory<AccountManager<*>> { get<LegacyAccountDtoManager>() }
+    factory<LegacyAccountDtoManager> { get<Preferences>() }
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
             logger = get(),

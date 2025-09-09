@@ -13,12 +13,12 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
 
 class AccountServerSettingsUpdater(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : AccountEditExternalContract.AccountServerSettingsUpdater {
 

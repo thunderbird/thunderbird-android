@@ -11,7 +11,7 @@ import net.thunderbird.feature.mail.account.api.AccountManager
         "app.k9mail.legacy.account.LegacyAccount",
     ),
 )
-interface AccountManager : AccountManager<LegacyAccountDto> {
+interface LegacyAccountDtoManager : AccountManager<LegacyAccountDto> {
     override fun getAccounts(): List<LegacyAccountDto>
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>>
     override fun getAccount(accountUuid: String): LegacyAccountDto?

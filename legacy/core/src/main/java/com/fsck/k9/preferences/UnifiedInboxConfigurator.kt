@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences
 
-import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.update
 
@@ -8,7 +8,7 @@ import net.thunderbird.core.preference.update
  * Configures the unified inbox after an account has been added.
  */
 class UnifiedInboxConfigurator(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val generalSettingsManager: GeneralSettingsManager,
 ) {
     fun configureUnifiedInbox() {

@@ -26,8 +26,8 @@ import net.openid.appauth.AuthState
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.legacy.Log
 
 private const val KEY_AUTHORIZATION = "app.k9mail_auth"
@@ -35,7 +35,7 @@ private const val KEY_AUTHORIZATION = "app.k9mail_auth"
 @Suppress("TooManyFunctions")
 internal class AuthViewModel(
     application: Application,
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val getOAuthRequestIntent: GetOAuthRequestIntent,
 ) : AndroidViewModel(application) {
     private var authService: AuthorizationService? = null

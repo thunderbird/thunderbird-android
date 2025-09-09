@@ -2,14 +2,14 @@ package net.thunderbird.app.common.account.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
 
 internal class DefaultLegacyAccountManager(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val accountDataMapper: DefaultLegacyAccountWrapperDataMapper,
 ) : LegacyAccountManager {
 

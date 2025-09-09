@@ -19,10 +19,10 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UNASSIGNED_ACCOUNT_NUMBER
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -32,14 +32,14 @@ import net.thunderbird.core.preference.storage.StoragePersister
 import net.thunderbird.feature.account.storage.legacy.AccountDtoStorageHandler
 import org.koin.java.KoinJavaComponent.inject
 
-@Suppress("MaxLineLength")
+@Suppress("MaxLineLength", "TooManyFunctions")
 class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
     private val legacyAccountStorageHandler: AccountDtoStorageHandler,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val accountDefaultsProvider: AccountDefaultsProvider,
-) : AccountManager {
+) : LegacyAccountDtoManager {
 
     private val generalSettingsManager: GeneralSettingsManager by inject(GeneralSettingsManager::class.java)
     private val accountLock = Any()

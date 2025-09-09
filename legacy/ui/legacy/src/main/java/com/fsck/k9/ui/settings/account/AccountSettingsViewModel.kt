@@ -11,13 +11,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 class AccountSettingsViewModel(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,

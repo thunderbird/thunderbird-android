@@ -4,10 +4,10 @@ package com.fsck.k9.search
 
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
-import net.thunderbird.core.android.account.AccountManager as LegacyAccountManager
 
 val LocalMessageSearch.isUnifiedFolders: Boolean
     get() = id == SearchAccount.UNIFIED_FOLDERS
@@ -23,7 +23,7 @@ val LocalMessageSearch.isSingleFolder: Boolean
 
 @Deprecated("Use getLegacyAccounts instead")
 @JvmName("getAccountsFromLocalSearch")
-fun LocalMessageSearch.getAccounts(accountManager: LegacyAccountManager): List<LegacyAccountDto> {
+fun LocalMessageSearch.getAccounts(accountManager: LegacyAccountDtoManager): List<LegacyAccountDto> {
     val accounts = accountManager.getAccounts()
     return if (searchAllAccounts()) {
         accounts

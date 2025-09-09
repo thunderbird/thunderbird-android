@@ -15,13 +15,13 @@ import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 
 class DefaultDisplayFolderRepository(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val messagingController: MessagingControllerRegistry,
     private val messageStoreManager: MessageStoreManager,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
