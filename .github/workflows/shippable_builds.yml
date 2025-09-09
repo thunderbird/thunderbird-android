@@ -39,7 +39,7 @@ jobs:
     outputs:
       releaseEnv: ${{ steps.releaseEnv.outputs.result }}
     steps:
-      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         id: releaseEnv
         with:
           result-encoding: string
@@ -68,7 +68,7 @@ jobs:
       releaseType: ${{ vars.RELEASE_TYPE }}
     steps:
       - name: Show Environment
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         id: dump
         env:
           matrixInclude: ${{ vars.MATRIX_INCLUDE }}
@@ -163,7 +163,7 @@ jobs:
     steps:
       - name: Triggering Actor Link
         id: actorLink
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         env:
           userMap: ${{ vars.MATRIX_NOTIFY_USER_MAP }}
         with:
@@ -413,7 +413,7 @@ jobs:
 
       - name: Summary
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         env:
           bump_sha: ${{ steps.commit.outputs.sha }}
           applicationId: ${{ steps.appinfo.outputs.APPLICATION_ID }}
@@ -952,7 +952,7 @@ jobs:
           gzip: false
 
       - name: Summary
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         id: summary
         env:
           tagName: ${{ steps.pkginfo.outputs.TAG_NAME }}
@@ -1028,7 +1028,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Info
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         id: info
         env:
           needs: ${{ toJSON(needs) }}
