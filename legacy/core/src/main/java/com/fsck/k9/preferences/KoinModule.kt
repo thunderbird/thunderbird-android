@@ -26,7 +26,6 @@ import net.thunderbird.core.preference.notification.DefaultNotificationPreferenc
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.DefaultPrivacySettingsPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
-import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.binds
@@ -44,7 +43,6 @@ val preferencesModule = module {
         )
     }
     factory { FolderSettingsProvider(folderRepository = get()) }
-    factory<AccountManager<*>> { get<LegacyAccountDtoManager>() }
     factory<LegacyAccountDtoManager> { get<Preferences>() }
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
