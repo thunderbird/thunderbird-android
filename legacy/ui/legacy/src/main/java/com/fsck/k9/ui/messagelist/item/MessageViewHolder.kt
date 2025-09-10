@@ -22,12 +22,12 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.FontSizes
 import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
+import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
-import com.fsck.k9.ui.messagelist.MlfUtils
 import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
 import kotlin.math.max
@@ -82,7 +82,11 @@ class MessageViewHolder(
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
             val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
-            val subject = MlfUtils.buildSubject(subject, res.getString(R.string.general_no_subject), displayThreadCount)
+            val subject = buildSubject(
+                subject = subject,
+                noSubjectText = res.getString(R.string.general_no_subject),
+                threadCount = displayThreadCount,
+            )
 
             if (appearance.showAccountChip) {
                 val accountChipDrawable = chipView.drawable.mutate()
@@ -148,6 +152,19 @@ class MessageViewHolder(
                 statusView.isVisible = false
             }
         }
+    }
+
+    private fun buildSubject(
+        subject: String?,
+        noSubjectText: String,
+        threadCount: Int,
+    ): String = if (subject.isNullOrEmpty()) {
+        noSubjectText
+    } else if (threadCount > 1) {
+        // If this is a thread, strip the RE/FW from the subject.  "Be like Outlook."
+        Utility.stripSubject(subject)
+    } else {
+        subject
     }
 
     private fun getPreview(isMessageEncrypted: Boolean, previewText: String): String {
