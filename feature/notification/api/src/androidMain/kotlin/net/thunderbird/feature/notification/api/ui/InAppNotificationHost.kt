@@ -100,7 +100,7 @@ fun InAppNotificationHost(
 
     val state by hostStateHolder.currentInAppNotificationHostState.collectAsState()
 
-    LaunchedEffect(inAppNotificationEvents) {
+    LaunchedEffect(inAppNotificationEvents, eventFilter) {
         val event = inAppNotificationEvents
         if (event != null && eventFilter(event)) {
             when (event) {

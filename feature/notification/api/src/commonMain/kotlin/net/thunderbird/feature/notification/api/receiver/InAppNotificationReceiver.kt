@@ -14,6 +14,8 @@ interface InAppNotificationReceiver {
 }
 
 sealed interface InAppNotificationEvent {
-    data class Show(val notification: InAppNotification) : InAppNotificationEvent
-    data class Dismiss(val notification: InAppNotification) : InAppNotificationEvent
+    val notification: InAppNotification
+
+    data class Show(override val notification: InAppNotification) : InAppNotificationEvent
+    data class Dismiss(override val notification: InAppNotification) : InAppNotificationEvent
 }

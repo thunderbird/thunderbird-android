@@ -20,6 +20,9 @@ import org.jetbrains.compose.resources.getString
  */
 @ConsistentCopyVisibility
 data class CertificateErrorNotification private constructor(
+    val isIncomingServerError: Boolean,
+    override val accountUuid: String,
+    val accountNumber: Int,
     override val title: String,
     override val contentText: String,
     val lockScreenTitle: String,
@@ -27,7 +30,13 @@ data class CertificateErrorNotification private constructor(
     override val icon: NotificationIcon = NotificationIcons.CertificateError,
 ) : AppNotification(), SystemNotification, InAppNotification {
     override val severity: NotificationSeverity = NotificationSeverity.Fatal
-    override val actions: Set<NotificationAction> = setOf(NotificationAction.UpdateServerSettings)
+    override val actions: Set<NotificationAction> = setOf(
+        if (isIncomingServerError) {
+            NotificationAction.UpdateIncomingServerSettings(accountUuid, accountNumber)
+        } else {
+            NotificationAction.UpdateOutgoingServerSettings(accountUuid, accountNumber)
+        },
+    )
 
     override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
         SystemNotification.LockscreenNotification(
@@ -45,7 +54,12 @@ data class CertificateErrorNotification private constructor(
         suspend operator fun invoke(
             accountUuid: String,
             accountDisplayName: String,
+            accountNumber: Int,
+            isIncomingServerError: Boolean,
         ): CertificateErrorNotification = CertificateErrorNotification(
+            isIncomingServerError = isIncomingServerError,
+            accountUuid = accountUuid,
+            accountNumber = accountNumber,
             title = getString(resource = Res.string.notification_certificate_error_title, accountDisplayName),
             lockScreenTitle = getString(resource = Res.string.notification_certificate_error_public),
             contentText = getString(resource = Res.string.notification_certificate_error_text),

@@ -43,6 +43,15 @@
                 android:scrollbars="vertical"
                 tools:listitem="@layout/message_list_item"
                 />
+
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/banner_global_compose_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="@color/pink"
+                />
+
         </androidx.core.view.insets.ProtectionLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
