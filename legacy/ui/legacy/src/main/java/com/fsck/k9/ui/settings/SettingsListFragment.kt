@@ -30,7 +30,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.utils.DragDropUtil
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.provider.BrandNameProvider
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -90,7 +90,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         }
     }
 
-    private fun populateSettingsList(accounts: List<LegacyAccount>) {
+    private fun populateSettingsList(accounts: List<LegacyAccountDto>) {
         val listItems = buildSettingsList {
             addAction(
                 text = getString(R.string.general_settings_title),
@@ -188,7 +188,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         }
     }
 
-    private fun launchAccountSettings(account: LegacyAccount) {
+    private fun launchAccountSettings(account: LegacyAccountDto) {
         AccountSettingsActivity.start(requireActivity(), account.uuid)
     }
 
@@ -216,7 +216,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             settingsList.add(UrlActionItem(itemId, text, url, icon))
         }
 
-        fun addAccount(account: LegacyAccount, isDraggable: Boolean) {
+        fun addAccount(account: LegacyAccountDto, isDraggable: Boolean) {
             settingsList.add(AccountItem(account, isDraggable))
         }
 

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 @Suppress("LongParameterList")
 class ImapBackendFactory(
@@ -33,7 +33,7 @@ class ImapBackendFactory(
     private val clientInfoAppName: String,
     private val clientInfoAppVersion: String,
 ) : BackendFactory {
-    override fun createBackend(account: LegacyAccount): Backend {
+    override fun createBackend(account: LegacyAccountDto): Backend {
         val accountName = account.displayName
         val backendStorage = backendStorageFactory.createBackendStorage(account)
         val imapStore = createImapStore(account)
@@ -51,7 +51,7 @@ class ImapBackendFactory(
         )
     }
 
-    private fun createImapStore(account: LegacyAccount): ImapStore {
+    private fun createImapStore(account: LegacyAccountDto): ImapStore {
         val serverSettings = account.toImapServerSettings()
 
         val oAuth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
@@ -69,7 +69,7 @@ class ImapBackendFactory(
         )
     }
 
-    private fun createImapStoreConfig(account: LegacyAccount): ImapStoreConfig {
+    private fun createImapStoreConfig(account: LegacyAccountDto): ImapStoreConfig {
         return object : ImapStoreConfig {
             override val logLabel
                 get() = account.uuid
@@ -82,7 +82,7 @@ class ImapBackendFactory(
         }
     }
 
-    private fun createSmtpTransport(account: LegacyAccount): SmtpTransport {
+    private fun createSmtpTransport(account: LegacyAccountDto): SmtpTransport {
         val serverSettings = account.outgoingServerSettings
         val oauth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
             createOAuth2TokenProvider(account)
@@ -93,12 +93,12 @@ class ImapBackendFactory(
         return SmtpTransport(serverSettings, trustedSocketFactory, oauth2TokenProvider)
     }
 
-    private fun createOAuth2TokenProvider(account: LegacyAccount): RealOAuth2TokenProvider {
+    private fun createOAuth2TokenProvider(account: LegacyAccountDto): RealOAuth2TokenProvider {
         val authStateStorage = AccountAuthStateStorage(accountManager, account)
         return RealOAuth2TokenProvider(context, authStateStorage)
     }
 
-    private fun createPushConfigProvider(account: LegacyAccount) = object : ImapPushConfigProvider {
+    private fun createPushConfigProvider(account: LegacyAccountDto) = object : ImapPushConfigProvider {
         override val maxPushFoldersFlow: Flow<Int>
             get() = accountManager.getAccountFlow(account.uuid)
                 .filterNotNull()

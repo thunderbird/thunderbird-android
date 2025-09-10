@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.DomainContract.UseCase
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
@@ -66,7 +66,7 @@ internal class GetDisplayAccounts(
         return listOf(unified) + accounts
     }
 
-    private fun getMessageCountsFlow(account: LegacyAccount): Flow<MessageCounts> {
+    private fun getMessageCountsFlow(account: LegacyAccountDto): Flow<MessageCounts> {
         return callbackFlow {
             send(messageCountsProvider.getMessageCounts(account))
 

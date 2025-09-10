@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.network.ConnectivityChangeListener
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.logging.legacy.Log
@@ -138,7 +138,7 @@ class PushController internal constructor(
         launchUpdatePushers()
     }
 
-    private fun onBackendChanged(account: LegacyAccount) {
+    private fun onBackendChanged(account: LegacyAccountDto) {
         coroutineScope.launch(coroutineDispatcher) {
             val accountPushController = synchronized(lock) {
                 pushers.remove(account.uuid)
@@ -241,14 +241,14 @@ class PushController internal constructor(
         }
     }
 
-    private fun getPushCapableAccounts(): Set<LegacyAccount> {
+    private fun getPushCapableAccounts(): Set<LegacyAccountDto> {
         return accountManager.getAccounts()
             .asSequence()
             .filter { account -> backendManager.getBackend(account).isPushCapable }
             .toSet()
     }
 
-    private fun getPushAccounts(): Set<LegacyAccount> {
+    private fun getPushAccounts(): Set<LegacyAccountDto> {
         return getPushCapableAccounts()
             .asSequence()
             .filter { account -> folderRepository.hasPushEnabledFolder(account) }
@@ -299,7 +299,7 @@ class PushController internal constructor(
         }
     }
 
-    private fun updatePushEnabledListeners(accounts: Set<LegacyAccount>) {
+    private fun updatePushEnabledListeners(accounts: Set<LegacyAccountDto>) {
         synchronized(lock) {
             // Stop listening to push enabled changes in accounts we no longer monitor
             val accountUuids = accounts.mapToSet { it.uuid }

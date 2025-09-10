@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.messageview
 
 import com.fsck.k9.mail.Message
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 /**
  * Extract recipient names from a message to display them in the message view.
@@ -13,7 +13,7 @@ internal class DisplayRecipientsExtractor(
     private val recipientFormatter: MessageViewRecipientFormatter,
     private val maxNumberOfDisplayRecipients: Int,
 ) {
-    fun extractDisplayRecipients(message: Message, account: LegacyAccount): DisplayRecipients {
+    fun extractDisplayRecipients(message: Message, account: LegacyAccountDto): DisplayRecipients {
         val toRecipients = message.getRecipients(Message.RecipientType.TO)
         val ccRecipients = message.getRecipients(Message.RecipientType.CC)
         val bccRecipients = message.getRecipients(Message.RecipientType.BCC)

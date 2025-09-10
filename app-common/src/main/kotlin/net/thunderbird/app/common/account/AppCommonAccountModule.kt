@@ -2,9 +2,9 @@ package net.thunderbird.app.common.account
 
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import net.thunderbird.app.common.account.data.DefaultAccountProfileLocalDataSource
-import net.thunderbird.app.common.account.data.DefaultLegacyAccountWrapperManager
+import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
-import net.thunderbird.core.android.account.LegacyAccountWrapperManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
@@ -19,8 +19,8 @@ internal val appCommonAccountModule = module {
         featureAccountStorageLegacyModule,
     )
 
-    single<LegacyAccountWrapperManager> {
-        DefaultLegacyAccountWrapperManager(
+    single<LegacyAccountManager> {
+        DefaultLegacyAccountManager(
             accountManager = get(),
             accountDataMapper = get(),
         )

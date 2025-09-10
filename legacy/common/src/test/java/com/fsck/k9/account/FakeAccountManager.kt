@@ -4,22 +4,22 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 class FakeAccountManager(
-    private val accounts: MutableMap<String, LegacyAccount> = mutableMapOf(),
+    private val accounts: MutableMap<String, LegacyAccountDto> = mutableMapOf(),
     private val isFailureOnSave: Boolean = false,
 ) : AccountManager {
 
-    override fun getAccounts(): List<LegacyAccount> = accounts.values.toList()
+    override fun getAccounts(): List<LegacyAccountDto> = accounts.values.toList()
 
-    override fun getAccountsFlow(): Flow<List<LegacyAccount>> {
+    override fun getAccountsFlow(): Flow<List<LegacyAccountDto>> {
         TODO("Not yet implemented")
     }
 
-    override fun getAccount(accountUuid: String): LegacyAccount? = accounts[accountUuid]
+    override fun getAccount(accountUuid: String): LegacyAccountDto? = accounts[accountUuid]
 
-    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount> {
+    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccountDto> {
         TODO("Not yet implemented")
     }
 
@@ -27,7 +27,7 @@ class FakeAccountManager(
         TODO("Not yet implemented")
     }
 
-    override fun moveAccount(account: LegacyAccount, newPosition: Int) {
+    override fun moveAccount(account: LegacyAccountDto, newPosition: Int) {
         TODO("Not yet implemented")
     }
 
@@ -40,7 +40,7 @@ class FakeAccountManager(
     }
 
     @Suppress("TooGenericExceptionThrown")
-    override fun saveAccount(account: LegacyAccount) {
+    override fun saveAccount(account: LegacyAccountDto) {
         if (isFailureOnSave) {
             throw Exception("FakeAccountManager.saveAccount() failed")
         }

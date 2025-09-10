@@ -9,7 +9,7 @@ import com.fsck.k9.notification.NotificationController
 import java.util.concurrent.ExecutorService
 import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
@@ -20,7 +20,7 @@ import net.thunderbird.feature.notification.NotificationVibration
 class AccountSettingsDataStore(
     private val preferences: Preferences,
     private val executorService: ExecutorService,
-    private val account: LegacyAccount,
+    private val account: LegacyAccountDto,
     private val jobManager: K9JobManager,
     private val notificationChannelManager: NotificationChannelManager,
     private val notificationController: NotificationController,

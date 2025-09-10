@@ -7,7 +7,7 @@ import kotlin.test.Test
 import net.thunderbird.account.fake.FakeAccountAvatarData
 import net.thunderbird.account.fake.FakeAccountData
 import net.thunderbird.account.fake.FakeAccountProfileData
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.fake.FakeStorage
 import net.thunderbird.feature.account.storage.legacy.fake.FakeStorageEditor
@@ -75,8 +75,8 @@ class LegacyProfileDtoStorageHandlerTest {
     }
 
     // Arrange methods
-    private fun createAccount(accountId: AccountId): LegacyAccount {
-        return LegacyAccount(accountId.asRaw()).apply {
+    private fun createAccount(accountId: AccountId): LegacyAccountDto {
+        return LegacyAccountDto(accountId.asRaw()).apply {
             name = NAME
             chipColor = COLOR
             avatar = AvatarDto(

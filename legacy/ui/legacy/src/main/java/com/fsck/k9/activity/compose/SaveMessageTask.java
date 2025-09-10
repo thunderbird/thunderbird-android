@@ -4,20 +4,20 @@ package com.fsck.k9.activity.compose;
 import android.os.AsyncTask;
 import android.os.Handler;
 
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Message;
 
 public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
     private final MessagingController messagingController;
-    private final LegacyAccount account;
+    private final LegacyAccountDto account;
     private final Handler handler;
     private final Message message;
     private final Long existingDraftId;
     private final String plaintextSubject;
 
-    public SaveMessageTask(MessagingController messagingController, LegacyAccount account, Handler handler, Message message,
+    public SaveMessageTask(MessagingController messagingController, LegacyAccountDto account, Handler handler, Message message,
             Long existingDraftId, String plaintextSubject) {
         this.messagingController = messagingController;
         this.account = account;

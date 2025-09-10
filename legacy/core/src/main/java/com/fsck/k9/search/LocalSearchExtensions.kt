@@ -3,7 +3,7 @@
 package com.fsck.k9.search
 
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 
@@ -20,7 +20,7 @@ val LocalMessageSearch.isSingleFolder: Boolean
     get() = isSingleAccount && folderIds.size == 1
 
 @JvmName("getAccountsFromLocalSearch")
-fun LocalMessageSearch.getAccounts(accountManager: AccountManager): List<LegacyAccount> {
+fun LocalMessageSearch.getAccounts(accountManager: AccountManager): List<LegacyAccountDto> {
     val accounts = accountManager.getAccounts()
     return if (searchAllAccounts()) {
         accounts

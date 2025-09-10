@@ -6,20 +6,20 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.testing.message.buildMessage
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.junit.Test
 
 private const val IDENTITY_ADDRESS = "me@domain.example"
 
 class DisplayRecipientsExtractorTest {
-    private val account = LegacyAccount(ACCOUNT_ID_RAW).apply {
+    private val account = LegacyAccountDto(ACCOUNT_ID_RAW).apply {
         identities += Identity(
             email = IDENTITY_ADDRESS,
         )
     }
 
     private val recipientFormatter = object : MessageViewRecipientFormatter {
-        override fun getDisplayName(address: Address, account: LegacyAccount): CharSequence {
+        override fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence {
             return if (account.isAnIdentity(address)) {
                 "me"
             } else {
@@ -173,7 +173,7 @@ class DisplayRecipientsExtractorTest {
         }
         var numberOfTimesCalled = 0
         val recipientFormatter = object : MessageViewRecipientFormatter {
-            override fun getDisplayName(address: Address, account: LegacyAccount): CharSequence {
+            override fun getDisplayName(address: Address, account: LegacyAccountDto): CharSequence {
                 numberOfTimesCalled++
                 return address.address
             }

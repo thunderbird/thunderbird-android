@@ -25,7 +25,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.google.android.material.textview.MaterialTextView
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.testing.TestClock
 import org.junit.Test
@@ -427,7 +427,7 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun createMessageListItem(
-        account: LegacyAccount = LegacyAccount(
+        account: LegacyAccountDto = LegacyAccountDto(
             SOME_ACCOUNT_UUID,
         ),
         subject: String? = "irrelevant",

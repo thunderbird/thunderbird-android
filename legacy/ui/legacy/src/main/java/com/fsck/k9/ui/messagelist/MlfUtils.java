@@ -11,12 +11,12 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import net.thunderbird.core.android.account.AccountManager;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 
 
 public class MlfUtils {
 
-    static LocalFolder getOpenFolder(long folderId, LegacyAccount account) throws MessagingException {
+    static LocalFolder getOpenFolder(long folderId, LegacyAccountDto account) throws MessagingException {
         LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
         LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open();
@@ -25,7 +25,7 @@ public class MlfUtils {
 
     static void setLastSelectedFolder(AccountManager accountManager, List<MessageReference> messages, long folderId) {
         MessageReference firstMsg = messages.get(0);
-        LegacyAccount account = accountManager.getAccount(firstMsg.getAccountUuid());
+        LegacyAccountDto account = accountManager.getAccount(firstMsg.getAccountUuid());
         account.setLastSelectedFolderId(folderId);
     }
 

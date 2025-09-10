@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.feature.mail.folder.api.Folder
 
@@ -125,7 +125,7 @@ internal class MessageDetailsViewModel(
         )
     }
 
-    private fun List<Address>.toParticipants(account: LegacyAccount): List<Participant> {
+    private fun List<Address>.toParticipants(account: LegacyAccountDto): List<Participant> {
         return this.map { address ->
             val displayName = participantFormatter.getDisplayName(address, account)
             val emailAddress = address.address

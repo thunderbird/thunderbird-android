@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 
 internal class AccountPushController(
@@ -18,7 +18,7 @@ internal class AccountPushController(
     private val messagingController: MessagingController,
     private val folderRepository: FolderRepository,
     backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val account: LegacyAccount,
+    private val account: LegacyAccountDto,
 ) {
     private val coroutineScope = CoroutineScope(backgroundDispatcher)
 

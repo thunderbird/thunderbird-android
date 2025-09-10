@@ -7,7 +7,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.notification.NotificationIds.getFetchingMailNotificationId
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
@@ -128,7 +128,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
         }
     }
 
-    private fun createFakeAccount(): LegacyAccount {
+    private fun createFakeAccount(): LegacyAccountDto {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { name } doReturn ACCOUNT_NAME

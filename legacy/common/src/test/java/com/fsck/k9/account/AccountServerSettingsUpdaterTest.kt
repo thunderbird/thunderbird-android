@@ -18,7 +18,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
 import org.junit.Test
-import net.thunderbird.core.android.account.LegacyAccount as K9Account
+import net.thunderbird.core.android.account.LegacyAccountDto as K9Account
 
 class AccountServerSettingsUpdaterTest {
 

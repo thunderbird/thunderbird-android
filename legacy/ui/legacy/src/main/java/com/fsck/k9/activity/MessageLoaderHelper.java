@@ -33,7 +33,7 @@ import com.fsck.k9.ui.crypto.MessageCryptoHelper;
 import com.fsck.k9.ui.crypto.OpenPgpApiFactory;
 import com.fsck.k9.ui.message.LocalMessageExtractorLoader;
 import com.fsck.k9.ui.message.LocalMessageLoader;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import net.thunderbird.core.logging.legacy.Log;
 
@@ -89,7 +89,7 @@ public class MessageLoaderHelper {
     // transient state
     private boolean onlyLoadMetadata;
     private MessageReference messageReference;
-    private LegacyAccount account;
+    private LegacyAccountDto account;
 
     private LocalMessage localMessage;
     private MessageCryptoAnnotations messageCryptoAnnotations;
@@ -489,7 +489,7 @@ public class MessageLoaderHelper {
 
     MessagingListener downloadMessageListener = new SimpleMessagingListener() {
         @Override
-        public void loadMessageRemoteFinished(final LegacyAccount account, final long folderId, final String uid) {
+        public void loadMessageRemoteFinished(final LegacyAccountDto account, final long folderId, final String uid) {
             handler.post(() -> {
                 if (!messageReference.equals(account.getUuid(), folderId, uid)) {
                     return;
@@ -499,7 +499,7 @@ public class MessageLoaderHelper {
         }
 
         @Override
-        public void loadMessageRemoteFailed(LegacyAccount account, long folderId, String uid, final Throwable t) {
+        public void loadMessageRemoteFailed(LegacyAccountDto account, long folderId, String uid, final Throwable t) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {

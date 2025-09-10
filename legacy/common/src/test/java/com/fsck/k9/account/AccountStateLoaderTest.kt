@@ -11,7 +11,7 @@ import com.fsck.k9.mail.ServerSettings
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.junit.Test
 
 class AccountStateLoaderTest {
@@ -29,7 +29,7 @@ class AccountStateLoaderTest {
     @Test
     fun `loadAccountState() SHOULD return account when present in accountManager`() = runTest {
         val accounts = mutableMapOf(
-            ACCOUNT_ID_RAW to LegacyAccount(uuid = ACCOUNT_ID_RAW).apply {
+            ACCOUNT_ID_RAW to LegacyAccountDto(uuid = ACCOUNT_ID_RAW).apply {
                 identities = mutableListOf(Identity())
                 email = "emailAddress"
                 incomingServerSettings = INCOMING_SERVER_SETTINGS

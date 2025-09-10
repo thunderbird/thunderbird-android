@@ -1,6 +1,6 @@
 package net.thunderbird.feature.account.storage.legacy
 
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
@@ -11,7 +11,7 @@ import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 class LegacyAvatarDtoStorageHandler : AvatarDtoStorageHandler {
 
     override fun load(
-        data: LegacyAccount,
+        data: LegacyAccountDto,
         storage: Storage,
     ) {
         val keyGen = AccountKeyGenerator(data.id)
@@ -27,7 +27,7 @@ class LegacyAvatarDtoStorageHandler : AvatarDtoStorageHandler {
     }
 
     override fun save(
-        data: LegacyAccount,
+        data: LegacyAccountDto,
         storage: Storage,
         editor: StorageEditor,
     ) {
@@ -42,7 +42,7 @@ class LegacyAvatarDtoStorageHandler : AvatarDtoStorageHandler {
     }
 
     override fun delete(
-        data: LegacyAccount,
+        data: LegacyAccountDto,
         storage: Storage,
         editor: StorageEditor,
     ) {

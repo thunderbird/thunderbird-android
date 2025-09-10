@@ -20,7 +20,7 @@ import com.fsck.k9.ui.base.K9Activity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.FolderType
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,7 +35,7 @@ class ChooseFolderActivity : K9Activity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
-    private lateinit var account: LegacyAccount
+    private lateinit var account: LegacyAccountDto
     private lateinit var action: Action
     private var currentFolderId: Long? = null
     private var scrollToFolderId: Long? = null

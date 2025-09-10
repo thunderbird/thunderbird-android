@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.featureflag.FeatureFlagResult.Disabled;
 import app.k9mail.legacy.message.controller.SimpleMessagingListener;
@@ -72,7 +72,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
 
     private MessagingController controller;
-    private LegacyAccount account;
+    private LegacyAccountDto account;
     @Mock
     private BackendManager backendManager;
     @Mock

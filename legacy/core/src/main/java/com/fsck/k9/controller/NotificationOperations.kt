@@ -6,7 +6,7 @@ import com.fsck.k9.search.isNewMessages
 import com.fsck.k9.search.isSingleFolder
 import com.fsck.k9.search.isUnifiedFolders
 import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 internal class NotificationOperations(
@@ -51,13 +51,13 @@ internal class NotificationOperations(
         }
     }
 
-    private fun clearNotifications(account: LegacyAccount, folderId: Long) {
+    private fun clearNotifications(account: LegacyAccountDto, folderId: Long) {
         notificationController.clearNewMailNotifications(account) { messageReferences ->
             messageReferences.filter { messageReference -> messageReference.folderId == folderId }
         }
     }
 
-    private fun LocalMessageSearch.firstAccount(): LegacyAccount? {
+    private fun LocalMessageSearch.firstAccount(): LegacyAccountDto? {
         return accountManager.getAccount(accountUuids.first())
     }
 }

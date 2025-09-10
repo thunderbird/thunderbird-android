@@ -20,7 +20,7 @@ import com.google.android.material.color.ColorRoles
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.abs
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountWrapper
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
@@ -32,11 +32,11 @@ class MessageListSwipeCallback(
     context: Context,
     private val resourceProvider: SwipeResourceProvider,
     private val swipeActionSupportProvider: SwipeActionSupportProvider,
-    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount>,
+    private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccountDto>,
     private val adapter: MessageListAdapter,
     private val listener: MessageListSwipeListener,
-    accounts: List<LegacyAccountWrapper>,
-    private val legacyAccountWrapperDataMapper: DataMapper<LegacyAccountWrapper, LegacyAccount>,
+    accounts: List<LegacyAccount>,
+    private val legacyAccountDataMapper: DataMapper<LegacyAccount, LegacyAccountDto>,
 ) : ItemTouchHelper.Callback() {
     private var swipeActions: Map<String, SwipeActions> = emptyMap()
     private val swipePadding = context.resources.getDimension(R.dimen.messageListSwipeIconPadding).toInt()
@@ -326,7 +326,7 @@ class MessageListSwipeCallback(
         return (super.getAnimationDuration(recyclerView, animationType, animateDx, animateDy) * percentage).toLong()
     }
 
-    fun invalidateSwipeActions(accounts: List<LegacyAccountWrapper>) {
+    fun invalidateSwipeActions(accounts: List<LegacyAccount>) {
         swipeActions = buildSwipeActions(accounts)
         swipeLeftConfig.apply {
             clear()
@@ -338,18 +338,18 @@ class MessageListSwipeCallback(
         }
     }
 
-    fun buildSwipeActions(accounts: List<LegacyAccountWrapper>): Map<String, SwipeActions> {
+    fun buildSwipeActions(accounts: List<LegacyAccount>): Map<String, SwipeActions> {
         return buildSwipeActions(
             accountUuids = accounts.map { it.uuid }.toSet(),
             isIncomingServerPop3 = { account ->
-                legacyAccountWrapperDataMapper.toDomain(account).isIncomingServerPop3()
+                legacyAccountDataMapper.toDomain(account).isIncomingServerPop3()
             },
-            hasArchiveFolder = { account -> legacyAccountWrapperDataMapper.toDomain(account).hasArchiveFolder() },
+            hasArchiveFolder = { account -> legacyAccountDataMapper.toDomain(account).hasArchiveFolder() },
         )
     }
 
     private fun setupSwipeActionConfig(
-        accounts: List<LegacyAccountWrapper>,
+        accounts: List<LegacyAccount>,
         resourceProvider: SwipeResourceProvider,
         isLeft: Boolean,
     ): Map<String, SwipeActionConfig> {
@@ -384,8 +384,8 @@ class MessageListSwipeCallback(
     private val ViewHolder.messageListItem: MessageListItem?
         get() = (this as? MessageViewHolder)?.uniqueId?.let { adapter.getItemById(it) }
 
-    private val MessageListItem.accountWrapper: LegacyAccountWrapper
-        get() = legacyAccountWrapperDataMapper.toDomain(account)
+    private val MessageListItem.accountWrapper: LegacyAccount
+        get() = legacyAccountDataMapper.toDomain(account)
 }
 
 fun interface SwipeActionSupportProvider {

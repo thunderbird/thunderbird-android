@@ -8,7 +8,7 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mailstore.LocalMessage
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.display.DisplaySettings
@@ -158,7 +158,7 @@ class NotificationContentCreatorTest : RobolectricTest() {
         )
     }
 
-    private fun createFakeAccount(): LegacyAccount = mock()
+    private fun createFakeAccount(): LegacyAccountDto = mock()
 
     private fun createFakeContentRepository(): ContactRepository = mock()
 

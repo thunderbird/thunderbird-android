@@ -5,7 +5,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.MessageColumns
 import com.fsck.k9.search.getAccounts
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -41,7 +41,7 @@ internal class MessageListLoader(
         return messageListItems
     }
 
-    private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
+    private fun loadMessageListForAccount(account: LegacyAccountDto, config: MessageListConfig): List<MessageListItem> {
         val accountUuid = account.uuid
         val sortOrder = buildSortOrder(config)
         val mapper = MessageListItemMapper(messageHelper, account, generalSettingsManager)

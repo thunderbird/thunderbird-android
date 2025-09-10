@@ -12,7 +12,7 @@ import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.SaveMessageDataCreator
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 import org.jetbrains.annotations.NotNull
@@ -24,7 +24,7 @@ internal class DraftOperations(
 ) {
 
     fun saveDraft(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         message: Message,
         existingDraftId: Long?,
         plaintextSubject: String?,
@@ -46,7 +46,7 @@ internal class DraftOperations(
     }
 
     private fun saveAndUploadDraft(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         message: Message,
         folderId: Long,
         existingDraftId: Long?,
@@ -84,7 +84,7 @@ internal class DraftOperations(
     }
 
     private fun saveDraftLocally(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         message: Message,
         folderId: Long,
         existingDraftId: Long?,
@@ -96,7 +96,7 @@ internal class DraftOperations(
         return messageStore.saveLocalMessage(folderId, messageData, existingDraftId)
     }
 
-    fun processPendingReplace(command: PendingReplace, account: LegacyAccount) {
+    fun processPendingReplace(command: PendingReplace, account: LegacyAccountDto) {
         val localStore = messagingController.getLocalStoreOrThrow(account)
         val localFolder = localStore.getFolder(command.folderId)
         localFolder.open()
@@ -119,7 +119,7 @@ internal class DraftOperations(
 
     private fun uploadMessage(
         backend: Backend,
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         localFolder: LocalFolder,
         localMessage: LocalMessage,
     ) {
