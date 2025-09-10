@@ -35,6 +35,12 @@ val controllerModule = module {
             get<Logger>(named("syncDebug")),
         )
     } binds arrayOf(MessagingControllerRegistry::class)
+
+    single {
+        MessagingControllerWrapper(
+            messagingController = get(),
+            accountManager = get(),
+        )
     }
 
     single<MessagingControllerRegistry> { get<MessagingController>() }
