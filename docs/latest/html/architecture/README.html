@@ -1,0 +1,970 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Architecture - Thunderbird for Android - Developer Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Developer Documentation for the Thunderbird for Android project.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../assets/theme/last-changed.css">
+        <link rel="stylesheet" href="../assets/theme/navigation.css">
+        <link rel="stylesheet" href="../assets/theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./architecture/README.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <style>
+.mdbook-alerts {
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-left: 0.25em solid var(--mdbook-alerts-color);
+}
+
+.mdbook-alerts > *:first-child {
+  margin-top: 0;
+}
+
+.mdbook-alerts > *:last-child {
+  margin-bottom: 0;
+}
+
+.mdbook-alerts-title {
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+  line-height: 1;
+  color: var(--mdbook-alerts-color);
+  text-transform: capitalize;
+}
+
+.mdbook-alerts-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / 100%;
+  mask: no-repeat center / 100%;
+  -webkit-mask-image: var(--mdbook-alerts-icon);
+  mask-image: var(--mdbook-alerts-icon);
+}
+
+.mdbook-alerts-note {
+  --mdbook-alerts-color: rgb(9, 105, 218);
+  /* https://icon-sets.iconify.design/material-symbols/info-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11q-.425 0-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-tip {
+  --mdbook-alerts-color: rgb(26, 127, 55);
+  /* https://icon-sets.iconify.design/material-symbols/lightbulb-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 22q-.825 0-1.412-.587T10 20h4q0 .825-.587 1.413T12 22m-3-3q-.425 0-.712-.288T8 18q0-.425.288-.712T9 17h6q.425 0 .713.288T16 18q0 .425-.288.713T15 19zm-.75-3q-1.725-1.025-2.738-2.75T4.5 9.5q0-3.125 2.188-5.312T12 2q3.125 0 5.313 2.188T19.5 9.5q0 2.025-1.012 3.75T15.75 16zm.6-2h6.3q1.125-.8 1.738-1.975T17.5 9.5q0-2.3-1.6-3.9T12 4Q9.7 4 8.1 5.6T6.5 9.5q0 1.35.613 2.525T8.85 14M12 14"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-important {
+  --mdbook-alerts-color: rgb(130, 80, 223);
+  /* https://icon-sets.iconify.design/material-symbols/chat-info-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 7q.425 0 .713-.288T13 6q0-.425-.288-.712T12 5q-.425 0-.712.288T11 6q0 .425.288.713T12 7m0 8q.425 0 .713-.288T13 14v-4q0-.425-.288-.712T12 9q-.425 0-.712.288T11 10v4q0 .425.288.713T12 15m-6 3l-2.3 2.3q-.475.475-1.088.213T2 19.575V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18zm-.85-2H20V4H4v13.125zM4 16V4z"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-warning {
+  --mdbook-alerts-color: rgb(154, 103, 0);
+  /* https://icon-sets.iconify.design/material-symbols/warning-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M2.725 21q-.275 0-.5-.137t-.35-.363q-.125-.225-.137-.488t.137-.512l9.25-16q.15-.25.388-.375T12 3q.25 0 .488.125t.387.375l9.25 16q.15.25.138.513t-.138.487q-.125.225-.35.363t-.5.137zm1.725-2h15.1L12 6zM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18m0-3q.425 0 .713-.288T13 14v-3q0-.425-.288-.712T12 10q-.425 0-.712.288T11 11v3q0 .425.288.713T12 15m0-2.5"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-caution {
+  --mdbook-alerts-color: rgb(207, 34, 46);
+  /* https://icon-sets.iconify.design/material-symbols/brightness-alert-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17m0-4q.425 0 .713-.288T13 12V8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8v4q0 .425.288.713T12 13m-3.35 7H6q-.825 0-1.412-.587T4 18v-2.65L2.075 13.4q-.275-.3-.425-.662T1.5 12q0-.375.15-.737t.425-.663L4 8.65V6q0-.825.588-1.412T6 4h2.65l1.95-1.925q.3-.275.663-.425T12 1.5q.375 0 .738.15t.662.425L15.35 4H18q.825 0 1.413.588T20 6v2.65l1.925 1.95q.275.3.425.663t.15.737q0 .375-.15.738t-.425.662L20 15.35V18q0 .825-.587 1.413T18 20h-2.65l-1.95 1.925q-.3.275-.662.425T12 22.5q-.375 0-.737-.15t-.663-.425zm.85-2l2.5 2.5l2.5-2.5H18v-3.5l2.5-2.5L18 9.5V6h-3.5L12 3.5L9.5 6H6v3.5L3.5 12L6 14.5V18zm2.5-6"%2F%3E%3C%2Fsvg%3E');
+}
+
+</style>
+<h1 id="-architecture"><a class="header" href="#-architecture">🏗️ Architecture</a></h1>
+<p>The application follows a modular architecture with clear separation between different layers and components. The architecture is designed to support both the Thunderbird for Android and K-9 Mail applications while maximizing code reuse, maintainability and enable adoption of Kotlin Multiplatform in the future.</p>
+<h2 id="-key-architectural-principles"><a class="header" href="#-key-architectural-principles">🔑 Key Architectural Principles</a></h2>
+<ul>
+<li><strong>🚀 Multi platform Compatibility</strong>: The architecture is designed to support future Kotlin Multiplatform adoption</li>
+<li><strong>📱 Offline-First</strong>: The application is designed to work offline with local data storage and synchronization with remote servers</li>
+<li><strong>🧩 Modularity</strong>: The application is divided into distinct modules with clear responsibilities</li>
+<li><strong>🔀 Separation of Concerns</strong>: Each module focuses on a specific aspect of the application</li>
+<li><strong>⬇️ Dependency Inversion</strong>: Higher-level modules do not depend on lower-level modules directly</li>
+<li><strong>🎯 Single Responsibility</strong>: Each component has a single responsibility</li>
+<li><strong>🔄 API/Implementation Separation</strong>: Clear separation between public APIs and implementation details</li>
+<li><strong>🧹 Clean Architecture</strong>: Separation of UI, domain, and data layers</li>
+<li><strong>🧪 Testability</strong>: The architecture facilitates comprehensive testing at all levels</li>
+</ul>
+<h2 id="-architecture-decision-records"><a class="header" href="#-architecture-decision-records">📝 Architecture Decision Records</a></h2>
+<p>The <a href="adr/README.html">Architecture Decision Records</a> document the architectural decisions made during the development of the
+project, providing context and rationale for key technical choices. Reading through these decisions will improve your
+contributions and ensure long-term maintainability of the project.</p>
+<h2 id="-module-structure"><a class="header" href="#-module-structure">📦 Module Structure</a></h2>
+<p>The application is organized into several module types:</p>
+<ul>
+<li><strong>📱 App Modules</strong>: <code>app-thunderbird</code> and <code>app-k9mail</code> - Application entry points</li>
+<li><strong>🔄 App Common</strong>: <code>app-common</code> - Shared code between applications</li>
+<li><strong>✨ Feature Modules</strong>: <code>feature:*</code> - Independent feature modules</li>
+<li><strong>🧰 Core Modules</strong>: <code>core:*</code> - Foundational components and utilities used across multiple features</li>
+<li><strong>📚 Library Modules</strong>: <code>library:*</code> - Specific implementations for reuse</li>
+<li><strong>🔙 Legacy Modules</strong>: Legacy code being gradually migrated</li>
+</ul>
+<p>For more details on the module organization and structure, see the <a href="module-organization.html">Module Organization</a> and
+<a href="module-structure.html">Module Structure</a> documents.</p>
+<h2 id="-architectural-patterns"><a class="header" href="#-architectural-patterns">🧩 Architectural Patterns</a></h2>
+<p>The architecture follows several key patterns to ensure maintainability, testability, and separation of concerns:</p>
+<h3 id="-apiimplementation-separation"><a class="header" href="#-apiimplementation-separation">🔄 API/Implementation Separation</a></h3>
+<p>Each module should be split into two main parts: <strong>API</strong> and <strong>implementation</strong>. This separation provides clear
+boundaries between what a module exposes to other modules and how it implements its functionality internally:</p>
+<ul>
+<li><strong>📝 API</strong>: Public interfaces, models, and contracts</li>
+<li><strong>⚙️ Implementation</strong>: Concrete implementations of the interfaces</li>
+</ul>
+<p>This separation provides clear boundaries, improves testability, and enables flexibility.</p>
+<p>See <a href="module-structure.html#-api-module">API Module</a> and
+<a href="module-structure.html#-implementation-module">Implementation Module</a> for more details.</p>
+<h3 id="clean-architecture"><a class="header" href="#clean-architecture">Clean Architecture</a></h3>
+<p>Thunderbird for Android uses <strong>Clean Architecture</strong> with three main layers (UI, domain, and data) to break down complex
+feature implementation into manageable components. Each layer has a specific responsibility:</p>
+<pre class="mermaid">graph TD
+    subgraph UI[UI Layer]
+        UI_COMPONENTS[UI Components]
+        VIEW_MODEL[ViewModels]
+    end
+
+    subgraph DOMAIN[&quot;Domain Layer&quot;]
+        USE_CASE[Use Cases]
+        REPO[Repositories]
+    end
+
+    subgraph DATA[Data Layer]
+        DATA_SOURCE[Data Sources]
+        API[API Clients]
+        DB[Local Database]
+    end
+
+    UI_COMPONENTS --&gt; VIEW_MODEL
+    VIEW_MODEL --&gt; USE_CASE
+    USE_CASE --&gt; REPO
+    REPO --&gt; DATA_SOURCE
+    DATA_SOURCE --&gt; API
+    DATA_SOURCE --&gt; DB
+
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef ui_class fill:#4d94ff,stroke:#000000,color:#000000
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef domain_class fill:#33cc33,stroke:#000000,color:#000000
+    classDef data_layer fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef data_class fill:#ffaa33,stroke:#000000,color:#000000
+    
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class UI ui_layer
+    class UI_COMPONENTS,VIEW_MODEL ui_class
+    class DOMAIN domain_layer
+    class USE_CASE,REPO domain_class
+    class DATA data_layer
+    class DATA_SOURCE,API,DB data_class
+</pre>
+<h4 id="-ui-layer-presentation"><a class="header" href="#-ui-layer-presentation">🖼️ UI Layer (Presentation)</a></h4>
+<p>The UI layer is responsible for displaying data to the user and handling user interactions.</p>
+<p><strong>Key Components:</strong></p>
+<ul>
+<li><strong>🎨 <a href="ui-architecture.html#-screens">Compose UI</a></strong>: Screen components built with Jetpack Compose</li>
+<li><strong>🧠 <a href="ui-architecture.html#-viewmodel">ViewModels</a></strong>: Manage UI state and handle UI events</li>
+<li><strong>📊 <a href="ui-architecture.html#-state">UI State</a></strong>: Immutable data classes representing the UI state</li>
+<li><strong>🎮 <a href="ui-architecture.html#-events">Events</a></strong>: User interactions or system events that trigger state changes</li>
+<li><strong>🔔 <a href="ui-architecture.html#effects">Effects</a></strong>: One-time side effects like navigation or showing messages</li>
+</ul>
+<p><strong>Pattern: Model-View-Intent (MVI)</strong></p>
+<ul>
+<li><strong>📋 Model</strong>: UI state representing the current state of the screen</li>
+<li><strong>👁️ View</strong>: Compose UI that renders the state</li>
+<li><strong>🎮 Event</strong>: User interactions that trigger state changes (equivalent to “Intent” in standard MVI)</li>
+<li><strong>🔔 Effect</strong>: One-time side effects like navigation or notifications</li>
+</ul>
+<h4 id="-domain-layer-business-logic"><a class="header" href="#-domain-layer-business-logic">🧠 Domain Layer (Business Logic)</a></h4>
+<p>The domain layer contains the business logic and rules of the application. It is independent of the UI and data layers,
+allowing for easy testing and reuse.</p>
+<p><strong>Key Components:</strong></p>
+<ul>
+<li><strong>⚙️ Use Cases</strong>: Encapsulate business logic operations</li>
+<li><strong>📋 Domain Models</strong>: Represent business entities</li>
+<li><strong>📝 Repository Interfaces</strong>: Define data access contracts</li>
+</ul>
+<pre class="mermaid">graph TB
+    subgraph DOMAIN[Domain Layer]
+        USE_CASE[Use Cases]
+        MODEL[Domain Models]
+        REPO_API[Repository Interfaces]
+    end
+
+    subgraph DATA[Data Layer]
+        REPO_IMPL[Repository Implementations]
+    end
+
+    USE_CASE --&gt; |uses| REPO_API
+    USE_CASE --&gt; |uses| MODEL
+    REPO_API --&gt; |uses| MODEL
+    REPO_IMPL --&gt; |implements| REPO_API
+    REPO_IMPL --&gt; |uses| MODEL
+
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef domain_class fill:#33cc33,stroke:#000000,color:#000000
+    classDef data_layer fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef data_class fill:#ffaa33,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class DOMAIN domain_layer
+    class USE_CASE,REPO_API,MODEL domain_class
+    class DATA data_layer
+    class REPO_IMPL data_class
+</pre>
+<h4 id="-data-layer"><a class="header" href="#-data-layer">💾 Data Layer</a></h4>
+<p>The data layer is responsible for data retrieval, storage, and synchronization.</p>
+<p><strong>Key Components:</strong></p>
+<ul>
+<li><strong>📦 Repository implementations</strong>: Implement repository interfaces from the domain layer</li>
+<li><strong>🔌 Data Sources</strong>: Provide data from specific sources (API, database, preferences)</li>
+<li><strong>📄 Data Transfer Objects</strong>: Represent data at the data layer</li>
+</ul>
+<p><strong>Pattern: Data Source Pattern</strong></p>
+<ul>
+<li>🔍 Abstracts data sources behind a clean API</li>
+<li>Maps data between domain models and data transfer objects</li>
+</ul>
+<pre class="mermaid">graph TD
+    subgraph DOMAIN[Domain Layer]
+        REPO_API[Repository]
+    end
+
+    subgraph DATA[Data Layer]
+        REPO_IMPL[Repository implementations]
+        RDS[Remote Data Sources]
+        LDS[Local Data Sources]
+        MAPPER[Data Mappers]
+        DTO[Data Transfer Objects]
+    end
+
+    REPO_IMPL --&gt; |implements| REPO_API
+    REPO_IMPL --&gt; RDS
+    REPO_IMPL --&gt; LDS
+    REPO_IMPL --&gt; MAPPER
+    RDS --&gt; MAPPER
+    LDS --&gt; MAPPER
+    MAPPER --&gt; DTO
+
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef domain_class fill:#33cc33,stroke:#000000,color:#000000
+    classDef data_layer fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef data_class fill:#ffaa33,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class DOMAIN domain_layer
+    class REPO_API domain_class
+    class DATA data_layer
+    class REPO_IMPL,RDS,LDS,MAPPER,DTO data_class
+</pre>
+<h3 id="-immutability"><a class="header" href="#-immutability">🔄 Immutability</a></h3>
+<p>Immutability means that once an object is created, it cannot be changed. Instead of modifying existing objects, new objects are created with the desired changes. In the context of UI state, this means that each state object represents a complete snapshot of the UI at a specific point in time.</p>
+<p><strong>Why is Immutability Important?</strong></p>
+<p>Immutability provides several benefits:</p>
+<ul>
+<li><strong>Predictability</strong>: With immutable state, the UI can only change when a new state object is provided, making the flow of data more predictable and easier to reason about.</li>
+<li><strong>Debugging</strong>: Each state change creates a new state object, making it easier to track changes and debug issues by comparing state objects.</li>
+<li><strong>Concurrency</strong>: Immutable objects are thread-safe by nature, eliminating many concurrency issues.</li>
+<li><strong>Performance</strong>: While creating new objects might seem inefficient, modern frameworks optimize this process, and the benefits of immutability often outweigh the costs.</li>
+<li><strong>Time-travel debugging</strong>: Immutability enables storing previous states, allowing developers to “time travel” back to previous application states during debugging.</li>
+</ul>
+<h2 id="-ui-architecture"><a class="header" href="#-ui-architecture">🎨 UI Architecture</a></h2>
+<p>The UI is built using Jetpack Compose with a component-based architecture following our modified Model-View-Intent (MVI) pattern. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.</p>
+<p>For detailed information about the UI architecture and theming, see the <a href="ui-architecture.html">UI Architecture</a> and
+<a href="theme-system.html">Theme System</a> documents.</p>
+<h2 id="-offline-first-approach"><a class="header" href="#-offline-first-approach">📱 Offline-First Approach</a></h2>
+<p>The application implements an offline-first Approach to provide a reliable user experience regardless of network conditions:</p>
+<ul>
+<li>💾 Local database as the single source of truth</li>
+<li>🔄 Background synchronization with remote servers</li>
+<li>📋 Operation queueing for network operations</li>
+<li>🔀 Conflict resolution for data modified both locally and remotely</li>
+</ul>
+<h4 id="implementation-approach"><a class="header" href="#implementation-approach">Implementation Approach</a></h4>
+<pre class="mermaid">graph LR
+    subgraph UI[UI Layer]
+        VIEW_MODEL[ViewModel]
+    end
+
+    subgraph DOMAIN[Domain Layer]
+        USE_CASE[Use Cases]
+    end
+
+    subgraph DATA[Data Layer]
+        subgraph SYNC[Synchronization]
+            SYNC_MANAGER[Sync Manager]
+            SYNC_QUEUE[Sync Queue]
+        end
+        REPO[Repository]
+        LOCAL[Local Data Source]
+        REMOTE[Remote Data Source]
+    end
+    
+    VIEW_MODEL --&gt; USE_CASE
+    USE_CASE --&gt; REPO
+    SYNC_MANAGER --&gt; LOCAL
+    SYNC_MANAGER --&gt; REMOTE
+    SYNC_MANAGER --&gt; SYNC_QUEUE
+    REPO --&gt; LOCAL
+    REPO --&gt; REMOTE
+    REPO --&gt; SYNC_MANAGER
+    REPO ~~~ SYNC
+    
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef ui_class fill:#4d94ff,stroke:#000000,color:#000000
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef domain_class fill:#33cc33,stroke:#000000,color:#000000
+    classDef data_layer fill:#ffe6cc,stroke:#000000,color:#000000
+    classDef data_class fill:#ffaa33,stroke:#000000,color:#000000
+    classDef sync_layer fill:#e6cce6,stroke:#000000,color:#000000
+    classDef sync_class fill:#cc99cc,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class UI ui_layer
+    class VIEW_MODEL ui_class
+    class DOMAIN domain_layer
+    class USE_CASE domain_class
+    class DATA data_layer
+    class REPO,LOCAL,REMOTE data_class
+    class SYNC sync_layer
+    class SYNC_MANAGER,SYNC_API,SYNC_QUEUE sync_class
+</pre>
+<p>The offline-first approach is implemented across all layers of the application:</p>
+<ol>
+<li><strong>💾 Data Layer</strong>:
+<ul>
+<li>📊 Local database as the primary data source</li>
+<li>🌐 Remote data source for server communication</li>
+<li>📦 Repository pattern to coordinate between data sources</li>
+<li>🔄 Synchronization manager to handle data syncing</li>
+</ul>
+</li>
+<li><strong>🧠 Domain Layer</strong>:
+<ul>
+<li>⚙️ Use cases handle both online and offline scenarios</li>
+<li>📝 Business logic accounts for potential network unavailability</li>
+<li>📋 Domain models represent data regardless of connectivity state</li>
+</ul>
+</li>
+<li><strong>🖼️ UI Layer</strong>:
+<ul>
+<li>🧠 ViewModels expose UI state that reflects connectivity status</li>
+<li>🚦 UI components display appropriate indicators for offline mode</li>
+<li>👆 User interactions are designed to work regardless of connectivity</li>
+</ul>
+</li>
+</ol>
+<h2 id="-dependency-injection"><a class="header" href="#-dependency-injection">💉 Dependency Injection</a></h2>
+<p>The application uses <a href="https://insert-koin.io/" title="" target="_blank">Koin</a> for dependency injection, with modules organized by feature:</p>
+<ul>
+<li><strong>📱 App Modules</strong>: Configure application-wide dependencies</li>
+<li><strong>🔄 App Common</strong>: Shared dependencies between applications</li>
+<li><strong>✨ Feature Modules</strong>: Configure feature-specific dependencies</li>
+<li><strong>🧰 Core Modules</strong>: Configure core dependencies</li>
+</ul>
+<pre><code class="language-kotlin">// Example Koin module for a feature
+val featureModule = module {
+    viewModel { FeatureViewModel(get()) }
+    single&lt;FeatureRepository&gt; { FeatureRepositoryImpl(get(), get()) }
+    single&lt;FeatureUseCase&gt; { FeatureUseCaseImpl(get()) }
+    single&lt;FeatureApiClient&gt; { FeatureApiClientImpl() }
+}
+</code></pre>
+<h2 id="-cross-cutting-concerns"><a class="header" href="#-cross-cutting-concerns">🔄 Cross-Cutting Concerns</a></h2>
+<p>Cross-cutting concerns are aspects of the application that affect multiple features and cannot be cleanly handled
+individually for every feature. These concerns require consistent implementation throughout the codebase to ensure
+maintainability an reliability.</p>
+<p>In Thunderbird for Android, several cross-cutting concerns are implemented as dedicated core modules to provide
+standardized solutions that can be reused across the application:</p>
+<ul>
+<li><strong>⚠️ Error Handling</strong>: Comprehensive error handling (<code>core/outcome</code>) transforms exceptions into domain-specific errors and provides user-friendly feedback.</li>
+<li><strong>📋 Logging</strong>: Centralized logging system (<code>core/logging</code>) ensures consistent log formatting, levels, and storage.</li>
+<li><strong>🔒 Security</strong>: Modules like <code>core/security</code> handle encryption, authentication, and secure data storage.</li>
+</ul>
+<p>Work in progress:</p>
+<ul>
+<li><strong>🔐 Encryption</strong>: The <code>core/crypto</code> module provides encryption and decryption utilities for secure data handling.</li>
+<li><strong>📦 Feature Flags</strong>: The <code>core/feature-flags</code> module manages feature toggles and experimental features.</li>
+<li><strong>🔄 Synchronization</strong>: The <code>core/sync</code> module manages background synchronization, conflict resolution, and offline-first behavior.</li>
+<li><strong>🛠️ Configuration Management</strong>: Centralized handling of application settings and environment-specific configurations.</li>
+</ul>
+<p>By implementing these concerns as core modules, the application achieves a clean and modular architecture that is easier to maintain and extend.</p>
+<h3 id="-error-handling"><a class="header" href="#-error-handling">⚠️ Error Handling</a></h3>
+<p>The application implements a comprehensive error handling strategy across all layers. We favor using the Outcome pattern
+over exceptions for expected error conditions, while exceptions are reserved for truly exceptional situations that
+indicate programming errors or unrecoverable system failures.</p>
+<ul>
+<li>🧠 <strong>Domain Errors</strong>: Encapsulate business logic errors as sealed classes, ensuring clear representation of specific
+error cases.</li>
+<li>💾 <strong>Data Errors</strong>: Transform network or database exceptions into domain-specific errors using result patterns in repository implementations.</li>
+<li>🖼️ <strong>UI Error Handling</strong>: Provide user-friendly error feedback by:
+<ul>
+<li>Mapping domain errors to UI state in ViewModels.</li>
+<li>Displaying actionable error states in Compose UI components.</li>
+<li>Offering retry options for network connectivity issues.</li>
+</ul>
+</li>
+</ul>
+<div class="mdbook-alerts mdbook-alerts-note">
+<p class="mdbook-alerts-title">
+  <span class="mdbook-alerts-icon"></span>
+  note
+</p>
+<p>Exceptions should be used sparingly. Favor the Outcome pattern and sealed classes for predictable error conditions to
+enhance maintainability and clarity.</p>
+</div>
+<h4 id="-how-to-implement-error-handling"><a class="header" href="#-how-to-implement-error-handling">🛠️ How to Implement Error Handling</a></h4>
+<p>When implementing error handling in your code:</p>
+<ol>
+<li>
+<p><strong>Define domain-specific errors</strong> as sealed classes in your feature’s domain layer:</p>
+<pre><code class="language-kotlin">sealed class AccountError {
+    data class AuthenticationFailed(val reason: String) : AccountError()
+    data class NetworkError(val exception: Exception) : AccountError()
+    data class ValidationError(val field: String, val message: String) : AccountError()
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Use result patterns (Outcome)</strong> instead of exceptions for error handling:</p>
+<pre><code class="language-kotlin">// Use the Outcome class for representing success or failure
+sealed class Outcome&lt;out T, out E&gt; {
+    data class Success&lt;T&gt;(val value: T) : Outcome&lt;T, Nothing&gt;()
+    data class Failure&lt;E&gt;(val error: E) : Outcome&lt;Nothing, E&gt;()
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Transform external errors</strong> into domain errors in your repositories using result patterns:</p>
+<pre><code class="language-kotlin">// Return Outcome instead of throwing exceptions
+fun authenticate(credentials: Credentials): Outcome&lt;AuthResult, AccountError&gt; {
+    return try {
+        val result = apiClient.authenticate(credentials)
+        Outcome.Success(result)
+    } catch (e: HttpException) {
+        val error = when (e.code()) {
+            401 -&gt; AccountError.AuthenticationFailed("Invalid credentials")
+            else -&gt; AccountError.NetworkError(e)
+        }
+        logger.error(e) { "Authentication failed: ${error::class.simpleName}" }
+        Outcome.Failure(error)
+    } catch (e: Exception) {
+        logger.error(e) { "Authentication failed with unexpected error" }
+        Outcome.Failure(AccountError.NetworkError(e))
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Handle errors in Use Cases</strong> by propagating the Outcome:</p>
+<pre><code class="language-kotlin">class LoginUseCase(
+    private val accountRepository: AccountRepository,
+    private val credentialValidator: CredentialValidator,
+) {
+    fun execute(credentials: Credentials): Outcome&lt;AuthResult, AccountError&gt; {
+        // Validate input first
+        val validationResult = credentialValidator.validate(credentials)
+        if (validationResult is ValidationResult.Failure) {
+            return Outcome.Failure(
+                AccountError.ValidationError(
+                    field = validationResult.field,
+                    message = validationResult.message
+                )
+            )
+        }
+
+        // Proceed with authentication
+        return accountRepository.authenticate(credentials)
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Handle outcomes in ViewModels</strong> and transform them into UI state:</p>
+<pre><code class="language-kotlin">viewModelScope.launch {
+    val outcome = loginUseCase.execute(credentials)
+
+    when (outcome) {
+        is Outcome.Success -&gt; {
+            _uiState.update { it.copy(isLoggedIn = true) }
+        }
+        is Outcome.Failure -&gt; {
+            val errorMessage = when (val error = outcome.error) {
+                is AccountError.AuthenticationFailed -&gt; 
+                    stringProvider.getString(R.string.error_authentication_failed, error.reason)
+                is AccountError.NetworkError -&gt; 
+                    stringProvider.getString(R.string.error_network, error.exception.message)
+                is AccountError.ValidationError -&gt; 
+                    stringProvider.getString(R.string.error_validation, error.field, error.message)
+            }
+            _uiState.update { it.copy(error = errorMessage) }
+        }
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Always log errors</strong> for debugging purposes:</p>
+<pre><code class="language-kotlin">// Logging is integrated into the Outcome pattern
+fun fetchMessages(): Outcome&lt;List&lt;Message&gt;, MessageError&gt; {
+    return try {
+        val messages = messageService.fetchMessages()
+        logger.info { "Successfully fetched ${messages.size} messages" }
+        Outcome.Success(messages)
+    } catch (e: Exception) {
+        logger.error(e) { "Failed to fetch messages" }
+        Outcome.Failure(MessageError.FetchFailed(e))
+    }
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Compose multiple operations</strong> that return Outcomes:</p>
+<pre><code class="language-kotlin">fun synchronizeAccount(): Outcome&lt;SyncResult, SyncError&gt; {
+    // First operation
+    val messagesOutcome = fetchMessages()
+    if (messagesOutcome is Outcome.Failure) {
+        return Outcome.Failure(SyncError.MessageSyncFailed(messagesOutcome.error))
+    }
+
+    // Second operation using the result of the first
+    val messages = messagesOutcome.getOrNull()!!
+    val folderOutcome = updateFolders(messages)
+    if (folderOutcome is Outcome.Failure) {
+        return Outcome.Failure(SyncError.FolderUpdateFailed(folderOutcome.error))
+    }
+
+    // Return success with combined results
+    return Outcome.Success(
+        SyncResult(
+            messageCount = messages.size,
+            folderCount = folderOutcome.getOrNull()!!.size
+        )
+    )
+}
+</code></pre>
+</li>
+</ol>
+<h3 id="-logging"><a class="header" href="#-logging">📝 Logging</a></h3>
+<p>The application uses a structured logging system with a well-defined API:</p>
+<ul>
+<li>📊 <strong>Logging Architecture</strong>:
+<ul>
+<li>Core logging API (<code>core/logging/api</code>) defines interfaces like <code>Logger</code> and <code>LogSink</code></li>
+<li>Multiple implementations (composite, console) allow for flexible logging targets</li>
+<li>Composite implementation enables logging to multiple sinks simultaneously</li>
+</ul>
+</li>
+<li>🔄 <strong>Logger vs. Sink</strong>:
+<ul>
+<li><strong>Logger</strong>: The front-facing interface that application code interacts with to create log entries
+<ul>
+<li>Provides methods for different log levels (verbose, debug, info, warn, error)</li>
+<li>Handles the creation of log events with appropriate metadata (timestamp, tag, etc.)</li>
+<li>Example: <code>DefaultLogger</code> implements the <code>Logger</code> interface and delegates to a <code>LogSink</code></li>
+</ul>
+</li>
+<li><strong>LogSink</strong>: The back-end component that receives log events and determines how to process them
+<ul>
+<li>Defines where and how log messages are actually stored or displayed</li>
+<li>Filters log events based on configured log levels</li>
+<li>Can be implemented in various ways (console output, file storage, remote logging service)</li>
+<li>Multiple sinks can be used simultaneously via composite pattern</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>📋 <strong>Log Levels</strong>:
+<ul>
+<li><code>VERBOSE</code>: Most detailed log level for debugging</li>
+<li><code>DEBUG</code>: Detailed information for diagnosing problems</li>
+<li><code>INFO</code>: General information about application flow</li>
+<li><code>WARN</code>: Potential issues that don’t affect functionality</li>
+<li><code>ERROR</code>: Issues that affect functionality but don’t crash the application</li>
+</ul>
+</li>
+</ul>
+<h4 id="-how-to-implement-logging"><a class="header" href="#-how-to-implement-logging">🛠️ How to Implement Logging</a></h4>
+<p>When adding logging to your code:</p>
+<ol>
+<li>
+<p><strong>Inject a Logger</strong> into your class:</p>
+<pre><code class="language-kotlin">class AccountRepository(
+    private val apiClient: ApiClient,
+    private val logger: Logger,
+) {
+    // Repository implementation
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Choose the appropriate log level</strong> based on the importance of the information:</p>
+<ul>
+<li>Use <code>verbose</code> for detailed debugging information (only visible in debug builds)</li>
+<li>Use <code>debug</code> for general debugging information</li>
+<li>Use <code>info</code> for important events that should be visible in production</li>
+<li>Use <code>warn</code> for potential issues that don’t affect functionality</li>
+<li>Use <code>error</code> for issues that affect functionality</li>
+</ul>
+</li>
+<li>
+<p><strong>Use lambda syntax</strong> to avoid string concatenation when logging isn’t needed:</p>
+<pre><code class="language-kotlin">// Good - string is only created if this log level is enabled
+logger.debug { "Processing message with ID: $messageId" }
+
+// Avoid - string is always created even if debug logging is disabled
+logger.debug("Processing message with ID: " + messageId)
+</code></pre>
+</li>
+<li>
+<p><strong>Include relevant context</strong> in log messages:</p>
+<pre><code class="language-kotlin">logger.info { "Syncing account: ${account.email}, folders: ${folders.size}" }
+</code></pre>
+</li>
+<li>
+<p><strong>Log exceptions</strong> with the appropriate level and context:</p>
+<pre><code class="language-kotlin">try {
+    apiClient.fetchMessages()
+} catch (e: Exception) {
+    logger.error(e) { "Failed to fetch messages for account: ${account.email}" }
+    throw MessageSyncError.FetchFailed(e)
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Use tags</strong> for better filtering when needed:</p>
+<pre><code class="language-kotlin">private val logTag = LogTag("AccountSync")
+
+fun syncAccount() {
+    logger.info(logTag) { "Starting account sync for: ${account.email}" }
+}
+</code></pre>
+</li>
+</ol>
+<h3 id="-security"><a class="header" href="#-security">🔒 Security</a></h3>
+<p>Security is a critical aspect of an email client. The application implements:</p>
+<ul>
+<li>🔐 <strong>Data Encryption</strong>:
+<ul>
+<li>End-to-end encryption using OpenPGP (via the <code>legacy/crypto-openpgp</code> module)</li>
+<li>Classes like <code>EncryptionDetector</code> and <code>OpenPgpEncryptionExtractor</code> handle encrypted emails</li>
+<li>Local storage encryption for sensitive data like account credentials</li>
+</ul>
+</li>
+<li>🔑 <strong>Authentication</strong>:
+<ul>
+<li>Support for various authentication types (OAuth, password, client certificate)</li>
+<li>Secure token storage and management</li>
+<li>Authentication error handling and recovery</li>
+</ul>
+</li>
+<li>🛡️ <strong>Network Security</strong>:
+<ul>
+<li>TLS for all network connections with certificate validation</li>
+<li>Certificate pinning for critical connections</li>
+<li>Protection against MITM attacks</li>
+</ul>
+</li>
+</ul>
+<div class="mdbook-alerts mdbook-alerts-note">
+<p class="mdbook-alerts-title">
+  <span class="mdbook-alerts-icon"></span>
+  note
+</p>
+<p>This section is a work in progress. The security architecture is being developed and will be documented in detail
+as it evolves.</p>
+</div>
+<h4 id="-how-to-implement-security"><a class="header" href="#-how-to-implement-security">🛠️ How to Implement Security</a></h4>
+<p>When implementing security features in your code:</p>
+<ol>
+<li>
+<p><strong>Never store sensitive data in plain text</strong>:</p>
+<pre><code class="language-kotlin">// Bad - storing password in plain text
+sharedPreferences.putString("password", password)
+
+// Good - use the secure credential storage
+val credentialStorage = get&lt;CredentialStorage&gt;()
+credentialStorage.storeCredentials(accountUuid, credentials)
+</code></pre>
+</li>
+<li>
+<p><strong>Use encryption for sensitive data</strong>:</p>
+<pre><code class="language-kotlin">// For data that needs to be stored encrypted
+val encryptionManager = get&lt;EncryptionManager&gt;()
+val encryptedData = encryptionManager.encrypt(sensitiveData)
+database.storeEncryptedData(encryptedData)
+</code></pre>
+</li>
+<li>
+<p><strong>Validate user input</strong> to prevent injection attacks:</p>
+<pre><code class="language-kotlin">// Validate input before using it
+if (!InputValidator.isValidEmailAddress(userInput)) {
+    throw ValidationError("Invalid email address")
+}
+</code></pre>
+</li>
+<li>
+<p><strong>Use secure network connections</strong>:</p>
+<pre><code class="language-kotlin">// The networking modules enforce TLS by default
+// Make sure to use the provided clients rather than creating your own
+val networkClient = get&lt;NetworkClient&gt;()
+</code></pre>
+</li>
+</ol>
+<h2 id="-testing-strategy"><a class="header" href="#-testing-strategy">🧪 Testing Strategy</a></h2>
+<p>The architecture supports comprehensive testing:</p>
+<ul>
+<li><strong>🔬 Unit Tests</strong>: Test individual components in isolation</li>
+<li><strong>🔌 Integration Tests</strong>: Test interactions between components</li>
+<li><strong>📱 UI Tests</strong>: Test the UI behavior and user flows</li>
+</ul>
+<p>See the <a href="../contributing/testing-guide.html">Testing guide</a> document for more details on how to write and run tests
+for the application.</p>
+<h2 id="-legacy-integration"><a class="header" href="#-legacy-integration">🔙 Legacy Integration</a></h2>
+<p>The application includes legacy code that is gradually being migrated to the new architecture:</p>
+<ul>
+<li><strong>📦 Legacy Modules</strong>: Contain code from the original K-9 Mail application</li>
+<li><strong>🔄 Migration Strategy</strong>: Gradual migration to the new architecture</li>
+<li><strong>🔌 Integration Points</strong>: Clear interfaces between legacy and new code</li>
+</ul>
+<p>For more details on the legacy integration, see the <a href="legacy-module-integration.html">Legacy Integration</a> document.</p>
+<h2 id="-user-flows"><a class="header" href="#-user-flows">🔄 User Flows</a></h2>
+<p>The <a href="user-flows.html">User Flows</a> provides visual representations of typical user flows through the application, helping to understand how different components interact.</p>
+<footer id="last-change">Last change: <time datetime="2025-09-10">2025-09-10</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/21a1e2c">21a1e2c</a></footer>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../contributing/java-to-kotlin-conversion-guide.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../architecture/module-organization.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../contributing/java-to-kotlin-conversion-guide.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../architecture/module-organization.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../assets/theme/mermaid.min.js"></script>
+        <script src="../assets/theme/mermaid-init.js"></script>
+        <script src="../assets/theme/navigation.js"></script>
+        <script src="../assets/theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
