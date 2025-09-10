@@ -1,6 +1,7 @@
 package net.thunderbird.core.ui.compose.designsystem.organism.message
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -68,6 +69,7 @@ private const val WEEK_DAYS = 7
  * @param action A composable function to display actions related to the message (e.g., star).
  * @param receivedAt The date and time the message was received.
  * @param onClick A callback function to be invoked when the message item is clicked.
+ * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
  * @param colors The colors to be used for the message item. See [MessageItemDefaults].
  * @param modifier The modifier to be applied to the message item.
  * @param hasAttachments A boolean indicating whether the message has attachments.
@@ -89,6 +91,7 @@ internal fun MessageItem(
     action: @Composable () -> Unit,
     receivedAt: LocalDateTime,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
     colors: MessageItemColors = MessageItemDefaults.readMessageItemColors(),
     hasAttachments: Boolean = false,
@@ -100,8 +103,11 @@ internal fun MessageItem(
     var contentStart by remember { mutableFloatStateOf(0f) }
     val layoutDirection = LocalLayoutDirection.current
     Surface(
-        onClick = onClick,
         modifier = modifier
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick,
+            )
             .drawWithCache {
                 onDrawWithContent {
                     drawContent()

@@ -19,6 +19,7 @@ fun JunkMessageItem(
     receivedAt: LocalDateTime,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
     hasAttachments: Boolean = false,
     threadCount: Int = 0,
@@ -54,6 +55,7 @@ fun JunkMessageItem(
         },
         receivedAt = receivedAt,
         onClick = onClick,
+        onLongClick = onLongClick,
         colors = if (selected) {
             MessageItemDefaults.selectedMessageItemColors(
                 containerColor = MainTheme.colors.errorContainer,

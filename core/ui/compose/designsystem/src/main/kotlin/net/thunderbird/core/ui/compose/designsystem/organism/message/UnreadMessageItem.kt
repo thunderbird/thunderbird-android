@@ -25,6 +25,7 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItem
  * @param favourite Whether the message is marked as favourite.
  * @param avatar A composable function to display the sender's avatar.
  * @param onClick A lambda function to be invoked when the message item is clicked.
+ * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
  * @param onFavouriteChange A lambda function to be invoked when the favourite button is clicked.
  * @param modifier A [Modifier] to be applied to the message item.
  * @param hasAttachments Whether the message has attachments. Defaults to `false`.
@@ -45,6 +46,7 @@ fun UnreadMessageItem(
     receivedAt: LocalDateTime,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
     onFavouriteChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     favourite: Boolean = false,
@@ -85,6 +87,7 @@ fun UnreadMessageItem(
         action = { FavouriteButtonIcon(favourite = favourite, onFavouriteChange = onFavouriteChange) },
         receivedAt = receivedAt,
         onClick = onClick,
+        onLongClick = onLongClick,
         colors = if (selected) {
             MessageItemDefaults.selectedMessageItemColors()
         } else {

@@ -127,6 +127,7 @@ private fun PreviewDefault(
                 }
             },
             onClick = { },
+            onLongClick = { },
             modifier = Modifier.padding(MainTheme.spacings.double),
             hasAttachments = params.hasAttachments,
             selected = params.selected,
@@ -149,6 +150,7 @@ private fun PreviewCompact(
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
             avatar = { },
             onClick = { },
+            onLongClick = { },
             modifier = Modifier.padding(MainTheme.spacings.double),
             hasAttachments = params.hasAttachments,
             selected = params.selected,
@@ -172,6 +174,7 @@ private fun PreviewRelaxed(
             receivedAt = @OptIn(ExperimentalTime::class) Clock.System.now().toLocalDateTime(TimeZone.UTC),
             avatar = { },
             onClick = { },
+            onLongClick = { },
             modifier = Modifier.padding(MainTheme.spacings.double),
             hasAttachments = params.hasAttachments,
             selected = params.selected,
