@@ -1,15 +1,22 @@
 version: 2
-commit-message:
-  prefix: chore
-  include: scope
-labels:
-  - "type: dependency"
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "type: dependency"
+      - "type: github actions"
+    commit-message:
+      prefix: chore
+      include: scope
   - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "type: dependency"
+      - "type: gradle"
+    commit-message:
+      prefix: chore
+      include: scope
