@@ -30,6 +30,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.k9mail.legacy.message.controller.MessageReference
+import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
 import app.k9mail.legacy.ui.folder.FolderNameFormatter
 import app.k9mail.ui.utils.itemtouchhelper.ItemTouchHelper
@@ -105,6 +106,7 @@ class MessageListFragment :
     private val sortTypeToastProvider: SortTypeToastProvider by inject()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireContext()) }
     private val messagingController: MessagingController by inject()
+    private val messagingControllerRegistry: MessagingControllerRegistry by inject()
     private val accountManager: AccountManager<LegacyAccount> by inject()
     private val connectivityManager: ConnectivityManager by inject()
     private val localStoreProvider: LocalStoreProvider by inject()
@@ -742,7 +744,7 @@ class MessageListFragment :
             hasConnectivity = connectivityManager.isNetworkAvailable()
         }
 
-        messagingController.addListener(activityListener)
+        messagingControllerRegistry.addListener(activityListener)
 
         updateTitle()
     }
@@ -750,7 +752,7 @@ class MessageListFragment :
     override fun onPause() {
         super.onPause()
 
-        messagingController.removeListener(activityListener)
+        messagingControllerRegistry.removeListener(activityListener)
     }
 
     private fun goBack() {
