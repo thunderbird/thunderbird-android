@@ -122,6 +122,9 @@ class ImapRemoteFolderCreatorTest {
 private class FakeImapStore(
     private val folder: TestImapFolder,
 ) : ImapStore {
+    override val combinedPrefix: String?
+        get() = throw NotImplementedError("combinedPrefix not implemented")
+
     override fun checkSettings() {
         throw NotImplementedError("checkSettings not implemented")
     }

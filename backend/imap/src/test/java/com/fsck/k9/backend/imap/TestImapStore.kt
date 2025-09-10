@@ -8,6 +8,9 @@ import com.fsck.k9.mail.store.imap.ImapStore
 class TestImapStore : ImapStore {
     private val folders = mutableMapOf<String, ImapFolder>()
 
+    override val combinedPrefix: String?
+        get() = throw UnsupportedOperationException("not implemented")
+
     fun addFolder(serverId: String): TestImapFolder {
         require(!folders.containsKey(serverId)) { "Folder '$serverId' already exists" }
 

@@ -31,7 +31,11 @@ internal open class RealImapStore(
     private val host: String = checkNotNull(serverSettings.host)
 
     private var pathPrefix: String?
-    private var combinedPrefix: String? = null
+
+    private var _combinedPrefix: String? = null
+    override val combinedPrefix: String?
+        get() = _combinedPrefix ?: buildCombinedPrefix().also { _combinedPrefix = it }
+
     private var pathDelimiter: String? = null
 
     private val permanentFlagsIndex: MutableSet<Flag> = mutableSetOf()
@@ -57,10 +61,6 @@ internal open class RealImapStore(
             serverId = name,
             folderNameCodec = folderNameCodec,
         )
-    }
-
-    override fun getCombinedPrefix(): String {
-        return combinedPrefix ?: buildCombinedPrefix().also { combinedPrefix = it }
     }
 
     private fun buildCombinedPrefix(): String {
@@ -118,15 +118,17 @@ internal open class RealImapStore(
             subscribedOnly -> {
                 "LSUB \"\" %s"
             }
+
             connection.supportsListExtended -> {
                 "LIST \"\" %s RETURN (SPECIAL-USE)"
             }
+
             else -> {
                 "LIST \"\" %s"
             }
         }
 
-        val encodedListPrefix = ImapUtility.encodeString(getCombinedPrefix() + "*")
+        val encodedListPrefix = ImapUtility.encodeString("$combinedPrefix*")
         val responses = connection.executeSimpleCommand(String.format(commandFormat, encodedListPrefix))
 
         val listResponses = if (subscribedOnly) {
@@ -141,7 +143,7 @@ internal open class RealImapStore(
 
             if (pathDelimiter == null) {
                 pathDelimiter = listResponse.hierarchyDelimiter
-                combinedPrefix = null
+                _combinedPrefix = null
             }
 
             if (RealImapFolder.INBOX.equals(serverId, ignoreCase = true)) {
@@ -196,7 +198,7 @@ internal open class RealImapStore(
     }
 
     private fun removePrefixFromFolderName(folderName: String): String? {
-        val prefix = getCombinedPrefix()
+        val prefix = combinedPrefix.orEmpty()
         val prefixLength = prefix.length
         if (prefixLength == 0) {
             return folderName
@@ -319,7 +321,7 @@ internal open class RealImapStore(
             }
 
         override fun setCombinedPrefix(prefix: String?) {
-            combinedPrefix = prefix
+            _combinedPrefix = prefix
         }
     }
 }

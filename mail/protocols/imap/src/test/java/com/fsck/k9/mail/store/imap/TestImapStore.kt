@@ -1,6 +1,9 @@
 package com.fsck.k9.mail.store.imap
 
 internal class TestImapStore(private val folder: ImapFolder) : ImapStore, ImapConnectionProvider {
+    override val combinedPrefix: String?
+        get() = throw UnsupportedOperationException("Not yet implemented")
+
     override fun checkSettings() {
         throw UnsupportedOperationException("not implemented")
     }
