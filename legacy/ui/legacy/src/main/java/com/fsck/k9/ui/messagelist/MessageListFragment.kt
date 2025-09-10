@@ -50,6 +50,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
@@ -120,6 +121,7 @@ class MessageListFragment :
     private val messagingController: MessagingController by inject()
     private val accountManager: AccountManager<LegacyAccount> by inject()
     private val connectivityManager: ConnectivityManager by inject()
+    private val localStoreProvider: LocalStoreProvider by inject()
 
     @OptIn(ExperimentalTime::class)
     private val clock: Clock by inject()
@@ -794,7 +796,9 @@ class MessageListFragment :
         )
 
     private fun getFolderInfoHolder(folderId: Long): FolderInfoHolder {
-        val localFolder = MlfUtils.getOpenFolder(folderId, accountDto)
+        val localStore = localStoreProvider.getInstanceByLegacyAccount(account!!)
+        val localFolder = localStore.getFolder(folderId)
+        localFolder.open()
         return FolderInfoHolder(folderNameFormatter, localFolder, account!!)
     }
 
