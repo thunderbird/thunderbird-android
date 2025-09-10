@@ -37,6 +37,12 @@ val controllerModule = module {
             get<NotificationSender>(),
         )
     } binds arrayOf(MessagingControllerRegistry::class)
+
+    single {
+        MessagingControllerWrapper(
+            messagingController = get(),
+            accountManager = get(),
+        )
     }
 
     single<MessagingControllerRegistry> { get<MessagingController>() }
