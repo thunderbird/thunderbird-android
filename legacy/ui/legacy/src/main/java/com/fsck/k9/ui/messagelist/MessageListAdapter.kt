@@ -291,6 +291,10 @@ class MessageListAdapter internal constructor(
         ComposableMessageViewHolder.create(
             context = parent.context,
             themeProvider = themeProvider,
+            onClick = { listItemListener.onMessageClicked(it) },
+            onLongClick = { listItemListener.onToggleMessageSelection(it) },
+            onFavouriteClick = { listItemListener.onToggleMessageFlag(it) },
+            onAvatarClick = { listItemListener.onToggleMessageSelection(it) },
         )
 
     override fun onBindViewHolder(holder: MessageListViewHolder, position: Int) {

@@ -22,6 +22,10 @@ internal fun MessageItemContentPreview() {
             item = fakeMessageListItem,
             isActive = true,
             isSelected = false,
+            onClick = {},
+            onLongClick = {},
+            onAvatarClick = {},
+            onFavouriteClick = {},
         )
     }
 }

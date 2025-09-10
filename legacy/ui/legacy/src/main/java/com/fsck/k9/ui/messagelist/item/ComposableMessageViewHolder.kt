@@ -11,6 +11,10 @@ import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 class ComposableMessageViewHolder(
     private val composeView: ComposeView,
     private val themeProvider: FeatureThemeProvider,
+    private val onClick: (MessageListItem) -> Unit,
+    private val onLongClick: (MessageListItem) -> Unit,
+    private val onAvatarClick: (MessageListItem) -> Unit,
+    private val onFavouriteClick: (MessageListItem) -> Unit,
 ) : MessageListViewHolder(composeView) {
 
     var uniqueId: Long = -1L
@@ -24,6 +28,10 @@ class ComposableMessageViewHolder(
                     item = item,
                     isActive = isActive,
                     isSelected = isSelected,
+                    onClick = { onClick(item) },
+                    onLongClick = { onLongClick(item) },
+                    onAvatarClick = { onAvatarClick(item) },
+                    onFavouriteClick = { onFavouriteClick(item) },
                 )
             }
         }
@@ -34,12 +42,20 @@ class ComposableMessageViewHolder(
         fun create(
             context: Context,
             themeProvider: FeatureThemeProvider,
+            onClick: (MessageListItem) -> Unit,
+            onLongClick: (MessageListItem) -> Unit,
+            onFavouriteClick: (MessageListItem) -> Unit,
+            onAvatarClick: (MessageListItem) -> Unit,
         ): ComposableMessageViewHolder {
             val composeView = ComposeView(context)
 
             val holder = ComposableMessageViewHolder(
                 composeView = composeView,
                 themeProvider = themeProvider,
+                onClick = onClick,
+                onLongClick = onLongClick,
+                onAvatarClick = onAvatarClick,
+                onFavouriteClick = onFavouriteClick,
             )
 
             composeView.tag = holder
