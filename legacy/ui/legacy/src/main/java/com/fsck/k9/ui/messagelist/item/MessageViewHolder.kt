@@ -32,6 +32,7 @@ import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
 import kotlin.math.max
 
+@Suppress("TooManyFunctions")
 class MessageViewHolder(
     view: View,
     private val appearance: MessageListAppearance,
