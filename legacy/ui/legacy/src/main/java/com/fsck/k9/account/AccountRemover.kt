@@ -52,7 +52,7 @@ class AccountRemover(
             // Ignore, this may lead to localStores on sd-cards that are currently not inserted to be left
         }
 
-        localStoreProvider.removeInstance(account)
+        localStoreProvider.removeInstance(account.uuid)
     }
 
     private fun removeBackend(account: LegacyAccountDto) {

@@ -2,10 +2,9 @@ package net.thunderbird.feature.account.storage.legacy.mapper
 
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 
-class DefaultLegacyAccountWrapperDataMapper : DataMapper<LegacyAccount, LegacyAccountDto> {
+internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
 
     @Suppress("LongMethod")
     override fun toDomain(dto: LegacyAccountDto): LegacyAccount {

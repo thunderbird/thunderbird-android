@@ -2,8 +2,10 @@
 
 package com.fsck.k9.search
 
-import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 
@@ -19,8 +21,9 @@ val LocalMessageSearch.isSingleAccount: Boolean
 val LocalMessageSearch.isSingleFolder: Boolean
     get() = isSingleAccount && folderIds.size == 1
 
+@Deprecated("Use getLegacyAccounts instead")
 @JvmName("getAccountsFromLocalSearch")
-fun LocalMessageSearch.getAccounts(accountManager: AccountManager): List<LegacyAccountDto> {
+fun LocalMessageSearch.getAccounts(accountManager: LegacyAccountDtoManager): List<LegacyAccountDto> {
     val accounts = accountManager.getAccounts()
     return if (searchAllAccounts()) {
         accounts
@@ -30,6 +33,17 @@ fun LocalMessageSearch.getAccounts(accountManager: AccountManager): List<LegacyA
     }
 }
 
-fun LocalMessageSearch.getAccountUuids(accountManager: AccountManager): List<String> {
-    return getAccounts(accountManager).map { it.uuid }
+@JvmName("getLegacyAccountsFromLocalSearch")
+fun LocalMessageSearch.getLegacyAccounts(accountManager: LegacyAccountManager): List<LegacyAccount> {
+    val accounts = accountManager.getAccounts()
+    return if (searchAllAccounts()) {
+        accounts
+    } else {
+        val searchAccountUuids = accountUuids.toSet()
+        accounts.filter { it.uuid in searchAccountUuids }
+    }
+}
+
+fun LocalMessageSearch.getLegacyAccountUuids(accountManager: LegacyAccountManager): List<String> {
+    return getLegacyAccounts(accountManager).map { it.uuid }
 }

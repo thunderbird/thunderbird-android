@@ -12,7 +12,7 @@ val messageListUiModule = module {
     factory { DefaultFolderProvider() }
     factory {
         MessageListLoader(
-            preferences = get(),
+            accountManager = get(),
             localStoreProvider = get(),
             messageListRepository = get(),
             messageHelper = get(),
@@ -20,7 +20,11 @@ val messageListUiModule = module {
         )
     }
     factory {
-        MessageListLiveDataFactory(messageListLoader = get(), preferences = get(), messageListRepository = get())
+        MessageListLiveDataFactory(
+            messageListLoader = get(),
+            accountManager = get(),
+            messageListRepository = get(),
+        )
     }
     single { SortTypeToastProvider() }
 }

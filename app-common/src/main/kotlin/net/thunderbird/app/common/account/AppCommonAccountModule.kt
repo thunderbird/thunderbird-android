@@ -10,7 +10,9 @@ import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 import net.thunderbird.feature.account.core.featureAccountCoreModule
 import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyModule
+import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 internal val appCommonAccountModule = module {
@@ -24,7 +26,7 @@ internal val appCommonAccountModule = module {
             accountManager = get(),
             accountDataMapper = get(),
         )
-    }
+    } binds arrayOf(AccountManager::class)
 
     single<AccountProfileLocalDataSource> {
         DefaultAccountProfileLocalDataSource(

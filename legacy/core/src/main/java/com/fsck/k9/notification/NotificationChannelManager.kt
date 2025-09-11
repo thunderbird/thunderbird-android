@@ -9,14 +9,14 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import java.util.concurrent.Executor
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
 
 class NotificationChannelManager(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val backgroundExecutor: Executor,
     private val notificationManager: NotificationManager,
     private val resourceProvider: NotificationResourceProvider,

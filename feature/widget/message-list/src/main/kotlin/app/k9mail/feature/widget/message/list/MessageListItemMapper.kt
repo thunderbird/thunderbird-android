@@ -7,12 +7,12 @@ import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.ui.helper.DisplayAddressHelper
 import java.util.Calendar
 import java.util.Locale
-import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal class MessageListItemMapper(
     private val messageHelper: MessageHelper,
-    private val account: LegacyAccountDto,
+    private val account: LegacyAccount,
     private val generalSettingsManager: GeneralSettingsManager,
 ) : MessageMapper<MessageListItem> {
     private val calendar: Calendar = Calendar.getInstance()
@@ -45,7 +45,7 @@ internal class MessageListItemMapper(
             isRead = message.isRead,
             hasAttachments = message.hasAttachments,
             threadCount = message.threadCount,
-            accountColor = account.chipColor,
+            accountColor = account.profile.color,
             messageReference = MessageReference(account.uuid, message.folderId, message.messageServerId),
             uniqueId = uniqueId,
             sortSubject = message.subject,
@@ -65,7 +65,7 @@ internal class MessageListItemMapper(
         return String.format("%d %s", dayOfMonth, month)
     }
 
-    private fun createUniqueId(account: LegacyAccountDto, messageId: Long): Long {
+    private fun createUniqueId(account: LegacyAccount, messageId: Long): Long {
         return ((account.accountNumber + 1).toLong() shl ACCOUNT_NUMBER_BIT_SHIFT) + messageId
     }
 

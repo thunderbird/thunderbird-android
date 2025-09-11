@@ -11,8 +11,8 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 import org.junit.Test
@@ -27,7 +27,7 @@ private const val STARRED_COUNT = 3
 class DefaultMessageCountsProviderTest {
 
     private val account = LegacyAccountDto(ACCOUNT_ID_RAW)
-    private val accountManager = mock<AccountManager> {
+    private val accountManager = mock<LegacyAccountDtoManager> {
         on { getAccounts() } doReturn listOf(account)
     }
     private val messageStore = mock<ListenableMessageStore> {

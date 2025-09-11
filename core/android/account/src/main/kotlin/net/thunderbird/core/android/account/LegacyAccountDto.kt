@@ -21,7 +21,7 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
-@Deprecated("Use LegacyAccount instead")
+@Deprecated(message = "Use LegacyAccount instead, this class is only for compatibility with existing code.")
 @Suppress("TooManyFunctions")
 open class LegacyAccountDto(
     override val uuid: String,

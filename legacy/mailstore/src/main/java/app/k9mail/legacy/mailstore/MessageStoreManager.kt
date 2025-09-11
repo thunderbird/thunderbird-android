@@ -1,11 +1,11 @@
 package app.k9mail.legacy.mailstore
 
 import java.util.concurrent.ConcurrentHashMap
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 
 class MessageStoreManager(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val messageStoreFactory: MessageStoreFactory,
 ) {
     private val messageStores = ConcurrentHashMap<String, ListenableMessageStore>()
