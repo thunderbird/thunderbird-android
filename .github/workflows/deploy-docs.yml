@@ -47,9 +47,9 @@ jobs:
 
       - name: Clean docs
         run: |
-          rm -rf book/docs/latest/assets/draw.io
-          rm -f book/docs/latest/.gitignore
-          rm -f book/docs/latest/install.sh
+          rm -rf book/docs/latest/html/assets/draw.io
+          rm -f book/docs/latest/html/.gitignore
+          rm -f book/docs/latest/html/install.sh
 
           # Restore mermaid.min.js, it has already been copied over to book/docs/latest
           git restore .
@@ -75,7 +75,7 @@ jobs:
           find docs/latest -mindepth 1 -delete  # Delete old files inside docs/latest
 
           # Copy new docs to gh-pages branch
-          cp -r book/docs/latest/* docs/latest/
+          cp -r book/docs/latest/html/* docs/latest/
 
           # Remove
           rm -rf book
