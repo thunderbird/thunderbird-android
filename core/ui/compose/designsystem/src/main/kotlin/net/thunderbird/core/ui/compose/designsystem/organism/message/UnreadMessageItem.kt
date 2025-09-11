@@ -26,6 +26,7 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItem
  * @param avatar A composable function to display the sender's avatar.
  * @param onClick A lambda function to be invoked when the message item is clicked.
  * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
+ * @param onLeadingClick A lambda function to be invoked when the leading avatar is clicked.
  * @param onFavouriteChange A lambda function to be invoked when the favourite button is clicked.
  * @param modifier A [Modifier] to be applied to the message item.
  * @param hasAttachments Whether the message has attachments. Defaults to `false`.
@@ -47,6 +48,7 @@ fun UnreadMessageItem(
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
+    onLeadingClick: () -> Unit,
     onFavouriteChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     favourite: Boolean = false,
@@ -88,6 +90,7 @@ fun UnreadMessageItem(
         receivedAt = receivedAt,
         onClick = onClick,
         onLongClick = onLongClick,
+        onLeadingClick = onLeadingClick,
         colors = if (selected) {
             MessageItemDefaults.selectedMessageItemColors()
         } else {

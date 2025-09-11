@@ -70,6 +70,7 @@ private const val WEEK_DAYS = 7
  * @param receivedAt The date and time the message was received.
  * @param onClick A callback function to be invoked when the message item is clicked.
  * @param onLongClick A lambda function to be invoked when the message item is long-clicked.
+ * @param onLeadingClick A callback function to be invoked when the leading content is clicked.
  * @param colors The colors to be used for the message item. See [MessageItemDefaults].
  * @param modifier The modifier to be applied to the message item.
  * @param hasAttachments A boolean indicating whether the message has attachments.
@@ -92,6 +93,7 @@ internal fun MessageItem(
     receivedAt: LocalDateTime,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
+    onLeadingClick: () -> Unit,
     modifier: Modifier = Modifier,
     colors: MessageItemColors = MessageItemDefaults.readMessageItemColors(),
     hasAttachments: Boolean = false,
@@ -131,7 +133,7 @@ internal fun MessageItem(
                 .padding(contentPadding)
                 .height(intrinsicSize = IntrinsicSize.Min),
         ) {
-            LeadingElements(selected, onClick, leading)
+            LeadingElements(selected, onLeadingClick, leading)
             Spacer(modifier = Modifier.width(MainTheme.spacings.default))
             Column(
                 modifier = Modifier
@@ -183,7 +185,7 @@ private fun PreviewText(
 private fun LeadingElements(
     selected: Boolean,
     onClick: () -> Unit,
-    trailing: @Composable (() -> Unit),
+    leading: @Composable (() -> Unit),
     modifier: Modifier = Modifier,
 ) {
     AnimatedContent(
@@ -193,7 +195,7 @@ private fun LeadingElements(
         if (selected) {
             SelectedIcon(onClick = onClick)
         } else {
-            trailing()
+            leading()
         }
     }
 }

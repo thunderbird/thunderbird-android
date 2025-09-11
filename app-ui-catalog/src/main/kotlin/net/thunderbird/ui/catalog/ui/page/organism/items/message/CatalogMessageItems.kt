@@ -31,14 +31,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
-import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHostState
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.math.roundToInt
 import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -105,6 +103,7 @@ private data class MessageItemConfiguration(
     val maxPreviewLines: Int,
 )
 
+@Suppress("LongMethod")
 @Composable
 private fun MessageItemConfiguration(
     config: MessageItemConfiguration,
@@ -230,6 +229,9 @@ private fun ColumnScope.CatalogNewMessageItem(
                 snackbarHostState.showSnackbar("Long clicked!")
             }
         },
+        onLeadingClick = {
+            selected = !selected
+        },
         onFavouriteChange = { favourite = it },
         modifier = Modifier.fillMaxWidth(),
         selected = selected,
@@ -281,6 +283,9 @@ private fun ColumnScope.CatalogUnreadMessageItem(
             coroutineScope.launch {
                 snackbarHostState.showSnackbar("Long clicked!")
             }
+        },
+        onLeadingClick = {
+            selected = !selected
         },
         onFavouriteChange = { favourite = it },
         modifier = Modifier.fillMaxWidth(),
@@ -334,6 +339,9 @@ private fun ColumnScope.CatalogReadMessageItem(
                 snackbarHostState.showSnackbar("Long clicked!")
             }
         },
+        onLeadingClick = {
+            selected = !selected
+        },
         onFavouriteChange = { favourite = it },
         modifier = Modifier.fillMaxWidth(),
         selected = selected,
@@ -386,6 +394,9 @@ private fun ColumnScope.CatalogActiveMessageItem(
                 snackbarHostState.showSnackbar("Long clicked!")
             }
         },
+        onLeadingClick = {
+            selected = !selected
+        },
         onFavouriteChange = { favourite = it },
         modifier = Modifier.fillMaxWidth(),
         selected = selected,
@@ -435,6 +446,9 @@ private fun ColumnScope.CatalogJunkMessageItem(
             coroutineScope.launch {
                 snackbarHostState.showSnackbar("Long clicked!")
             }
+        },
+        onLeadingClick = {
+            selected = !selected
         },
         modifier = Modifier.fillMaxWidth(),
         selected = selected,
