@@ -493,9 +493,8 @@ class RealImapStoreTest {
             imapConnections.add(imapConnection)
         }
 
-        override fun getCombinedPrefix(): String {
-            return testCombinedPrefix ?: super.getCombinedPrefix()
-        }
+        override val combinedPrefix: String?
+            get() = testCombinedPrefix ?: super.combinedPrefix
 
         fun setTestCombinedPrefix(prefix: String?) {
             testCombinedPrefix = prefix

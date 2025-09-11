@@ -6,7 +6,10 @@ internal interface InternalImapStore {
     val logLabel: String
     val config: ImapStoreConfig
 
-    fun getCombinedPrefix(): String
+    /**
+     * The IMAP prefix combined with the Path delimiter given by the server.
+     */
+    val combinedPrefix: String?
 
     fun getPermanentFlagsIndex(): MutableSet<Flag>
 }
