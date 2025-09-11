@@ -31,7 +31,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         // arrange
         val account = createAccount()
         val expected = createAccountWrapper()
-        val testSubject = DefaultLegacyAccountWrapperDataMapper()
+        val testSubject = DefaultLegacyAccountDataMapper()
 
         // act
         val result = testSubject.toDomain(account)
@@ -45,7 +45,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
     fun `toDto should return account`() {
         // arrange
         val wrapper = createAccountWrapper()
-        val testSubject = DefaultLegacyAccountWrapperDataMapper()
+        val testSubject = DefaultLegacyAccountDataMapper()
 
         // act
         val result = testSubject.toDto(wrapper)

@@ -5,7 +5,7 @@ package com.fsck.k9.search
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.feature.mail.account.api.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 
@@ -34,7 +34,7 @@ fun LocalMessageSearch.getAccounts(accountManager: LegacyAccountDtoManager): Lis
 }
 
 @JvmName("getLegacyAccountsFromLocalSearch")
-fun LocalMessageSearch.getLegacyAccounts(accountManager: AccountManager<LegacyAccount>): List<LegacyAccount> {
+fun LocalMessageSearch.getLegacyAccounts(accountManager: LegacyAccountManager): List<LegacyAccount> {
     val accounts = accountManager.getAccounts()
     return if (searchAllAccounts()) {
         accounts
@@ -44,6 +44,6 @@ fun LocalMessageSearch.getLegacyAccounts(accountManager: AccountManager<LegacyAc
     }
 }
 
-fun LocalMessageSearch.getLegacyAccountUuids(accountManager: AccountManager<LegacyAccount>): List<String> {
+fun LocalMessageSearch.getLegacyAccountUuids(accountManager: LegacyAccountManager): List<String> {
     return getLegacyAccounts(accountManager).map { it.uuid }
 }

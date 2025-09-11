@@ -8,12 +8,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.mail.account.api.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountManager
 
 class MessageListLiveData(
     private val messageListLoader: MessageListLoader,
-    private val accountManager: AccountManager<LegacyAccount>,
+    private val accountManager: LegacyAccountManager,
     private val messageListRepository: MessageListRepository,
     private val coroutineScope: CoroutineScope,
     val config: MessageListConfig,

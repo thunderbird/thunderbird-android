@@ -59,14 +59,13 @@ import kotlin.getValue
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
-import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
+import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
@@ -107,10 +106,7 @@ open class MessageList :
     private val fundingManager: FundingManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val logger: Logger by inject()
-    private val legacyAccountDataMapper: DataMapper<
-        LegacyAccount,
-        LegacyAccountDto,
-        > by inject<DefaultLegacyAccountWrapperDataMapper>()
+    private val legacyAccountDataMapper: LegacyAccountDataMapper by inject()
 
     private lateinit var actionBar: ActionBar
     private var searchView: SearchView? = null
