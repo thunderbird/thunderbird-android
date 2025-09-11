@@ -43,6 +43,13 @@ tasks.register("testsOnCi") {
     )
 }
 
+tasks.register("buildCliTools") {
+    val cliToolsProjects = subprojects.filter { it.path.startsWith(":cli:") }
+    dependsOn(
+        cliToolsProjects.map { project -> project.tasks.named("build") },
+    )
+}
+
 tasks.named<Wrapper>("wrapper") {
     gradleVersion = libs.versions.gradle.get()
     distributionType = Wrapper.DistributionType.ALL
