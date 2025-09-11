@@ -33,4 +33,28 @@ internal class FakeLegacyAccountManager(
             }
         }
     }
+
+    override fun getAccounts(): List<LegacyAccount> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAccountsFlow(): Flow<List<LegacyAccount>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAccount(accountUuid: String): LegacyAccount? {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAccountFlow(accountUuid: String): Flow<LegacyAccount?> {
+        TODO("Not yet implemented")
+    }
+
+    override fun moveAccount(account: LegacyAccount, newPosition: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun saveAccount(account: LegacyAccount) {
+        TODO("Not yet implemented")
+    }
 }

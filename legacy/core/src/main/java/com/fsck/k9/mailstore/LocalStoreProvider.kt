@@ -7,7 +7,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
+import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
 
 class LocalStoreProvider {
     private val localStores = ConcurrentHashMap<String, LocalStore>()
@@ -27,7 +27,7 @@ class LocalStoreProvider {
     @Throws
     fun getInstanceByLegacyAccount(account: LegacyAccount): LocalStore {
         val context = DI.get(Context::class.java)
-        val legacyAccountMapper = DefaultLegacyAccountWrapperDataMapper()
+        val legacyAccountMapper = DI.get(LegacyAccountDataMapper::class.java)
         val generalSettingsManager = DI.get(GeneralSettingsManager::class.java)
         val accountUuid = account.uuid
         val accountDto = legacyAccountMapper.toDto(account)
