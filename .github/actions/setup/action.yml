@@ -1,0 +1,20 @@
+name: Set up build environment
+description: Prepares environment for building with JDK and Gradle
+runs:
+  using: 'composite'
+  steps:
+    - name: Copy CI gradle.properties
+      shell: bash
+      run: mkdir -p ~/.gradle ; cp .github/ci-gradle-android-pr-workflow.properties ~/.gradle/gradle.properties
+
+    - name: Set up JDK
+      uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
+
+    - name: Restore Gradle cache
+      uses: ./.github/actions/gradle_cache
