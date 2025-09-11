@@ -63,8 +63,22 @@ internal open class RealImapStore(
         )
     }
 
-    private fun buildCombinedPrefix(): String {
-        val pathPrefix = pathPrefix ?: return ""
+    override fun fetchImapPrefix() {
+        if (combinedPrefix != null) return
+
+        val connection = createImapConnection()
+        connection.open()
+        if (connection.hasCapability(Capabilities.NAMESPACE)) {
+            val responses = connection.executeSimpleCommand(Commands.NAMESPACE)
+            NamespaceResponse.parse(responses)?.let { response ->
+                pathPrefix = response.prefix
+                pathDelimiter = response.hierarchyDelimiter
+            }
+        }
+    }
+
+    private fun buildCombinedPrefix(): String? {
+        val pathPrefix = pathPrefix ?: return null
 
         val trimmedPathPrefix = pathPrefix.trim { it <= ' ' }
         val trimmedPathDelimiter = pathDelimiter?.trim { it <= ' ' }.orEmpty()
@@ -74,7 +88,7 @@ internal open class RealImapStore(
         } else if (trimmedPathPrefix.isNotEmpty()) {
             trimmedPathPrefix + trimmedPathDelimiter
         } else {
-            ""
+            null
         }
     }
 
@@ -128,7 +142,7 @@ internal open class RealImapStore(
             }
         }
 
-        val encodedListPrefix = ImapUtility.encodeString("$combinedPrefix*")
+        val encodedListPrefix = ImapUtility.encodeString("${combinedPrefix.orEmpty()}*")
         val responses = connection.executeSimpleCommand(String.format(commandFormat, encodedListPrefix))
 
         val listResponses = if (subscribedOnly) {

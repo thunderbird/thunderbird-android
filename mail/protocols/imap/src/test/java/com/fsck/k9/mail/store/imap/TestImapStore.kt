@@ -24,4 +24,8 @@ internal class TestImapStore(private val folder: ImapFolder) : ImapStore, ImapCo
     override fun closeAllConnections() {
         throw UnsupportedOperationException("not implemented")
     }
+
+    override fun fetchImapPrefix() {
+        throw UnsupportedOperationException("not implemented")
+    }
 }

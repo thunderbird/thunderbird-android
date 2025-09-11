@@ -47,4 +47,8 @@ class TestImapStore : ImapStore {
     override fun closeAllConnections() {
         throw UnsupportedOperationException("not implemented")
     }
+
+    override fun fetchImapPrefix() {
+        throw UnsupportedOperationException("not implemented")
+    }
 }

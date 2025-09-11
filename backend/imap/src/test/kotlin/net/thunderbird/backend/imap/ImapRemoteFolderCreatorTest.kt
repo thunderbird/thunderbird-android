@@ -138,4 +138,8 @@ private class FakeImapStore(
     override fun closeAllConnections() {
         throw NotImplementedError("closeAllConnections not implemented")
     }
+
+    override fun fetchImapPrefix() {
+        throw NotImplementedError("fetchImapPrefix not implemented")
+    }
 }

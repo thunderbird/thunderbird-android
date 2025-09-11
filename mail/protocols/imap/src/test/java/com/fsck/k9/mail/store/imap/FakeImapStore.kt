@@ -28,4 +28,8 @@ class FakeImapStore : ImapStore {
     override fun closeAllConnections() {
         openConnectionCount = 0
     }
+
+    override fun fetchImapPrefix() {
+        throw UnsupportedOperationException("not implemented")
+    }
 }

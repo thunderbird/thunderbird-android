@@ -21,6 +21,8 @@ interface ImapStore {
 
     fun closeAllConnections()
 
+    fun fetchImapPrefix()
+
     companion object : ImapStoreFactory {
         override fun create(
             serverSettings: ServerSettings,
