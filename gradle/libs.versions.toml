@@ -164,8 +164,8 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidxConstraintLayout" }
 androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorlayout", version.ref = "androidxCoordinatorLayout" }
-androidx-core = { module = "androidx.core:core", version.ref = "androidxTestCore" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxTestCore" }
+androidx-core = { module = "androidx.core:core", version.ref = "androidxCore" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidxCoreSplashscreen" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidxDatastore" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidxDatastore" }
@@ -194,7 +194,6 @@ androidx-preference = { module = "androidx.preference:preference", version.ref =
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerView" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidxSwiperefreshlayout" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTestCore" }
-androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxTestEspresso" }
 androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExt" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxTestRules" }
@@ -284,7 +283,6 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version.ref = "xmlpull" }
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
-
 
 [bundles]
 shared-kmp-common = [
