@@ -821,7 +821,7 @@ open class MessageList :
             KeyEvent.KEYCODE_VOLUME_UP -> {
                 if (messageViewContainerFragment != null &&
                     displayMode != DisplayMode.MESSAGE_LIST &&
-                    K9.isUseVolumeKeysForNavigation
+                    generalSettingsManager.getConfig().interaction.useVolumeKeysForNavigation
                 ) {
                     showPreviousMessage()
                     return true
@@ -831,7 +831,7 @@ open class MessageList :
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 if (messageViewContainerFragment != null &&
                     displayMode != DisplayMode.MESSAGE_LIST &&
-                    K9.isUseVolumeKeysForNavigation
+                    generalSettingsManager.getConfig().interaction.useVolumeKeysForNavigation
                 ) {
                     showNextMessage()
                     return true
@@ -980,7 +980,7 @@ open class MessageList :
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.isUseVolumeKeysForNavigation) {
+        if (generalSettingsManager.getConfig().interaction.useVolumeKeysForNavigation) {
             if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
                 Log.v("Swallowed key up.")
                 return true

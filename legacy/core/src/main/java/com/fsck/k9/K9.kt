@@ -155,9 +155,6 @@ object K9 : KoinComponent {
         PostMarkAsUnreadNavigation.ReturnToMessageList
 
     @JvmStatic
-    var isUseVolumeKeysForNavigation = false
-
-    @JvmStatic
     var isShowAccountSelector = true
 
     var isNotificationDuringQuietTimeEnabled = true
@@ -239,7 +236,6 @@ object K9 : KoinComponent {
     @JvmStatic
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
-        isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
@@ -304,7 +300,6 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)

@@ -23,6 +23,7 @@ import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsP
 import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
 import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsPreferenceManager
 import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
+import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
@@ -51,6 +52,7 @@ internal class DefaultGeneralSettingsManager(
     private val displayMiscSettingsPreferenceManager: DisplayMiscSettingsPreferenceManager,
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
+    private val interactionSettingsPreferenceManager: InteractionSettingsPreferenceManager,
     private val debugLogConfigurator: DebugLogConfigurator,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GeneralSettingsManager {
@@ -107,6 +109,9 @@ internal class DefaultGeneralSettingsManager(
                 debugLogConfigurator.updateSyncLogging(debuggingSettings.isSyncLoggingEnabled)
             }
         }
+        .combine(interactionSettingsPreferenceManager.getConfigFlow()) { generalSettings, interactionSettings ->
+            generalSettings.copy(interaction = interactionSettings)
+        }
         .stateIn(
             scope = coroutineScope,
             started = SharingStarted.WhileSubscribed(),
@@ -159,6 +164,7 @@ internal class DefaultGeneralSettingsManager(
                 displayMiscSettingsPreferenceManager.save(config.display.miscSettings)
                 networkSettingsPreferenceManager.save(config.network)
                 debuggingSettingsPreferenceManager.save(config.debugging)
+                interactionSettingsPreferenceManager.save(config.interaction)
             }
         }
     }
