@@ -62,7 +62,7 @@ application-label-zh-CN:'Thunderbird Beta'
 application-label-zh-TW:'Thunderbird Beta'
 application-label-zh:'Thunderbird Beta'
 application-label:'Thunderbird Beta'
-application: label='Thunderbird Beta' icon='res/drawable/ic_app_logo.xml'
+application: label='Thunderbird Beta' icon='res/mipmap-anydpi-v26/ic_launcher.xml'
 densities: '120' '160' '240' '320' '480' '640' '65534'
 feature-group: label=''
 install-location:'auto'
@@ -75,7 +75,7 @@ other-activities
 other-receivers
 other-services
 package: name='net.thunderbird.android.beta' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
-property: name='android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE' value='This service is used to maintain a continuous connection to an IMAP server to be able to provide instant notifications to the user when a new email arrives. Firebase Cloud Messaging is not suitable for this task, neither are mechanisms like AndroidX WorkManager. Other foreground service types aren't a good fit for this use case.' 
+property: name='android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE' value='This service is used to maintain a continuous connection to an IMAP server to be able to provide instant notifications to the user when a new email arrives. Firebase Cloud Messaging is not suitable for this task, neither are mechanisms like AndroidX WorkManager. Other foreground service types aren't a good fit for this use case.'
 provides-component:'app-widget'
 supports-any-density: 'true'
 supports-screens: 'small' 'normal' 'large' 'xlarge'
