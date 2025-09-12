@@ -14,10 +14,16 @@
 androidBilling = "7.1.1"
 androidDesugar = "2.1.5"
 androidMaterial = "1.12.0"
+<<<<<<< HEAD
 # AGP and tools should be updated together.
 # Also, make sure AGP version is compatible with both AS and IntelliJ IDEA.
 androidGradlePlugin = "8.12.3"
 androidTools = "31.11.1"
+=======
+# AGP and tools should be updated together
+androidGradlePlugin = "8.10.1"
+androidTools = "31.10.1"
+>>>>>>> 46746d706b (Revert unecessary changes to fix #8932)
 androidxActivity = "1.10.1"
 androidxAnnotation = "1.9.1"
 androidxAppCompat = "1.7.1"
@@ -25,45 +31,62 @@ androidxAutofill = "1.3.0"
 androidxBiometric = "1.1.0"
 androidxCamera = "1.4.2"
 # https://developer.android.com/jetpack/compose/bom/bom-mapping
-androidxComposeBom = "2025.07.00"
+androidxComposeBom = "2025.06.00"
 androidxConstraintLayout = "2.2.1"
 androidxCoordinatorLayout = "1.3.0"
 androidxCore = "1.16.0"
 androidxCoreSplashscreen = "1.0.1"
-androidxDatastore = "1.1.7"
 androidxFragment = "1.8.8"
 androidxGlance = "1.1.1"
 androidxGlanceMaterial3 = "1.1.1"
-androidxLifecycle = "2.9.2"
+androidxLifecycle = "2.9.1"
 androidxLocalBroadcastManager = "1.1.0"
-androidxNavigation = "2.9.3"
+androidxNavigation = "2.9.0"
 androidxRecyclerView = "1.4.0"
 androidxPreference = "1.2.1"
 androidxSwiperefreshlayout = "1.1.0"
-androidxTestCore = "1.7.0"
-androidxTestEspresso = "3.7.0"
-androidxTestExt = "1.3.0"
-androidxTestRules = "1.7.0"
-androidxTestRunner = "1.7.0"
+androidxTestCore = "1.6.1"
+androidxTestEspresso = "3.6.1"
+androidxTestExt = "1.2.1"
+androidxTestRules = "1.6.1"
+androidxTestRunner = "1.6.2"
 androidxWebkit = "1.14.0"
+<<<<<<< HEAD
 androidxWork = "2.10.3"
 apacheHttpclient5 = "5.5.1"
+=======
+androidxWork = "2.10.1"
+apacheHttpclient5 = "5.4.4"
+>>>>>>> 46746d706b (Revert unecessary changes to fix #8932)
 appAuth = "0.11.1"
 assertk = "0.28.1"
 circleImageView = "3.1.0"
 ckchangelog = "2.0.0-beta02"
 clikt = "5.0.3"
+<<<<<<< HEAD
 commonsIo = "2.20.0"
 dependencyCheckPlugin = "0.53.0"
+=======
+commonsIo = "2.19.0"
+dependencyCheckPlugin = "0.52.0"
+>>>>>>> 46746d706b (Revert unecessary changes to fix #8932)
 dependencyGuardPlugin = "0.5.0"
 detektPlugin = "1.23.8"
 detektPluginCompose = "0.4.27"
 fastAdapter = "5.7.0"
+<<<<<<< HEAD
 forkhandlesBom = "2.23.0.0"
 glide = "4.16.0"
 gradle = "9.1.0"
 icu4j = "77.1"
 javaDiffUtils = "4.16"
+=======
+forkhandlesBom = "2.22.3.0"
+glide = "4.16.0"
+gradle = "8.14.2"
+icu4j = "72.1"
+javaDiffUtils = "4.12"
+>>>>>>> 46746d706b (Revert unecessary changes to fix #8932)
 jcipAnnotations = "1.0"
 jetbrainsAnnotations = "26.0.2-1"
 jetbrainsCompose = "1.9.0"
@@ -83,12 +106,13 @@ kotlinGradleBom = "2.2.0"
 kotlinKsp = "2.3.0"
 kotlinxCoroutines = "1.10.2"
 kotlinxCollectionsImmutable = "0.4.0"
-kotlinxDateTime = "0.7.1"
-kotlinxIoCore = "0.8.0"
-kotlinxSerialization = "1.9.0"
+kotlinxDateTime = "0.7.0"
+kotlinxIoCore = "0.7.0"
+kotlinxSerialization = "1.8.1"
 ktlint = "1.5.0"
 ktor = "3.3.1"
 kxml2 = "1.0"
+<<<<<<< HEAD
 landscapist = "2.6.1"
 leakcanary = "2.14"
 logbackClassic = "1.5.20"
@@ -97,11 +121,22 @@ minidns = "1.1.1"
 mockito = "5.20.0"
 mockitoKotlin = "6.1.0"
 mokkery = "2.10.2"
+=======
+landscapist = "2.5.0"
+leakcanary = "2.13"
+logbackClassic = "1.5.18"
+mime4j = "0.8.12"
+minidns = "1.0.5"
+mockito = "5.18.0"
+mockitoKotlin = "6.0.0"
+mokkery = "2.10.0"
+>>>>>>> 46746d706b (Revert unecessary changes to fix #8932)
 moshi = "1.15.2"
 mozillaAndroidComponents = "144.0.2"
 okhttp = "5.2.1"
 okio = "3.16.2"
 preferencesFix = "1.1.0"
+<<<<<<< HEAD
 robolectric = "4.16"
 safeContentResolver = "1.0.0"
 searchPreference = "2.7.3"
@@ -167,8 +202,6 @@ androidx-coordinatorlayout = { module = "androidx.coordinatorlayout:coordinatorl
 androidx-core = { module = "androidx.core:core", version.ref = "androidxCore" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidxCoreSplashscreen" }
-androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "androidxDatastore" }
-androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidxDatastore" }
 androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "androidxFragment" }
 androidx-fragment-compose = { module = "androidx.fragment:fragment-compose", version.ref = "androidxFragment" }
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "androidxFragment" }
@@ -194,6 +227,7 @@ androidx-preference = { module = "androidx.preference:preference", version.ref =
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidxRecyclerView" }
 androidx-swiperefreshlayout = { module = "androidx.swiperefreshlayout:swiperefreshlayout", version.ref = "androidxSwiperefreshlayout" }
 androidx-test-core = { module = "androidx.test:core", version.ref = "androidxTestCore" }
+androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidxTestEspresso" }
 androidx-test-ext-junit-ktx = { module = "androidx.test.ext:junit-ktx", version.ref = "androidxTestExt" }
 androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidxTestRules" }
@@ -283,6 +317,7 @@ turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version.ref = "xmlpull" }
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
+
 
 [bundles]
 shared-kmp-common = [
