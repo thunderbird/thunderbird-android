@@ -1,0 +1,1537 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>UI Architecture - Thunderbird for Android - Developer Documentation</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Developer Documentation for the Thunderbird for Android project.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../assets/theme/last-changed.css">
+        <link rel="stylesheet" href="../assets/theme/navigation.css">
+        <link rel="stylesheet" href="../assets/theme/pagetoc.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./architecture/ui-architecture.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <style>
+.mdbook-alerts {
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border-left: 0.25em solid var(--mdbook-alerts-color);
+}
+
+.mdbook-alerts > *:first-child {
+  margin-top: 0;
+}
+
+.mdbook-alerts > *:last-child {
+  margin-bottom: 0;
+}
+
+.mdbook-alerts-title {
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+  line-height: 1;
+  color: var(--mdbook-alerts-color);
+  text-transform: capitalize;
+}
+
+.mdbook-alerts-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+  background-color: currentColor;
+  -webkit-mask: no-repeat center / 100%;
+  mask: no-repeat center / 100%;
+  -webkit-mask-image: var(--mdbook-alerts-icon);
+  mask-image: var(--mdbook-alerts-icon);
+}
+
+.mdbook-alerts-note {
+  --mdbook-alerts-color: rgb(9, 105, 218);
+  /* https://icon-sets.iconify.design/material-symbols/info-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16v-4q0-.425-.288-.712T12 11q-.425 0-.712.288T11 12v4q0 .425.288.713T12 17m0-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-tip {
+  --mdbook-alerts-color: rgb(26, 127, 55);
+  /* https://icon-sets.iconify.design/material-symbols/lightbulb-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 22q-.825 0-1.412-.587T10 20h4q0 .825-.587 1.413T12 22m-3-3q-.425 0-.712-.288T8 18q0-.425.288-.712T9 17h6q.425 0 .713.288T16 18q0 .425-.288.713T15 19zm-.75-3q-1.725-1.025-2.738-2.75T4.5 9.5q0-3.125 2.188-5.312T12 2q3.125 0 5.313 2.188T19.5 9.5q0 2.025-1.012 3.75T15.75 16zm.6-2h6.3q1.125-.8 1.738-1.975T17.5 9.5q0-2.3-1.6-3.9T12 4Q9.7 4 8.1 5.6T6.5 9.5q0 1.35.613 2.525T8.85 14M12 14"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-important {
+  --mdbook-alerts-color: rgb(130, 80, 223);
+  /* https://icon-sets.iconify.design/material-symbols/chat-info-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 7q.425 0 .713-.288T13 6q0-.425-.288-.712T12 5q-.425 0-.712.288T11 6q0 .425.288.713T12 7m0 8q.425 0 .713-.288T13 14v-4q0-.425-.288-.712T12 9q-.425 0-.712.288T11 10v4q0 .425.288.713T12 15m-6 3l-2.3 2.3q-.475.475-1.088.213T2 19.575V4q0-.825.588-1.412T4 2h16q.825 0 1.413.588T22 4v12q0 .825-.587 1.413T20 18zm-.85-2H20V4H4v13.125zM4 16V4z"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-warning {
+  --mdbook-alerts-color: rgb(154, 103, 0);
+  /* https://icon-sets.iconify.design/material-symbols/warning-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M2.725 21q-.275 0-.5-.137t-.35-.363q-.125-.225-.137-.488t.137-.512l9.25-16q.15-.25.388-.375T12 3q.25 0 .488.125t.387.375l9.25 16q.15.25.138.513t-.138.487q-.125.225-.35.363t-.5.137zm1.725-2h15.1L12 6zM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18m0-3q.425 0 .713-.288T13 14v-3q0-.425-.288-.712T12 10q-.425 0-.712.288T11 11v3q0 .425.288.713T12 15m0-2.5"%2F%3E%3C%2Fsvg%3E');
+}
+
+.mdbook-alerts-caution {
+  --mdbook-alerts-color: rgb(207, 34, 46);
+  /* https://icon-sets.iconify.design/material-symbols/brightness-alert-outline-rounded/ */
+  --mdbook-alerts-icon: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="24" height="24" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17m0-4q.425 0 .713-.288T13 12V8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8v4q0 .425.288.713T12 13m-3.35 7H6q-.825 0-1.412-.587T4 18v-2.65L2.075 13.4q-.275-.3-.425-.662T1.5 12q0-.375.15-.737t.425-.663L4 8.65V6q0-.825.588-1.412T6 4h2.65l1.95-1.925q.3-.275.663-.425T12 1.5q.375 0 .738.15t.662.425L15.35 4H18q.825 0 1.413.588T20 6v2.65l1.925 1.95q.275.3.425.663t.15.737q0 .375-.15.738t-.425.662L20 15.35V18q0 .825-.587 1.413T18 20h-2.65l-1.95 1.925q-.3.275-.662.425T12 22.5q-.375 0-.737-.15t-.663-.425zm.85-2l2.5 2.5l2.5-2.5H18v-3.5l2.5-2.5L18 9.5V6h-3.5L12 3.5L9.5 6H6v3.5L3.5 12L6 14.5V18zm2.5-6"%2F%3E%3C%2Fsvg%3E');
+}
+
+</style>
+<h1 id="-ui-architecture"><a class="header" href="#-ui-architecture">🎨 UI Architecture</a></h1>
+<p>The UI is built using Jetpack Compose with a component-based architecture following a modified Model-View-Intent (MVI) pattern. While we refer to it as MVI, our implementation uses “Events” instead of “Intents” for user interactions and “Actions” for use case calls. This architecture provides a unidirectional data flow, clear separation of concerns, and improved testability.</p>
+<h2 id="-component-hierarchy"><a class="header" href="#-component-hierarchy">📱 Component Hierarchy</a></h2>
+<p>The UI components are organized in a hierarchical structure:</p>
+<pre class="mermaid">graph TD
+    subgraph UI_ARCHITECTURE[&quot;UI Architecture&quot;]
+        SCREENS[Screens]
+        COMPONENTS[Components]
+        DESIGN[Design System Components]
+        THEME[Theme]
+    end
+
+    SCREENS --&gt; COMPONENTS
+    COMPONENTS --&gt; DESIGN
+    DESIGN --&gt; THEME
+
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef screen fill:#99ccff,stroke:#000000,color:#000000
+    classDef component fill:#99ff99,stroke:#000000,color:#000000
+    classDef design fill:#ffcc99,stroke:#000000,color:#000000
+    classDef theme fill:#ffff99,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class UI_ARCHITECTURE ui_layer
+    class SCREENS screen
+    class COMPONENTS component
+    class DESIGN design
+    class THEME theme
+</pre>
+<h3 id="-screens"><a class="header" href="#-screens">🖥️ Screens</a></h3>
+<ul>
+<li>Top-level composables that represent a full screen in the application</li>
+<li>Typically associated with a specific route in the navigation graph</li>
+<li>Responsible for orchestrating components and managing screen-level state</li>
+<li>Connected to ViewModels that handle interaction logic and state management</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-kotlin">@Composable
+fun AccountSettingsScreen(
+    viewModel: AccountSettingsViewModel = koinViewModel(),
+    onNavigateNext: () -&gt; Unit,
+    onNavigateBack: () -&gt; Unit,
+) {
+    val (state, dispatch) = viewModel.observe { effect -&gt;
+        when (effect) {
+            AccountSettingsEffect.NavigateNext -&gt; onNavigateNext()
+            AccountSettingsEffect.NavigateBack -&gt; onNavigateBack()
+        }
+    }
+
+    AccountSettingsContent(
+        state = state.value,
+        onEvent = dispatch,
+    )
+}
+</code></pre>
+<h3 id="-components"><a class="header" href="#-components">🧩 Components</a></h3>
+<ul>
+<li>Reusable UI elements that encapsulate specific functionality</li>
+<li>Can be composed of multiple smaller components</li>
+<li>Follow a clear input-output model with immutable state passed in and events emitted out</li>
+<li>Designed to be reusable across different screens</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-kotlin">@Composable
+fun AccountSettingsContent(
+    state: AccountSettingsState,
+    onEvent: (AccountSettingsEvent) -&gt; Unit,
+) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = stringResource(R.string.account_settings_title),
+                onNavigateBack = { onEvent(AccountSettingsEvent.BackClicked) },
+            )
+        },
+    ) {
+        when {
+            state.isLoading -&gt; LoadingIndicator()
+            state.error != null -&gt; ErrorView(
+                message = state.error,
+                onRetryClicked = { onEvent(AccountSettingsEvent.RetryClicked) }
+            )
+            state.settings != null -&gt; AccountSettingsForm(
+                settings = state.settings,
+                onSettingChanged = { setting, value -&gt; 
+                    onEvent(AccountSettingsEvent.SettingChanged(setting, value))
+                },
+                onSaveClicked = { onEvent(AccountSettingsEvent.SaveClicked) }
+            )
+        }
+    }
+}
+</code></pre>
+<h3 id="-design-system-components"><a class="header" href="#-design-system-components">🎨 Design System Components</a></h3>
+<ul>
+<li>Foundational UI elements that implement the design system</li>
+<li>Consistent visual language across the application</li>
+<li>Encapsulate styling, theming, and behavior from Material Design 3</li>
+<li>Located in the <code>core:ui:compose:designsystem</code> module for reuse across features</li>
+<li>Built using the <a href="design-system.html">Atomic Design Methodology</a></li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-kotlin">@Composable
+fun PrimaryButton(
+    text: String,
+    onClick: () -&gt; Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    buttonStyle: ButtonStyle = ButtonStyle.Primary,
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        colors = buttonStyle.colors(),
+        shape = MaterialTheme.shapes.medium,
+    ) {
+        Text(text = text)
+    }
+}
+</code></pre>
+<h3 id="-theme"><a class="header" href="#-theme">🎭 Theme</a></h3>
+<ul>
+<li>Defines colors, typography, shapes, and other design tokens</li>
+<li>Supports light and dark modes</li>
+<li>Provides consistent visual appearance across the application</li>
+<li>Implemented using Material Design 3 theming system</li>
+<li>Located in the <code>core:ui:compose:theme2</code> module for reuse across features</li>
+<li>Provides a <code>ThunderbirdTheme2</code> and a <code>K9MailTheme2</code> composable that wraps the MaterialTheme with custom color schemes, typography, and shapes</li>
+<li>Uses Jetpack Compose’s <code>CompositionLocalProvider</code> as a theme provider to make theme components available throughout the app</li>
+</ul>
+<p>For a more detailed explanation of the theming system, including the theme provider implementation, see
+<a href="theme-system.html">Theme System</a>.</p>
+<h2 id="-unidirectional-data-flow"><a class="header" href="#-unidirectional-data-flow">📊 Unidirectional Data Flow</a></h2>
+<p>The UI architecture follows a unidirectional data flow pattern, which is a fundamental concept that ensures data moves
+in a single, well-defined direction throughout the application. This architectural approach creates a predictable and
+maintainable system by enforcing a strict flow of information.</p>
+<h3 id="-what-is-unidirectional-data-flow"><a class="header" href="#-what-is-unidirectional-data-flow">🔄 What is Unidirectional Data Flow?</a></h3>
+<p>Unidirectional data flow is a design pattern where:</p>
+<ol>
+<li>Data travels in one direction only</li>
+<li>State changes are predictable and traceable</li>
+<li>Components have clear, single responsibilities</li>
+<li>The UI is a pure function of the application state</li>
+</ol>
+<p>In our implementation, the flow follows this cycle:</p>
+<ol>
+<li><strong>User Interaction</strong>: The user interacts with the UI (e.g., clicks a button)</li>
+<li><strong>Event Dispatch</strong>: The UI captures this interaction as an Event and dispatches it to the ViewModel</li>
+<li><strong>Event Processing</strong>: The ViewModel processes the Event and determines what Action to take</li>
+<li><strong>Action Execution</strong>: The ViewModel executes an Action, typically by calling a Use Case</li>
+<li><strong>Domain Logic</strong>: The Use Case performs business logic, often involving repositories</li>
+<li><strong>Result Return</strong>: The Use Case returns a Result to the ViewModel</li>
+<li><strong>State Update</strong>: The ViewModel updates the State based on the Result</li>
+<li><strong>UI Rendering</strong>: The UI observes the State change and re-renders accordingly</li>
+<li><strong>Effect Handling</strong>: For one-time actions like navigation, the ViewModel emits an Effect that the UI handles</li>
+</ol>
+<p>This cycle ensures that data flows in a single direction: UI → ViewModel → Domain → ViewModel → UI.</p>
+<pre class="mermaid">flowchart LR
+    User([User]) --&gt; |Interaction| UI
+    UI --&gt; |Event| ViewModel
+    ViewModel --&gt; |Action| Domain
+    Domain --&gt; |Result| ViewModel
+    ViewModel --&gt; |State| UI
+    ViewModel --&gt; |Effect| UI
+    UI --&gt; |Render| User
+</pre>
+<h3 id="-benefits-of-unidirectional-data-flow"><a class="header" href="#-benefits-of-unidirectional-data-flow">🌟 Benefits of Unidirectional Data Flow</a></h3>
+<p>Unidirectional data flow provides numerous advantages over bidirectional or unstructured data flow patterns:</p>
+<ol>
+<li>
+<p><strong>Predictability</strong>: Since data flows in only one direction, the system behavior becomes more predictable and easier to reason about.</p>
+</li>
+<li>
+<p><strong>Debugging</strong>: Tracing issues becomes simpler because you can follow the data flow from source to destination without worrying about circular dependencies.</p>
+</li>
+<li>
+<p><strong>State Management</strong>: With a single source of truth (the ViewModel’s state), there’s no risk of inconsistent state across different parts of the application.</p>
+</li>
+<li>
+<p><strong>Testability</strong>: Each component in the flow can be tested in isolation with clear inputs and expected outputs.</p>
+</li>
+<li>
+<p><strong>Separation of Concerns</strong>: Each component has a well-defined responsibility:</p>
+<ul>
+<li>UI: Render state and capture user interactions</li>
+<li>ViewModel: Process events, update state, and emit effects</li>
+<li>Domain: Execute business logic</li>
+</ul>
+</li>
+<li>
+<p><strong>Scalability</strong>: The pattern scales well as the application grows because new features can follow the same consistent pattern.</p>
+</li>
+<li>
+<p><strong>Maintainability</strong>: Code is easier to maintain because changes in one part of the flow don’t unexpectedly affect other parts.</p>
+</li>
+<li>
+<p><strong>Concurrency</strong>: Reduces race conditions and timing issues since state updates happen in a controlled, sequential manner.</p>
+</li>
+</ol>
+<p>We leverage unidirectional data flow in our MVI implementation to ensure that the UI remains responsive, predictable,
+and easy to test.</p>
+<h2 id="-model-view-intent-mvi"><a class="header" href="#-model-view-intent-mvi">🔄 Model-View-Intent (MVI)</a></h2>
+<p>The UI layer follows the Model-View-Intent (MVI) pattern (with our Events/Effects/Actions adaptation as noted above), which
+provides a unidirectional data flow and clear separation between UI state and UI logic.</p>
+<pre class="mermaid">graph LR
+    subgraph UI[UI Layer]
+        VIEW[View]
+        VIEW_MODEL[ViewModel]
+    end
+
+    subgraph DOMAIN[Domain Layer]
+        USE_CASE[Use Cases]
+    end
+
+    VIEW --&gt; |Events| VIEW_MODEL
+    VIEW_MODEL --&gt; |State| VIEW
+    VIEW_MODEL --&gt; |Effects| VIEW
+    VIEW_MODEL --&gt; |Actions| USE_CASE
+    USE_CASE --&gt; |Results| VIEW_MODEL
+
+    classDef ui_layer fill:#d9e9ff,stroke:#000000,color:#000000
+    classDef view fill:#7fd3e0,stroke:#000000,color:#000000
+    classDef view_model fill:#cc99ff,stroke:#000000,color:#000000
+    classDef domain_layer fill:#d9ffd9,stroke:#000000,color:#000000
+    classDef use_case fill:#99ffcc,stroke:#000000,color:#000000
+
+    linkStyle default stroke:#999,stroke-width:2px
+
+    class UI ui_layer
+    class VIEW view
+    class VIEW_MODEL view_model
+    class DOMAIN domain_layer
+    class USE_CASE use_case
+</pre>
+<p><strong>Key components</strong>:</p>
+<ul>
+<li><strong>👁️ <a href="ui-architecture.html#-view">View</a></strong>: Renders the UI based on the current state and sends user events to the ViewModel</li>
+<li><strong>🧠 <a href="ui-architecture.html#-viewmodel">ViewModel</a></strong>: Processes user events, converting them into actions and sending them to the Domain Layer. It also maps the results to a state and sends state updates to the UI.</li>
+<li><strong>🧪 <a href="ui-architecture.html#-use-cases">Use Cases</a></strong>: Encapsulate business logic and interact with repositories to perform data operations. They return results to the ViewModel, which updates the state.</li>
+</ul>
+<p><strong>Unidirectional Data flow</strong>:</p>
+<ul>
+<li><strong>📊 <a href="ui-architecture.html#-state">State</a></strong>: Immutable representation of the UI state. States are the single source of truth for the UI and represent everything that can be displayed on the screen.</li>
+<li><strong>🎮 <a href="ui-architecture.html#-events">Events</a></strong>: User interactions or system events that are passed to the ViewModel to be processed. Events trigger state changes or side effects.</li>
+<li><strong>🔔 <a href="ui-architecture.html#-effects">Effects</a></strong>: One-time side effects that don’t belong in the state, such as navigation actions, showing toasts, etc.</li>
+<li><strong>⚡ <a href="ui-architecture.html#-actions">Actions</a></strong>: Operations triggered by the ViewModel to interact with the domain layer.</li>
+<li><strong>📊 <a href="ui-architecture.html#-results">Results</a></strong>: Responses from the domain layer that are processed by the ViewModel to update the state.</li>
+</ul>
+<h3 id="-components-1"><a class="header" href="#-components-1">🧩 Components</a></h3>
+<p>The MVI architecture is implemented using the following components:</p>
+<h4 id="-view"><a class="header" href="#-view">👁️ View</a></h4>
+<ul>
+<li>Represents the UI layer in the MVI pattern</li>
+<li>Composed of Jetpack Compose components (Screens, Components, etc.)</li>
+<li>Responsible for rendering the UI state and capturing user interactions</li>
+<li>Sends events to the ViewModel and receives state updates</li>
+<li>Purely presentational with no business logic</li>
+</ul>
+<p>In our architecture, the View is implemented using Jetpack Compose and consists of:</p>
+<ol>
+<li><strong>Screen Composables</strong>: Top-level composables that represent a full screen</li>
+<li><strong>Content Composables</strong>: Composables that render the UI based on the state</li>
+<li><strong>Component Composables</strong>: Reusable UI elements</li>
+</ol>
+<p>Example of a View implementation:</p>
+<pre><code class="language-kotlin">// Screen Composable (part of the View)
+@Composable
+internal fun AccountSettingsScreen(
+    onNavigateNext: () -&gt; Unit,
+    onNavigateBack: () -&gt; Unit,
+    viewModel: AccountSettingsViewModel = koinViewModel(),
+) {
+    // Observe state and handle effects
+    val (state, dispatch) = viewModel.observe { effect -&gt;
+        when (effect) {
+            AccountSettingsEffect.NavigateNext -&gt; onNavigateNext()
+            AccountSettingsEffect.NavigateBack -&gt; onNavigateBack()
+        }
+    }
+
+    // Content Composable (also part of the View)
+    AccountSettingsContent(
+        state = state.value,
+        onEvent = dispatch,
+    )
+}
+
+// Content Composable (part of the View)
+@Composable
+private fun AccountSettingsContent(
+    state: AccountSettingsState,
+    onEvent: (AccountSettingsEvent) -&gt; Unit,
+) {
+    // Render UI based on state
+    when {
+        state.isLoading -&gt; LoadingIndicator()
+        state.error != null -&gt; ErrorView(
+            message = state.error,
+            onRetryClicked = { onEvent(AccountSettingsEvent.RetryClicked) }
+        )
+        state.settings != null -&gt; AccountSettingsForm(
+            settings = state.settings,
+            onSettingChanged = { setting, value -&gt; 
+                onEvent(AccountSettingsEvent.SettingChanged(setting, value))
+            },
+            onSaveClicked = { onEvent(AccountSettingsEvent.SaveClicked) }
+        )
+    }
+}
+</code></pre>
+<p>The View is responsible for:</p>
+<ul>
+<li>Rendering the UI based on the current state</li>
+<li>Capturing user interactions and converting them to events</li>
+<li>Sending events to the ViewModel</li>
+<li>Handling side effects (like navigation)</li>
+<li>Maintaining a clear separation from business logic</li>
+</ul>
+<h4 id="-viewmodel"><a class="header" href="#-viewmodel">🧠 ViewModel</a></h4>
+<ul>
+<li>Acts as the mediator between the View and the Domain layer</li>
+<li>Processes events from the View and updates state</li>
+<li>Coordinates with use cases for business logic</li>
+<li>Exposes state as a StateFlow for the View to observe</li>
+<li>Emits side effects for one-time actions like navigation</li>
+</ul>
+<p>The ViewModel is implemented using the <code>BaseViewModel</code> class, which provides the core functionality for the MVI pattern:</p>
+<pre><code class="language-kotlin">abstract class BaseViewModel&lt;STATE, EVENT, EFFECT&gt;(
+    initialState: STATE,
+) : ViewModel(),
+    UnidirectionalViewModel&lt;STATE, EVENT, EFFECT&gt; {
+
+    private val _state = MutableStateFlow(initialState)
+    override val state: StateFlow&lt;STATE&gt; = _state.asStateFlow()
+
+    private val _effect = MutableSharedFlow&lt;EFFECT&gt;()
+    override val effect: SharedFlow&lt;EFFECT&gt; = _effect.asSharedFlow()
+
+    /**
+     * Updates the [STATE] of the ViewModel.
+     */
+    protected fun updateState(update: (STATE) -&gt; STATE) {
+        _state.update(update)
+    }
+
+    /**
+     * Emits a side effect.
+     */
+    protected fun emitEffect(effect: EFFECT) {
+        viewModelScope.launch {
+            _effect.emit(effect)
+        }
+    }
+}
+</code></pre>
+<p>Example of a ViewModel implementation:</p>
+<pre><code class="language-kotlin">class AccountViewModel(
+    private val getAccount: GetAccount,
+    private val updateAccount: UpdateAccount,
+) : BaseViewModel&lt;AccountState, AccountEvent, AccountEffect&gt;(
+    initialState = AccountState()
+) {
+    // Handle events from the UI
+    override fun event(event: AccountEvent) {
+        when (event) {
+            is AccountEvent.LoadAccount -&gt; loadAccount(event.accountId)
+            is AccountEvent.UpdateAccount -&gt; saveAccount(event.account)
+            is AccountEvent.BackClicked -&gt; emitEffect(AccountEffect.NavigateBack)
+        }
+    }
+
+    // Load account data
+    private fun loadAccount(accountId: String) {
+        viewModelScope.launch {
+            // Update state to show loading
+            updateState { it.copy(isLoading = true) }
+
+            // Call use case to get account
+            val account = getAccount(accountId)
+
+            // Update state with account data
+            updateState { 
+                it.copy(
+                    isLoading = false,
+                    account = account
+                )
+            }
+        }
+    }
+
+    // Save account changes
+    private fun saveAccount(account: Account) {
+        viewModelScope.launch {
+            // Update state to show loading
+            updateState { it.copy(isLoading = true) }
+
+            // Call use case to update account
+            val result = updateAccount(account)
+
+            // Handle result
+            if (result.isSuccess) {
+                updateState { it.copy(isLoading = false) }
+                emitEffect(AccountEffect.NavigateBack)
+            } else {
+                updateState { 
+                    it.copy(
+                        isLoading = false,
+                        error = "Failed to save account"
+                    )
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<h4 id="-use-cases"><a class="header" href="#-use-cases">🧪 Use Cases</a></h4>
+<ul>
+<li>Encapsulate business logic in the domain layer</li>
+<li>Follow the single responsibility principle</li>
+<li>Independent of UI and framework concerns</li>
+<li>Can be easily tested in isolation</li>
+<li>Invoked by ViewModels through Actions</li>
+<li>Implemented using the <code>operator fun invoke</code> pattern for cleaner, more concise code</li>
+</ul>
+<p>Use Cases represent the business logic of the application and are part of the domain layer. They encapsulate specific operations that the application can perform, such as creating an account, fetching data, or updating settings. Use cases should be implemented using the <code>operator fun invoke</code> pattern, which allows them to be called like functions.</p>
+<div class="mdbook-alerts mdbook-alerts-note">
+<p class="mdbook-alerts-title">
+  <span class="mdbook-alerts-icon"></span>
+  note
+</p>
+<p>Use Cases are only required when there needs to be business logic (such as validation, transformation, or complex operations). For simple CRUD operations or direct data access with no additional logic, ViewModels can use repositories directly. This approach reduces unnecessary abstraction layers while still maintaining clean architecture principles.</p>
+</div>
+<p>Example of a Use Case:</p>
+<pre><code class="language-kotlin">// Use Case interface using operator fun invoke pattern
+fun interface CreateAccount {
+    suspend operator fun invoke(accountState: AccountState): AccountCreatorResult
+}
+
+// Use Case implementation
+class CreateAccountImpl(
+    private val accountCreator: AccountCreator,
+    private val accountValidator: AccountValidator,
+) : CreateAccount {
+
+    override suspend operator fun invoke(accountState: AccountState): AccountCreatorResult {
+        // Validate account data
+        val validationResult = accountValidator.validate(accountState)
+        if (validationResult is ValidationResult.Failure) {
+            return AccountCreatorResult.Error.Validation(validationResult.errors)
+        }
+
+        // Create account
+        return try {
+            val accountUuid = accountCreator.createAccount(accountState)
+            AccountCreatorResult.Success(accountUuid)
+        } catch (e: Exception) {
+            AccountCreatorResult.Error.Creation(e.message ?: "Unknown error")
+        }
+    }
+}
+</code></pre>
+<p>Use Cases are typically:</p>
+<ul>
+<li>Injected into ViewModels</li>
+<li>Invoked in response to user events</li>
+<li>Responsible for orchestrating repositories and other domain services</li>
+<li>Returning results that the ViewModel can use to update the UI state</li>
+</ul>
+<p>The separation of Use Cases from ViewModels allows for:</p>
+<ul>
+<li>Better testability of business logic</li>
+<li>Reuse of business logic across different features</li>
+<li>Clear separation of concerns</li>
+<li>Easier maintenance and evolution of the codebase</li>
+</ul>
+<h3 id="data-flow-components"><a class="header" href="#data-flow-components">Data Flow Components</a></h3>
+<h4 id="-state"><a class="header" href="#-state">📊 State</a></h4>
+<ul>
+<li>Immutable data classes representing the UI state</li>
+<li>Single source of truth for the UI</li>
+<li>Exposed as a StateFlow from the ViewModel</li>
+<li>Rendered by Compose UI components</li>
+</ul>
+<p><strong>Example: State in Action</strong></p>
+<p>Here’s a complete example showing how state is defined, updated, and consumed:</p>
+<pre><code class="language-kotlin">// 1. Define the state
+data class AccountSettingsState(
+    val isLoading: Boolean = false,
+    val settings: AccountSettings? = null,
+    val error: String? = null,
+)
+
+// 2. Update state in ViewModel
+class AccountSettingsViewModel(
+    private val getSettings: GetAccountSettings,
+) : BaseViewModel&lt;AccountSettingsState, AccountSettingsEvent, AccountSettingsEffect&gt;(
+    initialState = AccountSettingsState(isLoading = true)
+) {
+    init {
+        loadSettings()
+    }
+
+    private fun loadSettings() {
+        viewModelScope.launch {
+            try {
+                val settings = getSettings()
+                // Update state with loaded settings
+                updateState { it.copy(isLoading = false, settings = settings, error = null) }
+            } catch (e: Exception) {
+                // Update state with error
+                updateState { it.copy(isLoading = false, settings = null, error = e.message) }
+            }
+        }
+    }
+
+    override fun event(event: AccountSettingsEvent) {
+        when (event) {
+            is AccountSettingsEvent.RetryClicked -&gt; {
+                // Update state to show loading and retry
+                updateState { it.copy(isLoading = true, error = null) }
+                loadSettings()
+            }
+            // Handle other events...
+        }
+    }
+}
+
+// 3. Consume state in UI
+@Composable
+fun AccountSettingsContent(
+    state: AccountSettingsState,
+    onEvent: (AccountSettingsEvent) -&gt; Unit,
+) {
+    when {
+        state.isLoading -&gt; {
+            // Show loading UI
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.Center)
+            )
+        }
+        state.error != null -&gt; {
+            // Show error UI
+            ErrorView(
+                message = state.error,
+                onRetryClicked = { onEvent(AccountSettingsEvent.RetryClicked) }
+            )
+        }
+        state.settings != null -&gt; {
+            // Show settings form
+            AccountSettingsForm(
+                settings = state.settings,
+                onSettingChanged = { setting, value -&gt; 
+                    onEvent(AccountSettingsEvent.SettingChanged(setting, value))
+                }
+            )
+        }
+    }
+}
+</code></pre>
+<h4 id="-events"><a class="header" href="#-events">🎮 Events</a></h4>
+<ul>
+<li>Represent user interactions or system events</li>
+<li>Passed from the UI to the ViewModel</li>
+<li>Trigger state updates or side effects</li>
+</ul>
+<p><strong>Example: Events in Action</strong></p>
+<p>Here’s a complete example showing how events are defined, dispatched, and handled:</p>
+<pre><code class="language-kotlin">// 1. Define events
+sealed interface AccountSettingsEvent {
+    data class SettingChanged(val setting: Setting, val value: Any) : AccountSettingsEvent
+    data object SaveClicked : AccountSettingsEvent
+    data object RetryClicked : AccountSettingsEvent
+    data object BackClicked : AccountSettingsEvent
+}
+
+// 2. Handle events in ViewModel
+class AccountSettingsViewModel(
+    private val saveSettings: SaveAccountSettings,
+) : BaseViewModel&lt;AccountSettingsState, AccountSettingsEvent, AccountSettingsEffect&gt;(
+    initialState = AccountSettingsState()
+) {
+    override fun event(event: AccountSettingsEvent) {
+        when (event) {
+            is AccountSettingsEvent.SettingChanged -&gt; {
+                // Update state with new setting value
+                updateState { state -&gt;
+                    val updatedSettings = state.settings?.copy() ?: return@updateState state
+                    updatedSettings.updateSetting(event.setting, event.value)
+                    state.copy(settings = updatedSettings)
+                }
+            }
+            is AccountSettingsEvent.SaveClicked -&gt; saveAccountSettings()
+            is AccountSettingsEvent.RetryClicked -&gt; loadSettings()
+            is AccountSettingsEvent.BackClicked -&gt; 
+                emitEffect(AccountSettingsEffect.NavigateBack)
+        }
+    }
+
+    private fun saveAccountSettings() {
+        viewModelScope.launch {
+            updateState { it.copy(isLoading = true) }
+
+            val result = saveSettings(state.value.settings!!)
+
+            if (result.isSuccess) {
+                emitEffect(AccountSettingsEffect.ShowMessage("Settings saved"))
+                emitEffect(AccountSettingsEffect.NavigateBack)
+            } else {
+                updateState { it.copy(
+                    isLoading = false,
+                    error = "Failed to save settings"
+                )}
+            }
+        }
+    }
+
+    // Other methods...
+}
+
+// 3. Dispatch events from UI
+@Composable
+fun AccountSettingsContent(
+    state: AccountSettingsState,
+    onEvent: (AccountSettingsEvent) -&gt; Unit,
+) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        if (state.settings != null) {
+            // Setting fields
+            for (setting in state.settings.items) {
+                SettingItem(
+                    setting = setting,
+                    onValueChanged = { newValue -&gt;
+                        // Dispatch SettingChanged event
+                        onEvent(AccountSettingsEvent.SettingChanged(setting, newValue))
+                    }
+                )
+            }
+
+            // Save button
+            Button(
+                onClick = { 
+                    // Dispatch SaveClicked event
+                    onEvent(AccountSettingsEvent.SaveClicked) 
+                },
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text("Save")
+            }
+        }
+
+        // Back button
+        TextButton(
+            onClick = { 
+                // Dispatch BackClicked event
+                onEvent(AccountSettingsEvent.BackClicked) 
+            }
+        ) {
+            Text("Back")
+        }
+    }
+}
+</code></pre>
+<h4 id="-effects"><a class="header" href="#-effects">🔔 Effects</a></h4>
+<ul>
+<li>Represent one-time side effects that don’t belong in the state</li>
+<li>Emitted by the ViewModel to trigger navigation, show messages, or perform other one-time actions</li>
+<li>Handled by the UI layer (Screen composables) to execute the appropriate action</li>
+<li>Implemented using Kotlin’s <code>SharedFlow</code> for asynchronous, non-blocking delivery</li>
+</ul>
+<p>Effects are essential for handling actions that should happen only once and shouldn’t be part of the UI state. Common use cases for effects include:</p>
+<ul>
+<li>Navigation (e.g., navigating to another screen)</li>
+<li>Showing transient UI elements (e.g., snackbars, toasts)</li>
+<li>Playing sounds or haptic feedback</li>
+<li>Triggering system actions (e.g., sharing content, opening URLs)</li>
+</ul>
+<p><strong>Example: Effects in Action</strong></p>
+<p>Here’s a simplified example showing how effects are defined, emitted, and handled:</p>
+<pre><code class="language-kotlin">// 1. Define effects
+sealed interface AccountSettingsEffect {
+    data object NavigateBack : AccountSettingsEffect
+    data class ShowMessage(val message: String) : AccountSettingsEffect
+}
+
+// 2. Emit effects from ViewModel
+class AccountSettingsViewModel : BaseViewModel&lt;AccountSettingsState, AccountSettingsEvent, AccountSettingsEffect&gt;(
+    initialState = AccountSettingsState()
+) {
+    override fun event(event: AccountSettingsEvent) {
+        when (event) {
+            is AccountSettingsEvent.SaveClicked -&gt; {
+                // Save settings and show success message
+                emitEffect(AccountSettingsEffect.ShowMessage("Settings saved"))
+                emitEffect(AccountSettingsEffect.NavigateBack)
+            }
+            is AccountSettingsEvent.BackClicked -&gt; 
+                emitEffect(AccountSettingsEffect.NavigateBack)
+        }
+    }
+}
+
+// 3. Handle effects in UI
+@Composable
+fun AccountSettingsScreen(
+    onNavigateBack: () -&gt; Unit,
+    viewModel: AccountSettingsViewModel = koinViewModel(),
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    val (state, dispatch) = viewModel.observe { effect -&gt;
+        when (effect) {
+            AccountSettingsEffect.NavigateBack -&gt; onNavigateBack()
+            is AccountSettingsEffect.ShowMessage -&gt; {
+                CoroutineScope(Dispatchers.Main).launch {
+                    snackbarHostState.showSnackbar(effect.message)
+                }
+            }
+        }
+    }
+
+    // Screen content with snackbar host...
+}
+</code></pre>
+<h4 id="-actions"><a class="header" href="#-actions">⚡ Actions</a></h4>
+<ul>
+<li>Represent calls to domain layer use cases</li>
+<li>Triggered by the ViewModel in response to events</li>
+<li>Bridge between UI and domain layers</li>
+<li>Execute business logic and return results to the ViewModel</li>
+</ul>
+<p>Example:</p>
+<pre><code class="language-kotlin">// In a domain layer repository interface
+interface AccountRepository {
+    suspend fun getAccount(accountId: String): Account
+    suspend fun updateAccount(account: Account): Result&lt;Unit&gt;
+    suspend fun deleteAccount(accountId: String): Result&lt;Unit&gt;
+}
+
+// Use case with operator fun invoke pattern (recommended approach)
+// In a domain layer use case interface
+fun interface UpdateAccount {
+    suspend operator fun invoke(account: Account): Result&lt;Unit&gt;
+}
+
+// Use case implementation
+class UpdateAccountImpl(
+    private val accountRepository: AccountRepository
+) : UpdateAccount {
+    override suspend operator fun invoke(account: Account): Result&lt;Unit&gt; {
+        return accountRepository.updateAccount(account)
+    }
+}
+
+// In the ViewModel
+class AccountSettingsViewModel(
+    private val updateAccount: UpdateAccount,
+) : BaseViewModel&lt;AccountSettingsState, AccountSettingsEvent, AccountSettingsEffect&gt;(
+    initialState = AccountSettingsState()
+) {
+    // Event handler
+    override fun event(event: AccountSettingsEvent) {
+        when (event) {
+            is AccountSettingsEvent.SaveClicked -&gt; saveAccount() // Triggers an action
+        }
+    }
+
+    // Action
+    private fun saveAccount() {
+        viewModelScope.launch {
+            updateState { it.copy(isLoading = true) }
+
+            // Call to domain layer use case (the action) using invoke operator
+            val result = updateAccount(currentAccount)
+
+            when (result) {
+                is Result.Success -&gt; {
+                    updateState { it.copy(isLoading = false) }
+                    emitEffect(AccountSettingsEffect.NavigateBack)
+                }
+                is Result.Error -&gt; {
+                    updateState { 
+                        it.copy(
+                            isLoading = false,
+                            error = result.message
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<h4 id="-results-outcomes"><a class="header" href="#-results-outcomes">📊 Results (Outcomes)</a></h4>
+<ul>
+<li>Represent the outcome of actions executed by use cases</li>
+<li>Can be success or error</li>
+<li>Used by the ViewModel to update the state or emit effects</li>
+</ul>
+<p><strong>Example:</strong></p>
+<pre><code class="language-kotlin">// Result types for account creation
+sealed interface AccountCreatorResult {
+    data class Success(val accountUuid: String) : AccountCreatorResult
+
+    sealed interface Error : AccountCreatorResult {
+        data class Validation(val errors: List&lt;ValidationError&gt;) : Error
+        data class Creation(val message: String) : Error
+        data class Network(val exception: NetworkException) : Error
+    }
+}
+
+// In ViewModel
+private fun handleResult(result: AccountCreatorResult) {
+    when (result) {
+        is AccountCreatorResult.Success -&gt; {
+            // Update state with success
+            updateState { it.copy(isLoading = false, error = null) }
+            // Emit navigation effect
+            emitEffect(Effect.NavigateNext(AccountUuid(result.accountUuid)))
+        }
+        is AccountCreatorResult.Error -&gt; {
+            // Update state with error
+            updateState { it.copy(isLoading = false, error = result) }
+            // Optionally emit effect for error handling
+            when (result) {
+                is AccountCreatorResult.Error.Network -&gt; 
+                    emitEffect(Effect.ShowNetworkError(result.exception))
+                else -&gt; { /* Handle other errors */ }
+            }
+        }
+    }
+}
+</code></pre>
+<h2 id="-navigation"><a class="header" href="#-navigation">🧭 Navigation</a></h2>
+<p>The application uses the Jetpack Navigation Compose library for navigation between screens:</p>
+<ul>
+<li><strong>📱 Navigation Graph</strong>: Defines the screens and their relationships</li>
+<li><strong>🔗 Navigation Arguments</strong>: Type-safe arguments passed between destinations</li>
+<li><strong>🔙 Back Stack Management</strong>: Handles the navigation back stack</li>
+<li><strong>↩️ Deep Linking</strong>: Supports deep linking to specific screens</li>
+</ul>
+<h3 id="navigation-setup"><a class="header" href="#navigation-setup">Navigation Setup</a></h3>
+<p>To set up navigation in the app, you need to:</p>
+<ol>
+<li>Define route constants</li>
+<li>Create a NavHost with composable destinations</li>
+<li>Handle navigation callbacks in screens</li>
+<li>Use ViewModels to emit navigation effects</li>
+</ol>
+<p>Example:</p>
+<pre><code class="language-kotlin">// Define route constants
+private const val ROUTE_HOME = "home"
+private const val ROUTE_SETTINGS = "settings"
+private const val ROUTE_DETAILS = "details/{itemId}"
+
+@Composable
+fun AppNavHost(
+    onFinish: () -&gt; Unit,
+) {
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = ROUTE_HOME,
+    ) {
+        composable(route = ROUTE_HOME) {
+            HomeScreen(
+                onNavigateToSettings = { navController.navigate(ROUTE_SETTINGS) },
+                onNavigateToDetails = { itemId -&gt; 
+                    navController.navigate("details/$itemId") 
+                },
+                viewModel = koinViewModel(),
+            )
+        }
+
+        composable(route = ROUTE_SETTINGS) {
+            SettingsScreen(
+                onBack = { navController.popBackStack() },
+                onFinish = onFinish,
+                viewModel = koinViewModel(),
+            )
+        }
+
+        composable(
+            route = ROUTE_DETAILS,
+            arguments = listOf(
+                navArgument("itemId") { type = NavType.StringType }
+            )
+        ) { backStackEntry -&gt;
+            val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
+            DetailsScreen(
+                itemId = itemId,
+                onBack = { navController.popBackStack() },
+                viewModel = koinViewModel(),
+            )
+        }
+    }
+}
+</code></pre>
+<h3 id="navigation-in-screens"><a class="header" href="#navigation-in-screens">Navigation in Screens</a></h3>
+<p>In your screen composables, you handle navigation by observing effects from the ViewModel:</p>
+<pre><code class="language-kotlin">@Composable
+fun HomeScreen(
+    onNavigateToSettings: () -&gt; Unit,
+    onNavigateToDetails: (String) -&gt; Unit,
+    viewModel: HomeViewModel,
+) {
+    val (state, dispatch) = viewModel.observe { effect -&gt;
+        when (effect) {
+            is HomeEffect.NavigateToSettings -&gt; onNavigateToSettings()
+            is HomeEffect.NavigateToDetails -&gt; onNavigateToDetails(effect.itemId)
+        }
+    }
+
+    // Screen content
+}
+</code></pre>
+<h3 id="navigation-in-viewmodels"><a class="header" href="#navigation-in-viewmodels">Navigation in ViewModels</a></h3>
+<p>In your ViewModels, you emit navigation effects:</p>
+<pre><code class="language-kotlin">class HomeViewModel : BaseViewModel&lt;HomeState, HomeEvent, HomeEffect&gt;(
+    initialState = HomeState()
+) {
+    override fun event(event: HomeEvent) {
+        when (event) {
+            is HomeEvent.SettingsClicked -&gt; emitEffect(HomeEffect.NavigateToSettings)
+            is HomeEvent.ItemClicked -&gt; emitEffect(HomeEffect.NavigateToDetails(event.itemId))
+        }
+    }
+}
+</code></pre>
+<h2 id="-complete-end-to-end-example"><a class="header" href="#-complete-end-to-end-example">🔄 Complete End-to-End Example</a></h2>
+<p>Here’s a complete example of how all the components work together in a real-world scenario, using the CreateAccount feature:</p>
+<h3 id="1-define-the-contract"><a class="header" href="#1-define-the-contract">1. Define the Contract</a></h3>
+<p>First, define the contract that specifies the State, Events, and Effects:</p>
+<pre><code class="language-kotlin">interface CreateAccountContract {
+
+    interface ViewModel : UnidirectionalViewModel&lt;State, Event, Effect&gt;
+
+    data class State(
+        override val isLoading: Boolean = true,
+        override val error: Error? = null,
+    ) : LoadingErrorState&lt;Error&gt;
+
+    sealed interface Event {
+        data object CreateAccount : Event
+        data object OnBackClicked : Event
+    }
+
+    sealed interface Effect {
+        data class NavigateNext(val accountUuid: AccountUuid) : Effect
+        data object NavigateBack : Effect
+    }
+}
+</code></pre>
+<h3 id="2-implement-the-viewmodel"><a class="header" href="#2-implement-the-viewmodel">2. Implement the ViewModel</a></h3>
+<p>Next, implement the ViewModel that handles events, updates state, and emits effects:</p>
+<pre><code class="language-kotlin">class CreateAccountViewModel(
+    private val createAccount: CreateAccount,
+    private val accountStateRepository: AccountStateRepository,
+    initialState: State = State(),
+) : BaseViewModel&lt;State, Event, Effect&gt;(initialState),
+    CreateAccountContract.ViewModel {
+
+    override fun event(event: Event) {
+        when (event) {
+            Event.CreateAccount -&gt; createAccount()
+            Event.OnBackClicked -&gt; maybeNavigateBack()
+        }
+    }
+
+    private fun createAccount() {
+        val accountState = accountStateRepository.getState()
+
+        viewModelScope.launch {
+            updateState { it.copy(isLoading = true, error = null) }
+
+            when (val result = createAccount(accountState)) {
+                is AccountCreatorResult.Success -&gt; showSuccess(AccountUuid(result.accountUuid))
+                is AccountCreatorResult.Error -&gt; showError(result)
+            }
+        }
+    }
+
+    private fun showSuccess(accountUuid: AccountUuid) {
+        updateState {
+            it.copy(
+                isLoading = false,
+                error = null,
+            )
+        }
+
+        viewModelScope.launch {
+            delay(WizardConstants.CONTINUE_NEXT_DELAY)
+            navigateNext(accountUuid)
+        }
+    }
+
+    private fun showError(error: AccountCreatorResult.Error) {
+        updateState {
+            it.copy(
+                isLoading = false,
+                error = error,
+            )
+        }
+    }
+
+    private fun maybeNavigateBack() {
+        if (!state.value.isLoading) {
+            navigateBack()
+        }
+    }
+
+    private fun navigateBack() {
+        viewModelScope.coroutineContext.cancelChildren()
+        emitEffect(Effect.NavigateBack)
+    }
+
+    private fun navigateNext(accountUuid: AccountUuid) {
+        viewModelScope.coroutineContext.cancelChildren()
+        emitEffect(Effect.NavigateNext(accountUuid))
+    }
+}
+</code></pre>
+<h3 id="3-create-the-screen-composable"><a class="header" href="#3-create-the-screen-composable">3. Create the Screen Composable</a></h3>
+<p>Then, create the screen composable that observes the ViewModel and handles effects:</p>
+<pre><code class="language-kotlin">@Composable
+internal fun CreateAccountScreen(
+    onNext: (AccountUuid) -&gt; Unit,
+    onBack: () -&gt; Unit,
+    viewModel: ViewModel,
+    brandNameProvider: BrandNameProvider,
+    modifier: Modifier = Modifier,
+) {
+    val (state, dispatch) = viewModel.observe { effect -&gt;
+        when (effect) {
+            Effect.NavigateBack -&gt; onBack()
+            is Effect.NavigateNext -&gt; onNext(effect.accountUuid)
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        dispatch(Event.CreateAccount)
+    }
+
+    BackHandler {
+        dispatch(Event.OnBackClicked)
+    }
+
+    Scaffold(
+        topBar = {
+            AppTitleTopHeader(
+                title = brandNameProvider.brandName,
+            )
+        },
+        bottomBar = {
+            WizardNavigationBar(
+                onNextClick = {},
+                onBackClick = {
+                    dispatch(Event.OnBackClicked)
+                },
+                state = WizardNavigationBarState(
+                    showNext = false,
+                    isBackEnabled = state.value.error != null,
+                ),
+            )
+        },
+        modifier = modifier,
+    ) { innerPadding -&gt;
+        CreateAccountContent(
+            state = state.value,
+            contentPadding = innerPadding,
+        )
+    }
+}
+</code></pre>
+<h3 id="4-create-the-content-composable"><a class="header" href="#4-create-the-content-composable">4. Create the Content Composable</a></h3>
+<p>Finally, create the content composable that renders the UI based on the state:</p>
+<pre><code class="language-kotlin">@Composable
+private fun CreateAccountContent(
+    state: State,
+    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(contentPadding),
+    ) {
+        when {
+            state.isLoading -&gt; {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+            state.error != null -&gt; {
+                ErrorView(
+                    error = state.error,
+                    modifier = Modifier.align(Alignment.Center),
+                )
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="5-add-to-navigation"><a class="header" href="#5-add-to-navigation">5. Add to Navigation</a></h3>
+<p>Add the screen to the navigation graph:</p>
+<pre><code class="language-kotlin">NavHost(
+    navController = navController,
+    startDestination = ROUTE_HOME,
+) {
+    // Other composables...
+
+    composable(route = NESTED_NAVIGATION_CREATE_ACCOUNT) {
+        CreateAccountScreen(
+            onNext = { accountUuid -&gt; onFinish(AccountSetupRoute.AccountSetup(accountUuid.value)) },
+            onBack = { navController.popBackStack() },
+            viewModel = koinViewModel&lt;CreateAccountViewModel&gt;(),
+            brandNameProvider = koinInject(),
+        )
+    }
+}
+</code></pre>
+<p>This example demonstrates the complete flow from UI to ViewModel to Domain and back, showing how all the components work together in a real-world scenario.</p>
+<h2 id="-component-interactions-and-state-changes"><a class="header" href="#-component-interactions-and-state-changes">🔄 Component Interactions and State Changes</a></h2>
+<p>Understanding how components interact and how state changes flow through the system is crucial for working with our MVI architecture. Here’s a detailed explanation of the interaction flow:</p>
+<pre class="mermaid">sequenceDiagram
+    participant User
+    participant View
+    participant ViewModel
+    participant UseCase
+    participant Repository
+
+    User-&gt;&gt;View: User Interaction
+    View-&gt;&gt;ViewModel: Event
+    ViewModel-&gt;&gt;ViewModel: Process Event
+    ViewModel-&gt;&gt;UseCase: Action (Execute Use Case)
+    UseCase-&gt;&gt;Repository: Data Operation
+    Repository--&gt;&gt;UseCase: Result
+    UseCase--&gt;&gt;ViewModel: Result
+    ViewModel-&gt;&gt;ViewModel: Update State
+    ViewModel--&gt;&gt;View: New State
+    View--&gt;&gt;User: UI Update
+
+    Note over ViewModel,View: Side Effect (if needed)
+    ViewModel-&gt;&gt;View: Effect
+    View-&gt;&gt;User: One-time Action (e.g., Navigation)
+</pre>
+<h3 id="interaction-flow"><a class="header" href="#interaction-flow">Interaction Flow</a></h3>
+<ol>
+<li><strong>User Interaction</strong>: The user interacts with the UI (e.g., clicks a button, enters text)</li>
+<li><strong>Event Dispatch</strong>: The View captures this interaction and dispatches an Event to the ViewModel</li>
+<li><strong>Event Processing</strong>: The ViewModel processes the Event and determines what action to take</li>
+<li><strong>Action Execution</strong>: The ViewModel executes an Action, typically by calling a Use Case</li>
+<li><strong>Domain Logic</strong>: The Use Case executes business logic, often involving repositories or other domain services</li>
+<li><strong>Result Handling</strong>: The Use Case returns a result to the ViewModel</li>
+<li><strong>State Update</strong>: The ViewModel updates its State based on the result</li>
+<li><strong>UI Update</strong>: The View observes the State change and updates the UI accordingly</li>
+<li><strong>Side Effects (if needed)</strong>: For one-time actions like navigation, the ViewModel emits an Effect that the View handles</li>
+</ol>
+<h3 id="state-changes"><a class="header" href="#state-changes">State Changes</a></h3>
+<p>State changes follow a unidirectional flow:</p>
+<ol>
+<li><strong>State Immutability</strong>: The State is an immutable data class that represents the entire UI state</li>
+<li><strong>Single Source of Truth</strong>: The ViewModel is the single source of truth for the State</li>
+<li><strong>State Updates</strong>: Only the ViewModel can update the State, using the <code>updateState</code> method</li>
+<li><strong>State Observation</strong>: The View observes the State using <code>collectAsStateWithLifecycle()</code> and recomposes when it changes</li>
+<li><strong>State Rendering</strong>: The View renders the UI based on the current State</li>
+</ol>
+<p>Example of state changes in the ViewModel:</p>
+<pre><code class="language-kotlin">// Initial state
+val initialState = AccountSettingsState(isLoading = false, settings = null, error = null)
+
+// Update state to show loading
+updateState { it.copy(isLoading = true, error = null) }
+
+// Update state with loaded settings
+updateState { it.copy(isLoading = false, settings = loadedSettings, error = null) }
+
+// Update state to show error
+updateState { it.copy(isLoading = false, error = "Failed to load settings") }
+</code></pre>
+<h3 id="component-responsibilities"><a class="header" href="#component-responsibilities">Component Responsibilities</a></h3>
+<p>Each component has specific responsibilities in the interaction flow:</p>
+<ol>
+<li><strong>View</strong>:
+<ul>
+<li>Render UI based on State</li>
+<li>Capture user interactions</li>
+<li>Dispatch Events to ViewModel</li>
+<li>Handle Effects (e.g., navigation)</li>
+</ul>
+</li>
+<li><strong>ViewModel</strong>:
+<ul>
+<li>Process Events</li>
+<li>Execute Actions (Use Cases)</li>
+<li>Update State</li>
+<li>Emit Effects</li>
+</ul>
+</li>
+<li><strong>Use Cases</strong>:
+<ul>
+<li>Execute business logic</li>
+<li>Coordinate with repositories and domain services</li>
+<li>Return results to ViewModel</li>
+</ul>
+</li>
+<li><strong>Repositories</strong>:
+<ul>
+<li>Provide data access</li>
+<li>Handle data operations</li>
+<li>Return data to Use Cases</li>
+</ul>
+</li>
+</ol>
+<p>This clear separation of responsibilities ensures that each component focuses on its specific role, making the codebase more maintainable, testable, and scalable.</p>
+<h2 id="-accessibility"><a class="header" href="#-accessibility">♿ Accessibility</a></h2>
+<p>The UI is designed with accessibility in mind:</p>
+<ul>
+<li><strong>🔍 Content Scaling</strong>: Support for font scaling and dynamic text sizes</li>
+<li><strong>🎙️ Screen Readers</strong>: Semantic properties for screen reader support</li>
+<li><strong>🎯 Touch Targets</strong>: Appropriately sized touch targets</li>
+<li><strong>🎨 Color Contrast</strong>: Sufficient color contrast for readability</li>
+<li><strong>⌨️ Keyboard Navigation</strong>: Support for keyboard navigation</li>
+</ul>
+<footer id="last-change">Last change: <time datetime="2025-09-15">2025-09-15</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/e5ee4ca">e5ee4ca</a></footer>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../architecture/feature-modules.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../architecture/theme-system.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../architecture/feature-modules.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../architecture/theme-system.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../assets/theme/mermaid.min.js"></script>
+        <script src="../assets/theme/mermaid-init.js"></script>
+        <script src="../assets/theme/navigation.js"></script>
+        <script src="../assets/theme/pagetoc.js"></script>
+
+
+
+    </div>
+    </body>
+</html>
