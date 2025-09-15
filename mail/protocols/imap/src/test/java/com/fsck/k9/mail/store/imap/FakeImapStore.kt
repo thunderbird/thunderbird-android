@@ -9,6 +9,9 @@ class FakeImapStore : ImapStore {
     val hasOpenConnections: Boolean
         get() = openConnectionCount != 0
 
+    override val combinedPrefix: String?
+        get() = null
+
     override fun checkSettings() {
         throw UnsupportedOperationException("not implemented")
     }
@@ -24,5 +27,9 @@ class FakeImapStore : ImapStore {
 
     override fun closeAllConnections() {
         openConnectionCount = 0
+    }
+
+    override fun fetchImapPrefix() {
+        throw UnsupportedOperationException("not implemented")
     }
 }

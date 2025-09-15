@@ -8,6 +8,10 @@ dependencies {
     implementation(projects.core.logging.api)
 
     implementation(projects.legacy.core)
+    // Required for MigrationTo107
+    implementation(projects.mail.common)
+    implementation(projects.mail.protocols.imap)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.mime4j.core)
     implementation(libs.commons.io)

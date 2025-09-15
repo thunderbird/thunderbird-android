@@ -12,7 +12,7 @@ import net.thunderbird.core.logging.legacy.Log;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 88;
+    static final int DB_VERSION = 90;
 
     private final MigrationsHelper migrationsHelper;
 
