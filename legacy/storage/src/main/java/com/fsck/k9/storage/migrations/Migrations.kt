@@ -35,7 +35,7 @@ object Migrations {
         if (oldVersion < 86) MigrationTo86(db, migrationsHelper).addFoldersPushEnabledColumn()
         if (oldVersion < 87) MigrationTo87(db, migrationsHelper).addFoldersSyncEnabledColumn()
         if (oldVersion < 88) MigrationTo88(db, migrationsHelper).addFoldersVisibleColumn()
-        if (oldVersion < 89) MigrationTo89(db, migrationsHelper).addAccountIdColumn()
         if (oldVersion < 90) MigrationTo90(db, migrationsHelper).removeImapPrefixFromFolderServerId()
+        if (oldVersion < 91) MigrationTo91(db, migrationsHelper).addAccountIdColumn()
     }
 }
