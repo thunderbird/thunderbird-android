@@ -40,7 +40,7 @@ class MessageStoreManagerTest {
 
         assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore1)
 
-        listenerCaptor.firstValue.onAccountRemoved(account)
+        listenerCaptor.firstValue.onAccountRemoved(account.id)
 
         assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore2)
     }

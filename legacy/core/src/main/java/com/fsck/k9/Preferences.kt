@@ -316,7 +316,7 @@ class Preferences internal constructor(
 
     private fun notifyAccountRemovedListeners(account: LegacyAccountDto) {
         for (listener in accountRemovedListeners) {
-            listener.onAccountRemoved(account)
+            listener.onAccountRemoved(account.id)
         }
     }
 
