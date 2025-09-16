@@ -1,6 +1,7 @@
 package net.thunderbird.app.common.feature.mail
 
 import com.fsck.k9.mailstore.DefaultSpecialFolderUpdater
+import com.fsck.k9.mailstore.LegacyAccountDtoSpecialFolderUpdaterFactory
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
@@ -19,7 +20,7 @@ internal val appCommonFeatureMailModule = module {
         )
     }
 
-    factory {
+    factory<LegacyAccountDtoSpecialFolderUpdaterFactory> {
         DefaultSpecialFolderUpdater.Factory(
             folderRepository = get(),
             specialFolderSelectionStrategy = get(),

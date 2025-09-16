@@ -142,7 +142,7 @@ class DefaultSpecialFolderUpdater private constructor(
         private val preferences: Preferences,
         private val folderRepository: FolderRepository,
         private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
-    ) : SpecialFolderUpdater.Factory<LegacyAccountDto> {
+    ) : LegacyAccountDtoSpecialFolderUpdaterFactory {
         override fun create(account: LegacyAccountDto): SpecialFolderUpdater = DefaultSpecialFolderUpdater(
             preferences = preferences,
             folderRepository = folderRepository,
