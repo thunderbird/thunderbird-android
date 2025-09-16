@@ -144,7 +144,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Running unit tests
-        run: ./gradlew testDebugUnitTest --parallel
+        run: ./gradlew testsOnCi --parallel
 
   dependency-guard:
     name: Quality - Dependency Guard
