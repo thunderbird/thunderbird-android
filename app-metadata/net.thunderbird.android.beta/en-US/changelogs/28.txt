@@ -1,0 +1,2 @@
+Thunderbird for Android version 13.0b2, based on K-9 Mail. Changes include:
+- On IMAP servers with folder prefixes, some folder operations stopped working

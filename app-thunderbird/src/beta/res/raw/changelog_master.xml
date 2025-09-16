@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="13.0b2" versioncode="28" date="2025-09-15">
+        <change>On IMAP servers with folder prefixes, some folder operations stopped working</change>
+    </release>
     <release version="13.0b1" versioncode="26" date="2025-09-02">
         <change>Added new design elements to Message List UI</change>
         <change>Sync logging duration is now limited to 24 hours</change>
