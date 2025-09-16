@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -15,6 +14,11 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
+import androidx.compose.animation.animateContentSize
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.ComposeView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
@@ -23,6 +27,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
@@ -61,6 +66,7 @@ import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
@@ -76,11 +82,19 @@ import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
+import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
+import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
+import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
+import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
@@ -118,6 +132,8 @@ class MessageListFragment :
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccountDto> by inject {
         parametersOf(preferences.storage)
     }
+    private val featureFlagProvider: FeatureFlagProvider by inject()
+    private val featureThemeProvider: FeatureThemeProvider by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -139,6 +155,7 @@ class MessageListFragment :
     private lateinit var fragmentListener: MessageListFragmentListener
 
     private lateinit var recentChangesSnackbar: Snackbar
+    private var coordinatorLayout: CoordinatorLayout? = null
     private var recyclerView: RecyclerView? = null
     private var itemTouchHelper: ItemTouchHelper? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
@@ -317,6 +334,7 @@ class MessageListFragment :
             listItemListener = this,
             appearance = messageListAppearance,
             relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock),
+            featureFlagProvider = featureFlagProvider,
         ).apply {
             activeMessage = this@MessageListFragment.activeMessage
         }
@@ -325,13 +343,6 @@ class MessageListFragment :
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (error == null) {
             inflater.inflate(R.layout.message_list_fragment, container, false).also { view ->
-                val typedValued = TypedValue()
-                requireContext().theme.resolveAttribute(
-                    com.google.android.material.R.attr.colorSurface,
-                    typedValued,
-                    true,
-                )
-
                 setFragmentResultListener(
                     SetupArchiveFolderDialogFragmentFactory.RESULT_CODE_DISMISS_REQUEST_KEY,
                 ) { key, bundle ->
@@ -474,8 +485,63 @@ class MessageListFragment :
 
         recyclerView.adapter = adapter
 
+        if (featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications) == FeatureFlagResult.Enabled) {
+            view.findViewById<ComposeView>(R.id.banner_global_compose_view).apply {
+                setContent {
+                    featureThemeProvider.WithTheme {
+                        InAppNotificationHost(
+                            onActionClick = { },
+                            enabled = persistentSetOf(
+                                DisplayInAppNotificationFlag.BannerGlobalNotifications,
+                                DisplayInAppNotificationFlag.SnackbarNotifications,
+                            ),
+                            onSnackbarNotificationEvent = ::onSnackbarInAppNotificationEvent,
+                            eventFilter = { event ->
+                                val accountUuid = event.notification.accountUuid
+                                accountUuid != null && accounts.any { it.uuid == accountUuid }
+                            },
+                            modifier = Modifier
+                                .animateContentSize()
+                                .onSizeChanged { size ->
+                                    recyclerView.updatePadding(top = size.height)
+                                },
+                        )
+                    }
+                }
+            }
+        }
+
         this.recyclerView = recyclerView
         this.itemTouchHelper = itemTouchHelper
+    }
+
+    private fun requireCoordinatorLayout(): CoordinatorLayout {
+        val coordinatorLayout = coordinatorLayout
+            ?: requireView().findViewById<CoordinatorLayout>(R.id.message_list_coordinator)
+                .also { coordinatorLayout = it }
+
+        return coordinatorLayout ?: error("Coordinator layout not initialized")
+    }
+
+    private suspend fun onSnackbarInAppNotificationEvent(visual: SnackbarVisual) {
+        val (message, action, duration) = visual
+        Snackbar.make(
+            requireCoordinatorLayout(),
+            message,
+            when (duration) {
+                SnackbarDuration.Short -> Snackbar.LENGTH_SHORT
+                SnackbarDuration.Long -> Snackbar.LENGTH_LONG
+                SnackbarDuration.Indefinite -> Snackbar.LENGTH_INDEFINITE
+            },
+        ).apply {
+            if (action != null) {
+                setAction(
+                    action.resolveTitle(),
+                ) {
+                    // TODO.
+                }
+            }
+        }.show()
     }
 
     private val shouldShowRecentChangesHintObserver = Observer<Boolean> { showRecentChangesHint ->
@@ -488,7 +554,7 @@ class MessageListFragment :
     }
 
     private fun initializeRecentChangesSnackbar() {
-        val coordinatorLayout = requireView().findViewById<View>(R.id.message_list_coordinator)
+        val coordinatorLayout = requireCoordinatorLayout()
 
         recentChangesSnackbar = Snackbar
             .make(coordinatorLayout, R.string.changelog_snackbar_text, RECENT_CHANGES_SNACKBAR_DURATION)
@@ -668,6 +734,7 @@ class MessageListFragment :
     }
 
     override fun onDestroyView() {
+        coordinatorLayout = null
         recyclerView = null
         messageListSwipeCallback = null
         itemTouchHelper = null
@@ -1617,6 +1684,11 @@ class MessageListFragment :
             rememberedSelected = null
             adapter.restoreSelected(it)
         }
+
+        messageListItems
+            .map { it.account }
+            .toSet()
+            .forEach(messagingController::checkAuthenticationProblem)
 
         resetActionMode()
         computeBatchDirection()

@@ -30,6 +30,7 @@ import net.thunderbird.feature.notification.api.ui.style.SystemNotificationStyle
  * @see AppNotification
  */
 sealed interface Notification {
+    val accountUuid: String?
     val title: String
     val accessibilityText: String
     val contentText: String?

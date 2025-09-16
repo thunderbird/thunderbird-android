@@ -34,6 +34,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     override val severity: NotificationSeverity = NotificationSeverity.Information
 
     data class Fetching(
+        override val accountUuid: String,
         override val title: String,
         override val accessibilityText: String,
         override val contentText: String?,
@@ -61,6 +62,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
             ): Fetching {
                 val title = getString(resource = Res.string.notification_bg_sync_title)
                 return Fetching(
+                    accountUuid = accountUuid,
                     title = title,
                     accessibilityText = folderName?.let { folderName ->
                         getString(
@@ -83,6 +85,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     }
 
     data class Sending(
+        override val accountUuid: String,
         override val title: String,
         override val accessibilityText: String,
         override val contentText: String?,
@@ -106,6 +109,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
                 accountUuid: String,
                 accountDisplayName: String,
             ): Sending = Sending(
+                accountUuid = accountUuid,
                 title = getString(resource = Res.string.notification_bg_send_title),
                 accessibilityText = getString(
                     resource = Res.string.notification_bg_send_ticker,
@@ -118,6 +122,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
     }
 
     data class SendFailed(
+        override val accountUuid: String,
         override val title: String,
         override val contentText: String?,
         override val channel: NotificationChannel,
@@ -143,6 +148,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
                 accountUuid: String,
                 exception: Exception,
             ): SendFailed = SendFailed(
+                accountUuid = accountUuid,
                 title = getString(resource = Res.string.send_failure_subject),
                 contentText = exception.rootCauseMassage,
                 channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),
@@ -163,7 +169,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
      * @property group The notification group this notification belongs to, if any.
      */
     data class NewMailSingleMail(
-        val accountUuid: String,
+        override val accountUuid: String,
         val accountName: String,
         val messagesNotificationChannelSuffix: String,
         val summary: String,
@@ -208,7 +214,7 @@ sealed class MailNotification : AppNotification(), SystemNotification {
      */
     @ConsistentCopyVisibility
     data class NewMailSummaryMail private constructor(
-        val accountUuid: String,
+        override val accountUuid: String,
         val accountName: String,
         val messagesNotificationChannelSuffix: String,
         override val title: String,

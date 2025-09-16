@@ -6,6 +6,7 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.AuthenticationError
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
+import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.resources.api.Res
 import net.thunderbird.feature.notification.resources.api.notification_authentication_error_text
 import net.thunderbird.feature.notification.resources.api.notification_authentication_error_title
@@ -18,16 +19,25 @@ import org.jetbrains.compose.resources.getString
  */
 @ConsistentCopyVisibility
 data class AuthenticationErrorNotification private constructor(
+    val isIncomingServerError: Boolean,
+    override val accountUuid: String,
+    val accountNumber: Int,
     override val title: String,
     override val contentText: String?,
     override val channel: NotificationChannel,
     override val icon: NotificationIcon = NotificationIcons.AuthenticationError,
 ) : AppNotification(), SystemNotification, InAppNotification {
     override val severity: NotificationSeverity = NotificationSeverity.Fatal
-    override val actions: Set<NotificationAction> = setOf(
-        NotificationAction.Retry,
-        NotificationAction.UpdateServerSettings,
-    )
+    override val actions: Set<NotificationAction> = buildSet {
+        val action = if (isIncomingServerError) {
+            NotificationAction.UpdateIncomingServerSettings(accountUuid, accountNumber)
+        } else {
+            NotificationAction.UpdateOutgoingServerSettings(accountUuid, accountNumber)
+        }
+        add(action)
+        add(NotificationAction.Tap(override = action))
+    }
+    override val inAppNotificationStyle = inAppNotificationStyle { bannerInline() }
 
     override fun asLockscreenNotification(): SystemNotification.LockscreenNotification =
         SystemNotification.LockscreenNotification(
@@ -45,12 +55,17 @@ data class AuthenticationErrorNotification private constructor(
         suspend operator fun invoke(
             accountUuid: String,
             accountDisplayName: String,
+            accountNumber: Int,
+            isIncomingServerError: Boolean,
         ): AuthenticationErrorNotification = AuthenticationErrorNotification(
-            title = getString(
-                resource = Res.string.notification_authentication_error_title,
+            isIncomingServerError = isIncomingServerError,
+            accountUuid = accountUuid,
+            accountNumber = accountNumber,
+            title = getString(resource = Res.string.notification_authentication_error_title),
+            contentText = getString(
+                resource = Res.string.notification_authentication_error_text,
                 accountDisplayName,
             ),
-            contentText = getString(resource = Res.string.notification_authentication_error_text),
             channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),
         )
     }
