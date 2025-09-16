@@ -18,11 +18,11 @@ import org.mockito.kotlin.mock
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class MigrationTo89Test {
+class MigrationTo91Test {
     private val database = createDatabaseVersion88()
     private val account = createAccount()
     private val migrationHelper = createMigrationsHelper(account)
-    private val migration = MigrationTo89(database, migrationHelper)
+    private val migration = MigrationTo91(database, migrationHelper)
 
     @After
     fun tearDown() {
@@ -48,6 +48,24 @@ class MigrationTo89Test {
         assertThat(messages).isNotNull()
         assertThat(messages.size).isEqualTo(1)
         assertThat(messages[0].accountId).isEqualTo(ACCOUNT_UUID)
+    }
+
+    @Test
+    fun `should not fail if account_id column already exists`() {
+        // Arrange
+        migration.addAccountIdColumn()
+
+        // Act
+        migration.addAccountIdColumn()
+
+        // Assert
+        val folders = database.readFolders()
+        assertThat(folders).isNotNull()
+        assertThat(folders.size).isEqualTo(0)
+
+        val messages = database.readMessages()
+        assertThat(messages).isNotNull()
+        assertThat(messages.size).isEqualTo(0)
     }
 
     private fun createAccount(): LegacyAccountDto {
