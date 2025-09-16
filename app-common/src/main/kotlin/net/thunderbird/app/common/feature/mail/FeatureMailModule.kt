@@ -4,6 +4,7 @@ import com.fsck.k9.mailstore.DefaultSpecialFolderUpdater
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
+import net.thunderbird.backend.imap.DefaultImapRemoteFolderCreatorFactory
 import net.thunderbird.backend.imap.ImapRemoteFolderCreatorFactory
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
@@ -40,8 +41,8 @@ internal val appCommonFeatureMailModule = module {
         )
     }
 
-    single {
-        ImapRemoteFolderCreatorFactory(
+    single<ImapRemoteFolderCreatorFactory> {
+        DefaultImapRemoteFolderCreatorFactory(
             logger = get(),
             backendFactory = get(),
         )

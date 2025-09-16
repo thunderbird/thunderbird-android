@@ -7,11 +7,11 @@ import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.pop3.Pop3Store
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
-import com.fsck.k9.mailstore.K9BackendStorageFactory
+import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory
 import net.thunderbird.core.android.account.LegacyAccountDto
 
 class Pop3BackendFactory(
-    private val backendStorageFactory: K9BackendStorageFactory,
+    private val backendStorageFactory: LegacyAccountDtoBackendStorageFactory,
     private val trustedSocketFactory: TrustedSocketFactory,
 ) : BackendFactory {
     override fun createBackend(account: LegacyAccountDto): Backend {
