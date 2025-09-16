@@ -7,7 +7,6 @@ import net.thunderbird.backend.api.folder.RemoteFolderCreator
 import net.thunderbird.backend.imap.ImapRemoteFolderCreatorFactory
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 internal val appCommonFeatureMailModule = module {
@@ -34,19 +33,23 @@ internal val appCommonFeatureMailModule = module {
         )
     }
 
-    single<BackendFactory<BaseAccount>>(named("imap")) {
+    single<BackendFactory<BaseAccount>> {
         BaseAccountImapBackendFactory(
             legacyFactory = get(),
             legacyMapper = get(),
         )
     }
 
+    single {
+        ImapRemoteFolderCreatorFactory(
+            logger = get(),
+            backendFactory = get(),
+        )
+    }
+
     single<RemoteFolderCreator.Factory> {
         RemoteFolderCreatorResolver(
-            imapFactory = ImapRemoteFolderCreatorFactory(
-                logger = get(),
-                backendFactory = get(named("imap")),
-            ),
+            imapFactory = get(),
         )
     }
 }
