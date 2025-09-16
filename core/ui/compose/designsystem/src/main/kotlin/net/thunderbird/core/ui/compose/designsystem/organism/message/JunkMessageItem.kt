@@ -11,6 +11,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderBodyMedium
 
+@Suppress("LongParameterList")
 @Composable
 fun JunkMessageItem(
     sender: String,
@@ -19,6 +20,8 @@ fun JunkMessageItem(
     receivedAt: LocalDateTime,
     avatar: @Composable () -> Unit,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    onLeadingClick: () -> Unit,
     modifier: Modifier = Modifier,
     hasAttachments: Boolean = false,
     threadCount: Int = 0,
@@ -54,6 +57,8 @@ fun JunkMessageItem(
         },
         receivedAt = receivedAt,
         onClick = onClick,
+        onLongClick = onLongClick,
+        onLeadingClick = onLeadingClick,
         colors = if (selected) {
             MessageItemDefaults.selectedMessageItemColors(
                 containerColor = MainTheme.colors.errorContainer,
