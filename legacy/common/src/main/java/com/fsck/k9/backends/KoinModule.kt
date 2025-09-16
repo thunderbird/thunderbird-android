@@ -5,9 +5,6 @@ import com.fsck.k9.backend.imap.BackendIdleRefreshManager
 import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.mail.oauth.OAuth2TokenProviderFactory
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
-import net.thunderbird.backend.api.BackendFactory
-import net.thunderbird.backend.api.folder.RemoteFolderCreator
-import net.thunderbird.backend.imap.ImapRemoteFolderCreatorFactory
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import com.fsck.k9.backend.BackendFactory as LegacyBackendFactory
@@ -34,18 +31,6 @@ val backendsModule = module {
             clientInfoAppVersion = get(named("ClientInfoAppVersion")),
         )
     }
-
-    single<BackendFactory<*>>(named("imap")) {
-        get<ImapBackendFactory>()
-    }
-
-    single<RemoteFolderCreator.Factory>(named("imap")) {
-        ImapRemoteFolderCreatorFactory(
-            logger = get(),
-            backendFactory = get(named("imap")),
-        )
-    }
-
     single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }

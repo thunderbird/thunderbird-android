@@ -1,0 +1,25 @@
+package net.thunderbird.app.common.feature.mail
+
+import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.mailstore.K9BackendStorageFactory
+import net.thunderbird.backend.api.BackendStorageFactory
+import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
+import net.thunderbird.feature.mail.account.api.BaseAccount
+
+class BaseAccountBackendStorageFactory(
+    private val legacyFactory: K9BackendStorageFactory,
+    private val legacyMapper: LegacyAccountDataMapper,
+) : BackendStorageFactory<BaseAccount> {
+    override fun createBackendStorage(account: BaseAccount): BackendStorage {
+        return when (account) {
+            is LegacyAccountDto -> legacyFactory.createBackendStorage(account)
+            is LegacyAccount -> {
+                val legacyAccountDto = legacyMapper.toDto(account)
+                legacyFactory.createBackendStorage(legacyAccountDto)
+            }
+            else -> throw IllegalArgumentException("Unsupported account type: ${account::class.java.name}")
+        }
+    }
+}
