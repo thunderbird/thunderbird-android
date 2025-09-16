@@ -201,6 +201,11 @@ class MessagingControllerWrapper(
         messagingController.markAllMessagesRead(account, folderId)
     }
 
+    fun checkAuthenticationProblem(id: AccountId) {
+        val account = getAccountDtoOrThrow(id)
+        messagingController.checkAuthenticationProblem(account)
+    }
+
     fun isMoveCapable(message: MessageReference) = messagingController.isMoveCapable(message)
     fun isCopyCapable(message: MessageReference) = messagingController.isCopyCapable(message)
 

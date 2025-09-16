@@ -89,7 +89,6 @@ import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
-import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
@@ -1730,7 +1729,7 @@ class MessageListFragment :
         messageListItems
             .map { it.account }
             .toSet()
-            .forEach(messagingController::checkAuthenticationProblem)
+            .forEach { account -> messagingController.checkAuthenticationProblem(account.id) }
 
         resetActionMode()
         computeBatchDirection()
