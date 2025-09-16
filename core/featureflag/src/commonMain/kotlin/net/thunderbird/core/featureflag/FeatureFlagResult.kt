@@ -44,4 +44,9 @@ sealed interface FeatureFlagResult {
 
         return this
     }
+
+    fun isEnabled(): Boolean = this is Enabled
+    fun isDisabled(): Boolean = this is Disabled
+    fun isUnavailable(): Boolean = this is Unavailable
+    fun isDisabledOrUnavailable(): Boolean = this is Disabled || this is Unavailable
 }
