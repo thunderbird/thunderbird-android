@@ -83,6 +83,7 @@ private const val WEEK_DAYS = 7
  *  Defaults to [MessageItemDefaults.defaultContentPadding].
  * @see MessageItemDefaults
  */
+@Suppress("LongParameterList")
 @Composable
 internal fun MessageItem(
     leading: @Composable () -> Unit,

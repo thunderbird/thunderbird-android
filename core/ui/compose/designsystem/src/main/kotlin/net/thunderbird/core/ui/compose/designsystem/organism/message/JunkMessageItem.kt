@@ -11,6 +11,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderBodyMedium
 
+@Suppress("LongParameterList")
 @Composable
 fun JunkMessageItem(
     sender: String,

@@ -39,6 +39,7 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItem
  * @param swapSenderWithSubject If `true`, the sender and subject will be swapped in their display positions.
  * Defaults to `false`.
  */
+@Suppress("LongParameterList")
 @Composable
 fun UnreadMessageItem(
     sender: String,
