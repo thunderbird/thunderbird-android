@@ -19,8 +19,8 @@ val backendsModule = module {
             ) + developmentBackends,
         )
     }
-    single {
-        ImapBackendFactory(
+    single<ImapBackendFactory> {
+        DefaultImapBackendFactory(
             accountManager = get(),
             powerManager = get(),
             idleRefreshManager = get(),

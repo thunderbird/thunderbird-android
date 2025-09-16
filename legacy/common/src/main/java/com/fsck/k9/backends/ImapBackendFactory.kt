@@ -22,8 +22,10 @@ import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
 
+interface ImapBackendFactory : BackendFactory
+
 @Suppress("LongParameterList")
-class ImapBackendFactory(
+class DefaultImapBackendFactory(
     private val accountManager: LegacyAccountDtoManager,
     private val powerManager: PowerManager,
     private val idleRefreshManager: IdleRefreshManager,
@@ -32,7 +34,7 @@ class ImapBackendFactory(
     private val context: Context,
     private val clientInfoAppName: String,
     private val clientInfoAppVersion: String,
-) : BackendFactory {
+) : ImapBackendFactory {
     override fun createBackend(account: LegacyAccountDto): Backend {
         val accountName = account.displayName
         val backendStorage = backendStorageFactory.createBackendStorage(account)
