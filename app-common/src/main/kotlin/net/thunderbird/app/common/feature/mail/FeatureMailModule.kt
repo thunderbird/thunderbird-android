@@ -41,10 +41,12 @@ internal val appCommonFeatureMailModule = module {
         )
     }
 
-    single<RemoteFolderCreator.Factory>(named("imap")) {
-        ImapRemoteFolderCreatorFactory(
-            logger = get(),
-            backendFactory = get(named("imap")),
+    single<RemoteFolderCreator.Factory> {
+        RemoteFolderCreatorResolver(
+            imapFactory = ImapRemoteFolderCreatorFactory(
+                logger = get(),
+                backendFactory = get(named("imap")),
+            ),
         )
     }
 }
