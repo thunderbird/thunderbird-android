@@ -554,6 +554,7 @@ internal class DrawerViewModelTest {
             isInTopGroup = false,
             unreadMessageCount = unreadCount,
             starredMessageCount = starredCount,
+            pathDelimiter = "/",
         )
     }
 

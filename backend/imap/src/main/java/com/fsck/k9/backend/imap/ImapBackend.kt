@@ -14,6 +14,7 @@ import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
+import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 
 class ImapBackend(
     private val accountName: String,
@@ -48,8 +49,8 @@ class ImapBackend(
     override val supportsFolderSubscriptions = true
     override val isPushCapable = true
 
-    override fun refreshFolderList() {
-        commandRefreshFolderList.refreshFolderList()
+    override fun refreshFolderList(): FolderPathDelimiter? {
+        return commandRefreshFolderList.refreshFolderList()
     }
 
     override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {

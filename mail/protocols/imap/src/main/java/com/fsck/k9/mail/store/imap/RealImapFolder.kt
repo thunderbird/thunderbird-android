@@ -73,8 +73,7 @@ internal class RealImapFolder(
     @get:Throws(MessagingException::class)
     private val prefixedName: String
         get() {
-            var prefixedName = ""
-            if (!INBOX.equals(serverId, ignoreCase = true)) {
+            val imapPrefix = if (!INBOX.equals(serverId, ignoreCase = true)) {
                 val connection = synchronized(this) {
                     this.connection ?: connectionManager.getConnection()
                 }
@@ -88,11 +87,13 @@ internal class RealImapFolder(
                         connectionManager.releaseConnection(connection)
                     }
                 }
-                prefixedName = internalImapStore.getCombinedPrefix()
+                internalImapStore.combinedPrefix.orEmpty()
+            } else {
+                ""
             }
-            prefixedName += serverId
+            val normalizedServerId = serverId.removePrefix(imapPrefix)
 
-            return prefixedName
+            return "$imapPrefix$normalizedServerId"
         }
 
     @get:Throws(MessagingException::class)

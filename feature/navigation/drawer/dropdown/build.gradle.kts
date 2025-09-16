@@ -25,6 +25,7 @@ dependencies {
     implementation(projects.core.featureflag)
 
     testImplementation(projects.core.ui.compose.testing)
+    testImplementation(projects.core.logging.testing)
 
     // Fakes
     debugImplementation(projects.feature.account.fake)

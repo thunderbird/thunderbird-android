@@ -50,7 +50,9 @@ val navigationDropDownDrawerModule: Module = module {
     }
 
     single<UseCase.GetDisplayTreeFolder> {
-        GetDisplayTreeFolder()
+        GetDisplayTreeFolder(
+            logger = get(),
+        )
     }
 
     single<UseCase.SyncAccount> {
