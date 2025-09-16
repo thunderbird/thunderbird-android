@@ -75,7 +75,7 @@ class GeneralSettingsDataStore(
             "debug_logging" -> generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
             "sync_debug_logging" -> generalSettingsManager.getConfig().debugging.isSyncLoggingEnabled
             "sensitive_logging" -> generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled
-            "volume_navigation" -> K9.isUseVolumeKeysForNavigation
+            "volume_navigation" -> generalSettingsManager.getConfig().interaction.useVolumeKeysForNavigation
             "enable_telemetry" -> K9.isTelemetryEnabled
             else -> defValue
         }
@@ -115,7 +115,7 @@ class GeneralSettingsDataStore(
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
             "sync_debug_logging" -> setIsSyncLoggingEnabled(isSyncLoggingEnabled = value)
             "sensitive_logging" -> setIsSensitiveLoggingEnabled(isSensitiveLoggingEnabled = value)
-            "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
+            "volume_navigation" -> setUseVolumeKeysForNavigation(value)
             "enable_telemetry" -> setTelemetryEnabled(value)
             else -> return
         }
@@ -625,6 +625,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 debugging = settings.debugging.copy(
                     isSensitiveLoggingEnabled = isSensitiveLoggingEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setUseVolumeKeysForNavigation(useVolumeKeysForNavigation: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                interaction = settings.interaction.copy(
+                    useVolumeKeysForNavigation = useVolumeKeysForNavigation,
                 ),
             )
         }
