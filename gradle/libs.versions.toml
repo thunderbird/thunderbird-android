@@ -134,6 +134,9 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "kotlinKsp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotlessPlugin" }
 dev-mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
 
+# Build plugins
+quality-code-coverage = { id = "net.thunderbird.gradle.plugin.quality.coverage" }
+
 [libraries]
 android-billing = { module = "com.android.billingclient:billing", version.ref = "androidBilling" }
 android-billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "androidBilling" }

@@ -15,7 +15,7 @@ plugins {
 
     id("thunderbird.dependency.check")
     id("thunderbird.quality.spotless.root")
-    id("thunderbird.quality.kover")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
 }
 
 allprojects {

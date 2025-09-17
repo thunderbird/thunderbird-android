@@ -2,7 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("thunderbird.quality.detekt.typed")
-    id("thunderbird.quality.kover")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
     id("thunderbird.quality.spotless")
 }
 
