@@ -30,7 +30,7 @@ class ValidateLogger {
             .filterNot { it.hasNameMatching("ConsoleLogSink.android|ConsoleLogSinkTest.android".toRegex()) }
             .filterNot {
                 // Exclude legacy code that still uses Timber
-                it.hasNameMatching("LogFileWriter|FileLoggerTree|K9|DebugLogConfigurator".toRegex())
+                it.hasNameMatching("LogFileWriter|FileLoggerTree|K9".toRegex())
             }
             .assertFalse(
                 additionalMessage = "No class should use timber.log.Timber import, use net.thunderbird.core.logging.Logger instead."
