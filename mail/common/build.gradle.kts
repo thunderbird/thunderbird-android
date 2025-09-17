@@ -22,3 +22,8 @@ dependencies {
     testImplementation(projects.mail.testing)
     testImplementation(libs.icu4j.charset)
 }
+
+codeCoverage {
+    branchCoverage.set(27)
+    lineCoverage.set(47)
+}

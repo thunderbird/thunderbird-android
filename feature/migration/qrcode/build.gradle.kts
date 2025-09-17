@@ -26,3 +26,8 @@ dependencies {
     testImplementation(projects.core.ui.compose.testing)
     testImplementation(projects.core.ui.compose.theme2.k9mail)
 }
+
+codeCoverage {
+    branchCoverage.set(58)
+    lineCoverage.set(67)
+}
