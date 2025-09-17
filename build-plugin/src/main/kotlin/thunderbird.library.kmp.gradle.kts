@@ -3,7 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("thunderbird.quality.detekt.typed")
-    id("thunderbird.quality.kover")
+    id("net.thunderbird.gradle.plugin.quality.coverage")
     id("thunderbird.quality.spotless")
 }
 
