@@ -1,15 +1,23 @@
 package com.fsck.k9.mail.store.imap
 
+import androidx.annotation.VisibleForTesting
 import com.fsck.k9.mail.ServerSettings
 
 /**
  * Extract IMAP-specific server settings from [ServerSettings]
  */
 object ImapStoreSettings {
-    private const val AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace"
-    private const val PATH_PREFIX_KEY = "pathPrefix"
-    private const val SEND_CLIENT_INFO = "sendClientInfo"
-    private const val USE_COMPRESSION = "useCompression"
+    @VisibleForTesting
+    const val AUTODETECT_NAMESPACE_KEY = "autoDetectNamespace"
+
+    @VisibleForTesting
+    const val PATH_PREFIX_KEY = "pathPrefix"
+
+    @VisibleForTesting
+    const val SEND_CLIENT_INFO = "sendClientInfo"
+
+    @VisibleForTesting
+    const val USE_COMPRESSION = "useCompression"
 
     @JvmStatic
     val ServerSettings.autoDetectNamespace: Boolean
