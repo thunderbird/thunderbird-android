@@ -1,15 +1,15 @@
-package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
+package net.thunderbird.feature.navigation.drawer.siderail.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.AccountsChangeListener
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 
-internal class FakeAccountManager(
+internal class FakeLegacyAccountDtoManager(
     val recordedParameters: MutableList<String> = mutableListOf(),
     private val accounts: List<LegacyAccountDto> = emptyList(),
-) : AccountManager {
+) : LegacyAccountDtoManager {
     override fun getAccounts(): List<LegacyAccountDto> {
         TODO("Not yet implemented")
     }

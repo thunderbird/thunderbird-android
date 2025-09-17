@@ -18,7 +18,7 @@ class AccountStateLoaderTest {
 
     @Test
     fun `loadAccountState() SHOULD return null when accountManager returns null`() = runTest {
-        val accountManager = FakeAccountManager()
+        val accountManager = FakeLegacyAccountDtoManager()
         val testSubject = AccountStateLoader(accountManager)
 
         val result = testSubject.loadAccountState(ACCOUNT_ID_RAW)
@@ -37,7 +37,7 @@ class AccountStateLoaderTest {
                 oAuthState = "oAuthState"
             },
         )
-        val accountManager = FakeAccountManager(accounts = accounts)
+        val accountManager = FakeLegacyAccountDtoManager(accounts = accounts)
         val testSubject = AccountStateLoader(accountManager)
 
         val result = testSubject.loadAccountState(ACCOUNT_ID_RAW)

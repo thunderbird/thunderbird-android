@@ -14,13 +14,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.navigation.drawer.siderail.domain.DomainContract
 import net.thunderbird.feature.navigation.drawer.siderail.domain.entity.DisplayAccount
 
 internal class GetDisplayAccounts(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val messageCountsProvider: MessageCountsProvider,
     private val messageListRepository: MessageListRepository,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,

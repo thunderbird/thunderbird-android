@@ -13,26 +13,28 @@ import com.fsck.k9.mail.store.imap.ImapClientInfo
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.ImapStoreConfig
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
-import com.fsck.k9.mailstore.K9BackendStorageFactory
+import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
+
+interface ImapBackendFactory : BackendFactory
 
 @Suppress("LongParameterList")
-class ImapBackendFactory(
-    private val accountManager: AccountManager,
+class DefaultImapBackendFactory(
+    private val accountManager: LegacyAccountDtoManager,
     private val powerManager: PowerManager,
     private val idleRefreshManager: IdleRefreshManager,
-    private val backendStorageFactory: K9BackendStorageFactory,
+    private val backendStorageFactory: LegacyAccountDtoBackendStorageFactory,
     private val trustedSocketFactory: TrustedSocketFactory,
     private val context: Context,
     private val clientInfoAppName: String,
     private val clientInfoAppVersion: String,
-) : BackendFactory {
+) : ImapBackendFactory {
     override fun createBackend(account: LegacyAccountDto): Backend {
         val accountName = account.displayName
         val backendStorage = backendStorageFactory.createBackendStorage(account)

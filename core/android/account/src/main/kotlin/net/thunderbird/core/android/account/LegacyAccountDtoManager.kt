@@ -4,14 +4,13 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.feature.mail.account.api.AccountManager
 
 @Deprecated(
-    message = "Use net.thunderbird.feature.mail.account.api.AccountManager<TAccount : BaseAccount> instead",
+    message = "Use net.thunderbird.core.android.account.LegacyAccountManager instead",
     replaceWith = ReplaceWith(
-        expression = "AccountManager<LegacyAccount>",
-        "net.thunderbird.feature.mail.account.api.AccountManager",
-        "app.k9mail.legacy.account.LegacyAccount",
+        expression = "LegacyAccountManager",
+        "net.thunderbird.core.android.account.LegacyAccountManager",
     ),
 )
-interface AccountManager : AccountManager<LegacyAccountDto> {
+interface LegacyAccountDtoManager : AccountManager<LegacyAccountDto> {
     override fun getAccounts(): List<LegacyAccountDto>
     override fun getAccountsFlow(): Flow<List<LegacyAccountDto>>
     override fun getAccount(accountUuid: String): LegacyAccountDto?

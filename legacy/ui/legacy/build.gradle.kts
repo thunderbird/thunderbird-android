@@ -16,6 +16,7 @@ dependencies {
     implementation(projects.core.android.contact)
 
     implementation(projects.core.featureflag)
+    implementation(projects.core.logging.api)
     implementation(projects.core.ui.theme.api)
     implementation(projects.feature.launcher)
     implementation(projects.core.common)

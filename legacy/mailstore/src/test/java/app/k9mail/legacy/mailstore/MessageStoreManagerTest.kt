@@ -2,9 +2,9 @@ package app.k9mail.legacy.mailstore
 
 import assertk.assertThat
 import assertk.assertions.isSameInstanceAs
-import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.AccountRemovedListener
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import org.junit.Test
 import org.mockito.kotlin.KStubbing
 import org.mockito.kotlin.argumentCaptor
@@ -23,7 +23,7 @@ class MessageStoreManagerTest {
 
     @Test
     fun `MessageStore instance is reused`() {
-        val accountManager = mock<AccountManager>()
+        val accountManager = mock<LegacyAccountDtoManager>()
         val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
 
         assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore1)
@@ -33,14 +33,14 @@ class MessageStoreManagerTest {
     @Test
     fun `MessageStore instance is removed when account is removed`() {
         val listenerCaptor = argumentCaptor<AccountRemovedListener>()
-        val accountManager = mock<AccountManager> {
+        val accountManager = mock<LegacyAccountDtoManager> {
             doNothingOn { addAccountRemovedListener(listenerCaptor.capture()) }
         }
         val messageStoreManager = MessageStoreManager(accountManager, messageStoreFactory)
 
         assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore1)
 
-        listenerCaptor.firstValue.onAccountRemoved(account)
+        listenerCaptor.firstValue.onAccountRemoved(account.id)
 
         assertThat(messageStoreManager.getMessageStore(account)).isSameInstanceAs(messageStore2)
     }

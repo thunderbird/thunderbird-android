@@ -3,7 +3,7 @@ package com.fsck.k9
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import com.fsck.k9.preferences.UnifiedInboxConfigurator
-import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.DisplaySettings
@@ -22,13 +22,13 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class UnifiedInboxConfiguratorTest {
 
-    private lateinit var accountManager: AccountManager
+    private lateinit var accountManager: LegacyAccountDtoManager
     private lateinit var generalSettingsManager: GeneralSettingsManager
     private lateinit var configurator: UnifiedInboxConfigurator
 
     @Before
     fun setUp() {
-        accountManager = mock(AccountManager::class.java)
+        accountManager = mock(LegacyAccountDtoManager::class.java)
         generalSettingsManager =
             FakeGeneralSettingsManager(
                 GeneralSettings(

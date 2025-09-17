@@ -43,6 +43,7 @@ dependencies {
     implementation(projects.feature.widget.messageList)
 
     implementation(projects.mail.protocols.imap)
+    implementation(projects.backend.imap)
 
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
