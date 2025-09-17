@@ -1,0 +1,50 @@
+name: dependabot PR - Update dependency guard
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
+    paths:
+      - '**/*.gradle'
+      - 'gradle/**'
+      - 'gradlew'
+      - '**/libs.versions.toml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.pull_request.number || 'no-pr' }}
+  cancel-in-progress: true
+
+jobs:
+  update-dependency-guard:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Prepares environment
+        uses: ./.github/actions/setup
+
+      - name: Update dependency guard
+        run: ./gradlew :dependencyGuardBaseline
+
+      - name: Commit and push changes if any
+        # The email address is composed by {user.id}+{user.login}@users.noreply.github.com
+        # See https://api.github.com/users/github-actions%5Bbot%5D for more details.
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(deps): Update dependency guard files on behalf of @dependabot"
+            git push
+          else
+            echo "No changes to commit"
+          fi
