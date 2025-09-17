@@ -1,8 +1,8 @@
 package net.thunderbird.app.common.feature.mail
 
 import assertk.assertThat
-import assertk.assertions.isNotSameAs
-import assertk.assertions.isSameAs
+import assertk.assertions.isNotSameInstanceAs
+import assertk.assertions.isSameInstanceAs
 import kotlin.test.Test
 import net.thunderbird.core.common.mail.Protocols
 
@@ -24,7 +24,7 @@ class RemoteFolderCreatorResolverTest {
         val result = router.create(account)
 
         // Assert
-        assertThat(result).isNotSameAs(NoOpRemoteFolderCreator)
+        assertThat(result).isNotSameInstanceAs(NoOpRemoteFolderCreator)
     }
 
     @Test
@@ -39,6 +39,6 @@ class RemoteFolderCreatorResolverTest {
         val result = router.create(account)
 
         // Assert
-        assertThat(result).isSameAs(NoOpRemoteFolderCreator)
+        assertThat(result).isSameInstanceAs(NoOpRemoteFolderCreator)
     }
 }

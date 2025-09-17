@@ -69,11 +69,13 @@ import java.util.concurrent.Future
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.collections.immutable.persistentSetOf
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.LegacyAccount
@@ -86,6 +88,7 @@ import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
@@ -105,6 +108,8 @@ import org.koin.core.parameter.parametersOf
 private const val MAXIMUM_MESSAGE_SORT_OVERRIDES = 3
 private const val MINIMUM_CLICK_INTERVAL = 200L
 private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
+
+private const val TAG = "MessageListFragment"
 
 class MessageListFragment :
     Fragment(),
@@ -132,6 +137,7 @@ class MessageListFragment :
     }
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val featureThemeProvider: FeatureThemeProvider by inject()
+    private val logger: Logger by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -870,8 +876,10 @@ class MessageListFragment :
                 sortType = sortType,
                 sortAscending = newSortAscendingMap,
             )
-            accountManager.saveAccount(updatedAccount)
-            this.account = updatedAccount
+            lifecycleScope.launch(Dispatchers.IO) {
+                accountManager.saveAccount(updatedAccount)
+                this@MessageListFragment.account = updatedAccount
+            }
         } else {
             K9.sortType = this.sortType
             if (sortAscending == null) {
@@ -1426,17 +1434,24 @@ class MessageListFragment :
             .groupBy { it.folderId }
 
         for ((folderId, messagesInFolder) in folderMap) {
-            val account = accountManager.getAccount(messagesInFolder.first().accountUuid) ?: continue
+            val account = accountManager.getAccount(messagesInFolder.first().accountUuid)
+            if (account == null) {
+                logger.debug(TAG) {
+                    "Account for message ${messagesInFolder.first()} not found, skipping copy/move operation"
+                }
+                continue
+            }
 
-            if (operation == FolderOperation.MOVE) {
-                if (showingThreadedList) {
+            when (operation) {
+                FolderOperation.MOVE if showingThreadedList -> {
                     messagingController.moveMessagesInThread(
                         account.id,
                         folderId,
                         messagesInFolder,
                         destinationFolderId,
                     )
-                } else {
+                }
+                FolderOperation.MOVE -> {
                     messagingController.moveMessages(
                         account.id,
                         folderId,
@@ -1444,15 +1459,15 @@ class MessageListFragment :
                         destinationFolderId,
                     )
                 }
-            } else {
-                if (showingThreadedList) {
+                FolderOperation.COPY if showingThreadedList -> {
                     messagingController.copyMessagesInThread(
                         account.id,
                         folderId,
                         messagesInFolder,
                         destinationFolderId,
                     )
-                } else {
+                }
+                FolderOperation.COPY -> {
                     messagingController.copyMessages(
                         account.id,
                         folderId,

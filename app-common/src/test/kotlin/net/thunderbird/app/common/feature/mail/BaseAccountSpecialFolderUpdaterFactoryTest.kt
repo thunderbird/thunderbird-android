@@ -3,7 +3,7 @@ package net.thunderbird.app.common.feature.mail
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
@@ -27,7 +27,7 @@ class BaseAccountSpecialFolderUpdaterFactoryTest {
         val updater = factory.create(dto)
 
         // Assert
-        assertThat(legacyFactory.lastAccount).isSameAs(dto)
+        assertThat(legacyFactory.lastAccount).isSameInstanceAs(dto)
         assertThat(updater).isInstanceOf(SpecialFolderUpdater::class)
     }
 
@@ -44,8 +44,8 @@ class BaseAccountSpecialFolderUpdaterFactoryTest {
         factory.create(domain)
 
         // Assert
-        assertThat(mapper.lastMapped).isSameAs(domain)
-        assertThat(legacyFactory.lastAccount).isSameAs(dto)
+        assertThat(mapper.lastMapped).isSameInstanceAs(domain)
+        assertThat(legacyFactory.lastAccount).isSameInstanceAs(dto)
     }
 
     @Test

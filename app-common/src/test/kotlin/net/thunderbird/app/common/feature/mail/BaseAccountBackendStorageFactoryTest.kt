@@ -3,7 +3,7 @@ package net.thunderbird.app.common.feature.mail
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
-import assertk.assertions.isSameAs
+import assertk.assertions.isSameInstanceAs
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import org.junit.Test
 
@@ -21,7 +21,7 @@ class BaseAccountBackendStorageFactoryTest {
         factory.createBackendStorage(dto)
 
         // Assert
-        assertThat(legacyFactory.lastAccount).isSameAs(dto)
+        assertThat(legacyFactory.lastAccount).isSameInstanceAs(dto)
     }
 
     @Test
@@ -37,8 +37,8 @@ class BaseAccountBackendStorageFactoryTest {
         factory.createBackendStorage(domain)
 
         // Assert
-        assertThat(mapper.lastMapped).isSameAs(domain)
-        assertThat(legacyFactory.lastAccount).isSameAs(dto)
+        assertThat(mapper.lastMapped).isSameInstanceAs(domain)
+        assertThat(legacyFactory.lastAccount).isSameInstanceAs(dto)
     }
 
     @Test

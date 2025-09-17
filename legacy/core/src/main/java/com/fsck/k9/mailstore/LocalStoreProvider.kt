@@ -24,7 +24,7 @@ class LocalStoreProvider {
         }
     }
 
-    @Throws
+    @Throws(MessagingException::class)
     fun getInstanceByLegacyAccount(account: LegacyAccount): LocalStore {
         val context = DI.get(Context::class.java)
         val legacyAccountMapper = DI.get(LegacyAccountDataMapper::class.java)
