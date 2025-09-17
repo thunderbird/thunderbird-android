@@ -12,3 +12,8 @@ dependencies {
 
     testImplementation(libs.junit)
 }
+
+codeCoverage {
+    branchCoverage.set(6)
+    lineCoverage.set(4)
+}

@@ -18,3 +18,8 @@ dependencies {
     implementation(projects.core.logging.implLegacy)
     implementation(libs.androidx.annotation)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

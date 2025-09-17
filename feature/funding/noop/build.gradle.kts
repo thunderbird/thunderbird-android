@@ -10,3 +10,7 @@ android {
 dependencies {
     api(projects.feature.funding.api)
 }
+
+codeCoverage {
+    lineCoverage.set(0)
+}

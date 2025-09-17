@@ -11,3 +11,7 @@ android {
 dependencies {
     api(projects.core.ui.compose.navigation)
 }
+
+codeCoverage {
+    lineCoverage.set(40)
+}

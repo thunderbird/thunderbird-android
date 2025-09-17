@@ -34,3 +34,8 @@ android {
         }
     }
 }
+
+codeCoverage {
+    branchCoverage.set(45)
+    lineCoverage.set(67)
+}

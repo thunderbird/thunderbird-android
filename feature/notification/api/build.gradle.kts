@@ -52,3 +52,8 @@ compose.resources {
     publicResClass = false
     packageOfResClass = "net.thunderbird.feature.notification.resources.api"
 }
+
+codeCoverage {
+    branchCoverage.set(52)
+    lineCoverage.set(41)
+}

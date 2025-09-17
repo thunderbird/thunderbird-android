@@ -177,3 +177,8 @@ dependencyGuard {
     configuration("fossReleaseRuntimeClasspath")
     configuration("fullReleaseRuntimeClasspath")
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(25)
+}

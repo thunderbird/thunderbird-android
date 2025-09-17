@@ -7,3 +7,7 @@ dependencies {
     api(projects.mail.common)
     api(projects.core.common)
 }
+
+codeCoverage {
+    lineCoverage.set(0)
+}

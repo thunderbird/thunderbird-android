@@ -16,3 +16,8 @@ dependencies {
 
     implementation(libs.androidx.activity)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

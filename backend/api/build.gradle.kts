@@ -10,3 +10,8 @@ dependencies {
     implementation(projects.feature.mail.folder.api)
     api(projects.mail.common)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

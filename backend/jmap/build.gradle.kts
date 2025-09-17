@@ -19,3 +19,8 @@ dependencies {
     testImplementation(projects.backend.testing)
     testImplementation(libs.okhttp.mockwebserver)
 }
+
+codeCoverage {
+    branchCoverage.set(33)
+    lineCoverage.set(42)
+}

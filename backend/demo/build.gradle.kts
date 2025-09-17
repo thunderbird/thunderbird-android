@@ -16,6 +16,11 @@ dependencies {
     testImplementation(projects.mail.testing)
 }
 
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}
+
 tasks.register<UpdateDemoMailbox>("updateDemoMailbox") {
     group = "demo"
     description = "Update mailbox/contents.json from src/main/resources/mailbox contents."

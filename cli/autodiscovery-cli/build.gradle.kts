@@ -17,6 +17,11 @@ dependencies {
     implementation(libs.kxml2)
 }
 
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}
+
 tasks.withType<Tar> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

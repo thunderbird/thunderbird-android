@@ -9,3 +9,7 @@ android {
 dependencies {
     implementation(projects.feature.migration.launcher.api)
 }
+
+codeCoverage {
+    lineCoverage.set(0)
+}
