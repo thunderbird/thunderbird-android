@@ -139,4 +139,22 @@ class FeatureFlagResultTest {
         )
         assertThat(unavailableResult).isEqualTo("Feature is OFF")
     }
+
+    @Test
+    fun `isEnabled, isDisabled, isUnavailable, isDisabledOrUnavailable should return correct values`() {
+        assertThat(FeatureFlagResult.Enabled.isEnabled()).isEqualTo(true)
+        assertThat(FeatureFlagResult.Enabled.isDisabled()).isEqualTo(false)
+        assertThat(FeatureFlagResult.Enabled.isUnavailable()).isEqualTo(false)
+        assertThat(FeatureFlagResult.Enabled.isDisabledOrUnavailable()).isEqualTo(false)
+
+        assertThat(FeatureFlagResult.Disabled.isEnabled()).isEqualTo(false)
+        assertThat(FeatureFlagResult.Disabled.isDisabled()).isEqualTo(true)
+        assertThat(FeatureFlagResult.Disabled.isUnavailable()).isEqualTo(false)
+        assertThat(FeatureFlagResult.Disabled.isDisabledOrUnavailable()).isEqualTo(true)
+
+        assertThat(FeatureFlagResult.Unavailable.isEnabled()).isEqualTo(false)
+        assertThat(FeatureFlagResult.Unavailable.isDisabled()).isEqualTo(false)
+        assertThat(FeatureFlagResult.Unavailable.isUnavailable()).isEqualTo(true)
+        assertThat(FeatureFlagResult.Unavailable.isDisabledOrUnavailable()).isEqualTo(true)
+    }
 }
