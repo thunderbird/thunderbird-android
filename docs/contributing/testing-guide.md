@@ -343,31 +343,73 @@ Run Android instrumentation tests:
 ./gradlew connectedAndroidTest
 ```
 
-Run tests with coverage:
+Run tests with coverage verification:
 
 ```bash
-./gradlew testDebugUnitTestCoverage
+./gradlew koverVerifyDebug
+```
+
+Generate an HTML coverage report:
+
+```bash
+./gradlew koverHtmlReportDebug
 ```
 
 ## 📊 Code Coverage
 
-> **⚠️ Work in Progress ⚠️**
->
-> This section is currently under development and will be updated with specific code coverage rules and guidelines.
+We use the Kover code coverage plugin with project defaults enforced via our Gradle build. Coverage is verified as part of CI and will fail if requirements are not met.
 
-Code coverage helps us understand how much of our codebase is being tested. While we don't currently have strict requirements, we aim for high coverage in critical components.
+Minimum requirements:
+- Branch coverage: at least 70%
+- Line coverage: at least 75%
 
-**Current Approach:**
-- Focus on critical business logic
-- Prioritize user-facing features
-- No strict percentage requirements
-- Quality of tests over quantity
+How to check locally:
+- Verify coverage (fails the build on violations):
 
-**Future Guidelines (Coming Soon):**
-- Code coverage targets by component type
-- Coverage report generation instructions
-- Interpretation guidelines
-- Exemptions for generated/simple code
-- CI/CD integration details
+```bash
+./gradlew koverVerifyDebug
+```
 
-**Remember:** High code coverage doesn't guarantee high-quality tests. Focus on writing meaningful tests that verify correct behavior, not just increasing coverage numbers.
+- For a specific module:
+
+  ```bash
+  ./gradlew :module-name:koverVerifyDebug
+  ```
+- Generate a human-readable HTML report:
+
+  ```bash
+  ./gradlew koverHtmlReportDebug
+  ```
+
+Temporarily disable coverage globally (e.g., for local runs or exceptional CI cases):
+
+- Using Gradle property:
+
+  ```bash
+  ./gradlew check -PcodeCoverageDisabled=true 
+  ```
+- Using environment variable:
+
+  ```bash
+  CODE_COVERAGE_DISABLED=true ./gradlew check
+  ```
+
+Where to find reports:
+- HTML: module/build/reports/kover/html/index.html
+- XML: module/build/reports/kover/xml/report.xml
+
+Scope:
+- Filters are applied automatically to exclude common framework/generated code (Android, Compose, etc.).
+- Targets apply to the aggregated totals reported by Kover for each module/variant.
+
+Exemptions:
+- New code should meet the coverage targets above.
+- Legacy code should be improved over time but is not required to meet targets immediately.
+
+If you believe an exception is warranted (e.g., trivial or generated code), discuss it with maintainers in the PR
+before requesting an exemption.
+
+> [!NOTE]
+> High coverage does not guarantee high-quality tests. Focus on meaningful tests that validate behavior and edge cases
+> while meeting the thresholds above.
+
