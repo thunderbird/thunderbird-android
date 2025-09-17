@@ -33,7 +33,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Update dependency guard
-        run: ./gradlew :dependencyGuardBaseline
+        run: ./gradlew dependencyGuardBaseline
 
       - name: Commit and push changes if any
         # The email address is composed by {user.id}+{user.login}@users.noreply.github.com
