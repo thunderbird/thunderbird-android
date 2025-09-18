@@ -30,7 +30,7 @@ class MessageViewContainerFragment : Fragment() {
             setMenuVisibility(value)
         }
 
-    private var showAccountChip: Boolean = true
+    private var showAccountIndicator: Boolean = true
 
     lateinit var messageReference: MessageReference
         private set
@@ -68,9 +68,9 @@ class MessageViewContainerFragment : Fragment() {
                 ?: error("Missing state $STATE_MESSAGE_REFERENCE")
         }
 
-        showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP) ?: showAccountChip
+        showAccountIndicator = arguments?.getBoolean(ARG_SHOW_ACCOUNT_INDICATOR) ?: showAccountIndicator
 
-        adapter = MessageViewContainerAdapter(this, showAccountChip)
+        adapter = MessageViewContainerAdapter(this, showAccountIndicator)
     }
 
     override fun onAttach(context: Context) {
@@ -230,7 +230,7 @@ class MessageViewContainerFragment : Fragment() {
 
     private class MessageViewContainerAdapter(
         fragment: Fragment,
-        private val showAccountChip: Boolean,
+        private val showAccountIndicator: Boolean,
     ) : FragmentStateAdapter(fragment) {
 
         var messageList: List<MessageListItem> = emptyList()
@@ -260,7 +260,7 @@ class MessageViewContainerFragment : Fragment() {
             check(position in messageList.indices)
 
             val messageReference = messageList[position].messageReference
-            return MessageViewFragment.newInstance(messageReference, showAccountChip)
+            return MessageViewFragment.newInstance(messageReference, showAccountIndicator)
         }
 
         fun getMessageReference(position: Int): MessageReference? {
@@ -304,17 +304,17 @@ class MessageViewContainerFragment : Fragment() {
         private const val VIEW_PAGER_SWIPE_VELOCITY_THRESHOLD = 0.8f
 
         private const val ARG_REFERENCE = "reference"
-        private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
+        private const val ARG_SHOW_ACCOUNT_INDICATOR = "showAccountIndicator"
 
         private const val STATE_MESSAGE_REFERENCE = "messageReference"
 
         fun newInstance(
             reference: MessageReference,
-            showAccountChip: Boolean,
+            isShowAccountIndicator: Boolean,
         ): MessageViewContainerFragment {
             return MessageViewContainerFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
+                ARG_SHOW_ACCOUNT_INDICATOR to isShowAccountIndicator,
             )
         }
     }

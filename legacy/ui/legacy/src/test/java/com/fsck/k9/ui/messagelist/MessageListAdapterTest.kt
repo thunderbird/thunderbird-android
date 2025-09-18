@@ -58,21 +58,21 @@ class MessageListAdapterTest : RobolectricTest() {
     val listItemListener: MessageListItemActionListener = mock()
 
     @Test
-    fun withShowAccountChip_shouldShowAccountChip() {
-        val adapter = createAdapter(showAccountChip = true)
+    fun withShowAccountIndicator_shouldShowAccountIndicator() {
+        val adapter = createAdapter(showAccountIndicator = true)
 
         val view = adapter.createAndBindView()
 
-        assertThat(view.accountChipView).isVisible()
+        assertThat(view.accountIndicatorView).isVisible()
     }
 
     @Test
-    fun withoutShowAccountChip_shouldHideAccountChip() {
-        val adapter = createAdapter(showAccountChip = false)
+    fun withoutShowAccountIndicator_shouldHideAccountIndicator() {
+        val adapter = createAdapter(showAccountIndicator = false)
 
         val view = adapter.createAndBindView()
 
-        assertThat(view.accountChipView).isGone()
+        assertThat(view.accountIndicatorView).isGone()
     }
 
     @Test
@@ -412,7 +412,7 @@ class MessageListAdapterTest : RobolectricTest() {
         showContactPicture: Boolean = true,
         showingThreadedList: Boolean = true,
         backGroundAsReadIndicator: Boolean = false,
-        showAccountChip: Boolean = false,
+        showAccountIndicator: Boolean = false,
         density: UiDensity = UiDensity.Default,
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
@@ -423,7 +423,7 @@ class MessageListAdapterTest : RobolectricTest() {
             showContactPicture,
             showingThreadedList,
             backGroundAsReadIndicator,
-            showAccountChip,
+            showAccountIndicator,
             density,
         )
 
@@ -539,7 +539,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
     fun secondLine(senderOrSubject: String, preview: String) = "$senderOrSubject – $preview"
 
-    val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
+    val View.accountIndicatorView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: View get() = findViewById(R.id.star)
     val View.contactPictureContainerView: View get() = findViewById(R.id.contact_picture_click_area)
     val View.threadCountView: MaterialTextView get() = findViewById(R.id.thread_count)

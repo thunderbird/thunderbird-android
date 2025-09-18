@@ -107,7 +107,7 @@ class MessageViewFragment :
 
     private lateinit var account: LegacyAccountDto
     lateinit var messageReference: MessageReference
-    private var showAccountChip: Boolean = true
+    private var showAccountIndicator: Boolean = true
 
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
     private var isDeleteMenuItemDisabled: Boolean = false
@@ -140,8 +140,8 @@ class MessageViewFragment :
         messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
             ?: error("Invalid argument '$ARG_REFERENCE'")
 
-        showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP)
-            ?: error("Missing argument: '$ARG_SHOW_ACCOUNT_CHIP'")
+        showAccountIndicator = arguments?.getBoolean(ARG_SHOW_ACCOUNT_INDICATOR)
+            ?: error("Missing argument: '$ARG_SHOW_ACCOUNT_INDICATOR'")
 
         if (savedInstanceState != null) {
             wasMessageMarkedAsOpened = savedInstanceState.getBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED)
@@ -173,7 +173,7 @@ class MessageViewFragment :
     }
 
     private fun initializeMessageTopView(messageTopView: MessageTopView) {
-        messageTopView.setShowAccountChip(showAccountChip)
+        messageTopView.setShowAccountIndicator(showAccountIndicator)
 
         messageTopView.setAttachmentCallback(this)
         messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
@@ -995,15 +995,15 @@ class MessageViewFragment :
         const val PROGRESS_THRESHOLD_MILLIS = 500 * 1000
 
         private const val ARG_REFERENCE = "reference"
-        private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
+        private const val ARG_SHOW_ACCOUNT_INDICATOR = "showAccountIndicator"
 
         private const val STATE_WAS_MESSAGE_MARKED_AS_OPENED = "wasMessageMarkedAsOpened"
         private const val STATE_IS_ACTIVE = "isActive"
 
-        fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewFragment {
+        fun newInstance(reference: MessageReference, showAccountIndicator: Boolean): MessageViewFragment {
             return MessageViewFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
+                ARG_SHOW_ACCOUNT_INDICATOR to showAccountIndicator,
             )
         }
     }

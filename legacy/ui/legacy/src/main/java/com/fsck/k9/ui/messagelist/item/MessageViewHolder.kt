@@ -89,10 +89,10 @@ class MessageViewHolder(
                 threadCount = displayThreadCount,
             )
 
-            if (appearance.showAccountChip) {
-                val accountChipDrawable = chipView.drawable.mutate()
-                DrawableCompat.setTint(accountChipDrawable, account.profile.color)
-                chipView.setImageDrawable(accountChipDrawable)
+            if (appearance.showAccountIndicator) {
+                val accountIndicatorDrawable = chipView.drawable.mutate()
+                DrawableCompat.setTint(accountIndicatorDrawable, account.profile.color)
+                chipView.setImageDrawable(accountIndicatorDrawable)
             }
 
             if (appearance.stars) {
@@ -315,7 +315,7 @@ class MessageViewHolder(
                 holder.contactPictureView.isVisible = false
             }
 
-            holder.chipView.isVisible = appearance.showAccountChip
+            holder.chipView.isVisible = appearance.showAccountIndicator
 
             // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
             holder.previewView.maxLines = max(appearance.previewLines, 1)
