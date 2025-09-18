@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.messagelist.item
 
 import androidx.compose.runtime.Composable
+import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -10,6 +11,7 @@ import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessa
 import net.thunderbird.core.ui.compose.designsystem.organism.message.ReadMessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.UnreadMessageItem
 
+@Suppress("LongParameterList")
 @OptIn(ExperimentalTime::class)
 @Composable
 internal fun MessageItemContent(
@@ -20,6 +22,7 @@ internal fun MessageItemContent(
     onLongClick: () -> Unit,
     onAvatarClick: () -> Unit,
     onFavouriteClick: (Boolean) -> Unit,
+    appearance: MessageListAppearance,
 ) {
     when {
         isActive -> ActiveMessageItem(
@@ -34,6 +37,7 @@ internal fun MessageItemContent(
             onFavouriteChange = onFavouriteClick,
             favourite = item.isStarred,
             selected = isSelected,
+            maxPreviewLines = appearance.previewLines,
         )
         item.isRead -> ReadMessageItem(
             sender = "${item.displayName}",
@@ -47,6 +51,7 @@ internal fun MessageItemContent(
             onFavouriteChange = onFavouriteClick,
             favourite = item.isStarred,
             selected = isSelected,
+            maxPreviewLines = appearance.previewLines,
         )
         else -> UnreadMessageItem(
             sender = "${item.displayName}",
@@ -60,6 +65,7 @@ internal fun MessageItemContent(
             onFavouriteChange = onFavouriteClick,
             favourite = item.isStarred,
             selected = isSelected,
+            maxPreviewLines = appearance.previewLines,
         )
     }
 }

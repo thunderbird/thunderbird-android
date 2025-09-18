@@ -3,9 +3,12 @@ package com.fsck.k9.ui.messagelist.item
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
+import com.fsck.k9.FontSizes
+import com.fsck.k9.UiDensity
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
@@ -26,6 +29,7 @@ internal fun MessageItemContentPreview() {
             onLongClick = {},
             onAvatarClick = {},
             onFavouriteClick = {},
+            appearance = fakeMessageListAppearance,
         )
     }
 }
@@ -80,4 +84,16 @@ private val fakeMessageListItem = MessageListItem(
     messageUid = "654321",
     databaseId = 1L,
     threadRoot = 1L,
+)
+
+private val fakeMessageListAppearance = MessageListAppearance(
+    fontSizes = FontSizes(),
+    previewLines = 2,
+    stars = true,
+    senderAboveSubject = false,
+    showContactPicture = true,
+    showingThreadedList = false,
+    backGroundAsReadIndicator = false,
+    showAccountIndicator = true,
+    density = UiDensity.Default,
 )

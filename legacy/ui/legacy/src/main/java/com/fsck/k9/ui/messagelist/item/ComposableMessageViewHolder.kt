@@ -2,6 +2,7 @@ package com.fsck.k9.ui.messagelist.item
 
 import android.content.Context
 import androidx.compose.ui.platform.ComposeView
+import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 
@@ -15,6 +16,7 @@ class ComposableMessageViewHolder(
     private val onLongClick: (MessageListItem) -> Unit,
     private val onAvatarClick: (MessageListItem) -> Unit,
     private val onFavouriteClick: (MessageListItem) -> Unit,
+    private val appearance: MessageListAppearance,
 ) : MessageListViewHolder(composeView) {
 
     var uniqueId: Long = -1L
@@ -32,6 +34,7 @@ class ComposableMessageViewHolder(
                     onLongClick = { onLongClick(item) },
                     onAvatarClick = { onAvatarClick(item) },
                     onFavouriteClick = { onFavouriteClick(item) },
+                    appearance = appearance,
                 )
             }
         }
@@ -46,6 +49,7 @@ class ComposableMessageViewHolder(
             onLongClick: (MessageListItem) -> Unit,
             onFavouriteClick: (MessageListItem) -> Unit,
             onAvatarClick: (MessageListItem) -> Unit,
+            appearance: MessageListAppearance,
         ): ComposableMessageViewHolder {
             val composeView = ComposeView(context)
 
@@ -56,6 +60,7 @@ class ComposableMessageViewHolder(
                 onLongClick = onLongClick,
                 onAvatarClick = onAvatarClick,
                 onFavouriteClick = onFavouriteClick,
+                appearance = appearance,
             )
 
             composeView.tag = holder

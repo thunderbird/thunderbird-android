@@ -295,6 +295,7 @@ class MessageListAdapter internal constructor(
             onLongClick = { listItemListener.onToggleMessageSelection(it) },
             onFavouriteClick = { listItemListener.onToggleMessageFlag(it) },
             onAvatarClick = { listItemListener.onToggleMessageSelection(it) },
+            appearance = appearance,
         )
 
     override fun onBindViewHolder(holder: MessageListViewHolder, position: Int) {
