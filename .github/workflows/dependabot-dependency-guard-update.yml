@@ -22,8 +22,17 @@ jobs:
   update-dependency-guard:
     if: github.actor == 'dependabot[bot]'
     runs-on: ubuntu-latest
+    environment: botmobile
     timeout-minutes: 90
     steps:
+      - name: App Token Generate
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        if: ${{ vars.BOT_CLIENT_ID }}
+        id: app-token
+        with:
+          app-id: ${{ vars.BOT_CLIENT_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -36,11 +45,12 @@ jobs:
         run: ./gradlew :dependencyGuardBaseline
 
       - name: Commit and push changes if any
-        # The email address is composed by {user.id}+{user.login}@users.noreply.github.com
-        # See https://api.github.com/users/github-actions%5Bbot%5D for more details.
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug || 'github-actions'}}
+          APP_USER_ID: ${{ vars.BOT_USER_ID || '41898282' }}
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "${APP_SLUG}"
+          git config --global user.email "${APP_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
           git add .
           if ! git diff --cached --quiet; then
             git commit -m "chore(deps): Update dependency guard files on behalf of @dependabot"
