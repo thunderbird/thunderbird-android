@@ -21,13 +21,33 @@ class RealOAuth2TokenProvider(
     private val authService = AuthorizationService(context)
     private var requestFreshToken = false
 
-    override val primaryEmail: String?
+    override val usernames: Set<String>
         get() {
-            return parseAuthState()
-                .parsedIdToken
-                ?.additionalClaims
-                ?.get("email")
-                ?.toString()
+            val idTokenClaims = parseAuthState().parsedIdToken?.additionalClaims.orEmpty()
+            return buildSet {
+                // https://learn.microsoft.com/en-us/entra/identity-platform/id-token-claims-reference#payload-claims
+                // https://docs.azure.cn/en-us/entra/identity-platform/optional-claims-reference
+                // requires profile scope
+                idTokenClaims["preferred_username"]?.let { add(it.toString()) }
+                // requires email scope
+                idTokenClaims["email"]?.let { add(it.toString()) }
+                // only present for v1.0 tokens
+                idTokenClaims["unique_name"]?.let { add(it.toString()) }
+                // requires profile scope
+                idTokenClaims["upn"]?.let { add(it.toString()) }
+                idTokenClaims["verified_primary_email"]?.let { verifiedPrimaryEmail ->
+                    when (verifiedPrimaryEmail) {
+                        is List<*> -> addAll(verifiedPrimaryEmail.map { it.toString() })
+                        else -> add(verifiedPrimaryEmail.toString())
+                    }
+                }
+                idTokenClaims["verified_secondary_email"]?.let { verifiedSecondaryEmail ->
+                    when (verifiedSecondaryEmail) {
+                        is List<*> -> addAll(verifiedSecondaryEmail.map { it.toString() })
+                        else -> add(verifiedSecondaryEmail.toString())
+                    }
+                }
+            }
         }
 
     @Suppress("TooGenericExceptionCaught")
