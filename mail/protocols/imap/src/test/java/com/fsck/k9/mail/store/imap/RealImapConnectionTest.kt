@@ -1273,7 +1273,7 @@ class RealImapConnectionTest {
     }
 }
 
-class TestTokenProvider(override val primaryEmail: String? = null) : OAuth2TokenProvider {
+class TestTokenProvider(override val usernames: Set<String> = emptySet()) : OAuth2TokenProvider {
     private var invalidationCount = 0
 
     override fun getToken(timeoutMillis: Long): String {
