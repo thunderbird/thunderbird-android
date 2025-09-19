@@ -17,6 +17,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.storage.messages.createFolder
 import com.fsck.k9.storage.messages.readFolders
+import java.io.IOException
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
@@ -220,7 +221,7 @@ class MigrationTo90Test : KoinTest {
     }
 
     @Test
-    fun `given an imap account - when can't fetch imap prefix during the migration - migration should not execute sql queries`() {
+    fun `given an imap account - when can't fetch imap prefix during the migration due to authentication error - migration should not execute sql queries`() {
         // Arrange
         populateDatabase()
         val prefix = "INBOX."
@@ -228,6 +229,43 @@ class MigrationTo90Test : KoinTest {
             imapPrefix = prefix,
             folderPathDelimiter = ".",
             authenticationFailedException = AuthenticationFailedException(message = "failed authenticate"),
+        )
+        val incomingServerSettings = createIncomingServerSettings()
+        val account = createAccount(incomingServerSettings)
+        val migrationHelper = createMigrationsHelper(account)
+        val dbSpy = spy<SQLiteDatabase> { database }
+        val migration = MigrationTo90(
+            db = dbSpy,
+            migrationsHelper = migrationHelper,
+            imapStoreFactory = createImapStoreFactory(imapStore),
+        )
+        val expected = database.readFolders().map { it.serverId }
+        val updateQuery = migration.buildQuery(imapPrefix = prefix)
+
+        // Act
+        migration.removeImapPrefixFromFolderServerId()
+        val actual = database.readFolders().mapNotNull { it.serverId }
+        testLogger.dumpLogs()
+
+        // Assert
+        verify(imapStore, times(1)).fetchImapPrefix()
+        verify(dbSpy, times(0)).execSQL(updateQuery)
+        assertThat(actual)
+            .all {
+                hasSize(expected.size)
+                isEqualTo(expected)
+            }
+    }
+
+    @Test
+    fun `given an imap account - when can't fetch imap prefix during the migration due to network error - migration should not execute sql queries`() {
+        // Arrange
+        populateDatabase()
+        val prefix = "INBOX."
+        val imapStore = createImapStoreSpy(
+            imapPrefix = prefix,
+            folderPathDelimiter = ".",
+            ioException = IOException("failed to fetch"),
         )
         val incomingServerSettings = createIncomingServerSettings()
         val account = createAccount(incomingServerSettings)
@@ -308,6 +346,7 @@ class MigrationTo90Test : KoinTest {
         imapPrefix: String? = null,
         folderPathDelimiter: FolderPathDelimiter = FOLDER_DEFAULT_PATH_DELIMITER,
         authenticationFailedException: AuthenticationFailedException? = null,
+        ioException: IOException? = null,
     ): ImapStore = spy<ImapStore> {
         on { this.combinedPrefix } doReturn imapPrefix
             ?.takeIf { it.isNotBlank() }
@@ -316,6 +355,9 @@ class MigrationTo90Test : KoinTest {
         on { fetchImapPrefix() } doAnswer {
             if (authenticationFailedException != null) {
                 throw authenticationFailedException
+            }
+            if (ioException != null) {
+                throw ioException
             }
         }
     }
