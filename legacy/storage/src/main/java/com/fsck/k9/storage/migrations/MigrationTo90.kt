@@ -21,6 +21,7 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
+import okio.IOException
 import org.intellij.lang.annotations.Language
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -55,22 +56,26 @@ internal class MigrationTo90(
         try {
             logger.verbose(TAG) { "fetching IMAP prefix" }
             imapStore.fetchImapPrefix()
+            val imapPrefix = imapStore.combinedPrefix
+
+            if (imapPrefix?.isNotBlank() == true) {
+                logger.verbose(TAG) { "Imap Prefix ($imapPrefix) detected, updating folder's server_id" }
+                val query = buildQuery(imapPrefix)
+                db.execSQL(query)
+            } else {
+                logger.verbose(TAG) { "No Imap Prefix detected, skipping db migration" }
+            }
+
+            logger.verbose(TAG) { "completed db migration to version 90 for account ${account.uuid}" }
         } catch (e: AuthenticationFailedException) {
-            logger.warn(TAG, e) { "failed to fetch IMAP prefix. skipping db migration" }
-            return
+            logger.warn(TAG, e) {
+                "failed to fetch IMAP prefix due to authentication error. skipping db migration"
+            }
+        } catch (e: IOException) {
+            logger.warn(TAG, e) {
+                "failed to fetch IMAP prefix due to network error. skipping db migration"
+            }
         }
-
-        val imapPrefix = imapStore.combinedPrefix
-
-        if (imapPrefix?.isNotBlank() == true) {
-            logger.verbose(TAG) { "Imap Prefix ($imapPrefix) detected, updating folder's server_id" }
-            val query = buildQuery(imapPrefix)
-            db.execSQL(query)
-        } else {
-            logger.verbose(TAG) { "No Imap Prefix detected, skipping db migration" }
-        }
-
-        logger.verbose(TAG) { "completed db migration to version 90 for account ${account.uuid}" }
     }
 
     private fun createImapStore(account: LegacyAccount): ImapStore {
