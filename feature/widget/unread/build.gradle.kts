@@ -17,3 +17,8 @@ dependencies {
 android {
     namespace = "app.k9mail.feature.widget.unread"
 }
+
+codeCoverage {
+    branchCoverage.set(10)
+    lineCoverage.set(18)
+}

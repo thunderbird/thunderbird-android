@@ -50,3 +50,8 @@ dependencies {
 
     testImplementation(projects.feature.account.fake)
 }
+
+codeCoverage {
+    branchCoverage.set(9)
+    lineCoverage.set(25)
+}

@@ -24,3 +24,7 @@ kotlin {
         }
     }
 }
+
+codeCoverage {
+    branchCoverage.set(30)
+}
