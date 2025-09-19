@@ -1,10 +1,11 @@
 package com.fsck.k9.ui.messagelist.item
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
@@ -24,12 +25,17 @@ internal fun MessageItemContent(
     onFavouriteClick: (Boolean) -> Unit,
     appearance: MessageListAppearance,
 ) {
+    val receivedAt = remember(item.messageDate) {
+        Instant.fromEpochMilliseconds(item.messageDate)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+    }
+
     when {
         isActive -> ActiveMessageItem(
             sender = "${item.displayName}",
             subject = item.subject ?: "n/a",
             preview = item.previewText,
-            receivedAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+            receivedAt = receivedAt,
             avatar = {},
             onClick = onClick,
             onLongClick = onLongClick,
@@ -38,12 +44,15 @@ internal fun MessageItemContent(
             favourite = item.isStarred,
             selected = isSelected,
             maxPreviewLines = appearance.previewLines,
+            threadCount = item.threadCount,
+            hasAttachments = item.hasAttachments,
+            swapSenderWithSubject = !appearance.senderAboveSubject,
         )
         item.isRead -> ReadMessageItem(
             sender = "${item.displayName}",
             subject = item.subject ?: "n/a",
             preview = item.previewText,
-            receivedAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+            receivedAt = receivedAt,
             avatar = {},
             onClick = onClick,
             onLongClick = onLongClick,
@@ -52,12 +61,15 @@ internal fun MessageItemContent(
             favourite = item.isStarred,
             selected = isSelected,
             maxPreviewLines = appearance.previewLines,
+            threadCount = item.threadCount,
+            hasAttachments = item.hasAttachments,
+            swapSenderWithSubject = !appearance.senderAboveSubject,
         )
         else -> UnreadMessageItem(
             sender = "${item.displayName}",
             subject = item.subject ?: "n/a",
             preview = item.previewText,
-            receivedAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
+            receivedAt = receivedAt,
             avatar = {},
             onClick = onClick,
             onLongClick = onLongClick,
@@ -66,6 +78,9 @@ internal fun MessageItemContent(
             favourite = item.isStarred,
             selected = isSelected,
             maxPreviewLines = appearance.previewLines,
+            threadCount = item.threadCount,
+            hasAttachments = item.hasAttachments,
+            swapSenderWithSubject = !appearance.senderAboveSubject,
         )
     }
 }
