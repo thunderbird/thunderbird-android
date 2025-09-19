@@ -17,7 +17,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = true),
             FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = true),
-            FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = true),
+            FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
         )
     }
 }
