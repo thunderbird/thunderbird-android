@@ -141,8 +141,8 @@ open class MessageList :
     private var messageListWasDisplayed = false
     private var viewSwitcher: ViewSwitcher? = null
 
-    private val isShowAccountChip: Boolean
-        get() = messageListFragment?.isShowAccountChip ?: true
+    private val isShowAccountIndicator: Boolean
+        get() = messageListFragment?.isShowAccountIndicator ?: true
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -1106,7 +1106,7 @@ open class MessageList :
         } else {
             val fragment = MessageViewContainerFragment.newInstance(
                 reference = messageReference,
-                showAccountChip = isShowAccountChip,
+                isShowAccountIndicator = isShowAccountIndicator,
             )
             supportFragmentManager.commitNow {
                 replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER)

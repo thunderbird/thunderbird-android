@@ -232,7 +232,7 @@ class MessageListFragment :
             maybeHideFloatingActionButton()
         }
 
-    val isShowAccountChip: Boolean
+    val isShowAccountIndicator: Boolean
         get() = isUnifiedFolders || !isSingleAccountMode
 
     override fun onAttach(context: Context) {
@@ -344,6 +344,7 @@ class MessageListFragment :
             listItemListener = this,
             appearance = messageListAppearance,
             relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), clock),
+            themeProvider = featureThemeProvider,
             featureFlagProvider = featureFlagProvider,
         ).apply {
             activeMessage = this@MessageListFragment.activeMessage
@@ -784,7 +785,7 @@ class MessageListFragment :
             showingThreadedList = showingThreadedList,
             backGroundAsReadIndicator = generalSettingsManager
                 .getConfig().display.visualSettings.isUseBackgroundAsUnreadIndicator,
-            showAccountChip = isShowAccountChip,
+            showAccountIndicator = isShowAccountIndicator,
             density = K9.messageListDensity,
         )
 

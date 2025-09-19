@@ -11,6 +11,9 @@ data class MessageListAppearance(
     val showContactPicture: Boolean,
     val showingThreadedList: Boolean,
     val backGroundAsReadIndicator: Boolean,
-    val showAccountChip: Boolean,
+    /**
+     * Whether to show an account color indicator on the left side of the message item.
+     */
+    val showAccountIndicator: Boolean,
     val density: UiDensity,
 )

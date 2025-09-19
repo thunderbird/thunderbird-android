@@ -195,8 +195,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         starView.setOnClickListener(listener);
     }
 
-    public void populate(final Message message, final LegacyAccountDto account, boolean showStar, boolean showAccountChip) {
-        if (showAccountChip) {
+    public void populate(final Message message, final LegacyAccountDto account, boolean showStar, boolean showAccountIndicator) {
+        if (showAccountIndicator) {
             accountNameView.setVisibility(View.VISIBLE);
             accountNameView.setText(account.getDisplayName());
             accountNameView.setChipBackgroundColor(ColorStateList.valueOf(account.getChipColor()));

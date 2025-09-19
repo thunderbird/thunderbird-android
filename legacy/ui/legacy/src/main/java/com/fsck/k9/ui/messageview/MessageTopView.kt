@@ -57,7 +57,7 @@ class MessageTopView(
     private var isShowingProgress = false
     private var showPicturesButtonClicked = false
 
-    private var showAccountChip = false
+    private var showAccountIndicator = false
 
     private var messageCryptoPresenter: MessageCryptoPresenter? = null
 
@@ -83,8 +83,8 @@ class MessageTopView(
         hideHeaderView()
     }
 
-    fun setShowAccountChip(showAccountChip: Boolean) {
-        this.showAccountChip = showAccountChip
+    fun setShowAccountIndicator(showAccountIndicator: Boolean) {
+        this.showAccountIndicator = showAccountIndicator
     }
 
     private fun setShowPicturesButtonListener() {
@@ -197,7 +197,7 @@ class MessageTopView(
     }
 
     fun setHeaders(message: Message?, account: LegacyAccountDto?, showStar: Boolean) {
-        messageHeaderView.populate(message, account, showStar, showAccountChip)
+        messageHeaderView.populate(message, account, showStar, showAccountIndicator)
         messageHeaderView.visibility = VISIBLE
     }
 
