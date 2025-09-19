@@ -3,6 +3,7 @@ package net.thunderbird.feature.navigation.drawer.dropdown.domain.usecase
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.core.logging.Logger
+import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 import net.thunderbird.feature.mail.folder.api.FolderType
@@ -28,7 +29,7 @@ internal class GetDisplayTreeFolder(
             )
         }
 
-        val pathDelimiter = folders.first().pathDelimiter
+        val pathDelimiter = folders.firstOrNull()?.pathDelimiter ?: FOLDER_DEFAULT_PATH_DELIMITER
         val accountFolders = folders.filterIsInstance<MailDisplayFolder>().map {
             val path = flattenPath(it.folder.name, pathDelimiter, maxDepth)
             logger.debug { "Flattened path for ${it.folder.name} → $path" }
