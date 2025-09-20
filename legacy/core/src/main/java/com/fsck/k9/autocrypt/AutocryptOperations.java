@@ -25,8 +25,8 @@ public class AutocryptOperations {
 
 
     public static AutocryptOperations getInstance() {
-        AutocryptHeaderParser autocryptHeaderParser = AutocryptHeaderParser.Companion.getInstance();
-        AutocryptGossipHeaderParser autocryptGossipHeaderParser = AutocryptGossipHeaderParser.INSTANCE;
+        final AutocryptHeaderParser autocryptHeaderParser = AutocryptHeaderParser.INSTANCE;
+        final AutocryptGossipHeaderParser autocryptGossipHeaderParser = AutocryptGossipHeaderParser.INSTANCE;
         return new AutocryptOperations(autocryptHeaderParser, autocryptGossipHeaderParser);
     }
 
