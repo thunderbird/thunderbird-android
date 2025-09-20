@@ -40,6 +40,10 @@ class DefaultInteractionSettingsPreferenceManager(
             KEY_USE_VOLUME_KEYS_FOR_NAVIGATION,
             INTERACTION_SETTINGS_DEFAULT_USE_VOLUME_KEYS_NAVIGATION,
         ),
+        messageViewPostRemoveNavigation = storage.getStringOrDefault(
+            KEY_MESSAGE_VIEW_POST_DELETE_ACTION,
+            INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
+        ),
     )
 
     private fun writeConfig(config: InteractionSettings) {
@@ -47,6 +51,7 @@ class DefaultInteractionSettingsPreferenceManager(
         scope.launch(ioDispatcher) {
             mutex.withLock {
                 storageEditor.putBoolean(KEY_USE_VOLUME_KEYS_FOR_NAVIGATION, config.useVolumeKeysForNavigation)
+                storageEditor.putString(KEY_MESSAGE_VIEW_POST_DELETE_ACTION, config.messageViewPostRemoveNavigation)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
