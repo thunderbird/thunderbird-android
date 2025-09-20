@@ -1,95 +1,70 @@
-package com.fsck.k9.autocrypt;
+package com.fsck.k9.autocrypt
 
+import androidx.annotation.VisibleForTesting
+import com.fsck.k9.mail.Part
+import com.fsck.k9.mail.internet.MimeUtility
+import java.util.Collections
+import net.thunderbird.core.logging.legacy.Log
+import okio.ByteString.Companion.decodeBase64
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+internal object AutocryptGossipHeaderParser {
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MimeUtility;
-import okio.ByteString;
-import net.thunderbird.core.logging.legacy.Log;
-
-
-class AutocryptGossipHeaderParser {
-    private static final AutocryptGossipHeaderParser INSTANCE = new AutocryptGossipHeaderParser();
-
-
-    public static AutocryptGossipHeaderParser getInstance() {
-        return INSTANCE;
+    fun getAllAutocryptGossipHeaders(part: Part): List<AutocryptGossipHeader> {
+        val headers = part.getHeader(AutocryptGossipHeader.AUTOCRYPT_GOSSIP_HEADER)
+        val autocryptHeaders = parseAllAutocryptGossipHeaders(headers)
+        return Collections.unmodifiableList(autocryptHeaders)
     }
 
-    private AutocryptGossipHeaderParser() { }
-
-
-    List<AutocryptGossipHeader> getAllAutocryptGossipHeaders(Part part) {
-        String[] headers = part.getHeader(AutocryptGossipHeader.AUTOCRYPT_GOSSIP_HEADER);
-        List<AutocryptGossipHeader> autocryptHeaders = parseAllAutocryptGossipHeaders(headers);
-
-        return Collections.unmodifiableList(autocryptHeaders);
-    }
-
-    @Nullable
     @VisibleForTesting
-    AutocryptGossipHeader parseAutocryptGossipHeader(String headerValue) {
-        Map<String,String> parameters = MimeUtility.getAllHeaderParameters(headerValue);
+    fun parseAutocryptGossipHeader(headerValue: String): AutocryptGossipHeader? {
+        val parameters = MimeUtility.getAllHeaderParameters(headerValue).toMutableMap()
 
-        String type = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_TYPE);
-        if (type != null && !type.equals(AutocryptHeader.AUTOCRYPT_TYPE_1)) {
-            Log.e("autocrypt: unsupported type parameter %s", type);
-            return null;
-        }
+        val type = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_TYPE)
+        val base64KeyData = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_KEY_DATA)
+        val addr = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_ADDR)
+        val decodedKey = base64KeyData?.decodeBase64()
 
-        String base64KeyData = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_KEY_DATA);
-        if (base64KeyData == null) {
-            Log.e("autocrypt: missing key parameter");
-            return null;
-        }
+        return when {
+            type != null && type != AutocryptHeader.AUTOCRYPT_TYPE_1 -> {
+                Log.e("autocrypt: unsupported type parameter %s", type)
+                null
+            }
 
-        ByteString byteString = ByteString.decodeBase64(base64KeyData);
-        if (byteString == null) {
-            Log.e("autocrypt: error parsing base64 data");
-            return null;
-        }
+            base64KeyData == null -> {
+                Log.e("autocrypt: missing key parameter")
+                null
+            }
 
-        String addr = parameters.remove(AutocryptHeader.AUTOCRYPT_PARAM_ADDR);
-        if (addr == null) {
-            Log.e("autocrypt: no to header!");
-            return null;
-        }
+            decodedKey == null -> {
+                Log.e("autocrypt: error parsing base64 data")
+                null
+            }
 
-        if (hasCriticalParameters(parameters)) {
-            return null;
-        }
+            addr == null -> {
+                Log.e("autocrypt: no to header!")
+                null
+            }
 
-        return new AutocryptGossipHeader(addr, byteString.toByteArray());
-    }
+            hasCriticalParameters(parameters) -> {
+                null
+            }
 
-    private boolean hasCriticalParameters(Map<String, String> parameters) {
-        for (String parameterName : parameters.keySet()) {
-            if (parameterName != null && !parameterName.startsWith("_")) {
-                return true;
+            else -> {
+                AutocryptGossipHeader(addr, decodedKey.toByteArray())
             }
         }
-        return false;
     }
 
-    @NonNull
-    private List<AutocryptGossipHeader> parseAllAutocryptGossipHeaders(String[] headers) {
-        ArrayList<AutocryptGossipHeader> autocryptHeaders = new ArrayList<>();
-        for (String header : headers) {
-            AutocryptGossipHeader autocryptHeader = parseAutocryptGossipHeader(header);
-            if (autocryptHeader == null) {
-                Log.e("Encountered malformed autocrypt-gossip header - skipping!");
-                continue;
+    private fun hasCriticalParameters(parameters: Map<String, String>): Boolean {
+        return parameters.keys.any { !it.startsWith("_") }
+    }
+
+    private fun parseAllAutocryptGossipHeaders(headers: Array<String>): List<AutocryptGossipHeader> {
+        return headers.mapNotNull { header ->
+            parseAutocryptGossipHeader(header) ?: run {
+                Log.e("Encountered malformed autocrypt-gossip header - skipping!")
+                null
             }
-            autocryptHeaders.add(autocryptHeader);
         }
-        return autocryptHeaders;
     }
 }
