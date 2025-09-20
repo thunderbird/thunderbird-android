@@ -4,7 +4,6 @@ import androidx.preference.PreferenceDataStore
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
-import com.fsck.k9.K9.PostRemoveNavigation
 import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
@@ -173,7 +172,7 @@ class GeneralSettingsDataStore(
             "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
             "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
             "message_list_density" -> K9.messageListDensity.toString()
-            "post_remove_navigation" -> K9.messageViewPostRemoveNavigation.name
+            "post_remove_navigation" -> generalSettingsManager.getConfig().interaction.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
         }
@@ -217,7 +216,7 @@ class GeneralSettingsDataStore(
             "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
             "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
             "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
-            "post_remove_navigation" -> K9.messageViewPostRemoveNavigation = PostRemoveNavigation.valueOf(value)
+            "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> {
                 K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
             }
@@ -647,6 +646,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 privacy = settings.privacy.copy(
                     isHideUserAgent = isHideUserAgent,
+                ),
+            )
+        }
+    }
+
+    private fun setMessageViewPostRemoveNavigation(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                interaction = settings.interaction.copy(
+                    messageViewPostRemoveNavigation = value,
                 ),
             )
         }

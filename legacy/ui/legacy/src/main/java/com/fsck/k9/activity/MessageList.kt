@@ -34,7 +34,6 @@ import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
-import com.fsck.k9.K9.PostRemoveNavigation
 import com.fsck.k9.Preferences
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
@@ -65,6 +64,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
+import net.thunderbird.core.preference.interaction.PostRemoveNavigation
 import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMapper
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
@@ -1292,10 +1292,10 @@ open class MessageList :
     }
 
     override fun performNavigationAfterMessageRemoval() {
-        when (K9.messageViewPostRemoveNavigation) {
-            PostRemoveNavigation.ReturnToMessageList -> returnToMessageList()
-            PostRemoveNavigation.ShowPreviousMessage -> showPreviousMessageOrReturn()
-            PostRemoveNavigation.ShowNextMessage -> showNextMessageOrReturn()
+        when (generalSettingsManager.getConfig().interaction.messageViewPostRemoveNavigation) {
+            PostRemoveNavigation.ReturnToMessageList.name -> returnToMessageList()
+            PostRemoveNavigation.ShowPreviousMessage.name -> showPreviousMessageOrReturn()
+            PostRemoveNavigation.ShowNextMessage.name -> showNextMessageOrReturn()
         }
     }
 
