@@ -37,13 +37,13 @@ internal fun CreateNewArchiveFolderDialogContent(
             visible = syncingMessage != null,
             modifier = Modifier.padding(horizontal = MainTheme.spacings.quadruple),
         ) {
-            requireNotNull(syncingMessage)
-
-            Spacer(modifier = Modifier.height(MainTheme.spacings.oneHalf))
-            TextBodySmall(
-                text = syncingMessage,
-                color = MainTheme.colors.onSurfaceVariant,
-            )
+            syncingMessage?.let { message ->
+                Spacer(modifier = Modifier.height(MainTheme.spacings.oneHalf))
+                TextBodySmall(
+                    text = message,
+                    color = MainTheme.colors.onSurfaceVariant,
+                )
+            }
         }
     }
 }
