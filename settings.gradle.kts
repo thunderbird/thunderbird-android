@@ -251,6 +251,10 @@ include(
     ":feature:debug-settings",
 )
 
+include(
+    ":core:logging:config",
+)
+
 check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
     """
         Java 17+ is required to build Thunderbird for Android.
