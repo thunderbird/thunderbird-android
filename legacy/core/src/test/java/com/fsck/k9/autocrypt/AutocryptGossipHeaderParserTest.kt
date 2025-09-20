@@ -18,7 +18,7 @@ import org.junit.Test
 
 class AutocryptGossipHeaderParserTest {
 
-    private val autocryptGossipHeaderParser = AutocryptGossipHeaderParser.getInstance()
+    private val autocryptGossipHeaderParser = AutocryptGossipHeaderParser.Companion.instance
 
     @Before
     fun setUp() {
