@@ -20,7 +20,7 @@ import static org.junit.Assert.assertNull;
 
 
 public class AutocryptHeaderParserTest extends RobolectricTest {
-    AutocryptHeaderParser autocryptHeaderParser = AutocryptHeaderParser.getInstance();
+    AutocryptHeaderParser autocryptHeaderParser = AutocryptHeaderParser.Companion.getInstance();
 
     @Before
     public void setUp() throws Exception {
