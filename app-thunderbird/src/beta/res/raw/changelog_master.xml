@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="13.0b3" versioncode="29" date="2025-09-22">
+        <change>Updating to 13.0b2 offline with IMAP prefix caused migration failure and data loss</change>
+        <change>App crashed on startup when no folders were available after data loss</change>
+    </release>
     <release version="13.0b2" versioncode="28" date="2025-09-15">
         <change>On IMAP servers with folder prefixes, some folder operations stopped working</change>
     </release>
