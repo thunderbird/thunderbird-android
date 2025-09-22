@@ -3,6 +3,7 @@ package com.fsck.k9.storage.migrations
 import android.database.sqlite.SQLiteDatabase
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
@@ -185,6 +186,80 @@ class MigrationTo90Test : KoinTest {
                 hasSize(expected.size)
                 isEqualTo(expected.map { it?.removePrefix("$prefix$folderDelimiter") })
             }
+    }
+
+    @Test
+    fun `given the server return an imap prefix - when folder's is local only - server_id must not be changed`() {
+        // Arrange
+        val prefix = "INBOX"
+        val folderDelimiter = "."
+        populateDatabase(serverIdPrefix = prefix, folderPathDelimiter = folderDelimiter)
+        val localOnlyServerId = "$prefix${folderDelimiter}Local Only"
+
+        database.createFolder("Local Only", isLocalOnly = true, serverId = localOnlyServerId)
+
+        val imapStore = createImapStoreSpy(
+            imapPrefix = prefix,
+            folderPathDelimiter = folderDelimiter,
+        )
+        val incomingServerSettings = createIncomingServerSettings(pathPrefix = prefix, autoDetectNamespace = false)
+        val account = createAccount(
+            incomingServerSettings = incomingServerSettings,
+            folderPathDelimiter = folderDelimiter,
+        )
+        val migrationHelper = createMigrationsHelper(account)
+        val migration = MigrationTo90(
+            db = database,
+            migrationsHelper = migrationHelper,
+            imapStoreFactory = createImapStoreFactory(imapStore),
+        )
+
+        // Act
+        migration.removeImapPrefixFromFolderServerId()
+        val actual = database.readFolders().map { it.serverId }
+        testLogger.dumpLogs()
+
+        // Assert
+        verify(imapStore, times(1)).fetchImapPrefix()
+
+        assertThat(actual).contains(localOnlyServerId)
+    }
+
+    @Test
+    fun `given the server return an imap prefix - when folder's is an outbox - server_id must not be changed`() {
+        // Arrange
+        val prefix = "INBOX"
+        val folderDelimiter = "."
+        populateDatabase(serverIdPrefix = prefix, folderPathDelimiter = folderDelimiter)
+        val outboxFolderServerId = "$prefix${folderDelimiter}Outbox"
+
+        database.createFolder("Outbox", isLocalOnly = true, serverId = outboxFolderServerId, type = "outbox")
+
+        val imapStore = createImapStoreSpy(
+            imapPrefix = prefix,
+            folderPathDelimiter = folderDelimiter,
+        )
+        val incomingServerSettings = createIncomingServerSettings(pathPrefix = prefix, autoDetectNamespace = false)
+        val account = createAccount(
+            incomingServerSettings = incomingServerSettings,
+            folderPathDelimiter = folderDelimiter,
+        )
+        val migrationHelper = createMigrationsHelper(account)
+        val migration = MigrationTo90(
+            db = database,
+            migrationsHelper = migrationHelper,
+            imapStoreFactory = createImapStoreFactory(imapStore),
+        )
+
+        // Act
+        migration.removeImapPrefixFromFolderServerId()
+        val actual = database.readFolders().map { it.serverId }
+        testLogger.dumpLogs()
+
+        // Assert
+        verify(imapStore, times(1)).fetchImapPrefix()
+
+        assertThat(actual).contains(outboxFolderServerId)
     }
 
     @Test
@@ -403,6 +478,7 @@ class MigrationTo90Test : KoinTest {
             database.createFolder(
                 name = folderName,
                 serverId = serverIdPrefix?.let { prefix -> "$prefix$folderPathDelimiter$folderName" } ?: folderName,
+                isLocalOnly = false,
             )
         }
     }
