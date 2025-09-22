@@ -1899,6 +1899,7 @@ class MessageListFragment :
 
     private val swipeListener = object : MessageListSwipeListener {
         override fun onSwipeStarted(item: MessageListItem, action: SwipeAction) {
+            swipeRefreshLayout?.isEnabled = false
             itemSelectedOnSwipeStart = isMessageSelected(item)
             if (itemSelectedOnSwipeStart && action != SwipeAction.ToggleSelection) {
                 deselectMessage(item)
@@ -1969,6 +1970,7 @@ class MessageListFragment :
         }
 
         override fun onSwipeEnded(item: MessageListItem) {
+            swipeRefreshLayout?.isEnabled = true
             if (itemSelectedOnSwipeStart && !isMessageSelected(item)) {
                 selectMessage(item)
             }
