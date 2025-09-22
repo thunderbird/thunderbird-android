@@ -1,6 +1,7 @@
 package com.fsck.k9.storage.migrations
 
 import android.database.sqlite.SQLiteDatabase
+import androidx.annotation.VisibleForTesting
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ServerSettings
@@ -10,6 +11,7 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapClientInfo
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.ImapStoreConfig
+import com.fsck.k9.mail.store.imap.ImapStoreFactory
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
@@ -19,6 +21,8 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
+import okio.IOException
+import org.intellij.lang.annotations.Language
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.qualifier.named
@@ -29,6 +33,7 @@ internal class MigrationTo90(
     private val db: SQLiteDatabase,
     private val migrationsHelper: MigrationsHelper,
     private val logger: Logger = Log,
+    private val imapStoreFactory: ImapStoreFactory = ImapStore.Companion,
 ) : KoinComponent {
     private val trustedSocketFactory: TrustedSocketFactory by inject()
     private val clientInfoAppName: String by inject(named("ClientInfoAppName"))
@@ -44,35 +49,33 @@ internal class MigrationTo90(
             return
         }
 
-        logger.verbose(TAG) { "started db migration to version 107 to account ${account.uuid}" }
+        logger.verbose(TAG) { "started db migration to version 90 to account ${account.uuid}" }
 
         val imapStore = createImapStore(account)
 
         try {
             logger.verbose(TAG) { "fetching IMAP prefix" }
             imapStore.fetchImapPrefix()
+            val imapPrefix = imapStore.combinedPrefix
+
+            if (imapPrefix?.isNotBlank() == true) {
+                logger.verbose(TAG) { "Imap Prefix ($imapPrefix) detected, updating folder's server_id" }
+                val query = buildQuery(imapPrefix)
+                db.execSQL(query)
+            } else {
+                logger.verbose(TAG) { "No Imap Prefix detected, skipping db migration" }
+            }
+
+            logger.verbose(TAG) { "completed db migration to version 90 for account ${account.uuid}" }
         } catch (e: AuthenticationFailedException) {
-            logger.warn(TAG, e) { "failed to fetch IMAP prefix." }
-            return
+            logger.warn(TAG, e) {
+                "failed to fetch IMAP prefix due to authentication error. skipping db migration"
+            }
+        } catch (e: IOException) {
+            logger.warn(TAG, e) {
+                "failed to fetch IMAP prefix due to network error. skipping db migration"
+            }
         }
-
-        val imapPrefix = imapStore.combinedPrefix
-
-        if (imapPrefix?.isNotBlank() == true) {
-            logger.verbose(TAG) { "Imap Prefix ($imapPrefix) detected, updating folder's server_id" }
-            val query = """
-                |UPDATE folders
-                |    SET server_id = REPLACE(server_id, '$imapPrefix', '')
-                |WHERE
-                |    server_id LIKE '$imapPrefix%'
-            """.trimMargin()
-
-            db.execSQL(query)
-        } else {
-            logger.verbose(TAG) { "No Imap Prefix detected, skipping db migration" }
-        }
-
-        logger.verbose(TAG) { "completed db migration to version 107 for account ${account.uuid}" }
     }
 
     private fun createImapStore(account: LegacyAccount): ImapStore {
@@ -87,7 +90,7 @@ internal class MigrationTo90(
             null
         }
 
-        return ImapStore.create(
+        return imapStoreFactory.create(
             serverSettings = serverSettings,
             config = createImapStoreConfig(account),
             trustedSocketFactory = trustedSocketFactory,
@@ -118,5 +121,19 @@ internal class MigrationTo90(
 
             override fun clientInfo() = ImapClientInfo(appName = clientInfoAppName, appVersion = clientInfoAppVersion)
         }
+    }
+
+    @Language("RoomSql")
+    @VisibleForTesting
+    internal fun buildQuery(imapPrefix: String): String {
+        return """
+            |UPDATE folders
+            |    SET server_id = REPLACE(server_id, '$imapPrefix', '')
+            |WHERE
+            |    server_id IS NOT NULL
+            |    AND server_id LIKE '$imapPrefix%'
+            |    AND type <> 'outbox'
+            |    AND local_only <> 1
+        """.trimMargin()
     }
 }
