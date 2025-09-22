@@ -531,7 +531,7 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun MessageListAdapter.createAndBindView(item: MessageListItem = createMessageListItem()): View {
-        messages = listOf(item)
+        viewItems = listOf(MessageListViewItem.Message(item))
         val holder = onCreateViewHolder(LinearLayout(context), 0)
         onBindViewHolder(holder, 0)
         return holder.itemView
