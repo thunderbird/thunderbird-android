@@ -130,7 +130,10 @@ internal class MigrationTo90(
             |UPDATE folders
             |    SET server_id = REPLACE(server_id, '$imapPrefix', '')
             |WHERE
-            |    server_id LIKE '$imapPrefix%'
+            |    server_id IS NOT NULL
+            |    AND server_id LIKE '$imapPrefix%'
+            |    AND type <> 'outbox'
+            |    AND local_only <> 1
         """.trimMargin()
     }
 }
