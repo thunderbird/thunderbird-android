@@ -1131,11 +1131,20 @@ class MessageListFragment :
     }
 
     fun updateFooterText(text: String?) {
-        adapter.footerText = text
+        val currentItems = adapter
+            .viewItems
+            .filter { it !is MessageListViewItem.Footer }
+            .toMutableList()
+
+        if (!text.isNullOrEmpty()) {
+            currentItems.add(MessageListViewItem.Footer(text))
+        }
+
+        adapter.viewItems = currentItems
     }
 
     private fun selectAll() {
-        if (adapter.messages.isEmpty()) {
+        if (adapter.viewItems.isEmpty()) {
             // Nothing to do if there are no messages
             return
         }
@@ -1452,6 +1461,7 @@ class MessageListFragment :
                         destinationFolderId,
                     )
                 }
+
                 FolderOperation.MOVE -> {
                     messagingController.moveMessages(
                         account.id,
@@ -1460,6 +1470,7 @@ class MessageListFragment :
                         destinationFolderId,
                     )
                 }
+
                 FolderOperation.COPY if showingThreadedList -> {
                     messagingController.copyMessagesInThread(
                         account.id,
@@ -1468,6 +1479,7 @@ class MessageListFragment :
                         destinationFolderId,
                     )
                 }
+
                 FolderOperation.COPY -> {
                     messagingController.copyMessages(
                         account.id,
@@ -1735,7 +1747,12 @@ class MessageListFragment :
             }
         }
 
-        adapter.messages = messageListItems
+        adapter.viewItems = buildList {
+            if (featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications).isEnabled()) {
+                add(MessageListViewItem.InAppNotificationBannerList)
+            }
+            addAll(messageListItems.map { MessageListViewItem.Message(it) })
+        }
 
         rememberedSelected?.let {
             rememberedSelected = null
