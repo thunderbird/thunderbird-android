@@ -1482,7 +1482,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         putBackground("sendPendingMessages", listener, new Runnable() {
             @Override
             public void run() {
-                if (messagesPendingSend(account)) {
+                if (OutboxFolderManagerKt.hasPendingMessagesSync(outboxFolderManager, account.getUuid())) {
 
                     showSendingNotificationIfNecessary(account);
 
