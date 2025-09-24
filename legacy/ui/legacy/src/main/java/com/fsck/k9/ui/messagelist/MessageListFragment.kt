@@ -795,7 +795,7 @@ class MessageListFragment :
         val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
         val localFolder = localStore.getFolder(folderId)
         localFolder.open()
-        return FolderInfoHolder(folderNameFormatter,  outboxFolderManager, localFolder, account)
+        return FolderInfoHolder(folderNameFormatter, outboxFolderManager, localFolder, account)
     }
 
     override fun onResume() {
@@ -1665,7 +1665,7 @@ class MessageListFragment :
     }
 
     val isOutbox: Boolean
-        get() = isSpecialFolder(account?.outboxFolderId)
+        get() = isSpecialFolder(account?.id?.let(outboxFolderManager::getOutboxFolderIdSync))
 
     private val isInbox: Boolean
         get() = isSpecialFolder(account?.inboxFolderId)
