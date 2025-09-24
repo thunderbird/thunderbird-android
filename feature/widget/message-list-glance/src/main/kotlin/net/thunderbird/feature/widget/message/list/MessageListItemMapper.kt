@@ -9,11 +9,13 @@ import java.util.Calendar
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
 internal class MessageListItemMapper(
     private val messageHelper: MessageHelper,
     private val account: LegacyAccount,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val outboxFolderManager: OutboxFolderManager,
 ) : MessageMapper<MessageListItem> {
     private val calendar: Calendar = Calendar.getInstance()
 
@@ -23,7 +25,7 @@ internal class MessageListItemMapper(
         val previewResult = message.preview
         val previewText = if (previewResult.isPreviewTextAvailable) previewResult.previewText else ""
         val uniqueId = createUniqueId(account, message.id)
-        val showRecipients = DisplayAddressHelper.shouldShowRecipients(account, message.folderId)
+        val showRecipients = DisplayAddressHelper.shouldShowRecipients(outboxFolderManager, account, message.folderId)
         val displayAddress = if (showRecipients) toAddresses.firstOrNull() else fromAddresses.firstOrNull()
         val displayName = if (showRecipients) {
             messageHelper.getRecipientDisplayNames(
