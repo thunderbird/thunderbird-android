@@ -16,6 +16,7 @@ val mailStoreModule = module {
     single {
         FolderRepository(
             messageStoreManager = get(),
+            outboxFolderManager = get(),
         )
     }
     single { MessageViewInfoExtractorFactory(get(), get(), get()) }
