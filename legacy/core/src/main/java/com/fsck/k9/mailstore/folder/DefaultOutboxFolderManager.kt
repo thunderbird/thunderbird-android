@@ -35,11 +35,11 @@ class DefaultOutboxFolderManager(
 ) : OutboxFolderManager {
     @OptIn(ExperimentalTime::class)
     override suspend fun getOutboxFolderId(
-        uuid: AccountId,
+        accountId: AccountId,
         createIfMissing: Boolean,
     ): Long {
-        logger.verbose(TAG) { "getOutboxFolderId() called with: uuid = $uuid" }
-        outboxFolderIdCache[uuid]?.let { entry ->
+        logger.verbose(TAG) { "getOutboxFolderId() called with: uuid = $accountId" }
+        outboxFolderIdCache[accountId]?.let { entry ->
             logger.debug(TAG) {
                 "getOutboxFolderId: Found Outbox folder with id = ${entry.value} in cache. " +
                     "Cache expires on ${entry.expiresAt}"
@@ -48,9 +48,9 @@ class DefaultOutboxFolderManager(
         }
 
         return withContext(ioDispatcher) {
-            val localStore = createLocalStore(uuid)
+            val localStore = createLocalStore(accountId)
 
-            var id = try {
+            var outboxId = try {
                 suspendCancellableCoroutine { continuation ->
                     localStore.database.execute(false) { db ->
                         db.rawQuery(
@@ -64,7 +64,7 @@ class DefaultOutboxFolderManager(
                             }
 
                             if (id != -1L) {
-                                outboxFolderIdCache.set(key = uuid, value = id)
+                                outboxFolderIdCache.set(key = accountId, value = id)
                                 continuation.resume(id)
                             } else {
                                 continuation.resumeWithException(MessagingException("Outbox folder not found"))
@@ -77,13 +77,13 @@ class DefaultOutboxFolderManager(
                 -1L
             }
 
-            if (createIfMissing && id == -1L) {
+            if (createIfMissing && outboxId == -1L) {
                 logger.debug(TAG) { "Creating Outbox folder." }
-                createOutboxFolder(uuid).handleAsync(
+                createOutboxFolder(accountId).handleAsync(
                     onSuccess = {
                         logger.debug(TAG) { "Created Outbox folder with id = $it." }
-                        outboxFolderIdCache.set(key = uuid, value = it)
-                        id = it
+                        outboxFolderIdCache.set(key = accountId, value = it)
+                        outboxId = it
                     },
                     onFailure = { exception ->
                         logger.error(TAG, exception) { "Failed to create Outbox folder." }
@@ -92,30 +92,31 @@ class DefaultOutboxFolderManager(
                 )
             }
 
-            id
+            outboxId
         }
     }
 
-    override suspend fun createOutboxFolder(uuid: AccountId): Outcome<Long, Exception> = withContext(ioDispatcher) {
-        logger.verbose(TAG) { "createOutboxFolder() called with: uuid = $uuid" }
-        val localStore = createLocalStore(uuid)
-        try {
-            val id = localStore.createLocalFolder(
-                OUTBOX_FOLDER_NAME,
-                FolderType.OUTBOX,
-                VISIBLE_LIMIT,
-                MoreMessages.UNKNOWN,
-            )
-            Outcome.Success(id)
-        } catch (e: MessagingException) {
-            Outcome.Failure(e)
+    override suspend fun createOutboxFolder(accountId: AccountId): Outcome<Long, Exception> =
+        withContext(ioDispatcher) {
+            logger.verbose(TAG) { "createOutboxFolder() called with: id = $accountId" }
+            val localStore = createLocalStore(accountId)
+            try {
+                val newId = localStore.createLocalFolder(
+                    OUTBOX_FOLDER_NAME,
+                    FolderType.OUTBOX,
+                    VISIBLE_LIMIT,
+                    MoreMessages.UNKNOWN,
+                )
+                Outcome.Success(newId)
+            } catch (e: MessagingException) {
+                Outcome.Failure(e)
+            }
         }
-    }
 
-    override suspend fun hasPendingMessages(uuid: AccountId): Boolean = withContext(ioDispatcher) {
-        logger.verbose(TAG) { "hasPendingMessages() called with: uuid = $uuid" }
+    override suspend fun hasPendingMessages(accountId: AccountId): Boolean = withContext(ioDispatcher) {
+        logger.verbose(TAG) { "hasPendingMessages() called with: id = $accountId" }
         var hasPendingMessages = false
-        val localStore = createLocalStore(uuid)
+        val localStore = createLocalStore(accountId)
         try {
             localStore.database.execute(false) { db ->
                 val query = """
@@ -147,9 +148,9 @@ class DefaultOutboxFolderManager(
         hasPendingMessages
     }
 
-    private fun createLocalStore(uuid: AccountId): LocalStore {
-        val account = requireNotNull(accountManager.getAccount(uuid.asRaw())) {
-            "Account with id $uuid not found"
+    private fun createLocalStore(accountId: AccountId): LocalStore {
+        val account = requireNotNull(accountManager.getAccount(accountId.asRaw())) {
+            "Account with id $accountId not found"
         }
 
         return localStoreProvider.getInstanceByLegacyAccount(account = account)

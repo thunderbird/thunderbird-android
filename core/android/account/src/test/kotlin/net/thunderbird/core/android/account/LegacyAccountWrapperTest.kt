@@ -127,7 +127,6 @@ class LegacyAccountWrapperTest {
                 importedArchiveFolder = null,
                 importedSpamFolder = null,
                 inboxFolderId = null,
-                outboxFolderId = null,
                 draftsFolderId = null,
                 sentFolderId = null,
                 trashFolderId = null,

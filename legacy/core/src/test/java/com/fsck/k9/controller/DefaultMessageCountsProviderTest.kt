@@ -58,7 +58,6 @@ class DefaultMessageCountsProviderTest {
         account.trashFolderId = null
         account.draftsFolderId = null
         account.spamFolderId = null
-        account.outboxFolderId = null
         account.sentFolderId = null
 
         val messageCounts = messageCountsProvider.getMessageCounts(account)

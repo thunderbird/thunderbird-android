@@ -20,7 +20,7 @@ class SpecialLocalFoldersCreator(
 
         val localStore = localStoreProvider.getInstance(account)
 
-        outboxFolderManager.getOutboxFolderId(uuid = account.id, createIfMissing = true)
+        outboxFolderManager.getOutboxFolderId(accountId = account.id, createIfMissing = true)
 
         if (account.isPop3()) {
             if (account.draftsFolderId == null) {

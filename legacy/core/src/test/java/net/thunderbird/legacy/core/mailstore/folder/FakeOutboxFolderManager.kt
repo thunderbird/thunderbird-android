@@ -9,21 +9,23 @@ class FakeOutboxFolderManager @JvmOverloads constructor(
     private val outboxIdMapping: MutableMap<AccountId, Long> = mutableMapOf(),
 ) : OutboxFolderManager {
     override suspend fun getOutboxFolderId(
-        uuid: AccountId,
+        accountId: AccountId,
         createIfMissing: Boolean,
     ): Long {
         return if (createIfMissing) {
-            outboxIdMapping.getOrPut(key = uuid) { outboxFolderId }
+            outboxIdMapping.getOrPut(key = accountId) { outboxFolderId }
         } else {
             outboxIdMapping.getOrDefault(
-                key = uuid,
+                key = accountId,
                 defaultValue = -1,
             )
         }
     }
 
-    override suspend fun createOutboxFolder(uuid: AccountId): Outcome<Long, Exception> {
-        outboxIdMapping[uuid] = outboxFolderId
+    override suspend fun createOutboxFolder(accountId: AccountId): Outcome<Long, Exception> {
+        outboxIdMapping[accountId] = outboxFolderId
         return Outcome.Success(outboxFolderId)
     }
+
+    override suspend fun hasPendingMessages(accountId: AccountId): Boolean = accountId in outboxIdMapping
 }
