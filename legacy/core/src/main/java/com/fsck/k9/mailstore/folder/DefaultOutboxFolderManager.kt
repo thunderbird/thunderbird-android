@@ -8,11 +8,13 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.toDatabaseFolderType
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
@@ -28,55 +30,70 @@ class DefaultOutboxFolderManager(
     private val logger: Logger,
     private val accountManager: LegacyAccountManager,
     private val localStoreProvider: LocalStoreProvider,
+    private val outboxFolderIdCache: TimeLimitedCache<AccountId, Long>,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : OutboxFolderManager {
+    @OptIn(ExperimentalTime::class)
     override suspend fun getOutboxFolderId(
         uuid: AccountId,
         createIfMissing: Boolean,
-    ): Long = withContext(ioDispatcher) {
+    ): Long {
         logger.verbose(TAG) { "getOutboxFolderId() called with: uuid = $uuid" }
-        val localStore = createLocalStore(uuid)
+        outboxFolderIdCache[uuid]?.let { entry ->
+            logger.debug(TAG) {
+                "getOutboxFolderId: Found Outbox folder with id = ${entry.value} in cache. " +
+                    "Cache expires on ${entry.expiresAt}"
+            }
+            return entry.value
+        }
 
-        var id = try {
-            suspendCancellableCoroutine { continuation ->
-                localStore.database.execute(false) { db ->
-                    var id = -1L
-                    db.rawQuery(
-                        "SELECT id FROM folders WHERE type = ?",
-                        arrayOf(FolderType.OUTBOX.toDatabaseFolderType()),
-                    ).use { cursor ->
-                        if (cursor.moveToFirst()) {
-                            id = cursor.getLong(0)
-                            logger.debug(TAG) { "getOutboxFolderId: Found Outbox folder with id = $id." }
-                        }
-                        if (id != -1L) {
-                            continuation.resume(id)
-                        } else {
-                            continuation.resumeWithException(MessagingException("Outbox folder not found"))
+        return withContext(ioDispatcher) {
+            val localStore = createLocalStore(uuid)
+
+            var id = try {
+                suspendCancellableCoroutine { continuation ->
+                    localStore.database.execute(false) { db ->
+                        db.rawQuery(
+                            "SELECT id FROM folders WHERE type = ?",
+                            arrayOf(FolderType.OUTBOX.toDatabaseFolderType()),
+                        ).use { cursor ->
+                            var id = -1L
+                            if (cursor.moveToFirst()) {
+                                id = cursor.getLong(0)
+                                logger.debug(TAG) { "getOutboxFolderId: Found Outbox folder with id = $id." }
+                            }
+
+                            if (id != -1L) {
+                                outboxFolderIdCache.set(key = uuid, value = id)
+                                continuation.resume(id)
+                            } else {
+                                continuation.resumeWithException(MessagingException("Outbox folder not found"))
+                            }
                         }
                     }
                 }
+            } catch (e: MessagingException) {
+                logger.warn(TAG, e) { "getOutboxFolderId: Couldn't find Outbox folder." }
+                -1L
             }
-        } catch (e: MessagingException) {
-            logger.warn(TAG, e) { "getOutboxFolderId: Couldn't find Outbox folder." }
-            -1L
-        }
 
-        if (createIfMissing && id == -1L) {
-            logger.debug(TAG) { "Creating Outbox folder." }
-            createOutboxFolder(uuid).handleAsync(
-                onSuccess = {
-                    logger.debug(TAG) { "Created Outbox folder with id = $it." }
-                    id = it
-                },
-                onFailure = { exception ->
-                    logger.error(TAG, exception) { "Failed to create Outbox folder." }
-                    throw exception
-                },
-            )
-        }
+            if (createIfMissing && id == -1L) {
+                logger.debug(TAG) { "Creating Outbox folder." }
+                createOutboxFolder(uuid).handleAsync(
+                    onSuccess = {
+                        logger.debug(TAG) { "Created Outbox folder with id = $it." }
+                        outboxFolderIdCache.set(key = uuid, value = it)
+                        id = it
+                    },
+                    onFailure = { exception ->
+                        logger.error(TAG, exception) { "Failed to create Outbox folder." }
+                        throw exception
+                    },
+                )
+            }
 
-        id
+            id
+        }
     }
 
     override suspend fun createOutboxFolder(uuid: AccountId): Outcome<Long, Exception> = withContext(ioDispatcher) {

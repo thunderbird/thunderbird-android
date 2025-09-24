@@ -7,6 +7,8 @@ import com.fsck.k9.mailstore.folder.DefaultOutboxFolderManager
 import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
 import com.fsck.k9.message.extractors.MessagePreviewCreator
+import kotlin.time.ExperimentalTime
+import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import org.koin.dsl.module
 
@@ -48,6 +50,7 @@ val mailStoreModule = module {
             logger = get(),
             accountManager = get(),
             localStoreProvider = get(),
+            outboxFolderIdCache = @OptIn(ExperimentalTime::class)TimeLimitedCache(),
         )
     }
 }
