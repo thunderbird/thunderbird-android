@@ -5,6 +5,7 @@ import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.contacts.ContactPictureLoader
 import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
@@ -79,4 +80,5 @@ val testModule = module {
     }
 
     single<ContactPictureLoader> { mock() }
+    single<LegacyAccountManager> { mock() }
 }
