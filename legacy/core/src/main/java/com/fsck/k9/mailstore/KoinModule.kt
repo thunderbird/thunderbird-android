@@ -30,7 +30,7 @@ val mailStoreModule = module {
             saveMessageDataCreator = get(),
         )
     }
-    factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get()) }
+    factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get(), outboxFolderManager = get()) }
     single { MessageStoreManager(accountManager = get(), messageStoreFactory = get()) }
     single { MessageRepository(messageStoreManager = get()) }
     factory { MessagePreviewCreator.newInstance() }

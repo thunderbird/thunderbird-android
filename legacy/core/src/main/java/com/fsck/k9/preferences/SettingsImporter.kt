@@ -72,7 +72,7 @@ class SettingsImporter internal constructor(
      */
     @Suppress("TooGenericExceptionCaught")
     @Throws(SettingsImportExportException::class)
-    fun importSettings(
+    suspend fun importSettings(
         inputStream: InputStream,
         globalSettings: Boolean,
         accountUuids: List<String>,
@@ -153,7 +153,7 @@ class SettingsImporter internal constructor(
         }
     }
 
-    private fun importAccount(
+    private suspend fun importAccount(
         contentVersion: Int,
         account: SettingsFile.Account,
     ): AccountDescriptionPair {

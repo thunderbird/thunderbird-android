@@ -5,24 +5,22 @@ import com.fsck.k9.mail.FolderType
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 
 class SpecialLocalFoldersCreator(
     private val preferences: Preferences,
     private val localStoreProvider: LocalStoreProvider,
+    private val outboxFolderManager: OutboxFolderManager,
 ) {
     // TODO: When rewriting the account setup code make sure this method is only called once. Until then this can be
     //  called multiple times and we have to make sure folders are only created once.
-    fun createSpecialLocalFolders(account: LegacyAccountDto) {
+    suspend fun createSpecialLocalFolders(account: LegacyAccountDto) {
         Log.d("Creating special local folders")
 
         val localStore = localStoreProvider.getInstance(account)
 
-        if (account.outboxFolderId == null) {
-            account.outboxFolderId = localStore.createLocalFolder(OUTBOX_FOLDER_NAME, FolderType.OUTBOX)
-        } else {
-            Log.d("Outbox folder was already set up")
-        }
+        outboxFolderManager.getOutboxFolderId(uuid = account.id, createIfMissing = true)
 
         if (account.isPop3()) {
             if (account.draftsFolderId == null) {
