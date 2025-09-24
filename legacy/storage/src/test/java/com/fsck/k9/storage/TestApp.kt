@@ -13,6 +13,7 @@ import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.legacyCoreModules
 import com.fsck.k9.preferences.K9StoragePersister
 import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
@@ -81,4 +82,5 @@ val testModule = module {
             },
         )
     }
+    single<LegacyAccountManager> { mock() }
 }

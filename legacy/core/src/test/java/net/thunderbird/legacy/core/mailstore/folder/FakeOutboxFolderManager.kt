@@ -26,4 +26,6 @@ class FakeOutboxFolderManager @JvmOverloads constructor(
         outboxIdMapping[uuid] = outboxFolderId
         return Outcome.Success(outboxFolderId)
     }
+
+    override suspend fun hasPendingMessages(uuid: AccountId): Boolean = true
 }
