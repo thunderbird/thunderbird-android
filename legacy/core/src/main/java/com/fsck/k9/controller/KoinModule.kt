@@ -52,6 +52,7 @@ val controllerModule = module {
             accountManager = get(),
             messageStoreManager = get(),
             messagingControllerRegistry = get(),
+            outboxFolderManager = get(),
         )
     }
 
