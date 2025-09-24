@@ -61,6 +61,7 @@ val coreNotificationModule = module {
             actionBuilder = get(),
             resourceProvider = get(),
             generalSettingsManager = get(),
+            outboxFolderManager = get(),
         )
     }
     single {
