@@ -29,11 +29,11 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
     fun cleanUpSpecialLocalFolders() {
         val account = migrationsHelper.account
 
-        Log.v("Cleaning up Outbox folder")
-        val outboxFolderId =
-            account.outboxFolderId ?: createFolder("Outbox", "K9MAIL_INTERNAL_OUTBOX", OUTBOX_FOLDER_TYPE)
-        deleteOtherOutboxFolders(outboxFolderId)
-        account.outboxFolderId = outboxFolderId
+//        Log.v("Cleaning up Outbox folder")
+//        val outboxFolderId =
+//            account.outboxFolderId ?: createFolder("Outbox", "K9MAIL_INTERNAL_OUTBOX", OUTBOX_FOLDER_TYPE)
+//        deleteOtherOutboxFolders(outboxFolderId)
+//        account.outboxFolderId = outboxFolderId
 
         if (account.isPop3()) {
             Log.v("Cleaning up Drafts folder")
@@ -76,12 +76,12 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         return folderId
     }
 
-    private fun deleteOtherOutboxFolders(outboxFolderId: Long) {
-        val otherFolderIds = getOtherFolders(OUTBOX_FOLDER_TYPE, outboxFolderId)
-        for (folderId in otherFolderIds) {
-            deleteFolder(folderId)
-        }
-    }
+//    private fun deleteOtherOutboxFolders(outboxFolderId: Long) {
+//        val otherFolderIds = getOtherFolders(OUTBOX_FOLDER_TYPE, outboxFolderId)
+//        for (folderId in otherFolderIds) {
+//            deleteFolder(folderId)
+//        }
+//    }
 
     private fun getOtherFolders(folderType: String, excludeFolderId: Long): List<Long> {
         return db.query(
@@ -124,7 +124,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
     private fun LegacyAccountDto.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
-        private const val OUTBOX_FOLDER_TYPE = "outbox"
+//        private const val OUTBOX_FOLDER_TYPE = "outbox"
         private const val DRAFTS_FOLDER_TYPE = "drafts"
         private const val SENT_FOLDER_TYPE = "sent"
         private const val TRASH_FOLDER_TYPE = "trash"

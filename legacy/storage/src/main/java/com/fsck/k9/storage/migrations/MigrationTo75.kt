@@ -8,7 +8,7 @@ internal class MigrationTo75(private val db: SQLiteDatabase, private val migrati
         val account = migrationsHelper.account
 
         account.inboxFolderId = getFolderId(account.legacyInboxFolder)
-        account.outboxFolderId = getFolderId("K9MAIL_INTERNAL_OUTBOX")
+//        account.outboxFolderId = getFolderId("K9MAIL_INTERNAL_OUTBOX")
         account.draftsFolderId = getFolderId(account.importedDraftsFolder)
         account.sentFolderId = getFolderId(account.importedSentFolder)
         account.trashFolderId = getFolderId(account.importedTrashFolder)

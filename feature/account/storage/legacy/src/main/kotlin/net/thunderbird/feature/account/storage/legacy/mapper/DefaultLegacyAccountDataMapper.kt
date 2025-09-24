@@ -42,7 +42,6 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
             importedArchiveFolder = dto.importedArchiveFolder,
             importedSpamFolder = dto.importedSpamFolder,
             inboxFolderId = dto.inboxFolderId,
-            outboxFolderId = dto.outboxFolderId,
             draftsFolderId = dto.draftsFolderId,
             sentFolderId = dto.sentFolderId,
             trashFolderId = dto.trashFolderId,
@@ -149,7 +148,6 @@ internal class DefaultLegacyAccountDataMapper : LegacyAccountDataMapper {
             importedArchiveFolder = domain.importedArchiveFolder
             importedSpamFolder = domain.importedSpamFolder
             inboxFolderId = domain.inboxFolderId
-            outboxFolderId = domain.outboxFolderId
             draftsFolderId = domain.draftsFolderId
             sentFolderId = domain.sentFolderId
             trashFolderId = domain.trashFolderId
