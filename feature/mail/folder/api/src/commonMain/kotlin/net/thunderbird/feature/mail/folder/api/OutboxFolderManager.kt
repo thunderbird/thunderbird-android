@@ -87,3 +87,19 @@ fun OutboxFolderManager.getOutboxFolderIdSync(uuid: String, createIfMissing: Boo
 fun OutboxFolderManager.hasPendingMessagesSync(uuid: String): Boolean = runBlocking {
     hasPendingMessages(uuid = AccountIdFactory.of(uuid))
 }
+
+/**
+ * Gets the folder ID of the outbox folder for the given account.
+ *
+ * @param uuid The ID of the account.
+ * @return The folder ID of the outbox folder.
+ * @throws IllegalStateException If the outbox folder could not be found.
+ */
+@Discouraged(
+    message = "This is a wrapper for Java compatibility. " +
+        "Always use getOutboxFolderIdSync(uuid: AccountId) instead on Kotlin files.",
+)
+@JvmOverloads
+fun OutboxFolderManager.getOutboxFolderIdSync(uuid: String, createIfMissing: Boolean = true): Long {
+    return getOutboxFolderIdSync(uuid = AccountIdFactory.of(uuid), createIfMissing = createIfMissing)
+}

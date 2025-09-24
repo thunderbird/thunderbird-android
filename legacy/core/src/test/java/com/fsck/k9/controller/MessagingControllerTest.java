@@ -39,8 +39,10 @@ import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.common.mail.Protocols;
 import net.thunderbird.core.logging.Logger;
 import net.thunderbird.core.outcome.Outcome;
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
 import net.thunderbird.feature.notification.api.sender.NotificationSender;
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification;
+import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -134,6 +136,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
             (flowCollector, continuation) ->
                 Outcome.Companion.success(new FakeInAppOnlyNotification());
 
+        final OutboxFolderManager fakeOutboxFolderManager = new FakeOutboxFolderManager(FOLDER_ID);
+
         controller = new MessagingController(
             appContext,
             notificationController,
@@ -148,7 +152,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
             Collections.<ControllerExtension>emptyList(),
             featureFlagProvider,
             syncLogger,
-            notificationSender
+            notificationSender,
+            fakeOutboxFolderManager
         );
 
         configureAccount();
@@ -305,7 +310,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     @Test
     public void sendPendingMessagesSynchronous_withNonExistentOutbox_shouldNotStartSync() throws MessagingException {
-        account.setOutboxFolderId(FOLDER_ID);
         when(localFolder.exists()).thenReturn(false);
         controller.addListener(listener);
 
@@ -393,7 +397,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
-        account.setOutboxFolderId(FOLDER_ID);
         account.setSentFolderId(SENT_FOLDER_ID);
         when(localStore.getFolder(SENT_FOLDER_ID)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(SENT_FOLDER_ID);
