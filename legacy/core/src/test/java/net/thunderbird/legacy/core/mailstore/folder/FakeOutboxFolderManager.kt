@@ -4,7 +4,8 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
-class FakeOutboxFolderManager(
+class FakeOutboxFolderManager @JvmOverloads constructor(
+    private val outboxFolderId: Long = 1L,
     private val outboxIdMapping: MutableMap<AccountId, Long> = mutableMapOf(),
 ) : OutboxFolderManager {
     override suspend fun getOutboxFolderId(
@@ -12,7 +13,7 @@ class FakeOutboxFolderManager(
         createIfMissing: Boolean,
     ): Long {
         return if (createIfMissing) {
-            outboxIdMapping.getOrPut(key = uuid) { 1L }
+            outboxIdMapping.getOrPut(key = uuid) { outboxFolderId }
         } else {
             outboxIdMapping.getOrDefault(
                 key = uuid,
@@ -22,8 +23,7 @@ class FakeOutboxFolderManager(
     }
 
     override suspend fun createOutboxFolder(uuid: AccountId): Outcome<Long, Exception> {
-        val id = 1L
-        outboxIdMapping[uuid] = id
-        return Outcome.Success(id)
+        outboxIdMapping[uuid] = outboxFolderId
+        return Outcome.Success(outboxFolderId)
     }
 }
