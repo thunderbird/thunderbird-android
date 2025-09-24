@@ -27,7 +27,9 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.legacy.core.FakeAccountDefaultsProvider
+import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -88,4 +90,5 @@ val testModule = module {
             },
         )
     }
+    single<OutboxFolderManager> { FakeOutboxFolderManager() }
 }

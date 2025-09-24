@@ -662,14 +662,19 @@ public class LocalStore {
     }
 
     public long createLocalFolder(String folderName, FolderType type) throws MessagingException {
+        return createLocalFolder(folderName, type, 0, MoreMessages.FALSE);
+    }
+
+    public long createLocalFolder(
+        String folderName, FolderType type, int visibleLimit, MoreMessages moreMessages) throws MessagingException {
         return database.execute(true, (DbCallback<Long>) db -> {
             ContentValues values = new ContentValues();
             values.put("name", folderName);
             values.putNull("server_id");
             values.put("local_only", 1);
             values.put("type", FolderTypeConverter.toDatabaseFolderType(type));
-            values.put("visible_limit", 0);
-            values.put("more_messages", MoreMessages.FALSE.getDatabaseName());
+            values.put("visible_limit", visibleLimit);
+            values.put("more_messages", moreMessages.getDatabaseName());
             values.put("visible", true);
 
             return db.insert("folders", null, values);
