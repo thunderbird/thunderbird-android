@@ -3,9 +3,11 @@ package com.fsck.k9.mailstore
 import app.k9mail.legacy.mailstore.FolderRepository
 import app.k9mail.legacy.mailstore.MessageListRepository
 import app.k9mail.legacy.mailstore.MessageStoreManager
+import com.fsck.k9.mailstore.folder.DefaultOutboxFolderManager
 import com.fsck.k9.message.extractors.AttachmentCounter
 import com.fsck.k9.message.extractors.MessageFulltextCreator
 import com.fsck.k9.message.extractors.MessagePreviewCreator
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import org.koin.dsl.module
 
 val mailStoreModule = module {
@@ -41,4 +43,11 @@ val mailStoreModule = module {
         )
     }
     single<MessageListRepository> { DefaultMessageListRepository(messageStoreManager = get()) }
+    single<OutboxFolderManager> {
+        DefaultOutboxFolderManager(
+            logger = get(),
+            accountManager = get(),
+            localStoreProvider = get(),
+        )
+    }
 }
