@@ -48,22 +48,9 @@ class SpecialLocalFoldersCreator(
         preferences.saveAccount(account)
     }
 
-    fun createOutbox(account: LegacyAccountDto): Long {
-        Log.d("Creating Outbox folder")
-
-        val localStore = localStoreProvider.getInstance(account)
-        val outboxFolderId = localStore.createLocalFolder(OUTBOX_FOLDER_NAME, FolderType.OUTBOX)
-
-        account.outboxFolderId = outboxFolderId
-        preferences.saveAccount(account)
-
-        return outboxFolderId
-    }
-
     private fun LegacyAccountDto.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
-        private const val OUTBOX_FOLDER_NAME = LegacyAccountDto.OUTBOX_NAME
         private const val DRAFTS_FOLDER_NAME = "Drafts"
         private const val SENT_FOLDER_NAME = "Sent"
         private const val TRASH_FOLDER_NAME = "Trash"
