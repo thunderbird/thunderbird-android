@@ -5,9 +5,11 @@ import com.fsck.k9.mailstore.LocalFolder
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
 class FolderInfoHolder(
     private val folderNameFormatter: FolderNameFormatter,
+    private val outboxFolderManager: OutboxFolderManager,
     localFolder: LocalFolder,
     account: LegacyAccount,
 ) {
@@ -28,7 +30,7 @@ class FolderInfoHolder(
         val folder = Folder(
             id = folderId,
             name = localFolder.name,
-            type = getFolderType(account, folderId),
+            type = getFolderType(outboxFolderManager, account, folderId),
             isLocalOnly = localFolder.isLocalOnly,
         )
         return folderNameFormatter.displayName(folder)
@@ -36,10 +38,14 @@ class FolderInfoHolder(
 
     companion object {
         @JvmStatic
-        fun getFolderType(account: LegacyAccount, folderId: Long): FolderType {
+        fun getFolderType(
+            outboxFolderManager: OutboxFolderManager,
+            account: LegacyAccount,
+            folderId: Long,
+        ): FolderType {
             return when (folderId) {
                 account.inboxFolderId -> FolderType.INBOX
-                account.outboxFolderId -> FolderType.OUTBOX
+                outboxFolderManager.getOutboxFolderIdSync(account.id) -> FolderType.OUTBOX
                 account.archiveFolderId -> FolderType.ARCHIVE
                 account.draftsFolderId -> FolderType.DRAFTS
                 account.sentFolderId -> FolderType.SENT
