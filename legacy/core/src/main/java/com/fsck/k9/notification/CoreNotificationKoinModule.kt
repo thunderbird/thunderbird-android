@@ -53,7 +53,12 @@ val coreNotificationModule = module {
         )
     }
     single {
-        SyncNotificationController(notificationHelper = get(), actionBuilder = get(), resourceProvider = get())
+        SyncNotificationController(
+            notificationHelper = get(),
+            actionBuilder = get(),
+            resourceProvider = get(),
+            outboxFolderManager = get(),
+        )
     }
     single {
         SendFailedNotificationController(
