@@ -13,7 +13,7 @@ import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 
-private const val TAG = "SystemNotificationCommand"
+private const val TAG = "DisplaySystemNotificationCommand"
 
 /**
  * Command for displaying system notifications.
@@ -21,7 +21,7 @@ private const val TAG = "SystemNotificationCommand"
  * @param notification The system notification to display.
  * @param notifier The notifier responsible for displaying the notification.
  */
-internal class SystemNotificationCommand(
+internal class DisplaySystemNotificationCommand(
     private val logger: Logger,
     private val featureFlagProvider: FeatureFlagProvider,
     private val notificationRegistry: NotificationRegistry,
