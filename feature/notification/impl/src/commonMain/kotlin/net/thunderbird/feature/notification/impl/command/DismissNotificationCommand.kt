@@ -7,7 +7,10 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
+import net.thunderbird.feature.notification.api.command.outcome.Success
+import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 
@@ -37,16 +40,14 @@ sealed class DismissNotificationCommand<TNotification : Notification>(
 ) {
     abstract val featureFlagKey: FeatureFlagKey
 
-    override suspend fun execute(): Outcome<Success<TNotification>, Failure<TNotification>> {
+    override suspend fun execute(): NotificationCommandOutcome<TNotification> {
         logger.verbose(logTag) { "execute() called with: notification = $notification" }
         return when {
             featureFlagProvider.provide(featureFlagKey).isDisabledOrUnavailable() ->
                 Outcome.failure(
-                    error = Failure(
+                    error = UnsupportedCommand(
                         command = this,
-                        throwable = NotificationCommandException(
-                            message = "${featureFlagKey.key} feature flag is not enabled",
-                        ),
+                        reason = UnsupportedCommand.Reason.FeatureFlagDisabled(key = featureFlagKey),
                     ),
                 )
 
@@ -63,14 +64,12 @@ sealed class DismissNotificationCommand<TNotification : Notification>(
                 Outcome.success(Success(notificationId = id, command = this))
             }
 
-            else -> {
-                Outcome.failure(
-                    Failure(
-                        command = this,
-                        throwable = NotificationCommandException("Can't execute command."),
-                    ),
-                )
-            }
+            else -> Outcome.failure(
+                error = CommandExecutionFailed(
+                    command = this,
+                    message = "Notification is not registered in the NotificationRegistry.",
+                ),
+            )
         }
     }
 }

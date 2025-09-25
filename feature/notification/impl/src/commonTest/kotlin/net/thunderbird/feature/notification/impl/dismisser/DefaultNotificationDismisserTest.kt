@@ -1,9 +1,6 @@
 package net.thunderbird.feature.notification.impl.dismisser
 
-import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasMessage
-import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import dev.mokkery.matcher.any
@@ -20,9 +17,7 @@ import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.Success
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
@@ -40,7 +35,7 @@ import net.thunderbird.feature.notification.testing.fake.receiver.FakeSystemNoti
 class DefaultNotificationDismisserTest {
 
     @Test
-    fun `dismiss(id) should emit Failure when notification is not found`() = runTest {
+    fun `dismiss(id) should emit SuccessNoOperation when notification is not found`() = runTest {
         // Arrange
         val registry = FakeNotificationRegistry()
         val dismisser = createTestSubject(notificationRegistry = registry)
@@ -51,73 +46,70 @@ class DefaultNotificationDismisserTest {
 
         // Assert
         assertThat(outcomes.single())
-            .isInstanceOf<Outcome.Failure<Failure<Notification>>>()
-            .prop("error") { it.error }
-            .all {
-                prop(Failure<Notification>::command).isEqualTo(null)
-                prop(Failure<Notification>::throwable)
-                    .isInstanceOf<NotificationCommandException>()
-                    .hasMessage("Notification with id '$missingId' not found")
-            }
-    }
-
-    @Test
-    fun `dismiss(notification) should emit Success and call system notifier when registered SystemNotification`() = runTest {
-        // Arrange
-        val registry = FakeNotificationRegistry()
-        val systemNotifier = spy(FakeSystemNotificationNotifier())
-        val inAppNotifier = spy(FakeInAppNotificationNotifier())
-        val dismisser = createTestSubject(
-            notificationRegistry = registry,
-            systemNotificationNotifier = systemNotifier,
-            inAppNotificationNotifier = inAppNotifier,
-        )
-        val notification: SystemNotification = FakeSystemOnlyNotification()
-        // register notification to be dismissible
-        registry.register(notification)
-
-        // Act
-        val outcomes = dismisser.dismiss(notification).toList(mutableListOf())
-
-        // Assert
-        assertThat(outcomes.single())
-            .isInstanceOf<Outcome.Success<Success<Notification>>>()
+            .isInstanceOf<Outcome.Success<Success.NoOperation<Notification>>>()
             .prop("data") { it.data }
-            .prop(Success<Notification>::command)
-            .isInstanceOf<DismissSystemNotificationCommand>()
-        verifySuspend(exactly(1)) { systemNotifier.dismiss(id = any()) }
-        verifySuspend(exactly(0)) { inAppNotifier.dismiss(id = any()) }
+            .isInstanceOf<Success.NoOperation<Notification>>()
     }
 
     @Test
-    fun `dismiss(notification) should emit Success and call in-app notifier when registered InAppNotification`() = runTest {
-        // Arrange
-        val registry = FakeNotificationRegistry()
-        val systemNotifier = spy(FakeSystemNotificationNotifier())
-        val inAppNotifier = spy(FakeInAppNotificationNotifier())
-        val dismisser = createTestSubject(
-            notificationRegistry = registry,
-            systemNotificationNotifier = systemNotifier,
-            inAppNotificationNotifier = inAppNotifier,
-        )
-        val notification: InAppNotification = FakeInAppOnlyNotification()
-        registry.register(notification)
+    fun `dismiss(notification) should emit Success and call system notifier when registered SystemNotification`() =
+        runTest {
+            // Arrange
+            val registry = FakeNotificationRegistry()
+            val systemNotifier = spy(FakeSystemNotificationNotifier())
+            val inAppNotifier = spy(FakeInAppNotificationNotifier())
+            val dismisser = createTestSubject(
+                notificationRegistry = registry,
+                systemNotificationNotifier = systemNotifier,
+                inAppNotificationNotifier = inAppNotifier,
+            )
+            val notification: SystemNotification = FakeSystemOnlyNotification()
+            // register notification to be dismissible
+            registry.register(notification)
 
-        // Act
-        val outcomes = dismisser.dismiss(notification).toList(mutableListOf())
+            // Act
+            val outcomes = dismisser.dismiss(notification).toList(mutableListOf())
 
-        // Assert
-        assertThat(outcomes.single())
-            .isInstanceOf<Outcome.Success<Success<Notification>>>()
-            .prop("data") { it.data }
-            .prop(Success<Notification>::command)
-            .isInstanceOf<DismissInAppNotificationCommand>()
-        verifySuspend(exactly(1)) { inAppNotifier.dismiss(id = any()) }
-        verifySuspend(exactly(0)) { systemNotifier.dismiss(id = any()) }
-    }
+            // Assert
+            assertThat(outcomes.single())
+                .isInstanceOf<Outcome.Success<Success.Executed<Notification>>>()
+                .prop("data") { it.data }
+                .prop(Success.Executed<Notification>::command)
+                .isInstanceOf<DismissSystemNotificationCommand>()
+            verifySuspend(exactly(1)) { systemNotifier.dismiss(id = any()) }
+            verifySuspend(exactly(0)) { inAppNotifier.dismiss(id = any()) }
+        }
 
     @Test
-    fun `dismiss(notification) should emit Failure when notification is not registered`() = runTest {
+    fun `dismiss(notification) should emit Success and call in-app notifier when registered InAppNotification`() =
+        runTest {
+            // Arrange
+            val registry = FakeNotificationRegistry()
+            val systemNotifier = spy(FakeSystemNotificationNotifier())
+            val inAppNotifier = spy(FakeInAppNotificationNotifier())
+            val dismisser = createTestSubject(
+                notificationRegistry = registry,
+                systemNotificationNotifier = systemNotifier,
+                inAppNotificationNotifier = inAppNotifier,
+            )
+            val notification: InAppNotification = FakeInAppOnlyNotification()
+            registry.register(notification)
+
+            // Act
+            val outcomes = dismisser.dismiss(notification).toList(mutableListOf())
+
+            // Assert
+            assertThat(outcomes.single())
+                .isInstanceOf<Outcome.Success<Success.Executed<Notification>>>()
+                .prop("data") { it.data }
+                .prop(Success.Executed<Notification>::command)
+                .isInstanceOf<DismissInAppNotificationCommand>()
+            verifySuspend(exactly(1)) { inAppNotifier.dismiss(id = any()) }
+            verifySuspend(exactly(0)) { systemNotifier.dismiss(id = any()) }
+        }
+
+    @Test
+    fun `dismiss(notification) should emit SuccessNoOperation when notification is not registered`() = runTest {
         // Arrange
         val registry = FakeNotificationRegistry() // empty
         val dismisser = createTestSubject(notificationRegistry = registry)
@@ -128,14 +120,9 @@ class DefaultNotificationDismisserTest {
 
         // Assert
         assertThat(outcomes.single())
-            .isInstanceOf<Outcome.Failure<Failure<Notification>>>()
-            .prop("error") { it.error }
-            .all {
-                prop(Failure<Notification>::command).isEqualTo(null)
-                prop(Failure<Notification>::throwable)
-                    .isInstanceOf<NotificationCommandException>()
-                    .hasMessage("Can't dismiss notification that is already dismissed")
-            }
+            .isInstanceOf<Outcome.Success<Success.NoOperation<Notification>>>()
+            .prop("data") { it.data }
+            .isInstanceOf<Success.NoOperation<Notification>>()
     }
 
     private fun createTestSubject(

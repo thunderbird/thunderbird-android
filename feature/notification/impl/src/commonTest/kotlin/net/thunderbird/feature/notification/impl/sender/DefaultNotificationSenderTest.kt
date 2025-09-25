@@ -16,7 +16,7 @@ import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
+import net.thunderbird.feature.notification.api.command.outcome.Success
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
@@ -50,9 +50,9 @@ class DefaultNotificationSenderTest {
 
         // Assert
         assertThat(outcomes.single())
-            .isInstanceOf<Outcome.Success<Success<Notification>>>()
+            .isInstanceOf<Outcome.Success<Success.Executed<Notification>>>()
             .prop("data") { it.data }
-            .prop(Success<Notification>::command)
+            .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplaySystemNotificationCommand>()
 
         verifySuspend(exactly(1)) { systemNotifier.show(id = any(), notification = any()) }
@@ -81,14 +81,14 @@ class DefaultNotificationSenderTest {
 
         // Assert: we expect two outcomes in order: system then in-app
         assertThat(outcomes[0])
-            .isInstanceOf<Outcome.Success<Success<Notification>>>()
+            .isInstanceOf<Outcome.Success<Success.Executed<Notification>>>()
             .prop("data") { it.data }
-            .prop(Success<Notification>::command)
+            .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplaySystemNotificationCommand>()
         assertThat(outcomes[1])
-            .isInstanceOf<Outcome.Success<Success<Notification>>>()
+            .isInstanceOf<Outcome.Success<Success.Executed<Notification>>>()
             .prop("data") { it.data }
-            .prop(Success<Notification>::command)
+            .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplayInAppNotificationCommand>()
 
         verifySuspend(exactly(1)) { systemNotifier.show(id = any(), notification) }
@@ -113,9 +113,9 @@ class DefaultNotificationSenderTest {
 
         // Assert
         assertThat(outcomes.single())
-            .isInstanceOf<Outcome.Success<Success<Notification>>>()
+            .isInstanceOf<Outcome.Success<Success.Executed<Notification>>>()
             .prop("data") { it.data }
-            .prop(Success<Notification>::command)
+            .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplayInAppNotificationCommand>()
 
         verifySuspend(exactly(1)) { inAppNotifier.show(id = any(), notification = any()) }
