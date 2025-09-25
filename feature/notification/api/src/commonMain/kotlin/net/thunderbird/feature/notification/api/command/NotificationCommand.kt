@@ -47,7 +47,7 @@ abstract class NotificationCommand<TNotification : Notification>(
      * @property throwable The exception that caused the failure.
      */
     data class Failure<out TNotification : Notification>(
-        val command: NotificationCommand<out TNotification>,
+        val command: NotificationCommand<out TNotification>?,
         val throwable: Throwable,
     ) : CommandOutcome
 }

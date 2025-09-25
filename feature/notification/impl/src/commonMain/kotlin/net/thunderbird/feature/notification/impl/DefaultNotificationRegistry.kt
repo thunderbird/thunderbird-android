@@ -57,4 +57,12 @@ class DefaultNotificationRegistry : NotificationRegistry {
     override fun unregister(notification: Notification) {
         _registrar.remove(notification)
     }
+
+    override fun contains(notification: Notification): Boolean {
+        return _registrar.containsKey(notification)
+    }
+
+    override fun contains(notificationId: NotificationId): Boolean {
+        return _registrar.containsValue(notificationId)
+    }
 }
