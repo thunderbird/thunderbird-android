@@ -8,8 +8,9 @@ import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.resources.api.Res
-import net.thunderbird.feature.notification.resources.api.notification_authentication_error_text
 import net.thunderbird.feature.notification.resources.api.notification_authentication_error_title
+import net.thunderbird.feature.notification.resources.api.notification_authentication_incoming_server_error_text
+import net.thunderbird.feature.notification.resources.api.notification_authentication_outgoing_server_error_text
 import org.jetbrains.compose.resources.getString
 
 /**
@@ -25,8 +26,8 @@ data class AuthenticationErrorNotification private constructor(
     override val title: String,
     override val contentText: String?,
     override val channel: NotificationChannel,
-    override val icon: NotificationIcon = NotificationIcons.AuthenticationError,
 ) : AppNotification(), SystemNotification, InAppNotification {
+    override val icon: NotificationIcon = NotificationIcons.AuthenticationError
     override val severity: NotificationSeverity = NotificationSeverity.Fatal
     override val actions: Set<NotificationAction> = buildSet {
         val action = if (isIncomingServerError) {
@@ -63,7 +64,11 @@ data class AuthenticationErrorNotification private constructor(
             accountNumber = accountNumber,
             title = getString(resource = Res.string.notification_authentication_error_title),
             contentText = getString(
-                resource = Res.string.notification_authentication_error_text,
+                resource = if (isIncomingServerError) {
+                    Res.string.notification_authentication_incoming_server_error_text
+                } else {
+                    Res.string.notification_authentication_outgoing_server_error_text
+                },
                 accountDisplayName,
             ),
             channel = NotificationChannel.Miscellaneous(accountUuid = accountUuid),
