@@ -32,7 +32,7 @@ internal class NotificationCommandFactory(
 
         if (notification is SystemNotification) {
             commands.add(
-                SystemNotificationCommand(
+                DisplaySystemNotificationCommand(
                     logger = logger,
                     featureFlagProvider = featureFlagProvider,
                     notificationRegistry = notificationRegistry,
@@ -44,7 +44,7 @@ internal class NotificationCommandFactory(
 
         if (notification is InAppNotification) {
             commands.add(
-                InAppNotificationCommand(
+                DisplayInAppNotificationCommand(
                     logger = logger,
                     featureFlagProvider = featureFlagProvider,
                     notificationRegistry = notificationRegistry,

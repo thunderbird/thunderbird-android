@@ -29,7 +29,7 @@ import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistr
 import net.thunderbird.feature.notification.testing.fake.receiver.FakeInAppNotificationNotifier
 
 @Suppress("MaxLineLength")
-class InAppNotificationCommandTest {
+class DisplayInAppNotificationCommandTest {
     @Test
     fun `execute should return Failure when display_in_app_notifications feature flag is Disabled`() =
         runTest {
@@ -128,9 +128,9 @@ class InAppNotificationCommandTest {
         featureFlagProvider: FeatureFlagProvider = FeatureFlagProvider { FeatureFlagResult.Enabled },
         notifier: NotificationNotifier<InAppNotification> = FakeInAppNotificationNotifier(),
         notificationRegistry: NotificationRegistry = FakeNotificationRegistry(),
-    ): InAppNotificationCommand {
+    ): DisplayInAppNotificationCommand {
         val logger = TestLogger()
-        return InAppNotificationCommand(
+        return DisplayInAppNotificationCommand(
             logger = logger,
             featureFlagProvider = featureFlagProvider,
             notificationRegistry = notificationRegistry,

@@ -31,7 +31,7 @@ import net.thunderbird.feature.notification.testing.fake.FakeNotification
 import net.thunderbird.feature.notification.testing.fake.FakeSystemOnlyNotification
 
 @Suppress("MaxLineLength")
-class SystemNotificationCommandTest {
+class DisplaySystemNotificationCommandTest {
     @Test
     fun `execute should return Failure when use_notification_sender_for_system_notifications feature flag is Disabled`() =
         runTest {
@@ -263,9 +263,9 @@ class SystemNotificationCommandTest {
             // TODO(#9391): Verify if the app is backgrounded.
             false
         },
-    ): SystemNotificationCommand {
+    ): DisplaySystemNotificationCommand {
         val logger = TestLogger()
-        return SystemNotificationCommand(
+        return DisplaySystemNotificationCommand(
             logger = logger,
             featureFlagProvider = featureFlagProvider,
             notificationRegistry = notificationRegistry,
