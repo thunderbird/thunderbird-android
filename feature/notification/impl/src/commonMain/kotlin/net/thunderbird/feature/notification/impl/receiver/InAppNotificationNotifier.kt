@@ -20,15 +20,26 @@ internal class InAppNotificationNotifier(
 ) : NotificationNotifier<InAppNotification> {
 
     override suspend fun show(id: NotificationId, notification: InAppNotification) {
-        logger.debug(TAG) { "show() called with: id = $id, notification = $notification" }
-        if (notificationRegistry.registrar.containsKey(id)) {
+        logger.verbose(TAG) { "show() called with: id = $id, notification = $notification" }
+        if (id in notificationRegistry) {
             inAppNotificationEventBus.publish(
                 event = InAppNotificationEvent.Show(notification),
             )
         }
     }
 
+    override suspend fun dismiss(id: NotificationId) {
+        logger.verbose(TAG) { "dismiss() called with: id = $id" }
+        val notification = notificationRegistry[id]
+        if (notification != null && notification is InAppNotification) {
+            notificationRegistry.unregister(notification)
+            inAppNotificationEventBus.publish(
+                event = InAppNotificationEvent.Dismiss(notification),
+            )
+        }
+    }
+
     override fun dispose() {
-        logger.debug(TAG) { "dispose() called" }
+        logger.verbose(TAG) { "dispose() called" }
     }
 }

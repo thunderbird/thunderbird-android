@@ -278,14 +278,14 @@ class DisplaySystemNotificationCommandTest {
 
 private open class FakeNotificationRegistry : NotificationRegistry {
     override val registrar: Map<NotificationId, Notification>
-        get() = TODO("Not yet implemented")
+        get() = error("Not yet implemented")
 
     override fun get(notificationId: NotificationId): Notification? {
-        TODO("Not yet implemented")
+        error("Not yet implemented")
     }
 
     override fun get(notification: Notification): NotificationId? {
-        TODO("Not yet implemented")
+        error("Not yet implemented")
     }
 
     override suspend fun register(notification: Notification): NotificationId {
@@ -293,11 +293,19 @@ private open class FakeNotificationRegistry : NotificationRegistry {
     }
 
     override fun unregister(notificationId: NotificationId) {
-        TODO("Not yet implemented")
+        error("Not yet implemented")
     }
 
     override fun unregister(notification: Notification) {
-        TODO("Not yet implemented")
+        error("Not yet implemented")
+    }
+
+    override fun contains(notification: Notification): Boolean {
+        error("Not yet implemented")
+    }
+
+    override fun contains(notificationId: NotificationId): Boolean {
+        error("Not yet implemented")
     }
 }
 
@@ -306,6 +314,8 @@ private open class FakeNotifier : NotificationNotifier<SystemNotification> {
         id: NotificationId,
         notification: SystemNotification,
     ) = Unit
+
+    override suspend fun dismiss(id: NotificationId) = Unit
 
     override fun dispose() = Unit
 }

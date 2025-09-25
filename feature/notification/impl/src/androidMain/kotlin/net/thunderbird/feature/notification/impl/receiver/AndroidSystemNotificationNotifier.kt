@@ -33,6 +33,11 @@ internal class AndroidSystemNotificationNotifier(
         notificationManager.notify(id.value, androidNotification)
     }
 
+    override suspend fun dismiss(id: NotificationId) {
+        logger.debug(TAG) { "dismiss() called with: id = $id" }
+        notificationManager.cancel(id.value)
+    }
+
     override fun dispose() {
         logger.debug(TAG) { "dispose() called" }
     }
