@@ -2,13 +2,15 @@ package net.thunderbird.feature.notification.impl.command
 
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.NotificationCommand
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
+import net.thunderbird.feature.notification.api.command.outcome.Success
+import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
@@ -32,24 +34,19 @@ internal class DisplaySystemNotificationCommand(
         false
     },
 ) : NotificationCommand<SystemNotification>(notification, notifier) {
-
-    private val isFeatureFlagEnabled: Boolean
-        get() = featureFlagProvider
-            .provide(FeatureFlagKey.UseNotificationSenderForSystemNotifications) == FeatureFlagResult.Enabled
-
-    override suspend fun execute(): Outcome<Success<SystemNotification>, Failure<SystemNotification>> {
-        logger.debug(TAG) { "execute() called" }
+    override suspend fun execute(): NotificationCommandOutcome<SystemNotification> {
+        logger.debug(TAG) { "execute() called with notification = $notification" }
         return when {
-            isFeatureFlagEnabled.not() ->
-                Outcome.failure(
-                    error = Failure(
-                        command = this,
-                        throwable = NotificationCommandException(
-                            message = "${FeatureFlagKey.UseNotificationSenderForSystemNotifications.key} feature flag" +
-                                "is not enabled",
-                        ),
+            featureFlagProvider
+                .provide(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
+                .isDisabledOrUnavailable() -> Outcome.failure(
+                error = UnsupportedCommand(
+                    command = this,
+                    reason = UnsupportedCommand.Reason.FeatureFlagDisabled(
+                        key = FeatureFlagKey.UseNotificationSenderForSystemNotifications,
                     ),
-                )
+                ),
+            )
 
             canExecuteCommand() -> {
                 val id = notificationRegistry.register(notification)
@@ -57,14 +54,7 @@ internal class DisplaySystemNotificationCommand(
                 Outcome.success(Success(notificationId = id, command = this))
             }
 
-            else -> {
-                Outcome.failure(
-                    error = Failure(
-                        command = this,
-                        throwable = NotificationCommandException("Can't execute command."),
-                    ),
-                )
-            }
+            else -> Outcome.failure(error = CommandExecutionFailed(command = this))
         }
     }
 

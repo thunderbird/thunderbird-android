@@ -3,8 +3,9 @@ package net.thunderbird.feature.notification.api.dismisser
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationId
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
+import net.thunderbird.feature.notification.api.command.outcome.Failure
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
+import net.thunderbird.feature.notification.api.command.outcome.Success
 import net.thunderbird.feature.notification.api.content.Notification
 
 /**
@@ -18,7 +19,7 @@ interface NotificationDismisser {
      * @return A [Flow] of [Outcome] that emits either a [Success] with the dismissed [Notification]
      * or a [Failure] with the [Notification] that failed to be dismissed.
      */
-    fun dismiss(id: NotificationId): Flow<Outcome<Success<Notification>, Failure<Notification>>>
+    fun dismiss(id: NotificationId): Flow<NotificationCommandOutcome<Notification>>
 
     /**
      * Dismisses a notification.
@@ -28,5 +29,5 @@ interface NotificationDismisser {
      * The [Outcome] will be a [Success] containing the dismissed [Notification] if the operation was successful,
      * or a [Failure] containing the [Notification] if the operation failed.
      */
-    fun dismiss(notification: Notification): Flow<Outcome<Success<Notification>, Failure<Notification>>>
+    fun dismiss(notification: Notification): Flow<NotificationCommandOutcome<Notification>>
 }

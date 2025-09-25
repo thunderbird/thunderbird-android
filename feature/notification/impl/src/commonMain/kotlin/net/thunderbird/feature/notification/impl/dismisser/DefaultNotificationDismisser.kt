@@ -9,9 +9,9 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.CommandNotCreated
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
+import net.thunderbird.feature.notification.api.command.outcome.Success
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
@@ -43,58 +43,34 @@ class DefaultNotificationDismisser internal constructor(
     private val systemNotificationNotifier: NotificationNotifier<SystemNotification>,
     private val inAppNotificationNotifier: NotificationNotifier<InAppNotification>,
 ) : NotificationDismisser {
-    override fun dismiss(id: NotificationId): Flow<Outcome<Success<Notification>, Failure<Notification>>> = flow {
+    override fun dismiss(id: NotificationId): Flow<NotificationCommandOutcome<Notification>> = flow {
         logger.verbose(TAG) { "dismiss() called with: id = $id" }
         val notification = notificationRegistry[id]
         if (notification == null) {
-            emit(
-                value = Outcome.failure(
-                    error = Failure(
-                        command = null,
-                        throwable = NotificationCommandException(message = "Notification with id '$id' not found"),
-                    ),
-                ),
-            )
+            emit(Outcome.success(Success.NoOperation()))
         } else {
             emitAll(dismiss(notification))
         }
     }
 
-    override fun dismiss(notification: Notification): Flow<Outcome<Success<Notification>, Failure<Notification>>> =
-        flow {
-            logger.verbose(TAG) { "dismiss() called with: notification = $notification" }
+    override fun dismiss(notification: Notification): Flow<NotificationCommandOutcome<Notification>> = flow {
+        logger.verbose(TAG) { "dismiss() called with: notification = $notification" }
 
-            if (notification in notificationRegistry) {
-                val commands = buildCommands(notification)
-                commands
-                    .ifEmpty {
-                        val message = "The notification is present in the registrar; " +
-                            "however no commands where found to execute for notification $notification"
-                        logger.warn { message }
-                        emit(
-                            Outcome.Failure(
-                                Failure(
-                                    command = null,
-                                    throwable = NotificationCommandException(message),
-                                ),
-                            ),
-                        )
-                        emptyList()
-                    }
-                    .forEach { command -> emit(command.execute()) }
-            } else {
-                emit(
-                    value = Outcome.failure(
-                        error = Failure(
-                            command = null,
-                            throwable = NotificationCommandException(
-                                message = "Can't dismiss notification that is already dismissed",
-                            ),
-                        ),
-                    ),
-                )
-            }
+        if (notification in notificationRegistry) {
+            val commands = buildCommands(notification)
+            commands
+                .ifEmpty {
+                    val message = "The notification is present in the registrar; " +
+                        "however no commands where found to execute for notification $notification"
+                    logger.warn { message }
+                    emit(Outcome.failure(CommandNotCreated(message)))
+                    emptyList()
+                }
+                .forEach { command -> emit(command.execute()) }
+        } else {
+            emit(Outcome.success(Success.NoOperation()))
         }
+    }
 
     private fun buildCommands(notification: Notification): List<NotificationCommand<out Notification>> = buildList {
         if (notification is SystemNotification) {

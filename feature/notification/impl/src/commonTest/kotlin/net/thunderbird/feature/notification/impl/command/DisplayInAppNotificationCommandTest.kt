@@ -2,7 +2,6 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
@@ -19,9 +18,8 @@ import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.Success
+import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
@@ -47,18 +45,16 @@ class DisplayInAppNotificationCommandTest {
             val outcome = testSubject.execute()
 
             // Assert
-
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<InAppNotification>>>()
+                .isInstanceOf<Outcome.Failure<UnsupportedCommand<InAppNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<InAppNotification>::command)
+                    prop(UnsupportedCommand<InAppNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<InAppNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage(
-                            "${FeatureFlagKey.DisplayInAppNotifications.key} feature flag is not enabled",
-                        )
+                    prop(UnsupportedCommand<InAppNotification>::reason)
+                        .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
+                        .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
+                        .isEqualTo(FeatureFlagKey.DisplayInAppNotifications)
                 }
         }
 
@@ -80,16 +76,15 @@ class DisplayInAppNotificationCommandTest {
 
             // Assert
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<InAppNotification>>>()
+                .isInstanceOf<Outcome.Failure<UnsupportedCommand<InAppNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<InAppNotification>::command)
+                    prop(UnsupportedCommand<InAppNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<InAppNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage(
-                            "${FeatureFlagKey.DisplayInAppNotifications.key} feature flag is not enabled",
-                        )
+                    prop(UnsupportedCommand<InAppNotification>::reason)
+                        .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
+                        .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
+                        .isEqualTo(FeatureFlagKey.DisplayInAppNotifications)
                 }
         }
 
