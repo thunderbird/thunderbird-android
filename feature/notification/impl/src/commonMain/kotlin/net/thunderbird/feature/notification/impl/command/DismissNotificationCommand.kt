@@ -60,7 +60,7 @@ sealed class DismissNotificationCommand<TNotification : Notification>(
                         "Registrar = ${notificationRegistry.registrar}"
                 }
                 notifier.dismiss(id)
-                Outcome.success(Success(command = this))
+                Outcome.success(Success(notificationId = id, command = this))
             }
 
             else -> {

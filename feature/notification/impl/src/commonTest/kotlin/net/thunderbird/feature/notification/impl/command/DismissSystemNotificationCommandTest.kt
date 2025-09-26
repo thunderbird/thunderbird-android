@@ -118,6 +118,8 @@ class DismissSystemNotificationCommandTest {
             .all {
                 prop(Success<SystemNotification>::command)
                     .isEqualTo(testSubject)
+                prop(Success<SystemNotification>::notificationId)
+                    .isEqualTo(expectedId)
             }
 
         verifySuspend(exactly(1)) { notifier.dismiss(expectedId) }

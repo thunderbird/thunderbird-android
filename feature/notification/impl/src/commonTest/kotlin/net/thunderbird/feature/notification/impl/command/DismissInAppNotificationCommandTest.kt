@@ -117,6 +117,8 @@ class DismissInAppNotificationCommandTest {
             .all {
                 prop(Success<InAppNotification>::command)
                     .isEqualTo(testSubject)
+                prop(Success<InAppNotification>::notificationId)
+                    .isEqualTo(expectedId)
             }
 
         verifySuspend(exactly(1)) { notifier.dismiss(expectedId) }
