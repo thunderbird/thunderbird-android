@@ -7,7 +7,7 @@ set -e
 
 # Define installation paths
 BASE_DIR=$(dirname -- "${BASH_SOURCE[0]}")
-MERMAID_JS_DIR="${BASE_DIR}/assets/theme/"
+MERMAID_JS_DIR="${BASE_DIR}/assets/additional/js/"
 MERMAID_JS_PATH="${MERMAID_JS_DIR}mermaid.min.js"
 
 # Check if the script was run with "force" argument

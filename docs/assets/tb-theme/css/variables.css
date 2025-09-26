@@ -1,0 +1,176 @@
+
+/* Globals */
+
+:root {
+    --sidebar-target-width: 300px;
+    --sidebar-width: min(var(--sidebar-target-width), 80vw);
+    --sidebar-resize-indicator-width: 8px;
+    --sidebar-resize-indicator-space: 2px;
+    --page-padding: 15px;
+    --content-max-width: 750px;
+    --menu-bar-height: 64px;
+    --mono-font: "Source Code Pro", Consolas, "Ubuntu Mono", Menlo, "DejaVu Sans Mono", monospace, monospace;
+    --code-font-size: 0.875em;
+    --searchbar-margin-block-start: 5px;
+}
+
+/* Themes */
+
+.dark {
+    /* Thunderbird dark palette */
+    --bg: #0a0c10; /* near-black */
+    --fg: #e5e7eb; /* gray-200 */
+
+    --sidebar-bg: #0b1220; /* deep navy */
+    --sidebar-fg: #d1d5db; /* gray-300 */
+    --sidebar-non-existant: #64748b; /* slate-500 */
+    --sidebar-active: #4cb1ff; /* TB blue light */
+    --sidebar-spacer: #111827; /* slate-800 */
+
+    --scrollbar: var(--sidebar-fg);
+
+    --icons: #9aa4b2;
+    --icons-hover: #e5e7eb;
+
+    --links: #4cb1ff; /* TB primary blue */
+
+    --inline-code-color: #fbbf24; /* warm accent for code */
+
+    --theme-popup-bg: #0b1220;
+    --theme-popup-border: #1f2937;
+    --theme-hover: #111827;
+
+    --quote-bg: #0f1a2b;
+    --quote-border: #19324f;
+
+    --warning-border: #f59e0b;
+
+    --table-border-color: #111827;
+    --table-header-bg: #1f2937;
+    --table-alternate-bg: #0d1324;
+
+    --searchbar-border-color: #4b5563;
+    --searchbar-bg: #1f2937;
+    --searchbar-fg: #f9fafb;
+    --searchbar-shadow-color: #60a5fa;
+    --searchresults-header-fg: #93a3b8;
+    --searchresults-border-color: #334155;
+    --searchresults-li-bg: #0d1324;
+    --search-mark-bg: #2563eb;
+
+    --color-scheme: dark;
+
+    /* Same as `--icons` */
+    --copy-button-filter: invert(80%) sepia(6%) saturate(300%) hue-rotate(180deg) brightness(95%) contrast(85%);
+    /* Same as `--sidebar-active` */
+    --copy-button-filter-hover: invert(67%) sepia(19%) saturate(1404%) hue-rotate(176deg) brightness(103%) contrast(103%);
+
+    --footnote-highlight: #3b82f6;
+
+    --overlay-bg: rgba(9, 14, 26, 0.5);
+}
+
+.light, html:not(.js) {
+    /* Thunderbird light palette */
+    --bg: #ffffff;
+    --fg: #0c1222; /* near-black navy */
+
+    --sidebar-bg: #f6f8fc; /* subtle blue tint */
+    --sidebar-fg: #0c1222;
+    --sidebar-non-existant: #94a3b8; /* slate-400 */
+    --sidebar-active: #0a84ff; /* TB primary blue */
+    --sidebar-spacer: #e6ecf7; /* light divider */
+
+    --scrollbar: #9aa4b2;
+
+    --icons: #5b6472;
+    --icons-hover: #0c1222;
+
+    --links: #0a84ff;
+
+    --inline-code-color: #7c3aed; /* purple accent for code */
+
+    --theme-popup-bg: #ffffff;
+    --theme-popup-border: #e5e7eb;
+    --theme-hover: #eef2ff;
+
+    --quote-bg: #eef5ff;
+    --quote-border: #d2e6ff;
+
+    --warning-border: #b45309;
+
+    --table-border-color: #e5e7eb;
+    --table-header-bg: #e9eef8;
+    --table-alternate-bg: #f7f9fd;
+
+    --searchbar-border-color: #c7d2fe;
+    --searchbar-bg: #f0f5ff;
+    --searchbar-fg: #0c1222;
+    --searchbar-shadow-color: #93c5fd;
+    --searchresults-header-fg: #475569;
+    --searchresults-border-color: #cbd5e1;
+    --searchresults-li-bg: #e8f3ff;
+    --search-mark-bg: #b6dbff;
+
+    --color-scheme: light;
+
+    /* Same as `--icons` */
+    --copy-button-filter: invert(35%);
+    /* Same as `--sidebar-active` */
+    --copy-button-filter-hover: invert(28%) sepia(93%) saturate(2967%) hue-rotate(193deg) brightness(103%) contrast(104%);
+
+    --footnote-highlight: #0a84ff;
+
+    --overlay-bg: rgba(10, 132, 255, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not(.js) {
+        --bg: hsl(200, 7%, 8%);
+        --fg: #98a3ad;
+
+        --sidebar-bg: #292c2f;
+        --sidebar-fg: #a1adb8;
+        --sidebar-non-existant: #505254;
+        --sidebar-active: #3473ad;
+        --sidebar-spacer: #393939;
+
+        --scrollbar: var(--sidebar-fg);
+
+        --icons: #43484d;
+        --icons-hover: #b3c0cc;
+
+        --links: #2b79a2;
+
+        --inline-code-color: #c5c8c6;
+
+        --theme-popup-bg: #141617;
+        --theme-popup-border: #43484d;
+        --theme-hover: #1f2124;
+
+        --quote-bg: hsl(234, 21%, 18%);
+        --quote-border: hsl(234, 21%, 23%);
+
+        --warning-border: #ff8e00;
+
+        --table-border-color: hsl(200, 7%, 13%);
+        --table-header-bg: hsl(200, 7%, 28%);
+        --table-alternate-bg: hsl(200, 7%, 11%);
+
+        --searchbar-border-color: #aaa;
+        --searchbar-bg: #b7b7b7;
+        --searchbar-fg: #000;
+        --searchbar-shadow-color: #aaa;
+        --searchresults-header-fg: #666;
+        --searchresults-border-color: #98a3ad;
+        --searchresults-li-bg: #2b2b2f;
+        --search-mark-bg: #355c7d;
+
+        --color-scheme: dark;
+
+        /* Same as `--icons` */
+        --copy-button-filter: invert(26%) sepia(8%) saturate(575%) hue-rotate(169deg) brightness(87%) contrast(82%);
+        /* Same as `--sidebar-active` */
+        --copy-button-filter-hover: invert(36%) sepia(70%) saturate(503%) hue-rotate(167deg) brightness(98%) contrast(89%);
+    }
+}
