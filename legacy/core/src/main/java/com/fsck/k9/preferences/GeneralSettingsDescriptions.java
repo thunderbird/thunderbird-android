@@ -14,7 +14,6 @@ import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
-import com.fsck.k9.K9.PostRemoveNavigation;
 import com.fsck.k9.UiDensity;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
@@ -42,6 +41,7 @@ import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.preference.SplitViewMode;
 import net.thunderbird.core.preference.SubTheme;
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsKt;
+import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
 
