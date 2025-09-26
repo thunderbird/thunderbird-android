@@ -50,6 +50,8 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Release Automation](ci/AUTOMATION.md)
   - [Developer Release Checklist](release/developer-checklist.md)
   - [Manual Release (historical)](ci/HISTORICAL_RELEASE.md)
+- [Security]()
+  - [Threat Modeling Guide](security/threat-modeling-guide.md)
 
 ---
 
