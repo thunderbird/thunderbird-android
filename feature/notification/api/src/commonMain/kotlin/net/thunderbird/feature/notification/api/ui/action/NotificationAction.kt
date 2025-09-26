@@ -136,4 +136,17 @@ sealed class NotificationAction {
         override val labelResource: StringResource? get() = null
         override suspend fun resolveTitle(): String = label
     }
+
+    /**
+     * Action to open a support article in a web browser.
+     *
+     * This action is typically used to provide users with more information or help related to
+     * the notification's content.
+     *
+     * @property url The URL of the support article to be opened.
+     */
+    data class ViewSupportArticle(val url: String) : NotificationAction() {
+        override val icon: NotificationIcon? = null
+        override val labelResource: StringResource = Res.string.banner_inline_notification_view_support_article
+    }
 }
