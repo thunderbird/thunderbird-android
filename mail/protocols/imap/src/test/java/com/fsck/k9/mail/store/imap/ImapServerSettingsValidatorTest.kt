@@ -351,7 +351,7 @@ class ImapServerSettingsValidatorTest {
     }
 }
 
-class FakeOAuth2TokenProvider(override val primaryEmail: String? = null) : OAuth2TokenProvider {
+class FakeOAuth2TokenProvider(override val usernames: Set<String> = emptySet()) : OAuth2TokenProvider {
     override fun getToken(timeoutMillis: Long): String {
         return AUTHORIZATION_TOKEN
     }
