@@ -52,11 +52,9 @@ internal class DisplaySystemNotificationCommand(
                 )
 
             canExecuteCommand() -> {
-                notifier.show(
-                    id = notificationRegistry.register(notification),
-                    notification = notification,
-                )
-                Outcome.success(Success(command = this))
+                val id = notificationRegistry.register(notification)
+                notifier.show(id = id, notification = notification)
+                Outcome.success(Success(notificationId = id, command = this))
             }
 
             else -> {

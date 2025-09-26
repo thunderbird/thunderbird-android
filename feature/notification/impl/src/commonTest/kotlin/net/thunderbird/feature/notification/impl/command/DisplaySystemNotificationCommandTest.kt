@@ -10,7 +10,6 @@ import dev.mokkery.matcher.any
 import dev.mokkery.spy
 import dev.mokkery.verify.VerifyMode.Companion.exactly
 import dev.mokkery.verifySuspend
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -24,10 +23,10 @@ import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
 import net.thunderbird.feature.notification.api.command.NotificationCommandException
-import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
+import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
 import net.thunderbird.feature.notification.testing.fake.FakeSystemOnlyNotification
 
 @Suppress("MaxLineLength")
@@ -134,11 +133,13 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notifier = spy(FakeNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { true },
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -151,6 +152,8 @@ class DisplaySystemNotificationCommandTest {
                 .all {
                     prop(Success<SystemNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<SystemNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -166,11 +169,13 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Fatal,
             )
             val notifier = spy(FakeNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -183,6 +188,8 @@ class DisplaySystemNotificationCommandTest {
                 .all {
                     prop(Success<SystemNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<SystemNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -198,11 +205,13 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Critical,
             )
             val notifier = spy(FakeNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -215,6 +224,8 @@ class DisplaySystemNotificationCommandTest {
                 .all {
                     prop(Success<SystemNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<SystemNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -230,11 +241,13 @@ class DisplaySystemNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notifier = spy(FakeNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -247,6 +260,8 @@ class DisplaySystemNotificationCommandTest {
                 .all {
                     prop(Success<SystemNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<SystemNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -273,39 +288,6 @@ class DisplaySystemNotificationCommandTest {
             notifier = notifier,
             isAppInBackground = isAppInBackground,
         )
-    }
-}
-
-private open class FakeNotificationRegistry : NotificationRegistry {
-    override val registrar: Map<NotificationId, Notification>
-        get() = error("Not yet implemented")
-
-    override fun get(notificationId: NotificationId): Notification? {
-        error("Not yet implemented")
-    }
-
-    override fun get(notification: Notification): NotificationId? {
-        error("Not yet implemented")
-    }
-
-    override suspend fun register(notification: Notification): NotificationId {
-        return NotificationId(value = Random.nextInt())
-    }
-
-    override fun unregister(notificationId: NotificationId) {
-        error("Not yet implemented")
-    }
-
-    override fun unregister(notification: Notification) {
-        error("Not yet implemented")
-    }
-
-    override fun contains(notification: Notification): Boolean {
-        error("Not yet implemented")
-    }
-
-    override fun contains(notificationId: NotificationId): Boolean {
-        error("Not yet implemented")
     }
 }
 

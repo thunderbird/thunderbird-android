@@ -53,8 +53,8 @@ public class NotificationSenderCompatJavaTest {
                 ? extends @NotNull Failure<? extends @NotNull Notification>
                 >
             > expectedResults = List.of(
-            Outcome.Companion.success(new Success<>(new FakeInAppNotificationCommand())),
-            Outcome.Companion.success(new Success<>(new FakeSystemNotificationCommand())),
+            Outcome.Companion.success(Success.Companion.invoke(1, new FakeInAppNotificationCommand())),
+            Outcome.Companion.success(Success.Companion.invoke(2, new FakeSystemNotificationCommand())),
             Outcome.Companion.failure(
                 new Failure<>(
                     new FakeSystemNotificationCommand(),

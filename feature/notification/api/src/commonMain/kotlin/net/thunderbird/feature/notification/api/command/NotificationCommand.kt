@@ -1,6 +1,8 @@
 package net.thunderbird.feature.notification.api.command
 
+import androidx.annotation.Discouraged
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 
@@ -33,11 +35,24 @@ abstract class NotificationCommand<TNotification : Notification>(
      * Represents a successful command execution.
      *
      * @param TNotification The type of notification associated with the command.
+     * @property notificationId The ID of the notification that was successfully acted upon.
      * @property command The command that was executed successfully.
      */
     data class Success<out TNotification : Notification>(
+        val notificationId: NotificationId,
         val command: NotificationCommand<out TNotification>,
-    ) : CommandOutcome
+    ) : CommandOutcome {
+        companion object {
+            @Discouraged(
+                message = "This is a utility function to enable usage in Java code. " +
+                    "Use Success(NotificationId, NotificationCommand) instead.",
+            )
+            operator fun invoke(
+                notificationId: Int,
+                command: NotificationCommand<*>,
+            ): Success<Notification> = Success(NotificationId(notificationId), command)
+        }
+    }
 
     /**
      * Represents a failed command execution.

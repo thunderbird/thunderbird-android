@@ -101,9 +101,11 @@ class DisplayInAppNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notifier = spy(FakeInAppNotificationNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -116,6 +118,8 @@ class DisplayInAppNotificationCommandTest {
                 .all {
                     prop(Success<InAppNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<InAppNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
