@@ -508,7 +508,7 @@ class MessageListFragment :
                             onSnackbarNotificationEvent = ::onSnackbarInAppNotificationEvent,
                             eventFilter = { event ->
                                 val accountUuid = event.notification.accountUuid
-                                accountUuid != null && accounts.any { it.uuid == accountUuid }
+                                accountUuid != null && accountUuid in accountUuids
                             },
                             modifier = Modifier
                                 .animateContentSize()

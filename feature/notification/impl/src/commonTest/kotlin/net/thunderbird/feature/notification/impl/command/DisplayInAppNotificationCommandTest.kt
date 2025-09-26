@@ -2,7 +2,6 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
@@ -19,9 +18,8 @@ import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.Success
+import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
@@ -29,7 +27,7 @@ import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistr
 import net.thunderbird.feature.notification.testing.fake.receiver.FakeInAppNotificationNotifier
 
 @Suppress("MaxLineLength")
-class InAppNotificationCommandTest {
+class DisplayInAppNotificationCommandTest {
     @Test
     fun `execute should return Failure when display_in_app_notifications feature flag is Disabled`() =
         runTest {
@@ -47,18 +45,16 @@ class InAppNotificationCommandTest {
             val outcome = testSubject.execute()
 
             // Assert
-
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<InAppNotification>>>()
+                .isInstanceOf<Outcome.Failure<UnsupportedCommand<InAppNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<InAppNotification>::command)
+                    prop(UnsupportedCommand<InAppNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<InAppNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage(
-                            "${FeatureFlagKey.DisplayInAppNotifications.key} feature flag is not enabled",
-                        )
+                    prop(UnsupportedCommand<InAppNotification>::reason)
+                        .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
+                        .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
+                        .isEqualTo(FeatureFlagKey.DisplayInAppNotifications)
                 }
         }
 
@@ -80,16 +76,15 @@ class InAppNotificationCommandTest {
 
             // Assert
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<InAppNotification>>>()
+                .isInstanceOf<Outcome.Failure<UnsupportedCommand<InAppNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<InAppNotification>::command)
+                    prop(UnsupportedCommand<InAppNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<InAppNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage(
-                            "${FeatureFlagKey.DisplayInAppNotifications.key} feature flag is not enabled",
-                        )
+                    prop(UnsupportedCommand<InAppNotification>::reason)
+                        .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
+                        .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
+                        .isEqualTo(FeatureFlagKey.DisplayInAppNotifications)
                 }
         }
 
@@ -101,9 +96,11 @@ class InAppNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notifier = spy(FakeInAppNotificationNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -116,6 +113,8 @@ class InAppNotificationCommandTest {
                 .all {
                     prop(Success<InAppNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<InAppNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -128,9 +127,9 @@ class InAppNotificationCommandTest {
         featureFlagProvider: FeatureFlagProvider = FeatureFlagProvider { FeatureFlagResult.Enabled },
         notifier: NotificationNotifier<InAppNotification> = FakeInAppNotificationNotifier(),
         notificationRegistry: NotificationRegistry = FakeNotificationRegistry(),
-    ): InAppNotificationCommand {
+    ): DisplayInAppNotificationCommand {
         val logger = TestLogger()
-        return InAppNotificationCommand(
+        return DisplayInAppNotificationCommand(
             logger = logger,
             featureFlagProvider = featureFlagProvider,
             notificationRegistry = notificationRegistry,

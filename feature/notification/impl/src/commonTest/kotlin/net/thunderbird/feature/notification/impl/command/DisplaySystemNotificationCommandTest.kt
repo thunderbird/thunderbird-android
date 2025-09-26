@@ -2,7 +2,6 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
@@ -10,7 +9,6 @@ import dev.mokkery.matcher.any
 import dev.mokkery.spy
 import dev.mokkery.verify.VerifyMode.Companion.exactly
 import dev.mokkery.verifySuspend
-import kotlin.random.Random
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -21,17 +19,17 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
-import net.thunderbird.feature.notification.api.content.Notification
+import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
+import net.thunderbird.feature.notification.api.command.outcome.Success
+import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
+import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
 import net.thunderbird.feature.notification.testing.fake.FakeSystemOnlyNotification
 
 @Suppress("MaxLineLength")
-class SystemNotificationCommandTest {
+class DisplaySystemNotificationCommandTest {
     @Test
     fun `execute should return Failure when use_notification_sender_for_system_notifications feature flag is Disabled`() =
         runTest {
@@ -49,19 +47,16 @@ class SystemNotificationCommandTest {
             val outcome = testSubject.execute()
 
             // Assert
-
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<SystemNotification>>>()
+                .isInstanceOf<Outcome.Failure<UnsupportedCommand<SystemNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<SystemNotification>::command)
+                    prop(UnsupportedCommand<SystemNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<SystemNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage(
-                            "${FeatureFlagKey.UseNotificationSenderForSystemNotifications.key} feature flag" +
-                                "is not enabled",
-                        )
+                    prop(UnsupportedCommand<SystemNotification>::reason)
+                        .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
+                        .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
+                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
                 }
         }
 
@@ -83,17 +78,15 @@ class SystemNotificationCommandTest {
 
             // Assert
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<SystemNotification>>>()
+                .isInstanceOf<Outcome.Failure<UnsupportedCommand<SystemNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<SystemNotification>::command)
+                    prop(UnsupportedCommand<SystemNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<SystemNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage(
-                            "${FeatureFlagKey.UseNotificationSenderForSystemNotifications.key} feature flag" +
-                                "is not enabled",
-                        )
+                    prop(UnsupportedCommand<SystemNotification>::reason)
+                        .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
+                        .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
+                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
                 }
         }
 
@@ -115,14 +108,11 @@ class SystemNotificationCommandTest {
 
             // Assert
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<SystemNotification>>>()
+                .isInstanceOf<Outcome.Failure<CommandExecutionFailed<SystemNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<SystemNotification>::command)
+                    prop(CommandExecutionFailed<SystemNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<SystemNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage("Can't execute command.")
                 }
         }
 
@@ -134,11 +124,13 @@ class SystemNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notifier = spy(FakeNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { true },
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -151,6 +143,8 @@ class SystemNotificationCommandTest {
                 .all {
                     prop(Success<SystemNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<SystemNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -166,11 +160,13 @@ class SystemNotificationCommandTest {
                 severity = NotificationSeverity.Fatal,
             )
             val notifier = spy(FakeNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -183,6 +179,8 @@ class SystemNotificationCommandTest {
                 .all {
                     prop(Success<SystemNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<SystemNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -198,11 +196,13 @@ class SystemNotificationCommandTest {
                 severity = NotificationSeverity.Critical,
             )
             val notifier = spy(FakeNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -215,6 +215,8 @@ class SystemNotificationCommandTest {
                 .all {
                     prop(Success<SystemNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<SystemNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -230,11 +232,13 @@ class SystemNotificationCommandTest {
                 severity = NotificationSeverity.Information,
             )
             val notifier = spy(FakeNotifier())
+            val notificationRegistry = FakeNotificationRegistry()
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
+                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -247,6 +251,8 @@ class SystemNotificationCommandTest {
                 .all {
                     prop(Success<SystemNotification>::command)
                         .isEqualTo(testSubject)
+                    prop(Success<SystemNotification>::notificationId)
+                        .isEqualTo(notificationRegistry.getValue(notification))
                 }
 
             verifySuspend(exactly(1)) {
@@ -263,9 +269,9 @@ class SystemNotificationCommandTest {
             // TODO(#9391): Verify if the app is backgrounded.
             false
         },
-    ): SystemNotificationCommand {
+    ): DisplaySystemNotificationCommand {
         val logger = TestLogger()
-        return SystemNotificationCommand(
+        return DisplaySystemNotificationCommand(
             logger = logger,
             featureFlagProvider = featureFlagProvider,
             notificationRegistry = notificationRegistry,
@@ -276,36 +282,13 @@ class SystemNotificationCommandTest {
     }
 }
 
-private open class FakeNotificationRegistry : NotificationRegistry {
-    override val registrar: Map<NotificationId, Notification>
-        get() = TODO("Not yet implemented")
-
-    override fun get(notificationId: NotificationId): Notification? {
-        TODO("Not yet implemented")
-    }
-
-    override fun get(notification: Notification): NotificationId? {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun register(notification: Notification): NotificationId {
-        return NotificationId(value = Random.nextInt())
-    }
-
-    override fun unregister(notificationId: NotificationId) {
-        TODO("Not yet implemented")
-    }
-
-    override fun unregister(notification: Notification) {
-        TODO("Not yet implemented")
-    }
-}
-
 private open class FakeNotifier : NotificationNotifier<SystemNotification> {
     override suspend fun show(
         id: NotificationId,
         notification: SystemNotification,
     ) = Unit
+
+    override suspend fun dismiss(id: NotificationId) = Unit
 
     override fun dispose() = Unit
 }

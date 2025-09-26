@@ -39,8 +39,10 @@ import com.fsck.k9.notification.NotificationStrategy;
 import net.thunderbird.core.common.mail.Protocols;
 import net.thunderbird.core.logging.Logger;
 import net.thunderbird.core.outcome.Outcome;
+import net.thunderbird.feature.notification.api.NotificationManager;
 import net.thunderbird.feature.notification.api.sender.NotificationSender;
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification;
+import net.thunderbird.feature.notification.testing.fake.FakeNotificationManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -130,9 +132,11 @@ public class MessagingControllerTest extends K9RobolectricTest {
         preferences = Preferences.getPreferences();
         featureFlagProvider = key -> Disabled.INSTANCE;
 
-        final NotificationSender notificationSender = notification ->
-            (flowCollector, continuation) ->
-                Outcome.Companion.success(new FakeInAppOnlyNotification());
+        final NotificationManager notificationManager = new FakeNotificationManager(
+            notification -> Outcome.Companion.success(new FakeInAppOnlyNotification()),
+            notification -> Outcome.Companion.success(new FakeInAppOnlyNotification()),
+            id -> Outcome.Companion.success(new FakeInAppOnlyNotification())
+        );
 
         controller = new MessagingController(
             appContext,
@@ -148,7 +152,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
             Collections.<ControllerExtension>emptyList(),
             featureFlagProvider,
             syncLogger,
-            notificationSender
+            notificationManager
         );
 
         configureAccount();
@@ -193,7 +197,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localNewMessage1.getUid()).thenReturn("newMessageUid1");
         when(localNewMessage2.getUid()).thenReturn("newMessageUid2");
         when(backend.search(eq(FOLDER_NAME), anyString(), nullable(Set.class), nullable(Set.class), eq(false)))
-                .thenReturn(remoteMessages);
+            .thenReturn(remoteMessages);
         when(localFolder.extractNewMessages(ArgumentMatchers.<String>anyList())).thenReturn(newRemoteMessages);
         when(localFolder.getMessage("newMessageUid1")).thenReturn(localNewMessage1);
         when(localFolder.getMessage("newMessageUid2")).thenAnswer(
@@ -285,7 +289,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotifyOnFailure() throws Exception {
         setupRemoteSearch();
         when(backend.search(anyString(), anyString(), nullable(Set.class), nullable(Set.class), eq(false)))
-                .thenThrow(new MessagingException("Test"));
+            .thenThrow(new MessagingException("Test"));
 
         controller.searchRemoteMessagesSynchronous(accountUuid, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
@@ -296,7 +300,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotifyOnFinish() throws Exception {
         setupRemoteSearch();
         when(backend.search(anyString(), nullable(String.class), nullable(Set.class), nullable(Set.class), eq(false)))
-                .thenThrow(new MessagingException("Test"));
+            .thenThrow(new MessagingException("Test"));
 
         controller.searchRemoteMessagesSynchronous(accountUuid, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
@@ -420,9 +424,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
         accountUuid = account.getUuid();
 
         account.setIncomingServerSettings(new ServerSettings(Protocols.IMAP, "host", 993,
-                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "username", "password", null));
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "username", "password", null));
         account.setOutgoingServerSettings(new ServerSettings(Protocols.SMTP, "host", 465,
-                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "username", "password", null));
+            ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "username", "password", null));
         account.setMaximumAutoDownloadMessageSize(MAXIMUM_SMALL_MESSAGE_SIZE);
         account.setEmail("user@host.com");
     }

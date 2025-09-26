@@ -6,26 +6,40 @@ import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.content.Notification
 
 open class FakeNotificationRegistry : NotificationRegistry {
+    private val byId = mutableMapOf<NotificationId, Notification>()
+    private val byNotification = mutableMapOf<Notification, NotificationId>()
+
     override val registrar: Map<NotificationId, Notification>
-        get() = TODO("Not yet implemented")
+        get() = byId
 
-    override fun get(notificationId: NotificationId): Notification? {
-        TODO("Not yet implemented")
-    }
+    override fun get(notificationId: NotificationId): Notification? = byId[notificationId]
 
-    override fun get(notification: Notification): NotificationId? {
-        TODO("Not yet implemented")
-    }
+    fun getValue(notificationId: NotificationId): Notification = byId.getValue(notificationId)
+
+    override fun get(notification: Notification): NotificationId? = byNotification[notification]
+
+    fun getValue(notification: Notification): NotificationId = byNotification.getValue(notification)
 
     override suspend fun register(notification: Notification): NotificationId {
-        return NotificationId(value = Random.Default.nextInt())
+        val id = NotificationId(value = Random.nextInt())
+        byId[id] = notification
+        byNotification[notification] = id
+        return id
     }
 
     override fun unregister(notificationId: NotificationId) {
-        TODO("Not yet implemented")
+        byId.remove(notificationId)?.let { notif ->
+            byNotification.remove(notif)
+        }
     }
 
     override fun unregister(notification: Notification) {
-        TODO("Not yet implemented")
+        byNotification.remove(notification)?.let { id ->
+            byId.remove(id)
+        }
     }
+
+    override fun contains(notification: Notification): Boolean = byNotification.containsKey(notification)
+
+    override fun contains(notificationId: NotificationId): Boolean = byId.containsKey(notificationId)
 }

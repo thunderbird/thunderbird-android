@@ -2,16 +2,18 @@ package net.thunderbird.feature.notification.impl.command
 
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
-import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
+import net.thunderbird.feature.notification.api.command.outcome.Success
+import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 
-private const val TAG = "InAppNotificationCommand"
+private const val TAG = "DisplayInAppNotificationCommand"
 
 /**
  * A command that handles in-app notifications.
@@ -21,38 +23,33 @@ private const val TAG = "InAppNotificationCommand"
  * @param notification The [InAppNotification] to be handled.
  * @param notifier The [NotificationNotifier] responsible for actually displaying the notification.
  */
-internal class InAppNotificationCommand(
+internal class DisplayInAppNotificationCommand(
     private val logger: Logger,
     private val featureFlagProvider: FeatureFlagProvider,
     private val notificationRegistry: NotificationRegistry,
     notification: InAppNotification,
     notifier: NotificationNotifier<InAppNotification>,
 ) : NotificationCommand<InAppNotification>(notification, notifier) {
-    private val isFeatureFlagEnabled: Boolean
-        get() = featureFlagProvider
-            .provide(FeatureFlagKey.DisplayInAppNotifications) == FeatureFlagResult.Enabled
-
-    override suspend fun execute(): Outcome<Success<InAppNotification>, Failure<InAppNotification>> {
+    override suspend fun execute(): NotificationCommandOutcome<InAppNotification> {
         logger.debug(TAG) { "execute() called with: notification = $notification" }
         return when {
-            isFeatureFlagEnabled.not() ->
+            featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications).isDisabledOrUnavailable() ->
                 Outcome.failure(
-                    error = Failure(
+                    error = UnsupportedCommand(
                         command = this,
-                        throwable = NotificationCommandException(
-                            message = "${FeatureFlagKey.DisplayInAppNotifications.key} feature flag is not enabled",
+                        reason = UnsupportedCommand.Reason.FeatureFlagDisabled(
+                            key = FeatureFlagKey.DisplayInAppNotifications,
                         ),
                     ),
                 )
 
             canExecuteCommand() -> {
-                notifier.show(id = notificationRegistry.register(notification), notification = notification)
-                Outcome.success(Success(command = this))
+                val id = notificationRegistry.register(notification)
+                notifier.show(id = id, notification = notification)
+                Outcome.success(Success(notificationId = id, command = this))
             }
 
-            else -> {
-                Outcome.failure(Failure(command = this, throwable = Exception("Can't execute command.")))
-            }
+            else -> Outcome.failure(CommandExecutionFailed(command = this))
         }
     }
 
