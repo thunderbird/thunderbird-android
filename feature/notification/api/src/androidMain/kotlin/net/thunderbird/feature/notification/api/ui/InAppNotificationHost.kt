@@ -7,9 +7,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.LifecycleStartEffect
+import androidx.lifecycle.coroutineScope
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.launch
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationReceiver
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
@@ -94,20 +97,22 @@ fun InAppNotificationHost(
     eventFilter: (InAppNotificationEvent) -> Boolean = { true },
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val inAppNotificationEvents by koinInject<InAppNotificationReceiver>()
-        .events
-        .collectAsStateWithLifecycle(initialValue = null)
-
+    val receiver = koinInject<InAppNotificationReceiver>()
     val state by hostStateHolder.currentInAppNotificationHostState.collectAsState()
 
-    LaunchedEffect(inAppNotificationEvents, eventFilter) {
-        val event = inAppNotificationEvents
-        if (event != null && eventFilter(event)) {
-            when (event) {
-                is InAppNotificationEvent.Dismiss -> Unit // TODO(#9626): Handle dismiss
-                is InAppNotificationEvent.Show -> hostStateHolder.showInAppNotification(event.notification)
-            }
+    LifecycleStartEffect(receiver, eventFilter) {
+        val job = lifecycle.coroutineScope.launch {
+            receiver
+                .events
+                .filter(eventFilter)
+                .collect { event ->
+                    when (event) {
+                        is InAppNotificationEvent.Dismiss -> hostStateHolder.dismiss(event.notification)
+                        is InAppNotificationEvent.Show -> hostStateHolder.showInAppNotification(event.notification)
+                    }
+                }
         }
+        onStopOrDispose { job.cancel() }
     }
 
     LaunchedEffect(state.snackbarVisual, onSnackbarNotificationEvent) {

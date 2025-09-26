@@ -11,7 +11,7 @@ import net.thunderbird.feature.notification.api.command.NotificationCommandExcep
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 
-private const val TAG = "InAppNotificationCommand"
+private const val TAG = "DisplayInAppNotificationCommand"
 
 /**
  * A command that handles in-app notifications.
@@ -21,7 +21,7 @@ private const val TAG = "InAppNotificationCommand"
  * @param notification The [InAppNotification] to be handled.
  * @param notifier The [NotificationNotifier] responsible for actually displaying the notification.
  */
-internal class InAppNotificationCommand(
+internal class DisplayInAppNotificationCommand(
     private val logger: Logger,
     private val featureFlagProvider: FeatureFlagProvider,
     private val notificationRegistry: NotificationRegistry,
@@ -46,8 +46,9 @@ internal class InAppNotificationCommand(
                 )
 
             canExecuteCommand() -> {
-                notifier.show(id = notificationRegistry.register(notification), notification = notification)
-                Outcome.success(Success(command = this))
+                val id = notificationRegistry.register(notification)
+                notifier.show(id = id, notification = notification)
+                Outcome.success(Success(notificationId = id, command = this))
             }
 
             else -> {

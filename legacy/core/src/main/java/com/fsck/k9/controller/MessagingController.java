@@ -85,13 +85,13 @@ import net.thunderbird.core.android.account.DeletePolicy;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
-import net.thunderbird.core.featureflag.FeatureFlagResult.Enabled;
 import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
 import net.thunderbird.core.logging.Logger;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.feature.notification.api.NotificationManager;
 import net.thunderbird.feature.notification.api.content.AuthenticationErrorNotification;
 import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
-import net.thunderbird.feature.notification.api.sender.NotificationSender;
+import net.thunderbird.feature.notification.api.dismisser.compat.NotificationDismisserCompat;
 import net.thunderbird.feature.notification.api.sender.compat.NotificationSenderCompat;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import org.jetbrains.annotations.NotNull;
@@ -144,6 +144,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final FeatureFlagProvider featureFlagProvider;
     private final Logger syncDebugLogger;
     private final NotificationSenderCompat notificationSender;
+    private final NotificationDismisserCompat notificationDismisser;
 
 
     private volatile boolean stopped = false;
@@ -168,7 +169,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         List<ControllerExtension> controllerExtensions,
         FeatureFlagProvider featureFlagProvider,
         Logger syncDebugLogger,
-        NotificationSender notificationSender
+        NotificationManager notificationManager
     ) {
         this.context = context;
         this.notificationController = notificationController;
@@ -182,7 +183,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.localDeleteOperationDecider = localDeleteOperationDecider;
         this.featureFlagProvider = featureFlagProvider;
         this.syncDebugLogger = syncDebugLogger;
-        this.notificationSender = new NotificationSenderCompat(notificationSender);
+        this.notificationSender = new NotificationSenderCompat(notificationManager);
+        this.notificationDismisser = new NotificationDismisserCompat(notificationManager);
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -702,19 +704,9 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             migrateAccountToOAuth(account);
         }
 
-        if (FeatureFlagProviderCompat.provide(featureFlagProvider, "display_in_app_notifications") ==
-            Enabled.INSTANCE) {
+        if (FeatureFlagProviderCompat.provide(featureFlagProvider, "display_in_app_notifications").isEnabled()) {
             Log.d("handleAuthenticationFailure: sending in-app notification");
-            final AuthenticationErrorNotification notification = NotificationFactoryCoroutineCompat.create(
-                continuation ->
-                    AuthenticationErrorNotification.Companion.invoke(
-                        account.getUuid(),
-                        account.getDisplayName(),
-                        account.getAccountNumber(),
-                        incoming,
-                        continuation
-                    )
-            );
+            final AuthenticationErrorNotification notification = createAuthenticationErrorNotification(account, incoming);
 
             notificationSender.send(notification, outcome -> {
                 Log.v("notificationSender outcome = " + outcome);
@@ -722,10 +714,24 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         }
 
         if (FeatureFlagProviderCompat.provide(featureFlagProvider,
-            "use_notification_sender_for_system_notifications") != Enabled.INSTANCE) {
+            "use_notification_sender_for_system_notifications").isDisabled()) {
             Log.d("handleAuthenticationFailure: sending system notification via old notification controller");
             notificationController.showAuthenticationErrorNotification(account, incoming);
         }
+    }
+
+    private AuthenticationErrorNotification createAuthenticationErrorNotification(
+        LegacyAccountDto account, boolean incoming) {
+        return NotificationFactoryCoroutineCompat.create(
+            continuation ->
+                AuthenticationErrorNotification.Companion.invoke(
+                    account.getUuid(),
+                    account.getDisplayName(),
+                    account.getAccountNumber(),
+                    incoming,
+                    continuation
+                )
+        );
     }
 
     private void migrateAccountToOAuth(LegacyAccountDto account) {
@@ -2582,10 +2588,15 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         if (isAuthenticationProblem(account, true)) {
             handleAuthenticationFailure(account, true);
             return;
+        } else {
+            clearAuthenticationErrorNotification(account, true);
         }
+
         // checking outgoing server configuration
         if (isAuthenticationProblem(account, false)) {
             handleAuthenticationFailure(account, false);
+        } else {
+            clearAuthenticationErrorNotification(account, false);
         }
     }
 
@@ -2595,6 +2606,16 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         return serverSettings.isMissingCredentials() ||
                 serverSettings.authenticationType == AuthType.XOAUTH2 && account.getOAuthState() == null;
+    }
+
+    private void clearAuthenticationErrorNotification(LegacyAccountDto account, boolean incoming) {
+        if (FeatureFlagProviderCompat.provide(featureFlagProvider, "display_in_app_notifications").isEnabled()) {
+            final AuthenticationErrorNotification notification = createAuthenticationErrorNotification(
+                account, incoming);
+            notificationDismisser.dismiss(notification,outcome -> {
+                Log.v("notificationDismisser outcome = " + outcome);
+            });
+        }
     }
 
     void actOnMessagesGroupedByAccountAndFolder(List<MessageReference> messages, MessageActor actor) {
@@ -2685,6 +2706,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         @Override
         public void syncAuthenticationSuccess() {
+            clearAuthenticationErrorNotification(account, true);
             notificationController.clearAuthenticationErrorNotification(account, true);
         }
 

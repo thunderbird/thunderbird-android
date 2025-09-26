@@ -58,4 +58,20 @@ interface NotificationRegistry {
      * @param notification The [Notification] object to unregister.
      */
     fun unregister(notification: Notification)
+
+    /**
+     * Checks if a specific notification is currently registered.
+     *
+     * @param notification The [Notification] object to check.
+     * @return `true` if the notification is registered, `false` otherwise.
+     */
+    operator fun contains(notification: Notification): Boolean
+
+    /**
+     * Checks if a notification with the given [notificationId] is currently registered.
+     *
+     * @param notificationId The ID of the notification to check.
+     * @return `true` if the notification is registered, `false` otherwise.
+     */
+    operator fun contains(notificationId: NotificationId): Boolean
 }

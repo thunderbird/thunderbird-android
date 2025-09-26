@@ -15,7 +15,8 @@
     <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound.\n\nTap to open notification settings.</string>
 
     <string name="notification_authentication_error_title">Authentication failed</string>
-    <string name="notification_authentication_error_text">Authentication failed for %1$s. Update your server settings.</string>
+    <string name="notification_authentication_incoming_server_error_text">Authentication failed for %1$s. Update your incoming server settings.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Authentication failed for %1$s. Update your outgoing server settings.</string>
 
     <string name="notification_certificate_error_public">Certificate error</string>
     <string name="notification_certificate_error_title">Certificate error for %1$s</string>
