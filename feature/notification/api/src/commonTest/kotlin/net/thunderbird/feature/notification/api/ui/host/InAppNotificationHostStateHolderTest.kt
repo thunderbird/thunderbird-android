@@ -138,8 +138,8 @@ class InAppNotificationHostStateHolderTest {
             val notification = FakeInAppOnlyNotification(
                 inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 actions = setOf(
-                    createFakeNotificationAction(title = "fake action 1"),
-                    createFakeNotificationAction(title = "fake action 2"),
+                    createFakeNotificationAction(label = "fake action 1"),
+                    createFakeNotificationAction(label = "fake action 2"),
                 ),
             )
             val flags = persistentSetOf<DisplayInAppNotificationFlag>()
@@ -344,10 +344,10 @@ class InAppNotificationHostStateHolderTest {
             }
 
             fun getAction(index: Int): NotificationAction = when (index) {
-                in 0..<25 -> createFakeNotificationAction(title = "fake action 1")
-                in 25..<50 -> createFakeNotificationAction(title = "fake action 2")
-                in 50..<75 -> createFakeNotificationAction(title = "fake action 3")
-                else -> createFakeNotificationAction(title = "fake action 4")
+                in 0..<25 -> createFakeNotificationAction(label = "fake action 1")
+                in 25..<50 -> createFakeNotificationAction(label = "fake action 2")
+                in 50..<75 -> createFakeNotificationAction(label = "fake action 3")
+                else -> createFakeNotificationAction(label = "fake action 4")
             }
 
             val expectedSize = 100
@@ -555,9 +555,9 @@ class InAppNotificationHostStateHolderTest {
                 inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 contentText = "not important in this test case",
                 actions = setOf(
-                    createFakeNotificationAction(title = "fake action 1"),
-                    createFakeNotificationAction(title = "fake action 2"),
-                    createFakeNotificationAction(title = "fake action 3"),
+                    createFakeNotificationAction(label = "fake action 1"),
+                    createFakeNotificationAction(label = "fake action 2"),
+                    createFakeNotificationAction(label = "fake action 3"),
                 ),
             )
             val flags = persistentSetOf<DisplayInAppNotificationFlag>()
@@ -703,8 +703,8 @@ class InAppNotificationHostStateHolderTest {
             val notification = FakeInAppOnlyNotification(
                 inAppNotificationStyle = inAppNotificationStyle { snackbar() },
                 actions = setOf(
-                    createFakeNotificationAction(title = "fake action 1"),
-                    createFakeNotificationAction(title = "fake action 2"),
+                    createFakeNotificationAction(label = "fake action 1"),
+                    createFakeNotificationAction(label = "fake action 2"),
                 ),
             )
             val flags = persistentSetOf<DisplayInAppNotificationFlag>()
@@ -810,10 +810,10 @@ class InAppNotificationHostStateHolderTest {
             }
 
             fun getAction(index: Int): NotificationAction = when (index) {
-                in 0..<25 -> createFakeNotificationAction(title = "fake action 1")
-                in 25..<50 -> createFakeNotificationAction(title = "fake action 2")
-                in 50..<75 -> createFakeNotificationAction(title = "fake action 3")
-                else -> createFakeNotificationAction(title = "fake action 4")
+                in 0..<25 -> createFakeNotificationAction(label = "fake action 1")
+                in 25..<50 -> createFakeNotificationAction(label = "fake action 2")
+                in 50..<75 -> createFakeNotificationAction(label = "fake action 3")
+                else -> createFakeNotificationAction(label = "fake action 4")
             }
 
             val expectedSize = 99
