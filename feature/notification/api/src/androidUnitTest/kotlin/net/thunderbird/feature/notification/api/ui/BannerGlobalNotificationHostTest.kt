@@ -238,7 +238,7 @@ class BannerGlobalNotificationHostTest : ComposeTest() {
             title = title,
             contentText = contentText,
             severity = NotificationSeverity.Fatal,
-            action = createFakeNotificationAction(title = actionText),
+            action = createFakeNotificationAction(label = actionText),
         )
         mainClock.autoAdvance = false
 
@@ -319,7 +319,7 @@ class BannerGlobalNotificationHostTest : ComposeTest() {
             title = title,
             contentText = contentText,
             severity = NotificationSeverity.Fatal,
-            action = createFakeNotificationAction(title = actionText),
+            action = createFakeNotificationAction(label = actionText),
         )
         mainClock.autoAdvance = false
 

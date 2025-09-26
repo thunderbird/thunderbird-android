@@ -1,14 +1,9 @@
 package net.thunderbird.feature.notification.api.ui.action
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.molecule.notification.NotificationActionButton
-import kotlin.let
+import org.jetbrains.compose.resources.stringResource
 
 /**
  * Displays a [NotificationActionButton] with the title resolved from the [NotificationAction].
@@ -27,19 +22,19 @@ internal fun ResolvedNotificationActionButton(
     onActionClick: (NotificationAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var text by remember(action) { mutableStateOf<String?>(value = null) }
+    NotificationActionButton(
+        text = when (val labelResource = action.labelResource) {
+            null if action.label.isNotEmpty() -> action.label
+            null -> error(
+                "You must specify at least one of labelResource or label in ${
+                    action::class.simpleName
+                }",
+            )
 
-    LaunchedEffect(action) {
-        text = action.resolveTitle()
-    }
-
-    text?.let { text ->
-        NotificationActionButton(
-            text = text,
-            onClick = {
-                onActionClick(action)
-            },
-            modifier = modifier,
-        )
-    }
+            else -> stringResource(labelResource)
+        },
+        onClick = { onActionClick(action) },
+        isExternalLink = action is NotificationAction.ViewSupportArticle,
+        modifier = modifier,
+    )
 }

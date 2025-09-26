@@ -43,9 +43,9 @@ class DefaultNotificationActionIntentCreatorTest {
             NotificationAction.UpdateIncomingServerSettings("uuid", 1),
             NotificationAction.UpdateOutgoingServerSettings("uuid", 1),
             NotificationAction.Retry,
-            NotificationAction.CustomAction(title = "Custom Action 1"),
-            NotificationAction.CustomAction(title = "Custom Action 2"),
-            NotificationAction.CustomAction(title = "Custom Action 3"),
+            NotificationAction.CustomAction(label = "Custom Action 1"),
+            NotificationAction.CustomAction(label = "Custom Action 2"),
+            NotificationAction.CustomAction(label = "Custom Action 3"),
         )
         val testSubject = createTestSubject()
 
