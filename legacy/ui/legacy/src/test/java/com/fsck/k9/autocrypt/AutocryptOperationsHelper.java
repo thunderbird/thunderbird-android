@@ -9,7 +9,7 @@ import static org.junit.Assert.assertArrayEquals;
 
 
 public class AutocryptOperationsHelper {
-    private static AutocryptHeaderParser INSTANCE = AutocryptHeaderParser.getInstance();
+    private static AutocryptHeaderParser INSTANCE = AutocryptHeaderParser.Companion.getInstance();
 
     public static void assertMessageHasAutocryptHeader(
             MimeMessage message, String addr, boolean isPreferEncryptMutual, byte[] keyData) {
