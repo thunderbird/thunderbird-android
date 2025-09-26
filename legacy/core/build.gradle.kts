@@ -13,7 +13,6 @@ dependencies {
     api(projects.core.preference.impl)
     api(projects.core.android.logging)
     api(projects.core.logging.implFile)
-    api(projects.core.logging.config)
     api(projects.core.logging.implComposite)
     api(projects.core.android.network)
     api(projects.core.outcome)

@@ -153,7 +153,6 @@ include(
     ":core:configstore:impl-backend",
     ":core:featureflag",
     ":core:logging:api",
-    ":core:logging:config",
     ":core:logging:impl-composite",
     ":core:logging:impl-console",
     ":core:logging:impl-legacy",
