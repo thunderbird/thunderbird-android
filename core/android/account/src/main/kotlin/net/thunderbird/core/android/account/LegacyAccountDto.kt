@@ -163,9 +163,14 @@ open class LegacyAccountDto(
     @set:Synchronized
     var inboxFolderId: Long? = null
 
-    @get:Synchronized
-    @set:Synchronized
-    var outboxFolderId: Long? = null
+    // This property is only kept here to avoid need to remove the MigrationTo75 and MigrationTo76.
+//    @get:Synchronized
+//    @set:Synchronized
+//    @Deprecated(
+//        message = "DO NOT USE. This property is not filled and should not be used. " +
+//            "Use OutboxFolderManager to retrieve the outbox id instead.",
+//    )
+//    var outboxFolderId: Long? = null
 
     @get:Synchronized
     @set:Synchronized

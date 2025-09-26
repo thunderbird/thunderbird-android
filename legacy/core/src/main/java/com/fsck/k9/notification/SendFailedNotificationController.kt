@@ -6,12 +6,14 @@ import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.helper.ExceptionHelper
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
 internal class SendFailedNotificationController(
     private val notificationHelper: NotificationHelper,
     private val actionBuilder: NotificationActionCreator,
     private val resourceProvider: NotificationResourceProvider,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val outboxFolderManager: OutboxFolderManager,
 ) {
     fun showSendFailedNotification(account: LegacyAccountDto, exception: Exception) {
         val title = resourceProvider.sendFailedTitle()
@@ -19,8 +21,8 @@ internal class SendFailedNotificationController(
 
         val notificationId = NotificationIds.getSendFailedNotificationId(account)
 
-        val pendingIntent = account.outboxFolderId.let { outboxFolderId ->
-            if (outboxFolderId != null) {
+        val pendingIntent = outboxFolderManager.getOutboxFolderIdSync(account.id).let { outboxFolderId ->
+            if (outboxFolderId != -1L) {
                 actionBuilder.createViewFolderPendingIntent(account, outboxFolderId)
             } else {
                 actionBuilder.createViewFolderListPendingIntent(account)

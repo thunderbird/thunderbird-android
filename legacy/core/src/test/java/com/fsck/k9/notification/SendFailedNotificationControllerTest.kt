@@ -54,6 +54,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
                 privacy = PrivacySettings(),
             )
         },
+        outboxFolderManager = mock(),
     )
 
     @OptIn(ExperimentalTime::class)

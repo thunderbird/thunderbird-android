@@ -7,7 +7,6 @@ object FolderTypeMapper {
 
     fun folderTypeOf(account: LegacyAccountDto, folderId: Long) = when (folderId) {
         account.inboxFolderId -> FolderType.INBOX
-        account.outboxFolderId -> FolderType.OUTBOX
         account.sentFolderId -> FolderType.SENT
         account.trashFolderId -> FolderType.TRASH
         account.draftsFolderId -> FolderType.DRAFTS

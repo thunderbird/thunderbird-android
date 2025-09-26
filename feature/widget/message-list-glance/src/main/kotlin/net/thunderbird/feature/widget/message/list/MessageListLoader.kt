@@ -9,6 +9,7 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 
 internal class MessageListLoader(
@@ -16,6 +17,7 @@ internal class MessageListLoader(
     private val messageListRepository: MessageListRepository,
     private val messageHelper: MessageHelper,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val outboxFolderManager: OutboxFolderManager,
 ) {
 
     @Suppress("TooGenericExceptionCaught")
@@ -44,7 +46,7 @@ internal class MessageListLoader(
     private fun loadMessageListForAccount(account: LegacyAccount, config: MessageListConfig): List<MessageListItem> {
         val accountUuid = account.uuid
         val sortOrder = buildSortOrder(config)
-        val mapper = MessageListItemMapper(messageHelper, account, generalSettingsManager)
+        val mapper = MessageListItemMapper(messageHelper, account, generalSettingsManager, outboxFolderManager)
 
         return if (config.showingThreadedList) {
             val (selection, selectionArgs) = buildSelection(config)

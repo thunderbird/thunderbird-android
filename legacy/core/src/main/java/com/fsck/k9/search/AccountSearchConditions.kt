@@ -29,11 +29,11 @@ fun LocalMessageSearch.limitToDisplayableFolders() {
  *
  * The Inbox will always be included even if one of the special folders is configured to point to the Inbox.
  */
-fun LocalMessageSearch.excludeSpecialFolders(account: LegacyAccountDto) {
+fun LocalMessageSearch.excludeSpecialFolders(account: LegacyAccountDto, outboxFolderId: Long) {
     this.excludeSpecialFolder(account.trashFolderId)
     this.excludeSpecialFolder(account.draftsFolderId)
     this.excludeSpecialFolder(account.spamFolderId)
-    this.excludeSpecialFolder(account.outboxFolderId)
+    this.excludeSpecialFolder(outboxFolderId)
     this.excludeSpecialFolder(account.sentFolderId)
 
     account.inboxFolderId?.let { inboxFolderId ->

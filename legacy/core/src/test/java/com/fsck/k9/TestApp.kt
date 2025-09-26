@@ -12,6 +12,7 @@ import com.fsck.k9.notification.NotificationResourceProvider
 import com.fsck.k9.notification.NotificationStrategy
 import com.fsck.k9.storage.storageModule
 import net.thunderbird.core.android.account.AccountDefaultsProvider
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
@@ -27,7 +28,9 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.legacy.core.FakeAccountDefaultsProvider
+import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -88,4 +91,6 @@ val testModule = module {
             },
         )
     }
+    single<OutboxFolderManager> { FakeOutboxFolderManager() }
+    single<LegacyAccountManager> { mock() }
 }

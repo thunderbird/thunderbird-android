@@ -92,6 +92,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
@@ -138,6 +139,7 @@ class MessageListFragment :
     private val featureFlagProvider: FeatureFlagProvider by inject()
     private val featureThemeProvider: FeatureThemeProvider by inject()
     private val logger: Logger by inject()
+    private val outboxFolderManager: OutboxFolderManager by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -793,7 +795,7 @@ class MessageListFragment :
         val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
         val localFolder = localStore.getFolder(folderId)
         localFolder.open()
-        return FolderInfoHolder(folderNameFormatter, localFolder, account)
+        return FolderInfoHolder(folderNameFormatter, outboxFolderManager, localFolder, account)
     }
 
     override fun onResume() {
@@ -1663,7 +1665,7 @@ class MessageListFragment :
     }
 
     val isOutbox: Boolean
-        get() = isSpecialFolder(account?.outboxFolderId)
+        get() = isSpecialFolder(account?.id?.let(outboxFolderManager::getOutboxFolderIdSync))
 
     private val isInbox: Boolean
         get() = isSpecialFolder(account?.inboxFolderId)

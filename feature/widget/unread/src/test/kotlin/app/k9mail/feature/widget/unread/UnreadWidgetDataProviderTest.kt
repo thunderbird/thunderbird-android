@@ -157,7 +157,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
 
     private fun createFolderRepository(): FolderRepository {
         return mock {
-            on { getFolder(account, FOLDER_ID) } doReturn FOLDER
+            onBlocking { getFolder(account, FOLDER_ID) } doReturn FOLDER
         }
     }
 
