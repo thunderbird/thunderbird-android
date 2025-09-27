@@ -12,6 +12,7 @@ kotlin {
             implementation(libs.timber)
             implementation(projects.core.logging.implComposite)
             implementation(projects.core.logging.implFile)
+            implementation(projects.core.logging.config)
         }
 
         commonMain.dependencies {
