@@ -266,7 +266,7 @@ class SettingsImportViewModelTest {
         assertThat(uiModelLiveData.value!!.statusText).isEqualTo(StatusText.IMPORTING_PROGRESS)
 
         settingsImporter.stub {
-            on { importSettings(inputStream, false, listOf("uuid-1")) } doReturn ImportResults(
+            onBlocking { importSettings(inputStream, false, listOf("uuid-1")) } doReturn ImportResults(
                 globalSettings = false,
                 importedAccounts = listOf(
                     AccountDescriptionPair(

@@ -79,6 +79,7 @@ import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -118,6 +119,7 @@ class MessageListFragment :
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount> by inject {
         parametersOf(preferences.storage)
     }
+    private val outboxFolderManager: OutboxFolderManager by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -716,7 +718,7 @@ class MessageListFragment :
 
     private fun getFolderInfoHolder(folderId: Long, account: LegacyAccount): FolderInfoHolder {
         val localFolder = MlfUtils.getOpenFolder(folderId, account)
-        return FolderInfoHolder(folderNameFormatter, localFolder, account)
+        return FolderInfoHolder(folderNameFormatter, outboxFolderManager, localFolder, account)
     }
 
     override fun onResume() {
@@ -1528,7 +1530,7 @@ class MessageListFragment :
     }
 
     val isOutbox: Boolean
-        get() = isSpecialFolder(account?.outboxFolderId)
+        get() = isSpecialFolder(account?.id?.let(outboxFolderManager::getOutboxFolderIdSync))
 
     private val isInbox: Boolean
         get() = isSpecialFolder(account?.inboxFolderId)

@@ -490,7 +490,11 @@ internal class SettingsImportViewModel(
         }
     }
 
-    private fun importSettings(contentUri: Uri, generalSettings: Boolean, accounts: List<AccountUuid>): ImportResults {
+    private suspend fun importSettings(
+        contentUri: Uri,
+        generalSettings: Boolean,
+        accounts: List<AccountUuid>,
+    ): ImportResults {
         val inputStream = contentResolver.openInputStream(contentUri)
             ?: error("Failed to open settings file for reading: $contentUri")
 

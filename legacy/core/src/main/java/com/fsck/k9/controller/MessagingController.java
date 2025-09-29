@@ -87,6 +87,8 @@ import net.thunderbird.core.android.account.LegacyAccount;
 import net.thunderbird.core.featureflag.FeatureFlagProvider;
 import net.thunderbird.core.logging.Logger;
 import net.thunderbird.core.logging.legacy.Log;
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager;
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManagerKt;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -136,6 +138,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final NotificationOperations notificationOperations;
     private final ArchiveOperations archiveOperations;
     private final Logger syncDebugLogger;
+    private final OutboxFolderManager outboxFolderManager;
 
 
     private volatile boolean stopped = false;
@@ -159,7 +162,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         LocalDeleteOperationDecider localDeleteOperationDecider,
         List<ControllerExtension> controllerExtensions,
         FeatureFlagProvider featureFlagProvider,
-        Logger syncDebugLogger
+        Logger syncDebugLogger,
+        OutboxFolderManager outboxFolderManager
     ) {
         this.context = context;
         this.notificationController = notificationController;
@@ -172,6 +176,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.specialLocalFoldersCreator = specialLocalFoldersCreator;
         this.localDeleteOperationDecider = localDeleteOperationDecider;
         this.syncDebugLogger = syncDebugLogger;
+        this.outboxFolderManager = outboxFolderManager;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -1407,16 +1412,11 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
      */
     public void sendMessage(LegacyAccount account, Message message, String plaintextSubject, MessagingListener listener) {
         try {
-            Long outboxFolderId = account.getOutboxFolderId();
-            if (outboxFolderId == null) {
-                if (BuildConfig.DEBUG) {
-                    throw new AssertionError("Outbox does not exist");
-                }
-
-                Log.w("Outbox does not exist");
-
-                outboxFolderId = specialLocalFoldersCreator.createOutbox(account);
-            }
+            final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
+                outboxFolderManager,
+                account.getUuid(),
+                true
+            );
 
             message.setFlag(Flag.SEEN, true);
 
@@ -1448,7 +1448,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         putBackground("sendPendingMessages", listener, new Runnable() {
             @Override
             public void run() {
-                if (messagesPendingSend(account)) {
+                if (OutboxFolderManagerKt.hasPendingMessagesSync(outboxFolderManager, account.getUuid())) {
 
                     showSendingNotificationIfNecessary(account);
 
@@ -1475,8 +1475,12 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     }
 
     private boolean messagesPendingSend(final LegacyAccount account) {
-        Long outboxFolderId = account.getOutboxFolderId();
-        if (outboxFolderId == null) {
+        final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
+            outboxFolderManager,
+            account.getUuid(),
+            true
+        );
+        if (outboxFolderId == -1L) {
             Log.w("Could not get Outbox folder ID from Account");
             return false;
         }
@@ -1498,9 +1502,14 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
                 return;
             }
 
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
-            LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderId());
+            final LocalStore localStore = localStoreProvider.getInstance(account);
+            final OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
+            final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
+                outboxFolderManager,
+                account.getUuid(),
+                true
+            );
+            final LocalFolder localFolder = localStore.getFolder(outboxFolderId);
             if (!localFolder.exists()) {
                 Log.w("Outbox does not exist");
                 return;
@@ -1508,9 +1517,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             localFolder.open();
 
-            long outboxFolderId = localFolder.getDatabaseId();
-
-            List<LocalMessage> localMessages = localFolder.getMessages();
+            final List<LocalMessage> localMessages = localFolder.getMessages();
             int progress = 0;
             int todo = localMessages.size();
             for (MessagingListener l : getListeners()) {
@@ -1654,8 +1661,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             }
         }
 
+        final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
+            outboxFolderManager,
+            account.getUuid(),
+            true
+        );
         for (MessagingListener listener : getListeners()) {
-            listener.folderStatusChanged(account, account.getOutboxFolderId());
+            listener.folderStatusChanged(account, outboxFolderId);
         }
     }
 
@@ -2076,8 +2088,13 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
             Log.d("Delete policy for account %s is %s", account, account.getDeletePolicy());
 
-            Long outboxFolderId = account.getOutboxFolderId();
-            if (outboxFolderId != null && folderId == outboxFolderId && supportsUpload(account)) {
+            final long outboxFolderId = OutboxFolderManagerKt.getOutboxFolderIdSync(
+                outboxFolderManager,
+                account.getUuid(),
+                true
+            );
+
+            if (outboxFolderId != -1L && folderId == outboxFolderId && supportsUpload(account)) {
                 for (String destinationUid : uidMap.values()) {
                     // If the message was in the Outbox, then it has been copied to local Trash, and has
                     // to be copied to remote trash
