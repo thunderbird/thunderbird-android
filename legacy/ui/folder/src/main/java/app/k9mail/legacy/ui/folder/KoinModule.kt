@@ -8,6 +8,7 @@ val uiFolderModule = module {
             accountManager = get(),
             messagingController = get(),
             messageStoreManager = get(),
+            outboxFolderManager = get(),
         )
     }
 }

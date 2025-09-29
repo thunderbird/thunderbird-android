@@ -10,6 +10,8 @@ import com.fsck.k9.notification.NotificationIds.getFetchingMailNotificationId
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
+import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito.verify
@@ -37,6 +39,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
         notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider,
+        outboxFolderManager = FakeOutboxFolderManager(outboxFolderId = 33L),
     )
 
     @Test
@@ -130,10 +133,10 @@ class SyncNotificationControllerTest : RobolectricTest() {
 
     private fun createFakeAccount(): LegacyAccountDto {
         return mock {
+            on { id } doReturn AccountIdFactory.create()
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { name } doReturn ACCOUNT_NAME
             on { displayName } doReturn ACCOUNT_NAME
-            on { outboxFolderId } doReturn 33L
         }
     }
 

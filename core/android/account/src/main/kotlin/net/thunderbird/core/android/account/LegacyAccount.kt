@@ -47,7 +47,6 @@ data class LegacyAccount(
     val importedArchiveFolder: String? = null,
     val importedSpamFolder: String? = null,
     val inboxFolderId: Long? = null,
-    val outboxFolderId: Long? = null,
     val draftsFolderId: Long? = null,
     val sentFolderId: Long? = null,
     val trashFolderId: Long? = null,

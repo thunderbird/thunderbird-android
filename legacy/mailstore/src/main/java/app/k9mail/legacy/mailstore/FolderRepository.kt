@@ -16,33 +16,38 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderDetails
+import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 @Suppress("TooManyFunctions")
 class FolderRepository(
     private val messageStoreManager: MessageStoreManager,
+    private val outboxFolderManager: OutboxFolderManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
-    fun getFolder(account: LegacyAccountDto, folderId: Long): Folder? {
+    suspend fun getFolder(account: LegacyAccountDto, folderId: Long): Folder? {
         val messageStore = messageStoreManager.getMessageStore(account)
+        val outboxFolderId = outboxFolderManager.getOutboxFolderId(account.id)
         return messageStore.getFolder(folderId) { folder ->
             Folder(
                 id = folder.id,
                 name = folder.name,
-                type = folderTypeOf(account, folder.id),
+                type = folder.getFolderType(account, outboxFolderId),
                 isLocalOnly = folder.isLocalOnly,
             )
         }
     }
 
-    fun getFolderDetails(account: LegacyAccountDto, folderId: Long): FolderDetails? {
+    suspend fun getFolderDetails(account: LegacyAccountDto, folderId: Long): FolderDetails? {
         val messageStore = messageStoreManager.getMessageStore(account)
+        val outboxFolderId = outboxFolderManager.getOutboxFolderId(account.id)
         return messageStore.getFolder(folderId) { folder ->
             FolderDetails(
                 folder = Folder(
                     id = folder.id,
                     name = folder.name,
-                    type = folderTypeOf(account, folder.id),
+                    type = folder.getFolderType(account, outboxFolderId),
                     isLocalOnly = folder.isLocalOnly,
                 ),
                 isInTopGroup = folder.isInTopGroup,
@@ -187,6 +192,13 @@ class FolderRepository(
             .distinctUntilChanged()
             .flowOn(ioDispatcher)
     }
+
+    private fun FolderDetailsAccessor.getFolderType(account: LegacyAccountDto, outboxFolderId: Long): FolderType =
+        if (id == outboxFolderId) {
+            FolderType.OUTBOX
+        } else {
+            folderTypeOf(account, id)
+        }
 }
 
 data class RemoteFolderDetails(

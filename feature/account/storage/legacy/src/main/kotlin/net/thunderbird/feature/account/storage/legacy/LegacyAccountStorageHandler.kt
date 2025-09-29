@@ -82,7 +82,6 @@ class LegacyAccountStorageHandler(
             importedSpamFolder = storage.getStringOrNull(keyGen.create("spamFolderName"))
 
             inboxFolderId = storage.getStringOrNull(keyGen.create("inboxFolderId"))?.toLongOrNull()
-            outboxFolderId = storage.getStringOrNull(keyGen.create("outboxFolderId"))?.toLongOrNull()
 
             val draftsFolderId = storage.getStringOrNull(keyGen.create("draftsFolderId"))?.toLongOrNull()
             val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(
@@ -349,7 +348,6 @@ class LegacyAccountStorageHandler(
             editor.putString(keyGen.create("archiveFolderName"), importedArchiveFolder)
             editor.putString(keyGen.create("spamFolderName"), importedSpamFolder)
             editor.putString(keyGen.create("inboxFolderId"), inboxFolderId?.toString())
-            editor.putString(keyGen.create("outboxFolderId"), outboxFolderId?.toString())
             editor.putString(keyGen.create("draftsFolderId"), draftsFolderId?.toString())
             editor.putString(keyGen.create("sentFolderId"), sentFolderId?.toString())
             editor.putString(keyGen.create("trashFolderId"), trashFolderId?.toString())
