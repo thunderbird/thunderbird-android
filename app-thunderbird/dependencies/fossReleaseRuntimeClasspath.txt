@@ -178,10 +178,10 @@ co.touchlab:stately-strict-jvm:2.1.0
 co.touchlab:stately-strict:2.1.0
 com.beetstra.jutf7:jutf7:1.0.0
 com.github.ByteHamster:SearchPreference:2.7.3
-com.github.bumptech.glide:annotations:4.16.0
-com.github.bumptech.glide:disklrucache:4.16.0
-com.github.bumptech.glide:gifdecoder:4.16.0
-com.github.bumptech.glide:glide:4.16.0
+com.github.bumptech.glide:annotations:5.0.5
+com.github.bumptech.glide:disklrucache:5.0.5
+com.github.bumptech.glide:gifdecoder:5.0.5
+com.github.bumptech.glide:glide:5.0.5
 com.github.skydoves:landscapist-android:2.5.1
 com.github.skydoves:landscapist-coil3-android:2.5.1
 com.github.skydoves:landscapist-coil3:2.5.1
