@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
+import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.notification.NotificationIds.getFetchingMailNotificationId
 import net.thunderbird.core.android.account.LegacyAccountDto
@@ -23,9 +24,12 @@ private const val ACCOUNT_NUMBER = 1
 private const val ACCOUNT_NAME = "TestAccount"
 private const val FOLDER_SERVER_ID = "INBOX"
 private const val FOLDER_NAME = "Inbox"
+private const val TEST_ICON_ID = 0xCAFE
 
 class SyncNotificationControllerTest : RobolectricTest() {
     private val resourceProvider: NotificationResourceProvider = TestNotificationResourceProvider()
+    private val iconResourceProvider: NotificationIconResourceProvider =
+        TestNotificationIconResourceProvider(pushNotificationIcon = TEST_ICON_ID)
     private val notification = mock<Notification>()
     private val lockScreenNotification = mock<Notification>()
     private val notificationManager = mock<NotificationManagerCompat>()
@@ -37,6 +41,8 @@ class SyncNotificationControllerTest : RobolectricTest() {
         notificationHelper = createFakeNotificationHelper(notificationManager, builder, lockScreenNotificationBuilder),
         actionBuilder = createActionBuilder(contentIntent),
         resourceProvider = resourceProvider,
+        iconResourceProvider = iconResourceProvider,
+
     )
 
     @Test
@@ -74,7 +80,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
         controller.showFetchingMailNotification(account, localFolder)
 
         verify(notificationManager).notify(notificationId, notification)
-        verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
+        verify(builder).setSmallIcon(iconResourceProvider.pushNotificationIcon)
         verify(builder).setTicker("Checking mail: $ACCOUNT_NAME:$FOLDER_NAME")
         verify(builder).setContentTitle("Checking mail")
         verify(builder).setContentText("$ACCOUNT_NAME:$FOLDER_NAME")
@@ -92,7 +98,7 @@ class SyncNotificationControllerTest : RobolectricTest() {
         controller.showEmptyFetchingMailNotification(account)
 
         verify(notificationManager).notify(notificationId, notification)
-        verify(builder).setSmallIcon(resourceProvider.iconCheckingMail)
+        verify(builder).setSmallIcon(iconResourceProvider.pushNotificationIcon)
         verify(builder).setContentTitle("Checking mail")
         verify(builder).setContentText(ACCOUNT_NAME)
         verify(builder).setPublicVersion(lockScreenNotification)
