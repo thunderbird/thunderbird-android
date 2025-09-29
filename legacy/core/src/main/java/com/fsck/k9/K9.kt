@@ -149,8 +149,6 @@ object K9 : KoinComponent {
     @JvmStatic
     var contactNameColor = 0xFF1093F5.toInt()
 
-    var messageViewPostRemoveNavigation: PostRemoveNavigation = PostRemoveNavigation.ReturnToMessageList
-
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         PostMarkAsUnreadNavigation.ReturnToMessageList
 
@@ -243,8 +241,6 @@ object K9 : KoinComponent {
 
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
-        messageViewPostRemoveNavigation =
-            storage.getEnum("messageViewPostDeleteAction", PostRemoveNavigation.ReturnToMessageList)
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
 
@@ -305,7 +301,6 @@ object K9 : KoinComponent {
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putInt("registeredNameColor", contactNameColor)
-        editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
@@ -396,16 +391,6 @@ object K9 : KoinComponent {
         MESSAGE_COUNT,
         APP_NAME,
         NOTHING,
-    }
-
-    /**
-     * The navigation actions that can be to performed after the user has deleted or moved a message from the message
-     * view screen.
-     */
-    enum class PostRemoveNavigation {
-        ReturnToMessageList,
-        ShowPreviousMessage,
-        ShowNextMessage,
     }
 
     /**
