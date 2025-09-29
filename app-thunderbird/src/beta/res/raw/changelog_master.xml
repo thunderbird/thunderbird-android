@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="13.0b4" versioncode="30" date="2025-09-29">
+        <change>Sync could cause &#34;IllegalStateException: No outbox_state entry for message id&#34; error</change>
+    </release>
     <release version="13.0b3" versioncode="29" date="2025-09-22">
         <change>Updating to 13.0b2 offline with IMAP prefix caused migration failure and data loss</change>
         <change>App crashed on startup when no folders were available after data loss</change>
