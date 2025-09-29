@@ -9,6 +9,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
+import kotlinx.coroutines.runBlocking
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -82,7 +83,7 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getFolderDisplayName(account: LegacyAccount, folderId: Long): String {
-        val folder = folderRepository.getFolder(account, folderId)
+        val folder = runBlocking { folderRepository.getFolder(account, folderId) }
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
         } else {

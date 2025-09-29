@@ -165,10 +165,6 @@ open class LegacyAccount(
 
     @get:Synchronized
     @set:Synchronized
-    var outboxFolderId: Long? = null
-
-    @get:Synchronized
-    @set:Synchronized
     var draftsFolderId: Long? = null
 
     @get:Synchronized

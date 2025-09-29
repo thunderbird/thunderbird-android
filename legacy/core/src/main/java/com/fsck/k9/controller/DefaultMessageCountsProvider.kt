@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.flowOn
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
@@ -29,11 +30,12 @@ internal class DefaultMessageCountsProvider(
     private val accountManager: AccountManager,
     private val messageStoreManager: MessageStoreManager,
     private val messagingControllerRegistry: MessagingControllerRegistry,
+    private val outboxFolderManager: OutboxFolderManager,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : MessageCountsProvider {
     override fun getMessageCounts(account: LegacyAccount): MessageCounts {
         val search = LocalMessageSearch().apply {
-            excludeSpecialFolders(account)
+            excludeSpecialFolders(account, outboxFolderId = outboxFolderManager.getOutboxFolderIdSync(account.id))
             limitToDisplayableFolders()
         }
 
@@ -62,7 +64,8 @@ internal class DefaultMessageCountsProvider(
     override fun getUnreadMessageCount(account: LegacyAccount, folderId: Long): Int {
         return try {
             val messageStore = messageStoreManager.getMessageStore(account)
-            return if (folderId == account.outboxFolderId) {
+            val outboxFolderId = outboxFolderManager.getOutboxFolderIdSync(account.id)
+            return if (folderId == outboxFolderId) {
                 messageStore.getMessageCount(folderId)
             } else {
                 messageStore.getUnreadMessageCount(folderId)

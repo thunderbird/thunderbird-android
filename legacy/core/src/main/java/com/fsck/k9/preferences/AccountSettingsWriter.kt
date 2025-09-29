@@ -29,7 +29,8 @@ constructor(
     private val folderSettingsWriter = FolderSettingsWriter(generalSettingsManager)
     private val serverSettingsWriter = ServerSettingsWriter(serverSettingsDtoSerializer, generalSettingsManager)
 
-    fun write(account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
+    @Suppress("LongMethod")
+    suspend fun write(account: ValidatedSettings.Account): Pair<AccountDescription, AccountDescription> {
         val editor = preferences.createStorageEditor()
 
         val originalAccountName = account.name!!
