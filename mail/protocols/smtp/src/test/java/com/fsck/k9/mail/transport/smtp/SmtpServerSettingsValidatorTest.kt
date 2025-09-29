@@ -124,7 +124,7 @@ class SmtpServerSettingsValidatorTest {
             trustedSocketFactory = trustedSocketFactory,
             oAuth2TokenProviderFactory = { authStateStorage ->
                 assertThat(authStateStorage.getAuthorizationState()).isEqualTo(AUTHORIZATION_STATE)
-                FakeOAuth2TokenProvider(primaryEmail = expectedUser)
+                FakeOAuth2TokenProvider(usernames = setOf(expectedUser))
             },
         )
 
@@ -136,7 +136,14 @@ class SmtpServerSettingsValidatorTest {
             output("250-AUTH PLAIN LOGIN XOAUTH2")
             output("250 HELP")
 
-            val ouathBearer = "user=${expectedUser}\u0001auth=Bearer ${AUTHORIZATION_TOKEN}\u0001\u0001"
+            var ouathBearer = "user=${USERNAME}\u0001auth=Bearer ${AUTHORIZATION_TOKEN}\u0001\u0001"
+                .encodeUtf8()
+                .base64()
+
+            expect("AUTH XOAUTH2 $ouathBearer")
+            output("535 5.7.3 Authentication unsuccessful")
+
+            ouathBearer = "user=${expectedUser}\u0001auth=Bearer ${AUTHORIZATION_TOKEN}\u0001\u0001"
                 .encodeUtf8()
                 .base64()
 
@@ -397,7 +404,7 @@ class SmtpServerSettingsValidatorTest {
     }
 }
 
-class FakeOAuth2TokenProvider(override val primaryEmail: String? = null) : OAuth2TokenProvider {
+class FakeOAuth2TokenProvider(override val usernames: Set<String> = emptySet()) : OAuth2TokenProvider {
     override fun getToken(timeoutMillis: Long): String {
         return AUTHORIZATION_TOKEN
     }
