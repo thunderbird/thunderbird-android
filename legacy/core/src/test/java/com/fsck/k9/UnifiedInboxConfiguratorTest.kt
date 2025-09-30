@@ -68,6 +68,18 @@ class UnifiedInboxConfiguratorTest {
     }
 
     @Test
+    fun `configureUnifiedInbox should disable unified inbox when there is only one account`() {
+        // Given
+        `when`(accountManager.getAccounts()).thenReturn(listOf(mock()))
+
+        // When
+        configurator.configureUnifiedInbox()
+
+        // Then
+        assertThat(generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox).isEqualTo(false)
+    }
+
+    @Test
     fun `configureUnifiedInbox should not enable unified inbox when there are less than two accounts`() {
         // Given
         `when`(accountManager.getAccounts()).thenReturn(listOf(mock()))

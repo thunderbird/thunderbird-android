@@ -11,6 +11,7 @@ val accountModule = module {
             backendManager = get(),
             localKeyStoreManager = get(),
             preferences = get(),
+            unifiedInboxConfigurator = get(),
         )
     }
     factory { BackgroundAccountRemover(get()) }

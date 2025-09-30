@@ -6,6 +6,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
+import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 
@@ -18,6 +19,7 @@ class AccountRemover(
     private val backendManager: BackendManager,
     private val localKeyStoreManager: LocalKeyStoreManager,
     private val preferences: Preferences,
+    private val unifiedInboxConfigurator: UnifiedInboxConfigurator,
 ) {
 
     fun removeAccount(accountUuid: String) {
@@ -38,6 +40,7 @@ class AccountRemover(
 
         removeCertificates(account)
         Core.setServicesEnabled()
+        unifiedInboxConfigurator.configureUnifiedInbox()
 
         Log.v("Finished removing account '%s'.", accountName)
     }
