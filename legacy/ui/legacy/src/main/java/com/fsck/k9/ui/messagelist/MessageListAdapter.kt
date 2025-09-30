@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
@@ -27,6 +28,7 @@ import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
 private const val FOOTER_ID = 1L
@@ -47,6 +49,8 @@ class MessageListAdapter internal constructor(
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
     private val themeProvider: FeatureThemeProvider,
     private val featureFlagProvider: FeatureFlagProvider,
+    private val contactRepository: ContactRepository,
+    private val avatarMonogramCreator: AvatarMonogramCreator,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
 
     val colors: MessageViewHolderColors = MessageViewHolderColors.resolveColors(theme)
@@ -266,6 +270,8 @@ class MessageListAdapter internal constructor(
         ComposableMessageViewHolder.create(
             context = parent.context,
             themeProvider = themeProvider,
+            contactRepository = contactRepository,
+            avatarMonogramCreator = avatarMonogramCreator,
             onClick = { listItemListener.onMessageClicked(it) },
             onLongClick = { listItemListener.onToggleMessageSelection(it) },
             onFavouriteClick = { listItemListener.onToggleMessageFlag(it) },
