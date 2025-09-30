@@ -124,6 +124,7 @@ private const val RECENT_CHANGES_SNACKBAR_DURATION = 10 * 1000
 
 private const val TAG = "MessageListFragment"
 
+@Suppress("LargeClass", "TooManyFunctions")
 class MessageListFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
