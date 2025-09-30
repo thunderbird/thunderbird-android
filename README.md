@@ -48,6 +48,12 @@ The Thunderbird Community uses Matrix to communicate:
 - Development and other ways to contribute: [#tb-android-dev:mozilla.org](https://matrix.to/#/#tb-android-dev:mozilla.org)
 - Reach the broader Thunderbird Community in the [community space](https://matrix.to/#/#thunderbird-community:mozilla.org)
 
+## Roadmap
+
+To learn more about all the wonderful things planned for this year please see our
+[roadmap](https://github.com/orgs/thunderbird/projects/19/views/1). The core team's day to day activities are additionally
+tracked in our [sprint board](https://github.com/orgs/thunderbird/projects/20/views/1).
+
 ## Contributing
 
 We welcome contributions from everyone.
