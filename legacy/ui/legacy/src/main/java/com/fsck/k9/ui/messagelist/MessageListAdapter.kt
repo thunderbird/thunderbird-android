@@ -11,8 +11,6 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import app.k9mail.feature.launcher.FeatureLauncherActivity
-import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
@@ -221,6 +219,7 @@ class MessageListAdapter internal constructor(
                 BannerInlineListInAppNotificationViewHolder(
                     view = ComposeView(context = parent.context),
                     eventFilter = listItemListener::filterInAppNotificationEvents,
+                    onNotificationActionClick = listItemListener::onNotificationActionClicked,
                 )
 
             else -> error("Unsupported type: $viewType")
@@ -405,6 +404,7 @@ interface MessageListItemActionListener {
     fun onToggleMessageFlag(item: MessageListItem)
     fun onFooterClicked()
     fun filterInAppNotificationEvents(event: InAppNotificationEvent): Boolean
+    fun onNotificationActionClicked(action: NotificationAction)
 }
 
 sealed interface MessageListViewItem {

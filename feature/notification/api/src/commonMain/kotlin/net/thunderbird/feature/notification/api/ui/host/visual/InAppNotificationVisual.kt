@@ -95,7 +95,7 @@ data class BannerInlineVisual(
     val severity: NotificationSeverity,
     val actions: ImmutableList<NotificationAction>,
 ) : InAppNotificationVisual {
-    internal companion object {
+    companion object {
         internal const val MAX_TITLE_LENGTH = 100
         internal const val MAX_SUPPORTING_TEXT_LENGTH = 200
 

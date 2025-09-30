@@ -34,6 +34,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import app.k9mail.legacy.message.controller.SimpleMessagingListener
@@ -95,7 +97,11 @@ import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
+import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialogFragmentActionListener
+import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialogFragmentFactory
 import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
 import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
 import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
@@ -115,7 +121,8 @@ private const val TAG = "MessageListFragment"
 class MessageListFragment :
     Fragment(),
     ConfirmationDialogFragmentListener,
-    MessageListItemActionListener {
+    MessageListItemActionListener,
+    ErrorNotificationsDialogFragmentActionListener {
 
     val viewModel: MessageListViewModel by viewModel()
     private val recentChangesViewModel: RecentChangesViewModel by viewModel()
@@ -140,6 +147,7 @@ class MessageListFragment :
     private val featureThemeProvider: FeatureThemeProvider by inject()
     private val logger: Logger by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
+    private val errorNotificationsDialogFragmentFactory: ErrorNotificationsDialogFragmentFactory by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -2017,6 +2025,29 @@ class MessageListFragment :
     override fun filterInAppNotificationEvents(event: InAppNotificationEvent): Boolean {
         val accountUuid = event.notification.accountUuid
         return accountUuid != null && accountUuid in accountUuids
+    }
+
+    override fun onNotificationActionClicked(action: NotificationAction) = onNotificationActionClick(action)
+
+    override fun onNotificationActionClick(action: NotificationAction) {
+        when (action) {
+            is NotificationAction.UpdateIncomingServerSettings ->
+                FeatureLauncherActivity.launch(
+                    context = requireContext(),
+                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountUuid),
+                )
+
+            is NotificationAction.UpdateOutgoingServerSettings ->
+                FeatureLauncherActivity.launch(
+                    context = requireContext(),
+                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountUuid),
+                )
+
+            is NotificationAction.OpenNotificationCentre ->
+                errorNotificationsDialogFragmentFactory.show(fragmentManager = childFragmentManager)
+
+            else -> Unit
+        }
     }
 
     internal inner class MessageListActivityListener : SimpleMessagingListener() {
