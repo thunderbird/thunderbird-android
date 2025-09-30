@@ -20,7 +20,7 @@
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailadres is fereaske.</string>
     <string name="account_setup_auto_discovery_loading_error">Laden e-mailkonfiguraasje mislearre</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ik fertrou dizze konfiguraasje</string>
-    <string name="account_setup_error_network">Netwerkflater. Kontrolearje jo netwurkferbining en probearje it opnij.</string>
+    <string name="account_setup_error_network">Netwurkflater. Kontrolearje jo netwurkferbining en probearje it opnij.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dit is net as in jildich e-mailadres werkend.</string>
     <string name="account_setup_options_email_check_frequency_never">Nea</string>
     <string name="account_setup_auto_discovery_loading_message">Konfiguraasje sykje…</string>
@@ -57,4 +57,6 @@
         <item quantity="one">Elke minút</item>
         <item quantity="other">Elke %d minuten</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Jo namme</string>
+    <string name="account_setup_options_your_name_error_required">Jo namme is fereaske.</string>
 </resources>
