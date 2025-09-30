@@ -62,9 +62,9 @@ private fun ErrorNotificationsDialogContent(
                 },
             )
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
+                verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
                 contentPadding = PaddingValues(
-                    top = MainTheme.spacings.half,
+                    top = MainTheme.spacings.default,
                     start = MainTheme.spacings.double,
                     end = MainTheme.spacings.double,
                     bottom = MainTheme.spacings.double,
