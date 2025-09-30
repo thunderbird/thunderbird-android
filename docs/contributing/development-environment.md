@@ -7,7 +7,7 @@ Android project.
 
 Before you begin, ensure you have the following installed:
 
-- **[Java Development Kit (JDK)](https://adoptium.net/temurin/releases/?version=17)** - Version 17 or higher (Temurin OpenJDK recommended)
+- **[Java Development Kit (JDK)](https://adoptium.net/temurin/releases/?version=21)** - Version 21 or higher (Temurin OpenJDK recommended)
 - **[Android Studio](https://developer.android.com/studio)** - Latest stable version recommended
 - **[Git](https://git-scm.com/downloads)** - For version control
 - **Gradle** - Use the Gradle wrapper included in this repo (`./gradlew`); no separate install required
