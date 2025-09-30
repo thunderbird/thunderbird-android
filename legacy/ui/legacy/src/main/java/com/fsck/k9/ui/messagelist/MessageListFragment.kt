@@ -520,10 +520,7 @@ class MessageListFragment :
                                 DisplayInAppNotificationFlag.SnackbarNotifications,
                             ),
                             onSnackbarNotificationEvent = ::onSnackbarInAppNotificationEvent,
-                            eventFilter = { event ->
-                                val accountUuid = event.notification.accountUuid
-                                accountUuid != null && accountUuid in accountUuids
-                            },
+                            eventFilter = ::filterInAppNotificationEvents,
                             modifier = Modifier
                                 .animateContentSize()
                                 .onSizeChanged { size ->
@@ -2163,6 +2160,11 @@ class MessageListFragment :
             SwipeAction.Move -> !isOutbox && messagingController.isMoveCapable(item.account.id)
             SwipeAction.Spam -> !isOutbox && item.account.hasSpamFolder() && item.folderId != item.account.spamFolderId
         }
+    }
+
+    override fun filterInAppNotificationEvents(event: InAppNotificationEvent): Boolean {
+        val accountUuid = event.notification.accountUuid
+        return accountUuid != null && accountUuid in accountUuids
     }
 
     internal inner class MessageListActivityListener : SimpleMessagingListener() {
