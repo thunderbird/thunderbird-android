@@ -9,6 +9,10 @@ inputs:
     description: 'Whether to add a job summary (always, never, on-failure).'
     required: false
     default: 'always'
+  write-cache:
+    description: 'Whether to write to the cache (true/false).'
+    required: false
+    default: 'false'
 runs:
   using: 'composite'
   steps:
@@ -27,3 +31,4 @@ runs:
       with:
         cache-disabled: ${{ inputs.run-release }}
         add-job-summary: ${{ inputs.add-job-summary }}
+        cache-read-only: ${{ inputs.write-cache == 'false' || inputs.run-release == 'true' }}
