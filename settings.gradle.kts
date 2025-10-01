@@ -249,14 +249,14 @@ include(
     ":feature:debug-settings",
 )
 
-check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_17)) {
+check(JavaVersion.current().isCompatibleWith(JavaVersion.VERSION_21)) {
     """
-        Java 17+ is required to build Thunderbird for Android.
+        Java 21+ is required to build Thunderbird for Android.
         But it found an incompatible Java version ${{JavaVersion.current()}}.
 
         Java Home: [${System.getProperty("java.home")}]
 
-        Please install Java 17+ and set JAVA_HOME to the directory containing the Java 17+ installation.
+        Please install Java 21+ and set JAVA_HOME to the directory containing the Java 21+ installation.
         https://developer.android.com/build/jdks#jdk-config-in-studio
     """.trimIndent()
 }
