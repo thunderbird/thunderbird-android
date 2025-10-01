@@ -1,5 +1,6 @@
 package net.thunderbird.core.android.account
 
+import androidx.annotation.Discouraged
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.ServerSettings
 import java.util.Calendar
@@ -21,7 +22,10 @@ const val DEFAULT_VISIBLE_LIMIT = 25
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
-@Deprecated(message = "Use LegacyAccount instead, this class is only for compatibility with existing code.")
+@Discouraged(
+    message = "Use net.thunderbird.core.android.account.LegacyAccount instead, " +
+        "this class is only for compatibility with existing code.",
+)
 @Suppress("TooManyFunctions")
 open class LegacyAccountDto(
     override val uuid: String,

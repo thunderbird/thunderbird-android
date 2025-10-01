@@ -1,14 +1,11 @@
 package net.thunderbird.core.android.account
 
+import androidx.annotation.Discouraged
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.feature.mail.account.api.AccountManager
 
-@Deprecated(
-    message = "Use net.thunderbird.core.android.account.LegacyAccountManager instead",
-    replaceWith = ReplaceWith(
-        expression = "LegacyAccountManager",
-        "net.thunderbird.core.android.account.LegacyAccountManager",
-    ),
+@Discouraged(
+    message = "Use net.thunderbird.core.android.account.LegacyAccountManager instead.",
 )
 interface LegacyAccountDtoManager : AccountManager<LegacyAccountDto> {
     override fun getAccounts(): List<LegacyAccountDto>
