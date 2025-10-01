@@ -1,0 +1,24 @@
+name: Disk usage
+description: Show disk usage
+runs:
+  using: 'composite'
+  steps:
+    - name: Total runner disk usage
+      shell: bash
+      run: df -h /
+
+    - name: Workspace usage
+      shell: bash
+      run: du -sh $GITHUB_WORKSPACE || true
+
+    - name: Gradle user home usage
+      shell: bash
+      run: du -sh ~/.gradle || true
+
+    - name: Gradle cache usage
+      shell: bash
+      run: du -sh ~/.gradle/caches ~/.gradle/wrapper || true
+
+    - name: Build outputs usage
+      shell: bash
+      run: du -sh build app-*/build || true
