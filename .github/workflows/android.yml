@@ -19,23 +19,19 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-android:
+    name: Build Android application
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
     steps:
-      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      - name: Copy CI gradle.properties
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+      - name: Checkout the repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          fetch-depth: 1
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Quality - Spotless
         run: ./gradlew spotlessCheck

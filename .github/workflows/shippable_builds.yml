@@ -220,22 +220,11 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token || github.token }}
 
-      - name: Copy CI gradle.properties
+      - name: Setup Gradle environment
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        shell: bash
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
-        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
+        uses: ./.github/actions/setup-gradle
         with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
-        if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
-        with:
-          cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+          run-release: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: never
 
       - name: Get application info
@@ -470,19 +459,10 @@ jobs:
         with:
           ref: ${{ steps.sha.outputs.app_sha }}
 
-      - name: Copy CI gradle.properties
-        shell: bash
-        run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
-
-      - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
         with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
-        with:
-          cache-disabled: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+          run-release: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: on-failure
 
       - name: Set Version Code for Daily
