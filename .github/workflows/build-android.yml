@@ -34,6 +34,12 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Show disk usage
+        uses: ./.github/actions/disk-usage
+
+      - name: Cleanup disk
+        uses: ./.github/actions/disk-cleanup
+
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
 
