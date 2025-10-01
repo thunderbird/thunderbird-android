@@ -18,8 +18,6 @@ import org.junit.Test
 
 class AutocryptGossipHeaderParserTest {
 
-    private val autocryptGossipHeaderParser = AutocryptGossipHeaderParser.getInstance()
-
     @Before
     fun setUp() {
         Log.logger = TestLogger()
@@ -28,7 +26,7 @@ class AutocryptGossipHeaderParserTest {
     @Test
     fun parseFromPart() {
         val gossipPart = MimePartStreamParser.parse(null, GOSSIP_PART.byteInputStream())
-        val allAutocryptGossipHeaders = autocryptGossipHeaderParser.getAllAutocryptGossipHeaders(gossipPart)
+        val allAutocryptGossipHeaders = AutocryptGossipHeaderParser.getAllAutocryptGossipHeaders(gossipPart)
 
         assertThat(gossipPart.mimeType).isEqualTo("text/plain")
         assertThat(allAutocryptGossipHeaders).all {
@@ -42,7 +40,7 @@ class AutocryptGossipHeaderParserTest {
 
     @Test
     fun parseString() {
-        val gossipHeader = autocryptGossipHeaderParser.parseAutocryptGossipHeader(GOSSIP_HEADER_BOB)
+        val gossipHeader = AutocryptGossipHeaderParser.parseAutocryptGossipHeader(GOSSIP_HEADER_BOB)
 
         assertThat(gossipHeader).isNotNull().all {
             transform { it.keyData }.isEqualTo(GOSSIP_DATA_BOB)
@@ -52,7 +50,7 @@ class AutocryptGossipHeaderParserTest {
 
     @Test
     fun parseHeader_missingKeydata() {
-        val gossipHeader = autocryptGossipHeaderParser.parseAutocryptGossipHeader(
+        val gossipHeader = AutocryptGossipHeaderParser.parseAutocryptGossipHeader(
             "addr=CDEF",
         )
 
@@ -61,7 +59,7 @@ class AutocryptGossipHeaderParserTest {
 
     @Test
     fun parseHeader_unknownCritical() {
-        val gossipHeader = autocryptGossipHeaderParser.parseAutocryptGossipHeader(
+        val gossipHeader = AutocryptGossipHeaderParser.parseAutocryptGossipHeader(
             "addr=bawb; somecritical=value; keydata=aGk",
         )
 
@@ -70,7 +68,7 @@ class AutocryptGossipHeaderParserTest {
 
     @Test
     fun parseHeader_unknownNonCritical() {
-        val gossipHeader = autocryptGossipHeaderParser.parseAutocryptGossipHeader(
+        val gossipHeader = AutocryptGossipHeaderParser.parseAutocryptGossipHeader(
             "addr=bawb; _somenoncritical=value; keydata=aGk",
         )
 
@@ -79,7 +77,7 @@ class AutocryptGossipHeaderParserTest {
 
     @Test
     fun parseHeader_brokenBase64() {
-        val gossipHeader = autocryptGossipHeaderParser.parseAutocryptGossipHeader(
+        val gossipHeader = AutocryptGossipHeaderParser.parseAutocryptGossipHeader(
             "addr=bawb; _somenoncritical=value; keydata=X",
         )
 
