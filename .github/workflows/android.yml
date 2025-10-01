@@ -29,13 +29,38 @@ jobs:
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
+      # Install Java 21 (Temurin)
       - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
+
+      # Force JAVA_HOME to JDK 21 to avoid invalid path issues
+      - name: Set JAVA_HOME to JDK 21
+        run: |
+          echo "JAVA_HOME=${JAVA_HOME_21_X64}" >> $GITHUB_ENV
+          echo "PATH=${JAVA_HOME_21_X64}/bin:$PATH" >> $GITHUB_ENV
+
+      # Log Java version to confirm
+      - name: Verify Java version
+        run: |
+          echo "JAVA_HOME=$JAVA_HOME"
+          java -version
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@748248ddd2a24f49513d8f472f81c3a07d4d50e1 # v4.4.4
+
+      # Free up disk space before running heavy Gradle tasks
+      - name: Free disk space
+        run: |
+          echo "Initial disk usage:"
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          echo "Disk usage after cleanup:"
+          df -h
 
       - name: Quality - Spotless
         run: ./gradlew spotlessCheck
