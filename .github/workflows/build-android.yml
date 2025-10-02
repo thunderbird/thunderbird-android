@@ -1,0 +1,72 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths-ignore:
+      - '.idea/**'
+      - '.gitattributes'
+      - '.github/**.json'
+      - '.gitignore'
+      - '.gitmodules'
+      - '**.md'
+      - 'LICENSE'
+      - 'NOTICE'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-ci-${{ github.ref }}-${{ github.event.pull_request.number || 'no-pr' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  build-android:
+    name: Build Android application
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Show disk usage
+        uses: ./.github/actions/disk-usage
+
+      - name: Cleanup disk
+        uses: ./.github/actions/disk-cleanup
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+        with:
+          write-cache: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Show disk usage
+        uses: ./.github/actions/disk-usage
+
+      - name: Quality - Spotless
+        run: ./gradlew spotlessCheck
+
+      - name: Quality - Detekt
+        run: ./gradlew detekt
+
+      - name: Quality - Lint
+        run: ./gradlew lint
+
+      - name: Show disk usage
+        uses: ./.github/actions/disk-usage
+
+      - name: Quality - Dependency Guard
+        run: ./gradlew dependencyGuard
+
+      - name: Build (run full build and tests)
+        run: ./gradlew build
+
+      - name: Show disk usage
+        uses: ./.github/actions/disk-usage
+
+
