@@ -24,6 +24,9 @@ typealias NotificationCommandOutcome<TNotification> = Outcome<Success<TNotificat
  */
 sealed interface Success<out TNotification : Notification> {
     val notificationId: NotificationId
+    val rawNotificationId: Int
+        @Discouraged("This is a utility getter to enable usage in Java code. Use notificationId instead.")
+        get() = notificationId.value
     val command: NotificationCommand<out TNotification>?
 
     /**
