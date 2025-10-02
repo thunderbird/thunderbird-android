@@ -2,9 +2,12 @@ package net.thunderbird.feature.notification.impl.dismisser
 
 import assertk.all
 import assertk.assertThat
+import assertk.assertions.contains
 import assertk.assertions.hasMessage
+import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNull
 import assertk.assertions.prop
 import dev.mokkery.matcher.any
 import dev.mokkery.spy
@@ -16,23 +19,28 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
+import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
 import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.content.AppNotification
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
+import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.impl.command.DismissInAppNotificationCommand
 import net.thunderbird.feature.notification.impl.command.DismissSystemNotificationCommand
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
 import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
 import net.thunderbird.feature.notification.testing.fake.FakeSystemOnlyNotification
+import net.thunderbird.feature.notification.testing.fake.icon.EMPTY_SYSTEM_NOTIFICATION_ICON
 import net.thunderbird.feature.notification.testing.fake.receiver.FakeInAppNotificationNotifier
 import net.thunderbird.feature.notification.testing.fake.receiver.FakeSystemNotificationNotifier
 
@@ -136,6 +144,54 @@ class DefaultNotificationDismisserTest {
                     .isInstanceOf<NotificationCommandException>()
                     .hasMessage("Can't dismiss notification that is already dismissed")
             }
+    }
+
+    @Test
+    fun `send should emit Failure when no commands can be executed`() = runTest {
+        // Arrange
+        val registry = FakeNotificationRegistry()
+        val systemNotifier = spy(FakeSystemNotificationNotifier())
+        val inAppNotifier = spy(FakeInAppNotificationNotifier())
+        val logger = TestLogger()
+        val testSubject = createTestSubject(
+            logger = logger,
+            notificationRegistry = registry,
+            systemNotificationNotifier = systemNotifier,
+            inAppNotificationNotifier = inAppNotifier,
+        )
+        val notification = object : AppNotification() {
+            override val accountUuid: String? get() = ""
+            override val title: String = ""
+            override val contentText: String? = null
+            override val severity: NotificationSeverity = NotificationSeverity.Critical
+            override val icon: NotificationIcon = NotificationIcon(
+                systemNotificationIcon = EMPTY_SYSTEM_NOTIFICATION_ICON,
+            )
+        }
+        // register notification to be dismissible
+        registry.register(notification)
+        val expectedMessage = "The notification is present in the registrar; " +
+            "however no commands where found to execute for notification $notification"
+
+        // Act
+        val outcomes = testSubject.dismiss(notification).toList(mutableListOf())
+
+        // Assert
+        assertThat(outcomes).all {
+            hasSize(size = 1)
+            transform { it.single() }
+                .isInstanceOf<Outcome.Failure<Failure<Notification>>>()
+                .prop(Outcome.Failure<Failure<Notification>>::error)
+                .all {
+                    prop(Failure<Notification>::command).isNull()
+                    prop(Failure<Notification>::throwable)
+                        .isInstanceOf<NotificationCommandException>()
+                        .hasMessage(expectedMessage)
+                }
+        }
+        assertThat(logger.events)
+            .transform { it.map { event -> event.level to event.message } }
+            .contains(LogLevel.WARN to expectedMessage)
     }
 
     private fun createTestSubject(

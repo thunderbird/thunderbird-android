@@ -9,6 +9,7 @@ import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
+import net.thunderbird.feature.notification.api.command.NotificationCommandException
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
@@ -40,9 +41,22 @@ class DefaultNotificationSender internal constructor(
 ) : NotificationSender {
     override fun send(notification: Notification): Flow<Outcome<Success<Notification>, Failure<Notification>>> = flow {
         val commands = buildCommands(notification)
-        commands.forEach { command ->
-            emit(command.execute())
-        }
+
+        commands
+            .ifEmpty {
+                val message = "No commands to execute for notification $notification"
+                logger.warn { message }
+                emit(
+                    Outcome.Failure(
+                        Failure(
+                            command = null,
+                            throwable = NotificationCommandException(message),
+                        ),
+                    ),
+                )
+                emptyList()
+            }
+            .forEach { command -> emit(command.execute()) }
     }
 
     private fun buildCommands(notification: Notification): List<NotificationCommand<out Notification>> = buildList {

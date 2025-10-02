@@ -66,7 +66,22 @@ class DefaultNotificationDismisser internal constructor(
 
             if (notification in notificationRegistry) {
                 val commands = buildCommands(notification)
-                commands.forEach { command -> emit(command.execute()) }
+                commands
+                    .ifEmpty {
+                        val message = "The notification is present in the registrar; " +
+                            "however no commands where found to execute for notification $notification"
+                        logger.warn { message }
+                        emit(
+                            Outcome.Failure(
+                                Failure(
+                                    command = null,
+                                    throwable = NotificationCommandException(message),
+                                ),
+                            ),
+                        )
+                        emptyList()
+                    }
+                    .forEach { command -> emit(command.execute()) }
             } else {
                 emit(
                     value = Outcome.failure(
