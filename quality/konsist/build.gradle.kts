@@ -3,7 +3,10 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+        vendor = JvmVendorSpec.ADOPTIUM
+    }
 }
 
 dependencies {

@@ -1,7 +1,11 @@
 version: 2
 updates:
+  # Dependabot does not support GitHub composite actions by default (.github/actions)
+  # so we need to add the folder by hand to the directories entry.
   - package-ecosystem: "github-actions"
-    directory: "/"
+    directories:
+      - "/"
+      - "/.github/actions/*"
     schedule:
       interval: "weekly"
     labels:

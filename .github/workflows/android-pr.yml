@@ -30,8 +30,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Build K9 application
         run: ./gradlew :app-k9mail:assemble
@@ -44,8 +44,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Build Thunderbird application
         run: ./gradlew :app-thunderbird:assemble
@@ -58,8 +58,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Build App UI-catalog application in Debug mode
         run: ./gradlew :app-ui-catalog:assembleDebug
@@ -81,9 +81,9 @@ jobs:
         if: steps.changes.outputs.cli_tools_changed == 'true'
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
+      - name: Setup Gradle environment
         if: steps.changes.outputs.cli_tools_changed == 'true'
-        uses: ./.github/actions/setup
+        uses: ./.github/actions/setup-gradle
 
       - name: Build CLI tools
         # run only if CLI tools were changed
@@ -98,8 +98,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Running Android lint
         run: ./gradlew lint
@@ -112,8 +112,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Running spotless check
         run: ./gradlew spotlessCheck
@@ -126,8 +126,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Running Detekt
         run: ./gradlew detekt
@@ -149,8 +149,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Running unit tests
         run: ./gradlew testsOnCi --parallel
@@ -163,8 +163,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Running Dependency Guard
         run: ./gradlew dependencyGuard
@@ -177,8 +177,8 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Running K9 Badging
         run: |
