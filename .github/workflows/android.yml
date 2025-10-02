@@ -29,6 +29,16 @@ jobs:
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
 
+      - name: Log Gradle cache key availability
+        shell: bash
+        run: |
+            key="${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}"
+            if [ -n "$key" ] && [ ${#key} -ge 8 ]; then
+              echo "found key"
+            else
+              echo "not available"
+            fi
+
       - uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
         with:
           distribution: 'temurin'
