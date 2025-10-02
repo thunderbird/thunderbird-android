@@ -1,10 +1,23 @@
 # Thunderbird for Android Security
 
-## Security Audit
+## CASA Assessment
+
+The [Cloud Application Security Assessment (CASA)](https://appdefensealliance.dev/casa) is an annual security review
+required by Google for apps that request access to restricted scopes such as Gmail data. It verifies that an app
+follows solid security practices for handling, storing, and accessing user information.
+
+Thunderbird for Android and K-9 Mail have completed the CASA assessment at Tier 2, covering broader access to
+Gmail features. The process was carried out by [NetSentries](https://www.netsentries.com/service/casa), an
+approved [ADA assessor](https://www.appdefensealliance.org/). We'd like to thank the team for their support. They
+have been supportive throughout, communicated clearly at every step, and were generous with their time and guidance.
+If your application requires a CASA review as well, please reach out to them.
+
+## OSTIF / 7A Security Audit 2023
 
 The code in this repository underwent an extensive security audit in collaboration with the Open Source Technology
-Improvement Fund ([OSTIF](https://ostif.org/)) and [7ASecurity](https://7asecurity.com/) in the first half of 2023. For
-more details, see
+Improvement Fund ([OSTIF](https://ostif.org/)) and [7ASecurity](https://7asecurity.com/) in the first half of 2023.
+OSTIF and 7ASecurity were amazing partners that provided a helpful guiding hand, and made the process of doing the
+audit a breeze. We really appreciated their professionalism and expertise. For more details, see
 our [blog post](https://blog.thunderbird.net/2023/07/k-9-mail-collaborates-with-ostif-and-7asecurity-security-audit/).
 
 ## Verifying Fingerprints
