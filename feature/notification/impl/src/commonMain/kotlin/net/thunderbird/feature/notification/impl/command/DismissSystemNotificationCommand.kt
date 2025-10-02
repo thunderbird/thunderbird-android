@@ -10,9 +10,9 @@ import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 private const val TAG = "DismissSystemNotificationCommand"
 
 class DismissSystemNotificationCommand(
-    private val logger: Logger,
-    private val featureFlagProvider: FeatureFlagProvider,
-    private val notificationRegistry: NotificationRegistry,
+    logger: Logger,
+    featureFlagProvider: FeatureFlagProvider,
+    notificationRegistry: NotificationRegistry,
     notification: SystemNotification,
     notifier: NotificationNotifier<SystemNotification>,
 ) : DismissNotificationCommand<SystemNotification>(

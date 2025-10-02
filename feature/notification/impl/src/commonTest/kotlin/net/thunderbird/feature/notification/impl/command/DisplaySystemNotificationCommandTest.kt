@@ -2,7 +2,6 @@ package net.thunderbird.feature.notification.impl.command
 
 import assertk.all
 import assertk.assertThat
-import assertk.assertions.hasMessage
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
@@ -20,9 +19,9 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
+import net.thunderbird.feature.notification.api.command.outcome.Success
+import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
@@ -48,19 +47,16 @@ class DisplaySystemNotificationCommandTest {
             val outcome = testSubject.execute()
 
             // Assert
-
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<SystemNotification>>>()
+                .isInstanceOf<Outcome.Failure<UnsupportedCommand<SystemNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<SystemNotification>::command)
+                    prop(UnsupportedCommand<SystemNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<SystemNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage(
-                            "${FeatureFlagKey.UseNotificationSenderForSystemNotifications.key} feature flag" +
-                                "is not enabled",
-                        )
+                    prop(UnsupportedCommand<SystemNotification>::reason)
+                        .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
+                        .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
+                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
                 }
         }
 
@@ -82,17 +78,15 @@ class DisplaySystemNotificationCommandTest {
 
             // Assert
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<SystemNotification>>>()
+                .isInstanceOf<Outcome.Failure<UnsupportedCommand<SystemNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<SystemNotification>::command)
+                    prop(UnsupportedCommand<SystemNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<SystemNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage(
-                            "${FeatureFlagKey.UseNotificationSenderForSystemNotifications.key} feature flag" +
-                                "is not enabled",
-                        )
+                    prop(UnsupportedCommand<SystemNotification>::reason)
+                        .isInstanceOf<UnsupportedCommand.Reason.FeatureFlagDisabled>()
+                        .prop(UnsupportedCommand.Reason.FeatureFlagDisabled::key)
+                        .isEqualTo(FeatureFlagKey.UseNotificationSenderForSystemNotifications)
                 }
         }
 
@@ -114,14 +108,11 @@ class DisplaySystemNotificationCommandTest {
 
             // Assert
             assertThat(outcome)
-                .isInstanceOf<Outcome.Failure<Failure<SystemNotification>>>()
+                .isInstanceOf<Outcome.Failure<CommandExecutionFailed<SystemNotification>>>()
                 .prop("error") { it.error }
                 .all {
-                    prop(Failure<SystemNotification>::command)
+                    prop(CommandExecutionFailed<SystemNotification>::command)
                         .isEqualTo(testSubject)
-                    prop(Failure<SystemNotification>::throwable)
-                        .isInstanceOf<NotificationCommandException>()
-                        .hasMessage("Can't execute command.")
                 }
         }
 

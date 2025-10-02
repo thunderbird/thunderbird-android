@@ -9,9 +9,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.sender.NotificationSender
 
@@ -45,6 +43,6 @@ class NotificationSenderCompat @JvmOverloads constructor(
     }
 
     fun interface OnResultListener {
-        fun onResult(outcome: Outcome<Success<Notification>, Failure<Notification>>)
+        fun onResult(outcome: NotificationCommandOutcome<Notification>)
     }
 }

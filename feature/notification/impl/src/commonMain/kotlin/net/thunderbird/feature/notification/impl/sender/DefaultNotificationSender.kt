@@ -7,9 +7,8 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
-import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.command.outcome.CommandNotCreated
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.SystemNotification
@@ -39,21 +38,13 @@ class DefaultNotificationSender internal constructor(
     private val systemNotificationNotifier: NotificationNotifier<SystemNotification>,
     private val inAppNotificationNotifier: NotificationNotifier<InAppNotification>,
 ) : NotificationSender {
-    override fun send(notification: Notification): Flow<Outcome<Success<Notification>, Failure<Notification>>> = flow {
+    override fun send(notification: Notification): Flow<NotificationCommandOutcome<Notification>> = flow {
         val commands = buildCommands(notification)
-
         commands
             .ifEmpty {
                 val message = "No commands to execute for notification $notification"
                 logger.warn { message }
-                emit(
-                    Outcome.Failure(
-                        Failure(
-                            command = null,
-                            throwable = NotificationCommandException(message),
-                        ),
-                    ),
-                )
+                emit(Outcome.failure(CommandNotCreated(message)))
                 emptyList()
             }
             .forEach { command -> emit(command.execute()) }

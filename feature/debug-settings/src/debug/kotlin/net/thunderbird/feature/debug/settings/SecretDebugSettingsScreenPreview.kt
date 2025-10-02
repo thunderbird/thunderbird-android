@@ -10,12 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.common.resources.StringsResourceManager
-import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationReceiver
@@ -25,6 +23,12 @@ import net.thunderbird.feature.notification.api.sender.NotificationSender
 @Composable
 private fun SecretDebugSettingsScreenPreview() {
     koinPreview {
+        single<InAppNotificationReceiver> {
+            object : InAppNotificationReceiver {
+                override val events: SharedFlow<InAppNotificationEvent>
+                    get() = error("not implemented")
+            }
+        }
         single<DebugNotificationSectionViewModel> {
             DebugNotificationSectionViewModel(
                 stringsResourceManager = object : StringsResourceManager {
@@ -47,13 +51,10 @@ private fun SecretDebugSettingsScreenPreview() {
                 notificationSender = object : NotificationSender {
                     override fun send(
                         notification: Notification,
-                    ): Flow<Outcome<Success<Notification>, Failure<Notification>>> =
+                    ): Flow<NotificationCommandOutcome<Notification>> =
                         error("not implemented")
                 },
-                notificationReceiver = object : InAppNotificationReceiver {
-                    override val events: SharedFlow<InAppNotificationEvent>
-                        get() = error("not implemented")
-                },
+                notificationReceiver = get(),
             )
         }
     } WithContent {

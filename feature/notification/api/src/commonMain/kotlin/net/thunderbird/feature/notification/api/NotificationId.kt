@@ -10,4 +10,8 @@ package net.thunderbird.feature.notification.api
  * @property value The integer value of the notification ID.
  */
 @JvmInline
-value class NotificationId(val value: Int) : Comparable<Int> by value
+value class NotificationId(val value: Int) : Comparable<Int> by value {
+    companion object {
+        val Undefined = NotificationId(Int.MIN_VALUE)
+    }
+}
