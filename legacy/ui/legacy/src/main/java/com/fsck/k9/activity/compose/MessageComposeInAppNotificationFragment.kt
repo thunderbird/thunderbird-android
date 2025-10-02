@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.animateContentSize
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
@@ -57,7 +55,6 @@ class MessageComposeInAppNotificationFragment : Fragment() {
                             val accountUuid = event.notification.accountUuid
                             accountUuid != null && accountUuid == accountId?.asRaw()
                         },
-                        modifier = Modifier.animateContentSize(),
                     )
                 }
             }
