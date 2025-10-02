@@ -2,41 +2,86 @@ package net.thunderbird.feature.notification.impl.sender
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
+import net.thunderbird.feature.notification.api.command.NotificationCommandException
+import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
+import net.thunderbird.feature.notification.api.content.SystemNotification
+import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.api.sender.NotificationSender
-import net.thunderbird.feature.notification.impl.command.NotificationCommandFactory
+import net.thunderbird.feature.notification.impl.command.DisplayInAppNotificationCommand
+import net.thunderbird.feature.notification.impl.command.DisplaySystemNotificationCommand
 
 /**
  * Responsible for sending notifications by creating and executing the appropriate commands.
  *
- * This class utilizes a [NotificationCommandFactory] to generate a list of
- * [NotificationCommand]s based on the provided [Notification]. It then executes
- * each command and emits the result of the execution as a [Flow].
+ * This class determines the type of the incoming [Notification] and constructs
+ * the relevant [NotificationCommand]s (e.g., [DisplaySystemNotificationCommand] for [SystemNotification],
+ * [DisplayInAppNotificationCommand] for [InAppNotification]). It then executes each command
+ * and emits the result of the execution as a [Flow].
  *
- * @param commandFactory The factory used to create notification commands.
+ * @param logger The logger instance for logging events.
+ * @param featureFlagProvider Provider for accessing feature flag states.
+ * @param notificationRegistry Registry for managing notifications.
+ * @param systemNotificationNotifier Notifier specifically for system notifications.
+ * @param inAppNotificationNotifier Notifier specifically for in-app notifications.
  */
 class DefaultNotificationSender internal constructor(
-    private val commandFactory: NotificationCommandFactory,
+    private val logger: Logger,
+    private val featureFlagProvider: FeatureFlagProvider,
+    private val notificationRegistry: NotificationRegistry,
+    private val systemNotificationNotifier: NotificationNotifier<SystemNotification>,
+    private val inAppNotificationNotifier: NotificationNotifier<InAppNotification>,
 ) : NotificationSender {
-    /**
-     * Sends a notification by creating and executing the appropriate commands.
-     *
-     * This function takes a [Notification] object, uses the [commandFactory] to generate
-     * a list of [NotificationCommand]s tailored to that notification, and then executes
-     * each command sequentially. The result of each command execution ([NotificationCommand.CommandOutcome])
-     * is emitted as part of the returned [Flow].
-     *
-     * @param notification The [Notification] to be sent.
-     * @return A [Flow] that emits the [NotificationCommand.CommandOutcome] for each executed command.
-     */
     override fun send(notification: Notification): Flow<Outcome<Success<Notification>, Failure<Notification>>> = flow {
-        val commands = commandFactory.create(notification)
-        commands.forEach { command ->
-            emit(command.execute())
+        val commands = buildCommands(notification)
+
+        commands
+            .ifEmpty {
+                val message = "No commands to execute for notification $notification"
+                logger.warn { message }
+                emit(
+                    Outcome.Failure(
+                        Failure(
+                            command = null,
+                            throwable = NotificationCommandException(message),
+                        ),
+                    ),
+                )
+                emptyList()
+            }
+            .forEach { command -> emit(command.execute()) }
+    }
+
+    private fun buildCommands(notification: Notification): List<NotificationCommand<out Notification>> = buildList {
+        if (notification is SystemNotification) {
+            add(
+                DisplaySystemNotificationCommand(
+                    logger = logger,
+                    featureFlagProvider = featureFlagProvider,
+                    notificationRegistry = notificationRegistry,
+                    notification = notification,
+                    notifier = systemNotificationNotifier,
+                ),
+            )
+        }
+
+        if (notification is InAppNotification) {
+            add(
+                DisplayInAppNotificationCommand(
+                    logger = logger,
+                    featureFlagProvider = featureFlagProvider,
+                    notificationRegistry = notificationRegistry,
+                    notification = notification,
+                    notifier = inAppNotificationNotifier,
+                ),
+            )
         }
     }
 }

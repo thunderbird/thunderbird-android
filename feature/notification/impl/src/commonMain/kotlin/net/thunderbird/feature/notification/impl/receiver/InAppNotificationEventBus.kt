@@ -22,7 +22,7 @@ internal interface InAppNotificationEventBus : InAppNotificationReceiver {
 }
 
 internal fun InAppNotificationEventBus(): InAppNotificationEventBus = object : InAppNotificationEventBus {
-    private val _events = MutableSharedFlow<InAppNotificationEvent>(replay = 1)
+    private val _events = MutableSharedFlow<InAppNotificationEvent>(replay = 32)
     override val events: SharedFlow<InAppNotificationEvent> = _events.asSharedFlow()
 
     override suspend fun publish(event: InAppNotificationEvent) {

@@ -10,6 +10,7 @@ import kotlin.test.Test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure
 import net.thunderbird.feature.notification.api.command.NotificationCommand.Success
 import net.thunderbird.feature.notification.api.command.NotificationCommandException
@@ -25,8 +26,8 @@ class NotificationSenderCompatTest {
     fun `send should call listener callback whenever a result is received`() {
         // Arrange
         val expectedResults = listOf<Outcome<Success<Notification>, Failure<Notification>>>(
-            Outcome.success(Success(FakeInAppNotificationCommand())),
-            Outcome.success(Success(FakeSystemNotificationCommand())),
+            Outcome.success(Success(NotificationId(1), FakeInAppNotificationCommand())),
+            Outcome.success(Success(NotificationId(2), FakeSystemNotificationCommand())),
             Outcome.failure(
                 error = Failure(
                     command = FakeSystemNotificationCommand(),
