@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import com.fsck.k9.ui.settings.account.AccountSettingsActivity
+import com.fsck.k9.ui.settings.account.AccountSettingsFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.collections.immutable.persistentSetOf
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
-import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
@@ -27,13 +26,13 @@ class MessageComposeInAppNotificationFragment : Fragment() {
     private val themeProvider: FeatureThemeProvider by inject()
     private val logger: Logger by inject()
     private var parentView: View? = null
-    private var accountId: AccountId? = null
+    private var accountIds: Set<String> = emptySet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { arg ->
-            accountId = requireNotNull(arg.getString(ARG_ACCOUNT_ID)?.let { AccountIdFactory.of(it) }) {
-                "Argument $ARG_ACCOUNT_ID is required"
+            accountIds = requireNotNull(arg.getStringArray(ARG_ACCOUNT_IDS)?.toSet()) {
+                "Missing argument $ARG_ACCOUNT_IDS"
             }
         }
     }
@@ -53,7 +52,7 @@ class MessageComposeInAppNotificationFragment : Fragment() {
                         onSnackbarNotificationEvent = ::onSnackbarInAppNotificationEvent,
                         eventFilter = { event ->
                             val accountUuid = event.notification.accountUuid
-                            accountUuid != null && accountUuid == accountId?.asRaw()
+                            accountUuid != null && accountUuid in accountIds
                         },
                     )
                 }
@@ -88,19 +87,28 @@ class MessageComposeInAppNotificationFragment : Fragment() {
 
     private fun onNotificationActionClick(action: NotificationAction) {
         logger.verbose(TAG) { "onNotificationActionClick() called with: action = $action" }
+        when (action) {
+            is NotificationAction.AssignSentFolder ->
+                AccountSettingsActivity.start(
+                    context = requireContext(),
+                    accountUuid = action.accountUuid,
+                    startScreenKey = AccountSettingsFragment.PREFERENCE_FOLDERS,
+                )
+
+            else -> Unit
+        }
     }
 
     companion object {
-        private const val ARG_ACCOUNT_ID = "MessageComposeInAppNotificationFragment_account_id"
+        private const val ARG_ACCOUNT_IDS = "MessageComposeInAppNotificationFragment_account_ids"
         const val FRAGMENT_TAG = "MessageComposeInAppNotificationFragment"
 
-        fun newInstance(accountId: AccountId): MessageComposeInAppNotificationFragment =
-            MessageComposeInAppNotificationFragment().apply {
-                arguments = bundleOf(ARG_ACCOUNT_ID to accountId.asRaw())
-            }
-
         @JvmStatic
-        fun newInstance(accountUuid: String): MessageComposeInAppNotificationFragment =
-            newInstance(AccountIdFactory.of(accountUuid))
+        fun newInstance(accountUuids: List<String>): MessageComposeInAppNotificationFragment =
+            MessageComposeInAppNotificationFragment().apply {
+                arguments = Bundle().apply {
+                    putStringArray(ARG_ACCOUNT_IDS, accountUuids.toTypedArray())
+                }
+            }
     }
 }
