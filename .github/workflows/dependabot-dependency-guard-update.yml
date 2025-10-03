@@ -39,8 +39,8 @@ jobs:
           ref: ${{ github.head_ref }}
           token: ${{ steps.app-token.outputs.token || github.token }}
 
-      - name: Prepares environment
-        uses: ./.github/actions/setup
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
       - name: Update dependency guard
         run: ./gradlew :dependencyGuardBaseline
@@ -51,7 +51,7 @@ jobs:
           APP_USER_ID: ${{ vars.BOT_USER_ID || '41898282' }}
         run: |
           set -x
-          
+
           git config --global user.name "${APP_SLUG}"
           git config --global user.email "${APP_USER_ID}+${APP_SLUG}[bot]@users.noreply.github.com"
           git add .
