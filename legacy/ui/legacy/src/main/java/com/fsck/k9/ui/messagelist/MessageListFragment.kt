@@ -103,6 +103,7 @@ import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
+import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
@@ -2172,8 +2173,11 @@ class MessageListFragment :
     }
 
     override fun filterInAppNotificationEvents(event: InAppNotificationEvent): Boolean {
-        val accountUuid = event.notification.accountUuid
-        return accountUuid != null && accountUuid in accountUuids
+        val notification = event.notification
+        val accountUuid = notification.accountUuid
+        return notification !is SentFolderNotFoundNotification &&
+            accountUuid != null &&
+            accountUuid in accountUuids
     }
 
     override fun onNotificationActionClicked(action: NotificationAction) = onNotificationActionClick(action)
