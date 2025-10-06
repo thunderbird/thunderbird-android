@@ -48,20 +48,11 @@ jobs:
       - name: Show disk usage
         uses: ./.github/actions/disk-usage
 
-      - name: Quality - Spotless
-        run: ./gradlew spotlessCheck
-
-      - name: Quality - Detekt
-        run: ./gradlew detekt
+      - name: Assemble
+        run: ./gradlew assemble
 
       - name: Quality - Lint
         run: ./gradlew lint
-
-      - name: Show disk usage
-        uses: ./.github/actions/disk-usage
-
-      - name: Quality - Dependency Guard
-        run: ./gradlew dependencyGuard
 
       - name: Build (run full build and tests)
         run: ./gradlew build
