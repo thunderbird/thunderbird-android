@@ -9,7 +9,6 @@ import assertk.assertions.isSameInstanceAs
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.FolderType
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
@@ -18,6 +17,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.createExtra
 import java.io.IOException
 import java.util.ArrayDeque
 import java.util.Deque
+import net.thunderbird.core.common.exception.MessagingException
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.kotlin.doReturn
@@ -493,9 +493,8 @@ class RealImapStoreTest {
             imapConnections.add(imapConnection)
         }
 
-        override fun getCombinedPrefix(): String {
-            return testCombinedPrefix ?: super.getCombinedPrefix()
-        }
+        override val combinedPrefix: String?
+            get() = testCombinedPrefix ?: super.combinedPrefix
 
         fun setTestCombinedPrefix(prefix: String?) {
             testCombinedPrefix = prefix

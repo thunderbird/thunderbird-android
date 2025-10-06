@@ -8,7 +8,7 @@ import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandle
 
 internal class GeneralSettingsWriter(
     private val preferences: Preferences,
-    private val generalSettingsManager: RealGeneralSettingsManager,
+    private val generalSettingsManager: DefaultGeneralSettingsManager,
 ) {
     fun write(settings: InternalSettingsMap): Boolean {
         // Convert general settings to the string representation used in preference storage
@@ -21,7 +21,7 @@ internal class GeneralSettingsWriter(
         mergedSettings.putAll(stringSettings)
 
         for ((key, value) in mergedSettings) {
-            editor.putStringWithLogging(key, value)
+            editor.putStringWithLogging(key, value, generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled)
         }
 
         return if (editor.commit()) {
@@ -40,8 +40,8 @@ internal class GeneralSettingsWriter(
 /**
  * Write to a [StorageEditor] while logging what is written if debug logging is enabled.
  */
-internal fun StorageEditor.putStringWithLogging(key: String, value: String?) {
-    if (K9.isDebugLoggingEnabled) {
+internal fun StorageEditor.putStringWithLogging(key: String, value: String?, isDebugLoggingEnabled: Boolean) {
+    if (isDebugLoggingEnabled) {
         var outputValue = value
         if (!K9.isSensitiveDebugLoggingEnabled &&
             (

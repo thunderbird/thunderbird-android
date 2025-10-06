@@ -9,7 +9,7 @@
     <string name="account_server_settings_authentication_password_encrypted">Zaszyfrowane hasło</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Automatycznie wykrywaj przestrzeń nazw IMAP</string>
     <string name="account_server_settings_incoming_top_bar_title">Ustawienia serwera poczty przychodzącej</string>
-    <string name="account_server_settings_authentication_password_cleartext">Normalne hasło</string>
+    <string name="account_server_settings_authentication_password_cleartext">Zwykłe hasło</string>
     <string name="account_server_settings_authentication_label">Uwierzytelnianie</string>
     <string name="account_server_settings_connection_security_none">Brak</string>
     <string name="account_server_settings_port_label">Port</string>

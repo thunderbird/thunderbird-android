@@ -3,6 +3,7 @@ package com.fsck.k9
 import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
+import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.notification.NotificationController
@@ -27,7 +28,7 @@ object Core : KoinComponent {
      * injection library.
      */
     fun earlyInit() {
-        if (K9.DEVELOPER_MODE) {
+        if (BuildConfig.DEBUG) {
             enableStrictMode()
         }
     }

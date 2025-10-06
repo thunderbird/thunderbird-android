@@ -3,7 +3,7 @@ package com.fsck.k9.mail.internet;
 
 import java.io.IOException;
 
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import okio.Buffer;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Test;

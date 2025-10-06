@@ -7,7 +7,7 @@ import com.fsck.k9.search.isSingleFolder
 import com.fsck.k9.search.isUnifiedInbox
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.search.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
 
 internal class NotificationOperations(
     private val notificationController: NotificationController,

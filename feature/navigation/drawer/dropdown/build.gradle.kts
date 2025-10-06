@@ -18,13 +18,14 @@ dependencies {
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
 
-    implementation(projects.feature.search)
+    implementation(projects.feature.search.implLegacy)
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)
     implementation(projects.legacy.ui.folder)
     implementation(projects.core.featureflag)
 
     testImplementation(projects.core.ui.compose.testing)
+    testImplementation(projects.core.logging.testing)
 
     // Fakes
     debugImplementation(projects.feature.account.fake)

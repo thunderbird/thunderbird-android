@@ -4,8 +4,8 @@ package com.fsck.k9.search
 
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchAccount
 
 val LocalMessageSearch.isUnifiedInbox: Boolean
     get() = id == SearchAccount.UNIFIED_INBOX

@@ -20,7 +20,7 @@ dependencies {
     implementation(projects.core.android.account)
     implementation(projects.legacy.mailstore)
     implementation(projects.legacy.message)
-    implementation(projects.feature.search)
+    implementation(projects.feature.search.implLegacy)
     implementation(projects.legacy.ui.folder)
     implementation(projects.core.featureflag)
 

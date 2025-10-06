@@ -24,6 +24,7 @@ internal fun CommonExtension<*, *, *, *, *, *>.configureSharedConfig(project: Pr
         abortOnError = true
         checkDependencies = true
         lintConfig = project.file("${project.rootProject.projectDir}/config/lint/lint.xml")
+        baseline = project.file("${project.rootProject.projectDir}/config/lint/android-lint-baseline.xml")
     }
 
     testOptions {

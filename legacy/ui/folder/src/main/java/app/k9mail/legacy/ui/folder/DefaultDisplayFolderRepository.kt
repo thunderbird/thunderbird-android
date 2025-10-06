@@ -19,11 +19,14 @@ import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 class DefaultDisplayFolderRepository(
     private val accountManager: AccountManager,
     private val messagingController: MessagingControllerRegistry,
     private val messageStoreManager: MessageStoreManager,
+    private val outboxFolderManager: OutboxFolderManager,
     private val coroutineContext: CoroutineContext = Dispatchers.IO,
 ) : DisplayFolderRepository {
     private val sortForDisplay =
@@ -33,22 +36,28 @@ class DefaultDisplayFolderRepository(
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
-    private fun getDisplayFolders(account: LegacyAccount, includeHiddenFolders: Boolean): List<DisplayFolder> {
+    private fun getDisplayFolders(
+        account: LegacyAccount,
+        outboxFolderId: Long,
+        includeHiddenFolders: Boolean,
+    ): List<DisplayFolder> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
         return messageStore.getDisplayFolders(
             includeHiddenFolders = includeHiddenFolders,
-            outboxFolderId = account.outboxFolderId,
+            outboxFolderId = outboxFolderId,
         ) { folder ->
             DisplayFolder(
                 folder = Folder(
                     id = folder.id,
                     name = folder.name,
-                    type = FolderTypeMapper.folderTypeOf(account, folder.id),
+                    type = folder.takeIf { it.id == outboxFolderId }?.type?.toFolderType()
+                        ?: FolderTypeMapper.folderTypeOf(account, folder.id),
                     isLocalOnly = folder.isLocalOnly,
                 ),
                 isInTopGroup = folder.isInTopGroup,
                 unreadMessageCount = folder.unreadMessageCount,
                 starredMessageCount = folder.starredMessageCount,
+                pathDelimiter = account.folderPathDelimiter,
             )
         }.sortedWith(sortForDisplay)
     }
@@ -60,19 +69,20 @@ class DefaultDisplayFolderRepository(
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
 
         return callbackFlow {
-            send(getDisplayFolders(account, includeHiddenFolders))
+            val outboxFolderId = outboxFolderManager.getOutboxFolderId(account.id)
+            send(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
                 override fun folderStatusChanged(statusChangedAccount: LegacyAccount, folderId: Long) {
                     if (statusChangedAccount.uuid == account.uuid) {
-                        trySendBlocking(getDisplayFolders(account, includeHiddenFolders))
+                        trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
                     }
                 }
             }
             messagingController.addListener(folderStatusChangedListener)
 
             val folderSettingsChangedListener = FolderSettingsChangedListener {
-                trySendBlocking(getDisplayFolders(account, includeHiddenFolders))
+                trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
             }
             messageStore.addFolderSettingsChangedListener(folderSettingsChangedListener)
 
@@ -89,4 +99,16 @@ class DefaultDisplayFolderRepository(
         val account = accountManager.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
         return getDisplayFoldersFlow(account, includeHiddenFolders = false)
     }
+
+    private fun LegacyFolderType.toFolderType(): FolderType =
+        when (this) {
+            LegacyFolderType.REGULAR -> FolderType.REGULAR
+            LegacyFolderType.INBOX -> FolderType.INBOX
+            LegacyFolderType.OUTBOX -> FolderType.OUTBOX
+            LegacyFolderType.DRAFTS -> FolderType.DRAFTS
+            LegacyFolderType.SENT -> FolderType.SENT
+            LegacyFolderType.TRASH -> FolderType.TRASH
+            LegacyFolderType.SPAM -> FolderType.SPAM
+            LegacyFolderType.ARCHIVE -> FolderType.ARCHIVE
+        }
 }

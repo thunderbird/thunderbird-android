@@ -1,0 +1,3 @@
+Thunderbird for Android version 13.0b3, based on K-9 Mail. Changes include:
+- Updating to 13.0b2 offline with IMAP prefix caused migration failure and data loss
+- App crashed on startup when no folders were available after data loss

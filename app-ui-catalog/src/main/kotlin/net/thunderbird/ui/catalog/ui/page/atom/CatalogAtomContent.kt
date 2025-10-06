@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.ui.catalog.ui.page.CatalogPageContract
 import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage.BUTTON
+import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage.CARD
 import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage.COLOR
 import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage.ICON
 import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage.IMAGE
@@ -12,6 +13,7 @@ import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage.SELECTION_CONTROL
 import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage.TEXT_FIELD
 import net.thunderbird.ui.catalog.ui.page.atom.CatalogAtomPage.TYPOGRAPHY
 import net.thunderbird.ui.catalog.ui.page.atom.items.buttonItems
+import net.thunderbird.ui.catalog.ui.page.atom.items.cardItems
 import net.thunderbird.ui.catalog.ui.page.atom.items.colorItems
 import net.thunderbird.ui.catalog.ui.page.atom.items.iconItems
 import net.thunderbird.ui.catalog.ui.page.atom.items.imageItems
@@ -40,6 +42,7 @@ fun CatalogAtomContent(
                 TEXT_FIELD -> textFieldItems()
                 ICON -> iconItems()
                 IMAGE -> imageItems()
+                CARD -> cardItems()
             }
         },
         onRenderFullScreenPage = {},

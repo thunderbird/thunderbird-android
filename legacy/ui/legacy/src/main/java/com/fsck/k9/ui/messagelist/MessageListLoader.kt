@@ -10,9 +10,10 @@ import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.api.MessageSearchField
-import net.thunderbird.feature.search.sql.SqlWhereClause
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.api.MessageSearchField
+import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 
 class MessageListLoader(
     private val preferences: Preferences,
@@ -20,6 +21,7 @@ class MessageListLoader(
     private val messageListRepository: MessageListRepository,
     private val messageHelper: MessageHelper,
     private val generalSettingsManager: GeneralSettingsManager,
+    private val outboxFolderManager: OutboxFolderManager,
 ) {
 
     fun getMessageList(config: MessageListConfig): MessageListInfo {
@@ -50,7 +52,7 @@ class MessageListLoader(
         val accountUuid = account.uuid
         val threadId = getThreadId(config.search)
         val sortOrder = buildSortOrder(config)
-        val mapper = MessageListItemMapper(messageHelper, account, generalSettingsManager)
+        val mapper = MessageListItemMapper(messageHelper, account, generalSettingsManager, outboxFolderManager)
 
         return when {
             threadId != null -> {

@@ -16,6 +16,7 @@ import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.storage.legacy.serializer.ServerSettingsDtoSerializer
+import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
 import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.notification.NotificationLight
 import net.thunderbird.feature.notification.NotificationSettings
@@ -81,7 +82,6 @@ class LegacyAccountStorageHandler(
             importedSpamFolder = storage.getStringOrNull(keyGen.create("spamFolderName"))
 
             inboxFolderId = storage.getStringOrNull(keyGen.create("inboxFolderId"))?.toLongOrNull()
-            outboxFolderId = storage.getStringOrNull(keyGen.create("outboxFolderId"))?.toLongOrNull()
 
             val draftsFolderId = storage.getStringOrNull(keyGen.create("draftsFolderId"))?.toLongOrNull()
             val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(
@@ -246,6 +246,10 @@ class LegacyAccountStorageHandler(
             lastFolderListRefreshTime = storage.getLong(keyGen.create("lastFolderListRefreshTime"), 0L)
 
             shouldMigrateToOAuth = storage.getBoolean(keyGen.create("migrateToOAuth"), false)
+            folderPathDelimiter = storage.getStringOrDefault(
+                key = keyGen.create(FOLDER_PATH_DELIMITER_KEY),
+                defValue = FOLDER_DEFAULT_PATH_DELIMITER,
+            )
 
             val isFinishedSetup = storage.getBoolean(keyGen.create("isFinishedSetup"), true)
             if (isFinishedSetup) markSetupFinished()
@@ -344,7 +348,6 @@ class LegacyAccountStorageHandler(
             editor.putString(keyGen.create("archiveFolderName"), importedArchiveFolder)
             editor.putString(keyGen.create("spamFolderName"), importedSpamFolder)
             editor.putString(keyGen.create("inboxFolderId"), inboxFolderId?.toString())
-            editor.putString(keyGen.create("outboxFolderId"), outboxFolderId?.toString())
             editor.putString(keyGen.create("draftsFolderId"), draftsFolderId?.toString())
             editor.putString(keyGen.create("sentFolderId"), sentFolderId?.toString())
             editor.putString(keyGen.create("trashFolderId"), trashFolderId?.toString())
@@ -412,6 +415,7 @@ class LegacyAccountStorageHandler(
             editor.putBoolean(keyGen.create("useCompression"), useCompression)
             editor.putBoolean(keyGen.create("sendClientInfo"), isSendClientInfoEnabled)
             editor.putBoolean(keyGen.create("migrateToOAuth"), shouldMigrateToOAuth)
+            editor.putString(keyGen.create(FOLDER_PATH_DELIMITER_KEY), folderPathDelimiter)
         }
 
         saveIdentities(data, storage, editor)
@@ -534,6 +538,7 @@ class LegacyAccountStorageHandler(
         editor.remove(keyGen.create("useCompression"))
         editor.remove(keyGen.create("sendClientInfo"))
         editor.remove(keyGen.create("migrateToOAuth"))
+        editor.remove(keyGen.create(FOLDER_PATH_DELIMITER_KEY))
 
         deleteIdentities(data, storage, editor)
         // TODO: Remove preference settings that may exist for individual folders in the account.
@@ -600,5 +605,7 @@ class LegacyAccountStorageHandler(
         const val IDENTITY_NAME_KEY = "name"
         const val IDENTITY_EMAIL_KEY = "email"
         const val IDENTITY_DESCRIPTION_KEY = "description"
+
+        const val FOLDER_PATH_DELIMITER_KEY = "folderPathDelimiter"
     }
 }

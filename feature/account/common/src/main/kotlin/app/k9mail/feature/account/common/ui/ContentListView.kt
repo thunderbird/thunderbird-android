@@ -27,11 +27,12 @@ fun ContentListView(
             .padding(contentPadding)
             .fillMaxWidth()
             .then(modifier),
-    ) {
+    ) { contentPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .imePadding(),
+            contentPadding = contentPadding,
             horizontalAlignment = horizontalAlignment,
             verticalArrangement = verticalArrangement,
         ) {

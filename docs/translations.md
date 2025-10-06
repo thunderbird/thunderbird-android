@@ -21,9 +21,9 @@ string on Weblate.
 
 ## Changing a string
 
-Changing a string should be avoided. Weblate doesn't automatically invalidate translations when a source string is
-changed. This can be worked around by removing the old string and adding a new one. Make sure to only modify the source
-language. It's fine for the translations to then contain unused strings. The next merge with Weblate will remove those.
+Changing a string is only acceptable if you are fixing typos or grammar in English. If you need to change the meaning of
+a string, or otherwise make a change that would affect other strings, please instead remove the string and add a new one
+with a different key.
 
 ## Removing a string
 
@@ -47,6 +47,15 @@ all languages, this should be discussed with the core team who will use this pro
 6. Wait for the changes in this repository to be automatically propagated to and processed by Weblate.
 7. Unlock components on Weblate by clicking the "Unlock" button in the
    [repository maintenance](https://hosted.weblate.org/projects/tb-android/#repository) screen.
+
+## Merging Weblate pull requests
+
+When merging a pull request from Weblate, please check the following:
+
+* If the PR contains changes to the cs, lt or sk locales, make sure that plural forms are correctly
+  maintained. Weblate does not manage this automatically due to https://github.com/WeblateOrg/weblate/issues/7520 . You
+  will need to manually add a patch that makes sure the strings have both a `many` and an `other` translation. If you
+  don't speak the language, using the same value for the two variants is an acceptable trade-off.
 
 # Managing translations
 

@@ -61,6 +61,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 
@@ -76,6 +77,7 @@ class MessageViewFragment :
     private val messagingController: MessagingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
+    private val outboxFolderManager: OutboxFolderManager by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -319,7 +321,7 @@ class MessageViewFragment :
         menu.findItem(R.id.compose).isVisible = true
 
         val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
-        if (generalSettingsManager.getSettings().fixedMessageViewTheme) {
+        if (generalSettingsManager.getConfig().display.coreSettings.fixedMessageViewTheme) {
             toggleTheme.isVisible = false
         } else {
             // Set title of menu item to switch to dark/light theme
@@ -785,7 +787,7 @@ class MessageViewFragment :
     override fun dialogCancelled(dialogId: Int) = Unit
 
     private val isOutbox: Boolean
-        get() = messageReference.folderId == account.outboxFolderId
+        get() = messageReference.folderId == outboxFolderManager.getOutboxFolderIdSync(account.id)
 
     private val isMessageRead: Boolean
         get() = message?.isSet(Flag.SEEN) == true

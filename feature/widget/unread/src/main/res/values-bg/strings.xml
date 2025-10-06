@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">Показване на непрочетената бройка за…</string>
     <string name="unread_widget_account_title">Профил</string>
     <string name="unread_widget_account_summary">Профилът, за който да се показва броят непрочетени съобщения</string>
-    <string name="unread_widget_unified_inbox_account_summary">Обща входяща кутия</string>
+    <string name="unread_widget_unified_inbox_account_summary">Обединена кутия</string>
     <string name="unread_widget_folder_enabled_title">Брой папки</string>
     <string name="unread_widget_folder_enabled_summary">Показване на броя непрочетени съобщения само за една папка</string>
     <string name="unread_widget_folder_title">Папка</string>
@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">Няма избран профил</string>
     <string name="unread_widget_folder_not_selected">Няма избрана папка</string>
     <string name="unread_widget_choose_account_title">Изберете Профил</string>
+    <string name="unread_widget_label">Брой непрочетени</string>
 </resources>

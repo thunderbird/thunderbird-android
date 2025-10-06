@@ -565,8 +565,8 @@
     <plurals name="dialog_confirm_delete_messages">
         <item quantity="one">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laišką?</item>
         <item quantity="few">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
-        <item quantity="many">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
-        <item quantity="other">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškus?</item>
+        <item quantity="many">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškų?</item>
+        <item quantity="other">Ar tikrai norite ištrinti <xliff:g id="message_count">%1$d</xliff:g> laiškų?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Taip</string>
     <string name="dialog_confirm_delete_cancel_button">Ne</string>

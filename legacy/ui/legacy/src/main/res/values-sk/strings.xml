@@ -66,8 +66,8 @@
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Adresa bola skopírovaná do schránky</item>
         <item quantity="few">Adresy boli skopírované do schránky</item>
-        <item quantity="many">Adresy boli skopírované do schránky</item>
-        <item quantity="other">Adresy boli skopírované do schránky</item>
+        <item quantity="many">Adries bolo skopírovaných do schránky</item>
+        <item quantity="other">Adries bolo skopírovaných do schránky</item>
     </plurals>
     <string name="message_view_theme_action_dark">Prepnúť na tmavú tému</string>
     <string name="message_view_theme_action_light">Prepnúť na svetlú tému</string>

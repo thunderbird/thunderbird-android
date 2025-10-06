@@ -19,7 +19,7 @@ import com.fsck.k9.helper.UnsubscribeUri;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
@@ -174,7 +174,7 @@ public class MessageViewInfoExtractor {
      * @return A {@link ViewableExtractedText} instance containing the textual parts of the message as
      *         plain text and HTML, and a list of message parts considered attachments.
      *
-     * @throws com.fsck.k9.mail.MessagingException
+     * @throws net.thunderbird.core.common.exception.MessagingException
      *          In case of an error.
      */
     @VisibleForTesting
@@ -425,7 +425,7 @@ public class MessageViewInfoExtractor {
      * @param message
      *         The message to extract the header values from.
      *
-     * @throws com.fsck.k9.mail.MessagingException
+     * @throws net.thunderbird.core.common.exception.MessagingException
      *          In case of an error.
      */
     private void addMessageHeaderText(StringBuilder text, Message message)
@@ -486,7 +486,7 @@ public class MessageViewInfoExtractor {
      * @param message
      *         The message to extract the header values from.
      *
-     * @throws com.fsck.k9.mail.MessagingException
+     * @throws net.thunderbird.core.common.exception.MessagingException
      *          In case of an error.
      */
     private void addMessageHeaderHtml(StringBuilder html, Message message)

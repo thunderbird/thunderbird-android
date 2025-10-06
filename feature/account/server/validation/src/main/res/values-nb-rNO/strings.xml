@@ -11,7 +11,7 @@
     <string name="account_server_validation_incoming_success">Innstillinger for innkommende tjener er verifisert</string>
     <string name="account_server_validation_incoming_loading_error">Kunne ikke sjekke innstillinger for innkommende tjener</string>
     <string name="account_server_validation_error_server">Tjenerfeil</string>
-    <string name="account_server_validation_error_missing_server_capability">Manglende tjeneregenskap</string>
+    <string name="account_server_validation_error_missing_server_capability">Manglende serverkapasitet</string>
     <string name="account_server_validation_error_client_certificate_expired">Klientsertifikatet er ikke lenger gyldig</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Fikk ikke tak i klientsertifikatet</string>
     <string name="account_server_validation_error_details">Detaljer:

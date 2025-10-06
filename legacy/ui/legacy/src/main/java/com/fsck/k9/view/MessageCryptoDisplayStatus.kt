@@ -25,19 +25,20 @@ import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult.USER_ID
 import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult.USER_ID_MISSING
 import org.openintents.openpgp.OpenPgpSignatureResult.SenderStatusResult.USER_ID_UNCONFIRMED
 
+@Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
 enum class MessageCryptoDisplayStatus(
     val isEnabled: Boolean = true,
 
-    @AttrRes
+    @param:AttrRes
     val colorAttr: Int,
 
-    @DrawableRes
+    @param:DrawableRes
     val statusIconRes: Int,
 
-    @StringRes
+    @param:StringRes
     val titleTextRes: Int? = null,
 
-    @StringRes
+    @param:StringRes
     val descriptionTextRes: Int? = null,
 ) {
     LOADING(

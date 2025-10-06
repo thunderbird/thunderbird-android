@@ -5,7 +5,7 @@
     <string name="account_server_settings_password_authentication_subtitle">Lås opp for å vise passordet ditt</string>
     <string name="account_server_settings_protocol_type_label">Protokoll</string>
     <string name="account_server_settings_server_label">Tenar</string>
-    <string name="account_server_settings_security_label">Sikkerheit</string>
+    <string name="account_server_settings_security_label">Tryggleik</string>
     <string name="account_server_settings_username_label">Brukarnamn</string>
     <string name="account_server_settings_connection_security_none">Ingen</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>

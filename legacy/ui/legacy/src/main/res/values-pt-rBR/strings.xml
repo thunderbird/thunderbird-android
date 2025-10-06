@@ -901,4 +901,11 @@
     <string name="open_camera">Abrir câmera</string>
     <string name="camera_permission_denied">Permissão de usar a câmera negado. Não foi possível tirar foto</string>
     <string name="attach_file">Anexar arquivo</string>
+    <string name="debug_enable_sync_debug_logging_title">Habilitar registro da depuração da sincronização</string>
+    <string name="debug_enable_sync_debug_logging_summary">Registrar informações do diagnóstico de sincronização por 24 horas</string>
+    <string name="debug_sync_export_logs_title">Exportar registros de sincronização</string>
+    <string name="debug_open_secret_debug_screen">Abrir tela de depuração secreta</string>
+    <string name="swipe_action_archive_folder_not_set">Definir pasta de arquivamento</string>
+    <string name="swipe_action_change_swipe_gestures">Alterar\ngestos de deslizar</string>
+    <string name="archiving_not_available_for_this_account">Arquivamento indisponível para esta conta.</string>
 </resources>

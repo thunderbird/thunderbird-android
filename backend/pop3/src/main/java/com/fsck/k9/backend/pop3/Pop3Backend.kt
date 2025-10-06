@@ -12,6 +12,7 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.store.pop3.Pop3Store
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
+import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 
 class Pop3Backend(
     accountName: String,
@@ -34,8 +35,9 @@ class Pop3Backend(
     override val supportsFolderSubscriptions = false
     override val isPushCapable = false
 
-    override fun refreshFolderList() {
+    override fun refreshFolderList(): FolderPathDelimiter? {
         commandRefreshFolderList.refreshFolderList()
+        return null
     }
 
     override fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {

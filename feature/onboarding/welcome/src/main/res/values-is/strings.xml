@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Byrja</string>
+    <string name="onboarding_welcome_start_button">Hefjast handa</string>
     <string name="onboarding_welcome_import_button">Flytja inn stillingar</string>
     <string name="onboarding_welcome_text">Tölvupóstforrit fyrir Android, með opinn grunnkóða, án auglýsinga og með áherslu á persónuvernd.</string>
     <string name="onboarding_welcome_developed_by">Þróað af sérstöku teymi við MZLA Technologies og sjálfboðaliðum um víða veröld. Hluti af Mozilla-fjölskyldunni.</string>

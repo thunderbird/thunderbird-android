@@ -39,14 +39,13 @@
     </plurals>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">כל דקה</item>
-        <item quantity="two">כל 2 דקות</item>
+        <item quantity="two">כל שתי דקות</item>
         <item quantity="many">כל %d דקות</item>
         <item quantity="other">כל %d דקות</item>
     </plurals>
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="one">הודעה אחת</item>
-        <item quantity="two">2 הודעות</item>
-        <item quantity="many">%d הודעות</item>
+        <item quantity="two">שתי הודעות</item>
         <item quantity="other">%d הודעות</item>
     </plurals>
     <string name="account_setup_options_show_notifications_label">הצג התראות</string>

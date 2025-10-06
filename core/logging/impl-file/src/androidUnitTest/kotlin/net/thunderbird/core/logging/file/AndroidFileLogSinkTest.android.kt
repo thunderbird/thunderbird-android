@@ -5,10 +5,11 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import java.io.File
 import kotlin.test.Test
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -44,6 +45,8 @@ class AndroidFileLogSinkTest {
             coroutineContext = UnconfinedTestDispatcher(),
         )
     }
+
+    @OptIn(ExperimentalTime::class)
     fun timeSetup(timeStamp: Long): String {
         val instant = Instant.fromEpochMilliseconds(timeStamp)
         val dateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
@@ -132,12 +135,11 @@ class AndroidFileLogSinkTest {
         )
         testSubject.log(event)
         runBlocking {
+            // Act
             testSubject.flushAndCloseBuffer()
+            val exportUri = "content://test/export.txt"
+            testSubject.export(exportUri)
         }
-
-        // Act
-        val exportUri = "content://test/export.txt"
-        testSubject.export(exportUri)
 
         // Arrange
         val exportedContent = fileManager.exportedContent
@@ -179,9 +181,10 @@ class AndroidFileLogSinkTest {
         assertThat(logFile.exists()).isEqualTo(true)
         assertThat(logFile.readText())
             .isEqualTo(logString1)
-
-        val exportUri = "content://test/export.txt"
-        testSubject.export(exportUri)
+        runBlocking {
+            val exportUri = "content://test/export.txt"
+            testSubject.export(exportUri)
+        }
 
         // Arrange
         val exportedContent = fileManager.exportedContent

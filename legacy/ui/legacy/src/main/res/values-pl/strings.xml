@@ -144,7 +144,7 @@
     <string name="debug_enable_debug_logging_title">Włącz rejestrowanie debugowania</string>
     <string name="debug_enable_debug_logging_summary">Rejestruj dodatkowe informacje diagnostyczne</string>
     <string name="debug_enable_sensitive_logging_title">Rejestruj informacje poufne</string>
-    <string name="debug_enable_sensitive_logging_summary">Dzienniki mogą zawierać hasła.</string>
+    <string name="debug_enable_sensitive_logging_summary">Dzienniki mogą zawierać hasła</string>
     <string name="debug_export_logs_title">Eksportuj dzienniki</string>
     <string name="debug_export_logs_success">Eksportowanie przebiegło pomyślnie. Dzienniki mogą zawierać informacje poufne. Uważaj, do kogo je wysyłasz.</string>
     <string name="debug_export_logs_failure">Eksportowanie nie powiodło się.</string>
@@ -912,4 +912,5 @@
     <string name="swipe_action_change_swipe_gestures">Zmień \ngesty przesunięcia</string>
     <string name="archiving_not_available_for_this_account">Archiwizacja nie jest dostępna dla tego konta.</string>
     <string name="swipe_action_archive_folder_not_set">Skonfiguruj folder archiwum</string>
+    <string name="debug_open_secret_debug_screen">Otwórz tajny ekran debugowania</string>
 </resources>

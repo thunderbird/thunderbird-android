@@ -18,14 +18,14 @@
     <string name="changelog_recent_changes_title">Какво ново</string>
     <string name="changelog_show_recent_changes">Показване на последните промени при обновяване на програмата</string>
     <!--Displayed in a "snack bar" at the bottom of the screen when the app was updated.-->
-    <string name="changelog_snackbar_text">Разбери какво ново в тази варсия</string>
+    <string name="changelog_snackbar_text">Научете какво ново има в това издание</string>
     <!--Button text of the "snack bar" that is displayed when the app was updated.-->
     <!--Default signature-->
     <!--General strings that include the app name-->
     <!--=== General strings ==================================================================-->
     <string name="authors">Автори</string>
     <string name="accounts_title">Профили</string>
-    <string name="compose_title_compose">Създай</string>
+    <string name="compose_title_compose">Създаване</string>
     <string name="compose_title_reply">Отговори</string>
     <string name="compose_title_reply_all">Отговори до всички</string>
     <string name="compose_title_forward">Препрати</string>
@@ -93,7 +93,7 @@
     <string name="status_network_error">Грешка при свързване</string>
     <string name="status_invalid_id_error">Съобщението не е намерено</string>
     <string name="status_loading_error">Грешка при зареждане на съобщението</string>
-    <string name="load_more_messages_fmt">Зареди още <xliff:g id="messages_to_load">%d</xliff:g> </string>
+    <string name="load_more_messages_fmt">Зареждане на още <xliff:g id="messages_to_load">%d</xliff:g></string>
     <string name="size_format_gigabytes">%.1f ГБ</string>
     <string name="size_format_megabytes">%.1f МБ</string>
     <string name="size_format_kilobytes">%.1f КБ</string>
@@ -152,7 +152,7 @@
     <string name="compose_error_incomplete_recipient">Полето Получател е недовършено!</string>
     <string name="error_contact_address_not_found">За този контакт не може да бъде намерен email адрес.</string>
     <string name="message_compose_attachments_skipped_toast">Някой от прикачените файлове не могат да бъдат препратени, тъй като не са свалени.</string>
-    <string name="message_compose_attachments_forward_toast">Съобщението не може да бъде препратено, защото не всички прикачени файлове са свалени</string>
+    <string name="message_compose_attachments_forward_toast">Съобщението не може да бъде препратено, защото не всички прикачени файлове са свалени.</string>
     <string name="message_compose_show_quoted_text_action">Включване на цитирани съобщения</string>
     <string name="message_compose_description_delete_quoted_text">Премахни цитираният текст</string>
     <string name="message_compose_description_edit_quoted_text">Редактирай цитираният текст</string>
@@ -166,7 +166,7 @@
     <!--Displayed in the message view screen if the message was addressed to the user. Make sure this works with 'message_view_recipient_prefix'. In English it's "to me".-->
     <!--Text of the button that is displayed below the message header when the message body references one or more remote images-->
     <string name="message_view_no_viewer">Не може да намери програма за <xliff:g id="mimetype">%s</xliff:g>.</string>
-    <string name="message_view_download_remainder">Свали цялото съобщение</string>
+    <string name="message_view_download_remainder">Сваляне на цялото съобщение</string>
     <string name="message_view_sender_label">през %1$s</string>
     <string name="from_same_sender">Още от този подател</string>
     <string name="message_discarded_toast">Съобщението е изтрито</string>
@@ -213,7 +213,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">По подразбиране</string>
     <string name="global_settings_privacy_hide_useragent">Скриване на имейл програмата</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Премахване на K-9 хедъра за потребителски агент</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Премахване на User-Agent заглавката от съобщението</string>
     <string name="global_settings_privacy_hide_timezone">Скриване на времевата зона</string>
     <string name="global_settings_privacy_hide_timezone_detail">Използване на UTC вместо локално време в header-a и reply header-a</string>
     <string name="global_settings_notification_quick_delete_title">Показвай бутон `Изтрий`</string>
@@ -320,16 +320,16 @@
     <string name="account_settings_sync">Получаване на поща</string>
     <string name="account_settings_folders">Папки</string>
     <string name="account_settings_quote_prefix_label">Префикс на цитираният текст</string>
-    <string name="account_settings_crypto">Криптиране от край-до-край</string>
+    <string name="account_settings_crypto">Шифроване от край-до-край</string>
     <string name="account_settings_crypto_app">Активиране на поддръжка за OpenPGP</string>
     <string name="account_settings_crypto_app_select_title">Избор на OpenPGP приложение</string>
-    <string name="account_settings_crypto_key">Настройване на ключа за криптиране от край-докрай</string>
+    <string name="account_settings_crypto_key">Настройване на ключа за шифроване от край-докрай</string>
     <string name="account_settings_crypto_summary_off">Няма избрано OpenPGP приложение</string>
     <string name="account_settings_crypto_summary_on">Свързан с %s</string>
     <string name="account_settings_crypto_summary_config">Конфигуриране …</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Съхранявайте всички чернови в криптиран вид</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Всички чернови ще се съхраняват криптирани</string>
-    <string name="account_settings_crypto_encrypt_all_drafts_off">Криптира чернови само ако е криптирането е активирано</string>
+    <string name="account_settings_crypto_encrypt_all_drafts_off">Шифрова чернови само ако шифроването е активирано</string>
     <string name="account_settings_mail_check_frequency_label">Честота на проверка на папката</string>
     <string name="account_settings_color_label">Цвят на профила</string>
     <string name="account_settings_color_summary">Акцентиращ цвят, който ще се използва в профила за показване на папки и списък</string>
@@ -434,9 +434,9 @@
     <string name="setting_theme_dark">Тъмна</string>
     <string name="setting_theme_light">Светла</string>
     <string name="setting_theme_follow_system">Използвайте системната настройка по подразбиране</string>
-    <string name="display_preferences">Дисплей</string>
+    <string name="display_preferences">Екран</string>
     <string name="global_preferences">Глобални</string>
-    <string name="debug_preferences">Дебъгване</string>
+    <string name="debug_preferences">Отстраняване на грешки</string>
     <string name="privacy_preferences">Сигурност</string>
     <string name="network_preferences">Мрежа</string>
     <string name="interaction_preferences">Взаимодействие</string>
@@ -467,7 +467,7 @@
     <string name="account_setup_push_limit_500">500 папки</string>
     <string name="account_setup_push_limit_1000">1000 папки</string>
     <string name="animations_title">Анимация</string>
-    <string name="animations_summary">Изплозване на ярки виулани ефекти</string>
+    <string name="animations_summary">Изпoлзване на ярки визулани ефекти</string>
     <string name="show_unified_inbox_title">Покажи унифицирана папка Входящи</string>
     <string name="integrated_inbox_title">Обща входяща кутия</string>
     <string name="integrated_inbox_detail">Всички съобщения в общата входяща кутия</string>
@@ -532,7 +532,7 @@
     <string name="dialog_attachment_progress_title">Изтегляне на прикачен файл</string>
     <string name="settings_list_backup_category">Резервно копие</string>
     <string name="settings_list_miscellaneous_category">Разни</string>
-    <string name="settings_export_title">Експорт на настройки</string>
+    <string name="settings_export_title">Изнасяне на настройки</string>
     <string name="settings_export_button">Изнасяне</string>
     <string name="settings_export_share_button">Сподели</string>
     <string name="settings_export_progress_text">Настройки на изнсянето…</string>
@@ -574,7 +574,7 @@
         <item quantity="other">Изтегляне на %d резултата</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Изтегляне на %1$d от %2$d резултата</item>
+        <item quantity="one">Изтегляне на %1$d от %2$d резултат</item>
         <item quantity="other">Изтегляне на %1$d от %2$d резултата</item>
     </plurals>
     <string name="remote_search_error">Търсенето на сървърва е неуспешно</string>
@@ -620,8 +620,8 @@
     <string name="compose_error_no_draft_folder">Липсва папка чернови за този профил!</string>
     <string name="compose_error_no_key_configured">Няма зададен ключ за този профил! Моля, проверете настройките си.</string>
     <string name="error_crypto_provider_incompatible">Доставчика на крипто имзползва несъвместима версия.  Моля, прегледайте настройките си!</string>
-    <string name="error_crypto_provider_connect">Неуспешна връзка с доставчика на криптиране, проверете настройките си или натиснете иконата за повторен опит!</string>
-    <string name="error_crypto_provider_ui_required">Неуспешно пускане на криптиране край-до-край, моля прегледайте настройките</string>
+    <string name="error_crypto_provider_connect">Неуспешна връзка с доставчика на шифроване, проверете настройките си или натиснете иконата за повторен опит!</string>
+    <string name="error_crypto_provider_ui_required">Неуспешно шифроване от край-до-край, моля прегледайте настройките</string>
     <string name="error_crypto_inline_attach">Режимът PGP/INLINE не поддържа прикачени файлове!</string>
     <string name="enable_inline_pgp">Активиране на PGP/INLINE</string>
     <string name="disable_inline_pgp">Деактивиране на PGP/INLINE</string>
@@ -649,7 +649,7 @@
     <string name="crypto_msg_incomplete_signed">трябва да се свали съобщението за да се обработи подписа</string>
     <string name="crypto_msg_unsupported_signed">съдържа наподдържан \"от край\" - \"до край\" подпис</string>
     <string name="crypto_msg_unsupported_encrypted">Съобщението е криптирано, но в неподдържан формат.</string>
-    <string name="crypto_msg_cancelled">Съобщението е криптирано, но декриптирането е прекратено.</string>
+    <string name="crypto_msg_cancelled">Съобщението е шифровано, но дешифрирането е прекратено.</string>
     <string name="crypto_msg_title_unencrypted_signed_e2e">Подписания от край-до-край некриптиран текст</string>
     <string name="crypto_msg_unencrypted_sign_verified">с потвърден подпис</string>
     <string name="crypto_msg_title_unencrypted_signed">Подписан некриптиран текст</string>
@@ -659,8 +659,8 @@
     <string name="crypto_msg_unencrypted_sign_insecure">но ключът от край-до-край не се счита за сигурен</string>
     <string name="crypto_msg_unencrypted_sign_unknown">от непознат ключ край-до-край</string>
     <string name="crypto_msg_title_encrypted_unknown">Криптиран</string>
-    <string name="crypto_msg_encrypted_error">но възникна грешка при декриптирането</string>
-    <string name="crypto_msg_encrypted_incomplete">тряба да се изтегли цялото съобщение за декриптиране</string>
+    <string name="crypto_msg_encrypted_error">но възникна грешка при дешифрирането</string>
+    <string name="crypto_msg_encrypted_incomplete">тряба да се изтегли цялото съобщение за дешифриране</string>
     <string name="crypto_msg_encrypted_no_provider">но няма настроена крипто приложение</string>
     <string name="crypto_msg_title_encrypted_unsigned">Криптирано</string>
     <string name="crypto_msg_encrypted_unsigned">но не е от край-до-край</string>
@@ -673,10 +673,10 @@
     <string name="crypto_msg_encrypted_sign_revoked">но ключът от край-до-край е оттеглен</string>
     <string name="crypto_msg_encrypted_sign_insecure">но ключът от край-до-край не се счита за сигурен</string>
     <string name="crypto_msg_encrypted_sign_error">но информацията от край-до-край има грешки</string>
-    <string name="crypto_msg_encrypted_insecure">но криптирането не се счита за сигурно</string>
+    <string name="crypto_msg_encrypted_insecure">но шифрирането не се счита за сигурно</string>
     <string name="locked_attach_unlock">Отключване</string>
     <string name="locked_attach_unencrypted">Тази част не криптирана и може да е несигурна.</string>
-    <string name="locked_attach_title">Незащитен прикачен файл.</string>
+    <string name="locked_attach_title">Незащитен прикачен файл</string>
     <string name="message_progress_text">Зареждане…</string>
     <string name="messageview_decrypt_cancelled">Декриптирването е отказано.</string>
     <string name="messageview_decrypt_retry">Повторен опит</string>
@@ -687,28 +687,28 @@
     <string name="account_settings_crypto_hide_sign_only">Скриване на некриптирани подписи</string>
     <string name="account_settings_crypto_hide_sign_only_on">Само криптирани подписи ще бъдат показавани</string>
     <string name="account_settings_crypto_hide_sign_only_off">Всички подписи ще бъдат показвани</string>
-    <string name="error_sign_only_no_encryption">Криптирането не е възможно, когато се използва режима само подпис! </string>
+    <string name="error_sign_only_no_encryption">Шифрирането не е възможно, когато се използва режима само подпис!</string>
     <string name="unsigned_text_divider_label">Неподписан текст</string>
     <string name="crypto_no_provider_title">Имейлът е криптиран</string>
     <string name="crypto_no_provider_message">Този имейл е криптиран използвайки OpenPGP.\nЗа да го прочетете, трябва да инсталирате и настроите OpenPGP приложението.</string>
     <string name="crypto_no_provider_button">Към настройки</string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
-    <string name="openpgp_enabled_error_title">Криптирането е невъзможно</string>
+    <string name="openpgp_enabled_error_title">Шифрирането е невъзможно</string>
     <string name="openpgp_enabled_error_msg">Някои от избраните получатели не поддържат тази функция!</string>
-    <string name="enable_encryption">Включване на криптирането</string>
-    <string name="disable_encryption">Изключване на криптирането</string>
-    <string name="openpgp_description_text1">Криптирането на съобщения подсигурява, че те могат да бъдат прочетени единствено от получателя им и никой друг.</string>
-    <string name="openpgp_description_text3">Криптирането ще се покаже единствено, когато е поддържано от всички получатели и ако те са Ви изпратили имейл преди.</string>
-    <string name="openpgp_description_text2">Промянана на криптирането след натискане на тази икона.</string>
+    <string name="enable_encryption">Включване на шифрирането</string>
+    <string name="disable_encryption">Изключване на шифрирането</string>
+    <string name="openpgp_description_text1">Шифрирането на съобщения подсигурява, че те могат да бъдат прочетени единствено от получателя им и никой друг.</string>
+    <string name="openpgp_description_text3">Шифрирането ще се покаже единствено, когато е поддържано от всички получатели и ако те са Ви изпратили имейл преди.</string>
+    <string name="openpgp_description_text2">Превключване на шифрирането след натискане на тази икона.</string>
     <string name="openpgp_enabled_error_gotit">Ясно</string>
     <string name="openpgp_enabled_error_back">Назад</string>
-    <string name="openpgp_enabled_error_disable">Изключване на криптирането</string>
-    <string name="openpgp_encryption">OpenPGP криптиране</string>
+    <string name="openpgp_enabled_error_disable">Изключване на шифрирането</string>
+    <string name="openpgp_encryption">OpenPGP шифриране</string>
     <string name="account_settings_crypto_prefer_encrypt">Взаимен режим на Autocrypt</string>
     <string name="dialog_autocrypt_mutual_title">Взаимен режим на Autocrypt</string>
     <string name="dialog_autocrypt_mutual_description_1">Обикновено съобщенията ще бъдат криптирано ако това е изрично зададено или ако се отговаря на криптирано съобщение.</string>
-    <string name="dialog_autocrypt_mutual_description_2">Ако както изпращача така и получателите активират взаимния режим, криптирането ще бъде активирано по подразбиране.</string>
+    <string name="dialog_autocrypt_mutual_description_2">Ако както изпращача така и получателите активират взаимния режим, шифрирането ще бъде активирано по подразбиране.</string>
     <string name="dialog_autocrypt_mutual_learn_more">Може да <a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">натиснете тук</a>, за да научете повече.</string>
     <string name="general_settings_title">Общи настройки</string>
     <string name="dialog_openkeychain_info_title">Няма инсталирано OpenPGP приложение</string>
@@ -718,7 +718,7 @@
     <string name="toast_account_not_found">Вътрешна грешка: Невалиден профил!</string>
     <string name="toast_openpgp_provider_error">Грешка при свързването с %s!</string>
     <string name="ac_transfer_setting_title">Изпрати Autocrypt съобщение с настройки</string>
-    <string name="ac_transfer_setting_summary">Сигурно споделяне от край-до-край на настройките с друго устройство.</string>
+    <string name="ac_transfer_setting_summary">Сигурно споделяне от край-до-край на настройките с друго устройство</string>
     <string name="ac_transfer_title">Autocrypt съобщение с настройки</string>
     <string name="ac_transfer_intro">Autocrypt съобщение с настройки сигурно споделя от край-до-край вашите настройките с други устройства.</string>
     <string name="ac_transfer_button_send">Изпрати съобщение с настройки</string>
@@ -825,11 +825,11 @@
     <string name="swipe_action_move">Премести…</string>
     <string name="show_starred_count_title">Брой важни съобщения</string>
     <string name="account_settings_vibrate_pattern_4">Шаблон 4</string>
-    <string name="debug_export_logs_success">Експортиране успешно. Докладите може да съдържат лична информация. Внимавайте кому ги пращате.</string>
+    <string name="debug_export_logs_success">Изнасянето е успешно. Журналите може да съдържат лична информация. Внимавайте кому ги пращате.</string>
     <string name="notification_notify_error_text">Възникна грешка при създаването на известие за ново съобщение. Причината най-вероятно е липсващ звук за известия.
 \n
 \nДокоснете тук, за да отворите настройките на известията.</string>
-    <string name="debug_export_logs_title">Експортирай докладите</string>
+    <string name="debug_export_logs_title">Изнасяне на журналите</string>
     <string name="general_settings_show_compose_button_title">Показване на плаващ бутон за създаване на съобщение</string>
     <string name="general_settings_contact_name_color_label">Цвят на контакта</string>
     <string name="account_settings_notification_light_red">Червен</string>
@@ -870,7 +870,7 @@
     <string name="message_list_error_folder_not_found">Папката не е намерена</string>
     <string name="account_settings_vibrate_pattern_3">Шаблон 3</string>
     <string name="background_work_notification_remove_account">Акаунтът се трие…</string>
-    <string name="debug_export_logs_failure">Експортирането беше неуспешно.</string>
+    <string name="debug_export_logs_failure">Изнасянето беше неуспешно.</string>
     <string name="message_view_show_remote_images_action">Зареди изображения</string>
     <string name="account_settings_autodownload_message_size_256">256 КБ</string>
     <string name="save_attachment_action">Запазване на прикачени</string>
@@ -885,4 +885,25 @@
     <string name="settings_ui_telemetry_title">Използване и технически данни</string>
     <string name="push_notification_grant_alarm_permission">Докоснете, за да дадете разрешение.</string>
     <string name="account_delete_dlg_instructions_fmt">Профилът „<xliff:g id="account">%1$s</xliff:g>“ ще бъде премахнат от <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="open_camera">Отваряне на камерата</string>
+    <string name="attach_file">Добавяне на файл</string>
+    <string name="camera_permission_denied">Достъпът до камерата е отказан! Не е възможно да се направи снимка</string>
+    <string name="dialog_openkeychain_info_text">Приложението OpenKeychain е необходимо, за да се активира поддръжката за шифроване от край до край.</string>
+    <string name="empty_spam_action">Изчистване на нежеланата поща</string>
+    <string name="debug_enable_sync_debug_logging_title">Активиране на журнала за отстраняване на грешки при синхронизиране</string>
+    <string name="debug_enable_sync_debug_logging_summary">Журнализирайте диагностичната информация за 24 часа</string>
+    <string name="debug_sync_export_logs_title">Изнасяне на регистрационни файлове на Sync</string>
+    <string name="debug_open_secret_debug_screen">Отворете екрана за отстраняване на грешки</string>
+    <string name="folder_settings_push_label">Включване на Push</string>
+    <string name="volume_navigation_title_short">Навигация с клавиша за силата на звука</string>
+    <string name="volume_navigation_summary">Преминаване между съобщенията с помощта на клавишите за сила на звука в изгледа на съобщенията</string>
+    <string name="dialog_confirm_empty_spam_title">Потвърждаване на изчистването на нежеланите съобщения</string>
+    <string name="dialog_confirm_empty_spam_message">Искате ли да изчистите нежеланите съобщения?</string>
+    <string name="settings_list_action_support">Подкрепа на <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="expand_content_description">Разширяване</string>
+    <string name="swipe_action_archive_folder_not_set">Задаване на папка \"Архиви\"</string>
+    <string name="settings_ui_telemetry_description">Споделя данни за производителността, използването, хардуера и настройките на това приложение с Mozilla, за да ни помогне да направим Thunderbird по-добър</string>
+    <string name="archiving_not_available_for_this_account">Архивирането не е достъпно за този профил.</string>
+    <string name="push_info_notification_explanation_text">Когато използвате Push, <xliff:g id="app_name">%1$s</xliff:g> поддържа връзка с пощенския сървър. Android изисква показване на текущо уведомление, докато приложението е активно във фонов режим. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="swipe_action_change_swipe_gestures">Промяна\nЖестове с плъзгане</string>
 </resources>

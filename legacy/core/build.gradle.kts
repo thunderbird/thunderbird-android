@@ -15,10 +15,11 @@ dependencies {
     api(projects.core.logging.implFile)
     api(projects.core.logging.implComposite)
     api(projects.core.android.network)
+    api(projects.core.outcome)
     api(projects.feature.mail.folder.api)
     api(projects.feature.account.storage.legacy)
 
-    api(projects.feature.search)
+    api(projects.feature.search.implLegacy)
     api(projects.feature.mail.account.api)
     api(projects.legacy.di)
     api(projects.legacy.mailstore)

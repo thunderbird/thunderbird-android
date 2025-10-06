@@ -1,0 +1,2 @@
+Thunderbird for Android version 13.0b4, based on K-9 Mail. Changes include:
+- Sync could cause "IllegalStateException: No outbox_state entry for message id" error

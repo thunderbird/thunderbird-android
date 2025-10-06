@@ -76,7 +76,6 @@
     <ID>TooGenericExceptionCaught:MessageRepository.kt$MessageRepository$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PushServiceManager.kt$PushServiceManager$e: Exception</ID>
     <ID>TooGenericExceptionCaught:QuoteDateFormatter.kt$QuoteDateFormatter$e: Exception</ID>
-    <ID>TooGenericExceptionCaught:RealGeneralSettingsManager.kt$e: Exception</ID>
     <ID>TooGenericExceptionCaught:SettingsExporter.kt$SettingsExporter$e: Exception</ID>
     <ID>TooManyFunctions:CoreResourceProvider.kt$CoreResourceProvider</ID>
     <ID>TooManyFunctions:HttpUriParser.kt$HttpUriParser : UriParser</ID>
@@ -90,7 +89,6 @@
     <ID>TooManyFunctions:NotifierMessageStore.kt$NotifierMessageStore : MessageStore</ID>
     <ID>TooManyFunctions:Preferences.kt$Preferences : AccountManager</ID>
     <ID>TooManyFunctions:PushController.kt$PushController</ID>
-    <ID>TooManyFunctions:RealGeneralSettingsManager.kt$RealGeneralSettingsManager : GeneralSettingsManager</ID>
     <ID>TooManyFunctions:SettingsExporter.kt$SettingsExporter</ID>
     <ID>TooManyFunctions:SingleMessageNotificationCreator.kt$SingleMessageNotificationCreator</ID>
     <ID>TooManyFunctions:SummaryNotificationCreator.kt$SummaryNotificationCreator</ID>

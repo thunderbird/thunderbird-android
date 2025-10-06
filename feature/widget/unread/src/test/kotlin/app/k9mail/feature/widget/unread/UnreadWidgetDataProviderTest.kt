@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchAccount
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -157,7 +157,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
 
     private fun createFolderRepository(): FolderRepository {
         return mock {
-            on { getFolder(account, FOLDER_ID) } doReturn FOLDER
+            onBlocking { getFolder(account, FOLDER_ID) } doReturn FOLDER
         }
     }
 

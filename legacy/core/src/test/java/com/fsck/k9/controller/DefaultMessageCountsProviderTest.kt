@@ -13,8 +13,9 @@ import kotlinx.coroutines.test.runTest
 import net.thunderbird.account.fake.FakeAccountData.ACCOUNT_ID_RAW
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchConditionTreeNode
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
+import net.thunderbird.legacy.core.mailstore.folder.FakeOutboxFolderManager
 import org.junit.Test
 import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.doAnswer
@@ -48,6 +49,7 @@ class DefaultMessageCountsProviderTest {
         accountManager = accountManager,
         messageStoreManager = messageStoreManager,
         messagingControllerRegistry = messagingControllerRegistry,
+        outboxFolderManager = FakeOutboxFolderManager(),
     )
 
     @Test
@@ -56,7 +58,6 @@ class DefaultMessageCountsProviderTest {
         account.trashFolderId = null
         account.draftsFolderId = null
         account.spamFolderId = null
-        account.outboxFolderId = null
         account.sentFolderId = null
 
         val messageCounts = messageCountsProvider.getMessageCounts(account)
@@ -93,6 +94,7 @@ class DefaultMessageCountsProviderTest {
             accountManager = accountManager,
             messageStoreManager = messageStoreManager,
             messagingControllerRegistry = registry,
+            outboxFolderManager = FakeOutboxFolderManager(),
         )
         val search = LocalMessageSearch().apply {
             addAccountUuid(account.uuid)

@@ -1,8 +1,6 @@
 package net.thunderbird.feature.notification.api.command
 
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.notification.api.command.NotificationCommand.CommandOutcome.Failure
-import net.thunderbird.feature.notification.api.command.NotificationCommand.CommandOutcome.Success
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 
@@ -24,32 +22,32 @@ abstract class NotificationCommand<TNotification : Notification>(
      * Executes the command.
      * @return The result of the execution.
      */
-    abstract fun execute(): Outcome<Success<TNotification>, Failure<TNotification>>
+    abstract suspend fun execute(): Outcome<Success<TNotification>, Failure<TNotification>>
 
     /**
      * Represents the outcome of a command's execution.
      */
-    sealed interface CommandOutcome {
-        /**
-         * Represents a successful command execution.
-         *
-         * @param TNotification The type of notification associated with the command.
-         * @property command The command that was executed successfully.
-         */
-        data class Success<out TNotification : Notification>(
-            val command: NotificationCommand<out TNotification>,
-        ) : CommandOutcome
+    sealed interface CommandOutcome
 
-        /**
-         * Represents a failed command execution.
-         *
-         * @param TNotification The type of notification associated with the command.
-         * @property command The command that failed.
-         * @property throwable The exception that caused the failure.
-         */
-        data class Failure<out TNotification : Notification>(
-            val command: NotificationCommand<out TNotification>,
-            val throwable: Throwable,
-        ) : CommandOutcome
-    }
+    /**
+     * Represents a successful command execution.
+     *
+     * @param TNotification The type of notification associated with the command.
+     * @property command The command that was executed successfully.
+     */
+    data class Success<out TNotification : Notification>(
+        val command: NotificationCommand<out TNotification>,
+    ) : CommandOutcome
+
+    /**
+     * Represents a failed command execution.
+     *
+     * @param TNotification The type of notification associated with the command.
+     * @property command The command that failed.
+     * @property throwable The exception that caused the failure.
+     */
+    data class Failure<out TNotification : Notification>(
+        val command: NotificationCommand<out TNotification>,
+        val throwable: Throwable,
+    ) : CommandOutcome
 }

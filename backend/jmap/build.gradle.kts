@@ -7,6 +7,7 @@ plugins {
 dependencies {
     api(projects.backend.api)
     implementation(projects.core.common)
+    implementation(projects.feature.mail.folder.api)
 
     api(libs.okhttp)
     implementation(libs.jmap.client)

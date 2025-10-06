@@ -15,6 +15,7 @@ import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.core.preference.update
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.api.ThemeManager
 import net.thunderbird.core.ui.theme.api.ThemeProvider
@@ -27,31 +28,31 @@ class ThemeManager(
 ) : ThemeManager {
 
     private val generalSettings: GeneralSettings
-        get() = generalSettingsManager.getSettings()
+        get() = generalSettingsManager.getConfig()
 
     override val appTheme: Theme
-        get() = when (generalSettings.appTheme) {
+        get() = when (generalSettings.display.coreSettings.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
             AppTheme.FOLLOW_SYSTEM -> getSystemTheme()
         }
 
     override val messageViewTheme: Theme
-        get() = resolveTheme(generalSettings.messageViewTheme)
+        get() = resolveTheme(generalSettings.display.coreSettings.messageViewTheme)
 
     override val messageComposeTheme: Theme
-        get() = resolveTheme(generalSettings.messageComposeTheme)
+        get() = resolveTheme(generalSettings.display.coreSettings.messageComposeTheme)
 
     @get:StyleRes
     override val appThemeResourceId: Int = themeProvider.appThemeResourceId
 
     @get:StyleRes
     override val messageViewThemeResourceId: Int
-        get() = getSubThemeResourceId(generalSettings.messageViewTheme)
+        get() = getSubThemeResourceId(generalSettings.display.coreSettings.messageViewTheme)
 
     @get:StyleRes
     override val messageComposeThemeResourceId: Int
-        get() = getSubThemeResourceId(generalSettings.messageComposeTheme)
+        get() = getSubThemeResourceId(generalSettings.display.coreSettings.messageComposeTheme)
 
     @get:StyleRes
     override val dialogThemeResourceId: Int = themeProvider.dialogThemeResourceId
@@ -61,7 +62,7 @@ class ThemeManager(
 
     fun init() {
         generalSettingsManager.getSettingsFlow()
-            .map { it.appTheme }
+            .map { it.display.coreSettings.appTheme }
             .distinctUntilChanged()
             .onEach {
                 updateAppTheme(it)
@@ -80,9 +81,25 @@ class ThemeManager(
 
     fun toggleMessageViewTheme() {
         if (messageViewTheme === Theme.DARK) {
-            generalSettingsManager.setMessageViewTheme(SubTheme.LIGHT)
+            generalSettingsManager.update { settings ->
+                settings.copy(
+                    display = settings.display.copy(
+                        coreSettings = settings.display.coreSettings.copy(
+                            messageViewTheme = SubTheme.LIGHT,
+                        ),
+                    ),
+                )
+            }
         } else {
-            generalSettingsManager.setMessageViewTheme(SubTheme.DARK)
+            generalSettingsManager.update { settings ->
+                settings.copy(
+                    display = settings.display.copy(
+                        coreSettings = settings.display.coreSettings.copy(
+                            messageViewTheme = SubTheme.DARK,
+                        ),
+                    ),
+                )
+            }
         }
     }
 

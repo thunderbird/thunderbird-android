@@ -906,4 +906,5 @@
     <string name="debug_enable_sync_debug_logging_title">Aktiver feilsøkingslogging for synkronisering</string>
     <string name="debug_enable_sync_debug_logging_summary">Logg informasjon frå synkroniseringdiagnostikk i 24 timar</string>
     <string name="debug_sync_export_logs_title">Eksporter synkroniseringslogg</string>
+    <string name="debug_open_secret_debug_screen">Opne hemmeleg feilsøkingsmeny</string>
 </resources>

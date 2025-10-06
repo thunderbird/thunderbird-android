@@ -24,7 +24,7 @@ fun SaveServerSettingsContent(
             .testTagAsResourceId("SaveServerSettingsContent")
             .padding(contentPadding)
             .then(modifier),
-    ) {
+    ) { contentPadding ->
         ContentLoadingErrorView(
             state = state,
             loading = {
@@ -42,7 +42,7 @@ fun SaveServerSettingsContent(
                     message = stringResource(id = R.string.account_edit_save_server_settings_success_message),
                 )
             },
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(contentPadding),
         )
     }
 }

@@ -14,6 +14,7 @@ val storageModule = module {
             localStoreProvider = get(),
             storageFilesProviderFactory = get(),
             basicPartInfoExtractor = get(),
+            generalSettingsManager = get(),
         )
     }
     single<NotificationStoreProvider> {

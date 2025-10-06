@@ -8,9 +8,10 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
+@Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
 internal class FolderNameItem(
     val displayName: String,
-    @DrawableRes val iconResourceId: Int,
+    @param:DrawableRes val iconResourceId: Int,
 ) : AbstractItem<FolderNameItem.ViewHolder>() {
     override val type: Int = R.id.message_details_folder_name
     override val layoutRes = R.layout.message_details_folder_name_item

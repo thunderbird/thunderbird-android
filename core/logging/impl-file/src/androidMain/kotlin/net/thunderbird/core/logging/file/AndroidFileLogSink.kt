@@ -3,15 +3,15 @@ package net.thunderbird.core.logging.file
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.IOException
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -47,22 +47,19 @@ open class AndroidFileLogSink(
     }
 
     override fun log(event: LogEvent) {
-        try {
-            coroutineScope.launch {
-                mutex.withLock {
-                    accumulatedLogs.add(
-                        "${convertLongToTime(event.timestamp)} priority = ${event.level}, ${event.message}",
-                    )
-                }
-                if (accumulatedLogs.size > LOG_BUFFER_COUNT) {
-                    writeToLogFile()
-                }
+        coroutineScope.launch {
+            mutex.withLock {
+                accumulatedLogs.add(
+                    "${convertLongToTime(event.timestamp)} priority = ${event.level}, ${event.message}",
+                )
             }
-        } catch (e: Exception) {
-            throw IOException("Failed to log event", e)
+            if (accumulatedLogs.size > LOG_BUFFER_COUNT) {
+                writeToLogFile()
+            }
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun convertLongToTime(long: Long): String {
         val instant = Instant.fromEpochMilliseconds(long)
         val dateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
@@ -73,11 +70,11 @@ open class AndroidFileLogSink(
         val outputStream = FileOutputStream(logFile, true)
         val sink = outputStream.asSink()
         var content: String
-        mutex.withLock {
-            content = accumulatedLogs.joinToString("\n", postfix = "\n")
-            accumulatedLogs.clear()
-        }
         try {
+            mutex.withLock {
+                content = accumulatedLogs.joinToString("\n", postfix = "\n")
+                accumulatedLogs.clear()
+            }
             val buffer = Buffer()
             val contentBytes = content.toByteArray(Charsets.UTF_8)
             buffer.write(contentBytes)
@@ -91,61 +88,53 @@ open class AndroidFileLogSink(
     }
 
     override suspend fun flushAndCloseBuffer() {
-        writeToLogFile()
+        if (accumulatedLogs.isNotEmpty()) {
+            writeToLogFile()
+        }
     }
 
-    override fun export(uriString: String) {
-        coroutineScope.launch {
-            if (accumulatedLogs.isNotEmpty()) {
-                writeToLogFile()
-            }
-            try {
-                val sink = fileSystemManager.openSink(uriString, "wt")
-                    ?: error("Error opening contentUri for writing")
+    override suspend fun export(uriString: String) {
+        if (accumulatedLogs.isNotEmpty()) {
+            writeToLogFile()
+        }
+        val sink = fileSystemManager.openSink(uriString, "wt")
+            ?: error("Error opening contentUri for writing")
 
-                copyInternalFileToExternal(sink)
+        copyInternalFileToExternal(sink)
 
-                // Clear the log file after export
-                val outputStream = FileOutputStream(logFile)
-                val clearSink = outputStream.asSink()
+        // Clear the log file after export
+        val outputStream = FileOutputStream(logFile)
+        val clearSink = outputStream.asSink()
 
-                try {
-                    // Write empty string to clear the file
-                    val buffer = Buffer()
-                    clearSink.write(buffer, 0)
-                    clearSink.flush()
-                } finally {
-                    clearSink.close()
-                    outputStream.close()
-                }
-            } catch (e: Exception) {
-                throw e
-            }
+        try {
+            // Write empty string to clear the file
+            val buffer = Buffer()
+            clearSink.write(buffer, 0)
+            clearSink.flush()
+        } finally {
+            clearSink.close()
+            outputStream.close()
         }
     }
 
     private fun copyInternalFileToExternal(sink: RawSink) {
+        val inputStream = FileInputStream(logFile)
+
         try {
-            val inputStream = FileInputStream(logFile)
+            val buffer = Buffer()
+            val byteArray = ByteArray(BUFFER_SIZE)
+            var bytesRead: Int
 
-            try {
-                val buffer = Buffer()
-                val byteArray = ByteArray(BUFFER_SIZE)
-                var bytesRead: Int
-
-                while (inputStream.read(byteArray).also { bytesRead = it } != -1) {
-                    buffer.write(byteArray, 0, bytesRead)
-                    sink.write(buffer, buffer.size)
-                    buffer.clear()
-                }
-
-                sink.flush()
-            } finally {
-                inputStream.close()
-                sink.close()
+            while (inputStream.read(byteArray).also { bytesRead = it } != -1) {
+                buffer.write(byteArray, 0, bytesRead)
+                sink.write(buffer, buffer.size)
+                buffer.clear()
             }
-        } catch (e: IOException) {
-            throw e
+
+            sink.flush()
+        } finally {
+            inputStream.close()
+            sink.close()
         }
     }
 }

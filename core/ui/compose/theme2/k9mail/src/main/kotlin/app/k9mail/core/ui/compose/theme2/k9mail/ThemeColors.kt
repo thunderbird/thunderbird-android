@@ -19,10 +19,10 @@ internal val lightThemeColorScheme = ThemeColorScheme(
     tertiaryContainer = Color(color = 0xFF685C8E),
     onTertiaryContainer = Color(color = 0xFFFFFFFF),
 
-    error = Color(color = 0xFFA0000E),
+    error = Color(color = 0xFF7F1D1D),
     onError = Color(color = 0xFFFFFFFF),
-    errorContainer = Color(color = 0xFFDC2626),
-    onErrorContainer = Color(color = 0xFFFFFFFF),
+    errorContainer = Color(color = 0xFFFEF2F2),
+    onErrorContainer = Color(color = 0xFF7F1D1D),
 
     surfaceDim = Color(color = 0xFFDCD9D9),
     surface = Color(color = 0xFFFCF8F8),
@@ -45,20 +45,20 @@ internal val lightThemeColorScheme = ThemeColorScheme(
 
     scrim = Color.Black,
 
-    info = Color(color = 0xFFCAA204),
+    info = Color(color = 0xFF004F9B),
     onInfo = Color(color = 0xFFFFFFFF),
-    infoContainer = Color(color = 0xFFFACC15),
-    onInfoContainer = Color(color = 0xFFFFFFFF),
+    infoContainer = Color(color = 0xFFF0F8FF),
+    onInfoContainer = Color(color = 0xFF004F9B),
 
     success = Color(color = 0xFF194E2C),
     onSuccess = Color(color = 0xFFFFFFFF),
-    successContainer = Color(color = 0xFF1D783B),
-    onSuccessContainer = Color(color = 0xFFFFFFFF),
+    successContainer = Color(color = 0xFFF4F9F4),
+    onSuccessContainer = Color(color = 0xFF194E2C),
 
-    warning = Color(color = 0xFFAA6000),
-    onWarning = Color(color = 0xFFFFFFFF),
-    warningContainer = Color(color = 0xFFF09D38),
-    onWarningContainer = Color(color = 0xFFFFFFFF),
+    warning = Color(color = 0xFF713F12),
+    onWarning = Color(color = 0xFFFEFAE8),
+    warningContainer = Color(color = 0xFFFEFAE8),
+    onWarningContainer = Color(color = 0xFF713F12),
 )
 
 internal val darkThemeColorScheme = ThemeColorScheme(
@@ -77,10 +77,10 @@ internal val darkThemeColorScheme = ThemeColorScheme(
     tertiaryContainer = Color(color = 0xFFDDAEBC),
     onTertiaryContainer = Color(color = 0xFF43242F),
 
-    error = Color(color = 0xFFFFB3AD),
-    onError = Color(color = 0xFF68000A),
-    errorContainer = Color(color = 0xFFDA3437),
-    onErrorContainer = Color(color = 0xFFFFFFFF),
+    error = Color(color = 0xFFFCA5A5),
+    onError = Color(color = 0xFF450A0A),
+    errorContainer = Color(color = 0xFF7F1D1D),
+    onErrorContainer = Color(color = 0xFFFEF2F2),
 
     surfaceDim = Color(color = 0xFF131314),
     surface = Color(color = 0xFF131314),
@@ -103,18 +103,18 @@ internal val darkThemeColorScheme = ThemeColorScheme(
 
     scrim = Color.Black,
 
-    info = Color(color = 0xFFFDD847),
-    onInfo = Color(color = 0xFF423606),
-    infoContainer = Color(color = 0xFFFEE78A),
-    onInfoContainer = Color(color = 0xFF423606),
+    info = Color(color = 0xFFBEE6FF),
+    onInfo = Color(color = 0xFF002E41),
+    infoContainer = Color(color = 0xFF262C40),
+    onInfoContainer = Color(color = 0xFFBEE6FF),
 
     success = Color(color = 0xFF8EE7AA),
     onSuccess = Color(color = 0xFF082B16),
-    successContainer = Color(color = 0xFFC0F2CF),
-    onSuccessContainer = Color(color = 0xFF082B16),
+    successContainer = Color(color = 0xFF082B16),
+    onSuccessContainer = Color(color = 0xFF8EE7AA),
 
-    warning = Color(color = 0xFFF09D38),
+    warning = Color(color = 0xFFFEE78A),
     onWarning = Color(color = 0xFF411107),
-    warningContainer = Color(color = 0xFFAA6000),
-    onWarningContainer = Color(color = 0xFF411107),
+    warningContainer = Color(color = 0xFF423606),
+    onWarningContainer = Color(color = 0xFFFEE78A),
 )

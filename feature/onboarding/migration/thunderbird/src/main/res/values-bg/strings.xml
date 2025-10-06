@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="onboarding_migration_thunderbird_qr_code_import_title">Вече използвате Thunderbird на компютър?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Лесно вмъкване на настройките на профила си, чрез сканиране на QR код.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">В настолната версия на Thuderbird, отидете до:</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Изберете \"Изнасяне към мобилното приложение\"</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Научете как да осъвременявате Thunderbird.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Процеса по внасяне изисква послено издание на Thunderbird 128. <xliff:g id="link_text">%s</xliff:g></string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Внасяне на настройките</string>
+    <string name="onboarding_migration_thunderbird_new_account_title">Нов потребител на Thunderbird?</string>
+    <string name="onboarding_migration_thunderbird_new_account_button_text">Добавяне на имейл профил</string>
+    <string name="onboarding_migration_thunderbird_import_title">Преминавате ли от друго устройство?</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Внасяне на настройките на профила</string>
+    <string name="onboarding_migration_thunderbird_link_open_error">Не е намерено приложение за отваряне на връзката.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">„Настройки“ в лентата с инструменти на Spaces (в долния ляв ъгъл)</string>
 </resources>

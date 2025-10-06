@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
 import androidx.appcompat.view.ActionMode
-import androidx.core.os.BundleCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
@@ -46,7 +45,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
@@ -55,17 +53,19 @@ import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import java.util.concurrent.Future
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.datetime.Clock
 import net.jcip.annotations.GuardedBy
 import net.thunderbird.core.android.account.AccountManager
 import net.thunderbird.core.android.account.Expunge
@@ -75,13 +75,16 @@ import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.android.network.ConnectivityManager
 import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultLegacyAccountWrapperDataMapper
+import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
-import net.thunderbird.feature.search.LocalMessageSearch
-import net.thunderbird.feature.search.SearchAccount
+import net.thunderbird.feature.search.legacy.LocalMessageSearch
+import net.thunderbird.feature.search.legacy.SearchAccount
+import net.thunderbird.feature.search.legacy.serialization.LocalMessageSearchSerializer
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -104,6 +107,8 @@ class MessageListFragment :
     private val messagingController: MessagingController by inject()
     private val accountManager: AccountManager by inject()
     private val connectivityManager: ConnectivityManager by inject()
+
+    @OptIn(ExperimentalTime::class)
     private val clock: Clock by inject()
     private val setupArchiveFolderDialogFragmentFactory: SetupArchiveFolderDialogFragmentFactory by inject()
     private val legacyAccountWrapperDataMapper: DataMapper<
@@ -114,6 +119,7 @@ class MessageListFragment :
     private val buildSwipeActions: DomainContract.UseCase.BuildSwipeActions<LegacyAccount> by inject {
         parametersOf(preferences.storage)
     }
+    private val outboxFolderManager: OutboxFolderManager by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -242,7 +248,7 @@ class MessageListFragment :
              * from the fragment's arguments rather than the flow.
              */
             .drop(1)
-            .map { it.isThreadedViewEnabled }
+            .map { it.display.inboxSettings.isThreadedViewEnabled }
             .distinctUntilChanged()
             .onEach {
                 showingThreadedList = it
@@ -271,7 +277,10 @@ class MessageListFragment :
         val arguments = requireArguments()
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
-        localSearch = BundleCompat.getParcelable(arguments, ARG_SEARCH, LocalMessageSearch::class.java)!!
+
+        localSearch = arguments.getByteArray(ARG_SEARCH)?.let {
+            LocalMessageSearchSerializer.deserialize(it)
+        }!!
 
         allAccounts = localSearch.searchAllAccounts()
         val searchAccounts = localSearch.getAccounts(accountManager).also(::updateAccountList)
@@ -301,6 +310,7 @@ class MessageListFragment :
     }
 
     private fun createMessageListAdapter(): MessageListAdapter {
+        @OptIn(ExperimentalTime::class)
         return MessageListAdapter(
             theme = requireActivity().theme,
             res = resources,
@@ -394,7 +404,10 @@ class MessageListFragment :
     }
 
     private fun initializeFloatingActionButton(view: View) {
-        isShowFloatingActionButton = generalSettingsManager.getSettings().isShowComposeButtonOnMessageList
+        isShowFloatingActionButton = generalSettingsManager.getConfig()
+            .display
+            .inboxSettings
+            .isShowComposeButtonOnMessageList
         if (isShowFloatingActionButton) {
             enableFloatingActionButton(view)
         } else {
@@ -690,18 +703,22 @@ class MessageListFragment :
         get() = MessageListAppearance(
             fontSizes = K9.fontSizes,
             previewLines = K9.messageListPreviewLines,
-            stars = !isOutbox && generalSettingsManager.getSettings().isShowMessageListStars,
-            senderAboveSubject = generalSettingsManager.getSettings().isMessageListSenderAboveSubject,
-            showContactPicture = generalSettingsManager.getSettings().isShowContactPicture,
+            stars = !isOutbox && generalSettingsManager.getConfig().display.inboxSettings.isShowMessageListStars,
+            senderAboveSubject = generalSettingsManager
+                .getConfig()
+                .display
+                .inboxSettings
+                .isMessageListSenderAboveSubject,
+            showContactPicture = generalSettingsManager.getConfig().display.isShowContactPicture,
             showingThreadedList = showingThreadedList,
-            backGroundAsReadIndicator = generalSettingsManager.getSettings().isUseBackgroundAsUnreadIndicator,
+            backGroundAsReadIndicator = generalSettingsManager.getConfig().display.isUseBackgroundAsUnreadIndicator,
             showAccountChip = isShowAccountChip,
             density = K9.messageListDensity,
         )
 
     private fun getFolderInfoHolder(folderId: Long, account: LegacyAccount): FolderInfoHolder {
         val localFolder = MlfUtils.getOpenFolder(folderId, account)
-        return FolderInfoHolder(folderNameFormatter, localFolder, account)
+        return FolderInfoHolder(folderNameFormatter, outboxFolderManager, localFolder, account)
     }
 
     override fun onResume() {
@@ -1513,7 +1530,7 @@ class MessageListFragment :
     }
 
     val isOutbox: Boolean
-        get() = isSpecialFolder(account?.outboxFolderId)
+        get() = isSpecialFolder(account?.id?.let(outboxFolderManager::getOutboxFolderIdSync))
 
     private val isInbox: Boolean
         get() = isSpecialFolder(account?.inboxFolderId)
@@ -2207,7 +2224,8 @@ class MessageListFragment :
         MOVE,
     }
 
-    private enum class Error(@StringRes val errorText: Int) {
+    @Suppress("detekt.UnnecessaryAnnotationUseSiteTarget") // https://github.com/detekt/detekt/issues/8212
+    private enum class Error(@param:StringRes val errorText: Int) {
         FolderNotFound(R.string.message_list_error_folder_not_found),
     }
 
@@ -2243,9 +2261,11 @@ class MessageListFragment :
             isThreadDisplay: Boolean,
             threadedList: Boolean,
         ): MessageListFragment {
+            val searchBytes = LocalMessageSearchSerializer.serialize(search)
+
             return MessageListFragment().apply {
                 arguments = bundleOf(
-                    ARG_SEARCH to search,
+                    ARG_SEARCH to searchBytes,
                     ARG_IS_THREAD_DISPLAY to isThreadDisplay,
                     ARG_THREADED_LIST to threadedList,
                 )

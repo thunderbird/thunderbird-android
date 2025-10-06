@@ -14,13 +14,15 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import kotlin.test.Test
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import net.thunderbird.core.testing.TestClock
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import org.junit.Rule
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalTime::class)
 class FundingReminderTest {
 
     @get:Rule

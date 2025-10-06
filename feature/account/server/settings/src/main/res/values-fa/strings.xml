@@ -5,7 +5,7 @@
     <string name="account_server_settings_outgoing_top_bar_title">تنظیمات سرور خروجی</string>
     <string name="account_server_settings_validation_error_password_required">رمز عبور الزامی است.</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
-    <string name="account_server_settings_authentication_none">هیچ‌کدام</string>
+    <string name="account_server_settings_authentication_none">هیچ کدام</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP یا hostname معتبر نیست</string>
     <string name="account_server_settings_authentication_password_encrypted">رمز عبور رمزنگاری شده</string>
     <string name="account_server_settings_incoming_imap_namespace_label">تشخیص خودکار فضای نام IMAP</string>

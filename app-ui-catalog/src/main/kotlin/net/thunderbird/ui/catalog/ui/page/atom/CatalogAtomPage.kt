@@ -14,6 +14,7 @@ enum class CatalogAtomPage(
     TEXT_FIELD("TextFields"),
     ICON("Icons"),
     IMAGE("Images"),
+    CARD("Cards"),
     ;
 
     override fun toString(): String {

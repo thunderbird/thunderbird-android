@@ -5,13 +5,14 @@ import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Outbox
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.AllInbox
 import androidx.compose.material.icons.outlined.Archive
+import androidx.compose.material.icons.outlined.Attachment
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material.icons.outlined.ChevronLeft
 import androidx.compose.material.icons.outlined.ChevronRight
 import androidx.compose.material.icons.outlined.Close
@@ -47,9 +48,6 @@ object Icons {
 
         val Dot: ImageVector
             get() = MaterialIcons.Filled.Dot
-
-        val Star: ImageVector
-            get() = MaterialIcons.Filled.Star
     }
 
     object Outlined {
@@ -65,6 +63,9 @@ object Icons {
         val Archive: ImageVector
             get() = MaterialIcons.Outlined.Archive
 
+        val Attachment: ImageVector
+            get() = MaterialIcons.Outlined.Attachment
+
         val ArrowBack: ImageVector
             get() = MaterialIcons.AutoMirrored.Outlined.ArrowBack
 
@@ -76,6 +77,9 @@ object Icons {
 
         val Check: ImageVector
             get() = MaterialIcons.Outlined.Check
+
+        val CheckCircle: ImageVector
+            get() = MaterialIcons.Outlined.CheckCircle
 
         val ChevronLeft: ImageVector
             get() = MaterialIcons.Outlined.ChevronLeft

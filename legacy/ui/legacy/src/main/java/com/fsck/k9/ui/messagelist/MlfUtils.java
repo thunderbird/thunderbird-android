@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import app.k9mail.legacy.di.DI;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
@@ -29,7 +29,7 @@ public class MlfUtils {
         account.setLastSelectedFolderId(folderId);
     }
 
-    static String buildSubject(String subjectFromCursor, String emptySubject, int threadCount) {
+    public static String buildSubject(String subjectFromCursor, String emptySubject, int threadCount) {
         if (TextUtils.isEmpty(subjectFromCursor)) {
             return emptySubject;
         } else if (threadCount > 1) {

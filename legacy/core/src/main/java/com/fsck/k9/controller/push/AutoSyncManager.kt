@@ -6,18 +6,22 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.core.content.ContextCompat
-import com.fsck.k9.K9
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.preference.BackgroundOps
+import net.thunderbird.core.preference.GeneralSettingsManager
 
 /**
  * Listen for changes to the system's auto sync setting.
  */
-internal class AutoSyncManager(private val context: Context) {
+internal class AutoSyncManager(
+    private val context: Context,
+    private val generalSettingsManager: GeneralSettingsManager,
+) {
     val isAutoSyncDisabled: Boolean
         get() = respectSystemAutoSync && !ContentResolver.getMasterSyncAutomatically()
 
     val respectSystemAutoSync: Boolean
-        get() = K9.backgroundOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
+        get() = generalSettingsManager.getConfig().network.backgroundOps == BackgroundOps.WHEN_CHECKED_AUTO_SYNC
 
     private var isRegistered = false
     private var listener: AutoSyncListener? = null

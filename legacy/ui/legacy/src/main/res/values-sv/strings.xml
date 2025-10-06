@@ -907,4 +907,5 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="swipe_action_archive_folder_not_set">Konfigurera arkivmapp</string>
     <string name="swipe_action_change_swipe_gestures">Ändra \nsvepgester</string>
     <string name="archiving_not_available_for_this_account">Arkivering är inte tillgängligt för det här kontot.</string>
+    <string name="debug_open_secret_debug_screen">Öppna hemlig felsökningsskärm</string>
 </resources>

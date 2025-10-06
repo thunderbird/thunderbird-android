@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="unread_widget_select_account">Dangos y nifer heb eu darllen ar gyfer…</string>
     <string name="unread_widget_account_title">Cyfrif</string>
@@ -13,4 +13,5 @@
     <string name="unread_widget_account_not_selected">Cyfrif heb ei ddewis</string>
     <string name="unread_widget_folder_not_selected">Ffolder heb ei ddewis</string>
     <string name="unread_widget_choose_account_title">Dewis cyfrif</string>
+    <string name="unread_widget_label">Cyfrif heb eu darllen</string>
 </resources>

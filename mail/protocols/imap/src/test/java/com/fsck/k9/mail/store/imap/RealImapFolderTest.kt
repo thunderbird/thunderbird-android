@@ -21,7 +21,6 @@ import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessageRetrievalListener
-import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MimeHeader
@@ -32,6 +31,11 @@ import java.io.IOException
 import java.nio.file.Files
 import java.util.Date
 import java.util.TimeZone
+import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
+import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 import net.thunderbird.protocols.imap.folder.attributeName
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
@@ -55,15 +59,10 @@ import org.mockito.kotlin.never
 import org.mockito.kotlin.stub
 import org.mockito.kotlin.whenever
 
-@Suppress("MaxLineLength")
+@Suppress("MaxLineLength", "LargeClass")
 class RealImapFolderTest {
     private val imapStoreConfig = FakeImapStoreConfig()
-    private val internalImapStore = object : InternalImapStore {
-        override val logLabel = "Account"
-        override val config = imapStoreConfig
-        override fun getCombinedPrefix() = ""
-        override fun getPermanentFlagsIndex() = mutableSetOf<Flag>()
-    }
+    private val internalImapStore = FakeInternalImapStore(config = imapStoreConfig)
     private val imapConnection = mock<ImapConnection>()
     private val testConnectionManager = TestConnectionManager(imapConnection)
 
@@ -71,6 +70,7 @@ class RealImapFolderTest {
 
     @Before
     fun setUp() {
+        Log.logger = TestLogger()
         tempDirectory = Files.createTempDirectory("RealImapFolderTest").toFile()
         BinaryTempFileBody.setTempDirectory(tempDirectory)
     }
@@ -396,6 +396,48 @@ class RealImapFolderTest {
         val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
 
         assertCommandWithIdsIssued("UID MOVE 1 \"la vache dit møø\"")
+    }
+
+    @Test
+    fun `moveMessages() should message to folder using serverId when IMAP Prefix is set`() {
+        // Arrange
+        val prefix = "INBOX"
+        val pathDelimiter = "."
+        val imapStore = FakeInternalImapStore(
+            config = imapStoreConfig,
+            imapPrefix = prefix,
+            pathDelimiter = pathDelimiter,
+        )
+
+        val sourceFolderName = "My New Folder"
+        val sourceFolderId = "$prefix$pathDelimiter$sourceFolderName"
+        val sourceFolder = createFolder(folderName = sourceFolderId, internalImapStore = imapStore)
+        prepareImapFolderForOpen(openMode = OpenMode.READ_WRITE, folderServerId = sourceFolderId)
+
+        val destinationFolderName = "Destination Folder"
+        val destinationFolderId = "$prefix$pathDelimiter$destinationFolderName"
+        val destinationFolder = createFolder(folderName = destinationFolderId, internalImapStore = imapStore)
+        imapConnection.stub {
+            on { hasCapability(Capabilities.MOVE) } doReturn true
+        }
+        val messageUid = "1"
+        val message = createImapMessage(messageUid)
+
+        setupMoveResponses(
+            "* OK [COPYUID 1757454189 2 1]",
+            "* 1 EXPUNGE",
+            "x OK MOVE completed",
+        )
+
+        // Act
+        sourceFolder.open(OpenMode.READ_WRITE)
+        sourceFolder.moveMessages(
+            messages = listOf(message),
+            folder = destinationFolder,
+        )
+
+        // Assert
+        assertCommandWithIdsIssued("UID MOVE $messageUid \"$destinationFolderId\"")
     }
 
     @Test
@@ -1566,6 +1608,62 @@ class RealImapFolderTest {
         }
     }
 
+    @Test
+    fun `open() should open folder in read-only mode successfully when connection has IMAP prefix`() {
+        // Arrange
+        val prefix = "INBOX"
+        val pathDelimiter = "/"
+        val folderName = "My New Folder"
+        val serverId = "$prefix$pathDelimiter$folderName"
+        val imapStore = FakeInternalImapStore(
+            config = imapStoreConfig,
+            imapPrefix = prefix,
+            pathDelimiter = pathDelimiter,
+        )
+        val openMode = OpenMode.READ_ONLY
+        imapConnection.stub {
+            on { executeSimpleCommand(anyString()) } doReturn createOpenImapResponse(
+                openMode = OpenMode.READ_ONLY,
+            )
+        }
+
+        val folder = createFolder(folderName = serverId, internalImapStore = imapStore)
+
+        // Act
+        folder.open(openMode)
+
+        // Assert
+        assertCommandIssued("EXAMINE \"$serverId\"")
+    }
+
+    @Test
+    fun `open() should open folder in read-write mode successfully when connection has IMAP prefix`() {
+        // Arrange
+        val prefix = "INBOX"
+        val pathDelimiter = "/"
+        val folderName = "My New Folder"
+        val imapStore = FakeInternalImapStore(
+            config = imapStoreConfig,
+            imapPrefix = prefix,
+            pathDelimiter = pathDelimiter,
+        )
+        val serverId = "$prefix$pathDelimiter$folderName"
+        val openMode = OpenMode.READ_WRITE
+        imapConnection.stub {
+            on { executeSimpleCommand(anyString()) } doReturn createOpenImapResponse(
+                openMode = OpenMode.READ_WRITE,
+            )
+        }
+
+        val folder = createFolder(folderName = serverId, internalImapStore = imapStore)
+
+        // Act
+        folder.open(openMode)
+
+        // Assert
+        assertCommandIssued("SELECT \"$serverId\"")
+    }
+
     @Suppress("SameParameterValue")
     private fun createPlainTextPart(serverExtra: String): Part {
         val part = createPart(serverExtra)
@@ -1600,9 +1698,17 @@ class RealImapFolderTest {
         return response
     }
 
-    private fun createFolder(folderName: String): RealImapFolder {
-        return RealImapFolder(internalImapStore, testConnectionManager, folderName, FolderNameCodec())
-    }
+    private fun createFolder(
+        folderName: String,
+        internalImapStore: InternalImapStore = this.internalImapStore,
+        connectionManager: ImapConnectionManager = testConnectionManager,
+        folderNameCodec: FolderNameCodec = FolderNameCodec(),
+    ): RealImapFolder = RealImapFolder(
+        internalImapStore = internalImapStore,
+        connectionManager = connectionManager,
+        serverId = folderName,
+        folderNameCodec = folderNameCodec,
+    )
 
     private fun createImapMessage(uid: String): ImapMessage {
         return mock {
@@ -1622,29 +1728,32 @@ class RealImapFolderTest {
 
     private fun createMessageRetrievalListener() = mock<MessageRetrievalListener<ImapMessage>>()
 
-    private fun prepareImapFolderForOpen(openMode: OpenMode) {
-        val imapResponses = listOf(
-            createImapResponse("* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft NonJunk \$MDNSent)"),
+    private fun createOpenImapResponse(openMode: OpenMode) = buildList {
+        add(
             createImapResponse(
                 "* OK [PERMANENTFLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft NonJunk \$MDNSent \\*)] " +
                     "Flags permitted.",
             ),
-            createImapResponse("* 23 EXISTS"),
-            createImapResponse("* 0 RECENT"),
-            createImapResponse("* OK [UIDVALIDITY 1125022061] UIDs valid"),
-            createImapResponse("* OK [UIDNEXT 57576] Predicted next UID"),
+        )
+        add(createImapResponse("* 23 EXISTS"))
+        add(createImapResponse("* 0 RECENT"))
+        add(createImapResponse("* OK [UIDVALIDITY 1125022061] UIDs valid"))
+        add(createImapResponse("* OK [UIDNEXT 57576] Predicted next UID"))
+        add(
             if (openMode == OpenMode.READ_WRITE) {
                 createImapResponse("2 OK [READ-WRITE] Select completed.")
             } else {
                 createImapResponse("2 OK [READ-ONLY] Examine completed.")
             },
         )
+    }
 
-        if (openMode == OpenMode.READ_WRITE) {
-            whenever(imapConnection.executeSimpleCommand("SELECT \"Folder\"")).thenReturn(imapResponses)
-        } else {
-            whenever(imapConnection.executeSimpleCommand("EXAMINE \"Folder\"")).thenReturn(imapResponses)
-        }
+    private fun prepareImapFolderForOpen(openMode: OpenMode, folderServerId: String = "Folder") {
+        val imapResponses = createOpenImapResponse(openMode)
+
+        val command = if (openMode == OpenMode.READ_WRITE) "SELECT" else "EXAMINE"
+        whenever(imapConnection.executeSimpleCommand("$command \"$folderServerId\""))
+            .thenReturn(imapResponses)
     }
 
     private fun assertCommandWithIdsIssued(expectedCommand: String) {
@@ -1734,4 +1843,15 @@ internal class TestConnectionManager(private val connection: ImapConnection) : I
     }
 
     override fun releaseConnection(connection: ImapConnection?) = Unit
+}
+
+private class FakeInternalImapStore(
+    override val config: ImapStoreConfig,
+    override val logLabel: String = "Account",
+    private val imapPrefix: String? = null,
+    private val pathDelimiter: FolderPathDelimiter = FOLDER_DEFAULT_PATH_DELIMITER,
+    private val permanentFlagsIndex: MutableSet<Flag> = mutableSetOf(),
+) : InternalImapStore {
+    override val combinedPrefix: String = imapPrefix?.let { "$it$pathDelimiter" }.orEmpty()
+    override fun getPermanentFlagsIndex() = permanentFlagsIndex
 }

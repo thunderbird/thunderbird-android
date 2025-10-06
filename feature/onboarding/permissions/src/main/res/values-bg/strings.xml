@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_permissions_contacts_description">Предоставете достъп до контактите, за да можем да покажем техните имена и снимки.</string>
+    <string name="onboarding_permissions_contacts_description">Предоставете достъп до контактите си, за да можем да покажем техните имена и снимки.</string>
     <string name="onboarding_permissions_notifications_description">Включете известията, за да не пропускате съобщения.</string>
     <string name="onboarding_permissions_notifications_title">Известия</string>
     <string name="onboarding_permissions_screen_title">Подобрете изживяването</string>

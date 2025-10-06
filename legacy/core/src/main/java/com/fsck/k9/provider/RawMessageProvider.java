@@ -20,7 +20,7 @@ import app.k9mail.legacy.di.DI;
 import com.fsck.k9.Preferences;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;

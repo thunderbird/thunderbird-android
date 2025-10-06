@@ -6,7 +6,7 @@
     <string name="account_server_settings_incoming_top_bar_title">Подешавања долазног сервера</string>
     <string name="account_server_settings_outgoing_top_bar_title">Подешавања одлазног сервера</string>
     <string name="account_server_settings_validation_error_port_invalid">Порт је неважећи (мора бити 1–65535).</string>
-    <string name="account_server_settings_authentication_none">Нема</string>
+    <string name="account_server_settings_authentication_none">Ниједно</string>
     <string name="account_server_settings_authentication_password_cleartext">Нормална лозинка</string>
     <string name="account_server_settings_authentication_password_encrypted">Шифрована лозинка</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Аутоматско откривање простора назива IMAP-а</string>

@@ -14,7 +14,7 @@
     <string name="about_libraries">المكتبات</string>
     <string name="license">الرخصة</string>
     <string name="changelog_title">سجل التغييرات</string>
-    <string name="changelog_loading_error">تعذر تحميل سجل التغيير</string>
+    <string name="changelog_loading_error">تعذر تحميل سجل التغيير.</string>
     <string name="changelog_version_title">الإصدار %s</string>
     <string name="changelog_recent_changes_title">مالجديد</string>
     <string name="changelog_show_recent_changes">إظهار التغييرات الأخيرة عندما تم تحديث التطبيق</string>
@@ -33,8 +33,8 @@
     <string name="compose_title_forward">إعادة توجيه</string>
     <string name="compose_title_forward_as_attachment">إعادة توجيه كمُرفَقات</string>
     <string name="choose_folder_title">إختر مجلد</string>
-    <string name="choose_folder_move_title">نقل إلي</string>
-    <string name="choose_folder_copy_title">نسخ إلي</string>
+    <string name="choose_folder_move_title">نقل إلى…</string>
+    <string name="choose_folder_copy_title">نسخ إلى…</string>
     <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> محدد</string>
     <string name="send_action">أرسل</string>
     <string name="empty_subject">موضوع الرسالة فارغ، أنقر مرة أخرى لمواصلة الإرسال</string>
@@ -130,8 +130,7 @@
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">إشعار خطأ</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">حدث خطأ أثناء محاولة إنشاء إشعار نظام برسالة جديدة. السبب على الأرجح هو فقدان صوت الإشعار.
-\nانقر لفتح إعدادات الإشعارات.</string>
+    <string name="notification_notify_error_text">حدث خطأ أثناء محاولة إنشاء إشعار نظام برسالة جديدة. السبب على الأرجح هو فقدان صوت الإشعار. \n\nانقر لفتح إعدادات الإشعارات.</string>
     <string name="notification_bg_sync_ticker">تفقد البريد: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_sync_title">التحقق من البريد</string>
     <string name="notification_bg_send_ticker">إرسال البريد: <xliff:g id="account">%s</xliff:g></string>
@@ -217,11 +216,11 @@
     <string name="global_settings_confirm_menu_mark_all_read">جعل كل الرسائل مقروءة</string>
     <string name="global_settings_confirm_action_delete_notif">احذف (من الإشعارات)</string>
     <!--Title of the screen to configure swipe actions-->
-    <string name="general_settings_swipe_actions_title">Swipe actions </string>
+    <string name="general_settings_swipe_actions_title">حركات التمرير</string>
     <!--Name of the setting to configure the right swipe action-->
-    <string name="general_settings_right_swipe_title">Right swipe </string>
+    <string name="general_settings_right_swipe_title">التمرير إلى اليمين</string>
     <!--Name of the setting to configure the left swipe action-->
-    <string name="general_settings_left_swipe_title">Left swipe</string>
+    <string name="general_settings_left_swipe_title">التمرير إلى اليسار</string>
     <!--The list item users select to not use a swipe action for a particular direction-->
     <string name="general_settings_swipe_action_none">بدون</string>
     <!--Name of the swipe action to select/deselect a message-->
@@ -229,7 +228,7 @@
     <!--Name of the swipe action to mark as message as read/unread-->
     <string name="general_settings_swipe_action_toggle_read">وضع علامة مقروء / غير مقروء </string>
     <!--Name of the swipe action to add/remove a star-->
-    <string name="general_settings_swipe_action_toggle_star">Add/remove star</string>
+    <string name="general_settings_swipe_action_toggle_star">إضافة/إزالة نجمة</string>
     <!--Name of the swipe action to archive a message-->
     <string name="general_settings_swipe_action_archive">أرشيف</string>
     <!--Name of the swipe action to delete a message-->
@@ -337,7 +336,7 @@
     <string name="account_settings_default_quoted_text_shown_label">إقتباس نص الرسالة عند الإجابة</string>
     <string name="account_settings_default_quoted_text_shown_summary">إدماج نص الرسالة الأصلية ضمن إجابتك.</string>
     <string name="account_settings_reply_after_quote_label">الإجابة تحت النص المقتبَس</string>
-    <string name="account_settings_reply_after_quote_summary">ستظهر الرسالة الأصلية فوق ردّك</string>
+    <string name="account_settings_reply_after_quote_summary">ستظهر الرسالة الأصلية فوق ردّك.</string>
     <string name="account_settings_strip_signature_label">التجريد مِن التوقيعات عند الرد</string>
     <string name="account_settings_strip_signature_summary">يحذف التوقيعات مِن نص الرسائل المُقتبَسة</string>
     <string name="account_settings_message_format_label">تنسيق الرسالة</string>
@@ -679,7 +678,7 @@
     <string name="enable_sign_only">تفعيل تسجيل PGP فقط </string>
     <string name="disable_sign_only">تعطيل تسجيل PGP فقط </string>
     <string name="openpgp_inline_title">وضع PGP / INLINE </string>
-    <string name="openpgp_inline_text">تم إرسال البريد الإلكتروني بتنسيق PGP / INLINE. \ n يجب استخدام هذا فقط من أجل التوافق: </string>
+    <string name="openpgp_inline_text">تم إرسال البريد الإلكتروني بتنسيق PGP / INLINE.\n يجب استخدام هذا فقط من أجل التوافق:</string>
     <string name="openpgp_inline_plus_compat">يدعم بعض العملاء هذا التنسيق فقط </string>
     <string name="openpgp_inline_minus_transit">التوقيعات قد تنكسر أثناء العبور </string>
     <string name="openpgp_inline_minus_attach">الملفات المُرفقة غير مدعومة</string>
@@ -741,7 +740,7 @@
     <string name="error_sign_only_no_encryption">التشفير غير متوفر في وضع التسجيل فقط! </string>
     <string name="unsigned_text_divider_label">نص غير مُوَقَّع</string>
     <string name="crypto_no_provider_title">هذه الرسالة مُعماة</string>
-    <string name="crypto_no_provider_message">تم تشفير هذا البريد الإلكتروني باستخدام OpenPGP. \ n لقراءته ، تحتاج إلى تثبيت وتكوين تطبيق OpenPGP متوافق. </string>
+    <string name="crypto_no_provider_message">تم تشفير هذا البريد الإلكتروني باستخدام OpenPGP.\n لقراءته ، تحتاج إلى تثبيت وتكوين تطبيق OpenPGP متوافق.</string>
     <string name="crypto_no_provider_button">اذهب للاعدادات </string>
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
@@ -779,7 +778,7 @@
     <string name="ac_transfer_finish">للإنهاء ، افتح الرسالة على جهازك الآخر وأدخل رمز الإعداد. </string>
     <string name="ac_transfer_show_code">إظهار كود الإعداد </string>
     <string name="ac_transfer_msg_subject">تشفير تلقائي لرسالة الإعداد</string>
-    <string name="ac_transfer_msg_body">تحتوي هذه الرسالة على جميع المعلومات اللازمة لنقل إعدادات التشفير التلقائي إلى جانب مفتاحك السري بأمان من جهازك الأصلي. لإعداد جهازك الجديد لـ Autocrypt ، يرجى اتباع الإرشادات التي يجب أن يقدمها جهازك الجديد.  يمكنك الاحتفاظ هذه الرسالة واستخدامها كنسخة احتياطية لمفتاحك السري. إذا كنت ترغب في القيام بذلك ، يجب عليك كتابة كلمة المرور وتخزينها بشكل آمن </string>
+    <string name="ac_transfer_msg_body">تحتوي هذه الرسالة على جميع المعلومات اللازمة لنقل إعدادات التشفير التلقائي إلى جانب مفتاحك السري بأمان من جهازك الأصلي. لإعداد جهازك الجديد لـ Autocrypt ، يرجى اتباع الإرشادات التي يجب أن يقدمها جهازك الجديد. يمكنك الاحتفاظ هذه الرسالة واستخدامها كنسخة احتياطية لمفتاحك السري. إذا كنت ترغب في القيام بذلك ، يجب عليك كتابة كلمة المرور وتخزينها بشكل آمن.</string>
     <string name="ac_transfer_error_send">حدث خطأ أثناء إرسال الرسالة. يرجى التحقق من اتصال الشبكة وتكوين خادم البريد الصادر. </string>
     <string name="switch_on">مُفعّل</string>
     <string name="switch_off">مُوقّف</string>
@@ -854,4 +853,45 @@
     <!--Might be displayed in a notification when deleting an account (in the background)-->
     <!--For unread messages the first line of a message list item is modified by this to improve the experience for people with screen readers.-->
     <string name="about_app_authors_thunderbird">فريق ثَندَربِرْد للهواتف الذكيّة</string>
+    <string name="open_camera">افتح الكاميرا</string>
+    <string name="attach_file">إرفاق ملف</string>
+    <string name="camera_permission_denied">تم رفض إذن الكاميرا! غير قادر على التقاط صورة</string>
+    <string name="account_delete_dlg_instructions_fmt">سيُحذَف الحساب \"<xliff:g id="account">%1$s</xliff:g>\" من <xliff:g id="app_name">%2$s</xliff:g>.</string>
+    <string name="about_title">حول <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="dialog_openkeychain_info_text">تطبيق OpenKeychain مطلوب لتمكين دعم التشفير من طرف إلى طرف.</string>
+    <string name="push_info_notification_explanation_text">عند استخدام الدفع الفوري (Push)، يُبقي <xliff:g id="app_name">%1$s</xliff:g> على اتصال بخادم البريد. يتطلب أندرويد عرض إشعار مستمر عندما يكون التطبيق نشطًا في الخلفية. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
+    <string name="archiving_not_available_for_this_account">الأرشفة غير متاحة لهذا الحساب.</string>
+    <string name="settings_ui_telemetry_description">مشاركة بيانات الأداء والاستخدام والأجهزة وبيانات التخصيص حول هذا التطبيق مع موزيلا لمساعدتنا في تحسين ثندربرد</string>
+    <string name="settings_ui_telemetry_title">الاستخدام والبيانات التقنية</string>
+    <string name="settings_ui_data_collection">جمع البيانات</string>
+    <string name="message_list_content_description_unread_prefix">غير مقروءة، %s</string>
+    <string name="background_work_notification_remove_account">إزالة الحساب…</string>
+    <string name="swipe_action_change_swipe_gestures">تغيير \nإيماءات التمرير السريع</string>
+    <string name="swipe_action_archive_folder_not_set">إعداد مجلد الأرشفة</string>
+    <string name="push_notification_grant_alarm_permission">انقر لمنح الإذن.</string>
+    <string name="push_notification_state_alarm_permission_missing">إذن مفقود لجدولة التنبيهات</string>
+    <string name="expand_content_description">توسيع</string>
+    <string name="dialog_confirm_empty_spam_message">هل تريد إفراغ مجلد البريد المزعج؟</string>
+    <string name="dialog_confirm_empty_spam_title">تأكيد إفراغ البريد المزعج</string>
+    <string name="volume_navigation_summary">التنقل بين الرسائل باستخدام مفاتيح مستوى الصوت في عرض الرسائل</string>
+    <string name="volume_navigation_title_short">التنقل بمفاتيح الصوت</string>
+    <string name="folder_list_show_hidden_folders">عرض المجلدات المخفية</string>
+    <string name="folder_settings_notifications_label">الإشعارات</string>
+    <string name="folder_settings_sync_label">تفعيل المزامنة</string>
+    <string name="folder_settings_visible_label">عرض المجلد</string>
+    <string name="general_settings_post_mark_as_unread_action_return_to_list">العودة إلى قائمة الرسائل</string>
+    <string name="general_settings_post_mark_as_unread_action_stay">ابق في الرسالة الحالية</string>
+    <string name="general_settings_post_mark_as_unread_action_title">بعد جعل رسالة كغير مقروءة</string>
+    <string name="general_settings_post_remove_action_show_next_message">عرض الرسالة التالية</string>
+    <string name="general_settings_post_remove_action_show_previous_message">عرض الرسالة السابقة</string>
+    <string name="general_settings_post_remove_action_return_to_list">العودة إلى قائمة الرسائل</string>
+    <string name="general_settings_post_remove_action_title">بعد حذف رسالة أو نقلها</string>
+    <string name="save_attachment_action">حفظ المرفق</string>
+    <string name="debug_open_secret_debug_screen">فتح شاشة تصحيح الأخطاء السرية</string>
+    <string name="debug_sync_export_logs_title">تصدير سجلات المزامنة</string>
+    <string name="empty_spam_action">إفراغ البريد المزعج</string>
+    <string name="debug_enable_sync_debug_logging_title">تمكين تسجيل تصحيح أخطاء المزامنة</string>
+    <string name="debug_enable_sync_debug_logging_summary">تسجيل معلومات تشخيص المزامنة لمدة 24 ساعة</string>
+    <string name="folder_settings_push_label">تمكين الدفع الفوري</string>
+    <string name="settings_list_action_support">ادعم <xliff:g id="app_name">%s</xliff:g></string>
 </resources>

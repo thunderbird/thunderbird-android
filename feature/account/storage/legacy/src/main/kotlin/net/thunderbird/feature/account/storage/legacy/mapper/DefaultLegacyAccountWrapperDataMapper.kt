@@ -43,7 +43,6 @@ class DefaultLegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, L
             importedArchiveFolder = dto.importedArchiveFolder,
             importedSpamFolder = dto.importedSpamFolder,
             inboxFolderId = dto.inboxFolderId,
-            outboxFolderId = dto.outboxFolderId,
             draftsFolderId = dto.draftsFolderId,
             sentFolderId = dto.sentFolderId,
             trashFolderId = dto.trashFolderId,
@@ -105,6 +104,7 @@ class DefaultLegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, L
             signatureUse = dto.signatureUse,
             signature = dto.signature,
             shouldMigrateToOAuth = dto.shouldMigrateToOAuth,
+            folderPathDelimiter = dto.folderPathDelimiter,
         )
     }
 
@@ -149,7 +149,6 @@ class DefaultLegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, L
             importedArchiveFolder = domain.importedArchiveFolder
             importedSpamFolder = domain.importedSpamFolder
             inboxFolderId = domain.inboxFolderId
-            outboxFolderId = domain.outboxFolderId
             draftsFolderId = domain.draftsFolderId
             sentFolderId = domain.sentFolderId
             trashFolderId = domain.trashFolderId
@@ -211,6 +210,7 @@ class DefaultLegacyAccountWrapperDataMapper : DataMapper<LegacyAccountWrapper, L
             signatureUse = domain.signatureUse
             signature = domain.signature
             shouldMigrateToOAuth = domain.shouldMigrateToOAuth
+            folderPathDelimiter = domain.folderPathDelimiter
         }
     }
 

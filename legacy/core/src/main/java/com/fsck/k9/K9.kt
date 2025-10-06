@@ -7,40 +7,27 @@ import com.fsck.k9.K9.DATABASE_VERSION_CACHE
 import com.fsck.k9.K9.areDatabasesUpToDate
 import com.fsck.k9.K9.checkCachedDatabaseVersion
 import com.fsck.k9.K9.setDatabasesUpToDate
-import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
-import com.fsck.k9.preferences.RealGeneralSettingsManager
+import com.fsck.k9.preferences.DefaultGeneralSettingsManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
-import net.thunderbird.core.logging.composite.CompositeLogSink
-import net.thunderbird.core.logging.file.FileLogSink
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.core.qualifier.named
 import timber.log.Timber
-import timber.log.Timber.DebugTree
 
 // TODO "Use GeneralSettingsManager and GeneralSettings instead"
 object K9 : KoinComponent {
-    private val generalSettingsManager: RealGeneralSettingsManager by inject()
+    private val generalSettingsManager: DefaultGeneralSettingsManager by inject()
     private val telemetryManager: TelemetryManager by inject()
     private val featureFlagProvider: FeatureFlagProvider by inject()
-    private val syncDebugCompositeSink: CompositeLogSink by inject(named("syncDebug"))
-    private val syncDebugFileLogSink: FileLogSink by inject(named("syncDebug"))
-
-    /**
-     * If this is `true`, various development settings will be enabled.
-     */
-    @JvmField
-    val DEVELOPER_MODE = BuildConfig.DEBUG
 
     /**
      * Name of the [SharedPreferences] file used to store the last known version of the
@@ -127,30 +114,10 @@ object K9 : KoinComponent {
     }
 
     @JvmStatic
-    var isDebugLoggingEnabled: Boolean = DEVELOPER_MODE
-        set(debug) {
-            field = debug
-            updateLoggingStatus()
-        }
-
-    @JvmStatic
-    var isSyncLoggingEnabled: Boolean = false
-        set(debug) {
-            field = debug
-            updateSyncLogging()
-        }
-
-    @JvmStatic
     var isSensitiveDebugLoggingEnabled: Boolean = false
 
     @JvmStatic
-    var k9Language = ""
-
-    @JvmStatic
     val fontSizes = FontSizes()
-
-    @JvmStatic
-    var backgroundOps = BACKGROUND_OPS.ALWAYS
 
     @JvmStatic
     var isConfirmDelete = false
@@ -183,9 +150,6 @@ object K9 : KoinComponent {
     var messageListPreviewLines = 2
 
     @JvmStatic
-    var isShowContactName = false
-
-    @JvmStatic
     var contactNameColor = 0xFF1093F5.toInt()
 
     var messageViewPostRemoveNavigation: PostRemoveNavigation = PostRemoveNavigation.ReturnToMessageList
@@ -206,11 +170,6 @@ object K9 : KoinComponent {
     @JvmStatic
     var sortType: SortType = AccountDefaultsProvider.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
-
-    @get:Synchronized
-    @set:Synchronized
-    @JvmStatic
-    var splitViewMode = SplitViewMode.NEVER
 
     @JvmStatic
     var isMessageViewArchiveActionVisible = false
@@ -268,7 +227,7 @@ object K9 : KoinComponent {
     fun init(context: Context) {
         K9MailLib.setDebugStatus(
             object : K9MailLib.DebugStatus {
-                override fun enabled(): Boolean = isDebugLoggingEnabled
+                override fun enabled(): Boolean = generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
 
                 override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
             },
@@ -282,8 +241,6 @@ object K9 : KoinComponent {
     @JvmStatic
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
-        isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
-        isSyncLoggingEnabled = storage.getBoolean("enableSyncDebugLogging", false)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
@@ -317,15 +274,10 @@ object K9 : KoinComponent {
             LockScreenNotificationVisibility.MESSAGE_COUNT,
         )
 
-        splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
-
         featureFlagProvider.provide("disable_font_size_config".toFeatureFlagKey())
             .onDisabledOrUnavailable {
                 fontSizes.load(storage)
             }
-
-        backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.ALWAYS)
-
         isMessageViewArchiveActionVisible = storage.getBoolean("messageViewArchiveActionVisible", false)
         isMessageViewDeleteActionVisible = storage.getBoolean("messageViewDeleteActionVisible", true)
         isMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false)
@@ -334,8 +286,6 @@ object K9 : KoinComponent {
 
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
-
-        k9Language = storage.getStringOrDefault("language", "")
 
         swipeRightAction = storage.getEnum(
             key = SwipeActions.KEY_SWIPE_ACTION_RIGHT,
@@ -357,10 +307,7 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
-        editor.putBoolean("enableSyncDebugLogging", isSyncLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
-        editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putEnum("messageListDensity", messageListDensity)
@@ -369,8 +316,6 @@ object K9 : KoinComponent {
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
-
-        editor.putString("language", k9Language)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
         editor.putBoolean("confirmDiscardMessage", isConfirmDiscardMessage)
@@ -384,8 +329,6 @@ object K9 : KoinComponent {
 
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
-
-        editor.putEnum("splitViewMode", splitViewMode)
 
         editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
         editor.putBoolean("messageViewDeleteActionVisible", isMessageViewDeleteActionVisible)
@@ -408,21 +351,6 @@ object K9 : KoinComponent {
         editor.putLong("fundingActivityCounterInMillis", fundingActivityCounterInMillis)
 
         fontSizes.save(editor)
-    }
-
-    private fun updateLoggingStatus() {
-        Timber.uprootAll()
-        if (isDebugLoggingEnabled) {
-            Timber.plant(DebugTree())
-        }
-    }
-
-    private fun updateSyncLogging() {
-        if (isSyncLoggingEnabled) {
-            syncDebugCompositeSink.manager.add(syncDebugFileLogSink)
-        } else {
-            syncDebugCompositeSink.manager.remove(syncDebugFileLogSink)
-        }
     }
 
     @JvmStatic
@@ -462,13 +390,6 @@ object K9 : KoinComponent {
 
     const val MANUAL_WAKE_LOCK_TIMEOUT = 120000
 
-    @Suppress("ClassName")
-    enum class BACKGROUND_OPS {
-        ALWAYS,
-        NEVER,
-        WHEN_CHECKED_AUTO_SYNC,
-    }
-
     /**
      * Controls behaviour of delete button in notifications.
      */
@@ -484,15 +405,6 @@ object K9 : KoinComponent {
         MESSAGE_COUNT,
         APP_NAME,
         NOTHING,
-    }
-
-    /**
-     * Controls when to use the message list split view.
-     */
-    enum class SplitViewMode {
-        ALWAYS,
-        NEVER,
-        WHEN_IN_LANDSCAPE,
     }
 
     /**

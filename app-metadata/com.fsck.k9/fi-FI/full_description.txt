@@ -1,0 +1,24 @@
+K-9 Mail on avoimen lähdekoodin sähköpostiohjelma, joka toimii käytännössä kaikkien sähköpostipalveluntarjoajien kanssa.
+
+<b>Ominaisuudet</b>
+
+* Tukee useita tilejä
+* Yhtenäinen postilaatikko
+* Yksityisyyttä suojaava (ei minkäänlaista seurantaa, yhdistää vain sähköpostipalveluntarjoajaasi)
+* Automaattinen taustalla synkronointi tai työntöilmoitukset
+* Paikallinen ja palvelimen puolen haku
+* OpenPGP-sähköpostin salaus (PGP/MIME)
+
+Asenna sovellus <a href="https://f-droid.org/packages/org.sufficientlysecure.keychain">OpenKeychain: Helppo PGP</a> sähköpostien salaamiseen/purkamiseen OpenPGP:n avulla.
+
+
+<b>Tuki</b>
+
+Jos sinulla on ongelmia K-9 Mailin kanssa, pyydä apua <a href="https://forum.k9mail.app">tukifoorumiltamme</a>.
+
+
+<b>Haluatko auttaa?</b>
+
+K-9 Mail on yhteisön kehittämä projekti. Jos olet kiinnostunut auttamaan sovelluksen parantamisessa, liity joukkoomme!
+Löydät vikaseurantamme, lähdekoodimme ja wikin osoitteesta <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Otamme aina mielellämme vastaan uusia kehittäjiä, suunnittelijoita, dokumentoijia, kääntäjiä, vikojen lajittelijat ja ystäviä.

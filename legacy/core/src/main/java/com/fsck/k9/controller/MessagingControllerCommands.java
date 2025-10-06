@@ -4,7 +4,7 @@ package com.fsck.k9.controller;
 import java.util.List;
 import java.util.Map;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
+import net.thunderbird.core.common.exception.MessagingException;
 import net.thunderbird.core.android.account.LegacyAccount;
 
 import static com.fsck.k9.controller.Preconditions.requireNotNull;

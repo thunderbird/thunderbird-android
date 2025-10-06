@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="migration_qrcode_permission_denied_title">Mae angen mynediad at y camera</string>
+    <string name="migration_qrcode_permission_denied_message">Ewch i osodiadau Android, pwyso ar Permissions a chaniatáu mynediad i\'r camera.</string>
+    <string name="migration_qrcode_go_to_settings_button_text">Ewch i\'r gosodiadau</string>
+    <string name="migration_qrcode_scanning_progress">Wedi sganio %1$s o %2$s</string>
+    <string name="migration_qrcode_scanning_instructions">Aliniwch y cod QR ddarparwyd gan Thunderbird y Bwrdd Gwaith</string>
+    <string name="migration_qrcode_done_button_text">Gorffen</string>
+</resources>

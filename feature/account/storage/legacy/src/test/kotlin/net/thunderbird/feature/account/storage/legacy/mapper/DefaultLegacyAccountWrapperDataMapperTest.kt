@@ -77,7 +77,6 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         assertThat(result.importedArchiveFolder).isEqualTo("importedArchiveFolder")
         assertThat(result.importedSpamFolder).isEqualTo("importedSpamFolder")
         assertThat(result.inboxFolderId).isEqualTo(1)
-        assertThat(result.outboxFolderId).isEqualTo(2)
         assertThat(result.draftsFolderId).isEqualTo(3)
         assertThat(result.sentFolderId).isEqualTo(4)
         assertThat(result.trashFolderId).isEqualTo(5)
@@ -143,6 +142,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         assertThat(result.signatureUse).isEqualTo(defaultIdentities[0].signatureUse)
         assertThat(result.signature).isEqualTo(defaultIdentities[0].signature)
         assertThat(result.shouldMigrateToOAuth).isEqualTo(true)
+        assertThat(result.folderPathDelimiter).isEqualTo(".")
     }
 
     private companion object {
@@ -223,7 +223,6 @@ class DefaultLegacyAccountWrapperDataMapperTest {
                 importedArchiveFolder = "importedArchiveFolder"
                 importedSpamFolder = "importedSpamFolder"
                 inboxFolderId = 1
-                outboxFolderId = 2
                 draftsFolderId = 3
                 sentFolderId = 4
                 trashFolderId = 5
@@ -287,6 +286,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
                 signatureUse = defaultIdentities[0].signatureUse
                 signature = defaultIdentities[0].signature
                 shouldMigrateToOAuth = true
+                folderPathDelimiter = "."
             }
         }
 
@@ -337,7 +337,6 @@ class DefaultLegacyAccountWrapperDataMapperTest {
                 importedArchiveFolder = "importedArchiveFolder",
                 importedSpamFolder = "importedSpamFolder",
                 inboxFolderId = 1,
-                outboxFolderId = 2,
                 draftsFolderId = 3,
                 sentFolderId = 4,
                 trashFolderId = 5,
@@ -402,6 +401,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
                 signatureUse = defaultIdentities[0].signatureUse,
                 signature = defaultIdentities[0].signature,
                 shouldMigrateToOAuth = true,
+                folderPathDelimiter = ".",
             )
         }
     }

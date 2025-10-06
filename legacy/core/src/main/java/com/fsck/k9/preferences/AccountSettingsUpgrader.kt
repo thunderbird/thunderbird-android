@@ -1,5 +1,7 @@
 package com.fsck.k9.preferences
 
+import net.thunderbird.core.preference.GeneralSettingsManager
+
 internal class AccountSettingsUpgrader(
     private val identitySettingsUpgrader: IdentitySettingsUpgrader,
     private val folderSettingsUpgrader: FolderSettingsUpgrader,
@@ -8,6 +10,7 @@ internal class AccountSettingsUpgrader(
     private val settingsDescriptions: SettingsDescriptions = AccountSettingsDescriptions.SETTINGS,
     private val upgraders: Map<Int, SettingsUpgrader> = AccountSettingsDescriptions.UPGRADERS,
     private val combinedUpgraders: Map<Int, CombinedSettingsUpgraderFactory> = CombinedSettingsUpgraders.UPGRADERS,
+    private val generalSettingsManager: GeneralSettingsManager,
 ) {
 
     fun upgrade(contentVersion: Int, account: ValidatedSettings.Account): ValidatedSettings.Account {
@@ -60,6 +63,7 @@ internal class AccountSettingsUpgrader(
             upgraders,
             settingsDescriptions,
             settings,
+            generalSettingsManager,
         )
     }
 

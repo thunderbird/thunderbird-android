@@ -554,6 +554,10 @@
             android:title="@string/debug_enable_sensitive_logging_title"
             />
 
+        <Preference
+            android:key="debug_secret_debug_screen"
+            android:title="@string/debug_open_secret_debug_screen" />
+
     </PreferenceScreen>
 
 </PreferenceScreen>

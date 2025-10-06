@@ -4,6 +4,7 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.LocalContentColor as Material3LocalContentColor
 
 /**
  * Theme color scheme following Material 3 color roles.
@@ -134,3 +135,10 @@ internal fun ThemeColorScheme.toMaterial3ColorScheme(): ColorScheme {
 internal val LocalThemeColorScheme = staticCompositionLocalOf<ThemeColorScheme> {
     error("No ThemeColorScheme provided")
 }
+
+/**
+ * CompositionLocal used to specify the default color for text and icons.
+ *
+ * This uses the Material 3 [LocalContentColor] implementation.
+ */
+val LocalContentColor get() = Material3LocalContentColor
