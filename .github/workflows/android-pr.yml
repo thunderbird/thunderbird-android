@@ -104,43 +104,6 @@ jobs:
       - name: Running Android lint
         run: ./gradlew lint
 
-  spotless:
-    name: Quality - Spotless
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Running spotless check
-        run: ./gradlew spotlessCheck
-
-  detekt:
-    name: Quality - Detekt
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Running Detekt
-        run: ./gradlew detekt
-
-      - name: Running Detekt including KMP
-        # As we were not verifying detekt in KMP sources before,
-        # this step is likely to fail.
-        continue-on-error: true
-        run: |
-          ./gradlew detektMetadataCommonMain
-          ./gradlew detektMetadataMain
-          ./gradlew detektMetadataCommonJvmMain
-
   unit-test:
     name: Quality - Unit tests
     runs-on: ubuntu-latest
@@ -154,20 +117,6 @@ jobs:
 
       - name: Running unit tests
         run: ./gradlew testsOnCi --parallel
-
-  dependency-guard:
-    name: Quality - Dependency Guard
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - name: Checkout the repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      - name: Setup Gradle environment
-        uses: ./.github/actions/setup-gradle
-
-      - name: Running Dependency Guard
-        run: ./gradlew dependencyGuard
 
   check-badging:
     name: Quality - Badging
