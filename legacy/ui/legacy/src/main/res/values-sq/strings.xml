@@ -901,4 +901,5 @@
     <string name="swipe_action_archive_folder_not_set">Ujdisni Dosje Arkiv</string>
     <string name="swipe_action_change_swipe_gestures">Ndryshim \nGjeste Fërkimi</string>
     <string name="notification_action_archive">Arkivoje</string>
+    <string name="debug_open_secret_debug_screen">Hap skenën e Fshehtë të diagnostikimeve</string>
 </resources>
