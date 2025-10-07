@@ -9,6 +9,7 @@ class HtmlProcessor(private val htmlHeadProvider: HtmlHeadProvider) {
         return htmlSanitizer.sanitize(html)
             .addCustomHeadContents()
             .wrapContent()
+            .wrapTables()
             .toCompactString()
     }
 
@@ -37,5 +38,19 @@ class HtmlProcessor(private val htmlHeadProvider: HtmlHeadProvider) {
             )
 
         body().appendChild(wrapper)
+    }
+
+    private fun Document.wrapTables() = apply {
+        body()
+            .allElements
+            .filter { it.tagName() == "table" }
+            .forEach { element ->
+                val parent = element.parent() ?: body()
+                element.remove()
+                val wrappedElement = createElement("div")
+                    .classNames(setOf("table-wrapper"))
+                    .appendChild(element)
+                parent.appendChild(wrappedElement)
+            }
     }
 }

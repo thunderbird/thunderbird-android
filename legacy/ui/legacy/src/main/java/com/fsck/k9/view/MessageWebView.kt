@@ -108,6 +108,22 @@ class MessageWebView : WebView, KoinComponent {
         resumeTimers()
     }
 
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        parent.requestDisallowInterceptTouchEvent(true)
+        return super.onInterceptTouchEvent(ev)
+    }
+
+    override fun onOverScrolled(scrollX: Int, scrollY: Int, clampedX: Boolean, clampedY: Boolean) {
+        val isHorizontalScroll = scrollX > scrollY
+        parent.requestDisallowInterceptTouchEvent(
+            if (isHorizontalScroll) {
+                !clampedX
+            } else {
+                false
+            },
+        )
+    }
+
     fun interface OnPageFinishedListener {
         fun onPageFinished()
     }

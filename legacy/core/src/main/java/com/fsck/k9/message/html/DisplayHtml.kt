@@ -89,6 +89,11 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
                 body, div, section, article, main, header, footer {
                   overflow-x: hidden;
                 }
+                div.table-wrapper:has(table) {
+                  overflow-x: auto;
+                  display: block;
+                  width: 100% !important;
+                }
             </style>
         """.trimIndent()
     }
