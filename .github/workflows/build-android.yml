@@ -120,33 +120,6 @@ jobs:
       - name: Build App UI-catalog application in Debug mode
         run: ./gradlew :app-ui-catalog:assembleDebug
 
-  build-cli-tools:
-    name: Build CLI tools if needed
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - name: Check if CLI tools are changed
-        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
-        id: changes
-        with:
-          filters: |
-            cli_tools_changed:
-              - 'cli/**'
-
-      - name: Checkout the repo
-        if: steps.changes.outputs.cli_tools_changed == 'true'
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-        with:
-          fetch-depth: 1
-
-      - name: Setup Gradle environment
-        if: steps.changes.outputs.cli_tools_changed == 'true'
-        uses: ./.github/actions/setup-gradle
-
-      - name: Build CLI tools
-        if: steps.changes.outputs.cli_tools_changed == 'true'
-        run: ./gradlew buildCliTools
-
   quality-unit-test:
     name: Quality - Unit tests
     runs-on: ubuntu-latest
