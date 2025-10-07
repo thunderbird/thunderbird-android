@@ -45,6 +45,9 @@ jobs:
         with:
           write-cache: ${{ github.ref == 'refs/heads/main' }}
 
+      - name: Prime configuration and dependency cache
+        run: ./gradlew --no-daemon help
+
       - name: Assemble common
         run: ./gradlew :app-common:assemble
 
