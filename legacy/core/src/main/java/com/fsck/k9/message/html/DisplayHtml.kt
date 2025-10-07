@@ -8,7 +8,7 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
         get() {
             @Language("HTML")
             val html = """
-                <meta name="viewport" content="width=device-width"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=2">
                 ${cssStyleGlobal()}
                 ${cssStylePre()}
                 ${cssStyleSignature()}
@@ -35,7 +35,11 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
                     $headHtml
                 </head>
                 <body>
-                    $messageContent
+                    <div class="message message-content">
+                        <div class="clear">
+                            $messageContent
+                        </div>
+                    </div>
                 </body>
             </html>
         """.trimIndent()
@@ -54,9 +58,36 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
     private fun cssStyleGlobal(): String {
         return """
             <style type="text/css">
-                * {
-                    word-break: break-word;
-                    overflow-wrap: break-word;
+                body { font-size: 0.9rem; }
+                .clear:after {
+                  content: "";
+                  clear: both;
+                  display: block
+                }
+                .message {
+                  display: block;
+                  user-select: auto;
+                  -webkit-user-select: auto;
+                }
+                .message.message-content {
+                  width: 100%;
+                  overflow-wrap: break-word;
+                }
+                .message.message-content pre { white-space: pre-wrap; }
+                .message.message-content blockquote {
+                  margin-left: .8ex !important;
+                  margin-right: 0 !important;
+                  border-left: 1px #ccc solid !important;
+                  padding-left: 1ex !important
+                }
+                .message.message-content pre,
+                .message.message-content code,
+                .message.message-content table {
+                  max-width: 100%;
+                  overflow-x: auto;
+                }
+                body, div, section, article, main, header, footer {
+                  overflow-x: hidden;
                 }
             </style>
         """.trimIndent()

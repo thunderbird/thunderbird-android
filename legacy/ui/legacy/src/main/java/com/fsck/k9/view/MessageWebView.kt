@@ -3,9 +3,11 @@ package com.fsck.k9.view
 import android.content.Context
 import android.content.pm.PackageManager
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.webkit.WebSettings.LayoutAlgorithm
 import android.webkit.WebSettings.RenderPriority
 import android.webkit.WebView
+import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mailstore.AttachmentResolver
 import net.thunderbird.core.android.common.view.showInDarkMode
 import net.thunderbird.core.android.common.view.showInLightMode
@@ -58,6 +60,7 @@ class MessageWebView : WebView, KoinComponent {
             overScrollMode = OVER_SCROLL_NEVER
 
             textZoom = config.textZoom
+            setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
         }
 
         // Disable network images by default. This is overridden by preferences.
