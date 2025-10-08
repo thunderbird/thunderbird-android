@@ -1,6 +1,7 @@
 package com.fsck.k9.message.html
 
 import assertk.Assert
+import assertk.all
 import assertk.assertThat
 import assertk.assertions.contains
 import assertk.assertions.hasSize
@@ -8,6 +9,7 @@ import assertk.assertions.isEqualTo
 import org.jsoup.Jsoup
 import org.junit.Test
 
+@Suppress("LongMethod")
 class DisplayHtmlTest {
     val htmlSettings = HtmlSettings(useDarkMode = false, useFixedWidthFont = false)
     val displayHtml = DisplayHtml(htmlSettings)
@@ -37,11 +39,84 @@ class DisplayHtmlTest {
     fun wrapMessageContent_addsGlobalStyleRules() {
         val html = displayHtml.wrapMessageContent("test")
 
-        assertThat(html).containsStyleRulesFor(
-            selector = "*",
-            "word-break: break-word;",
-            "overflow-wrap: break-word;",
-        )
+        val styleContent = Jsoup.parse(html)
+            .select("style")
+            .joinToString("\n") { it.data().trimIndent() }
+
+        assertThat(styleContent).all {
+            contains(
+                """
+                    |body { font-size: 0.9rem; }
+                """.trimMargin(),
+            )
+            contains(
+                """
+                    |.clear:after {
+                    |  content: "";
+                    |  clear: both;
+                    |  display: block;
+                    |}
+                """.trimMargin(),
+            )
+            contains(
+                """
+                    |.message {
+                    |  display: block;
+                    |  user-select: auto;
+                    |  -webkit-user-select: auto;
+                    |}
+                """.trimMargin(),
+            )
+            contains(
+                """
+                    |.message.message-content {
+                    |  width: 100%;
+                    |  overflow-wrap: break-word;
+                    |}
+                """.trimMargin(),
+            )
+            contains(
+                """
+                    |.message.message-content pre { white-space: pre-wrap; }
+                """.trimMargin(),
+            )
+            contains(
+                """
+                    |.message.message-content blockquote {
+                    |  margin-left: .8ex !important;
+                    |  margin-right: 0 !important;
+                    |  border-left: 1px #ccc solid !important;
+                    |  padding-left: 1ex !important
+                    |}
+                """.trimMargin(),
+            )
+            contains(
+                """
+                    |.message.message-content pre,
+                    |.message.message-content code,
+                    |.message.message-content table {
+                    |  max-width: 100%;
+                    |  overflow-x: auto;
+                    |}
+                """.trimMargin(),
+            )
+            contains(
+                """
+                    |body, div, section, article, main, header, footer {
+                    |  overflow-x: hidden;
+                    |}
+                """.trimMargin(),
+            )
+            contains(
+                """
+                    |div.table-wrapper:has(table) {
+                    |  overflow-x: auto;
+                    |  display: block;
+                    |  width: 100% !important;
+                    |}
+                """.trimMargin(),
+            )
+        }
     }
 
     @Test

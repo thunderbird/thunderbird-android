@@ -62,7 +62,7 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
                 .clear:after {
                   content: "";
                   clear: both;
-                  display: block
+                  display: block;
                 }
                 .message {
                   display: block;
