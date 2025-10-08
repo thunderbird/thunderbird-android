@@ -181,6 +181,10 @@ include(
 )
 
 include(
+    ":core:ui:setting:api",
+)
+
+include(
     ":core:ui:account",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
