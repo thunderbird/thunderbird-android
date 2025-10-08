@@ -57,4 +57,6 @@
         <item quantity="one">1 mesazh</item>
         <item quantity="other">%d mesazhe</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Emri juaj</string>
+    <string name="account_setup_options_your_name_error_required">Emri juaj është i domosdoshëm.</string>
 </resources>
