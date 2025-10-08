@@ -6,7 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.message.controller.MessageReference
@@ -67,6 +70,7 @@ class ChooseFolderActivity : K9Activity() {
         val showHiddenFolders = savedShowHiddenFolders ?: false
 
         viewModel.setDisplayMode(account, showHiddenFolders)
+        initializeInsets()
     }
 
     private fun decodeArguments(savedInstanceState: Bundle?): Boolean {
@@ -107,6 +111,17 @@ class ChooseFolderActivity : K9Activity() {
 
         recyclerView = findViewById(R.id.folderList)
         recyclerView.adapter = folderListAdapter
+    }
+
+    private fun initializeInsets() {
+        val folderList = findViewById<View>(R.id.folderList)
+
+        ViewCompat.setOnApplyWindowInsetsListener(folderList) { v, windowsInsets ->
+            val insets = windowsInsets.getInsets(navigationBars())
+            v.setPadding(0, 0, 0, insets.bottom)
+
+            windowsInsets
+        }
     }
 
     private fun updateFolderList(displayFolders: List<DisplayFolder>) {
