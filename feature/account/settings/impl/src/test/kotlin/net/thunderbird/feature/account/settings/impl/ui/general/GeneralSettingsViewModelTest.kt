@@ -7,7 +7,6 @@ import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +17,9 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
-import net.thunderbird.core.ui.compose.preference.api.Preference
-import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
+import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.ui.setting.Settings
+import net.thunderbird.core.ui.setting.emptySettings
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
@@ -42,7 +42,7 @@ class GeneralSettingsViewModelTest {
         val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = null,
-            preferences = persistentListOf(),
+            settings = emptySettings(),
         )
 
         generalSettingsRobot(accountId, initialState, persistentListOf()) {
@@ -55,12 +55,12 @@ class GeneralSettingsViewModelTest {
         val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
-            preferences = persistentListOf(),
+            settings = emptySettings(),
         )
-        val preferences = FakeData.preferences
+        val settings = FakeData.settings
 
-        generalSettingsRobot(accountId, initialState, preferences) {
-            verifyGeneralSettingsLoaded(preferences)
+        generalSettingsRobot(accountId, initialState, settings) {
+            verifyGeneralSettingsLoaded(settings)
         }
     }
 
@@ -69,12 +69,12 @@ class GeneralSettingsViewModelTest {
         val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
-            preferences = persistentListOf(),
+            settings = emptySettings(),
         )
-        val preferences = FakeData.preferences
+        val settings = FakeData.settings
 
-        generalSettingsRobot(accountId, initialState, preferences) {
-            verifyGeneralSettingsLoaded(preferences)
+        generalSettingsRobot(accountId, initialState, settings) {
+            verifyGeneralSettingsLoaded(settings)
             pressBack()
             verifyBackNavigation()
         }
@@ -85,19 +85,19 @@ class GeneralSettingsViewModelTest {
         val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
-            preferences = persistentListOf(),
+            settings = emptySettings(),
         )
-        val preferences = FakeData.preferences
+        val settings = FakeData.settings
 
-        generalSettingsRobot(accountId, initialState, preferences) {
-            verifyGeneralSettingsLoaded(preferences)
-            val updatedPreference = (preferences.first() as PreferenceSetting.Text).copy(
+        generalSettingsRobot(accountId, initialState, settings) {
+            verifyGeneralSettingsLoaded(settings)
+            val updatedPreference = (settings.first() as SettingValue.Text).copy(
                 title = { "Updated Title" },
                 description = { "Updated Description" },
             )
-            updatePreference(updatedPreference)
+            updateSetting(updatedPreference)
 
-            verifyPreferenceUpdated(updatedPreference)
+            verifySettingUpdated(updatedPreference)
         }
     }
 }
@@ -105,9 +105,9 @@ class GeneralSettingsViewModelTest {
 private suspend fun MviContext.generalSettingsRobot(
     accountId: AccountId,
     initialState: State,
-    preferences: ImmutableList<Preference>,
+    settings: Settings,
     interaction: suspend GeneralSettingsRobot.() -> Unit,
-) = GeneralSettingsRobot(this, accountId, initialState, preferences).apply {
+) = GeneralSettingsRobot(this, accountId, initialState, settings).apply {
     initialize()
     interaction()
 }
@@ -116,9 +116,9 @@ private class GeneralSettingsRobot(
     private val mviContext: MviContext,
     private val accountId: AccountId,
     private val initialState: State = State(),
-    private val preferences: ImmutableList<Preference>,
+    private val settings: Settings,
 ) {
-    private lateinit var preferencesState: MutableStateFlow<ImmutableList<Preference>>
+    private lateinit var settingsState: MutableStateFlow<Settings>
     private lateinit var turbines: MviTurbines<State, Effect>
 
     private val viewModel: GeneralSettingsContract.ViewModel by lazy {
@@ -127,21 +127,21 @@ private class GeneralSettingsRobot(
             getAccountName = {
                 flowOf(Outcome.success("Subtitle"))
             },
-            getGeneralPreferences = {
-                preferencesState.map {
+            getGeneralSettings = {
+                settingsState.map {
                     println("Loading preferences: $it")
                     Outcome.success(it)
                 }
             },
-            updateGeneralPreferences = { _, preference ->
-                preferencesState.value = preferencesState.value.map { existingPreference ->
-                    if (existingPreference is PreferenceSetting<*> && existingPreference.id == preference.id) {
-                        println("Updating preference: ${preference.id}")
-                        println("Old preference: $existingPreference")
-                        println("New preference: $preference")
-                        preference
+            updateGeneralSettings = { _, setting ->
+                settingsState.value = settingsState.value.map { existingSetting ->
+                    if (existingSetting is SettingValue<*> && existingSetting.id == setting.id) {
+                        println("Updating setting: ${setting.id}")
+                        println("Old setting: $existingSetting")
+                        println("New setting: $setting")
+                        setting
                     } else {
-                        existingPreference
+                        existingSetting
                     }
                 }.toImmutableList()
                 Outcome.success(Unit)
@@ -151,7 +151,7 @@ private class GeneralSettingsRobot(
     }
 
     suspend fun initialize() {
-        preferencesState = MutableStateFlow(preferences)
+        settingsState = MutableStateFlow(settings)
 
         turbines = mviContext.turbinesWithInitialStateCheck(
             initialState = initialState,
@@ -167,10 +167,10 @@ private class GeneralSettingsRobot(
         )
     }
 
-    suspend fun verifyGeneralSettingsLoaded(preferences: ImmutableList<Preference>) {
+    suspend fun verifyGeneralSettingsLoaded(settings: Settings) {
         assertThat(turbines.awaitStateItem()).isEqualTo(
             initialState.copy(
-                preferences = preferences,
+                settings = settings,
             ),
         )
     }
@@ -185,15 +185,15 @@ private class GeneralSettingsRobot(
         )
     }
 
-    fun updatePreference(preference: PreferenceSetting<*>) {
-        viewModel.event(GeneralSettingsContract.Event.OnPreferenceSettingChange(preference))
+    fun updateSetting(setting: SettingValue<*>) {
+        viewModel.event(GeneralSettingsContract.Event.OnSettingValueChange(setting))
     }
 
-    suspend fun verifyPreferenceUpdated(preference: PreferenceSetting<*>) {
-        val updatedPreference = turbines.awaitStateItem().preferences
-            .filterIsInstance<PreferenceSetting<*>>()
-            .find { it.id == preference.id }
+    suspend fun verifySettingUpdated(setting: SettingValue<*>) {
+        val updatedSetting = turbines.awaitStateItem().settings
+            .filterIsInstance<SettingValue<*>>()
+            .find { it.id == setting.id }
 
-        assertThat(updatedPreference).isEqualTo(preference)
+        assertThat(updatedSetting).isEqualTo(setting)
     }
 }

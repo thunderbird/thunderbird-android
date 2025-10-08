@@ -88,8 +88,8 @@ internal class GetGeneralPreferencesTest {
     private fun createTestSubject(
         accountProfile: AccountProfile? = null,
         resourceProvider: ResourceProvider.GeneralResourceProvider = FakeGeneralResourceProvider(),
-    ): UseCase.GetGeneralPreferences {
-        return GetGeneralPreferences(
+    ): UseCase.GetGeneralSettings {
+        return GetGeneralSettings(
             repository = FakeAccountProfileRepository(accountProfile),
             resourceProvider = resourceProvider,
         )

@@ -6,13 +6,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.compose.preference.api.Preference
-import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
+import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 
 internal typealias AccountNameOutcome = Outcome<String, SettingsError>
-internal typealias AccountSettingsOutcome = Outcome<ImmutableList<Preference>, SettingsError>
+internal typealias AccountSettingsOutcome = Outcome<Settings, SettingsError>
 
 internal interface AccountSettingsDomainContract {
 
@@ -22,14 +22,14 @@ internal interface AccountSettingsDomainContract {
             operator fun invoke(accountId: AccountId): Flow<AccountNameOutcome>
         }
 
-        fun interface GetGeneralPreferences {
+        fun interface GetGeneralSettings {
             operator fun invoke(accountId: AccountId): Flow<AccountSettingsOutcome>
         }
 
-        fun interface UpdateGeneralPreferences {
+        fun interface UpdateGeneralSettings {
             suspend operator fun invoke(
                 accountId: AccountId,
-                preference: PreferenceSetting<*>,
+                setting: SettingValue<*>,
             ): Outcome<Unit, SettingsError>
         }
     }

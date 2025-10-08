@@ -9,12 +9,12 @@ import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.collections.immutable.persistentListOf
-import net.thunderbird.core.ui.compose.preference.api.PreferenceDisplay
-import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
+import net.thunderbird.core.ui.setting.SettingDecoration
+import net.thunderbird.core.ui.setting.SettingValue
 
-object FakePreferenceData {
+object FakeSettingData {
 
-    val textPreference = PreferenceSetting.Text(
+    val text = SettingValue.Text(
         id = "text",
         icon = { Icons.Outlined.Info },
         title = { "Title" },
@@ -22,7 +22,7 @@ object FakePreferenceData {
         value = "Value",
     )
 
-    val colorPreference = PreferenceSetting.Color(
+    val color = SettingValue.Color(
         id = "color",
         icon = { Icons.Outlined.Info },
         title = { "Title" },
@@ -35,7 +35,7 @@ object FakePreferenceData {
         ),
     )
 
-    val customPreference = PreferenceDisplay.Custom(
+    val custom = SettingDecoration.Custom(
         id = "custom",
         customUi = { modifier ->
             CardElevated(
@@ -53,20 +53,20 @@ object FakePreferenceData {
         },
     )
 
-    val sectionDivider = PreferenceDisplay.SectionDivider(
+    val sectionDivider = SettingDecoration.SectionDivider(
         id = "section_divider",
     )
 
-    val sectionHeader = PreferenceDisplay.SectionHeader(
+    val sectionHeader = SettingDecoration.SectionHeader(
         id = "section_header",
         title = { "Section Title" },
         color = { Color.Black },
     )
 
-    val preferences = persistentListOf(
-        textPreference,
-        colorPreference,
-        customPreference,
+    val settings = persistentListOf(
+        text,
+        color,
+        custom,
         sectionHeader,
         sectionDivider,
     )

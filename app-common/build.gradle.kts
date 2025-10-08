@@ -31,6 +31,9 @@ dependencies {
     implementation(projects.core.configstore.implBackend)
 
     implementation(projects.core.featureflag)
+
+    implementation(projects.core.ui.setting.api)
+    implementation(projects.core.ui.setting.implDialog)
     implementation(projects.core.ui.legacy.theme2.common)
 
     implementation(projects.feature.account.avatar.api)

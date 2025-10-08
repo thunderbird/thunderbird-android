@@ -8,7 +8,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
+import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
@@ -16,7 +16,7 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
 import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
 
-class UpdateGeneralPreferencesTest {
+class UpdateGeneralSettingsTest {
 
     @Test
     fun `should update account profile`() = runTest {
@@ -29,7 +29,7 @@ class UpdateGeneralPreferencesTest {
             avatar = AccountAvatar.Icon(name = "star"),
         )
         val newName = "Updated Account Name"
-        val preference = PreferenceSetting.Text(
+        val setting = SettingValue.Text(
             id = GeneralPreference.NAME.generateId(accountId),
             title = { "Name" },
             description = { "Account name" },
@@ -39,10 +39,10 @@ class UpdateGeneralPreferencesTest {
         val repository = FakeAccountProfileRepository(
             initialAccountProfile = accountProfile,
         )
-        val testSubject = UpdateGeneralPreferences(repository)
+        val testSubject = UpdateGeneralSettings(repository)
 
         // Act
-        val result = testSubject(accountId, preference)
+        val result = testSubject(accountId, setting)
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Success::class)
@@ -63,15 +63,15 @@ class UpdateGeneralPreferencesTest {
         )
         val newName = "Updated Account Name"
         val newColor = 0x00FF00
-        val preferences = listOf(
-            PreferenceSetting.Text(
+        val settings = listOf(
+            SettingValue.Text(
                 id = GeneralPreference.NAME.generateId(accountId),
                 title = { "Name" },
                 description = { "Account name" },
                 icon = { null },
                 value = newName,
             ),
-            PreferenceSetting.Color(
+            SettingValue.Color(
                 id = GeneralPreference.COLOR.generateId(accountId),
                 title = { "Color" },
                 description = { "Account color" },
@@ -83,11 +83,11 @@ class UpdateGeneralPreferencesTest {
         val repository = FakeAccountProfileRepository(
             initialAccountProfile = accountProfile,
         )
-        val testSubject = UpdateGeneralPreferences(repository)
+        val testSubject = UpdateGeneralSettings(repository)
 
         // Act
-        preferences.forEach { preference ->
-            testSubject(accountId, preference)
+        settings.forEach { setting ->
+            testSubject(accountId, setting)
         }
 
         // Assert
@@ -103,7 +103,7 @@ class UpdateGeneralPreferencesTest {
     fun `should emit NotFound when account profile not found`() = runTest {
         // Arrange
         val accountId = AccountIdFactory.create()
-        val preference = PreferenceSetting.Text(
+        val setting = SettingValue.Text(
             id = GeneralPreference.NAME.generateId(accountId),
             title = { "Name" },
             description = { "Account name" },
@@ -111,10 +111,10 @@ class UpdateGeneralPreferencesTest {
             value = "Updated Account Name",
         )
         val repository = FakeAccountProfileRepository()
-        val testSubject = UpdateGeneralPreferences(repository)
+        val testSubject = UpdateGeneralSettings(repository)
 
         // Act
-        val result = testSubject(accountId, preference)
+        val result = testSubject(accountId, setting)
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)

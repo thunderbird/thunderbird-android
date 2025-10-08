@@ -2,7 +2,7 @@ package net.thunderbird.feature.account.settings.impl.domain.usecase
 
 import kotlinx.coroutines.flow.firstOrNull
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
+import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.profile.AccountProfileRepository
@@ -11,29 +11,29 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
 import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
 
-internal class UpdateGeneralPreferences(
+internal class UpdateGeneralSettings(
     private val repository: AccountProfileRepository,
-) : UseCase.UpdateGeneralPreferences {
+) : UseCase.UpdateGeneralSettings {
     override suspend fun invoke(
         accountId: AccountId,
-        preference: PreferenceSetting<*>,
+        setting: SettingValue<*>,
     ): Outcome<Unit, SettingsError> {
-        return when (preference.id) {
+        return when (setting.id) {
             GeneralPreference.NAME.generateId(accountId) -> {
                 updateAccountProfile(accountId) {
-                    copy(name = preference.value as String)
+                    copy(name = setting.value as String)
                 }
             }
 
             GeneralPreference.COLOR.generateId(accountId) -> {
                 updateAccountProfile(accountId) {
-                    copy(color = preference.value as Int)
+                    copy(color = setting.value as Int)
                 }
             }
 
             else -> Outcome.failure(
                 SettingsError.NotFound(
-                    message = "Unknown preference id: ${preference.id}",
+                    message = "Unknown setting id: ${setting.id}",
                 ),
             )
         }

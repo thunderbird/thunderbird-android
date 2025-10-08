@@ -182,6 +182,7 @@ include(
 
 include(
     ":core:ui:setting:api",
+    ":core:ui:setting:impl-dialog",
 )
 
 include(

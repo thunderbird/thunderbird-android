@@ -14,11 +14,15 @@ dependencies {
 
     implementation(projects.core.outcome)
 
+    implementation(projects.core.ui.setting.api)
+
     implementation(projects.core.logging.implLegacy)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.compose.navigation)
     implementation(projects.core.ui.compose.preference)
     implementation(projects.core.ui.legacy.theme2.common)
+
+    debugImplementation(projects.core.ui.setting.implDialog)
 
     testImplementation(projects.core.logging.testing)
     testImplementation(projects.core.ui.compose.testing)
