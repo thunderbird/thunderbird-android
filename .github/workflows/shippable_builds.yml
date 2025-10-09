@@ -224,7 +224,7 @@ jobs:
         if: ${{ contains(matrix.releaseTarget, 'github') || needs.dump_config.outputs.releaseType == 'daily' }}
         uses: ./.github/actions/setup-gradle
         with:
-          run-release: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+          disable-cache: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: never
 
       - name: Get application info
@@ -462,7 +462,7 @@ jobs:
       - name: Setup Gradle environment
         uses: ./.github/actions/setup-gradle
         with:
-          run-release: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
+          disable-cache: "${{ contains(fromJSON('[\"beta\", \"release\"]'), needs.dump_config.outputs.releaseType) }}"
           add-job-summary: on-failure
 
       - name: Set Version Code for Daily
