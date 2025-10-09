@@ -10,3 +10,8 @@ android {
 dependencies {
     implementation(projects.core.ui.compose.navigation)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

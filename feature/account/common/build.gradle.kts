@@ -15,3 +15,8 @@ dependencies {
 
     testImplementation(projects.core.ui.compose.testing)
 }
+
+codeCoverage {
+    branchCoverage.set(45)
+    lineCoverage.set(42)
+}

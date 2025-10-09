@@ -16,3 +16,8 @@ dependencies {
     implementation(libs.clikt)
     implementation(libs.kxml2)
 }
+
+codeCoverage {
+    branchCoverage.set(0)
+    lineCoverage.set(0)
+}

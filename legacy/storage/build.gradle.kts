@@ -28,3 +28,8 @@ dependencies {
 android {
     namespace = "com.fsck.k9.storage"
 }
+
+codeCoverage {
+    branchCoverage.set(45)
+    lineCoverage.set(67)
+}

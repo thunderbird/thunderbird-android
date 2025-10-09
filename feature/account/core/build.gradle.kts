@@ -6,3 +6,7 @@ plugins {
 dependencies {
     api(projects.feature.account.api)
 }
+
+codeCoverage {
+    lineCoverage.set(0)
+}
