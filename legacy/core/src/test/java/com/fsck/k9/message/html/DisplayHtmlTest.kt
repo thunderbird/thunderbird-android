@@ -116,6 +116,14 @@ class DisplayHtmlTest {
                     |}
                 """.trimMargin(),
             )
+            contains(
+                """
+                    |.message.message-content img {
+                    |  max-width: 100%;
+                    |  height: auto;
+                    |}
+                """.trimMargin(),
+            )
         }
     }
 

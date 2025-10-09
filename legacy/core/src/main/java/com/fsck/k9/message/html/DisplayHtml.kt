@@ -86,6 +86,10 @@ class DisplayHtml(private val settings: HtmlSettings) : HtmlHeadProvider {
                   max-width: 100%;
                   overflow-x: auto;
                 }
+                .message.message-content img {
+                  max-width: 100%;
+                  height: auto;
+                }
                 body, div, section, article, main, header, footer {
                   overflow-x: hidden;
                 }
