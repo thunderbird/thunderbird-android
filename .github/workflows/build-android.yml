@@ -23,8 +23,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  build-android:
-    name: Build Android application
+  build-common:
+    name: Build common code
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
@@ -45,28 +45,114 @@ jobs:
         with:
           write-cache: ${{ github.ref == 'refs/heads/main' }}
 
+      - name: Prime configuration and dependency cache
+        run: ./gradlew --no-daemon help
+
+      - name: Assemble common
+        run: ./gradlew :app-common:assemble
+
       - name: Show disk usage
         uses: ./.github/actions/disk-usage
 
-      - name: Quality - Spotless
-        run: ./gradlew spotlessCheck
+  build-k9:
+    name: Build K9 application
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [build-common]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
 
-      - name: Quality - Detekt
-        run: ./gradlew detekt
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
 
-      - name: Quality - Lint
+      - name: Build K9 application
+        run: ./gradlew :app-k9mail:assemble
+
+      - name: Check K9 Badging
+        run: |
+          ./gradlew :app-k9mail:checkFossReleaseBadging \
+                    :app-k9mail:checkFullReleaseBadging \
+                    -x assemble \
+                    -x build
+
+  build-thunderbird:
+    name: Build Thunderbird application
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [build-common]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+
+      - name: Build Thunderbird application
+        run: ./gradlew :app-thunderbird:assemble
+
+      - name: Check Thunderbird Badging
+        run: |
+          ./gradlew :app-thunderbird:checkFossBetaBadging \
+                    :app-thunderbird:checkFossDailyBadging \
+                    :app-thunderbird:checkFossReleaseBadging \
+                    :app-thunderbird:checkFullBetaBadging \
+                    :app-thunderbird:checkFullDailyBadging \
+                    :app-thunderbird:checkFullReleaseBadging \
+                    -x assemble \
+                    -x build
+
+  build-ui-catalog:
+    name: Build UI-catalog application
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [build-common]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+
+      - name: Build App UI-catalog application in Debug mode
+        run: ./gradlew :app-ui-catalog:assembleDebug
+
+  quality-unit-test:
+    name: Quality - Unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [build-common]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+
+      - name: Running unit tests
+        run: ./gradlew testsOnCi --parallel
+
+  quality-lint:
+    name: Quality - Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    needs: [build-common]
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 1
+
+      - name: Setup Gradle environment
+        uses: ./.github/actions/setup-gradle
+
+      - name: Running Android lint
         run: ./gradlew lint
-
-      - name: Show disk usage
-        uses: ./.github/actions/disk-usage
-
-      - name: Quality - Dependency Guard
-        run: ./gradlew dependencyGuard
-
-      - name: Build (run full build and tests)
-        run: ./gradlew build
-
-      - name: Show disk usage
-        uses: ./.github/actions/disk-usage
-
-

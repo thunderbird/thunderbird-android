@@ -37,9 +37,10 @@ tasks.register("testsOnCi") {
     val skipTests = setOf("testReleaseUnitTest")
 
     dependsOn(
-        subprojects.map { project -> project.tasks.withType(Test::class.java) }
-            .flatten()
-            .filterNot { task -> task.name in skipTests },
+        subprojects
+            .filterNot { it.path == ":quality:konsist" } // Konsist tests should be run separately
+            .flatMap { it.tasks.withType(Test::class.java) }
+            .filterNot { it.name in skipTests },
     )
 }
 
