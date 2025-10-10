@@ -2,11 +2,14 @@ package com.fsck.k9.activity;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -49,9 +52,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.os.BundleCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
+import kotlin.Unit;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.android.account.Identity;
@@ -121,8 +128,18 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
+import net.thunderbird.core.featureflag.FeatureFlagProvider;
+import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
+import net.thunderbird.core.outcome.OutcomeKt;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
+import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed;
+import net.thunderbird.feature.notification.api.content.NotificationFactoryCoroutineCompat;
+import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification;
+import net.thunderbird.feature.notification.api.dismisser.NotificationDismisser;
+import net.thunderbird.feature.notification.api.dismisser.compat.NotificationDismisserCompat;
+import net.thunderbird.feature.notification.api.sender.NotificationSender;
+import net.thunderbird.feature.notification.api.sender.compat.NotificationSenderCompat;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
@@ -130,6 +147,7 @@ import net.thunderbird.core.logging.legacy.Log;
 import static com.fsck.k9.activity.compose.AttachmentPresenter.REQUEST_CODE_ATTACHMENT_URI;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.CAMERA_PERMISSION_REQUEST_CODE;
 import static app.k9mail.core.android.common.camera.CameraCaptureHandler.REQUEST_IMAGE_CAPTURE;
+import static net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotificationKt.SentFolderNotFoundNotification;
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
@@ -167,6 +185,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final String STATE_KEY_READ_RECEIPT = "com.fsck.k9.activity.MessageCompose.messageReadReceipt";
     private static final String STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE = "com.fsck.k9.activity.MessageCompose.changesMadeSinceLastSave";
     private static final String STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT = "alreadyNotifiedUserOfEmptySubject";
+    private static final String STATE_ACTIVE_IN_APP_NOTIFICATIONS =
+            "com.fsck.k9.activity.MessageCompose.activeInAppNotifications";
 
     private static final String FRAGMENT_WAITING_FOR_ATTACHMENT = "waitingForAttachment";
 
@@ -202,6 +222,14 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private final Contacts contacts = DI.get(Contacts.class);
 
     private final CameraCaptureHandler cameraCaptureHandler = DI.get(CameraCaptureHandler.class);
+    private final FeatureFlagProvider featureFlagProvider = DI.get(FeatureFlagProvider.class);
+    private final NotificationSender notificationSender = DI.get(NotificationSender.class);
+    private final NotificationSenderCompat notificationSenderCompat = new NotificationSenderCompat(notificationSender);
+    private final NotificationDismisser notificationDismisser = DI.get(NotificationDismisser.class);
+    private final NotificationDismisserCompat notificationDismisserCompat =
+            new NotificationDismisserCompat(notificationDismisser);
+
+    private final Set<Integer> activeInAppNotifications = new HashSet<>();
 
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
@@ -287,16 +315,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         final Intent intent = getIntent();
 
-        String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
-        relatedMessageReference = MessageReference.parse(messageReferenceString);
-
-        final String accountUuid = (relatedMessageReference != null) ?
-                relatedMessageReference.getAccountUuid() :
-                intent.getStringExtra(EXTRA_ACCOUNT);
-
-        if (accountUuid != null) {
-            account = preferences.getAccount(accountUuid);
-        }
+        fetchAccount(intent);
 
         if (account == null) {
             account = preferences.getDefaultAccount();
@@ -312,6 +331,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             finish();
             return;
         }
+
+        initializeInAppNotificationFragment();
 
         chooseIdentityView = findViewById(R.id.identity);
         chooseIdentityView.setOnClickListener(this);
@@ -532,10 +553,76 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
+    private void fetchAccount(Intent intent) {
+        String messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE);
+        relatedMessageReference = MessageReference.parse(messageReferenceString);
+
+        final String accountUuid = (relatedMessageReference != null) ?
+            relatedMessageReference.getAccountUuid() :
+            intent.getStringExtra(EXTRA_ACCOUNT);
+
+        if (accountUuid != null) {
+            account = preferences.getAccount(accountUuid);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         messagingController.addListener(messagingListener);
+
+        if (account == null) {
+            fetchAccount(getIntent());
+        }
+
+        dismissActiveInAppNotifications();
+        triggerIfNeededSentFolderNotFoundInAppNotification();
+    }
+
+    private void triggerIfNeededSentFolderNotFoundInAppNotification() {
+        if (account != null && account.getSentFolderId() == null) {
+            final SentFolderNotFoundNotification notification = NotificationFactoryCoroutineCompat.create(
+                    continuation -> SentFolderNotFoundNotification(account.getUuid(), continuation)
+            );
+            notificationSenderCompat.send(notification, outcome -> {
+                OutcomeKt.handle(
+                        outcome,
+                        success -> {
+                            activeInAppNotifications.add(success.getRawNotificationId());
+                            return Unit.INSTANCE;
+                        },
+                        failure -> {
+                            final Throwable throwable = failure instanceof CommandExecutionFailed<?>
+                                ? ((CommandExecutionFailed<?>) failure).getThrowable()
+                                : null;
+                            Log.e(throwable, "Failed to send in-app notification. Failure = " + failure);
+                            return Unit.INSTANCE;
+                        });
+            });
+        }
+    }
+
+    private void dismissActiveInAppNotifications() {
+        for (Integer notificationId : activeInAppNotifications) {
+            notificationDismisserCompat.dismiss(
+                    notificationId,
+                    outcome -> {
+                        OutcomeKt.handle(
+                                outcome,
+                                success -> {
+                                    activeInAppNotifications.remove(success.getRawNotificationId());
+                                    return Unit.INSTANCE;
+                                },
+                                failure -> {
+                                    final Throwable throwable = failure instanceof CommandExecutionFailed<?>
+                                        ? ((CommandExecutionFailed<?>) failure).getThrowable()
+                                        : null;
+                                    Log.e(throwable, "Failed to dismiss in-app notification. Failure = " + failure);
+                                    return Unit.INSTANCE;
+                                }
+                        );
+                    });
+        }
     }
 
     @Override
@@ -563,7 +650,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * Quoted text,
      */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, relatedMessageProcessed);
@@ -577,6 +664,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         outState.putBoolean(STATE_KEY_READ_RECEIPT, requestReadReceipt);
         outState.putBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE, changesMadeSinceLastSave);
         outState.putBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT, alreadyNotifiedUserOfEmptySubject);
+        outState.putIntegerArrayList(STATE_ACTIVE_IN_APP_NOTIFICATIONS, new ArrayList<>(activeInAppNotifications));
 
         replyToPresenter.onSaveInstanceState(outState);
         recipientPresenter.onSaveInstanceState(outState);
@@ -616,6 +704,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         referencedMessageIds = savedInstanceState.getString(STATE_REFERENCES);
         changesMadeSinceLastSave = savedInstanceState.getBoolean(STATE_KEY_CHANGES_MADE_SINCE_LAST_SAVE);
         alreadyNotifiedUserOfEmptySubject = savedInstanceState.getBoolean(STATE_ALREADY_NOTIFIED_USER_OF_EMPTY_SUBJECT);
+        final List<Integer> activeInAppNotifications = savedInstanceState
+                .getIntegerArrayList(STATE_ACTIVE_IN_APP_NOTIFICATIONS);
+        if (activeInAppNotifications != null && !activeInAppNotifications.isEmpty()) {
+            this.activeInAppNotifications.addAll(activeInAppNotifications);
+        }
 
         updateFrom();
 
@@ -878,6 +971,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             } else {
                 this.account = account;
             }
+
+            dismissActiveInAppNotifications();
+            triggerIfNeededSentFolderNotFoundInAppNotification();
 
             // Show CC/BCC text input field when switching to an account that always wants them
             // displayed.
@@ -1731,6 +1827,39 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void initializeActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void initializeInAppNotificationFragment() {
+        if (FeatureFlagProviderCompat
+                .provide(featureFlagProvider, "display_in_app_notifications")
+                .isDisabledOrUnavailable()) {
+            return;
+        }
+
+        final List<LegacyAccountDto> accounts = preferences.getAccounts();
+        if (accounts.isEmpty()) {
+            Log.w("Can't initialize in-app notifications. No accounts were found.");
+            return;
+        }
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment currentFragment = fragmentManager
+                .findFragmentByTag(MessageComposeInAppNotificationFragment.FRAGMENT_TAG);
+
+        if (currentFragment != null) {
+            return;
+        }
+
+        final ArrayList<String> uuids = new ArrayList<>();
+        for (LegacyAccountDto legacyAccountDto : accounts) {
+            uuids.add(legacyAccountDto.getUuid());
+        }
+        final MessageComposeInAppNotificationFragment inAppNotificationFragment =
+                MessageComposeInAppNotificationFragment.newInstance(uuids);
+        fragmentManager
+            .beginTransaction()
+            .add(R.id.message_compose_in_app_notifications_container, inAppNotificationFragment,
+                MessageComposeInAppNotificationFragment.FRAGMENT_TAG)
+            .commit();
     }
 
     // TODO We miss callbacks for this listener if they happens while we are paused!
