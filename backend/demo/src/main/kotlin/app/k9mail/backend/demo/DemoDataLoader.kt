@@ -11,13 +11,13 @@ internal class DemoDataLoader {
 
     @OptIn(ExperimentalSerializationApi::class)
     fun loadFolders(): DemoFolders {
-        return getResourceAsStream("/contents.json").use { inputStream ->
+        return getResourceAsStream("/mailbox/contents.json").use { inputStream ->
             Json.decodeFromStream<DemoFolders>(inputStream)
         }
     }
 
     fun loadMessage(folderServerId: String, messageServerId: String): Message {
-        return getResourceAsStream("/$folderServerId/$messageServerId.eml").use { inputStream ->
+        return getResourceAsStream("/mailbox/$folderServerId/$messageServerId.eml").use { inputStream ->
             MimeMessage.parseMimeMessage(inputStream, false).apply {
                 uid = messageServerId
             }
