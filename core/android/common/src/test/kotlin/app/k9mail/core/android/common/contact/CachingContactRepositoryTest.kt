@@ -1,5 +1,6 @@
 package app.k9mail.core.android.common.contact
 
+import android.net.Uri
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isFalse
@@ -139,5 +140,54 @@ internal class CachingContactRepositoryTest {
         testSubject.clearCache()
 
         assertThat(cache[CONTACT_EMAIL_ADDRESS]).isNull()
+    }
+
+    @Test
+    fun `getPhotoUri() returns null when email is invalid`() {
+        val result = testSubject.getPhotoUri("invalid-email")
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `getPhotoUri() returns null when no contact found for valid email`() {
+        dataSource.stub { on { getContactFor(CONTACT_EMAIL_ADDRESS) } doReturn null }
+
+        val result = testSubject.getPhotoUri(CONTACT_EMAIL_ADDRESS.address)
+
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `getPhotoUri() returns contact photo uri when contact exists`() {
+        dataSource.stub { on { getContactFor(CONTACT_EMAIL_ADDRESS) } doReturn CONTACT }
+
+        val result = testSubject.getPhotoUri(CONTACT_EMAIL_ADDRESS.address)
+
+        assertThat(result).isEqualTo(CONTACT.photoUri)
+    }
+
+    @Test
+    fun `getPhotoUri() returns cached photo uri when contact already cached`() {
+        cache[CONTACT_EMAIL_ADDRESS] = CONTACT
+
+        val result = testSubject.getPhotoUri(CONTACT_EMAIL_ADDRESS.address)
+
+        assertThat(result).isEqualTo(CONTACT.photoUri)
+    }
+
+    @Test
+    fun `getPhotoUri() caches result after first fetch`() {
+        dataSource.stub {
+            on { getContactFor(CONTACT_EMAIL_ADDRESS) } doReturnConsecutively listOf(
+                CONTACT,
+                CONTACT.copy(photoUri = Uri.parse("content://other/photo")),
+            )
+        }
+
+        val result1 = testSubject.getPhotoUri(CONTACT_EMAIL_ADDRESS.address)
+        val result2 = testSubject.getPhotoUri(CONTACT_EMAIL_ADDRESS.address)
+
+        assertThat(result1).isEqualTo(result2)
     }
 }
