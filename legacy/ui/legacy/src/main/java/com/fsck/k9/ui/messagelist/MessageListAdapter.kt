@@ -11,8 +11,6 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import app.k9mail.feature.launcher.FeatureLauncherActivity
-import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
@@ -27,6 +25,7 @@ import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
 private const val FOOTER_ID = 1L
@@ -219,27 +218,8 @@ class MessageListAdapter internal constructor(
             TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST if isInAppNotificationEnabled ->
                 BannerInlineListInAppNotificationViewHolder(
                     view = ComposeView(context = parent.context),
-                    eventFilter = { event ->
-                        val accountUuid = event.notification.accountUuid
-                        accountUuid != null && accountUuid in accountUuids
-                    },
-                    onNotificationActionClick = { action ->
-                        when (action) {
-                            is NotificationAction.UpdateIncomingServerSettings ->
-                                FeatureLauncherActivity.launch(
-                                    context = parent.context,
-                                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountUuid),
-                                )
-
-                            is NotificationAction.UpdateOutgoingServerSettings ->
-                                FeatureLauncherActivity.launch(
-                                    context = parent.context,
-                                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountUuid),
-                                )
-
-                            else -> Unit
-                        }
-                    },
+                    eventFilter = listItemListener::filterInAppNotificationEvents,
+                    onNotificationActionClick = listItemListener::onNotificationActionClicked,
                 )
 
             else -> error("Unsupported type: $viewType")
@@ -423,6 +403,8 @@ interface MessageListItemActionListener {
     fun onToggleMessageSelection(item: MessageListItem)
     fun onToggleMessageFlag(item: MessageListItem)
     fun onFooterClicked()
+    fun filterInAppNotificationEvents(event: InAppNotificationEvent): Boolean
+    fun onNotificationActionClicked(action: NotificationAction)
 }
 
 sealed interface MessageListViewItem {
