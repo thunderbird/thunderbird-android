@@ -103,6 +103,9 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                     KEY_SHOW_CORRESPONDENT_NAMES,
                     config.isShowCorrespondentNames,
                 )
+                storageEditor.commit().also { commited ->
+                    logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
+                }
             }
         }
     }
