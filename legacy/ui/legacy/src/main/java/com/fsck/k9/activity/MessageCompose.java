@@ -49,9 +49,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.os.BundleCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.fsck.k9.activity.compose.MessageComposeInAppNotificationFragment;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.android.account.Identity;
@@ -121,6 +124,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import net.thunderbird.core.android.account.MessageFormat;
 import net.thunderbird.core.android.contact.ContactIntentHelper;
+import net.thunderbird.core.featureflag.FeatureFlagProvider;
+import net.thunderbird.core.featureflag.compat.FeatureFlagProviderCompat;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
@@ -202,6 +207,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private final Contacts contacts = DI.get(Contacts.class);
 
     private final CameraCaptureHandler cameraCaptureHandler = DI.get(CameraCaptureHandler.class);
+    private final FeatureFlagProvider featureFlagProvider = DI.get(FeatureFlagProvider.class);
 
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
@@ -312,6 +318,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             finish();
             return;
         }
+
+        initializeInAppNotificationFragment();
 
         chooseIdentityView = findViewById(R.id.identity);
         chooseIdentityView.setOnClickListener(this);
@@ -1731,6 +1739,34 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void initializeActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void initializeInAppNotificationFragment() {
+        if (FeatureFlagProviderCompat
+                .provide(featureFlagProvider, "display_in_app_notifications")
+                .isDisabledOrUnavailable()) {
+            return;
+        }
+
+        if (account == null) {
+            Log.w("Can't initialize in-app notifications. Account is currently null");
+            return;
+        }
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        final Fragment currentFragment = fragmentManager
+                .findFragmentByTag(MessageComposeInAppNotificationFragment.FRAGMENT_TAG);
+
+        if (currentFragment != null) {
+            return;
+        }
+
+        final MessageComposeInAppNotificationFragment inAppNotificationFragment =
+                MessageComposeInAppNotificationFragment.newInstance(account.getUuid());
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.message_compose_in_app_notifications_container, inAppNotificationFragment,
+                        MessageComposeInAppNotificationFragment.FRAGMENT_TAG)
+                .commit();
     }
 
     // TODO We miss callbacks for this listener if they happens while we are paused!
