@@ -68,7 +68,8 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> generalSettingsManager.getConfig()
                 .notification.isQuietTimeEnabled
 
-            "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
+            "disable_notifications_during_quiet_time" -> !generalSettingsManager.getConfig()
+                .notification.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> generalSettingsManager.getConfig().privacy.isHideUserAgent
             "privacy_hide_timezone" -> generalSettingsManager.getConfig().privacy.isHideTimeZone
             "debug_logging" -> generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
@@ -108,7 +109,7 @@ class GeneralSettingsDataStore(
             "messageview_fixedwidth_font" -> setIsUseMessageViewFixedWidthFont(isUseMessageViewFixedWidthFont = value)
             "messageview_autofit_width" -> setIsAutoFitWidth(isAutoFitWidth = value)
             "quiet_time_enabled" -> setIsQuietTimeEnabled(isQuietTimeEnabled = value)
-            "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
+            "disable_notifications_during_quiet_time" -> setIsNotificationDuringQuietTimeEnabled(!value)
             "privacy_hide_useragent" -> setIsHideUserAgent(isHideUserAgent = value)
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
@@ -580,6 +581,17 @@ class GeneralSettingsDataStore(
             settings.copy(
                 notification = settings.notification.copy(
                     isQuietTimeEnabled = isQuietTimeEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setIsNotificationDuringQuietTimeEnabled(isNotificationDuringQuietTimeEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                notification = settings.notification.copy(
+                    isNotificationDuringQuietTimeEnabled = isNotificationDuringQuietTimeEnabled,
                 ),
             )
         }

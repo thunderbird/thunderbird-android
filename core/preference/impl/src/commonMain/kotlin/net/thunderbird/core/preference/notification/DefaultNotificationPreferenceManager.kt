@@ -38,6 +38,10 @@ class DefaultNotificationPreferenceManager(
                 key = KEY_QUIET_TIME_ENDS,
                 defValue = NOTIFICATION_PREFERENCE_DEFAULT_QUIET_TIME_END,
             ),
+            isNotificationDuringQuietTimeEnabled = storage.getBoolean(
+                key = KEY_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
+                defValue = NOTIFICATION_PREFERENCE_DEFAULT_IS_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
+            ),
         ),
     )
 
@@ -53,6 +57,10 @@ class DefaultNotificationPreferenceManager(
                 storageEditor.putBoolean(
                     KEY_QUIET_TIME_ENABLED,
                     config.isQuietTimeEnabled,
+                )
+                storageEditor.putBoolean(
+                    KEY_NOTIFICATION_DURING_QUIET_TIME_ENABLED,
+                    config.isNotificationDuringQuietTimeEnabled,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }

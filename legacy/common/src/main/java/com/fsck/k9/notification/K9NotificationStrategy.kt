@@ -2,7 +2,6 @@ package com.fsck.k9.notification
 
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.di.DI
-import com.fsck.k9.K9
 import com.fsck.k9.QuietTimeChecker
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.K9MailLib
@@ -29,7 +28,9 @@ class K9NotificationStrategy(
         message: LocalMessage,
         isOldMessage: Boolean,
     ): Boolean {
-        if (!K9.isNotificationDuringQuietTimeEnabled && generalSettingsManager.getConfig().notification.isQuietTime) {
+        if (!generalSettingsManager.getConfig().notification.isNotificationDuringQuietTimeEnabled &&
+            generalSettingsManager.getConfig().notification.isQuietTime
+        ) {
             Log.v("No notification: Quiet time is active")
             return false
         }
