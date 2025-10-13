@@ -18,6 +18,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.io.Buffer
 import kotlinx.io.RawSink
 import kotlinx.io.asSink
+import net.thunderbird.core.file.FileSystemManager
 import net.thunderbird.core.logging.LogEvent
 import net.thunderbird.core.logging.LogLevel
 
