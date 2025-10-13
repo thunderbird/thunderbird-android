@@ -57,6 +57,7 @@ import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.Theme
@@ -78,6 +79,7 @@ class MessageViewFragment :
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -318,6 +320,8 @@ class MessageViewFragment :
         menu.findItem(R.id.move_to_drafts).isVisible = isOutbox
         menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
         menu.findItem(R.id.show_headers).isVisible = true
+        menu.findItem(R.id.export_eml).isVisible =
+            featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
         menu.findItem(R.id.compose).isVisible = true
 
         val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
@@ -354,6 +358,9 @@ class MessageViewFragment :
             R.id.move_to_drafts -> onMoveToDrafts()
             R.id.unsubscribe -> onUnsubscribe()
             R.id.show_headers -> onShowHeaders()
+            R.id.export_eml -> if (
+                featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
+            ) onExportEml() else return true
             else -> return false
         }
 
@@ -660,6 +667,10 @@ class MessageViewFragment :
         account.setLastSelectedFolderId(destinationFolderId)
 
         copyMessage(messageReference, destinationFolderId)
+    }
+
+    private fun onExportEml() {
+        // TODO trigger eml export
     }
 
     private fun onSendAlternate() {
