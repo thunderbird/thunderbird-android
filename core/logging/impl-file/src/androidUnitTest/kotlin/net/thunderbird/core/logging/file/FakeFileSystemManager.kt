@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 import kotlinx.io.Buffer
 import kotlinx.io.RawSink
+import kotlinx.io.RawSource
+import net.thunderbird.core.file.FileSystemManager
 
 class FakeFileSystemManager : FileSystemManager {
 
@@ -28,5 +30,10 @@ class FakeFileSystemManager : FileSystemManager {
 
             override fun close() = Unit
         }
+    }
+
+    override fun openSource(uriString: String): RawSource? {
+        // Not needed for tests in this module
+        return null
     }
 }

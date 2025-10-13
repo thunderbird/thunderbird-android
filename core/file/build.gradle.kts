@@ -3,15 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "net.thunderbird.core.logging.file"
+    namespace = "net.thunderbird.core.file"
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kotlinx.io.core)
-            implementation(projects.core.logging.api)
-            implementation(projects.core.file)
         }
     }
 }

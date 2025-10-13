@@ -31,6 +31,7 @@ dependencies {
     implementation(projects.core.configstore.implBackend)
 
     implementation(projects.core.featureflag)
+    implementation(projects.core.file)
 
     implementation(projects.core.ui.setting.api)
     implementation(projects.core.ui.setting.implDialog)
