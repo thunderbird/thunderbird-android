@@ -1,13 +1,13 @@
 package net.thunderbird.core.logging.file
 
-import net.thunderbird.core.file.FileSystemManager
+import net.thunderbird.core.file.FileManager
 import net.thunderbird.core.logging.LogLevel
 
 actual fun FileLogSink(
     level: LogLevel,
     fileName: String,
     fileLocation: String,
-    fileSystemManager: FileSystemManager,
+    fileManager: FileManager,
 ): FileLogSink {
     return JvmFileLogSink(level, fileName, fileLocation)
 }

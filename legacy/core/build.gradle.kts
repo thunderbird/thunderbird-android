@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.mime4j.core)
     implementation(libs.mime4j.dom)
+    implementation(libs.uri)
     implementation(projects.feature.navigation.drawer.api)
 
     testApi(projects.core.testing)

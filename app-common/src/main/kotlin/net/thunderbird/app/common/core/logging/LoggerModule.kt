@@ -57,7 +57,7 @@ val appCommonCoreLogger = module {
             level = LogLevel.DEBUG,
             fileName = "thunderbird-sync-debug",
             fileLocation = get<Context>().filesDir.path,
-            fileSystemManager = get(),
+            fileManager = get(),
         )
     }
 

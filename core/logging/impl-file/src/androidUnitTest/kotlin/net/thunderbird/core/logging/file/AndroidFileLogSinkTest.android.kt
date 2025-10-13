@@ -3,6 +3,7 @@ package net.thunderbird.core.logging.file
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import com.eygraber.uri.toKmpUri
 import java.io.File
 import kotlin.test.Test
 import kotlin.time.ExperimentalTime
@@ -18,8 +19,13 @@ import net.thunderbird.core.logging.LogLevel
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE)
 class AndroidFileLogSinkTest {
 
     @JvmField
@@ -29,19 +35,19 @@ class AndroidFileLogSinkTest {
     private val initialTimestamp = 1234567890L
     private lateinit var logFile: File
     private lateinit var fileLocation: String
-    private lateinit var fileManager: FakeFileSystemManager
+    private lateinit var fileManager: FakeFileManager
     private lateinit var testSubject: AndroidFileLogSink
 
     @Before
     fun setUp() {
         fileLocation = folder.newFolder().absolutePath
         logFile = File(fileLocation, "test_log.txt")
-        fileManager = FakeFileSystemManager()
+        fileManager = FakeFileManager()
         testSubject = AndroidFileLogSink(
             level = LogLevel.INFO,
             fileName = "test_log",
             fileLocation = fileLocation,
-            fileSystemManager = fileManager,
+            fileManager = fileManager,
             coroutineContext = UnconfinedTestDispatcher(),
         )
     }
@@ -137,7 +143,7 @@ class AndroidFileLogSinkTest {
         runBlocking {
             // Act
             testSubject.flushAndCloseBuffer()
-            val exportUri = "content://test/export.txt"
+            val exportUri = "content://test/export.txt".toKmpUri()
             testSubject.export(exportUri)
         }
 
@@ -182,7 +188,7 @@ class AndroidFileLogSinkTest {
         assertThat(logFile.readText())
             .isEqualTo(logString1)
         runBlocking {
-            val exportUri = "content://test/export.txt"
+            val exportUri = "content://test/export.txt".toKmpUri()
             testSubject.export(exportUri)
         }
 
