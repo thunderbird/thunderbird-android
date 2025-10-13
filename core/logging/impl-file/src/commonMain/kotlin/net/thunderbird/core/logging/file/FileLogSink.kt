@@ -1,16 +1,17 @@
 package net.thunderbird.core.logging.file
 
-import net.thunderbird.core.file.FileSystemManager
+import com.eygraber.uri.Uri
+import net.thunderbird.core.file.FileManager
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.LogSink
 
 interface FileLogSink : LogSink {
     /**
      * Exports from the logging method to the requested external file
-     * @param uriString The [String] for the URI to export the log to
+     * @param uri The [String] for the URI to export the log to
      *
      **/
-    suspend fun export(uriString: String)
+    suspend fun export(uri: Uri)
 
     /**
      * On a crash or close, flushes buffer to file fo avoid log loss
@@ -27,11 +28,12 @@ interface FileLogSink : LogSink {
  * @param level The minimum [LogLevel] for messages to be logged.
  * @param fileName The [String] fileName to log to
  * @param fileLocation The [String] fileLocation for the log file
- * @param fileSystemManager The [FileSystemManager] abstraction for opening the file stream
+ * @param fileManager The [FileManager] to handle file operations
+ * @return A [FileLogSink] instance for logging to a file.
  */
 expect fun FileLogSink(
     level: LogLevel,
     fileName: String,
     fileLocation: String,
-    fileSystemManager: FileSystemManager,
+    fileManager: FileManager,
 ): FileLogSink
