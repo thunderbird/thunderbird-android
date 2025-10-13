@@ -2,6 +2,7 @@ package net.thunderbird.app.common.feature.mail
 
 import com.fsck.k9.mailstore.DefaultSpecialFolderUpdater
 import com.fsck.k9.mailstore.LegacyAccountDtoSpecialFolderUpdaterFactory
+import net.thunderbird.app.common.feature.mail.message.mailMessageModule
 import net.thunderbird.backend.api.BackendFactory
 import net.thunderbird.backend.api.BackendStorageFactory
 import net.thunderbird.backend.api.folder.RemoteFolderCreator
@@ -12,6 +13,8 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 import org.koin.dsl.module
 
 internal val appCommonFeatureMailModule = module {
+
+    includes(mailMessageModule)
 
     single<BackendStorageFactory<BaseAccount>> {
         BaseAccountBackendStorageFactory(
