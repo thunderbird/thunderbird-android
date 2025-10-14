@@ -31,7 +31,6 @@ class MessageListViewModel(
         currentMessageListLiveData = liveData
 
         messageListLiveData.addSource(liveData) { items ->
-            logger.debug { "Received new MessageListInfo: $items" }
             messageListLiveData.value = items
         }
     }
