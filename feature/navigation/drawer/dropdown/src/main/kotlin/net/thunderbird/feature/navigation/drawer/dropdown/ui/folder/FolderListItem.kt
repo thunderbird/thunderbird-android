@@ -76,13 +76,14 @@ internal fun FolderListItem(
                 )
             },
             selected = selectedFolderId == displayFolder.id,
-            onClick = { onClick(displayFolder) },
-            modifier = Modifier.fillMaxWidth(),
-            icon = {
-                Icon(
-                    imageVector = mapFolderIcon(displayFolder),
-                )
+            onClick = {
+                when (displayFolder) {
+                    is MailDisplayFolder if displayFolder.accountId == null -> isExpanded.value = !isExpanded.value
+                    else -> onClick(displayFolder)
+                }
             },
+            modifier = Modifier.fillMaxWidth(),
+            icon = { Icon(imageVector = mapFolderIcon(displayFolder)) },
         )
 
         // Managing children

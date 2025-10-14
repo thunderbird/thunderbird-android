@@ -240,12 +240,14 @@ internal class DrawerViewModel(
         selectFolder(folder.id)
 
         if (folder is MailDisplayFolder) {
-            emitEffect(
-                Effect.OpenFolder(
-                    accountId = folder.accountId,
-                    folderId = folder.folder.id,
-                ),
-            )
+            if (folder.accountId != null) {
+                emitEffect(
+                    Effect.OpenFolder(
+                        accountId = folder.accountId,
+                        folderId = folder.folder.id,
+                    ),
+                )
+            }
         } else if (folder is UnifiedDisplayFolder) {
             emitEffect(Effect.OpenUnifiedFolder)
         }
