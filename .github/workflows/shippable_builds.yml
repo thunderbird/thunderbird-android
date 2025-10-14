@@ -285,10 +285,10 @@ jobs:
             NEW_VERSION_CODE=$(($OLD_VERSION_CODE + 1))
             if [[ "$APP_NAME" = "thunderbird" ]]; then
                 # Estimated max version code to get through 2025 is "30"
-                MAX_VERSION_CODE="30"
+                MAX_VERSION_CODE="52"
             else
                 # Estimated max version code to get through 2025 is "39037"
-                MAX_VERSION_CODE="39037"
+                MAX_VERSION_CODE="39059"
             fi
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
             NEW_VERSION_CODE=$(date_version_code "$RELEASE_DATE")
