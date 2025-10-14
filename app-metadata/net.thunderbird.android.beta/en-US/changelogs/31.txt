@@ -1,0 +1,3 @@
+Thunderbird for Android version 13.0b5, based on K-9 Mail. Changes include:
+- Reverted word-wrapping change that broke HTML and table rendering
+- Application crashed when opening placeholder folder

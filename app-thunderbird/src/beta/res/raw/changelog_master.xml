@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="13.0b5" versioncode="31" date="2025-10-13">
+        <change>Reverted word-wrapping change that broke HTML and table rendering</change>
+        <change>Application crashed when opening placeholder folder</change>
+    </release>
     <release version="13.0b4" versioncode="30" date="2025-09-29">
         <change>Sync could cause &#34;IllegalStateException: No outbox_state entry for message id&#34; error</change>
     </release>
