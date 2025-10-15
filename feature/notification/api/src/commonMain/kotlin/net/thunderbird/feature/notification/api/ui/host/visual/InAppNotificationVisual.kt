@@ -10,6 +10,7 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual.Companion.MAX_SUPPORTING_TEXT_LENGTH
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual.Companion.MAX_TITLE_LENGTH
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
+import net.thunderbird.feature.notification.api.ui.style.NotificationPriority
 import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
 
 sealed interface InAppNotificationVisual
@@ -34,8 +35,10 @@ data class BannerGlobalVisual(
     val message: CharSequence,
     val severity: NotificationSeverity,
     val action: NotificationAction?,
-    val priority: Int,
-) : InAppNotificationVisual {
+    val priority: NotificationPriority,
+) : InAppNotificationVisual, Comparable<BannerGlobalVisual> {
+    override fun compareTo(other: BannerGlobalVisual): Int = priority.compareTo(other.priority)
+
     internal companion object {
         /**
          * Creates a [BannerGlobalVisual] from an [InAppNotification].

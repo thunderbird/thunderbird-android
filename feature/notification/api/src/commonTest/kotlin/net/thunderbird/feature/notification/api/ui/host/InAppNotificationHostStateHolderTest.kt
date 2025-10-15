@@ -27,6 +27,7 @@ import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisua
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual.Companion.MAX_TITLE_LENGTH
 import net.thunderbird.feature.notification.api.ui.host.visual.InAppNotificationHostState
 import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
+import net.thunderbird.feature.notification.api.ui.style.NotificationPriority
 import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
@@ -127,6 +128,42 @@ class InAppNotificationHostStateHolderTest {
                 assertThat(state)
                     .prop(InAppNotificationHostState::bannerGlobalVisual)
                     .isNull()
+            }
+        }
+
+    @Test
+    fun `showInAppNotification should show higher priority bannerGlobal when multiple bannerGlobal notifications are visible`() =
+        runTest {
+            // Arrange
+            val lowerPriorityNotificationText = "lower priority notification"
+            val lowerPriorityNotification = FakeInAppOnlyNotification(
+                contentText = lowerPriorityNotificationText,
+                severity = NotificationSeverity.Warning,
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Min) },
+            )
+            val higherPriorityNotificationText = "higher priority notification"
+            val higherPriorityNotification = FakeInAppOnlyNotification(
+                contentText = higherPriorityNotificationText,
+                severity = NotificationSeverity.Warning,
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Max) },
+            )
+            val flags = persistentSetOf(
+                DisplayInAppNotificationFlag.BannerGlobalNotifications,
+            )
+            val testSubject = InAppNotificationHostStateHolder(enabled = flags)
+
+            // Act
+            testSubject.showInAppNotification(lowerPriorityNotification)
+            testSubject.showInAppNotification(higherPriorityNotification)
+
+            // Assert
+            testSubject.currentInAppNotificationHostState.test {
+                val state = awaitItem()
+                assertThat(state)
+                    .prop(InAppNotificationHostState::bannerGlobalVisual)
+                    .isNotNull()
+                    .prop(BannerGlobalVisual::message)
+                    .isEqualTo(higherPriorityNotificationText)
             }
         }
 
@@ -766,6 +803,40 @@ class InAppNotificationHostStateHolderTest {
             assertThat(state)
                 .prop(InAppNotificationHostState::bannerGlobalVisual)
                 .isNull()
+        }
+    }
+
+    @Test
+    fun `dismiss should not remove bannerGlobal notification given multiple banner global present and lower priority notification is dimissed`() = runTest {
+        // Arrange
+        val lowerPriorityNotificationText = "lower priority notification"
+        val lowerPriorityNotification = FakeInAppOnlyNotification(
+            contentText = lowerPriorityNotificationText,
+            severity = NotificationSeverity.Warning,
+            inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Min) },
+        )
+        val higherPriorityNotificationText = "higher priority notification"
+        val higherPriorityNotification = FakeInAppOnlyNotification(
+            contentText = higherPriorityNotificationText,
+            severity = NotificationSeverity.Warning,
+            inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Max) },
+        )
+        val flags = persistentSetOf(DisplayInAppNotificationFlag.BannerGlobalNotifications)
+        val testSubject = InAppNotificationHostStateHolder(enabled = flags)
+        testSubject.showInAppNotification(lowerPriorityNotification)
+        testSubject.showInAppNotification(higherPriorityNotification)
+
+        // Act
+        testSubject.dismiss(lowerPriorityNotification)
+
+        // Assert
+        testSubject.currentInAppNotificationHostState.test {
+            val state = awaitItem()
+            assertThat(state)
+                .prop(InAppNotificationHostState::bannerGlobalVisual)
+                .isNotNull()
+                .prop(BannerGlobalVisual::message)
+                .isEqualTo(higherPriorityNotificationText)
         }
     }
 
