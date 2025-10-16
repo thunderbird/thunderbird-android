@@ -9,3 +9,7 @@ android {
 dependencies {
     api(projects.core.ui.legacy.theme2.common)
 }
+
+codeCoverage {
+    lineCoverage.set(0)
+}

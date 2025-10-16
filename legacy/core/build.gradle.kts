@@ -74,3 +74,8 @@ android {
         buildConfig = true
     }
 }
+
+codeCoverage {
+    branchCoverage.set(41)
+    lineCoverage.set(48)
+}

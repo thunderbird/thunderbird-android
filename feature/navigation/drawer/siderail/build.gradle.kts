@@ -30,3 +30,8 @@ dependencies {
     debugImplementation(projects.feature.account.fake)
     testImplementation(projects.feature.account.fake)
 }
+
+codeCoverage {
+    branchCoverage.set(40)
+    lineCoverage.set(31)
+}
