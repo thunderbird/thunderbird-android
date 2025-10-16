@@ -10,16 +10,16 @@ import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
-import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSection
+import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffold
 
 @Composable
 fun SecretDebugSettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
+    InAppNotificationScaffold(
         topBar = {
             TopAppBar(
                 title = stringResource(R.string.debug_settings_screen_title),

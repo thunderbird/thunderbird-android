@@ -18,7 +18,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
 import org.junit.Test
-import net.thunderbird.core.android.account.LegacyAccount as K9Account
+import net.thunderbird.core.android.account.LegacyAccountDto as K9Account
 
 class AccountServerSettingsUpdaterTest {
 
@@ -29,7 +29,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return account not found exception WHEN none present with uuid`() = runTest {
-        val accountManager = FakeAccountManager(accounts = mutableMapOf())
+        val accountManager = FakeLegacyAccountDtoManager(accounts = mutableMapOf())
         val testSubject = AccountServerSettingsUpdater(accountManager)
 
         val result = testSubject.updateServerSettings(
@@ -48,7 +48,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated incoming settings WHEN is incoming`() = runTest {
-        val accountManager = FakeAccountManager(
+        val accountManager = FakeLegacyAccountDtoManager(
             accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
         )
         val updatedIncomingServerSettings = INCOMING_SERVER_SETTINGS.copy(port = 123)
@@ -74,7 +74,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return success with updated outgoing settings WHEN is not incoming`() = runTest {
-        val accountManager = FakeAccountManager(
+        val accountManager = FakeLegacyAccountDtoManager(
             accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
         )
         val updatedOutgoingServerSettings = OUTGOING_SERVER_SETTINGS.copy(port = 123)
@@ -100,7 +100,7 @@ class AccountServerSettingsUpdaterTest {
 
     @Test
     fun `updateServerSettings() SHOULD return unknown error when exception thrown`() = runTest {
-        val accountManager = FakeAccountManager(
+        val accountManager = FakeLegacyAccountDtoManager(
             accounts = mutableMapOf(ACCOUNT_ID_RAW to createAccount(ACCOUNT_ID_RAW)),
             isFailureOnSave = true,
         )

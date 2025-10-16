@@ -40,8 +40,8 @@
     <string name="account_setup_options_section_display_options">Display options</string>
     <string name="account_setup_options_account_name_label">Account name</string>
     <string name="account_setup_options_account_name_error_blank">Account name can\'t be blank.</string>
-    <string name="account_setup_options_display_name_label">Your name</string>
-    <string name="account_setup_options_display_name_error_required">Your name is required.</string>
+    <string name="account_setup_options_your_name_label">Your name</string>
+    <string name="account_setup_options_your_name_error_required">Your name is required.</string>
     <string name="account_setup_options_email_signature_label">Email signature</string>
     <string name="account_setup_options_email_signature_error_blank">Email signature name can\'t be blank.</string>
     <string name="account_setup_options_section_sync_options">Sync options</string>

@@ -12,7 +12,7 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -60,23 +60,23 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun unifiedInbox() {
+    fun unifiedFoldersSearch() {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 1,
-            accountUuid = SearchAccount.UNIFIED_INBOX,
+            accountUuid = SearchAccount.UNIFIED_FOLDERS,
             folderId = null,
         )
 
         val widgetData = provider.loadUnreadWidgetData(configuration)
 
         with(widgetData!!) {
-            assertThat(title).isEqualTo("Unified Inbox")
+            assertThat(title).isEqualTo("Unified Folders")
             assertThat(unreadCount).isEqualTo(SEARCH_ACCOUNT_UNREAD_COUNT)
         }
     }
 
     @Test
-    fun regularAccount() {
+    fun regularSearch() {
         val configuration = UnreadWidgetConfiguration(
             appWidgetId = 3,
             accountUuid = ACCOUNT_UUID,
@@ -120,7 +120,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         assertThat(widgetData).isNull()
     }
 
-    private fun createAccount(): LegacyAccount = mock {
+    private fun createAccount(): LegacyAccountDto = mock {
         on { uuid } doReturn ACCOUNT_UUID
         on { displayName } doReturn ACCOUNT_NAME
     }
@@ -130,7 +130,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     private fun createMessageCountsProvider() = object : MessageCountsProvider {
-        override fun getMessageCounts(account: LegacyAccount): MessageCounts {
+        override fun getMessageCounts(account: LegacyAccountDto): MessageCounts {
             return MessageCounts(unread = ACCOUNT_UNREAD_COUNT, starred = 0)
         }
 
@@ -146,7 +146,7 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
             throw UnsupportedOperationException()
         }
 
-        override fun getUnreadMessageCount(account: LegacyAccount, folderId: Long): Int {
+        override fun getUnreadMessageCount(account: LegacyAccountDto, folderId: Long): Int {
             return FOLDER_UNREAD_COUNT
         }
     }
@@ -166,8 +166,8 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
     }
 
     private fun createCoreResourceProvider(): CoreResourceProvider = mock {
-        on { searchUnifiedInboxTitle() } doReturn UNIFIED_INBOX_NAME
-        on { searchUnifiedInboxDetail() } doReturn UNIFIED_INBOX_DETAIL
+        on { searchUnifiedFoldersTitle() } doReturn UNIFIED_FOLDERS_NAME
+        on { searchUnifiedFoldersDetail() } doReturn UNIFIED_FOLDERS_DETAIL
     }
 
     companion object {
@@ -178,8 +178,8 @@ class UnreadWidgetDataProviderTest : AutoCloseKoinTest() {
         const val ACCOUNT_UNREAD_COUNT = 2
         const val FOLDER_UNREAD_COUNT = 3
         const val LOCALIZED_FOLDER_NAME = "Posteingang"
-        const val UNIFIED_INBOX_NAME = "Unified Inbox"
-        const val UNIFIED_INBOX_DETAIL = "All Messages"
+        const val UNIFIED_FOLDERS_NAME = "Unified Folders"
+        const val UNIFIED_FOLDERS_DETAIL = "All Messages"
         val FOLDER = Folder(
             id = FOLDER_ID,
             name = "INBOX",

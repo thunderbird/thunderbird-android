@@ -47,6 +47,10 @@ class DefaultDebuggingSettingsPreferenceManager(
             KEY_ENABLE_SYNC_DEBUG_LOGGING,
             DEBUGGING_SETTINGS_DEFAULT_IS_SYNC_LOGGING_ENABLED,
         ),
+        isSensitiveLoggingEnabled = storage.getBoolean(
+            key = KEY_ENABLE_SENSITIVE_LOGGING,
+            defValue = DEBUGGING_SETTINGS_DEFAULT_SENSITIVE_LOGGING_ENABLED,
+        ),
     ).also(::updateDebugLogLevel)
 
     private fun writeConfig(config: DebuggingSettings) {
@@ -55,6 +59,7 @@ class DefaultDebuggingSettingsPreferenceManager(
             mutex.withLock {
                 storageEditor.putBoolean(KEY_ENABLE_DEBUG_LOGGING, config.isDebugLoggingEnabled)
                 storageEditor.putBoolean(KEY_ENABLE_SYNC_DEBUG_LOGGING, config.isSyncLoggingEnabled)
+                storageEditor.putBoolean(KEY_ENABLE_SENSITIVE_LOGGING, config.isSensitiveLoggingEnabled)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }
@@ -64,7 +69,7 @@ class DefaultDebuggingSettingsPreferenceManager(
 
     private fun updateDebugLogLevel(config: DebuggingSettings) {
         if (config.isDebugLoggingEnabled) {
-            logLevelManager.override(LogLevel.DEBUG)
+            logLevelManager.override(LogLevel.VERBOSE)
         } else {
             logLevelManager.restoreDefault()
         }

@@ -1,7 +1,7 @@
 package com.fsck.k9.notification
 
 import app.k9mail.legacy.message.controller.MessageReference
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 internal data class NewMailNotificationData(
     val cancelNotificationIds: List<Int>,
@@ -11,7 +11,7 @@ internal data class NewMailNotificationData(
 )
 
 internal data class BaseNotificationData(
-    val account: LegacyAccount,
+    val account: LegacyAccountDto,
     val accountName: String,
     val groupKey: String,
     val color: Int,

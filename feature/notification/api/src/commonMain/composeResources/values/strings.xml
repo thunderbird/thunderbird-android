@@ -15,23 +15,24 @@
     <string name="notification_notify_error_text">An error has occurred while trying to create a system notification for a new message. The reason is most likely a missing notification sound.\n\nTap to open notification settings.</string>
 
     <string name="notification_authentication_error_title">Authentication failed</string>
-    <string name="notification_authentication_error_text">Authentication failed for %s. Update your server settings.</string>
+    <string name="notification_authentication_incoming_server_error_text">Authentication failed for %1$s. Update your incoming server settings.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Authentication failed for %1$s. Update your outgoing server settings.</string>
 
     <string name="notification_certificate_error_public">Certificate error</string>
-    <string name="notification_certificate_error_title">Certificate error for %s</string>
+    <string name="notification_certificate_error_title">Certificate error for %1$s</string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
     <string name="notification_bg_sync_ticker">Checking mail: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Checking mail</string>
     <string name="notification_bg_sync_text">%1$s: %2$s</string>
-    <string name="notification_bg_send_ticker">Sending mail: %s</string>
+    <string name="notification_bg_send_ticker">Sending mail: %1$s</string>
     <string name="notification_bg_send_title">Sending mail</string>
 
     <string name="send_failure_subject">Failed to send some messages</string>
 
     <plurals name="notification_new_messages_title">
-        <item quantity="one">%d new message</item>
-        <item quantity="other">%d new messages</item>
+        <item quantity="one">%1$d new message</item>
+        <item quantity="other">%1$d new messages</item>
     </plurals>
     <string name="notification_additional_messages">+ %1$d more on %2$s</string>
 
@@ -56,4 +57,7 @@
     <string name="notification_action_retry">Retry</string>
     <string name="notification_action_update_server_settings">Update Server Settings</string>
 
+    <string name="banner_inline_notification_check_error_notifications">Check Error Notifications</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Some messages need your attention.</string>
+    <string name="banner_inline_notification_open_notifications">Open notifications</string>
 </resources>

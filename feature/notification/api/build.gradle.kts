@@ -7,6 +7,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.common)
+            implementation(projects.core.featureflag)
             implementation(projects.core.outcome)
         }
         commonTest.dependencies {

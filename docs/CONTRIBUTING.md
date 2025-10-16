@@ -1,71 +1,79 @@
-# Contributing to Thunderbird for Android
+# 🤝 Contributing to Thunderbird for Android
 
 Welcome to the Thunderbird for Android project! We're excited to have you here and welcome your contributions.
 
-## Getting Started
+## 🌱 New Contributor Essentials
 
 Before you start contributing, please take a moment to familiarize yourself with the following:
 
-- **Mozilla Community Participation Guidelines:** [https://www.mozilla.org/en-US/about/governance/policies/participation/](https://www.mozilla.org/en-US/about/governance/policies/participation/)
-- **Frequently Asked Questions:** [https://forum.k9mail.app/c/faq](https://forum.k9mail.app/c/faq)
-- **Support Forum:** [https://forum.k9mail.app/](https://forum.k9mail.app/)
+- [About Thunderbird for Android](about.md).
+- [Thunderbird Developer Portal](https://developer.thunderbird.net/)
+- [Mozilla Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
+- [Matrix (developer chat)](https://matrix.to/#/#tb-mobile-dev:mozilla.org)
+- [Frequently Asked Questions (historical K-9 forum)](https://forum.k9mail.app/c/faq)
+- [Support Forum (historical K-9 forum)](https://forum.k9mail.app/)
 
-## Bug Reports and Feature Requests
+Note: Some support resources currently point to the K-9 Mail forum due to the project’s history and ongoing migration.
+Where appropriate, we’ll update links to Thunderbird-specific channels.
 
-If you encounter a bug or have a feature request, please follow these steps:
+### 📋 Recommended knowledge
 
-- Search the [existing issues](https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue) to see if your issue or feature has already been reported.
-- If you can't find an existing issue, please [open a new issue](https://github.com/thunderbird/thunderbird-android/issues/new/choose) on GitHub.
+Helpful background (not strictly required):
 
-## Translations
+- **[Kotlin](https://kotlinlang.org/docs/home.html)** - Primary programming language for the project
+- **[Jetpack Compose](https://developer.android.com/jetpack/compose)** - UI toolkit used for Android
+- **[Kotlin Multiplatform](https://kotlinlang.org/docs/multiplatform.html)** - Shared code across modules where applicable
+- **[Android Development](https://developer.android.com/guide)** - Basic understanding of Android app development
+- **[GitHub](https://docs.github.com/en)** - For managing contributions and pull requests
 
-If you'd like to help to translate K-9 Mail / Thunderbird for Android, please visit the [Weblate - K-9 Mail/Thunderbird project](https://hosted.weblate.org/projects/tb-android/).
+## 🐛 Bug Reports and Feature Ideas
 
-## Contributing Code
+When you encounter a bug or have a feature request or idea, please do the following:
 
-Thank you for your willingness to contribute code! Here's how you can get started:
+**Bugs**:
+- Search for [existing issues](https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue) before filing a new one.
+- If you can't find an existing issue, please [open a new GitHub issue](https://github.com/thunderbird/thunderbird-android/issues/new/choose) using the appropriate template.
 
-**1. Find an issue:**
+**Feature Requests / Ideas:**
 
-- Check the issue tracker for [open issues](https://github.com/thunderbird/thunderbird-android/issues?q=is%3Aissue+is%3Aopen+-label%3Aunconfirmed+-label%3Atb-team).
-- Look for issues labeled [good first issue](https://github.com/thunderbird/thunderbird-android/labels/good%20first%20issue) for a good starting point.
-- Propose a new feature by [opening a new issue](https://github.com/thunderbird/thunderbird-android/issues/new/choose)
-- Avoid issues labeled [unconfirmed](https://github.com/thunderbird/thunderbird-android/labels/unconfirmed) or [tb-team](https://github.com/thunderbird/thunderbird-android/labels/tb-team) as they are not yet ready for contributions.
+We don’t track new ideas or feature requests in GitHub Issues.
 
-**2. Discuss your plan:**
+- Start a discussion in [Mozilla Connect – Ideas](https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android)
+- Once a feature is accepted and work is planned, maintainers will create the corresponding GitHub issue(s).
 
-- Leave a comment on the issue you want to work on, explaining what you plan to do. This helps avoid duplicate work and gets you feedback from the team.
+## 🌐 Translations
 
-**3. Fork the repository:**
+If you'd like to help to translate Thunderbird for Android, please visit:
 
-- Create your own [fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) of the Thunderbird for Android repository on GitHub.
+- **[Translations](contributing/translations.md)** – How to help localize Thunderbird for Android via Weblate.
+- **[Weblate - Thunderbird for Android project](https://hosted.weblate.org/projects/tb-android/)** - Translation platform where all localization happens.
 
-**4. Create a branch:**
+## 🤝 Contributing Code
 
-- Start a new branch from the `main` branch to keep your changes separate.
-- Name your branch descriptively (e.g., `fix-issue-123` or `add-feature-xyz`).
+This should give you a detailed overview on how to contribute code to the project. Use it as a reference for setup,
+development, testing, and review.
 
-**5. Make your changes:**
+### 🚀 Getting Started
 
-- Write your code and commit it to your branch.
-- Follow our [Code Style Guidelines](https://github.com/thunderbird/thunderbird-android/wiki/CodeStyle)
+* **[Contribution Workflow](contributing/contribution-workflow.md)** – Step-by-step process: find an issue, fork, branch, commit, PR.
+* **[Development Environment](contributing/development-environment.md)** – How to set up Android Studio, build, run, and debug the project.
 
-**6. Test your changes:**
+### 🏗️ Development Practices
 
-- Run the project's tests to make sure everything works and that your changes don't introduce any regressions.
-- If applicable, write new tests to cover your changes.
+* **[Architecture](architecture/README.md)** – System design: module types, UI/Domain/Data layers, offline-first.
+* **[Development Guidelines](contributing/development-guide.md)** – Project-specific conventions and quick “do’s & don’ts.”
+* **[Code Quality Guide](contributing/code-quality-guide.md)** – Style rules, static analysis tools, and security practices.
+* **[Testing Guide](contributing/testing-guide.md)** – Test layers, frameworks, and best practices.
 
-**7. Push your changes:**
+### 🔍 Reviews & Collaboration
 
-- Upload your branch to your forked repository.
+* **[Git Commit Guide](contributing/git-commit-guide.md)** – How to write clear, Conventional Commit-style messages.
+* **[Code Review Guide](contributing/code-review-guide.md)** – Expectations for PR authors and reviewers, review etiquette.
 
-**8. Open a pull request:**
+### 🌐 Translations
 
-- Create a pull request to merge your changes into the main project.
-- Provide a clear and concise description of your changes, including:
-  - A reference to the issue you're addressing.
-  - A summary of the changes you made.
-  - Any relevant screenshots or testing results.
+* **[Translations](contributing/translations.md)** – How to help localize Thunderbird for Android via Weblate.
+* **[Managing Strings](contributing/managing-strings.md)** – Developer guide for adding/changing/removing strings, languages, and handling Weblate sync.
 
 ## Thank You!
 

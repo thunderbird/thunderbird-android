@@ -11,15 +11,14 @@ interface OAuth2TokenProvider {
     }
 
     /**
-     * Fetch the primary email found in the id_token additional claims,
-     * if it is available.
+     * A set of usernames fetched from the `id_token`.
      *
      * > Some providers, like Microsoft, require this as they need the primary account email to be the username,
-     * not the email the user entered
+     * > not the email the user entered for SMTP authentication.
      *
-     * @return the primary email present in the id_token, otherwise null.
+     * @throws AuthenticationFailedException If no AuthState is available.
      */
-    val primaryEmail: String?
+    val usernames: Set<String>
         @Throws(AuthenticationFailedException::class)
         get
 

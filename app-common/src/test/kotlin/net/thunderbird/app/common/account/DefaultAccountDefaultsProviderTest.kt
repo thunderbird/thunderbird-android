@@ -26,7 +26,7 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UN
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.preference.storage.Storage
@@ -47,7 +47,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccount(
+        val account = LegacyAccountDto(
             uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
@@ -144,7 +144,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccount(
+        val account = LegacyAccountDto(
             uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
@@ -174,7 +174,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccount(
+        val account = LegacyAccountDto(
             uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
@@ -205,7 +205,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccount(
+        val account = LegacyAccountDto(
             uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )
@@ -236,7 +236,7 @@ class DefaultAccountDefaultsProviderTest {
         val resourceProvider = mock<CoreResourceProvider> {
             on { defaultIdentityDescription() } doReturn "Default Identity"
         }
-        val account = LegacyAccount(
+        val account = LegacyAccountDto(
             uuid = "cf728064-077d-4369-a0c7-7c2b21693d9b",
             isSensitiveDebugLoggingEnabled = { false },
         )

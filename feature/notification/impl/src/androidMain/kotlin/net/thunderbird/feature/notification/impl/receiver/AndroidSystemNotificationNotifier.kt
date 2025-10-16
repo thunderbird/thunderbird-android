@@ -33,6 +33,11 @@ internal class AndroidSystemNotificationNotifier(
         notificationManager.notify(id.value, androidNotification)
     }
 
+    override suspend fun dismiss(id: NotificationId) {
+        logger.debug(TAG) { "dismiss() called with: id = $id" }
+        notificationManager.cancel(id.value)
+    }
+
     override fun dispose() {
         logger.debug(TAG) { "dispose() called" }
     }
@@ -60,16 +65,23 @@ internal class AndroidSystemNotificationNotifier(
                     }
                 }
 
+                val overrideTap = systemNotification
+                    .actions
+                    .firstOrNull {
+                        it is NotificationAction.Tap && it.override != null
+                    } as? NotificationAction.Tap
+
                 val tapAction = notificationActionCreator.create(
                     notification = systemNotification,
-                    action = NotificationAction.Tap,
+                    action = overrideTap?.override ?: NotificationAction.Tap(),
                 )
                 setContentIntent(tapAction.pendingIntent)
 
                 setNotificationStyle(notification = systemNotification)
 
-                if (actions.isNotEmpty()) {
-                    for (action in actions) {
+                val actionsWithoutTap = actions.filterNot { it is NotificationAction.Tap }
+                if (actionsWithoutTap.isNotEmpty()) {
+                    for (action in actionsWithoutTap) {
                         val notificationAction = notificationActionCreator
                             .create(notification = systemNotification, action)
 

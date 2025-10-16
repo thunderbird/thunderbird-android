@@ -15,15 +15,15 @@ import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
-import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.mail.folder.api.Folder
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 class DefaultDisplayFolderRepository(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val messagingController: MessagingControllerRegistry,
     private val messageStoreManager: MessageStoreManager,
     private val outboxFolderManager: OutboxFolderManager,
@@ -37,7 +37,7 @@ class DefaultDisplayFolderRepository(
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
     private fun getDisplayFolders(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         outboxFolderId: Long,
         includeHiddenFolders: Boolean,
     ): List<DisplayFolder> {
@@ -63,7 +63,7 @@ class DefaultDisplayFolderRepository(
     }
 
     override fun getDisplayFoldersFlow(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         includeHiddenFolders: Boolean,
     ): Flow<List<DisplayFolder>> {
         val messageStore = messageStoreManager.getMessageStore(account.uuid)
@@ -73,7 +73,7 @@ class DefaultDisplayFolderRepository(
             send(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
 
             val folderStatusChangedListener = object : SimpleMessagingListener() {
-                override fun folderStatusChanged(statusChangedAccount: LegacyAccount, folderId: Long) {
+                override fun folderStatusChanged(statusChangedAccount: LegacyAccountDto, folderId: Long) {
                     if (statusChangedAccount.uuid == account.uuid) {
                         trySendBlocking(getDisplayFolders(account, outboxFolderId, includeHiddenFolders))
                     }

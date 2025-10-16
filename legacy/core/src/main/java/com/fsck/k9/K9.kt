@@ -114,9 +114,6 @@ object K9 : KoinComponent {
     }
 
     @JvmStatic
-    var isSensitiveDebugLoggingEnabled: Boolean = false
-
-    @JvmStatic
     val fontSizes = FontSizes()
 
     @JvmStatic
@@ -152,13 +149,8 @@ object K9 : KoinComponent {
     @JvmStatic
     var contactNameColor = 0xFF1093F5.toInt()
 
-    var messageViewPostRemoveNavigation: PostRemoveNavigation = PostRemoveNavigation.ReturnToMessageList
-
     var messageViewPostMarkAsUnreadNavigation: PostMarkAsUnreadNavigation =
         PostMarkAsUnreadNavigation.ReturnToMessageList
-
-    @JvmStatic
-    var isUseVolumeKeysForNavigation = false
 
     @JvmStatic
     var isShowAccountSelector = true
@@ -229,7 +221,8 @@ object K9 : KoinComponent {
             object : K9MailLib.DebugStatus {
                 override fun enabled(): Boolean = generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
 
-                override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
+                override fun debugSensitive(): Boolean = generalSettingsManager
+                    .getConfig().debugging.isSensitiveLoggingEnabled
             },
         )
 
@@ -241,8 +234,6 @@ object K9 : KoinComponent {
     @JvmStatic
     @Suppress("LongMethod")
     fun loadPrefs(storage: Storage) {
-        isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
-        isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
@@ -250,8 +241,6 @@ object K9 : KoinComponent {
 
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
-        messageViewPostRemoveNavigation =
-            storage.getEnum("messageViewPostDeleteAction", PostRemoveNavigation.ReturnToMessageList)
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
 
@@ -307,14 +296,11 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
-        editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putInt("registeredNameColor", contactNameColor)
-        editor.putEnum("messageViewPostDeleteAction", messageViewPostRemoveNavigation)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
@@ -405,16 +391,6 @@ object K9 : KoinComponent {
         MESSAGE_COUNT,
         APP_NAME,
         NOTHING,
-    }
-
-    /**
-     * The navigation actions that can be to performed after the user has deleted or moved a message from the message
-     * view screen.
-     */
-    enum class PostRemoveNavigation {
-        ReturnToMessageList,
-        ShowPreviousMessage,
-        ShowNextMessage,
     }
 
     /**

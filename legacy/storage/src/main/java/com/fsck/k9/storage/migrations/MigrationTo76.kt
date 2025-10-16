@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import app.k9mail.core.android.common.database.map
 import com.fsck.k9.mailstore.MigrationsHelper
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
 
@@ -108,7 +108,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         db.delete("folders", "id = ?", arrayOf(folderId.toString()))
     }
 
-    private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
+    private fun LegacyAccountDto.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
         private const val DRAFTS_FOLDER_TYPE = "drafts"

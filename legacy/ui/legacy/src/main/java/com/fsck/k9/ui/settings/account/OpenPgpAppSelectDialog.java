@@ -23,7 +23,7 @@ import android.widget.ListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
@@ -48,9 +48,9 @@ public class OpenPgpAppSelectDialog extends K9Activity {
             String.format("https://play.google.com/store/apps/details?id=%s", OPENKEYCHAIN_PACKAGE)));
 
 
-    private LegacyAccount account;
+    private LegacyAccountDto account;
 
-    public static void startOpenPgpChooserActivity(Context context, LegacyAccount account) {
+    public static void startOpenPgpChooserActivity(Context context, LegacyAccountDto account) {
         Intent i = new Intent(context, OpenPgpAppSelectDialog.class);
         i.putExtra(EXTRA_ACCOUNT, account.getUuid());
         context.startActivity(i);

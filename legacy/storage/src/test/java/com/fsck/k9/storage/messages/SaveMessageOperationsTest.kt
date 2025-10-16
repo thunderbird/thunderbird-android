@@ -23,12 +23,16 @@ import java.io.ByteArrayOutputStream
 import java.util.Stack
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 
 class SaveMessageOperationsTest : RobolectricTest() {
+
+    private val accountId = AccountIdFactory.create()
+
     private val messagePartDirectory = createRandomTempDirectory()
     private val sqliteDatabase = createDatabase()
     private val storageFilesProvider = object : StorageFilesProvider {
@@ -44,6 +48,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
         attachmentFileManager,
         basicPartInfoExtractor,
         threadMessageOperations,
+        accountId,
     )
 
     @Before

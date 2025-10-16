@@ -21,4 +21,7 @@
     <string name="funding_googleplay_contribution_tfa_onetime_s_title">Verdsatt bidrag</string>
     <string name="funding_googleplay_contribution_reminder_title">Støtt Thunderbird</string>
     <string name="funding_googleplay_contribution_reminder_positive_button">Ja</string>
+    <string name="funding_googleplay_contribution_header_thank_you">En stor takk fra oss alle!</string>
+    <string name="funding_googleplay_contribution_list_title">Sikkert bidrag</string>
+    <string name="funding_googleplay_contribution_list_type_none_available">Ingen tilgjengelig</string>
 </resources>

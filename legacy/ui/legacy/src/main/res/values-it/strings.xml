@@ -903,4 +903,9 @@
     <string name="debug_sync_export_logs_title">Esporta i registri di sincronizzazione</string>
     <string name="archiving_not_available_for_this_account">L\'archiviazione non è disponibile per questo account.</string>
     <string name="swipe_action_archive_folder_not_set">Imposta la cartella di archivio</string>
+    <string name="open_camera">Apri Fotocamera</string>
+    <string name="debug_enable_sync_debug_logging_title">Abilita la registrazione del debug di sincronizzazione</string>
+    <string name="debug_enable_sync_debug_logging_summary">Registra le informazioni diagnostiche di sincronizzazione per 24 ore</string>
+    <string name="debug_open_secret_debug_screen">Apri la schermata di debug segreta</string>
+    <string name="swipe_action_change_swipe_gestures">Cambia Invio / Scorri Gestures</string>
 </resources>

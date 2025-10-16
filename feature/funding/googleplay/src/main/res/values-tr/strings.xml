@@ -20,8 +20,8 @@
     <string name="funding_googleplay_contribution_error_unknown">Bilinmeyen hata</string>
     <string name="funding_googleplay_contribution_error_purchase_failed">Satın alma başarısız oldu.</string>
     <string name="funding_googleplay_contribution_header_thank_you">Hepimizden içten bir teşekkür!</string>
-    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Desteğiniz bizi ileri itiyor! En ufak katkılar bile değişim adına küçük dalgalar yaratarak ilerleyebilir, ve aramızda olmanıza çok minnettarız.</string>
-    <string name="funding_googleplay_contribution_header_thank_you_message">Bağışlarınız Thunderbird\'ün gelişimini ileri taşıyor ve desteğiniz için gerçekten minnettarız.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Desteğiniz bizi ileri taşıyor! En küçük bağışlar bile dalga dalga büyüyerek değişimi tetikleyebilir. Yanımızda olduğunuz için teşekkür ederiz.</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Bağışlarınız Thunderbird\'ün gelişimini ileri taşıyor. Desteğiniz için size minnettarız.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_s_title">Değerli Katkı</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xs_title">Temel Katkı</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Sıradışı Katkı</string>

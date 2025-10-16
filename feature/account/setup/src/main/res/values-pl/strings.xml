@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Nazwa konta</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Znaleziono konfigurację</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Adres e-mail jest wymagany.</string>
-    <string name="account_setup_options_display_name_label">Twoje imię i nazwisko</string>
     <string name="account_setup_auto_discovery_loading_error">Nie udało się wczytać konfiguracji poczty e-mail</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ufam tej konfiguracji</string>
-    <string name="account_setup_options_display_name_error_required">Twoje imię i nazwisko jest wymagane.</string>
     <string name="account_setup_error_network">Błąd sieci. Sprawdź stan połączenia i spróbuj ponownie.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Nie jest rozpoznawany jako prawidłowy adres e-mail.</string>
     <string name="account_setup_options_email_check_frequency_never">Nigdy</string>
@@ -65,4 +63,6 @@
         <item quantity="many">%d wiadomości</item>
         <item quantity="other">%d wiadomości</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Imię i nazwisko</string>
+    <string name="account_setup_options_your_name_error_required">Imię i nazwisko jest wymagane.</string>
 </resources>

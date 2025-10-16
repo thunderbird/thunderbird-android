@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">アカウント名</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">設定が見つかりました</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">メールアドレスは必須です。</string>
-    <string name="account_setup_options_display_name_label">あなたのお名前</string>
     <string name="account_setup_auto_discovery_loading_error">メールの設定が見つかりませんでした</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">この設定を信頼します</string>
-    <string name="account_setup_options_display_name_error_required">あなたのお名前は必須です。</string>
     <string name="account_setup_error_network">ネットワークエラーが発生しました。接続状況を確認してもう一度お試しください。</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">有効なメールアドレスとして認識されませんでした。</string>
     <string name="account_setup_options_email_check_frequency_never">確認しない</string>

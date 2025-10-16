@@ -10,7 +10,7 @@ import androidx.work.workDataOf
 import java.util.concurrent.TimeUnit
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.BackgroundOps
@@ -25,13 +25,13 @@ constructor(
     val generalSettingsManager: GeneralSettingsManager,
 ) {
 
-    fun cancelMailSync(account: LegacyAccount) {
+    fun cancelMailSync(account: LegacyAccountDto) {
         Log.v("Canceling mail sync worker for %s", account)
         val uniqueWorkName = createUniqueWorkName(account.uuid)
         workManager.cancelUniqueWork(uniqueWorkName)
     }
 
-    fun scheduleMailSync(account: LegacyAccount) {
+    fun scheduleMailSync(account: LegacyAccountDto) {
         if (isNeverSyncInBackground()) return
 
         getSyncIntervalIfEnabled(account)?.let { syncIntervalMinutes ->
@@ -75,9 +75,9 @@ constructor(
     private fun isNeverSyncInBackground() =
         generalSettingsManager.getConfig().network.backgroundOps == BackgroundOps.NEVER
 
-    private fun getSyncIntervalIfEnabled(account: LegacyAccount): Long? {
+    private fun getSyncIntervalIfEnabled(account: LegacyAccountDto): Long? {
         val intervalMinutes = account.automaticCheckIntervalMinutes
-        if (intervalMinutes <= LegacyAccount.INTERVAL_MINUTES_NEVER) {
+        if (intervalMinutes <= LegacyAccountDto.INTERVAL_MINUTES_NEVER) {
             return null
         }
 

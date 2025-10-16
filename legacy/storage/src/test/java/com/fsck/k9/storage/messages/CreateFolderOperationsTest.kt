@@ -7,12 +7,15 @@ import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.storage.RobolectricTest
+import net.thunderbird.feature.account.AccountIdFactory
 import org.junit.Test
 
 class CreateFolderOperationsTest : RobolectricTest() {
+
+    private val accountId = AccountIdFactory.create()
     private val sqliteDatabase = createDatabase()
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val createFolderOperations = CreateFolderOperations(lockableDatabase)
+    private val createFolderOperations = CreateFolderOperations(lockableDatabase, accountId)
 
     @Test
     fun `create single folder`() {

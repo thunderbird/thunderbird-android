@@ -19,7 +19,7 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.MigrationsHelper
 import net.thunderbird.core.android.account.FolderMode
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import org.junit.Before
@@ -381,7 +381,7 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
     private fun createStoreSchemaDefinition(): StoreSchemaDefinition {
         val account = createAccount()
         val migrationsHelper = object : MigrationsHelper {
-            override fun getAccount(): LegacyAccount {
+            override fun getAccount(): LegacyAccountDto {
                 return account
             }
 
@@ -393,8 +393,8 @@ class StoreSchemaDefinitionTest : RobolectricTest() {
         return StoreSchemaDefinition(migrationsHelper)
     }
 
-    private fun createAccount(): LegacyAccount {
-        return mock<LegacyAccount> {
+    private fun createAccount(): LegacyAccountDto {
+        return mock<LegacyAccountDto> {
             on { legacyInboxFolder } doReturn "Inbox"
             on { importedTrashFolder } doReturn "Trash"
             on { importedDraftsFolder } doReturn "Drafts"

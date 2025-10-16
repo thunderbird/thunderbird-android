@@ -2,7 +2,7 @@ package com.fsck.k9.mailstore
 
 import app.k9mail.legacy.mailstore.FolderRepository
 import com.fsck.k9.Preferences
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
@@ -10,7 +10,7 @@ import net.thunderbird.feature.mail.folder.api.SpecialFolderSelection
 import net.thunderbird.feature.mail.folder.api.SpecialFolderUpdater
 
 /**
- * Updates special folders in [LegacyAccount] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they
+ * Updates special folders in [LegacyAccountDto] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they
  * are marked as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
 // TODO: Find a better way to deal with local-only special folders
@@ -18,7 +18,7 @@ class DefaultSpecialFolderUpdater private constructor(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
-    private val account: LegacyAccount,
+    private val account: LegacyAccountDto,
 ) : SpecialFolderUpdater {
     override fun updateSpecialFolders() {
         val folders = folderRepository.getRemoteFolders(account)
@@ -136,14 +136,14 @@ class DefaultSpecialFolderUpdater private constructor(
         preferences.saveAccount(account)
     }
 
-    private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
+    private fun LegacyAccountDto.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     class Factory(
         private val preferences: Preferences,
         private val folderRepository: FolderRepository,
         private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
-    ) : SpecialFolderUpdater.Factory<LegacyAccount> {
-        override fun create(account: LegacyAccount): SpecialFolderUpdater = DefaultSpecialFolderUpdater(
+    ) : LegacyAccountDtoSpecialFolderUpdaterFactory {
+        override fun create(account: LegacyAccountDto): SpecialFolderUpdater = DefaultSpecialFolderUpdater(
             preferences = preferences,
             folderRepository = folderRepository,
             specialFolderSelectionStrategy = specialFolderSelectionStrategy,

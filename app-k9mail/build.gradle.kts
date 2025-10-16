@@ -18,7 +18,7 @@ android {
         testApplicationId = "com.fsck.k9.tests"
 
         versionCode = 39021
-        versionName = "13.0"
+        versionName = "14.0"
         versionNameSuffix = "b1"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"K-9 Mail\"")
@@ -30,6 +30,7 @@ android {
             "ar",
             "be",
             "bg",
+            "br",
             "ca",
             "co",
             "cs",
@@ -48,6 +49,7 @@ android {
             "fr",
             "fy",
             "ga",
+            "gd",
             "gl",
             "hr",
             "hu",
@@ -72,6 +74,7 @@ android {
             "sq",
             "sr",
             "sv",
+            "ta-rIN",
             "tr",
             "uk",
             "vi",

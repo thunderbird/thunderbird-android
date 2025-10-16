@@ -20,7 +20,6 @@
     <string name="account_setup_special_folders_folder_automatic">Autumaticu (%s)</string>
     <string name="account_setup_options_section_display_options">Ozzioni d’affissera</string>
     <string name="account_setup_options_account_name_error_blank">U nome di u contu ùn pò micca esse viotu.</string>
-    <string name="account_setup_options_display_name_error_required">U vostru nome hè richiestu.</string>
     <string name="account_setup_options_email_signature_label">Segnatura di u messaghju elettronicu</string>
     <string name="account_setup_options_account_check_frequency_label">Frequenza di cuntrollu</string>
     <string name="account_setup_options_email_check_frequency_never">Mai</string>
@@ -52,7 +51,6 @@
     <string name="account_setup_special_folders_spam_folder_label">Cartulare di i merzaghji (dispiacevule)</string>
     <string name="account_setup_special_folders_trash_folder_label">Cartulare di a curbella</string>
     <string name="account_setup_options_account_name_label">Nome di u contu</string>
-    <string name="account_setup_options_display_name_label">U vostru nome</string>
     <string name="account_setup_options_section_sync_options">Ozzioni di sincrunizazione</string>
     <string name="account_setup_options_email_signature_error_blank">A segnatura di u messaghju elettronicu ùn pò micca esse viota.</string>
     <plurals name="account_setup_options_email_display_count_messages">

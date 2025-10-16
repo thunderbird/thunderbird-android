@@ -23,7 +23,7 @@ import com.fsck.k9.message.ComposePgpEnableByDefaultDecider
 import com.fsck.k9.message.ComposePgpInlineDecider
 import com.fsck.k9.view.RecipientSelectView.Recipient
 import kotlin.test.assertNotNull
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -34,6 +34,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.refEq
 import org.mockito.kotlin.stubbing
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
@@ -56,7 +57,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         }
     }
     private val recipientMvpView = mock<RecipientMvpView>()
-    private val account = mock<LegacyAccount>()
+    private val account = mock<LegacyAccountDto>()
     private val composePgpInlineDecider = mock<ComposePgpInlineDecider>()
     private val composePgpEnableByDefaultDecider = mock<ComposePgpEnableByDefaultDecider>()
     private val autocryptStatusInteractor = mock<AutocryptStatusInteractor>()
@@ -303,7 +304,7 @@ class RecipientPresenterTest : K9RobolectricTest() {
         val openPgpApiMock = mock<OpenPgpApi>()
 
         stubbing(autocryptStatusInteractor) {
-            on { retrieveCryptoProviderRecipientStatus(eq(openPgpApiMock), any()) } doReturn autocryptStatusResult
+            on { retrieveCryptoProviderRecipientStatus(refEq(openPgpApiMock), any()) } doReturn autocryptStatusResult
         }
 
         stubbing(openPgpApiManager) {

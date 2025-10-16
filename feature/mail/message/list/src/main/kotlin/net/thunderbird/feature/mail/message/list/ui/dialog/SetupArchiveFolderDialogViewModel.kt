@@ -31,7 +31,7 @@ internal class SetupArchiveFolderDialogViewModel(
     private val resourceManager: StringsResourceManager,
     private val generalSettingsManager: GeneralSettingsManager,
 ) : ViewModel(
-    initialState = if (generalSettingsManager.getConfig().display.shouldShowSetupArchiveFolderDialog) {
+    initialState = if (generalSettingsManager.getConfig().display.miscSettings.shouldShowSetupArchiveFolderDialog) {
         State.EmailCantBeArchived()
     } else {
         State.Closed(isDoNotShowDialogAgainChecked = true)
@@ -129,7 +129,9 @@ internal class SetupArchiveFolderDialogViewModel(
             generalSettingsManager.update { settings ->
                 settings.copy(
                     display = settings.display.copy(
-                        shouldShowSetupArchiveFolderDialog = state.value.isDoNotShowDialogAgainChecked.not(),
+                        miscSettings = settings.display.miscSettings.copy(
+                            shouldShowSetupArchiveFolderDialog = state.value.isDoNotShowDialogAgainChecked.not(),
+                        ),
                     ),
                 )
             }

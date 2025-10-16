@@ -21,7 +21,7 @@ import com.fsck.k9.preferences.UnifiedInboxConfigurator
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
@@ -113,7 +113,7 @@ internal class AccountCreator(
      * Since the folder list hasn't been synced yet, we don't have database IDs for the folders. So we use the same
      * mechanism that is used when importing settings. See [com.fsck.k9.mailstore.SpecialFolderUpdater] for details.
      */
-    private fun LegacyAccount.setSpecialFolders(specialFolders: SpecialFolderSettings) {
+    private fun LegacyAccountDto.setSpecialFolders(specialFolders: SpecialFolderSettings) {
         importedArchiveFolder = specialFolders.archiveSpecialFolderOption.toFolderServerId()
         archiveFolderSelection = specialFolders.archiveSpecialFolderOption.toFolderSelection()
 
@@ -153,7 +153,7 @@ internal class AccountCreator(
     }
 }
 
-private fun LegacyAccount.setIncomingServerSettings(serverSettings: ServerSettings) {
+private fun LegacyAccountDto.setIncomingServerSettings(serverSettings: ServerSettings) {
     if (serverSettings.type == Protocols.IMAP) {
         useCompression = serverSettings.isUseCompression
         isSendClientInfoEnabled = serverSettings.isSendClientInfo

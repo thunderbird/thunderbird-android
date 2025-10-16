@@ -18,7 +18,7 @@ android {
         testApplicationId = "net.thunderbird.android.tests"
 
         versionCode = 31
-        versionName = "13.0"
+        versionName = "14.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
     }
@@ -29,6 +29,7 @@ android {
             "ar",
             "be",
             "bg",
+            "br",
             "ca",
             "co",
             "cs",
@@ -47,6 +48,7 @@ android {
             "fr",
             "fy",
             "ga",
+            "gd",
             "gl",
             "hr",
             "hu",
@@ -66,11 +68,12 @@ android {
             "pt-rPT",
             "ro",
             "ru",
-            "sl",
             "sk",
+            "sl",
             "sq",
             "sr",
             "sv",
+            "ta-rIN",
             "tr",
             "uk",
             "vi",
@@ -118,7 +121,7 @@ android {
             signingConfig = signingConfigs.getByType(SigningType.TB_BETA)
 
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "b5"
+            versionNameSuffix = "b1"
 
             isMinifyEnabled = true
             isShrinkResources = true
@@ -235,7 +238,9 @@ dependencies {
 
     implementation(projects.feature.autodiscovery.api)
     debugImplementation(projects.backend.demo)
+    "dailyImplementation"(projects.backend.demo)
     debugImplementation(projects.feature.autodiscovery.demo)
+    "dailyImplementation"(projects.feature.autodiscovery.demo)
 
     "fossImplementation"(projects.feature.funding.link)
 

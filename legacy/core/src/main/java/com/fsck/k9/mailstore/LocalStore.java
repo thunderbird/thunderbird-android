@@ -46,7 +46,7 @@ import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import kotlin.time.Clock;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
 import net.thunderbird.feature.search.legacy.api.SearchAttribute;
@@ -163,20 +163,20 @@ public class LocalStore {
     private final AttachmentInfoExtractor attachmentInfoExtractor;
     private final StorageFilesProvider storageFilesProvider;
 
-    private final LegacyAccount account;
+    private final LegacyAccountDto account;
     private final LockableDatabase database;
     private final OutboxStateRepository outboxStateRepository;
     private GeneralSettingsManager generalSettingsManager;
 
-    static LocalStore createInstance(LegacyAccount account, Context context, GeneralSettingsManager generalSettingsManager) throws MessagingException {
+    static LocalStore createInstance(LegacyAccountDto account, Context context, GeneralSettingsManager generalSettingsManager) throws MessagingException {
         return new LocalStore(account, context, generalSettingsManager);
     }
 
     /**
      * local://localhost/path/to/database/uuid.db
-     * This constructor is only used by {@link LocalStoreProvider#getInstance(LegacyAccount,GeneralSettingsManager)}
+     * This constructor is only used by {@link LocalStoreProvider#getInstance(LegacyAccountDto,GeneralSettingsManager)}
      */
-    private LocalStore(final LegacyAccount account, final Context context, final GeneralSettingsManager generalSettingsManager) throws MessagingException {
+    private LocalStore(final LegacyAccountDto account, final Context context, final GeneralSettingsManager generalSettingsManager) throws MessagingException {
         pendingCommandSerializer = PendingCommandSerializer.getInstance();
         attachmentInfoExtractor = DI.get(AttachmentInfoExtractor.class);
         StorageFilesProviderFactory storageFilesProviderFactory = DI.get(StorageFilesProviderFactory.class);
@@ -201,7 +201,7 @@ public class LocalStore {
         return schemaDefinitionFactory.getDatabaseVersion();
     }
 
-    LegacyAccount getAccount() {
+    LegacyAccountDto getAccount() {
         return account;
     }
 
@@ -1044,7 +1044,7 @@ public class LocalStore {
 
     class RealMigrationsHelper implements MigrationsHelper {
         @Override
-        public LegacyAccount getAccount() {
+        public LegacyAccountDto getAccount() {
             return LocalStore.this.getAccount();
         }
 

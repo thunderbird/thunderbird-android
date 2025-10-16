@@ -21,7 +21,7 @@ import kotlin.test.assertNotNull
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.display.DisplaySettings
 import net.thunderbird.core.preference.network.NetworkSettings
@@ -402,8 +402,8 @@ class NewMailNotificationManagerTest {
         }
     }
 
-    private fun createAccount(): LegacyAccount {
-        return LegacyAccount(ACCOUNT_UUID).apply {
+    private fun createAccount(): LegacyAccountDto {
+        return LegacyAccountDto(ACCOUNT_UUID).apply {
             name = ACCOUNT_NAME
             chipColor = ACCOUNT_COLOR
         }

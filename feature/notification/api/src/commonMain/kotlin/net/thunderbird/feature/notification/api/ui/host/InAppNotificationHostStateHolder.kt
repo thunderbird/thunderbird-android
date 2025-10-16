@@ -83,6 +83,21 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
     }
 
     /**
+     * Dismisses all visual representations of the given in-app notification.
+     *
+     * This function will attempt to dismiss the global banner, inline banners,
+     * and snackbar associated with the provided notification.
+     *
+     * @param notification The [InAppNotification] to dismiss.
+     */
+    fun dismiss(notification: InAppNotification) {
+        val data = notification.toInAppNotificationData()
+        data.bannerInlineVisuals.singleOrNull()?.let(::dismiss)
+        data.bannerGlobalVisual?.let(::dismiss)
+        data.snackbarVisual?.let(::dismiss)
+    }
+
+    /**
      * Dismisses the given in-app notification visual.
      *
      * This function is responsible for removing the specified notification visual
@@ -123,7 +138,9 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
     private fun InAppNotification.toInAppNotificationData(): InAppNotificationHostState =
         InAppNotificationHostStateImpl(
             bannerGlobalVisual = BannerGlobalVisual.from(notification = this),
-            bannerInlineVisuals = BannerInlineVisual.from(notification = this).toPersistentSet(),
+            bannerInlineVisuals = BannerInlineVisual.from(notification = this)
+                ?.let { persistentSetOf(it) }
+                ?: persistentSetOf(),
             snackbarVisual = SnackbarVisual.from(notification = this),
         )
 
@@ -134,7 +151,7 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
 }
 
 @Composable
-fun rememberInAppNotificationHostState(
+fun rememberInAppNotificationHostStateHolder(
     enabled: ImmutableSet<DisplayInAppNotificationFlag> = DisplayInAppNotificationFlag.AllNotifications,
 ): InAppNotificationHostStateHolder {
     return remember { InAppNotificationHostStateHolder(enabled) }

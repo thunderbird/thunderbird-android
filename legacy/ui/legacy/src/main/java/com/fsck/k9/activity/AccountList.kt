@@ -16,7 +16,7 @@ import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.search.legacy.SearchAccount
@@ -73,13 +73,13 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
      * @param realAccounts
      * An array of accounts to display.
      */
-    private fun populateListView(realAccounts: List<LegacyAccount>) {
+    private fun populateListView(realAccounts: List<LegacyAccountDto>) {
         val accounts: MutableList<BaseAccount> = ArrayList()
 
         if (generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox) {
-            val unifiedInboxAccount: BaseAccount = SearchAccount.createUnifiedInboxAccount(
-                unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-                unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+            val unifiedInboxAccount: BaseAccount = SearchAccount.createUnifiedFoldersSearch(
+                title = coreResourceProvider.searchUnifiedFoldersTitle(),
+                detail = coreResourceProvider.searchUnifiedFoldersDetail(),
             )
             accounts.add(unifiedInboxAccount)
         }
@@ -123,7 +123,7 @@ abstract class AccountList : K9ListActivity(), OnItemClickListener {
                 holder.email.visibility = View.GONE
             }
 
-            if (account is LegacyAccount) {
+            if (account is LegacyAccountDto) {
                 holder.chip.setBackgroundColor(account.chipColor)
             } else {
                 holder.chip.setBackgroundColor(resources.getColor(R.color.account_list_item_chip_background))

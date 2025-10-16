@@ -4,7 +4,6 @@ import androidx.preference.PreferenceDataStore
 import app.k9mail.feature.telemetry.api.TelemetryManager
 import com.fsck.k9.K9
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation
-import com.fsck.k9.K9.PostRemoveNavigation
 import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
@@ -16,6 +15,7 @@ import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
 import net.thunderbird.core.preference.update
 
+@Suppress("LargeClass")
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,
     private val appLanguageManager: AppLanguageManager,
@@ -28,30 +28,30 @@ class GeneralSettingsDataStore(
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
             "fixed_message_view_theme" -> generalSettingsManager.getConfig().display.coreSettings.fixedMessageViewTheme
-            "animations" -> generalSettingsManager.getConfig().display.isShowAnimations
+            "animations" -> generalSettingsManager.getConfig().display.visualSettings.isShowAnimations
             "show_unified_inbox" -> generalSettingsManager.getConfig().display.inboxSettings.isShowUnifiedInbox
             "show_starred_count" -> generalSettingsManager.getConfig().display.inboxSettings.isShowStarredCount
             "messagelist_stars" -> generalSettingsManager.getConfig().display.inboxSettings.isShowMessageListStars
             "messagelist_show_correspondent_names" -> generalSettingsManager.getConfig()
-                .display.isShowCorrespondentNames
+                .display.visualSettings.isShowCorrespondentNames
 
             "messagelist_sender_above_subject" -> generalSettingsManager.getConfig()
                 .display.inboxSettings.isMessageListSenderAboveSubject
 
             "messagelist_show_contact_name" -> generalSettingsManager.getConfig()
-                .display.isShowContactName
+                .display.visualSettings.isShowContactName
 
             "messagelist_change_contact_name_color" -> generalSettingsManager.getConfig()
-                .display.isChangeContactNameColor
+                .display.visualSettings.isChangeContactNameColor
 
             "messagelist_show_contact_picture" -> generalSettingsManager.getConfig()
-                .display.isShowContactPicture
+                .display.visualSettings.isShowContactPicture
 
             "messagelist_colorize_missing_contact_pictures" -> generalSettingsManager.getConfig()
-                .display.isColorizeMissingContactPictures
+                .display.visualSettings.isColorizeMissingContactPictures
 
             "messagelist_background_as_unread_indicator" -> generalSettingsManager.getConfig()
-                .display.isUseBackgroundAsUnreadIndicator
+                .display.visualSettings.isUseBackgroundAsUnreadIndicator
 
             "show_compose_button" -> generalSettingsManager.getConfig()
                 .display.inboxSettings.isShowComposeButtonOnMessageList
@@ -60,10 +60,10 @@ class GeneralSettingsDataStore(
                 .display.inboxSettings.isThreadedViewEnabled
 
             "messageview_fixedwidth_font" -> generalSettingsManager.getConfig()
-                .display.isUseMessageViewFixedWidthFont
+                .display.visualSettings.isUseMessageViewFixedWidthFont
 
             "messageview_autofit_width" -> generalSettingsManager.getConfig()
-                .display.isAutoFitWidth
+                .display.visualSettings.isAutoFitWidth
 
             "quiet_time_enabled" -> generalSettingsManager.getConfig()
                 .notification.isQuietTimeEnabled
@@ -73,8 +73,8 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> generalSettingsManager.getConfig().privacy.isHideTimeZone
             "debug_logging" -> generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
             "sync_debug_logging" -> generalSettingsManager.getConfig().debugging.isSyncLoggingEnabled
-            "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
-            "volume_navigation" -> K9.isUseVolumeKeysForNavigation
+            "sensitive_logging" -> generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled
+            "volume_navigation" -> generalSettingsManager.getConfig().interaction.useVolumeKeysForNavigation
             "enable_telemetry" -> K9.isTelemetryEnabled
             else -> defValue
         }
@@ -113,8 +113,8 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> setIsHideTimeZone(isHideTimeZone = value)
             "debug_logging" -> setIsDebugLoggingEnabled(isDebugLoggingEnabled = value)
             "sync_debug_logging" -> setIsSyncLoggingEnabled(isSyncLoggingEnabled = value)
-            "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
-            "volume_navigation" -> K9.isUseVolumeKeysForNavigation = value
+            "sensitive_logging" -> setIsSensitiveLoggingEnabled(isSensitiveLoggingEnabled = value)
+            "volume_navigation" -> setUseVolumeKeysForNavigation(value)
             "enable_telemetry" -> setTelemetryEnabled(value)
             else -> return
         }
@@ -172,7 +172,7 @@ class GeneralSettingsDataStore(
             "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
             "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
             "message_list_density" -> K9.messageListDensity.toString()
-            "post_remove_navigation" -> K9.messageViewPostRemoveNavigation.name
+            "post_remove_navigation" -> generalSettingsManager.getConfig().interaction.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
         }
@@ -216,7 +216,7 @@ class GeneralSettingsDataStore(
             "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
             "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
             "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
-            "post_remove_navigation" -> K9.messageViewPostRemoveNavigation = PostRemoveNavigation.valueOf(value)
+            "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> {
                 K9.messageViewPostMarkAsUnreadNavigation = PostMarkAsUnreadNavigation.valueOf(value)
             }
@@ -399,14 +399,26 @@ class GeneralSettingsDataStore(
     private fun setIsShowAnimations(isShowAnimations: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(isShowAnimations = isShowAnimations))
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isShowAnimations = isShowAnimations,
+                    ),
+                ),
+            )
         }
     }
 
     private fun setIsShowCorrespondentNames(isShowCorrespondentNames: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(isShowCorrespondentNames = isShowCorrespondentNames))
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isShowCorrespondentNames = isShowCorrespondentNames,
+                    ),
+                ),
+            )
         }
     }
 
@@ -426,21 +438,39 @@ class GeneralSettingsDataStore(
     private fun setIsShowContactName(isShowContactName: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(isShowContactName = isShowContactName))
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isShowContactName = isShowContactName,
+                    ),
+                ),
+            )
         }
     }
 
     private fun setIsShowContactPicture(isShowContactPicture: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(isShowContactPicture = isShowContactPicture))
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isShowContactPicture = isShowContactPicture,
+                    ),
+                ),
+            )
         }
     }
 
     private fun setIsChangeContactNameColor(isChangeContactNameColor: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(isChangeContactNameColor = isChangeContactNameColor))
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isChangeContactNameColor = isChangeContactNameColor,
+                    ),
+                ),
+            )
         }
     }
 
@@ -448,7 +478,11 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
             settings.copy(
-                display = settings.display.copy(isColorizeMissingContactPictures = isColorizeMissingContactPictures),
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isColorizeMissingContactPictures = isColorizeMissingContactPictures,
+                    ),
+                ),
             )
         }
     }
@@ -457,7 +491,11 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
             settings.copy(
-                display = settings.display.copy(isUseBackgroundAsUnreadIndicator = isUseBackgroundAsUnreadIndicator),
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isUseBackgroundAsUnreadIndicator = isUseBackgroundAsUnreadIndicator,
+                    ),
+                ),
             )
         }
     }
@@ -492,7 +530,11 @@ class GeneralSettingsDataStore(
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
             settings.copy(
-                display = settings.display.copy(isUseMessageViewFixedWidthFont = isUseMessageViewFixedWidthFont),
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isUseMessageViewFixedWidthFont = isUseMessageViewFixedWidthFont,
+                    ),
+                ),
             )
         }
     }
@@ -522,7 +564,13 @@ class GeneralSettingsDataStore(
     private fun setIsAutoFitWidth(isAutoFitWidth: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(isAutoFitWidth = isAutoFitWidth))
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        isAutoFitWidth = isAutoFitWidth,
+                    ),
+                ),
+            )
         }
     }
 
@@ -570,12 +618,45 @@ class GeneralSettingsDataStore(
         }
     }
 
+    private fun setIsSensitiveLoggingEnabled(isSensitiveLoggingEnabled: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                debugging = settings.debugging.copy(
+                    isSensitiveLoggingEnabled = isSensitiveLoggingEnabled,
+                ),
+            )
+        }
+    }
+
+    private fun setUseVolumeKeysForNavigation(useVolumeKeysForNavigation: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                interaction = settings.interaction.copy(
+                    useVolumeKeysForNavigation = useVolumeKeysForNavigation,
+                ),
+            )
+        }
+    }
+
     private fun setIsHideUserAgent(isHideUserAgent: Boolean) {
         skipSaveSettings = true
         generalSettingsManager.update { settings ->
             settings.copy(
                 privacy = settings.privacy.copy(
                     isHideUserAgent = isHideUserAgent,
+                ),
+            )
+        }
+    }
+
+    private fun setMessageViewPostRemoveNavigation(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                interaction = settings.interaction.copy(
+                    messageViewPostRemoveNavigation = value,
                 ),
             )
         }

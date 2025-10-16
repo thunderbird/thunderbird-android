@@ -7,7 +7,7 @@ import androidx.work.WorkerParameters
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mail.AuthType
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -66,7 +66,7 @@ class MailSyncWorker(
         }
     }
 
-    private val LegacyAccount.isPeriodicMailSyncDisabled
+    private val LegacyAccountDto.isPeriodicMailSyncDisabled
         get() = automaticCheckIntervalMinutes <= 0
 
     companion object {

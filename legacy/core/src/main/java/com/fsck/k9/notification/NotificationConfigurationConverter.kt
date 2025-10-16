@@ -1,6 +1,6 @@
 package com.fsck.k9.notification
 
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.notification.NotificationSettings
 
 /**
@@ -11,7 +11,7 @@ class NotificationConfigurationConverter(
     private val notificationVibrationDecoder: NotificationVibrationDecoder,
 ) {
     fun convert(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationConfiguration: NotificationConfiguration,
     ): NotificationSettings {
         val light = notificationLightDecoder.decode(

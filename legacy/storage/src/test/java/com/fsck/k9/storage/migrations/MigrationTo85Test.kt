@@ -9,7 +9,7 @@ import com.fsck.k9.storage.messages.FolderEntry
 import com.fsck.k9.storage.messages.readFolders
 import kotlin.test.Test
 import net.thunderbird.core.android.account.FolderMode
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.junit.After
 import org.junit.runner.RunWith
 import org.mockito.kotlin.doAnswer
@@ -186,15 +186,15 @@ class MigrationTo85Test {
         )
     }
 
-    private fun createAccount(): LegacyAccount {
-        return mock<LegacyAccount> {
+    private fun createAccount(): LegacyAccountDto {
+        return mock<LegacyAccountDto> {
             on { folderNotifyNewMailMode } doAnswer { folderNotifyMode }
         }
     }
 
-    private fun createMigrationsHelper(account: LegacyAccount): MigrationsHelper {
+    private fun createMigrationsHelper(account: LegacyAccountDto): MigrationsHelper {
         return object : MigrationsHelper {
-            override fun getAccount(): LegacyAccount {
+            override fun getAccount(): LegacyAccountDto {
                 return account
             }
 

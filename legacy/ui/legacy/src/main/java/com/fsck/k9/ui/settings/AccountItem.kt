@@ -12,10 +12,10 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.TouchEventHook
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 internal class AccountItem(
-    val account: LegacyAccount,
+    val account: LegacyAccountDto,
     override var isDraggable: Boolean,
 ) : AbstractItem<AccountItem.ViewHolder>(), IDraggable {
     override var identifier = 200L + account.accountNumber

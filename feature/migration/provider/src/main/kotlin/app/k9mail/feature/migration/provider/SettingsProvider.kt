@@ -13,7 +13,7 @@ import com.fsck.k9.helper.MimeTypeUtil
 import com.fsck.k9.helper.mapToSet
 import com.fsck.k9.preferences.SettingsExporter
 import kotlin.concurrent.thread
-import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.legacy.Log
 import okio.ByteString.Companion.toByteString
 import org.koin.android.ext.android.inject
@@ -27,7 +27,7 @@ import org.koin.core.component.KoinComponent
  * settings (including passwords).
  */
 class SettingsProvider : ContentProvider(), KoinComponent {
-    private val accountManager: AccountManager by inject()
+    private val accountManager: LegacyAccountDtoManager by inject()
     private val settingsExporter: SettingsExporter by inject()
 
     override fun onCreate(): Boolean {

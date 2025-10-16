@@ -15,7 +15,6 @@
     <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Konfigurovať ručne</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Je nevyhnutné potvrdiť konfiguráciu.</string>
     <string name="account_setup_special_folders_loading_message">Získavam zoznam zložiek…</string>
-    <string name="account_setup_options_display_name_label">Vaše meno</string>
     <string name="account_setup_options_section_sync_options">Možnosti synchronizácie</string>
     <plurals name="account_setup_options_email_check_frequency_minutes">
         <item quantity="one">Každú minútu</item>
@@ -38,7 +37,6 @@
     <string name="account_setup_special_folders_error_message">Zlyhalo načítanie zoznamu zložiek zo servera</string>
     <string name="account_setup_special_folders_spam_folder_label">Zložka SPAMu</string>
     <string name="account_setup_options_account_name_label">Názov konta</string>
-    <string name="account_setup_options_display_name_error_required">Vaše meno je povinné.</string>
     <string name="account_setup_options_email_signature_error_blank">E-mailový podpis nemôže byť prázdny.</string>
     <string name="account_setup_create_account_creating">Vytváram konto…</string>
     <string name="account_setup_auto_discovery_validation_error_password_required">Heslo je povinné.</string>

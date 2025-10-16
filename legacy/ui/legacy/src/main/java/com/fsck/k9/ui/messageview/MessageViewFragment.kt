@@ -55,8 +55,8 @@ import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
-import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.Theme
@@ -73,7 +73,7 @@ class MessageViewFragment :
 
     private val themeManager: ThemeManager by inject()
     private val messageLoaderHelperFactory: MessageLoaderHelperFactory by inject()
-    private val accountManager: AccountManager by inject()
+    private val accountManager: LegacyAccountDtoManager by inject()
     private val messagingController: MessagingController by inject()
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
@@ -107,9 +107,9 @@ class MessageViewFragment :
     private var destinationFolderId: Long? = null
     private lateinit var fragmentListener: MessageViewFragmentListener
 
-    private lateinit var account: LegacyAccount
+    private lateinit var account: LegacyAccountDto
     lateinit var messageReference: MessageReference
-    private var showAccountChip: Boolean = true
+    private var showAccountIndicator: Boolean = true
 
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
     private var isDeleteMenuItemDisabled: Boolean = false
@@ -142,8 +142,8 @@ class MessageViewFragment :
         messageReference = MessageReference.parse(arguments?.getString(ARG_REFERENCE))
             ?: error("Invalid argument '$ARG_REFERENCE'")
 
-        showAccountChip = arguments?.getBoolean(ARG_SHOW_ACCOUNT_CHIP)
-            ?: error("Missing argument: '$ARG_SHOW_ACCOUNT_CHIP'")
+        showAccountIndicator = arguments?.getBoolean(ARG_SHOW_ACCOUNT_INDICATOR)
+            ?: error("Missing argument: '$ARG_SHOW_ACCOUNT_INDICATOR'")
 
         if (savedInstanceState != null) {
             wasMessageMarkedAsOpened = savedInstanceState.getBoolean(STATE_WAS_MESSAGE_MARKED_AS_OPENED)
@@ -175,7 +175,7 @@ class MessageViewFragment :
     }
 
     private fun initializeMessageTopView(messageTopView: MessageTopView) {
-        messageTopView.setShowAccountChip(showAccountChip)
+        messageTopView.setShowAccountIndicator(showAccountIndicator)
 
         messageTopView.setAttachmentCallback(this)
         messageTopView.setMessageCryptoPresenter(messageCryptoPresenter)
@@ -997,15 +997,15 @@ class MessageViewFragment :
         const val PROGRESS_THRESHOLD_MILLIS = 500 * 1000
 
         private const val ARG_REFERENCE = "reference"
-        private const val ARG_SHOW_ACCOUNT_CHIP = "showAccountChip"
+        private const val ARG_SHOW_ACCOUNT_INDICATOR = "showAccountIndicator"
 
         private const val STATE_WAS_MESSAGE_MARKED_AS_OPENED = "wasMessageMarkedAsOpened"
         private const val STATE_IS_ACTIVE = "isActive"
 
-        fun newInstance(reference: MessageReference, showAccountChip: Boolean): MessageViewFragment {
+        fun newInstance(reference: MessageReference, showAccountIndicator: Boolean): MessageViewFragment {
             return MessageViewFragment().withArguments(
                 ARG_REFERENCE to reference.toIdentityString(),
-                ARG_SHOW_ACCOUNT_CHIP to showAccountChip,
+                ARG_SHOW_ACCOUNT_INDICATOR to showAccountIndicator,
             )
         }
     }

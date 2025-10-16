@@ -8,22 +8,35 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.NO_POSITION
+import app.k9mail.feature.launcher.FeatureLauncherActivity
+import app.k9mail.feature.launcher.FeatureLauncherTarget
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.fsck.k9.ui.messagelist.MessageListFeatureFlags.UseComposeForMessageListItems
+import com.fsck.k9.ui.messagelist.item.BannerInlineListInAppNotificationViewHolder
+import com.fsck.k9.ui.messagelist.item.ComposableMessageViewHolder
 import com.fsck.k9.ui.messagelist.item.FooterViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageListViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.fsck.k9.ui.messagelist.item.MessageViewHolderColors
+import net.thunderbird.core.featureflag.FeatureFlagKey
+import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
+import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 
 private const val FOOTER_ID = 1L
+private const val IN_APP_NOTIFICATION_BANNER_INLINE_LIST_ID = -1L
 
 private const val TYPE_MESSAGE = 0
 private const val TYPE_FOOTER = 1
+private const val TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST = 2
 
+@Suppress("LongParameterList")
 class MessageListAdapter internal constructor(
     private val theme: Theme,
     private val res: Resources,
@@ -32,17 +45,21 @@ class MessageListAdapter internal constructor(
     private val listItemListener: MessageListItemActionListener,
     private val appearance: MessageListAppearance,
     private val relativeDateTimeFormatter: RelativeDateTimeFormatter,
+    private val themeProvider: FeatureThemeProvider,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) : RecyclerView.Adapter<MessageListViewHolder>() {
 
     val colors: MessageViewHolderColors = MessageViewHolderColors.resolveColors(theme)
 
-    var messages: List<MessageListItem> = emptyList()
+    var viewItems: List<MessageListViewItem> = emptyList()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
             val oldMessageList = field
 
             field = value
-            messagesMap = value.associateBy { it.uniqueId }
+            val messages = value.filterMessageListItem()
+            accountUuids = messages.map { it.account.uuid }.toSet()
+            messagesMap = messages.associateBy { it.uniqueId }
 
             if (selected.isNotEmpty()) {
                 val uniqueIds = messagesMap.keys
@@ -55,7 +72,9 @@ class MessageListAdapter internal constructor(
             diffResult.dispatchUpdatesTo(this)
         }
 
+    private val messages get() = viewItems.filterMessageListItem()
     private var messagesMap = emptyMap<Long, MessageListItem>()
+    private var accountUuids = emptySet<String>()
 
     var activeMessage: MessageReference? = null
         set(value) {
@@ -105,34 +124,6 @@ class MessageListAdapter internal constructor(
     var selectedCount: Int = 0
         private set
 
-    var footerText: String? = null
-        set(value) {
-            if (field == value) return
-
-            val hadFooterText = field != null
-            val previousFooterPosition = footerPosition
-            field = value
-
-            if (hadFooterText) {
-                if (value == null) {
-                    notifyItemRemoved(previousFooterPosition)
-                } else {
-                    notifyItemChanged(footerPosition)
-                }
-            } else {
-                notifyItemInserted(footerPosition)
-            }
-        }
-
-    private val hasFooter: Boolean
-        get() = footerText != null
-
-    private val lastMessagePosition: Int
-        get() = messages.lastIndex
-
-    private val footerPosition: Int
-        get() = if (hasFooter) lastMessagePosition + 1 else NO_POSITION
-
     private val messageClickedListener = OnClickListener { view: View ->
         val messageListItem = getItemFromView(view) ?: return@OnClickListener
         listItemListener.onMessageClicked(messageListItem)
@@ -161,59 +152,101 @@ class MessageListAdapter internal constructor(
         listItemListener.onToggleMessageSelection(messageListItem)
     }
 
+    private val isInAppNotificationEnabled: Boolean
+        get() = featureFlagProvider.provide(FeatureFlagKey.DisplayInAppNotifications) == FeatureFlagResult.Enabled
+
     init {
         setHasStableIds(true)
     }
 
-    override fun getItemCount(): Int = messages.size + if (hasFooter) 1 else 0
+    override fun getItemCount(): Int = viewItems.size
 
     override fun getItemId(position: Int): Long {
-        return if (position <= lastMessagePosition) {
-            messages[position].uniqueId
-        } else {
-            FOOTER_ID
-        }
+        return viewItems[position].viewId
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position <= lastMessagePosition) TYPE_MESSAGE else TYPE_FOOTER
+        return viewItems[position].viewType
     }
 
-    private fun getItem(position: Int): MessageListItem = messages[position]
+    private fun getItem(position: Int): MessageListItem = (viewItems[position] as MessageListViewItem.Message).item
 
     fun getItemById(uniqueId: Long): MessageListItem? {
         return messagesMap[uniqueId]
     }
 
     fun getItem(messageReference: MessageReference): MessageListItem? {
-        return messages.firstOrNull {
-            it.account.uuid == messageReference.accountUuid &&
-                it.folderId == messageReference.folderId &&
-                it.messageUid == messageReference.uid
-        }
+        return viewItems
+            .filterMessageListItem()
+            .firstOrNull {
+                it.account.uuid == messageReference.accountUuid &&
+                    it.folderId == messageReference.folderId &&
+                    it.messageUid == messageReference.uid
+            }
     }
 
     fun getPosition(messageListItem: MessageListItem): Int? {
-        return messages.indexOf(messageListItem).takeIf { it != -1 }
+        return viewItems
+            .map { (it as? MessageListViewItem.Message)?.item }
+            .indexOf(messageListItem).takeIf { it != -1 }
     }
 
     private fun getPosition(messageReference: MessageReference?): Int? {
         if (messageReference == null) return null
 
-        return messages.indexOfFirst {
-            messageReference.equals(it.account.uuid, it.folderId, it.messageUid)
-        }.takeIf { it != -1 }
+        return viewItems
+            .map { (it as? MessageListViewItem.Message)?.item }
+            .indexOfFirst {
+                it != null &&
+                    messageReference.equals(it.account.uuid, it.folderId, it.messageUid)
+            }
+            .takeIf { it != -1 }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageListViewHolder {
         return when (viewType) {
-            TYPE_MESSAGE -> createMessageViewHolder(parent)
+            TYPE_MESSAGE -> {
+                val result = featureFlagProvider.provide(UseComposeForMessageListItems)
+                if (result.isEnabled()) {
+                    createComposableMessageViewHolder(parent)
+                } else {
+                    createMessageViewHolder(parent)
+                }
+            }
+
             TYPE_FOOTER -> FooterViewHolder.create(layoutInflater, parent, footerClickListener)
+
+            TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST if isInAppNotificationEnabled ->
+                BannerInlineListInAppNotificationViewHolder(
+                    view = ComposeView(context = parent.context),
+                    eventFilter = { event ->
+                        val accountUuid = event.notification.accountUuid
+                        accountUuid != null && accountUuid in accountUuids
+                    },
+                    onNotificationActionClick = { action ->
+                        when (action) {
+                            is NotificationAction.UpdateIncomingServerSettings ->
+                                FeatureLauncherActivity.launch(
+                                    context = parent.context,
+                                    target = FeatureLauncherTarget.AccountEditIncomingSettings(action.accountUuid),
+                                )
+
+                            is NotificationAction.UpdateOutgoingServerSettings ->
+                                FeatureLauncherActivity.launch(
+                                    context = parent.context,
+                                    target = FeatureLauncherTarget.AccountEditOutgoingSettings(action.accountUuid),
+                                )
+
+                            else -> Unit
+                        }
+                    },
+                )
+
             else -> error("Unsupported type: $viewType")
         }
     }
 
-    private fun createMessageViewHolder(parent: ViewGroup?): MessageViewHolder =
+    private fun createMessageViewHolder(parent: ViewGroup): MessageViewHolder =
         MessageViewHolder.create(
             layoutInflater = layoutInflater,
             parent = parent,
@@ -229,21 +262,46 @@ class MessageListAdapter internal constructor(
             starClickListener = starClickListener,
         )
 
+    private fun createComposableMessageViewHolder(parent: ViewGroup): MessageListViewHolder =
+        ComposableMessageViewHolder.create(
+            context = parent.context,
+            themeProvider = themeProvider,
+            onClick = { listItemListener.onMessageClicked(it) },
+            onLongClick = { listItemListener.onToggleMessageSelection(it) },
+            onFavouriteClick = { listItemListener.onToggleMessageFlag(it) },
+            onAvatarClick = { listItemListener.onToggleMessageSelection(it) },
+            appearance = appearance,
+        )
+
     override fun onBindViewHolder(holder: MessageListViewHolder, position: Int) {
         when (val viewType = getItemViewType(position)) {
+            TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST if isInAppNotificationEnabled ->
+                (holder as BannerInlineListInAppNotificationViewHolder).bind()
+
             TYPE_MESSAGE -> {
                 val messageListItem = getItem(position)
-                val messageViewHolder = holder as MessageViewHolder
-                messageViewHolder.bind(
-                    messageListItem = messageListItem,
-                    isActive = isActiveMessage(messageListItem),
-                    isSelected = isSelected(messageListItem),
-                )
+                val result = featureFlagProvider.provide(UseComposeForMessageListItems)
+                if (result.isEnabled()) {
+                    val messageViewHolder = holder as ComposableMessageViewHolder
+                    messageViewHolder.bind(
+                        item = messageListItem,
+                        isActive = isActiveMessage(messageListItem),
+                        isSelected = isSelected(messageListItem),
+                    )
+                } else {
+                    val messageViewHolder = holder as MessageViewHolder
+                    messageViewHolder.bind(
+                        messageListItem = messageListItem,
+                        isActive = isActiveMessage(messageListItem),
+                        isSelected = isSelected(messageListItem),
+                    )
+                }
             }
 
             TYPE_FOOTER -> {
                 val footerViewHolder = holder as FooterViewHolder
-                footerViewHolder.bind(footerText)
+                val footer = viewItems[position] as MessageListViewItem.Footer
+                footerViewHolder.bind(footer.text)
             }
 
             else -> {
@@ -304,36 +362,55 @@ class MessageListAdapter internal constructor(
     }
 
     private fun calculateSelectionCount(): Int {
-        if (selected.isEmpty()) {
-            return 0
+        return when {
+            selected.isEmpty() -> 0
+            !appearance.showingThreadedList -> selected.size
+            else ->
+                viewItems
+                    .asSequence()
+                    .filterIsInstance<MessageListViewItem.Message>()
+                    .map { it.item }
+                    .filter { it.uniqueId in selected }
+                    .sumOf { it.threadCount.coerceAtLeast(1) }
         }
-
-        if (!appearance.showingThreadedList) {
-            return selected.size
-        }
-
-        return messages
-            .asSequence()
-            .filter { it.uniqueId in selected }
-            .sumOf { it.threadCount.coerceAtLeast(1) }
     }
 
     private fun getItemFromView(view: View): MessageListItem? {
-        val messageViewHolder = view.tag as MessageViewHolder
-        return getItemById(messageViewHolder.uniqueId)
+        if (featureFlagProvider.provide(UseComposeForMessageListItems).isEnabled()) {
+            val messageViewHolder = view.tag as ComposableMessageViewHolder
+            return getItemById(messageViewHolder.uniqueId)
+        } else {
+            val messageViewHolder = view.tag as MessageViewHolder
+            return getItemById(messageViewHolder.uniqueId)
+        }
     }
+
+    private fun List<MessageListViewItem>.filterMessageListItem(): List<MessageListItem> =
+        filterIsInstance<MessageListViewItem.Message>()
+            .map { it.item }
 }
 
 private class MessageListDiffCallback(
-    private val oldMessageList: List<MessageListItem>,
-    private val newMessageList: List<MessageListItem>,
+    private val oldMessageList: List<MessageListViewItem>,
+    private val newMessageList: List<MessageListViewItem>,
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldMessageList.size
 
     override fun getNewListSize(): Int = newMessageList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldMessageList[oldItemPosition].uniqueId == newMessageList[newItemPosition].uniqueId
+        val oldItem = oldMessageList[oldItemPosition]
+        val newItem = newMessageList[newItemPosition]
+        return when (oldItem) {
+            is MessageListViewItem.InAppNotificationBannerList
+            if newItem is MessageListViewItem.InAppNotificationBannerList -> true
+
+            is MessageListViewItem.Message
+            if newItem is MessageListViewItem.Message -> oldItem.item.uniqueId == newItem.item.uniqueId
+
+            is MessageListViewItem.Footer if newItem is MessageListViewItem.Footer -> true
+            else -> false
+        }
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -346,4 +423,24 @@ interface MessageListItemActionListener {
     fun onToggleMessageSelection(item: MessageListItem)
     fun onToggleMessageFlag(item: MessageListItem)
     fun onFooterClicked()
+}
+
+sealed interface MessageListViewItem {
+    val viewId: Long
+    val viewType: Int
+
+    data object InAppNotificationBannerList : MessageListViewItem {
+        override val viewId: Long = IN_APP_NOTIFICATION_BANNER_INLINE_LIST_ID
+        override val viewType: Int = TYPE_IN_APP_NOTIFICATION_BANNER_INLINE_LIST
+    }
+
+    data class Message(val item: MessageListItem) : MessageListViewItem {
+        override val viewId: Long get() = item.uniqueId
+        override val viewType: Int = TYPE_MESSAGE
+    }
+
+    data class Footer(val text: String) : MessageListViewItem {
+        override val viewId: Long = FOOTER_ID
+        override val viewType: Int = TYPE_FOOTER
+    }
 }

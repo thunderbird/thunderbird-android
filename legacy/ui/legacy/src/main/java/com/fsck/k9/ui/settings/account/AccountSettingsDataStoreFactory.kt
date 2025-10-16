@@ -6,7 +6,7 @@ import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.notification.NotificationChannelManager
 import com.fsck.k9.notification.NotificationController
 import java.util.concurrent.ExecutorService
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 class AccountSettingsDataStoreFactory(
     private val preferences: Preferences,
@@ -16,7 +16,7 @@ class AccountSettingsDataStoreFactory(
     private val notificationController: NotificationController,
     private val messagingController: MessagingController,
 ) {
-    fun create(account: LegacyAccount): AccountSettingsDataStore {
+    fun create(account: LegacyAccountDto): AccountSettingsDataStore {
         return AccountSettingsDataStore(
             preferences,
             executorService,

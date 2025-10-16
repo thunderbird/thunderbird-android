@@ -1,0 +1,34 @@
+name: Set up Gradle build environment
+description: Prepares environment for building with JDK and Gradle
+inputs:
+  add-job-summary:
+    description: 'Whether to add a job summary (always, never, on-failure).'
+    required: false
+    default: 'always'
+  write-cache:
+    description: 'Whether to write to the cache (true/false).'
+    required: false
+    default: 'false'
+  disable-cache:
+    description: 'Whether to disable the cache (true/false).'
+    required: false
+    default: 'false'
+runs:
+  using: 'composite'
+  steps:
+    - name: Copy CI gradle.properties
+      shell: bash
+      run: mkdir -p ~/.gradle ; cp .github/ci-gradle.properties ~/.gradle/gradle.properties
+
+    - name: Set up JDK
+      uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # v5.0.0
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Set up Gradle without cache
+      uses: gradle/actions/setup-gradle@4d9f0ba0025fe599b4ebab900eb7f3a1d93ef4c2 # v5.0.0
+      with:
+        cache-disabled: ${{ inputs.disable-cache }}
+        add-job-summary: ${{ inputs.add-job-summary }}
+        cache-read-only: ${{ inputs.write-cache == 'false' }}

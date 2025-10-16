@@ -13,7 +13,7 @@ import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import kotlin.test.assertNotNull
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.RobolectricTest
 import org.junit.Test
 
@@ -229,8 +229,8 @@ class NotificationDataStoreTest : RobolectricTest() {
         assertThat(notificationHolder.content).isSameInstanceAs(content)
     }
 
-    private fun createAccount(): LegacyAccount {
-        return LegacyAccount("00000000-0000-4000-0000-000000000000").apply {
+    private fun createAccount(): LegacyAccountDto {
+        return LegacyAccountDto("00000000-0000-4000-0000-000000000000").apply {
             accountNumber = ACCOUNT_NUMBER
         }
     }

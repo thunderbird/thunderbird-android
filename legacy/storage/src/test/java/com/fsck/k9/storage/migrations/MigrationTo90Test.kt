@@ -19,7 +19,7 @@ import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.storage.messages.createFolder
 import com.fsck.k9.storage.messages.readFolders
 import java.io.IOException
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
@@ -397,7 +397,7 @@ class MigrationTo90Test : KoinTest {
         incomingServerSettings: ServerSettings = createIncomingServerSettings(),
         oAuthState: String? = null,
         folderPathDelimiter: FolderPathDelimiter = FOLDER_DEFAULT_PATH_DELIMITER,
-    ): LegacyAccount {
+    ): LegacyAccountDto {
         return mock {
             on { this.incomingServerSettings } doReturn incomingServerSettings
             on { this.oAuthState } doReturn oAuthState
@@ -405,9 +405,9 @@ class MigrationTo90Test : KoinTest {
         }
     }
 
-    private fun createMigrationsHelper(account: LegacyAccount): MigrationsHelper {
+    private fun createMigrationsHelper(account: LegacyAccountDto): MigrationsHelper {
         return object : MigrationsHelper {
-            override fun getAccount(): LegacyAccount {
+            override fun getAccount(): LegacyAccountDto {
                 return account
             }
 

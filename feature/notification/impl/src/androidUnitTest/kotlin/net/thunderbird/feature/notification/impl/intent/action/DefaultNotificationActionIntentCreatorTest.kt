@@ -34,13 +34,14 @@ class DefaultNotificationActionIntentCreatorTest {
     fun `accept should return true for any type of notification action`() {
         // Arrange
         val multipleActions = listOf(
-            NotificationAction.Tap,
+            NotificationAction.Tap(),
             NotificationAction.Reply,
             NotificationAction.MarkAsRead,
             NotificationAction.Delete,
             NotificationAction.MarkAsSpam,
             NotificationAction.Archive,
-            NotificationAction.UpdateServerSettings,
+            NotificationAction.UpdateIncomingServerSettings("uuid", 1),
+            NotificationAction.UpdateOutgoingServerSettings("uuid", 1),
             NotificationAction.Retry,
             NotificationAction.CustomAction(title = "Custom Action 1"),
             NotificationAction.CustomAction(title = "Custom Action 2"),
@@ -96,7 +97,7 @@ class DefaultNotificationActionIntentCreatorTest {
             val testSubject = createTestSubject(context)
 
             // Act
-            testSubject.create(notification = FakeNotification(), action = NotificationAction.Tap)
+            testSubject.create(notification = FakeNotification(), action = NotificationAction.Tap())
 
             // Assert
             pendingIntentCompat.verify {

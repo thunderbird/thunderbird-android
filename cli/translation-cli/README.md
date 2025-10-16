@@ -4,7 +4,7 @@ This is a command line interface that will check the [weblate](https://hosted.we
 
 ## Usage
 
-To use this script you need to have a weblate token. You can get it by logging in to weblate and going to your profile settings.
+To use this script you need to have a [weblate token](https://hosted.weblate.org/accounts/profile/#api). You can get it by logging in to weblate and going to your profile settings.
 
 You can run the script with the following command:
 
@@ -20,4 +20,8 @@ If you want a code example, you can pass the `--print-all` argument. It will pri
 ./scripts/translation --token <weblate-token> --print-all
 ```
 
-You could use this output to update the `resourceConfigurations` variable in the `app-k9mail/build.gradle.kts` file and the `supported_languages` in the `arrays_general_settings_values.xml` file.
+This output can be used to update:
+
+- `resourceConfigurations` in `app-k9mail/build.gradle.kts` and `app-thunderbird/build.gradle.kts`
+- `supported_languages` in `legacy/core/src/res/values/arrays_general_settings_values.xml`
+

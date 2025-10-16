@@ -23,9 +23,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.architecture.model.Id
 import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.core.common.exception.MessagingException
@@ -34,7 +36,9 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.Account
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.mail.account.api.AccountManager
+import net.thunderbird.feature.account.storage.profile.AvatarDto
+import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
+import net.thunderbird.feature.account.storage.profile.ProfileDto
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -163,7 +167,7 @@ class DefaultOutboxFolderManagerTest {
             on { createLocalFolder(any(), any(), any(), any()) } doReturn expectedFolderId
         }
         val localStoreProvider = mock<LocalStoreProvider> {
-            on { getInstance(account) } doReturn localStore
+            on { getInstanceByLegacyAccount(account) } doReturn localStore
         }
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
@@ -192,7 +196,7 @@ class DefaultOutboxFolderManagerTest {
             on { createLocalFolder(any(), any(), any(), any()) } doAnswer { throw MessagingException("boom") }
         }
         val localStoreProvider = mock<LocalStoreProvider> {
-            on { getInstance(account) } doReturn localStore
+            on { getInstanceByLegacyAccount(account) } doReturn localStore
         }
         val cache = TimeLimitedCache<AccountId, Long>()
         val subject = DefaultOutboxFolderManager(
@@ -283,6 +287,12 @@ class DefaultOutboxFolderManagerTest {
 
     private fun createAccountPair(): Pair<Id<Account>, LegacyAccount> {
         val accountId = AccountIdFactory.of(Uuid.random().toString())
+        val profile = ProfileDto(
+            id = accountId,
+            name = "name",
+            color = 0,
+            avatar = AvatarDto(AvatarTypeDto.MONOGRAM, "A", null, null),
+        )
         val incoming = ServerSettings(
             type = "imap",
             host = "example.com",
@@ -304,13 +314,14 @@ class DefaultOutboxFolderManagerTest {
             clientCertificateAlias = null,
         )
         return accountId to LegacyAccount(
-            uuid = accountId.asRaw(),
-        ).apply {
-            name = "acc"
-            identities = listOf(Identity(name = "n", email = "user@example.com")).toMutableList()
-            incomingServerSettings = incoming
-            outgoingServerSettings = outgoing
-        }
+            id = accountId,
+            name = "acc",
+            email = "user@example.com",
+            profile = profile,
+            incomingServerSettings = incoming,
+            outgoingServerSettings = outgoing,
+            identities = listOf(Identity(name = "n", email = "user@example.com")),
+        )
     }
 
     private fun createLocalStoreProvider(
@@ -347,7 +358,7 @@ class DefaultOutboxFolderManagerTest {
             }
         }
         val localStoreProvider = mock<LocalStoreProvider> {
-            on { getInstance(account) } doReturn localStore
+            on { getInstanceByLegacyAccount(account) } doReturn localStore
         }
         return localStoreProvider
     }
@@ -355,8 +366,22 @@ class DefaultOutboxFolderManagerTest {
 
 private class FakeLegacyAccountManager(
     initialAccounts: List<LegacyAccount> = emptyList(),
-) : AccountManager<LegacyAccount> {
+) : LegacyAccountManager {
     private val accountsState = MutableStateFlow(initialAccounts)
+
+    override fun getAll(): Flow<List<LegacyAccount>> = accountsState
+
+    override fun getById(id: AccountId): Flow<LegacyAccount?> =
+        accountsState.map { list -> list.find { it.id == id } }
+
+    override suspend fun update(account: LegacyAccount) {
+        accountsState.update { currentList ->
+            currentList.toMutableList().apply {
+                removeIf { it.uuid == account.uuid }
+                add(account)
+            }
+        }
+    }
 
     override fun getAccounts(): List<LegacyAccount> = accountsState.value
 

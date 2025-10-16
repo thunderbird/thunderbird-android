@@ -4,5 +4,5 @@ import net.thunderbird.core.preference.GeneralSettingsManager
 
 class ContactSettingsProvider(private val generalSettingsManager: GeneralSettingsManager) {
     val isShowContactPicture: Boolean
-        get() = generalSettingsManager.getConfig().display.isShowContactPicture
+        get() = generalSettingsManager.getConfig().display.visualSettings.isShowContactPicture
 }

@@ -16,14 +16,14 @@ import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.AccountManager
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @Deprecated("Remove once import used the new oauth flow")
 class OAuthFlowActivity : K9Activity() {
     private val authViewModel: AuthViewModel by viewModel()
-    private val accountManager: AccountManager by inject()
+    private val accountManager: LegacyAccountDtoManager by inject()
 
     private lateinit var errorText: MaterialTextView
     private lateinit var signInButton: Button

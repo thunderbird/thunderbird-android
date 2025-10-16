@@ -3,10 +3,17 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+        vendor = JvmVendorSpec.ADOPTIUM
+    }
 }
 
 dependencies {
     testImplementation(libs.konsist)
     testImplementation(libs.kotlin.test)
+}
+
+tasks.withType<Test> {
+    outputs.upToDateWhen { false }
 }

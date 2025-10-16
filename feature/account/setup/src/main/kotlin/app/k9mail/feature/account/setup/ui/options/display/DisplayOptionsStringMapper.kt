@@ -27,7 +27,7 @@ private fun ValidateAccountNameError.toAccountNameErrorString(resources: Resourc
 
 private fun ValidateDisplayNameError.toDisplayNameErrorString(resources: Resources): String {
     return when (this) {
-        is EmptyDisplayName -> resources.getString(R.string.account_setup_options_display_name_error_required)
+        is EmptyDisplayName -> resources.getString(R.string.account_setup_options_your_name_error_required)
     }
 }
 

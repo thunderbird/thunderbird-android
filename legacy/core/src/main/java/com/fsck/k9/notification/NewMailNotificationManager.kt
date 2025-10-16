@@ -4,7 +4,7 @@ import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.mailstore.LocalMessage
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 /**
  * Manages notifications for new messages
@@ -19,7 +19,7 @@ constructor(
     private val summaryNotificationDataCreator: SummaryNotificationDataCreator,
     private val clock: Clock,
 ) {
-    fun restoreNewMailNotifications(account: LegacyAccount): NewMailNotificationData? {
+    fun restoreNewMailNotifications(account: LegacyAccountDto): NewMailNotificationData? {
         val notificationData = notificationRepository.restoreNotifications(account) ?: return null
 
         val addLockScreenNotification = notificationData.isSingleMessageNotification
@@ -42,7 +42,7 @@ constructor(
     }
 
     fun addNewMailNotification(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         message: LocalMessage,
         silent: Boolean,
     ): NewMailNotificationData? {
@@ -71,7 +71,7 @@ constructor(
     }
 
     fun removeNewMailNotifications(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         clearNewMessageState: Boolean,
         selector: (List<MessageReference>) -> List<MessageReference>,
     ): NewMailNotificationData? {
@@ -104,7 +104,7 @@ constructor(
         )
     }
 
-    fun clearNewMailNotifications(account: LegacyAccount, clearNewMessageState: Boolean): List<Int> {
+    fun clearNewMailNotifications(account: LegacyAccountDto, clearNewMessageState: Boolean): List<Int> {
         notificationRepository.clearNotifications(account, clearNewMessageState)
         return NotificationIds.getAllMessageNotificationIds(account)
     }
@@ -114,7 +114,7 @@ constructor(
     }
 
     private fun createSingleNotificationData(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationId: Int,
         content: NotificationContent,
         timestamp: Long,

@@ -1,5 +1,7 @@
 package net.thunderbird.core.android.account
 
+import net.thunderbird.feature.account.AccountId
+
 fun interface AccountRemovedListener {
-    fun onAccountRemoved(account: LegacyAccount)
+    fun onAccountRemoved(id: AccountId)
 }

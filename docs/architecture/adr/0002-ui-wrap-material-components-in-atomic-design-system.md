@@ -17,7 +17,7 @@ be implemented multiple times across different screens.
 
 To address these challenges, we've decided to adopt an
 [Atomic Design System](../design-system.md) as a foundation for our application UI.
-This system encapsulates Material components within our [own components](../../../core/ui/compose/designsystem/),
+This system encapsulates Material components within our own [components](https://github.com/thunderbird/thunderbird-android/tree/main/core/ui/compose/designsystem),
 organized into categories of _atoms_, _molecules_, and _organisms_. We also defined _templates_ as layout structures
 that can be flexibly combined to construct _pages_. These components collectively form the building blocks that we are
 using to construct our application's UI.

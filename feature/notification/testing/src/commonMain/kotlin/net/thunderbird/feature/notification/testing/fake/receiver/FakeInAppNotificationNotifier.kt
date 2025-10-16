@@ -10,5 +10,7 @@ open class FakeInAppNotificationNotifier : NotificationNotifier<InAppNotificatio
         notification: InAppNotification,
     ) = Unit
 
+    override suspend fun dismiss(id: NotificationId) = Unit
+
     override fun dispose() = Unit
 }

@@ -3,7 +3,6 @@
     <string name="account_setup_error_unknown">خطأ غير معروف</string>
     <string name="account_setup_special_folders_loading_message">يتم الآن الحصول على قائمة المجلدات…</string>
     <string name="account_setup_special_folders_drafts_folder_label">مجلد المسودات</string>
-    <string name="account_setup_options_display_name_label">الاسم</string>
     <string name="account_setup_create_account_creating">جارٍ إنشاء الحساب…</string>
     <string name="account_setup_create_account_created">تم إنشاء الحساب بنجاح</string>
     <string name="account_setup_create_account_error">حدث خطأ ما أثناء محاولة إنشاء الحساب</string>
@@ -70,5 +69,4 @@
     <string name="account_setup_options_email_signature_label">توقيع البريد الإلكتروني</string>
     <string name="account_setup_options_show_notifications_label">عرض الإشعارات</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">يُرجى إدخال عنوان البريد الإلكتروني.</string>
-    <string name="account_setup_options_display_name_error_required">يُرجى ادخال الاسم.</string>
 </resources>

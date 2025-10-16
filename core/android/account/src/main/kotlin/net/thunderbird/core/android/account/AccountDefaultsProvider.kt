@@ -8,14 +8,14 @@ interface AccountDefaultsProvider {
      *
      * This method should only be called when creating a new account.
      */
-    fun applyDefaults(account: LegacyAccount)
+    fun applyDefaults(account: LegacyAccountDto)
 
     /**
      * Apply any additional default values to the account.
      *
      * This method should be called when updating an existing account.
      */
-    fun applyOverwrites(account: LegacyAccount, storage: Storage)
+    fun applyOverwrites(account: LegacyAccountDto, storage: Storage)
 
     companion object {
         const val DEFAULT_MAXIMUM_AUTO_DOWNLOAD_MESSAGE_SIZE = 131072

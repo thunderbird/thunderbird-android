@@ -631,13 +631,13 @@
     <string name="account_settings_remote_search_num_label">Limite de recherche sur le serveur</string>
     <string name="remote_search_sending_query">Envoi de la requête au serveur</string>
     <plurals name="remote_search_downloading">
-        <item quantity="one">Extraction d’%d résultat</item>
-        <item quantity="many">Extraction de %d de résultats</item>
+        <item quantity="one">Extraction de %d résultat</item>
+        <item quantity="many">Extraction de %d résultats</item>
         <item quantity="other">Extraction de %d résultats</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Extraction d’%1$d résultat de %2$d</item>
-        <item quantity="many">Extraction de %1$d de résultats de %2$d</item>
+        <item quantity="one">Extraction de  %1$d résultat de %2$d</item>
+        <item quantity="many">Extraction de %1$d résultats de %2$d</item>
         <item quantity="other">Extraction de %1$d résultats de %2$d</item>
     </plurals>
     <string name="remote_search_error">Échec de recherche distante</string>

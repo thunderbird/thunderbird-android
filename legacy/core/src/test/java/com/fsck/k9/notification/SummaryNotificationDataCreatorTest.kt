@@ -13,7 +13,7 @@ import java.util.Calendar
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.display.DisplaySettings
 import net.thunderbird.core.preference.network.NetworkSettings
@@ -104,6 +104,7 @@ class SummaryNotificationDataCreatorTest {
 
     @Test
     fun `single notification with quiet time disabled`() {
+        setClockTo("23:01")
         setQuietTime(false)
         val notificationData = createNotificationData()
 
@@ -288,8 +289,8 @@ class SummaryNotificationDataCreatorTest {
         K9.isConfirmDeleteFromNotification = confirm
     }
 
-    private fun createAccount(): LegacyAccount {
-        return LegacyAccount("00000000-0000-0000-0000-000000000000").apply {
+    private fun createAccount(): LegacyAccountDto {
+        return LegacyAccountDto("00000000-0000-0000-0000-000000000000").apply {
             accountNumber = 42
         }
     }
