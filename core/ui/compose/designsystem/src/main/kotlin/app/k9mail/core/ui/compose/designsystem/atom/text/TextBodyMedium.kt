@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -17,6 +18,7 @@ fun TextBodyMedium(
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
 ) {
     Material3Text(
         text = text,
@@ -26,6 +28,7 @@ fun TextBodyMedium(
         overflow = overflow,
         maxLines = maxLines,
         style = MainTheme.typography.bodyMedium,
+        onTextLayout = onTextLayout,
     )
 }
 
@@ -37,6 +40,7 @@ fun TextBodyMedium(
     textAlign: TextAlign? = null,
     overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
+    onTextLayout: (TextLayoutResult) -> Unit = {},
 ) {
     Material3Text(
         text = text,
@@ -46,5 +50,6 @@ fun TextBodyMedium(
         overflow = overflow,
         maxLines = maxLines,
         style = MainTheme.typography.bodyMedium,
+        onTextLayout = onTextLayout,
     )
 }
