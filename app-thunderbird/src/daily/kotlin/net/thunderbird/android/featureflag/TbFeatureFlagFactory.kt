@@ -19,7 +19,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("enable_dropdown_drawer".toFeatureFlagKey(), enabled = true),
             FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = true),
             FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
-            FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = true),
+            FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
             FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
         )
     }

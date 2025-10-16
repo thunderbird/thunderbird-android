@@ -18,7 +18,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
             FeatureFlag("enable_dropdown_drawer".toFeatureFlagKey(), enabled = true),
             FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = true),
-            FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = true),
+            FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
             FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
         )
