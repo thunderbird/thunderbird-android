@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.molecule.notification.NotificationActionButton
 import app.k9mail.core.ui.compose.designsystem.organism.banner.inline.BannerInlineNotificationCardBehaviour
@@ -21,6 +23,7 @@ import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListH
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION
 import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT
+import net.thunderbird.feature.notification.api.ui.BannerInlineNotificationListHostDefaults.TEST_TAG_LEARN_MORE_ACTION
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.action.ResolvedNotificationActionButton
 import net.thunderbird.feature.notification.api.ui.animation.bannerSlideInSlideOutAnimationSpec
@@ -28,6 +31,7 @@ import net.thunderbird.feature.notification.api.ui.host.InAppNotificationHostSta
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual
 import net.thunderbird.feature.notification.resources.api.Res
 import net.thunderbird.feature.notification.resources.api.banner_inline_notification_check_error_notifications
+import net.thunderbird.feature.notification.resources.api.banner_inline_notification_learn_more
 import net.thunderbird.feature.notification.resources.api.banner_inline_notification_open_notifications
 import net.thunderbird.feature.notification.resources.api.banner_inline_notification_some_messages_need_attention
 import org.jetbrains.compose.resources.stringResource
@@ -105,25 +109,11 @@ private fun BannerInlineNotificationListHostLayout(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),
     ) {
         displayableNotifications.forEachIndexed { index, banner ->
-            ErrorBannerInlineNotificationCard(
-                title = banner.title,
-                supportingText = banner.supportingText,
-                actions = {
-                    banner.actions.forEachIndexed { actionIndex, action ->
-                        ResolvedNotificationActionButton(
-                            action = action,
-                            onActionClick = onActionClick,
-                            modifier = Modifier.testTagAsResourceId(
-                                tag = BannerInlineNotificationListHostDefaults.testTagBannerInlineListItemAction(
-                                    index = index,
-                                    actionIndex = actionIndex,
-                                ),
-                            ),
-                        )
-                    }
-                },
-                behaviour = BannerInlineNotificationCardBehaviour.Clipped,
-                modifier = Modifier.animateContentSize(),
+            BannerInlineItem(
+                index = index,
+                banner = banner,
+                onActionClick = onActionClick,
+                onOpenErrorNotificationsClick = onOpenErrorNotificationsClick,
             )
         }
 
@@ -150,11 +140,53 @@ private fun BannerInlineNotificationListHostLayout(
     }
 }
 
+@Composable
+private fun BannerInlineItem(
+    index: Int,
+    banner: BannerInlineVisual,
+    onActionClick: (NotificationAction) -> Unit,
+    onOpenErrorNotificationsClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var hasSupportingTextOverflowed by remember { mutableStateOf(false) }
+    ErrorBannerInlineNotificationCard(
+        title = banner.title,
+        supportingText = banner.supportingText,
+        actions = {
+            if (hasSupportingTextOverflowed) {
+                NotificationActionButton(
+                    text = stringResource(
+                        resource = Res.string.banner_inline_notification_learn_more,
+                    ),
+                    onClick = onOpenErrorNotificationsClick,
+                    modifier = Modifier.testTagAsResourceId(TEST_TAG_LEARN_MORE_ACTION),
+                )
+            }
+            banner.actions.forEachIndexed { actionIndex, action ->
+                ResolvedNotificationActionButton(
+                    action = action,
+                    onActionClick = onActionClick,
+                    modifier = Modifier.testTagAsResourceId(
+                        tag = BannerInlineNotificationListHostDefaults.testTagBannerInlineListItemAction(
+                            index = index,
+                            actionIndex = actionIndex,
+                        ),
+                    ),
+                )
+            }
+        },
+        behaviour = BannerInlineNotificationCardBehaviour.Clipped,
+        modifier = modifier.animateContentSize(),
+        onSupportingTextOverflow = { hasSupportingTextOverflowed = it },
+    )
+}
+
 object BannerInlineNotificationListHostDefaults {
     internal const val TEST_TAG_HOST_PARENT = "banner_inline_notification_host"
     internal const val TEST_TAG_BANNER_INLINE_LIST = "banner_inline_notification_list"
     internal const val TEST_TAG_CHECK_ERROR_NOTIFICATIONS = "check_notifications_composable"
     internal const val TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION = "check_notifications_action"
+    internal const val TEST_TAG_LEARN_MORE_ACTION = "learn_more_action"
 
     internal fun testTagBannerInlineListItemAction(index: Int, actionIndex: Int) =
         "banner_inline_notification_list_item_action_${index}_$actionIndex"
