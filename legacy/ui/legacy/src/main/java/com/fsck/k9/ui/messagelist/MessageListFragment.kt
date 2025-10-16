@@ -51,9 +51,11 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.helper.mapToSet
+import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.getLegacyAccounts
+import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.changelog.RecentChangesActivity
 import com.fsck.k9.ui.changelog.RecentChangesViewModel
@@ -61,6 +63,7 @@ import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.ui.choosefolder.ChooseFolderResultContract
 import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.fsck.k9.ui.messagelist.debug.AuthDebugActions
 import com.fsck.k9.ui.messagelist.item.MessageViewHolder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar.BaseCallback
@@ -91,6 +94,7 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
@@ -142,6 +146,7 @@ class MessageListFragment :
     private val featureThemeProvider: FeatureThemeProvider by inject()
     private val logger: Logger by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
+    private val authDebugActions: AuthDebugActions by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -1060,6 +1065,12 @@ class MessageListFragment :
         menu.findItem(R.id.search).isVisible = !isManualSearch
         menu.findItem(R.id.search_remote).isVisible = !isRemoteSearch && isRemoteSearchAllowed
         menu.findItem(R.id.search_everywhere).isVisible = isManualSearch && !localSearch.searchAllAccounts()
+        // Show debug actions only in DEBUG builds and when account uses OAuth.
+        val isOAuthAccount = account?.incomingServerSettings?.authenticationType == AuthType.XOAUTH2
+        val showDebug = BuildConfig.DEBUG && isOAuthAccount
+        menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = showDebug
+        menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = showDebug
+        menu.findItem(R.id.debug_force_auth_failure).isVisible = showDebug
     }
 
     private fun hideMenu(menu: Menu) {
@@ -1074,6 +1085,9 @@ class MessageListFragment :
         menu.findItem(R.id.empty_trash).isVisible = false
         menu.findItem(R.id.expunge).isVisible = false
         menu.findItem(R.id.search_everywhere).isVisible = false
+        menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = false
+        menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = false
+        menu.findItem(R.id.debug_force_auth_failure).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -1094,6 +1108,9 @@ class MessageListFragment :
             R.id.empty_trash -> onEmptyTrash()
             R.id.expunge -> onExpunge()
             R.id.search_everywhere -> onSearchEverywhere()
+            R.id.debug_invalidate_access_token_local -> onDebugInvalidateAccessTokenLocal()
+            R.id.debug_invalidate_access_token_server -> onDebugInvalidateAccessTokenServer()
+            R.id.debug_force_auth_failure -> onDebugForceAuthFailure()
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -1116,6 +1133,130 @@ class MessageListFragment :
 
     private fun onSendPendingMessages() {
         account?.id?.let { messagingController.sendPendingMessages(it, null) }
+    }
+
+    private fun onDebugInvalidateAccessTokenServer() {
+        val uuid = account?.uuid
+        if (!BuildConfig.DEBUG || uuid == null) {
+            Toast.makeText(
+                requireContext(),
+                R.string.debug_invalidate_access_token_unavailable,
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
+        when (val outcome = authDebugActions.invalidateAccessTokenServer(uuid)) {
+            is Outcome.Success -> {
+                Toast.makeText(
+                    requireContext(),
+                    R.string.debug_invalidate_access_token_server_done,
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+            is Outcome.Failure -> {
+                when (outcome.error) {
+                    is AuthDebugActions.Error.AccountNotFound,
+                    is AuthDebugActions.Error.NoOAuthState,
+                    -> {
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.debug_invalidate_access_token_unavailable,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                    is AuthDebugActions.Error.CannotModifyAccessToken -> {
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.debug_invalidate_access_token_cannot_modify,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                    is AuthDebugActions.Error.AlreadyModified -> {
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.debug_invalidate_access_token_already_modified,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onDebugInvalidateAccessTokenLocal() {
+        val uuid = account?.uuid
+        if (!BuildConfig.DEBUG || uuid == null) {
+            Toast.makeText(
+                requireContext(),
+                R.string.debug_invalidate_access_token_unavailable,
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
+        when (val outcome = authDebugActions.invalidateAccessTokenLocal(uuid)) {
+            is Outcome.Success -> {
+                Toast.makeText(
+                    requireContext(),
+                    R.string.debug_invalidate_access_token_local_done,
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+            is Outcome.Failure -> {
+                when (outcome.error) {
+                    is AuthDebugActions.Error.AccountNotFound,
+                    is AuthDebugActions.Error.NoOAuthState,
+                    is AuthDebugActions.Error.CannotModifyAccessToken,
+                    is AuthDebugActions.Error.AlreadyModified,
+                    -> {
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.debug_invalidate_access_token_unavailable,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun onDebugForceAuthFailure() {
+        val uuid = account?.uuid
+        if (!BuildConfig.DEBUG || uuid == null) {
+            Toast.makeText(requireContext(), R.string.debug_force_auth_failure_unavailable, Toast.LENGTH_SHORT).show()
+            return
+        }
+        when (val outcome = authDebugActions.forceAuthFailure(uuid)) {
+            is Outcome.Success -> {
+                Toast.makeText(requireContext(), R.string.debug_force_auth_failure_done, Toast.LENGTH_SHORT).show()
+            }
+            is Outcome.Failure -> {
+                when (outcome.error) {
+                    is AuthDebugActions.Error.AccountNotFound -> Toast.makeText(
+                        requireContext(),
+                        R.string.debug_force_auth_failure_unavailable,
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    is AuthDebugActions.Error.NoOAuthState -> {
+                        // Clearing is already the desired state; still report done so user knows it's in effect
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.debug_force_auth_failure_done,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                    is AuthDebugActions.Error.CannotModifyAccessToken,
+                    is AuthDebugActions.Error.AlreadyModified,
+                    -> {
+                        // Not relevant to this action, but keep exhaustive when; show generic unavailable
+                        Toast.makeText(
+                            requireContext(),
+                            R.string.debug_invalidate_access_token_unavailable,
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun updateFooterText() {
