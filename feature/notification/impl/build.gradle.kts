@@ -19,6 +19,7 @@ kotlin {
         androidMain.dependencies {
             // should split feature.launcher into api/impl?
             implementation(projects.feature.launcher)
+            implementation(projects.core.ui.theme.api)
         }
         androidUnitTest.dependencies {
             implementation(libs.androidx.test.core)
