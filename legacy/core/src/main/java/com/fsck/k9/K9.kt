@@ -155,8 +155,6 @@ object K9 : KoinComponent {
     @JvmStatic
     var isShowAccountSelector = true
 
-    var isNotificationDuringQuietTimeEnabled = true
-
     @get:Synchronized
     @set:Synchronized
     @JvmStatic
@@ -237,8 +235,6 @@ object K9 : KoinComponent {
         isShowAccountSelector = storage.getBoolean("showAccountSelector", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
-        isNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true)
-
         messageListDensity = storage.getEnum("messageListDensity", UiDensity.Default)
         contactNameColor = storage.getInt("registeredNameColor", 0xFF1093F5.toInt())
         messageViewPostMarkAsUnreadNavigation =
@@ -296,7 +292,6 @@ object K9 : KoinComponent {
 
     @Suppress("LongMethod")
     internal fun save(editor: StorageEditor) {
-        editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putEnum("messageListDensity", messageListDensity)
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
