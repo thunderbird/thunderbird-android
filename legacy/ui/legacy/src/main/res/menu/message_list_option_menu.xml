@@ -242,4 +242,23 @@
         app:showAsAction="never"
         />
 
+    <!-- MessageList (Debug) -->
+    <item
+        android:id="@+id/debug_invalidate_access_token_local"
+        android:title="@string/debug_invalidate_access_token_local"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/debug_invalidate_access_token_server"
+        android:title="@string/debug_invalidate_access_token_server"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/debug_force_auth_failure"
+        android:title="@string/debug_force_auth_failure"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>
