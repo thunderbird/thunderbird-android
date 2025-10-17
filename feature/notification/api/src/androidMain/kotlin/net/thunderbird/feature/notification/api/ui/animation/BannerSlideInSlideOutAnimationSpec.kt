@@ -4,10 +4,10 @@ import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.ui.unit.IntSize
 
@@ -30,12 +30,20 @@ private const val A_QUARTER = 4
  *         as well as the size transformation.
  */
 fun <T> AnimatedContentTransitionScope<T>.bannerSlideInSlideOutAnimationSpec(): ContentTransform {
-    val enter = fadeIn() + slideInVertically()
-    val exit = fadeOut() + slideOutVertically()
-    return enter togetherWith exit using SizeTransform { initialSize, targetSize ->
-        keyframes {
-            IntSize(width = targetSize.width, height = initialSize.height) at durationMillis / A_QUARTER
-            IntSize(width = targetSize.width, height = targetSize.height)
+    val enter = fadeIn() + expandVertically()
+    val exit = fadeOut() + shrinkVertically()
+    return (enter togetherWith exit) using SizeTransform { initialSize, targetSize ->
+        this.contentAlignment
+        if (targetState != null) {
+            keyframes {
+                IntSize(width = targetSize.width, height = initialSize.height) at durationMillis / A_QUARTER
+                IntSize(width = targetSize.width, height = targetSize.height)
+            }
+        } else {
+            keyframes {
+                IntSize(width = initialSize.width, height = initialSize.height) at durationMillis / A_QUARTER
+                IntSize(width = initialSize.width, height = 0)
+            }
         }
     }
 }

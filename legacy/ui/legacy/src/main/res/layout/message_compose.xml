@@ -10,13 +10,26 @@
 
     <include layout="@layout/toolbar" />
 
-    <ViewStub
-        android:id="@+id/message_compose_content"
-        android:layout="@layout/message_compose_content"
+    <LinearLayout
+        android:id="@+id/message_compose_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:visibility="visible"
-        />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
+        <FrameLayout
+            android:id="@+id/message_compose_in_app_notifications_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <ViewStub
+            android:id="@+id/message_compose_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout="@layout/message_compose_content"
+            tools:visibility="visible"
+            />
+    </LinearLayout>
 </LinearLayout>
