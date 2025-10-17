@@ -97,6 +97,7 @@ import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 import net.thunderbird.feature.mail.message.list.domain.DomainContract
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
+import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
 import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
 import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
@@ -516,8 +517,11 @@ class MessageListFragment :
                             ),
                             onSnackbarNotificationEvent = ::onSnackbarInAppNotificationEvent,
                             eventFilter = { event ->
-                                val accountUuid = event.notification.accountUuid
-                                accountUuid != null && accountUuid in accountUuids
+                                val notification = event.notification
+                                val accountUuid = notification.accountUuid
+                                notification !is SentFolderNotFoundNotification &&
+                                    accountUuid != null &&
+                                    accountUuid in accountUuids
                             },
                             modifier = Modifier
                                 .animateContentSize()
