@@ -98,6 +98,8 @@ include(
     ":feature:mail:account:api",
     ":feature:mail:folder:api",
     ":feature:mail:message:list",
+    ":feature:mail:message:export:api",
+    ":feature:mail:message:export:impl-eml",
 )
 
 include(
@@ -163,6 +165,7 @@ include(
     ":core:logging:impl-legacy",
     ":core:logging:impl-file",
     ":core:logging:testing",
+    ":core:file",
     ":core:mail:mailserver",
     ":core:preference:api",
     ":core:preference:impl",

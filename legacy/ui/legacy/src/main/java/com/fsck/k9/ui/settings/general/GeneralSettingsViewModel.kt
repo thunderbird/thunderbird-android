@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.k9mail.feature.launcher.FeatureLauncherActivity
 import app.k9mail.feature.launcher.FeatureLauncherTarget
+import com.eygraber.uri.toKmpUri
 import com.fsck.k9.ui.BuildConfig
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -41,7 +42,7 @@ class GeneralSettingsViewModel(
         viewModelScope.launch {
             setExportingState()
             try {
-                syncDebugFileLogSink.export(contentUri)
+                syncDebugFileLogSink.export(contentUri.toKmpUri())
                 showSnackbar(GeneralSettingsUiState.Success)
             } catch (e: Exception) {
                 Log.e(e, "Failed to write log to URI")

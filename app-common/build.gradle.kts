@@ -31,6 +31,8 @@ dependencies {
     implementation(projects.core.configstore.implBackend)
 
     implementation(projects.core.featureflag)
+    implementation(projects.core.file)
+
     implementation(projects.core.ui.legacy.theme2.common)
 
     implementation(projects.feature.account.avatar.api)
@@ -41,6 +43,9 @@ dependencies {
     implementation(projects.feature.notification.api)
     implementation(projects.feature.notification.impl)
     implementation(projects.feature.widget.messageList)
+
+    implementation(projects.feature.mail.message.export.api)
+    implementation(projects.feature.mail.message.export.implEml)
 
     implementation(projects.mail.protocols.imap)
     implementation(projects.backend.imap)

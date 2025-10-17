@@ -34,6 +34,7 @@ dependencies {
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
     implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.mail.message.export.api)
 
     compileOnly(projects.mail.protocols.imap)
 
@@ -69,6 +70,8 @@ dependencies {
     implementation(libs.mime4j.core)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.uri)
 
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
