@@ -13,10 +13,14 @@ class FakeFileSystemManager : FileSystemManager {
 
     private val storage = mutableMapOf<String, ByteArray>()
 
-    override fun openSink(uri: Uri): RawSink? {
+    override fun openSink(uri: Uri, mode: WriteMode): RawSink? {
         val key = uri.toString()
         return object : RawSink {
-            private val collected = mutableListOf<Byte>()
+            private val collected = mutableListOf<Byte>().apply {
+                if (mode == WriteMode.Append) {
+                    storage[key]?.forEach { add(it) }
+                }
+            }
 
             override fun write(source: Buffer, byteCount: Long) {
                 // Read exactly byteCount bytes from source and collect

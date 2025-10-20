@@ -14,13 +14,16 @@ import kotlinx.io.asSource
  * JVM implementation of [FileSystemManager] using java.io streams.
  */
 class JvmFileSystemManager : FileSystemManager {
-    override fun openSink(uri: Uri): RawSink? {
+    override fun openSink(uri: Uri, mode: WriteMode): RawSink? {
         // Only support simple file paths for JVM implementation
         return try {
             val file = File(uri.toURI())
             // create parent directories if necessary
             file.parentFile?.mkdirs()
-            val append = false // overwrite/truncate by default
+            val append = when (mode) {
+                WriteMode.Truncate -> false
+                WriteMode.Append -> true
+            }
             FileOutputStream(file, append).asSink()
         } catch (_: Throwable) {
             null

@@ -53,4 +53,82 @@ class AndroidFileSystemManagerTest {
         // Assert
         assertThat(result).isEqualTo(testText)
     }
+
+    @Test
+    fun openSink_withAppend_shouldAppendToExistingContent() {
+        // Arrange
+        val tempFile = folder.newFile("tb-file-fs-test-android-append.txt")
+        val uri: Uri = Uri.fromFile(tempFile)
+        val initial = "Hello"
+        val extra = " Android"
+
+        // Write initial content (truncate by default)
+        run {
+            val sink = checkNotNull(testSubject.openSink(uri.toKmpUri()))
+            val buf = Buffer().apply { write(initial.encodeToByteArray()) }
+            sink.write(buf, buf.size)
+            sink.flush()
+            sink.close()
+        }
+
+        // Append extra content
+        run {
+            val sink = checkNotNull(testSubject.openSink(uri.toKmpUri(), WriteMode.Append))
+            val buf = Buffer().apply { write(extra.encodeToByteArray()) }
+            sink.write(buf, buf.size)
+            sink.flush()
+            sink.close()
+        }
+
+        // Read back
+        val source = checkNotNull(testSubject.openSource(uri.toKmpUri()))
+        val readBuffer = Buffer()
+        source.readAtMostTo(readBuffer, 1024)
+        val bytes = ByteArray(readBuffer.size.toInt())
+        repeat(bytes.size) { i -> bytes[i] = readBuffer.readByte() }
+        val result = bytes.decodeToString()
+        source.close()
+
+        // Assert
+        assertThat(result).isEqualTo(initial + extra)
+    }
+
+    @Test
+    fun openSink_withTruncate_shouldOverwriteExistingContent() {
+        // Arrange
+        val tempFile = folder.newFile("tb-file-fs-test-android-truncate.txt")
+        val uri: Uri = Uri.fromFile(tempFile)
+        val first = "First"
+        val second = "Second"
+
+        // Write first content
+        run {
+            val sink = checkNotNull(testSubject.openSink(uri.toKmpUri(), WriteMode.Truncate))
+            val buf = Buffer().apply { write(first.encodeToByteArray()) }
+            sink.write(buf, buf.size)
+            sink.flush()
+            sink.close()
+        }
+
+        // Overwrite with second content
+        run {
+            val sink = checkNotNull(testSubject.openSink(uri.toKmpUri(), WriteMode.Truncate))
+            val buf = Buffer().apply { write(second.encodeToByteArray()) }
+            sink.write(buf, buf.size)
+            sink.flush()
+            sink.close()
+        }
+
+        // Read back
+        val source = checkNotNull(testSubject.openSource(uri.toKmpUri()))
+        val readBuffer = Buffer()
+        source.readAtMostTo(readBuffer, 1024)
+        val bytes = ByteArray(readBuffer.size.toInt())
+        repeat(bytes.size) { i -> bytes[i] = readBuffer.readByte() }
+        val result = bytes.decodeToString()
+        source.close()
+
+        // Assert
+        assertThat(result).isEqualTo(second)
+    }
 }

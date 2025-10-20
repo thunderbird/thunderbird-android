@@ -14,9 +14,13 @@ import kotlinx.io.asSource
 class AndroidFileSystemManager(
     private val contentResolver: ContentResolver,
 ) : FileSystemManager {
-    override fun openSink(uri: Uri): RawSink? {
-        // Use truncate/overwrite mode by default
-        return contentResolver.openOutputStream(uri.toAndroidUri(), "wt")?.asSink()
+    override fun openSink(uri: Uri, mode: WriteMode): RawSink? {
+        // Map WriteMode to ContentResolver open modes: "wt" (truncate) or "wa" (append)
+        val androidMode = when (mode) {
+            WriteMode.Truncate -> "wt"
+            WriteMode.Append -> "wa"
+        }
+        return contentResolver.openOutputStream(uri.toAndroidUri(), androidMode)?.asSink()
     }
 
     override fun openSource(uri: Uri): RawSource? {

@@ -4,6 +4,7 @@ import com.eygraber.uri.Uri
 import kotlinx.io.Buffer
 import net.thunderbird.core.file.FileOperationError
 import net.thunderbird.core.file.FileSystemManager
+import net.thunderbird.core.file.WriteMode
 import net.thunderbird.core.outcome.Outcome
 
 /**
@@ -19,7 +20,7 @@ internal class CopyCommand(
             ?: return Outcome.Failure(
                 FileOperationError.Unavailable(sourceUri, "Unable to open source: $sourceUri"),
             )
-        val sink = fs.openSink(destinationUri)
+        val sink = fs.openSink(destinationUri, WriteMode.Truncate)
             ?: return Outcome.Failure(
                 FileOperationError.Unavailable(destinationUri, "Unable to open destination: $destinationUri"),
             )

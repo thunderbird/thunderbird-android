@@ -11,12 +11,15 @@ interface FileSystemManager {
     /**
      * Opens a sink for writing to a URI.
      *
-     * Implementations should open the destination for writing in overwrite/truncate mode.
+     * Implementations must honor the requested [mode]:
+     * - [WriteMode.Truncate]: overwrite existing content (truncate) or create if missing
+     * - [WriteMode.Append]: append to existing content or create if missing
      *
      * @param uri The URI to open a sink for
+     * @param mode The write mode (truncate/append), defaults to [WriteMode.Truncate]
      * @return A sink for writing to the URI, or null if the URI couldn't be opened
      */
-    fun openSink(uri: Uri): RawSink?
+    fun openSink(uri: Uri, mode: WriteMode = WriteMode.Truncate): RawSink?
 
     /**
      * Opens a source for reading from a URI.
