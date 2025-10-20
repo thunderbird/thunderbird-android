@@ -46,10 +46,16 @@ val appCommonCoreLogger = module {
         )
     }
 
+    // Setup for sync debug logger
+    // Define this list lazily to avoid eager initialization at app startup
+    single<List<LogSink>>(qualifier = named(SYNC_DEBUG_LOG), createdAtStart = false) {
+        listOf(get<FileLogSink>(named(SYNC_DEBUG_LOG)))
+    }
+
     single<CompositeLogSink>(named(SYNC_DEBUG_LOG)) {
         CompositeLogSink(
             logLevelProvider = get(),
-            sinks = getList(),
+            sinks = get<List<LogSink>>(named(SYNC_DEBUG_LOG)),
         )
     }
 
