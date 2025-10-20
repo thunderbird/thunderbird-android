@@ -17,7 +17,7 @@ android {
         applicationId = "net.thunderbird.android"
         testApplicationId = "net.thunderbird.android.tests"
 
-        versionCode = 31
+        versionCode = 32
         versionName = "14.0"
 
         buildConfigField("String", "CLIENT_INFO_APP_NAME", "\"Thunderbird for Android\"")
