@@ -5,6 +5,17 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="13.0" versioncode="39029" date="2025-10-20">
+        <change>Sync logging duration is now limited to 24 hours</change>
+        <change>Client certificate was not displayed in SMTP settings</change>
+        <change>Outlook headers included unnecessary newlines when replying to a message</change>
+        <change>&#34;Enable debug logging&#34; did not provide verbose logging</change>
+        <change>Scrolling in a short email could trigger left/right swipe</change>
+        <change>Landscape scrolling only worked in center of Welcome and New Account screens</change>
+        <change>On IMAP servers with folder prefixes, some folder operations stopped working</change>
+        <change>Reverted word-wrapping change that broke HTML and table rendering</change>
+        <change>Application crashed when opening placeholder folder</change>
+    </release>
     <release version="12.1" versioncode="39028" date="2025-09-03">
         <change>Improved drawer navigation with a folder hierarchy</change>
         <change>K-9 mail could crash when opening</change>

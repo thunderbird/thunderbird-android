@@ -1,0 +1,8 @@
+- Sync logging limited to 24 hours
+- Client certificate not displayed in SMTP settings
+- "Enable debug logging" did not provide verbose logging
+- Scrolling short email could trigger left/right swipe
+- Landscape scrolling only worked in center of some screens
+- IMAP folder operations broken with prefixes
+- HTML/table rendering display broken
+- Application crashed opening placeholder folder
