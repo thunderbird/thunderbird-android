@@ -12,7 +12,7 @@ class FakeFileSystemManager : FileSystemManager {
 
     private val storage = mutableMapOf<String, ByteArray>()
 
-    override fun openSink(uriString: String, mode: String): RawSink? {
+    override fun openSink(uriString: String): RawSink? {
         return object : RawSink {
             private val collected = mutableListOf<Byte>()
 

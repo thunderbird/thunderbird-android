@@ -19,7 +19,7 @@ internal class CopyCommand(
             ?: return Outcome.Failure(
                 FileOperationError.Unavailable(sourceUri, "Unable to open source: $sourceUri"),
             )
-        val sink = fs.openSink(destinationUri.toString(), "wt")
+        val sink = fs.openSink(destinationUri.toString())
             ?: return Outcome.Failure(
                 FileOperationError.Unavailable(destinationUri, "Unable to open destination: $destinationUri"),
             )

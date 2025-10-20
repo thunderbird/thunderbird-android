@@ -33,7 +33,7 @@ class AndroidFileSystemManagerTest {
         val testText = "Hello Thunderbird Android!"
 
         // Act
-        val sink = checkNotNull(testSubject.openSink(uri.toString(), "wt"))
+        val sink = checkNotNull(testSubject.openSink(uri.toString()))
         val writeBuffer = Buffer().apply { write(testText.encodeToByteArray()) }
         sink.write(writeBuffer, writeBuffer.size)
         sink.flush()

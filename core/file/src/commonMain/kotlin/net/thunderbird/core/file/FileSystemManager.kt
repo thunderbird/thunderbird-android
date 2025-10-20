@@ -10,11 +10,12 @@ interface FileSystemManager {
     /**
      * Opens a sink for writing to a URI.
      *
+     * Implementations should open the destination for writing in overwrite/truncate mode.
+     *
      * @param uriString The URI string to open a sink for
-     * @param mode The mode to open the sink in (e.g., "wt" for write text)
      * @return A sink for writing to the URI, or null if the URI couldn't be opened
      */
-    fun openSink(uriString: String, mode: String): RawSink?
+    fun openSink(uriString: String): RawSink?
 
     /**
      * Opens a source for reading from a URI.

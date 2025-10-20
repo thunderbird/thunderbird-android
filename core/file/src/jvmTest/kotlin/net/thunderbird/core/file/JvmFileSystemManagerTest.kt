@@ -21,7 +21,7 @@ class JvmFileSystemManagerTest {
         // Arrange
         val tempFile: File = folder.newFile("tb-file-fs-test.txt")
         val testText = "Hello Thunderbird!"
-        val sink = checkNotNull(testSubject.openSink(tempFile.absolutePath, "wt"))
+        val sink = checkNotNull(testSubject.openSink(tempFile.absolutePath))
 
         // Act
         val writeBuffer = Buffer().apply { write(testText.encodeToByteArray()) }
