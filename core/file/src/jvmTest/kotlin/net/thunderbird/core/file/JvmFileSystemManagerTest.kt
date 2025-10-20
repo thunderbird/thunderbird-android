@@ -2,6 +2,7 @@ package net.thunderbird.core.file
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.eygraber.uri.Uri
 import java.io.File
 import kotlinx.io.Buffer
 import org.junit.Rule
@@ -21,7 +22,8 @@ class JvmFileSystemManagerTest {
         // Arrange
         val tempFile: File = folder.newFile("tb-file-fs-test.txt")
         val testText = "Hello Thunderbird!"
-        val sink = checkNotNull(testSubject.openSink(tempFile.absolutePath))
+        val uri = Uri.parse(tempFile.toURI().toString())
+        val sink = checkNotNull(testSubject.openSink(uri))
 
         // Act
         val writeBuffer = Buffer().apply { write(testText.encodeToByteArray()) }
@@ -29,7 +31,7 @@ class JvmFileSystemManagerTest {
         sink.flush()
         sink.close()
 
-        val source = checkNotNull(testSubject.openSource(tempFile.absolutePath))
+        val source = checkNotNull(testSubject.openSource(uri))
         val readBuffer = Buffer()
         source.readAtMostTo(readBuffer, 1024)
         val bytes = ByteArray(readBuffer.size.toInt())

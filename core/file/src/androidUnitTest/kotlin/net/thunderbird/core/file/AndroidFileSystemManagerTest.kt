@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import com.eygraber.uri.toKmpUri
 import kotlinx.io.Buffer
 import org.junit.Rule
 import org.junit.Test
@@ -33,13 +34,13 @@ class AndroidFileSystemManagerTest {
         val testText = "Hello Thunderbird Android!"
 
         // Act
-        val sink = checkNotNull(testSubject.openSink(uri.toString()))
+        val sink = checkNotNull(testSubject.openSink(uri.toKmpUri()))
         val writeBuffer = Buffer().apply { write(testText.encodeToByteArray()) }
         sink.write(writeBuffer, writeBuffer.size)
         sink.flush()
         sink.close()
 
-        val source = checkNotNull(testSubject.openSource(uri.toString()))
+        val source = checkNotNull(testSubject.openSource(uri.toKmpUri()))
         val readBuffer = Buffer()
         source.readAtMostTo(readBuffer, 1024)
         val bytes = ByteArray(readBuffer.size.toInt())

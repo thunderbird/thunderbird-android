@@ -15,11 +15,11 @@ internal class CopyCommand(
 ) : FileCommand<Unit> {
     override suspend fun invoke(fs: FileSystemManager): Outcome<Unit, FileOperationError> {
         // Open endpoints
-        val source = fs.openSource(sourceUri.toString())
+        val source = fs.openSource(sourceUri)
             ?: return Outcome.Failure(
                 FileOperationError.Unavailable(sourceUri, "Unable to open source: $sourceUri"),
             )
-        val sink = fs.openSink(destinationUri.toString())
+        val sink = fs.openSink(destinationUri)
             ?: return Outcome.Failure(
                 FileOperationError.Unavailable(destinationUri, "Unable to open destination: $destinationUri"),
             )
@@ -29,31 +29,31 @@ internal class CopyCommand(
             while (true) {
                 val read = try {
                     source.readAtMostTo(buffer, BUFFER_SIZE)
-                } catch (t: Throwable) {
-                    return Outcome.Failure(FileOperationError.ReadFailed(sourceUri, t.message), cause = t)
+                } catch (e: Exception) {
+                    return Outcome.Failure(FileOperationError.ReadFailed(sourceUri, e.message), cause = e)
                 }
                 if (read <= 0L) break
                 try {
                     sink.write(buffer, read)
-                } catch (t: Throwable) {
-                    return Outcome.Failure(FileOperationError.WriteFailed(destinationUri, t.message), cause = t)
+                } catch (e: Exception) {
+                    return Outcome.Failure(FileOperationError.WriteFailed(destinationUri, e.message), cause = e)
                 }
             }
             try {
                 sink.flush()
-            } catch (t: Throwable) {
-                return Outcome.Failure(FileOperationError.WriteFailed(destinationUri, t.message), cause = t)
+            } catch (e: Exception) {
+                return Outcome.Failure(FileOperationError.WriteFailed(destinationUri, e.message), cause = e)
             }
             Outcome.Success(Unit)
-        } catch (t: Throwable) {
-            Outcome.Failure(FileOperationError.Unknown(t.message), cause = t)
+        } catch (e: Exception) {
+            Outcome.Failure(FileOperationError.Unknown(e.message), cause = e)
         } finally {
             try {
                 source.close()
-            } catch (_: Throwable) {}
+            } catch (_: Exception) {}
             try {
                 sink.close()
-            } catch (_: Throwable) {}
+            } catch (_: Exception) {}
         }
     }
 

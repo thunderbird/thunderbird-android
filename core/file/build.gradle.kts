@@ -9,9 +9,10 @@ android {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            api(libs.uri)
+
             implementation(projects.core.outcome)
 
-            implementation(libs.uri)
             implementation(libs.kotlinx.io.core)
         }
         androidUnitTest.dependencies {
