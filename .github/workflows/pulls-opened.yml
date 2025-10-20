@@ -38,6 +38,7 @@ jobs:
             User impact if declined:
             Testing completed (on daily, beta, etc.):
             Introduces or modifies localizable strings (yes/no):
+            Skips a database migration (yes/no):
             Risk to taking this patch (and alternatives if risky):
         run: |
           if gh pr view "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --json comments \
