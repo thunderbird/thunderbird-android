@@ -193,8 +193,8 @@ com.mikepenz:fastadapter-extensions-swipe:5.7.0
 com.mikepenz:fastadapter-extensions-utils:5.7.0
 com.mikepenz:fastadapter:5.7.0
 com.squareup.moshi:moshi:1.15.2
-com.squareup.okhttp3:okhttp-android:5.1.0
-com.squareup.okhttp3:okhttp:5.1.0
+com.squareup.okhttp3:okhttp-android:5.2.1
+com.squareup.okhttp3:okhttp:5.2.1
 com.squareup.okio:okio-jvm:3.16.2
 com.squareup.okio:okio:3.16.2
 com.takisoft.colorpicker:colorpicker:1.0.0
