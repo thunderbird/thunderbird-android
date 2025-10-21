@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "app.k9mail.feature.account.edit"
     resourcePrefix = "account_edit_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

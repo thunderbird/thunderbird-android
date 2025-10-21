@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "net.thunderbird.feature.navigation.drawer.siderail"
     resourcePrefix = "navigation_drawer_siderail_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

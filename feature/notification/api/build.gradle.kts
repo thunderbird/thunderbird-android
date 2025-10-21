@@ -40,6 +40,7 @@ kotlin {
 
 android {
     namespace = "net.thunderbird.feature.notification.api"
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true

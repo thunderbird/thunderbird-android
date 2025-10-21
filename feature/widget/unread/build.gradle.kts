@@ -16,4 +16,10 @@ dependencies {
 
 android {
     namespace = "app.k9mail.feature.widget.unread"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }

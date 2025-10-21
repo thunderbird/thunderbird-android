@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "app.k9mail.feature.onboarding.migration.thunderbird"
     resourcePrefix = "onboarding_migration_thunderbird_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
