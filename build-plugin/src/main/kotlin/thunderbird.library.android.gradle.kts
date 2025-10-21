@@ -15,12 +15,6 @@ android {
     kotlinOptions {
         jvmTarget = ThunderbirdProjectConfig.Compiler.javaCompatibility.toString()
     }
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
 }
 
 kotlin {
