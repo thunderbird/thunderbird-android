@@ -8,7 +8,7 @@ object ThunderbirdProjectConfig {
 
         // Only needed for application
         const val sdkTarget = 35
-        const val sdkCompile = 35
+        const val sdkCompile = 36
     }
 
     object Compiler {
