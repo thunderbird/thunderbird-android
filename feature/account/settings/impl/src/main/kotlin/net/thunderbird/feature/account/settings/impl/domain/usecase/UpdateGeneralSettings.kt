@@ -3,6 +3,7 @@ package net.thunderbird.feature.account.settings.impl.domain.usecase
 import kotlinx.coroutines.flow.firstOrNull
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.CompactOption
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
@@ -21,7 +22,16 @@ internal class UpdateGeneralSettings(
     ): Outcome<Unit, SettingsError> {
         return when (setting.id) {
             GeneralPreference.PROFILE_INDICATOR.generateId(accountId) -> {
-                val avatar = setting.value as AccountAvatar
+                val option = setting.value as CompactOption<*>
+                val avatar = option.value as? AccountAvatar
+
+                if (avatar == null) {
+                    return Outcome.failure(
+                        SettingsError.NotFound(
+                            message = "Invalid avatar option selected for accountId: $accountId",
+                        ),
+                    )
+                }
                 updateAccountProfile(accountId) {
                     copy(avatar = avatar)
                 }

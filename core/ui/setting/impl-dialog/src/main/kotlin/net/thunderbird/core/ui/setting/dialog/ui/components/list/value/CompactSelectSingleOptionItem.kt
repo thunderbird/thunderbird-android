@@ -12,8 +12,8 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.setting.SettingValue
 
 @Composable
-internal fun CompactSelectSingleOptionItem(
-    setting: SettingValue.CompactSelectSingleOption,
+internal fun <T> CompactSelectSingleOptionItem(
+    setting: SettingValue.CompactSelectSingleOption<T>,
     onSettingValueChange: (SettingValue<*>) -> Unit,
     modifier: Modifier = Modifier,
 ) {
