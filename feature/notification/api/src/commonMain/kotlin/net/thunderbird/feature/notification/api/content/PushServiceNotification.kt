@@ -181,7 +181,7 @@ sealed class PushServiceNotification : AppNotification(), SystemNotification {
 private suspend fun buildNotificationActions(): Set<NotificationAction> = setOf(
     NotificationAction.Tap(),
     NotificationAction.CustomAction(
-        title = getString(resource = Res.string.push_info_disable_push_action),
+        label = getString(resource = Res.string.push_info_disable_push_action),
         icon = NotificationActionIcons.DisablePushAction,
     ),
 )

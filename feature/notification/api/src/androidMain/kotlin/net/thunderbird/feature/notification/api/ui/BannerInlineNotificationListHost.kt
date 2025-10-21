@@ -1,6 +1,7 @@
 package net.thunderbird.feature.notification.api.ui
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -69,6 +70,7 @@ fun BannerInlineNotificationListHost(
         targetState = bannerInlineSet,
         modifier = modifier.testTagAsResourceId(TEST_TAG_HOST_PARENT),
         transitionSpec = { bannerSlideInSlideOutAnimationSpec() },
+        contentKey = { it.isEmpty() },
     ) { bannerInlineSet ->
         if (bannerInlineSet.isNotEmpty()) {
             BannerInlineNotificationListHostLayout(
@@ -121,6 +123,7 @@ private fun BannerInlineNotificationListHostLayout(
                     }
                 },
                 behaviour = BannerInlineNotificationCardBehaviour.Clipped,
+                modifier = Modifier.animateContentSize(),
             )
         }
 
@@ -139,7 +142,9 @@ private fun BannerInlineNotificationListHostLayout(
                         modifier = Modifier.testTagAsResourceId(TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION),
                     )
                 },
-                modifier = Modifier.testTagAsResourceId(TEST_TAG_CHECK_ERROR_NOTIFICATIONS),
+                modifier = Modifier
+                    .testTagAsResourceId(TEST_TAG_CHECK_ERROR_NOTIFICATIONS)
+                    .animateContentSize(),
             )
         }
     }
