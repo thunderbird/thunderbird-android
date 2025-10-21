@@ -48,6 +48,7 @@ internal actual val platformFeatureNotificationModule: Module = module {
         AndroidSystemNotificationNotifier(
             logger = get(),
             applicationContext = androidApplication(),
+            notificationRegistry = get(),
             notificationActionCreator = get(named(NotificationActionCreator.TypeQualifier.System)),
         )
     }.onClose { notifier ->

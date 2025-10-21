@@ -5,7 +5,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.matcher.any
 import dev.mokkery.spy
 import dev.mokkery.verify.VerifyMode.Companion.exactly
 import dev.mokkery.verifySuspend
@@ -16,7 +15,6 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.outcome.Success
 import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
@@ -95,12 +93,11 @@ class DisplayInAppNotificationCommandTest {
             val notification = FakeNotification(
                 severity = NotificationSeverity.Information,
             )
-            val notifier = spy(FakeInAppNotificationNotifier())
             val notificationRegistry = FakeNotificationRegistry()
+            val notifier = spy(FakeInAppNotificationNotifier(notificationRegistry))
             val testSubject = createTestSubject(
                 notification = notification,
                 notifier = notifier,
-                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -118,7 +115,7 @@ class DisplayInAppNotificationCommandTest {
                 }
 
             verifySuspend(exactly(1)) {
-                notifier.show(id = any(), notification)
+                notifier.show(notification)
             }
         }
 
@@ -126,13 +123,11 @@ class DisplayInAppNotificationCommandTest {
         notification: InAppNotification = FakeNotification(),
         featureFlagProvider: FeatureFlagProvider = FeatureFlagProvider { FeatureFlagResult.Enabled },
         notifier: NotificationNotifier<InAppNotification> = FakeInAppNotificationNotifier(),
-        notificationRegistry: NotificationRegistry = FakeNotificationRegistry(),
     ): DisplayInAppNotificationCommand {
         val logger = TestLogger()
         return DisplayInAppNotificationCommand(
             logger = logger,
             featureFlagProvider = featureFlagProvider,
-            notificationRegistry = notificationRegistry,
             notification = notification,
             notifier = notifier,
         )

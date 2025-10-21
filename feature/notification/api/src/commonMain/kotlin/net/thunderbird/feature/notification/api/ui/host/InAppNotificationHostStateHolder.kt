@@ -89,6 +89,7 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
      * @param notification The [InAppNotification] to dismiss.
      */
     fun dismiss(notification: InAppNotification) {
+        println("---- InAppNotificationHostStateHolder.dismiss called with notification: $notification")
         val data = notification.toInAppNotificationData()
         data.bannerInlineVisuals.singleOrNull()?.let(::dismiss)
         data.bannerGlobalVisual?.let(::dismiss)
@@ -104,6 +105,7 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
      * @param visual The [InAppNotificationVisual] to dismiss.
      */
     fun dismiss(visual: InAppNotificationVisual) {
+        println("---- InAppNotificationHostStateHolder.dismiss called with visual: $visual")
         internalState.update { current ->
             current.copy(
                 bannerGlobalVisual = if (visual is BannerGlobalVisual && bannerGlobalVisuals.remove(visual)) {
