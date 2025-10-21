@@ -20,7 +20,6 @@ import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.LogLevel
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.outcome.CommandNotCreated
 import net.thunderbird.feature.notification.api.command.outcome.Success
@@ -34,7 +33,6 @@ import net.thunderbird.feature.notification.impl.command.DisplayInAppNotificatio
 import net.thunderbird.feature.notification.impl.command.DisplaySystemNotificationCommand
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
-import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
 import net.thunderbird.feature.notification.testing.fake.FakeSystemOnlyNotification
 import net.thunderbird.feature.notification.testing.fake.icon.EMPTY_SYSTEM_NOTIFICATION_ICON
 import net.thunderbird.feature.notification.testing.fake.receiver.FakeInAppNotificationNotifier
@@ -45,11 +43,9 @@ class DefaultNotificationSenderTest {
     @Test
     fun `send should emit Success and call system notifier for SystemNotification`() = runTest {
         // Arrange
-        val registry = FakeNotificationRegistry()
         val systemNotifier = spy(FakeSystemNotificationNotifier())
         val inAppNotifier = spy(FakeInAppNotificationNotifier())
         val testSubject = createTestSubject(
-            notificationRegistry = registry,
             systemNotificationNotifier = systemNotifier,
             inAppNotificationNotifier = inAppNotifier,
         )
@@ -65,19 +61,17 @@ class DefaultNotificationSenderTest {
             .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplaySystemNotificationCommand>()
 
-        verifySuspend(exactly(1)) { systemNotifier.show(id = any(), notification = any()) }
+        verifySuspend(exactly(1)) { systemNotifier.show(notification = any()) }
         // Ensure in-app notifier wasn't called
-        verifySuspend(exactly(0)) { inAppNotifier.show(id = any(), notification = any()) }
+        verifySuspend(exactly(0)) { inAppNotifier.show(notification = any()) }
     }
 
     @Test
     fun `send should emit Successes and call both notifiers when notification qualifies for both`() = runTest {
         // Arrange: Make system command succeed by using a Critical severity (always show)
-        val registry = FakeNotificationRegistry()
         val systemNotifier = spy(FakeSystemNotificationNotifier())
         val inAppNotifier = spy(FakeInAppNotificationNotifier())
         val testSubject = createTestSubject(
-            notificationRegistry = registry,
             systemNotificationNotifier = systemNotifier,
             inAppNotificationNotifier = inAppNotifier,
         )
@@ -101,18 +95,16 @@ class DefaultNotificationSenderTest {
             .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplayInAppNotificationCommand>()
 
-        verifySuspend(exactly(1)) { systemNotifier.show(id = any(), notification) }
-        verifySuspend(exactly(1)) { inAppNotifier.show(id = any(), notification) }
+        verifySuspend(exactly(1)) { systemNotifier.show(notification) }
+        verifySuspend(exactly(1)) { inAppNotifier.show(notification) }
     }
 
     @Test
     fun `send should emit Success and call in-app notifier for InAppNotification`() = runTest {
         // Arrange
-        val registry = FakeNotificationRegistry()
         val systemNotifier = spy(FakeSystemNotificationNotifier())
         val inAppNotifier = spy(FakeInAppNotificationNotifier())
         val testSubject = createTestSubject(
-            notificationRegistry = registry,
             systemNotificationNotifier = systemNotifier,
             inAppNotificationNotifier = inAppNotifier,
         )
@@ -128,20 +120,18 @@ class DefaultNotificationSenderTest {
             .prop(Success.Executed<Notification>::command)
             .isInstanceOf<DisplayInAppNotificationCommand>()
 
-        verifySuspend(exactly(1)) { inAppNotifier.show(id = any(), notification = any()) }
-        verifySuspend(exactly(0)) { systemNotifier.show(id = any(), notification = any()) }
+        verifySuspend(exactly(1)) { inAppNotifier.show(notification = any()) }
+        verifySuspend(exactly(0)) { systemNotifier.show(notification = any()) }
     }
 
     @Test
     fun `send should emit Failure when no commands can be executed`() = runTest {
         // Arrange
-        val registry = FakeNotificationRegistry()
         val systemNotifier = spy(FakeSystemNotificationNotifier())
         val inAppNotifier = spy(FakeInAppNotificationNotifier())
         val logger = TestLogger()
         val testSubject = createTestSubject(
             logger = logger,
-            notificationRegistry = registry,
             systemNotificationNotifier = systemNotifier,
             inAppNotificationNotifier = inAppNotifier,
         )
@@ -179,14 +169,12 @@ class DefaultNotificationSenderTest {
     private fun createTestSubject(
         logger: TestLogger = TestLogger(),
         featureFlagProvider: FeatureFlagProvider = FeatureFlagProvider { FeatureFlagResult.Enabled },
-        notificationRegistry: NotificationRegistry = FakeNotificationRegistry(),
         systemNotificationNotifier: NotificationNotifier<SystemNotification> = FakeSystemNotificationNotifier(),
         inAppNotificationNotifier: NotificationNotifier<InAppNotification> = FakeInAppNotificationNotifier(),
     ): DefaultNotificationSender {
         return DefaultNotificationSender(
             logger = logger,
             featureFlagProvider = featureFlagProvider,
-            notificationRegistry = notificationRegistry,
             systemNotificationNotifier = systemNotificationNotifier,
             inAppNotificationNotifier = inAppNotificationNotifier,
         )

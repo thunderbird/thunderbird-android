@@ -13,6 +13,7 @@ kotlin {
             implementation(projects.feature.notification.api)
         }
         commonTest.dependencies {
+            implementation(projects.core.testing)
             implementation(projects.core.logging.testing)
             implementation(projects.feature.notification.testing)
         }
