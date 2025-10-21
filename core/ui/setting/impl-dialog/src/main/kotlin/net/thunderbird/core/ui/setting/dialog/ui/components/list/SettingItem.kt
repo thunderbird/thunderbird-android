@@ -63,7 +63,7 @@ private fun RenderSettingValue(
             )
         }
 
-        is SettingValue.CompactSelectSingleOption -> {
+        is SettingValue.CompactSelectSingleOption<*> -> {
             CompactSelectSingleOptionItem(
                 setting = setting,
                 onSettingValueChange = onSettingValueChange,

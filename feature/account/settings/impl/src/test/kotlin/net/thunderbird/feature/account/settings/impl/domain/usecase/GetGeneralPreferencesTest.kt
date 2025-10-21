@@ -5,7 +5,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.SettingDecoration
@@ -16,6 +15,8 @@ import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
+import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
+import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
 
 internal class GetGeneralPreferencesTest {
 
@@ -38,30 +39,50 @@ internal class GetGeneralPreferencesTest {
             assertThat(outcome).isInstanceOf(Outcome.Success::class)
 
             val success = outcome as Outcome.Success
-            assertThat(success.data).isEqualTo(
-                persistentListOf(
-                    SettingDecoration.Custom(
-                        id = "${accountId.asRaw()}-general-profile",
-                        customUi = resourceProvider.profileUi(
-                            name = accountProfile.name,
-                            color = accountProfile.color,
-                        ),
+            val settings = success.data
+
+            assertThat(settings[0]).isEqualTo(
+                SettingDecoration.Custom(
+                    id = "${accountId.asRaw()}-general-profile",
+                    customUi = resourceProvider.profileUi(
+                        name = accountProfile.name,
+                        color = accountProfile.color,
                     ),
-                    SettingValue.Text(
-                        id = "${accountId.asRaw()}-general-name",
-                        title = resourceProvider.nameTitle,
-                        description = resourceProvider.nameDescription,
-                        icon = resourceProvider.nameIcon,
-                        value = accountProfile.name,
-                    ),
-                    SettingValue.Color(
-                        id = "${accountId.asRaw()}-general-color",
-                        title = resourceProvider.colorTitle,
-                        description = resourceProvider.colorDescription,
-                        icon = resourceProvider.colorIcon,
-                        value = accountProfile.color,
-                        colors = resourceProvider.colors,
-                    ),
+                ),
+            )
+
+            val profileIndicator = settings[1] as SettingValue.CompactSelectSingleOption<*>
+            assertThat(profileIndicator.id).isEqualTo(GeneralPreference.PROFILE_INDICATOR.generateId(accountId))
+            assertThat(profileIndicator.options.size).isEqualTo(3)
+
+            assertThat(settings[2]).isEqualTo(
+                SettingValue.Text(
+                    id = "${accountId.asRaw()}-general-name",
+                    title = resourceProvider.nameTitle,
+                    description = resourceProvider.nameDescription,
+                    icon = resourceProvider.nameIcon,
+                    value = accountProfile.name,
+                ),
+            )
+
+            assertThat(settings[2]).isEqualTo(
+                SettingValue.Text(
+                    id = "${accountId.asRaw()}-general-name",
+                    title = resourceProvider.nameTitle,
+                    description = resourceProvider.nameDescription,
+                    icon = resourceProvider.nameIcon,
+                    value = accountProfile.name,
+                ),
+            )
+
+            assertThat(settings[3]).isEqualTo(
+                SettingValue.Color(
+                    id = "${accountId.asRaw()}-general-color",
+                    title = resourceProvider.colorTitle,
+                    description = resourceProvider.colorDescription,
+                    icon = resourceProvider.colorIcon,
+                    value = accountProfile.color,
+                    colors = resourceProvider.colors,
                 ),
             )
         }
@@ -92,6 +113,7 @@ internal class GetGeneralPreferencesTest {
         return GetGeneralSettings(
             repository = FakeAccountProfileRepository(accountProfile),
             resourceProvider = resourceProvider,
+            monogramCreator = FakeMonogramCreator(),
         )
     }
 }
