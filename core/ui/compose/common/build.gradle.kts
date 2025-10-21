@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "app.k9mail.core.ui.compose.common"
     resourcePrefix = "core_ui_common_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

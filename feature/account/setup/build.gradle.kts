@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "app.k9mail.feature.account.setup"
     resourcePrefix = "account_setup_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

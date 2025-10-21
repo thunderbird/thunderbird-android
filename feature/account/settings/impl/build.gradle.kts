@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "net.thunderbird.feature.account.settings"
     resourcePrefix = "account_settings_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

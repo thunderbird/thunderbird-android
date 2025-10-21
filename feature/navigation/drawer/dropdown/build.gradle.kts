@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "net.thunderbird.feature.navigation.drawer.dropdown"
     resourcePrefix = "navigation_drawer_dropdown_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "app.k9mail.feature.funding.googleplay"
     resourcePrefix = "funding_googleplay_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

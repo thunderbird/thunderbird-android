@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "app.k9mail.feature.account.server.settings"
     resourcePrefix = "account_server_settings_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
