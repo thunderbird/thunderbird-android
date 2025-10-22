@@ -20,6 +20,7 @@ dependencies {
     implementation(projects.feature.account.avatar.api)
     implementation(projects.feature.account.avatar.impl)
 
+    implementation(projects.core.featureflag)
     implementation(projects.core.outcome)
 
     implementation(projects.core.ui.setting.api)

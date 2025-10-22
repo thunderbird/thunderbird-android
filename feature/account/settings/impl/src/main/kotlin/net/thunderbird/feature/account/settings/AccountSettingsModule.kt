@@ -33,6 +33,7 @@ val featureAccountSettingsModule = module {
             repository = get(),
             resourceProvider = get(),
             monogramCreator = get(),
+            featureFlagProvider = get(),
         )
     }
 

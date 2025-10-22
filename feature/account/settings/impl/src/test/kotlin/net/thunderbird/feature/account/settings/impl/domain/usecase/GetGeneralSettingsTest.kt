@@ -6,6 +6,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import kotlin.test.Test
 import kotlinx.coroutines.test.runTest
+import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
@@ -18,10 +19,10 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
 import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
 
-internal class GetGeneralPreferencesTest {
+internal class GetGeneralSettingsTest {
 
     @Test
-    fun `should emit preferences when account profile present`() = runTest {
+    fun `should emit settings when account profile present`() = runTest {
         // Arrange
         val accountId = AccountIdFactory.create()
         val accountProfile = AccountProfile(
@@ -106,14 +107,53 @@ internal class GetGeneralPreferencesTest {
         }
     }
 
+    @Test
+    fun `should omit profile indicator when flag disabled`() = runTest {
+        // Arrange
+        val accountId = AccountIdFactory.create()
+        val accountProfile = AccountProfile(
+            id = accountId,
+            name = "Test Account",
+            color = 0xFF0000,
+            avatar = AccountAvatar.Icon(name = "star"),
+        )
+        val resourceProvider = FakeGeneralResourceProvider()
+        val testSubject = createTestSubject(accountProfile, resourceProvider, enableAvatarCustomization = false)
+
+        // Act & Assert
+        testSubject(accountId).test {
+            val outcome = awaitItem()
+            assertThat(outcome).isInstanceOf(Outcome.Success::class)
+
+            val success = outcome as Outcome.Success
+            val settings = success.data
+
+            assertThat(settings.size).isEqualTo(3)
+            // Ensure second item is Name (no indicator)
+            assertThat(settings[1]).isEqualTo(
+                SettingValue.Text(
+                    id = GeneralPreference.NAME.generateId(accountId),
+                    title = resourceProvider.nameTitle,
+                    description = resourceProvider.nameDescription,
+                    icon = resourceProvider.nameIcon,
+                    value = accountProfile.name,
+                ),
+            )
+        }
+    }
+
     private fun createTestSubject(
         accountProfile: AccountProfile? = null,
         resourceProvider: ResourceProvider.GeneralResourceProvider = FakeGeneralResourceProvider(),
+        enableAvatarCustomization: Boolean = true,
     ): UseCase.GetGeneralSettings {
         return GetGeneralSettings(
             repository = FakeAccountProfileRepository(accountProfile),
             resourceProvider = resourceProvider,
             monogramCreator = FakeMonogramCreator(),
+            featureFlagProvider = {
+                if (enableAvatarCustomization) FeatureFlagResult.Enabled else FeatureFlagResult.Disabled
+            },
         )
     }
 }
