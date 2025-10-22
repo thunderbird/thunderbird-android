@@ -5,6 +5,7 @@ import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcons
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
+import net.thunderbird.feature.notification.api.ui.style.NotificationPriority
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.resources.api.Res
 import net.thunderbird.feature.notification.resources.api.sent_folder_not_found_title
@@ -30,8 +31,7 @@ data class SentFolderNotFoundNotification internal constructor(
     override val icon: NotificationIcon get() = NotificationIcons.SentFolderNotFound
     override val actions: Set<NotificationAction> = setOf(NotificationAction.AssignSentFolder(accountUuid))
     override val inAppNotificationStyle: InAppNotificationStyle
-        // TODO(9572): Properly setup the notification priority.
-        get() = inAppNotificationStyle { bannerGlobal(priority = Int.MAX_VALUE) }
+        get() = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Max) }
 }
 
 /**
