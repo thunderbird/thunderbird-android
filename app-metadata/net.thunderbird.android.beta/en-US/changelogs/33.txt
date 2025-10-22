@@ -1,0 +1,2 @@
+Thunderbird for Android version 14.0b2, based on K-9 Mail. Changes include:
+- Messages could not be fetched in 14.0b1

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="14.0b2" versioncode="33" date="2025-10-22">
+        <change>Messages could not be fetched in 14.0b1</change>
+    </release>
     <release version="14.0b1" versioncode="32" date="2025-10-20">
         <change>&#39;Auto-fit messages&#39; display setting did not persist</change>
         <change>Edge-to-edge regressed moving/copying message with 3-button navigation</change>
