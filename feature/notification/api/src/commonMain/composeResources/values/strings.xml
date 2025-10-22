@@ -60,5 +60,6 @@
     <string name="banner_inline_notification_check_error_notifications">Check Error Notifications</string>
     <string name="banner_inline_notification_some_messages_need_attention">Some messages need your attention.</string>
     <string name="banner_inline_notification_open_notifications">Open notifications</string>
+    <string name="banner_inline_notification_learn_more">Learn more</string>
     <string name="banner_inline_notification_view_support_article">View support article</string>
 </resources>

@@ -25,6 +25,7 @@ fun SuccessBannerInlineNotificationCard(
     actions: @Composable RowScope.() -> Unit,
     modifier: Modifier = Modifier,
     behaviour: BannerInlineNotificationCardBehaviour = BannerNotificationCardDefaults.bannerInlineBehaviour,
+    onSupportingTextOverflow: (hasVisualOverflow: Boolean) -> Unit = {},
 ) {
     BannerInlineNotificationCard(
         icon = { Icon(imageVector = Icons.Outlined.CheckCircle) },
@@ -35,5 +36,6 @@ fun SuccessBannerInlineNotificationCard(
         behaviour = behaviour,
         colors = BannerNotificationCardDefaults.successCardColors(),
         border = BannerNotificationCardDefaults.successCardBorder(),
+        onSupportingTextOverflow = onSupportingTextOverflow,
     )
 }
