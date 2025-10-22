@@ -34,6 +34,7 @@ dependencies {
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
     implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.mail.message.composer)
 
     compileOnly(projects.mail.protocols.imap)
 

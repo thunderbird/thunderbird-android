@@ -14,6 +14,7 @@ import net.thunderbird.feature.notification.resources.api.Res
 import net.thunderbird.feature.notification.resources.api.banner_inline_notification_open_notifications
 import net.thunderbird.feature.notification.resources.api.banner_inline_notification_view_support_article
 import net.thunderbird.feature.notification.resources.api.notification_action_archive
+import net.thunderbird.feature.notification.resources.api.notification_action_assign_sent_folder
 import net.thunderbird.feature.notification.resources.api.notification_action_delete
 import net.thunderbird.feature.notification.resources.api.notification_action_mark_as_read
 import net.thunderbird.feature.notification.resources.api.notification_action_reply
@@ -120,6 +121,11 @@ sealed class NotificationAction {
     data object OpenNotificationCentre : NotificationAction() {
         override val icon: NotificationIcon? = null
         override val labelResource: StringResource = Res.string.banner_inline_notification_open_notifications
+    }
+
+    data class AssignSentFolder(val accountUuid: String) : NotificationAction() {
+        override val icon: NotificationIcon? = null
+        override val labelResource: StringResource = Res.string.notification_action_assign_sent_folder
     }
 
     /**
