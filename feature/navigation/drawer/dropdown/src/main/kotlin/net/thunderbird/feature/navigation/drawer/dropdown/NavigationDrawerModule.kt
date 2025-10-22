@@ -39,6 +39,8 @@ val navigationDropDownDrawerModule: Module = module {
             accountManager = get(),
             messageCountsProvider = get(),
             messageListRepository = get(),
+            notificationStream = get(),
+            featureFlagProvider = get(),
         )
     }
 
