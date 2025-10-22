@@ -24,7 +24,7 @@ sealed interface InAppNotificationStyle {
      * @see InAppNotificationStyleBuilder.bannerGlobal
      */
     data class BannerGlobalNotification(
-        val priority: Int,
+        val priority: NotificationPriority,
     ) : InAppNotificationStyle
 
     /**
@@ -41,6 +41,16 @@ sealed interface InAppNotificationStyle {
 }
 
 enum class SnackbarDuration { Short, Long, Indefinite }
+
+@JvmInline
+value class NotificationPriority(val value: UInt) : Comparable<NotificationPriority> {
+    override fun compareTo(other: NotificationPriority): Int = value.compareTo(other.value)
+
+    companion object {
+        val Min = NotificationPriority(UInt.MIN_VALUE)
+        val Max = NotificationPriority(UInt.MAX_VALUE)
+    }
+}
 
 /**
  * Configures the in-app notification style.

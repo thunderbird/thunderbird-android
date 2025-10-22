@@ -19,11 +19,13 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -41,9 +43,11 @@ import kotlin.test.Test
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
 import net.thunderbird.feature.notification.api.receiver.InAppNotificationReceiver
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.style.NotificationPriority
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
 import net.thunderbird.feature.notification.api.ui.util.assertBannerInline
 import net.thunderbird.feature.notification.api.ui.util.assertBannerInlineList
@@ -252,11 +256,19 @@ class InAppNotificationScaffoldTest : ComposeTest() {
     fun `InAppNotificationScaffold should display the most priority banner global notification when multiple banner global notifications are triggered`() =
         runComposeTestSuspend {
             // Arrange
-            val event = InAppNotificationEvent.Show(
-                notification = FakeInAppOnlyNotification(
-                    inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
-                ),
+            val lowerPriorityNotificationText = "lower priority notification"
+            val lowerPriorityNotification = FakeInAppOnlyNotification(
+                contentText = lowerPriorityNotificationText,
+                severity = NotificationSeverity.Warning,
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Min) },
             )
+            val higherPriorityNotificationText = "higher priority notification"
+            val higherPriorityNotification = FakeInAppOnlyNotification(
+                contentText = higherPriorityNotificationText,
+                severity = NotificationSeverity.Warning,
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Max) },
+            )
+
             val receiver = FakeInAppNotificationReceiver()
             setTestSubjectContent(inAppNotificationReceiver = receiver) {
                 InAppNotificationScaffold {
@@ -267,12 +279,87 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             // Pre-Act Assert
             assertIdleState()
 
-            // Act
-            // TODO(#9572): If global is already present, show the one with the highest priority
-            //              show the previous one back once the higher priority has fixed and the
-            //              other wasn't
+            // Act (Phase 1)
+            printSemanticTree()
+            receiver.triggerEvent(InAppNotificationEvent.Show(notification = lowerPriorityNotification))
+            printSemanticTree()
 
-            // Assert
+            // Assert (Phase 1)
+            onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
+                .assertIsNotDisplayed()
+            onNodeWithTag(BannerGlobalNotificationHostDefaults.TEST_TAG_WARNING_BANNER)
+                .assertIsDisplayed()
+                .onChild()
+                .assertTextEquals(lowerPriorityNotificationText)
+
+            // Act (Phase 2)
+            printSemanticTree()
+            receiver.triggerEvent(InAppNotificationEvent.Show(notification = higherPriorityNotification))
+            printSemanticTree()
+
+            // Assert (Phase 2)
+            onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
+                .assertIsNotDisplayed()
+            onNodeWithTag(BannerGlobalNotificationHostDefaults.TEST_TAG_WARNING_BANNER)
+                .assertIsDisplayed()
+                .onChild()
+                .assertTextEquals(higherPriorityNotificationText)
+        }
+
+    @Test
+    fun `InAppNotificationScaffold should display the previous banner global notification when higher priority banner global notification is dismissed`() =
+        runComposeTestSuspend {
+            // Arrange
+            val lowerPriorityNotificationText = "lower priority notification"
+            val lowerPriorityNotification = FakeInAppOnlyNotification(
+                contentText = lowerPriorityNotificationText,
+                severity = NotificationSeverity.Warning,
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Min) },
+            )
+            val higherPriorityNotificationText = "higher priority notification"
+            val higherPriorityNotification = FakeInAppOnlyNotification(
+                contentText = higherPriorityNotificationText,
+                severity = NotificationSeverity.Warning,
+                inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Max) },
+            )
+
+            val receiver = FakeInAppNotificationReceiver()
+            setTestSubjectContent(inAppNotificationReceiver = receiver) {
+                InAppNotificationScaffold {
+                    TextBodyLarge(text = "Content")
+                }
+            }
+
+            // Pre-Act Assert
+            assertIdleState()
+
+            // Act (Phase 1)
+            printSemanticTree(prefixLabel = "before first show event")
+            receiver.triggerEvent(InAppNotificationEvent.Show(notification = lowerPriorityNotification))
+            printSemanticTree(prefixLabel = "before second show event")
+            receiver.triggerEvent(InAppNotificationEvent.Show(notification = higherPriorityNotification))
+            printSemanticTree(prefixLabel = "after events triggered")
+
+            // Assert (Phase 1)
+            onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
+                .assertIsNotDisplayed()
+            onNodeWithTag(BannerGlobalNotificationHostDefaults.TEST_TAG_WARNING_BANNER)
+                .assertIsDisplayed()
+                .onChild()
+                .assertTextEquals(higherPriorityNotificationText)
+
+            // Act (Phase 2)
+            printSemanticTree(prefixLabel = "before dismiss event")
+            receiver.triggerEvent(InAppNotificationEvent.Dismiss(notification = higherPriorityNotification))
+            printSemanticTree(prefixLabel = "after dismiss event triggered")
+
+            // Assert (Phase 2)
+            onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_HOST_PARENT)
+                .assertIsNotDisplayed()
+            onNodeWithTag(BannerGlobalNotificationHostDefaults.TEST_TAG_WARNING_BANNER)
+                .assertIsDisplayed()
+                .onChild()
+                .assertTextEquals(lowerPriorityNotificationText)
         }
 
     @Test

@@ -5,6 +5,7 @@ import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.BannerInlineNotification
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.DialogNotification
 import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle.SnackbarNotification
+import net.thunderbird.feature.notification.api.ui.style.NotificationPriority
 import net.thunderbird.feature.notification.api.ui.style.NotificationStyleMarker
 import net.thunderbird.feature.notification.api.ui.style.SnackbarDuration
 
@@ -67,7 +68,7 @@ class InAppNotificationStyleBuilder internal constructor() {
      * a [DialogNotification] in these cases)
      */
     @NotificationStyleMarker
-    fun bannerGlobal(priority: Int = 0) {
+    fun bannerGlobal(priority: NotificationPriority = NotificationPriority.Min) {
         checkSingleStyleEntry<BannerGlobalNotification>()
         style = BannerGlobalNotification(priority = priority)
     }
