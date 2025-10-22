@@ -30,3 +30,29 @@ internal fun AccountListItemSelectedPreview() {
         )
     }
 }
+
+@Composable
+@Preview(showBackground = true)
+internal fun AccountListItemWithErrorPreview() {
+    PreviewWithThemes {
+        AccountListItem(
+            account = MAIL_DISPLAY_ACCOUNT.copy(hasError = true),
+            onClick = { },
+            selected = false,
+            showStarredCount = false,
+        )
+    }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun AccountListItemSelectedWithErrorPreview() {
+    PreviewWithThemes {
+        AccountListItem(
+            account = MAIL_DISPLAY_ACCOUNT.copy(hasError = true),
+            onClick = { },
+            selected = true,
+            showStarredCount = false,
+        )
+    }
+}
