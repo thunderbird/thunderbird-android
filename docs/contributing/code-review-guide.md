@@ -57,8 +57,8 @@ Paste this into your PR to self-check:
    - Follow strings policy: don’t modify translations here; avoid late string changes; see [managing strings](managing-strings.md).
    - No string concatenation with localized text; use placeholders.
 9. **Feature flags & release train awareness**
-   - Gate incomplete features behind flags aligned with branch rules [Release - Feature Flags](../ci/RELEASE.md#feature-flags).
-   - For uplifts: add label and risk/impact notes [Release - Branch uplifts](../ci/RELEASE.md#branch-uplifts).
+   - Gate incomplete features behind flags aligned with branch rules [Release - Feature Flags](../release/RELEASE.md#feature-flags).
+   - For uplifts: add label and risk/impact notes [Release - Branch uplifts](../release/RELEASE.md#branch-uplifts).
 10. **Documentation & metadata**
     - Update relevant docs, CHANGELOG entries and add context as needed.
     - Link relevant issues using GitHub keywords so they auto-close on merge (`Fixes #123`, `Resolves #456`).
