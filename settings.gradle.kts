@@ -181,11 +181,15 @@ include(
 )
 
 include(
+    ":core:ui:setting:api",
+    ":core:ui:setting:impl-dialog",
+)
+
+include(
     ":core:ui:account",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:navigation",
-    ":core:ui:compose:preference",
     ":core:ui:compose:testing",
     ":core:ui:compose:theme2:common",
     ":core:ui:compose:theme2:k9mail",
