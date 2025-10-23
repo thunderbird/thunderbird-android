@@ -45,6 +45,8 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Troubleshooting]()
     - [Collecting Debug Logs](user-guide/troubleshooting/collecting-debug-logs.md)
     - [Find your app version](user-guide/troubleshooting/find-your-app-version.md)
+- [Developer](developer/README.md)
+  - [Database Migration Checklist](developer/db-migration-checklist.md)
 - [Release]()
   - [Release Process](release/RELEASE.md)
   - [Release Automation](release/AUTOMATION.md)
