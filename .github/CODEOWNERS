@@ -3,6 +3,7 @@
 
 # Release Engineering
 /.github/ @thunderbird/build-release
+/docs/release/ @thunderbird/build-release
 /scripts/ci/ @thunderbird/build-release
 
 # CODEOWNERS protection
