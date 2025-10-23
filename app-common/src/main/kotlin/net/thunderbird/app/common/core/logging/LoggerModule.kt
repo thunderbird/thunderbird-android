@@ -13,7 +13,6 @@ import net.thunderbird.core.logging.LogSink
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.composite.CompositeLogSink
 import net.thunderbird.core.logging.console.ConsoleLogSink
-import net.thunderbird.core.logging.file.AndroidFileSystemManager
 import net.thunderbird.core.logging.file.FileLogSink
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
@@ -64,7 +63,7 @@ val appCommonCoreLogger = module {
             level = LogLevel.DEBUG,
             fileName = "thunderbird-sync-debug",
             fileLocation = get<Context>().filesDir.path,
-            fileSystemManager = AndroidFileSystemManager(get<Context>().contentResolver),
+            fileManager = get(),
         )
     }
 

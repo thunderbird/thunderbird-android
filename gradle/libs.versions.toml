@@ -108,6 +108,7 @@ searchPreference = "2.7.3"
 spotlessPlugin = "8.0.0"
 timber = "5.0.1"
 turbine = "1.2.1"
+uri = "0.0.21"
 xmlpull = "1.0"
 zxing = "3.5.3"
 
@@ -279,6 +280,7 @@ safeContentResolver = { module = "de.cketti.safecontentresolver:safe-content-res
 searchPreference = { module = "com.github.ByteHamster:SearchPreference", version.ref = "searchPreference" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
 xmlpull = { module = "com.github.cketti:xmlpull-extracted-from-android", version.ref = "xmlpull" }
 zxing = { module = "com.google.zxing:core", version.ref = "zxing" }
 

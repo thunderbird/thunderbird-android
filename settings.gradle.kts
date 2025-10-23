@@ -164,6 +164,7 @@ include(
     ":core:logging:impl-legacy",
     ":core:logging:impl-file",
     ":core:logging:testing",
+    ":core:file",
     ":core:mail:mailserver",
     ":core:preference:api",
     ":core:preference:impl",

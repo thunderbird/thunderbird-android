@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.mime4j.core)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.uri)
 
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
