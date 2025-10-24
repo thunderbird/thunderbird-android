@@ -1,8 +1,8 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import app.k9mail.feature.account.common.domain.input.StringInputField
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.input.StringInputField
 
 interface DisplayOptionsContract {
 
@@ -31,8 +31,8 @@ interface DisplayOptionsContract {
     }
 
     interface Validator {
-        fun validateAccountName(accountName: String): ValidationResult
-        fun validateDisplayName(displayName: String): ValidationResult
-        fun validateEmailSignature(emailSignature: String): ValidationResult
+        fun validateAccountName(accountName: String): ValidationOutcome
+        fun validateDisplayName(displayName: String): ValidationOutcome
+        fun validateEmailSignature(emailSignature: String): ValidationOutcome
     }
 }
