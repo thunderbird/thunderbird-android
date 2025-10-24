@@ -1,15 +1,17 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.feature.account.setup.domain.DomainContract
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
 
 internal class ValidateAccountName : DomainContract.UseCase.ValidateAccountName {
-    override fun execute(accountName: String): ValidationResult {
+    override fun execute(accountName: String): ValidationOutcome {
         return when {
-            accountName.isEmpty() -> ValidationResult.Success
-            accountName.isBlank() -> ValidationResult.Failure(ValidateAccountNameError.BlankAccountName)
-            else -> ValidationResult.Success
+            accountName.isEmpty() -> ValidationSuccess
+            accountName.isBlank() -> Outcome.Failure(ValidateAccountNameError.BlankAccountName)
+            else -> ValidationSuccess
         }
     }
 

@@ -1,9 +1,9 @@
 package app.k9mail.feature.account.setup.ui.options.display
 
-import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import net.thunderbird.core.validation.input.StringInputField
 import org.junit.Test
 
 class DisplayOptionsStateTest {

@@ -23,9 +23,11 @@ import com.fsck.k9.mail.folders.FolderFetcherException
 import com.fsck.k9.mail.folders.FolderServerId
 import com.fsck.k9.mail.folders.RemoteFolder
 import kotlinx.coroutines.delay
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
 import org.junit.Rule
 import org.junit.Test
 
@@ -43,7 +45,7 @@ class SpecialFoldersViewModelTest {
             )
             val testSubject = createTestSubject(
                 formUiModel = FakeSpecialFoldersFormUiModel(),
-                validateSpecialFolderOptions = { ValidationResult.Success },
+                validateSpecialFolderOptions = { ValidationSuccess },
                 accountStateRepository = accountStateRepository,
                 initialState = initialState,
             )
@@ -98,7 +100,7 @@ class SpecialFoldersViewModelTest {
         )
         val testSubject = createTestSubject(
             formUiModel = FakeSpecialFoldersFormUiModel(),
-            validateSpecialFolderOptions = { ValidationResult.Failure(TestValidationError) },
+            validateSpecialFolderOptions = { Outcome.Failure(TestValidationError) },
             accountStateRepository = accountStateRepository,
             initialState = initialState,
         )
@@ -278,7 +280,7 @@ class SpecialFoldersViewModelTest {
         fun createTestSubject(
             formUiModel: SpecialFoldersContract.FormUiModel = FakeSpecialFoldersFormUiModel(),
             getSpecialFolderOptions: () -> SpecialFolderOptions = { SPECIAL_FOLDER_OPTIONS },
-            validateSpecialFolderOptions: (SpecialFolderOptions) -> ValidationResult = { ValidationResult.Success },
+            validateSpecialFolderOptions: (SpecialFolderOptions) -> ValidationOutcome = { ValidationSuccess },
             accountStateRepository: AccountDomainContract.AccountStateRepository = InMemoryAccountStateRepository(),
             initialState: State = State(),
         ) = SpecialFoldersViewModel(

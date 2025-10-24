@@ -3,7 +3,8 @@ package app.k9mail.feature.account.server.settings.domain.usecase
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
 import org.junit.Test
 
 class ValidatePasswordTest {
@@ -14,15 +15,15 @@ class ValidatePasswordTest {
     fun `should succeed when password is set`() {
         val result = testSubject.execute("password")
 
-        assertThat(result).isInstanceOf<ValidationResult.Success>()
+        assertThat(result).isInstanceOf<Outcome.Success<Unit>>()
     }
 
     @Test
     fun `should fail when password is empty`() {
         val result = testSubject.execute("")
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<ValidatePassword.ValidatePasswordError.EmptyPassword>()
     }
 
@@ -30,8 +31,8 @@ class ValidatePasswordTest {
     fun `should fail when password is blank`() {
         val result = testSubject.execute(" ")
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<ValidatePassword.ValidatePasswordError.EmptyPassword>()
     }
 }

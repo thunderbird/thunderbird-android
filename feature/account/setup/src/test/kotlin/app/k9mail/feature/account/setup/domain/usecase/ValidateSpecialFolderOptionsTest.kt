@@ -8,7 +8,8 @@ import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
 import dev.forkhandles.fabrikate.Fabrikate
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
 import org.junit.Test
 
 class ValidateSpecialFolderOptionsTest {
@@ -19,7 +20,7 @@ class ValidateSpecialFolderOptionsTest {
     fun `validate special folder options should succeed when all default options are present`() {
         val result = testSubject(SPECIAL_FOLDER_OPTIONS)
 
-        assertThat(result).isInstanceOf<ValidationResult.Success>()
+        assertThat(result).isInstanceOf<Outcome.Success<Unit>>()
     }
 
     @Test
@@ -34,8 +35,8 @@ class ValidateSpecialFolderOptionsTest {
 
         val result = testSubject(specialFolderOptions)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<Failure.MissingDefaultSpecialFolderOption>()
     }
 
@@ -51,8 +52,8 @@ class ValidateSpecialFolderOptionsTest {
 
         val result = testSubject(specialFolderOptions)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<Failure.MissingDefaultSpecialFolderOption>()
     }
 
@@ -68,8 +69,8 @@ class ValidateSpecialFolderOptionsTest {
 
         val result = testSubject(specialFolderOptions)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<Failure.MissingDefaultSpecialFolderOption>()
     }
 
@@ -85,8 +86,8 @@ class ValidateSpecialFolderOptionsTest {
 
         val result = testSubject(specialFolderOptions)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<Failure.MissingDefaultSpecialFolderOption>()
     }
 
@@ -102,8 +103,8 @@ class ValidateSpecialFolderOptionsTest {
 
         val result = testSubject(specialFolderOptions)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<Failure.MissingDefaultSpecialFolderOption>()
     }
 

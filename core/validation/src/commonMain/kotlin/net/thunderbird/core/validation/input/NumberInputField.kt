@@ -1,50 +1,52 @@
-package app.k9mail.feature.account.common.domain.input
+package net.thunderbird.core.validation.input
 
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
 
-class BooleanInputField(
-    override val value: Boolean? = null,
+class NumberInputField(
+    override val value: Long? = null,
     override val error: ValidationError? = null,
     override val isValid: Boolean = false,
-) : InputField<Boolean?> {
-    override fun updateValue(value: Boolean?): BooleanInputField {
-        return BooleanInputField(
+) : InputField<Long?> {
+
+    override fun updateValue(value: Long?): NumberInputField {
+        return NumberInputField(
             value = value,
             error = null,
             isValid = false,
         )
     }
 
-    override fun updateError(error: ValidationError?): BooleanInputField {
-        return BooleanInputField(
+    override fun updateError(error: ValidationError?): NumberInputField {
+        return NumberInputField(
             value = value,
             error = error,
             isValid = false,
         )
     }
 
-    override fun updateValidity(isValid: Boolean): BooleanInputField {
+    override fun updateValidity(isValid: Boolean): NumberInputField {
         if (isValid == this.isValid) return this
 
-        return BooleanInputField(
+        return NumberInputField(
             value = value,
             error = null,
             isValid = isValid,
         )
     }
 
-    override fun updateFromValidationResult(result: ValidationResult): BooleanInputField {
-        return when (result) {
-            is ValidationResult.Success -> BooleanInputField(
+    override fun updateFromValidationOutcome(outcome: ValidationOutcome): NumberInputField {
+        return when (outcome) {
+            is Outcome.Success -> NumberInputField(
                 value = value,
                 error = null,
                 isValid = true,
             )
 
-            is ValidationResult.Failure -> BooleanInputField(
+            is Outcome.Failure -> NumberInputField(
                 value = value,
-                error = result.error,
+                error = outcome.error,
                 isValid = false,
             )
         }
@@ -54,7 +56,7 @@ class BooleanInputField(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as BooleanInputField
+        other as NumberInputField
 
         if (value != other.value) return false
         if (error != other.error) return false
@@ -69,6 +71,6 @@ class BooleanInputField(
     }
 
     override fun toString(): String {
-        return "BooleanInputField(value=$value, error=$error, isValid=$isValid)"
+        return "NumberInputField(value=$value, error=$error, isValid=$isValid)"
     }
 }

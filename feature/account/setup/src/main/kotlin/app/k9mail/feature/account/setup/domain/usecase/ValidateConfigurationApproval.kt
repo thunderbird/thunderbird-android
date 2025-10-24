@@ -1,19 +1,21 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
 
 class ValidateConfigurationApproval : UseCase.ValidateConfigurationApproval {
-    override fun execute(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationResult {
+    override fun execute(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationOutcome {
         return if (isApproved == null && isAutoDiscoveryTrusted == null) {
-            ValidationResult.Success
+            ValidationSuccess
         } else if (isAutoDiscoveryTrusted == true) {
-            ValidationResult.Success
+            ValidationSuccess
         } else if (isApproved == true) {
-            ValidationResult.Success
+            ValidationSuccess
         } else {
-            ValidationResult.Failure(ValidateConfigurationApprovalError.ApprovalRequired)
+            Outcome.Failure(ValidateConfigurationApprovalError.ApprovalRequired)
         }
     }
 

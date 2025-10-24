@@ -5,7 +5,9 @@ import assertk.Assert
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
 import org.junit.Test
 
 /**
@@ -105,19 +107,19 @@ class ValidateServerTest {
         assertThat(validate(domain)).isFailureInvalidDomainOrIpAddress()
     }
 
-    private fun validate(input: String): ValidationResult {
+    private fun validate(input: String): ValidationOutcome {
         return testSubject.execute(input)
     }
 
-    private fun Assert<ValidationResult>.isSuccess() = isInstanceOf<ValidationResult.Success>()
+    private fun Assert<ValidationOutcome>.isSuccess() = isInstanceOf<Outcome.Success<Unit>>()
 
-    private fun Assert<ValidationResult>.isFailureEmptyServer() =
-        isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+    private fun Assert<ValidationOutcome>.isFailureEmptyServer() =
+        isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf(ValidateServerError.EmptyServer::class)
 
-    private fun Assert<ValidationResult>.isFailureInvalidDomainOrIpAddress() =
-        isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+    private fun Assert<ValidationOutcome>.isFailureInvalidDomainOrIpAddress() =
+        isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf(ValidateServerError.InvalidHostnameOrIpAddress::class)
 }

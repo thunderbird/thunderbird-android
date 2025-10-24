@@ -3,8 +3,6 @@ package app.k9mail.feature.account.setup.ui.autodiscovery
 import app.k9mail.autodiscovery.api.ImapServerSettings
 import app.k9mail.autodiscovery.api.SmtpServerSettings
 import app.k9mail.feature.account.common.domain.entity.AccountState
-import app.k9mail.feature.account.common.domain.input.NumberInputField
-import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract
 import app.k9mail.feature.account.setup.domain.entity.toAuthenticationType
@@ -12,6 +10,8 @@ import app.k9mail.feature.account.setup.domain.entity.toConnectionSecurity
 import app.k9mail.feature.account.setup.domain.entity.toIncomingProtocolType
 import app.k9mail.feature.account.setup.domain.toServerSettings
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract
+import net.thunderbird.core.validation.input.NumberInputField
+import net.thunderbird.core.validation.input.StringInputField
 
 internal fun AccountAutoDiscoveryContract.State.toAccountState(): AccountState {
     return AccountState(

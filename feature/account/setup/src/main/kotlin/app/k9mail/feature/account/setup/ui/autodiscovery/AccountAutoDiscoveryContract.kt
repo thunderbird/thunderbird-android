@@ -5,11 +5,11 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import app.k9mail.core.ui.compose.designsystem.molecule.LoadingErrorState
 import app.k9mail.feature.account.common.domain.entity.AuthorizationState
 import app.k9mail.feature.account.common.domain.entity.IncomingProtocolType
-import app.k9mail.feature.account.common.domain.input.BooleanInputField
-import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.oauth.domain.entity.OAuthResult
 import app.k9mail.feature.account.oauth.ui.AccountOAuthContract
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.input.BooleanInputField
+import net.thunderbird.core.validation.input.StringInputField
 
 interface AccountAutoDiscoveryContract {
 
@@ -62,9 +62,9 @@ interface AccountAutoDiscoveryContract {
     }
 
     interface Validator {
-        fun validateEmailAddress(emailAddress: String): ValidationResult
-        fun validatePassword(password: String): ValidationResult
-        fun validateConfigurationApproval(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationResult
+        fun validateEmailAddress(emailAddress: String): ValidationOutcome
+        fun validatePassword(password: String): ValidationOutcome
+        fun validateConfigurationApproval(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationOutcome
     }
 
     sealed interface Error {

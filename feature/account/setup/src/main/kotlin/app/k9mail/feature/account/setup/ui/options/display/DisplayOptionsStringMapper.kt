@@ -8,7 +8,7 @@ import app.k9mail.feature.account.setup.domain.usecase.ValidateDisplayName.Valid
 import app.k9mail.feature.account.setup.domain.usecase.ValidateDisplayName.ValidateDisplayNameError.EmptyDisplayName
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailSignature.ValidateEmailSignatureError
 import app.k9mail.feature.account.setup.domain.usecase.ValidateEmailSignature.ValidateEmailSignatureError.BlankEmailSignature
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.validation.ValidationError
 
 internal fun ValidationError.toResourceString(resources: Resources): String {
     return when (this) {

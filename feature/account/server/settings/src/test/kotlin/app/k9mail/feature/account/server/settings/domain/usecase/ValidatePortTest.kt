@@ -4,7 +4,8 @@ import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePort.Va
 import assertk.assertThat
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
 import org.junit.Test
 
 class ValidatePortTest {
@@ -15,15 +16,15 @@ class ValidatePortTest {
     fun `should succeed when port is set`() {
         val result = testSubject.execute(123L)
 
-        assertThat(result).isInstanceOf<ValidationResult.Success>()
+        assertThat(result).isInstanceOf<Outcome.Success<Unit>>()
     }
 
     @Test
     fun `should fail when port is negative`() {
         val result = testSubject.execute(-1L)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<ValidatePortError.InvalidPort>()
     }
 
@@ -31,8 +32,8 @@ class ValidatePortTest {
     fun `should fail when port is zero`() {
         val result = testSubject.execute(0)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<ValidatePortError.InvalidPort>()
     }
 
@@ -40,8 +41,8 @@ class ValidatePortTest {
     fun `should fail when port exceeds maximum`() {
         val result = testSubject.execute(65536L)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<ValidatePortError.InvalidPort>()
     }
 
@@ -49,8 +50,8 @@ class ValidatePortTest {
     fun `should fail when port is null`() {
         val result = testSubject.execute(null)
 
-        assertThat(result).isInstanceOf<ValidationResult.Failure>()
-            .prop(ValidationResult.Failure::error)
+        assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
+            .prop(Outcome.Failure<ValidationError>::error)
             .isInstanceOf<ValidatePortError.EmptyPort>()
     }
 }

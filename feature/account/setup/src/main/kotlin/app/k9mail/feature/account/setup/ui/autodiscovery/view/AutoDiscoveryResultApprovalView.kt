@@ -9,9 +9,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import app.k9mail.feature.account.common.domain.input.BooleanInputField
 import app.k9mail.feature.account.setup.R
 import app.k9mail.feature.account.setup.ui.autodiscovery.toAutoDiscoveryValidationErrorString
+import net.thunderbird.core.validation.input.BooleanInputField
 
 @Composable
 internal fun AutoDiscoveryResultApprovalView(

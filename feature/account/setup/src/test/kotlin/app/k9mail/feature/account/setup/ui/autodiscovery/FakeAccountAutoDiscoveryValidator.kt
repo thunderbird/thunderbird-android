@@ -1,16 +1,17 @@
 package app.k9mail.feature.account.setup.ui.autodiscovery
 
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
 
 class FakeAccountAutoDiscoveryValidator(
-    private val emailAddressAnswer: ValidationResult = ValidationResult.Success,
-    private val passwordAnswer: ValidationResult = ValidationResult.Success,
-    private val configurationApprovalAnswer: ValidationResult = ValidationResult.Success,
+    private val emailAddressAnswer: ValidationOutcome = ValidationSuccess,
+    private val passwordAnswer: ValidationOutcome = ValidationSuccess,
+    private val configurationApprovalAnswer: ValidationOutcome = ValidationSuccess,
 ) : AccountAutoDiscoveryContract.Validator {
-    override fun validateEmailAddress(emailAddress: String): ValidationResult = emailAddressAnswer
-    override fun validatePassword(password: String): ValidationResult = passwordAnswer
+    override fun validateEmailAddress(emailAddress: String): ValidationOutcome = emailAddressAnswer
+    override fun validatePassword(password: String): ValidationOutcome = passwordAnswer
     override fun validateConfigurationApproval(
         isApproved: Boolean?,
         isAutoDiscoveryTrusted: Boolean?,
-    ): ValidationResult = configurationApprovalAnswer
+    ): ValidationOutcome = configurationApprovalAnswer
 }

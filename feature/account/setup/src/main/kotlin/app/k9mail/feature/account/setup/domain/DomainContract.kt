@@ -4,8 +4,8 @@ import app.k9mail.autodiscovery.api.AutoDiscoveryResult
 import app.k9mail.feature.account.common.domain.entity.AccountState
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.setup.AccountSetupExternalContract.AccountCreator.AccountCreatorResult
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
 
 interface DomainContract {
 
@@ -19,23 +19,23 @@ interface DomainContract {
         }
 
         fun interface ValidateEmailAddress {
-            fun execute(emailAddress: String): ValidationResult
+            fun execute(emailAddress: String): ValidationOutcome
         }
 
         fun interface ValidateConfigurationApproval {
-            fun execute(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationResult
+            fun execute(isApproved: Boolean?, isAutoDiscoveryTrusted: Boolean?): ValidationOutcome
         }
 
         fun interface ValidateAccountName {
-            fun execute(accountName: String): ValidationResult
+            fun execute(accountName: String): ValidationOutcome
         }
 
         fun interface ValidateDisplayName {
-            fun execute(displayName: String): ValidationResult
+            fun execute(displayName: String): ValidationOutcome
         }
 
         fun interface ValidateEmailSignature {
-            fun execute(emailSignature: String): ValidationResult
+            fun execute(emailSignature: String): ValidationOutcome
         }
 
         fun interface GetSpecialFolderOptions {
@@ -43,7 +43,7 @@ interface DomainContract {
         }
 
         fun interface ValidateSpecialFolderOptions {
-            operator fun invoke(specialFolderOptions: SpecialFolderOptions): ValidationResult
+            operator fun invoke(specialFolderOptions: SpecialFolderOptions): ValidationOutcome
 
             sealed interface Failure : ValidationError {
                 data object MissingDefaultSpecialFolderOption : Failure

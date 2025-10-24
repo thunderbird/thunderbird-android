@@ -10,7 +10,7 @@ import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSett
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.State
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.Validator
 import app.k9mail.feature.account.server.settings.ui.outgoing.OutgoingServerSettingsContract.ViewModel
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
 
 open class OutgoingServerSettingsViewModel(
     initialState: State = State(),
@@ -64,18 +64,18 @@ open class OutgoingServerSettingsViewModel(
         val passwordResult = if (authenticationType.isPasswordRequired) {
             validator.validatePassword(password.value)
         } else {
-            ValidationResult.Success
+            Outcome.Success(Unit)
         }
 
         val hasError = listOf(serverResult, portResult, usernameResult, passwordResult)
-            .any { it is ValidationResult.Failure }
+            .any { it is Outcome.Failure }
 
         updateState {
             it.copy(
-                server = it.server.updateFromValidationResult(serverResult),
-                port = it.port.updateFromValidationResult(portResult),
-                username = it.username.updateFromValidationResult(usernameResult),
-                password = it.password.updateFromValidationResult(passwordResult),
+                server = it.server.updateFromValidationOutcome(serverResult),
+                port = it.port.updateFromValidationOutcome(portResult),
+                username = it.username.updateFromValidationOutcome(usernameResult),
+                password = it.password.updateFromValidationOutcome(passwordResult),
             )
         }
 

@@ -4,15 +4,15 @@ import app.k9mail.core.ui.compose.testing.mvi.eventStateTest
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import app.k9mail.feature.account.common.data.InMemoryAccountStateRepository
-import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.State
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.input.StringInputField
 import org.junit.Rule
 import org.junit.Test
 
@@ -82,7 +82,7 @@ class DisplayOptionsViewModelTest {
         runMviTest {
             val viewModel = DisplayOptionsViewModel(
                 validator = FakeDisplayOptionsValidator(
-                    accountNameAnswer = ValidationResult.Failure(TestError),
+                    accountNameAnswer = Outcome.Failure(TestError),
                 ),
                 accountStateRepository = InMemoryAccountStateRepository(),
                 accountOwnerNameProvider = accountOwnerNameProvider,

@@ -170,6 +170,7 @@ include(
     ":core:preference:impl",
     ":core:outcome",
     ":core:testing",
+    ":core:validation",
 )
 
 include(

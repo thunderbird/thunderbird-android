@@ -4,14 +4,16 @@ import app.k9mail.feature.account.common.domain.entity.SpecialFolderOption
 import app.k9mail.feature.account.common.domain.entity.SpecialFolderOptions
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase.ValidateSpecialFolderOptions.Failure
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
 
 class ValidateSpecialFolderOptions : UseCase.ValidateSpecialFolderOptions {
-    override fun invoke(specialFolderOptions: SpecialFolderOptions): ValidationResult {
+    override fun invoke(specialFolderOptions: SpecialFolderOptions): ValidationOutcome {
         return if (specialFolderOptions.hasMissingDefaultOption()) {
-            ValidationResult.Failure(error = Failure.MissingDefaultSpecialFolderOption)
+            Outcome.Failure(error = Failure.MissingDefaultSpecialFolderOption)
         } else {
-            ValidationResult.Success
+            ValidationSuccess
         }
     }
 
