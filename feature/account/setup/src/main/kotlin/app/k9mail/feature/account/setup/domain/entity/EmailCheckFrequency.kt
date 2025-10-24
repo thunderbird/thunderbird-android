@@ -18,7 +18,7 @@ enum class EmailCheckFrequency(
     ;
 
     companion object {
-        val DEFAULT = EVERY_HOUR
+        val DEFAULT = EVERY_15_MINUTES
         fun all() = entries.toImmutableList()
 
         fun fromMinutes(minutes: Int): EmailCheckFrequency {
