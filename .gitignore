@@ -46,3 +46,5 @@ captures/
 
 # Screenshots
 adb-screenshots/
+# Extracted eml files
+eml-files/
