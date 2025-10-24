@@ -2,8 +2,6 @@ package net.thunderbird.feature.notification.testing.fake
 
 import kotlin.random.Random
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.api.NotificationRegistry
@@ -14,8 +12,6 @@ open class FakeNotificationRegistry(
     private val useRandomIdForRegistering: Boolean = true,
 ) : NotificationRegistry {
     private val internalRegistrar = MutableStateFlow(initialRegistrar)
-
-    override val registrar: StateFlow<Map<NotificationId, Notification>> = internalRegistrar.asStateFlow()
 
     override fun get(notificationId: NotificationId): Notification? = internalRegistrar.value[notificationId]
 

@@ -21,23 +21,22 @@ import net.thunderbird.feature.notification.api.content.Notification
 @OptIn(ExperimentalAtomicApi::class)
 class DefaultNotificationRegistry(
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
-    private val scope: CoroutineScope = CoroutineScope(dispatcher),
 ) : NotificationRegistry {
+    private val scope: CoroutineScope = CoroutineScope(dispatcher)
     private val mutex = Mutex()
 
     // We use a MutableMap<Notification, NotificationId>, rather than MutableMap<NotificationId, Notification>,
     // allowing for quick lookups (O(1) on average for MutableMap) to check if a notification is already present
     // during registration.
-    private val _registrar = MutableStateFlow<Map<Notification, NotificationId>>(emptyMap())
+    private val internalRegistrar = MutableStateFlow<Map<Notification, NotificationId>>(emptyMap())
     private val rawId = AtomicInt(value = 0)
 
-    override val registrar: StateFlow<Map<NotificationId, Notification>>
-        get() = _registrar
-            .map { current -> current.map { it.value to it.key }.toMap() }
-            .stateIn(scope, started = SharingStarted.Eagerly, initialValue = emptyMap())
+    internal val registrar: StateFlow<Map<NotificationId, Notification>> = internalRegistrar
+        .map { current -> current.map { it.value to it.key }.toMap() }
+        .stateIn(scope, started = SharingStarted.WhileSubscribed(), initialValue = emptyMap())
 
     override fun get(notificationId: NotificationId): Notification? {
-        return _registrar
+        return internalRegistrar
             .value
             .entries
             .firstOrNull { (_, value) -> value == notificationId }
@@ -45,7 +44,7 @@ class DefaultNotificationRegistry(
     }
 
     override fun get(notification: Notification): NotificationId? {
-        return _registrar.value[notification]
+        return internalRegistrar.value[notification]
     }
 
     override suspend fun register(notification: Notification): NotificationId {
@@ -57,7 +56,7 @@ class DefaultNotificationRegistry(
 
             val id = rawId.incrementAndFetch()
             val notificationId = NotificationId(id)
-            _registrar.update { it + (notification to notificationId) }
+            internalRegistrar.update { it + (notification to notificationId) }
 
             notificationId
         }
@@ -71,14 +70,14 @@ class DefaultNotificationRegistry(
     }
 
     override fun unregister(notification: Notification) {
-        _registrar.update { it - notification }
+        internalRegistrar.update { it - notification }
     }
 
     override fun contains(notification: Notification): Boolean {
-        return _registrar.value.containsKey(notification)
+        return internalRegistrar.value.containsKey(notification)
     }
 
     override fun contains(notificationId: NotificationId): Boolean {
-        return _registrar.value.containsValue(notificationId)
+        return internalRegistrar.value.containsValue(notificationId)
     }
 }

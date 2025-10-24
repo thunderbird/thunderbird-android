@@ -42,8 +42,8 @@ import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentSetOf
-import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.style.NotificationPriority
 import net.thunderbird.feature.notification.api.ui.style.inAppNotificationStyle
@@ -51,7 +51,7 @@ import net.thunderbird.feature.notification.api.ui.util.assertBannerInline
 import net.thunderbird.feature.notification.api.ui.util.assertBannerInlineList
 import net.thunderbird.feature.notification.api.ui.util.printSemanticTree
 import net.thunderbird.feature.notification.testing.fake.FakeInAppOnlyNotification
-import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
+import net.thunderbird.feature.notification.testing.fake.receiver.FakeInAppNotificationStream
 import net.thunderbird.feature.notification.testing.fake.ui.action.createFakeNotificationAction
 import org.jetbrains.compose.resources.PreviewContextConfigurationEffect
 
@@ -178,8 +178,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             val notification = FakeInAppOnlyNotification(
                 inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
             )
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold {
                     TextBodyLarge(text = "Content")
                 }
@@ -190,7 +190,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             printSemanticTree()
 
             // Assert
@@ -210,9 +210,9 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
                 actions = setOf(action),
             )
-            val registry = FakeNotificationRegistry()
+            val stream = FakeInAppNotificationStream()
             val clickedAction = mutableStateOf<NotificationAction?>(value = null)
-            setTestSubjectContent(notificationRegistry = registry) {
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold(
                     onNotificationActionClick = { clickedAction.value = it },
                 ) {
@@ -225,7 +225,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act (Phase 1)
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             printSemanticTree()
 
             // Assert (Phase 1)
@@ -264,8 +264,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Max) },
             )
 
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold {
                     TextBodyLarge(text = "Content")
                 }
@@ -276,7 +276,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act (Phase 1)
             printSemanticTree()
-            registry.register(lowerPriorityNotification)
+            stream.addNotification(lowerPriorityNotification)
             printSemanticTree()
 
             // Assert (Phase 1)
@@ -289,7 +289,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act (Phase 2)
             printSemanticTree()
-            registry.register(notification = higherPriorityNotification)
+            stream.addNotification(notification = higherPriorityNotification)
             printSemanticTree()
 
             // Assert (Phase 2)
@@ -318,8 +318,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { bannerGlobal(priority = NotificationPriority.Max) },
             )
 
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold {
                     TextBodyLarge(text = "Content")
                 }
@@ -330,9 +330,9 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act (Phase 1)
             printSemanticTree(prefixLabel = "before first show event")
-            registry.register(notification = lowerPriorityNotification)
+            stream.addNotification(notification = lowerPriorityNotification)
             printSemanticTree(prefixLabel = "before second show event")
-            registry.register(notification = higherPriorityNotification)
+            stream.addNotification(notification = higherPriorityNotification)
             printSemanticTree(prefixLabel = "after events triggered")
 
             // Assert (Phase 1)
@@ -345,7 +345,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act (Phase 2)
             printSemanticTree(prefixLabel = "before dismiss event")
-            registry.unregister(notification = higherPriorityNotification)
+            stream.removeNotification(notification = higherPriorityNotification)
             printSemanticTree(prefixLabel = "after dismiss event triggered")
 
             // Assert (Phase 2)
@@ -365,8 +365,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(createFakeNotificationAction("Action")),
             )
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold {
                     TextBodyLarge(text = "Content")
                 }
@@ -377,7 +377,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             printSemanticTree()
 
             // Assert
@@ -397,8 +397,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(createFakeNotificationAction("Action")),
             )
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold {
                     TextBodyLarge(text = "Content")
                 }
@@ -409,7 +409,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             printSemanticTree()
 
             // Assert
@@ -437,8 +437,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(createFakeNotificationAction("Action")),
             )
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold { TextBodyLarge(text = "Content") }
             }
 
@@ -447,10 +447,10 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             mainClock.advanceTimeBy(milliseconds = 1000L)
             repeat(times = 10) {
-                registry.register(
+                stream.addNotification(
                     notification = FakeInAppOnlyNotification(
                         title = "Notification $it",
                         inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
@@ -504,9 +504,9 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(action),
             )
-            val registry = FakeNotificationRegistry()
+            val stream = FakeInAppNotificationStream()
             val clickedAction = mutableStateOf<NotificationAction?>(value = null)
-            setTestSubjectContent(notificationRegistry = registry) {
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold(
                     onNotificationActionClick = { clickedAction.value = it },
                 ) {
@@ -519,7 +519,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act (Phase 1)
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             printSemanticTree()
 
             // Assert (Phase 1)
@@ -548,9 +548,9 @@ class InAppNotificationScaffoldTest : ComposeTest() {
         runComposeTestSuspend {
             // Arrange
             mainClock.autoAdvance = false
-            val registry = FakeNotificationRegistry()
+            val stream = FakeInAppNotificationStream()
             val clickedAction = mutableStateOf<NotificationAction?>(value = null)
-            setTestSubjectContent(notificationRegistry = registry) {
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold(
                     onNotificationActionClick = { clickedAction.value = it },
                 ) {
@@ -564,7 +564,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             // Act (Phase 1)
             printSemanticTree()
             repeat(times = 10) {
-                registry.register(
+                stream.addNotification(
                     notification = FakeInAppOnlyNotification(
                         title = "Notification $it",
                         inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
@@ -604,8 +604,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             val notification = FakeInAppOnlyNotification(
                 inAppNotificationStyle = inAppNotificationStyle { bannerGlobal() },
             )
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold(
                     enabled = persistentSetOf(), // Empty set will disable all display flags
                 ) {
@@ -618,7 +618,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             printSemanticTree()
 
             // Pre-Act Assert
@@ -638,8 +638,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { bannerInline() },
                 actions = setOf(createFakeNotificationAction("Action")),
             )
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold(
                     enabled = persistentSetOf(), // Empty set will disable all display flags
                 ) {
@@ -652,7 +652,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             printSemanticTree()
 
             // Assert
@@ -669,8 +669,8 @@ class InAppNotificationScaffoldTest : ComposeTest() {
                 inAppNotificationStyle = inAppNotificationStyle { snackbar() },
                 actions = setOf(createFakeNotificationAction("Action")),
             )
-            val registry = FakeNotificationRegistry()
-            setTestSubjectContent(notificationRegistry = registry) {
+            val stream = FakeInAppNotificationStream()
+            setTestSubjectContent(notificationStream = stream) {
                 InAppNotificationScaffold(
                     enabled = persistentSetOf(), // Empty set will disable all display flags
                 ) {
@@ -683,7 +683,7 @@ class InAppNotificationScaffoldTest : ComposeTest() {
 
             // Act
             printSemanticTree()
-            registry.register(notification)
+            stream.addNotification(notification)
             printSemanticTree()
 
             // Assert
@@ -710,12 +710,12 @@ class InAppNotificationScaffoldTest : ComposeTest() {
     }
 
     private fun ComposeTest.setTestSubjectContent(
-        notificationRegistry: NotificationRegistry = FakeNotificationRegistry(),
+        notificationStream: InAppNotificationStream = FakeInAppNotificationStream(),
         content: @Composable () -> Unit,
     ) {
         setContentWithTheme {
             koinPreview {
-                single<NotificationRegistry> { notificationRegistry }
+                single<InAppNotificationStream> { notificationStream }
             } WithContent {
                 // https://github.com/robolectric/robolectric/issues/9603
                 // https://youtrack.jetbrains.com/issue/CMP-6612/Support-non-compose-UI-tests-with-resources

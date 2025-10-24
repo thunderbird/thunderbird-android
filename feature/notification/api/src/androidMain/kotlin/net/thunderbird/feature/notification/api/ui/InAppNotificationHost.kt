@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import kotlinx.collections.immutable.ImmutableSet
-import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.content.InAppNotification
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
 import net.thunderbird.feature.notification.api.ui.host.InAppNotificationHostStateHolder
@@ -136,15 +136,12 @@ private fun InAppNotificationReceiverEffect(
     eventFilter: (InAppNotification) -> Boolean,
     hostStateHolder: InAppNotificationHostStateHolder,
 ) {
-    val registry = koinInject<NotificationRegistry>()
-    val inAppNotifications by registry.registrar.collectAsStateWithLifecycle()
+    val stream = koinInject<InAppNotificationStream>()
+    val inAppNotifications by stream.notifications.collectAsStateWithLifecycle()
     var pastNotifications by remember { mutableStateOf<Set<InAppNotification>>(emptySet()) }
 
     LaunchedEffect(inAppNotifications, eventFilter) {
         val newNotifications = inAppNotifications
-            .values
-            .asSequence()
-            .filterIsInstance<InAppNotification>()
             .filter(eventFilter)
             .toSet()
             .onEach { notification ->
