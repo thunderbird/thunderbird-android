@@ -22,6 +22,10 @@ class MessagingControllerWrapper(
         return accountManager.getAccount(id.asRaw()) ?: error("Account not found: $id")
     }
 
+    private fun getAccountDtoOrNull(id: AccountId): LegacyAccountDto? {
+        return accountManager.getAccount(id.asRaw())
+    }
+
     fun loadMoreMessages(id: AccountId, folderId: Long) {
         val account = getAccountDtoOrThrow(id)
         messagingController.loadMoreMessages(account, folderId)
@@ -79,12 +83,12 @@ class MessagingControllerWrapper(
     }
 
     fun isMoveCapable(id: AccountId): Boolean {
-        val account = getAccountDtoOrThrow(id)
+        val account = getAccountDtoOrNull(id) ?: return false
         return messagingController.isMoveCapable(account)
     }
 
     fun isCopyCapable(id: AccountId): Boolean {
-        val account = getAccountDtoOrThrow(id)
+        val account = getAccountDtoOrNull(id) ?: return false
         return messagingController.isCopyCapable(account)
     }
 
@@ -175,7 +179,7 @@ class MessagingControllerWrapper(
         notify: Boolean,
         listener: MessagingListener?,
     ) {
-        val account = id?.let { getAccountDtoOrThrow(it) }
+        val account = id?.let { getAccountDtoOrNull(it) }
 
         messagingController.checkMail(
             account,
@@ -187,12 +191,12 @@ class MessagingControllerWrapper(
     }
 
     fun supportsExpunge(id: AccountId): Boolean {
-        val account = getAccountDtoOrThrow(id)
+        val account = getAccountDtoOrNull(id) ?: return false
         return messagingController.supportsExpunge(account)
     }
 
     fun isPushCapable(id: AccountId): Boolean {
-        val account = getAccountDtoOrThrow(id)
+        val account = getAccountDtoOrNull(id) ?: return false
         return messagingController.isPushCapable(account)
     }
 
