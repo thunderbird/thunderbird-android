@@ -51,6 +51,7 @@ generator, in this case, **mdbook**. It defines the structure and navigation of 
   - [Release Process](release/RELEASE.md)
   - [Release Automation](release/AUTOMATION.md)
   - [Developer Release Checklist](release/developer-checklist.md)
+  - [Release Testing Checklist](release/testing-checklist.md)
   - [Manual Release (historical)](release/HISTORICAL_RELEASE.md)
 - [Security]()
   - [Threat Modeling Guide](security/threat-modeling-guide.md)
