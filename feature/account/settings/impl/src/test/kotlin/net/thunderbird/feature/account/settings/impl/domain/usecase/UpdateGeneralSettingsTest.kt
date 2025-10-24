@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption
+import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.CompactOption
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
@@ -119,5 +121,85 @@ class UpdateGeneralSettingsTest {
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)
         assertThat((result as Outcome.Failure).error).isInstanceOf(SettingsError.NotFound::class)
+    }
+
+    @Test
+    fun `should update avatar when PROFILE_INDICATOR CompactOption is selected`() = runTest {
+        // Arrange
+        val accountId = AccountIdFactory.create()
+        val accountProfile = AccountProfile(
+            id = accountId,
+            name = "Test Account",
+            color = 0xFF0000,
+            avatar = AccountAvatar.Icon(name = "star"),
+        )
+        val imageAvatar = AccountAvatar.Image(uri = "avatar://uri")
+        val imageOption: CompactOption<AccountAvatar> = CompactOption(
+            id = "${accountId.asRaw()}-profile-indicator-image",
+            title = { "Image" },
+            value = imageAvatar,
+        )
+        val iconOption: CompactOption<AccountAvatar> = CompactOption(
+            id = "${accountId.asRaw()}-profile-indicator-icon",
+            title = { "Icon" },
+            value = AccountAvatar.Icon("user"),
+        )
+        val setting: CompactSelectSingleOption<AccountAvatar> = CompactSelectSingleOption(
+            id = GeneralPreference.PROFILE_INDICATOR.generateId(accountId),
+            title = { "Profile Indicator" },
+            value = imageOption,
+            options = persistentListOf(imageOption, iconOption),
+        )
+        val repository = FakeAccountProfileRepository(initialAccountProfile = accountProfile)
+        val testSubject = UpdateGeneralSettings(repository)
+
+        // Act
+        val result = testSubject(accountId, setting)
+
+        // Assert
+        assertThat(result).isInstanceOf(Outcome.Success::class)
+        assertThat(repository.getById(accountId).firstOrNull()).isEqualTo(
+            accountProfile.copy(avatar = imageAvatar),
+        )
+    }
+
+    @Test
+    fun `should return failure when PROFILE_INDICATOR value is invalid`() = runTest {
+        // Arrange
+        val accountId = AccountIdFactory.create()
+        val accountProfile = AccountProfile(
+            id = accountId,
+            name = "Test Account",
+            color = 0xFF0000,
+            avatar = AccountAvatar.Icon(name = "star"),
+        )
+        // Construct a CompactSelectSingleOption with wrong inner value type
+        val invalidOption: CompactOption<Any?> = CompactOption(
+            id = "${accountId.asRaw()}-profile-indicator-invalid",
+            title = { "Invalid" },
+            value = "invalid",
+        )
+        val otherOption: CompactOption<Any?> = CompactOption(
+            id = "${accountId.asRaw()}-profile-indicator-icon",
+            title = { "Icon" },
+            value = AccountAvatar.Icon("user"),
+        )
+        val invalidSetting: CompactSelectSingleOption<Any?> = CompactSelectSingleOption(
+            id = GeneralPreference.PROFILE_INDICATOR.generateId(accountId),
+            title = { "Profile Indicator" },
+            value = invalidOption,
+            options = persistentListOf(invalidOption, otherOption),
+        )
+        val repository = FakeAccountProfileRepository(initialAccountProfile = accountProfile)
+        val testSubject = UpdateGeneralSettings(repository)
+
+        // Act
+        val result = testSubject(accountId, invalidSetting)
+
+        // Assert
+        assertThat(result).isInstanceOf(Outcome.Failure::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(SettingsError.NotFound::class)
+        // Ensure no change was made
+        assertThat(repository.getById(accountId).firstOrNull()).isEqualTo(accountProfile)
     }
 }

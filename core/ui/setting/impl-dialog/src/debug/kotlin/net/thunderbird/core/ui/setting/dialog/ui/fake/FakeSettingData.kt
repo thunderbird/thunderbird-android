@@ -30,9 +30,9 @@ internal object FakeSettingData {
     )
 
     private val compactOptions = persistentListOf(
-        CompactOption("1") { "Choice 1" },
-        CompactOption("2") { "Choice 2" },
-        CompactOption("3") { "Choice 3" },
+        CompactOption(id = "1", title = { "Option 1" }, value = "1"),
+        CompactOption(id = "2", title = { "Option 2" }, value = "2"),
+        CompactOption(id = "3", title = { "Option 3" }, value = "3"),
     )
 
     val compactSelectSingleOption = SettingValue.CompactSelectSingleOption(
@@ -44,12 +44,12 @@ internal object FakeSettingData {
     )
 
     private val options = persistentListOf(
-        Option("1") { "Compact Choice 1" },
-        Option("2") { "Compact Choice 2" },
-        Option("3") { "Compact Choice 3" },
-        Option("1") { "Compact Choice 4" },
-        Option("2") { "Compact Choice 5" },
-        Option("3") { "Compact Choice 6" },
+        Option("1") { "Option 1" },
+        Option("2") { "Option 2" },
+        Option("3") { "Option 3" },
+        Option("4") { "Option 4" },
+        Option("5") { "Option 5" },
+        Option("6") { "Option 6" },
     )
 
     val selectSingleOption = SettingValue.SelectSingleOption(

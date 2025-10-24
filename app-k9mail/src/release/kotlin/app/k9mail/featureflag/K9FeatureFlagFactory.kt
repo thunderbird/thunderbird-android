@@ -5,11 +5,11 @@ import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 
 /**
  * Feature flags for K-9 Mail (release)
  */
-
 class K9FeatureFlagFactory : FeatureFlagFactory {
     override fun createFeatureCatalog(): List<FeatureFlag> {
         return listOf(
@@ -22,6 +22,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
             FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
+            FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
         )
     }
 }
