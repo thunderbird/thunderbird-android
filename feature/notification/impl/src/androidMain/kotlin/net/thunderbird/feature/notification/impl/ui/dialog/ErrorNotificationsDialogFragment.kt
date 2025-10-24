@@ -17,8 +17,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toPersistentSet
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
-import net.thunderbird.feature.notification.api.NotificationRegistry
-import net.thunderbird.feature.notification.api.content.InAppNotification
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialog
 import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialogFragmentActionListener
 import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialogFragmentFactory
@@ -27,7 +26,7 @@ import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
 import org.koin.android.ext.android.inject
 
 internal class ErrorNotificationsDialogFragment : DialogFragment() {
-    private val registry: NotificationRegistry by inject()
+    private val stream: InAppNotificationStream by inject()
     private var listener: ErrorNotificationsDialogFragmentActionListener? = null
 
     private val themeProvider: FeatureThemeProvider by inject<FeatureThemeProvider>()
@@ -40,13 +39,11 @@ internal class ErrorNotificationsDialogFragment : DialogFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 themeProvider.WithTheme {
-                    val registrar by registry.registrar.collectAsStateWithLifecycle()
+                    val inAppNotifications by stream.notifications.collectAsStateWithLifecycle()
                     val visuals by remember {
                         derivedStateOf {
-                            registrar
-                                .values
+                            inAppNotifications
                                 .asSequence()
-                                .filterIsInstance<InAppNotification>()
                                 .filter { it.inAppNotificationStyle is InAppNotificationStyle.BannerInlineNotification }
                                 .mapNotNull { BannerInlineVisual.from(it) }
                                 .toPersistentSet()

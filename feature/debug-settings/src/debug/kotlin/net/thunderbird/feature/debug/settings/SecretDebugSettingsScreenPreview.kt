@@ -7,19 +7,28 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.common.koin.koinPreview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
 import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionViewModel
 import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.account.api.BaseAccount
 import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
+import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.Notification
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 @PreviewLightDark
 @Composable
 private fun SecretDebugSettingsScreenPreview() {
     koinPreview {
+        single<InAppNotificationStream> {
+            object : InAppNotificationStream {
+                override val notifications: StateFlow<Set<InAppNotification>> = MutableStateFlow(emptySet())
+            }
+        }
         single<DebugNotificationSectionViewModel> {
             DebugNotificationSectionViewModel(
                 stringsResourceManager = object : StringsResourceManager {
@@ -45,6 +54,7 @@ private fun SecretDebugSettingsScreenPreview() {
                     ): Flow<NotificationCommandOutcome<Notification>> =
                         error("not implemented")
                 },
+                inAppNotificationStream = get(),
             )
         }
     } WithContent {

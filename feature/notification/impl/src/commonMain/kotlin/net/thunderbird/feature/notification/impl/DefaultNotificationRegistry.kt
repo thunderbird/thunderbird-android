@@ -29,7 +29,7 @@ class DefaultNotificationRegistry(
     private val internalRegistrar = MutableStateFlow<Registrar>(Registrar())
     private val rawId = AtomicInt(value = 0)
 
-    override val registrar: StateFlow<Map<NotificationId, Notification>> = internalRegistrar
+    internal val registrar: StateFlow<Map<NotificationId, Notification>> = internalRegistrar
         .map { current -> current.byId }
         .stateIn(scope, started = SharingStarted.WhileSubscribed(), initialValue = emptyMap())
 

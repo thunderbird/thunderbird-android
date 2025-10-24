@@ -1,6 +1,5 @@
 package net.thunderbird.feature.notification.api
 
-import kotlinx.coroutines.flow.StateFlow
 import net.thunderbird.feature.notification.api.content.Notification
 
 /**
@@ -12,12 +11,6 @@ import net.thunderbird.feature.notification.api.content.Notification
  * to the user.
  */
 interface NotificationRegistry {
-    /**
-     * A [Map] off all the current notifications, associated with their IDs,
-     * being displayed to the user.
-     */
-    val registrar: StateFlow<Map<NotificationId, Notification>>
-
     /**
      * Retrieves a [Notification] object based on its [notificationId].
      *
