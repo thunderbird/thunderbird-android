@@ -66,6 +66,7 @@ public class AddressTest {
                 "example@s.solutions",
                 "user@com",
                 "user@localserver",
+                "user@orléans.example",
                 "user@[IPv6:2001:db8::1]"
         };
 
