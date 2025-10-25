@@ -128,6 +128,7 @@ class AddressTest {
             "example@s.solutions",
             "user@com",
             "user@localserver",
+            "user@orléans.example",
             "user@[IPv6:2001:db8::1]",
         )
 
@@ -139,6 +140,19 @@ class AddressTest {
             assertThat(addresses.size).isEqualTo(1)
             assertThat(addresses[0].address).isEqualTo(mail)
         }
+    }
+
+    @Test
+    fun `construction with A-label should decode`() {
+        // Mutt and Exchange do this, and maybe Plesk too. Best fix it
+        // at the earliest opportunity.
+
+        // Act
+        val address = Address(address = "grå@xn--gr-zia.org", personal = "Grå katt")
+
+        // Assert
+        assertThat(address.personal).isEqualTo("Grå katt")
+        assertThat(address.address).isEqualTo("grå@grå.org")
     }
 
     @Test
@@ -166,6 +180,16 @@ class AddressTest {
         // Assert
         assertThat(addresses[0].personal).isEqualTo("Yahoo!ダイレクトオファー")
         assertThat(addresses[0].address).isEqualTo("directoffer-master@mail.yahoo.co.jp")
+    }
+
+    @Test
+    fun `parse with A-label should decode`() {
+        // Act
+        val addresses = parse("info@xn--gr-zia.org")
+
+        // Assert
+        assertThat(addresses.size).isEqualTo(1)
+        assertThat(addresses[0].address).isEqualTo("info@grå.org")
     }
 
     /**
