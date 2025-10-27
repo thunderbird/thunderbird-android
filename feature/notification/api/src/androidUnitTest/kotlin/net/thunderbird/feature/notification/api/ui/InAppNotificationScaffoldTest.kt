@@ -39,6 +39,7 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
+import assertk.assertions.isNull
 import kotlin.test.Test
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -597,13 +598,16 @@ class InAppNotificationScaffoldTest : ComposeTest() {
             assertBannerInlineList(size = 2)
 
             // Act (Phase 2)
+            mainClock.autoAdvance = true
             onNodeWithTag(BannerInlineNotificationListHostDefaults.TEST_TAG_CHECK_ERROR_NOTIFICATIONS_ACTION)
                 .performClick()
 
             // Assert (Phase 2)
             assertThat(clickedAction.value)
-                .isNotNull()
-                .isEqualTo(NotificationAction.OpenNotificationCentre)
+                .isNull()
+
+            onNodeWithTag(InAppNotificationScaffoldDefaults.TEST_TAG_ERROR_NOTIFICATIONS_DIALOG)
+                .assertIsDisplayed()
         }
     // endregion [ Banner Inline List Notification verification ]
 
