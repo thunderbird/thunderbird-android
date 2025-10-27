@@ -136,6 +136,14 @@
         app:showAsAction="never"
         />
 
+    <!-- MessageView -->
+    <item
+        android:id="@+id/export_eml"
+        android:title="@string/message_view_menu_action_export_eml"
+        android:visible="false"
+        app:showAsAction="never"
+        />
+
     <!-- always -->
     <item
         android:id="@+id/compose"

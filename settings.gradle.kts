@@ -99,6 +99,8 @@ include(
     ":feature:mail:folder:api",
     ":feature:mail:message:composer",
     ":feature:mail:message:list",
+    ":feature:mail:message:export:api",
+    ":feature:mail:message:export:impl-eml",
 )
 
 include(
