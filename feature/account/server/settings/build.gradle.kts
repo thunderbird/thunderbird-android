@@ -16,6 +16,7 @@ android {
 dependencies {
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.common)
+    implementation(projects.core.validation)
 
     implementation(projects.mail.common)
     implementation(projects.mail.protocols.imap)

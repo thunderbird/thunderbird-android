@@ -1,4 +1,4 @@
-package app.k9mail.feature.account.common.domain.input
+package net.thunderbird.core.validation.input
 
 import assertk.Assert
 import assertk.all
@@ -10,8 +10,8 @@ import assertk.assertions.isNull
 import assertk.assertions.isSameInstanceAs
 import assertk.assertions.isTrue
 import assertk.assertions.prop
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -139,7 +139,7 @@ class InputFieldTest(
             false,
         )
 
-        val result = initialInput.updateFromValidationResult(ValidationResult.Success)
+        val result = initialInput.updateFromValidationOutcome(Outcome.Success(Unit))
 
         assertThat(result).all {
             isNotSameInstanceAs(initialInput)
@@ -157,7 +157,7 @@ class InputFieldTest(
             true,
         )
 
-        val result = initialInput.updateFromValidationResult(ValidationResult.Failure(TestValidationError))
+        val result = initialInput.updateFromValidationOutcome(Outcome.Failure(TestValidationError))
 
         assertThat(result).all {
             isNotSameInstanceAs(initialInput)

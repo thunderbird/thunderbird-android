@@ -1,7 +1,7 @@
-package app.k9mail.feature.account.common.domain.input
+package net.thunderbird.core.validation.input
 
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
 
 /**
  * InputField is an interface defining the state of an input field.
@@ -44,5 +44,5 @@ interface InputField<T> {
         return error != null
     }
 
-    fun updateFromValidationResult(result: ValidationResult): InputField<T>
+    fun updateFromValidationOutcome(outcome: ValidationOutcome): InputField<T>
 }

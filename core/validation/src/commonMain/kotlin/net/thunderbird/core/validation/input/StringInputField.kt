@@ -1,51 +1,52 @@
-package app.k9mail.feature.account.common.domain.input
+package net.thunderbird.core.validation.input
 
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
 
-class NumberInputField(
-    override val value: Long? = null,
+class StringInputField(
+    override val value: String = "",
     override val error: ValidationError? = null,
     override val isValid: Boolean = false,
-) : InputField<Long?> {
+) : InputField<String> {
 
-    override fun updateValue(value: Long?): NumberInputField {
-        return NumberInputField(
+    override fun updateValue(value: String): StringInputField {
+        return StringInputField(
             value = value,
             error = null,
             isValid = false,
         )
     }
 
-    override fun updateError(error: ValidationError?): NumberInputField {
-        return NumberInputField(
+    override fun updateError(error: ValidationError?): StringInputField {
+        return StringInputField(
             value = value,
             error = error,
             isValid = false,
         )
     }
 
-    override fun updateValidity(isValid: Boolean): NumberInputField {
+    override fun updateValidity(isValid: Boolean): StringInputField {
         if (isValid == this.isValid) return this
 
-        return NumberInputField(
+        return StringInputField(
             value = value,
             error = null,
             isValid = isValid,
         )
     }
 
-    override fun updateFromValidationResult(result: ValidationResult): NumberInputField {
-        return when (result) {
-            is ValidationResult.Success -> NumberInputField(
+    override fun updateFromValidationOutcome(outcome: ValidationOutcome): StringInputField {
+        return when (outcome) {
+            is Outcome.Success -> StringInputField(
                 value = value,
                 error = null,
                 isValid = true,
             )
 
-            is ValidationResult.Failure -> NumberInputField(
+            is Outcome.Failure -> StringInputField(
                 value = value,
-                error = result.error,
+                error = outcome.error,
                 isValid = false,
             )
         }
@@ -55,7 +56,7 @@ class NumberInputField(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as NumberInputField
+        other as StringInputField
 
         if (value != other.value) return false
         if (error != other.error) return false
@@ -63,13 +64,13 @@ class NumberInputField(
     }
 
     override fun hashCode(): Int {
-        var result = value?.hashCode() ?: 0
+        var result = value.hashCode()
         result = 31 * result + (error?.hashCode() ?: 0)
         result = 31 * result + isValid.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "NumberInputField(value=$value, error=$error, isValid=$isValid)"
+        return "StringInputField(value='$value', error=$error, isValid=$isValid)"
     }
 }
