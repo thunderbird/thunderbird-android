@@ -8,14 +8,10 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlin.concurrent.thread
-import kotlin.test.BeforeTest
 import kotlin.test.Test
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
@@ -32,7 +28,7 @@ class DefaultNotificationRegistryTest {
         val notification = FakeNotification()
         val registry = DefaultNotificationRegistry()
 
-        // Act
+        // Ac
         val notificationId = registry.register(notification)
 
         // Assert
