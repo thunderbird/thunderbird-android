@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="14.0b3" versioncode="34" date="2025-10-27">
+        <change>Thunderbird could crash when deleting an account and returning to the message list</change>
+    </release>
     <release version="14.0b2" versioncode="33" date="2025-10-22">
         <change>Messages could not be fetched in 14.0b1</change>
     </release>
