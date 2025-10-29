@@ -254,13 +254,13 @@
 <li>main → beta</li>
 <li>beta → release</li>
 </ul>
-<p>For the full release-driver process (branch locks, announcements, publishing), see <a href="../ci/RELEASE.html">Release → Release Process</a>.</p>
+<p>For the full release-driver process (branch locks, announcements, publishing), see <a href="../release/RELEASE.html">Release → Release Process</a>.</p>
 <h2 id="ongoing-between-merges"><a class="header" href="#ongoing-between-merges">Ongoing (between merges)</a></h2>
 <p>Do these as part of regular development:</p>
 <ul>
 <li>Identify potential uplifts early
 <ul>
-<li>Add risk and user impact notes to the issue/PR; ensure the fix lands on <code>main</code> and bakes on Daily first — see <a href="../ci/RELEASE.html#uplifts">Uplifts</a> and <a href="../ci/RELEASE.html#uplift-criteria">Uplift Criteria</a></li>
+<li>Add risk and user impact notes to the issue/PR; ensure the fix lands on <code>main</code> and bakes on Daily first — see <a href="../release/RELEASE.html#uplifts">Uplifts</a> and <a href="../release/RELEASE.html#uplift-criteria">Uplift Criteria</a></li>
 </ul>
 </li>
 <li>Strings and translations
@@ -295,7 +295,7 @@
   <span class="mdbook-alerts-icon"></span>
   note
 </p>
-<p>A one-week <a href="../ci/RELEASE.html#soft-freeze">Soft Freeze</a> occurs before merging <code>main</code> into <code>beta</code>.</p>
+<p>A one-week <a href="../release/RELEASE.html#soft-freeze">Soft Freeze</a> occurs before merging <code>main</code> into <code>beta</code>.</p>
 </div>
 <p>During soft freeze:</p>
 <ul>
@@ -306,13 +306,13 @@
 <ul>
 <li>Feature flags
 <ul>
-<li>Ensure flags match the <a href="../ci/RELEASE.html#feature-flags">rules for beta</a>
+<li>Ensure flags match the <a href="../release/RELEASE.html#feature-flags">rules for beta</a>
 <ul>
 <li>New features are disabled by default unless explicitly approved for beta</li>
 <li>Not-ready features must be disabled</li>
 </ul>
 </li>
-<li>Prepare and merge a PR on <code>main</code> with necessary flag changes (before merge day)</li>
+<li>Prepare and merge a PR on <code>main</code> with necessary flag changes (before soft freeze starts)</li>
 </ul>
 </li>
 <li>Translations
@@ -327,13 +327,13 @@
 <ul>
 <li>Feature flags
 <ul>
-<li>Verify flags align with <a href="../ci/RELEASE.html#feature-flags">rules for release</a>
+<li>Verify flags align with <a href="../release/RELEASE.html#feature-flags">rules for release</a>
 <ul>
 <li>Features are disabled unless explicitly approved for release</li>
 <li>Not-ready features remain disabled</li>
 </ul>
 </li>
-<li>If changes are required, open a PR on <code>main</code> and request uplift to <code>beta</code> following the criteria in <a href="../ci/RELEASE.html#uplift-criteria">Uplift Criteria</a></li>
+<li>If changes are required, open a PR on <code>main</code> and request uplift to <code>beta</code> following the criteria in <a href="../release/RELEASE.html#uplift-criteria">Uplift Criteria</a></li>
 </ul>
 </li>
 <li>Translations
@@ -351,11 +351,11 @@
 </ul>
 <h2 id="optional-pr-checklist-snippet"><a class="header" href="#optional-pr-checklist-snippet">Optional: PR checklist snippet</a></h2>
 <p>Paste the following snippet into your PR description to help reviewers and release drivers verify readiness for merge:</p>
-<pre><code class="language-markdown">- [ ] Feature flags set according to target branch rules ([beta](../ci/RELEASE.md#feature-flags) / [release](../ci/RELEASE.md#feature-flags))
+<pre><code class="language-markdown">- [ ] Feature flags set according to target branch rules ([beta](../release/RELEASE.md#feature-flags) / [release](../release/RELEASE.md#feature-flags))
 - [ ] Tests added/updated; CI green on affected modules
 - [ ] No new localizable strings (or justified and coordinated)
 - [ ] Translations accounted for (Weblate PR merged or not required)
-- [ ] Uplift label and risk/impact notes added if proposing uplift ([criteria](../ci/RELEASE.md#uplift-criteria))
+- [ ] Uplift template with risk/impact notes filled out if proposing uplift ([criteria](../release/RELEASE.md#uplift-criteria))
 </code></pre>
 <h2 id="after-merges-what-developers-should-verify"><a class="header" href="#after-merges-what-developers-should-verify">After merges (what developers should verify)</a></h2>
 <ul>
@@ -371,18 +371,18 @@
   <span class="mdbook-alerts-icon"></span>
   note
 </p>
-<p>Merge-day coordination (branch locks, Matrix announcements, running scripts) is handled by release drivers. See <a href="../ci/RELEASE.html#merge-process">Merge Process</a> for details.</p>
+<p>Merge-day coordination (branch locks, Matrix announcements, running scripts) is handled by release drivers. See <a href="../release/RELEASE.html#merge-process">Merge Process</a> for details.</p>
 </div>
-<footer id="last-change">Last change: <time datetime="2025-10-02">2025-10-02</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/335ed15">335ed15</a></footer>
+<footer id="last-change">Last change: <time datetime="2025-10-29">2025-10-29</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/49fd58b">49fd58b</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../ci/AUTOMATION.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../release/AUTOMATION.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../ci/HISTORICAL_RELEASE.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../release/HISTORICAL_RELEASE.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -392,11 +392,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../ci/AUTOMATION.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../release/AUTOMATION.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../ci/HISTORICAL_RELEASE.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../release/HISTORICAL_RELEASE.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
