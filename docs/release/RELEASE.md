@@ -104,7 +104,9 @@ Template for uplift requests:
 Original Issue/Pull request:
 Regression caused by (issue #):
 User impact if declined:
-Testing completed (on daily, etc.):
+Testing completed (on daily, beta, etc.):
+Introduces or modifies localizable strings (yes/no):
+Skips a database migration (yes/no):
 Risk to taking this patch (and alternatives if risky):
 ```
 
