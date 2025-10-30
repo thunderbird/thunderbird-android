@@ -6,6 +6,7 @@ import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 
 /**
  * Feature flags for Thunderbird (release)
@@ -23,6 +24,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
             FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
             FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = false),
+            FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
         )
     }
 }

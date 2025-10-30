@@ -41,6 +41,11 @@ internal interface AccountSettingsDomainContract {
                 color: Int,
             ): @Composable (Modifier) -> Unit
 
+            val profileIndicatorTitle: () -> String
+            val profileIndicatorMonogram: () -> String
+            val profileIndicatorImage: () -> String
+            val profileIndicatorIcon: () -> String
+
             val nameTitle: () -> String
             val nameDescription: () -> String?
             val nameIcon: () -> ImageVector?

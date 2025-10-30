@@ -32,6 +32,8 @@ val featureAccountSettingsModule = module {
         GetGeneralSettings(
             repository = get(),
             resourceProvider = get(),
+            monogramCreator = get(),
+            featureFlagProvider = get(),
         )
     }
 
