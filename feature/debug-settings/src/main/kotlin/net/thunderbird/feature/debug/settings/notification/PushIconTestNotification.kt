@@ -8,6 +8,7 @@ import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 
 class PushIconTestNotification(
     pushIcon: Int,
+    override val accountUuid: String? = null,
 ) : AppNotification(), SystemNotification {
     override val title: String = "Push Icon Test"
     override val contentText: String = "Verifying NotificationIconResourceProvider"
