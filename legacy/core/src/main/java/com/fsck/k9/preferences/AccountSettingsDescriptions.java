@@ -20,6 +20,7 @@ import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo104;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo106;
+import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo107;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo53;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo54;
 import com.fsck.k9.preferences.upgrader.AccountSettingsUpgraderTo74;
@@ -80,7 +81,8 @@ class AccountSettingsDescriptions {
         ));
         s.put("automaticCheckIntervalMinutes", Settings.versions(
                 new V(1, new IntegerResourceSetting(-1, R.array.check_frequency_values)),
-                new V(61, new IntegerResourceSetting(60, R.array.check_frequency_values))
+                new V(61, new IntegerResourceSetting(60, R.array.check_frequency_values)),
+                new V(107, new IntegerResourceSetting(15, R.array.check_frequency_values))
         ));
         s.put("chipColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF0000FF))
@@ -324,6 +326,7 @@ class AccountSettingsDescriptions {
         u.put(91, new AccountSettingsUpgraderTo91());
         u.put(104, new AccountSettingsUpgraderTo104());
         u.put(106, new AccountSettingsUpgraderTo106(new ServerSettingsDtoSerializer()));
+        u.put(107, new AccountSettingsUpgraderTo107());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
