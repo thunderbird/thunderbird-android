@@ -6,15 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.LifecycleStartEffect
-import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.launch
-import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
-import net.thunderbird.feature.notification.api.receiver.InAppNotificationReceiver
+import net.thunderbird.feature.notification.api.content.InAppNotification
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
 import net.thunderbird.feature.notification.api.ui.host.InAppNotificationHostStateHolder
@@ -25,8 +25,8 @@ import net.thunderbird.feature.notification.api.ui.layout.rememberBannerInlineSc
 import org.koin.compose.koinInject
 
 /**
- * Host used to properly show, hide and dismiss in-app notifications listening events from
- * [InAppNotificationReceiver].
+ * Host used to properly show and dismiss in-app notifications listening notification changes using
+ * [InAppNotificationReceiverEffect].
  *
  * This component takes in consideration the [InAppNotificationHostStateHolder]'s enabled flags to
  * decide which kind of notifications to show.
@@ -51,7 +51,7 @@ fun InAppNotificationHost(
     enabled: ImmutableSet<DisplayInAppNotificationFlag> = DisplayInAppNotificationFlag.AllNotifications,
     contentPadding: PaddingValues = PaddingValues(),
     onSnackbarNotificationEvent: suspend (SnackbarVisual) -> Unit = {},
-    eventFilter: (InAppNotificationEvent) -> Boolean = { true },
+    eventFilter: (InAppNotification) -> Boolean = { true },
     content: @Composable (PaddingValues) -> Unit = {},
 ) {
     InAppNotificationHost(
@@ -66,8 +66,8 @@ fun InAppNotificationHost(
 }
 
 /**
- * Host used to properly show, hide and dismiss in-app notifications listening events from
- * [InAppNotificationReceiver].
+ * Host used to properly show and dismiss in-app notifications listening notification changes using
+ * [InAppNotificationReceiverEffect].
  *
  * This component takes in consideration the [InAppNotificationHostStateHolder]'s enabled flags to
  * decide which kind of notifications to show.
@@ -94,26 +94,11 @@ fun InAppNotificationHost(
     ),
     contentPadding: PaddingValues = PaddingValues(),
     onSnackbarNotificationEvent: suspend (SnackbarVisual) -> Unit = {},
-    eventFilter: (InAppNotificationEvent) -> Boolean = { true },
+    eventFilter: (InAppNotification) -> Boolean = { true },
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val receiver = koinInject<InAppNotificationReceiver>()
     val state by hostStateHolder.currentInAppNotificationHostState.collectAsState()
-
-    LifecycleStartEffect(receiver, eventFilter) {
-        val job = lifecycle.coroutineScope.launch {
-            receiver
-                .events
-                .filter(eventFilter)
-                .collect { event ->
-                    when (event) {
-                        is InAppNotificationEvent.Dismiss -> hostStateHolder.dismiss(event.notification)
-                        is InAppNotificationEvent.Show -> hostStateHolder.showInAppNotification(event.notification)
-                    }
-                }
-        }
-        onStopOrDispose { job.cancel() }
-    }
+    InAppNotificationReceiverEffect(eventFilter, hostStateHolder)
 
     LaunchedEffect(state.snackbarVisual, onSnackbarNotificationEvent) {
         val snackbarVisual = state.snackbarVisual
@@ -144,4 +129,32 @@ fun InAppNotificationHost(
         content = content,
         modifier = modifier,
     )
+}
+
+@Composable
+private fun InAppNotificationReceiverEffect(
+    eventFilter: (InAppNotification) -> Boolean,
+    hostStateHolder: InAppNotificationHostStateHolder,
+) {
+    val stream = koinInject<InAppNotificationStream>()
+    val inAppNotifications by stream.notifications.collectAsStateWithLifecycle()
+    var pastNotifications by remember { mutableStateOf<Set<InAppNotification>>(emptySet()) }
+
+    LaunchedEffect(inAppNotifications, eventFilter) {
+        val newNotifications = inAppNotifications
+            .filter(eventFilter)
+            .toSet()
+            .onEach { notification ->
+                hostStateHolder.showInAppNotification(notification)
+            }
+
+        // dismiss notifications that are not in the new list
+        pastNotifications
+            .filterNot { it in newNotifications }
+            .forEach { notification ->
+                hostStateHolder.dismiss(notification)
+            }
+
+        pastNotifications = newNotifications
+    }
 }

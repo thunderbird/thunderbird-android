@@ -1,5 +1,6 @@
 package net.thunderbird.feature.notification.impl
 
+import app.cash.turbine.test
 import assertk.assertThat
 import assertk.assertions.containsAtLeast
 import assertk.assertions.hasSize
@@ -7,14 +8,25 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import kotlin.concurrent.thread
+import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import net.thunderbird.feature.notification.api.NotificationId
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
 
 @Suppress("MaxLineLength")
 class DefaultNotificationRegistryTest {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @BeforeTest
+    fun setup() {
+        Dispatchers.setMain(StandardTestDispatcher())
+    }
+
     @Test
     fun `register should return NotificationId given notification`() = runTest {
         // Arrange
@@ -51,6 +63,7 @@ class DefaultNotificationRegistryTest {
             .isEqualTo(notification)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `register should not register duplicated notifications when running concurrently`() = runTest {
         // Arrange
@@ -80,10 +93,14 @@ class DefaultNotificationRegistryTest {
         }
 
         // Assert
-        val registrar = registry.registrar
-        assertThat(registrar).hasSize(notificationSize)
-        assertThat(registrar)
-            .containsAtLeast(elements = expectedNotificationIds.zip(notifications).toTypedArray())
+        registry.registrar.test {
+            // skip initial value
+            skipItems(1)
+            val notificationIds = awaitItem()
+            assertThat(notificationIds).hasSize(notificationSize)
+            assertThat(notificationIds)
+                .containsAtLeast(elements = expectedNotificationIds.zip(notifications).toTypedArray())
+        }
     }
 
     @Test

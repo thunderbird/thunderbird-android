@@ -7,4 +7,5 @@ internal data class MailDisplayAccount(
     val color: Int,
     override val unreadMessageCount: Int,
     override val starredMessageCount: Int,
+    override val hasError: Boolean,
 ) : DisplayAccount

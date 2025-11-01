@@ -144,4 +144,6 @@ object Icons {
         val VisibilityOff: ImageVector
             get() = MaterialIcons.Filled.VisibilityOff
     }
+
+    object DualTone
 }

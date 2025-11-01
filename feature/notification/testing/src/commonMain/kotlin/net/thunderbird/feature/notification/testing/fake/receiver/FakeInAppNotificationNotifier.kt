@@ -1,16 +1,9 @@
 package net.thunderbird.feature.notification.testing.fake.receiver
 
-import net.thunderbird.feature.notification.api.NotificationId
+import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.content.InAppNotification
-import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
+import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
 
-open class FakeInAppNotificationNotifier : NotificationNotifier<InAppNotification> {
-    override suspend fun show(
-        id: NotificationId,
-        notification: InAppNotification,
-    ) = Unit
-
-    override suspend fun dismiss(id: NotificationId) = Unit
-
-    override fun dispose() = Unit
-}
+open class FakeInAppNotificationNotifier(
+    registry: NotificationRegistry = FakeNotificationRegistry(),
+) : AbstractFakeNotificationNotifier<InAppNotification>(registry)
