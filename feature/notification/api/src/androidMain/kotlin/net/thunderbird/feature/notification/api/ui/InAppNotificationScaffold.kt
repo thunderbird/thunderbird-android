@@ -2,10 +2,17 @@ package net.thunderbird.feature.notification.api.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHostState
 import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
@@ -13,10 +20,12 @@ import app.k9mail.core.ui.compose.designsystem.template.Scaffold
 import app.k9mail.core.ui.compose.designsystem.template.ScaffoldFabPosition
 import kotlinx.collections.immutable.ImmutableSet
 import net.thunderbird.core.ui.compose.common.modifier.testTagAsResourceId
+import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_ERROR_NOTIFICATIONS_DIALOG
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_INNER_SCAFFOLD
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_IN_APP_NOTIFICATION_HOST
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffoldDefaults.TEST_TAG_SNACKBAR_HOST
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
+import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialog
 import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
 import net.thunderbird.feature.notification.api.ui.host.rememberInAppNotificationHostStateHolder
 import net.thunderbird.feature.notification.api.ui.host.visual.SnackbarVisual
@@ -55,6 +64,7 @@ fun InAppNotificationScaffold(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val hostStateHolder = rememberInAppNotificationHostStateHolder(enabled)
+    var showErrorNotificationDialog by remember { mutableStateOf(false) }
     Scaffold(
         modifier = modifier.testTagAsResourceId(TEST_TAG_INNER_SCAFFOLD),
         topBar = topBar,
@@ -69,7 +79,12 @@ fun InAppNotificationScaffold(
         floatingActionButtonPosition = floatingActionButtonPosition,
     ) { paddingValues ->
         InAppNotificationHost(
-            onActionClick = onNotificationActionClick,
+            onActionClick = { action ->
+                when (action) {
+                    NotificationAction.OpenNotificationCentre -> showErrorNotificationDialog = true
+                    else -> onNotificationActionClick(action)
+                }
+            },
             contentPadding = paddingValues,
             hostStateHolder = hostStateHolder,
             onSnackbarNotificationEvent = { visual: SnackbarVisual ->
@@ -86,11 +101,24 @@ fun InAppNotificationScaffold(
             modifier = Modifier.testTagAsResourceId(TEST_TAG_IN_APP_NOTIFICATION_HOST),
             content = content,
         )
+
+        if (showErrorNotificationDialog) {
+            val state by hostStateHolder.currentInAppNotificationHostState.collectAsStateWithLifecycle()
+            ErrorNotificationsDialog(
+                visuals = state.bannerInlineVisuals,
+                onDismiss = { showErrorNotificationDialog = false },
+                onNotificationActionClick = onNotificationActionClick,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(TEST_TAG_ERROR_NOTIFICATIONS_DIALOG),
+            )
+        }
     }
 }
 
-object InAppNotificationScaffoldDefaults {
+internal object InAppNotificationScaffoldDefaults {
     internal const val TEST_TAG_INNER_SCAFFOLD = "ins_inner_scaffold"
     internal const val TEST_TAG_IN_APP_NOTIFICATION_HOST = "ins_in_app_notification_host"
     internal const val TEST_TAG_SNACKBAR_HOST = "ins_snackbar_host"
+    internal const val TEST_TAG_ERROR_NOTIFICATIONS_DIALOG = "ins_error_notifications_dialog"
 }

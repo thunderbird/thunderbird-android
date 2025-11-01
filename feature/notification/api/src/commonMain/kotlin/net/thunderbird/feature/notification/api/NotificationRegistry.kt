@@ -12,12 +12,6 @@ import net.thunderbird.feature.notification.api.content.Notification
  */
 interface NotificationRegistry {
     /**
-     * A [Map] off all the current notifications, associated with their IDs,
-     * being displayed to the user.
-     */
-    val registrar: Map<NotificationId, Notification>
-
-    /**
      * Retrieves a [Notification] object based on its [notificationId].
      *
      * @param notificationId The ID of the notification to retrieve.

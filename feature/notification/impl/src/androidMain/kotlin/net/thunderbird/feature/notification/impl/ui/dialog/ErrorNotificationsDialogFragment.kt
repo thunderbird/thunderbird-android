@@ -7,15 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import kotlinx.collections.immutable.ImmutableSet
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.collections.immutable.toPersistentSet
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
-import net.thunderbird.feature.notification.api.NotificationRegistry
-import net.thunderbird.feature.notification.api.content.InAppNotification
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialog
 import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialogFragmentActionListener
 import net.thunderbird.feature.notification.api.ui.dialog.ErrorNotificationsDialogFragmentFactory
@@ -24,8 +26,7 @@ import net.thunderbird.feature.notification.api.ui.style.InAppNotificationStyle
 import org.koin.android.ext.android.inject
 
 internal class ErrorNotificationsDialogFragment : DialogFragment() {
-    private val registry: NotificationRegistry by inject()
-    private var visuals = getVisuals()
+    private val stream: InAppNotificationStream by inject()
     private var listener: ErrorNotificationsDialogFragmentActionListener? = null
 
     private val themeProvider: FeatureThemeProvider by inject<FeatureThemeProvider>()
@@ -38,6 +39,16 @@ internal class ErrorNotificationsDialogFragment : DialogFragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 themeProvider.WithTheme {
+                    val inAppNotifications by stream.notifications.collectAsStateWithLifecycle()
+                    val visuals by remember {
+                        derivedStateOf {
+                            inAppNotifications
+                                .asSequence()
+                                .filter { it.inAppNotificationStyle is InAppNotificationStyle.BannerInlineNotification }
+                                .mapNotNull { BannerInlineVisual.from(it) }
+                                .toPersistentSet()
+                        }
+                    }
                     ErrorNotificationsDialog(
                         visuals = visuals,
                         onDismiss = { dismiss() },
@@ -62,20 +73,6 @@ internal class ErrorNotificationsDialogFragment : DialogFragment() {
         super.onDetach()
         listener = null
     }
-
-    override fun onResume() {
-        super.onResume()
-        visuals = getVisuals()
-    }
-
-    private fun getVisuals(): ImmutableSet<BannerInlineVisual> = registry
-        .registrar
-        .values
-        .asSequence()
-        .filterIsInstance<InAppNotification>()
-        .filter { it.inAppNotificationStyle is InAppNotificationStyle.BannerInlineNotification }
-        .mapNotNull { BannerInlineVisual.from(it) }
-        .toPersistentSet()
 
     companion object Factory : ErrorNotificationsDialogFragmentFactory {
         private const val TAG = "ErrorNotificationsDialogFragment"

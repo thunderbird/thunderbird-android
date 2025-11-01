@@ -28,7 +28,6 @@ class UpdateServerSettingsNotificationActionIntentCreator(
         notification: AuthenticationErrorNotification,
         action: NotificationAction,
     ): PendingIntent? {
-        logger.debug(TAG) { "create() called with: notification = $notification, action = $action" }
         val (accountNumber, intent) = when (action) {
             is NotificationAction.UpdateIncomingServerSettings -> {
                 action.accountNumber to FeatureLauncherActivity.getIntent(

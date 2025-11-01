@@ -13,6 +13,7 @@ import net.thunderbird.feature.notification.api.command.outcome.Success
 import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
+import net.thunderbird.feature.notification.impl.DefaultNotificationRegistry
 
 /**
  * A command that dismisses a notification.
@@ -58,7 +59,7 @@ sealed class DismissNotificationCommand<TNotification : Notification>(
                         "This might have been caused by a concurrent modification of the registry." +
                         "Please report this issue." +
                         "Notification = $notification" +
-                        "Registrar = ${notificationRegistry.registrar}"
+                        (notificationRegistry as? DefaultNotificationRegistry)?.registrar?.let { ", Registrar = $it" }
                 }
                 notifier.dismiss(id)
                 Outcome.success(Success(notificationId = id, command = this))

@@ -16,17 +16,13 @@ import net.thunderbird.feature.notification.api.content.Notification
  */
 interface NotificationNotifier<in TNotification : Notification> {
     /**
-     * Displays or updates a notification associated with the given [id].
+     * Displays a notification and associates with an [id][NotificationId].
      *
-     * Implementations should render [notification] according to their medium. If a notification
-     * with the same [id] is already visible, this call should update/replace it when supported
-     * by the underlying mechanism.
-     *
-     * @param id A stable identifier that correlates to this notification instance across updates
-     * and dismissal. Often maps to a system notification ID when using platform notifications.
      * @param notification The domain model describing what to present to the user.
+     * @return A stable identifier that correlates to this notification instance across updates
+     * and dismissal. Often maps to a system notification ID when using platform notifications.
      */
-    suspend fun show(id: NotificationId, notification: TNotification)
+    suspend fun show(notification: TNotification): NotificationId
 
     /**
      * Dismisses the notification previously shown with [id].
