@@ -795,7 +795,7 @@ class MessageListFragment :
     private val messageListAppearance: MessageListAppearance
         get() = MessageListAppearance(
             fontSizes = K9.fontSizes,
-            previewLines = K9.messageListPreviewLines,
+            previewLines = generalSettingsManager.getConfig().display.visualSettings.messageListPreviewLines,
             stars = !isOutbox && generalSettingsManager.getConfig().display.inboxSettings.isShowMessageListStars,
             senderAboveSubject = generalSettingsManager
                 .getConfig()

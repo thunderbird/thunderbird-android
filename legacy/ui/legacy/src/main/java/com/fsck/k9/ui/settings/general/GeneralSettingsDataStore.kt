@@ -70,6 +70,7 @@ class GeneralSettingsDataStore(
 
             "disable_notifications_during_quiet_time" -> !generalSettingsManager.getConfig()
                 .notification.isNotificationDuringQuietTimeEnabled
+
             "privacy_hide_useragent" -> generalSettingsManager.getConfig().privacy.isHideUserAgent
             "privacy_hide_timezone" -> generalSettingsManager.getConfig().privacy.isHideTimeZone
             "debug_logging" -> generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled
@@ -153,7 +154,9 @@ class GeneralSettingsDataStore(
                 generalSettingsManager.getConfig().display.coreSettings.messageViewTheme,
             )
 
-            "messagelist_preview_lines" -> K9.messageListPreviewLines.toString()
+            "messagelist_preview_lines" -> generalSettingsManager.getConfig()
+                .display.visualSettings.messageListPreviewLines.toString()
+
             "splitview_mode" -> generalSettingsManager.getConfig().display.coreSettings.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
@@ -191,7 +194,7 @@ class GeneralSettingsDataStore(
             "theme" -> setTheme(value)
             "message_compose_theme" -> setMessageComposeTheme(value)
             "messageViewTheme" -> setMessageViewTheme(value)
-            "messagelist_preview_lines" -> K9.messageListPreviewLines = value.toInt()
+            "messagelist_preview_lines" -> setMessageListPreviewLines(value.toInt())
             "splitview_mode" -> setSplitViewModel(SplitViewMode.valueOf(value.uppercase()))
             "notification_quick_delete" -> {
                 K9.notificationQuickDeleteBehaviour = K9.NotificationQuickDelete.valueOf(value)
@@ -326,6 +329,19 @@ class GeneralSettingsDataStore(
                         messageViewTheme = stringToSubTheme(
                             subThemeString,
                         ),
+                    ),
+                ),
+            )
+        }
+    }
+
+    private fun setMessageListPreviewLines(previewLines: Int) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        messageListPreviewLines = previewLines,
                     ),
                 ),
             )

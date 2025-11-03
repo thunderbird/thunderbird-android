@@ -58,7 +58,7 @@ data class MessageListActivityConfig(
                 isShowComposeButton = settings.display.inboxSettings.isShowComposeButtonOnMessageList,
                 contactNameColor = K9.contactNameColor,
                 messageViewTheme = settings.display.coreSettings.messageViewTheme,
-                messageListPreviewLines = K9.messageListPreviewLines,
+                messageListPreviewLines = settings.display.visualSettings.messageListPreviewLines,
                 messageListDensity = K9.messageListDensity,
                 splitViewMode = settings.display.coreSettings.splitViewMode,
                 fontSizeMessageListSubject = K9.fontSizes.messageListSubject,
