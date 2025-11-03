@@ -5,7 +5,7 @@
     <string name="account_server_settings_outgoing_top_bar_title">Stillingar sendinga-póstþjóns</string>
     <string name="account_server_settings_validation_error_password_required">Lykilorð er nauðsynlegt.</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
-    <string name="account_server_settings_authentication_none">Ekkert</string>
+    <string name="account_server_settings_authentication_none">Engin</string>
     <string name="account_server_settings_authentication_password_encrypted">Dulritað lykilorð</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Skynja sjálfvirkt IMAP-nafnarými</string>
     <string name="account_server_settings_incoming_top_bar_title">Stillingar inn-póstþjóns</string>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_server_settings_protocol_type_label">ပရဵုတဵုခဝ်</string>
+    <string name="account_server_settings_username_label">ယၟုညးသုၚ်စောဲ</string>
+    <string name="account_server_settings_port_label">ပၞော်(ဖတ်)</string>
+    <string name="account_server_settings_server_label">သာပါ</string>
+    <string name="account_server_settings_authentication_label">ပွမကဵုအခေါၚ်</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth ၂.၀</string>
+    <string name="account_server_settings_authentication_none">မုဟွံသေၚ်</string>
+</resources>

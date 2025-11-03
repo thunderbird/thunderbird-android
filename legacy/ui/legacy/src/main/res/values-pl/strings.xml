@@ -913,4 +913,17 @@
     <string name="archiving_not_available_for_this_account">Archiwizacja nie jest dostępna dla tego konta.</string>
     <string name="swipe_action_archive_folder_not_set">Skonfiguruj folder archiwum</string>
     <string name="debug_open_secret_debug_screen">Otwórz tajny ekran debugowania</string>
+    <string name="debug_invalidate_access_token_done">Token dostępu został unieważniony. Następne żądanie zostanie odświeżone.</string>
+    <string name="debug_invalidate_access_token_unavailable">Brak dostępnego tokenu OAuth dla tego konta.</string>
+    <string name="debug_invalidate_access_token_local">Test: unieważnij token dostępu (lokalnie)</string>
+    <string name="debug_invalidate_access_token_local_done">Zażądano lokalnego unieważnienia. Następne żądanie pobierze nowy token.</string>
+    <string name="debug_invalidate_access_token_server">Test: unieważnij token dostępu (serwer)</string>
+    <string name="debug_invalidate_access_token">Test: unieważnij token dostępu</string>
+    <string name="debug_invalidate_access_token_server_done">Zapisany token dostępu jest uszkodzony. Następne żądanie zakończy się niepowodzeniem i nastąpi odświeżenie.</string>
+    <string name="debug_force_auth_failure">Test: wymuś teraz błąd autoryzacji</string>
+    <string name="debug_force_auth_failure_done">Stan OAuth został wyczyszczony. Następne żądanie zakończy się niepowodzeniem.</string>
+    <string name="debug_force_auth_failure_unavailable">Brak dostępnej konfiguracji OAuth dla tego konta.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Nie można zmodyfikować zapisanego tokena dostępu. Spróbuj unieważnić lokalnie.</string>
+    <string name="debug_invalidate_access_token_already_modified">Zapisany token dostępu został już zmodyfikowany.</string>
+    <string name="message_view_menu_action_export_eml">Eksportuj jako EML</string>
 </resources>

@@ -2,18 +2,18 @@
 <resources>
     <string name="account_server_validation_error_client_certificate_expired">Klientsertifikatet er ikkje lenger gyldig</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Klarte ikkje å få tilgang til klientsertifikatet</string>
-    <string name="account_server_validation_error_missing_server_capability">Manglande serverkapasitet</string>
-    <string name="account_server_validation_error_missing_server_capability_details">Serveren manglar denne eigenskapen:\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability">Manglande tenarkapasitet</string>
+    <string name="account_server_validation_error_missing_server_capability_details">Tenaren manglar denne eigenskapen:\n%s</string>
     <string name="account_server_validation_sign_in">Logg inn</string>
     <string name="account_server_validation_error_unknown">Ukjend feil</string>
     <string name="account_server_validation_error_network">Nettverksfeil</string>
     <string name="account_server_validation_error_server">Tenarfeil</string>
     <string name="account_server_validation_error_details">Detaljar:\n%s</string>
     <string name="account_server_validation_error_authentication">Autentiseringsfeil</string>
-    <string name="account_server_validation_incoming_loading_message">Sjekker innkommande tenar-innstillingar…</string>
-    <string name="account_server_validation_incoming_loading_error">Sjekking av innkommande tenar-innstillingar feila</string>
-    <string name="account_server_validation_outgoing_loading_error">Sjekking av utgåande tenar-innstillingar feila</string>
-    <string name="account_server_validation_outgoing_success">Utgåande serverinnstillingar stadfesta</string>
-    <string name="account_server_validation_incoming_success">Innkomande serverinnstillingar stadfesta</string>
-    <string name="account_server_validation_outgoing_loading_message">Sjekkar utgåande tenar-innstillingar…</string>
+    <string name="account_server_validation_incoming_loading_message">Sjekkar innstillingar for innkomande tenar…</string>
+    <string name="account_server_validation_incoming_loading_error">Sjekking av innstillingar for innkomande tenar feila</string>
+    <string name="account_server_validation_outgoing_loading_error">Sjekking av innstillingar for utgåande tenar feila</string>
+    <string name="account_server_validation_outgoing_success">Innstillingar for utåande tenar er stadfesta</string>
+    <string name="account_server_validation_incoming_success">Innstillingar for innkomande tenar er stadfesta</string>
+    <string name="account_server_validation_outgoing_loading_message">Sjekkar innstillingar for utgåande tenar…</string>
 </resources>

@@ -57,4 +57,6 @@
         <item quantity="one">۱ پیام</item>
         <item quantity="other">%d پیام</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">نام شما</string>
+    <string name="account_setup_options_your_name_error_required">نام شما ضروری است.</string>
 </resources>

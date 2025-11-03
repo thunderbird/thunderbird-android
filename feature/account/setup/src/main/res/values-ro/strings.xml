@@ -60,4 +60,6 @@
         <item quantity="few">%d mesaje</item>
         <item quantity="other">%d mesaje</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Numele dvs.</string>
+    <string name="account_setup_options_your_name_error_required">Trebuie să vă scrieți numele.</string>
 </resources>

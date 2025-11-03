@@ -14,7 +14,7 @@
     <string name="account_server_settings_security_label">Sekureco</string>
     <string name="account_server_settings_port_label">Pordo</string>
     <string name="account_server_settings_authentication_label">Aŭtentokontrolo</string>
-    <string name="account_server_settings_username_label">Uzanta nomo</string>
+    <string name="account_server_settings_username_label">Salutnomo</string>
     <string name="account_server_settings_connection_security_none">Nenia</string>
     <string name="account_server_settings_authentication_client_certificate">Klienta atestilo</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
@@ -31,4 +31,5 @@
     <string name="account_server_settings_validation_error_username_required">Uzanta nomo nepras.</string>
     <string name="account_server_settings_incoming_top_bar_title">Eniran servilon agordoj</string>
     <string name="account_server_settings_outgoing_top_bar_title">Eliran servilon agordoj</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Nevalida IP-adreso aŭ nomregno</string>
 </resources>

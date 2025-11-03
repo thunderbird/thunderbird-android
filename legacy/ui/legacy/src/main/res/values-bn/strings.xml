@@ -39,4 +39,8 @@
     <string name="general_settings_swipe_action_delete">অপসারণ</string>
     <string name="message_view_additional_recipient_prefix">+</string>
     <string name="general_settings_swipe_action_spam">স্প্যাম</string>
+    <string name="compose_action">তৈরি</string>
+    <string name="search_action">অনুসন্ধান</string>
+    <string name="send_alternate_action">শেয়ার</string>
+    <string name="copy_action">অনুলিপি</string>
 </resources>

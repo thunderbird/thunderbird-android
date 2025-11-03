@@ -60,4 +60,6 @@
         <item quantity="many">Ogni %d minuti</item>
         <item quantity="other">Ogni %d minuti</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Il tuo nome</string>
+    <string name="account_setup_options_your_name_error_required">E\' richiesto il tuo nome.</string>
 </resources>

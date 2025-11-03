@@ -6,8 +6,8 @@
     <string name="account_oauth_error_browser_not_available">Aplikacioni s’gjeti dot një shfletues për ta përdorur për akordim hyrjeje te llogaria juaj.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 aktualisht s’mbulohet me këtë shërbim.</string>
     <string name="account_oauth_error_canceled">Autorizimi u anulua</string>
-    <string name="account_oauth_loading_message">Po hyhet duke përdorur OAuth</string>
-    <string name="account_oauth_sign_in_description">Do t’ju ridrejtojmë te shërbimi juaj email, që të bëni hyrjen. Lypset t’i akordoni aplikacionit hyrje në llogarinë tuaj email.</string>
+    <string name="account_oauth_loading_message">Hyrje duke përdorur OAuth</string>
+    <string name="account_oauth_sign_in_description">Do t’ju ridrejtojmë te shërbimi juaj email, që të bëni hyrjen. Lypset t’i akordoni aplikacionit hyrje te llogaria juaj email.</string>
     <string name="account_oauth_sign_in_button">Hyni</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">artikullin e asistencës</string>
     <string name="account_oauth_google_sign_in_support_text">Nëse hasni probleme, kur bëni hyrje me Google, ju lutemi, shihni {placeHolder} tonë.</string>

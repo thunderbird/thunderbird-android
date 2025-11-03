@@ -9,7 +9,7 @@
     <string name="app_license">Apache License, versio 2.0</string>
     <string name="about_project_title">Malfermkoda projekto</string>
     <string name="about_website_title">Retejo</string>
-    <string name="user_forum_title">Uzantojn forumo</string>
+    <string name="user_forum_title">Forumo por uzantoj</string>
     <string name="about_libraries">Bibliotekoj</string>
     <string name="license">Permesilo</string>
     <string name="changelog_title">Ŝanĝoprotokolo</string>
@@ -211,7 +211,7 @@
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_ui_density_default">Norma</string>
     <string name="global_settings_privacy_hide_useragent">Kaŝi retpoŝtilan nomon</string>
-    <string name="global_settings_privacy_hide_useragent_detail">Forviŝi nomon de klienta aplikaĵo el mesaĝokapo</string>
+    <string name="global_settings_privacy_hide_useragent_detail">Kaŝi nomon de klienta programo en mesaĝokapo</string>
     <string name="global_settings_privacy_hide_timezone">Kaŝi horzonon</string>
     <string name="global_settings_privacy_hide_timezone_detail">Uzi UTC anstataŭ lokan horzonon en mesaĝokapo kaj respond-kampo</string>
     <string name="global_settings_notification_quick_delete_title">Montri butonon \'Forigi\'</string>
@@ -827,8 +827,8 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="debug_export_logs_title">Elporti protokolojn</string>
     <string name="general_settings_post_remove_action_show_previous_message">Montri la antaŭan mesaĝon</string>
     <string name="general_settings_post_remove_action_return_to_list">Reiri al la listo de mesaĝoj</string>
-    <string name="general_settings_post_remove_action_title">Post mesaĝon forigado aŭ movado</string>
-    <string name="general_settings_post_mark_as_unread_action_title">Post mesaĝon markado kiel nelegitan</string>
+    <string name="general_settings_post_remove_action_title">Post forviŝo aŭ movo de mesaĝo</string>
+    <string name="general_settings_post_mark_as_unread_action_title">Post markado de mesaĝo kiel nelegita</string>
     <string name="general_settings_post_remove_action_show_next_message">Montri la sekvan mesaĝon</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Reiri al la listo de mesaĝoj</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Resti ĉe la nuna mesaĝo</string>
@@ -874,10 +874,10 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="font_size_message_view_recipients">Ricevintoj</string>
     <string name="action_add_to_contacts">Aldoni al kontaktaro</string>
     <string name="push_notification_grant_alarm_permission">Tuŝu por doni la permeson.</string>
-    <string name="push_notification_state_alarm_permission_missing">Mankas permeson plani alarmojn</string>
+    <string name="push_notification_state_alarm_permission_missing">Mankas permeso plani alarmojn</string>
     <string name="action_compose_message_to">Ekskribi mesaĝon al</string>
     <string name="message_list_error_title">Eraro</string>
-    <string name="dialog_openkeychain_info_text">La apo OpenKeychain estas bezonata por ĉifrado de-fino-al-fino.</string>
+    <string name="dialog_openkeychain_info_text">La programo OpenKeychain bezoniĝas por ĉifrado de fino al fino.</string>
     <string name="action_copy_email_address">Kopii retpoŝtadreson</string>
     <string name="settings_list_action_support">Subteni <xliff:g id="app_name">%s</xliff:g></string>
     <string name="clipboard_label_name_and_email_address">Nomo kaj retpoŝtadreso</string>
@@ -897,4 +897,16 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
     <string name="expand_content_description">Etendi</string>
     <string name="about_app_authors_thunderbird">Teamo Thunderbird por Poŝaparatoj</string>
     <string name="debug_export_logs_success">Eksportado sukcesis. Protokoloj eble enhavas malpublikendajn informojn. Atentu kiun vi sendos ilin.</string>
+    <string name="open_camera">Malfermi kameraon</string>
+    <string name="attach_file">Alkroĉi dosieron</string>
+    <string name="camera_permission_denied">Mankas permeso pri kamerao! Ne eblas foti</string>
+    <string name="swipe_action_archive_folder_not_set">Agordi Arĥivujon</string>
+    <string name="archiving_not_available_for_this_account">Enarĥivigado ne eblas por ĉi tiu konto.</string>
+    <string name="swipe_action_change_swipe_gestures">Ŝanĝi \nViŝajn gestojn</string>
+    <string name="debug_invalidate_access_token_unavailable">Neniu OAuth-ĵetono disponiĝas por ĉi tiu konto.</string>
+    <string name="message_view_menu_action_export_eml">Elporti kiel EML</string>
+    <string name="debug_enable_sync_debug_logging_title">Protokoli sencimigajn informojn pri sinkronigado</string>
+    <string name="debug_enable_sync_debug_logging_summary">Protokoli diagnozajn informojn pri sinkronigado dum 24 horoj</string>
+    <string name="debug_sync_export_logs_title">Elporti protokolojn pri sinkronigado</string>
+    <string name="debug_open_secret_debug_screen">Malfermi sekretan sencimigan ekranon</string>
 </resources>

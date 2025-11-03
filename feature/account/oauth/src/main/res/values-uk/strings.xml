@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_description">Ми переадресуємо вас до вашого постачальника послуг електронної пошти для входу. Вам потрібно надати застосунку доступ до вашого облікового запису електронної пошти.</string>
+    <string name="account_oauth_sign_in_description">Ми перенаправимо вас на сторінку вашого постачальника послуг електронної пошти для входу. Вам потрібно надати програмі доступ до вашого облікового запису електронної пошти.</string>
     <string name="account_oauth_sign_in_button">Увійти</string>
     <string name="account_oauth_sign_in_with_google_button">Увійти за допомогою Google</string>
-    <string name="account_oauth_loading_message">Увійти використовуючи OAuth</string>
-    <string name="account_oauth_loading_error">Не вдалося ввійти за допомогою OAuth</string>
+    <string name="account_oauth_loading_message">Вхід за допомогою OAuth</string>
+    <string name="account_oauth_loading_error">Не вдалося ввійти через OAuth</string>
     <string name="account_oauth_error_canceled">Авторизація скасована</string>
     <string name="account_oauth_error_failed">Не вдалося авторизувати через цю помилку: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">Цей постачальник наразі не підтримує OAuth 2.0.</string>

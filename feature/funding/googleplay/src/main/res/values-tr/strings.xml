@@ -37,4 +37,21 @@
     <string name="funding_googleplay_contribution_reminder_negative_button">Şimdi değil</string>
     <string name="funding_googleplay_contribution_reminder_statement">Thunderbird ücretsiz ve açık kaynaklıdır.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_s_description">Harika şeyler yapmamıza yardım ediyorsunuz! Bu seviyede katkıda bulunarak, büyümeye devam etmemize izin vererek anlamlı adımlar atmamıza yardımcı olursunuz.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Katkınız gerçekten çok değerli! Görevimizi ilerletmede, önemli kilometre taşlarına ulaşmamıza ve daha büyük bir etki yaratmamıza yardımcı olarak büyük bir görev üstleniyorsunuz.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">Yaptığımız işleri yapabilmemizin en büyük nedeni sizlersiniz! Cömertliğiniz sayesinde daha büyük projeler üstlenebiliyor ve birlikte yeni kilometre taşlarına ulaşabiliyoruz.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Desteğiniz gerçekten ilham verici! Önemli katkılarınız sayesinde sınırları zorlayabiliyor, yenilikler yapabiliyor ve hedeflerimize doğru önemli adımlar atabiliyoruz.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Büyük hayaller kurmamıza gerçekten yardımcı oluyorsunuz! İnanılmaz desteğiniz, olağanüstü başarılara imza atmamızı sağlıyor ve yaptığımız her şeye kalıcı bir etki bırakıyor.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Aylık Temel Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Aylık Değerli Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Aylık Anlamlı Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Aylık Önemli Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Aylık Olağanüstü Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Aylık Fevkalade Katkı</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Desteğiniz bizi ileriye götürüyor! Her katkı bir değişim yaratır — teşekkür ederiz!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Katkınız, büyümemize ve anlamlı adımlar atmamıza yardımcı oluyor — teşekkür ederiz!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Katkınız çok değerli! Görevimizi ilerletmek ve etki yaratmak için kilit öneme sahipsiniz.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">Yaptığımız işleri yapabilmemizin en büyük nedenlerinden biri sizsiniz! Cömertliğiniz, yeni kilometre taşlarına ulaşmamıza yardımcı oluyor.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Desteğiniz bize ilham veriyor! Katkınız, sınırları zorlamamıza ve hedeflerimize ulaşmamıza yardımcı oluyor.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Büyük hayaller kurmamıza yardımcı oluyorsunuz! Desteğiniz, olağanüstü şeyler başarmamızı sağlıyor.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Gizliliğe saygılı, özelleştirilebilir en iyi e-posta deneyimini sağlama hedefimize katılın.</string>
 </resources>

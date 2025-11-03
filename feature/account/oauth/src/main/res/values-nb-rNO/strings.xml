@@ -6,8 +6,8 @@
     <string name="account_oauth_error_browser_not_available">Appen klarte ikke å finne noen nettleser å bruke for å innvilge tilgang til kontoen din.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 støttes ikke med denne tilbyderen.</string>
     <string name="account_oauth_error_canceled">Autorisasjon avbrutt</string>
-    <string name="account_oauth_loading_message">Logger inn med OAuth</string>
-    <string name="account_oauth_sign_in_description">Du vil bli sendt til din e-posttilbyder for innlogging. Du må innvilge programmet tilgang til e-postkontoen din.</string>
+    <string name="account_oauth_loading_message">Logg inn med OAuth</string>
+    <string name="account_oauth_sign_in_description">Vi omdirigerer deg til e-postleverandøren din så du kan logge deg inn. Du må gi appen tilgang til e-postkontoen din.</string>
     <string name="account_oauth_sign_in_button">Logg inn</string>
     <string name="account_oauth_google_sign_in_support_text">Hvis du opplever problemer når du logger inn med Google, oppsøk vår {placeHolder}.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">hjelpeartikkel</string>

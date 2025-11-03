@@ -908,4 +908,17 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="swipe_action_change_swipe_gestures">Muuda \nViiped</string>
     <string name="archiving_not_available_for_this_account">Selle kasutajakonto jaoks pole arhiveerimine saadaval.</string>
     <string name="debug_open_secret_debug_screen">Ava salajane veaotsingu vaade</string>
+    <string name="debug_invalidate_access_token">Katse: tühista ligipääsu tunnusluba</string>
+    <string name="debug_invalidate_access_token_done">Ligipääsu tunnusluba on muudetud kehtetuks. Järgmise päringuga värskendatakse andmed uuesti.</string>
+    <string name="debug_invalidate_access_token_unavailable">Selle kasutajakonto jaoks pole ühtegi OAuthi tunnusluba saadaval.</string>
+    <string name="debug_invalidate_access_token_local">Katse: tühista ligipääsu tunnusluba (kohalikus seadmes)</string>
+    <string name="debug_invalidate_access_token_local_done">Oled tunnusloa kohalikus seadmes tühistanud. Järgmine päring laadib uue tunnusloa.</string>
+    <string name="debug_invalidate_access_token_server">Katse: tühista ligipääsu tunnusluba (serveris)</string>
+    <string name="debug_invalidate_access_token_server_done">Salvestatud tunnusluba on muudetud kasutamatuks. Järgmine päring ei õnnestu ja siis laaditakse uus tunnusluba.</string>
+    <string name="debug_invalidate_access_token_already_modified">Salvestatud tunnusluba on juba muudetud.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Salvestatud tunnusluba ei õnnestunud muuta. Proovi kehtetuks tunnistamist kohalikus seadmes.</string>
+    <string name="debug_force_auth_failure_unavailable">Selle kasutajakonto jaoks pole saadaval OAuth seadistust.</string>
+    <string name="debug_force_auth_failure_done">OAuthi olek on kustutatud. Järgmine päring ei õnnestu.</string>
+    <string name="debug_force_auth_failure">Katse: käivita autentimise ebaõnnestumine</string>
+    <string name="message_view_menu_action_export_eml">Ekspordi EML-failina</string>
 </resources>

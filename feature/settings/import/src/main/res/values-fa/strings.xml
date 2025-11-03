@@ -31,7 +31,7 @@
     <string name="settings_import_server_name_format">نام کارساز:<xliff:g id="hostname">%s</xliff:g></string>
     <string name="settings_import_oauth_description">برای استفاده‌ از این حساب باید وارد شده و اجازهٔ دسترسی به رایانامه‌هایتان را به برنامه بدهید.</string>
     <string name="settings_import_oauth_sign_in">ورود</string>
-    <string name="settings_import_oauth_sign_in_with_google">ورود با حساب گوگل</string>
+    <string name="settings_import_oauth_sign_in_with_google">ورود با گوگل</string>
     <string name="settings_import_oauth_error_oauth_flow_canceled">مجوزدهی لغو شد</string>
     <string name="settings_import_oauth_error_oauth_flow_failed">مجوزدهی به علت این خطا ناتمام ماند: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 فعلا توسط این ارائه دهنده پشتیبانی نمی‌شود.</string>

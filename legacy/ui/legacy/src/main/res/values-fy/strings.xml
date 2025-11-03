@@ -902,4 +902,17 @@
     <string name="swipe_action_archive_folder_not_set">Argyfmap ynstelle</string>
     <string name="archiving_not_available_for_this_account">Argivearring is foar dizze account net beskikber.</string>
     <string name="debug_open_secret_debug_screen">Geheim debugskerm iepenje</string>
+    <string name="debug_invalidate_access_token">Test: Unjildich tagongstoken</string>
+    <string name="debug_invalidate_access_token_done">Unjildich tagongstoken. Wurdt by folgjende fersyk ferfarske.</string>
+    <string name="debug_invalidate_access_token_unavailable">Gjin OAuth-token beskikber foar dizze account.</string>
+    <string name="debug_invalidate_access_token_local">Test: Unjildich tagongstoken (lokaal)</string>
+    <string name="debug_invalidate_access_token_local_done">Lokale ûnjildichheid frege. Folgjende fersyk sil in nij token ophelje.</string>
+    <string name="debug_invalidate_access_token_server">Test: Unjildich tagongstoken (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Bewarre tagongstoken is skansearre. Folgjende fersyk sil mislearre en dan ferfarskje.</string>
+    <string name="debug_force_auth_failure">Test: Mislearre autentikaasje no forsearje</string>
+    <string name="debug_force_auth_failure_done">OAuth-status wiske. Folgjende fersyk sil mislearre.</string>
+    <string name="debug_force_auth_failure_unavailable">Gjin OAuth-konfiguraasje beskikber foar dizze account.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Kin bewarre tagongstoken net bewurkje. Probearje lokale ûnjildichheid.</string>
+    <string name="debug_invalidate_access_token_already_modified">Bewarre tagongstoken is al oanpast.</string>
+    <string name="message_view_menu_action_export_eml">Eksportearje as EML</string>
 </resources>

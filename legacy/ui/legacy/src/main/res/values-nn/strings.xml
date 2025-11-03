@@ -148,7 +148,7 @@
     <string name="account_setup_incoming_delete_policy_label">Når eg slettar ei melding</string>
     <string name="account_setup_incoming_delete_policy_never_label">Ikkje slett på tenaren</string>
     <string name="account_setup_incoming_delete_policy_delete_label">Slett på tenaren</string>
-    <string name="account_setup_incoming_delete_policy_markread_label">Merk som lesen på serveren</string>
+    <string name="account_setup_incoming_delete_policy_markread_label">Merk som lesen på tenaren</string>
     <string name="account_setup_expunge_policy_immediately">Med ein gong</string>
     <string name="account_setup_expunge_policy_manual">Manuelt</string>
     <string name="drafts_folder_label">Kladdemappe</string>
@@ -349,9 +349,9 @@
     <!--Displayed after importing accounts when one or multiple accounts require to use the OAuth authorization flow-->
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="webview_empty_message">Ingen tekst</string>
-    <string name="webview_contextmenu_link_view_action">Opna lenkje</string>
+    <string name="webview_contextmenu_link_view_action">Opne lenkje</string>
     <string name="webview_contextmenu_link_share_action">Del lenkje</string>
-    <string name="webview_contextmenu_link_copy_action">Kopier lenkje til utklippsbordet</string>
+    <string name="webview_contextmenu_link_copy_action">Kopier lenkje til utklippstavle</string>
     <string name="webview_contextmenu_link_clipboard_label">Lenkje</string>
     <string name="webview_contextmenu_image_title">Bilete</string>
     <string name="webview_contextmenu_image_view_action">Sjå bilete</string>
@@ -483,7 +483,7 @@
     <string name="setting_language_system">Systemstandard</string>
     <string name="account_setup_push_limit_5">5 mapper</string>
     <string name="about_title">Om <xliff:g id="app_name">%s</xliff:g></string>
-    <string name="account_setup_expunge_policy_label">Fjern sletta meldingar på server</string>
+    <string name="account_setup_expunge_policy_label">Fjern sletta meldingar på tenar</string>
     <string name="general_settings_show_compose_button_title">Vis flytande «Skriv»-knapp</string>
     <string name="changelog_snackbar_text">Finn ut kva som er nytt i denne utgåva</string>
     <string name="size_format_gigabytes">%.1f GB</string>
@@ -602,7 +602,7 @@
     <string name="global_settings_lock_screen_notification_visibility_senders">Antal meldingar og avsendarar</string>
     <string name="quiet_time_ends">Stillemodus ender</string>
     <string name="account_notify_contacts_mail_only_summary">Vis notifikasjonar kun frå meldingar frå kjende kontaktar</string>
-    <string name="account_settings_sync_remote_deletetions_label">Synkroniser serversletting</string>
+    <string name="account_settings_sync_remote_deletetions_label">Synkroniser tenarsletting</string>
     <string name="account_settings_openpgp_missing">Manglande OpenPGP app - var den avinstallert?</string>
     <string name="folder_settings_in_top_group_label">Vis i toppgruppe</string>
     <string name="account_settings_strip_signature_label">Fjern signaturar under svar</string>
@@ -641,14 +641,14 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle utkast vil bli lagra ukryptert</string>
     <string name="account_settings_autodownload_message_size_8">8 KiB</string>
     <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
-    <string name="account_settings_incoming_label">Innkommande tenar</string>
+    <string name="account_settings_incoming_label">Innkomande tenar</string>
     <string name="account_settings_outgoing_label">Utgåande tenar</string>
     <string name="folder_settings_notifications_label">Notifikasjonar</string>
     <string name="folder_settings_push_label">Aktiver dytting</string>
     <string name="account_settings_color_summary">Aksentfargen for denne kontoen er brukt i mappe- og kontolista</string>
     <string name="account_settings_autodownload_message_size_512">512 KiB</string>
     <string name="folder_settings_sync_label">Aktiver synkronisering</string>
-    <string name="account_settings_incoming_summary">Konfigurer innkommande e-post tenar</string>
+    <string name="account_settings_incoming_summary">Konfigurer innkomande e-posttenar</string>
     <string name="account_settings_ignore_chat_messages_label">Ignorer chat-meldingar</string>
     <string name="account_settings_ignore_chat_messages_summary">Ikkje vis notifikasjonar frå meldingar som høyrer til ein e-post chat</string>
     <string name="account_settings_notify_sync_summary">Varsle i statuslinja, medan mail er sjekka</string>
@@ -672,7 +672,7 @@
     <string name="idle_refresh_period_label">Gjenoppfrisk IDLE-forbindelse</string>
     <string name="account_settings_crypto_app_select_title">Vel OpenGPG app</string>
     <string name="account_settings_crypto_key">Konfigurer ende-til-ende nøkkel</string>
-    <string name="account_settings_outgoing_summary">Konfigurer utgåande mail (SMTP) tenar</string>
+    <string name="account_settings_outgoing_summary">Konfigurer tenar for utgåande e-post (SMTP)</string>
     <string name="account_settings_vibration">Vibrasjon</string>
     <string name="account_settings_vibrate_enable">Vibrer</string>
     <string name="account_settings_vibrate_pattern_2">Mønster 2</string>
@@ -737,8 +737,8 @@
         <item quantity="other">Hentar %d resultatar</item>
     </plurals>
     <string name="settings_export_title">Eksporter innstillingar</string>
-    <string name="webview_contextmenu_link_text_clipboard_label">Lenketekst</string>
-    <string name="webview_contextmenu_link_text_copy_action">Kopier lenketekst til utklippstavle</string>
+    <string name="webview_contextmenu_link_text_clipboard_label">Lenkjetekst</string>
+    <string name="webview_contextmenu_link_text_copy_action">Kopier lenkjetekst til utklippstavle</string>
     <plurals name="dialog_confirm_spam_message">
         <item quantity="one">Er du sikker på du vil flytte denne meldinga til søppelpost?</item>
         <item quantity="other">Er du sikker på du vil flytte <xliff:g id="message_count">%1$d</xliff:g> meldingar til søppelpost?</item>
@@ -836,7 +836,7 @@
     <string name="dialog_autocrypt_mutual_description_1">Meldingar vil normalt sett krypterast etter eige val, eller når ein svarer på krypterte meldingar.</string>
     <string name="dialog_autocrypt_mutual_description_2">Om både avsendar og mottakar aktiverer gjensidig modus, vil kryptering bli slått på som standard.</string>
     <string name="ac_transfer_intro">Ein Autocrypt oppsett-melding deler ditt ende-til-ende oppsett med andre einingar på ein sikker måte.</string>
-    <string name="ac_transfer_error_send">Ein feil oppstod under sending av meldinga. Ver vennleg og sjekk nettverkstilkopling og utgåande tenar-konfigurasjon.</string>
+    <string name="ac_transfer_error_send">Ein feil oppstod under sending av meldinga. Ver vennleg og sjekk nettverkstilkopling og konfigurasjon for utgåande tenar.</string>
     <string name="push_info_notification_explanation_text">Under bruk av dytting, held <xliff:g id="app_name">%1$s</xliff:g> ein forbindelse med e-posttenaren. Android påkrev vising av ein pågåande notifikasjon medan appen er aktiv i bakgrunnen. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
     <string name="message_details_loading_error">Feil under lasting av meldingsdetaljar.</string>
     <string name="openpgp_enabled_error_gotit">Eg forstår</string>
@@ -907,4 +907,17 @@
     <string name="debug_enable_sync_debug_logging_summary">Logg informasjon frå synkroniseringdiagnostikk i 24 timar</string>
     <string name="debug_sync_export_logs_title">Eksporter synkroniseringslogg</string>
     <string name="debug_open_secret_debug_screen">Opne hemmeleg feilsøkingsmeny</string>
+    <string name="message_view_menu_action_export_eml">Eksporter som EML</string>
+    <string name="debug_invalidate_access_token">Test: Ugyldiggjer tilgjengepollett</string>
+    <string name="debug_invalidate_access_token_done">Tilgjengepollett ugyldiggjort. Neste førespurnad vil oppdatere.</string>
+    <string name="debug_invalidate_access_token_unavailable">Ingen OAuth pollett tilgjengeleg for denne kontoen.</string>
+    <string name="debug_invalidate_access_token_local">Test: Ugyldiggjer tilgjengepollett (lokal)</string>
+    <string name="debug_invalidate_access_token_local_done">Lokal ugyldiggjering førespurt. Neste førespurnad vil hente ein ny pollett.</string>
+    <string name="debug_invalidate_access_token_server">Test: Invalider tilgjengepollett (tenar)</string>
+    <string name="debug_invalidate_access_token_server_done">Den lagra tilgjengepolletten er korrumpert. Neste førespurnad vil feile og deretter oppfriske.</string>
+    <string name="debug_force_auth_failure">Test: Framtving autentiseringsfeil no</string>
+    <string name="debug_force_auth_failure_done">OAuth-status nullstilt. Neste førespurnad vil feile.</string>
+    <string name="debug_force_auth_failure_unavailable">Ingen OAuth-konfigurasjon tilgjengeleg for denne kontoen.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Kunne ikkje endre lagra tilgjengepollett. Prøv lokal invalidering.</string>
+    <string name="debug_invalidate_access_token_already_modified">Lagra tilgjengepollett er allereie endra.</string>
 </resources>
