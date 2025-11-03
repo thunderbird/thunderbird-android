@@ -1,20 +1,56 @@
 package net.thunderbird.core.outcome
 
+/**
+ * A sealed interface representing the outcome of an operation.
+ *
+ * @param SUCCESS The type of the value when the operation succeeds.
+ * @param FAILURE The type of the error when the operation fails.
+ */
 sealed interface Outcome<out SUCCESS, out FAILURE> {
+
+    /**
+     * A successful outcome with a value of type [SUCCESS].
+     *
+     * @param data The value of the successful outcome.
+     */
     data class Success<out SUCCESS>(val data: SUCCESS) : Outcome<SUCCESS, Nothing>
+
+    /**
+     * A failed outcome with an error of type [FAILURE].
+     *
+     * @param error The error of the failed outcome.
+     * @param cause The cause of the failed outcome.
+     */
     data class Failure<out FAILURE>(
         val error: FAILURE,
         val cause: Any? = null,
     ) : Outcome<Nothing, FAILURE>
 
+    /**
+     * Whether the outcome is a success.
+     */
     val isSuccess: Boolean
         get() = this is Success
 
+    /**
+     * Whether the outcome is a failure.
+     */
     val isFailure: Boolean
         get() = this is Failure
 
     companion object {
+        /**
+         * Create a [Success] outcome with the given value.
+         *
+         * @param data The value of the successful outcome.
+         */
         fun <SUCCESS> success(data: SUCCESS): Outcome<SUCCESS, Nothing> = Success(data)
+
+        /**
+         * Create a [Failure] outcome with the given error.
+         *
+         * @param error The error of the failed outcome.
+         */
         fun <FAILURE> failure(error: FAILURE): Outcome<Nothing, FAILURE> = Failure(error)
     }
 }
