@@ -69,13 +69,13 @@ sealed interface SettingValue<T> : Setting {
      * @param value The currently selected option.
      * @param options The list of available options to choose from.
      */
-    data class CompactSelectSingleOption(
+    data class CompactSelectSingleOption<T>(
         override val id: String,
         val title: () -> String,
         val description: () -> String? = { null },
-        override val value: CompactOption,
-        val options: ImmutableList<CompactOption>,
-    ) : SettingValue<CompactOption> {
+        override val value: CompactOption<T>,
+        val options: ImmutableList<CompactOption<T>>,
+    ) : SettingValue<CompactOption<T>> {
         override val requiresEditView: Boolean = false
 
         init {
@@ -83,9 +83,10 @@ sealed interface SettingValue<T> : Setting {
             require(options.size <= 4) { "There can be at most four options." }
         }
 
-        data class CompactOption(
+        data class CompactOption<T>(
             val id: String,
             val title: () -> String,
+            val value: T,
         )
     }
 

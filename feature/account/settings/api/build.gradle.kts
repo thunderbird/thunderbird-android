@@ -9,4 +9,5 @@ android {
 
 dependencies {
     implementation(projects.core.ui.compose.navigation)
+    implementation(projects.core.featureflag)
 }

@@ -52,6 +52,6 @@ internal fun SettingDialog(
         }
 
         // No dialog needed
-        is SettingValue.CompactSelectSingleOption, is SettingValue.Switch -> Unit
+        is SettingValue.CompactSelectSingleOption<*>, is SettingValue.Switch -> Unit
     }
 }
