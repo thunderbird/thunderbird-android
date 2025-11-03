@@ -205,6 +205,7 @@ public class Rfc822Token {
     }
 
     public static String withULabelDomain(final String address) {
+        if (address == null) return null;
         int at = address.lastIndexOf('@');
         if (at < 0 || at == address.length()-1)
             return address;
