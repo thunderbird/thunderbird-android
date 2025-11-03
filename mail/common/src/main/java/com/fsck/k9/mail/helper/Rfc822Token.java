@@ -204,7 +204,8 @@ public class Rfc822Token {
                 stringEquals(mComment, other.mComment));
     }
 
-    public static String withULabelDomain(final String address) {
+    @Nullable
+    public static String withULabelDomain(@Nullable final String address) {
         if (address == null) return null;
         int at = address.lastIndexOf('@');
         if (at < 0 || at == address.length()-1)
