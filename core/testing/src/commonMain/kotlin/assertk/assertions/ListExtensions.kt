@@ -4,6 +4,9 @@ import assertk.Assert
 import assertk.assertions.support.expected
 import assertk.assertions.support.show
 
+/**
+ * Asserts that the list contains no duplicate elements.
+ */
 fun <T> Assert<List<T>>.containsNoDuplicates() = given { actual ->
     val seen: MutableSet<T> = mutableSetOf()
     val duplicates = actual.filter { !seen.add(it) }
