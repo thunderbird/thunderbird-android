@@ -11,6 +11,11 @@ class DefaultAccountProfileRepository(
     private val localDataSource: AccountProfileLocalDataSource,
 ) : AccountProfileRepository {
 
+    override fun getAll(): Flow<List<AccountProfile>> {
+        return localDataSource.getAll()
+            .distinctUntilChanged()
+    }
+
     override fun getById(accountId: AccountId): Flow<AccountProfile?> {
         return localDataSource.getById(accountId)
             .distinctUntilChanged()

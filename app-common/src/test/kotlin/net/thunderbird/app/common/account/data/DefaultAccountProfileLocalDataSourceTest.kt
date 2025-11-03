@@ -25,14 +25,46 @@ import org.junit.Test
 class DefaultAccountProfileLocalDataSourceTest {
 
     @Test
+    fun `getAll should return all account profiles`() = runTest {
+        // Arrange
+        val accountId1 = AccountIdFactory.create()
+        val legacyAccount1 = createLegacyAccount(accountId1)
+        val accountProfile1 = createAccountProfile(accountId1)
+
+        val accountId2 = AccountIdFactory.create()
+        val legacyAccount2 = createLegacyAccount(accountId2)
+        val accountProfile2 = createAccountProfile(accountId2)
+
+        val testSubject = createTestSubject(listOf(legacyAccount1, legacyAccount2))
+
+        // Act / Assert
+        testSubject.getAll().test {
+            val profiles = awaitItem()
+            assertThat(profiles).isEqualTo(listOf(accountProfile1, accountProfile2))
+        }
+    }
+
+    @Test
+    fun `getAll should return empty list when no accounts found`() = runTest {
+        // Arrange
+        val testSubject = createTestSubject(emptyList())
+
+        // Act / Assert
+        testSubject.getAll().test {
+            val result = awaitItem()
+            assertThat(result).isEqualTo(emptyList())
+        }
+    }
+
+    @Test
     fun `getById should return account profile`() = runTest {
-        // arrange
+        // Arrange
         val accountId = AccountIdFactory.create()
         val legacyAccount = createLegacyAccount(accountId)
         val accountProfile = createAccountProfile(accountId)
-        val testSubject = createTestSubject(legacyAccount)
+        val testSubject = createTestSubject(listOf(legacyAccount))
 
-        // act & assert
+        // Act / Assert
         testSubject.getById(accountId).test {
             assertThat(awaitItem()).isEqualTo(accountProfile)
         }
@@ -40,11 +72,11 @@ class DefaultAccountProfileLocalDataSourceTest {
 
     @Test
     fun `getById should return null when account is not found`() = runTest {
-        // arrange
+        // Arrange
         val accountId = AccountIdFactory.create()
-        val testSubject = createTestSubject(null)
+        val testSubject = createTestSubject(emptyList())
 
-        // act & assert
+        // Act / Assert
         testSubject.getById(accountId).test {
             assertThat(awaitItem()).isEqualTo(null)
         }
@@ -52,7 +84,7 @@ class DefaultAccountProfileLocalDataSourceTest {
 
     @Test
     fun `update should save account profile`() = runTest {
-        // arrange
+        // Arrange
         val accountId = AccountIdFactory.create()
         val legacyAccount = createLegacyAccount(accountId)
         val accountProfile = createAccountProfile(accountId)
@@ -60,9 +92,9 @@ class DefaultAccountProfileLocalDataSourceTest {
         val updatedName = "updatedName"
         val updatedAccountProfile = accountProfile.copy(name = updatedName)
 
-        val testSubject = createTestSubject(legacyAccount)
+        val testSubject = createTestSubject(listOf(legacyAccount))
 
-        // act & assert
+        // Act / Assert
         testSubject.getById(accountId).test {
             assertThat(awaitItem()).isEqualTo(accountProfile)
 
@@ -139,15 +171,11 @@ class DefaultAccountProfileLocalDataSourceTest {
         }
 
         private fun createTestSubject(
-            legacyAccount: LegacyAccount?,
+            accounts: List<LegacyAccount>,
         ): DefaultAccountProfileLocalDataSource {
             return DefaultAccountProfileLocalDataSource(
                 accountManager = FakeLegacyAccountManager(
-                    initialAccounts = if (legacyAccount != null) {
-                        listOf(legacyAccount)
-                    } else {
-                        emptyList()
-                    },
+                    initialAccounts = accounts,
                 ),
                 dataMapper = DefaultAccountProfileDataMapper(
                     avatarMapper = DefaultAccountAvatarDataMapper(),
