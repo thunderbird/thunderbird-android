@@ -70,6 +70,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             KEY_SHOW_CONTACT_PICTURE,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE,
         ),
+        messageListPreviewLines = storage.getInt(
+            KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES,
+            DISPLAY_SETTINGS_DEFAULT_MESSAGE_LIST_PREVIEW_LINES,
+        ),
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {
@@ -102,6 +106,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                 storageEditor.putBoolean(
                     KEY_SHOW_CORRESPONDENT_NAMES,
                     config.isShowCorrespondentNames,
+                )
+                storageEditor.putInt(
+                    KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES,
+                    config.messageListPreviewLines,
                 )
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
