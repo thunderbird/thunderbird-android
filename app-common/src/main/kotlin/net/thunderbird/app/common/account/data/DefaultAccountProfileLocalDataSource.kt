@@ -14,6 +14,15 @@ internal class DefaultAccountProfileLocalDataSource(
     private val dataMapper: AccountProfileDataMapper,
 ) : AccountProfileLocalDataSource {
 
+    override fun getAll(): Flow<List<AccountProfile>> {
+        return accountManager.getAll()
+            .map { accounts ->
+                accounts.map { dto ->
+                    dataMapper.toDomain(dto.profile)
+                }
+            }
+    }
+
     override fun getById(accountId: AccountId): Flow<AccountProfile?> {
         return accountManager.getById(accountId)
             .map { account ->
