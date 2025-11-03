@@ -7,6 +7,7 @@ import net.thunderbird.feature.account.profile.AccountProfile
 interface AccountCoreExternalContract {
 
     interface AccountProfileLocalDataSource {
+
         fun getById(accountId: AccountId): Flow<AccountProfile?>
 
         suspend fun update(accountProfile: AccountProfile)
