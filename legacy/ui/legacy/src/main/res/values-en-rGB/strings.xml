@@ -33,8 +33,6 @@
     <!--Title of the setting to specify the density of the message list-->
     <!--Please use the same translation for "screen lock" as is used in the 'Security' section in Android's settings app-->
     <string name="move_copy_cannot_copy_unsynced_message">Cannot copy or move a message that is not synchronised with the server</string>
-    <string name="account_settings_color_label">Account colour</string>
-    <string name="account_settings_color_summary">The accent colour of this account used in folder and account list</string>
     <string name="account_settings_notification_light_account_color">Account colour</string>
     <!--Displayed in the font size settings screen to configure the font size of the account name in the message view.-->
     <!--Displayed after importing accounts when one or multiple accounts require entering a password-->
@@ -247,7 +245,6 @@
     <string name="account_settings_message_format_text">Plain Text (remove images and formatting)</string>
     <string name="sort_unread_first">Unread messages first</string>
     <string name="global_settings_notification_quick_delete_title">Show \'Delete\' button</string>
-    <string name="account_settings_description_label">Account name</string>
     <string name="font_size_message_view_recipients">Recipients</string>
     <string name="font_size_default">Default</string>
     <string name="debug_preferences">Debugging</string>

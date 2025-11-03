@@ -363,8 +363,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Visi melnraksti glabāsies šifrēti</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifrēt melnrakstus tikai tad, ja iespējota šifrēšana</string>
     <string name="account_settings_mail_check_frequency_label">Mapes pārbaudes biežums</string>
-    <string name="account_settings_color_label">Konta krāsa</string>
-    <string name="account_settings_color_summary">Noteicošā šī konta krāsa mapju un konta sarakstā</string>
     <string name="account_settings_mail_display_count_label">Vietējās mapes izmērs</string>
     <string name="account_settings_autodownload_message_size_label">Ielasīt ziņas ne lielākas par</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -405,7 +403,6 @@
     <string name="account_settings_incoming_summary">Iestatīt ienākošā pasta serveri</string>
     <string name="account_settings_outgoing_label">Izejošais serveris</string>
     <string name="account_settings_outgoing_summary">Iestatīt izejošā pasta (SMTP) serveri</string>
-    <string name="account_settings_description_label">Konta nosaukums</string>
     <string name="account_settings_name_label">Jūsu vārds</string>
     <string name="notifications_title">Paziņojumi</string>
     <string name="account_settings_vibration">Vibrācija</string>

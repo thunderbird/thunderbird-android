@@ -359,8 +359,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">下書きはすべて暗号化して保存されます</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">暗号化が有効な場合のみ下書きを暗号化します</string>
     <string name="account_settings_mail_check_frequency_label">フォルダーの同期間隔</string>
-    <string name="account_settings_color_label">アカウントの色</string>
-    <string name="account_settings_color_summary">フォルダーとアカウント一覧で使用する色です</string>
     <string name="account_settings_mail_display_count_label">ローカルフォルダーの大きさ</string>
     <string name="account_settings_autodownload_message_size_label">取得するメッセージサイズの上限</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +399,6 @@
     <string name="account_settings_incoming_summary">受信メールサーバーを設定します</string>
     <string name="account_settings_outgoing_label">送信メールサーバー設定</string>
     <string name="account_settings_outgoing_summary">送信メールサーバー (SMTP) を設定します</string>
-    <string name="account_settings_description_label">アカウント名</string>
     <string name="account_settings_name_label">あなたのお名前</string>
     <string name="notifications_title">通知</string>
     <string name="account_settings_vibration">バイブレーション</string>

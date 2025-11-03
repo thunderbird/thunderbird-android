@@ -358,8 +358,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle Entwürfe werden verschlüsselt gespeichert</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Entwürfe nur verschlüsseln, wenn Verschlüsselung aktiviert ist</string>
     <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
-    <string name="account_settings_color_label">Kontofarbe</string>
-    <string name="account_settings_color_summary">Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
     <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
     <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -400,7 +398,6 @@
     <string name="account_settings_incoming_summary">Einstellungen des Posteingangsservers bearbeiten</string>
     <string name="account_settings_outgoing_label">Postausgangsserver</string>
     <string name="account_settings_outgoing_summary">Einstellungen des Postausgangsservers (SMTP) bearbeiten</string>
-    <string name="account_settings_description_label">Kontoname</string>
     <string name="account_settings_name_label">Dein Name</string>
     <string name="notifications_title">Benachrichtigungen</string>
     <string name="account_settings_vibration">Vibration</string>

@@ -315,8 +315,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Sve skice će biti pohranjene šifrirano</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifriraj skice samo ukoliko je šifriranje uključeno</string>
     <string name="account_settings_mail_check_frequency_label">Učestalost provjere mape</string>
-    <string name="account_settings_color_label">Boja računa</string>
-    <string name="account_settings_color_summary">Oznaka boje za ovaj račun koristi se za mape i popis računa</string>
     <string name="account_settings_mail_display_count_label">Veličina lokalne mape</string>
     <string name="account_settings_autodownload_message_size_label">Dohvaćaj poruke do</string>
     <string name="account_settings_autodownload_message_size_1">1 KB</string>
@@ -357,7 +355,6 @@
     <string name="account_settings_incoming_summary">Postavite dolazni poslužitelj e-pošte</string>
     <string name="account_settings_outgoing_label">Odlazni poslužitelj</string>
     <string name="account_settings_outgoing_summary">Postavite odlazni (SMTP) poslužitelj e-pošte</string>
-    <string name="account_settings_description_label">Naziv računa</string>
     <string name="account_settings_name_label">vaše ime</string>
     <string name="notifications_title">Obavijesti</string>
     <string name="account_settings_vibrate_enable">Vibriranje</string>

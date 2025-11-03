@@ -361,8 +361,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Tutte le bozze saranno memorizzate criptate</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Cripta le bozze solo se la crittografia è abilitata</string>
     <string name="account_settings_mail_check_frequency_label">Frequenza sincronizzazione cartella</string>
-    <string name="account_settings_color_label">Colore account</string>
-    <string name="account_settings_color_summary">Colore account usato in lista account e cartelle</string>
     <string name="account_settings_mail_display_count_label">Dimensione cartella locale</string>
     <string name="account_settings_autodownload_message_size_label">Scarica messaggi fino a</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -403,7 +401,6 @@
     <string name="account_settings_incoming_summary">Configura server della posta in arrivo</string>
     <string name="account_settings_outgoing_label">Server posta in uscita</string>
     <string name="account_settings_outgoing_summary">Configura server della posta in uscita (SMTP)</string>
-    <string name="account_settings_description_label">Nome account</string>
     <string name="account_settings_name_label">Il tuo nome</string>
     <string name="notifications_title">Notifiche</string>
     <string name="account_settings_vibration">Vibrazione</string>

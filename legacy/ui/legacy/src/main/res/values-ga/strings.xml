@@ -426,8 +426,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Stórálfar gach dréacht criptithe</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Ná criptigh dréachtaí ach amháin má tá criptiú cumasaithe</string>
     <string name="account_settings_mail_check_frequency_label">Minicíocht na vótaíochta fillteáin</string>
-    <string name="account_settings_color_label">Dath an chuntais</string>
-    <string name="account_settings_color_summary">Dath accent an chuntais seo a úsáidtear i bhfillteán agus i liosta na gcuntas</string>
     <string name="account_settings_mail_display_count_label">Méid an fhillteáin logánta</string>
     <string name="account_settings_autodownload_message_size_label">Faigh teachtaireachtaí suas go dtí</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -464,7 +462,6 @@
     <string name="folder_settings_clear_local_folder_action">Glan teachtaireachtaí logánta</string>
     <string name="account_settings_incoming_label">Freastalaí isteach</string>
     <string name="account_settings_outgoing_summary">Cumraigh an freastalaí ríomhphoist amach (SMTP)</string>
-    <string name="account_settings_description_label">Ainm an chuntais</string>
     <string name="account_settings_name_label">D\'ainm</string>
     <string name="notifications_title">Fógraí</string>
     <string name="account_settings_vibrate_pattern_default">Réamhshocrú</string>

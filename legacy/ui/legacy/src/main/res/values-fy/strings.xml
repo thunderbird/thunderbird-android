@@ -359,8 +359,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle konsepten sille fersifere bewarre wurde</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Konsepten allinnich fersiferje as fersifering ynskeakele is</string>
     <string name="account_settings_mail_check_frequency_label">Map-peilingsfrekwinsje</string>
-    <string name="account_settings_color_label">Accountkleur</string>
-    <string name="account_settings_color_summary">De accountkleur brûkt by mappen- en accountlist</string>
     <string name="account_settings_mail_display_count_label">Grutte fan lokale map</string>
     <string name="account_settings_autodownload_message_size_label">Automatysk berjochten downloade oant</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +399,6 @@
     <string name="account_settings_incoming_summary">Ynkommende mailserver ynstelle</string>
     <string name="account_settings_outgoing_label">Utgeande server</string>
     <string name="account_settings_outgoing_summary">Utgeande (SMTP-)server ynstelle</string>
-    <string name="account_settings_description_label">Accountnamme</string>
     <string name="account_settings_name_label">Jo namme</string>
     <string name="notifications_title">Meldingen</string>
     <string name="account_settings_vibration">Trilling</string>

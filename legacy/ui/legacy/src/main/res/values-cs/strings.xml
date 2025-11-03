@@ -365,8 +365,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Všechny koncepty budou ukládány šifrovaně</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifrovat koncepty pouze pokud je zapnuté šifrování</string>
     <string name="account_settings_mail_check_frequency_label">Frekvence dotazování složky</string>
-    <string name="account_settings_color_label">Barva účtu</string>
-    <string name="account_settings_color_summary">Vyberte barvu pro tento účet, používanou v seznamech složek a zpráv</string>
     <string name="account_settings_mail_display_count_label">Velikost místního adresáře</string>
     <string name="account_settings_autodownload_message_size_label">Stahovat zprávy až do</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -407,7 +405,6 @@
     <string name="account_settings_incoming_summary">Nastavení serveru příchozí pošty</string>
     <string name="account_settings_outgoing_label">Server odchozí pošty</string>
     <string name="account_settings_outgoing_summary">Nastavení serveru odchozí pošty (SMTP)</string>
-    <string name="account_settings_description_label">Název účtu</string>
     <string name="account_settings_name_label">Vaše jméno</string>
     <string name="notifications_title">Oznámení</string>
     <string name="account_settings_vibration">Vibrace</string>

@@ -363,8 +363,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Усі чернетки зберігатимуться зашифрованими</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Шифрувати чернетки лише якщо шифрування ввімкнено</string>
     <string name="account_settings_mail_check_frequency_label">Частота опитування тек</string>
-    <string name="account_settings_color_label">Колір облікового запису</string>
-    <string name="account_settings_color_summary">Виберіть колір облікового запису для тек та списку облікових записів</string>
     <string name="account_settings_mail_display_count_label">Розмір локальної теки</string>
     <string name="account_settings_autodownload_message_size_label">Отримувати повідомлення розміром до</string>
     <string name="account_settings_autodownload_message_size_1">1 КБ</string>
@@ -405,7 +403,6 @@
     <string name="account_settings_incoming_summary">Налаштувати сервер вхідної пошти</string>
     <string name="account_settings_outgoing_label">Сервер вихідної пошти</string>
     <string name="account_settings_outgoing_summary">Налаштувати сервер вихідної пошти (SMTP)</string>
-    <string name="account_settings_description_label">Ім’я облікового запису</string>
     <string name="account_settings_name_label">Ваше ім\'я</string>
     <string name="notifications_title">Сповіщення</string>
     <string name="account_settings_vibration">Вібрація</string>

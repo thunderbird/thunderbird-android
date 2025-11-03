@@ -15,27 +15,6 @@
         />
 
     <PreferenceScreen
-        android:icon="@drawable/ic_settings"
-        android:key="account_settings"
-        android:title="@string/account_settings_general_title"
-        >
-
-        <com.takisoft.preferencex.AutoSummaryEditTextPreference
-            android:dialogTitle="@string/account_settings_description_label"
-            android:key="account_description"
-            android:title="@string/account_settings_description_label"
-            />
-
-        <com.takisoft.preferencex.ColorPickerPreference
-            android:key="chip_color"
-            android:summary="@string/account_settings_color_summary"
-            android:title="@string/account_settings_color_label"
-            app:pref_colors="@array/account_colors"
-            />
-
-    </PreferenceScreen>
-
-    <PreferenceScreen
         android:icon="@drawable/ic_mark_email_read"
         android:key="reading_mail"
         android:title="@string/account_settings_reading_mail"

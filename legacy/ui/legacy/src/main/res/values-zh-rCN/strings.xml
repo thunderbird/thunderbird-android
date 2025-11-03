@@ -357,8 +357,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">将会加密存储所有草稿</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">仅当启用加密时才加密草稿</string>
     <string name="account_settings_mail_check_frequency_label">文件夹轮询频率</string>
-    <string name="account_settings_color_label">账号颜色</string>
-    <string name="account_settings_color_summary">账号在文件夹和账号列表中显示时所使用的颜色</string>
     <string name="account_settings_mail_display_count_label">本地文件夹大小</string>
     <string name="account_settings_autodownload_message_size_label">收取邮件的最大尺寸为</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB </string>
@@ -399,7 +397,6 @@
     <string name="account_settings_incoming_summary">配置收件服务器</string>
     <string name="account_settings_outgoing_label">发件服务器</string>
     <string name="account_settings_outgoing_summary">配置发件（SMTP）服务器</string>
-    <string name="account_settings_description_label">账号名称</string>
     <string name="account_settings_name_label">您的名称</string>
     <string name="notifications_title">通知</string>
     <string name="account_settings_vibration">振动</string>

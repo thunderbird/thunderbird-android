@@ -360,8 +360,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Όλα τα πρόχειρα θα αποθηκεύονται κρυπτογραφημένα</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Κρυπτογράφηση πρόχειρων μόνο εάν είναι ενεργοποιημένη η λειτουργία κρυπτογράφησης</string>
     <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
-    <string name="account_settings_color_label">Χρώμα λογαριασμού</string>
-    <string name="account_settings_color_summary">Επιλογή χρώματος για χρήση στους φακέλους και τη λίστα των λογαριασμών</string>
     <string name="account_settings_mail_display_count_label">Μέγεθος τοπικού φακέλου</string>
     <string name="account_settings_autodownload_message_size_label">Μετάκληση μηνυμάτων μέχρι</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -402,7 +400,6 @@
     <string name="account_settings_incoming_summary">Διαμόρφωση του διακομιστή εισερχόμενων email</string>
     <string name="account_settings_outgoing_label">Ρυθμίσεις εξερχομένων</string>
     <string name="account_settings_outgoing_summary">Διαμόρφωση του διακομιστή εισερχόμενων email (SMTP)</string>
-    <string name="account_settings_description_label">Όνομα λογαριασμού</string>
     <string name="account_settings_name_label">Το όνομά σου</string>
     <string name="notifications_title">Ειδοποιήσεις</string>
     <string name="account_settings_vibration">Δόνηση</string>

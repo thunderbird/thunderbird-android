@@ -314,8 +314,6 @@
     <string name="account_settings_crypto_app">Aplacaid OpenPGP</string>
     <string name="account_settings_crypto_key">An iuchair agam</string>
     <string name="account_settings_mail_check_frequency_label">Dè cho tric ’s a dh’iarras sinn am post\?</string>
-    <string name="account_settings_color_label">Dath a’ chunntais</string>
-    <string name="account_settings_color_summary">Dath soillearachadh a’ chunntais seo a chithear ann am pasganan is liosta nan cunntas</string>
     <string name="account_settings_mail_display_count_label">Meud a’ phasgain ionadail</string>
     <string name="account_settings_autodownload_message_size_label">Faigh teachdaireachdan suas ri</string>
     <string name="account_settings_autodownload_message_size_1">1KB</string>
@@ -355,7 +353,6 @@
     <string name="account_settings_incoming_summary">Rèitich frithealaiche a’ phuist a-steach</string>
     <string name="account_settings_outgoing_label">Am frithealaiche a-mach</string>
     <string name="account_settings_outgoing_summary">Rèitich frithealaiche a’ phuist a-mach (SMTP)</string>
-    <string name="account_settings_description_label">Ainm a’ chunntais</string>
     <string name="account_settings_name_label">D’ ainm</string>
     <string name="notifications_title">Brathan</string>
     <string name="account_settings_vibrate_enable">Crith</string>

@@ -293,8 +293,6 @@
     <string name="account_settings_crypto_summary_on">מחובר ל %s</string>
     <string name="account_settings_crypto_encrypt_all_drafts">שמור טיוטות באופן מוצפן</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">כל הטיוטות יישמרו באופן מוצפן</string>
-    <string name="account_settings_color_label">צבע חשבון</string>
-    <string name="account_settings_color_summary">בחר את הצבע של החשבון המשומש בתיקייה וברשימת החשבונות</string>
     <string name="account_settings_mail_display_count_label">גודל תיקיה מקומית</string>
     <string name="account_settings_autodownload_message_size_label">לייבא הודעות בנפח של עד</string>
     <string name="account_settings_autodownload_message_size_any">כל גודל(ללא הגבלה)</string>
@@ -320,7 +318,6 @@
     <string name="account_settings_incoming_summary">הגדר את שרת הדואר הנכנס</string>
     <string name="account_settings_outgoing_label">שרת דואר יוצא</string>
     <string name="account_settings_outgoing_summary">הגדר את שרת הדואר היוצא (SMTP) </string>
-    <string name="account_settings_description_label">שם חשבון</string>
     <string name="account_settings_name_label">השם שלך</string>
     <string name="notifications_title">התראות</string>
     <string name="account_settings_vibration">רטט</string>

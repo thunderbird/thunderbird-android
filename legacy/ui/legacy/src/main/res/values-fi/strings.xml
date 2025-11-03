@@ -359,8 +359,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Kaikki luonnokset talletetaan salattuina</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Salaa luonnokset vain jos salaus on käytössä</string>
     <string name="account_settings_mail_check_frequency_label">Kansioiden tarkistus</string>
-    <string name="account_settings_color_label">Tilin väri</string>
-    <string name="account_settings_color_summary">Valitse väri tilin kansio- ja tililistaan</string>
     <string name="account_settings_mail_display_count_label">Paikallisen kansion koko</string>
     <string name="account_settings_autodownload_message_size_label">Hae viestit, joiden koko on enintään</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +399,6 @@
     <string name="account_settings_incoming_summary">Määritä saapuvan postin palvelin</string>
     <string name="account_settings_outgoing_label">Lähtevän postin palvelin</string>
     <string name="account_settings_outgoing_summary">Määritä lähtevän postin palvelin (SMTP)</string>
-    <string name="account_settings_description_label">Tilin nimi</string>
     <string name="account_settings_name_label">Nimesi</string>
     <string name="notifications_title">Ilmoitukset</string>
     <string name="account_settings_vibration">Värinä</string>

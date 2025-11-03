@@ -361,8 +361,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده ذخیره می‌شوند</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">پیش‌نویس‌ها فقط در صورتی رمزنگاری شوند که رمزنگاری فعال باشد</string>
     <string name="account_settings_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
-    <string name="account_settings_color_label">رنگ حساب کاربری</string>
-    <string name="account_settings_color_summary">رنگ مشخصهٔ این حساب که در سیاههٔ پوشه‌ها و حساب‌ها استفاده می‌شود</string>
     <string name="account_settings_mail_display_count_label">گنجایش پوشهٔ محلی</string>
     <string name="account_settings_autodownload_message_size_label">واکشی پیام‌ها تا این حجم</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -403,7 +401,6 @@
     <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>
     <string name="account_settings_outgoing_label">کارساز خروجی</string>
     <string name="account_settings_outgoing_summary">کارساز خروجی رایانامه (SMTP) را پیکربندی کنید</string>
-    <string name="account_settings_description_label">نام حساب</string>
     <string name="account_settings_name_label">نام شما</string>
     <string name="notifications_title">آگاهی‌ها</string>
     <string name="account_settings_vibration">لرزش</string>

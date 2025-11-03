@@ -318,8 +318,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle kladder vil bli lagret kryptert</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Krypter kladder, bare om kryptering er slått på</string>
     <string name="account_settings_mail_check_frequency_label">Oppdateringsfrekvens for mappe</string>
-    <string name="account_settings_color_label">Kontofarge</string>
-    <string name="account_settings_color_summary">Aksentfargen for denne konto brukt i mappe- og kontoliste</string>
     <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
     <string name="account_settings_autodownload_message_size_label">Hent meldinger opp til</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -360,7 +358,6 @@
     <string name="account_settings_incoming_summary">Sett opp innkommende e-posttjener</string>
     <string name="account_settings_outgoing_label">Utgående tjener</string>
     <string name="account_settings_outgoing_summary">Sett opp utgående e-posttjener (SMTP)</string>
-    <string name="account_settings_description_label">Kontonavn</string>
     <string name="account_settings_name_label">Ditt navn</string>
     <string name="notifications_title">Varslinger</string>
     <string name="account_settings_vibrate_enable">Vibrer</string>

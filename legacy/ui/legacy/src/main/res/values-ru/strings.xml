@@ -365,8 +365,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Все черновики будут храниться в зашифрованном виде</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Зашифровать черновики, если включено шифрование</string>
     <string name="account_settings_mail_check_frequency_label">Промежуток проверки</string>
-    <string name="account_settings_color_label">Цвет для учётной записи</string>
-    <string name="account_settings_color_summary">Акцентный цвет текущей учётной записи, используемый среди учётных записей и папок</string>
     <string name="account_settings_mail_display_count_label">Отображать сообщений</string>
     <string name="account_settings_autodownload_message_size_label">Загружать фрагмент</string>
     <string name="account_settings_autodownload_message_size_1">1 КиБ</string>
@@ -407,7 +405,6 @@
     <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
     <string name="account_settings_outgoing_label">Сервер исходящих</string>
     <string name="account_settings_outgoing_summary">Настройки сервера исходящей почты</string>
-    <string name="account_settings_description_label">Название учётной записи</string>
     <string name="account_settings_name_label">Ваше имя</string>
     <string name="notifications_title">Уведомления</string>
     <string name="account_settings_vibration">Вибрация</string>

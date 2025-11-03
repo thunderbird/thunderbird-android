@@ -361,8 +361,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Todos los borradores se guardarán de forma segura</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Cifrar borradores solamente si está disponible el cifrado</string>
     <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>
-    <string name="account_settings_color_label">Color de la cuenta</string>
-    <string name="account_settings_color_summary">Selecciona el color a utilizar en la carpeta y en la cuenta</string>
     <string name="account_settings_mail_display_count_label">Tamaño carpeta local</string>
     <string name="account_settings_autodownload_message_size_label">Obtener correos de hasta</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -403,7 +401,6 @@
     <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
     <string name="account_settings_outgoing_label">Servidor de salida</string>
     <string name="account_settings_outgoing_summary">Configurar servidor de salida (SMTP)</string>
-    <string name="account_settings_description_label">Nombre de la cuenta</string>
     <string name="account_settings_name_label">Tu nombre</string>
     <string name="notifications_title">Notificaciones</string>
     <string name="account_settings_vibration">Vibración</string>

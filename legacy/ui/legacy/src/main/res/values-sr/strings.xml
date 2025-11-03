@@ -322,8 +322,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Све недовршено ће бити сачувано шифровано</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Шифруј недовршено само ако је шифровање омогућено</string>
     <string name="account_settings_mail_check_frequency_label">Учесталост анкетирања фолдера</string>
-    <string name="account_settings_color_label">Боја налога</string>
-    <string name="account_settings_color_summary">Боја наглашавања овог налога која се користи у фолдеру и листи налога</string>
     <string name="account_settings_mail_display_count_label">Величина локалног фолдера</string>
     <string name="account_settings_autodownload_message_size_label">Прикупљање порука до</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -364,7 +362,6 @@
     <string name="account_settings_incoming_summary">Конфигуришите долазни сервер мејла</string>
     <string name="account_settings_outgoing_label">Одлазни сервер</string>
     <string name="account_settings_outgoing_summary">Конфигуришите одлазни сервер мејла (SMTP)</string>
-    <string name="account_settings_description_label">Назив налога</string>
     <string name="account_settings_name_label">Ваше име</string>
     <string name="notifications_title">Обавештења</string>
     <string name="account_settings_vibrate_enable">Вибрација</string>

@@ -360,8 +360,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Öll drög verða geymd dulrituð</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Dulrita drög einungis ef dulritun er virk</string>
     <string name="account_settings_mail_check_frequency_label">Tíðni athugana á möppu</string>
-    <string name="account_settings_color_label">Litur aðgangsins</string>
-    <string name="account_settings_color_summary">Liturinn sem notaður er til að auðkenna þennan aðgang í listum</string>
     <string name="account_settings_mail_display_count_label">Stærð staðværrar möppu</string>
     <string name="account_settings_autodownload_message_size_label">Ná í skilaboð upp að</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -402,7 +400,6 @@
     <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>
     <string name="account_settings_outgoing_label">Sendinga-póstþjónn</string>
     <string name="account_settings_outgoing_summary">Stilla sendinga-póstþjón (SMTP)</string>
-    <string name="account_settings_description_label">Nafn aðgangsins</string>
     <string name="account_settings_name_label">Nafnið þitt</string>
     <string name="notifications_title">Tilkynningar</string>
     <string name="account_settings_vibration">Titringur</string>
