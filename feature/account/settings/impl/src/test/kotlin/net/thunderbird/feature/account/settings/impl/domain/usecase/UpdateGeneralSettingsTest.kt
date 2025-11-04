@@ -14,7 +14,7 @@ import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.Co
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
 import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
 
@@ -120,7 +120,7 @@ class UpdateGeneralSettingsTest {
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)
-        assertThat((result as Outcome.Failure).error).isInstanceOf(SettingsError.NotFound::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(AccountSettingError.NotFound::class)
     }
 
     @Test
@@ -198,7 +198,7 @@ class UpdateGeneralSettingsTest {
 
         // Assert
         assertThat(result).isInstanceOf(Outcome.Failure::class)
-        assertThat((result as Outcome.Failure).error).isInstanceOf(SettingsError.NotFound::class)
+        assertThat((result as Outcome.Failure).error).isInstanceOf(AccountSettingError.NotFound::class)
         // Ensure no change was made
         assertThat(repository.getById(accountId).firstOrNull()).isEqualTo(accountProfile)
     }

@@ -13,8 +13,8 @@ import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
 import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
@@ -99,7 +99,7 @@ internal class GetGeneralSettingsTest {
         testSubject(accountId).test {
             assertThat(awaitItem()).isEqualTo(
                 Outcome.failure(
-                    SettingsError.NotFound(
+                    AccountSettingError.NotFound(
                         message = "Account profile not found for accountId: ${accountId.asRaw()}",
                     ),
                 ),

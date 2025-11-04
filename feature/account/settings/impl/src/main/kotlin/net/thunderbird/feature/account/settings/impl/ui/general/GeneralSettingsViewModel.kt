@@ -7,7 +7,7 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.handle
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Event
@@ -66,9 +66,9 @@ internal class GeneralSettingsViewModel(
         }
     }
 
-    private fun handleError(error: SettingsError) {
+    private fun handleError(error: AccountSettingError) {
         when (error) {
-            is SettingsError.NotFound -> Log.w(error.message)
+            is AccountSettingError.NotFound -> Log.w(error.message)
         }
     }
 }

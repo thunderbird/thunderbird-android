@@ -18,10 +18,9 @@ import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsOutcome
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
 import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
 
@@ -31,13 +30,13 @@ internal class GetGeneralSettings(
     private val monogramCreator: AvatarMonogramCreator,
     private val featureFlagProvider: FeatureFlagProvider,
 ) : UseCase.GetGeneralSettings {
-    override fun invoke(accountId: AccountId): Flow<AccountSettingsOutcome> {
+    override fun invoke(accountId: AccountId): Flow<Outcome<Settings, AccountSettingError>> {
         return repository.getById(accountId).map { profile ->
             if (profile != null) {
                 Outcome.success(generateSettings(accountId, profile))
             } else {
                 Outcome.failure(
-                    SettingsError.NotFound(
+                    AccountSettingError.NotFound(
                         message = "Account profile not found for accountId: ${accountId.asRaw()}",
                     ),
                 )
