@@ -10,4 +10,7 @@
     <string name="account_server_certificate_fingerprints_section">Fingerprints</string>
     <string name="account_server_certificate_section_title">Server certificate</string>
     <string name="account_server_certificate_button_continue">Accept risk and continue</string>
+    <string name="account_server_certificate_subject_alternative_names">Subject alternative names</string>
+    <string name="account_server_certificate_not_valid_before">Not valid before</string>
+    <string name="account_server_certificate_not_valid_after">Not valid after</string>
 </resources>

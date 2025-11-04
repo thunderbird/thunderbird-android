@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_header_title">Støtt Thunderbird</string>
     <string name="funding_googleplay_contribution_list_type_one_time">Gi én gang</string>
     <string name="funding_googleplay_contribution_reminder_negative_button">Ikke nå</string>
@@ -24,4 +24,34 @@
     <string name="funding_googleplay_contribution_header_thank_you">En stor takk fra oss alle!</string>
     <string name="funding_googleplay_contribution_list_title">Sikkert bidrag</string>
     <string name="funding_googleplay_contribution_list_type_none_available">Ingen tilgjengelig</string>
+    <string name="funding_googleplay_contribution_header_description">Thunderbird er fullstendig finansiert av bidrag fra brukere som deg. Vi kommer aldri til å vise deg reklame eller selge dataene dine. Hvis du liker å bruke Thunderbird, støtt oss. Vi kan ikke gjøre dette uten deg!</string>
+    <string name="funding_googleplay_contribution_header_thank_you_message">Bidragene dine fremmer utviklingen av Thunderbird og vi er meget takknemlige for støtten din.</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Bidragene er ikke fradragsberettigede som gaver til frivillige organisasjoner.</string>
+    <string name="funding_googleplay_contribution_list_empty_title">Bidrag innenfor appen er ikke tilgjengelig for øyeblikket.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Besøk <xliff:g id="link_text">%s</xliff:g> for flere måter å støtte Thunderbird på.</string>
+    <string name="funding_googleplay_contribution_footer_payment_unavailable_button">Betaling for øyeblikket utilgjengelig</string>
+    <string name="funding_googleplay_contribution_footer_show_contribution_list_button">Gi enda ett virkningsfullt bidrag</string>
+    <string name="funding_googleplay_contribution_error_purchase_failed">Kjøp mislyktes.</string>
+    <string name="funding_googleplay_contribution_error_service_disconnected">Bidrag er ikke tilgjengelige for øyeblikket.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_title">Enestående bidrag</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xs_description">Støtten din hjelper oss fremover! Selv de minste bidrag kan utgjøre en stor forskjell, og vi er meget takknemlige for å ha deg ombord.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_s_description">Du hjelper oss med å få store ting til å skje! Ved å bidrag på dette nivået, hjelper du oss ta meningsfulle skritt fremover og du lar oss fortsette å vokse.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_m_description">Bidraget ditt skinner virkelig! Du spiller en stor rolle i å fremme oppdraget vårt, og du hjelper oss nå viktige milepæler og å oppnå en større innvirkning.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_title">Enestående månedlig bidrag</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_title">Eksepsjonelt månedlig bidrag</string>
+    <string name="funding_googleplay_contribution_reminder_claim">Vi er fullstendig finansiert av brukere som deg.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_l_description">Du er en stor grunn til at vi kan gjøre det vi gjør! Takket være din gavmildhet, kan vi takle større prosjekter og nå nye milepæler sammen.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Støtten din er virkelig inspirerende! Takket være ditt betydelige bidrag, kan vi tøye grensene, innovere, og stadig gjøre større fremskritt mot målene våre.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_title">Verdsatt månedlig bidrag</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_title">Betydelig månedlig bidrag</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_title">Stort månedlig bidrag</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_description">Støtten din driver oss fremover! Ethvert bidrag fører til endringer! Tusen takk!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_s_description">Bidraget ditt lar oss vokse og lar oss ta meningsfulle skritt fremover! Tusen takk!</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_m_description">Bidraget ditt skinner! Du er nøkkelen til å fremme oppdraget vårt og oppnå det vi vil.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_l_description">Du er en stor grunn til at vi kan gjøre det vi gjør! Gavmildheten din lar oss nå nye milepæler.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xl_description">Støtten din er inspirerende! Bidraget ditt lar oss tøye grensene og oppnå målene våre.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xxl_description">Du hjelper oss drømme stort! Støtten din lar oss oppnå det ekstraordinære.</string>
+    <string name="funding_googleplay_contribution_reminder_message">Bli med oss i oppdraget om å skape den beste privatlivsorienterte e-postopplevelsen som kan tilpasses deg.</string>
+    <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">Du hjelper oss drømme stort! Støtten din lar oss oppnå det ekstraordinære, med varig påvirkning på det vi gjør.</string>
+    <string name="funding_googleplay_contribution_tfa_recurring_xs_title">Essensielt månedlig bidrag</string>
 </resources>

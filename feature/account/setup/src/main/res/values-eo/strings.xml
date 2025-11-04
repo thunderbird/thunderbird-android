@@ -42,4 +42,16 @@
     <string name="account_setup_options_email_signature_error_blank">La retletera subskribo ne povas esti malplena.</string>
     <string name="account_setup_create_account_created">Konto sukcese kreita</string>
     <string name="account_setup_special_folders_form_description">Bonvolu specifi la specialajn dosierujojn por via konto.</string>
+    <string name="account_setup_options_your_name_label">Via nomo</string>
+    <string name="account_setup_options_your_name_error_required">Via nomo necesas.</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_not_found">Agordi malaŭtomate</string>
+    <string name="account_setup_auto_discovery_result_edit_configuration_button_label">Modifi agordojn</string>
+    <string name="account_setup_auto_discovery_result_approval_checkbox_label">Mi fidas ĉi tiun agordon</string>
+    <string name="account_setup_auto_discovery_loading_message">Serĉante agordojn…</string>
+    <string name="account_setup_auto_discovery_loading_error">Malsukcesis ŝargi retpoŝtan agordon</string>
+    <string name="account_setup_auto_discovery_status_header_title_configuration_found">Agordo troviĝis</string>
+    <string name="account_setup_auto_discovery_result_header_title_configuration_not_found">Agordo ne troviĝis</string>
+    <string name="account_setup_auto_discovery_result_header_subtitle_configuration_trusted">Agordi aŭtomate</string>
+    <string name="account_setup_special_folders_loading_message">Akirante liston de dosierujoj…</string>
+    <string name="account_setup_special_folders_error_message">Malsukcesis akiri la liston de dosierujoj el la servilo</string>
 </resources>

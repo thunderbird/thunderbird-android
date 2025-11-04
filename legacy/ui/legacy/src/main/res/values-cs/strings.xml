@@ -122,7 +122,7 @@
     <string name="notification_certificate_error_title">Chyba certifikátu účtu <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
     <string name="notification_authentication_error_title">Přihlášení se nezdařilo</string>
-    <string name="notification_authentication_error_text">Přihlášení k <xliff:g id="account">%s</xliff:g> se nezdařilo. Aktualizujte svá nastavení pro server.</string>
+    <string name="notification_authentication_error_text">Přihlášení k účtu <xliff:g id="account">%s</xliff:g> se nezdařilo. Aktualizujte svá nastavení pro server.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Chyba oznámení</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
@@ -922,4 +922,17 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="archiving_not_available_for_this_account">Archivování není u tohoto účtu dostupné.</string>
     <string name="swipe_action_archive_folder_not_set">Nastavte složku Archiv</string>
     <string name="debug_open_secret_debug_screen">Otevřít tajnou ladicí obrazovku</string>
+    <string name="debug_invalidate_access_token">Test: Zneplatnit přístupový token</string>
+    <string name="debug_invalidate_access_token_done">Přístupový token zneplatněn. Další žádostí se obnoví.</string>
+    <string name="debug_invalidate_access_token_unavailable">U tohoto účtu není dostupný žádný OAuth token.</string>
+    <string name="debug_invalidate_access_token_local">Test: Zneplatnit přístupový token (lokálně)</string>
+    <string name="debug_invalidate_access_token_local_done">Vyžádáno lokální zneplatnění. Další žádostí se získá nový token.</string>
+    <string name="debug_invalidate_access_token_server">Test: Zneplatnit přístupový token (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Uložený přístupový token je poškozen. Další žádost selže, poté se obnoví.</string>
+    <string name="debug_force_auth_failure">Test: Vynutit selhání autentifikace</string>
+    <string name="debug_force_auth_failure_done">Stav OAuth vymazán. Další žádost selže.</string>
+    <string name="debug_force_auth_failure_unavailable">U tohoto účtu není dostupná žádná konfigurace OAuth.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Nepodařilo se upravit uložený přístupový token. Zkuste lokální zneplatnění.</string>
+    <string name="debug_invalidate_access_token_already_modified">Uložený přístupový token již byl upraven.</string>
+    <string name="message_view_menu_action_export_eml">Exportovat jako EML</string>
 </resources>

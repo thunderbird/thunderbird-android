@@ -570,7 +570,7 @@
     <string name="dialog_confirm_delete_title">Confirmer la suppression</string>
     <string name="dialog_confirm_delete_message">Voulez-vous supprimer ce courriel ?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Voulez-vous supprimer ce courriel ?</item>
+        <item quantity="one">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> courriel ?</item>
         <item quantity="many">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> de courriels ?</item>
         <item quantity="other">Voulez-vous supprimer <xliff:g id="message_count">%1$d</xliff:g> courriels ?</item>
     </plurals>
@@ -584,7 +584,7 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Non</string>
     <string name="dialog_confirm_spam_title">Confirmer le déplacement vers le dossier des pourriels (indésirables)</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Voulez-vous déplacer ce courriel vers le dossier des pourriels ?</item>
+        <item quantity="one">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> courriel vers le dossier des pourriels ?</item>
         <item quantity="many">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> de courriels vers le dossier des pourriels ?</item>
         <item quantity="other">Voulez-vous déplacer <xliff:g id="message_count">%1$d</xliff:g> courriels vers le dossier des pourriels ?</item>
     </plurals>
@@ -636,7 +636,7 @@
         <item quantity="other">Extraction de %d résultats</item>
     </plurals>
     <plurals name="remote_search_downloading_limited">
-        <item quantity="one">Extraction de  %1$d résultat de %2$d</item>
+        <item quantity="one">Extraction de %1$d résultat de %2$d</item>
         <item quantity="many">Extraction de %1$d résultats de %2$d</item>
         <item quantity="other">Extraction de %1$d résultats de %2$d</item>
     </plurals>
@@ -908,4 +908,17 @@
     <string name="swipe_action_change_swipe_gestures">Changer\nles gestes de balayage</string>
     <string name="archiving_not_available_for_this_account">L’archivage n’est pas proposé pour ce compte.</string>
     <string name="debug_open_secret_debug_screen">Ouvrir l’écran de débogage de Secret</string>
+    <string name="debug_invalidate_access_token">Test : invalider le jeton d’accès</string>
+    <string name="debug_invalidate_access_token_done">Le jeton d’accès a été invalidé. La prochaine requête l’actualisera.</string>
+    <string name="debug_invalidate_access_token_unavailable">Aucun jeton OAuth n’est proposé pour ce compte.</string>
+    <string name="debug_invalidate_access_token_local">Test : invalider le jeton d’accès (local)</string>
+    <string name="debug_invalidate_access_token_local_done">L’nvalidation locale a été demandée. La prochaine requête récupérera un nouveau jeton.</string>
+    <string name="debug_invalidate_access_token_server">Test : invalider le jeton d’accès (serveur)</string>
+    <string name="debug_invalidate_access_token_server_done">Le jeton d’accès enregistré est corrompu. La prochaine requête échouera, puis l’actualisera.</string>
+    <string name="debug_force_auth_failure">Test : forcer un échec d’authentification maintenant</string>
+    <string name="debug_force_auth_failure_done">L’état OAuth a été effacé. La prochaine requête échouera.</string>
+    <string name="debug_force_auth_failure_unavailable">Aucune configuration OAuth n’est proposée pour ce compte.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Impossible de modifier le jeton d’accès enregistré. Essayez l’invalidation locale.</string>
+    <string name="debug_invalidate_access_token_already_modified">Le jeton d’accès enregistré est déjà modifié.</string>
+    <string name="message_view_menu_action_export_eml">Exporter en tant que EML</string>
 </resources>

@@ -894,4 +894,23 @@
     <string name="attach_file">Dosya ekle</string>
     <string name="open_camera">Kamerayı aç</string>
     <string name="camera_permission_denied">Kamera izni reddedildi! Fotoğraf çekilemiyor</string>
+    <string name="debug_enable_sync_debug_logging_title">Eşitleme hata ayıklama günlüğünü etkinleştir</string>
+    <string name="debug_enable_sync_debug_logging_summary">Eşitleme tanılama bilgilerini 24 saat boyunca günlüğe kaydet</string>
+    <string name="debug_sync_export_logs_title">Eşitleme günlüklerini dışa aktar</string>
+    <string name="debug_open_secret_debug_screen">Gizli hata ayıklama ekranını aç</string>
+    <string name="swipe_action_archive_folder_not_set">Arşiv Klasörünü Ayarla</string>
+    <string name="swipe_action_change_swipe_gestures">Kaydırma\nHareketlerini Değiştir</string>
+    <string name="archiving_not_available_for_this_account">Bu hesapta arşivleme kullanılamıyor.</string>
+    <string name="debug_invalidate_access_token">Test: Erişim belirtecini geçersiz kıl</string>
+    <string name="debug_invalidate_access_token_done">Erişim belirteci geçersiz kılındı. Bir sonraki istek yenileyecektir.</string>
+    <string name="debug_invalidate_access_token_unavailable">Bu hesap için OAuth belirteci yok.</string>
+    <string name="debug_invalidate_access_token_local">Test: Erişim belirtecini geçersiz kıl (yerel)</string>
+    <string name="debug_invalidate_access_token_local_done">Yerel geçersiz kılma istendi. Bir sonraki istek yeni bir belirteç alacak.</string>
+    <string name="debug_invalidate_access_token_server">Test: Erişim belirtecini geçersiz kıl (sunucu)</string>
+    <string name="debug_invalidate_access_token_server_done">Saklanan erişim belirteci bozuldu. Bir sonraki istek başarısız olacak, ardından yenileyecektir.</string>
+    <string name="debug_force_auth_failure">Test: Şimdi kimlik doğrulama hatasına zorla</string>
+    <string name="debug_force_auth_failure_done">OAuth durumu silindi. Bir sonraki istek başarısız olacak.</string>
+    <string name="debug_force_auth_failure_unavailable">Bu hesap için OAuth yapılandırması yok.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Saklanan erişim belirteci değiştirilemedi. Yerel geçersiz kılmayı deneyin.</string>
+    <string name="debug_invalidate_access_token_already_modified">Saklanan erişim belirteci zaten değiştirildi.</string>
 </resources>

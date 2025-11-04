@@ -127,7 +127,7 @@
     <string name="changelog_snackbar_button_text">View</string>
     <string name="about_project_title">Open Source Project</string>
     <string name="compose_title_reply">Reply</string>
-    <string name="license">License</string>
+    <string name="license">Licence</string>
     <string name="refresh_folders_action">Refresh folder list</string>
     <string name="changelog_title">Changelog</string>
     <string name="filter_folders_action">Find folder</string>
@@ -143,7 +143,7 @@
     <string name="reply_action">Reply</string>
     <string name="show_headers_action">Show headers</string>
     <string name="user_forum_title">User forum</string>
-    <string name="app_license">Apache License, Version 2.0</string>
+    <string name="app_license">Apache Licence, Version 2.0</string>
     <string name="about_website_title">Website</string>
     <string name="get_help_title">Get help</string>
     <string name="changelog_loading_error">Couldn\'t load the changelog.</string>
@@ -911,4 +911,18 @@
     <string name="debug_open_secret_debug_screen">Open Secret debug screen</string>
     <string name="swipe_action_archive_folder_not_set">Set Up Archive Folder</string>
     <string name="archiving_not_available_for_this_account">Archiving is not available for this account.</string>
+    <string name="swipe_action_change_swipe_gestures">Change \n\nSwipe Gestures</string>
+    <string name="debug_invalidate_access_token">Test: Invalidate access token</string>
+    <string name="debug_invalidate_access_token_done">Access token invalidated. Next request will refresh.</string>
+    <string name="debug_invalidate_access_token_unavailable">No OAuth token available for this account.</string>
+    <string name="debug_invalidate_access_token_local">Test: Invalidate access token (local)</string>
+    <string name="debug_invalidate_access_token_local_done">Local invalidation requested. Next request will fetch a new token.</string>
+    <string name="debug_invalidate_access_token_server">Test: Invalidate access token (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Stored access token corrupted. Next request will fail then refresh.</string>
+    <string name="debug_force_auth_failure">Test: Force auth failure now</string>
+    <string name="debug_force_auth_failure_done">OAuth state cleared. Next request will fail.</string>
+    <string name="debug_force_auth_failure_unavailable">No OAuth configuration available for this account.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Could not modify stored access token. Try local invalidation.</string>
+    <string name="debug_invalidate_access_token_already_modified">Stored access token already modified.</string>
+    <string name="message_view_menu_action_export_eml">Export as EML</string>
 </resources>

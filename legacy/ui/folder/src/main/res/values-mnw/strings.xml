@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="special_mailbox_name_outbox">ကဠာလိက်တိတ်</string>
+    <string name="special_mailbox_name_drafts">လိက်အပြောံ</string>
+</resources>

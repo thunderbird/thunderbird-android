@@ -14,4 +14,6 @@
     <string name="account_server_validation_error_missing_server_capability">Missing server capability</string>
     <string name="account_server_validation_error_client_certificate_expired">The client certificate is no longer valid</string>
     <string name="account_server_validation_error_client_certificate_retrieval_failure">The client certificate couldn\'t be accessed</string>
+    <string name="account_server_validation_error_details">Details:\n%s</string>
+    <string name="account_server_validation_error_missing_server_capability_details">The server is missing this capability:\n%s</string>
 </resources>

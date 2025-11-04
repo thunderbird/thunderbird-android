@@ -5,4 +5,5 @@
     <string name="migration_qrcode_permission_denied_message">Iru al Androidon agordoj, tuŝetu permesojn, kaj donu alireblon al la fotilo.</string>
     <string name="migration_qrcode_scanning_progress">%1$s de %2$s skanitaj</string>
     <string name="migration_qrcode_done_button_text">Farita</string>
+    <string name="migration_qrcode_scanning_instructions">Rektigu la QR-kodon el Thunderbird Desktop</string>
 </resources>

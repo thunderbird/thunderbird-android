@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="funding_googleplay_contribution_title">Support Thunderbird</string>
     <string name="funding_googleplay_contribution_header_title">Support Thunderbird</string>
     <string name="funding_googleplay_contribution_header_description">Thunderbird is funded entirely by contributions from users like you. We never show ads or sell your data. If you’re enjoying Thunderbird, please help support it. We can’t do this without you!</string>
@@ -52,4 +52,6 @@
     <string name="funding_googleplay_contribution_tfa_onetime_l_description">You’re a big reason we’re able to do what we do! Thanks to your generosity, we can take on bigger projects and reach new milestones together.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xl_description">Your support is truly inspiring! Thanks to your substantial contribution, we’re able to push boundaries, innovate, and make significant strides toward our goals.</string>
     <string name="funding_googleplay_contribution_tfa_onetime_xxl_description">You’re really helping us dream big! Your incredible support empowers us to achieve the extraordinary, leaving a lasting impact on everything we do.</string>
+    <string name="funding_googleplay_contribution_list_disclaimer">Contributions are not tax-deductible as charitable donations.</string>
+    <string name="funding_googleplay_contribution_list_empty_message">Visit <xliff:g id="link_text">%s</xliff:g> for more ways to support Thunderbird.</string>
 </resources>

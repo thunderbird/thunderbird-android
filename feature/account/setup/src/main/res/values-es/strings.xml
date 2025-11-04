@@ -60,4 +60,6 @@
         <item quantity="many">%d mensajes</item>
         <item quantity="other">%d mensajes</item>
     </plurals>
+    <string name="account_setup_options_your_name_error_required">Tienes que poner tu nombre.</string>
+    <string name="account_setup_options_your_name_label">Tu nombre</string>
 </resources>

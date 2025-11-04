@@ -902,4 +902,17 @@
     <string name="swipe_action_change_swipe_gestures">Veegacties \naanpassen</string>
     <string name="archiving_not_available_for_this_account">Archivering is voor deze account niet beschikbaar.</string>
     <string name="debug_open_secret_debug_screen">Geheim debugscherm openen</string>
+    <string name="debug_invalidate_access_token">Test: Ongeldig toegangstoken</string>
+    <string name="debug_invalidate_access_token_done">Ongeldig toegangstoken. Wordt bij volgende verzoek ververst.</string>
+    <string name="debug_invalidate_access_token_unavailable">Geen OAuth-token beschikbaar voor deze account.</string>
+    <string name="debug_invalidate_access_token_local">Test: Ongeldig toegangstoken (lokaal)</string>
+    <string name="debug_invalidate_access_token_local_done">Lokale ongeldigheid gevraagd. Volgende verzoek zal een nieuw token ophalen.</string>
+    <string name="debug_invalidate_access_token_server">Test: Ongeldig toegangstoken (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Opgeslagen toegangstoken is beschadigd. Volgende verzoek zal mislukken en dan verversen.</string>
+    <string name="debug_force_auth_failure">Test: Mislukte authenticatie nu forceren</string>
+    <string name="debug_force_auth_failure_done">OAuth-status gewist. Volgende verzoek zal mislukken.</string>
+    <string name="debug_force_auth_failure_unavailable">Geen OAuth-configuratie beschikbaar voor deze account.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Kan opgeslagen toegangstoken niet bewerken. Probeer lokale ongeldigheid.</string>
+    <string name="debug_invalidate_access_token_already_modified">Opgeslagen toegangstoken is al aangepast.</string>
+    <string name="message_view_menu_action_export_eml">Exporteren als EML</string>
 </resources>
