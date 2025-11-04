@@ -22,6 +22,7 @@ dependencies {
 
     implementation(projects.core.featureflag)
     implementation(projects.core.outcome)
+    implementation(projects.core.validation)
 
     implementation(projects.core.ui.setting.api)
 
