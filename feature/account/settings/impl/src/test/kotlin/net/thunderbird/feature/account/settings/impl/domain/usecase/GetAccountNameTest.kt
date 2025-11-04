@@ -10,7 +10,7 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 
 class GetAccountNameTest {
@@ -49,7 +49,7 @@ class GetAccountNameTest {
             assertThat(outcome).isInstanceOf(Outcome.Failure::class)
 
             val failure = outcome as Outcome.Failure
-            assertThat(failure.error).isInstanceOf(SettingsError.NotFound::class)
+            assertThat(failure.error).isInstanceOf(AccountSettingError.NotFound::class)
         }
     }
 

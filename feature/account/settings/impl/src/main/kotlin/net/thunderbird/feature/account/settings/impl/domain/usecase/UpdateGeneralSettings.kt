@@ -8,7 +8,7 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.profile.AccountProfileRepository
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
 import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
@@ -19,7 +19,7 @@ internal class UpdateGeneralSettings(
     override suspend fun invoke(
         accountId: AccountId,
         setting: SettingValue<*>,
-    ): Outcome<Unit, SettingsError> {
+    ): Outcome<Unit, AccountSettingError> {
         return when (setting.id) {
             GeneralPreference.PROFILE_INDICATOR.generateId(accountId) -> {
                 val option = setting.value as CompactOption<*>
@@ -27,7 +27,7 @@ internal class UpdateGeneralSettings(
 
                 if (avatar == null) {
                     return Outcome.failure(
-                        SettingsError.NotFound(
+                        AccountSettingError.NotFound(
                             message = "Invalid avatar option selected for accountId: $accountId",
                         ),
                     )
@@ -50,7 +50,7 @@ internal class UpdateGeneralSettings(
             }
 
             else -> Outcome.failure(
-                SettingsError.NotFound(
+                AccountSettingError.NotFound(
                     message = "Unknown setting id: ${setting.id}",
                 ),
             )
@@ -60,10 +60,10 @@ internal class UpdateGeneralSettings(
     private suspend fun updateAccountProfile(
         accountId: AccountId,
         update: AccountProfile.() -> AccountProfile,
-    ): Outcome<Unit, SettingsError> {
+    ): Outcome<Unit, AccountSettingError> {
         val accountProfile = repository.getById(accountId).firstOrNull()
             ?: return Outcome.failure(
-                SettingsError.NotFound(
+                AccountSettingError.NotFound(
                     message = "Account profile not found for accountId: $accountId",
                 ),
             )

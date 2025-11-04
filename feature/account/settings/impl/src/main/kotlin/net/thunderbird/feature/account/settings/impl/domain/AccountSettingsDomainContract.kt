@@ -9,28 +9,23 @@ import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
-
-internal typealias AccountNameOutcome = Outcome<String, SettingsError>
-internal typealias AccountSettingsOutcome = Outcome<Settings, SettingsError>
 
 internal interface AccountSettingsDomainContract {
 
     interface UseCase {
-
         fun interface GetAccountName {
-            operator fun invoke(accountId: AccountId): Flow<AccountNameOutcome>
+            operator fun invoke(accountId: AccountId): Flow<Outcome<String, AccountSettingError>>
         }
 
         fun interface GetGeneralSettings {
-            operator fun invoke(accountId: AccountId): Flow<AccountSettingsOutcome>
+            operator fun invoke(accountId: AccountId): Flow<Outcome<Settings, AccountSettingError>>
         }
 
         fun interface UpdateGeneralSettings {
             suspend operator fun invoke(
                 accountId: AccountId,
                 setting: SettingValue<*>,
-            ): Outcome<Unit, SettingsError>
+            ): Outcome<Unit, AccountSettingError>
         }
     }
 
@@ -57,9 +52,9 @@ internal interface AccountSettingsDomainContract {
         }
     }
 
-    sealed interface SettingsError {
+    sealed interface AccountSettingError {
         data class NotFound(
             val message: String,
-        ) : SettingsError
+        ) : AccountSettingError
     }
 }
