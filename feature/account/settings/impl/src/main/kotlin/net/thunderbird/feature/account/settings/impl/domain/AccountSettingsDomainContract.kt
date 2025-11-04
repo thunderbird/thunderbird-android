@@ -7,6 +7,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.Settings
+import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.profile.AccountAvatar
 
@@ -26,6 +27,14 @@ internal interface AccountSettingsDomainContract {
                 accountId: AccountId,
                 command: UpdateGeneralSettingCommand,
             ): Outcome<Unit, AccountSettingError>
+        }
+
+        fun interface ValidateAccountName {
+            operator fun invoke(name: String): ValidationOutcome
+        }
+
+        fun interface ValidateAvatarMonogram {
+            operator fun invoke(monogram: String): ValidationOutcome
         }
     }
 

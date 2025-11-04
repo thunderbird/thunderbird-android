@@ -5,6 +5,7 @@ import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.ui.setting.emptySettings
+import net.thunderbird.core.validation.ValidationOutcome
 
 internal interface GeneralSettingsContract {
 
@@ -26,5 +27,10 @@ internal interface GeneralSettingsContract {
 
     sealed interface Effect {
         object NavigateBack : Effect
+    }
+
+    interface Validator {
+        fun validateName(name: String): ValidationOutcome
+        fun validateMonogram(monogram: String): ValidationOutcome
     }
 }
