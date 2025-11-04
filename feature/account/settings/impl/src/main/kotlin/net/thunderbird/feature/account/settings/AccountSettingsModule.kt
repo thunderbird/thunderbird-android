@@ -11,6 +11,7 @@ import net.thunderbird.feature.account.settings.impl.ui.general.GeneralResourceP
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureAccountSettingsModule = module {
@@ -19,6 +20,7 @@ val featureAccountSettingsModule = module {
     factory<ResourceProvider.GeneralResourceProvider> {
         GeneralResourceProvider(
             context = androidContext(),
+            colors = get(named("AccountColors")),
         )
     }
 
