@@ -7,7 +7,9 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
+import app.k9mail.feature.account.server.settings.R
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
 import org.junit.Test
 import app.k9mail.core.ui.compose.designsystem.R as RDesign
@@ -21,7 +23,7 @@ class ProtectedPasswordInputKtTest : ComposeTest() {
             ProtectedPasswordInput(
                 password = "",
                 onPasswordChange = {},
-                authenticator = Authenticator { Outcome.Failure("irrelevant") },
+                authenticator = Authenticator { Outcome.Failure(AuthenticationError.Failed) },
             )
         }
 
@@ -34,8 +36,7 @@ class ProtectedPasswordInputKtTest : ComposeTest() {
     fun `should show warning message when authenticator fails`() = runComposeTest {
         // Arrange
         val password = "Password input"
-        val errorMessage = "Auth failed"
-        val failingAuthenticator: Authenticator = Authenticator { Outcome.Failure(errorMessage) }
+        val failingAuthenticator: Authenticator = Authenticator { Outcome.Failure(AuthenticationError.NotAvailable) }
         setContentWithTheme {
             ProtectedPasswordInput(
                 password = password,
@@ -50,7 +51,9 @@ class ProtectedPasswordInputKtTest : ComposeTest() {
         ).performClick()
 
         // Assert
-        onNodeWithText(errorMessage).assertIsDisplayed()
+        onNodeWithText(
+            getString(R.string.account_server_settings_password_authentication_screen_lock_required),
+        ).assertIsDisplayed()
     }
 
     @Test
@@ -62,7 +65,7 @@ class ProtectedPasswordInputKtTest : ComposeTest() {
                 password = "",
                 onPasswordChange = {},
                 errorMessage = errorMessage,
-                authenticator = Authenticator { Outcome.Failure("irrelevant") },
+                authenticator = Authenticator { Outcome.Failure(AuthenticationError.Failed) },
             )
         }
 

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlinedPassword
 import kotlinx.coroutines.launch
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
 
 /**
@@ -25,7 +26,7 @@ import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
 fun ProtectedTextFieldOutlinedPassword(
     value: String,
     onValueChange: (String) -> Unit,
-    onWarningChange: (CharSequence?) -> Unit,
+    onWarningChange: (AuthenticationError?) -> Unit,
     authenticator: Authenticator,
     modifier: Modifier = Modifier,
     label: String? = null,

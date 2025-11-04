@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import app.k9mail.core.ui.compose.testing.ComposeTest
 import app.k9mail.core.ui.compose.testing.setContentWithTheme
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import org.junit.Test
 import app.k9mail.core.ui.compose.designsystem.R as RDesign
 
@@ -21,8 +22,8 @@ class ProtectedTextFieldOutlinedPasswordKtTest : ComposeTest() {
             ProtectedTextFieldOutlinedPassword(
                 value = value,
                 onValueChange = { value = it },
-                onWarningChange = {},
-                authenticator = { Outcome.Failure("Auth required") },
+                onWarningChange = { _ -> },
+                authenticator = { Outcome.Failure(AuthenticationError.Failed) },
             )
         }
 
@@ -49,8 +50,8 @@ class ProtectedTextFieldOutlinedPasswordKtTest : ComposeTest() {
             ProtectedTextFieldOutlinedPassword(
                 value = value,
                 onValueChange = { value = it },
-                onWarningChange = {},
-                authenticator = { Outcome.Failure("Auth required") },
+                onWarningChange = { _ -> },
+                authenticator = { Outcome.Failure(AuthenticationError.Failed) },
             )
         }
 

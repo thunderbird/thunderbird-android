@@ -1,6 +1,6 @@
 package app.k9mail.feature.account.server.settings.ui.common
 
-import androidx.activity.compose.LocalActivity
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -15,15 +15,16 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.InputLayout
 import app.k9mail.core.ui.compose.designsystem.molecule.input.inputContentPadding
 import app.k9mail.feature.account.server.settings.R
 import kotlinx.coroutines.delay
+import net.thunderbird.feature.account.server.settings.ui.common.AuthenticationError
 import net.thunderbird.feature.account.server.settings.ui.common.Authenticator
-import net.thunderbird.feature.account.server.settings.ui.common.BiometricAuthenticator
+import net.thunderbird.feature.account.server.settings.ui.common.rememberBiometricAuthenticator
 import app.k9mail.core.ui.compose.designsystem.R as RDesign
 
 private const val SHOW_WARNING_DURATION = 5000L
 
 /**
  * Variant of [PasswordInput] that only allows the password to be unmasked after the user has authenticated using
- * [Authenticator] that defaults to [BiometricAuthenticator].
+ * [Authenticator] that defaults to [rememberBiometricAuthenticator].
  */
 @Composable
 fun ProtectedPasswordInput(
@@ -33,14 +34,18 @@ fun ProtectedPasswordInput(
     isRequired: Boolean = false,
     errorMessage: String? = null,
     contentPadding: PaddingValues = inputContentPadding(),
-    authenticator: Authenticator? = null,
+    authenticator: Authenticator = rememberBiometricAuthenticator(
+        title = stringResource(R.string.account_server_settings_password_authentication_title),
+        subtitle = stringResource(R.string.account_server_settings_password_authentication_subtitle),
+    ),
 ) {
-    var biometricWarning by remember { mutableStateOf<String?>(value = null) }
+    var authenticationError by remember { mutableStateOf<AuthenticationError?>(value = null) }
+    val authenticationWarning = authenticationError?.let { stringResource(it.mapToStringRes()) }
 
-    LaunchedEffect(key1 = biometricWarning) {
-        if (biometricWarning != null) {
+    LaunchedEffect(key1 = authenticationError) {
+        if (authenticationError != null) {
             delay(SHOW_WARNING_DURATION)
-            biometricWarning = null
+            authenticationError = null
         }
     }
 
@@ -48,32 +53,29 @@ fun ProtectedPasswordInput(
         modifier = modifier,
         contentPadding = contentPadding,
         errorMessage = errorMessage,
-        warningMessage = biometricWarning,
+        warningMessage = authenticationWarning,
     ) {
-        val title = stringResource(R.string.account_server_settings_password_authentication_title)
-        val subtitle = stringResource(R.string.account_server_settings_password_authentication_subtitle)
-        val needScreenLockMessage =
-            stringResource(R.string.account_server_settings_password_authentication_screen_lock_required)
-
-        val resolvedAuthenticator: Authenticator = authenticator ?: run {
-            val activity = LocalActivity.current as androidx.fragment.app.FragmentActivity
-            BiometricAuthenticator(
-                activity = activity,
-                title = title,
-                subtitle = subtitle,
-                needScreenLockMessage = needScreenLockMessage,
-            )
-        }
-
         ProtectedTextFieldOutlinedPassword(
             value = password,
             onValueChange = onPasswordChange,
-            onWarningChange = { biometricWarning = it?.toString() },
-            authenticator = resolvedAuthenticator,
+            onWarningChange = { authenticationError = it },
+            authenticator = authenticator,
             label = stringResource(id = RDesign.string.designsystem_molecule_password_input_label),
             isRequired = isRequired,
             hasError = errorMessage != null,
             modifier = Modifier.fillMaxWidth(),
         )
+    }
+}
+
+@StringRes
+private fun AuthenticationError.mapToStringRes(): Int {
+    return when (this) {
+        AuthenticationError.NotAvailable ->
+            R.string.account_server_settings_password_authentication_screen_lock_required
+        AuthenticationError.Failed ->
+            R.string.account_server_settings_password_authentication_failed
+        AuthenticationError.UnableToStart ->
+            R.string.account_server_settings_password_authentication_unable_to_start
     }
 }
