@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_action_reply">Cavab ver</string>
+    <string name="notification_action_delete">Sil</string>
+    <string name="notification_action_archive">Arxiv</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

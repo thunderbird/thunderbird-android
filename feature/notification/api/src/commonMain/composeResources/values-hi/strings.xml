@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">सिंक (पुश)</string>
+    <string name="notification_channel_push_description">नए मैसेज का इंतज़ार करते टाइम दिखाया जाएगा</string>
+    <string name="notification_channel_messages_title">मैसेज</string>
+    <string name="notification_channel_messages_description">मैसेजवाले नोटिफिकेशन</string>
+    <string name="notification_channel_miscellaneous_title">बाकी</string>
+    <string name="notification_channel_miscellaneous_description">गड़बड़ वगैरह जैसे बाकी नोटिफिकेशन।</string>
+    <string name="notification_notify_error_title">नोटिफिकेशन गड़बड़</string>
+    <string name="notification_notify_error_text">एक नए मैसेज के लिए सिस्टम नोटिफिकेशन बनाते टाइम एक गड़बड़ हुई। इसका वजह किसी नोटिफिकेशन आवाज़ का गुम होना होना चाहिए।
+\n
+\nनोटिफिकेशन सेटिंग खोलने के लिए दबाएं।</string>
+    <string name="notification_authentication_error_title">ऑथेंटिकेशन नहीं हुआ</string>
+    <string name="notification_certificate_error_public">सर्टिफिकेट गड़बड़</string>
+    <string name="notification_certificate_error_title">%1$s पे सर्टिफिकेट गड़बड़</string>
+    <string name="notification_certificate_error_text">अपनी सर्वर सेटिंग चेक करें</string>
+    <string name="notification_bg_sync_ticker">मेल चेक कर रहे: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">मेल चेक कर रहे</string>
+    <string name="notification_bg_send_ticker">मेल भेज रहे: %1$s</string>
+    <string name="notification_bg_send_title">मेल भेज रहे</string>
+    <string name="send_failure_subject">कुछ मैसेज भेज नहीं सके</string>
+    <string name="notification_additional_messages">+ %1$d और %2$s पे</string>
+    <string name="notification_action_reply">जवाब दें</string>
+    <string name="notification_action_mark_as_read">पढ़ा मार्क करें</string>
+    <string name="notification_action_mark_all_as_read">सब पढ़ा मार्क करें</string>
+    <string name="notification_action_delete">मिटाएं</string>
+    <string name="notification_action_delete_all">सब मिटाएं</string>
+    <string name="notification_action_archive">आर्काइव करें</string>
+    <string name="notification_action_archive_all">सब आर्काइव करें</string>
+    <string name="notification_action_spam">स्पैम</string>
+</resources>

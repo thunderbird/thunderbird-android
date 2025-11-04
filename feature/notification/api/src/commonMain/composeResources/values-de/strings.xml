@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synchronisieren (Push)</string>
+    <string name="notification_channel_push_description">Wird während des Wartens auf neue Nachrichten angezeigt</string>
+    <string name="notification_channel_messages_title">Nachrichtenanzeige</string>
+    <string name="notification_channel_messages_description">Benachrichtigungen zu Nachrichten</string>
+    <string name="notification_channel_miscellaneous_title">Verschiedenes</string>
+    <string name="notification_channel_miscellaneous_description">Diverse Benachrichtigungen wie Fehler etc.</string>
+    <string name="notification_notify_error_title">Benachrichtigungsfehler</string>
+    <string name="notification_notify_error_text">Beim Versuch, eine Systembenachrichtigung für eine neue Nachricht zu erstellen, ist ein Fehler aufgetreten. Der Grund dafür ist höchstwahrscheinlich ein fehlender Benachrichtigungston.\n\nAntippen, um die Benachrichtigungseinstellungen zu öffnen.</string>
+    <string name="notification_authentication_error_title">Authentifizierung fehlgeschlagen</string>
+    <string name="notification_certificate_error_public">Zertifikatsfehler</string>
+    <string name="notification_certificate_error_title">Zertifikatsproblem (%1$s)</string>
+    <string name="notification_certificate_error_text">Überprüfe deine Servereinstellungen</string>
+    <string name="notification_bg_sync_ticker">Neue E-Mails in %1$s:%2$s werden abgerufen</string>
+    <string name="notification_bg_sync_title">E-Mails werden abgerufen</string>
+    <string name="notification_bg_send_ticker">E-Mail in %1$s wird gesendet</string>
+    <string name="notification_bg_send_title">E-Mail wird gesendet</string>
+    <string name="send_failure_subject">Nachrichten konnten nicht gesendet werden</string>
+    <string name="notification_additional_messages">+ %1$d weitere auf %2$s</string>
+    <string name="push_notification_state_initializing">Initialisieren…</string>
+    <string name="push_notification_state_listening">Warte auf neue E-Mails</string>
+    <string name="push_notification_state_wait_background_sync">Wartet, bis die Hintergrundsynchronisation erlaubt ist</string>
+    <string name="push_notification_state_wait_network">Wartet, bis ein Netzwerk verfügbar ist</string>
+    <string name="push_notification_state_alarm_permission_missing">Fehlende Berechtigung zur Zeitplanung von Alarmen</string>
+    <string name="push_notification_info">Antippen, um mehr zu erfahren.</string>
+    <string name="push_notification_grant_alarm_permission">Antippen, um die Berechtigung zu erteilen.</string>
+    <string name="push_info_disable_push_action">Push deaktivieren</string>
+    <string name="notification_action_reply">Antworten</string>
+    <string name="notification_action_mark_as_read">Gelesen</string>
+    <string name="notification_action_mark_all_as_read">Alle als gelesen markieren</string>
+    <string name="notification_action_delete">Löschen</string>
+    <string name="notification_action_delete_all">Alle löschen</string>
+    <string name="notification_action_archive">Archiv</string>
+    <string name="notification_action_archive_all">Alle archivieren</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

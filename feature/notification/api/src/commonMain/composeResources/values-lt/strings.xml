@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sinchronizuoti (Push)</string>
+    <string name="notification_channel_push_description">Rodoma laukiant naujų laiškų</string>
+    <string name="notification_channel_messages_title">Laiškai</string>
+    <string name="notification_channel_messages_description">Pranešimai susiję su laiškais</string>
+    <string name="notification_channel_miscellaneous_title">Įvairūs</string>
+    <string name="notification_channel_miscellaneous_description">Įvairūs pranešimai, pavyzdžiui, apie klaidas ir pan.</string>
+    <string name="notification_notify_error_title">Pranešimo klaida</string>
+    <string name="notification_notify_error_text">Bandant sukurti sistemos pranešimą apie naują laišką, įvyko klaida. Tikėtina priežastis – trūkstamas pranešimo garsas.
+\n
+\nBakstelėkite pranešimų nustatymams atverti.</string>
+    <string name="notification_authentication_error_title">Autentifikavimas nepavyko</string>
+    <string name="notification_certificate_error_public">Sertifikato klaida.</string>
+    <string name="notification_certificate_error_title">Sertifikato klaida %1$s</string>
+    <string name="notification_certificate_error_text">Patikrinkite serverio nustatymus</string>
+    <string name="notification_bg_sync_ticker">Tikrinamas paštas: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Tikrinamas paštas</string>
+    <string name="notification_bg_send_ticker">Siunčiamas paštas: %1$s</string>
+    <string name="notification_bg_send_title">Siunčiamas paštas</string>
+    <string name="send_failure_subject">Kai kurių laiškų išsiųsti nepavyko</string>
+    <string name="notification_additional_messages">+ %1$d daugiau paskyroje %2$s</string>
+    <string name="push_notification_state_initializing">Inicializuojama…</string>
+    <string name="push_notification_state_listening">Laukiama naujų laiškų</string>
+    <string name="push_notification_state_wait_background_sync">Miegama iki kol fono sinchronizacija bus leidžiama</string>
+    <string name="push_notification_state_wait_network">Miegama, kol bus prieinamas tinklas</string>
+    <string name="push_notification_info">Bakstelėkite, jei norite sužinoti daugiau.</string>
+    <string name="push_info_disable_push_action">Išjungti Push</string>
+    <string name="notification_action_reply">Atsakyti</string>
+    <string name="notification_action_mark_as_read">Žymėti kaip skaitytą</string>
+    <string name="notification_action_mark_all_as_read">Žymėti viską kaip skaitytą</string>
+    <string name="notification_action_delete">Ištrinti</string>
+    <string name="notification_action_delete_all">Ištrinti viską</string>
+    <string name="notification_action_archive">Archyvuoti</string>
+    <string name="notification_action_archive_all">Archyvuoti viską</string>
+    <string name="notification_action_spam">Brukalas</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Samtempigo (puŝ-sciigo)</string>
+    <string name="notification_channel_push_description">Vidigita atendante novajn mesaĝojn</string>
+    <string name="notification_channel_messages_title">Mesaĝoj</string>
+    <string name="notification_channel_messages_description">Sciigoj pri novaj mesaĝoj</string>
+    <string name="notification_channel_miscellaneous_title">Diversaj</string>
+    <string name="notification_channel_miscellaneous_description">Aliaj sciigoj, ekzemple pri eraroj, ktp.</string>
+    <string name="notification_notify_error_title">Sciiga eraro</string>
+    <string name="notification_notify_error_text">Eraro okazis provante krei sisteman sciigon pri nova mesaĝo. Estas probable kaŭze de manka sciiga sono.\n\nTuŝetu por malfermi sciigajn agordojn.</string>
+    <string name="notification_authentication_error_title">Aŭtentigo malsukcesis</string>
+    <string name="notification_certificate_error_public">Atestila eraro</string>
+    <string name="notification_certificate_error_title">Eraro pri atestilo por %1$s</string>
+    <string name="notification_certificate_error_text">Kontrolu agordojn de servilo</string>
+    <string name="notification_bg_sync_ticker">Kontrolado de retpoŝto: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Kontrolado de retpoŝto</string>
+    <string name="notification_bg_send_ticker">Sendado de retletero: %1$s</string>
+    <string name="notification_bg_send_title">Sendado de retletero</string>
+    <string name="send_failure_subject">Malsukcesis sendi iujn mesaĝojn</string>
+    <string name="notification_additional_messages">+ %1$d pliaj en %2$s</string>
+    <string name="push_notification_state_initializing">Komencante…</string>
+    <string name="push_notification_state_listening">Atendante novajn retleterojn</string>
+    <string name="push_notification_state_wait_background_sync">Haltigita ĝis “fona samtempigo” estos aktiva</string>
+    <string name="push_notification_state_wait_network">Haltigita ĝis interreta konekto estos disponebla</string>
+    <string name="push_notification_state_alarm_permission_missing">Mankas permeson plani alarmojn</string>
+    <string name="push_notification_info">Frapetu por pli da informoj.</string>
+    <string name="push_notification_grant_alarm_permission">Tuŝu por doni la permeson.</string>
+    <string name="push_info_disable_push_action">Malaktivigi puŝ-sciigojn</string>
+    <string name="notification_action_reply">Respondi</string>
+    <string name="notification_action_mark_as_read">Marki kiel legitan</string>
+    <string name="notification_action_mark_all_as_read">Marki ĉiujn kiel legitajn</string>
+    <string name="notification_action_delete">Forigi</string>
+    <string name="notification_action_delete_all">Forigi ĉiujn</string>
+    <string name="notification_action_archive">Arĥivi</string>
+    <string name="notification_action_archive_all">Arĥivi ĉiujn</string>
+    <string name="notification_action_spam">Trudmesaĝo</string>
+</resources>
