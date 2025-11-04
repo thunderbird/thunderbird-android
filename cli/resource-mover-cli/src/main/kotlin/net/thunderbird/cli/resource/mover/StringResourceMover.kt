@@ -48,12 +48,20 @@ class StringResourceMover {
             println("\nFound key in file: ${sourceFile.path}\n")
 
             val targetFile = getOrCreateTargetFile(targetPath, sourceFile, isTargetComposeResources)
-            val keyDeclaration = extractKeyDeclaration(sourceFile, key)
+            val originalKeyDeclaration = extractKeyDeclaration(sourceFile, key)
+            val keyDeclaration = originalKeyDeclaration.let { keyDeclaration ->
+                if (isTargetComposeResources && keyDeclaration.contains("<xliff:g id")) {
+                    val regex = """(<xliff:g\s+id="[^"]+">)(.*?)(</xliff:g>)""".toRegex()
+                    keyDeclaration.replace(regex, "$2")
+                } else {
+                    keyDeclaration
+                }
+            }
 
             println("    Key declaration: $keyDeclaration")
 
             copyKeyToTarget(targetFile, keyDeclaration, key)
-            deleteKeyFromSource(sourceFile, keyDeclaration)
+            deleteKeyFromSource(sourceFile, originalKeyDeclaration)
 
             if (isSourceFileEmpty(sourceFile)) {
                 println("    Source file is empty: ${sourceFile.path} -> deleting it.")
