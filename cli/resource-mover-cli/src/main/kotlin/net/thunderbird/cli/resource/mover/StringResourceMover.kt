@@ -7,8 +7,16 @@ import kotlin.system.exitProcess
 class StringResourceMover {
 
     fun moveKeys(source: String, target: String, keys: List<String>) {
-        val sourcePath = File(source + RESOURCE_PATH)
-        val targetPath = File(target + RESOURCE_PATH)
+        fun File.isComposeResource(): Boolean = File(this, COMPOSE_RESOURCE_PATH).exists()
+
+        val sourceDir = File(source)
+        val sourceBaseResourcePath = if (sourceDir.isComposeResource()) COMPOSE_RESOURCE_PATH else RESOURCE_PATH
+        val sourcePath = File(source + sourceBaseResourcePath)
+
+        val targetDir = File(target)
+        val isTargetComposeResources = targetDir.isComposeResource()
+        val targetBaseResourcePath = if (isTargetComposeResources) COMPOSE_RESOURCE_PATH else RESOURCE_PATH
+        val targetPath = File(target + targetBaseResourcePath)
 
         if (!sourcePath.exists()) {
             println("\nSource path does not exist: $sourcePath\n")
@@ -18,11 +26,11 @@ class StringResourceMover {
         println("\nMoving keys $keys")
         println("       from \"$sourcePath\" -> \"$targetPath\"\n")
         for (key in keys) {
-            moveKey(sourcePath, targetPath, key)
+            moveKey(sourcePath, targetPath, key, isTargetComposeResources)
         }
     }
 
-    private fun moveKey(sourcePath: File, targetPath: File, key: String) {
+    private fun moveKey(sourcePath: File, targetPath: File, key: String, isTargetComposeResources: Boolean) {
         println("\nMoving key: $key\n")
 
         sourcePath.walk()
@@ -30,22 +38,30 @@ class StringResourceMover {
             .forEach { sourceDir ->
                 val sourceFile = sourceDir.resolve(STRING_RESOURCE_FILE_NAME)
                 if (sourceFile.exists()) {
-                    moveKeyDeclaration(sourceFile, targetPath, key)
+                    moveKeyDeclaration(sourceFile, targetPath, key, isTargetComposeResources)
                 }
             }
     }
 
-    private fun moveKeyDeclaration(sourceFile: File, targetPath: File, key: String) {
+    private fun moveKeyDeclaration(sourceFile: File, targetPath: File, key: String, isTargetComposeResources: Boolean) {
         if (containsKey(sourceFile, key)) {
             println("\nFound key in file: ${sourceFile.path}\n")
 
-            val targetFile = getOrCreateTargetFile(targetPath, sourceFile)
-            val keyDeclaration = extractKeyDeclaration(sourceFile, key)
+            val targetFile = getOrCreateTargetFile(targetPath, sourceFile, isTargetComposeResources)
+            val originalKeyDeclaration = extractKeyDeclaration(sourceFile, key)
+            val keyDeclaration = originalKeyDeclaration.let { keyDeclaration ->
+                if (isTargetComposeResources && keyDeclaration.contains("<xliff:g id")) {
+                    val regex = """(<xliff:g\s+id="[^"]+">)(.*?)(</xliff:g>)""".toRegex()
+                    keyDeclaration.replace(regex, "$2")
+                } else {
+                    keyDeclaration
+                }
+            }
 
             println("    Key declaration: $keyDeclaration")
 
             copyKeyToTarget(targetFile, keyDeclaration, key)
-            deleteKeyFromSource(sourceFile, keyDeclaration)
+            deleteKeyFromSource(sourceFile, originalKeyDeclaration)
 
             if (isSourceFileEmpty(sourceFile)) {
                 println("    Source file is empty: ${sourceFile.path} -> deleting it.")
@@ -134,7 +150,7 @@ class StringResourceMover {
         return sourceContent.contains(STRING_CLOSING_TAG).not() && sourceContent.contains(PLURALS_CLOSING_TAG).not()
     }
 
-    private fun getOrCreateTargetFile(targetPath: File, sourceFile: File): File {
+    private fun getOrCreateTargetFile(targetPath: File, sourceFile: File, isTargetComposeResources: Boolean): File {
         val targetFilePath = targetPath.resolve(sourceFile.parentFile.name)
         val targetFile = File(targetFilePath, sourceFile.name)
         val targetDirectory = targetFile.parentFile
@@ -145,20 +161,22 @@ class StringResourceMover {
         }
 
         if (!targetFile.exists()) {
-            createTargetFile(targetFile)
+            createTargetFile(targetFile, isTargetComposeResources)
         }
 
         return targetFile
     }
 
-    private fun createTargetFile(targetFile: File) {
+    private fun createTargetFile(targetFile: File, isTargetComposeResources: Boolean) {
         val isNewFileCreated: Boolean = targetFile.createNewFile()
         if (!isNewFileCreated) {
             printError("Target file could not be created: ${targetFile.path}")
             exitProcess(-1)
         }
 
-        targetFile.writeText(TARGET_FILE_CONTENT)
+        targetFile.writeText(
+            if (isTargetComposeResources) TARGET_FILE_CONTENT_COMPOSE_RESOURCE else TARGET_FILE_CONTENT,
+        )
         println("Target file ${targetFile.path} created")
     }
 
@@ -168,6 +186,7 @@ class StringResourceMover {
 
     private companion object {
         const val RESOURCE_PATH = "/src/main/res/"
+        const val COMPOSE_RESOURCE_PATH = "/src/commonMain/composeResources/"
         const val KEY_PLACEHOLDER = "{KEY}"
         const val KEY_PATTERN = """name="$KEY_PLACEHOLDER""""
         const val VALUES_PATH = "values"
@@ -179,6 +198,13 @@ class StringResourceMover {
         val TARGET_FILE_CONTENT = """
             <?xml version="1.0" encoding="UTF-8"?>
             <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+            </resources>
+
+        """.trimIndent()
+
+        val TARGET_FILE_CONTENT_COMPOSE_RESOURCE = """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <resources>
             </resources>
 
         """.trimIndent()
