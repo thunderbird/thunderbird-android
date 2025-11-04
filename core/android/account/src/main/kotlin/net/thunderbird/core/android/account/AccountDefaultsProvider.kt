@@ -41,7 +41,7 @@ interface AccountDefaultsProvider {
 
         const val DEFAULT_STRIP_SIGNATURE = true
 
-        const val DEFAULT_SYNC_INTERVAL = 60
+        const val DEFAULT_SYNC_INTERVAL = 15
 
         /**
          * Specifies how many messages will be shown in a folder by default. This number is set
