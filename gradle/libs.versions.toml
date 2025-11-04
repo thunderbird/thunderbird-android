@@ -80,7 +80,7 @@ konsist = "0.17.3"
 kotlinBom = "2.2.21"
 # Needs to match the version used by Gradle, just check with `./gradlew --version`
 kotlinGradleBom = "2.2.0"
-kotlinKsp = "2.2.20-2.0.4"
+kotlinKsp = "2.3.0"
 kotlinxCoroutines = "1.10.2"
 kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDateTime = "0.7.1"
