@@ -22,10 +22,22 @@ import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.ui.setting.emptySettings
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
+import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
+import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
 import org.junit.Before
 import org.junit.Rule
+
+private fun createSettings(accountId: AccountId): Settings = persistentListOf(
+    SettingValue.Text(
+        id = GeneralPreference.NAME.generateId(accountId),
+        title = { "Title" },
+        description = { "Description" },
+        icon = { null },
+        value = "Test",
+    ),
+)
 
 class GeneralSettingsViewModelTest {
 
@@ -87,7 +99,7 @@ class GeneralSettingsViewModelTest {
             subtitle = "Subtitle",
             settings = emptySettings(),
         )
-        val settings = FakeData.settings
+        val settings = createSettings(accountId)
 
         generalSettingsRobot(accountId, initialState, settings) {
             verifyGeneralSettingsLoaded(settings)
@@ -120,6 +132,7 @@ private class GeneralSettingsRobot(
 ) {
     private lateinit var settingsState: MutableStateFlow<Settings>
     private lateinit var turbines: MviTurbines<State, Effect>
+    private var lastSetting: SettingValue<*>? = null
 
     private val viewModel: GeneralSettingsContract.ViewModel by lazy {
         GeneralSettingsViewModel(
@@ -133,17 +146,20 @@ private class GeneralSettingsRobot(
                     Outcome.success(it)
                 }
             },
-            updateGeneralSettings = { _, setting ->
-                settingsState.value = settingsState.value.map { existingSetting ->
-                    if (existingSetting is SettingValue<*> && existingSetting.id == setting.id) {
-                        println("Updating setting: ${setting.id}")
-                        println("Old setting: $existingSetting")
-                        println("New setting: $setting")
-                        setting
-                    } else {
-                        existingSetting
-                    }
-                }.toImmutableList()
+            updateGeneralSettings = { _, _ ->
+                val newSetting = lastSetting
+                if (newSetting != null) {
+                    settingsState.value = settingsState.value.map { existingSetting ->
+                        if (existingSetting is SettingValue<*> && existingSetting.id == newSetting.id) {
+                            println("Updating setting: ${newSetting.id}")
+                            println("Old setting: $existingSetting")
+                            println("New setting: $newSetting")
+                            newSetting
+                        } else {
+                            existingSetting
+                        }
+                    }.toImmutableList()
+                }
                 Outcome.success(Unit)
             },
             initialState = initialState,
@@ -186,6 +202,7 @@ private class GeneralSettingsRobot(
     }
 
     fun updateSetting(setting: SettingValue<*>) {
+        lastSetting = setting
         viewModel.event(GeneralSettingsContract.Event.OnSettingValueChange(setting))
     }
 

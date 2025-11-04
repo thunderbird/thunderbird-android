@@ -6,9 +6,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.AccountId
+import net.thunderbird.feature.account.profile.AccountAvatar
 
 internal interface AccountSettingsDomainContract {
 
@@ -24,9 +24,15 @@ internal interface AccountSettingsDomainContract {
         fun interface UpdateGeneralSettings {
             suspend operator fun invoke(
                 accountId: AccountId,
-                setting: SettingValue<*>,
+                command: UpdateGeneralSettingCommand,
             ): Outcome<Unit, AccountSettingError>
         }
+    }
+
+    sealed interface UpdateGeneralSettingCommand {
+        data class UpdateName(val value: String) : UpdateGeneralSettingCommand
+        data class UpdateColor(val value: Int) : UpdateGeneralSettingCommand
+        data class UpdateAvatar(val value: AccountAvatar) : UpdateGeneralSettingCommand
     }
 
     interface ResourceProvider {
