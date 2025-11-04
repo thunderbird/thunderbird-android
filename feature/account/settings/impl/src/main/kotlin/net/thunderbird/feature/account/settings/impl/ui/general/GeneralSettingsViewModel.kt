@@ -2,6 +2,8 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.handle
@@ -26,23 +28,30 @@ internal class GeneralSettingsViewModel(
 ) : BaseViewModel<State, Event, Effect>(initialState), GeneralSettingsContract.ViewModel {
 
     init {
-        viewModelScope.launch {
-            getAccountName(accountId).collect { outcome ->
+        observeAccountName()
+        observeGeneralSettings()
+    }
+
+    override fun event(event: Event) {
+        when (event) {
+            is Event.OnBackPressed -> emitEffect(Effect.NavigateBack)
+            is Event.OnSettingValueChange -> updateSetting(event.setting)
+        }
+    }
+
+    private fun observeAccountName() {
+        getAccountName(accountId)
+            .onEach { outcome ->
                 outcome.handle(
-                    onSuccess = { accountName ->
-                        updateState { state ->
-                            state.copy(
-                                subtitle = accountName,
-                            )
-                        }
-                    },
+                    onSuccess = { updateState { state -> state.copy(subtitle = it) } },
                     onFailure = { handleError(it) },
                 )
-            }
-        }
+            }.launchIn(viewModelScope)
+    }
 
-        viewModelScope.launch {
-            getGeneralSettings(accountId).collect { outcome ->
+    private fun observeGeneralSettings() {
+        getGeneralSettings(accountId)
+            .onEach { outcome ->
                 outcome.handle(
                     onSuccess = { settings ->
                         updateState { state ->
@@ -53,15 +62,7 @@ internal class GeneralSettingsViewModel(
                     },
                     onFailure = { handleError(it) },
                 )
-            }
-        }
-    }
-
-    override fun event(event: Event) {
-        when (event) {
-            is Event.OnSettingValueChange -> updateSetting(event.setting)
-            is Event.OnBackPressed -> emitEffect(Effect.NavigateBack)
-        }
+            }.launchIn(viewModelScope)
     }
 
     private fun updateSetting(setting: SettingValue<*>) {
