@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>About Thunderbird for Android - Thunderbird for Android - Developer Documentation</title>
+        <title>Developer - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -12,37 +12,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="assets/additional/css/last-changed.css">
-        <link rel="stylesheet" href="assets/additional/css/navigation.css">
-        <link rel="stylesheet" href="assets/additional/css/pagetoc.css">
+        <link rel="stylesheet" href="../assets/additional/css/last-changed.css">
+        <link rel="stylesheet" href="../assets/additional/css/navigation.css">
+        <link rel="stylesheet" href="../assets/additional/css/pagetoc.css">
 
 
         <!-- Provide site root and default themes to javascript -->
         <script>
-            const path_to_root = "";
+            const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex.js";
+            window.path_to_searchindex_js = "../searchindex.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="../toc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -109,7 +109,7 @@
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
-                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
             </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -141,13 +141,13 @@
                     <h1 class="menu-title">Thunderbird for Android - Developer Documentation</h1>
 
                     <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./about.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./developer/README.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -248,70 +248,25 @@
 }
 
 </style>
-<h1 id="about-thunderbird-for-android"><a class="header" href="#about-thunderbird-for-android">About Thunderbird for Android</a></h1>
-<p>Thunderbird for Android (TfA) is a powerful, privacy‑focused email app for managing multiple accounts with ease —
-including a Unified Inbox for maximum productivity. It’s open source, built with the community, and never treats your
-private data as a product.</p>
-<p>This page is for both <strong>users</strong> and <strong>contributors</strong>:</p>
+<h1 id="developer-documentation"><a class="header" href="#developer-documentation">Developer Documentation</a></h1>
+<p>Developer focused documentation for contributing to the codebase. It’s dedicated to providing essential guides,
+checklists, and architectural notes to help you navigate the codebase and contribute safely.</p>
+<h2 id="checklists"><a class="header" href="#checklists">Checklists</a></h2>
+<p>Detailed checklists to ensure best practices and consistency across the codebase:</p>
 <ul>
-<li>If you want to use Thunderbird for Android, see <a href="#download">Download</a>.</li>
-<li>If you want to contribute, jump to <a href="#contributing">Contributing</a>.</li>
-</ul>
-<h2 id="-download"><a class="header" href="#-download">📥 Download</a></h2>
-<p>You can get Thunderbird for Android from multiple sources:</p>
-<ul>
-<li><a href="https://play.google.com/store/apps/details?id=net.thunderbird.android" title="" target="_blank">Google Play</a></li>
-<li><a href="https://f-droid.org/packages/net.thunderbird.android" title="" target="_blank">F-Droid</a></li>
-<li><a href="https://play.google.com/store/apps/details?id=net.thunderbird.android.beta" title="" target="_blank">Beta (early access) on Google Play</a></li>
-<li><a href="https://f-droid.org/packages/net.thunderbird.android.beta" title="" target="_blank">Beta on F-Droid</a></li>
-<li><a href="https://github.com/thunderbird/thunderbird-android/releases" title="" target="_blank">GitHub Releases</a></li>
-</ul>
-<p>Check the <a href="https://github.com/thunderbird/thunderbird-android/releases" title="" target="_blank">Release Notes</a> to see what’s new in each version.</p>
-<h2 id="-highlights"><a class="header" href="#-highlights">✨ Highlights</a></h2>
-<ul>
-<li>Unified Inbox and multiple account support</li>
-<li>Open source, privacy‑respecting by design</li>
-<li>Modern, fast UI with helpful features like powerful search and rich composer</li>
-<li>Actively developed with regular updates</li>
-</ul>
-<h2 id="-k9-mail-heritage"><a class="header" href="#-k9-mail-heritage">📨 K‑9 Mail heritage</a></h2>
-<p>Thunderbird for Android is based on <strong>K‑9 Mail</strong>, a long‑standing open source email app. The projects share much of
-the same code and therefore may look and feel similar.</p>
-<p>Some features are selectively enabled in Thunderbird when they are a better fit for Thunderbird users (e.g., import from K‑9).</p>
-<p>If you prefer to keep using K‑9 Mail, you can find it here:</p>
-<ul>
-<li><a href="https://play.google.com/store/apps/details?id=com.fsck.k9" title="" target="_blank">Google Play</a></li>
-<li><a href="https://f-droid.org/packages/com.fsck.k9/" title="" target="_blank">F‑Droid</a></li>
-</ul>
-<h2 id="-need-help-or-have-feedback"><a class="header" href="#-need-help-or-have-feedback">❓ Need help or have feedback?</a></h2>
-<ul>
-<li><a href="https://support.mozilla.org/products/thunderbird-android" title="" target="_blank">Knowledge base</a></li>
-<li><a href="https://support.mozilla.org/kb/thunderbird-android-8-faq" title="" target="_blank">FAQ</a></li>
-<li><a href="https://support.mozilla.org/en-US/questions/new/thunderbird-android" title="" target="_blank">Support forum</a></li>
-<li><a href="https://github.com/thunderbird/thunderbird-android/issues" title="" target="_blank">Bug tracker</a></li>
-<li><a href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/thunderbird%20android" title="" target="_blank">Ideas &amp; voting</a></li>
-</ul>
-<p>Community chat (Matrix):</p>
-<ul>
-<li><a href="https://matrix.to/#/#tb-android:mozilla.org" title="" target="_blank">General</a></li>
-<li><a href="https://matrix.to/#/#tb-android-dev:mozilla.org" title="" target="_blank">Development</a></li>
-<li><a href="https://matrix.to/#/#thunderbird-community:mozilla.org" title="" target="_blank">Thunderbird community space</a></li>
-</ul>
-<h2 id="-contributing"><a class="header" href="#-contributing">🤝 Contributing</a></h2>
-<p>We welcome contributions of all kinds:</p>
-<ul>
-<li>Development: <a href="CONTRIBUTING.html">Contributing Guide</a> if you want to help with code</li>
-<li>Translations: <a href="https://hosted.weblate.org/projects/tb-android/" title="" target="_blank">Weblate Project</a> if you want to help localize the app</li>
-<li><a href="https://blog.thunderbird.net/2024/09/contribute-to-thunderbird-for-android/" title="" target="_blank">Other ways to help</a></li>
-<li><a href="https://www.mozilla.org/about/governance/policies/participation/" title="" target="_blank">Participation guidelines</a></li>
+<li><strong><a href="./db-migration-checklist.html">Database Migration Checklist</a></strong>
+A mandatory checklist for creating and reviewing database migrations to ensure they are safe, performant, and correct.</li>
 </ul>
 <footer id="last-change">Last change: <time datetime="2025-11-04">2025-11-04</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/f929329">f929329</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../user-guide/troubleshooting/find-your-app-version.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
 
-                            <a rel="next prefetch" href="CONTRIBUTING.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../developer/db-migration-checklist.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -321,8 +276,11 @@ the same code and therefore may look and feel similar.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../user-guide/troubleshooting/find-your-app-version.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
 
-                    <a rel="next prefetch" href="CONTRIBUTING.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../developer/db-migration-checklist.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
@@ -337,19 +295,19 @@ the same code and therefore may look and feel similar.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        <script src="assets/additional/js/mermaid.min.js"></script>
-        <script src="assets/additional/js/mermaid-init.js"></script>
-        <script src="assets/additional/js/navigation.js"></script>
-        <script src="assets/additional/js/pagetoc.js"></script>
+        <script src="../assets/additional/js/mermaid.min.js"></script>
+        <script src="../assets/additional/js/mermaid-init.js"></script>
+        <script src="../assets/additional/js/navigation.js"></script>
+        <script src="../assets/additional/js/pagetoc.js"></script>
 
 
 
