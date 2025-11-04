@@ -16,11 +16,13 @@ import app.k9mail.feature.account.setup.ui.options.sync.SyncOptionsContract
 import app.k9mail.feature.account.setup.ui.specialfolders.SpecialFoldersContract
 import com.fsck.k9.mail.oauth.AuthStateStorage
 import org.junit.Test
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.KoinTest
 import org.koin.test.verify.verify
 
 class AccountSetupModuleKtTest : KoinTest {
 
+    @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
         featureAccountSetupModule.verify(
