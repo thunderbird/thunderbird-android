@@ -81,8 +81,8 @@
         <item quantity="other">Adresy skopiowane do schowka</item>
     </plurals>
     <string name="copy_subject_to_clipboard">Skopiowano do schowka</string>
-    <string name="message_view_theme_action_dark">Przełącz na ciemny styl</string>
-    <string name="message_view_theme_action_light">Przełącz na jasny styl</string>
+    <string name="message_view_theme_action_dark">Przełącz na motyw ciemny</string>
+    <string name="message_view_theme_action_light">Przełącz na motyw jasny</string>
     <string name="mark_as_unread_action">Oznacz jako nieprzeczytane</string>
     <string name="read_receipt">Powiadomienie o przeczytaniu</string>
     <string name="read_receipt_enabled">Żadaj powiadomienia o przeczytaniu</string>
@@ -122,16 +122,16 @@
     <string name="notification_certificate_error_public">Błąd certyfikatu</string>
     <string name="notification_certificate_error_title">Błąd certyfikatu dla <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Sprawdź ustawienia serwera</string>
-    <string name="notification_authentication_error_title">Uwierzytelnianie nie powiodło się</string>
+    <string name="notification_authentication_error_title">Uwierzytelnianie się nie powiodło</string>
     <string name="notification_authentication_error_text">Uwierzytelnianie dla <xliff:g id="account">%s</xliff:g> nie powiodło się. Zaktualizuj ustawienia serwera.</string>
     <!--Title of an error notification that is displayed when creating a notification for a new message has failed-->
     <string name="notification_notify_error_title">Błąd powiadomienia</string>
     <!--Body of an error notification that is displayed when creating a notification for a new message has failed-->
-    <string name="notification_notify_error_text">Wystąpił błąd podczas próby utworzenia powiadomienia systemowego dla nowej wiadomości. Powodem jest najprawdopodobniej brak dźwięku powiadomienia.\n\nStuknij, aby otworzyć ustawienia powiadomień.</string>
-    <string name="notification_bg_sync_ticker">Sprawdzam: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
-    <string name="notification_bg_sync_title">Sprawdzam</string>
-    <string name="notification_bg_send_ticker">Wysyłam: <xliff:g id="account">%s</xliff:g></string>
-    <string name="notification_bg_send_title">Wysyłam</string>
+    <string name="notification_notify_error_text">Wystąpił błąd podczas próby utworzenia powiadomienia systemowego o nowej wiadomości. Powodem jest najprawdopodobniej brak dźwięku powiadomienia.\n\nStuknij, aby otworzyć ustawienia powiadomień.</string>
+    <string name="notification_bg_sync_ticker">Sprawdzanie poczty: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_title">Sprawdzanie poczty</string>
+    <string name="notification_bg_send_ticker">Wysyłanie poczty: <xliff:g id="account">%s</xliff:g></string>
+    <string name="notification_bg_send_title">Wysyłanie poczty</string>
     <string name="notification_bg_title_separator">:</string>
     <string name="notification_channel_push_title">Synchronizuj (push)</string>
     <string name="notification_channel_push_description">Wyświetlane podczas oczekiwania na nowe wiadomości</string>
@@ -306,13 +306,13 @@
     <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nie można skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
     <string name="account_settings_push_advanced_title">Zaawansowane</string>
-    <string name="account_settings_title_fmt">Ustawienia ogólne</string>
-    <string name="account_settings_notify_label">Nowe wiadomości</string>
-    <string name="account_settings_notify_sync_label">Synchronizacja konta</string>
+    <string name="account_settings_title_fmt">Ustawienia konta</string>
+    <string name="account_settings_notify_label">Powiadomienia o nowej poczcie</string>
+    <string name="account_settings_notify_sync_label">Powiadomienia o synchronizacji</string>
     <string name="account_settings_email_label">Twój adres e-mail</string>
     <string name="account_settings_notify_summary">Powiadomiaj na pasku stanu, gdy jest nowa wiadomość</string>
     <string name="account_settings_notify_sync_summary">Powiadomiaj na pasku stanu, gdy przeprowadzasz sprawdzanie tego konta</string>
-    <string name="account_settings_notify_self_label">Moje wiadomości</string>
+    <string name="account_settings_notify_self_label">Uwzględnij pocztę wychodzącą</string>
     <string name="account_settings_notify_self_summary">Pokaż powiadomienie dla wiadomości wysłanych przeze mnie</string>
     <string name="account_notify_contacts_mail_only_label">Tylko kontakty</string>
     <string name="account_notify_contacts_mail_only_summary">Pokaż powiadomienia tylko dla wiadomości od znanych kontaktów</string>
@@ -329,7 +329,7 @@
     <string name="account_settings_show_pictures_never">Nie</string>
     <string name="account_settings_show_pictures_only_from_contacts">Od kontaktów</string>
     <string name="account_settings_show_pictures_always">Od każdego</string>
-    <string name="account_settings_composition">Tworzenie wiadomości</string>
+    <string name="account_settings_composition">Wysyłanie poczty</string>
     <string name="account_settings_default_quoted_text_shown_label">Cytuj oryginał</string>
     <string name="account_settings_default_quoted_text_shown_summary">Dołącz oryginalną wiadomość do swojej odpowiedzi.</string>
     <string name="account_settings_reply_after_quote_label">Odpowiedź pod cytatem</string>
@@ -485,15 +485,15 @@
     <string name="sort_by_flag">Gwiazdka</string>
     <string name="sort_by_unread">Przeczytane/nieprzeczytane</string>
     <string name="sort_by_attach">Załączniki</string>
-    <string name="account_delete_dlg_title">Usuwanie</string>
+    <string name="account_delete_dlg_title">Usuń konto</string>
     <string name="folder_list_filter_hint">Nazwa folderu zawiera</string>
     <string name="account_settings_signature__location_label">Pozycja podpisu</string>
     <string name="account_settings_signature__location_before_quoted_text">Przed cytowaną wiadomością</string>
     <string name="account_settings_signature__location_after_quoted_text">Pod cytowaną wiadomością</string>
-    <string name="setting_theme_global">Użyj stylu aplikacji</string>
-    <string name="setting_theme_dark">Ciemna</string>
-    <string name="setting_theme_light">Jasna</string>
-    <string name="setting_theme_follow_system">Użyj domyślnej systemowej</string>
+    <string name="setting_theme_global">Użyj motywu aplikacji</string>
+    <string name="setting_theme_dark">Ciemny</string>
+    <string name="setting_theme_light">Jasny</string>
+    <string name="setting_theme_follow_system">Użyj domyślnego systemu</string>
     <string name="display_preferences">Wyświetlanie</string>
     <string name="global_preferences">Globalne</string>
     <string name="debug_preferences">Debugowanie</string>
@@ -503,14 +503,14 @@
     <string name="accountlist_preferences">Lista kont</string>
     <string name="messagelist_preferences">Listy wiadomości</string>
     <string name="messageview_preferences">Wiadomości</string>
-    <string name="settings_theme_label">Kolorystyka</string>
-    <string name="settings_message_theme_label">Kolorystyka widoku wiadomości</string>
-    <string name="settings_compose_theme_label">Kolorystyka widoku tworzenia wiadomości</string>
+    <string name="settings_theme_label">Motyw</string>
+    <string name="settings_message_theme_label">Motyw widoku wiadomości</string>
+    <string name="settings_compose_theme_label">Motyw widoku tworzenia wiadomości</string>
     <string name="settings_language_label">Język</string>
     <string name="preference_search_no_results">Nie znaleziono ustawień</string>
-    <string name="settings_message_theme_selection_label">Stała kolorystyka widoku wiadomości</string>
-    <string name="settings_message_theme_selection_summary_off">Wybierz kolorystykę z poziomu widoku wiadomości</string>
-    <string name="settings_message_theme_selection_summary_on">Użyj kolorystyki wskazanej w konfiguracji</string>
+    <string name="settings_message_theme_selection_label">Stały motyw wiadomości</string>
+    <string name="settings_message_theme_selection_summary_off">Wybierz motyw z poziomu widoku wiadomości</string>
+    <string name="settings_message_theme_selection_summary_on">Użyj stałego motywu widoku wiadomości</string>
     <string name="setting_language_system">Domyślny systemowy</string>
     <string name="background_ops_label">Synchronizacja w tle</string>
     <string name="background_ops_never">Nigdy</string>
@@ -913,4 +913,17 @@
     <string name="archiving_not_available_for_this_account">Archiwizacja nie jest dostępna dla tego konta.</string>
     <string name="swipe_action_archive_folder_not_set">Skonfiguruj folder archiwum</string>
     <string name="debug_open_secret_debug_screen">Otwórz tajny ekran debugowania</string>
+    <string name="debug_invalidate_access_token_done">Token dostępu został unieważniony. Następne żądanie zostanie odświeżone.</string>
+    <string name="debug_invalidate_access_token_unavailable">Brak dostępnego tokenu OAuth dla tego konta.</string>
+    <string name="debug_invalidate_access_token_local">Test: unieważnij token dostępu (lokalnie)</string>
+    <string name="debug_invalidate_access_token_local_done">Zażądano lokalnego unieważnienia. Następne żądanie pobierze nowy token.</string>
+    <string name="debug_invalidate_access_token_server">Test: unieważnij token dostępu (serwer)</string>
+    <string name="debug_invalidate_access_token">Test: unieważnij token dostępu</string>
+    <string name="debug_invalidate_access_token_server_done">Zapisany token dostępu jest uszkodzony. Następne żądanie zakończy się niepowodzeniem i nastąpi odświeżenie.</string>
+    <string name="debug_force_auth_failure">Test: wymuś teraz błąd autoryzacji</string>
+    <string name="debug_force_auth_failure_done">Stan OAuth został wyczyszczony. Następne żądanie zakończy się niepowodzeniem.</string>
+    <string name="debug_force_auth_failure_unavailable">Brak dostępnej konfiguracji OAuth dla tego konta.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Nie można zmodyfikować zapisanego tokena dostępu. Spróbuj unieważnić lokalnie.</string>
+    <string name="debug_invalidate_access_token_already_modified">Zapisany token dostępu został już zmodyfikowany.</string>
+    <string name="message_view_menu_action_export_eml">Eksportuj jako EML</string>
 </resources>

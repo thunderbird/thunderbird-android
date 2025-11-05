@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_glance_widget_compose_action">撰写</string>
+    <string name="message_list_glance_widget_inbox_title">统一收件箱</string>
+    <string name="message_list_glance_widget_label">邮件列表</string>
+</resources>

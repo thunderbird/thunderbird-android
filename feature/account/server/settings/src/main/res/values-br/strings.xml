@@ -2,4 +2,6 @@
 <resources>
     <string name="account_server_settings_protocol_type_label">Fazi gant ar c\'homenad</string>
     <string name="account_server_settings_server_label">Dafariad</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_authentication_none">Hini ebet</string>
 </resources>

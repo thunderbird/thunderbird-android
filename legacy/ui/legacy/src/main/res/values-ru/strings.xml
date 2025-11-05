@@ -922,4 +922,17 @@
     <string name="swipe_action_change_swipe_gestures">Изменить \nжесты</string>
     <string name="archiving_not_available_for_this_account">Архивирование недоступно для этой учётной записи.</string>
     <string name="debug_open_secret_debug_screen">Экран отладки Open Secret</string>
+    <string name="debug_invalidate_access_token">Тест: недействительный токен доступа</string>
+    <string name="debug_invalidate_access_token_done">Токен доступа недействительный. Следующий запрос будет обновлён.</string>
+    <string name="debug_invalidate_access_token_unavailable">Токен OAuth недоступен для этой учётной записи.</string>
+    <string name="debug_invalidate_access_token_local">Тест: недействительный токен доступа (локально)</string>
+    <string name="debug_invalidate_access_token_local_done">Локально запрошено аннулирование. При следующем запросе будет получен новый токен.</string>
+    <string name="debug_invalidate_access_token_server">Тест: недействительный токен доступа (сервер)</string>
+    <string name="debug_invalidate_access_token_server_done">Сохраненный токен доступа повреждён. Следующий запрос завершится неудачно, затем будет обновлён.</string>
+    <string name="debug_force_auth_failure">Тест: принудительный сбой аутентификации</string>
+    <string name="debug_force_auth_failure_done">Состояние OAuth сброшено. Следующий запрос завершится неудачно.</string>
+    <string name="debug_force_auth_failure_unavailable">Для этой учётной записи недоступна настройка OAuth.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Невозможно изменить сохранённый токен доступа. Попробуйте локальное аннулирование.</string>
+    <string name="debug_invalidate_access_token_already_modified">Сохранённый токен доступа уже изменён.</string>
+    <string name="message_view_menu_action_export_eml">Экспорт как EML</string>
 </resources>

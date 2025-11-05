@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_description">Za vpis je zahtevana preusmeritev k ponudniku elektronske pošte. Programu je treba odobriti dostop do računa.</string>
-    <string name="account_oauth_sign_in_with_google_button">Prijavi se z Googlovim računom</string>
-    <string name="account_oauth_loading_error">Vpis z OAuth je spodletel</string>
+    <string name="account_oauth_sign_in_description">Preusmerili vas bomo k vašem e-poštnemu ponudniku. Programu morate odobriti dostop do svojega e-poštnega računa.</string>
+    <string name="account_oauth_sign_in_with_google_button">Vpiši se z Googlom</string>
+    <string name="account_oauth_loading_error">Vpis z OAuthom je spodletel.</string>
     <string name="account_oauth_error_canceled">Overitev je preklicana</string>
-    <string name="account_oauth_loading_message">Prijava z uporabo OAuth</string>
-    <string name="account_oauth_sign_in_button">Prijavi se</string>
+    <string name="account_oauth_loading_message">Vpisovanje z OAuthom</string>
+    <string name="account_oauth_sign_in_button">Vpis</string>
     <string name="account_oauth_error_failed">Avtorizacija ni uspela z naslednjo napako: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_not_supported">Ta ponudnik trenutno ne podpira OAuth 2.0.</string>
     <string name="account_oauth_error_browser_not_available">Aplikacija ni našla brskalnika, ki bi ga uporabila za odobritev dostopa do tvojega računa.</string>

@@ -63,4 +63,6 @@
         <item quantity="few">Vsake %d minute</item>
         <item quantity="other">Vsakih %d minut</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Vaše ime</string>
+    <string name="account_setup_options_your_name_error_required">Vaše ime je zahtevan podatek.</string>
 </resources>

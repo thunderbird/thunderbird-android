@@ -233,7 +233,7 @@
     <string name="general_settings_swipe_action_move">Mută</string>
     <!--Title of the setting to specify the density of the message list-->
     <string name="general_settings_message_list_density_title">Densitate</string>
-    <string name="general_settings_ui_density_compact">Compact</string>
+    <string name="general_settings_ui_density_compact">Compactă</string>
     <string name="general_settings_ui_density_default">Implicit</string>
     <string name="general_settings_ui_density_relaxed">Relaxat</string>
     <string name="global_settings_privacy_hide_useragent">Ascunde clientul de mail</string>
@@ -913,4 +913,17 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="archiving_not_available_for_this_account">Arhivarea nu este disponibilă pentru acest cont.</string>
     <string name="swipe_action_change_swipe_gestures">Schimbare \nGesturi de glisare</string>
     <string name="debug_open_secret_debug_screen">Deschide ecranul de depanare secret</string>
+    <string name="debug_invalidate_access_token">Test: Invalidare a jetonului de acces</string>
+    <string name="debug_invalidate_access_token_done">Jetonul de acces a fost invalidat. Următoarea solicitare va reîmprospăta pagina.</string>
+    <string name="debug_invalidate_access_token_unavailable">Nu există niciun jeton OAuth disponibil pentru acest cont.</string>
+    <string name="debug_invalidate_access_token_local">Test: Invalidarea jetonului de acces (local)</string>
+    <string name="debug_invalidate_access_token_local_done">S-a solicitat invalidarea locală. Următoarea solicitare va genera un nou jeton.</string>
+    <string name="debug_invalidate_access_token_server">Test: Invalidarea jetonului de acces (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Jetonul de acces stocat este corupt. Următoarea solicitare va eșua, apoi se va reactualiza.</string>
+    <string name="debug_force_auth_failure">Test: Forțează eșecul autentificării acum</string>
+    <string name="debug_force_auth_failure_done">Starea OAuth a fost ștersă. Următoarea solicitare va eșua.</string>
+    <string name="debug_force_auth_failure_unavailable">Nu există nicio configurație OAuth disponibilă pentru acest cont.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Nu s-a putut modifica jetonul de acces stocat. Încercați invalidarea locală.</string>
+    <string name="debug_invalidate_access_token_already_modified">Jetonul de acces stocat a fost deja modificat.</string>
+    <string name="message_view_menu_action_export_eml">Exportă ca EML</string>
 </resources>

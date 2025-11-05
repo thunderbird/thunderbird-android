@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="navigation_drawer_dropdown_action_settings">Settings</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Manage folders</string>
-    <string name="navigation_drawer_dropdown_unified_inbox_title">Unified Inbox</string>
+    <string name="navigation_drawer_dropdown_unified_inbox_title">Inbox</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Account list</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Unified Account</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>

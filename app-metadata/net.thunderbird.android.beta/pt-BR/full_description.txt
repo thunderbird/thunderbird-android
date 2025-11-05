@@ -1,43 +1,25 @@
-Ajude a tornar a próxima versão do Thunderbird a melhor possível baixando o Thunderbird Beta e tendo acesso antecipado aos recursos mais recentes e correções de bugs antes do lançamento oficial. Seus testes e feedback são importantes, então, por favor, reporte bugs, problemas e compartilhe suas opiniões conosco!
+Ajude a tornar a próxima versão do Thunderbird a melhor possível baixando o Thunderbird Beta e tendo acesso antecipado aos recursos mais recentes e correções de bugs antes do lançamento oficial. Seus testes e feedback são importantes, então por favor reporte bugs, problemas e compartilhe suas opiniões conosco!
 
-Encontre nosso rastreador de bugs, código-fonte e wiki em <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android</a>.
+Encontre nosso rastreador de bugs, código-fonte e wiki em <a href="https://github.com/thunderbird/thunderbird-android">https://github.com/thunderbird/thunderbird-android
+</a>.
 
-Estamos sempre felizes em receber novos desenvolvedores, designers, documentadores, tradutores, revisores de bugs e amigos. Visite <a href="https://thunderbird.net/participate">https://thunderbird.net/participate</a> para começar.
+Estamos sempre felizes em receber novos desenvolvedores, designers, redatores de documentação, tradutores, triadores de bugs e amigos. Visite <a href="https://thunderbird.net/participate">https://thunderbird.net/participate
+</a> para começar.
 
-O Thunderbird é um poderoso aplicativo de e-mail focado em privacidade. Gerencie facilmente várias contas de e-mail em um único aplicativo, com a opção de Caixa de Entrada Unificada para máxima produtividade. Construído com tecnologia de código aberto e apoiado por uma equipe dedicada de desenvolvedores, junto a uma comunidade global de voluntários, o Thunderbird nunca trata seus dados privados como produto. É financiado exclusivamente por contribuições dos usuários, então você nunca verá anúncios misturados aos seus e-mails.
+O Thunderbird é um poderoso aplicativo de e-mail focado em privacidade. Gerencie múltiplas contas de e-mail em um único app, com a opção de Caixa de Entrada Unificada para máxima produtividade. Construído com tecnologia open source e apoiado por uma equipe dedicada de desenvolvedores junto a uma comunidade global de voluntários, o Thunderbird nunca trata seus dados privados como produto. Suportado apenas por contribuições financeiras dos nossos usuários, para que você nunca mais veja anúncios misturados aos seus e-mails.
 
-O que você pode fazer
+<b>O que você pode fazer</b>
 
-Diga adeus a múltiplos apps e webmail. Use um único aplicativo, com a Caixa de Entrada Unificada opcional, para agilizar seu dia.
+<ul> <li>Abandone múltiplos apps e webmails. Use um único app, com a opção de Caixa de Entrada Unificada, para otimizar seu dia.</li> <li>Desfrute de um cliente de e-mail que respeita sua privacidade e nunca coleta ou vende seus dados pessoais. Conectamos você diretamente ao seu provedor de e-mail. Só isso!</li> <li>Eleve sua privacidade usando criptografia de e-mail OpenPGP (PGP/MIME) com o app “OpenKeychain”, para criptografar e descriptografar suas mensagens.</li> <li>Escolha sincronizar seu e-mail instantaneamente, em intervalos definidos ou sob demanda. A forma como você verifica seu e-mail é você quem decide!</li> <li>Encontre suas mensagens importantes usando busca local e no servidor.</li> </ul>
 
-Aproveite um cliente de e-mail que respeita sua privacidade e nunca coleta ou vende seus dados pessoais. Conectamos você diretamente ao seu provedor de e-mail. Só isso!
+<b>Compatibilidade</b>
 
-Leve sua privacidade a outro nível usando criptografia de e-mails OpenPGP (PGP/MIME) com o app OpenKeychain, para criptografar e descriptografar suas mensagens.
+<ul> <li>O Thunderbird funciona com os protocolos IMAP e POP3, suportando uma ampla variedade de provedores de e-mail, incluindo Gmail, Outlook, Yahoo Mail, iCloud e mais.</li> </ul>
 
-Escolha sincronizar seus e-mails instantaneamente, em intervalos definidos ou sob demanda. Você decide como quer checar seu e-mail!
+<b>Por que usar o Thunderbird</b>
 
-Encontre suas mensagens importantes usando pesquisa local ou no servidor.
+<ul> <li>Nome de confiança em e-mails por mais de 20 anos – agora no Android.</li> <li>O Thunderbird é totalmente financiado por contribuições voluntárias dos nossos usuários. Não coletamos seus dados pessoais. Você nunca é o produto.</li> <li>Desenvolvido por uma equipe tão focada em eficiência quanto você. Queremos que você gaste o mínimo de tempo usando o app, obtendo o máximo em retorno.</li> <li>Com colaboradores de todo o mundo, o Thunderbird para Android foi traduzido para mais de 20 idiomas.</li> <li>Suportado pela MZLA Technologies Corporation, uma subsidiária integral da Mozilla Foundation.</li> </ul>
 
-Compatibilidade
+<b>Open Source e Comunidade</b>
 
-O Thunderbird funciona com os protocolos IMAP e POP3, suportando uma ampla gama de provedores de e-mail, incluindo Gmail, Outlook, Yahoo Mail, iCloud e outros.
-
-Por que usar o Thunderbird
-
-Um nome de confiança em e-mails por mais de 20 anos – agora disponível para Android.
-
-O Thunderbird é totalmente financiado por contribuições voluntárias dos usuários. Não mineramos seus dados pessoais. Você nunca é o produto.
-
-Criado por uma equipe tão focada em eficiência quanto você. Queremos que você passe o mínimo de tempo usando o app, aproveitando o máximo dele.
-
-Com colaboradores de todo o mundo, o Thunderbird para Android foi traduzido para mais de 20 idiomas.
-
-Suportado pela MZLA Technologies Corporation, subsidiária integral da Mozilla Foundation.
-
-Código aberto e comunidade
-
-O Thunderbird é gratuito e de código aberto, o que significa que seu código está disponível para ver, modificar, usar e compartilhar livremente. Sua licença garante que ele será sempre gratuito. Você pode pensar no Thunderbird como um presente de milhares de colaboradores para você.
-
-Desenvolvemos de forma aberta, com atualizações regulares e transparentes em nosso blog e listas de discussão.
-
-Nosso suporte aos usuários é alimentado por nossa comunidade global. Encontre as respostas que precisa ou participe como colaborador – seja respondendo perguntas, traduzindo o app ou divulgando o Thunderbird para amigos e familiares.
+<ul> <li>O Thunderbird é gratuito e open source, o que significa que seu código está disponível para ser visto, modificado, usado e compartilhado livremente. Sua licença também garante que ele será gratuito para sempre. Você pode pensar no Thunderbird como um presente de milhares de colaboradores para você.</li> <li>Desenvolvemos de forma aberta com atualizações regulares e transparentes em nosso blog e listas de discussão.</li> <li>Nosso suporte ao usuário é impulsionado por nossa comunidade global. Encontre as respostas que precisa ou participe como colaborador – seja respondendo perguntas, traduzindo o app ou divulgando o Thunderbird para amigos e familiares.</li> </ul>

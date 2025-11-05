@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Conectează-te cu Google</string>
-    <string name="account_oauth_loading_error">Conectarea OAuth a eșuat</string>
+    <string name="account_oauth_loading_error">Conectarea cu OAuth a eșuat</string>
     <string name="account_oauth_error_failed">Autorizarea a eșuat cu următoarea eroare: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Aplicația nu a putut găsi un browser pe care să îl folosească pentru a acorda acces la cont.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 nu este acceptat în prezent cu acest furnizor.</string>
     <string name="account_oauth_error_canceled">Autorizație anulată</string>
     <string name="account_oauth_loading_message">Conectare folosind OAuth</string>
-    <string name="account_oauth_sign_in_description">Te vom redirecționa către furnizorul de e-mail pentru a te conecta. Trebuie să acorzi aplicației acces la contul de e-mail.</string>
-    <string name="account_oauth_sign_in_button">Conectează-te</string>
+    <string name="account_oauth_sign_in_description">Vă vom redirecționa către furnizorul dvs. de poștă electronică pentru a vă conecta. Trebuie să acordați aplicației acces la contul dvs. de poștă electronică.</string>
+    <string name="account_oauth_sign_in_button">Conectați-vă</string>
     <string name="account_oauth_google_sign_in_support_text">Dacă întâmpini probleme când te conectezi cu Google, consultă {placeHolder}.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">articol de suport</string>
 </resources>

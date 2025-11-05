@@ -32,4 +32,6 @@
     <string name="account_server_settings_security_label">Turvalisus</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Vigane ip-aadress või serveri nimi</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Saada kliendi teave</string>
+    <string name="account_server_settings_password_authentication_failed">Autentimine ei õnnestunud!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Ei õnnestu käivitada biomeetrilise tuvastamise päringut.</string>
 </resources>

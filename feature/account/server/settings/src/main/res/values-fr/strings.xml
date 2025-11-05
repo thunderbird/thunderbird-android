@@ -32,4 +32,6 @@
     <string name="account_server_settings_security_label">Sécurité</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Adresse IP ou nom d’hôte invalide</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Envoyer les renseignements du client</string>
+    <string name="account_server_settings_password_authentication_failed">Échec d’authentification</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Impossible de lancer l’invite biométrique.</string>
 </resources>

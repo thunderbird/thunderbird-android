@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="onboarding_migration_thunderbird_qr_code_import_title">क्या आप पहले से ही डेस्कटॉप पर थंडरबर्ड का उपयोग कर रहे हैं?</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">क्यू. आर. कोड स्कैन करके आसानी से अपने खाते की सेटिंग आयात करें।</string>
+</resources>

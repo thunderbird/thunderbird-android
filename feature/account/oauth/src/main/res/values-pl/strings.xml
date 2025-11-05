@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Zaloguj się przez Google</string>
-    <string name="account_oauth_loading_error">Logowanie OAuth nie powiodło się</string>
+    <string name="account_oauth_loading_error">Logowanie OAuth się nie powiodło</string>
     <string name="account_oauth_error_failed">Autoryzacja nie powiodła się z powodu następującego błędu: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Aplikacja nie mogła znaleźć przeglądarki, za pomocą której można uzyskać dostęp do Twojego konta.</string>
     <string name="account_oauth_error_not_supported">Ten dostawca nie obsługuje obecnie protokołu OAuth 2.0.</string>
     <string name="account_oauth_error_canceled">Autoryzacja anulowana</string>
     <string name="account_oauth_loading_message">Logowanie przy użyciu OAuth</string>
-    <string name="account_oauth_sign_in_description">Przekierujemy Cię do Twojego dostawcy poczty e-mail, żebyś się zalogował. Musisz przyznać aplikacji dostęp do swojego konta e-mail.</string>
+    <string name="account_oauth_sign_in_description">Przekierujemy Cię do dostawcy poczty e-mail, aby się zalogować. Musisz przyznać aplikacji dostęp do swojego konta e-mail.</string>
     <string name="account_oauth_sign_in_button">Zaloguj się</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">artykułem pomocy</string>
     <string name="account_oauth_google_sign_in_support_text">Jeśli masz problemy z logowaniem się za pomocą konta Google, zapoznaj się z naszym {placeHolder}.</string>

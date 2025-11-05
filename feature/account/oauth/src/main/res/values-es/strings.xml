@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Iniciar sesión con Google</string>
-    <string name="account_oauth_loading_error">El inicio de sesión mediante OAuth ha fallado</string>
+    <string name="account_oauth_loading_error">No se pudo iniciar sesión con OAuth</string>
     <string name="account_oauth_error_failed">La autorización ha fallado con el siguiente error: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">La aplicación no ha encontrado ningún navegador con el que abrir una interfaz para dar acceso a tu cuenta.</string>
     <string name="account_oauth_error_not_supported">Este servicio no parece que sea compatible con OAuth 2.0 para el inicio de sesión.</string>
     <string name="account_oauth_error_canceled">Se ha abandonado la autorización</string>
-    <string name="account_oauth_loading_message">Iniciar sesión mediante OAuth</string>
-    <string name="account_oauth_sign_in_description">Te redirigiremos a la web de tu proveedor de correo para que escribas tus credenciales. Tienes que dar acceso a la aplicación para poder acceder a tus datos.</string>
+    <string name="account_oauth_loading_message">Iniciar sesión usando OAuth</string>
+    <string name="account_oauth_sign_in_description">Te redirigiremos a tu proveedor de correo electrónico para iniciar sesión. Necesitarás darnos acceso a tu cuenta de correo electrónico.</string>
     <string name="account_oauth_sign_in_button">Iniciar sesión</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">artículo de soporte</string>
     <string name="account_oauth_google_sign_in_support_text">Si estás experimentando problemas iniciando sesión con Google, consulta nuestro {placeHolder}.</string>

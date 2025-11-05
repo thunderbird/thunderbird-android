@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_oauth_sign_in_description">သ္ဂောံလုပ် အဳမေလ်ဂွံဂှ် ပိုဲတအ်ပၠံၚ်ဗ္စိုပ်ဏာကဵု ဌာနအဳမေလ်မၞးရောၚ်။. မၞးသ္ဒးကဵုအခေါၚ်သုၚ်စောဲအေပ်ကု အဳမေလ်မၞးရောၚ်။.</string>
+    <string name="account_oauth_sign_in_button">လုပ်</string>
+</resources>

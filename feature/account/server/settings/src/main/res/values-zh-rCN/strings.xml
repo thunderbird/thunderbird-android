@@ -30,6 +30,8 @@
     <string name="account_server_settings_password_authentication_title">验证您的身份</string>
     <string name="account_server_settings_password_authentication_subtitle">解锁以查看您的密码</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">要在此查看您的密码，请启用此设备的屏幕锁。</string>
-    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">无效 IP 或主机名</string>
+    <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP 或主机名无效</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">发送客户端信息</string>
+    <string name="account_server_settings_password_authentication_failed">身份验证失败！</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">无法启动生物识别验证提示。</string>
 </resources>

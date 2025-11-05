@@ -141,7 +141,7 @@
     <string name="debug_enable_debug_logging_title">Activar registro de depuración</string>
     <string name="debug_enable_debug_logging_summary">Registrar el estado del programa con información adicional para diagnosticar posibles problemas</string>
     <string name="debug_enable_sensitive_logging_title">Incluir información sensible</string>
-    <string name="debug_enable_sensitive_logging_summary">Las contraseñas pueden aparecer tal cual en los registros</string>
+    <string name="debug_enable_sensitive_logging_summary">Las contraseñas pueden aparecer tal cual en los registros.</string>
     <string name="debug_export_logs_title">Exportar registros de depuración</string>
     <string name="debug_export_logs_success">Se han exportado correctamente. Ten en cuenta que los registros pueden contener datos privados; así que ten cuidado y asegúrate de que te fias de las personas a las que se los mandas.</string>
     <string name="debug_export_logs_failure">No se han podido exportar los registros.</string>
@@ -908,4 +908,17 @@
     <string name="swipe_action_change_swipe_gestures">Cambiar \nGestos al deslizar</string>
     <string name="archiving_not_available_for_this_account">El archivamiento no está disponible para esta cuenta.</string>
     <string name="debug_open_secret_debug_screen">Abrir la pantalla secreta de desarrollo</string>
+    <string name="debug_invalidate_access_token">Prueba: Invalidar Token de Acceso</string>
+    <string name="debug_invalidate_access_token_done">Token de acceso invalidado. La próxima petición lo actualizará.</string>
+    <string name="debug_invalidate_access_token_unavailable">No existe ningún token OAuth para esta cuenta.</string>
+    <string name="debug_invalidate_access_token_local">Prueba: Invalidar token de acceso (local)</string>
+    <string name="debug_invalidate_access_token_local_done">Petición para invalidar en local. La próxima petición recuperará un nuevo token.</string>
+    <string name="debug_invalidate_access_token_server">Prueba: Invalidar token de acceso (servidor)</string>
+    <string name="debug_invalidate_access_token_server_done">El token de acceso almacenado está corrupto. La siguiente petición fallará y actualizará el token.</string>
+    <string name="debug_force_auth_failure">Prueba: Forzar un fallo de autenticación</string>
+    <string name="debug_force_auth_failure_done">Estado de OAuth borrado. La próxima petición fallará.</string>
+    <string name="debug_force_auth_failure_unavailable">No hay ninguna configuración OAuth para esta cuenta.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">No se pudo almacenar el token de acceso. Pruebe a invalidarlo localmente.</string>
+    <string name="debug_invalidate_access_token_already_modified">El token de acceso almacenado ya ha sido modificado.</string>
+    <string name="message_view_menu_action_export_eml">Exportar como EML</string>
 </resources>

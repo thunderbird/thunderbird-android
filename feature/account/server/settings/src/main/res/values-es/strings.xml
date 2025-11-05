@@ -21,7 +21,7 @@
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protocolo</string>
     <string name="account_server_settings_password_authentication_subtitle">Para ver tu contraseña tienes que verificar tu identidad</string>
-    <string name="account_server_settings_username_label">Usuario</string>
+    <string name="account_server_settings_username_label">Nombre de usuario</string>
     <string name="account_server_settings_validation_error_port_invalid">El número de puerto no parece correcto (van de 1 a 65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Certificado de usuario</string>

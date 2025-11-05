@@ -54,4 +54,6 @@
     <plurals name="account_setup_options_email_display_count_messages">
         <item quantity="other">メッセージ %d 通</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">あなたのお名前</string>
+    <string name="account_setup_options_your_name_error_required">あなたのお名前を入力してください。</string>
 </resources>
