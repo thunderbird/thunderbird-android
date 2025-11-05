@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Allmänna inställningar</string>
+    <string name="account_settings_general_profile_indicator_title">Profilindikator</string>
+    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
+    <string name="account_settings_general_profile_indicator_image">Bild</string>
+    <string name="account_settings_general_profile_indicator_icon">Ikon</string>
+    <string name="account_settings_general_name_title">Kontonamn</string>
+    <string name="account_settings_general_name_description">Namnet som är kopplat till ditt konto.</string>
+    <string name="account_settings_general_color_title">Kontofärg</string>
+    <string name="account_settings_general_color_description">Accentfärgen för det här kontot som används i mappar och kontolistor.</string>
 </resources>

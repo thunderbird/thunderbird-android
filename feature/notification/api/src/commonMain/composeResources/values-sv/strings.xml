@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Synkronisera (Push)</string>
     <string name="notification_channel_push_description">Visas i väntan på nya meddelanden</string>
@@ -34,4 +34,20 @@
     <string name="notification_action_archive">Arkivera</string>
     <string name="notification_action_archive_all">Arkivera alla</string>
     <string name="notification_action_spam">Skräppost</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentisering misslyckades för %1$s. Uppdatera dina inställningar för inkommande server.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentisering misslyckades för %1$s. Uppdatera dina inställningar för utgående server.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nytt meddelande</item>
+        <item quantity="other">%1$d nya meddelanden</item>
+    </plurals>
+    <string name="notification_action_retry">Försök igen</string>
+    <string name="notification_action_update_server_settings">Uppdatera serverinställningar</string>
+    <string name="notification_action_assign_sent_folder">Tilldela mapp</string>
+    <string name="banner_inline_notification_check_error_notifications">Kontrollera felmeddelanden</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Vissa meddelanden kräver din uppmärksamhet.</string>
+    <string name="banner_inline_notification_open_notifications">Öppna meddelanden</string>
+    <string name="banner_inline_notification_learn_more">Läs mer</string>
+    <string name="banner_inline_notification_view_support_article">Visa supportartikel</string>
+    <string name="sent_folder_not_found_title">Mappen Skickat är inte tillgänglig.</string>
 </resources>
