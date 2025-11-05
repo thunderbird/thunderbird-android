@@ -522,6 +522,7 @@ internal class DrawerViewModelTest {
             color = 0,
             unreadMessageCount = unreadCount,
             starredMessageCount = starredCount,
+            hasError = false,
         )
     }
 

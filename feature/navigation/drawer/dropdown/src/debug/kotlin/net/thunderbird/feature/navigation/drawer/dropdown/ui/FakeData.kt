@@ -42,6 +42,7 @@ internal object FakeData {
     val UNIFIED_DISPLAY_ACCOUNT = UnifiedDisplayAccount(
         unreadMessageCount = 224,
         starredMessageCount = 42,
+        hasError = false,
     )
 
     val MAIL_DISPLAY_ACCOUNT = MailDisplayAccount(
@@ -51,6 +52,7 @@ internal object FakeData {
         color = Color.Red.toArgb(),
         unreadMessageCount = 0,
         starredMessageCount = 0,
+        hasError = false,
     )
 
     val FOLDER = Folder(
@@ -156,6 +158,7 @@ internal object FakeData {
                 color = Color.Green.toArgb(),
                 unreadMessageCount = 2,
                 starredMessageCount = 0,
+                hasError = false,
             ),
             MailDisplayAccount(
                 id = "account2",
@@ -164,6 +167,7 @@ internal object FakeData {
                 color = Color.Red.toArgb(),
                 unreadMessageCount = 12,
                 starredMessageCount = 0,
+                hasError = false,
             ),
             MailDisplayAccount(
                 id = "account3",
@@ -172,6 +176,7 @@ internal object FakeData {
                 color = Color.Cyan.toArgb(),
                 unreadMessageCount = 0,
                 starredMessageCount = 0,
+                hasError = false,
             ),
         )
     }
