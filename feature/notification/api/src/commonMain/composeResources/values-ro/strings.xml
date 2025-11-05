@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sincronizare (Push)</string>
+    <string name="notification_channel_push_description">Afișat când se așteaptă mesaje noi</string>
+    <string name="notification_channel_messages_title">Mesaje</string>
+    <string name="notification_channel_messages_description">Notificări asociate cu mesaje</string>
+    <string name="notification_channel_miscellaneous_title">Diverse</string>
+    <string name="notification_channel_miscellaneous_description">Notificări diverse ca erori etc.</string>
+    <string name="notification_notify_error_title">Eroare de notificare</string>
+    <string name="notification_notify_error_text">S-a produs o eroare în timpul încercării de a crea o notificare de sistem pentru un mesaj nou. Motivul este cel mai probabil lipsa unui sunet de notificare.\n\nApasă pentru a deschide setările de notificare.</string>
+    <string name="notification_authentication_error_title">Autentificarea a eșuat</string>
+    <string name="notification_certificate_error_public">Eroare de certificat</string>
+    <string name="notification_certificate_error_title">Eroare de certificat pentru %1$s</string>
+    <string name="notification_certificate_error_text">Verifică setările serverului</string>
+    <string name="notification_bg_sync_ticker">Se verifică emailul: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Se verifică emailul</string>
+    <string name="notification_bg_send_ticker">Se trimite emailul: %1$s</string>
+    <string name="notification_bg_send_title">Se trimite emailul</string>
+    <string name="send_failure_subject">Eșuare la trimiterea unor mesaje</string>
+    <string name="notification_additional_messages">+ %1$d mai multe %2$s</string>
+    <string name="push_notification_state_initializing">Inițializare…</string>
+    <string name="push_notification_state_listening">Așteptând noi e-mailuri</string>
+    <string name="push_notification_state_wait_background_sync">Adormire până când este permisă sincronizarea în fundal</string>
+    <string name="push_notification_state_wait_network">În așteptare până când rețeaua este disponibilă</string>
+    <string name="push_notification_state_alarm_permission_missing">Lipsește permisiunea de a programa alarme</string>
+    <string name="push_notification_info">Apasă pentru a afla mai multe.</string>
+    <string name="push_notification_grant_alarm_permission">Atinge pentru a acorda permisiunea.</string>
+    <string name="push_info_disable_push_action">Dezactivare Push</string>
+    <string name="notification_action_reply">Răspunde</string>
+    <string name="notification_action_mark_as_read">Marchează ca citit</string>
+    <string name="notification_action_mark_all_as_read">Marchează totul ca citit</string>
+    <string name="notification_action_delete">Șterge</string>
+    <string name="notification_action_delete_all">Șterge tot</string>
+    <string name="notification_action_archive">Arhivă</string>
+    <string name="notification_action_archive_all">Arhivează tot</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

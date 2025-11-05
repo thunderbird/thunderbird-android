@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Đồng bộ hóa (Push)</string>
+    <string name="notification_channel_push_description">Hiển thị khi chờ tin nhắn mới</string>
+    <string name="notification_channel_messages_title">Tin nhắn</string>
+    <string name="notification_channel_messages_description">Thông báo liên quan đến tin nhắn</string>
+    <string name="notification_channel_miscellaneous_title">Khác</string>
+    <string name="notification_channel_miscellaneous_description">Thông báo khác như lỗi, v.v.</string>
+    <string name="notification_notify_error_title">Thông báo lỗi</string>
+    <string name="notification_notify_error_text">Có lỗi xảy ra khi tạo thông báo hệ thống cho tin nhắn mới. Nguyên nhân có thể do thiếu âm thanh thông báo.
+\n
+\nNhấn để mở thiết đặt thông báo.</string>
+    <string name="notification_authentication_error_title">Xác thực không thành công</string>
+    <string name="notification_certificate_error_public">Lỗi xác thực</string>
+    <string name="notification_certificate_error_title">Lỗi xác thực đối với %1$s</string>
+    <string name="notification_certificate_error_text">Kiểm tra các thiết đặt máy chủ bạn đã nhập</string>
+    <string name="notification_bg_sync_ticker">Đang kiểm tra thư cho: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Kiểm tra thư</string>
+    <string name="notification_bg_send_ticker">Đang gửi thư: %1$s</string>
+    <string name="notification_bg_send_title">Đang gửi thư</string>
+    <string name="send_failure_subject">Không gửi được một số tin nhắn</string>
+    <string name="notification_additional_messages">+ %1$d thêm cho %2$s</string>
+    <string name="push_notification_state_initializing">Đang hình thành…</string>
+    <string name="push_notification_state_listening">Đang đợi email mới</string>
+    <string name="push_notification_state_wait_background_sync">Đang ngủ cho đến khi đồng bộ nền được cho phép</string>
+    <string name="push_notification_state_wait_network">Đang ngủ đến khi có kết nối mạng</string>
+    <string name="push_notification_state_alarm_permission_missing">Thiếu quyền cho phép đặt báo thức</string>
+    <string name="push_notification_info">Nhấn để đọc thêm.</string>
+    <string name="push_notification_grant_alarm_permission">Nhấn để cấp quyền.</string>
+    <string name="push_info_disable_push_action">Vô hiệu hóa Đẩy</string>
+    <string name="notification_action_reply">Trả lời</string>
+    <string name="notification_action_mark_as_read">Đánh dấu đã đọc</string>
+    <string name="notification_action_mark_all_as_read">Đánh Dấu Tất Cả Đã Đọc</string>
+    <string name="notification_action_delete">Xóa</string>
+    <string name="notification_action_delete_all">Xóa tất cả</string>
+    <string name="notification_action_archive">Lưu trữ</string>
+    <string name="notification_action_archive_all">Lưu trữ tất cả</string>
+    <string name="notification_action_spam">Thư rác</string>
+</resources>

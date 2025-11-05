@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">同期 (プッシュ)</string>
+    <string name="notification_channel_push_description">新着メッセージの待機中に表示します</string>
+    <string name="notification_channel_messages_title">メッセージ</string>
+    <string name="notification_channel_messages_description">メッセージに関連した通知</string>
+    <string name="notification_channel_miscellaneous_title">その他</string>
+    <string name="notification_channel_miscellaneous_description">エラーなどその他さまざまな通知</string>
+    <string name="notification_notify_error_title">通知エラー</string>
+    <string name="notification_notify_error_text">新着メッセージのシステム通知の作成中にエラーが発生しました。通知サウンドが存在しないことが原因と思われます。
+\n
+\nタップして通知設定を開いてください。</string>
+    <string name="notification_authentication_error_title">認証に失敗しました</string>
+    <string name="notification_certificate_error_public">証明書エラー</string>
+    <string name="notification_certificate_error_title">%1$s の証明書エラー</string>
+    <string name="notification_certificate_error_text">サーバーの設定を確認してください</string>
+    <string name="notification_bg_sync_ticker">メール確認中: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">メール確認中</string>
+    <string name="notification_bg_send_ticker">メール送信中: %1$s</string>
+    <string name="notification_bg_send_title">メール送信中</string>
+    <string name="send_failure_subject">メール送信に失敗しました</string>
+    <string name="notification_additional_messages">+ %1$d 続く %2$s</string>
+    <string name="push_notification_state_initializing">初期化中…</string>
+    <string name="push_notification_state_listening">新着メール待機中</string>
+    <string name="push_notification_state_wait_background_sync">バックグラウンド同期が許可されるまでスリープ中</string>
+    <string name="push_notification_state_wait_network">ネットワークが利用できるようになるまでスリープ中</string>
+    <string name="push_notification_state_alarm_permission_missing">アラームを設定する権限がありません</string>
+    <string name="push_notification_info">タップすると詳細を表示します。</string>
+    <string name="push_notification_grant_alarm_permission">タップして権限を付与してください。</string>
+    <string name="push_info_disable_push_action">プッシュ同期を無効化</string>
+    <string name="notification_action_reply">返信</string>
+    <string name="notification_action_mark_as_read">既読</string>
+    <string name="notification_action_mark_all_as_read">すべて既読</string>
+    <string name="notification_action_delete">削除</string>
+    <string name="notification_action_delete_all">すべて削除</string>
+    <string name="notification_action_archive">アーカイブ</string>
+    <string name="notification_action_archive_all">すべてアーカイブ</string>
+    <string name="notification_action_spam">迷惑メール</string>
+</resources>

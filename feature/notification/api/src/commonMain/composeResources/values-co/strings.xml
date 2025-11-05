@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sincrunizà (Catapughjà)</string>
+    <string name="notification_channel_push_description">Affissatu durante l’attesa di i messaghji novi</string>
+    <string name="notification_channel_messages_title">Messaghji</string>
+    <string name="notification_channel_messages_description">Nutificazioni relative à i messaghji</string>
+    <string name="notification_channel_miscellaneous_title">Diversi</string>
+    <string name="notification_channel_miscellaneous_description">Nutificazioni diverse tale chì sbaglii, ecc.</string>
+    <string name="notification_notify_error_title">Sbagliu di nutificazione</string>
+    <string name="notification_notify_error_text">Un sbagliu hè accadutu pruvendu di creà una nutificazione di sistema per un messaghju novu. A ragione prubabile hè l’assenza di sonu di nutificazione.
+\n
+\nPicchichjà per apre i parametri di nutificazione.</string>
+    <string name="notification_authentication_error_title">Fiascu d’autenticazione</string>
+    <string name="notification_certificate_error_public">Sbagliu di certificatu</string>
+    <string name="notification_certificate_error_title">Sbagliu di certificatu per %1$s</string>
+    <string name="notification_certificate_error_text">Verificate i vostri parametri di servitore</string>
+    <string name="notification_bg_sync_ticker">Rileva di i messaghji : %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Rileva di i messaghji</string>
+    <string name="notification_bg_send_ticker">Inviu di i messaghji : %1$s</string>
+    <string name="notification_bg_send_title">Inviu di i messaghji</string>
+    <string name="send_failure_subject">Fiascu per mandà certi messaghji</string>
+    <string name="notification_additional_messages">+ %1$d di più nant’à %2$s</string>
+    <string name="push_notification_state_initializing">Iniziu…</string>
+    <string name="push_notification_state_listening">In attesa di i messaghji novi</string>
+    <string name="push_notification_state_wait_background_sync">Inattiva finchè a sincrunizazione in tacca di sfondulu sia permessa</string>
+    <string name="push_notification_state_wait_network">Inattiva finchè a reta sia dispunibule</string>
+    <string name="push_notification_state_alarm_permission_missing">Un permessu hè assente per pianificà l’alarme</string>
+    <string name="push_notification_info">Tuccà per sapene di più.</string>
+    <string name="push_notification_grant_alarm_permission">Tuccà per cunsente u permessu.</string>
+    <string name="push_info_disable_push_action">Disattivà a catapughjata</string>
+    <string name="notification_action_reply">Risponde</string>
+    <string name="notification_action_mark_as_read">Marcà cum’è lettu</string>
+    <string name="notification_action_mark_all_as_read">Tuttu marcà cum’è lettu</string>
+    <string name="notification_action_delete">Squassà</string>
+    <string name="notification_action_delete_all">Tuttu squassà</string>
+    <string name="notification_action_archive">Archiviu</string>
+    <string name="notification_action_archive_all">Tuttu in archiviu</string>
+    <string name="notification_action_spam">Merzaghju</string>
+</resources>

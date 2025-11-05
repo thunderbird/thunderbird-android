@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synchronizovať (Push)</string>
+    <string name="notification_channel_push_description">Zobrazené po dobu čakania na nové správy</string>
+    <string name="notification_channel_messages_title">Správy</string>
+    <string name="notification_channel_messages_description">Oznámenia súvisiace so správami</string>
+    <string name="notification_channel_miscellaneous_title">Rôzne</string>
+    <string name="notification_channel_miscellaneous_description">Rôzne oznámenia, napr. chyby atď.</string>
+    <string name="notification_notify_error_title">Chyba oznámení</string>
+    <string name="notification_notify_error_text">Vyskytla sa chyba počas pokusu o vytvorenie notifikácie pre noú správu. Dôvodom je pravdepodobne nenastavený zvuk notifikácie.\n\nKliknite pre otvorenie nastavení notifikácií.</string>
+    <string name="notification_authentication_error_title">Overenie zlyhalo</string>
+    <string name="notification_certificate_error_public">Chyba certifikátu</string>
+    <string name="notification_certificate_error_title">Chyba certifikátu pre %1$s</string>
+    <string name="notification_certificate_error_text">Skontrolujte nastavenia servera</string>
+    <string name="notification_bg_sync_ticker">Kontrolovanie pošty: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Kontrolovanie pošty</string>
+    <string name="notification_bg_send_ticker">Odosielanie pošty: %1$s</string>
+    <string name="notification_bg_send_title">Odosielanie pošty</string>
+    <string name="send_failure_subject">Nepodarilo sa odoslať niektoré správy</string>
+    <string name="notification_additional_messages">+ %1$d ďalších v %2$s</string>
+    <string name="push_notification_state_initializing">Inicializujem…</string>
+    <string name="push_notification_state_listening">Čakám na nové e-maily</string>
+    <string name="push_notification_state_wait_background_sync">Pozastavený pokiaľ nebude povolená synchronizácia na pozadí</string>
+    <string name="push_notification_state_wait_network">Pozastavený pokiaľ nebude dostupná sieť</string>
+    <string name="push_notification_state_alarm_permission_missing">Chýbajúce oprávnenie na nastavovanie alarmov</string>
+    <string name="push_notification_info">Kliknite aby ste sa dozvedeli viac.</string>
+    <string name="push_notification_grant_alarm_permission">Kliknite na udelenie oprávnení.</string>
+    <string name="push_info_disable_push_action">Vypnúť Push</string>
+    <string name="notification_action_reply">Odpovedať</string>
+    <string name="notification_action_mark_as_read">Označiť ako prečítané</string>
+    <string name="notification_action_mark_all_as_read">Označiť všetky ako prečítané</string>
+    <string name="notification_action_delete">Vymazať</string>
+    <string name="notification_action_delete_all">Vymazať všetko</string>
+    <string name="notification_action_archive">Archivovať</string>
+    <string name="notification_action_archive_all">Archivovať všetko</string>
+    <string name="notification_action_spam">Nevyžiadaná pošta</string>
+</resources>

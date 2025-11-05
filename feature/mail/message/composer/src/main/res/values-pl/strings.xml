@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Nie znaleziono folderu wysłanych</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Aby zapisać wiadomość e-mail po jej wysłaniu, ustaw folder „Wysłane” w ustawieniach konta.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Przypisz folder wysłanych</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Anuluj</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Wyślij i usuń</string>
+</resources>

@@ -9,6 +9,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.feature.notification.api.NotificationId
+import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.content.SystemNotification
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.style.SystemNotificationStyle
@@ -20,22 +21,25 @@ private const val TAG = "AndroidSystemNotificationNotifier"
 internal class AndroidSystemNotificationNotifier(
     private val logger: Logger,
     private val applicationContext: Context,
+    private val notificationRegistry: NotificationRegistry,
     private val notificationActionCreator: NotificationActionCreator<SystemNotification>,
 ) : SystemNotificationNotifier {
     private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(applicationContext)
 
     override suspend fun show(
-        id: NotificationId,
         notification: SystemNotification,
-    ) {
-        logger.debug(TAG) { "show() called with: id = $id, notification = $notification" }
+    ): NotificationId {
+        logger.debug(TAG) { "show() called with: notification = $notification" }
+        val id = notificationRegistry.register(notification)
         val androidNotification = notification.toAndroidNotification()
         notificationManager.notify(id.value, androidNotification)
+        return id
     }
 
     override suspend fun dismiss(id: NotificationId) {
         logger.debug(TAG) { "dismiss() called with: id = $id" }
         notificationManager.cancel(id.value)
+        notificationRegistry.unregister(id)
     }
 
     override fun dispose() {

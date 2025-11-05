@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_general_title">Загальні Налаштування</string>
+    <string name="account_settings_general_profile_indicator_title">Індикатор профілю</string>
+    <string name="account_settings_general_profile_indicator_monogram">Монограма</string>
+    <string name="account_settings_general_profile_indicator_image">Зображення</string>
+    <string name="account_settings_general_profile_indicator_icon">Значок</string>
+    <string name="account_settings_general_name_title">Ім\'я облікового запису</string>
+    <string name="account_settings_general_name_description">Ім\'я, пов\'язане з вашим обліковим записом.</string>
+    <string name="account_settings_general_color_title">Колір облікового запису</string>
+    <string name="account_settings_general_color_description">Акцентний колір цього облікового запису, що використовується в папках та списках облікових записів.</string>
+</resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_push_title">Синхронизация (Push)</string>
+    <string name="notification_channel_push_description">Отображается во время ожидания новых сообщений</string>
+    <string name="notification_channel_messages_title">Сообщение</string>
+    <string name="notification_channel_messages_description">Уведомления о сообщениях</string>
+    <string name="notification_channel_miscellaneous_title">Разное</string>
+    <string name="notification_channel_miscellaneous_description">Различные уведомления, например, об ошибках и т.д.</string>
+    <string name="notification_notify_error_title">Ошибка уведомления</string>
+    <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления.
+\n
+\nНажмите, чтобы открыть настройки уведомлений.</string>
+    <string name="notification_authentication_error_title">Ошибка аутентификации</string>
+    <string name="notification_certificate_error_public">Ошибка сертификата</string>
+    <string name="notification_certificate_error_title">Сбой сертификата %1$s</string>
+    <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
+    <string name="notification_bg_sync_ticker">Проверка %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Проверка почты</string>
+    <string name="notification_bg_send_ticker">Отправка %1$s</string>
+    <string name="notification_bg_send_title">Отправка почты</string>
+    <string name="send_failure_subject">Сбой отправки почты</string>
+    <string name="notification_additional_messages">+ ещё %1$d в %2$s</string>
+    <string name="push_notification_state_initializing">Инициализация…</string>
+    <string name="push_notification_state_listening">Ожидание новых писем</string>
+    <string name="push_notification_state_wait_background_sync">Спящий режим до тех пор, пока не будет разрешена фоновая синхронизация</string>
+    <string name="push_notification_state_wait_network">Спящий режим до появления сети</string>
+    <string name="push_notification_state_alarm_permission_missing">Отсутствует разрешение на установку будильников</string>
+    <string name="push_notification_info">Нажмите, чтобы узнать больше.</string>
+    <string name="push_notification_grant_alarm_permission">Нажмите, чтобы дать разрешение.</string>
+    <string name="push_info_disable_push_action">Отключить push</string>
+    <string name="notification_action_reply">Ответить</string>
+    <string name="notification_action_mark_as_read">Прочитано</string>
+    <string name="notification_action_mark_all_as_read">Прочитаны все</string>
+    <string name="notification_action_delete">Удалить</string>
+    <string name="notification_action_delete_all">Удалить все</string>
+    <string name="notification_action_archive">Архив</string>
+    <string name="notification_action_archive_all">Архивировать все</string>
+    <string name="notification_action_spam">Спам</string>
+    <string name="notification_authentication_incoming_server_error_text">Ошибка аутентификации %1$s. Обновите настройки сервера входящей почты.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Ошибка аутентификации %1$s. Обновите настройки сервера исходящей почты.</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d новое сообщение</item>
+        <item quantity="few">%1$d новых сообщения</item>
+        <item quantity="many">%1$d новых сообщений</item>
+        <item quantity="other">%1$d новых сообщений</item>
+    </plurals>
+    <string name="notification_action_retry">Повтор</string>
+    <string name="notification_action_update_server_settings">Обновить настройки сервера</string>
+    <string name="notification_action_assign_sent_folder">Назначить папку</string>
+</resources>

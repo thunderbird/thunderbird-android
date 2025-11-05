@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synchroniser (poussé)</string>
+    <string name="notification_channel_push_description">Affiché lors de l’attente de nouveaux courriels</string>
+    <string name="notification_channel_messages_title">Courriels</string>
+    <string name="notification_channel_messages_description">Notifications relatives aux courriels</string>
+    <string name="notification_channel_miscellaneous_title">Divers</string>
+    <string name="notification_channel_miscellaneous_description">Notifications diverses telles que les erreurs, etc.</string>
+    <string name="notification_notify_error_title">Erreur de notification</string>
+    <string name="notification_notify_error_text">Impossible de créer une notification système de nouveau courriel. Un son de notification manquant en est probablement la cause.\n\nTouchez pour ouvrir les paramètres de notification.</string>
+    <string name="notification_authentication_error_title">Échec d’authentification</string>
+    <string name="notification_certificate_error_public">Erreur de certificat</string>
+    <string name="notification_certificate_error_title">Erreur de certificat pour (%1$s)</string>
+    <string name="notification_certificate_error_text">Vérifiez les paramètres du serveur</string>
+    <string name="notification_bg_sync_ticker">Relève des courriels : %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Relève des courriels</string>
+    <string name="notification_bg_send_ticker">Envoi du courriel : %1$s</string>
+    <string name="notification_bg_send_title">Envoi du courriel</string>
+    <string name="send_failure_subject">Échec d’envoi de certains courriels</string>
+    <string name="notification_additional_messages">+ %1$d de plus sur %2$s</string>
+    <string name="push_notification_state_initializing">Initialisation…</string>
+    <string name="push_notification_state_listening">En attente de nouveaux courriels</string>
+    <string name="push_notification_state_wait_background_sync">Inactif tant que la synchronisation en arrière-plan n’est pas autorisée</string>
+    <string name="push_notification_state_wait_network">Inactif tant que le réseau n’est pas connecté</string>
+    <string name="push_notification_state_alarm_permission_missing">Il manque une autorisation pour programmer des alarmes</string>
+    <string name="push_notification_info">Touchez pour en apprendre davantage.</string>
+    <string name="push_notification_grant_alarm_permission">Touchez pour accorder l’autorisation.</string>
+    <string name="push_info_disable_push_action">Désactiver le poussé</string>
+    <string name="notification_action_reply">Répondre</string>
+    <string name="notification_action_mark_as_read">Marquer comme lu</string>
+    <string name="notification_action_mark_all_as_read">Tout marquer comme lu</string>
+    <string name="notification_action_delete">Supprimer</string>
+    <string name="notification_action_delete_all">Tout supprimer</string>
+    <string name="notification_action_archive">Archiver</string>
+    <string name="notification_action_archive_all">Tout archiver</string>
+    <string name="notification_action_spam">Pourriel (indésirable)</string>
+</resources>

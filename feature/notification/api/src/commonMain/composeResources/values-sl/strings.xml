@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Usklajevanje (potisno)</string>
+    <string name="notification_channel_push_description">Prikazano med čakanjem na nova sporočila</string>
+    <string name="notification_channel_messages_title">Sporočila</string>
+    <string name="notification_channel_messages_description">Obvestila v zvezi s sporočili</string>
+    <string name="notification_channel_miscellaneous_title">Razno</string>
+    <string name="notification_channel_miscellaneous_description">Razna obvestila, kot so npr. napake itd.</string>
+    <string name="notification_notify_error_title">Napaka obveščanja</string>
+    <string name="notification_notify_error_text">Med poskusom ustvarjanja sistemskega obvestila za novo sporočilo je prišlo do napake. Razlog je najverjetneje manjkajoči zvok obvestila.\n\nDotaknite se, če želite odpreti nastavitve obvestil.</string>
+    <string name="notification_authentication_error_title">Overjanje je spodletelo</string>
+    <string name="notification_certificate_error_public">Napaka potrdila</string>
+    <string name="notification_certificate_error_title">Napaka potrdila za račun %1$s</string>
+    <string name="notification_certificate_error_text">Preverite nastavitve strežnika</string>
+    <string name="notification_bg_sync_ticker">Preverjanje pošte: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Preverjanje pošte</string>
+    <string name="notification_bg_send_ticker">Pošiljanje pošte: %1$s</string>
+    <string name="notification_bg_send_title">Pošiljanje pošte</string>
+    <string name="send_failure_subject">Nekaterih sporočil ni bilo mogoče poslati</string>
+    <string name="notification_additional_messages">in %1$d na %2$s</string>
+    <string name="push_notification_state_initializing">Začenjanje …</string>
+    <string name="push_notification_state_listening">Čakam na nova e-poštna sporočila</string>
+    <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju </string>
+    <string name="push_notification_state_wait_network">Spanje, dokler ni na voljo omrežja</string>
+    <string name="push_notification_state_alarm_permission_missing">Manjka dovoljenje za nastavitev alarma.</string>
+    <string name="push_notification_info">Dotakni se, če želiš izvedeti več.</string>
+    <string name="push_notification_grant_alarm_permission">Tapnite za odobritev dovoljenja.</string>
+    <string name="push_info_disable_push_action">Onemogoči potisne storitve</string>
+    <string name="notification_action_reply">Odgovori</string>
+    <string name="notification_action_mark_as_read">Označi kot prebrano</string>
+    <string name="notification_action_mark_all_as_read">Označi vsa kot prebrana</string>
+    <string name="notification_action_delete">Izbriši</string>
+    <string name="notification_action_delete_all">Izbriši vse</string>
+    <string name="notification_action_archive">Arhiviraj</string>
+    <string name="notification_action_archive_all">Arhiviraj vse</string>
+    <string name="notification_action_spam">Označi kot neželeno pošto</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sincronización rápida («push»)</string>
+    <string name="notification_channel_push_description">Necesaria para buscar correos entrantes en segundo plano</string>
+    <string name="notification_channel_messages_title">Correos</string>
+    <string name="notification_channel_messages_description">Notificaciones relacionadas con los correos</string>
+    <string name="notification_channel_miscellaneous_title">Varios</string>
+    <string name="notification_channel_miscellaneous_description">Notificaciones varias, como errores, etc.</string>
+    <string name="notification_notify_error_title">Notificación fallida</string>
+    <string name="notification_notify_error_text">Ha ocurrido un problema al intentar crear una notificación del sistema alertando de un correo nuevo. Seguramente sea por no tener un sonido de alerta puesto.\n\nToca para ver los ajustes de notificaciones.</string>
+    <string name="notification_authentication_error_title">Fallo de autenticación</string>
+    <string name="notification_certificate_error_public">El certificado no funciona</string>
+    <string name="notification_certificate_error_title">Error de certificado para %1$s</string>
+    <string name="notification_certificate_error_text">Comprueba los ajustes del servidor</string>
+    <string name="notification_bg_sync_ticker">Comprobando correo: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Comprobando correo</string>
+    <string name="notification_bg_send_ticker">Enviando correo: %1$s</string>
+    <string name="notification_bg_send_title">Enviando correo</string>
+    <string name="send_failure_subject">Hubo un error al enviar algunos correos</string>
+    <string name="notification_additional_messages">+ %1$d más en %2$s</string>
+    <string name="push_notification_state_initializing">Iniciando…</string>
+    <string name="push_notification_state_listening">Esperando correos electrónicos nuevos</string>
+    <string name="push_notification_state_wait_background_sync">Esperar hasta que se permita la sincronización en segundo plano</string>
+    <string name="push_notification_state_wait_network">Esperar hasta que la red esté disponible</string>
+    <string name="push_notification_state_alarm_permission_missing">Falta el permiso para programar alarmas</string>
+    <string name="push_notification_info">Toca aquí para leer más sobre el tema.</string>
+    <string name="push_notification_grant_alarm_permission">Toca aquí para conceder el permiso.</string>
+    <string name="push_info_disable_push_action">Desactivar sincronización rápida («push»)</string>
+    <string name="notification_action_reply">Responder</string>
+    <string name="notification_action_mark_as_read">Marcar como leído</string>
+    <string name="notification_action_mark_all_as_read">Marcar todo como leído</string>
+    <string name="notification_action_delete">Borrar</string>
+    <string name="notification_action_delete_all">Borrar todo</string>
+    <string name="notification_action_archive">Archivar</string>
+    <string name="notification_action_archive_all">Archivar todo</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

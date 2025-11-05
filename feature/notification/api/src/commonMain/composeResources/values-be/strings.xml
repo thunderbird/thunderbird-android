@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Сінхранізаваць (прымусовае правяранне)</string>
+    <string name="notification_channel_push_description">Паказваецца падчас чакання новых лістоў</string>
+    <string name="notification_channel_messages_title">Лісты</string>
+    <string name="notification_channel_messages_description">Апавяшчэнні пра лісты</string>
+    <string name="notification_channel_miscellaneous_title">Рознае</string>
+    <string name="notification_channel_miscellaneous_description">Іншыя апавяшчэнні.</string>
+    <string name="notification_notify_error_title">Памылка апавяшчэння</string>
+    <string name="notification_notify_error_text">Падчас стварэння сістэмнага апавяшчэння пра новы ліст адбылася памылка. Хутчэй за ўсё, прычына ў адсутнасці гуку апавяшчэння.\n\nНацісніце, каб адкрыць налады апавяшчэнняў.</string>
+    <string name="notification_authentication_error_title">Аўтэнтыфікацыя схібіла</string>
+    <string name="notification_certificate_error_public">Памылка сертыфіката</string>
+    <string name="notification_certificate_error_title">Збой сертыфіката %1$s</string>
+    <string name="notification_certificate_error_text">Праверце налады сервера</string>
+    <string name="notification_bg_sync_ticker">Правяранне пошты: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Правяранне пошты</string>
+    <string name="notification_bg_send_ticker">Адпраўленне пошты: %1$s</string>
+    <string name="notification_bg_send_title">Адпраўленне пошты</string>
+    <string name="send_failure_subject">Не ўдалося адправіць лісты</string>
+    <string name="notification_additional_messages">+ %1$d яшчэ %2$s</string>
+    <string name="push_notification_state_initializing">Ініцыялізацыя…</string>
+    <string name="push_notification_state_listening">Чаканне новых лістоў</string>
+    <string name="push_notification_state_wait_background_sync">Знаходзіцца ў рэжыме сну, пакуль фонавая сінхранізацыя не будзе дазволеная</string>
+    <string name="push_notification_state_wait_network">Знаходзіцца ў рэжыме сну, пакуль не стане даступная сетка</string>
+    <string name="push_notification_state_alarm_permission_missing">Няма дазволу на прызначэнне будзільнікаў</string>
+    <string name="push_notification_info">Націсніце, каб даведацца больш.</string>
+    <string name="push_notification_grant_alarm_permission">Націсніце, каб даць дазвол.</string>
+    <string name="push_info_disable_push_action">Адключыць прымусовае правяранне</string>
+    <string name="notification_action_reply">Адказаць</string>
+    <string name="notification_action_mark_as_read">Пазначыць прачытаным</string>
+    <string name="notification_action_mark_all_as_read">Пазначыць усё прачытаным</string>
+    <string name="notification_action_delete">Выдаліць</string>
+    <string name="notification_action_delete_all">Выдаліць усе</string>
+    <string name="notification_action_archive">Архіў</string>
+    <string name="notification_action_archive_all">Усе ў архіў</string>
+    <string name="notification_action_spam">Спам</string>
+</resources>

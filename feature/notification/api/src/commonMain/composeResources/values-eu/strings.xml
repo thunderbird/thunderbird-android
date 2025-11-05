@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sinkronizatu (Push)</string>
+    <string name="notification_channel_push_description">Bistaratuta mezu berrien zain geundenean</string>
+    <string name="notification_channel_messages_title">Mezuak</string>
+    <string name="notification_channel_messages_description">Mezuekin erlazionatutako jakinarazpenak</string>
+    <string name="notification_channel_miscellaneous_title">Denetarik</string>
+    <string name="notification_channel_miscellaneous_description">Denetariko jakinarazpenak, esaterako erroreak.</string>
+    <string name="notification_notify_error_title">Jakinarazpen errorea</string>
+    <string name="notification_notify_error_text">Errore bat gertatu da mezu berri baterako sistemaren jakinarazpena sortzen saiatzean. Arrazoia ziurrenik jakinarazpen-soinu bat falta da.\n\nSakatu jakinarazpen-ezarpenak irekitzeko.</string>
+    <string name="notification_authentication_error_title">Autentifikazioak huts egin du</string>
+    <string name="notification_certificate_error_public">Ziurtagiri errorea</string>
+    <string name="notification_certificate_error_title">%1$s-(r)entzako ziurtagiri errorea</string>
+    <string name="notification_certificate_error_text">Egiaztatu zerbitzariaren ezarpenak</string>
+    <string name="notification_bg_sync_ticker">Posta egiaztatzen: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Posta egiaztatzen</string>
+    <string name="notification_bg_send_ticker">Posta bidaltzen: %1$s</string>
+    <string name="notification_bg_send_title">Posta bidaltzea</string>
+    <string name="send_failure_subject">Ezin izan dira mezu batzuk bidali</string>
+    <string name="notification_additional_messages">+ %1$d gehiago %2$s-(e)n</string>
+    <string name="push_notification_state_initializing">Hasieratzen…</string>
+    <string name="push_notification_state_listening">e-posta berrien zain</string>
+    <string name="push_notification_state_wait_background_sync">Lo, atzeko planoko sinkronizazioa baimendu arte</string>
+    <string name="push_notification_state_wait_network">Lo, sarea eskuragarri izan arte</string>
+    <string name="push_notification_state_alarm_permission_missing">Alarmak programatzeko baimena falta da</string>
+    <string name="push_notification_info">Sakatu informazio gehiago lortzeko.</string>
+    <string name="push_notification_grant_alarm_permission">Sakatu baimena emateko.</string>
+    <string name="push_info_disable_push_action">Desgaitu \"Push\"a</string>
+    <string name="notification_action_reply">Erantzun</string>
+    <string name="notification_action_mark_as_read">Markatu irakurritako gisa</string>
+    <string name="notification_action_mark_all_as_read">Markatu denak irakurritako gisa</string>
+    <string name="notification_action_delete">Ezabatu</string>
+    <string name="notification_action_delete_all">Ezabatu denak</string>
+    <string name="notification_action_archive">Artxibatu</string>
+    <string name="notification_action_archive_all">Artxibatu denak</string>
+    <string name="notification_action_spam">Zabor-posta</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Samstilla (Ýta)</string>
+    <string name="notification_channel_push_description">Birtist á meðan beðið er eftir nýjum skilaboðum</string>
+    <string name="notification_channel_messages_title">Skilaboð</string>
+    <string name="notification_channel_messages_description">Tilkynning tengdar skilaboðum</string>
+    <string name="notification_channel_miscellaneous_title">Ýmislegt</string>
+    <string name="notification_channel_miscellaneous_description">Ýmsar tilkynningar, eins og villur o.s.frv.</string>
+    <string name="notification_notify_error_title">Villa í tilkynningu</string>
+    <string name="notification_notify_error_text">Villa kom upp þegar reynt var að útbúa kerfistilkynningu vegna nýrra skilaboða. Ástæðan er líklegast sú að það vanti hljóð fyrir tilkynningar.\n\nPikkaðu til að opna stillingar á tilkynningum.</string>
+    <string name="notification_authentication_error_title">Auðkenning mistókst</string>
+    <string name="notification_certificate_error_public">Villa í skilríki</string>
+    <string name="notification_certificate_error_title">Villa í skilríki fyrir %1$s</string>
+    <string name="notification_certificate_error_text">Athugaðu stillingar póstþjónsins</string>
+    <string name="notification_bg_sync_ticker">Athuga með póst: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Athuga með póst</string>
+    <string name="notification_bg_send_ticker">Sendi póst: %1$s</string>
+    <string name="notification_bg_send_title">Sendi póst</string>
+    <string name="send_failure_subject">Náði ekki að senda einhver skilaboð</string>
+    <string name="notification_additional_messages">+ %1$d fleiri á %2$s</string>
+    <string name="push_notification_state_initializing">Frumstilli…</string>
+    <string name="push_notification_state_listening">Bíð eftir nýjum tölvupóstum</string>
+    <string name="push_notification_state_wait_background_sync">Í dvala þar til samstilling í bakgrunni er heimil</string>
+    <string name="push_notification_state_wait_network">Í dvala þar til netkerfi er til taks</string>
+    <string name="push_notification_state_alarm_permission_missing">Vantar heimild til að setja áminningar á áætlun</string>
+    <string name="push_notification_info">Ýttu til að kanna nánar.</string>
+    <string name="push_notification_grant_alarm_permission">Ýttu til að veita heimild.</string>
+    <string name="push_info_disable_push_action">Gera ýtitilkynningar óvirkar</string>
+    <string name="notification_action_reply">Svara</string>
+    <string name="notification_action_mark_as_read">Merkja sem lesið</string>
+    <string name="notification_action_mark_all_as_read">Merkja allt sem lesið</string>
+    <string name="notification_action_delete">Fjarlægja</string>
+    <string name="notification_action_delete_all">Fjarlægja allt</string>
+    <string name="notification_action_archive">Geymsla</string>
+    <string name="notification_action_archive_all">Setja allt í geymslu</string>
+    <string name="notification_action_spam">Ruslpóstur</string>
+</resources>

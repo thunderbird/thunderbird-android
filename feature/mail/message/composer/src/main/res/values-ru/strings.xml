@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Папка \"Отправленные\" не найдена</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Чтобы письмо сохранилось после отправки, настройте папку \"Отправленные\" в параметрах учётной записи.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Назначить папкой \"Отправленные\"</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Отмена</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Отправить и удалить</string>
+</resources>

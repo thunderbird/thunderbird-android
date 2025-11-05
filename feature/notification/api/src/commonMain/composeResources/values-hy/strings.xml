@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_authentication_error_title">Վաւերացումը խափանուել է</string>
+    <string name="notification_certificate_error_title">Արտոնագրի սխալ %1$s֊ի համար</string>
+    <string name="notification_certificate_error_text">Վերանայէք սպասարկչի կարգաւորումները</string>
+    <string name="notification_bg_sync_ticker">Ստուգւում է փոստը %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Ստուգել էլ․ փոստ</string>
+    <string name="notification_bg_send_ticker">Ուղարկւում է՝ %1$s</string>
+    <string name="notification_bg_send_title">Ուղարկւում է</string>
+    <string name="send_failure_subject">Որոշ հաղորդագրութիւնների ուղարկումը խափանուել է</string>
+    <string name="notification_action_reply">Պատասխանել</string>
+    <string name="notification_action_mark_as_read">Նշել ընթերցուածները</string>
+    <string name="notification_action_mark_all_as_read">Նշել բոլոր ընթերցուածները</string>
+    <string name="notification_action_delete">Հեռացնել</string>
+    <string name="notification_action_delete_all">Հեռացնել բոլորը</string>
+    <string name="notification_action_archive">Արխիւացնել</string>
+    <string name="notification_action_archive_all">Արխիւացնել բոլորը</string>
+    <string name="notification_action_spam">Լցօն</string>
+</resources>

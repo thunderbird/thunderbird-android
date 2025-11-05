@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Синхронизуј (Push)</string>
+    <string name="notification_channel_push_description">Приказано док чекате нове поруке</string>
+    <string name="notification_channel_messages_title">Поруке</string>
+    <string name="notification_channel_messages_description">Обавештења о порукама</string>
+    <string name="notification_channel_miscellaneous_title">Разно</string>
+    <string name="notification_channel_miscellaneous_description">Разна обавештења, попут грешака итд.</string>
+    <string name="notification_notify_error_title">Грешка обавештења</string>
+    <string name="notification_notify_error_text">Дошло је до грешке приликом покушаја прављења системског обавештења за нову поруку. Разлог је највероватније недостатак звука обавештења. \n \nДодирните да отворите подешавања обавештења.</string>
+    <string name="notification_authentication_error_title">Аутентификација није успела</string>
+    <string name="notification_certificate_error_public">Грешка сертификата</string>
+    <string name="notification_certificate_error_title">Грешка сертификата за %1$s</string>
+    <string name="notification_certificate_error_text">Проверите подешавања сервера</string>
+    <string name="notification_bg_sync_ticker">Проверавање мејла: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Проверавање мејла</string>
+    <string name="notification_bg_send_ticker">Слање мејла: %1$s</string>
+    <string name="notification_bg_send_title">Слање мејла</string>
+    <string name="send_failure_subject">Неуспешно слање неких порука</string>
+    <string name="notification_additional_messages">+ још %1$d на %2$s</string>
+    <string name="push_notification_state_initializing">Покретање…</string>
+    <string name="push_notification_state_listening">Чекање нових имејлова</string>
+    <string name="push_notification_state_wait_background_sync">Спавање док се не дозволи синхронизација у позадини</string>
+    <string name="push_notification_state_wait_network">Спавање док мрежа не буде доступна</string>
+    <string name="push_notification_state_alarm_permission_missing">Недостаје дозвола за заказивање аларма</string>
+    <string name="push_notification_info">Додирните да сазнате више.</string>
+    <string name="push_notification_grant_alarm_permission">Додирните да бисте дали дозволу.</string>
+    <string name="push_info_disable_push_action">Онемогући push</string>
+    <string name="notification_action_reply">Одговори</string>
+    <string name="notification_action_mark_as_read">Означи као прочитано</string>
+    <string name="notification_action_mark_all_as_read">Означи све као прочитано</string>
+    <string name="notification_action_delete">Избриши</string>
+    <string name="notification_action_delete_all">Избриши све</string>
+    <string name="notification_action_archive">Архивирај</string>
+    <string name="notification_action_archive_all">Архивирај све</string>
+    <string name="notification_action_spam">Непожељно</string>
+</resources>
