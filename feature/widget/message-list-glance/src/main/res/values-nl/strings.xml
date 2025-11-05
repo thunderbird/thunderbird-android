@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_glance_widget_compose_action">Opstellen</string>
+    <string name="message_list_glance_widget_inbox_title">Gecombineerd Postvak IN</string>
+    <string name="message_list_glance_widget_label">Berichtenlijst</string>
+</resources>

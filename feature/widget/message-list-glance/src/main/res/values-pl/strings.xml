@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_glance_widget_compose_action">Nowa wiadomość</string>
+    <string name="message_list_glance_widget_inbox_title">Zintegrowana odbiorcza</string>
+    <string name="message_list_glance_widget_label">Lista wiadomości</string>
+</resources>

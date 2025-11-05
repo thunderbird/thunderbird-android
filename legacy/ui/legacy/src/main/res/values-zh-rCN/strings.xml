@@ -132,7 +132,7 @@
     <string name="notification_channel_messages_description">与邮件相关的通知</string>
     <string name="notification_channel_miscellaneous_title">杂项</string>
     <string name="notification_channel_miscellaneous_description">错误等杂项通知。</string>
-    <string name="send_failure_subject">无法发送某些邮件</string>
+    <string name="send_failure_subject">无法发送部分邮件</string>
     <string name="version">版本</string>
     <string name="debug_enable_debug_logging_title">启用调试日志记录</string>
     <string name="debug_enable_debug_logging_summary">记录额外的诊断信息</string>
@@ -157,8 +157,8 @@
     <string name="message_compose_error_no_recipients">您必须至少添加一位收件人。</string>
     <string name="compose_error_incomplete_recipient">收件人字段输入不完整！</string>
     <string name="error_contact_address_not_found">找不到此联系人的电子邮件地址。</string>
-    <string name="message_compose_attachments_skipped_toast">某些附件因尚未下载而无法转发。</string>
-    <string name="message_compose_attachments_forward_toast">此邮件因某些附件尚未下载而无法转发。</string>
+    <string name="message_compose_attachments_skipped_toast">部分附件尚未下载，无法转发。</string>
+    <string name="message_compose_attachments_forward_toast">由于部分附件尚未下载，邮件无法转发。</string>
     <string name="message_compose_show_quoted_text_action">包含引用邮件</string>
     <string name="message_compose_description_delete_quoted_text">移除引用文本</string>
     <string name="message_compose_description_edit_quoted_text">编辑引用文本</string>
@@ -673,7 +673,7 @@
     <string name="compose_error_no_key_configured">此账号未配置密钥！请检查您的设置。</string>
     <string name="error_crypto_provider_incompatible">加密提供程序使用不兼容的版本。请检查您的设置！</string>
     <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或点击加密图标重试！</string>
-    <string name="error_crypto_provider_ui_required">端到端加密初始化失败，请检查您的设置</string>
+    <string name="error_crypto_provider_ui_required">无法初始化端到端加密，请检查您的设置‌</string>
     <string name="error_crypto_inline_attach">PGP/INLINE 模式不支持附件！</string>
     <string name="enable_inline_pgp">启用 PGP/INLINE</string>
     <string name="disable_inline_pgp">禁用 PGP/INLINE</string>
@@ -694,7 +694,7 @@
     <string name="openpgp_dialog_sign_only_text">在此模式下，您的 PGP 密钥将用于为未加密的电子邮件创建加密签名。</string>
     <string name="openpgp_dialog_sign_only_plus_verified">这不会对电子邮件进行加密，但会验证电子邮件是从您的密钥发送的。</string>
     <string name="openpgp_dialog_sign_only_minus_break">发送到邮件列表时，签名可能会损坏。</string>
-    <string name="openpgp_dialog_sign_only_minus_attach">在某些客户端中，签名可能显示为“signature.asc”附件。</string>
+    <string name="openpgp_dialog_sign_only_minus_attach">签名可能在部分客户端中显示为“signature.asc”附件。</string>
     <string name="openpgp_dialog_sign_only_neutral_encsigned">加密邮件始终包含签名。</string>
     <string name="crypto_msg_title_plaintext">纯文本</string>
     <string name="crypto_msg_unencrypted_sign_error">端到端签名包含错误</string>
@@ -747,11 +747,11 @@
     <!--Displayed in the the message list widget when the app hasn't had a chance to send content to it yet-->
     <!--Might be displayed in the message list widget when the list is scrolled and new data can't be fetched fast enough-->
     <string name="openpgp_enabled_error_title">无法加密</string>
-    <string name="openpgp_enabled_error_msg">某些选定的收件人不支持此功能！</string>
+    <string name="openpgp_enabled_error_msg">部分所选收件人不支持此功能！</string>
     <string name="enable_encryption">启用加密</string>
     <string name="disable_encryption">禁用加密</string>
     <string name="openpgp_description_text1">对邮件进行加密可确保只有收件人才能阅读，其他人无法阅读。</string>
-    <string name="openpgp_description_text3">加密功能只有在所有收件人都支持的情况下才会显示，而且收件人必须曾经给您发送过电子邮件。</string>
+    <string name="openpgp_description_text3">加密功能只有在所有收件人都支持的情况下才会显示，并且他们必须之前给您发送过邮件。</string>
     <string name="openpgp_description_text2">点击此图标切换加密。</string>
     <string name="openpgp_enabled_error_gotit">知道了</string>
     <string name="openpgp_enabled_error_back">返回</string>
@@ -766,8 +766,8 @@
     <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
     <string name="dialog_openkeychain_info_install">安装</string>
     <string name="account_settings_crypto_encrypt_subject">加密邮件主题</string>
-    <string name="account_settings_crypto_encrypt_subject_subtitle">某些收件人可能不支持</string>
-    <string name="toast_account_not_found">内部错误：无效账号！</string>
+    <string name="account_settings_crypto_encrypt_subject_subtitle">部分收件人可能不支持</string>
+    <string name="toast_account_not_found">内部错误：账号无效！</string>
     <string name="toast_openpgp_provider_error">连接到 %s 时出错！</string>
     <string name="ac_transfer_setting_title">发送 Autocrypt 设置邮件</string>
     <string name="ac_transfer_setting_summary">与其他设备安全地共享端到端设置</string>
