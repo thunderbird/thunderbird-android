@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Папку «Надіслані» не знайдено</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Щоб зберегти цей електронний лист після надсилання, налаштуйте папку «Надіслані» в налаштуваннях облікового запису.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Призначити папку для надісланих повідомлень</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Скасувати</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Надіслати та видалити</string>
+</resources>

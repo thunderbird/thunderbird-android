@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_general_title">Ustawienia ogólne</string>
+    <string name="account_settings_general_profile_indicator_title">Wskaźnik profilu</string>
+    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
+    <string name="account_settings_general_profile_indicator_image">Obraz</string>
+    <string name="account_settings_general_profile_indicator_icon">Ikona</string>
+    <string name="account_settings_general_name_title">Nazwa konta</string>
+    <string name="account_settings_general_name_description">Nazwa powiązana z Twoim kontem.</string>
+    <string name="account_settings_general_color_title">Kolor konta</string>
+    <string name="account_settings_general_color_description">Kolor wiodący tego konta używany w folderach i na listach kont.</string>
+</resources>

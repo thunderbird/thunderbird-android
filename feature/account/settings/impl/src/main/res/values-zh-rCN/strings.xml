@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_general_title">常规设置</string>
+    <string name="account_settings_general_profile_indicator_monogram">字母组合</string>
+    <string name="account_settings_general_profile_indicator_image">图片</string>
+    <string name="account_settings_general_profile_indicator_icon">图标</string>
+    <string name="account_settings_general_name_title">账号名称</string>
+    <string name="account_settings_general_name_description">与您的账号关联的名称。</string>
+    <string name="account_settings_general_color_title">账号颜色</string>
+    <string name="account_settings_general_color_description">此账号在文件夹和账号列表中使用的强调色。</string>
+    <string name="account_settings_general_profile_indicator_title">个人资料标识</string>
+</resources>
