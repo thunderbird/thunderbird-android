@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sinhronizacija (Push)</string>
+    <string name="notification_channel_push_description">Prikazano dok se čeka na nove poruke</string>
+    <string name="notification_channel_messages_title">Poruke</string>
+    <string name="notification_channel_messages_description">Obavještenja vezana za poruke</string>
+    <string name="notification_channel_miscellaneous_title">Razno</string>
+    <string name="notification_channel_miscellaneous_description">Raznovrsne obavijesti kao greške itd.</string>
+    <string name="notification_notify_error_title">Greška pri kreiranju obavještenja</string>
+    <string name="notification_notify_error_text">Dogodila se greška tokom kreiranja sistemskog obavještenja za novu poruku. Razlog je vjerovatno nemanje zvuka obavještenja.
+\n
+\nDodirnite da otvorite podešavanja obavještenja.</string>
+    <string name="notification_authentication_error_title">Autentifikacija nije uspjela</string>
+    <string name="notification_certificate_error_public">Greška sertifikata</string>
+    <string name="notification_certificate_error_title">Greška sertifikata za %1$s</string>
+    <string name="notification_certificate_error_text">Provjerite postavke vašeg servera</string>
+    <string name="notification_bg_sync_ticker">Provjeravanje pošte: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Provjeravanje pošte</string>
+    <string name="notification_bg_send_ticker">Slanje pošte: %1$s</string>
+    <string name="notification_bg_send_title">Slanje pošte</string>
+    <string name="send_failure_subject">Slanje nekih poruka nije uspjelo</string>
+    <string name="notification_additional_messages">+ %1$d više na %2$s</string>
+    <string name="notification_action_reply">Odgovori</string>
+    <string name="notification_action_mark_as_read">Označi pročitanim</string>
+    <string name="notification_action_mark_all_as_read">Označi sve kao pročitane</string>
+    <string name="notification_action_delete">Obriši</string>
+    <string name="notification_action_delete_all">Obriši sve</string>
+    <string name="notification_action_archive">Arhiviraj</string>
+    <string name="notification_action_archive_all">Arhiviraj sve</string>
+    <string name="notification_action_spam">Neželjena pošta</string>
+</resources>

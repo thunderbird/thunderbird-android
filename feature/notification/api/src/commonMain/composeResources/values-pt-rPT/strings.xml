@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sincronizar (Push)</string>
+    <string name="notification_channel_push_description">Mostrado enquanto à espera de novas mensagens</string>
+    <string name="notification_channel_messages_title">Mensagens</string>
+    <string name="notification_channel_messages_description">Notificações relacionadas com mensagens</string>
+    <string name="notification_channel_miscellaneous_title">Diversos</string>
+    <string name="notification_channel_miscellaneous_description">Notificações várias como erros, etc.</string>
+    <string name="notification_notify_error_title">Erro de notificação</string>
+    <string name="notification_notify_error_text">Occoreu um erro ao tentar criar uma notificação do sistema para uma nova mensagem. A causa mais provavel é a falta de um som de notificação.\n\nToque para abrir as definições de notificação
+.</string>
+    <string name="notification_authentication_error_title">A autenticação falhou</string>
+    <string name="notification_certificate_error_public">Erro de certificado</string>
+    <string name="notification_certificate_error_title">Erro de certificado para %1$s</string>
+    <string name="notification_certificate_error_text">Verifique as configurações do servidor</string>
+    <string name="notification_bg_sync_ticker">A verificar correio: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">A verificar correio</string>
+    <string name="notification_bg_send_ticker">A enviar correio: %1$s</string>
+    <string name="notification_bg_send_title">A enviar correio</string>
+    <string name="send_failure_subject">Falha ao enviar algumas mensagens</string>
+    <string name="notification_additional_messages">+ %1$d em %2$s</string>
+    <string name="push_notification_state_initializing">Inicializando…</string>
+    <string name="push_notification_state_listening">À espera de novos e-mails</string>
+    <string name="push_notification_state_wait_background_sync">Suspenso até que a sincronização em segundo plano seja permitida</string>
+    <string name="push_notification_state_wait_network">Suspenso até que a rede esteja disponível</string>
+    <string name="push_notification_state_alarm_permission_missing">Falta a permissão para agendar alarmes</string>
+    <string name="push_notification_info">Toque para saber mais.</string>
+    <string name="push_notification_grant_alarm_permission">Toque para conceder a permissão.</string>
+    <string name="push_info_disable_push_action">Desativar o Push</string>
+    <string name="notification_action_reply">Responder</string>
+    <string name="notification_action_mark_as_read">Marcar como lido</string>
+    <string name="notification_action_mark_all_as_read">Marcar tudo como lido</string>
+    <string name="notification_action_delete">Eliminar</string>
+    <string name="notification_action_delete_all">Eliminar tudo</string>
+    <string name="notification_action_archive">Arquivar</string>
+    <string name="notification_action_archive_all">Arquivar tudo</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

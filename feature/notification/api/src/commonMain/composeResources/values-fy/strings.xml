@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Syngronisearje (Push)</string>
+    <string name="notification_channel_push_description">Wurdt yn ôfwachting fan nije berjochten toand</string>
+    <string name="notification_channel_messages_title">Berjochten</string>
+    <string name="notification_channel_messages_description">Meldingen relatearre oan berjochten</string>
+    <string name="notification_channel_miscellaneous_title">Diversken</string>
+    <string name="notification_channel_miscellaneous_description">Oare meldingen, lykas flaters en soksawat.</string>
+    <string name="notification_notify_error_title">Meldingsflater</string>
+    <string name="notification_notify_error_text">Der is in flater bard wylst it meitsjen fan in systeemmelding foar in nij berjocht. De reden is wierskynlik in ûntbrekken fan in meldingslûd.\n\nTik om meldingsynstellingen te iepenjen.</string>
+    <string name="notification_authentication_error_title">Autentikaasje mislearre</string>
+    <string name="notification_certificate_error_public">Sertifikaatflater</string>
+    <string name="notification_certificate_error_title">Sertifikaatflater foar %1$s</string>
+    <string name="notification_certificate_error_text">Kontrolearje de serverynstellingen</string>
+    <string name="notification_bg_sync_ticker">Berjochten kontrolearje: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Berjochten kontrolearje</string>
+    <string name="notification_bg_send_ticker">Berjochten ferstjoere: %1$s</string>
+    <string name="notification_bg_send_title">Berjochten ferstjoere</string>
+    <string name="send_failure_subject">Flater by ferstjoeren fan berjochten</string>
+    <string name="notification_additional_messages">+ %1$d mear by %2$s</string>
+    <string name="push_notification_state_initializing">Oan it inisjalisearjen…</string>
+    <string name="push_notification_state_listening">Yn ôfwachting fan nije e-mailberjochten</string>
+    <string name="push_notification_state_wait_background_sync">Docht neat oant eftergrûnsyngronisaasje tastien wurdt</string>
+    <string name="push_notification_state_wait_network">Docht neat oant der in netwurk beskikber is</string>
+    <string name="push_notification_state_alarm_permission_missing">Tastimming om alarms te plannen ûntbrekt</string>
+    <string name="push_notification_info">Tik hjir foar mear ynfo.</string>
+    <string name="push_notification_grant_alarm_permission">Tik om tastimming te jaan.</string>
+    <string name="push_info_disable_push_action">Push útskeakelje</string>
+    <string name="notification_action_reply">Beäntwurdzje</string>
+    <string name="notification_action_mark_as_read">As lêzen markearje</string>
+    <string name="notification_action_mark_all_as_read">Alle as lêzen markearje</string>
+    <string name="notification_action_delete">Fuortsmite</string>
+    <string name="notification_action_delete_all">Alle fuortsmite</string>
+    <string name="notification_action_archive">Argivearje</string>
+    <string name="notification_action_archive_all">Alle argivearje</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

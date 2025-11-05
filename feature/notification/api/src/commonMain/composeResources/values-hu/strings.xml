@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Szinkronizálás (leküldés)</string>
+    <string name="notification_channel_push_description">Az új levelekre várakozáskor jelenik meg</string>
+    <string name="notification_channel_messages_title">Üzenetek</string>
+    <string name="notification_channel_messages_description">Az üzenetekkel kapcsolatos értesítések</string>
+    <string name="notification_channel_miscellaneous_title">Egyebek</string>
+    <string name="notification_channel_miscellaneous_description">Egyéb értesítések, például hibák, stb.</string>
+    <string name="notification_notify_error_title">Értesítési hiba</string>
+    <string name="notification_notify_error_text">Hiba történt egy új üzenethez tartozó rendszerértesítés létrehozásának kísérletekor. Az ok valószínűleg egy hiányzó értesítési hang.\n\nKoppintson az értesítési beállítások megnyitásához.</string>
+    <string name="notification_authentication_error_title">A hitelesítés sikertelen</string>
+    <string name="notification_certificate_error_public">Tanúsítványhiba</string>
+    <string name="notification_certificate_error_title">Tanúsítványhiba: %1$s</string>
+    <string name="notification_certificate_error_text">Kiszolgálóbeállítások ellenőrzése</string>
+    <string name="notification_bg_sync_ticker">Levelek ellenőrzése: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Levelek ellenőrzése</string>
+    <string name="notification_bg_send_ticker">Levél küldése: %1$s</string>
+    <string name="notification_bg_send_title">Levél küldése</string>
+    <string name="send_failure_subject">Néhány üzenetet nem sikerült elküldeni</string>
+    <string name="notification_additional_messages">+ %1$d további: %2$s</string>
+    <string name="push_notification_state_initializing">Előkészítés…</string>
+    <string name="push_notification_state_listening">Várakozás az új e-mailekre</string>
+    <string name="push_notification_state_wait_background_sync">Alvás addig, amíg a háttérbeli szinkronizálás engedélyezésre nem kerül</string>
+    <string name="push_notification_state_wait_network">Alvás addig, amíg a hálózat elérhetővé nem válik</string>
+    <string name="push_notification_state_alarm_permission_missing">Hiányzó engedély a riasztások ütemezéséhez</string>
+    <string name="push_notification_info">Koppintson ide a további tudnivalókért.</string>
+    <string name="push_notification_grant_alarm_permission">Koppintson az engedély megadásához.</string>
+    <string name="push_info_disable_push_action">Leküldés letiltása</string>
+    <string name="notification_action_reply">Válasz</string>
+    <string name="notification_action_mark_as_read">Megjelölés olvasottként</string>
+    <string name="notification_action_mark_all_as_read">Összes megjelölése olvasottként</string>
+    <string name="notification_action_delete">Törlés</string>
+    <string name="notification_action_delete_all">Összes törlése</string>
+    <string name="notification_action_archive">Archiválás</string>
+    <string name="notification_action_archive_all">Összes archiválása</string>
+    <string name="notification_action_spam">Levélszemét</string>
+</resources>

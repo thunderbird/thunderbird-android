@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">동기화하기 (푸시)</string>
+    <string name="notification_channel_push_description">새 메시지 받는 동안 표시됨</string>
+    <string name="notification_channel_messages_title">메시지</string>
+    <string name="notification_channel_messages_description">메시지와 관련된 알림</string>
+    <string name="notification_channel_miscellaneous_title">기타 설정</string>
+    <string name="notification_channel_miscellaneous_description">오류 같은 기타 알림.</string>
+    <string name="notification_notify_error_title">알림 오류</string>
+    <string name="notification_notify_error_text">새로운 메시지를 위한 시스템 알림을 만드는 중에 오류가 발생했습니다. 알림 소리가 지정되지 않아 그럴 가능성이 높습니다.\n\n여기를 눌러 알림 설정으로 이동하세요.</string>
+    <string name="notification_authentication_error_title">인증 실패</string>
+    <string name="notification_certificate_error_public">인증 요류</string>
+    <string name="notification_certificate_error_title">계정 인증 오류 (%1$s)</string>
+    <string name="notification_certificate_error_text">서버 설정을 확인해 주세요</string>
+    <string name="notification_bg_sync_ticker">메일 확인 중: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">메일 확인 중</string>
+    <string name="notification_bg_send_ticker">메일 전송 중: %1$s</string>
+    <string name="notification_bg_send_title">메일 전송 중</string>
+    <string name="send_failure_subject">일부 메시지를 보내는 데 실패했습니다</string>
+    <string name="notification_additional_messages">+ %1$d more on %2$s</string>
+    <string name="notification_action_reply">답장</string>
+    <string name="notification_action_mark_as_read">읽은 것으로 표시</string>
+    <string name="notification_action_mark_all_as_read">모두 읽은 것으로 표시</string>
+    <string name="notification_action_delete">삭제</string>
+    <string name="notification_action_delete_all">모두 삭제</string>
+    <string name="notification_action_archive">보관</string>
+    <string name="notification_action_archive_all">모두 보관</string>
+    <string name="notification_action_spam">스팸</string>
+</resources>

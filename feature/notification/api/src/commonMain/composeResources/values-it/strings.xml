@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sincronizzazione (Push)</string>
+    <string name="notification_channel_push_description">Visualizzata in attesa di nuovi messaggi</string>
+    <string name="notification_channel_messages_title">Messaggi</string>
+    <string name="notification_channel_messages_description">Notifiche relative ai messaggi</string>
+    <string name="notification_channel_miscellaneous_title">Varie</string>
+    <string name="notification_channel_miscellaneous_description">Notifiche varie come errori ecc.</string>
+    <string name="notification_notify_error_title">Notifica errore</string>
+    <string name="notification_notify_error_text">Errore nella generazione di una notifica di ricezione di un nuovo messaggio. Errore probabilmente dovuto alla mancanza di un suono di notifica. \n \nTocca per le impostazioni di notifica.</string>
+    <string name="notification_authentication_error_title">Autenticazione non riuscita</string>
+    <string name="notification_certificate_error_public">Errore certificato</string>
+    <string name="notification_certificate_error_title">Errore certificato per %1$s</string>
+    <string name="notification_certificate_error_text">Controlla le impostazioni del server</string>
+    <string name="notification_bg_sync_ticker">Controllo posta: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Controllo posta</string>
+    <string name="notification_bg_send_ticker">Invio posta: %1$s</string>
+    <string name="notification_bg_send_title">Invio posta</string>
+    <string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
+    <string name="notification_additional_messages">+ %1$d altri in %2$s</string>
+    <string name="push_notification_state_initializing">Inizializzazione…</string>
+    <string name="push_notification_state_listening">In attesa di nuove email</string>
+    <string name="push_notification_state_wait_background_sync">Inattivo fino a quando la sincronizzazione in background non sarà consentita</string>
+    <string name="push_notification_state_wait_network">Inattivo fino a quando la rete non sarà disponibile</string>
+    <string name="push_notification_state_alarm_permission_missing">Autorizzazione mancante per pianificare gli allarmi</string>
+    <string name="push_notification_info">Tocca per saperne di più</string>
+    <string name="push_notification_grant_alarm_permission">Tocca per concedere l\'autorizzazione.</string>
+    <string name="push_info_disable_push_action">Disabilita Push</string>
+    <string name="notification_action_reply">Rispondi</string>
+    <string name="notification_action_mark_as_read">Letto</string>
+    <string name="notification_action_mark_all_as_read">Segna tutti come letti</string>
+    <string name="notification_action_delete">Elimina</string>
+    <string name="notification_action_delete_all">Elimina tutto</string>
+    <string name="notification_action_archive">Archivia</string>
+    <string name="notification_action_archive_all">Archivia tutto</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

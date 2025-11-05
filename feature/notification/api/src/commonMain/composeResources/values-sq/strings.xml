@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Njëkohëso (Push)</string>
+    <string name="notification_channel_push_description">Shfaqur teksa pritet për mesazhe të reja</string>
+    <string name="notification_channel_messages_title">Mesazhe</string>
+    <string name="notification_channel_messages_description">Njoftime lidhur me mesazhe</string>
+    <string name="notification_channel_miscellaneous_title">Të ndryshme</string>
+    <string name="notification_channel_miscellaneous_description">Njoftime të ndryshme, si gabime, etj.</string>
+    <string name="notification_notify_error_title">Gabim njoftimi</string>
+    <string name="notification_notify_error_text">Ndodhi një gabim teksa provohej të krijohej një njoftim sistemi për një mesazh të ri. Arsyeja ka shumë gjasa të jetë mungesa e një tingulli njoftimesh. \n \nPrekeni që të hapen rregullimet për njoftimet.</string>
+    <string name="notification_authentication_error_title">Mirëfilltësimi dështoi</string>
+    <string name="notification_certificate_error_public">Gabim dëshmie</string>
+    <string name="notification_certificate_error_title">Gabim dëshmie për %1$s</string>
+    <string name="notification_certificate_error_text">Kontrolloni rregullimet e shërbyesit tuaj</string>
+    <string name="notification_bg_sync_ticker">Po merret postë: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Marrje poste</string>
+    <string name="notification_bg_send_ticker">Po dërgohet postë: %1$s</string>
+    <string name="notification_bg_send_title">Dërgim poste</string>
+    <string name="send_failure_subject">Dështoi dërgimi i disa mesazhe</string>
+    <string name="notification_additional_messages">+ %1$d më tepër te %2$s</string>
+    <string name="push_notification_state_initializing">Po fillohet…</string>
+    <string name="push_notification_state_listening">Po pritet për email-e të rinj</string>
+    <string name="push_notification_state_wait_background_sync">Po dremitet, deri sa të lejohet njëkohësimi në prapaskenë</string>
+    <string name="push_notification_state_wait_network">Po dremitet, deri sa të ketë rrjet</string>
+    <string name="push_notification_state_alarm_permission_missing">Mungojnë leje për të planifikuar alarme</string>
+    <string name="push_notification_info">Që të mësoni më tepër, prekeni.</string>
+    <string name="push_notification_grant_alarm_permission">Për të akorduar leje, prekeni.</string>
+    <string name="push_info_disable_push_action">Çaktivizoje Push-in</string>
+    <string name="notification_action_reply">Përgjigjuni</string>
+    <string name="notification_action_mark_as_read">Vëri Shenjë Si të Lexuar</string>
+    <string name="notification_action_mark_all_as_read">Shënoji Krejt Si të Lexuar</string>
+    <string name="notification_action_delete">Fshije</string>
+    <string name="notification_action_delete_all">Fshiji Krejt</string>
+    <string name="notification_action_archive">Arkivoje</string>
+    <string name="notification_action_archive_all">Arkivoji Krejt</string>
+    <string name="notification_action_spam">Mesazh i Padëshiruar</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">同步（推送）</string>
+    <string name="notification_channel_push_description">等待新邮件时显示</string>
+    <string name="notification_channel_messages_title">邮件</string>
+    <string name="notification_channel_messages_description">与邮件相关的通知</string>
+    <string name="notification_channel_miscellaneous_title">杂项</string>
+    <string name="notification_channel_miscellaneous_description">错误等杂项通知。</string>
+    <string name="notification_notify_error_title">通知错误</string>
+    <string name="notification_notify_error_text">尝试为新邮件创建系统通知时出错。原因很可能是缺少通知提示音。\n\n请点按以打开通知设置。</string>
+    <string name="notification_authentication_error_title">身份验证失败</string>
+    <string name="notification_certificate_error_public">证书错误</string>
+    <string name="notification_certificate_error_title">%1$s 的证书错误</string>
+    <string name="notification_certificate_error_text">请检查您的服务器设置</string>
+    <string name="notification_bg_sync_ticker">正在检查邮件：%1$s：%2$s</string>
+    <string name="notification_bg_sync_title">正在检查邮件</string>
+    <string name="notification_bg_send_ticker">正在发送邮件：%1$s</string>
+    <string name="notification_bg_send_title">正在发送邮件</string>
+    <string name="send_failure_subject">无法发送某些邮件</string>
+    <string name="notification_additional_messages">加载 %2$s 上的另外 %1$d 封邮件</string>
+    <string name="push_notification_state_initializing">正在初始化…</string>
+    <string name="push_notification_state_listening">正在等待新电子邮件</string>
+    <string name="push_notification_state_wait_background_sync">在允许后台同步之前一直处于睡眠状态</string>
+    <string name="push_notification_state_wait_network">在网络可用之前一直处于睡眠状态</string>
+    <string name="push_notification_state_alarm_permission_missing">缺少设置闹钟的权限</string>
+    <string name="push_notification_info">点按即可了解详情。</string>
+    <string name="push_notification_grant_alarm_permission">点按即可授予权限。</string>
+    <string name="push_info_disable_push_action">禁用推送</string>
+    <string name="notification_action_reply">回复</string>
+    <string name="notification_action_mark_as_read">标记为已读</string>
+    <string name="notification_action_mark_all_as_read">全部标记为已读</string>
+    <string name="notification_action_delete">删除</string>
+    <string name="notification_action_delete_all">删除全部</string>
+    <string name="notification_action_archive">归档</string>
+    <string name="notification_action_archive_all">归档全部</string>
+    <string name="notification_action_spam">垃圾邮件</string>
+</resources>

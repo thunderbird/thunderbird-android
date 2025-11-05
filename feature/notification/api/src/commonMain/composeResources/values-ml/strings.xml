@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">സമന്വയിപ്പിക്കുക (പുഷ്)</string>
+    <string name="notification_channel_push_description">പുതിയ സന്ദേശങ്ങൾക്കായി കാത്തിരിക്കുമ്പോൾ പ്രദർശിപ്പിക്കുന്നു</string>
+    <string name="notification_channel_messages_title">സന്ദേശങ്ങൾ</string>
+    <string name="notification_channel_messages_description">സന്ദേശങ്ങളുമായി ബന്ധപ്പെട്ട അറിയിപ്പുകൾ</string>
+    <string name="notification_channel_miscellaneous_title">പലവക</string>
+    <string name="notification_channel_miscellaneous_description">പിശകുകൾ പോലുള്ള പലവിധ അറിയിപ്പുകൾ.</string>
+    <string name="notification_authentication_error_title">പ്രാമാണീകരണം പരാജയപ്പെട്ടു</string>
+    <string name="notification_certificate_error_public">സർട്ടിഫിക്കറ്റ് പിശക്</string>
+    <string name="notification_certificate_error_title">%1$sനുള്ള സർട്ടിഫിക്കറ്റ് പിശക്</string>
+    <string name="notification_certificate_error_text">നിങ്ങളുടെ സെർവർ ക്രമീകരണങ്ങൾ പരിശോധിക്കുക</string>
+    <string name="notification_bg_sync_ticker">മെയിൽ പരിശോധിക്കുന്നു: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">മെയിൽ പരിശോധിക്കുന്നു</string>
+    <string name="notification_bg_send_ticker">മെയിൽ അയയ്ക്കുന്നു: %1$s</string>
+    <string name="notification_bg_send_title">മെയിൽ അയയ്ക്കുന്നു</string>
+    <string name="send_failure_subject">ചില സന്ദേശങ്ങൾ അയയ്ക്കുന്നതിൽ പരാജയപ്പെട്ടു</string>
+    <string name="notification_additional_messages">+%1$d %2$s ൽ കൂടുതൽ</string>
+    <string name="notification_action_reply">മറുപടി പറയുക</string>
+    <string name="notification_action_mark_as_read">വായന അടയാളപ്പെടുത്തുക</string>
+    <string name="notification_action_mark_all_as_read">എല്ലാത്തിലും വായന അടയാളപ്പെടുത്തുക</string>
+    <string name="notification_action_delete">ഇല്ലാതാക്കുക</string>
+    <string name="notification_action_delete_all">എല്ലാം ഇല്ലാതാക്കുക</string>
+    <string name="notification_action_archive">ശേഖരം</string>
+    <string name="notification_action_archive_all">എല്ലാം ശേഖരത്തിൽ ചേർക്കുക</string>
+    <string name="notification_action_spam">സ്പാം</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">同步（推送）</string>
+    <string name="notification_channel_push_description">等待新郵件時顯示</string>
+    <string name="notification_channel_messages_title">郵件</string>
+    <string name="notification_channel_messages_description">與郵件相關的通知</string>
+    <string name="notification_channel_miscellaneous_title">雜項設定</string>
+    <string name="notification_channel_miscellaneous_description">其他通知，如錯誤通知等。</string>
+    <string name="notification_notify_error_title">通知錯誤</string>
+    <string name="notification_notify_error_text">嘗試建立新訊息的系統通知時發生錯誤。最有可能的原因是缺少通知聲音。\n\n按一下開啟通知設定。</string>
+    <string name="notification_authentication_error_title">身份驗證失敗</string>
+    <string name="notification_certificate_error_public">證書錯誤</string>
+    <string name="notification_certificate_error_title">%1$s驗證錯誤</string>
+    <string name="notification_certificate_error_text">檢查你的伺服器設定</string>
+    <string name="notification_bg_sync_ticker">正在檢查郵件：%1$s:%2$s</string>
+    <string name="notification_bg_sync_title">正在檢查郵件</string>
+    <string name="notification_bg_send_ticker">正在寄送郵件：%1$s</string>
+    <string name="notification_bg_send_title">正在寄送郵件</string>
+    <string name="send_failure_subject">有些郵件沒有成功寄送</string>
+    <string name="notification_additional_messages">+ 來自%2$s已超過%1$d則訊息</string>
+    <string name="push_notification_state_initializing">初始化…</string>
+    <string name="push_notification_state_listening">正在等待新郵件</string>
+    <string name="push_notification_state_wait_background_sync">等待背景同步允許</string>
+    <string name="push_notification_state_wait_network">等待網路可用</string>
+    <string name="push_notification_state_alarm_permission_missing">缺少排程鬧鐘的權限</string>
+    <string name="push_notification_info">點擊以瞭解更多。</string>
+    <string name="push_notification_grant_alarm_permission">點擊以授予權限。</string>
+    <string name="push_info_disable_push_action">停用推送</string>
+    <string name="notification_action_reply">回覆</string>
+    <string name="notification_action_mark_as_read">標示為已讀取</string>
+    <string name="notification_action_mark_all_as_read">全部標示為已讀取</string>
+    <string name="notification_action_delete">刪除</string>
+    <string name="notification_action_delete_all">刪除全部</string>
+    <string name="notification_action_archive">封存</string>
+    <string name="notification_action_archive_all">全部封存</string>
+    <string name="notification_action_spam">垃圾郵件</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Sünkroniseeri (kasuta tõuketeenust)</string>
+    <string name="notification_channel_push_description">Näidatakse uute kirjade ootamisel</string>
+    <string name="notification_channel_messages_title">E-kirjad</string>
+    <string name="notification_channel_messages_description">E-kirjadega seotud teated</string>
+    <string name="notification_channel_miscellaneous_title">Muu</string>
+    <string name="notification_channel_miscellaneous_description">Mitmesugused teated nagu vead jms.</string>
+    <string name="notification_notify_error_title">Viga teavitusel</string>
+    <string name="notification_notify_error_text">Uue saabunud sõnumi kohta süsteemise teavituse loomisel tekkis viga. Üks võimalik põhjus on teavitusele määratud heli puudumine.\n\nAva teavituste seadistused.</string>
+    <string name="notification_authentication_error_title">Autentimine ebaõnnestus</string>
+    <string name="notification_certificate_error_public">Sertifikaadiviga</string>
+    <string name="notification_certificate_error_title">Sertifikaadi viga kontol %1$s</string>
+    <string name="notification_certificate_error_text">Kontrolli serveri seadistusi</string>
+    <string name="notification_bg_sync_ticker">Kontrollib e-kirju: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Kontrollib e-kirju</string>
+    <string name="notification_bg_send_ticker">Saadab e-kirja: %1$s</string>
+    <string name="notification_bg_send_title">Saadab e-kirja</string>
+    <string name="send_failure_subject">Mõne kirja saatmine ebaõnnestus</string>
+    <string name="notification_additional_messages">+ %1$d veel kontol %2$s</string>
+    <string name="push_notification_state_initializing">Käivitamine…</string>
+    <string name="push_notification_state_listening">Ootan uusi e-kirju</string>
+    <string name="push_notification_state_wait_background_sync">Ootan taustal kuni sünkroniseerimine on lubatud</string>
+    <string name="push_notification_state_wait_network">Ootan taustal kuni võrguühendus taastub</string>
+    <string name="push_notification_state_alarm_permission_missing">Puuduvad õigused alarmide seadistamiseks</string>
+    <string name="push_notification_info">Lisateabe saamiseks klõpsi.</string>
+    <string name="push_notification_grant_alarm_permission">Õiguste jagamiseks klõpsi.</string>
+    <string name="push_info_disable_push_action">Ära kasuta tõuketeenuseid</string>
+    <string name="notification_action_reply">Vasta</string>
+    <string name="notification_action_mark_as_read">Märgi loetuks</string>
+    <string name="notification_action_mark_all_as_read">Märgi kõik loetuks</string>
+    <string name="notification_action_delete">Kustuta</string>
+    <string name="notification_action_delete_all">Kustuta kõik</string>
+    <string name="notification_action_archive">Arhiveeri</string>
+    <string name="notification_action_archive_all">Arhiveeri kõik</string>
+    <string name="notification_action_spam">Rämps</string>
+</resources>
