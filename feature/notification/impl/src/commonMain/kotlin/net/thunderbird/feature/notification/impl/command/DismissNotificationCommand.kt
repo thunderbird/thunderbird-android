@@ -54,7 +54,7 @@ sealed class DismissNotificationCommand<TNotification : Notification>(
 
             notification in notificationRegistry -> {
                 val id = checkNotNull(notificationRegistry[notification]) {
-                    "Unexcepted state when trying to dismiss a notification. " +
+                    "Unexpected state when trying to dismiss a notification. " +
                         "The required notification was not found in registry." +
                         "This might have been caused by a concurrent modification of the registry." +
                         "Please report this issue." +
