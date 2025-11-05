@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_glance_widget_compose_action">Verfassen</string>
+    <string name="message_list_glance_widget_inbox_title">Gemeinsamer Posteingang</string>
+    <string name="message_list_glance_widget_label">Nachrichtenliste</string>
+</resources>

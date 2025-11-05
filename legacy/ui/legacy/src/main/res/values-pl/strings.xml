@@ -306,9 +306,9 @@
     <string name="account_setup_options_mail_display_count_all">Wszystkie wiadomości</string>
     <string name="move_copy_cannot_copy_unsynced_message">Nie można skopiować ani przenieść wiadomości, która nie jest zsynchronizowana z serwerem</string>
     <string name="account_settings_push_advanced_title">Zaawansowane</string>
-    <string name="account_settings_title_fmt">Ustawienia ogólne</string>
-    <string name="account_settings_notify_label">Nowe wiadomości</string>
-    <string name="account_settings_notify_sync_label">Synchronizacja konta</string>
+    <string name="account_settings_title_fmt">Ustawienia konta</string>
+    <string name="account_settings_notify_label">Powiadomienia o nowej poczcie</string>
+    <string name="account_settings_notify_sync_label">Powiadomienia o synchronizacji</string>
     <string name="account_settings_email_label">Twój adres e-mail</string>
     <string name="account_settings_notify_summary">Powiadomiaj na pasku stanu, gdy jest nowa wiadomość</string>
     <string name="account_settings_notify_sync_summary">Powiadomiaj na pasku stanu, gdy przeprowadzasz sprawdzanie tego konta</string>

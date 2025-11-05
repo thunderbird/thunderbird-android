@@ -32,4 +32,6 @@
     <string name="account_server_settings_validation_error_server_required">Необходимо указать имя сервера.</string>
     <string name="account_server_settings_password_authentication_screen_lock_required">Чтобы увидеть ваш пароль, включите блокировку экрана на этом устройстве.</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Отправлять информацию о клиенте</string>
+    <string name="account_server_settings_password_authentication_failed">Аутентификация не выполнена!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Невозможно запустить биометрическую проверку.</string>
 </resources>
