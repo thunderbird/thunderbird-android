@@ -13,6 +13,7 @@ import net.thunderbird.feature.notification.api.command.outcome.Success
 import net.thunderbird.feature.notification.api.command.outcome.UnsupportedCommand
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
+import net.thunderbird.feature.notification.impl.DefaultNotificationRegistry
 
 /**
  * A command that dismisses a notification.
@@ -53,12 +54,12 @@ sealed class DismissNotificationCommand<TNotification : Notification>(
 
             notification in notificationRegistry -> {
                 val id = checkNotNull(notificationRegistry[notification]) {
-                    "Unexcepted state when trying to dismiss a notification. " +
+                    "Unexpected state when trying to dismiss a notification. " +
                         "The required notification was not found in registry." +
                         "This might have been caused by a concurrent modification of the registry." +
                         "Please report this issue." +
                         "Notification = $notification" +
-                        "Registrar = ${notificationRegistry.registrar}"
+                        (notificationRegistry as? DefaultNotificationRegistry)?.registrar?.let { ", Registrar = $it" }
                 }
                 notifier.dismiss(id)
                 Outcome.success(Success(notificationId = id, command = this))

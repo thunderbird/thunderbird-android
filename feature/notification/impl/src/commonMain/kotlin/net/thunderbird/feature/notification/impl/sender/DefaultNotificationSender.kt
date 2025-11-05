@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.flow
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.command.outcome.CommandNotCreated
 import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome
@@ -27,14 +26,12 @@ import net.thunderbird.feature.notification.impl.command.DisplaySystemNotificati
  *
  * @param logger The logger instance for logging events.
  * @param featureFlagProvider Provider for accessing feature flag states.
- * @param notificationRegistry Registry for managing notifications.
  * @param systemNotificationNotifier Notifier specifically for system notifications.
  * @param inAppNotificationNotifier Notifier specifically for in-app notifications.
  */
 class DefaultNotificationSender internal constructor(
     private val logger: Logger,
     private val featureFlagProvider: FeatureFlagProvider,
-    private val notificationRegistry: NotificationRegistry,
     private val systemNotificationNotifier: NotificationNotifier<SystemNotification>,
     private val inAppNotificationNotifier: NotificationNotifier<InAppNotification>,
 ) : NotificationSender {
@@ -56,7 +53,6 @@ class DefaultNotificationSender internal constructor(
                 DisplaySystemNotificationCommand(
                     logger = logger,
                     featureFlagProvider = featureFlagProvider,
-                    notificationRegistry = notificationRegistry,
                     notification = notification,
                     notifier = systemNotificationNotifier,
                 ),
@@ -68,7 +64,6 @@ class DefaultNotificationSender internal constructor(
                 DisplayInAppNotificationCommand(
                     logger = logger,
                     featureFlagProvider = featureFlagProvider,
-                    notificationRegistry = notificationRegistry,
                     notification = notification,
                     notifier = inAppNotificationNotifier,
                 ),

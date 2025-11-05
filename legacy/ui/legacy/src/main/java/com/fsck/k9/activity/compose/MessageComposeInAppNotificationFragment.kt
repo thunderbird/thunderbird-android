@@ -50,8 +50,8 @@ class MessageComposeInAppNotificationFragment : Fragment() {
                             DisplayInAppNotificationFlag.SnackbarNotifications,
                         ),
                         onSnackbarNotificationEvent = ::onSnackbarInAppNotificationEvent,
-                        eventFilter = { event ->
-                            val accountUuid = event.notification.accountUuid
+                        eventFilter = { notification ->
+                            val accountUuid = notification.accountUuid
                             accountUuid != null && accountUuid in accountIds
                         },
                     )

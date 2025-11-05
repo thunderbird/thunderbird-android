@@ -2605,32 +2605,45 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
             handleAuthenticationFailure(account, true);
             return;
         } else {
-            clearAuthenticationErrorNotification(account, true);
+            clearAuthenticationErrorNotification(account, true, true);
         }
 
         // checking outgoing server configuration
         if (isAuthenticationProblem(account, false)) {
             handleAuthenticationFailure(account, false);
         } else {
-            clearAuthenticationErrorNotification(account, false);
+            clearAuthenticationErrorNotification(account, false, true);
         }
     }
 
     private boolean isAuthenticationProblem(LegacyAccountDto account, boolean incoming) {
-        ServerSettings serverSettings = incoming ?
-                account.getIncomingServerSettings() : account.getOutgoingServerSettings();
+        final ServerSettings serverSettings = getServerSettings(account, incoming);
 
         return serverSettings.isMissingCredentials() ||
                 serverSettings.authenticationType == AuthType.XOAUTH2 && account.getOAuthState() == null;
     }
 
-    private void clearAuthenticationErrorNotification(LegacyAccountDto account, boolean incoming) {
+    private ServerSettings getServerSettings(LegacyAccountDto account, boolean incoming) {
+        return incoming ? account.getIncomingServerSettings() : account.getOutgoingServerSettings();
+    }
+
+    private void clearAuthenticationErrorNotification(
+        LegacyAccountDto account, boolean incoming, boolean clearOnlyForOAuthAccounts
+    ) {
         if (FeatureFlagProviderCompat.provide(featureFlagProvider, "display_in_app_notifications").isEnabled()) {
-            final AuthenticationErrorNotification notification = createAuthenticationErrorNotification(
-                account, incoming);
-            notificationDismisser.dismiss(notification,outcome -> {
-                Log.v("notificationDismisser outcome = " + outcome);
-            });
+            boolean shouldClear = true;
+            final ServerSettings serverSettings = getServerSettings(account, incoming);
+            if (clearOnlyForOAuthAccounts && serverSettings.authenticationType != AuthType.XOAUTH2) {
+                shouldClear = false;
+            }
+
+            if (shouldClear) {
+                final AuthenticationErrorNotification notification = createAuthenticationErrorNotification(
+                    account, incoming);
+                notificationDismisser.dismiss(notification, outcome -> {
+                    Log.v("notificationDismisser outcome = " + outcome);
+                });
+            }
         }
     }
 
@@ -2722,7 +2735,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         @Override
         public void syncAuthenticationSuccess() {
-            clearAuthenticationErrorNotification(account, true);
+            clearAuthenticationErrorNotification(account, true, false);
             notificationController.clearAuthenticationErrorNotification(account, true);
         }
 

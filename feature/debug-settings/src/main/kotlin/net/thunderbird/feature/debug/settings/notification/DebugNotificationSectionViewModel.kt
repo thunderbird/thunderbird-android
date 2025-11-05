@@ -5,6 +5,7 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -28,14 +29,14 @@ import net.thunderbird.feature.notification.api.content.MailNotification
 import net.thunderbird.feature.notification.api.content.Notification
 import net.thunderbird.feature.notification.api.content.PushServiceNotification
 import net.thunderbird.feature.notification.api.content.SystemNotification
-import net.thunderbird.feature.notification.api.receiver.InAppNotificationReceiver
+import net.thunderbird.feature.notification.api.receiver.InAppNotificationStream
 import net.thunderbird.feature.notification.api.sender.NotificationSender
 
 internal class DebugNotificationSectionViewModel(
     private val stringsResourceManager: StringsResourceManager,
     private val accountManager: AccountManager<BaseAccount>,
     private val notificationSender: NotificationSender,
-    private val notificationReceiver: InAppNotificationReceiver,
+    private val inAppNotificationStream: InAppNotificationStream,
     private val mainDispatcher: CoroutineDispatcher = Dispatchers.Main,
     ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : BaseViewModel<State, Event, Effect>(initialState = State()), DebugNotificationSectionContract.ViewModel {
@@ -81,12 +82,25 @@ internal class DebugNotificationSectionViewModel(
         }
 
         viewModelScope.launch {
-            notificationReceiver
-                .events
-                .collectLatest { event ->
+            var pastNotifications = emptySet<InAppNotification>()
+            inAppNotificationStream
+                .notifications
+                .collectLatest { notifications ->
+                    val events = notifications
+                        .mapNotNull { notification -> if (notification in pastNotifications) null else notification }
+                        .let { newNotifications ->
+                            newNotifications
+                                .map { notification -> "Show in-app notification: $notification" }
+                                .plus(
+                                    pastNotifications
+                                        .filter { notification -> notification !in newNotifications }
+                                        .map { notification -> "Hide in-app notification: $notification" },
+                                )
+                        }
                     updateState { state ->
+                        val newLog = state.notificationStatusLog + events
                         state.copy(
-                            notificationStatusLog = state.notificationStatusLog + " In-app notification event: $event",
+                            notificationStatusLog = newLog.toImmutableList(),
                         )
                     }
                 }
