@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
-    <application tools:ignore="MissingApplicationIcon">
+    <application
+        tools:ignore="MissingApplicationIcon"
+        android:memtagMode="async">
 
         <!-- This component is disabled by default (if possible). It will be enabled programmatically if necessary. -->
         <!-- IMPORTANT: The component name must be -->
