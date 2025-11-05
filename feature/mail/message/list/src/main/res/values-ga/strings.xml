@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Ná taispeáin an teachtaireacht seo arís</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Ní féidir ríomhphost a chartlannú</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Cumraigh fillteán cartlainne anois</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Scipeáil ar feadh tamaill</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Socraigh fillteán cartlainne</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Úps, chuaigh rud éigin mícheart agus fillteáin an chuntais á n-aisghabháil!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Sonraí earráide: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Cruthaigh fillteán nua</string>
+    <string name="setup_archive_folder_dialog_done">Déanta</string>
+    <string name="setup_archive_folder_dialog_cancel">Cealaigh</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Cruthaigh agus socraigh fillteán nua]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Níorbh fhéidir cuntas a aimsiú a bhaineann leis an UUID \'%1$s\'</string>
+    <string name="setup_archive_folder_unhandled_error">Earráid neamhláimhseáilte: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Ag sioncrónú…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Cruthaíodh fillteán áitiúil. Ag tosú sioncrónaithe…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Cruthaíodh fillteán cianda.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Ag cruthú fillteáin ar sholáthraí ríomhphoist…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Ag nuashonrú rialacha fillteáin speisialta…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Níor aimsíodh an cuntas (%1$s)</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Theip ar chruthú an fhillteáin áitiúil \'%1$s\'.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Theip ar shioncrónú an fhillteáin \'%1$s\' leis an gcianrialtán. Teachtaireacht: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Ní féidir ainm an fhillteáin a fhágáil bán</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Ainm fillteáin neamhbhailí \'%1$s\'</string>
+</resources>

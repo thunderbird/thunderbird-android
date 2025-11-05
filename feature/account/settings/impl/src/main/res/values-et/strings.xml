@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_general_title">Üldseadistused</string>
+    <string name="account_settings_general_profile_indicator_title">Profiili eraldustunnus</string>
+    <string name="account_settings_general_profile_indicator_monogram">Monogramm</string>
+    <string name="account_settings_general_profile_indicator_image">Pilt</string>
+    <string name="account_settings_general_profile_indicator_icon">Ikoon</string>
+    <string name="account_settings_general_name_title">Kasutajakonto nimi</string>
+    <string name="account_settings_general_name_description">Sinu kasutajakontoga seotud nimi.</string>
+    <string name="account_settings_general_color_title">Kasutajakonto värv</string>
+    <string name="account_settings_general_color_description">Selle kasutajakonto tunnusvärv, mida kasutatakse kaustades ja kontode loendis.</string>
+</resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Синхронизация (Push)</string>
     <string name="notification_channel_push_description">Отображается во время ожидания новых сообщений</string>
@@ -10,7 +10,7 @@
     <string name="notification_notify_error_text">При попытке создать системное уведомление для нового сообщения произошла ошибка. Причина, скорее всего, заключается в отсутствующем звуке уведомления.
 \n
 \nНажмите, чтобы открыть настройки уведомлений.</string>
-    <string name="notification_authentication_error_title">Сбой аутентификации</string>
+    <string name="notification_authentication_error_title">Ошибка аутентификации</string>
     <string name="notification_certificate_error_public">Ошибка сертификата</string>
     <string name="notification_certificate_error_title">Сбой сертификата %1$s</string>
     <string name="notification_certificate_error_text">Проверьте настройки сервера</string>
@@ -36,4 +36,15 @@
     <string name="notification_action_archive">Архив</string>
     <string name="notification_action_archive_all">Архивировать все</string>
     <string name="notification_action_spam">Спам</string>
+    <string name="notification_authentication_incoming_server_error_text">Ошибка аутентификации %1$s. Обновите настройки сервера входящей почты.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Ошибка аутентификации %1$s. Обновите настройки сервера исходящей почты.</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d новое сообщение</item>
+        <item quantity="few">%1$d новых сообщения</item>
+        <item quantity="many">%1$d новых сообщений</item>
+        <item quantity="other">%1$d новых сообщений</item>
+    </plurals>
+    <string name="notification_action_retry">Повтор</string>
+    <string name="notification_action_update_server_settings">Обновить настройки сервера</string>
+    <string name="notification_action_assign_sent_folder">Назначить папку</string>
 </resources>

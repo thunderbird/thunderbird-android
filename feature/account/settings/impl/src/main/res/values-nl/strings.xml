@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_general_title">Algemene instellingen</string>
+    <string name="account_settings_general_profile_indicator_title">Profielindicator</string>
+    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
+    <string name="account_settings_general_profile_indicator_image">Afbeelding</string>
+    <string name="account_settings_general_profile_indicator_icon">Pictogram</string>
+    <string name="account_settings_general_name_title">Accountnaam</string>
+    <string name="account_settings_general_name_description">De met uw account geassocieerd naam.</string>
+    <string name="account_settings_general_color_title">Accountkleur</string>
+    <string name="account_settings_general_color_description">De accentkleur van deze account gebruikt in mappen en accountlijsten.</string>
+</resources>
