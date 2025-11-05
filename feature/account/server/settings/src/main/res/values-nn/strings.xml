@@ -15,10 +15,10 @@
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
     <string name="account_server_settings_client_certificate_none_selected">Ingen</string>
     <string name="account_server_settings_client_certificate_label">Klientsertifikat</string>
-    <string name="account_server_settings_incoming_top_bar_title">Innkomande serverinnstillingar</string>
+    <string name="account_server_settings_incoming_top_bar_title">Innkomande tenarinnstillingar</string>
     <string name="account_server_settings_incoming_imap_compression_label">Bruk samanpakking</string>
-    <string name="account_server_settings_outgoing_top_bar_title">Utgåande serverinnstillingar</string>
-    <string name="account_server_settings_validation_error_server_required">Servernamn er påkravd.</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Innstillingar for utgåande tenar</string>
+    <string name="account_server_settings_validation_error_server_required">Tenarnamn er påkravd.</string>
     <string name="account_server_settings_validation_error_port_required">Port er npåkravd.</string>
     <string name="account_server_settings_port_label">Port</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Oppdag IMAP-navnerom automatisk</string>

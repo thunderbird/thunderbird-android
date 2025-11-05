@@ -61,4 +61,5 @@
         <item quantity="other">%d missatges</item>
     </plurals>
     <string name="account_setup_options_your_name_label">El vostre nom</string>
+    <string name="account_setup_options_your_name_error_required">El vostre nom és necessari.</string>
 </resources>

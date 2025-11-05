@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_setup_error_network">နိတ်ဝံက်ယောၚ်။ စၟဳစၟတ် လာၚ်မၞးတုဲ ဂ္စာန်မွဲအလန်ပၠန်ညိ။</string>
+    <string name="account_setup_error_unknown">ပရေၚ်ယောၚ်ယာ ဟွံတီသွဟ်</string>
+</resources>

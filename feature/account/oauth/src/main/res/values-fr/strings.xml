@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Me connecter avec Google</string>
-    <string name="account_oauth_loading_error">Échec de connexion OAuth</string>
+    <string name="account_oauth_loading_error">Échec de connection avec OAuth</string>
     <string name="account_oauth_error_failed">Échec d’autorisation avec l’erreur suivante : <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">L’appli n’a pas trouvé de navigateur pour accorder l’accès à votre compte.</string>
     <string name="account_oauth_error_not_supported">OAuth n\'est actuellement pas pris en charge par ce fournisseur.</string>
     <string name="account_oauth_error_canceled">L\'autorisation a été annulée</string>
-    <string name="account_oauth_loading_message">Me connecter avec OAuth</string>
-    <string name="account_oauth_sign_in_description">Nous vous redirigerons vers votre fournisseur de courriel pour vous connecter. Vous devez accorder à l’appli l’accès à votre compte de courriel.</string>
+    <string name="account_oauth_loading_message">Connexion avec OAuth</string>
+    <string name="account_oauth_sign_in_description">Nous allons vous rediriger vers votre service de courriel pour vous connecter. Vous devez autoriser l’appli à accéder à votre compte de courriel.</string>
     <string name="account_oauth_sign_in_button">Me connecter</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">article d’assistance</string>
     <string name="account_oauth_google_sign_in_support_text">Si vous rencontrez des problèmes lors de la connexion avec Google, consultez notre {placeHolder}.</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="onboarding_welcome_start_button">शुरू करें</string>
+    <string name="onboarding_welcome_start_button">शुरू कीजिए।</string>
     <string name="onboarding_welcome_import_button">सेटिंग इंपोर्ट करें</string>
+    <string name="onboarding_welcome_text">एंड्रॉइड के लिए एक खुला स्रोत, गोपनीयता-केंद्रित और विज्ञापन-मुक्त ईमेल ऐप।</string>
 </resources>

@@ -66,4 +66,6 @@
     </plurals>
     <string name="account_setup_create_account_creating">Cuntas á chruthú…</string>
     <string name="account_setup_create_account_error">Tharla earráid agus an cuntas a chruthú</string>
+    <string name="account_setup_options_your_name_label">D\'ainm</string>
+    <string name="account_setup_options_your_name_error_required">Tá d\'ainm riachtanach.</string>
 </resources>

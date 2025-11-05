@@ -55,11 +55,11 @@
     <string name="copy_action">Eilañ</string>
     <string name="show_headers_action">Diskouez an talbennoù</string>
     <plurals name="copy_address_to_clipboard">
-        <item quantity="one">Chomlec’h eilet er golver</item>
-        <item quantity="two">Chomlec’hioù eilet er golver</item>
-        <item quantity="few">Chomlec’hioù eilet er golver</item>
-        <item quantity="many">Chomlec’hioù eilet er golver</item>
-        <item quantity="other">Chomlec’hioù eilet er golver</item>
+        <item quantity="one">Eilet eo bet ar chomlec’h er golver</item>
+        <item quantity="two">Eilet eo bet ar chomlec’hioù er golver</item>
+        <item quantity="few">Eilet eo bet ar chomlec’hioù er golver</item>
+        <item quantity="many">Eilet eo bet ar chomlec’hioù er golver</item>
+        <item quantity="other">Eilet eo bet ar chomlec’hioù er golver</item>
     </plurals>
     <string name="message_view_theme_action_dark">Mont d’an neuz teñval</string>
     <string name="message_view_theme_action_light">Mont d’an neuz sklaer</string>
@@ -926,4 +926,5 @@ Gallout a rit mirout ar gemennadenn-mañ hag implij anezhi evel un enrolladenn e
     <string name="swipe_action_archive_folder_not_set">Kefluniañ an teuliad \"Dielloù\"</string>
     <string name="swipe_action_change_swipe_gestures">Kemmañ\nRisklañ jestroù</string>
     <string name="archiving_not_available_for_this_account">N\'eo ket hegez an diellaouiñ evit ar c\'hont-mañ.</string>
+    <string name="message_view_menu_action_export_eml">Ezporzhiañ e stumm EML</string>
 </resources>

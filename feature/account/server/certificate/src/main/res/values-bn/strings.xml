@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_certificate_button_advanced">বিশেষায়িত পছন্দ</string>
+    <string name="account_server_certificate_fingerprints_section">Fingerprints</string>
+</resources>

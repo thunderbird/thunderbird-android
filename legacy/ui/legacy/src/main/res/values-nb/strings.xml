@@ -905,4 +905,17 @@
     <string name="swipe_action_archive_folder_not_set">Sett opp arkivmappe</string>
     <string name="swipe_action_change_swipe_gestures">Endre \nsveipehandlinger</string>
     <string name="archiving_not_available_for_this_account">Arkivering er ikke tilgjengelig for denne kontoen.</string>
+    <string name="debug_invalidate_access_token">Test: Ugyldiggjør tilgangstoken</string>
+    <string name="debug_invalidate_access_token_done">Tilgangstoken ugyldiggjort. Den neste forespørselen vil oppfriske.</string>
+    <string name="debug_invalidate_access_token_unavailable">Intet OAuth-token er tilgjengelig for denne kontoen.</string>
+    <string name="debug_invalidate_access_token_local">Test: Ugyldiggjør tilgangstoken (lokalt)</string>
+    <string name="debug_invalidate_access_token_local_done">Lokal ugyldiggjøring har blitt forespurt. Den neste forespørselen vil hente et nytt token.</string>
+    <string name="debug_invalidate_access_token_server">Test: Ugyldiggjør tilgangstoken (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Det lagrede tilgangstokenet er korrput. Den neste forespørselen vil mistykkes og deretter oppfriske det.</string>
+    <string name="debug_force_auth_failure">Test: tving mislykket autentisering nå</string>
+    <string name="debug_force_auth_failure_done">OAuth-tilstand slettet. Den neste forespørselen vil mislykkes.</string>
+    <string name="debug_force_auth_failure_unavailable">Ingen OAuth-konfigurasjon er tilgjengelig for denne kontoen.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Kunne ikke modifisere det lagrede tilgangstokenet. Prøv lokal ugyldiggjøring.</string>
+    <string name="debug_invalidate_access_token_already_modified">Det lagrede tilgangstokenet er allerede modifisert.</string>
+    <string name="message_view_menu_action_export_eml">Eksporter som EML</string>
 </resources>

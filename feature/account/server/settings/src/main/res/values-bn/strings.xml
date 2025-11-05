@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_protocol_type_label">প্রোটোকল</string>
+    <string name="account_server_settings_server_label">সার্ভার</string>
+    <string name="account_server_settings_security_label">নিরাপত্তা</string>
+    <string name="account_server_settings_port_label">পোর্ট</string>
+    <string name="account_server_settings_authentication_label">যাচাইকরণ</string>
+    <string name="account_server_settings_username_label">নাম</string>
+    <string name="account_server_settings_connection_security_none">নিরাপত্তাহীন</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">কোনটি নয়</string>
+    <string name="account_server_settings_client_certificate_none_selected">কোনটি নয়</string>
+</resources>

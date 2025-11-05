@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_drawer_siderail_action_settings">တၚ်ပလေဝ်ဂမၠိုၚ်</string>
+    <string name="navigation_drawer_siderail_action_manage_folders">စဳရေၚ် အခန်ဝှါၚ်</string>
+    <string name="navigation_drawer_siderail_action_show_accounts">ထ္ၜးအဃံက်ဖအိုတ်</string>
+    <string name="navigation_drawer_siderail_action_sync_all_accounts">ဆက်စၠောံအဃံဖအိုတ်</string>
+    <string name="navigation_drawer_siderail_action_hide_accounts">ပၞုက်အဃံက်</string>
+    <string name="navigation_drawer_siderail_unified_inbox_title">လိက်လုပ်လဝ်ဖအိုတ်</string>
+    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_99">၉၉+</string>
+    <string name="navigation_drawer_siderail_folder_item_badge_count_greater_than_1_000">၁လ္ၚဳ+</string>
+</resources>

@@ -902,4 +902,17 @@
     <string name="swipe_action_change_swipe_gestures">Ndryshim \nGjeste Fërkimi</string>
     <string name="notification_action_archive">Arkivoje</string>
     <string name="debug_open_secret_debug_screen">Hap skenën e Fshehtë të diagnostikimeve</string>
+    <string name="message_view_menu_action_export_eml">Eksportoje si EML</string>
+    <string name="debug_invalidate_access_token">Test: Bëj të pavlefshëm token-in e hyrjeve</string>
+    <string name="debug_invalidate_access_token_done">Token-i i hyrjeve u bë i pavlefshëm. Kërkesa tjetër do ta rifreskojë.</string>
+    <string name="debug_invalidate_access_token_unavailable">Për këtë llogari s’ka token OAuth të gatshëm.</string>
+    <string name="debug_invalidate_access_token_local">Test: Bëj të pavlefshëm token-in (vendor) të hyrjeve</string>
+    <string name="debug_invalidate_access_token_local_done">U kërkua bërje e pavlefshme e token-it vendor. Kërkesa pasuese do të sjellë një token të ri.</string>
+    <string name="debug_invalidate_access_token_server">Test: Bëj të pavlefshëm token-in e hyrjeve (shërbyes)</string>
+    <string name="debug_invalidate_access_token_server_done">Token-i i depozituar i hyrjeve është dëmtuar. Kërkesa pauese do të dështojë, mandej do të bëjë rifreskimin.</string>
+    <string name="debug_force_auth_failure">Test: Detyro dështim mirëfilltësimi tani</string>
+    <string name="debug_force_auth_failure_done">Gjendja e OAuth u spastrua. Kërkesa pasuese do të dështojë.</string>
+    <string name="debug_force_auth_failure_unavailable">Për këtë llogari s’ka të formësuar OAuth.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">S’u ndryshua dot token hyrjesh i depozituar. Provoni bërjen lokalisht të pavlefshëm.</string>
+    <string name="debug_invalidate_access_token_already_modified">Token-i i depozituar i hyrjeve është ndryshuar tashmë.</string>
 </resources>
