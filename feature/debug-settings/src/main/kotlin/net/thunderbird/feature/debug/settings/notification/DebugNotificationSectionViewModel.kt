@@ -3,7 +3,6 @@ package net.thunderbird.feature.debug.settings.notification
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
-import kotlin.jvm.java
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
