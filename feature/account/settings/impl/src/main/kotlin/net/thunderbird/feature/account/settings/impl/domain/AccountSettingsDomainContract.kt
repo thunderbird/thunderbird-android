@@ -6,10 +6,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.profile.AccountProfile
 
 internal interface AccountSettingsDomainContract {
 
@@ -19,7 +19,7 @@ internal interface AccountSettingsDomainContract {
         }
 
         fun interface GetGeneralSettings {
-            operator fun invoke(accountId: AccountId): Flow<Outcome<Settings, AccountSettingError>>
+            operator fun invoke(accountId: AccountId): Flow<Outcome<AccountProfile, AccountSettingError>>
         }
 
         fun interface UpdateGeneralSettings {
@@ -49,6 +49,7 @@ internal interface AccountSettingsDomainContract {
             fun profileUi(
                 name: String,
                 color: Int,
+                avatar: AccountAvatar?,
             ): @Composable (Modifier) -> Unit
 
             val profileIndicatorTitle: () -> String

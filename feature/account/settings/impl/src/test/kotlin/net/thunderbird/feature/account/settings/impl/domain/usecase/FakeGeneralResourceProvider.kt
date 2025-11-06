@@ -5,12 +5,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 
 internal class FakeGeneralResourceProvider : ResourceProvider.GeneralResourceProvider {
     override fun profileUi(
         name: String,
         color: Int,
+        avatar: AccountAvatar?,
     ): @Composable ((Modifier) -> Unit) = { }
 
     override val nameTitle: () -> String = { "Name" }

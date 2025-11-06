@@ -2,13 +2,12 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 
 import app.k9mail.core.ui.compose.testing.mvi.MviContext
 import app.k9mail.core.ui.compose.testing.mvi.MviTurbines
+import app.k9mail.core.ui.compose.testing.mvi.advanceUntilIdle
 import app.k9mail.core.ui.compose.testing.mvi.runMviTest
 import app.k9mail.core.ui.compose.testing.mvi.turbinesWithInitialStateCheck
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import kotlin.test.Test
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -17,27 +16,18 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
-import net.thunderbird.core.ui.setting.SettingValue
-import net.thunderbird.core.ui.setting.Settings
-import net.thunderbird.core.ui.setting.emptySettings
+import net.thunderbird.core.validation.input.IntegerInputField
+import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.account.settings.impl.domain.entity.GeneralPreference
-import net.thunderbird.feature.account.settings.impl.domain.entity.generateId
+import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.profile.AccountProfile
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UpdateGeneralSettingCommand
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Effect
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
 import org.junit.Before
 import org.junit.Rule
-
-private fun createSettings(accountId: AccountId): Settings = persistentListOf(
-    SettingValue.Text(
-        id = GeneralPreference.NAME.generateId(accountId),
-        title = { "Title" },
-        description = { "Description" },
-        icon = { null },
-        value = "Test",
-    ),
-)
 
 class GeneralSettingsViewModelTest {
 
@@ -54,10 +44,9 @@ class GeneralSettingsViewModelTest {
         val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = null,
-            settings = emptySettings(),
         )
 
-        generalSettingsRobot(accountId, initialState, persistentListOf()) {
+        generalSettingsRobot(accountId, initialState) {
             verifyAccountNameLoaded()
         }
     }
@@ -67,12 +56,16 @@ class GeneralSettingsViewModelTest {
         val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
-            settings = emptySettings(),
         )
-        val settings = FakeData.settings
+        val profile = AccountProfile(
+            id = accountId,
+            name = "John",
+            color = 0xFF0000,
+            avatar = AccountAvatar.Monogram("J"),
+        )
 
-        generalSettingsRobot(accountId, initialState, settings) {
-            verifyGeneralSettingsLoaded(settings)
+        generalSettingsRobot(accountId, initialState, profile) {
+            verifyGeneralSettingsLoaded(profile)
         }
     }
 
@@ -81,35 +74,52 @@ class GeneralSettingsViewModelTest {
         val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
-            settings = emptySettings(),
         )
-        val settings = FakeData.settings
 
-        generalSettingsRobot(accountId, initialState, settings) {
-            verifyGeneralSettingsLoaded(settings)
+        generalSettingsRobot(accountId, initialState) {
             pressBack()
             verifyBackNavigation()
         }
     }
 
     @Test
-    fun `should update preference when changed`() = runMviTest {
+    fun `should send update command when name changed`() = runMviTest {
         val accountId = AccountIdFactory.create()
         val initialState = State(
             subtitle = "Subtitle",
-            settings = emptySettings(),
         )
-        val settings = createSettings(accountId)
 
-        generalSettingsRobot(accountId, initialState, settings) {
-            verifyGeneralSettingsLoaded(settings)
-            val updatedPreference = (settings.first() as SettingValue.Text).copy(
-                title = { "Updated Title" },
-                description = { "Updated Description" },
-            )
-            updateSetting(updatedPreference)
+        generalSettingsRobot(accountId, initialState) {
+            changeName("New Name")
+            verifyLastCommand(UpdateGeneralSettingCommand.UpdateName("New Name"))
+        }
+    }
 
-            verifySettingUpdated(updatedPreference)
+    @Test
+    fun `should send update command when color changed`() = runMviTest {
+        val accountId = AccountIdFactory.create()
+        val initialState = State(
+            subtitle = "Subtitle",
+        )
+
+        generalSettingsRobot(accountId, initialState) {
+            val newColor = 0x00FF00
+            changeColor(newColor)
+            verifyLastCommand(UpdateGeneralSettingCommand.UpdateColor(newColor))
+        }
+    }
+
+    @Test
+    fun `should send update command when avatar changed`() = runMviTest {
+        val accountId = AccountIdFactory.create()
+        val initialState = State(
+            subtitle = "Subtitle",
+        )
+
+        generalSettingsRobot(accountId, initialState) {
+            val newAvatar = AccountAvatar.Monogram("A")
+            changeAvatar(newAvatar)
+            verifyLastCommand(UpdateGeneralSettingCommand.UpdateAvatar(newAvatar))
         }
     }
 }
@@ -117,9 +127,9 @@ class GeneralSettingsViewModelTest {
 private suspend fun MviContext.generalSettingsRobot(
     accountId: AccountId,
     initialState: State,
-    settings: Settings,
+    profile: AccountProfile? = null,
     interaction: suspend GeneralSettingsRobot.() -> Unit,
-) = GeneralSettingsRobot(this, accountId, initialState, settings).apply {
+) = GeneralSettingsRobot(this, accountId, initialState, profile).apply {
     initialize()
     interaction()
 }
@@ -128,11 +138,11 @@ private class GeneralSettingsRobot(
     private val mviContext: MviContext,
     private val accountId: AccountId,
     private val initialState: State = State(),
-    private val settings: Settings,
+    private val initialProfile: AccountProfile? = null,
 ) {
-    private lateinit var settingsState: MutableStateFlow<Settings>
+    private lateinit var profileState: MutableStateFlow<AccountProfile?>
     private lateinit var turbines: MviTurbines<State, Effect>
-    private var lastSetting: SettingValue<*>? = null
+    private var lastCommand: UpdateGeneralSettingCommand? = null
 
     private val viewModel: GeneralSettingsContract.ViewModel by lazy {
         GeneralSettingsViewModel(
@@ -141,25 +151,17 @@ private class GeneralSettingsRobot(
                 flowOf(Outcome.success("Subtitle"))
             },
             getGeneralSettings = {
-                settingsState.map {
-                    println("Loading preferences: $it")
-                    Outcome.success(it)
+                profileState.map { profile ->
+                    profile?.let { Outcome.success(it) }
+                        ?: Outcome.failure(
+                            AccountSettingError.NotFound(
+                                message = "Profile not found",
+                            ),
+                        )
                 }
             },
-            updateGeneralSettings = { _, _ ->
-                val newSetting = lastSetting
-                if (newSetting != null) {
-                    settingsState.value = settingsState.value.map { existingSetting ->
-                        if (existingSetting is SettingValue<*> && existingSetting.id == newSetting.id) {
-                            println("Updating setting: ${newSetting.id}")
-                            println("Old setting: $existingSetting")
-                            println("New setting: $newSetting")
-                            newSetting
-                        } else {
-                            existingSetting
-                        }
-                    }.toImmutableList()
-                }
+            updateGeneralSettings = { _, command ->
+                lastCommand = command
                 Outcome.success(Unit)
             },
             initialState = initialState,
@@ -167,7 +169,7 @@ private class GeneralSettingsRobot(
     }
 
     suspend fun initialize() {
-        settingsState = MutableStateFlow(settings)
+        profileState = MutableStateFlow(initialProfile)
 
         turbines = mviContext.turbinesWithInitialStateCheck(
             initialState = initialState,
@@ -183,12 +185,13 @@ private class GeneralSettingsRobot(
         )
     }
 
-    suspend fun verifyGeneralSettingsLoaded(settings: Settings) {
-        assertThat(turbines.awaitStateItem()).isEqualTo(
-            initialState.copy(
-                settings = settings,
-            ),
+    suspend fun verifyGeneralSettingsLoaded(profile: AccountProfile) {
+        val expected = initialState.copy(
+            name = StringInputField().updateValue(profile.name),
+            color = IntegerInputField(value = profile.color),
+            avatar = profile.avatar,
         )
+        assertThat(turbines.awaitStateItem()).isEqualTo(expected)
     }
 
     fun pressBack() {
@@ -201,16 +204,20 @@ private class GeneralSettingsRobot(
         )
     }
 
-    fun updateSetting(setting: SettingValue<*>) {
-        lastSetting = setting
-        viewModel.event(GeneralSettingsContract.Event.OnSettingValueChange(setting))
+    fun changeName(value: String) {
+        viewModel.event(GeneralSettingsContract.Event.OnNameChange(value))
     }
 
-    suspend fun verifySettingUpdated(setting: SettingValue<*>) {
-        val updatedSetting = turbines.awaitStateItem().settings
-            .filterIsInstance<SettingValue<*>>()
-            .find { it.id == setting.id }
+    fun changeColor(value: Int) {
+        viewModel.event(GeneralSettingsContract.Event.OnColorChange(value))
+    }
 
-        assertThat(updatedSetting).isEqualTo(setting)
+    fun changeAvatar(value: AccountAvatar) {
+        viewModel.event(GeneralSettingsContract.Event.OnAvatarChange(value))
+    }
+
+    suspend fun verifyLastCommand(expected: UpdateGeneralSettingCommand) {
+        mviContext.advanceUntilIdle()
+        assertThat(lastCommand).isEqualTo(expected)
     }
 }
