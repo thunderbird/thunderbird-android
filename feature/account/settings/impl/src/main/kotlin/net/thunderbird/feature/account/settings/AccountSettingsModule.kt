@@ -10,6 +10,7 @@ import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGenera
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAvatarMonogram
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralResourceProvider
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsBuilder
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsValidator
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
@@ -37,15 +38,20 @@ val featureAccountSettingsModule = module {
     factory<UseCase.GetGeneralSettings> {
         GetGeneralSettings(
             repository = get(),
-            resourceProvider = get(),
-            monogramCreator = get(),
-            featureFlagProvider = get(),
         )
     }
 
     factory<UseCase.UpdateGeneralSettings> {
         UpdateGeneralSettings(
             repository = get(),
+        )
+    }
+
+    factory<GeneralSettingsContract.SettingsBuilder> {
+        GeneralSettingsBuilder(
+            resources = get(),
+            provider = get(),
+            monogramCreator = get(),
         )
     }
 

@@ -2,10 +2,11 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
-import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
-import net.thunderbird.core.ui.setting.emptySettings
 import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.input.IntegerInputField
+import net.thunderbird.core.validation.input.StringInputField
+import net.thunderbird.feature.account.profile.AccountAvatar
 
 internal interface GeneralSettingsContract {
 
@@ -14,13 +15,22 @@ internal interface GeneralSettingsContract {
     @Stable
     data class State(
         val subtitle: String? = null,
-        val settings: Settings = emptySettings(),
+        val name: StringInputField = StringInputField(),
+        val color: IntegerInputField = IntegerInputField(),
+        val avatarType: AvatarType = AvatarType.MONOGRAM,
+        val avatar: AccountAvatar? = null,
     )
 
+    enum class AvatarType {
+        MONOGRAM,
+        IMAGE,
+        ICON,
+    }
+
     sealed interface Event {
-        data class OnSettingValueChange(
-            val setting: SettingValue<*>,
-        ) : Event
+        data class OnNameChange(val name: String) : Event
+        data class OnColorChange(val color: Int) : Event
+        data class OnAvatarChange(val avatar: AccountAvatar) : Event
 
         data object OnBackPressed : Event
     }
@@ -32,5 +42,9 @@ internal interface GeneralSettingsContract {
     interface Validator {
         fun validateName(name: String): ValidationOutcome
         fun validateMonogram(monogram: String): ValidationOutcome
+    }
+
+    fun interface SettingsBuilder {
+        fun build(state: State): Settings
     }
 }
