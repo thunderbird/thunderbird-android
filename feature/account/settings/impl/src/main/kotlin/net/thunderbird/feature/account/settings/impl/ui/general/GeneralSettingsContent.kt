@@ -33,6 +33,9 @@ internal fun GeneralSettingsContent(
             when (setting) {
                 is SettingValue.Text -> when (setting.id) {
                     GeneralSettingId.NAME -> onEvent(Event.OnNameChange(setting.value))
+                    GeneralSettingId.AVATAR_MONOGRAM -> onEvent(
+                        Event.OnAvatarChange(AccountAvatar.Monogram(setting.value)),
+                    )
                 }
 
                 is SettingValue.Color -> if (setting.id == GeneralSettingId.COLOR) {

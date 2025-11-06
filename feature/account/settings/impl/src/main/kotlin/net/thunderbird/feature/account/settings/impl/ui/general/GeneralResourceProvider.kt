@@ -21,11 +21,11 @@ internal class GeneralResourceProvider(
         color: Int,
         avatar: AccountAvatar?,
     ): @Composable ((Modifier) -> Unit) = { modifier ->
-        // TODO Avatar parameter is not used yet
         GeneralSettingsProfileView(
             name = name,
             email = null,
             color = Color(color),
+            avatar = avatar,
             modifier = modifier,
         )
     }

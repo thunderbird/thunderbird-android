@@ -19,6 +19,7 @@ internal interface GeneralSettingsContract {
         val color: IntegerInputField = IntegerInputField(),
         val avatarType: AvatarType = AvatarType.MONOGRAM,
         val avatar: AccountAvatar? = null,
+        val avatarMonogram: StringInputField = StringInputField(),
     )
 
     enum class AvatarType {
