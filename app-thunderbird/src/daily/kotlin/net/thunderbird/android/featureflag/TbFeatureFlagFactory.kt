@@ -7,6 +7,7 @@ import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
+import net.thunderbird.feature.mail.message.reader.api.MessageViewerFeatureFlags
 
 /**
  * Feature flags for Thunderbird Daily
@@ -25,6 +26,7 @@ class TbFeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
             FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
             FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
+            FeatureFlag(MessageViewerFeatureFlags.UseNewMessageViewerCssStyles, enabled = false),
         )
     }
 }
