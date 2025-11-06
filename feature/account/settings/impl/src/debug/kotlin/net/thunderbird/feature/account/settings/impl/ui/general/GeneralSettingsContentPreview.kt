@@ -7,7 +7,7 @@ import net.thunderbird.core.ui.setting.dialog.DialogSettingViewProvider
 import net.thunderbird.core.ui.setting.emptySettings
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 
 @Composable
 @Preview(showBackground = true)
@@ -18,7 +18,7 @@ internal fun GeneralSettingsContentPreview() {
                 subtitle = "Subtitle",
                 name = StringInputField(value = "Alice"),
                 color = IntegerInputField(value = 0x112233),
-                avatar = AccountAvatar.Monogram("AL"),
+                avatar = Avatar.Monogram("AL"),
             ),
             onEvent = {},
             provider = DialogSettingViewProvider(),

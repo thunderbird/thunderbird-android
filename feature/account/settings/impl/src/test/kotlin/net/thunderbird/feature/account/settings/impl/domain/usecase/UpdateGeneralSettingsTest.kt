@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UpdateGeneralSettingCommand
@@ -23,7 +23,7 @@ class UpdateGeneralSettingsTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
-            avatar = AccountAvatar.Icon(name = "star"),
+            avatar = Avatar.Icon(name = "star"),
         )
         val newName = "Updated Account Name"
         val command = UpdateGeneralSettingCommand.UpdateName(newName)
@@ -50,7 +50,7 @@ class UpdateGeneralSettingsTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
-            avatar = AccountAvatar.Icon(name = "star"),
+            avatar = Avatar.Icon(name = "star"),
         )
         val newName = "Updated Account Name"
         val newColor = 0x00FF00
@@ -101,9 +101,9 @@ class UpdateGeneralSettingsTest {
             id = accountId,
             name = "Test Account",
             color = 0xFF0000,
-            avatar = AccountAvatar.Icon(name = "star"),
+            avatar = Avatar.Icon(name = "star"),
         )
-        val imageAvatar = AccountAvatar.Image(uri = "avatar://uri")
+        val imageAvatar = Avatar.Image(uri = "avatar://uri")
         val repository = FakeAccountProfileRepository(initialAccountProfile = accountProfile)
         val testSubject = UpdateGeneralSettings(repository)
 
@@ -121,7 +121,7 @@ class UpdateGeneralSettingsTest {
     fun `should emit NotFound when updating avatar for non-existing account`() = runTest {
         // Arrange
         val accountId = AccountIdFactory.create()
-        val imageAvatar = AccountAvatar.Image(uri = "avatar://uri")
+        val imageAvatar = Avatar.Image(uri = "avatar://uri")
         val repository = FakeAccountProfileRepository()
         val testSubject = UpdateGeneralSettings(repository)
 

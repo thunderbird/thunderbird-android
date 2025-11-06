@@ -44,7 +44,7 @@ Fetch/update an account profile:
 
 ```kotlin
 val profiles: Flow<AccountProfile?> = repo.getById(id)
-repo.update(AccountProfile(id, name = "Alice", color = 0xFFAA66, avatar = AccountAvatar.Monogram(value = "A")))
+repo.update(AccountProfile(id, name = "Alice", color = 0xFFAA66, avatar = Avatar.Monogram(value = "A")))
 ```
 
 ## Design guidelines

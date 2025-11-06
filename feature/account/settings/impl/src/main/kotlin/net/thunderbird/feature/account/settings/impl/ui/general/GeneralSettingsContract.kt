@@ -6,7 +6,7 @@ import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 
 internal interface GeneralSettingsContract {
 
@@ -18,7 +18,7 @@ internal interface GeneralSettingsContract {
         val name: StringInputField = StringInputField(),
         val color: IntegerInputField = IntegerInputField(),
         val avatarType: AvatarType = AvatarType.MONOGRAM,
-        val avatar: AccountAvatar? = null,
+        val avatar: Avatar? = null,
         val avatarMonogram: StringInputField = StringInputField(),
     )
 
@@ -31,7 +31,7 @@ internal interface GeneralSettingsContract {
     sealed interface Event {
         data class OnNameChange(val name: String) : Event
         data class OnColorChange(val color: Int) : Event
-        data class OnAvatarChange(val avatar: AccountAvatar) : Event
+        data class OnAvatarChange(val avatar: Avatar) : Event
 
         data object OnBackPressed : Event
     }

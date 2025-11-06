@@ -16,9 +16,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.card.CardElevated
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
-import net.thunderbird.feature.account.profile.AccountAvatar
 
 @Composable
 internal fun GeneralSettingsProfileView(
@@ -26,9 +26,9 @@ internal fun GeneralSettingsProfileView(
     email: String?,
     color: Color,
     modifier: Modifier = Modifier,
-    avatar: AccountAvatar? = null,
+    avatar: Avatar? = null,
 ) {
-    val avatarDisplayName = (avatar as? AccountAvatar.Monogram)?.value ?: name
+    val avatarDisplayName = (avatar as? Avatar.Monogram)?.value ?: name
 
     Box(
         modifier = modifier

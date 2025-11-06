@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import net.thunderbird.app.common.account.data.FakeAccountProfileRepository
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.profile.AccountProfile
 
 class AccountColorPickerTest {
@@ -132,34 +132,34 @@ class AccountColorPickerTest {
             id = AccountIdFactory.create(),
             name = "Account Red 1",
             color = COLOR_RED,
-            avatar = AccountAvatar.Icon(name = "icon1"),
+            avatar = Avatar.Icon(name = "icon1"),
         )
         val ACCOUNT_PROFILE_RED_2 = AccountProfile(
             id = AccountIdFactory.create(),
             name = "Account Red 2",
             color = COLOR_RED,
-            avatar = AccountAvatar.Icon(name = "icon4"),
+            avatar = Avatar.Icon(name = "icon4"),
         )
 
         val ACCOUNT_PROFILE_GREEN_1 = AccountProfile(
             id = AccountIdFactory.create(),
             name = "Account Green 1",
             color = COLOR_GREEN,
-            avatar = AccountAvatar.Icon(name = "icon2"),
+            avatar = Avatar.Icon(name = "icon2"),
         )
 
         val ACCOUNT_PROFILE_GREEN_2 = AccountProfile(
             id = AccountIdFactory.create(),
             name = "Account Green 2",
             color = COLOR_GREEN,
-            avatar = AccountAvatar.Icon(name = "icon5"),
+            avatar = Avatar.Icon(name = "icon5"),
         )
 
         val ACCOUNT_PROFILE_BLUE_1 = AccountProfile(
             id = AccountIdFactory.create(),
             name = "Account Blue 1",
             color = COLOR_BLUE,
-            avatar = AccountAvatar.Icon(name = "icon3"),
+            avatar = Avatar.Icon(name = "icon3"),
         )
     }
 }

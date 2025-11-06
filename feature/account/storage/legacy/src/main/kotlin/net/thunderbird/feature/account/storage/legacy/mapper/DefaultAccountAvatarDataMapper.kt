@@ -1,15 +1,15 @@
 package net.thunderbird.feature.account.storage.legacy.mapper
 
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.storage.mapper.AccountAvatarDataMapper
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 
 class DefaultAccountAvatarDataMapper : AccountAvatarDataMapper {
 
-    override fun toDomain(dto: AvatarDto): AccountAvatar {
+    override fun toDomain(dto: AvatarDto): Avatar {
         return when (dto.avatarType) {
-            AvatarTypeDto.MONOGRAM -> AccountAvatar.Monogram(
+            AvatarTypeDto.MONOGRAM -> Avatar.Monogram(
                 value = dto.avatarMonogram ?: DEFAULT_MONOGRAM,
             )
 
@@ -17,11 +17,11 @@ class DefaultAccountAvatarDataMapper : AccountAvatarDataMapper {
                 val uri = dto.avatarImageUri
 
                 if (uri.isNullOrEmpty()) {
-                    AccountAvatar.Monogram(
+                    Avatar.Monogram(
                         value = DEFAULT_MONOGRAM,
                     )
                 } else {
-                    AccountAvatar.Image(
+                    Avatar.Image(
                         uri = uri,
                     )
                 }
@@ -31,11 +31,11 @@ class DefaultAccountAvatarDataMapper : AccountAvatarDataMapper {
                 val name = dto.avatarIconName
 
                 if (name.isNullOrEmpty()) {
-                    AccountAvatar.Monogram(
+                    Avatar.Monogram(
                         value = DEFAULT_MONOGRAM,
                     )
                 } else {
-                    AccountAvatar.Icon(
+                    Avatar.Icon(
                         name = name,
                     )
                 }
@@ -43,16 +43,16 @@ class DefaultAccountAvatarDataMapper : AccountAvatarDataMapper {
         }
     }
 
-    override fun toDto(domain: AccountAvatar): AvatarDto {
+    override fun toDto(domain: Avatar): AvatarDto {
         return AvatarDto(
             avatarType = when (domain) {
-                is AccountAvatar.Monogram -> AvatarTypeDto.MONOGRAM
-                is AccountAvatar.Image -> AvatarTypeDto.IMAGE
-                is AccountAvatar.Icon -> AvatarTypeDto.ICON
+                is Avatar.Monogram -> AvatarTypeDto.MONOGRAM
+                is Avatar.Image -> AvatarTypeDto.IMAGE
+                is Avatar.Icon -> AvatarTypeDto.ICON
             },
-            avatarMonogram = if (domain is AccountAvatar.Monogram) domain.value else null,
-            avatarImageUri = if (domain is AccountAvatar.Image) domain.uri else null,
-            avatarIconName = if (domain is AccountAvatar.Icon) domain.name else null,
+            avatarMonogram = if (domain is Avatar.Monogram) domain.value else null,
+            avatarImageUri = if (domain is Avatar.Image) domain.uri else null,
+            avatarIconName = if (domain is Avatar.Icon) domain.name else null,
         )
     }
 

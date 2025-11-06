@@ -20,7 +20,7 @@ import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UpdateGeneralSettingCommand
@@ -61,7 +61,7 @@ class GeneralSettingsViewModelTest {
             id = accountId,
             name = "John",
             color = 0xFF0000,
-            avatar = AccountAvatar.Monogram("J"),
+            avatar = Avatar.Monogram("J"),
         )
 
         generalSettingsRobot(accountId, initialState, profile) {
@@ -117,7 +117,7 @@ class GeneralSettingsViewModelTest {
         )
 
         generalSettingsRobot(accountId, initialState) {
-            val newAvatar = AccountAvatar.Monogram("A")
+            val newAvatar = Avatar.Monogram("A")
             changeAvatar(newAvatar)
             verifyLastCommand(UpdateGeneralSettingCommand.UpdateAvatar(newAvatar))
         }
@@ -212,7 +212,7 @@ private class GeneralSettingsRobot(
         viewModel.event(GeneralSettingsContract.Event.OnColorChange(value))
     }
 
-    fun changeAvatar(value: AccountAvatar) {
+    fun changeAvatar(value: Avatar) {
         viewModel.event(GeneralSettingsContract.Event.OnAvatarChange(value))
     }
 

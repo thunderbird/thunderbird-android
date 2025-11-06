@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ResourceProvider
 import net.thunderbird.feature.account.settings.impl.ui.general.components.GeneralSettingsProfileView
@@ -19,7 +19,7 @@ internal class GeneralResourceProvider(
     override fun profileUi(
         name: String,
         color: Int,
-        avatar: AccountAvatar?,
+        avatar: Avatar?,
     ): @Composable ((Modifier) -> Unit) = { modifier ->
         GeneralSettingsProfileView(
             name = name,
