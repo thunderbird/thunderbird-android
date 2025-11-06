@@ -8,11 +8,13 @@ import app.k9mail.feature.account.server.certificate.domain.ServerCertificateDom
 import app.k9mail.feature.account.server.certificate.ui.ServerCertificateErrorContract
 import app.k9mail.feature.account.server.validation.ui.ServerValidationContract
 import org.junit.Test
+import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.KoinTest
 import org.koin.test.verify.verify
 
 class ServerValidationModuleKtTest : KoinTest {
 
+    @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
         featureAccountServerValidationModule.verify(
