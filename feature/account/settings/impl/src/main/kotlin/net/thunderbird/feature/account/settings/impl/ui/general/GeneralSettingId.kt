@@ -5,4 +5,5 @@ internal object GeneralSettingId {
     const val NAME = "account_name"
     const val COLOR = "account_color"
     const val AVATAR = "account_profile_avatar"
+    const val AVATAR_MONOGRAM = "account_avatar_monogram"
 }

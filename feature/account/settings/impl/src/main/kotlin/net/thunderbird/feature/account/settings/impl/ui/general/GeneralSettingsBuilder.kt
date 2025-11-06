@@ -37,6 +37,11 @@ internal class GeneralSettingsBuilder(
                 name = state.name.value,
                 avatar = state.avatar,
             )
+
+            val monogramValue = (state.avatar as? AccountAvatar.Monogram)?.value
+            if (monogramValue != null) {
+                settings += monogram(monogram = monogramValue)
+            }
         }
 
         settings += name(name = state.name.value)
@@ -89,6 +94,16 @@ internal class GeneralSettingsBuilder(
         icon = resources.colorIcon,
         value = color,
         colors = resources.colors,
+    )
+
+    private fun monogram(
+        monogram: String,
+    ): Setting = SettingValue.Text(
+        id = GeneralSettingId.AVATAR_MONOGRAM,
+        title = resources.profileIndicatorMonogram,
+        description = { null },
+        icon = { null },
+        value = monogram,
     )
 
     private fun avatarOptions(
