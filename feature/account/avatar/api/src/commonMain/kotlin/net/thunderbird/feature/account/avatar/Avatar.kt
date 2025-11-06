@@ -1,18 +1,18 @@
-package net.thunderbird.feature.account.profile
+package net.thunderbird.feature.account.avatar
 
 /**
  * Sealed interface representing the avatar of an account.
  */
-sealed interface AccountAvatar {
+sealed interface Avatar {
     data class Monogram(
         val value: String,
-    ) : AccountAvatar
+    ) : Avatar
 
     data class Image(
         val uri: String,
-    ) : AccountAvatar
+    ) : Avatar
 
     data class Icon(
         val name: String,
-    ) : AccountAvatar
+    ) : Avatar
 }

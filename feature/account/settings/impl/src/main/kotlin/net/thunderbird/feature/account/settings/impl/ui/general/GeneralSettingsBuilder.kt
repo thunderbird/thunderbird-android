@@ -8,8 +8,8 @@ import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
-import net.thunderbird.feature.account.profile.AccountAvatar
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
@@ -38,7 +38,7 @@ internal class GeneralSettingsBuilder(
                 avatar = state.avatar,
             )
 
-            val monogramValue = (state.avatar as? AccountAvatar.Monogram)?.value
+            val monogramValue = (state.avatar as? Avatar.Monogram)?.value
             if (monogramValue != null) {
                 settings += monogram(monogram = monogramValue)
             }
@@ -53,7 +53,7 @@ internal class GeneralSettingsBuilder(
     private fun profile(
         name: String,
         color: Int,
-        avatar: AccountAvatar?,
+        avatar: Avatar?,
     ): Setting = SettingDecoration.Custom(
         id = GeneralSettingId.PROFILE,
     ) { modifier ->
@@ -63,7 +63,7 @@ internal class GeneralSettingsBuilder(
 
     private fun avatar(
         name: String,
-        avatar: AccountAvatar?,
+        avatar: Avatar?,
     ): Setting {
         val options = avatarOptions(avatar = avatar, name = name)
         val selected = selectAvatarOption(avatar = avatar, options = options)
@@ -107,40 +107,40 @@ internal class GeneralSettingsBuilder(
     )
 
     private fun avatarOptions(
-        avatar: AccountAvatar?,
+        avatar: Avatar?,
         name: String,
-    ): ImmutableList<SettingValue.CompactSelectSingleOption.CompactOption<AccountAvatar>> =
+    ): ImmutableList<SettingValue.CompactSelectSingleOption.CompactOption<Avatar>> =
         persistentListOf(
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_MONOGRAM_ID,
                 title = resources.profileIndicatorMonogram,
-                value = (avatar as? AccountAvatar.Monogram) ?: AccountAvatar.Monogram(
+                value = (avatar as? Avatar.Monogram) ?: Avatar.Monogram(
                     value = monogramCreator.create(name, null),
                 ),
             ),
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_IMAGE_ID,
                 title = resources.profileIndicatorImage,
-                value = (avatar as? AccountAvatar.Image) ?: AccountAvatar.Image(
+                value = (avatar as? Avatar.Image) ?: Avatar.Image(
                     uri = "avatar_placeholder_uri",
                 ),
             ),
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_ICON_ID,
                 title = resources.profileIndicatorIcon,
-                value = (avatar as? AccountAvatar.Icon) ?: AccountAvatar.Icon(
+                value = (avatar as? Avatar.Icon) ?: Avatar.Icon(
                     name = "user",
                 ),
             ),
         )
 
     private fun selectAvatarOption(
-        avatar: AccountAvatar?,
-        options: List<SettingValue.CompactSelectSingleOption.CompactOption<AccountAvatar>>,
-    ): SettingValue.CompactSelectSingleOption.CompactOption<AccountAvatar> = when (avatar) {
-        is AccountAvatar.Monogram, null -> options.first { it.id == AVATAR_MONOGRAM_ID }
-        is AccountAvatar.Image -> options.first { it.id == AVATAR_IMAGE_ID }
-        is AccountAvatar.Icon -> options.first { it.id == AVATAR_ICON_ID }
+        avatar: Avatar?,
+        options: List<SettingValue.CompactSelectSingleOption.CompactOption<Avatar>>,
+    ): SettingValue.CompactSelectSingleOption.CompactOption<Avatar> = when (avatar) {
+        is Avatar.Monogram, null -> options.first { it.id == AVATAR_MONOGRAM_ID }
+        is Avatar.Image -> options.first { it.id == AVATAR_IMAGE_ID }
+        is Avatar.Icon -> options.first { it.id == AVATAR_ICON_ID }
     }
 
     private companion object {

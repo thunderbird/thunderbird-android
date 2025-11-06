@@ -17,7 +17,7 @@ import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.account.settings.impl.domain.usecase.FakeGeneralResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.usecase.FakeMonogramCreator
@@ -103,17 +103,17 @@ internal class GeneralSettingsBuilderTest {
     fun `avatar selection should match provided avatar or default to monogram`() {
         // Monogram
         assertSelectedAvatarOption(
-            avatar = AccountAvatar.Monogram(value = "AB"),
+            avatar = Avatar.Monogram(value = "AB"),
             expectedOptionId = "avatar_monogram",
         )
         // Image
         assertSelectedAvatarOption(
-            avatar = AccountAvatar.Image(uri = "uri"),
+            avatar = Avatar.Image(uri = "uri"),
             expectedOptionId = "avatar_image",
         )
         // Icon
         assertSelectedAvatarOption(
-            avatar = AccountAvatar.Icon(name = "icon"),
+            avatar = Avatar.Icon(name = "icon"),
             expectedOptionId = "avatar_icon",
         )
         // Null defaults to monogram
@@ -124,7 +124,7 @@ internal class GeneralSettingsBuilderTest {
     }
 
     private fun assertSelectedAvatarOption(
-        avatar: AccountAvatar?,
+        avatar: Avatar?,
         expectedOptionId: String,
     ) {
         // Assert

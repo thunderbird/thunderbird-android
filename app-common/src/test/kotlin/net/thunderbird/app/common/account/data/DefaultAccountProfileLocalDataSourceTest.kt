@@ -13,7 +13,7 @@ import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountAvatarDataMapper
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountProfileDataMapper
@@ -164,7 +164,7 @@ class DefaultAccountProfileLocalDataSourceTest {
                 id = accountId,
                 name = name,
                 color = color,
-                avatar = AccountAvatar.Icon(
+                avatar = Avatar.Icon(
                     name = "star",
                 ),
             )

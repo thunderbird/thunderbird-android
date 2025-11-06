@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.profile.AccountProfile
 
 internal interface AccountSettingsDomainContract {
@@ -41,7 +41,7 @@ internal interface AccountSettingsDomainContract {
     sealed interface UpdateGeneralSettingCommand {
         data class UpdateName(val value: String) : UpdateGeneralSettingCommand
         data class UpdateColor(val value: Int) : UpdateGeneralSettingCommand
-        data class UpdateAvatar(val value: AccountAvatar) : UpdateGeneralSettingCommand
+        data class UpdateAvatar(val value: Avatar) : UpdateGeneralSettingCommand
     }
 
     interface ResourceProvider {
@@ -49,7 +49,7 @@ internal interface AccountSettingsDomainContract {
             fun profileUi(
                 name: String,
                 color: Int,
-                avatar: AccountAvatar?,
+                avatar: Avatar?,
             ): @Composable (Modifier) -> Unit
 
             val profileIndicatorTitle: () -> String

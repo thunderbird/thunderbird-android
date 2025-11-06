@@ -7,7 +7,7 @@ import androidx.compose.ui.res.stringResource
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.CompactOption
 import net.thunderbird.core.ui.setting.SettingViewProvider
-import net.thunderbird.feature.account.profile.AccountAvatar
+import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.Event
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.SettingsBuilder
@@ -34,7 +34,7 @@ internal fun GeneralSettingsContent(
                 is SettingValue.Text -> when (setting.id) {
                     GeneralSettingId.NAME -> onEvent(Event.OnNameChange(setting.value))
                     GeneralSettingId.AVATAR_MONOGRAM -> onEvent(
-                        Event.OnAvatarChange(AccountAvatar.Monogram(setting.value)),
+                        Event.OnAvatarChange(Avatar.Monogram(setting.value)),
                     )
                 }
 
@@ -44,7 +44,7 @@ internal fun GeneralSettingsContent(
 
                 is SettingValue.CompactSelectSingleOption<*> -> if (setting.id == GeneralSettingId.AVATAR) {
                     @Suppress("UNCHECKED_CAST")
-                    val avatarOption = setting.value as CompactOption<AccountAvatar>
+                    val avatarOption = setting.value as CompactOption<Avatar>
                     onEvent(Event.OnAvatarChange(avatarOption.value))
                 }
 
