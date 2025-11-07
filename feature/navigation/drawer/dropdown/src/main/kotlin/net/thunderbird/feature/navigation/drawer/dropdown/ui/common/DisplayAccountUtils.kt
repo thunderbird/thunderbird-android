@@ -18,8 +18,6 @@ internal fun getDisplayAccountColor(account: DisplayAccount): Color {
         is MailDisplayAccount -> {
             Color(account.color)
         }
-
-        else -> throw IllegalArgumentException("Unknown account type: ${account::class.java.simpleName}")
     }
 }
 
@@ -32,7 +30,5 @@ internal fun getDisplayAccountName(account: DisplayAccount): String {
         is MailDisplayAccount -> {
             account.name
         }
-
-        else -> throw IllegalArgumentException("Unknown account type: ${account::class.java.simpleName}")
     }
 }

@@ -4,14 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import net.thunderbird.feature.account.avatar.Avatar
 
 @Composable
 @PreviewLightDark
-internal fun AvatarPreview() {
+internal fun AvatarMonogramPreview() {
     PreviewWithTheme {
-        Avatar(
-            avatar = Avatar.Monogram("AB"),
+        AvatarMonogram(
+            monogram = "AB",
             color = Color.Red,
             size = AvatarSize.MEDIUM,
         )
@@ -20,13 +19,12 @@ internal fun AvatarPreview() {
 
 @Composable
 @PreviewLightDark
-internal fun AvatarSelectedPreview() {
+internal fun AvatarMonogramLargePreview() {
     PreviewWithTheme {
-        Avatar(
-            avatar = Avatar.Monogram("AB"),
+        AvatarMonogram(
+            monogram = "AB",
             color = Color.Red,
-            size = AvatarSize.MEDIUM,
-            selected = true,
+            size = AvatarSize.LARGE,
         )
     }
 }

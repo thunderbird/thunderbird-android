@@ -18,8 +18,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItem
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.dualtone.Warning
-import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
+import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
+import net.thunderbird.feature.account.avatar.ui.rememberCompatAvatar
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
@@ -35,6 +36,7 @@ internal fun AccountListItem(
 ) {
     val color = getDisplayAccountColor(account)
     val name = getDisplayAccountName(account)
+    val compatAvatar = rememberCompatAvatar(null, name)
 
     NavigationDrawerItem(
         label = { AccountLabel(account = account) },
@@ -44,9 +46,9 @@ internal fun AccountListItem(
             .fillMaxWidth()
             .height(MainTheme.sizes.large),
         icon = {
-            AvatarOutlined(
+            Avatar(
+                avatar = compatAvatar,
                 color = color,
-                name = name,
                 size = AvatarSize.MEDIUM,
             )
         },

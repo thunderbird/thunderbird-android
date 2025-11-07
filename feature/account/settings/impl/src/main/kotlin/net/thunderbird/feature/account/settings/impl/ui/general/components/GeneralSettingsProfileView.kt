@@ -17,8 +17,9 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextHeadlineSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.feature.account.avatar.Avatar
-import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
+import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
+import net.thunderbird.feature.account.avatar.ui.rememberCompatAvatar
 
 @Composable
 internal fun GeneralSettingsProfileView(
@@ -28,7 +29,7 @@ internal fun GeneralSettingsProfileView(
     modifier: Modifier = Modifier,
     avatar: Avatar? = null,
 ) {
-    val avatarDisplayName = (avatar as? Avatar.Monogram)?.value ?: name
+    val compatAvatar = rememberCompatAvatar(avatar, name)
 
     Box(
         modifier = modifier
@@ -42,9 +43,9 @@ internal fun GeneralSettingsProfileView(
                 .padding(top = MainTheme.spacings.quadruple)
                 .fillMaxWidth(),
         )
-        AvatarOutlined(
+        Avatar(
+            avatar = compatAvatar,
             color = color,
-            name = avatarDisplayName,
             size = AvatarSize.LARGE,
         )
     }
