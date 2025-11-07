@@ -1,5 +1,7 @@
 package net.thunderbird.feature.mail.message.reader.api.css
 
+import net.thunderbird.core.common.mail.html.HtmlSettings
+
 /**
  * Provides CSS styles to be injected into the message viewer's web view.
  *
@@ -19,6 +21,10 @@ sealed interface CssStyleProvider {
      * ```
      */
     val style: String
+
+    fun interface Factory {
+        fun create(htmlSettings: HtmlSettings): CssStyleProvider
+    }
 }
 
 /**
@@ -27,7 +33,9 @@ sealed interface CssStyleProvider {
  * This is used for global styles that affect the overall appearance of the email content,
  * such as font size, colors, and layout adjustments for the entire message body.
  */
-interface GlobalCssStyleProvider : CssStyleProvider
+interface GlobalCssStyleProvider : CssStyleProvider {
+    fun interface Factory : CssStyleProvider.Factory
+}
 
 /**
  * Provides CSS styles specifically for the `<pre>` element used to wrap plain text messages.
@@ -36,9 +44,7 @@ interface GlobalCssStyleProvider : CssStyleProvider
  * size, and controlling word wrapping behavior to ensure readability.
  */
 interface PlainTextMessagePreElementCssStyleProvider : CssStyleProvider {
-    interface Factory {
-        fun create(useFixedWidthFont: Boolean): PlainTextMessagePreElementCssStyleProvider
-    }
+    fun interface Factory : CssStyleProvider.Factory
 }
 
 /**
@@ -47,4 +53,6 @@ interface PlainTextMessagePreElementCssStyleProvider : CssStyleProvider {
  * This is used to apply custom styling to the signature block within an email message,
  * allowing it to be visually distinct from the main message body.
  */
-interface SignatureCssStyleProvider : CssStyleProvider
+interface SignatureCssStyleProvider : CssStyleProvider {
+    fun interface Factory : CssStyleProvider.Factory
+}

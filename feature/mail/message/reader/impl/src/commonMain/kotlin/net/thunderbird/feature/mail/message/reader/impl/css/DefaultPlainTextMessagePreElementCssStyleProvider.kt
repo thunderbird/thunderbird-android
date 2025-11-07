@@ -1,5 +1,6 @@
 package net.thunderbird.feature.mail.message.reader.impl.css
 
+import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import net.thunderbird.feature.mail.message.reader.api.css.PlainTextMessagePreElementCssStyleProvider
 import org.intellij.lang.annotations.Language
@@ -24,10 +25,10 @@ class DefaultPlainTextMessagePreElementCssStyleProvider(
     class Factory(
         private val cssClassNameProvider: CssClassNameProvider,
     ) : PlainTextMessagePreElementCssStyleProvider.Factory {
-        override fun create(useFixedWidthFont: Boolean): PlainTextMessagePreElementCssStyleProvider {
+        override fun create(htmlSettings: HtmlSettings): PlainTextMessagePreElementCssStyleProvider {
             return DefaultPlainTextMessagePreElementCssStyleProvider(
                 cssClassNameProvider = cssClassNameProvider,
-                useFixedWidthFont = useFixedWidthFont,
+                useFixedWidthFont = htmlSettings.useFixedWidthFont,
             )
         }
     }

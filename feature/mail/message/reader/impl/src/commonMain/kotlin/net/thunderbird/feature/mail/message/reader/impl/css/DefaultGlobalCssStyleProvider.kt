@@ -1,11 +1,13 @@
 package net.thunderbird.feature.mail.message.reader.impl.css
 
+import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.mail.message.reader.api.css.CssStyleProvider
 import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
 import net.thunderbird.feature.mail.message.reader.api.css.GlobalCssStyleProvider
 import org.intellij.lang.annotations.Language
 
-internal class DefaultGlobalCssStyleProvider(
+internal class DefaultGlobalCssStyleProvider private constructor(
     cssClassNameProvider: CssClassNameProvider,
     cssVariableNameProvider: CssVariableNameProvider,
 ) : GlobalCssStyleProvider {
@@ -26,6 +28,7 @@ internal class DefaultGlobalCssStyleProvider(
         |  .${cssClassNameProvider.rootClassName}.${cssClassNameProvider.mainContentClassName} {
         |    width: 100%;
         |    overflow-wrap: break-word;
+        |    padding: 0 8px;
         |  }
         |  .${cssClassNameProvider.rootClassName}.${cssClassNameProvider.mainContentClassName} pre {
         |    white-space: pre-wrap;
@@ -39,11 +42,22 @@ internal class DefaultGlobalCssStyleProvider(
         |  }
         |</style>
     """.trimMargin()
+
+    internal class Factory(
+        private val cssClassNameProvider: CssClassNameProvider,
+        private val cssVariableNameProvider: CssVariableNameProvider,
+    ) : GlobalCssStyleProvider.Factory {
+        override fun create(htmlSettings: HtmlSettings): CssStyleProvider = DefaultGlobalCssStyleProvider(
+            cssClassNameProvider = cssClassNameProvider,
+            cssVariableNameProvider = cssVariableNameProvider,
+        )
+    }
 }
 
-internal class LegacyGlobalCssStyleProvider : GlobalCssStyleProvider {
+internal class LegacyGlobalCssStyleProvider(useDarkMode: Boolean) : GlobalCssStyleProvider {
     @Language("HTML")
-    override val style: String = """
+    override val style: String = if (useDarkMode) {
+        """
         |<style type="text/css">
         |  * {
         |    background: #121212 !important;
@@ -52,5 +66,14 @@ internal class LegacyGlobalCssStyleProvider : GlobalCssStyleProvider {
         |  :link, :link * { color: #CCFF33 !important }
         |  :visited, :visited * { color: #551A8B !important }
         |</style>
-    """.trimMargin()
+        """.trimMargin()
+    } else {
+        ""
+    }
+
+    internal class Factory : GlobalCssStyleProvider.Factory {
+        override fun create(htmlSettings: HtmlSettings): CssStyleProvider = LegacyGlobalCssStyleProvider(
+            useDarkMode = htmlSettings.useDarkMode,
+        )
+    }
 }

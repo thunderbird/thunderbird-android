@@ -1,6 +1,15 @@
 package com.fsck.k9.message.html
 
-class EmailTextToHtml private constructor(private val text: String) {
+import app.k9mail.legacy.di.DI
+import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
+import org.intellij.lang.annotations.Language
+
+class EmailTextToHtml private constructor(
+    private val cssClassNameProvider: CssClassNameProvider,
+    private val cssVariableNameProvider: CssVariableNameProvider,
+    private val text: String,
+) {
     private val html = StringBuilder(text.length + EXTRA_BUFFER_LENGTH)
     private var previousQuoteDepth = 0
 
@@ -22,7 +31,7 @@ class EmailTextToHtml private constructor(private val text: String) {
     }
 
     private fun appendHtmlPrefix() {
-        html.append("<pre class=\"$K9MAIL_CSS_CLASS\">")
+        html.append("<pre class=\"${cssClassNameProvider.plainTextMessagePreClassName}\">")
     }
 
     private fun appendHtmlSuffix() {
@@ -36,13 +45,13 @@ class EmailTextToHtml private constructor(private val text: String) {
             }
         } else if (quoteDepth > previousQuoteDepth) {
             for (depth in (previousQuoteDepth + 1)..quoteDepth) {
-                html.append(
-                    "<blockquote " +
-                        "class=\"gmail_quote\" " +
-                        "style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid ",
-                )
-                html.append(quoteColor(depth))
-                html.append("; padding-left: 1ex;\">")
+                val borderColorStyle =
+                    "${cssVariableNameProvider.blockquoteDefaultBorderLeftColor}: ${quoteColor(depth)};"
+
+                @Language("HTML")
+                val blockQuoteStartTag =
+                    "<blockquote class=\"gmail_quote\" style=\"margin-bottom: 1ex; $borderColorStyle\">"
+                html.append(blockQuoteStartTag)
             }
         }
         previousQuoteDepth = quoteDepth
@@ -63,7 +72,9 @@ class EmailTextToHtml private constructor(private val text: String) {
 
         @JvmStatic
         fun convert(text: String): String {
-            return EmailTextToHtml(text).convert()
+            val cssClassNameProvider = DI.get<CssClassNameProvider>()
+            val cssVariableNameProvider = DI.get<CssVariableNameProvider>()
+            return EmailTextToHtml(cssClassNameProvider, cssVariableNameProvider, text).convert()
         }
     }
 }

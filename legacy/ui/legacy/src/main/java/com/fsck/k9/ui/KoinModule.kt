@@ -4,16 +4,22 @@ import android.content.Context
 import app.k9mail.legacy.message.controller.MessagingControllerMailChecker
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
-import com.fsck.k9.ui.helper.HtmlSettingsProvider
 import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.messageview.LinkTextHandler
 import com.fsck.k9.ui.share.ShareIntentBuilder
+import net.thunderbird.core.common.inject.getList
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val uiModule = module {
-    single { HtmlSettingsProvider(themeManager = get(), generalSettingsManager = get()) }
-    single { DisplayHtmlUiFactory(get()) }
+    factory {
+        DisplayHtmlUiFactory(
+            cssClassNameProvider = get(),
+            cssStyleProviders = getList(),
+            messageReaderHtmlSettingsProvider = get(),
+            messageComposerHtmlSettingsProvider = get(),
+        )
+    }
     single<MessagingControllerMailChecker> { get<MessagingController>() }
     factory(named("MessageView")) { get<DisplayHtmlUiFactory>().createForMessageView() }
     factory { (context: Context) -> SizeFormatter(context.resources) }

@@ -5,4 +5,6 @@ plugins {
 
 dependencies {
     implementation(libs.jsoup)
+    implementation(projects.core.featureflag)
+    implementation(projects.feature.mail.message.reader.api)
 }
