@@ -15,15 +15,18 @@ import com.fsck.k9.job.MailSyncWorker
 import com.fsck.k9.job.SyncDebugWorker
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.message.html.DisplayHtml
-import com.fsck.k9.message.html.HtmlSettings
+import com.fsck.k9.message.html.DisplayHtmlFactory
 import com.fsck.k9.ui.changelog.ChangeLogMode
 import com.fsck.k9.ui.changelog.ChangelogViewModel
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.view.K9WebViewClient
 import com.fsck.k9.view.MessageWebView
 import net.openid.appauth.AppAuthConfiguration
+import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
+import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.definition
@@ -53,7 +56,13 @@ class DependencyInjectionTest {
             injections = injectedParameters(
                 definition<AccountRemoverWorker>(WorkerParameters::class),
                 definition<ChangelogViewModel>(ChangeLogMode::class),
-                definition<DisplayHtml>(HtmlSettings::class),
+                definition<DisplayHtml>(
+                    HtmlSettings::class,
+                    CssClassNameProvider::class,
+                    List::class,
+                ),
+                definition<DisplayHtmlFactory>(List::class),
+                definition<DisplayHtmlUiFactory>(List::class),
                 definition<K9WebViewClient>(AttachmentResolver::class, MessageWebView.OnPageFinishedListener::class),
                 definition<MailSyncWorker>(WorkerParameters::class),
                 definition<SyncDebugWorker>(WorkerParameters::class),

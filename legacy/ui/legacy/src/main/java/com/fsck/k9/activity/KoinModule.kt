@@ -3,5 +3,11 @@ package com.fsck.k9.activity
 import org.koin.dsl.module
 
 val activityModule = module {
-    single { MessageLoaderHelperFactory(messageViewInfoExtractorFactory = get(), htmlSettingsProvider = get()) }
+    single {
+        MessageLoaderHelperFactory(
+            messageViewInfoExtractorFactory = get(),
+            messageReaderHtmlSettingsProvider = get(),
+            messageComposerHtmlSettingsProvider = get(),
+        )
+    }
 }

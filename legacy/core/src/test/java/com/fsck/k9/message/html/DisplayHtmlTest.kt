@@ -2,13 +2,25 @@ package com.fsck.k9.message.html
 
 import assertk.Assert
 import assertk.assertThat
+import assertk.assertions.atLeast
 import assertk.assertions.hasSize
 import assertk.assertions.isEqualTo
+import assertk.assertions.prop
+import net.thunderbird.core.common.mail.html.HtmlSettings
+import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.mail.message.reader.api.css.GlobalCssStyleProvider
+import net.thunderbird.feature.mail.message.reader.api.css.PlainTextMessagePreElementCssStyleProvider
+import net.thunderbird.feature.mail.message.reader.api.css.SignatureCssStyleProvider
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
 import org.junit.Test
 
 class DisplayHtmlTest {
-    val displayHtml = DisplayHtml(HtmlSettings(useDarkMode = false, useFixedWidthFont = false))
+    val displayHtml = DisplayHtml(
+        htmlSettings = HtmlSettings(useDarkMode = false, useFixedWidthFont = false),
+        cssClassNameProvider = FakeCssClassNameProvider(),
+        cssStyleProviders = listOf(),
+    )
 
     @Test
     fun wrapMessageContent_addsViewportMetaElement() {
@@ -26,18 +38,31 @@ class DisplayHtmlTest {
 
     @Test
     fun wrapMessageContent_addsPreCSS() {
+        val expectedStyleCssRule = ".my-custom-pre-class { mock-property: mock-value }"
+        val displayHtml = DisplayHtml(
+            htmlSettings = HtmlSettings(useDarkMode = false, useFixedWidthFont = false),
+            cssClassNameProvider = FakeCssClassNameProvider(),
+            cssStyleProviders = listOf(
+                GlobalCssStyleProvider.Factory { FakeGlobalCssStyleProvider() },
+                PlainTextMessagePreElementCssStyleProvider.Factory {
+                    FakePlainTextMessagePreElementCssStyleProvider(
+                        style = "<style>$expectedStyleCssRule</style>",
+                    )
+                },
+                SignatureCssStyleProvider.Factory { FakeSignatureCssStyleProvider() },
+            ),
+        )
         val html = displayHtml.wrapMessageContent("Some text")
 
-        assertThat(html).containsHtmlElement("head > style")
-    }
-
-    @Test
-    fun wrapMessageContent_whenDarkMessageViewTheme_addsDarkThemeCSS() {
-        val darkModeDisplayHtml = DisplayHtml(HtmlSettings(useDarkMode = true, useFixedWidthFont = false))
-
-        val html = darkModeDisplayHtml.wrapMessageContent("Some text")
-
-        assertThat(html).htmlElements("head > style").hasSize(2)
+        assertThat(html).given { raw ->
+            val html = Jsoup.parse(raw)
+            assertThat(html.select("head > style"))
+                .atLeast(1) { element ->
+                    element
+                        .prop(Element::data)
+                        .isEqualTo(expectedStyleCssRule)
+                }
+        }
     }
 
     @Test
@@ -60,4 +85,24 @@ class DisplayHtmlTest {
     private fun Assert<String>.bodyText() = transform { html ->
         Jsoup.parse(html).body().text()
     }
+
+    private class FakeCssClassNameProvider(
+        override val defaultNamespaceClassName: String = "mock defaultNamespaceClassName",
+        override val rootClassName: String = "mock rootClassName",
+        override val mainContentClassName: String = "mock mainContentClassName",
+        override val plainTextMessagePreClassName: String = "mock plainTextMessagePreClassName",
+        override val signatureClassName: String = "mock signatureClassName",
+    ) : CssClassNameProvider
+
+    private class FakeGlobalCssStyleProvider(
+        override val style: String = "<style>.mock-style { mock-property: mock-value }</style>",
+    ) : GlobalCssStyleProvider
+
+    private class FakePlainTextMessagePreElementCssStyleProvider(
+        override val style: String = "<style>.mock-style { mock-property: mock-value }</style>",
+    ) : PlainTextMessagePreElementCssStyleProvider
+
+    private class FakeSignatureCssStyleProvider(
+        override val style: String = "<style>.mock-style { mock-property: mock-value }</style>",
+    ) : SignatureCssStyleProvider
 }

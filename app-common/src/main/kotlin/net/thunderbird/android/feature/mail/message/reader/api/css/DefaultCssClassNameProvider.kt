@@ -13,9 +13,9 @@ class DefaultCssClassNameProvider(
     override val mainContentClassName: String = "${defaultNamespaceClassName}__main-content"
     override val plainTextMessagePreClassName: String =
         if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {
-            EmailTextToHtml.K9MAIL_CSS_CLASS
-        } else {
             "${defaultNamespaceClassName}__plain-text-message-pre"
+        } else {
+            EmailTextToHtml.K9MAIL_CSS_CLASS
         }
     override val signatureClassName: String =
         if (featureFlagProvider.provide(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles).isEnabled()) {

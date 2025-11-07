@@ -6,10 +6,14 @@ import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.core.Context
 import com.github.ajalt.clikt.core.main
 import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.arguments.default
 import com.github.ajalt.clikt.parameters.arguments.optional
+import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.inputStream
 import java.io.File
+import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import okio.buffer
 import okio.sink
 import okio.source
@@ -18,6 +22,10 @@ import okio.source
 class HtmlCleaner : CliktCommand() {
     val input by argument(help = "HTML input file (needs to be UTF-8 encoded)")
         .inputStream()
+
+    val app by argument(help = "The app the email will be target to")
+        .enum<App>(ignoreCase = true)
+        .default(App.THUNDERBIRD)
 
     val output by argument(help = "Output file")
         .file(mustExist = false, canBeDir = false)
@@ -38,7 +46,21 @@ class HtmlCleaner : CliktCommand() {
 
     private fun cleanHtml(html: String): String {
         val htmlProcessor = HtmlProcessor(
-            object : HtmlHeadProvider {
+            featureFlagProvider = { FeatureFlagResult.Enabled },
+            cssClassNameProvider = object : CssClassNameProvider {
+                override val defaultNamespaceClassName: String
+                    get() = if (app == App.THUNDERBIRD) {
+                        "net_thunderbird_android"
+                    } else {
+                        "com_fsck_k9"
+                    }
+                override val rootClassName: String = "${defaultNamespaceClassName}__message-viewer"
+                override val mainContentClassName: String = "${defaultNamespaceClassName}__main-content"
+                override val plainTextMessagePreClassName: String =
+                    "${defaultNamespaceClassName}__plain-text-message-pre"
+                override val signatureClassName: String = "${defaultNamespaceClassName}__signature"
+            },
+            htmlHeadProvider = object : HtmlHeadProvider {
                 override val headHtml = """<meta name="viewport" content="width=device-width"/>"""
             },
         )
@@ -56,5 +78,7 @@ class HtmlCleaner : CliktCommand() {
         }
     }
 }
+
+enum class App { THUNDERBIRD, K9MAIL }
 
 fun main(args: Array<String>) = HtmlCleaner().main(args)

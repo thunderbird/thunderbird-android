@@ -1,4 +1,4 @@
-package com.fsck.k9.message.html
+package net.thunderbird.core.common.mail.html
 
 data class HtmlSettings(
     val useDarkMode: Boolean,
