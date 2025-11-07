@@ -4,4 +4,4 @@ import net.thunderbird.core.architecture.data.DataMapper
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 
-interface AccountAvatarDataMapper : DataMapper<Avatar, AvatarDto>
+interface AvatarDataMapper : DataMapper<Avatar, AvatarDto>

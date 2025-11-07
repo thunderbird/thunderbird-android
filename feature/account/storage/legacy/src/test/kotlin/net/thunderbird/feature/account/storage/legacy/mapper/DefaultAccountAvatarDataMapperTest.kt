@@ -10,7 +10,7 @@ import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 
 class DefaultAccountAvatarDataMapperTest {
 
-    private val testSubject = DefaultAccountAvatarDataMapper()
+    private val testSubject = DefaultAvatarDataMapper()
 
     @Test
     fun `toDomain should map valid AvatarDto to correct Avatar type`() {
