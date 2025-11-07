@@ -8,6 +8,7 @@ import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
 import net.thunderbird.feature.account.avatar.ui.rememberCompatAvatar
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
+import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountAvatar
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountName
 
@@ -23,14 +24,15 @@ internal fun AccountAvatar(
     val color = getDisplayAccountColor(account)
     val accountColor = rememberCalculatedAccountColor(color)
     val accountColorRoles = rememberCalculatedAccountColorRoles(accountColor)
-    val avatar = rememberCompatAvatar(null, name)
+    val avatar = getDisplayAccountAvatar(account)
+    val compatAvatar = rememberCompatAvatar(avatar, name)
 
     Box(
         modifier = modifier,
         contentAlignment = Alignment.BottomEnd,
     ) {
         Avatar(
-            avatar = avatar,
+            avatar = compatAvatar,
             color = accountColor,
             size = AvatarSize.MEDIUM,
             selected = selected,
