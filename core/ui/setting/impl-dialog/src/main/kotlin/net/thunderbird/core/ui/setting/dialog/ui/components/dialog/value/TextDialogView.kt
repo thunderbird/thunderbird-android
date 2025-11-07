@@ -69,7 +69,8 @@ internal fun TextDialogView(
             text = textFieldValue,
             contentPadding = PaddingValues(),
             onTextChange = { changedText ->
-                textFieldValue = changedText
+                val transformedText = setting.transform(changedText.text)
+                textFieldValue = changedText.copy(text = transformedText)
             },
             modifier = Modifier.focusRequester(focusRequester),
         )

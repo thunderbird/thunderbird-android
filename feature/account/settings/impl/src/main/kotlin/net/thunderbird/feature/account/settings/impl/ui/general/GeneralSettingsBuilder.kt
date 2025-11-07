@@ -104,6 +104,7 @@ internal class GeneralSettingsBuilder(
         description = { null },
         icon = { null },
         value = monogram,
+        transform = { it.uppercase() },
     )
 
     private fun avatarOptions(
