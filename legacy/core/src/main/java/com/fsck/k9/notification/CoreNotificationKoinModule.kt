@@ -58,6 +58,7 @@ val coreNotificationModule = module {
             actionBuilder = get(),
             resourceProvider = get(),
             outboxFolderManager = get(),
+            iconResourceProvider = get(),
         )
     }
     single {
@@ -127,6 +128,7 @@ val coreNotificationModule = module {
             resourceProvider = get(),
             notificationChannelManager = get(),
             notificationManager = get(),
+            iconResourceProvider = get(),
         )
     }
     single {
