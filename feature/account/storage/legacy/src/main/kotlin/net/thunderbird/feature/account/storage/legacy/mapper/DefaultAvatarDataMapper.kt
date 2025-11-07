@@ -1,11 +1,11 @@
 package net.thunderbird.feature.account.storage.legacy.mapper
 
 import net.thunderbird.feature.account.avatar.Avatar
-import net.thunderbird.feature.account.storage.mapper.AccountAvatarDataMapper
+import net.thunderbird.feature.account.storage.mapper.AvatarDataMapper
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 
-class DefaultAccountAvatarDataMapper : AccountAvatarDataMapper {
+class DefaultAvatarDataMapper : AvatarDataMapper {
 
     override fun toDomain(dto: AvatarDto): Avatar {
         return when (dto.avatarType) {

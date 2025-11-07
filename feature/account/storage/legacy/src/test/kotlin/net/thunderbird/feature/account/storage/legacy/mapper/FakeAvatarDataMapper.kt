@@ -1,13 +1,13 @@
 package net.thunderbird.feature.account.storage.legacy.mapper
 
 import net.thunderbird.feature.account.avatar.Avatar
-import net.thunderbird.feature.account.storage.mapper.AccountAvatarDataMapper
+import net.thunderbird.feature.account.storage.mapper.AvatarDataMapper
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 
-class FakeAccountAvatarDataMapper(
+class FakeAvatarDataMapper(
     private val dto: AvatarDto,
     private val domain: Avatar,
-) : AccountAvatarDataMapper {
+) : AvatarDataMapper {
     override fun toDomain(dto: AvatarDto): Avatar = domain
 
     override fun toDto(domain: Avatar): AvatarDto = dto

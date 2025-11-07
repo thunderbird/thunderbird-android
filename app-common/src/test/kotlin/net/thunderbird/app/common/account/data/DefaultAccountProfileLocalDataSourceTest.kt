@@ -15,8 +15,8 @@ import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.profile.AccountProfile
-import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountAvatarDataMapper
 import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAccountProfileDataMapper
+import net.thunderbird.feature.account.storage.legacy.mapper.DefaultAvatarDataMapper
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
@@ -178,7 +178,7 @@ class DefaultAccountProfileLocalDataSourceTest {
                     initialAccounts = accounts,
                 ),
                 dataMapper = DefaultAccountProfileDataMapper(
-                    avatarMapper = DefaultAccountAvatarDataMapper(),
+                    avatarMapper = DefaultAvatarDataMapper(),
                 ),
             )
         }

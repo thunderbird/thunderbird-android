@@ -1,12 +1,12 @@
 package net.thunderbird.feature.account.storage.legacy.mapper
 
 import net.thunderbird.feature.account.profile.AccountProfile
-import net.thunderbird.feature.account.storage.mapper.AccountAvatarDataMapper
 import net.thunderbird.feature.account.storage.mapper.AccountProfileDataMapper
+import net.thunderbird.feature.account.storage.mapper.AvatarDataMapper
 import net.thunderbird.feature.account.storage.profile.ProfileDto
 
 class DefaultAccountProfileDataMapper(
-    private val avatarMapper: AccountAvatarDataMapper,
+    private val avatarMapper: AvatarDataMapper,
 ) : AccountProfileDataMapper {
     override fun toDomain(dto: ProfileDto): AccountProfile {
         return AccountProfile(
