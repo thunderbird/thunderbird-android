@@ -619,6 +619,7 @@
     <string name="network_preferences">Network</string>
     <string name="interaction_preferences">Interaction</string>
     <string name="accountlist_preferences">Account list</string>
+    <string name="navigation_drawer_preferences">Side Menu</string>
     <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>
     <string name="settings_theme_label">Theme</string>
@@ -659,6 +660,7 @@
 
     <string name="show_unified_inbox_title">Show Unified Inbox</string>
     <string name="show_starred_count_title">Show starred count</string>
+    <string name="expand_folders">Expand Folders</string>
 
     <string name="integrated_inbox_title">Unified Inbox</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>
