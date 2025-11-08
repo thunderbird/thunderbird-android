@@ -13,4 +13,6 @@ const val KEY_AUTO_FIT_WIDTH = "autofitWidth"
 const val KEY_SHOW_CONTACT_PICTURE = "showContactPicture"
 const val KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES = "messageListPreviewLines"
 
+const val KEY_DRAWER_EXPAND_ALL_FOLDER = "drawerExpandAllFolder"
+
 interface DisplayVisualSettingsPreferenceManager : PreferenceManager<DisplayVisualSettings>

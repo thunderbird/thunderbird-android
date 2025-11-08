@@ -333,6 +333,9 @@ class GeneralSettingsDescriptions {
         s.put("shouldShowSetupArchiveFolderDialog", Settings.versions(
             new V(105, new BooleanSetting(DISPLAY_SETTINGS_DEFAULT_SHOULD_SHOW_SETUP_ARCHIVE_FOLDER_DIALOG)))
         );
+        s.put("drawerExpandAllFolder", Settings.versions(
+            new V(108, new BooleanSetting(false))
+        ));
 
         // TODO: Add a way to properly support feature-specific settings.
         if (telemetryManager.isTelemetryFeatureIncluded()) {
