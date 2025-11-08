@@ -153,6 +153,7 @@ val preferencesModule = module {
             preferences = get(),
             coroutineScope = get(named("AppCoroutineScope")),
             displayInboxSettingsPreferenceManager = get(),
+            displayVisualSettingsPreferenceManager = get(),
         )
     } bind DrawerConfigManager::class
 
