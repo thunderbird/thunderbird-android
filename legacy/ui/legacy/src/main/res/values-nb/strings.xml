@@ -234,7 +234,6 @@
     <string name="archive_folder_label">Arkiv-mappe</string>
     <string name="spam_folder_label">Søppelpost-mappe</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Kun vis mapper du abonnerer på</string>
-    <string name="account_setup_auto_expand_folder">Auto-utvid mappe</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldri</string>
     <string name="account_setup_options_mail_check_frequency_15min">Hvert kvarter</string>
     <string name="account_setup_options_mail_check_frequency_30min">Hver halvtime</string>

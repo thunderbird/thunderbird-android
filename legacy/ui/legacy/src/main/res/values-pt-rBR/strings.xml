@@ -271,7 +271,6 @@
     <string name="archive_folder_label">Pasta de arquivamento</string>
     <string name="spam_folder_label">Pasta de spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Exibir somente pastas assinadas</string>
-    <string name="account_setup_auto_expand_folder">Expandir as pastas automaticamente</string>
     <string name="account_setup_options_mail_check_frequency_never">Nunca</string>
     <string name="account_setup_options_mail_check_frequency_15min">A cada 15 minutos</string>
     <string name="account_setup_options_mail_check_frequency_30min">A cada 30 minutos</string>

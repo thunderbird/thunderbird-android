@@ -269,7 +269,6 @@
     <string name="archive_folder_label">Mapa za arhivirano pošto</string>
     <string name="spam_folder_label">Mapa neželene pošte</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Pokaži samo naročene mape</string>
-    <string name="account_setup_auto_expand_folder">Samodejno razširi mape</string>
     <string name="account_setup_options_mail_check_frequency_never">Ročno preverjanje</string>
     <string name="account_setup_options_mail_check_frequency_15min">Vsakih 15 minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Vsakih 30 minut</string>

@@ -260,7 +260,6 @@
     <string name="account_setup_incoming_delete_policy_never_label">Ùn squassà micca nant’à u servitore</string>
     <string name="trash_folder_label">Cartulare di a curbella</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Affissà solu i cartulari à quelli mi sò abbunatu</string>
-    <string name="account_setup_auto_expand_folder">Spiegà autumaticamente u cartulare</string>
     <string name="account_setup_options_mail_check_frequency_never">Mai</string>
     <string name="account_setup_options_mail_check_frequency_15min">Tutti i 15 minuti</string>
     <string name="account_setup_options_mail_check_frequency_30min">Tutti i 30 minuti</string>

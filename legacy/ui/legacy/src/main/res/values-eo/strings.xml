@@ -245,7 +245,6 @@
     <string name="archive_folder_label">Arĥivujo</string>
     <string name="spam_folder_label">Trudmesaĝujo</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Montri nur abonitajn mesaĝujojn</string>
-    <string name="account_setup_auto_expand_folder">Ĉiam etendi mesaĝujon</string>
     <string name="account_setup_options_mail_check_frequency_never">Neniam</string>
     <string name="account_setup_options_mail_check_frequency_15min">Je ĉiuj 15 minutoj</string>
     <string name="account_setup_options_mail_check_frequency_30min">Je ĉiuj 30 minutoj</string>

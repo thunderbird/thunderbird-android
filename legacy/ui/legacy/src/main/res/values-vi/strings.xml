@@ -354,7 +354,6 @@
     <string name="account_setup_options_mail_check_frequency_24hour">Mỗi 24 giờ</string>
     <string name="account_setup_options_mail_check_frequency_2hour">Mỗi 2 giờ</string>
     <string name="drafts_folder_label">Thư mục bản nháp</string>
-    <string name="account_setup_auto_expand_folder">Tự động mở rộng thư mục</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Chỉ hiển thị các thư mục đã đăng ký</string>
     <string name="account_setup_options_mail_check_frequency_6hour">Mỗi 6 giờ</string>
     <string name="archive_folder_label">Thư mục lưu trữ</string>

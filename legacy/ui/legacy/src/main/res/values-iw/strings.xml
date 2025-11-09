@@ -227,7 +227,6 @@
     <string name="archive_folder_label">תיקיית ארכיון</string>
     <string name="spam_folder_label">תיקיית דואר זבל</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">הצג רק תיקיות רשומות</string>
-    <string name="account_setup_auto_expand_folder">הרחב את התיקייה אוטומטית</string>
     <string name="account_setup_options_mail_check_frequency_never">אפ פעם</string>
     <string name="account_setup_options_mail_check_frequency_15min">כל רבע שעה</string>
     <string name="account_setup_options_mail_check_frequency_30min">כל חצי שעה</string>

@@ -267,7 +267,6 @@
     <string name="archive_folder_label">Dosje arkivi</string>
     <string name="spam_folder_label">Dosje të padëshiruarish</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Shfaq vetëm dosje me pajtim</string>
-    <string name="account_setup_auto_expand_folder">Dosje për vetë-zgjerim</string>
     <string name="account_setup_options_mail_check_frequency_never">Kurrë</string>
     <string name="account_setup_options_mail_check_frequency_15min">Çdo 15 minuta</string>
     <string name="account_setup_options_mail_check_frequency_30min">Çdo 30 minuta</string>
