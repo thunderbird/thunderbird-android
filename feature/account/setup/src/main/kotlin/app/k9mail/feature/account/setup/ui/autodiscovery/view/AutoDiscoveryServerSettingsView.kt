@@ -16,7 +16,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import app.k9mail.autodiscovery.api.ConnectionSecurity
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -24,6 +23,7 @@ import app.k9mail.feature.account.setup.ui.autodiscovery.toAutoDiscoveryConnecti
 import net.thunderbird.core.common.net.Hostname
 import net.thunderbird.core.common.net.isIpAddress
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 @Composable
 internal fun AutoDiscoveryServerSettingsView(

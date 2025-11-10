@@ -9,8 +9,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 @Suppress("MagicNumber", "UnusedReceiverParameter")
 val Icons.DualTone.Warning: ImageVector

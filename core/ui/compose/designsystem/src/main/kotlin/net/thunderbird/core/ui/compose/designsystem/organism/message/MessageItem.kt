@@ -38,7 +38,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
 import app.k9mail.core.ui.compose.theme2.LocalContentColor
@@ -53,6 +52,7 @@ import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.ui.compose.common.date.LocalDateTimeConfiguration
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 private const val WEEK_DAYS = 7
 

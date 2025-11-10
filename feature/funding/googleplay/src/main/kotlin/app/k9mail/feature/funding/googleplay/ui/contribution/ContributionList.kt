@@ -25,7 +25,6 @@ import androidx.compose.ui.text.withStyle
 import app.k9mail.core.ui.compose.common.resources.annotatedStringResource
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonText
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
@@ -41,6 +40,7 @@ import app.k9mail.feature.funding.googleplay.domain.entity.RecurringContribution
 import app.k9mail.feature.funding.googleplay.ui.contribution.ContributionContract.ContributionListState
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 @Composable
 internal fun ContributionList(

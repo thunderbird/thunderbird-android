@@ -6,8 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 @Composable
 @Preview(showBackground = true)

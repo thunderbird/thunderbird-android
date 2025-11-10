@@ -1,4 +1,4 @@
-package app.k9mail.core.ui.compose.designsystem.atom.icon
+package net.thunderbird.core.ui.compose.designsystem.atom.icon
 
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person

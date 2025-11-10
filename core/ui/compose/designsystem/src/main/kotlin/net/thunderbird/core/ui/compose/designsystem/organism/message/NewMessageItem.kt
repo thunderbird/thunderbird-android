@@ -7,11 +7,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.NewMailBadge
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderTitleSmall
 

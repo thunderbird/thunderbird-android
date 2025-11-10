@@ -1,6 +1,6 @@
 package net.thunderbird.feature.notification.api.ui.icon
 
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.Warning
 import net.thunderbird.feature.notification.api.R
 import net.thunderbird.feature.notification.api.ui.icon.atom.Notification

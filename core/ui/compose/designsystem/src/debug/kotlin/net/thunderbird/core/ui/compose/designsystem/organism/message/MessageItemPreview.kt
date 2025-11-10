@@ -14,7 +14,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
@@ -24,6 +23,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.ExperimentalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.Star
 
 private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(

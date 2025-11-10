@@ -1,5 +1,6 @@
-package app.k9mail.core.ui.compose.designsystem.atom.icon
+package net.thunderbird.core.ui.compose.designsystem.atom.icon
 
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.Send
 import androidx.compose.material.icons.filled.Cancel
@@ -35,115 +36,129 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.ui.graphics.vector.ImageVector
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.Dot
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.FolderManaged
-import androidx.compose.material.icons.Icons as MaterialIcons
 
 // We're using getters so not all icons are loaded into memory as soon as one of the nested objects is accessed.
+/**
+ * Collection of standard icons for the design system.
+ *
+ * They are organized by style: [Filled], [Outlined], and [DualTone].
+ */
 object Icons {
+
+    /**
+     * Icons with filled style.
+     */
     object Filled {
         val Cancel: ImageVector
-            get() = MaterialIcons.Filled.Cancel
+            get() = Icons.Filled.Cancel
 
         val CheckCircle: ImageVector
-            get() = MaterialIcons.Filled.CheckCircle
+            get() = Icons.Filled.CheckCircle
 
         val Dot: ImageVector
-            get() = MaterialIcons.Filled.Dot
+            get() = Icons.Filled.Dot
     }
 
+    /**
+     * Icons with outlined style.
+     */
     object Outlined {
         val AccountCircle: ImageVector
-            get() = MaterialIcons.Outlined.AccountCircle
+            get() = Icons.Outlined.AccountCircle
 
         val Add: ImageVector
-            get() = MaterialIcons.Outlined.Add
+            get() = Icons.Outlined.Add
 
         val AllInbox: ImageVector
-            get() = MaterialIcons.Outlined.AllInbox
+            get() = Icons.Outlined.AllInbox
 
         val Archive: ImageVector
-            get() = MaterialIcons.Outlined.Archive
+            get() = Icons.Outlined.Archive
 
         val Attachment: ImageVector
-            get() = MaterialIcons.Outlined.Attachment
+            get() = Icons.Outlined.Attachment
 
         val ArrowBack: ImageVector
-            get() = MaterialIcons.AutoMirrored.Outlined.ArrowBack
+            get() = Icons.AutoMirrored.Outlined.ArrowBack
 
         val KeyboardArrowDown: ImageVector
-            get() = MaterialIcons.Outlined.KeyboardArrowDown
+            get() = Icons.Outlined.KeyboardArrowDown
 
         val KeyboardArrowUp: ImageVector
-            get() = MaterialIcons.Outlined.KeyboardArrowUp
+            get() = Icons.Outlined.KeyboardArrowUp
 
         val Check: ImageVector
-            get() = MaterialIcons.Outlined.Check
+            get() = Icons.Outlined.Check
 
         val CheckCircle: ImageVector
-            get() = MaterialIcons.Outlined.CheckCircle
+            get() = Icons.Outlined.CheckCircle
 
         val ChevronLeft: ImageVector
-            get() = MaterialIcons.Outlined.ChevronLeft
+            get() = Icons.Outlined.ChevronLeft
 
         val ChevronRight: ImageVector
-            get() = MaterialIcons.Outlined.ChevronRight
+            get() = Icons.Outlined.ChevronRight
 
         val Close: ImageVector
-            get() = MaterialIcons.Outlined.Close
+            get() = Icons.Outlined.Close
 
         val Delete: ImageVector
-            get() = MaterialIcons.Outlined.Delete
+            get() = Icons.Outlined.Delete
 
         val Drafts: ImageVector
-            get() = MaterialIcons.Outlined.Drafts
+            get() = Icons.Outlined.Drafts
 
         val ErrorOutline: ImageVector
-            get() = MaterialIcons.Outlined.ErrorOutline
+            get() = Icons.Outlined.ErrorOutline
 
         val ExpandMore: ImageVector
-            get() = MaterialIcons.Outlined.ExpandMore
+            get() = Icons.Outlined.ExpandMore
 
         val ExpandLess: ImageVector
-            get() = MaterialIcons.Outlined.ExpandLess
+            get() = Icons.Outlined.ExpandLess
 
         val Folder: ImageVector
-            get() = MaterialIcons.Outlined.Folder
+            get() = Icons.Outlined.Folder
 
         val Inbox: ImageVector
-            get() = MaterialIcons.Outlined.Inbox
+            get() = Icons.Outlined.Inbox
 
         val Info: ImageVector
-            get() = MaterialIcons.Outlined.Info
+            get() = Icons.Outlined.Info
 
         val FolderManaged: ImageVector
-            get() = MaterialIcons.Outlined.FolderManaged
+            get() = Icons.Outlined.FolderManaged
 
         val Menu: ImageVector
-            get() = MaterialIcons.Outlined.Menu
+            get() = Icons.Outlined.Menu
 
         val Outbox: ImageVector
-            get() = MaterialIcons.Filled.Outbox
+            get() = Icons.Filled.Outbox
 
         val Security: ImageVector
-            get() = MaterialIcons.Outlined.Security
+            get() = Icons.Outlined.Security
 
         val Send: ImageVector
-            get() = MaterialIcons.AutoMirrored.Outlined.Send
+            get() = Icons.AutoMirrored.Outlined.Send
 
         val Settings: ImageVector
-            get() = MaterialIcons.Outlined.Settings
+            get() = Icons.Outlined.Settings
 
         val Sync: ImageVector
-            get() = MaterialIcons.Outlined.Sync
+            get() = Icons.Outlined.Sync
 
         val Report: ImageVector
-            get() = MaterialIcons.Outlined.Report
+            get() = Icons.Outlined.Report
 
         val Visibility: ImageVector
-            get() = MaterialIcons.Outlined.Visibility
+            get() = Icons.Outlined.Visibility
 
         val VisibilityOff: ImageVector
-            get() = MaterialIcons.Filled.VisibilityOff
+            get() = Icons.Filled.VisibilityOff
     }
 
+    /**
+     * Icons with dual tone style.
+     */
     object DualTone
 }
