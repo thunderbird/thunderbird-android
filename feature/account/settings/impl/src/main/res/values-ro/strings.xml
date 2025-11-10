@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Preferințe generale</string>
-    <string name="account_settings_general_profile_indicator_title">Indicator de profil</string>
-    <string name="account_settings_general_profile_indicator_monogram">Monogramă</string>
-    <string name="account_settings_general_profile_indicator_image">Imagine</string>
-    <string name="account_settings_general_profile_indicator_icon">Pictogramă</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogramă</string>
+    <string name="account_settings_general_avatar_option_image">Imagine</string>
+    <string name="account_settings_general_avatar_option_icon">Pictogramă</string>
     <string name="account_settings_general_name_title">Numele contului</string>
     <string name="account_settings_general_name_description">Numele asociat contului dvs.</string>
     <string name="account_settings_general_color_title">Culoarea contului</string>

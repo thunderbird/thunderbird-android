@@ -52,10 +52,10 @@ internal interface AccountSettingsDomainContract {
                 avatar: Avatar?,
             ): @Composable (Modifier) -> Unit
 
-            val profileIndicatorTitle: () -> String
-            val profileIndicatorMonogram: () -> String
-            val profileIndicatorImage: () -> String
-            val profileIndicatorIcon: () -> String
+            val avatarTitle: () -> String
+            val avatarOptionMonogram: () -> String
+            val avatarOptionImage: () -> String
+            val avatarOptionIcon: () -> String
 
             val nameTitle: () -> String
             val nameDescription: () -> String?

@@ -72,8 +72,8 @@ internal class GeneralSettingsBuilder(
         val options = avatarOptions(avatar = avatar, name = name)
         val selected = selectAvatarOption(avatar = avatar, options = options)
         return SettingValue.CompactSelectSingleOption(
-            id = GeneralSettingId.AVATAR,
-            title = resources.profileIndicatorTitle,
+            id = GeneralSettingId.AVATAR_OPTIONS,
+            title = resources.avatarTitle,
             value = selected,
             options = options,
         )
@@ -115,7 +115,7 @@ internal class GeneralSettingsBuilder(
         monogram: String,
     ): Setting = SettingValue.Text(
         id = GeneralSettingId.AVATAR_MONOGRAM,
-        title = resources.profileIndicatorMonogram,
+        title = resources.avatarOptionMonogram,
         description = { null },
         icon = { null },
         value = monogram,
@@ -140,21 +140,21 @@ internal class GeneralSettingsBuilder(
         persistentListOf(
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_MONOGRAM_ID,
-                title = resources.profileIndicatorMonogram,
+                title = resources.avatarOptionMonogram,
                 value = (avatar as? Avatar.Monogram) ?: Avatar.Monogram(
                     value = monogramCreator.create(name, null),
                 ),
             ),
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_IMAGE_ID,
-                title = resources.profileIndicatorImage,
+                title = resources.avatarOptionImage,
                 value = (avatar as? Avatar.Image) ?: Avatar.Image(
                     uri = "avatar_placeholder_uri",
                 ),
             ),
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_ICON_ID,
-                title = resources.profileIndicatorIcon,
+                title = resources.avatarOptionIcon,
                 value = (avatar as? Avatar.Icon) ?: Avatar.Icon(
                     name = "user",
                 ),

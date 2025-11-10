@@ -42,7 +42,7 @@ internal fun GeneralSettingsContent(
                     onEvent(Event.OnColorChange(setting.value))
                 }
 
-                is SettingValue.CompactSelectSingleOption<*> -> if (setting.id == GeneralSettingId.AVATAR) {
+                is SettingValue.CompactSelectSingleOption<*> -> if (setting.id == GeneralSettingId.AVATAR_OPTIONS) {
                     @Suppress("UNCHECKED_CAST")
                     val avatarOption = setting.value as CompactOption<Avatar>
                     onEvent(Event.OnAvatarChange(avatarOption.value))

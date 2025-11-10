@@ -88,7 +88,7 @@ internal class GeneralSettingsBuilderTest {
         // Assert
         assertThat(settingsWith).any {
             it.isInstanceOf<SettingValue.CompactSelectSingleOption<*>>()
-            it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR)
+            it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR_OPTIONS)
         }
 
         // Arrange disabled
@@ -105,7 +105,7 @@ internal class GeneralSettingsBuilderTest {
         // Assert
         assertThat(settingsWithout).none {
             it.isInstanceOf<SettingValue.CompactSelectSingleOption<*>>()
-            it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR)
+            it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR_OPTIONS)
         }
     }
 
@@ -209,7 +209,7 @@ internal class GeneralSettingsBuilderTest {
 
         // Act
         val settings = builder.build(state)
-        val avatarSetting = settings.firstOrNull { it.id == GeneralSettingId.AVATAR }
+        val avatarSetting = settings.firstOrNull { it.id == GeneralSettingId.AVATAR_OPTIONS }
 
         // Assert
         assertThat(avatarSetting).isNotNull()
