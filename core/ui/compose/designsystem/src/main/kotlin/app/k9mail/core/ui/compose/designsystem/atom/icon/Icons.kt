@@ -33,8 +33,8 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.ui.graphics.vector.ImageVector
-import app.k9mail.core.ui.compose.designsystem.atom.icon.filled.Dot
-import app.k9mail.core.ui.compose.designsystem.atom.icon.outlined.FolderManaged
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.Dot
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.FolderManaged
 import androidx.compose.material.icons.Icons as MaterialIcons
 
 // We're using getters so not all icons are loaded into memory as soon as one of the nested objects is accessed.
