@@ -10,7 +10,6 @@
     <string name="account_setup_special_folders_archive_folder_label">Arquivar cartafol</string>
     <string name="account_setup_special_folders_drafts_folder_label">Cartafol de borradores</string>
     <string name="account_setup_special_folders_sent_folder_label">Cartafol de enviados</string>
-    <string name="account_setup_options_display_name_label">O teu nome</string>
     <string name="account_setup_options_email_signature_error_blank">O nome da firma de correo electrónico non pode estar en branco.</string>
     <string name="account_setup_special_folders_folder_automatic">Automático (%s)</string>
     <string name="account_setup_create_account_created">Conta creada correctamente</string>
@@ -39,7 +38,6 @@
     <string name="account_setup_special_folders_trash_folder_label">Cartafol da papeleira</string>
     <string name="account_setup_options_section_display_options">Mostrar opcións</string>
     <string name="account_setup_options_account_name_label">Nome da conta</string>
-    <string name="account_setup_options_display_name_error_required">O teu nome é obrigatorio.</string>
     <string name="account_setup_options_email_signature_label">Firma de correo electrónico</string>
     <string name="account_setup_options_section_sync_options">Opcións de sincronización</string>
     <string name="account_setup_options_email_check_frequency_never">Nunca</string>

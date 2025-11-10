@@ -8,7 +8,7 @@ import assertk.assertions.isNull
 import com.fsck.k9.helper.ReplyToParser
 import com.fsck.k9.mail.testing.message.buildMessage
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import org.junit.Test
 
 private const val IDENTITY_EMAIL_ADDRESS = "myself@domain.example"
@@ -107,8 +107,8 @@ class ReplyActionStrategyTest {
         assertThat(replyActions.additionalActions).isEmpty()
     }
 
-    private fun createAccount(): LegacyAccount {
-        return LegacyAccount("00000000-0000-4000-0000-000000000000").apply {
+    private fun createAccount(): LegacyAccountDto {
+        return LegacyAccountDto("00000000-0000-4000-0000-000000000000").apply {
             identities += Identity(name = "Myself", email = IDENTITY_EMAIL_ADDRESS)
         }
     }

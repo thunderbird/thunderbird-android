@@ -16,6 +16,10 @@ kotlin {
             implementation(projects.core.logging.testing)
             implementation(projects.feature.notification.testing)
         }
+        androidMain.dependencies {
+            // should split feature.launcher into api/impl?
+            implementation(projects.feature.launcher)
+        }
         androidUnitTest.dependencies {
             implementation(libs.androidx.test.core)
             implementation(libs.mockito.core)

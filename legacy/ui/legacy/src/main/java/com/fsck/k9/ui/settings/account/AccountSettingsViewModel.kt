@@ -11,23 +11,23 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.feature.mail.folder.api.FolderType
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 
 class AccountSettingsViewModel(
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val folderRepository: FolderRepository,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
     val accounts = accountManager.getAccountsFlow().asLiveData()
     private var accountUuid: String? = null
-    private val accountLiveData = MutableLiveData<LegacyAccount?>()
+    private val accountLiveData = MutableLiveData<LegacyAccountDto?>()
     private val foldersLiveData = MutableLiveData<RemoteFolderInfo>()
 
-    fun getAccount(accountUuid: String): LiveData<LegacyAccount?> {
+    fun getAccount(accountUuid: String): LiveData<LegacyAccountDto?> {
         if (this.accountUuid != accountUuid) {
             this.accountUuid = accountUuid
             viewModelScope.launch {
@@ -42,10 +42,10 @@ class AccountSettingsViewModel(
     }
 
     /**
-     * Returns the cached [LegacyAccount] if possible. Otherwise does a blocking load because `PreferenceFragmentCompat`
-     * doesn't support asynchronous preference loading.
+     * Returns the cached [LegacyAccountDto] if possible. Otherwise does a blocking load because
+     * `PreferenceFragmentCompat` doesn't support asynchronous preference loading.
      */
-    fun getAccountBlocking(accountUuid: String): LegacyAccount {
+    fun getAccountBlocking(accountUuid: String): LegacyAccountDto {
         return accountLiveData.value
             ?: loadAccount(accountUuid).also { account ->
                 this.accountUuid = accountUuid
@@ -54,11 +54,11 @@ class AccountSettingsViewModel(
             ?: error("Account $accountUuid not found")
     }
 
-    private fun loadAccount(accountUuid: String): LegacyAccount? {
+    private fun loadAccount(accountUuid: String): LegacyAccountDto? {
         return accountManager.getAccount(accountUuid)
     }
 
-    fun getFolders(account: LegacyAccount): LiveData<RemoteFolderInfo> {
+    fun getFolders(account: LegacyAccountDto): LiveData<RemoteFolderInfo> {
         if (foldersLiveData.value == null) {
             loadFolders(account)
         }
@@ -66,7 +66,7 @@ class AccountSettingsViewModel(
         return foldersLiveData
     }
 
-    private fun loadFolders(account: LegacyAccount) {
+    private fun loadFolders(account: LegacyAccountDto) {
         viewModelScope.launch {
             val remoteFolderInfo = withContext(backgroundDispatcher) {
                 val folders = folderRepository.getRemoteFolders(account)

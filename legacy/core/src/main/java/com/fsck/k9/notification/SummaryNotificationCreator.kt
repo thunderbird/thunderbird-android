@@ -4,7 +4,7 @@ import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.WearableExtender
 import com.fsck.k9.notification.NotificationChannelManager.ChannelType
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import androidx.core.app.NotificationCompat.Builder as NotificationBuilder
 
@@ -101,14 +101,14 @@ internal class SummaryNotificationCreator(
     }
 
     private fun createViewIntent(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationData: SummaryInboxNotificationData,
     ): PendingIntent {
         return actionCreator.createViewMessagesPendingIntent(account, notificationData.messageReferences)
     }
 
     private fun NotificationBuilder.setDeviceActions(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationData: SummaryInboxNotificationData,
     ) = apply {
         for (action in notificationData.actions) {
@@ -120,7 +120,7 @@ internal class SummaryNotificationCreator(
     }
 
     private fun NotificationBuilder.addMarkAllAsReadAction(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.iconMarkAsRead
@@ -132,7 +132,7 @@ internal class SummaryNotificationCreator(
     }
 
     private fun NotificationBuilder.addDeleteAllAction(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.iconDelete
@@ -145,7 +145,7 @@ internal class SummaryNotificationCreator(
 
     @Suppress("NestedBlockDepth")
     private fun NotificationBuilder.setWearActions(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationData: SummaryInboxNotificationData,
     ) = apply {
         val wearableExtender = WearableExtender().apply {
@@ -162,7 +162,7 @@ internal class SummaryNotificationCreator(
     }
 
     private fun WearableExtender.addMarkAllAsReadAction(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.wearIconMarkAsRead
@@ -175,7 +175,7 @@ internal class SummaryNotificationCreator(
     }
 
     private fun WearableExtender.addDeleteAllAction(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.wearIconDelete
@@ -188,7 +188,7 @@ internal class SummaryNotificationCreator(
     }
 
     private fun WearableExtender.addArchiveAllAction(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationData: SummaryInboxNotificationData,
     ) {
         val icon = resourceProvider.wearIconArchive

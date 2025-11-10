@@ -30,6 +30,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.Stack
 import java.util.UUID
+import net.thunderbird.feature.account.AccountId
 import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.codec.Base64InputStream
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream
@@ -42,6 +43,7 @@ internal class SaveMessageOperations(
     private val attachmentFileManager: AttachmentFileManager,
     private val partInfoExtractor: BasicPartInfoExtractor,
     private val threadMessageOperations: ThreadMessageOperations,
+    private val accountId: AccountId,
 ) {
     fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
         saveMessage(folderId, messageServerId, messageData)
@@ -419,6 +421,8 @@ internal class SaveMessageOperations(
             } else {
                 putNull("preview")
             }
+
+            put("account_id", accountId.asRaw())
         }
 
         return if (replaceMessageId != null) {

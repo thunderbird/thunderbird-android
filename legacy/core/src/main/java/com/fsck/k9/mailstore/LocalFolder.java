@@ -32,7 +32,7 @@ import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -1193,7 +1193,7 @@ public class LocalFolder {
         });
     }
 
-    private LegacyAccount getAccount() {
+    private LegacyAccountDto getAccount() {
         return localStore.getAccount();
     }
 

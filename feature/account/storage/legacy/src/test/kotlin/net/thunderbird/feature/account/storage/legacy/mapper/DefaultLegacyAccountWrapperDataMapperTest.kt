@@ -12,7 +12,7 @@ import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.LegacyAccount
-import net.thunderbird.core.android.account.LegacyAccountWrapper
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
@@ -31,7 +31,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         // arrange
         val account = createAccount()
         val expected = createAccountWrapper()
-        val testSubject = DefaultLegacyAccountWrapperDataMapper()
+        val testSubject = DefaultLegacyAccountDataMapper()
 
         // act
         val result = testSubject.toDomain(account)
@@ -45,7 +45,7 @@ class DefaultLegacyAccountWrapperDataMapperTest {
     fun `toDto should return account`() {
         // arrange
         val wrapper = createAccountWrapper()
-        val testSubject = DefaultLegacyAccountWrapperDataMapper()
+        val testSubject = DefaultLegacyAccountDataMapper()
 
         // act
         val result = testSubject.toDto(wrapper)
@@ -183,8 +183,8 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         val defaultNotificationSettings = NotificationSettings()
 
         @Suppress("LongMethod")
-        fun createAccount(): LegacyAccount {
-            return LegacyAccount(
+        fun createAccount(): LegacyAccountDto {
+            return LegacyAccountDto(
                 uuid = ACCOUNT_ID_RAW,
                 isSensitiveDebugLoggingEnabled = defaultIsSensitiveDebugLoggingEnabled,
             ).apply {
@@ -291,10 +291,10 @@ class DefaultLegacyAccountWrapperDataMapperTest {
         }
 
         @Suppress("LongMethod")
-        fun createAccountWrapper(): LegacyAccountWrapper {
+        fun createAccountWrapper(): LegacyAccount {
             val id = AccountIdFactory.of(ACCOUNT_ID_RAW)
 
-            return LegacyAccountWrapper(
+            return LegacyAccount(
                 isSensitiveDebugLoggingEnabled = defaultIsSensitiveDebugLoggingEnabled,
 
                 // [Account]

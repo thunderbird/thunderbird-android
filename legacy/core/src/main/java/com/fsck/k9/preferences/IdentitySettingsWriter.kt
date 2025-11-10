@@ -12,16 +12,19 @@ internal class IdentitySettingsWriter(private val generalSettingsManager: Genera
             "$accountUuid.$IDENTITY_NAME_KEY.$index",
             identity.name,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
         editor.putStringWithLogging(
             "$accountUuid.$IDENTITY_EMAIL_KEY.$index",
             identity.email,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
         editor.putStringWithLogging(
             "$accountUuid.$IDENTITY_DESCRIPTION_KEY.$index",
             identity.description,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
 
         // Convert identity settings to the representation used in preference storage
@@ -29,7 +32,12 @@ internal class IdentitySettingsWriter(private val generalSettingsManager: Genera
 
         for ((identityKey, value) in stringSettings) {
             val key = "$accountUuid.$identityKey.$index"
-            editor.putStringWithLogging(key, value, generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled)
+            editor.putStringWithLogging(
+                key,
+                value,
+                generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+                generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
+            )
         }
     }
 }

@@ -20,7 +20,7 @@ class ChangelogViewModel(
 ) : ViewModel() {
     val showRecentChangesState: LiveData<Boolean> =
         generalSettingsManager.getConfigFlow()
-            .map { it.display.showRecentChanges }
+            .map { it.display.miscSettings.showRecentChanges }
             .distinctUntilChanged()
             .asLiveData()
 
@@ -34,7 +34,13 @@ class ChangelogViewModel(
 
     fun setShowRecentChanges(showRecentChanges: Boolean) {
         generalSettingsManager.update { settings ->
-            settings.copy(display = settings.display.copy(showRecentChanges = showRecentChanges))
+            settings.copy(
+                display = settings.display.copy(
+                    miscSettings = settings.display.miscSettings.copy(
+                        showRecentChanges = showRecentChanges,
+                    ),
+                ),
+            )
         }
     }
 

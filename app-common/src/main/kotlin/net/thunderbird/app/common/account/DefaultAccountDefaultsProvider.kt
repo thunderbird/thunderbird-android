@@ -22,7 +22,7 @@ import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.UN
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.ShowPictures
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
@@ -38,11 +38,11 @@ internal class DefaultAccountDefaultsProvider(
     private val featureFlagProvider: FeatureFlagProvider,
 ) : AccountDefaultsProvider {
 
-    override fun applyDefaults(account: LegacyAccount) = with(account) {
+    override fun applyDefaults(account: LegacyAccountDto) = with(account) {
         applyLegacyDefaults()
     }
 
-    override fun applyOverwrites(account: LegacyAccount, storage: Storage) = with(account) {
+    override fun applyOverwrites(account: LegacyAccountDto, storage: Storage) = with(account) {
         if (storage.contains("${account.uuid}.notifyNewMail")) {
             isNotifyNewMail = storage.getBoolean("${account.uuid}.notifyNewMail", false)
             isNotifySelfNewMail = storage.getBoolean("${account.uuid}.notifySelfNewMail", true)
@@ -64,7 +64,7 @@ internal class DefaultAccountDefaultsProvider(
     }
 
     @Suppress("LongMethod")
-    private fun LegacyAccount.applyLegacyDefaults() {
+    private fun LegacyAccountDto.applyLegacyDefaults() {
         automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
         idleRefreshMinutes = 24
         displayCount = DEFAULT_VISIBLE_LIMIT

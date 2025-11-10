@@ -23,8 +23,6 @@
     <string name="account_setup_options_email_signature_error_blank">E-kirja allkiri ei saa olla tühi.</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">On nõutav, et saa nõustud nende seadistustega.</string>
     <string name="account_setup_options_account_name_label">Kasutajakonto nimi</string>
-    <string name="account_setup_options_display_name_label">Sinu nimi</string>
-    <string name="account_setup_options_display_name_error_required">Sinu nimi peab olema sisestatud.</string>
     <string name="account_setup_options_email_check_frequency_never">Mitte kunagi</string>
     <string name="account_setup_options_section_sync_options">Sünkroniseerimisvalikud</string>
     <string name="account_setup_options_show_notifications_label">Näita teavitusi</string>
@@ -59,4 +57,6 @@
         <item quantity="one">Kord minutis</item>
         <item quantity="other">Iga %d minuti järel</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Sinu nimi</string>
+    <string name="account_setup_options_your_name_error_required">Sinu nimi peab olema sisestatud.</string>
 </resources>

@@ -23,7 +23,6 @@
     <string name="account_setup_options_email_signature_label">Eàrr-sgrìobhadh a’ phuist-d</string>
     <string name="account_setup_special_folders_form_description">Sònraich na pasganan sònraichte sa chunntas agad.</string>
     <string name="account_setup_special_folders_loading_message">A’ faighinn liosta nam pasganan…</string>
-    <string name="account_setup_options_display_name_label">D’ ainm</string>
     <string name="account_setup_options_email_display_count_label">Co mheud teachdaireachd a thèid a shealltainn</string>
     <string name="account_setup_create_account_creating">A’ cruthachadh a’ chunntais…</string>
     <string name="account_setup_options_account_name_label">Ainm a’ chunntais</string>
@@ -50,7 +49,6 @@
     <string name="account_setup_special_folders_spam_folder_label">Pasgan an spama</string>
     <string name="account_setup_options_section_display_options">Roghainnean taisbeanaidh</string>
     <string name="account_setup_special_folders_folder_automatic">Fèin-obrachail (%s)</string>
-    <string name="account_setup_options_display_name_error_required">Tha feum air d’ ainm.</string>
     <string name="account_setup_options_email_signature_error_blank">Chan fhaod eàrr-sgrìobhadh a’ phuist-d a bhith bàn.</string>
     <string name="account_setup_options_account_check_frequency_label">Dè cho tric ’s a bheirear sùil</string>
     <string name="account_setup_options_show_notifications_label">Seall na brathan</string>

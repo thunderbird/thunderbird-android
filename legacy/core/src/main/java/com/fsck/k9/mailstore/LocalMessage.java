@@ -10,7 +10,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.VisibleForTesting;
-import com.fsck.k9.K9;
 import app.k9mail.legacy.message.controller.MessageReference;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.Address;
@@ -22,7 +21,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import app.k9mail.legacy.message.extractors.PreviewResult.PreviewType;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.logging.legacy.Log;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 
@@ -98,7 +97,7 @@ public class LocalMessage extends MimeMessage {
 
         String previewTypeString = cursor.getString(LocalStore.MSG_INDEX_PREVIEW_TYPE);
         DatabasePreviewType databasePreviewType = DatabasePreviewType.fromDatabaseValue(previewTypeString);
-        previewType = databasePreviewType.getPreviewType();
+        previewType = databasePreviewType.previewType;
         if (previewType == PreviewType.TEXT) {
             preview = cursor.getString(LocalStore.MSG_INDEX_PREVIEW);
         } else {
@@ -293,7 +292,7 @@ public class LocalMessage extends MimeMessage {
             public Void doDbWork(final SQLiteDatabase db) throws MessagingException {
                 ContentValues cv = new ContentValues();
                 cv.put("deleted", 1);
-                cv.put("preview_type", DatabasePreviewType.fromPreviewType(PreviewType.NONE).getDatabaseValue());
+                cv.put("preview_type", DatabasePreviewType.fromPreviewType(PreviewType.NONE).databaseValue);
                 cv.put("read", 0);
                 cv.put("flagged", 0);
                 cv.put("answered", 0);
@@ -369,7 +368,7 @@ public class LocalMessage extends MimeMessage {
         return rootId;
     }
 
-    public LegacyAccount getAccount() {
+    public LegacyAccountDto getAccount() {
         return localStore.getAccount();
     }
 

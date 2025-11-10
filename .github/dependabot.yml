@@ -1,11 +1,26 @@
 version: 2
-commit-message:
-  prefix: chore
-  include: scope
-labels:
-  - "type: dependency"
 updates:
+  # Dependabot does not support GitHub composite actions by default (.github/actions)
+  # so we need to add the folder by hand to the directories entry.
   - package-ecosystem: "github-actions"
+    directories:
+      - "/"
+      - "/.github/actions/*"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "type: dependency"
+      - "type: github actions"
+    commit-message:
+      prefix: chore
+      include: scope
+  - package-ecosystem: "gradle"
     directory: "/"
     schedule:
       interval: "weekly"
+    labels:
+      - "type: dependency"
+      - "type: gradle"
+    commit-message:
+      prefix: chore
+      include: scope

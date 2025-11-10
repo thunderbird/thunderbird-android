@@ -868,7 +868,7 @@
     <string name="push_info_configure_notification_action">Sett opp merknad</string>
     <string name="push_info_disable_push_text">Skru av dytting og bruk spørring hvis du ikke trenger merknader om nye meldinger. Spørring sjekker ny e-post ved regelmessige intervalles og trenger ikke merknaden.</string>
     <string name="debug_export_logs_failure">Eksport mislyktes.</string>
-    <string name="message_view_show_remote_images_action">Vis bilder fra annensteds hen</string>
+    <string name="message_view_show_remote_images_action">Vis eksterne bilder</string>
     <string name="general_settings_post_mark_as_unread_action_stay">Forbli på nåværende melding</string>
     <string name="general_settings_post_mark_as_unread_action_return_to_list">Gå tilbake til meldingslisten</string>
     <string name="general_settings_post_mark_as_unread_action_title">Etter markering av melding som ulest</string>

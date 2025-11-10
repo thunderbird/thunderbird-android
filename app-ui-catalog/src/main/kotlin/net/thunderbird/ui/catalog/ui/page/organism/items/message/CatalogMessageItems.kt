@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,11 +30,14 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.designsystem.atom.textfield.TextFieldOutlined
 import app.k9mail.core.ui.compose.designsystem.molecule.input.CheckboxInput
+import app.k9mail.core.ui.compose.designsystem.organism.snackbar.SnackbarHost
+import app.k9mail.core.ui.compose.designsystem.organism.snackbar.rememberSnackbarHostState
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.math.roundToInt
 import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.organism.message.ActiveMessageItem
@@ -99,6 +103,7 @@ private data class MessageItemConfiguration(
     val maxPreviewLines: Int,
 )
 
+@Suppress("LongMethod")
 @Composable
 private fun MessageItemConfiguration(
     config: MessageItemConfiguration,
@@ -141,21 +146,27 @@ private fun MessageItemConfiguration(
             label = "Sender",
             onValueChange = onSenderChange,
             isSingleLine = true,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = MainTheme.spacings.double),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MainTheme.spacings.double),
         )
         TextFieldOutlined(
             value = config.subject,
             label = "Subject",
             onValueChange = onSubjectChange,
             isSingleLine = true,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = MainTheme.spacings.double),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MainTheme.spacings.double),
         )
         TextFieldOutlined(
             value = config.preview,
             label = "Preview",
             onValueChange = onPreviewChange,
             isSingleLine = false,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = MainTheme.spacings.double),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MainTheme.spacings.double),
         )
         Column(modifier = Modifier.padding(horizontal = MainTheme.spacings.double)) {
             TextLabelSmall(text = "Preview lines: ${config.maxPreviewLines}")
@@ -181,12 +192,17 @@ private fun CatalogMessageItems(config: MessageItemConfiguration, modifier: Modi
 }
 
 @Composable
-private fun ColumnScope.CatalogNewMessageItem(config: MessageItemConfiguration) {
+private fun ColumnScope.CatalogNewMessageItem(
+    config: MessageItemConfiguration,
+) {
     if (!config.hideSection) {
         Section(text = "New Message", modifier = Modifier.padding(vertical = MainTheme.spacings.double))
     }
     var selected by remember { mutableStateOf(false) }
     var favourite by remember { mutableStateOf(false) }
+    val snackbarHostState = rememberSnackbarHostState()
+    val coroutineScope = rememberCoroutineScope()
+
     NewMessageItem(
         sender = config.sender,
         subject = config.subject,
@@ -204,9 +220,17 @@ private fun ColumnScope.CatalogNewMessageItem(config: MessageItemConfiguration) 
             }
         },
         onClick = {
-            if (selected) {
-                selected = false
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Clicked!")
             }
+        },
+        onLongClick = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Long clicked!")
+            }
+        },
+        onLeadingClick = {
+            selected = !selected
         },
         onFavouriteChange = { favourite = it },
         modifier = Modifier.fillMaxWidth(),
@@ -217,15 +241,23 @@ private fun ColumnScope.CatalogNewMessageItem(config: MessageItemConfiguration) 
         },
         maxPreviewLines = config.maxPreviewLines,
     )
+
+    SnackbarHost(snackbarHostState)
 }
 
 @Composable
-private fun ColumnScope.CatalogUnreadMessageItem(config: MessageItemConfiguration) {
+private fun ColumnScope.CatalogUnreadMessageItem(
+    config: MessageItemConfiguration,
+) {
     if (!config.hideSection) {
         Section(text = "Unread Message", modifier = Modifier.padding(vertical = MainTheme.spacings.double))
     }
     var selected by remember { mutableStateOf(false) }
     var favourite by remember { mutableStateOf(false) }
+
+    val snackbarHostState = rememberSnackbarHostState()
+    val coroutineScope = rememberCoroutineScope()
+
     UnreadMessageItem(
         sender = config.sender,
         subject = config.subject,
@@ -243,9 +275,17 @@ private fun ColumnScope.CatalogUnreadMessageItem(config: MessageItemConfiguratio
             }
         },
         onClick = {
-            if (selected) {
-                selected = false
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Clicked!")
             }
+        },
+        onLongClick = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Long clicked!")
+            }
+        },
+        onLeadingClick = {
+            selected = !selected
         },
         onFavouriteChange = { favourite = it },
         modifier = Modifier.fillMaxWidth(),
@@ -256,15 +296,23 @@ private fun ColumnScope.CatalogUnreadMessageItem(config: MessageItemConfiguratio
         },
         maxPreviewLines = config.maxPreviewLines,
     )
+
+    SnackbarHost(snackbarHostState)
 }
 
 @Composable
-private fun ColumnScope.CatalogReadMessageItem(config: MessageItemConfiguration) {
+private fun ColumnScope.CatalogReadMessageItem(
+    config: MessageItemConfiguration,
+) {
     if (!config.hideSection) {
         Section(text = "Read Message", modifier = Modifier.padding(vertical = MainTheme.spacings.double))
     }
     var selected by remember { mutableStateOf(false) }
     var favourite by remember { mutableStateOf(false) }
+
+    val snackbarHostState = rememberSnackbarHostState()
+    val coroutineScope = rememberCoroutineScope()
+
     ReadMessageItem(
         sender = config.sender,
         subject = config.subject,
@@ -282,9 +330,17 @@ private fun ColumnScope.CatalogReadMessageItem(config: MessageItemConfiguration)
             }
         },
         onClick = {
-            if (selected) {
-                selected = false
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Clicked!")
             }
+        },
+        onLongClick = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Long clicked!")
+            }
+        },
+        onLeadingClick = {
+            selected = !selected
         },
         onFavouriteChange = { favourite = it },
         modifier = Modifier.fillMaxWidth(),
@@ -295,15 +351,23 @@ private fun ColumnScope.CatalogReadMessageItem(config: MessageItemConfiguration)
         },
         maxPreviewLines = config.maxPreviewLines,
     )
+
+    SnackbarHost(snackbarHostState)
 }
 
 @Composable
-private fun ColumnScope.CatalogActiveMessageItem(config: MessageItemConfiguration) {
+private fun ColumnScope.CatalogActiveMessageItem(
+    config: MessageItemConfiguration,
+) {
     if (!config.hideSection) {
         Section(text = "Active Message", modifier = Modifier.padding(vertical = MainTheme.spacings.double))
     }
     var selected by remember { mutableStateOf(false) }
     var favourite by remember { mutableStateOf(false) }
+
+    val snackbarHostState = rememberSnackbarHostState()
+    val coroutineScope = rememberCoroutineScope()
+
     ActiveMessageItem(
         sender = config.sender,
         subject = config.subject,
@@ -321,9 +385,17 @@ private fun ColumnScope.CatalogActiveMessageItem(config: MessageItemConfiguratio
             }
         },
         onClick = {
-            if (selected) {
-                selected = false
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Clicked!")
             }
+        },
+        onLongClick = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Long clicked!")
+            }
+        },
+        onLeadingClick = {
+            selected = !selected
         },
         onFavouriteChange = { favourite = it },
         modifier = Modifier.fillMaxWidth(),
@@ -334,14 +406,22 @@ private fun ColumnScope.CatalogActiveMessageItem(config: MessageItemConfiguratio
         },
         maxPreviewLines = config.maxPreviewLines,
     )
+
+    SnackbarHost(snackbarHostState)
 }
 
 @Composable
-private fun ColumnScope.CatalogJunkMessageItem(config: MessageItemConfiguration) {
+private fun ColumnScope.CatalogJunkMessageItem(
+    config: MessageItemConfiguration,
+) {
     if (!config.hideSection) {
         Section(text = "Junk Message", modifier = Modifier.padding(vertical = MainTheme.spacings.double))
     }
     var selected by remember { mutableStateOf(false) }
+
+    val snackbarHostState = rememberSnackbarHostState()
+    val coroutineScope = rememberCoroutineScope()
+
     JunkMessageItem(
         sender = config.sender,
         subject = config.subject,
@@ -358,9 +438,17 @@ private fun ColumnScope.CatalogJunkMessageItem(config: MessageItemConfiguration)
             }
         },
         onClick = {
-            if (selected) {
-                selected = false
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Clicked!")
             }
+        },
+        onLongClick = {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar("Long clicked!")
+            }
+        },
+        onLeadingClick = {
+            selected = !selected
         },
         modifier = Modifier.fillMaxWidth(),
         selected = selected,
@@ -370,6 +458,8 @@ private fun ColumnScope.CatalogJunkMessageItem(config: MessageItemConfiguration)
         },
         maxPreviewLines = config.maxPreviewLines,
     )
+
+    SnackbarHost(snackbarHostState)
 }
 
 @Composable

@@ -4,7 +4,7 @@ import android.app.Notification
 import android.app.PendingIntent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 
 internal open class AuthenticationErrorNotificationController(
@@ -13,7 +13,7 @@ internal open class AuthenticationErrorNotificationController(
     private val resourceProvider: NotificationResourceProvider,
     private val generalSettingsManager: GeneralSettingsManager,
 ) {
-    fun showAuthenticationErrorNotification(account: LegacyAccount, incoming: Boolean) {
+    fun showAuthenticationErrorNotification(account: LegacyAccountDto, incoming: Boolean) {
         val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming)
         val editServerSettingsPendingIntent = createContentIntent(account, incoming)
         val title = resourceProvider.authenticationErrorTitle()
@@ -37,12 +37,12 @@ internal open class AuthenticationErrorNotificationController(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    fun clearAuthenticationErrorNotification(account: LegacyAccount, incoming: Boolean) {
+    fun clearAuthenticationErrorNotification(account: LegacyAccountDto, incoming: Boolean) {
         val notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming)
         notificationManager.cancel(notificationId)
     }
 
-    protected open fun createContentIntent(account: LegacyAccount, incoming: Boolean): PendingIntent {
+    protected open fun createContentIntent(account: LegacyAccountDto, incoming: Boolean): PendingIntent {
         return if (incoming) {
             actionCreator.getEditIncomingServerSettingsIntent(account)
         } else {
@@ -50,7 +50,7 @@ internal open class AuthenticationErrorNotificationController(
         }
     }
 
-    private fun createLockScreenNotification(account: LegacyAccount): Notification {
+    private fun createLockScreenNotification(account: LegacyAccountDto): Notification {
         return notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconWarning)

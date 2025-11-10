@@ -12,15 +12,22 @@ edition = "2018"
 [build]
 build-dir = "../book/docs/latest"
 create-missing = false
+use-default-preprocessors = false
 
 [output.html]
 git-repository-url = "https://github.com/thunderbird/thunderbird-android"
 edit-url-template = "https://github.com/thunderbird/thunderbird-android/edit/main/{path}"
 git-branch = "main"
 fold.enable = true
-theme = "assets/theme"
-additional-js = ["assets/theme/mermaid.min.js", "assets/theme/mermaid-init.js", "assets/theme/navigation.js", "assets/theme/pagetoc.js"]
-additional-css = ["assets/theme/last-changed.css", "assets/theme/navigation.css", "assets/theme/pagetoc.css"]
+theme = "assets/tb-theme"
+additional-js = ["assets/additional/js/mermaid.min.js", "assets/additional/js/mermaid-init.js", "assets/additional/js/navigation.js", "assets/additional/js/pagetoc.js"]
+additional-css = ["assets/additional/css/last-changed.css", "assets/additional/css/navigation.css", "assets/additional/css/pagetoc.css"]
+
+[output.linkcheck]
+follow-web-links = false
+traverse-parent-directories = false
+warning-policy = "error"
+exclude = [ 'mozilla\.com', '0000-adr-template\.md' ]
 
 [preprocessor]
 
@@ -31,6 +38,8 @@ additional-css = ["assets/theme/last-changed.css", "assets/theme/navigation.css"
 [preprocessor.last-changed]
 command = "mdbook-last-changed"
 renderer = ["html"]
+
+[preprocessor.links]
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"

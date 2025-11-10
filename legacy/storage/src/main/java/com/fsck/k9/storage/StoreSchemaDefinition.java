@@ -12,7 +12,7 @@ import net.thunderbird.core.logging.legacy.Log;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 90;
+    static final int DB_VERSION = 91;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -98,11 +98,13 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "more_messages TEXT default \"unknown\", " +
                 "server_id TEXT, " +
                 "local_only INTEGER, " +
-                "type TEXT DEFAULT \"regular\"" +
+                "type TEXT DEFAULT \"regular\", " +
+                "account_id TEXT" +
                 ")");
 
         db.execSQL("DROP INDEX IF EXISTS folder_server_id");
         db.execSQL("CREATE INDEX folder_server_id ON folders (server_id)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS folders_account_id ON folders(account_id)");
 
         db.execSQL("DROP TABLE IF EXISTS folder_extra_values");
         db.execSQL("CREATE TABLE folder_extra_values (" +
@@ -141,11 +143,13 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "forwarded INTEGER default 0, " +
                 "message_part_id INTEGER," +
                 "encryption_type TEXT," +
-                "new_message INTEGER DEFAULT 0" +
+                "new_message INTEGER DEFAULT 0," +
+                "account_id TEXT" +
                 ")");
 
         db.execSQL("DROP INDEX IF EXISTS new_messages");
         db.execSQL("CREATE INDEX IF NOT EXISTS new_messages ON messages(new_message)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS messages_account_id ON messages(account_id)");
 
         db.execSQL("CREATE TRIGGER new_message_reset " +
                 "AFTER UPDATE OF read ON messages " +

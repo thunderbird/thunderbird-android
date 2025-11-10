@@ -17,7 +17,7 @@ import com.fsck.k9.mail.store.imap.ImapStoreSettings.autoDetectNamespace
 import com.fsck.k9.mail.store.imap.ImapStoreSettings.pathPrefix
 import com.fsck.k9.mailstore.MigrationsHelper
 import net.thunderbird.core.android.account.Expunge
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
@@ -78,7 +78,7 @@ internal class MigrationTo90(
         }
     }
 
-    private fun createImapStore(account: LegacyAccount): ImapStore {
+    private fun createImapStore(account: LegacyAccountDto): ImapStore {
         val serverSettings = account.toImapServerSettings()
         val oAuth2TokenProvider = if (serverSettings.authenticationType == AuthType.XOAUTH2) {
             val authStateStorage = object : AuthStateStorage {
@@ -98,7 +98,7 @@ internal class MigrationTo90(
         )
     }
 
-    private fun LegacyAccount.toImapServerSettings(): ServerSettings {
+    private fun LegacyAccountDto.toImapServerSettings(): ServerSettings {
         val serverSettings = incomingServerSettings
         return serverSettings.copy(
             extra = ImapStoreSettings.createExtra(
@@ -110,7 +110,7 @@ internal class MigrationTo90(
         )
     }
 
-    private fun createImapStoreConfig(account: LegacyAccount): ImapStoreConfig {
+    private fun createImapStoreConfig(account: LegacyAccountDto): ImapStoreConfig {
         return object : ImapStoreConfig {
             override val logLabel
                 get() = account.uuid

@@ -10,7 +10,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import kotlinx.coroutines.runBlocking
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
@@ -25,8 +25,8 @@ class UnreadWidgetDataProvider(
     private val coreResourceProvider: CoreResourceProvider,
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
-        if (SearchAccount.UNIFIED_INBOX == accountUuid) {
-            loadSearchAccountData(configuration)
+        if (SearchAccount.UNIFIED_FOLDERS == accountUuid) {
+            loadUnifiedFoldersData(configuration)
         } else if (folderId != null) {
             loadFolderData(configuration)
         } else {
@@ -34,8 +34,8 @@ class UnreadWidgetDataProvider(
         }
     }
 
-    private fun loadSearchAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
-        val searchAccount = getSearchAccount(configuration.accountUuid)
+    private fun loadUnifiedFoldersData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
+        val searchAccount = getUnifiedFoldersSearch(configuration.accountUuid)
         val title = searchAccount.name
         val unreadCount = messageCountsProvider.getMessageCounts(searchAccount).unread
         val clickIntent = MessageList.intentDisplaySearch(context, searchAccount.relatedSearch, false, true, true)
@@ -43,10 +43,10 @@ class UnreadWidgetDataProvider(
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getSearchAccount(accountUuid: String): SearchAccount = when (accountUuid) {
-        SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount(
-            unifiedInboxTitle = coreResourceProvider.searchUnifiedInboxTitle(),
-            unifiedInboxDetail = coreResourceProvider.searchUnifiedInboxDetail(),
+    private fun getUnifiedFoldersSearch(accountUuid: String): SearchAccount = when (accountUuid) {
+        SearchAccount.UNIFIED_FOLDERS -> SearchAccount.createUnifiedFoldersSearch(
+            title = coreResourceProvider.searchUnifiedFoldersTitle(),
+            detail = coreResourceProvider.searchUnifiedFoldersDetail(),
         )
         else -> throw AssertionError("SearchAccount expected")
     }
@@ -60,7 +60,7 @@ class UnreadWidgetDataProvider(
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getClickIntentForAccount(account: LegacyAccount): Intent {
+    private fun getClickIntentForAccount(account: LegacyAccountDto): Intent {
         val folderId = defaultFolderProvider.getDefaultFolder(account)
         return getClickIntentForFolder(account, folderId)
     }
@@ -82,7 +82,7 @@ class UnreadWidgetDataProvider(
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getFolderDisplayName(account: LegacyAccount, folderId: Long): String {
+    private fun getFolderDisplayName(account: LegacyAccountDto, folderId: Long): String {
         val folder = runBlocking { folderRepository.getFolder(account, folderId) }
         return if (folder != null) {
             folderNameFormatter.displayName(folder)
@@ -92,7 +92,7 @@ class UnreadWidgetDataProvider(
         }
     }
 
-    private fun getClickIntentForFolder(account: LegacyAccount, folderId: Long): Intent {
+    private fun getClickIntentForFolder(account: LegacyAccountDto, folderId: Long): Intent {
         val search = LocalMessageSearch()
         search.addAllowedFolder(folderId)
         search.addAccountUuid(account.uuid)

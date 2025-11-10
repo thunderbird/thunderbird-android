@@ -11,7 +11,6 @@ import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDia
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogViewModel
 import org.koin.core.module.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureMessageListModule = module {
@@ -21,7 +20,7 @@ val featureMessageListModule = module {
             accountManager = get(),
             backendStorageFactory = get(),
             specialFolderUpdaterFactory = get(),
-            remoteFolderCreatorFactory = get(named("imap")),
+            remoteFolderCreatorFactory = get(),
         )
     }
     factory<DomainContract.UseCase.SetArchiveFolder> {

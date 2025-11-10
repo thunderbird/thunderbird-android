@@ -34,7 +34,7 @@ import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import net.thunderbird.core.android.account.AccountDefaultsProvider.Companion.NO_OPENPGP_KEY
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.common.provider.AppNameProvider
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -177,7 +177,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeUploadSentMessages(account: LegacyAccount) {
+    private fun initializeUploadSentMessages(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_UPLOAD_SENT_MESSAGES)?.apply {
             if (!messagingController.supportsUpload(account)) {
                 remove()
@@ -204,7 +204,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeDeletePolicy(account: LegacyAccount) {
+    private fun initializeDeletePolicy(account: LegacyAccountDto) {
         (findPreference(PREFERENCE_DELETE_POLICY) as? ListPreference)?.apply {
             if (!messagingController.supportsFlags(account)) {
                 removeEntry(DELETE_POLICY_MARK_AS_READ)
@@ -212,7 +212,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeExpungePolicy(account: LegacyAccount) {
+    private fun initializeExpungePolicy(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_EXPUNGE_POLICY)?.apply {
             if (!messagingController.supportsExpunge(account)) {
                 remove()
@@ -220,7 +220,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeMessageAge(account: LegacyAccount) {
+    private fun initializeMessageAge(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_MESSAGE_AGE)?.apply {
             if (!messagingController.supportsSearchByDate(account)) {
                 remove()
@@ -228,13 +228,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeAdvancedPushSettings(account: LegacyAccount) {
+    private fun initializeAdvancedPushSettings(account: LegacyAccountDto) {
         if (!messagingController.isPushCapable(account)) {
             findPreference<Preference>(PREFERENCE_ADVANCED_PUSH_SETTINGS)?.remove()
         }
     }
 
-    private fun initializeNotifications(account: LegacyAccount) {
+    private fun initializeNotifications(account: LegacyAccountDto) {
         if (!vibrator.hasVibrator) {
             findPreference<Preference>(PREFERENCE_NOTIFICATION_VIBRATION)?.remove()
         }
@@ -270,7 +270,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun maybeUpdateNotificationPreferences(account: LegacyAccount) {
+    private fun maybeUpdateNotificationPreferences(account: LegacyAccountDto) {
         if (notificationSoundPreference != null ||
             notificationLightPreference != null ||
             notificationVibrationPreference != null
@@ -280,7 +280,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     @SuppressLint("NewApi")
-    private fun updateNotificationPreferences(account: LegacyAccount) {
+    private fun updateNotificationPreferences(account: LegacyAccountDto) {
         notificationSettingsUpdater.updateNotificationSettings(account)
         val notificationSettings = account.notificationSettings
 
@@ -298,13 +298,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun initializeCryptoSettings(account: LegacyAccount) {
+    private fun initializeCryptoSettings(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_OPENPGP)?.let {
             configureCryptoPreferences(account)
         }
     }
 
-    private fun configureCryptoPreferences(account: LegacyAccount) {
+    private fun configureCryptoPreferences(account: LegacyAccountDto) {
         var pgpProviderName: String? = null
         var pgpProvider = account.openPgpProvider
         val isPgpConfigured = pgpProvider != null
@@ -312,7 +312,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         if (isPgpConfigured) {
             pgpProviderName = getOpenPgpProviderName(pgpProvider)
             if (pgpProviderName == null) {
-                Toast.makeText(requireContext(), R.string.account_settings_openpgp_missing, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    R.string.account_settings_openpgp_missing,
+                    Toast.LENGTH_LONG,
+                ).show()
 
                 pgpProvider = null
                 removeOpenPgpProvider(account)
@@ -329,7 +333,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         return OpenPgpProviderUtil.getOpenPgpProviderName(packageManager, pgpProvider)
     }
 
-    private fun configureEnablePgpSupport(account: LegacyAccount, isPgpConfigured: Boolean, pgpProviderName: String?) {
+    private fun configureEnablePgpSupport(
+        account: LegacyAccountDto,
+        isPgpConfigured: Boolean,
+        pgpProviderName: String?,
+    ) {
         (findPreference<Preference>(PREFERENCE_OPENPGP_ENABLE) as SwitchPreference).apply {
             if (!isPgpConfigured) {
                 isChecked = false
@@ -356,7 +364,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun configurePgpKey(account: LegacyAccount, pgpProvider: String?) {
+    private fun configurePgpKey(account: LegacyAccountDto, pgpProvider: String?) {
         (findPreference<Preference>(PREFERENCE_OPENPGP_KEY) as OpenPgpKeyPreference).apply {
             value = account.openPgpKey
             setOpenPgpProvider(openPgpApiManager, pgpProvider)
@@ -366,14 +374,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun configureAutocryptTransfer(account: LegacyAccount) {
+    private fun configureAutocryptTransfer(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_AUTOCRYPT_TRANSFER)!!.onClick {
             val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), account.uuid)
             startActivity(intent)
         }
     }
 
-    private fun initializeFolderSettings(account: LegacyAccount) {
+    private fun initializeFolderSettings(account: LegacyAccountDto) {
         findPreference<Preference>(PREFERENCE_FOLDERS)?.let {
             if (!messagingController.supportsFolderSubscriptions(account)) {
                 findPreference<Preference>(PREFERENCE_SUBSCRIBED_FOLDERS_ONLY).remove()
@@ -391,7 +399,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         }
     }
 
-    private fun loadFolders(account: LegacyAccount) {
+    private fun loadFolders(account: LegacyAccountDto) {
         viewModel.getFolders(account).observe(this@AccountSettingsFragment) { remoteFolderInfo ->
             if (remoteFolderInfo != null) {
                 setFolders(PREFERENCE_AUTO_EXPAND_FOLDER, remoteFolderInfo.folders)
@@ -424,7 +432,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun getAccount(): LegacyAccount {
+    private fun getAccount(): LegacyAccountDto {
         return viewModel.getAccountBlocking(accountUuid)
     }
 
@@ -453,12 +461,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         requireActivity().finish()
     }
 
-    private fun setOpenPgpProvider(account: LegacyAccount, openPgpProviderPackage: String) {
+    private fun setOpenPgpProvider(account: LegacyAccountDto, openPgpProviderPackage: String) {
         account.openPgpProvider = openPgpProviderPackage
         dataStore.saveSettingsInBackground()
     }
 
-    private fun removeOpenPgpProvider(account: LegacyAccount) {
+    private fun removeOpenPgpProvider(account: LegacyAccountDto) {
         account.openPgpProvider = null
         account.openPgpKey = NO_OPENPGP_KEY
         dataStore.saveSettingsInBackground()

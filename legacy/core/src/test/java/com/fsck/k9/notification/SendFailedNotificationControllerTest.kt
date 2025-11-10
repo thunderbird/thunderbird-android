@@ -7,7 +7,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.test.core.app.ApplicationProvider
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.testing.MockHelper.mockBuilder
 import net.thunderbird.core.android.testing.RobolectricTest
 import net.thunderbird.core.preference.GeneralSettings
@@ -117,7 +117,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
         }
     }
 
-    private fun createFakeAccount(): LegacyAccount {
+    private fun createFakeAccount(): LegacyAccountDto {
         return mock {
             on { accountNumber } doReturn ACCOUNT_NUMBER
             on { name } doReturn ACCOUNT_NAME

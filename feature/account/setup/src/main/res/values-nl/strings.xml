@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Accountnaam</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Configuratie gevonden</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">E-mailadres is vereist.</string>
-    <string name="account_setup_options_display_name_label">Uw naam</string>
     <string name="account_setup_auto_discovery_loading_error">Laden e-mailconfiguratie mislukt</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Ik vertrouw deze configuratie</string>
-    <string name="account_setup_options_display_name_error_required">Uw naam is vereist.</string>
     <string name="account_setup_error_network">Netwerkfout. Controleer uw netwerkverbinding en probeer het opnieuw.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Dit is niet als een geldig e-mailadres herkend.</string>
     <string name="account_setup_options_email_check_frequency_never">Nooit</string>
@@ -59,4 +57,6 @@
         <item quantity="one">Elke minuut</item>
         <item quantity="other">Elke %d minuten</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Uw naam</string>
+    <string name="account_setup_options_your_name_error_required">Uw naam is vereist.</string>
 </resources>

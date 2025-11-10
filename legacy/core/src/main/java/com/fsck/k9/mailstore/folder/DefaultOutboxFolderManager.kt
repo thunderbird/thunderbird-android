@@ -13,14 +13,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.cache.TimeLimitedCache
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.outcome.handleAsync
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.account.api.AccountManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
 private const val TAG = "DefaultOutboxFolderManager"
@@ -29,7 +28,7 @@ private const val VISIBLE_LIMIT = 100
 
 class DefaultOutboxFolderManager(
     private val logger: Logger,
-    private val accountManager: AccountManager<LegacyAccount>,
+    private val accountManager: LegacyAccountManager,
     private val localStoreProvider: LocalStoreProvider,
     private val outboxFolderIdCache: TimeLimitedCache<AccountId, Long>,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -154,6 +153,6 @@ class DefaultOutboxFolderManager(
             "Account with id $accountId not found"
         }
 
-        return localStoreProvider.getInstance(account = account)
+        return localStoreProvider.getInstanceByLegacyAccount(account = account)
     }
 }

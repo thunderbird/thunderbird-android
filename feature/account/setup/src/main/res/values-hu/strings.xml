@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Fióknév</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Konfiguráció megtalálva</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Az e-mail-cím megadása kötelező.</string>
-    <string name="account_setup_options_display_name_label">Saját név</string>
     <string name="account_setup_auto_discovery_loading_error">Nem sikerült betölteni az e-mail-konfigurációt.</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Megbízom a konfigurációban</string>
-    <string name="account_setup_options_display_name_error_required">A saját név kötelező.</string>
     <string name="account_setup_error_network">Hálózati hiba. Ellenőrizze a kapcsolat állapotát, és próbálja meg újra.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Az e-mail-cím nem tekinthető érvényes e-mail-címnek.</string>
     <string name="account_setup_options_email_check_frequency_never">Soha</string>

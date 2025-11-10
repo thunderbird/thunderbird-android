@@ -11,6 +11,7 @@ import net.thunderbird.feature.notification.api.ui.action.icon.Retry
 import net.thunderbird.feature.notification.api.ui.action.icon.UpdateServerSettings
 import net.thunderbird.feature.notification.api.ui.icon.NotificationIcon
 import net.thunderbird.feature.notification.resources.api.Res
+import net.thunderbird.feature.notification.resources.api.banner_inline_notification_open_notifications
 import net.thunderbird.feature.notification.resources.api.notification_action_archive
 import net.thunderbird.feature.notification.resources.api.notification_action_delete
 import net.thunderbird.feature.notification.resources.api.notification_action_mark_as_read
@@ -38,10 +39,12 @@ sealed class NotificationAction {
      *
      * All [SystemNotification] will have this action implicitly, even if not specified in the
      * [SystemNotification.actions] set.
+     *
+     * @property override The action that will override the tap action for this notification.
      */
-    data object Tap : NotificationAction() {
-        override val icon: NotificationIcon? = null
-        override val titleResource: StringResource? = null
+    data class Tap(val override: NotificationAction? = null) : NotificationAction() {
+        override val icon: NotificationIcon? = override?.icon
+        override val titleResource: StringResource? = override?.titleResource
     }
 
     /**
@@ -92,9 +95,16 @@ sealed class NotificationAction {
     /**
      * Action to prompt the user to update server settings, typically when authentication fails.
      */
-    data object UpdateServerSettings : NotificationAction() {
+    data class UpdateIncomingServerSettings(val accountUuid: String, val accountNumber: Int) : NotificationAction() {
         override val icon: NotificationIcon = NotificationActionIcons.UpdateServerSettings
+        override val titleResource: StringResource = Res.string.notification_action_update_server_settings
+    }
 
+    /**
+     * Action to prompt the user to update server settings, typically when authentication fails.
+     */
+    data class UpdateOutgoingServerSettings(val accountUuid: String, val accountNumber: Int) : NotificationAction() {
+        override val icon: NotificationIcon = NotificationActionIcons.UpdateServerSettings
         override val titleResource: StringResource = Res.string.notification_action_update_server_settings
     }
 
@@ -105,6 +115,14 @@ sealed class NotificationAction {
         override val icon: NotificationIcon = NotificationActionIcons.Retry
 
         override val titleResource: StringResource = Res.string.notification_action_retry
+    }
+
+    /**
+     * Action to open the notification centre in the app.
+     */
+    data object OpenNotificationCentre : NotificationAction() {
+        override val icon: NotificationIcon? = null
+        override val titleResource: StringResource = Res.string.banner_inline_notification_open_notifications
     }
 
     /**

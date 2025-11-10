@@ -2,7 +2,7 @@ package com.fsck.k9.mailstore
 
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderType
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.common.mail.Protocols
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -15,7 +15,7 @@ class SpecialLocalFoldersCreator(
 ) {
     // TODO: When rewriting the account setup code make sure this method is only called once. Until then this can be
     //  called multiple times and we have to make sure folders are only created once.
-    suspend fun createSpecialLocalFolders(account: LegacyAccount) {
+    suspend fun createSpecialLocalFolders(account: LegacyAccountDto) {
         Log.d("Creating special local folders")
 
         val localStore = localStoreProvider.getInstance(account)
@@ -48,7 +48,7 @@ class SpecialLocalFoldersCreator(
         preferences.saveAccount(account)
     }
 
-    private fun LegacyAccount.isPop3() = incomingServerSettings.type == Protocols.POP3
+    private fun LegacyAccountDto.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
         private const val DRAFTS_FOLDER_NAME = "Drafts"

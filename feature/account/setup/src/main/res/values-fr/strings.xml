@@ -18,10 +18,8 @@
     <string name="account_setup_options_account_name_label">Nom du compte</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">La configuration a été trouvée</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">L’adresse courriel est requise.</string>
-    <string name="account_setup_options_display_name_label">Votre nom</string>
     <string name="account_setup_auto_discovery_loading_error">Échec de chargement de la configuration du compte de courriel</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Je fais confiance à cette configuration</string>
-    <string name="account_setup_options_display_name_error_required">Votre nom est requis.</string>
     <string name="account_setup_error_network">Erreur réseau. Vérifiez l’état de votre connexion et réessayez.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Cette adresse courriel n’est pas reconnue comme valide.</string>
     <string name="account_setup_options_email_check_frequency_never">Jamais</string>
@@ -62,4 +60,6 @@
         <item quantity="many">%d de courriels</item>
         <item quantity="other">%d courriels</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Votre nom</string>
+    <string name="account_setup_options_your_name_error_required">Vous devez saisir votre nom.</string>
 </resources>

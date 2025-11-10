@@ -3,13 +3,13 @@ package com.fsck.k9.job
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import kotlinx.coroutines.flow.Flow
-import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.logging.legacy.Log
 
 class K9JobManager(
     private val workManager: WorkManager,
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val mailSyncWorkerManager: MailSyncWorkerManager,
     private val syncDebugFileLogManager: FileLogLimitWorkManager,
 ) {
@@ -26,7 +26,7 @@ class K9JobManager(
         scheduleMailSync()
     }
 
-    fun scheduleMailSync(account: LegacyAccount) {
+    fun scheduleMailSync(account: LegacyAccountDto) {
         mailSyncWorkerManager.cancelMailSync(account)
         mailSyncWorkerManager.scheduleMailSync(account)
     }

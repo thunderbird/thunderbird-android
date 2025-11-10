@@ -2,7 +2,7 @@ package com.fsck.k9.notification
 
 import com.fsck.k9.K9
 import com.fsck.k9.K9.LockScreenNotificationVisibility
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 private const val MAX_NUMBER_OF_SENDERS_IN_LOCK_SCREEN_NOTIFICATION = 5
 
@@ -39,7 +39,7 @@ internal class BaseNotificationDataCreator {
             .joinToString()
     }
 
-    private fun createNotificationAppearance(account: LegacyAccount): NotificationAppearance {
+    private fun createNotificationAppearance(account: LegacyAccountDto): NotificationAppearance {
         return with(account.notificationSettings) {
             val vibrationPattern = vibration.systemPattern.takeIf { vibration.isEnabled }
             NotificationAppearance(

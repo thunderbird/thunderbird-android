@@ -9,7 +9,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flowOn
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.navigation.drawer.siderail.domain.DomainContract
 
 class SyncAllAccounts(
@@ -18,7 +18,7 @@ class SyncAllAccounts(
 ) : DomainContract.UseCase.SyncAllAccounts {
     override fun invoke(): Flow<Result<Unit>> = callbackFlow {
         val listener = object : SimpleMessagingListener() {
-            override fun checkMailFinished(context: Context?, account: LegacyAccount?) {
+            override fun checkMailFinished(context: Context?, account: LegacyAccountDto?) {
                 trySend(Result.success(Unit))
                 close()
             }

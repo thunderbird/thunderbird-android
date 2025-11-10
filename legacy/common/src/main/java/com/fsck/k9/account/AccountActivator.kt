@@ -5,7 +5,7 @@ import app.k9mail.feature.settings.import.SettingsImportExternalContract
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 /**
  * Activate account after server password(s) have been provided on settings import.
@@ -28,7 +28,7 @@ class AccountActivator(
         enableAccount(account)
     }
 
-    private fun enableAccount(account: LegacyAccount) {
+    private fun enableAccount(account: LegacyAccountDto) {
         // Start services if necessary
         Core.setServicesEnabled(context)
 
@@ -37,7 +37,7 @@ class AccountActivator(
     }
 
     private fun setAccountPasswords(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         incomingServerPassword: String?,
         outgoingServerPassword: String?,
     ) {

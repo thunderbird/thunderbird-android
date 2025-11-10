@@ -247,7 +247,11 @@ class BuildSwipeActionsTest {
         val uuids = setOf(uuid)
         val testSubject = createTestSubject(
             initialGeneralSettings = defaultGeneralSettings.copy(
-                display = defaultGeneralSettings.display.copy(shouldShowSetupArchiveFolderDialog = true),
+                display = defaultGeneralSettings.display.copy(
+                    miscSettings = defaultGeneralSettings.display.miscSettings.copy(
+                        shouldShowSetupArchiveFolderDialog = true,
+                    ),
+                ),
             ),
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
@@ -288,7 +292,11 @@ class BuildSwipeActionsTest {
         )
         val testSubject = createTestSubject(
             initialGeneralSettings = defaultGeneralSettings.copy(
-                display = defaultGeneralSettings.display.copy(shouldShowSetupArchiveFolderDialog = true),
+                display = defaultGeneralSettings.display.copy(
+                    miscSettings = defaultGeneralSettings.display.miscSettings.copy(
+                        shouldShowSetupArchiveFolderDialog = true,
+                    ),
+                ),
             ),
             accountsUuids = uuids.toList(),
             storageValues = mapOf(

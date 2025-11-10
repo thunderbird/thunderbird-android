@@ -2,7 +2,7 @@ package com.fsck.k9.backend
 
 import com.fsck.k9.backend.api.Backend
 import net.thunderbird.backend.api.BackendFactory
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 @Deprecated(
     message = "Use net.thunderbird.backend.api.BackendFactory<TAccount : BaseAccount> instead",
@@ -12,6 +12,6 @@ import net.thunderbird.core.android.account.LegacyAccount
         "net.thunderbird.core.android.account.LegacyAccount",
     ),
 )
-interface BackendFactory : BackendFactory<LegacyAccount> {
-    override fun createBackend(account: LegacyAccount): Backend
+interface BackendFactory : BackendFactory<LegacyAccountDto> {
+    override fun createBackend(account: LegacyAccountDto): Backend
 }

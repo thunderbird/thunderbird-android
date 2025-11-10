@@ -26,7 +26,6 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,7 +52,7 @@ import androidx.core.view.WindowInsetsCompat;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import app.k9mail.legacy.di.DI;
 import net.thunderbird.core.android.account.Identity;
 import com.fsck.k9.K9;
@@ -125,7 +124,6 @@ import net.thunderbird.core.android.contact.ContactIntentHelper;
 import net.thunderbird.core.preference.GeneralSettingsManager;
 import net.thunderbird.core.ui.theme.manager.ThemeManager;
 import net.thunderbird.feature.search.legacy.LocalMessageSearch;
-import org.jetbrains.annotations.NotNull;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpIntentStarter;
 import net.thunderbird.core.logging.legacy.Log;
@@ -213,7 +211,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     /**
      * The account used for message composition.
      */
-    private LegacyAccount account;
+    private LegacyAccountDto account;
     private Identity identity;
     private boolean identityChanged = false;
     private boolean signatureChanged = false;
@@ -329,7 +327,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         OpenPgpApiManager openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), this);
         recipientPresenter = new RecipientPresenter(getApplicationContext(), getSupportLoaderManager(),
                 openPgpApiManager, recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
-                AutocryptStatusInteractor.getInstance(), new ReplyToParser(),
+                AutocryptStatusInteractor.Companion.getInstance(), new ReplyToParser(),
                 DI.get(AutocryptDraftStateHeaderParser.class));
         recipientPresenter.asyncUpdateCryptoStatus();
 
@@ -849,7 +847,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
 
-    private void onAccountChosen(LegacyAccount account, Identity identity) {
+    private void onAccountChosen(LegacyAccountDto account, Identity identity) {
         if (!this.account.equals(account)) {
             Log.v("Switching account from %s to %s", this.account, account);
 
@@ -861,7 +859,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             // test whether there is something to save
             if (changesMadeSinceLastSave || (draftMessageId != null)) {
                 final Long previousDraftId = draftMessageId;
-                final LegacyAccount previousAccount = this.account;
+                final LegacyAccountDto previousAccount = this.account;
 
                 // make current message appear as new
                 draftMessageId = null;
@@ -1428,7 +1426,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             if (messageReference != null) {
                 // Check if this is a valid account in our database
-                LegacyAccount account = preferences.getAccount(messageReference.getAccountUuid());
+                LegacyAccountDto account = preferences.getAccount(messageReference.getAccountUuid());
                 if (account != null) {
                     relatedMessageReference = messageReference;
                 }
@@ -1447,7 +1445,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
         final MessagingController messagingController;
         final Preferences preferences;
-        final LegacyAccount account;
+        final LegacyAccountDto account;
         final Contacts contacts;
         final Message message;
         final Long draftId;
@@ -1455,7 +1453,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final MessageReference messageReference;
         final Flag flag;
 
-        SendMessageTask(MessagingController messagingController, Preferences preferences, LegacyAccount account,
+        SendMessageTask(MessagingController messagingController, Preferences preferences, LegacyAccountDto account,
                 Contacts contacts, Message message, Long draftId, String plaintextSubject,
                 MessageReference messageReference, Flag flag) {
             this.messagingController = messagingController;
@@ -1495,7 +1493,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         private void addFlagToReferencedMessage() {
             if (messageReference != null && flag != null) {
                 String accountUuid = messageReference.getAccountUuid();
-                LegacyAccount account = preferences.getAccount(accountUuid);
+                LegacyAccountDto account = preferences.getAccount(accountUuid);
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
 
@@ -1739,7 +1737,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public MessagingListener messagingListener = new SimpleMessagingListener() {
 
         @Override
-        public void messageUidChanged(LegacyAccount account, long folderId, String oldUid, String newUid) {
+        public void messageUidChanged(LegacyAccountDto account, long folderId, String oldUid, String newUid) {
             if (relatedMessageReference == null) {
                 return;
             }

@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.messagelist
 
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
 /**
@@ -9,7 +9,7 @@ import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 class DefaultFolderProvider(
     private val outboxFolderManager: OutboxFolderManager,
 ) {
-    fun getDefaultFolder(account: LegacyAccount): Long {
+    fun getDefaultFolder(account: LegacyAccountDto): Long {
         // Until the UI can handle the case where no remote folders have been fetched yet, we fall back to the Outbox
         // which should always exist.
         return account.autoExpandFolderId

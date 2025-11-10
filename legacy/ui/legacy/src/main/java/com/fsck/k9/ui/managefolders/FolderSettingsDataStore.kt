@@ -6,12 +6,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 
 class FolderSettingsDataStore(
     private val folderRepository: FolderRepository,
-    private val account: LegacyAccount,
+    private val account: LegacyAccountDto,
     private var folder: FolderDetails,
     private val saveScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO),
 ) : PreferenceDataStore() {

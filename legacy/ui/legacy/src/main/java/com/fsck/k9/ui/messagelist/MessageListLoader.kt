@@ -1,12 +1,12 @@
 package com.fsck.k9.ui.messagelist
 
 import app.k9mail.legacy.mailstore.MessageListRepository
-import com.fsck.k9.Preferences
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.MessageColumns
-import com.fsck.k9.search.getAccounts
+import com.fsck.k9.search.getLegacyAccounts
 import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -16,7 +16,7 @@ import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.sql.SqlWhereClause
 
 class MessageListLoader(
-    private val preferences: Preferences,
+    private val accountManager: LegacyAccountManager,
     private val localStoreProvider: LocalStoreProvider,
     private val messageListRepository: MessageListRepository,
     private val messageHelper: MessageHelper,
@@ -36,7 +36,7 @@ class MessageListLoader(
     }
 
     private fun getMessageListInfo(config: MessageListConfig): MessageListInfo {
-        val accounts = config.search.getAccounts(preferences)
+        val accounts = config.search.getLegacyAccounts(accountManager)
         val messageListItems = accounts
             .flatMap { account ->
                 loadMessageListForAccount(account, config)
@@ -176,7 +176,7 @@ class MessageListLoader(
         return if (accounts.size == 1 && folderIds.size == 1) {
             val account = accounts[0]
             val folderId = folderIds[0]
-            val localStore = localStoreProvider.getInstance(account)
+            val localStore = localStoreProvider.getInstanceByLegacyAccount(account)
             val localFolder = localStore.getFolder(folderId)
             localFolder.open()
             localFolder.hasMoreMessages()

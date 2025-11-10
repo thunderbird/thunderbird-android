@@ -20,10 +20,8 @@
     <string name="account_setup_options_account_name_label">Tên tài khoản</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Đã tìm thấy cấu hình</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Địa chỉ e-mail là bắt buộc.</string>
-    <string name="account_setup_options_display_name_label">Tên của bạn</string>
     <string name="account_setup_auto_discovery_loading_error">Không tải được cấu hình email</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Tôi tin tưởng cấu hình này</string>
-    <string name="account_setup_options_display_name_error_required">Tên của bạn là bắt buộc.</string>
     <string name="account_setup_error_network">Lỗi mang. Xin vui lòng kiểm tra lại kết nối mạng của bạn và thử lại.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Đây không được công nhận là địa chỉ email hợp lệ.</string>
     <string name="account_setup_options_email_check_frequency_never">Không bao giờ</string>

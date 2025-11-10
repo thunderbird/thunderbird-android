@@ -15,7 +15,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import net.thunderbird.core.android.account.LegacyAccount;
+import net.thunderbird.core.android.account.LegacyAccountDto;
 import net.thunderbird.core.logging.legacy.Log;
 
 /**
@@ -180,11 +180,11 @@ public class DatabaseUpgradeService extends Service {
     private void upgradeDatabases() {
         Preferences preferences = Preferences.getPreferences();
 
-        List<LegacyAccount> accounts = preferences.getAccounts();
+        List<LegacyAccountDto> accounts = preferences.getAccounts();
         mProgressEnd = accounts.size();
         mProgress = 0;
 
-        for (LegacyAccount account : accounts) {
+        for (LegacyAccountDto account : accounts) {
             mAccountUuid = account.getUuid();
 
             sendProgressBroadcast(mAccountUuid, mProgress, mProgressEnd);

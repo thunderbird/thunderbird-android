@@ -66,6 +66,8 @@ class InAppNotificationNotifierTest {
                 override suspend fun register(notification: Notification): NotificationId = error("Not yet implemented")
                 override fun unregister(notificationId: NotificationId) = error("Not yet implemented")
                 override fun unregister(notification: Notification) = error("Not yet implemented")
+                override fun contains(notification: Notification): Boolean = registrar.containsValue(notification)
+                override fun contains(notificationId: NotificationId): Boolean = registrar.contains(notificationId)
             },
             inAppNotificationEventBus = eventBus,
         )

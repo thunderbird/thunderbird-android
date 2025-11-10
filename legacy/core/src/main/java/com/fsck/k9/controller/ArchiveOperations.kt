@@ -5,7 +5,7 @@ import com.fsck.k9.controller.MessagingController.MessageActor
 import com.fsck.k9.controller.MessagingController.MoveOrCopyFlavor
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.core.logging.legacy.Log
@@ -34,7 +34,7 @@ internal class ArchiveOperations(
         description: String,
         messages: List<MessageReference>,
         action: (
-            account: LegacyAccount,
+            account: LegacyAccountDto,
             folderId: Long,
             messagesInFolder: List<LocalMessage>,
             archiveFolderId: Long,
@@ -62,7 +62,7 @@ internal class ArchiveOperations(
     }
 
     private fun archiveThreads(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
         archiveFolderId: Long,
@@ -72,7 +72,7 @@ internal class ArchiveOperations(
     }
 
     private fun archiveMessages(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         sourceFolderId: Long,
         messages: List<LocalMessage>,
         archiveFolderId: Long,
@@ -93,7 +93,7 @@ internal class ArchiveOperations(
 
     private fun actOnMessagesGroupedByAccountAndFolder(
         messages: List<MessageReference>,
-        block: (account: LegacyAccount, messageFolder: LocalFolder, messages: List<LocalMessage>) -> Unit,
+        block: (account: LegacyAccountDto, messageFolder: LocalFolder, messages: List<LocalMessage>) -> Unit,
     ) {
         val actor = MessageActor { account, messageFolder, messagesInFolder ->
             block(account, messageFolder, messagesInFolder)

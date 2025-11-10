@@ -1,0 +1,2 @@
+Thunderbird for Android version 14.0b3, based on K-9 Mail. Changes include:
+- Thunderbird could crash after deleting an account

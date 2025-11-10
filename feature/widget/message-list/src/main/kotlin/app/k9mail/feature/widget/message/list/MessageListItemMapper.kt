@@ -30,8 +30,10 @@ internal class MessageListItemMapper(
         val displayName = if (showRecipients) {
             messageHelper.getRecipientDisplayNames(
                 addresses = toAddresses.toTypedArray(),
-                isShowCorrespondentNames = generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                isChangeContactNameColor = generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                isShowCorrespondentNames = generalSettingsManager
+                    .getConfig().display.visualSettings.isShowCorrespondentNames,
+                isChangeContactNameColor = generalSettingsManager
+                    .getConfig().display.visualSettings.isChangeContactNameColor,
             ).toString()
         } else {
             messageHelper.getSenderDisplayName(displayAddress).toString()
@@ -45,7 +47,7 @@ internal class MessageListItemMapper(
             isRead = message.isRead,
             hasAttachments = message.hasAttachments,
             threadCount = message.threadCount,
-            accountColor = account.chipColor,
+            accountColor = account.profile.color,
             messageReference = MessageReference(account.uuid, message.folderId, message.messageServerId),
             uniqueId = uniqueId,
             sortSubject = message.subject,

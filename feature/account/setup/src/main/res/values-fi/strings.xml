@@ -17,10 +17,8 @@
     <string name="account_setup_options_account_name_label">Tilin nimi</string>
     <string name="account_setup_auto_discovery_status_header_title_configuration_found">Määritys löytyi</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Sähköpostiosoite vaaditaan.</string>
-    <string name="account_setup_options_display_name_label">Nimi</string>
     <string name="account_setup_auto_discovery_loading_error">Sähköpostin määrityksen lataaminen epäonnistui</string>
     <string name="account_setup_auto_discovery_result_approval_checkbox_label">Luotan tähän määritykseen</string>
-    <string name="account_setup_options_display_name_error_required">Nimi vaaditaan.</string>
     <string name="account_setup_error_network">Verkkovirhe. Tarkista verkkoyhteyden tila ja yritä uudelleen.</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_invalid">Tätä ei tunnistettu kelvolliseksi sähköpostiosoitteeksi.</string>
     <string name="account_setup_options_email_check_frequency_never">Ei koskaan</string>

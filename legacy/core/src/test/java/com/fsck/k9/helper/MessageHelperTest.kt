@@ -17,6 +17,7 @@ import net.thunderbird.core.common.mail.toEmailAddressOrThrow
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettings
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.doReturn
@@ -35,8 +36,10 @@ class MessageHelperTest : RobolectricTest() {
     @Before
     fun setUp() {
         val displaySettings = DisplaySettings(
-            isShowCorrespondentNames = true,
-            isChangeContactNameColor = false,
+            visualSettings = DisplayVisualSettings(
+                isShowCorrespondentNames = true,
+                isChangeContactNameColor = false,
+            ),
         )
 
         val generalSettings = mock<GeneralSettings> {
@@ -52,8 +55,8 @@ class MessageHelperTest : RobolectricTest() {
         assertThat(
             toFriendly(
                 address,
-                generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+                generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
                 contactRepository,
             ),
         ).isEqualTo("Tim Testor")
@@ -65,8 +68,8 @@ class MessageHelperTest : RobolectricTest() {
         assertThat(
             toFriendly(
                 address,
-                generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+                generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
                 contactRepository,
             ),
         ).isEqualTo("test@testor.com")
@@ -80,8 +83,8 @@ class MessageHelperTest : RobolectricTest() {
         assertThat(
             toFriendly(
                 addresses,
-                generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+                generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
                 contactRepository,
             ).toString(),
         ).isEqualTo("Tim Testor,Foo Bar")
@@ -95,8 +98,8 @@ class MessageHelperTest : RobolectricTest() {
         assertThat(
             toFriendly(
                 address,
-                generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+                generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
                 contactRepository,
             ),
         ).isEqualTo("Tim Testor")
@@ -139,8 +142,8 @@ class MessageHelperTest : RobolectricTest() {
         val friendly =
             toFriendly(
                 address,
-                generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+                generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
                 contactRepository,
             )
         assertThat(friendly).isEqualTo("test@testor.com")
@@ -152,8 +155,8 @@ class MessageHelperTest : RobolectricTest() {
         val friendly =
             toFriendly(
                 address,
-                generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+                generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
                 contactRepository,
             )
         assertThat(friendly).isEqualTo("username (@username)")
@@ -165,8 +168,8 @@ class MessageHelperTest : RobolectricTest() {
         val friendly =
             toFriendly(
                 address,
-                generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+                generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
                 contactRepository,
             )
         assertThat(friendly).isEqualTo("@username")
@@ -195,8 +198,8 @@ class MessageHelperTest : RobolectricTest() {
         setupContactRepositoryWithFakeContact(EMAIL_ADDRESS)
         val displayName = messageHelper.getRecipientDisplayNames(
             addresses,
-            generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-            generalSettingsManager.getConfig().display.isChangeContactNameColor,
+            generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+            generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
         )
         assertThat(displayName.toString()).isEqualTo("To: Tim Testor,Foo Bar")
     }
@@ -209,8 +212,8 @@ class MessageHelperTest : RobolectricTest() {
 
         val displayName = messageHelper.getRecipientDisplayNames(
             addresses,
-            generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-            generalSettingsManager.getConfig().display.isChangeContactNameColor,
+            generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+            generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
         )
         assertThat(displayName.toString()).isEqualTo("To: test@testor.com,foo@bar.com")
     }
@@ -220,8 +223,8 @@ class MessageHelperTest : RobolectricTest() {
         val displayName =
             messageHelper.getRecipientDisplayNames(
                 null,
-                generalSettingsManager.getConfig().display.isShowCorrespondentNames,
-                generalSettingsManager.getConfig().display.isChangeContactNameColor,
+                generalSettingsManager.getConfig().display.visualSettings.isShowCorrespondentNames,
+                generalSettingsManager.getConfig().display.visualSettings.isChangeContactNameColor,
             )
         assertThat(displayName.toString()).isEqualTo(resourceProvider.contactUnknownRecipient())
     }

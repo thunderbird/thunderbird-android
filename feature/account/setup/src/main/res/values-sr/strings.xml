@@ -19,8 +19,6 @@
     <string name="account_setup_options_section_display_options">Прикажи опције</string>
     <string name="account_setup_options_account_name_label">Име налога</string>
     <string name="account_setup_options_account_name_error_blank">Име налога не може бити празно.</string>
-    <string name="account_setup_options_display_name_label">Ваше име</string>
-    <string name="account_setup_options_display_name_error_required">Ваше име је обавезно.</string>
     <string name="account_setup_options_email_signature_label">Потпис имејла</string>
     <string name="account_setup_options_account_check_frequency_label">Учесталост провере</string>
     <string name="account_setup_options_email_check_frequency_never">Никада</string>
@@ -44,7 +42,7 @@
     <string name="account_setup_special_folders_loading_message">Прикупљање листе фолдера…</string>
     <string name="account_setup_auto_discovery_result_approval_error_approval_required">Обавезно је одобрити конфигурацију.</string>
     <string name="account_setup_special_folders_error_message">Преузимање листе фолдера са сервера није успело</string>
-    <string name="account_setup_error_network">Мрежна грешка. Проверите статус ваше везе и покушајте поново.</string>
+    <string name="account_setup_error_network">Мрежна грешка. Проверите стање везе и покушајте поново.</string>
     <string name="account_setup_error_unknown">Непозната грешка</string>
     <string name="account_setup_auto_discovery_validation_error_email_address_required">Имејл адреса је обавезна.</string>
     <string name="account_setup_auto_discovery_connection_security_ssl">SSL/TLS</string>

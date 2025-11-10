@@ -5,7 +5,7 @@ import net.thunderbird.core.android.account.DeletePolicy
 import net.thunderbird.core.android.account.Expunge
 import net.thunderbird.core.android.account.FolderMode
 import net.thunderbird.core.android.account.Identity
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.MessageFormat
 import net.thunderbird.core.android.account.QuoteStyle
 import net.thunderbird.core.android.account.ShowPictures
@@ -31,7 +31,7 @@ class LegacyAccountStorageHandler(
 
     @Suppress("LongMethod", "MagicNumber")
     @Synchronized
-    override fun load(data: LegacyAccount, storage: Storage) {
+    override fun load(data: LegacyAccountDto, storage: Storage) {
         val keyGen = AccountKeyGenerator(data.id)
 
         profileDtoStorageHandler.load(data, storage)
@@ -308,7 +308,7 @@ class LegacyAccountStorageHandler(
 
     @Suppress("LongMethod")
     @Synchronized
-    override fun save(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+    override fun save(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
         val keyGen = AccountKeyGenerator(data.id)
 
         profileDtoStorageHandler.save(data, storage, editor)
@@ -423,7 +423,7 @@ class LegacyAccountStorageHandler(
 
     @Suppress("LongMethod")
     @Synchronized
-    override fun delete(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+    override fun delete(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
         val keyGen = AccountKeyGenerator(data.id)
         val accountUuid = data.uuid
 
@@ -545,7 +545,7 @@ class LegacyAccountStorageHandler(
     }
 
     @Synchronized
-    private fun saveIdentities(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+    private fun saveIdentities(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
         deleteIdentities(data, storage, editor)
         var ident = 0
         val keyGen = AccountKeyGenerator(data.id)
@@ -564,7 +564,7 @@ class LegacyAccountStorageHandler(
     }
 
     @Synchronized
-    private fun deleteIdentities(data: LegacyAccount, storage: Storage, editor: StorageEditor) {
+    private fun deleteIdentities(data: LegacyAccountDto, storage: Storage, editor: StorageEditor) {
         val keyGen = AccountKeyGenerator(data.id)
 
         var identityIndex = 0

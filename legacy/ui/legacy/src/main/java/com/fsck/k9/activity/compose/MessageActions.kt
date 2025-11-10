@@ -8,7 +8,7 @@ import app.k9mail.feature.launcher.FeatureLauncherTarget.AccountSetup
 import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageCompose
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 object MessageActions {
     /**
@@ -17,7 +17,7 @@ object MessageActions {
      * activity.
      */
     @JvmStatic
-    fun actionCompose(context: Context, account: LegacyAccount?) {
+    fun actionCompose(context: Context, account: LegacyAccountDto?) {
         val defaultAccount = Preferences.getPreferences().defaultAccount
         if (account == null && defaultAccount == null) {
             FeatureLauncherActivity.launch(context, AccountSetup)

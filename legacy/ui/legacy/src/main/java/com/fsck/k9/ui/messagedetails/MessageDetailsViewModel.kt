@@ -26,12 +26,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.AccountManager
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.feature.mail.folder.api.Folder
 
-@Suppress("TooManyFunctions")
+@Suppress("TooManyFunctions", "LongParameterList")
 internal class MessageDetailsViewModel(
     private val resources: Resources,
     private val messageRepository: MessageRepository,
@@ -40,7 +40,7 @@ internal class MessageDetailsViewModel(
     private val contactRepository: ContactRepository,
     private val contactPermissionResolver: ContactPermissionResolver,
     private val clipboardManager: ClipboardManager,
-    private val accountManager: AccountManager,
+    private val accountManager: LegacyAccountDtoManager,
     private val participantFormatter: MessageDetailsParticipantFormatter,
     private val folderNameFormatter: FolderNameFormatter,
 ) : ViewModel() {
@@ -125,7 +125,7 @@ internal class MessageDetailsViewModel(
         )
     }
 
-    private fun List<Address>.toParticipants(account: LegacyAccount): List<Participant> {
+    private fun List<Address>.toParticipants(account: LegacyAccountDto): List<Participant> {
         return this.map { address ->
             val displayName = participantFormatter.getDisplayName(address, account)
             val emailAddress = address.address

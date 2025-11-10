@@ -6,7 +6,7 @@ import com.fsck.k9.Preferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.legacy.Log
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
@@ -21,7 +21,7 @@ class AutocryptKeyTransferPresenter internal constructor(
     private val presenterScope: CoroutineScope = MainScope(),
 ) {
 
-    private lateinit var account: LegacyAccount
+    private lateinit var account: LegacyAccountDto
     private lateinit var showTransferCodePi: PendingIntent
 
     init {

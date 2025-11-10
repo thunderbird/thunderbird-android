@@ -4,7 +4,7 @@ import android.app.Notification
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.mailstore.LocalFolder
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
 
 internal class SyncNotificationController(
@@ -13,7 +13,7 @@ internal class SyncNotificationController(
     private val resourceProvider: NotificationResourceProvider,
     private val outboxFolderManager: OutboxFolderManager,
 ) {
-    fun showSendingNotification(account: LegacyAccount) {
+    fun showSendingNotification(account: LegacyAccountDto) {
         val accountName = account.displayName
         val title = resourceProvider.sendingMailTitle()
         val tickerText = resourceProvider.sendingMailBody(accountName)
@@ -40,12 +40,12 @@ internal class SyncNotificationController(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    fun clearSendingNotification(account: LegacyAccount) {
+    fun clearSendingNotification(account: LegacyAccountDto) {
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
         notificationManager.cancel(notificationId)
     }
 
-    fun showFetchingMailNotification(account: LegacyAccount, folder: LocalFolder) {
+    fun showFetchingMailNotification(account: LegacyAccountDto, folder: LocalFolder) {
         val accountName = account.displayName
         val folderId = folder.databaseId
         val folderName = folder.name
@@ -74,7 +74,7 @@ internal class SyncNotificationController(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    fun showEmptyFetchingMailNotification(account: LegacyAccount) {
+    fun showEmptyFetchingMailNotification(account: LegacyAccountDto) {
         val title = resourceProvider.checkingMailTitle()
         val text = account.displayName
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
@@ -93,12 +93,12 @@ internal class SyncNotificationController(
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    fun clearFetchingMailNotification(account: LegacyAccount) {
+    fun clearFetchingMailNotification(account: LegacyAccountDto) {
         val notificationId = NotificationIds.getFetchingMailNotificationId(account)
         notificationManager.cancel(notificationId)
     }
 
-    private fun createSendingLockScreenNotification(account: LegacyAccount): Notification {
+    private fun createSendingLockScreenNotification(account: LegacyAccountDto): Notification {
         return notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconSendingMail)
@@ -108,7 +108,7 @@ internal class SyncNotificationController(
             .build()
     }
 
-    private fun createFetchingMailLockScreenNotification(account: LegacyAccount): Notification {
+    private fun createFetchingMailLockScreenNotification(account: LegacyAccountDto): Notification {
         return notificationHelper
             .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
             .setSmallIcon(resourceProvider.iconCheckingMail)

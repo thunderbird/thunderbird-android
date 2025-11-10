@@ -1,12 +1,12 @@
 package com.fsck.k9.notification
 
 import com.fsck.k9.K9
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 
 internal class SingleMessageNotificationDataCreator {
 
     fun createSingleNotificationData(
-        account: LegacyAccount,
+        account: LegacyAccountDto,
         notificationId: Int,
         content: NotificationContent,
         timestamp: Long,
@@ -52,7 +52,7 @@ internal class SingleMessageNotificationDataCreator {
         }
     }
 
-    private fun createSingleNotificationWearActions(account: LegacyAccount): List<WearNotificationAction> {
+    private fun createSingleNotificationWearActions(account: LegacyAccountDto): List<WearNotificationAction> {
         return buildList {
             add(WearNotificationAction.Reply)
             add(WearNotificationAction.MarkAsRead)
@@ -81,7 +81,7 @@ internal class SingleMessageNotificationDataCreator {
     }
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
-    private fun isSpamActionAvailableForWear(account: LegacyAccount): Boolean {
+    private fun isSpamActionAvailableForWear(account: LegacyAccountDto): Boolean {
         return account.hasSpamFolder() && !K9.isConfirmSpam
     }
 }

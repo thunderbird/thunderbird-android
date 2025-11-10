@@ -1,6 +1,6 @@
 package com.fsck.k9.search
 
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
 import net.thunderbird.feature.search.legacy.api.SearchAttribute
@@ -29,7 +29,7 @@ fun LocalMessageSearch.limitToDisplayableFolders() {
  *
  * The Inbox will always be included even if one of the special folders is configured to point to the Inbox.
  */
-fun LocalMessageSearch.excludeSpecialFolders(account: LegacyAccount, outboxFolderId: Long) {
+fun LocalMessageSearch.excludeSpecialFolders(account: LegacyAccountDto, outboxFolderId: Long) {
     this.excludeSpecialFolder(account.trashFolderId)
     this.excludeSpecialFolder(account.draftsFolderId)
     this.excludeSpecialFolder(account.spamFolderId)

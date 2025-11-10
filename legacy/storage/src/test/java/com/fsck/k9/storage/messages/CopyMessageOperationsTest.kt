@@ -8,6 +8,7 @@ import assertk.assertions.isNull
 import com.fsck.k9.mail.testing.crlf
 import com.fsck.k9.mailstore.StorageFilesProvider
 import com.fsck.k9.storage.RobolectricTest
+import net.thunderbird.feature.account.AccountIdFactory
 import okio.buffer
 import okio.sink
 import okio.source
@@ -16,6 +17,8 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 
 class CopyMessageOperationsTest : RobolectricTest() {
+
+    private val accountId = AccountIdFactory.create()
     private val messagePartDirectory = createRandomTempDirectory()
     private val sqliteDatabase = createDatabase()
     private val storageFilesProvider = object : StorageFilesProvider {
@@ -29,6 +32,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
         lockableDatabase,
         attachmentFileManager,
         threadMessageOperations,
+        accountId,
     )
 
     @After
@@ -114,6 +118,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
                 uid = destinationMessage.uid,
                 folderId = 2,
                 messagePartId = destinationMessage.messagePartId,
+                accountId = accountId.asRaw(),
             ),
         )
 
@@ -229,6 +234,7 @@ class CopyMessageOperationsTest : RobolectricTest() {
                 uid = destinationMessage.uid,
                 folderId = 2,
                 messagePartId = destinationMessage.messagePartId,
+                accountId = accountId.asRaw(),
             ),
         )
 

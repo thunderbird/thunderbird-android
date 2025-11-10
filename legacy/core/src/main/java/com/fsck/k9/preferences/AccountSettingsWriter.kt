@@ -7,7 +7,7 @@ import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import java.util.UUID
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.feature.account.storage.legacy.LegacyAccountStorageHandler.Companion.ACCOUNT_DESCRIPTION_KEY
@@ -45,6 +45,7 @@ constructor(
             "$accountUuid.$ACCOUNT_DESCRIPTION_KEY",
             accountName,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
 
         // Convert account settings to the string representation used in preference storage
@@ -55,6 +56,7 @@ constructor(
                 "$accountUuid.$accountKey",
                 value,
                 generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+                generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
             )
         }
 
@@ -63,6 +65,7 @@ constructor(
             "$accountUuid.accountNumber",
             newAccountNumber,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
 
         // When deleting an account and then restoring it using settings import, the same account UUID will be used.
@@ -74,6 +77,7 @@ constructor(
             key = "$accountUuid.messagesNotificationChannelVersion",
             value = messageNotificationChannelVersion,
             isDebugLoggingEnabled = generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            isSensitiveDebugLoggingEnabled = generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
 
         serverSettingsWriter.writeServerSettings(
@@ -118,6 +122,7 @@ constructor(
             "accountUuids",
             newAccountUuidString,
             generalSettingsManager.getConfig().debugging.isDebugLoggingEnabled,
+            generalSettingsManager.getConfig().debugging.isSensitiveLoggingEnabled,
         )
     }
 
@@ -165,7 +170,7 @@ constructor(
         error("Unexpected exit")
     }
 
-    private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccount>): Boolean {
+    private fun isAccountNameUsed(name: String?, accounts: List<LegacyAccountDto>): Boolean {
         return accounts.any { it.displayName == name }
     }
 }

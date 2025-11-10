@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import net.thunderbird.core.logging.legacy.DebugLogConfigurator
+import net.thunderbird.core.logging.config.DebugLogConfigurator
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.PreferenceChangePublisher
@@ -21,6 +21,9 @@ import net.thunderbird.core.preference.debugging.DebuggingSettingsPreferenceMana
 import net.thunderbird.core.preference.display.DisplaySettingsPreferenceManager
 import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsPreferenceManager
 import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
+import net.thunderbird.core.preference.display.miscSettings.DisplayMiscSettingsPreferenceManager
+import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
+import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import net.thunderbird.core.preference.network.NetworkSettingsPreferenceManager
 import net.thunderbird.core.preference.notification.NotificationPreferenceManager
 import net.thunderbird.core.preference.privacy.PrivacySettingsPreferenceManager
@@ -45,8 +48,11 @@ internal class DefaultGeneralSettingsManager(
     private val displaySettingsSettingsPreferenceManager: DisplaySettingsPreferenceManager,
     private val displayCoreSettingsPreferenceManager: DisplayCoreSettingsPreferenceManager,
     private val displayInboxSettingsPreferenceManager: DisplayInboxSettingsPreferenceManager,
+    private val displayVisualSettingsPreferenceManager: DisplayVisualSettingsPreferenceManager,
+    private val displayMiscSettingsPreferenceManager: DisplayMiscSettingsPreferenceManager,
     private val networkSettingsPreferenceManager: NetworkSettingsPreferenceManager,
     private val debuggingSettingsPreferenceManager: DebuggingSettingsPreferenceManager,
+    private val interactionSettingsPreferenceManager: InteractionSettingsPreferenceManager,
     private val debugLogConfigurator: DebugLogConfigurator,
     private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : GeneralSettingsManager {
@@ -80,6 +86,16 @@ internal class DefaultGeneralSettingsManager(
                 display = generalSettings.display.copy(inboxSettings = inboxSettings),
             )
         }
+        .combine(displayVisualSettingsPreferenceManager.getConfigFlow()) { generalSettings, visualSettings ->
+            generalSettings.copy(
+                display = generalSettings.display.copy(visualSettings = visualSettings),
+            )
+        }
+        .combine(displayMiscSettingsPreferenceManager.getConfigFlow()) { generalSettings, miscSettings ->
+            generalSettings.copy(
+                display = generalSettings.display.copy(miscSettings = miscSettings),
+            )
+        }
         .combine(networkSettingsPreferenceManager.getConfigFlow()) { generalSettings, networkSettings ->
             generalSettings.copy(
                 network = networkSettings,
@@ -92,6 +108,9 @@ internal class DefaultGeneralSettingsManager(
                 debugLogConfigurator.updateLoggingStatus(debuggingSettings.isDebugLoggingEnabled)
                 debugLogConfigurator.updateSyncLogging(debuggingSettings.isSyncLoggingEnabled)
             }
+        }
+        .combine(interactionSettingsPreferenceManager.getConfigFlow()) { generalSettings, interactionSettings ->
+            generalSettings.copy(interaction = interactionSettings)
         }
         .stateIn(
             scope = coroutineScope,
@@ -141,8 +160,11 @@ internal class DefaultGeneralSettingsManager(
                 displaySettingsSettingsPreferenceManager.save(config.display)
                 displayCoreSettingsPreferenceManager.save(config.display.coreSettings)
                 displayInboxSettingsPreferenceManager.save(config.display.inboxSettings)
+                displayVisualSettingsPreferenceManager.save(config.display.visualSettings)
+                displayMiscSettingsPreferenceManager.save(config.display.miscSettings)
                 networkSettingsPreferenceManager.save(config.network)
                 debuggingSettingsPreferenceManager.save(config.debugging)
+                interactionSettingsPreferenceManager.save(config.interaction)
             }
         }
     }

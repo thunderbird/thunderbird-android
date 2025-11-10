@@ -129,6 +129,7 @@ fun SQLiteDatabase.readMessages(): List<MessageEntry> {
                 messagePartId = cursor.getLongOrNull("message_part_id"),
                 encryptionType = cursor.getStringOrNull("encryption_type"),
                 newMessage = cursor.getIntOrNull("new_message"),
+                accountId = cursor.getStringOrNull("account_id"),
             )
         }
     }
@@ -162,6 +163,7 @@ data class MessageEntry(
     val messagePartId: Long?,
     val encryptionType: String?,
     val newMessage: Int?,
+    val accountId: String? = null,
 )
 
 fun SQLiteDatabase.createMessagePart(

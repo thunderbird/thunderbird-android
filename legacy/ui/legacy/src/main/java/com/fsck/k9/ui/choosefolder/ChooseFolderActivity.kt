@@ -6,7 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.recyclerview.widget.RecyclerView
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.message.controller.MessageReference
@@ -20,7 +23,7 @@ import com.fsck.k9.ui.base.K9Activity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
-import net.thunderbird.core.android.account.LegacyAccount
+import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.FolderType
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,7 +38,7 @@ class ChooseFolderActivity : K9Activity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
-    private lateinit var account: LegacyAccount
+    private lateinit var account: LegacyAccountDto
     private lateinit var action: Action
     private var currentFolderId: Long? = null
     private var scrollToFolderId: Long? = null
@@ -67,6 +70,7 @@ class ChooseFolderActivity : K9Activity() {
         val showHiddenFolders = savedShowHiddenFolders ?: false
 
         viewModel.setDisplayMode(account, showHiddenFolders)
+        initializeInsets()
     }
 
     private fun decodeArguments(savedInstanceState: Bundle?): Boolean {
@@ -107,6 +111,17 @@ class ChooseFolderActivity : K9Activity() {
 
         recyclerView = findViewById(R.id.folderList)
         recyclerView.adapter = folderListAdapter
+    }
+
+    private fun initializeInsets() {
+        val folderList = findViewById<View>(R.id.folderList)
+
+        ViewCompat.setOnApplyWindowInsetsListener(folderList) { v, windowsInsets ->
+            val insets = windowsInsets.getInsets(navigationBars())
+            v.setPadding(0, 0, 0, insets.bottom)
+
+            windowsInsets
+        }
     }
 
     private fun updateFolderList(displayFolders: List<DisplayFolder>) {

@@ -9,9 +9,11 @@ import kotlinx.coroutines.test.TestCoroutineDispatchersKt;
 import kotlinx.coroutines.test.TestDispatcher;
 import kotlinx.coroutines.test.TestDispatchers;
 import net.thunderbird.core.outcome.Outcome;
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Failure;
-import net.thunderbird.feature.notification.api.command.NotificationCommand.Success;
 import net.thunderbird.feature.notification.api.command.NotificationCommandException;
+import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed;
+import net.thunderbird.feature.notification.api.command.outcome.Failure;
+import net.thunderbird.feature.notification.api.command.outcome.NotificationCommandOutcome;
+import net.thunderbird.feature.notification.api.command.outcome.Success;
 import net.thunderbird.feature.notification.api.content.Notification;
 import net.thunderbird.feature.notification.testing.fake.FakeNotification;
 import net.thunderbird.feature.notification.testing.fake.command.FakeInAppNotificationCommand;
@@ -53,11 +55,12 @@ public class NotificationSenderCompatJavaTest {
                 ? extends @NotNull Failure<? extends @NotNull Notification>
                 >
             > expectedResults = List.of(
-            Outcome.Companion.success(new Success<>(new FakeInAppNotificationCommand())),
-            Outcome.Companion.success(new Success<>(new FakeSystemNotificationCommand())),
+            Outcome.Companion.success(NotificationCommandOutcome.Success(1, new FakeInAppNotificationCommand())),
+            Outcome.Companion.success(NotificationCommandOutcome.Success(2, new FakeSystemNotificationCommand())),
             Outcome.Companion.failure(
-                new Failure<>(
+                new CommandExecutionFailed<>(
                     new FakeSystemNotificationCommand(),
+                    "What an issue?",
                     new NotificationCommandException("What an issue?")
                 )
             )

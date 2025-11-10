@@ -7,7 +7,7 @@
     <string name="account_server_validation_error_client_certificate_retrieval_failure">Није могуће приступити сертификату клијента</string>
     <string name="account_server_validation_outgoing_loading_message">Провера подешавања одлазног сервера…</string>
     <string name="account_server_validation_outgoing_loading_error">Провера подешавања одлазног сервера није успела</string>
-    <string name="account_server_validation_error_authentication">Грешка при аутентификацији</string>
+    <string name="account_server_validation_error_authentication">Грешка при пријави</string>
     <string name="account_server_validation_incoming_loading_error">Провера подешавања долазног сервера није успела</string>
     <string name="account_server_validation_incoming_success">Подешавања долазног сервера су верификована</string>
     <string name="account_server_validation_sign_in">Пријавите се</string>

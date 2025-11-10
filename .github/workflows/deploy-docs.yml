@@ -21,7 +21,7 @@ jobs:
     environment: botmobile
     steps:
       - name: App token generate
-        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b  # v2.1.1
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42  # v2.1.4
         if: ${{ vars.BOT_CLIENT_ID }}
         id: app-token
         with:
@@ -34,7 +34,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token || github.token }}
 
       - name: Cargo cache
-        uses: actions-rust-lang/setup-rust-toolchain@ab6845274e2ff01cd4462007e1a9d9df1ab49f42  # v1.14.0
+        uses: actions-rust-lang/setup-rust-toolchain@1780873c7b576612439a134613cc4cc74ce5538c  # v1.15.2
 
       - name: Install mdbook and extensions
         run: ./docs/install.sh
@@ -47,9 +47,9 @@ jobs:
 
       - name: Clean docs
         run: |
-          rm -rf book/docs/latest/assets/draw.io
-          rm book/docs/latest/.gitignore
-          rm book/docs/latest/install.sh
+          rm -rf book/docs/latest/html/assets/draw.io
+          rm -f book/docs/latest/html/.gitignore
+          rm -f book/docs/latest/html/install.sh
 
           # Restore mermaid.min.js, it has already been copied over to book/docs/latest
           git restore .
@@ -75,7 +75,7 @@ jobs:
           find docs/latest -mindepth 1 -delete  # Delete old files inside docs/latest
 
           # Copy new docs to gh-pages branch
-          cp -r book/docs/latest/* docs/latest/
+          cp -r book/docs/latest/html/* docs/latest/
 
           # Remove
           rm -rf book
