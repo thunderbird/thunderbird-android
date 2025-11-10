@@ -19,6 +19,12 @@ internal class FakeGeneralResourceProvider : ResourceProvider.GeneralResourcePro
     override val nameDescription: () -> String? = { null }
     override val nameIcon: () -> ImageVector? = { null }
 
+    override val nameEmptyError: () -> String = { "Name cannot be empty" }
+    override val nameTooLongError: () -> String = { "Name is too long" }
+    override val monogramTitle: () -> String = { "Monogram" }
+    override val monogramEmptyError: () -> String = { "Monogram cannot be empty" }
+    override val monogramTooLongError: () -> String = { "Monogram is too long" }
+
     override val colorTitle: () -> String = { "Color" }
     override val colorDescription: () -> String? = { null }
     override val colorIcon: () -> ImageVector? = { null }

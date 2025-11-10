@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.core.featureflag.FeatureFlagProvider
+import net.thunderbird.core.outcome.fold
 import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
@@ -12,6 +13,8 @@ import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
 
 /**
@@ -21,6 +24,7 @@ internal class GeneralSettingsBuilder(
     private val resources: AccountSettingsDomainContract.ResourceProvider.GeneralResourceProvider,
     private val provider: FeatureFlagProvider,
     private val monogramCreator: AvatarMonogramCreator,
+    private val validator: GeneralSettingsContract.Validator,
 ) : GeneralSettingsContract.SettingsBuilder {
 
     override fun build(state: State): Settings {
@@ -83,6 +87,17 @@ internal class GeneralSettingsBuilder(
         description = resources.nameDescription,
         icon = resources.nameIcon,
         value = name,
+        validate = {
+            validator.validateName(it).fold(
+                onSuccess = { null },
+                onFailure = { failure ->
+                    when (failure) {
+                        is ValidateAccountNameError.EmptyName -> resources.nameEmptyError()
+                        is ValidateAccountNameError.TooLongName -> resources.nameTooLongError()
+                    }
+                },
+            )
+        },
     )
 
     private fun color(
@@ -105,6 +120,17 @@ internal class GeneralSettingsBuilder(
         icon = { null },
         value = monogram,
         transform = { it.uppercase() },
+        validate = {
+            validator.validateMonogram(it).fold(
+                onSuccess = { null },
+                onFailure = { failure ->
+                    when (failure) {
+                        is ValidateMonogramError.EmptyMonogram -> resources.monogramEmptyError()
+                        is ValidateMonogramError.TooLongMonogram -> resources.monogramTooLongError()
+                    }
+                },
+            )
+        },
     )
 
     private fun avatarOptions(

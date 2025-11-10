@@ -25,6 +25,7 @@ import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.SettingDialog
 // This a workaround for a bug in Compose, preventing the keyboard been show when requesting focus on a dialog,
 // see: https://issuetracker.google.com/issues/204502668
 private const val EDIT_TEXT_FOCUS_DELAY = 200L
+private const val VALIDATION_DEBOUNCE_DELAY = 300L
 
 @Composable
 internal fun TextDialogView(
@@ -43,20 +44,34 @@ internal fun TextDialogView(
             ),
         )
     }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
         delay(EDIT_TEXT_FOCUS_DELAY)
         focusRequester.requestFocus()
     }
 
+    LaunchedEffect(textFieldValue.text) {
+        delay(VALIDATION_DEBOUNCE_DELAY)
+        val transformedText = setting.transform(textFieldValue.text)
+        errorMessage = setting.validate(transformedText)
+    }
+
     SettingDialogLayout(
         title = setting.title(),
         icon = setting.icon(),
         onConfirmClick = {
-            onConfirmClick(setting.copy(value = textFieldValue.text))
+            val transformedText = setting.transform(textFieldValue.text)
+            val validationError = setting.validate(transformedText)
+            if (validationError == null) {
+                onConfirmClick(setting.copy(value = transformedText))
+            } else {
+                errorMessage = validationError
+            }
         },
         onDismissClick = onDismissClick,
         onDismissRequest = onDismissRequest,
+        confirmButtonEnabled = errorMessage == null,
         modifier = modifier,
     ) {
         setting.description()?.let {
@@ -67,6 +82,7 @@ internal fun TextDialogView(
 
         AdvancedTextInput(
             text = textFieldValue,
+            errorMessage = errorMessage,
             contentPadding = PaddingValues(),
             onTextChange = { changedText ->
                 val transformedText = setting.transform(changedText.text)

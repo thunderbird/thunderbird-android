@@ -23,6 +23,7 @@ sealed interface SettingValue<T> : Setting {
      * @param icon A lambda that returns the icon of the setting as an [ImageVector]. Default is null.
      * @param value The current value of the setting.
      * @param transform A function that transforms the entered string value. Default is the identity function.
+     * @param validate A function that validates the entered string value and returns an error message if invalid. Default is always valid.
      */
     data class Text(
         override val id: String,
@@ -31,6 +32,7 @@ sealed interface SettingValue<T> : Setting {
         val icon: () -> ImageVector? = { null },
         override val value: String,
         val transform: (String) -> String = { it },
+        val validate: (String) -> String? = { null },
     ) : SettingValue<String> {
         override val requiresEditView: Boolean = true
     }

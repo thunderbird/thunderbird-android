@@ -6,6 +6,7 @@ import assertk.assertions.prop
 import kotlin.test.Test
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
 
 class ValidateAvatarMonogramTest {
 
@@ -24,7 +25,7 @@ class ValidateAvatarMonogramTest {
 
         assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
             .prop(Outcome.Failure<ValidationError>::error)
-            .isInstanceOf<ValidateAvatarMonogram.ValidateAvatarMonogramError.EmptyMonogram>()
+            .isInstanceOf<ValidateMonogramError.EmptyMonogram>()
     }
 
     @Test
@@ -33,7 +34,7 @@ class ValidateAvatarMonogramTest {
 
         assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
             .prop(Outcome.Failure<ValidationError>::error)
-            .isInstanceOf<ValidateAvatarMonogram.ValidateAvatarMonogramError.EmptyMonogram>()
+            .isInstanceOf<ValidateMonogramError.EmptyMonogram>()
     }
 
     @Test
@@ -42,6 +43,6 @@ class ValidateAvatarMonogramTest {
 
         assertThat(result).isInstanceOf<Outcome.Failure<ValidationError>>()
             .prop(Outcome.Failure<ValidationError>::error)
-            .isInstanceOf<ValidateAvatarMonogram.ValidateAvatarMonogramError.TooLongMonogram>()
+            .isInstanceOf<ValidateMonogramError.TooLongMonogram>()
     }
 }

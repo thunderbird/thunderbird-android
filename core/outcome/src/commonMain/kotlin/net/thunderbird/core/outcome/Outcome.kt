@@ -142,3 +142,16 @@ suspend fun <SUCCESS, FAILURE> Outcome<SUCCESS, FAILURE>.handleAsync(
         is Outcome.Failure -> onFailure(error)
     }
 }
+
+/**
+ * Fold the value of an [Outcome] to a new value.
+ */
+inline fun <SUCCESS, FAILURE, R> Outcome<SUCCESS, FAILURE>.fold(
+    onSuccess: (SUCCESS) -> R,
+    onFailure: (FAILURE) -> R,
+): R {
+    return when (this) {
+        is Outcome.Success -> onSuccess(data)
+        is Outcome.Failure -> onFailure(error)
+    }
+}
