@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationError
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.profile.AccountProfile
@@ -30,11 +30,11 @@ internal interface AccountSettingsDomainContract {
         }
 
         fun interface ValidateAccountName {
-            operator fun invoke(name: String): ValidationOutcome
+            operator fun invoke(name: String): Outcome<Unit, ValidateAccountNameError>
         }
 
         fun interface ValidateAvatarMonogram {
-            operator fun invoke(monogram: String): ValidationOutcome
+            operator fun invoke(monogram: String): Outcome<Unit, ValidateMonogramError>
         }
     }
 
@@ -61,6 +61,14 @@ internal interface AccountSettingsDomainContract {
             val nameDescription: () -> String?
             val nameIcon: () -> ImageVector?
 
+            // Validation error messages
+            val nameEmptyError: () -> String
+            val nameTooLongError: () -> String
+
+            val monogramTitle: () -> String
+            val monogramEmptyError: () -> String
+            val monogramTooLongError: () -> String
+
             val colorTitle: () -> String
             val colorDescription: () -> String?
             val colorIcon: () -> ImageVector?
@@ -72,5 +80,15 @@ internal interface AccountSettingsDomainContract {
         data class NotFound(
             val message: String,
         ) : AccountSettingError
+    }
+
+    sealed interface ValidateAccountNameError : ValidationError {
+        data object EmptyName : ValidateAccountNameError
+        data object TooLongName : ValidateAccountNameError
+    }
+
+    sealed interface ValidateMonogramError : ValidationError {
+        data object EmptyMonogram : ValidateMonogramError
+        data object TooLongMonogram : ValidateMonogramError
     }
 }

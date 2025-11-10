@@ -54,6 +54,22 @@ internal class GeneralResourceProvider(
     }
     override val nameIcon: () -> ImageVector? = { null }
 
+    override val nameEmptyError: () -> String = {
+        context.getString(R.string.account_settings_general_name_error_empty)
+    }
+    override val nameTooLongError: () -> String = {
+        context.getString(R.string.account_settings_general_name_error_too_long)
+    }
+    override val monogramTitle: () -> String = {
+        context.getString(R.string.account_settings_general_monogram_title)
+    }
+    override val monogramEmptyError: () -> String = {
+        context.getString(R.string.account_settings_general_monogram_error_empty)
+    }
+    override val monogramTooLongError: () -> String = {
+        context.getString(R.string.account_settings_general_monogram_error_too_long)
+    }
+
     override val colorTitle: () -> String = {
         context.getString(R.string.account_settings_general_color_title)
     }

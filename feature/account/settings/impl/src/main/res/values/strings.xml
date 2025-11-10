@@ -10,8 +10,14 @@
 
     <string name="account_settings_general_name_title">Account name</string>
     <string name="account_settings_general_name_description">The name associated with your account.</string>
+    <string name="account_settings_general_name_error_empty">Name cannot be empty</string>
+    <string name="account_settings_general_name_error_too_long">Name is too long</string>
 
     <string name="account_settings_general_color_title">Account color</string>
     <string name="account_settings_general_color_description">The accent color of this account used in folders and account lists.</string>
+
+    <string name="account_settings_general_monogram_title">Monogram</string>
+    <string name="account_settings_general_monogram_error_empty">Monogram cannot be empty</string>
+    <string name="account_settings_general_monogram_error_too_long">Monogram is too long</string>
 
 </resources>

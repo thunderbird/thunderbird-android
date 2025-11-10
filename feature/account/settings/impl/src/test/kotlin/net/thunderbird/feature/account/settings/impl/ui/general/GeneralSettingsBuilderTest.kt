@@ -12,6 +12,7 @@ import kotlin.test.Test
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
@@ -19,6 +20,8 @@ import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
 import net.thunderbird.feature.account.settings.impl.domain.usecase.FakeGeneralResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.usecase.FakeMonogramCreator
 
@@ -26,6 +29,10 @@ internal class GeneralSettingsBuilderTest {
 
     private val resources = FakeGeneralResourceProvider()
     private val monogramCreator = FakeMonogramCreator()
+    private val validator = object : GeneralSettingsContract.Validator {
+        override fun validateName(name: String) = Outcome.success(Unit)
+        override fun validateMonogram(monogram: String) = Outcome.success(Unit)
+    }
 
     @Test
     fun `should always include profile, name and color settings`() {
@@ -34,6 +41,7 @@ internal class GeneralSettingsBuilderTest {
             resources = resources,
             provider = enabled(false),
             monogramCreator = monogramCreator,
+            validator = validator,
         )
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),
@@ -66,6 +74,7 @@ internal class GeneralSettingsBuilderTest {
             resources = resources,
             provider = enabled(true),
             monogramCreator = monogramCreator,
+            validator = validator,
         )
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "TB"),
@@ -87,6 +96,7 @@ internal class GeneralSettingsBuilderTest {
             resources = resources,
             provider = enabled(false),
             monogramCreator = monogramCreator,
+            validator = validator,
         )
 
         // Act
@@ -123,6 +133,63 @@ internal class GeneralSettingsBuilderTest {
         )
     }
 
+    @Test
+    fun `should include monogram setting when avatar is monogram and feature flag is enabled`() {
+        // Arrange
+        val builder = GeneralSettingsBuilder(
+            resources = resources,
+            provider = enabled(true),
+            monogramCreator = monogramCreator,
+            validator = validator,
+        )
+        val state = GeneralSettingsContract.State(
+            name = StringInputField(value = "Thunderbird"),
+            color = IntegerInputField(value = 0),
+            avatar = Avatar.Monogram("TB"),
+        )
+
+        // Act
+        val settings = builder.build(state)
+
+        // Assert
+        val monogramSetting = settings.firstOrNull { it.id == GeneralSettingId.AVATAR_MONOGRAM }
+        assertThat(monogramSetting).isNotNull()
+        val textSetting = monogramSetting as SettingValue.Text
+        assertThat(textSetting.value).isEqualTo("TB")
+    }
+
+    @Test
+    fun `should map validation errors to resource provider strings`() {
+        // Arrange: validator that fails for both name and monogram
+        val failingValidator = object : GeneralSettingsContract.Validator {
+            override fun validateName(name: String): Outcome<Unit, ValidateAccountNameError> =
+                Outcome.failure(ValidateAccountNameError.EmptyName)
+            override fun validateMonogram(monogram: String): Outcome<Unit, ValidateMonogramError> =
+                Outcome.failure(ValidateMonogramError.TooLongMonogram)
+        }
+        val builder = GeneralSettingsBuilder(
+            resources = resources,
+            provider = enabled(true),
+            monogramCreator = monogramCreator,
+            validator = failingValidator,
+        )
+        val state = GeneralSettingsContract.State(
+            name = StringInputField(value = ""),
+            color = IntegerInputField(value = 0),
+            avatar = Avatar.Monogram("TB"),
+        )
+
+        // Act
+        val settings = builder.build(state)
+        val nameSetting = settings.first { it.id == GeneralSettingId.NAME } as SettingValue.Text
+        val monogramSetting = settings.first { it.id == GeneralSettingId.AVATAR_MONOGRAM } as SettingValue.Text
+
+        // Assert: name empty error and monogram too long error come from resource provider
+        assertThat(nameSetting.validate("")).isEqualTo(resources.nameEmptyError())
+        assertThat(monogramSetting.validate("TOO_LONG"))
+            .isEqualTo(resources.monogramTooLongError())
+    }
+
     private fun assertSelectedAvatarOption(
         avatar: Avatar?,
         expectedOptionId: String,
@@ -132,6 +199,7 @@ internal class GeneralSettingsBuilderTest {
             resources = resources,
             provider = enabled(true),
             monogramCreator = monogramCreator,
+            validator = validator,
         )
         val state = GeneralSettingsContract.State(
             name = StringInputField(value = "Thunderbird"),

@@ -47,18 +47,19 @@ val featureAccountSettingsModule = module {
         )
     }
 
+    factory<GeneralSettingsContract.Validator> {
+        GeneralSettingsValidator(
+            accountNameValidator = ValidateAccountName(),
+            avatarMonogramValidator = ValidateAvatarMonogram(),
+        )
+    }
+
     factory<GeneralSettingsContract.SettingsBuilder> {
         GeneralSettingsBuilder(
             resources = get(),
             provider = get(),
             monogramCreator = get(),
-        )
-    }
-
-    factory<GeneralSettingsContract.Validator> {
-        GeneralSettingsValidator(
-            accountNameValidator = ValidateAccountName(),
-            avatarMonogramValidator = ValidateAvatarMonogram(),
+            validator = get(),
         )
     }
 

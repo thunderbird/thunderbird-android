@@ -2,11 +2,13 @@ package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.compose.runtime.Stable
 import app.k9mail.core.ui.compose.common.mvi.UnidirectionalViewModel
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.ui.setting.Settings
-import net.thunderbird.core.validation.ValidationOutcome
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.account.avatar.Avatar
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
+import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
 
 internal interface GeneralSettingsContract {
 
@@ -41,8 +43,8 @@ internal interface GeneralSettingsContract {
     }
 
     interface Validator {
-        fun validateName(name: String): ValidationOutcome
-        fun validateMonogram(monogram: String): ValidationOutcome
+        fun validateName(name: String): Outcome<Unit, ValidateAccountNameError>
+        fun validateMonogram(monogram: String): Outcome<Unit, ValidateMonogramError>
     }
 
     fun interface SettingsBuilder {

@@ -153,4 +153,46 @@ class TextDialogViewTest : ComposeTest() {
         // Assert
         assertThat(dismissedRequest).isTrue()
     }
+
+    @Test
+    fun `should validate input and show error without confirming then confirm when valid`() = runComposeTest {
+        // Arrange
+        val setting = SettingValue.Text(
+            id = "text_setting",
+            title = { "Title" },
+            description = { null },
+            value = "initial",
+            transform = { it },
+            validate = { value -> if (value.isBlank()) "Required" else null },
+        )
+        var confirmed: SettingValue<*>? = null
+
+        // Act
+        setContentWithTheme {
+            TextDialogView(
+                setting = setting,
+                onConfirmClick = { confirmed = it },
+                onDismissClick = {},
+                onDismissRequest = {},
+            )
+        }
+
+        // Make it invalid (blank)
+        onNodeWithText("initial").performTextClearance()
+        onNodeWithTextIgnoreCase(DialogR.string.core_ui_setting_dialog_button_accept).performClick()
+
+        // Assert: error shown and not confirmed
+        onNodeWithText("Required").assertExists()
+        assertThat(confirmed == null).isTrue()
+
+        // Act: enter valid value and wait for debounce, then confirm
+        onNode(hasSetTextAction()).performTextInput("valid")
+        // Wait for VALIDATION_DEBOUNCE_DELAY to update confirm button enabled state
+        mainClock.advanceTimeBy(400L)
+        onNodeWithTextIgnoreCase(DialogR.string.core_ui_setting_dialog_button_accept).performClick()
+
+        // Assert: confirmed with new value
+        val result = confirmed as SettingValue.Text
+        assertThat(result.value).isEqualTo("valid")
+    }
 }
