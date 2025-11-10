@@ -20,13 +20,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.common.image.ImageWithOverlayCoordinate
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonFilled
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import app.k9mail.feature.onboarding.permissions.R
 import app.k9mail.feature.onboarding.permissions.ui.PermissionsContract.UiPermissionState
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 
 private val MAX_WIDTH = 500.dp
 

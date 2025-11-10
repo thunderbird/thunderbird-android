@@ -5,8 +5,8 @@ import androidx.compose.material.icons.outlined.AccountBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemes
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 
 @Composable
 @Preview(showBackground = true)

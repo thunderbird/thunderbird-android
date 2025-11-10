@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
 import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.image.FixedScaleImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
@@ -27,6 +26,7 @@ import app.k9mail.feature.funding.googleplay.ui.contribution.image.GoldenHearthS
 import app.k9mail.feature.funding.googleplay.ui.contribution.image.HearthSunburst
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 
 @Composable
 internal fun ContributionHeader(
