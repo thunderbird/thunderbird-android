@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodySmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.reflect.full.declaredMemberProperties
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.ui.catalog.ui.page.common.list.defaultItem
@@ -24,7 +25,7 @@ import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons as LegacyIcons
 
 fun LazyGridScope.iconItems() {
     sectionHeaderItem(
-        text = "Compose Icons",
+        text = "Icons",
     )
     sectionSubtitleItem(text = "Sizes")
     defaultItem {
@@ -54,6 +55,11 @@ fun LazyGridScope.iconItems() {
     getIconsFor(Icons.Filled)
     sectionSubtitleItem(text = "Outlined")
     getIconsFor(Icons.Outlined)
+
+    sectionHeaderItem(text = "Badge Icons")
+    sectionSubtitleItem(text = "Filled")
+    getIconsFor(BadgeIcons.Filled)
+
     sectionHeaderItem(text = "Legacy Icons")
     sectionSubtitleItem(text = "Filled")
     getLegacyIconsFor(LegacyIcons.Filled)
