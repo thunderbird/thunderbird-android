@@ -134,7 +134,7 @@ internal class GeneralSettingsBuilderTest {
     }
 
     @Test
-    fun `should include monogram setting when avatar is monogram and feature flag is enabled`() {
+    fun `should include monogram setting when avatar is monogram and feature flag is enabled and use description`() {
         // Arrange
         val builder = GeneralSettingsBuilder(
             resources = resources,
@@ -156,6 +156,7 @@ internal class GeneralSettingsBuilderTest {
         assertThat(monogramSetting).isNotNull()
         val textSetting = monogramSetting as SettingValue.Text
         assertThat(textSetting.value).isEqualTo("TB")
+        assertThat(textSetting.description()).isEqualTo(resources.monogramDescription())
     }
 
     @Test

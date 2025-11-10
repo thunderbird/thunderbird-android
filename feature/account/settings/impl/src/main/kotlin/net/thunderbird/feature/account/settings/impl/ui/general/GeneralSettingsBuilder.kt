@@ -74,6 +74,7 @@ internal class GeneralSettingsBuilder(
         return SettingValue.CompactSelectSingleOption(
             id = GeneralSettingId.AVATAR_OPTIONS,
             title = resources.avatarTitle,
+            description = resources.avatarDescription,
             value = selected,
             options = options,
         )
@@ -115,8 +116,8 @@ internal class GeneralSettingsBuilder(
         monogram: String,
     ): Setting = SettingValue.Text(
         id = GeneralSettingId.AVATAR_MONOGRAM,
-        title = resources.avatarOptionMonogram,
-        description = { null },
+        title = resources.monogramTitle,
+        description = resources.monogramDescription,
         icon = { null },
         value = monogram,
         transform = { it.uppercase() },

@@ -4,6 +4,7 @@
     <string name="account_settings_general_title">General Settings</string>
 
     <string name="account_settings_general_avatar_title">Avatar</string>
+    <string name="account_settings_general_avatar_description">Choose how your account avatar is displayed.</string>
     <string name="account_settings_general_avatar_option_monogram">Monogram</string>
     <string name="account_settings_general_avatar_option_image">Image</string>
     <string name="account_settings_general_avatar_option_icon">Icon</string>
@@ -16,7 +17,8 @@
     <string name="account_settings_general_color_title">Account color</string>
     <string name="account_settings_general_color_description">The accent color of this account used in folders and account lists.</string>
 
-    <string name="account_settings_general_avatar_monogram_title">Monogram</string>
+    <string name="account_settings_general_avatar_monogram_title">Avatar Monogram</string>
+    <string name="account_settings_general_avatar_monogram_description">The monogram used as your avatar.</string>
     <string name="account_settings_general_avatar_monogram_error_empty">Monogram cannot be empty</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram is too long</string>
 

@@ -34,6 +34,10 @@ internal class GeneralResourceProvider(
         context.getString(R.string.account_settings_general_avatar_title)
     }
 
+    override val avatarDescription: () -> String? = {
+        context.getString(R.string.account_settings_general_avatar_description)
+    }
+
     override val avatarOptionMonogram: () -> String = {
         context.getString(R.string.account_settings_general_avatar_option_monogram)
     }
@@ -62,6 +66,9 @@ internal class GeneralResourceProvider(
     }
     override val monogramTitle: () -> String = {
         context.getString(R.string.account_settings_general_avatar_monogram_title)
+    }
+    override val monogramDescription: () -> String? = {
+        context.getString(R.string.account_settings_general_avatar_monogram_description)
     }
     override val monogramEmptyError: () -> String = {
         context.getString(R.string.account_settings_general_avatar_monogram_error_empty)
