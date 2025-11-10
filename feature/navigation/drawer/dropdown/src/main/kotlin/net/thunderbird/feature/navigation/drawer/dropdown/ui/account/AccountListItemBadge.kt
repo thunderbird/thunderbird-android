@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalContext
 import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerItemBadge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.Star
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.labelForCount
 
 @Composable

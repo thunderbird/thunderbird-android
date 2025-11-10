@@ -17,7 +17,6 @@ import app.k9mail.core.ui.compose.designsystem.organism.drawer.NavigationDrawerI
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.dualtone.Warning
 import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount

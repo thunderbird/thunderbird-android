@@ -9,8 +9,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIconDefaults
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.Star
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.Star
+
+private val FAVOURITE_ICON_COLOR = Color(color = 0xFFFF8C00)
 
 @Composable
 fun FavouriteButtonIcon(
@@ -23,7 +23,7 @@ fun FavouriteButtonIcon(
         onClick = { onFavouriteChange(!favourite) },
         imageVector = if (favourite) Icons.Filled.Star else Icons.Outlined.Star,
         colors = ButtonIconDefaults.buttonIconColors(
-            contentColor = if (favourite) Color(color = 0xFFFF8C00) else MainTheme.colors.onSurface,
+            contentColor = if (favourite) FAVOURITE_ICON_COLOR else MainTheme.colors.onSurface,
         ),
         modifier = modifier.size(size),
     )

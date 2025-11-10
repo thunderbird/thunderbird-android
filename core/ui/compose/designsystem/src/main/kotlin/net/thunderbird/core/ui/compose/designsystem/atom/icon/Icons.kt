@@ -34,131 +34,92 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.ui.graphics.vector.ImageVector
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.Dot
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.FolderManaged
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.dualtone.DualToneWarningIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledDotIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledStarIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFolderManagedIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedOpenInNewIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedStarIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedWarningIcon
 
-// We're using getters so not all icons are loaded into memory as soon as one of the nested objects is accessed.
 /**
- * Collection of standard icons for the design system.
+ * Collection of standard icons for the design system using a 24x24 base grid.
  *
  * They are organized by style: [Filled], [Outlined], and [DualTone].
+ * It acts as a facade, allowing for a gradual transition from Material Icons to custom icons
+ * without requiring changes in consumer code.
+ *
+ * Icons are defined as `val` properties. Direct assignment is used as the underlying Material and custom icons
+ * are already efficiently cached singletons.
  */
 object Icons {
+
+    /**
+     * Icons with dual tone style.
+     */
+    object DualTone {
+        val Warning: ImageVector = DualToneWarningIcon
+    }
 
     /**
      * Icons with filled style.
      */
     object Filled {
-        val Cancel: ImageVector
-            get() = Icons.Filled.Cancel
-
-        val CheckCircle: ImageVector
-            get() = Icons.Filled.CheckCircle
-
-        val Dot: ImageVector
-            get() = Icons.Filled.Dot
+        val Cancel: ImageVector = Icons.Filled.Cancel
+        val CheckCircle: ImageVector = Icons.Filled.CheckCircle
+        val Dot: ImageVector = FilledDotIcon
+        val Star: ImageVector = FilledStarIcon
     }
 
     /**
      * Icons with outlined style.
      */
     object Outlined {
-        val AccountCircle: ImageVector
-            get() = Icons.Outlined.AccountCircle
+        val AccountCircle: ImageVector = Icons.Outlined.AccountCircle
+        val Add: ImageVector = Icons.Outlined.Add
+        val AllInbox: ImageVector = Icons.Outlined.AllInbox
+        val Archive: ImageVector = Icons.Outlined.Archive
+        val Attachment: ImageVector = Icons.Outlined.Attachment
+        val ArrowBack: ImageVector = Icons.AutoMirrored.Outlined.ArrowBack
 
-        val Add: ImageVector
-            get() = Icons.Outlined.Add
+        val Check: ImageVector = Icons.Outlined.Check
+        val CheckCircle: ImageVector = Icons.Outlined.CheckCircle
+        val ChevronLeft: ImageVector = Icons.Outlined.ChevronLeft
+        val ChevronRight: ImageVector = Icons.Outlined.ChevronRight
+        val Close: ImageVector = Icons.Outlined.Close
 
-        val AllInbox: ImageVector
-            get() = Icons.Outlined.AllInbox
+        val Delete: ImageVector = Icons.Outlined.Delete
+        val Drafts: ImageVector = Icons.Outlined.Drafts
 
-        val Archive: ImageVector
-            get() = Icons.Outlined.Archive
+        val ErrorOutline: ImageVector = Icons.Outlined.ErrorOutline
+        val ExpandMore: ImageVector = Icons.Outlined.ExpandMore
+        val ExpandLess: ImageVector = Icons.Outlined.ExpandLess
 
-        val Attachment: ImageVector
-            get() = Icons.Outlined.Attachment
+        val Folder: ImageVector = Icons.Outlined.Folder
+        val FolderManaged: ImageVector = OutlinedFolderManagedIcon
 
-        val ArrowBack: ImageVector
-            get() = Icons.AutoMirrored.Outlined.ArrowBack
+        val Inbox: ImageVector = Icons.Outlined.Inbox
+        val Info: ImageVector = Icons.Outlined.Info
 
-        val KeyboardArrowDown: ImageVector
-            get() = Icons.Outlined.KeyboardArrowDown
+        val KeyboardArrowDown: ImageVector = Icons.Outlined.KeyboardArrowDown
+        val KeyboardArrowUp: ImageVector = Icons.Outlined.KeyboardArrowUp
 
-        val KeyboardArrowUp: ImageVector
-            get() = Icons.Outlined.KeyboardArrowUp
+        val Menu: ImageVector = Icons.Outlined.Menu
 
-        val Check: ImageVector
-            get() = Icons.Outlined.Check
+        val OpenInNew: ImageVector = OutlinedOpenInNewIcon
+        val Outbox: ImageVector = Icons.Filled.Outbox
 
-        val CheckCircle: ImageVector
-            get() = Icons.Outlined.CheckCircle
+        val Security: ImageVector = Icons.Outlined.Security
+        val Send: ImageVector = Icons.AutoMirrored.Outlined.Send
+        val Settings: ImageVector = Icons.Outlined.Settings
+        val Star: ImageVector = OutlinedStarIcon
+        val Sync: ImageVector = Icons.Outlined.Sync
 
-        val ChevronLeft: ImageVector
-            get() = Icons.Outlined.ChevronLeft
+        val Report: ImageVector = Icons.Outlined.Report
 
-        val ChevronRight: ImageVector
-            get() = Icons.Outlined.ChevronRight
+        val Visibility: ImageVector = Icons.Outlined.Visibility
+        val VisibilityOff: ImageVector = Icons.Filled.VisibilityOff
 
-        val Close: ImageVector
-            get() = Icons.Outlined.Close
-
-        val Delete: ImageVector
-            get() = Icons.Outlined.Delete
-
-        val Drafts: ImageVector
-            get() = Icons.Outlined.Drafts
-
-        val ErrorOutline: ImageVector
-            get() = Icons.Outlined.ErrorOutline
-
-        val ExpandMore: ImageVector
-            get() = Icons.Outlined.ExpandMore
-
-        val ExpandLess: ImageVector
-            get() = Icons.Outlined.ExpandLess
-
-        val Folder: ImageVector
-            get() = Icons.Outlined.Folder
-
-        val Inbox: ImageVector
-            get() = Icons.Outlined.Inbox
-
-        val Info: ImageVector
-            get() = Icons.Outlined.Info
-
-        val FolderManaged: ImageVector
-            get() = Icons.Outlined.FolderManaged
-
-        val Menu: ImageVector
-            get() = Icons.Outlined.Menu
-
-        val Outbox: ImageVector
-            get() = Icons.Filled.Outbox
-
-        val Security: ImageVector
-            get() = Icons.Outlined.Security
-
-        val Send: ImageVector
-            get() = Icons.AutoMirrored.Outlined.Send
-
-        val Settings: ImageVector
-            get() = Icons.Outlined.Settings
-
-        val Sync: ImageVector
-            get() = Icons.Outlined.Sync
-
-        val Report: ImageVector
-            get() = Icons.Outlined.Report
-
-        val Visibility: ImageVector
-            get() = Icons.Outlined.Visibility
-
-        val VisibilityOff: ImageVector
-            get() = Icons.Filled.VisibilityOff
+        val Warning: ImageVector = OutlinedWarningIcon
     }
-
-    /**
-     * Icons with dual tone style.
-     */
-    object DualTone
 }

@@ -23,8 +23,8 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.ExperimentalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.Star
 
 private class MessageItemPrevParamCol : CollectionPreviewParameterProvider<MessageItemPrevParams>(
     collection = listOf(
@@ -142,12 +142,11 @@ private fun PreviewCompact(
             subject = { TextLabelLarge(text = params.subject) },
             preview = params.preview,
             action = {
-                IconButton(
-                    onClick = { },
+                FavouriteButtonIcon(
+                    favourite = true,
+                    onFavouriteChange = { },
                     modifier = Modifier.size(MainTheme.sizes.iconLarge),
-                ) {
-                    Image(imageVector = Icons.Filled.Star, contentDescription = null)
-                }
+                )
             },
             receivedAt = params.receivedAt,
             onClick = { },
