@@ -12,8 +12,6 @@ import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.inputStream
 import java.io.File
-import net.thunderbird.core.featureflag.FeatureFlagResult
-import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import okio.buffer
 import okio.sink
 import okio.source
@@ -45,21 +43,16 @@ class HtmlCleaner : CliktCommand() {
     }
 
     private fun cleanHtml(html: String): String {
+        val defaultNamespaceClassName = if (app == App.THUNDERBIRD) {
+            "net_thunderbird_android"
+        } else {
+            "com_fsck_k9"
+        }
         val htmlProcessor = HtmlProcessor(
-            featureFlagProvider = { FeatureFlagResult.Enabled },
-            cssClassNameProvider = object : CssClassNameProvider {
-                override val defaultNamespaceClassName: String
-                    get() = if (app == App.THUNDERBIRD) {
-                        "net_thunderbird_android"
-                    } else {
-                        "com_fsck_k9"
-                    }
-                override val rootClassName: String = "${defaultNamespaceClassName}__message-viewer"
-                override val mainContentClassName: String = "${defaultNamespaceClassName}__main-content"
-                override val plainTextMessagePreClassName: String =
-                    "${defaultNamespaceClassName}__plain-text-message-pre"
-                override val signatureClassName: String = "${defaultNamespaceClassName}__signature"
-            },
+            customClasses = setOf(
+                "${defaultNamespaceClassName}__message-viewer",
+                "${defaultNamespaceClassName}__main-content",
+            ),
             htmlHeadProvider = object : HtmlHeadProvider {
                 override val headHtml = """<meta name="viewport" content="width=device-width"/>"""
             },

@@ -9,8 +9,6 @@ application {
 }
 
 dependencies {
-    implementation(projects.core.featureflag)
-    implementation(projects.feature.mail.message.reader.api)
     implementation(projects.library.htmlCleaner)
 
     implementation(libs.clikt)
