@@ -30,20 +30,20 @@ internal class GeneralResourceProvider(
         )
     }
 
-    override val profileIndicatorTitle: () -> String = {
-        context.getString(R.string.account_settings_general_profile_indicator_title)
+    override val avatarTitle: () -> String = {
+        context.getString(R.string.account_settings_general_avatar_title)
     }
 
-    override val profileIndicatorMonogram: () -> String = {
-        context.getString(R.string.account_settings_general_profile_indicator_monogram)
+    override val avatarOptionMonogram: () -> String = {
+        context.getString(R.string.account_settings_general_avatar_option_monogram)
     }
 
-    override val profileIndicatorImage: () -> String = {
-        context.getString(R.string.account_settings_general_profile_indicator_image)
+    override val avatarOptionImage: () -> String = {
+        context.getString(R.string.account_settings_general_avatar_option_image)
     }
 
-    override val profileIndicatorIcon: () -> String = {
-        context.getString(R.string.account_settings_general_profile_indicator_icon)
+    override val avatarOptionIcon: () -> String = {
+        context.getString(R.string.account_settings_general_avatar_option_icon)
     }
 
     override val nameTitle: () -> String = {
@@ -61,13 +61,13 @@ internal class GeneralResourceProvider(
         context.getString(R.string.account_settings_general_name_error_too_long)
     }
     override val monogramTitle: () -> String = {
-        context.getString(R.string.account_settings_general_monogram_title)
+        context.getString(R.string.account_settings_general_avatar_monogram_title)
     }
     override val monogramEmptyError: () -> String = {
-        context.getString(R.string.account_settings_general_monogram_error_empty)
+        context.getString(R.string.account_settings_general_avatar_monogram_error_empty)
     }
     override val monogramTooLongError: () -> String = {
-        context.getString(R.string.account_settings_general_monogram_error_too_long)
+        context.getString(R.string.account_settings_general_avatar_monogram_error_too_long)
     }
 
     override val colorTitle: () -> String = {

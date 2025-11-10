@@ -15,6 +15,12 @@ internal class FakeGeneralResourceProvider : ResourceProvider.GeneralResourcePro
         avatar: Avatar?,
     ): @Composable ((Modifier) -> Unit) = { }
 
+    override val avatarTitle: () -> String = { "Avatar" }
+    override val avatarDescription: () -> String? = { "Choose avatar type" }
+    override val avatarOptionMonogram: () -> String = { "ProfileIndicatorMonogram" }
+    override val avatarOptionImage: () -> String = { "ProfileIndicatorImage" }
+    override val avatarOptionIcon: () -> String = { "ProfileIndicatorIcon" }
+
     override val nameTitle: () -> String = { "Name" }
     override val nameDescription: () -> String? = { null }
     override val nameIcon: () -> ImageVector? = { null }
@@ -29,9 +35,4 @@ internal class FakeGeneralResourceProvider : ResourceProvider.GeneralResourcePro
     override val colorDescription: () -> String? = { null }
     override val colorIcon: () -> ImageVector? = { null }
     override val colors: ImmutableList<Int> = persistentListOf(0xFF0000, 0x00FF00, 0x0000FF)
-
-    override val profileIndicatorIcon: () -> String = { "ProfileIndicatorIcon" }
-    override val profileIndicatorImage: () -> String = { "ProfileIndicatorImage" }
-    override val profileIndicatorMonogram: () -> String = { "ProfileIndicatorMonogram" }
-    override val profileIndicatorTitle: () -> String = { "Profile Indicator" }
 }
