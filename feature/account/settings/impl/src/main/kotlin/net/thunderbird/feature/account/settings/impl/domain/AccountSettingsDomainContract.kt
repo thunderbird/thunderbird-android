@@ -53,6 +53,7 @@ internal interface AccountSettingsDomainContract {
             ): @Composable (Modifier) -> Unit
 
             val avatarTitle: () -> String
+            val avatarDescription: () -> String?
             val avatarOptionMonogram: () -> String
             val avatarOptionImage: () -> String
             val avatarOptionIcon: () -> String
@@ -66,6 +67,7 @@ internal interface AccountSettingsDomainContract {
             val nameTooLongError: () -> String
 
             val monogramTitle: () -> String
+            val monogramDescription: () -> String?
             val monogramEmptyError: () -> String
             val monogramTooLongError: () -> String
 

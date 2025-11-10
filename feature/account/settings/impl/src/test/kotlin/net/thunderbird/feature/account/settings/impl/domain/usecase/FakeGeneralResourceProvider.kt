@@ -22,12 +22,13 @@ internal class FakeGeneralResourceProvider : ResourceProvider.GeneralResourcePro
     override val avatarOptionIcon: () -> String = { "ProfileIndicatorIcon" }
 
     override val nameTitle: () -> String = { "Name" }
-    override val nameDescription: () -> String? = { null }
+    override val nameDescription: () -> String? = { "The name associated with your account." }
     override val nameIcon: () -> ImageVector? = { null }
 
     override val nameEmptyError: () -> String = { "Name cannot be empty" }
     override val nameTooLongError: () -> String = { "Name is too long" }
     override val monogramTitle: () -> String = { "Monogram" }
+    override val monogramDescription: () -> String? = { "Enter two-letter initials to use as your avatar." }
     override val monogramEmptyError: () -> String = { "Monogram cannot be empty" }
     override val monogramTooLongError: () -> String = { "Monogram is too long" }
 
