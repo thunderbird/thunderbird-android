@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Manual Release (historical) - Thunderbird for Android - Developer Documentation</title>
+        <title>Release Testing Checklist - Thunderbird for Android - Developer Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -147,7 +147,7 @@
                         <a href="https://github.com/thunderbird/thunderbird-android" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./release/HISTORICAL_RELEASE.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                        <a href="https://github.com/thunderbird/thunderbird-android/edit/main/./release/testing-checklist.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -248,351 +248,345 @@
 }
 
 </style>
-<h1 id="create-k-9-mail-releases"><a class="header" href="#create-k-9-mail-releases">Create K-9 Mail releases</a></h1>
-<div class="warning">
-This document contains the historical manual release process for K-9 Mail. Please use the <a href="AUTOMATION.html">automated process</a> instead.
-We're keeping this around in case we need to do a manual release.
-</div>
-<h2 id="one-time-setup"><a class="header" href="#one-time-setup">One-time setup</a></h2>
-<ol>
-<li>Create a <code>.signing</code> folder in the root of the Git repository, if it doesn’t exist yet.</li>
-<li>Download the <code>k9-release-signing.jks</code> and <code>k9.release.signing.properties</code> files from 1Password and place them in the <code>.signing</code> folder.</li>
-</ol>
-<p>Example <code>&lt;app&gt;.&lt;releaseType&gt;.signing.properties</code> file:</p>
-<pre><code class="language-properties">&lt;app&gt;.&lt;releaseType&gt;.storeFile=&lt;path to keystore "../.signing/k9mail.jks"&gt;
-&lt;app&gt;.&lt;releaseType&gt;.storePassword=&lt;storePassword&gt;
-&lt;app&gt;.&lt;releaseType&gt;.keyAlias=&lt;keyAlias&gt;
-&lt;app&gt;.&lt;releaseType&gt;.keyPassword=&lt;keyPassword&gt;
-</code></pre>
+<h3 id="release-manual-testing-checklist"><a class="header" href="#release-manual-testing-checklist">Release Manual Testing Checklist</a></h3>
+<p>Purpose</p>
 <ul>
-<li><code>&lt;app&gt;</code> is the short name of the app, e.g. <code>k9</code></li>
-<li><code>&lt;releaseType&gt;</code> is the type of release, e.g. <code>release</code></li>
+<li>Ensure consistent, repeatable pre-release validation across core areas: installation/upgrade, UI/UX, functionality regression, performance, connectivity, and security/privacy.</li>
+<li>Provide a short “Smoke” run and a full “Release” run.</li>
 </ul>
-<h3 id="one-time-setup-for-f-droid-builds"><a class="header" href="#one-time-setup-for-f-droid-builds">One-time setup for F-Droid builds</a></h3>
-<ol>
-<li>
-<p>Install <em>fdroidserver</em> by following
-the <a href="https://f-droid.org/docs/Installing_the_Server_and_Repo_Tools" title="" target="_blank">installation instructions</a>.</p>
-<ol>
-<li>On MacOS, it’s best to install the latest version from source, because the version in Homebrew has some issues.
-<ol>
-<li>
-<p>Install the android command line tools if not available already.</p>
-<pre><code class="language-shell">brew install --cask android-commandlinetools
-</code></pre>
-</li>
-<li>
-<p>Install latest <em>fdroidserver</em> from source:</p>
-<pre><code class="language-shell">python -m venv fdroidserver-env
-source fdroidserver-env/bin/activate
-pip install git+https://gitlab.com/fdroid/fdroidserver.git
-</code></pre>
-</li>
-<li>
-<p>To use <em>fdroidserver</em> from the command line, you need to activate the virtual environment before each use:</p>
-<pre><code class="language-shell">source fdroidserver-env/bin/activate
-</code></pre>
-</li>
-<li>
-<p>To deactivate the virtual environment:</p>
-<pre><code class="language-shell">deactivate
-</code></pre>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>
-<p><a href="https://gitlab.com/users/sign_up" title="" target="_blank">Sign up for a Gitlab account</a> and fork
-the <a href="https://gitlab.com/fdroid/fdroiddata" title="" target="_blank">fdroiddata</a> repository.</p>
-</li>
-<li>
-<p>Clone your fork of the <em>fdroiddata</em> repository.</p>
-</li>
-</ol>
-<h2 id="release-a-beta-version"><a class="header" href="#release-a-beta-version">Release a beta version</a></h2>
-<ol>
-<li>
-<p>Update versionCode and versionName in <code>app-k9mail/build.gradle.kts</code></p>
-</li>
-<li>
-<p>Create change log entries in</p>
+<p>When to use</p>
 <ul>
-<li><code>app-k9mail/src/main/res/raw/changelog_master.xml</code></li>
-<li><code>app-metadata/com.fsck.k9/en-US/changelogs/${versionCode}.txt</code>
-Use past tense. Try to keep them high level. Focus on the user (experience).</li>
+<li>Before every Beta/Production release</li>
+<li>After high‑risk feature merges</li>
+</ul>
+<p>Test environments</p>
+<ul>
+<li>Devices: At least one low-end and one mid/high-end device; 1 emulator</li>
+<li>OS versions: Last 3 major Android versions supported + Lowest supported (API 21)</li>
+<li>Network: Wi‑Fi, LTE/3G, Offline/Airplane; captive portal if available</li>
+<li>Accounts: At least 2 IMAP accounts (different providers), 1 POP3 if supported; one account with many messages/folders</li>
+<li>Locales: English + one non‑English (RTL if possible)</li>
+<li>Themes: Light and Dark</li>
+</ul>
+<p>Data prerequisites</p>
+<ul>
+<li>Test mailboxes with folders: Inbox, Sent, Drafts, Trash, Spam, Archive, custom folders</li>
+<li>A few threads with 50+ messages for performance/scroll tests</li>
+<li>At least one account configured with push (if supported)</li>
+</ul>
+<p>How to record results</p>
+<ul>
+<li>Mark each item Pass/Fail/Blocked/Not Applicable</li>
+<li>Record build/commit, device, OS, account provider, network type</li>
+<li>File defects with clear reproduction steps, logs, and screenshots</li>
+</ul>
+<h2 id="quick-smoke-1525-min"><a class="header" href="#quick-smoke-1525-min">Quick Smoke (15–25 min)</a></h2>
+<ol>
+<li>Install/Launch
+<ul>
+<li>Fresh install: App installs and launches without crash</li>
+<li>First‑run: Onboarding visible, no ANRs</li>
 </ul>
 </li>
-<li>
-<p>Update the metadata link to point to K-9 Mail’s data:
-<code>ln --symbolic --no-dereference --force app-metadata/com.fsck.k9 metadata</code></p>
-</li>
-<li>
-<p>Commit the changes. Message: “Version $versionName”</p>
-</li>
-<li>
-<p>Run <code>./gradlew clean :app-k9mail:assembleRelease --no-build-cache --no-configuration-cache</code></p>
-</li>
-<li>
-<p>Update an existing installation to make sure the app is signed with the proper key and runs on a real device.</p>
-<pre><code class="language-shell">adb install -r app-k9mail/build/outputs/apk/release/app-k9mail-release.apk
-</code></pre>
-</li>
-<li>
-<p>Tag as $versionName, e.g. <code>6.508</code></p>
-</li>
-<li>
-<p>Copy <code>app-k9mail/build/outputs/apk/release/app-k9mail-release.apk</code> as <code>k9-${versionName}.apk</code> to Google Drive (MZLA
-Team &gt; K9 &gt; APKs)</p>
-</li>
-<li>
-<p>Change versionName in <code>app-k9mail/build.gradle.kts</code> to next version name followed by <code>-SNAPSHOT</code></p>
-</li>
-<li>
-<p>Commit the changes. Message: “Prepare for version $newVersionName”</p>
-</li>
-<li>
-<p>Update <code>gh-pages</code> branch with the new change log</p>
-</li>
-<li>
-<p>Push <code>main</code> branch</p>
-</li>
-<li>
-<p>Push tags</p>
-</li>
-<li>
-<p>Push <code>gh-pages</code> branch</p>
-</li>
-</ol>
-<h3 id="create-release-on-github"><a class="header" href="#create-release-on-github">Create release on GitHub</a></h3>
-<ol>
-<li>Go to https://github.com/thunderbird/thunderbird-android/tags and select the appropriate tag</li>
-<li>Click “Create release from tag”</li>
-<li>Fill out the form
+<li>Account Setup (1 IMAP)
 <ul>
-<li>Click “Generate release notes”</li>
-<li>Replace contents under “What’s changed” with change log entries</li>
-<li>Add GitHub handles in parentheses to change log entries</li>
-<li>If necessary, add another entry “Internal changes” (or similar) so people who contributed changes outside of the
-entries mentioned in the change log can be mentioned via GitHub handle.</li>
-<li>Attach the APK</li>
-<li>Select “Set as a pre-release”</li>
-<li>Click “Publish release”</li>
+<li>Manual or auto‑config completes; inbox loads</li>
+</ul>
+</li>
+<li>UI Smoke
+<ul>
+<li>Navigate: Account list → Inbox → Message → Back works</li>
+<li>Compose: Create draft, send to self, appears in Sent and then Inbox</li>
+</ul>
+</li>
+<li>Sync/Refresh
+<ul>
+<li>Pull‑to‑refresh fetches new mail; background sync triggers at expected times</li>
+</ul>
+</li>
+<li>Notifications
+<ul>
+<li>Receive mail notification; tap opens message; mark as read behavior correct</li>
+</ul>
+</li>
+<li>Basic Actions
+<ul>
+<li>Read, star/flag, delete to Trash; undo/restore if offered</li>
+</ul>
+</li>
+<li>Performance quick check
+<ul>
+<li>App cold start acceptable, scrolling in Inbox smooth</li>
 </ul>
 </li>
 </ol>
-<h3 id="create-release-on-f-droid"><a class="header" href="#create-release-on-f-droid">Create release on F-Droid</a></h3>
-<ol>
-<li>
-<p>Fetch the latest changes from the <em>fdroiddata</em> repository.</p>
-</li>
-<li>
-<p>Switch to a new branch in your copy of the <em>fdroiddata</em> repository.</p>
-</li>
-<li>
-<p>Edit <code>metadata/com.fsck.k9.yml</code> to create a new entry for the version you want to release. Usually it’s copy &amp; paste
-of the previous entry and adjusting <code>versionName</code>, <code>versionCode</code>, and <code>commit</code> (use the tag name).
-Leave <code>CurrentVersion</code> and <code>CurrentVersionCode</code> unchanged. Those specify which version is the stable/recommended
-build.</p>
-<p>Example:</p>
-<pre><code class="language-yaml">- versionName: "${versionName}"
-  versionCode: ${versionCode}
-  commit: "${tagName}"
-  subdir: app-k9mail
-  gradle:
-    - yes
-  scandelete:
-    - build-plugin/build
-</code></pre>
-</li>
-<li>
-<p>Commit the changes. Message: “Update K-9 Mail to $newVersionName (beta)”</p>
-</li>
-<li>
-<p>Run <code>fdroid build --latest com.fsck.k9</code> to build the project using F-Droid’s toolchain.</p>
-</li>
-<li>
-<p>Push the changes to your fork of the <em>fdroiddata</em> repository.</p>
-</li>
-<li>
-<p>Open a merge request on Gitlab. (The message from the server after the push in the previous step should contain a
-URL)</p>
-</li>
-<li>
-<p>Select the <em>App update</em> template and fill it out.</p>
-</li>
-<li>
-<p>Create merge request and the F-Droid team will do the rest.</p>
-</li>
-</ol>
-<h3 id="create-release-on-google-play"><a class="header" href="#create-release-on-google-play">Create release on Google Play</a></h3>
-<ol>
-<li>Go to the <a href="https://play.google.com/console/" title="" target="_blank">Google Play Console</a></li>
-<li>Select the <em>K-9 Mail</em> app</li>
-<li>Click on <em>Open testing</em> in the left sidebar</li>
-<li>Click on <em>Create new release</em></li>
-<li>Upload the APK to <em>App bundles</em></li>
-<li>Fill out Release name (e.g. “$versionCode ($versionName)”)</li>
-<li>Fill out Release notes (copy from <code>app-metadata/com.fsck.k9/en-US/changelogs/${versionCode}.txt</code>)</li>
-<li>Click <em>Next</em></li>
-<li>Review the release</li>
-<li>Configure a full rollout for beta versions</li>
-<li>On the Publishing overview page, click <em>Send change for review</em></li>
-<li>Wait for the review to complete</li>
-<li>In case of a rejection, fix the issues and repeat the process</li>
-</ol>
-<h2 id="release-a-stable-version"><a class="header" href="#release-a-stable-version">Release a stable version</a></h2>
-<p>When the team decides the <code>main</code> branch is stable enough and it’s time to release a new stable version, create a new
-maintenance branch (off <code>main</code>) using the desired version number with the last two digits dropped followed by <code>-MAINT</code>.
-Example: <code>6.8-MAINT</code> when the first stable release is K-9 Mail 6.800.</p>
-<p>Ideally the first stable release contains no code changes when compared to the last beta version built from <code>main</code>.
-That way the new release won’t contain any changes that weren’t exposed to user testing in a beta version before.</p>
-<ol>
-<li>
-<p>Switch to the appropriate maintenance branch, e.g. <code>6.8-MAINT</code></p>
-</li>
-<li>
-<p>Update versionCode and versionName in <code>app-k9mail/build.gradle.kts</code> (stable releases use an even digit after the
-dot, e.g. <code>5.400</code>, <code>6.603</code>)</p>
-</li>
-<li>
-<p>Create change log entries in</p>
+<h2 id="full-release-checklist"><a class="header" href="#full-release-checklist">Full Release Checklist</a></h2>
+<h3 id="a-installation-and-upgrade"><a class="header" href="#a-installation-and-upgrade">A. Installation and Upgrade</a></h3>
+<p>Top-level verification</p>
 <ul>
-<li><code>app-k9mail/src/main/res/raw/changelog_master.xml</code></li>
-<li><code>app-k9mail/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt</code>
-Use past tense. Try to keep them high level. Focus on the user (experience).</li>
+<li>Fresh Install — App installs and runs correctly on a fresh install
+<ul>
+<li>Installs and launches without crash</li>
+<li>Permissions requested only when needed; rationale shown</li>
+<li>First‑run experience shows expected screens/toggles</li>
 </ul>
 </li>
-<li>
-<p>Update the metadata link to point to K-9 Mail’s data:
-<code>ln --symbolic --no-dereference --force app-metadata/com.fsck.k9 metadata</code></p>
-</li>
-<li>
-<p>Commit the changes. Message: “Version $versionName”</p>
-</li>
-<li>
-<p>Run <code>./gradlew clean :app-k9mail:assembleRelease --no-build-cache --no-configuration-cache</code></p>
-</li>
-<li>
-<p>Update an existing installation to make sure the app is signed with the proper key and runs on a real device.</p>
-<pre><code class="language-shell">adb install -r app-k9mail/build/outputs/apk/release/app-k9mail-release.apk
-</code></pre>
-</li>
-<li>
-<p>Tag as $versionName, e.g. <code>6.800</code></p>
-</li>
-<li>
-<p>Copy <code>app-k9mail/build/outputs/apk/release/app-k9mail-release.apk</code> as <code>k9-${versionName}.apk</code> to Google Drive (MZLA
-Team &gt; K9 &gt; APKs)</p>
-</li>
-<li>
-<p>Update <code>gh-pages</code> branch with the new change log. Create a new file if it’s the first stable release in a series.</p>
-</li>
-<li>
-<p>Push maintenance branch</p>
-</li>
-<li>
-<p>Push tags</p>
-</li>
-<li>
-<p>Push <code>gh-pages</code> branch</p>
-</li>
-</ol>
-<h3 id="create-release-on-github-1"><a class="header" href="#create-release-on-github-1">Create release on GitHub</a></h3>
-<ol>
-<li>Go to https://github.com/thunderbird/thunderbird-android/tags and select the appropriate tag</li>
-<li>Click “Create release from tag”</li>
-<li>Fill out the form
+<li>Upgrade to Production — App upgrades correctly to the latest production version (only for releases)
 <ul>
-<li>Click “Generate release notes”</li>
-<li>Replace contents under “What’s changed” with change log entries</li>
-<li>Add GitHub handles in parentheses to change log entries</li>
-<li>If necessary, add another entry “Internal changes” (or similar) so people who contributed changes outside of the
-entries mentioned in the change log can be mentioned via GitHub handle.</li>
-<li>Attach the APK</li>
-<li>Select “Set as the latest release”</li>
-<li>Click “Publish release”</li>
+<li>Upgrade to latest production build preserves accounts, settings, and local cache</li>
+<li>No duplicate notifications or migration errors on first launch</li>
 </ul>
 </li>
-</ol>
-<h3 id="create-release-on-f-droid-1"><a class="header" href="#create-release-on-f-droid-1">Create release on F-Droid</a></h3>
-<ol>
-<li>
-<p>Fetch the latest changes from the <em>fdroiddata</em> repository.</p>
-</li>
-<li>
-<p>Switch to a new branch in your copy of the <em>fdroiddata</em> repository.</p>
-</li>
-<li>
-<p>Edit <code>metadata/com.fsck.k9.yml</code> to create a new entry for the version you want to release. Usually it’s copy &amp; paste
-of the previous entry and adjusting <code>versionName</code>, <code>versionCode</code>, and <code>commit</code> (use the tag name).
-Change <code>CurrentVersion</code> and <code>CurrentVersionCode</code> to the new values, making this the new stable/recommended build.</p>
-<p>Example:</p>
-<pre><code class="language-yaml">- versionName: "${versionName}"
-  versionCode: ${versionCode}
-  commit: "${tagName}"
-  subdir: app-k9mail
-  gradle:
-    - yes
-  scandelete:
-    - build-plugin/build
-</code></pre>
-</li>
-<li>
-<p>Commit the changes. Message: “Update K-9 Mail to $newVersionName”</p>
-</li>
-<li>
-<p>Run <code>fdroid build --latest com.fsck.k9</code> to build the project using F-Droid’s toolchain.</p>
-</li>
-<li>
-<p>Push the changes to your fork of the <em>fdroiddata</em> repository.</p>
-</li>
-<li>
-<p>Open a merge request on Gitlab. (The message from the server after the push in the previous step should contain a
-URL)</p>
-</li>
-<li>
-<p>Select the <em>App update</em> template and fill it out.</p>
-</li>
-<li>
-<p>Create merge request and the F-Droid team will do the rest.</p>
-</li>
-</ol>
-<h3 id="create-release-on-google-play-1"><a class="header" href="#create-release-on-google-play-1">Create release on Google Play</a></h3>
-<ol>
-<li>Go to the <a href="https://play.google.com/console/" title="" target="_blank">Google Play Console</a></li>
-<li>Select the <em>K-9 Mail</em> app</li>
-<li>Click on <em>Production</em> in the left sidebar</li>
-<li>Click on <em>Create new release</em></li>
-<li>Upload the APK to <em>App bundles</em></li>
-<li>Fill out Release name (e.g. “$versionCode ($versionName)”)</li>
-<li>Fill out Release notes (copy from <code>app-k9mail/fastlane/metadata/android/en-US/changelogs/${versionCode}.txt</code>)</li>
-<li>Click <em>Next</em></li>
-<li>Review the release</li>
-<li>Start with a staged rollout (usually 20%)</li>
-<li>On the Publishing overview page, click <em>Send change for review</em></li>
-<li>Wait for the review to complete</li>
-<li>In case of a rejection, fix the issues and repeat the process</li>
-<li>Once the review is complete, monitor the staged rollout for issues and increase the rollout percentage as necessary</li>
-</ol>
-<h2 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h2>
-<h3 id="f-droid"><a class="header" href="#f-droid">F-Droid</a></h3>
-<p>If the app doesn’t show up in the F-Droid client:</p>
+<li>Upgrade to Beta — App upgrades correctly to the latest beta version
 <ul>
-<li>Check the build cycle, maybe you just missed it and it will be available in the next cycle. (The cycle is usually every 5 days.)</li>
-<li>Check <a href="https://fdroidstatus.org/status/fdroid" title="" target="_blank">F-Droid Status</a> for any issues.</li>
-<li>Check <a href="https://monitor.f-droid.org/builds" title="" target="_blank">F-Droid Monitor</a> for any errors mentioning <code>com.fsck.k9</code>.</li>
+<li>Upgrade to latest beta build preserves accounts, settings, and local cache</li>
+<li>Feature flags and migrations behave correctly when upgrading to beta</li>
+<li>No duplicate notifications or migration errors on first launch</li>
+</ul>
+</li>
+<li>Backup/Restore
+<ul>
+<li>Backup 1 account setting, delete account from app, restore from backup; account usable</li>
+<li>Backup all accounts, uninstall/reinstall, restore settings; accounts usable</li>
+</ul>
+</li>
+<li>Settings Import via QR code (only Thunderbird)
+<ul>
+<li>From first-run flow, choose “Import settings”; scan a valid QR; settings are imported/applied or account is added/usable</li>
+<li>From Settings &gt; Import, choose “Scan QR code”; scan a valid QR; settings are imported/applied or account is added/usable</li>
+<li>Try an invalid or expired QR; a clear error is shown and the app does not crash</li>
+</ul>
+</li>
+</ul>
+<h3 id="b-account-management"><a class="header" href="#b-account-management">B. Account Management</a></h3>
+<ul>
+<li>Add accounts
+<ul>
+<li>Auto‑config works for common providers; fallback to manual works</li>
+<li>Validation errors are clear (username/password/server settings)</li>
+</ul>
+</li>
+<li>Multiple accounts
+<ul>
+<li>Switch accounts; titles/subtitles update correctly</li>
+<li>Unified Inbox visibility matches setting and number of accounts</li>
+</ul>
+</li>
+<li>Delete account
+<ul>
+<li>Deleting current account transitions correctly (Unified Inbox if enabled and &gt;1; else default account)</li>
+<li>No crash during or after deletion; capability checks safe</li>
+</ul>
+</li>
+<li>Special folders
+<ul>
+<li>Drafts/Sent/Archive/Trash/Spam configured/created as needed</li>
+</ul>
+</li>
+</ul>
+<h2 id="c-core-mail-flows-per-account"><a class="header" href="#c-core-mail-flows-per-account">C. Core Mail Flows (per account)</a></h2>
+<ul>
+<li>Receiving
+<ul>
+<li>New message appears after push/refresh; badge/notification updates</li>
+</ul>
+</li>
+<li>Reading
+<ul>
+<li>Open message; images loading policy obeyed; external images prompt if applicable</li>
+</ul>
+</li>
+<li>Compose/Reply/Forward
+<ul>
+<li>From identity correct; quoted content; signatures; attachments; send succeeds</li>
+</ul>
+</li>
+<li>Drafts
+<ul>
+<li>Auto‑save draft; edit and send later</li>
+</ul>
+</li>
+<li>Move/Copy
+<ul>
+<li>Move/copy messages between folders; operation succeeds and reflects in UI</li>
+</ul>
+</li>
+<li>Search
+<ul>
+<li>Local search by sender/subject/body; filters; results correct; remote search if supported</li>
+</ul>
+</li>
+<li>Attachments
+<ul>
+<li>Download, open with external app, share; large attachment handling</li>
+</ul>
+</li>
+</ul>
+<h2 id="d-ui-and-ux"><a class="header" href="#d-ui-and-ux">D. UI and UX</a></h2>
+<ul>
+<li>Navigation
+<ul>
+<li>Drawer/tabs/back behavior consistent; deep linking from notifications</li>
+</ul>
+</li>
+<li>Message List view
+<ul>
+<li>Threaded/flat messages shown; selection mode; swipe actions (customizable to check archive/delete)</li>
+</ul>
+</li>
+<li>Message view
+<ul>
+<li>Rendering of HTML/plain text; long messages; quoted text expansion; link handling</li>
+<li>Image loading per settings; attachment previews</li>
+</ul>
+</li>
+<li>Theming and localization
+<ul>
+<li>Light/Dark theme correctness; typography and icons;</li>
+<li>Non‑English locale strings fit and are translated; RTL layout alignment</li>
+</ul>
+</li>
+<li>Accessibility
+<ul>
+<li>TalkBack announcements; content descriptions present</li>
+<li>Focus order logical; dynamic type/Font scale respected</li>
+</ul>
+</li>
+</ul>
+<h2 id="e-performance-and-resource-use"><a class="header" href="#e-performance-and-resource-use">E. Performance and Resource Use</a></h2>
+<ul>
+<li>Startup performance
+<ul>
+<li>Cold start time acceptable on low‑end device</li>
+</ul>
+</li>
+<li>Scrolling and list operations
+<ul>
+<li>Smooth scrolling in Inbox with 1000+ items; no jank during load more</li>
+</ul>
+</li>
+<li>Sync performance
+<ul>
+<li>Time to first sync for a fresh account reasonable; no repeated retries</li>
+</ul>
+</li>
+<li>Resource usage
+<ul>
+<li>No abnormal CPU usage when idle; memory stable during long scrolling; cache does not balloon unexpectedly</li>
+</ul>
+</li>
+</ul>
+<h2 id="f-connectivity-and-background-behavior"><a class="header" href="#f-connectivity-and-background-behavior">F. Connectivity and Background Behavior</a></h2>
+<ul>
+<li>Network transitions
+<ul>
+<li>Wi‑Fi → Cellular → Offline: app handles gracefully; shows appropriate banners/status</li>
+</ul>
+</li>
+<li>Offline usage
+<ul>
+<li>Read previously synced messages; queued actions (send/move) execute on reconnect</li>
+</ul>
+</li>
+</ul>
+<h2 id="g-notifications"><a class="header" href="#g-notifications">G. Notifications</a></h2>
+<ul>
+<li>New mail
+<ul>
+<li>Shows correct sender/subject; grouping for multiple messages</li>
+<li>Actions: Mark read, Delete, Archive function correctly and reflect in app</li>
+</ul>
+</li>
+<li>Quiet hours/Do Not Disturb
+<ul>
+<li>Respected according to settings</li>
+</ul>
+</li>
+</ul>
+<h2 id="h-settings-and-preferences"><a class="header" href="#h-settings-and-preferences">H. Settings and Preferences</a></h2>
+<ul>
+<li>General settings
+<ul>
+<li>Unified Inbox toggle behavior: only shows when &gt;1 accounts, correct fallback behavior</li>
+<li>Sort options persist per account/unified; changes reflected immediately</li>
+</ul>
+</li>
+<li>Account settings
+<ul>
+<li>Outgoing/incoming server edits persist; re‑auth flows; OAuth if applicable</li>
+</ul>
+</li>
+</ul>
+<h2 id="i-security-and-privacy"><a class="header" href="#i-security-and-privacy">I. Security and Privacy</a></h2>
+<ul>
+<li>Permissions
+<ul>
+<li>No unexpected permission prompts; revoking a permission shows clear error states</li>
+</ul>
+</li>
+<li>Sensitive logging
+<ul>
+<li>Disabled by default; enabling shows warnings; logs redact personal data where possible</li>
+</ul>
+</li>
+<li>Certificates (if applicable)
+<ul>
+<li>Certificate errors surfaced with clear options; pinning remembered</li>
+</ul>
+</li>
+</ul>
+<h2 id="j-regression-checks-recently-changed-areas"><a class="header" href="#j-regression-checks-recently-changed-areas">J. Regression Checks (recently changed areas)</a></h2>
+<ul>
+<li>Check changes in this release
+<ul>
+<li>Perform smoke tests around changed screens/use cases</li>
+</ul>
+</li>
+<li>Logs, crashes, and ANRs
+<ul>
+<li>No new crashes/ANRs; logging remains appropriate and doesn’t expose sensitive data</li>
+</ul>
+</li>
+<li>Quick smoke around changed screens
+<ul>
+<li>Basic open/close, refresh/sync, action buttons, and navigation work</li>
+</ul>
+</li>
+</ul>
+<p>K. Known Issues Verification</p>
+<ul>
+<li>Validate that previously documented known issues still match behavior and are noted in release notes</li>
+</ul>
+<h2 id="sign-off"><a class="header" href="#sign-off">Sign-off</a></h2>
+<ul>
+<li>All “Smoke” items: Pass</li>
+<li>No Critical/High defects open; Medium has workarounds; Low acceptable</li>
+<li>Performance thresholds met on target devices</li>
+</ul>
+<h2 id="appendix-a-quick-result-template"><a class="header" href="#appendix-a-quick-result-template">Appendix A: Quick result template</a></h2>
+<ul>
+<li>Build/Commit:</li>
+<li>Device/OS:</li>
+<li>Accounts:</li>
+<li>Network:</li>
+<li>Locale/Theme:</li>
+<li>Summary:</li>
+<li>Defects filed:</li>
+</ul>
+<h2 id="appendix-b-full-run-log-template"><a class="header" href="#appendix-b-full-run-log-template">Appendix B: Full run log template</a></h2>
+<ul>
+<li>Include timestamps, steps, expected vs actual, screenshots, and logs as needed</li>
 </ul>
 <footer id="last-change">Last change: <time datetime="2025-11-10">2025-11-10</time>, commit: <a href="https://github.com/thunderbird/thunderbird-android/commit/3ecd96a">3ecd96a</a></footer>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../release/testing-checklist.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../release/developer-checklist.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../security/threat-modeling-guide.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../release/HISTORICAL_RELEASE.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -602,11 +596,11 @@ URL)</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../release/testing-checklist.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../release/developer-checklist.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../security/threat-modeling-guide.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../release/HISTORICAL_RELEASE.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
