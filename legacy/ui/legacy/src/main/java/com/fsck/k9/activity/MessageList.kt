@@ -58,8 +58,6 @@ import kotlin.getValue
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
-import net.thunderbird.core.featureflag.FeatureFlagKey
-import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
@@ -69,7 +67,6 @@ import net.thunderbird.feature.account.storage.legacy.mapper.LegacyAccountDataMa
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.DropDownDrawer
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.UnifiedDisplayAccount
-import net.thunderbird.feature.navigation.drawer.siderail.SideRailDrawer
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
 import net.thunderbird.feature.search.legacy.SearchAccount
 import net.thunderbird.feature.search.legacy.api.MessageSearchField
@@ -104,7 +101,6 @@ open class MessageList :
     private val contactRepository: ContactRepository by inject()
     private val coreResourceProvider: CoreResourceProvider by inject()
     private val fundingManager: FundingManager by inject()
-    private val featureFlagProvider: FeatureFlagProvider by inject()
     private val logger: Logger by inject()
     private val legacyAccountDataMapper: LegacyAccountDataMapper by inject()
 
@@ -629,30 +625,15 @@ open class MessageList :
     }
 
     private fun initializeFolderDrawer() {
-        featureFlagProvider.provide(FeatureFlagKey("enable_dropdown_drawer")).whenEnabledOrNot(
-            onEnabled = {
-                navigationDrawer = DropDownDrawer(
-                    parent = this,
-                    openAccount = { accountId -> openRealAccount(accountId) },
-                    openAddAccount = { launchAddAccountScreen() },
-                    openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
-                    openUnifiedFolder = { openUnifiedFolders() },
-                    openManageFolders = { launchManageFoldersScreen() },
-                    openSettings = { SettingsActivity.launch(this) },
-                    createDrawerListener = { createDrawerListener() },
-                )
-            },
-            onDisabledOrUnavailable = {
-                navigationDrawer = SideRailDrawer(
-                    parent = this,
-                    openAccount = { accountId -> openRealAccount(accountId) },
-                    openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
-                    openUnifiedFolder = { openUnifiedFolders() },
-                    openManageFolders = { launchManageFoldersScreen() },
-                    openSettings = { SettingsActivity.launch(this) },
-                    createDrawerListener = { createDrawerListener() },
-                )
-            },
+        navigationDrawer = DropDownDrawer(
+            parent = this,
+            openAccount = { accountId -> openRealAccount(accountId) },
+            openAddAccount = { launchAddAccountScreen() },
+            openFolder = { accountId, folderId -> openFolder(accountId, folderId) },
+            openUnifiedFolder = { openUnifiedFolders() },
+            openManageFolders = { launchManageFoldersScreen() },
+            openSettings = { SettingsActivity.launch(this) },
+            createDrawerListener = { createDrawerListener() },
         )
     }
 
