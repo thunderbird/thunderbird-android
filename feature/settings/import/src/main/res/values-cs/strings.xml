@@ -38,7 +38,7 @@
     <string name="settings_import_oauth_error_oauth_flow_failed">Ověření se nezdařilo s následující chybou: <xliff:g id="error">%s</xliff:g></string>
     <string name="settings_import_oauth_error_oauth_not_supported">OAuth 2.0 není v současnosti tímto poskytovatelem podporováno.</string>
     <string name="settings_import_oauth_error_browser_not_found">Aplikaci se nepodařilo najít webový prohlížeč, který použít pro udělení přístupu k vašemu účtu.</string>
-    <string name="settings_import_general_settings_item">Hlavní nastavení</string>
+    <string name="settings_import_general_settings_item">Obecná nastavení</string>
     <string name="settings_import_pick_app_button">Importovat z aplikace</string>
     <string name="settings_import_pick_app_dialog_title">Importovat z aplikace</string>
     <string name="settings_import_scan_qr_code_button">Naskenovat QR kód</string>

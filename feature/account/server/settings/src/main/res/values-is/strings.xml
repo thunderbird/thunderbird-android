@@ -32,4 +32,6 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Til að sjá lykilorðið þitt hér, skaltu virkja skjálæsingu á þessu tæki.</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">Ógilt IP-vistfang eða vélarheiti</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Senda upplýsingar um biðlaraforrit</string>
+    <string name="account_server_settings_password_authentication_failed">Auðkenning mistókst!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Tekst ekki að opna lífkennaglugga.</string>
 </resources>

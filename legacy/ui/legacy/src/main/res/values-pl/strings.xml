@@ -318,7 +318,7 @@
     <string name="account_notify_contacts_mail_only_summary">Pokaż powiadomienia tylko dla wiadomości od znanych kontaktów</string>
     <string name="account_settings_ignore_chat_messages_label">Ignoruj wiadomości z czatu</string>
     <string name="account_settings_ignore_chat_messages_summary">Nie pokazuj powiadomień dla wiadomości należących do czatu e-mail</string>
-    <string name="account_settings_mark_message_as_read_on_view_label">Oznacz jako przeczytane</string>
+    <string name="account_settings_mark_message_as_read_on_view_label">Oznacz jako przeczytane po otwarciu</string>
     <string name="account_settings_mark_message_as_read_on_view_summary">Oznacz wiadomość jako przeczytaną przy otwieraniu</string>
     <string name="account_settings_mark_message_as_read_on_delete_label">Oznacz jako przeczytane po usunięciu</string>
     <string name="account_settings_mark_message_as_read_on_delete_summary">Oznacz wiadomość jako przeczytaną przy usuwaniu</string>
@@ -578,8 +578,8 @@
         <item quantity="many">Czy chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>
         <item quantity="other">Czy chcesz usunąć <xliff:g id="message_count">%1$d</xliff:g> wiadomości?</item>
     </plurals>
-    <string name="dialog_confirm_delete_confirm_button">Usuń</string>
-    <string name="dialog_confirm_delete_cancel_button">Nie usuwaj</string>
+    <string name="dialog_confirm_delete_confirm_button">Tak</string>
+    <string name="dialog_confirm_delete_cancel_button">Nie</string>
     <string name="dialog_confirm_mark_all_as_read_title">Potwierdź oznaczenie wszystkich jako przeczytanych</string>
     <string name="dialog_confirm_mark_all_as_read_message">Czy chcesz oznaczyć wszystkie wiadomości jako przeczytane?</string>
     <string name="dialog_confirm_empty_trash_title">Potwierdź opróżnienie kosza</string>
@@ -806,7 +806,7 @@
     <string name="switch_off">Wyłącz</string>
     <string name="generic_loading_error">Podczas wczytywania danych wystąpił błąd</string>
     <string name="push_notification_state_initializing">Inicjowanie…</string>
-    <string name="push_notification_state_listening">Oczekiwanie na nowe e-maile</string>
+    <string name="push_notification_state_listening">Oczekiwanie na nowe wiadomości</string>
     <string name="push_notification_state_wait_background_sync">Uśpione, dopóki synchronizacja w tle nie będzie dozwolona</string>
     <string name="push_notification_state_wait_network">Uśpione, dopóki sieć nie będzie dostępna</string>
     <string name="push_notification_info">Stuknij, aby dowiedzieć się więcej.</string>

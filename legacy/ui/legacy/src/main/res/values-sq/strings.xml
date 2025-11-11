@@ -108,7 +108,7 @@
     <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> më tepër te <xliff:g id="account">%2$s</xliff:g></string>
     <string name="notification_action_reply">Përgjigjuni</string>
     <string name="notification_action_mark_as_read">Vëri Shenjë Si të Lexuar</string>
-    <string name="notification_action_mark_all_as_read">Shënoji Krejt Si të Lexuar</string>
+    <string name="notification_action_mark_all_as_read">Vëru Shenjë të Tërëvë Si të Lexuar</string>
     <string name="notification_action_delete">Fshije</string>
     <string name="notification_action_delete_all">Fshiji Krejt</string>
     <string name="notification_action_archive_all">Arkivoji Krejt</string>
@@ -133,7 +133,7 @@
     <string name="notification_channel_messages_description">Njoftime lidhur me mesazhe</string>
     <string name="notification_channel_miscellaneous_title">Të ndryshme</string>
     <string name="notification_channel_miscellaneous_description">Njoftime të ndryshme, si gabime, etj.</string>
-    <string name="send_failure_subject">Dështoi dërgimi i disa mesazhe</string>
+    <string name="send_failure_subject">S’u arrit të dërgohen disa mesazhe</string>
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Aktivizo regjistrim diagnostikimesh</string>
     <string name="debug_enable_debug_logging_summary">Regjistro të dhëna ekstra diagnostikimesh</string>
