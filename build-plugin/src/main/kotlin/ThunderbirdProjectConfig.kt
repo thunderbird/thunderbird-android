@@ -14,6 +14,5 @@ object ThunderbirdProjectConfig {
     object Compiler {
         val javaCompatibility = JavaVersion.VERSION_11
         val jvmTarget = JvmTarget.JVM_11
-        val javaVersion = JavaVersion.VERSION_11
     }
 }

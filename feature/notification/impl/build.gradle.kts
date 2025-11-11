@@ -4,6 +4,12 @@ plugins {
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.feature.notification"
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+    }
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.common)
@@ -22,17 +28,13 @@ kotlin {
             implementation(projects.feature.launcher)
             implementation(projects.core.ui.theme.api)
         }
-        androidUnitTest.dependencies {
+        getByName("androidHostTest").dependencies {
             implementation(libs.androidx.test.core)
             implementation(libs.mockito.core)
             implementation(libs.mockito.kotlin)
             implementation(libs.robolectric)
         }
     }
-}
-
-android {
-    namespace = "net.thunderbird.feature.notification"
 }
 
 compose.resources {

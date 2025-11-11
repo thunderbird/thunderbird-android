@@ -4,6 +4,16 @@ plugins {
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.feature.notification.api"
+        @Suppress("UnstableApiUsage")
+        androidResources {
+            enable = true
+        }
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
+    }
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.common)
@@ -17,7 +27,7 @@ kotlin {
             implementation(projects.core.ui.compose.designsystem)
             implementation(projects.core.ui.compose.theme2.common)
         }
-        androidUnitTest.dependencies {
+        getByName("androidHostTest").dependencies {
             implementation(projects.core.ui.compose.testing)
             implementation(libs.bundles.shared.jvm.test.compose)
             implementation(libs.bundles.shared.jvm.android.compose.debug)
@@ -36,21 +46,6 @@ kotlin {
             )
         }
     }
-}
-
-android {
-    namespace = "net.thunderbird.feature.notification.api"
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
-}
-
-java {
-    sourceCompatibility = ThunderbirdProjectConfig.Compiler.javaVersion
-    targetCompatibility = ThunderbirdProjectConfig.Compiler.javaVersion
 }
 
 compose.resources {
