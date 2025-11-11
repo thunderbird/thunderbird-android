@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Synkroniser (dytting)</string>
     <string name="notification_channel_push_description">Vist i påvente av nye meldinger</string>
@@ -36,4 +36,20 @@
     <string name="notification_action_archive">Arkiver</string>
     <string name="notification_action_archive_all">Arkiver alle</string>
     <string name="notification_action_spam">Søppelpost</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentisering mislyktes for %1$s. Oppdater innstillingene dine for den innkommende serveren.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentisering mislyktes for %1$s. Oppdater innstillingene dine for den utgående serveren.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d ny melding</item>
+        <item quantity="other">%1$d nye meldinger</item>
+    </plurals>
+    <string name="notification_action_retry">Prøv igjen</string>
+    <string name="notification_action_update_server_settings">Oppdater serverinnstilinger</string>
+    <string name="notification_action_assign_sent_folder">Sett mappe</string>
+    <string name="banner_inline_notification_check_error_notifications">Sjekk feilmeldinger</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Noen meldinger krever din oppmerksomhet.</string>
+    <string name="banner_inline_notification_open_notifications">Åpne notifikasjoner</string>
+    <string name="banner_inline_notification_learn_more">Les mer</string>
+    <string name="banner_inline_notification_view_support_article">Se støtteartikkel</string>
+    <string name="sent_folder_not_found_title">Sendt-mappe ikke tilgjengelig.</string>
 </resources>

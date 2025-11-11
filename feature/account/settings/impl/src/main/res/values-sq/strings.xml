@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Rregullime të Përgjithshme</string>
+    <string name="account_settings_general_profile_indicator_title">Tregues Profili</string>
+    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
+    <string name="account_settings_general_profile_indicator_image">Figurë</string>
+    <string name="account_settings_general_profile_indicator_icon">Ikonë</string>
+    <string name="account_settings_general_name_title">Emër llogarie</string>
+    <string name="account_settings_general_name_description">Emri përshoqëruar llogarisë tuaj.</string>
+    <string name="account_settings_general_color_title">Ngjyrë llogarie</string>
+    <string name="account_settings_general_color_description">Ngjyra e theksimit të kësaj llogarie, e përdorur në lista dosjesh dhe llogarish.</string>
 </resources>

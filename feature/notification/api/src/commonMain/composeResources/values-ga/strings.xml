@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sioncrónaigh (Brúigh)</string>
     <string name="notification_channel_push_description">Ar taispeáint agus tú ag fanacht le teachtaireachtaí nua</string>
@@ -12,7 +12,7 @@
     <string name="notification_certificate_error_public">Earráid teastais</string>
     <string name="notification_certificate_error_title">Earráid deimhnithe le haghaidh %1$s</string>
     <string name="notification_certificate_error_text">Seiceáil socruithe do fhreastalaí</string>
-    <string name="notification_bg_sync_ticker">Ríomhphost á sheiceáil: %1$s: %2$s</string>
+    <string name="notification_bg_sync_ticker">Ag seiceáil ríomhphoist: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Post á sheiceáil</string>
     <string name="notification_bg_send_ticker">Ríomhphost á sheoladh: %1$s</string>
     <string name="notification_bg_send_title">Post á sheoladh</string>
@@ -34,4 +34,23 @@
     <string name="notification_action_archive">Cartlann</string>
     <string name="notification_action_archive_all">Cartlann Gach Rud</string>
     <string name="notification_action_spam">Turscar</string>
+    <string name="notification_authentication_incoming_server_error_text">Theip ar fhíordheimhniú do %1$s. Nuashonraigh do shocruithe freastalaí isteach.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Theip ar fhíordheimhniú do %1$s. Nuashonraigh do shocruithe freastalaí amach.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d teachtaireacht nua</item>
+        <item quantity="two">%1$d teachtaireachtaí nua</item>
+        <item quantity="few">%1$d teachtaireachtaí nua</item>
+        <item quantity="many">%1$d teachtaireachtaí nua</item>
+        <item quantity="other">%1$d teachtaireachtaí nua</item>
+    </plurals>
+    <string name="notification_action_retry">Déan iarracht arís</string>
+    <string name="notification_action_update_server_settings">Nuashonraigh Socruithe an Fhreastalaí</string>
+    <string name="notification_action_assign_sent_folder">Sannadh fillteán</string>
+    <string name="banner_inline_notification_check_error_notifications">Seiceáil Fógraí Earráide</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Tá d’aird ag teastáil ó roinnt teachtaireachtaí.</string>
+    <string name="banner_inline_notification_open_notifications">Fógraí oscailte</string>
+    <string name="banner_inline_notification_learn_more">Foghlaim níos mó</string>
+    <string name="banner_inline_notification_view_support_article">Féach ar an alt tacaíochta</string>
+    <string name="sent_folder_not_found_title">Níl an fillteán seolta ar fáil.</string>
 </resources>

@@ -1,3 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Tega sporočila ne prikaži več.</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Za zdaj preskoči</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Nastavi mapo za arhiviranje</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Pri pridobivanju map računa je šlo nekaj narobe!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Podrobnosti napake: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Ustvari novo mapo</string>
+    <string name="setup_archive_folder_dialog_done">Končano</string>
+    <string name="setup_archive_folder_dialog_cancel">Prekliči</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Create & set new folder]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Računa, povezanega z UUID-jem \'%1$s\', ni bilo mogoče najti.</string>
+    <string name="setup_archive_folder_unhandled_error">Nedoločena napaka: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Usklajevanje …</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Krajevna mapa je bila ustvarjena. Začenjanje usklajevanja …</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Oddaljena mapa je bila ustvarjena.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Ustvarjanje mape pri e-poštnem ponudniku …</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Posodabljanje posebnih pravil map …</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Računa (%1$s) ni bilo mogoče najti.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Krajevne mape \'%1$s\' ni bilo mogoče ustvariti.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Usklajevanje mape \'%1$s\' z oddaljeno mapo je spodletelo. Sporočilo: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Ime mape ne sme biti prazno.</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Ime mape \'%1$s\' ni veljavno.</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">E-pošte ni mogoče arhivirati.</string>
 </resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Eşitle (anında ilet)</string>
     <string name="notification_channel_push_description">Yeni iletiler beklenirken görüntülenir</string>
@@ -17,7 +17,7 @@
     <string name="notification_bg_send_ticker">E-posta gönderiliyor: %1$s</string>
     <string name="notification_bg_send_title">E-posta gönderiliyor</string>
     <string name="send_failure_subject">Bazı iletiler gönderilemedi</string>
-    <string name="notification_additional_messages">%2$s hesabında %1$d tane daha</string>
+    <string name="notification_additional_messages">+%2$s hesabında %1$d tane daha</string>
     <string name="push_notification_state_initializing">Başlatılıyor…</string>
     <string name="push_notification_state_listening">Yeni e-postalar bekleniyor</string>
     <string name="push_notification_state_wait_background_sync">Arka planda eşitlemeye izin verilene kadar uyku halinde</string>
@@ -34,4 +34,9 @@
     <string name="notification_action_archive">Arşivle</string>
     <string name="notification_action_archive_all">Tümünü arşivle</string>
     <string name="notification_action_spam">Spam</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d yeni ileti</item>
+        <item quantity="other">%1$d yeni ileti</item>
+    </plurals>
+    <string name="notification_action_retry">Yeniden dene</string>
 </resources>

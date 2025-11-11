@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Njëkohëso (Push)</string>
     <string name="notification_channel_push_description">Shfaqur teksa pritet për mesazhe të reja</string>
@@ -16,7 +16,7 @@
     <string name="notification_bg_sync_title">Marrje poste</string>
     <string name="notification_bg_send_ticker">Po dërgohet postë: %1$s</string>
     <string name="notification_bg_send_title">Dërgim poste</string>
-    <string name="send_failure_subject">Dështoi dërgimi i disa mesazhe</string>
+    <string name="send_failure_subject">S’u arrit të dërgohen disa mesazhe</string>
     <string name="notification_additional_messages">+ %1$d më tepër te %2$s</string>
     <string name="push_notification_state_initializing">Po fillohet…</string>
     <string name="push_notification_state_listening">Po pritet për email-e të rinj</string>
@@ -28,10 +28,26 @@
     <string name="push_info_disable_push_action">Çaktivizoje Push-in</string>
     <string name="notification_action_reply">Përgjigjuni</string>
     <string name="notification_action_mark_as_read">Vëri Shenjë Si të Lexuar</string>
-    <string name="notification_action_mark_all_as_read">Shënoji Krejt Si të Lexuar</string>
+    <string name="notification_action_mark_all_as_read">Vëru Shenjë të Tërëvë Si të Lexuar</string>
     <string name="notification_action_delete">Fshije</string>
     <string name="notification_action_delete_all">Fshiji Krejt</string>
     <string name="notification_action_archive">Arkivoje</string>
     <string name="notification_action_archive_all">Arkivoji Krejt</string>
     <string name="notification_action_spam">Mesazh i Padëshiruar</string>
+    <string name="notification_authentication_incoming_server_error_text">Dështoi mirëfilltësimi për %1$s. Përditësoni rregullimet për shërbyesin tuaj marrës.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Dështoi mirëfilltësimi për %1$s. Përditësoni rregullimet për shërbyesin tuaj dërgues.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d mesazh i ri</item>
+        <item quantity="other">%1$d mesazhe të rinj</item>
+    </plurals>
+    <string name="notification_action_retry">Riprovo</string>
+    <string name="notification_action_update_server_settings">Përditësoni Rregullime Shërbyesi</string>
+    <string name="notification_action_assign_sent_folder">Caktoni dosje</string>
+    <string name="banner_inline_notification_check_error_notifications">Kontrolloni Njoftime Gabimesh</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Disa mesazhe lypin vëmendjen tuaj.</string>
+    <string name="banner_inline_notification_open_notifications">Hap njoftimet</string>
+    <string name="banner_inline_notification_learn_more">Mësoni më tepër</string>
+    <string name="banner_inline_notification_view_support_article">Shihni artikull asistence</string>
+    <string name="sent_folder_not_found_title">S’ka dosje “Të dërguar”.</string>
 </resources>
