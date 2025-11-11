@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="message_list_glance_widget_compose_action">Opstelle</string>
+    <string name="message_list_glance_widget_inbox_title">Kombinearre Postfek YN</string>
+    <string name="message_list_glance_widget_label">Berjochtelist</string>
 </resources>

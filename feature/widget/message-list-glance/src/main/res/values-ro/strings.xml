@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="message_list_glance_widget_compose_action">Compunere</string>
+    <string name="message_list_glance_widget_inbox_title">Căsuță poștală de intrare unificată</string>
+    <string name="message_list_glance_widget_label">Lista de mesaje</string>
 </resources>

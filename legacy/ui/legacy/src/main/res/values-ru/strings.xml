@@ -115,7 +115,7 @@
     <string name="notification_action_mark_all_as_read">Прочитаны все</string>
     <string name="notification_action_delete">Удалить</string>
     <string name="notification_action_delete_all">Удалить все</string>
-    <string name="notification_action_archive">Архив</string>
+    <string name="notification_action_archive">Архивировать</string>
     <string name="notification_action_archive_all">Архивировать все</string>
     <string name="notification_action_spam">Спам</string>
     <string name="notification_certificate_error_public">Ошибка сертификата</string>
@@ -228,7 +228,7 @@
     <!--Name of the swipe action to add/remove a star-->
     <string name="general_settings_swipe_action_toggle_star">Добавить/удалить звёздочку</string>
     <!--Name of the swipe action to archive a message-->
-    <string name="general_settings_swipe_action_archive">Архив</string>
+    <string name="general_settings_swipe_action_archive">Архивировать</string>
     <!--Name of the swipe action to delete a message-->
     <string name="general_settings_swipe_action_delete">Удалить</string>
     <!--Name of the swipe action to move a message to the spam folder-->

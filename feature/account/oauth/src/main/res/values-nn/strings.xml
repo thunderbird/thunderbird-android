@@ -2,7 +2,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_button">Logg inn</string>
     <string name="account_oauth_sign_in_with_google_button">Logg inn med Google</string>
-    <string name="account_oauth_sign_in_description">Me vidaeresender deg til eposttilbydaren din for å logge inn. Du må gje appen tilgang til epostkontoen din.</string>
+    <string name="account_oauth_sign_in_description">Me vidaeresender deg til e-posttilbydaren din for å logge inn. Du må gje appen tilgang til e-postkontoen din.</string>
     <string name="account_oauth_loading_message">Logg inn med OAuth</string>
     <string name="account_oauth_loading_error">Innlogging med OAuth feila</string>
     <string name="account_oauth_error_canceled">Godkjenning avbroten</string>

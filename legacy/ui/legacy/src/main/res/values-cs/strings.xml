@@ -349,7 +349,7 @@
     <string name="account_settings_quote_style_header">Záhlaví (jako Outlook)</string>
     <string name="account_settings_upload_sent_messages_label">Nahrát odeslané zprávy</string>
     <string name="account_settings_upload_sent_messages_summary">Po odeslání nahrát zprávy do složky Odesláno</string>
-    <string name="account_settings_general_title">Hlavní nastavení</string>
+    <string name="account_settings_general_title">Obecná nastavení</string>
     <string name="account_settings_reading_mail">Čtení zpráv</string>
     <string name="account_settings_sync">Stahování pošty</string>
     <string name="account_settings_folders">Složky</string>
@@ -752,7 +752,7 @@
     <string name="locked_attach_title">Nechráněná příloha</string>
     <string name="message_progress_text">Načítání…</string>
     <string name="messageview_decrypt_cancelled">Rozšifrování zrušeno.</string>
-    <string name="messageview_decrypt_retry">Opakovat</string>
+    <string name="messageview_decrypt_retry">Zkusit znovu</string>
     <string name="messageview_decrypt_incomplete">Zašifrovaná zpráva musí být stažena pro dešifrování.</string>
     <string name="messageview_crypto_error_title">Chyba při rozšifrovávání e-mailu</string>
     <string name="recipient_error_non_ascii">Speciální znaky nejsou momentálně podporovány!</string>
@@ -784,7 +784,7 @@
     <string name="dialog_autocrypt_mutual_description_1">Normálně budou zprávy šifrovány volitelně, nebo při odpovědi na šifrovanou zprávu.</string>
     <string name="dialog_autocrypt_mutual_description_2">Pokud odesílatel i příjemce zapnou vzájemný režim, šifrování bude ve výchozím stavu zapnuté.</string>
     <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.app/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Kliknutím sem</a> se můžete dozvědět více.</string>
-    <string name="general_settings_title">Hlavní nastavení</string>
+    <string name="general_settings_title">Obecná nastavení</string>
     <string name="dialog_openkeychain_info_title">Není nainstalovaná žádná OpenPGP aplikace</string>
     <string name="dialog_openkeychain_info_install">Nainstalovat</string>
     <string name="account_settings_crypto_encrypt_subject">Šifrovat předměty e-mailů</string>

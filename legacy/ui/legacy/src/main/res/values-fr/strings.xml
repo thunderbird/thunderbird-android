@@ -87,7 +87,7 @@
     <string name="read_receipt_disabled">Un accusé de lecture ne sera pas demandé</string>
     <string name="add_attachment_action">Ajouter un fichier joint</string>
     <string name="empty_trash_action">Vider la corbeille</string>
-    <string name="expunge_action">Supprimer</string>
+    <string name="expunge_action">Supprimer irrémédiablement</string>
     <string name="about_action">À propos</string>
     <string name="prefs_title">Paramètres</string>
     <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
@@ -779,7 +779,7 @@
     <string name="dialog_openkeychain_info_install">Installer</string>
     <string name="account_settings_crypto_encrypt_subject">Chiffrer l’objet des courriels</string>
     <string name="account_settings_crypto_encrypt_subject_subtitle">Pourrait ne pas être pris en charge par certains destinataires</string>
-    <string name="toast_account_not_found">Erreur interne : le compte est invalide !</string>
+    <string name="toast_account_not_found">Erreur interne : le compte est invalide</string>
     <string name="toast_openpgp_provider_error">Erreur de connexion à %s</string>
     <string name="ac_transfer_setting_title">Envoyer un courriel de configuration Autocrypt</string>
     <string name="ac_transfer_setting_summary">Partager en toute sécurité la configuration du chiffrement de bout de bout avec d’autres appareils</string>

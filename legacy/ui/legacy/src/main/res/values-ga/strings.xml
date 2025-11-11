@@ -39,7 +39,7 @@
     <string name="notification_certificate_error_title">Earráid deimhnithe le haghaidh <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_authentication_error_text">Theip ar fhíordheimhniú <xliff:g id="account">%s</xliff:g>. Nuashonraigh socruithe do fhreastalaí.</string>
     <string name="notification_bg_sync_title">Post á sheiceáil</string>
-    <string name="notification_bg_sync_ticker">Ríomhphost á sheiceáil: <xliff:g id="account">%1$s</xliff:g>: <xliff:g id="fhillteán">%2$s</xliff:g></string>
+    <string name="notification_bg_sync_ticker">Ag seiceáil ríomhphoist: <xliff:g id="account">%1$s</xliff:g>:<xliff:g id="folder">%2$s</xliff:g></string>
     <string name="notification_bg_send_ticker">Ríomhphost á sheoladh: <xliff:g id="account">%s</xliff:g></string>
     <string name="debug_enable_sensitive_logging_title">Faisnéis íogair a logáil</string>
     <string name="message_to_fmt">Chuig:<xliff:g id="counterParty">%s</xliff:g></string>

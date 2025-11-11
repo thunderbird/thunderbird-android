@@ -304,7 +304,7 @@
     <string name="account_settings_title_fmt">Nastavitve računa</string>
     <string name="account_settings_notify_label">Obvestila za prejem nove pošte</string>
     <string name="account_settings_notify_sync_label">Obvestila usklajevanja</string>
-    <string name="account_settings_email_label">Elektronski naslov</string>
+    <string name="account_settings_email_label">Vaš e-poštni naslov</string>
     <string name="account_settings_notify_summary">Pokaže obvestilo v vrstici stanja ob prihodu novega sporočila</string>
     <string name="account_settings_notify_sync_summary">Pokaži obvestilo med pregledom za novo pošto</string>
     <string name="account_settings_notify_self_label">Obveščaj ob pošiljanju sporočil</string>
@@ -447,7 +447,7 @@
     <string name="edit_identity_description_hint">(izbirno)</string>
     <string name="edit_identity_name_label">Ime</string>
     <string name="edit_identity_name_hint">(izbirno)</string>
-    <string name="edit_identity_email_label">Elektronski naslov</string>
+    <string name="edit_identity_email_label">E-poštni naslov</string>
     <string name="edit_identity_email_hint">(zahtevano)</string>
     <string name="edit_identity_reply_to_label">Naslov za odgovor</string>
     <string name="edit_identity_reply_to_hint">(izbirno)</string>
