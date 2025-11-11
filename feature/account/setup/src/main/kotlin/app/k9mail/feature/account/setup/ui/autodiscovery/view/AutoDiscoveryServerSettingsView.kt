@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -35,7 +35,7 @@ internal fun AutoDiscoveryServerSettingsView(
     username: String = "",
     isIncoming: Boolean = true,
 ) {
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
     Column(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.default),
         modifier = modifier,
