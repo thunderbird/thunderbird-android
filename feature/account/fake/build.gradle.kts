@@ -2,11 +2,10 @@ plugins {
     id(ThunderbirdPlugins.Library.kmp)
 }
 
-android {
-    namespace = "net.thunderbird.account.fake"
-}
-
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.account.fake"
+    }
     sourceSets {
         commonMain.dependencies {
             api(projects.feature.account.api)

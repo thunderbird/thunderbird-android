@@ -1,17 +1,12 @@
 plugins {
-    id(ThunderbirdPlugins.Library.kmp)
+    id(ThunderbirdPlugins.Library.android)
 }
 
 android {
     namespace = "net.thunderbird.core.preference.impl"
 }
 
-kotlin {
-    sourceSets {
-        commonMain.dependencies {
-            api(projects.core.preference.api)
-
-            implementation(projects.core.logging.api)
-        }
-    }
+dependencies {
+    api(projects.core.preference.api)
+    implementation(projects.core.logging.api)
 }
