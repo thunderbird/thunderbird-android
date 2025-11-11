@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Algemiene ynstellingen</string>
+    <string name="account_settings_general_profile_indicator_title">Profylyndikator</string>
+    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
+    <string name="account_settings_general_profile_indicator_image">Ofbylding</string>
+    <string name="account_settings_general_profile_indicator_icon">Piktogram</string>
+    <string name="account_settings_general_name_title">Accountnamme</string>
+    <string name="account_settings_general_name_description">De mei jo account assosjearre namme.</string>
+    <string name="account_settings_general_color_title">Accountkleur</string>
+    <string name="account_settings_general_color_description">De aksintkleur fan dizze account brûkt yn mappen en accountlisten.</string>
 </resources>

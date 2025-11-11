@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Usklajevanje (potisno)</string>
     <string name="notification_channel_push_description">Prikazano med čakanjem na nova sporočila</string>
@@ -34,4 +34,21 @@
     <string name="notification_action_archive">Arhiviraj</string>
     <string name="notification_action_archive_all">Arhiviraj vse</string>
     <string name="notification_action_spam">Označi kot neželeno pošto</string>
+    <string name="notification_authentication_incoming_server_error_text">Za %1$s je overjanje spodletelo. Posodobite nastavitve za dohodni strežnik.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Za %1$s je overjanje spodletelo. Posodobite nastavitve za odhodni strežnik.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d novo sporočilo</item>
+        <item quantity="two">%1$d novi sporočili</item>
+        <item quantity="few">%1$d nova sporočila</item>
+        <item quantity="other">%1$d novih sporočil</item>
+    </plurals>
+    <string name="notification_action_retry">Poskusi znova</string>
+    <string name="notification_action_update_server_settings">Posodobi nastavitve strežnika</string>
+    <string name="notification_action_assign_sent_folder">Dodeli mapo</string>
+    <string name="banner_inline_notification_check_error_notifications">Preveri za obvestila o napakah</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Nekatera sporočila potrebujejo vašo pozornost.</string>
+    <string name="banner_inline_notification_open_notifications">Odpri obvestila</string>
+    <string name="banner_inline_notification_learn_more">Več o tem</string>
+    <string name="banner_inline_notification_view_support_article">Pokaži članek podpore</string>
 </resources>

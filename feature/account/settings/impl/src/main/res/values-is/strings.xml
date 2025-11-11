@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="account_settings_general_title">Almennar stillingar</string>
+    <string name="account_settings_general_profile_indicator_title">Merki sniðs</string>
+    <string name="account_settings_general_profile_indicator_image">Mynd</string>
+    <string name="account_settings_general_profile_indicator_icon">Táknmynd</string>
+    <string name="account_settings_general_name_title">Heiti notandaaðgangs</string>
+    <string name="account_settings_general_name_description">Nafnið sem tengist reikningnum þínum.</string>
+    <string name="account_settings_general_color_title">Litur aðgangsins</string>
+    <string name="account_settings_general_color_description">Áherslulitur aðgangsins, notaður í möppum og listum yfir reikninga.</string>
+    <string name="account_settings_general_profile_indicator_monogram">Fangamark</string>
 </resources>

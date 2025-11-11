@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Sendt-mappa er ikkje funnen</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">For å lagre denne e-posten etter sending, må du setje ei Sendt-mappe i kontoinnstillingar.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Set Sendt-mappe</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Avbryt</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Send og slett</string>
 </resources>

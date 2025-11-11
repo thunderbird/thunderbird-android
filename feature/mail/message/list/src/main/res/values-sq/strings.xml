@@ -1,3 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Mos e shfaq sërish këtë mesazh</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Email-i s’mund të arkivohet</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Formësoni tani dosje arkivi</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Anashkaloje hëpërhë</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Caktoni dosje arkivi</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Hëm, diç shkoi ters teksa merreshin dosje llogarie!</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Hollësi gabimi: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Krijo dosje të re</string>
+    <string name="setup_archive_folder_dialog_done">U bë</string>
+    <string name="setup_archive_folder_dialog_cancel">Anuloje</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Krijoni & ujdisni dosje të re]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">S’u gjet dot llogari e përshoqëruar me UUID \'%1$s\'</string>
+    <string name="setup_archive_folder_unhandled_error">Gabim i patrajtuar: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Po njëkohësohet…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Dosja vendore u krijua. Po fillohet njëkohësimi…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Dosja e largët u krijua.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Po krijohet dosje te shërbimi email…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Po përditësohen rregulla specialë dosjesh…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">S’u gjet llogaria (%1$s)</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">S’u arrit të krijohej dosje vendore \'%1$s\'.</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">S’u arrit të njëkohësohej dosja \'%1$s\' me të largëtën. Mesazh: %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Emri i dosjes s’mund të jetë i zbrazët</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Emër i pavlefshëm dosjeje \'%1$s\'</string>
 </resources>

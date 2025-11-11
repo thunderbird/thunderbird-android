@@ -1,3 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Ne plus afficher ce message</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">Le courriel ne peut pas être archivé</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Configurez maintenant le dossier d’archivage</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Ignorer pour l’instant</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Définir le dossier d’archivage</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Une erreur est survenue lors de la récupération des dossiers du compte</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Détails de l’erreur : %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Créer un nouveau dossier</string>
+    <string name="setup_archive_folder_dialog_done">Terminé</string>
+    <string name="setup_archive_folder_dialog_cancel">Annuler</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Créer et définir un nouveau dossier]]></string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">Impossible de trouver un compte associé à l’UUID « %1$s »</string>
+    <string name="setup_archive_folder_unhandled_error">Erreur non gérée : %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Synchronisation…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Le dossier local a été créé. Démarrage de la synchronisation…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Le dossier distant a été créé.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Création du dossier chez le fournisseur de services de courriel…</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Mise à jour des règles spéciales du dossier…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Le compte (%1$s) est introuvable</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">Échec de création du dossier local « %1$s ».</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Échec de synchronisation du dossier « %1$s » avec le serveur distant. Message : %2$s</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Le nom du dossier ne peut pas être vide</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Le nom de dossier « %1$s » est invalide</string>
 </resources>

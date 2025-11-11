@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Synchroniser (poussé)</string>
     <string name="notification_channel_push_description">Affiché lors de l’attente de nouveaux courriels</string>
@@ -34,4 +34,21 @@
     <string name="notification_action_archive">Archiver</string>
     <string name="notification_action_archive_all">Tout archiver</string>
     <string name="notification_action_spam">Pourriel (indésirable)</string>
+    <string name="notification_authentication_incoming_server_error_text">Échec d’authentification pour %1$s. Mettez à jour les paramètres de votre serveur entrant.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Échec d’authentification pour %1$s. Mettez à jour les paramètres de votre serveur sortant.</string>
+    <string name="notification_bg_sync_text">%1$s : %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nouveau message</item>
+        <item quantity="many">%1$d de nouveaux messages</item>
+        <item quantity="other">%1$d nouveaux messages</item>
+    </plurals>
+    <string name="notification_action_retry">Réessayer</string>
+    <string name="notification_action_update_server_settings">Mettre à jour les paramètres du serveur</string>
+    <string name="notification_action_assign_sent_folder">Attribuer un dossier</string>
+    <string name="banner_inline_notification_check_error_notifications">Vérifier les notifications d’erreur</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Certains messages requièrent votre attention.</string>
+    <string name="banner_inline_notification_open_notifications">Ouvrir les notifications</string>
+    <string name="banner_inline_notification_learn_more">En apprendre davantage</string>
+    <string name="banner_inline_notification_view_support_article">Afficher l’article d’assistance</string>
+    <string name="sent_folder_not_found_title">Le dossier Envoyé est inaccessible.</string>
 </resources>

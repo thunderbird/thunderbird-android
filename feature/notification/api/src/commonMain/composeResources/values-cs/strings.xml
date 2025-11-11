@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Synchronizovat (Push)</string>
     <string name="notification_channel_push_description">Zobrazeno po dobu čekání na nové zprávy</string>
@@ -14,7 +14,7 @@
     <string name="notification_certificate_error_public">Chyba certifikátu</string>
     <string name="notification_certificate_error_title">Chyba certifikátu účtu %1$s</string>
     <string name="notification_certificate_error_text">Zkontrolujte nastavení serveru</string>
-    <string name="notification_bg_sync_ticker">Kontrola nové pošty: %1$s:%2$s</string>
+    <string name="notification_bg_sync_ticker">Kontrola nové pošty: %1$s: %2$s</string>
     <string name="notification_bg_sync_title">Kontrola nové pošty</string>
     <string name="notification_bg_send_ticker">Odesílání pošty: %1$s</string>
     <string name="notification_bg_send_title">Odesílání pošty</string>
@@ -36,4 +36,22 @@
     <string name="notification_action_archive">Archivovat</string>
     <string name="notification_action_archive_all">Archivovat vše</string>
     <string name="notification_action_spam">Nevyžádaná</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentifikace účtu %1$s selhala. Upravte svá nastavení příchozího serveru.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentifikace účtu %1$s selhala. Upravte svá nastavení odchozího serveru.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nová zpráva</item>
+        <item quantity="few">%1$d nové zprávy</item>
+        <item quantity="many">%1$d nových zpráv</item>
+        <item quantity="other">%1$d nových zpráv</item>
+    </plurals>
+    <string name="notification_action_retry">Zkusit znovu</string>
+    <string name="notification_action_update_server_settings">Upravit nastavení serveru</string>
+    <string name="notification_action_assign_sent_folder">Přiřadit složku</string>
+    <string name="banner_inline_notification_check_error_notifications">Zkontrolovat oznámení o chybách</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Některé zprávy vyžadují vaši pozornost.</string>
+    <string name="banner_inline_notification_open_notifications">Otevřít oznámení</string>
+    <string name="banner_inline_notification_learn_more">Zjistit více</string>
+    <string name="banner_inline_notification_view_support_article">Zobrazit článek nápovědy</string>
+    <string name="sent_folder_not_found_title">Složka Odeslané je nedostupná.</string>
 </resources>

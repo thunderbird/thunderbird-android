@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">S’u gjet dosje “Të dërguar”</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Që të ruhet ky email pas dërgimit, caktoni te Rregullime Llogarie një dosje “Të dërguar”.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Caktoni Dosje “Të dërguar”</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Anuloje</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Dërgoje dhe Fshije</string>
 </resources>

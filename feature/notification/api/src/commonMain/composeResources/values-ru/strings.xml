@@ -33,7 +33,7 @@
     <string name="notification_action_mark_all_as_read">Прочитаны все</string>
     <string name="notification_action_delete">Удалить</string>
     <string name="notification_action_delete_all">Удалить все</string>
-    <string name="notification_action_archive">Архив</string>
+    <string name="notification_action_archive">Архивировать</string>
     <string name="notification_action_archive_all">Архивировать все</string>
     <string name="notification_action_spam">Спам</string>
     <string name="notification_authentication_incoming_server_error_text">Ошибка аутентификации %1$s. Обновите настройки сервера входящей почты.</string>
@@ -47,4 +47,11 @@
     <string name="notification_action_retry">Повтор</string>
     <string name="notification_action_update_server_settings">Обновить настройки сервера</string>
     <string name="notification_action_assign_sent_folder">Назначить папку</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="banner_inline_notification_learn_more">Узнать больше</string>
+    <string name="banner_inline_notification_view_support_article">Открыть статью поддержки</string>
+    <string name="sent_folder_not_found_title">Папка "Отправленные" недоступна.</string>
+    <string name="banner_inline_notification_check_error_notifications">Проверка уведомлений об ошибках</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Некоторые сообщения требуют вашего внимания.</string>
+    <string name="banner_inline_notification_open_notifications">Открыть уведомления</string>
 </resources>

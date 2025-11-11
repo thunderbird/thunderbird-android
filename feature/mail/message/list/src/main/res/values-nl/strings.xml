@@ -22,5 +22,5 @@
     <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">Ongeldige mapnaam ‘%1$s’</string>
     <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Externe map aangemaakt.</string>
     <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">Map ‘%1$s’ extern synchroniseren mislukt. Bericht: %2$s</string>
-    <string name="setup_archive_folder_unhandled_error">Onafgehandelde fout: %1$s</string>
+    <string name="setup_archive_folder_unhandled_error">Onbehandelde fout: %1$s</string>
 </resources>

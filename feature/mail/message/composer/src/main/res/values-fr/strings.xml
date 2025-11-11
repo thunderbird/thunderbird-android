@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sent_folder_not_found_dialog_title">Le dossier Envoyé est introuvable</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Pour enregistrer ce courriel après l’avoir envoyé, définissez un dossier Envoyé dans Paramètres du compte.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Attribuer un dossier Envoyé</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Annuler</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Envoyer et supprimer</string>
 </resources>

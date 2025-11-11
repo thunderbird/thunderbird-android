@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Синхронізація (Push)</string>
     <string name="notification_channel_push_description">Показується під час очікування нових повідомлень</string>
@@ -34,4 +34,22 @@
     <string name="notification_action_archive">Архівувати</string>
     <string name="notification_action_archive_all">Архівувати всі</string>
     <string name="notification_action_spam">Спам</string>
+    <string name="notification_authentication_incoming_server_error_text">Не вдалося автентифікацію для %1$s. Оновіть налаштування сервера вхідної пошти.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Не вдалося автентифікацію для %1$s. Оновіть налаштування сервера вихідної пошти.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d нове повідомлення</item>
+        <item quantity="few">%1$d нових повідомлень</item>
+        <item quantity="many">%1$d нових повідомлень</item>
+        <item quantity="other">%1$d нових повідомлень</item>
+    </plurals>
+    <string name="notification_action_retry">Повторити спробу</string>
+    <string name="notification_action_update_server_settings">Оновлення налаштувань сервера</string>
+    <string name="notification_action_assign_sent_folder">Призначити папку</string>
+    <string name="banner_inline_notification_check_error_notifications">Перевірте сповіщення про помилки</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Деякі повідомлення потребують вашої уваги.</string>
+    <string name="banner_inline_notification_open_notifications">Відкрити сповіщення</string>
+    <string name="banner_inline_notification_learn_more">Дізнатися більше</string>
+    <string name="banner_inline_notification_view_support_article">Переглянути статтю служби підтримки</string>
+    <string name="sent_folder_not_found_title">Папка «Надіслані» недоступна.</string>
 </resources>

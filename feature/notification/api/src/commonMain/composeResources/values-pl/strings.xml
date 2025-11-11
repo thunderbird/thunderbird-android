@@ -1,3 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="notification_channel_push_title">Synchronizuj (push)</string>
+    <string name="notification_channel_push_description">Wyświetlane podczas oczekiwania na nowe wiadomości</string>
+    <string name="notification_channel_messages_title">Wiadomości</string>
+    <string name="notification_channel_messages_description">Powiadomienia związane z wiadomościami</string>
+    <string name="notification_channel_miscellaneous_title">Różne</string>
+    <string name="notification_channel_miscellaneous_description">Dodatkowe powiadomienia, takie jak błędy itp.</string>
+    <string name="notification_notify_error_title">Błąd powiadomienia</string>
+    <string name="notification_notify_error_text">Wystąpił błąd podczas próby utworzenia powiadomienia systemowego o nowej wiadomości. Powodem jest najprawdopodobniej brak dźwięku powiadomienia.\n\nStuknij, aby otworzyć ustawienia powiadomień.</string>
+    <string name="notification_authentication_error_title">Uwierzytelnianie się nie powiodło</string>
+    <string name="notification_authentication_incoming_server_error_text">Uwierzytelnienie się nie powiodło dla %1$s. Zaktualizuj ustawienia serwera poczty przychodzącej.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Uwierzytelnienie się nie powiodło dla %1$s. Zaktualizuj ustawienia serwera poczty wychodzącej.</string>
+    <string name="notification_certificate_error_public">Błąd certyfikatu</string>
+    <string name="notification_certificate_error_title">Błąd certyfikatu dla %1$s</string>
+    <string name="notification_certificate_error_text">Sprawdź ustawienia serwera</string>
+    <string name="notification_bg_sync_ticker">Sprawdzanie poczty: %1$s: %2$s</string>
+    <string name="notification_bg_sync_title">Sprawdzanie poczty</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <string name="notification_bg_send_ticker">Wysyłanie poczty: %1$s</string>
+    <string name="notification_bg_send_title">Wysyłanie poczty</string>
+    <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d nowa wiadomość</item>
+        <item quantity="few">%1$d nowe wiadomości</item>
+        <item quantity="many">%1$d nowych wiadomości</item>
+        <item quantity="other">%1$d nowych wiadomości</item>
+    </plurals>
+    <string name="notification_additional_messages">+ %1$d więcej na %2$s</string>
+    <string name="push_notification_state_initializing">Inicjowanie…</string>
+    <string name="push_notification_state_listening">Oczekiwanie na nowe wiadomości</string>
+    <string name="push_notification_state_wait_background_sync">Uśpione, dopóki synchronizacja w tle nie będzie dozwolona</string>
+    <string name="push_notification_state_wait_network">Uśpione, dopóki sieć nie będzie dostępna</string>
+    <string name="push_notification_state_alarm_permission_missing">Brak uprawnień do planowania alarmów</string>
+    <string name="push_notification_info">Stuknij, aby dowiedzieć się więcej.</string>
+    <string name="push_notification_grant_alarm_permission">Stuknij, aby udzielić uprawnienia.</string>
+    <string name="push_info_disable_push_action">Wyłącz funkcję push</string>
+    <string name="notification_action_reply">Odpowiedz</string>
+    <string name="notification_action_mark_as_read">Oznacz jako przeczytane</string>
+    <string name="notification_action_mark_all_as_read">Oznacz wszystkie jako przeczytane</string>
+    <string name="notification_action_delete">Usuń</string>
+    <string name="notification_action_delete_all">Usuń wszystkie</string>
+    <string name="notification_action_archive">Archiwizuj</string>
+    <string name="notification_action_archive_all">Archiwizuj wszystkie</string>
+    <string name="notification_action_spam">Spam</string>
+    <string name="notification_action_retry">Spróbuj ponownie</string>
+    <string name="notification_action_update_server_settings">Zaktualizuj ustawienia serwera</string>
+    <string name="notification_action_assign_sent_folder">Przypisz folder</string>
+    <string name="banner_inline_notification_check_error_notifications">Sprawdź powiadomienia o błędach</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Niektóre wiadomości wymagają uwagi.</string>
+    <string name="banner_inline_notification_open_notifications">Otwórz powiadomienia</string>
+    <string name="banner_inline_notification_learn_more">Dowiedz się więcej</string>
+    <string name="banner_inline_notification_view_support_article">Zobacz artykuł pomocy technicznej</string>
+    <string name="sent_folder_not_found_title">Folder wysłanych jest niedostępny.</string>
 </resources>

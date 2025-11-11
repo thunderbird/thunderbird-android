@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="notification_channel_push_title">Sünkroniseeri (kasuta tõuketeenust)</string>
     <string name="notification_channel_push_description">Näidatakse uute kirjade ootamisel</string>
@@ -34,4 +34,20 @@
     <string name="notification_action_archive">Arhiveeri</string>
     <string name="notification_action_archive_all">Arhiveeri kõik</string>
     <string name="notification_action_spam">Rämps</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentimine teenuses %1$s ei õnnestunud. Palun kontrolli saabuvate kirjade serveri seadistusi.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentimine teenuses %1$s ei õnnestunud. Palun kontrolli väljuvate kirjade serveri seadistusi.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d uus kiri</item>
+        <item quantity="other">%1$d uut kirja</item>
+    </plurals>
+    <string name="notification_action_retry">Proovi uuesti</string>
+    <string name="notification_action_update_server_settings">Muuda serveri seadistusi</string>
+    <string name="notification_action_assign_sent_folder">Määratle kaust</string>
+    <string name="banner_inline_notification_check_error_notifications">Kontrolli veateateid</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Palun pööra tähelepanu mõnedele teadetele.</string>
+    <string name="banner_inline_notification_open_notifications">Ava teavitused</string>
+    <string name="banner_inline_notification_learn_more">Lisateave</string>
+    <string name="banner_inline_notification_view_support_article">Vaata kasutajatoe artiklit</string>
+    <string name="sent_folder_not_found_title">Saadetud kirjade kaust pole saadaval.</string>
 </resources>
