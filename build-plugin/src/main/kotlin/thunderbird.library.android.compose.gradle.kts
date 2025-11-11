@@ -1,3 +1,5 @@
+import com.android.build.api.variant.HostTestBuilder
+
 plugins {
     id("thunderbird.library.android")
     id("org.jetbrains.kotlin.plugin.compose")
@@ -12,7 +14,7 @@ android {
 
 androidComponents {
     beforeVariants(selector().withBuildType("release")) { variantBuilder ->
-        variantBuilder.enableUnitTest = false
+        variantBuilder.hostTests[HostTestBuilder.UNIT_TEST_TYPE]?.enable = false
         variantBuilder.enableAndroidTest = false
     }
 }
