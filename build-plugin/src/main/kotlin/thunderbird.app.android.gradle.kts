@@ -20,13 +20,15 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
 
-    kotlinOptions {
-        jvmTarget = ThunderbirdProjectConfig.Compiler.javaCompatibility.toString()
-    }
-
     dependenciesInfo {
         includeInApk = false
         includeInBundle = false
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = ThunderbirdProjectConfig.Compiler.jvmTarget
     }
 }
 
