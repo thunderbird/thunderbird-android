@@ -2,8 +2,8 @@ package net.thunderbird.core.ui.setting
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.core.ui.setting.SettingValue.SelectSingleOption.Option
 import net.thunderbird.core.ui.setting.SettingValue.SegmentedButton.SegmentedButtonOption
+import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption
 
 /**
  * A setting that holds a value of type [T].
@@ -104,17 +104,17 @@ sealed interface SettingValue<T> : Setting {
      * @param value The currently selected option.
      * @param options The list of available options to choose from.
      */
-    data class SelectSingleOption(
+    data class Select(
         override val id: String,
         val title: () -> String,
         val description: () -> String? = { null },
         val icon: () -> ImageVector? = { null },
-        override val value: Option,
-        val options: ImmutableList<Option>,
-    ) : SettingValue<Option> {
+        override val value: SelectOption,
+        val options: ImmutableList<SelectOption>,
+    ) : SettingValue<SelectOption> {
         override val requiresEditView: Boolean = true
 
-        data class Option(
+        data class SelectOption(
             val id: String,
             val title: () -> String,
         )
