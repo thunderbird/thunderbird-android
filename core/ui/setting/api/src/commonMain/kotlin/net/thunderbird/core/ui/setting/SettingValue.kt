@@ -2,8 +2,10 @@ package net.thunderbird.core.ui.setting
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
+import net.thunderbird.core.ui.setting.SettingValue.IconList.IconOption
 import net.thunderbird.core.ui.setting.SettingValue.SegmentedButton.SegmentedButtonOption
 import net.thunderbird.core.ui.setting.SettingValue.Select.SelectOption
+import androidx.compose.ui.graphics.Color as ComposeColor
 
 /**
  * A setting that holds a value of type [T].
@@ -57,6 +59,36 @@ sealed interface SettingValue<T> : Setting {
         val colors: ImmutableList<Int>,
     ) : SettingValue<Int> {
         override val requiresEditView: Boolean = true
+    }
+
+    /**
+     * A setting that allows the user to select an icon from a list of icons.
+     *
+     * This does not require an edit view to modify the value, as the selection is made directly.
+     *
+     * @param id The unique identifier for the setting.
+     * @param title A lambda that returns the title of the setting.
+     * @param description A lambda that returns the description of the setting. Default is null.
+     * @param icon A lambda that returns the icon of the setting as an [ImageVector]. Default is null.
+     * @param color The color associated with the icon list.
+     * @param value The currently selected icon option.
+     * @param icons The list of available icons to choose from.
+     */
+    data class IconList(
+        override val id: String,
+        val title: () -> String,
+        val description: () -> String? = { null },
+        val icon: () -> ImageVector? = { null },
+        val color: ComposeColor,
+        override val value: IconOption,
+        val icons: ImmutableList<IconOption>,
+    ) : SettingValue<IconOption> {
+        override val requiresEditView: Boolean = false
+
+        data class IconOption(
+            val id: String,
+            val icon: () -> ImageVector,
+        )
     }
 
     /**

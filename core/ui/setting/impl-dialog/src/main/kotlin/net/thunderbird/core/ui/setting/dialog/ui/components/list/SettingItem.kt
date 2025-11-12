@@ -9,6 +9,7 @@ import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.Cust
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.SectionDividerItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.decoration.SectionHeaderItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.ColorItem
+import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.IconListItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.SegmentedButtonItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.SelectItem
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.value.SwitchItem
@@ -59,6 +60,14 @@ private fun RenderSettingValue(
             ColorItem(
                 setting = setting,
                 onClick = onClick,
+                modifier = modifier,
+            )
+        }
+
+        is SettingValue.IconList -> {
+            IconListItem(
+                setting = setting,
+                onSettingValueChange = onSettingValueChange,
                 modifier = modifier,
             )
         }

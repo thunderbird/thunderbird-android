@@ -52,6 +52,9 @@ internal fun SettingDialog(
         }
 
         // No dialog needed
-        is SettingValue.SegmentedButton<*>, is SettingValue.Switch -> Unit
+        is SettingValue.IconList,
+        is SettingValue.SegmentedButton<*>,
+        is SettingValue.Switch,
+        -> Unit
     }
 }
