@@ -15,4 +15,5 @@
     <string name="debug_settings_notification_status_log">Notification status log</string>
     <string name="debug_settings_notifications_status">"Status: "</string>
     <string name="debug_settings_notifications_clear_status_log">Clear status log</string>
+    <string name="debug_settings_feature_flag_title">Feature flags</string>
 </resources>
