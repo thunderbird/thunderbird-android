@@ -39,7 +39,11 @@ sealed class FeatureLauncherTarget(
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK,
     )
 
-    data object SecretDebugSettings : FeatureLauncherTarget(
-        deepLinkUri = SecretDebugSettingsRoute.Notification.route().toUri(),
+    data object SecretDebugSettingsNotification : FeatureLauncherTarget(
+        deepLinkUri = SecretDebugSettingsRoute().route().toUri(),
+    )
+
+    data object SecretDebugSettingsFeatureFlag : FeatureLauncherTarget(
+        deepLinkUri = SecretDebugSettingsRoute(tab = SecretDebugSettingsRoute.Tab.FeatureFlag).route().toUri(),
     )
 }

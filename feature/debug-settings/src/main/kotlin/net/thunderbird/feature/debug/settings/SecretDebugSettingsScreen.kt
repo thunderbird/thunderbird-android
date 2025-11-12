@@ -16,6 +16,7 @@ import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffold
 
 @Composable
 fun SecretDebugSettingsScreen(
+    starterTab: SecretDebugSettingsRoute.Tab,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
