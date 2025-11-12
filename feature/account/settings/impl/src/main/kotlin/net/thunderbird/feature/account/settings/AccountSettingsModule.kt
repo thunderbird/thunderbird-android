@@ -53,6 +53,7 @@ val featureAccountSettingsModule = module {
             monogramCreator = get(),
             validator = get(),
             featureFlagProvider = get(),
+            iconCatalog = get(),
         )
     }
 

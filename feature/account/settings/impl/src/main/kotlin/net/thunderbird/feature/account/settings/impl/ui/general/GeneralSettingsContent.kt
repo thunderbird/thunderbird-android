@@ -42,10 +42,31 @@ internal fun GeneralSettingsContent(
                     onEvent(Event.OnColorChange(setting.value))
                 }
 
-                    @Suppress("UNCHECKED_CAST")
-                    val avatarOption = setting.value as CompactOption<Avatar>
-                    onEvent(Event.OnAvatarChange(avatarOption.value))
-                is SettingValue.SegmentedButton<*> -> if (setting.id == GeneralSettingId.AVATAR_OPTIONS) {
+                is SettingValue.SegmentedButton<*> -> when (setting.id) {
+                    GeneralSettingId.AVATAR_OPTIONS -> {
+                        @Suppress("UNCHECKED_CAST")
+                        val avatarOption = setting.value as SegmentedButtonOption<Avatar>
+                        onEvent(Event.OnAvatarChange(avatarOption.value))
+                    }
+
+                    GeneralSettingId.AVATAR_ICON -> {
+                        @Suppress("UNCHECKED_CAST")
+                        val iconOption = setting.value as SegmentedButtonOption<Avatar>
+                        onEvent(Event.OnAvatarChange(iconOption.value))
+                    }
+
+                    else -> Unit
+                }
+
+                is SettingValue.IconList -> when (setting.id) {
+                    GeneralSettingId.AVATAR_ICON -> {
+                        val iconOption = setting.icons.firstOrNull { it == setting.value }
+                        if (iconOption != null) {
+                            onEvent(Event.OnAvatarChange(Avatar.Icon(iconOption.id)))
+                        }
+                    }
+
+                    else -> Unit
                 }
 
                 else -> Unit

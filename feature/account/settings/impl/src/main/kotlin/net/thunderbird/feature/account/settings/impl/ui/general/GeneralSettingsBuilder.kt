@@ -12,7 +12,9 @@ import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.avatar.Avatar
+import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.account.avatar.ui.AvatarIconMapper
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
@@ -22,6 +24,14 @@ import net.thunderbird.feature.account.settings.impl.ui.general.components.Gener
 
 /**
  * Builds the General Settings from [State].
+ *
+ * Invariants and UI rules:
+ * - AVATAR_OPTIONS is a quick selector for the avatar type and MUST always contain exactly 3 options:
+ *   Monogram, Image, and Icon. This is the only place where the "3 items" limit applies.
+ * - Detailed avatar settings (e.g., AVATAR_MONOGRAM for text input, AVATAR_ICON for icon selection)
+ *   are rendered as additional items when relevant and are NOT subject to this cap.
+ * - When the current avatar is Avatar.Icon with an unknown name, a stable default from AvatarIconCatalog
+ *   is used as the selected value.
  */
 internal class GeneralSettingsBuilder(
     private val resources: StringsResourceManager,
@@ -29,6 +39,7 @@ internal class GeneralSettingsBuilder(
     private val monogramCreator: AvatarMonogramCreator,
     private val validator: GeneralSettingsContract.Validator,
     private val featureFlagProvider: FeatureFlagProvider,
+    private val iconCatalog: AvatarIconCatalog,
 ) : GeneralSettingsContract.SettingsBuilder {
 
     override fun build(state: State): Settings {
@@ -36,7 +47,7 @@ internal class GeneralSettingsBuilder(
 
         settings += profile(
             name = state.name.value,
-            color = state.color.value ?: 0,
+            color = Color(state.color.value ?: 0),
             avatar = state.avatar,
         )
 
@@ -46,9 +57,14 @@ internal class GeneralSettingsBuilder(
                 avatar = state.avatar,
             )
 
-            val monogramValue = (state.avatar as? Avatar.Monogram)?.value
-            if (monogramValue != null) {
-                settings += monogram(monogram = monogramValue)
+            when (val avatar = state.avatar) {
+                is Avatar.Monogram -> settings += monogram(monogram = avatar.value)
+                is Avatar.Icon -> settings += iconPicker(
+                    icon = avatar,
+                    color = Color(state.color.value ?: 0),
+                )
+
+                else -> Unit
             }
         }
 
@@ -60,7 +76,7 @@ internal class GeneralSettingsBuilder(
 
     private fun profile(
         name: String,
-        color: Int,
+        color: Color,
         avatar: Avatar?,
     ): Setting = SettingDecoration.Custom(
         id = GeneralSettingId.PROFILE,
@@ -68,7 +84,7 @@ internal class GeneralSettingsBuilder(
         GeneralSettingsProfileView(
             name = name,
             email = null,
-            color = Color(color),
+            color = color,
             avatar = avatar,
             modifier = modifier,
         )
@@ -105,6 +121,7 @@ internal class GeneralSettingsBuilder(
                         is ValidateAccountNameError.EmptyName -> resources.stringResource(
                             R.string.account_settings_general_name_error_empty,
                         )
+
                         is ValidateAccountNameError.TooLongName -> resources.stringResource(
                             R.string.account_settings_general_name_error_too_long,
                         )
@@ -142,6 +159,7 @@ internal class GeneralSettingsBuilder(
                         is ValidateMonogramError.EmptyMonogram -> resources.stringResource(
                             R.string.account_settings_general_avatar_monogram_error_empty,
                         )
+
                         is ValidateMonogramError.TooLongMonogram -> resources.stringResource(
                             R.string.account_settings_general_avatar_monogram_error_too_long,
                         )
@@ -150,6 +168,29 @@ internal class GeneralSettingsBuilder(
             )
         },
     )
+
+    private fun iconPicker(
+        icon: Avatar.Icon,
+        color: Color,
+    ): Setting {
+        val names = iconCatalog.all()
+        val selectedName = if (iconCatalog.contains(icon.name)) icon.name else iconCatalog.defaultName
+        val icons = names.map { name ->
+            SettingValue.IconList.IconOption(
+                id = name,
+                icon = { AvatarIconMapper.toIcon(name) },
+            )
+        }
+        val selected = icons.firstOrNull { it.id == selectedName } ?: icons.first()
+        return SettingValue.IconList(
+            id = GeneralSettingId.AVATAR_ICON,
+            title = { resources.stringResource(R.string.account_settings_general_avatar_icon_title) },
+            description = { resources.stringResource(R.string.account_settings_general_avatar_icon_description) },
+            color = color,
+            value = selected,
+            icons = icons.toImmutableList(),
+        )
+    }
 
     private fun avatarOptions(
         avatar: Avatar?,
@@ -174,7 +215,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_ICON_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_icon) },
                 value = (avatar as? Avatar.Icon) ?: Avatar.Icon(
-                    name = "user",
+                    name = iconCatalog.defaultName,
                 ),
             ),
         )

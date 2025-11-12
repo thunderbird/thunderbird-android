@@ -8,7 +8,9 @@ import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.account.avatar.DefaultAvatarIconCatalog
 import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 import net.thunderbird.feature.account.core.featureAccountCoreModule
@@ -59,6 +61,10 @@ internal val appCommonAccountModule = module {
             repository = get(),
             accountColors = get(named("AccountColors")),
         )
+    }
+
+    factory<AvatarIconCatalog> {
+        DefaultAvatarIconCatalog()
     }
 
     factory<AvatarMonogramCreator> {

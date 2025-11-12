@@ -22,4 +22,7 @@
     <string name="account_settings_general_avatar_monogram_error_empty">Monogram cannot be empty</string>
     <string name="account_settings_general_avatar_monogram_error_too_long">Monogram is too long</string>
 
+    <string name="account_settings_general_avatar_icon_title">Avatar Icon</string>
+    <string name="account_settings_general_avatar_icon_description">Pick one of the icons to use as your avatar.</string>
+
 </resources>
