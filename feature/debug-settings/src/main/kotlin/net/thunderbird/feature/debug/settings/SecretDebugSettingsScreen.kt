@@ -1,16 +1,21 @@
 package net.thunderbird.feature.debug.settings
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.atom.button.ButtonIcon
 import app.k9mail.core.ui.compose.designsystem.organism.TopAppBar
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
+import net.thunderbird.core.ui.compose.designsystem.template.pager.HorizontalTabPagerSecondary
+import net.thunderbird.core.ui.compose.designsystem.template.pager.TabSecondaryConfig
+import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSection
+import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSection
 import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffold
 
@@ -34,13 +39,31 @@ fun SecretDebugSettingsScreen(
         },
         modifier = modifier,
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(MainTheme.spacings.double),
+        val resources = LocalResources.current
+        HorizontalTabPagerSecondary(
+            initialSelected = starterTab,
+            modifier = Modifier.padding(paddingValues),
         ) {
-            DebugNotificationSection()
+            pages(
+                items = SecretDebugSettingsRoute.Tab.entries.toList(),
+                tabConfigBuilder = {
+                    TabSecondaryConfig(title = resources.getString(it.titleRes))
+                },
+            ) { route ->
+                when (route) {
+                    SecretDebugSettingsRoute.Tab.Notification -> DebugNotificationSection(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(state = rememberScrollState())
+                            .padding(MainTheme.spacings.double),
+                    )
+
+                    SecretDebugSettingsRoute.Tab.FeatureFlag -> DebugFeatureFlagSection(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                    )
+                }
+            }
         }
     }
 }
