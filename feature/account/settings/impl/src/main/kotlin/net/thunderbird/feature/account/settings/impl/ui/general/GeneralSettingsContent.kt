@@ -5,7 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import net.thunderbird.core.ui.setting.SettingValue
-import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.CompactOption
+import net.thunderbird.core.ui.setting.SettingValue.SegmentedButton.SegmentedButtonOption
 import net.thunderbird.core.ui.setting.SettingViewProvider
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.R
@@ -42,10 +42,10 @@ internal fun GeneralSettingsContent(
                     onEvent(Event.OnColorChange(setting.value))
                 }
 
-                is SettingValue.CompactSelectSingleOption<*> -> if (setting.id == GeneralSettingId.AVATAR_OPTIONS) {
                     @Suppress("UNCHECKED_CAST")
                     val avatarOption = setting.value as CompactOption<Avatar>
                     onEvent(Event.OnAvatarChange(avatarOption.value))
+                is SettingValue.SegmentedButton<*> -> if (setting.id == GeneralSettingId.AVATAR_OPTIONS) {
                 }
 
                 else -> Unit

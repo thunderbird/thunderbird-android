@@ -80,7 +80,7 @@ internal class GeneralSettingsBuilder(
     ): Setting {
         val options = avatarOptions(avatar = avatar, name = name)
         val selected = selectAvatarOption(avatar = avatar, options = options)
-        return SettingValue.CompactSelectSingleOption(
+        return SettingValue.SegmentedButton(
             id = GeneralSettingId.AVATAR_OPTIONS,
             title = { resources.stringResource(R.string.account_settings_general_avatar_title) },
             description = { resources.stringResource(R.string.account_settings_general_avatar_description) },
@@ -154,23 +154,23 @@ internal class GeneralSettingsBuilder(
     private fun avatarOptions(
         avatar: Avatar?,
         name: String,
-    ): ImmutableList<SettingValue.CompactSelectSingleOption.CompactOption<Avatar>> =
+    ): ImmutableList<SettingValue.SegmentedButton.SegmentedButtonOption<Avatar>> =
         persistentListOf(
-            SettingValue.CompactSelectSingleOption.CompactOption(
+            SettingValue.SegmentedButton.SegmentedButtonOption(
                 id = AVATAR_MONOGRAM_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_monogram) },
                 value = (avatar as? Avatar.Monogram) ?: Avatar.Monogram(
                     value = monogramCreator.create(name, null),
                 ),
             ),
-            SettingValue.CompactSelectSingleOption.CompactOption(
+            SettingValue.SegmentedButton.SegmentedButtonOption(
                 id = AVATAR_IMAGE_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_image) },
                 value = (avatar as? Avatar.Image) ?: Avatar.Image(
                     uri = "avatar_placeholder_uri",
                 ),
             ),
-            SettingValue.CompactSelectSingleOption.CompactOption(
+            SettingValue.SegmentedButton.SegmentedButtonOption(
                 id = AVATAR_ICON_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_icon) },
                 value = (avatar as? Avatar.Icon) ?: Avatar.Icon(
@@ -181,8 +181,8 @@ internal class GeneralSettingsBuilder(
 
     private fun selectAvatarOption(
         avatar: Avatar?,
-        options: List<SettingValue.CompactSelectSingleOption.CompactOption<Avatar>>,
-    ): SettingValue.CompactSelectSingleOption.CompactOption<Avatar> = when (avatar) {
+        options: List<SettingValue.SegmentedButton.SegmentedButtonOption<Avatar>>,
+    ): SettingValue.SegmentedButton.SegmentedButtonOption<Avatar> = when (avatar) {
         is Avatar.Monogram, null -> options.first { it.id == AVATAR_MONOGRAM_ID }
         is Avatar.Image -> options.first { it.id == AVATAR_IMAGE_ID }
         is Avatar.Icon -> options.first { it.id == AVATAR_ICON_ID }

@@ -2,8 +2,8 @@ package net.thunderbird.core.ui.setting
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.CompactOption
 import net.thunderbird.core.ui.setting.SettingValue.SelectSingleOption.Option
+import net.thunderbird.core.ui.setting.SettingValue.SegmentedButton.SegmentedButtonOption
 
 /**
  * A setting that holds a value of type [T].
@@ -60,12 +60,10 @@ sealed interface SettingValue<T> : Setting {
     }
 
     /**
-     * A setting that allows the user to select a single option from a list of options.
+     * A setting that allows the user to select a single option from a segmented button.
      *
-     * The options are displayed in a compact manner, suitable for scenarios where space is limited.
      * The number of options must be between 2 and 4.
-     *
-     * This requires no edit view to modify the value. The selection can be made directly from the setting item.
+     * This does not require an edit view to modify the value, as the selection is made directly.
      *
      * @param id The unique identifier for the setting.
      * @param title A lambda that returns the title of the setting.
@@ -73,13 +71,13 @@ sealed interface SettingValue<T> : Setting {
      * @param value The currently selected option.
      * @param options The list of available options to choose from.
      */
-    data class CompactSelectSingleOption<T>(
+    data class SegmentedButton<T>(
         override val id: String,
         val title: () -> String,
         val description: () -> String? = { null },
-        override val value: CompactOption<T>,
-        val options: ImmutableList<CompactOption<T>>,
-    ) : SettingValue<CompactOption<T>> {
+        override val value: SegmentedButtonOption<T>,
+        val options: ImmutableList<SegmentedButtonOption<T>>,
+    ) : SettingValue<SegmentedButtonOption<T>> {
         override val requiresEditView: Boolean = false
 
         init {
@@ -87,7 +85,7 @@ sealed interface SettingValue<T> : Setting {
             require(options.size <= 4) { "There can be at most four options." }
         }
 
-        data class CompactOption<T>(
+        data class SegmentedButtonOption<T>(
             val id: String,
             val title: () -> String,
             val value: T,

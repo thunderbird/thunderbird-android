@@ -13,8 +13,8 @@ import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.setting.SettingValue
 
 @Composable
-internal fun <T> CompactSelectSingleOptionItem(
-    setting: SettingValue.CompactSelectSingleOption<T>,
+internal fun <T> SegmentedButtonItem(
+    setting: SettingValue.SegmentedButton<T>,
     onSettingValueChange: (SettingValue<*>) -> Unit,
     modifier: Modifier = Modifier,
 ) {

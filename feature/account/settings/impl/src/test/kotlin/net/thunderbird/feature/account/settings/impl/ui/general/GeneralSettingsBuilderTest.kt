@@ -95,7 +95,7 @@ internal class GeneralSettingsBuilderTest {
 
         // Assert
         assertThat(settingsWith).any {
-            it.isInstanceOf<SettingValue.CompactSelectSingleOption<*>>()
+            it.isInstanceOf<SettingValue.SegmentedButton<*>>()
             it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR_OPTIONS)
         }
 
@@ -113,7 +113,7 @@ internal class GeneralSettingsBuilderTest {
 
         // Assert
         assertThat(settingsWithout).none {
-            it.isInstanceOf<SettingValue.CompactSelectSingleOption<*>>()
+            it.isInstanceOf<SettingValue.SegmentedButton<*>>()
             it.prop(Setting::id).isEqualTo(GeneralSettingId.AVATAR_OPTIONS)
         }
     }
@@ -231,7 +231,7 @@ internal class GeneralSettingsBuilderTest {
 
         // Assert
         assertThat(avatarSetting).isNotNull()
-        val compact = avatarSetting as SettingValue.CompactSelectSingleOption<*>
+        val compact = avatarSetting as SettingValue.SegmentedButton<*>
         assertThat(compact.options.size).isEqualTo(3)
         assertThat(compact.value.id).isEqualTo(expectedOptionId)
     }
