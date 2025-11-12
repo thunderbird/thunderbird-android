@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +39,10 @@ fun Avatar(
     onClick: (() -> Unit)? = null,
     selected: Boolean = false,
 ) {
-    val backgroundColor = color.toSurfaceContainer(alpha = AVATAR_ALPHA)
+    val surfaceContainerColor = color.toSurfaceContainer(alpha = AVATAR_ALPHA)
+    val backgroundColor = remember(avatar, color, surfaceContainerColor) {
+        if (avatar is Avatar.Monogram) surfaceContainerColor else color
+    }
 
     Box(
         contentAlignment = Alignment.TopStart,
@@ -64,7 +68,10 @@ fun Avatar(
                 }
 
                 is Avatar.Icon -> {
-                    // TODO add support for icon avatars
+                    AvatarIcon(
+                        iconName = avatar.name,
+                        size = size,
+                    )
                 }
             }
         }

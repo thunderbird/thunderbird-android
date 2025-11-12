@@ -30,3 +30,27 @@ internal fun AvatarSelectedPreview() {
         )
     }
 }
+
+@Composable
+@PreviewLightDark
+internal fun AvatarIconPreview() {
+    PreviewWithTheme {
+        Avatar(
+            avatar = Avatar.Icon("person"),
+            color = Color.Red,
+            size = AvatarSize.MEDIUM,
+        )
+    }
+}
+
+@Composable
+@PreviewLightDark
+internal fun AvatarIconLargePreview() {
+    PreviewWithTheme {
+        Avatar(
+            avatar = Avatar.Icon("person"),
+            color = Color.Red,
+            size = AvatarSize.LARGE,
+        )
+    }
+}
