@@ -1,6 +1,7 @@
 package net.thunderbird.feature.account.settings.impl.ui.general
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -14,7 +15,6 @@ import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
-import net.thunderbird.feature.account.avatar.ui.AvatarIconMapper
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
@@ -39,7 +39,7 @@ internal class GeneralSettingsBuilder(
     private val monogramCreator: AvatarMonogramCreator,
     private val validator: GeneralSettingsContract.Validator,
     private val featureFlagProvider: FeatureFlagProvider,
-    private val iconCatalog: AvatarIconCatalog,
+    private val iconCatalog: AvatarIconCatalog<ImageVector>,
 ) : GeneralSettingsContract.SettingsBuilder {
 
     override fun build(state: State): Settings {
@@ -173,12 +173,12 @@ internal class GeneralSettingsBuilder(
         icon: Avatar.Icon,
         color: Color,
     ): Setting {
-        val names = iconCatalog.all()
+        val names = iconCatalog.allNames()
         val selectedName = if (iconCatalog.contains(icon.name)) icon.name else iconCatalog.defaultName
         val icons = names.map { name ->
             SettingValue.IconList.IconOption(
                 id = name,
-                icon = { AvatarIconMapper.toIcon(name) },
+                icon = { iconCatalog.toIcon(name) },
             )
         }
         val selected = icons.firstOrNull { it.id == selectedName } ?: icons.first()

@@ -1,5 +1,6 @@
 package net.thunderbird.feature.account.settings.impl.ui.general
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.any
@@ -15,6 +16,7 @@ import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.setting.Setting
 import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
@@ -40,9 +42,17 @@ internal class GeneralSettingsBuilderTest {
         override fun validateName(name: String) = Outcome.success(Unit)
         override fun validateMonogram(monogram: String) = Outcome.success(Unit)
     }
-    private val iconCatalog = object : AvatarIconCatalog {
+    private val iconCatalog = object : AvatarIconCatalog<ImageVector> {
         override val defaultName: String = "person"
-        override fun all(): List<String> = listOf("star", "person", "folder")
+        override val defaultIcon: ImageVector = Icons.Outlined.Person
+        override fun toIcon(name: String): ImageVector = when (name) {
+            "star" -> Icons.Outlined.Star
+            "person" -> Icons.Outlined.Person
+            "folder" -> Icons.Outlined.Folder
+            else -> defaultIcon
+        }
+        override fun allNames(): List<String> = listOf("star", "person", "folder")
+        override fun contains(name: String): Boolean = allNames().any { it.equals(name, ignoreCase = true) }
     }
 
     @Test

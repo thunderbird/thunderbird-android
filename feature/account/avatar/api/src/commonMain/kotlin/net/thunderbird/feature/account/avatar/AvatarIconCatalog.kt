@@ -1,17 +1,43 @@
 package net.thunderbird.feature.account.avatar
 
 /**
- * Catalog of available avatar icons identified by a stable name String.
+ * A catalog that provides a collection of icons suitable for user avatars.
  *
  * The [defaultName] must always be present in [all].
+ *
+ * @param TIcon The type representing the icon, e.g., an ImageVector or Drawable.
  */
-interface AvatarIconCatalog {
-    /** Stable identifier of the default icon. */
+interface AvatarIconCatalog<TIcon> {
+
+    /**
+     * The default icon to use when an unknown name is requested.
+     */
+    val defaultIcon: TIcon
+
+    /**
+     * The stable string name of the default icon.
+     */
     val defaultName: String
 
-    /** List of all available icon names. Names must be stable for persistence. */
-    fun all(): List<String>
+    /**
+     * Returns the [TIcon] associated with the given [name].
+     *
+     * If the name is not found, it returns the [defaultIcon].
+     *
+     * @param name The stable, case-insensitive string identifier for the icon.
+     * @return The corresponding [TIcon].
+     */
+    fun toIcon(name: String): TIcon
 
-    /** Returns true if the provided [name] exists in this catalog. */
-    fun contains(name: String): Boolean = all().contains(name)
+    /**
+     * Returns a list of all available icon names in the catalog.
+     */
+    fun allNames(): List<String>
+
+    /**
+     * Checks if an icon with the given [name] exists in the catalog.
+     *
+     * @param name The case-insensitive string identifier to check.
+     */
+    fun contains(name: String): Boolean
 }
