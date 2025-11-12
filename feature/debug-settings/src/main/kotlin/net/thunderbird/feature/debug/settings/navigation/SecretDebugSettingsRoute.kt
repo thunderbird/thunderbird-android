@@ -14,6 +14,5 @@ data class SecretDebugSettingsRoute(val tab: Tab = Tab.Notification) : Route {
     enum class Tab(@param:StringRes val titleRes: Int) {
         Notification(titleRes = R.string.debug_settings_notifications_title),
         FeatureFlag(titleRes = R.string.debug_settings_feature_flag_title),
-        ;
     }
 }
