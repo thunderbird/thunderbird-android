@@ -8,9 +8,11 @@ import net.thunderbird.ui.catalog.ui.page.common.PagedContent
 import net.thunderbird.ui.catalog.ui.page.molecule.CatalogMoleculePage.INPUT
 import net.thunderbird.ui.catalog.ui.page.molecule.CatalogMoleculePage.PULL_TO_REFRESH
 import net.thunderbird.ui.catalog.ui.page.molecule.CatalogMoleculePage.STATE
+import net.thunderbird.ui.catalog.ui.page.molecule.CatalogMoleculePage.TAB_ROW
 import net.thunderbird.ui.catalog.ui.page.molecule.items.PullToRefresh
 import net.thunderbird.ui.catalog.ui.page.molecule.items.inputItems
 import net.thunderbird.ui.catalog.ui.page.molecule.items.stateItems
+import net.thunderbird.ui.catalog.ui.page.molecule.items.tabRowItems
 
 @Composable
 fun CatalogMoleculeContent(
@@ -27,6 +29,7 @@ fun CatalogMoleculeContent(
             when (it) {
                 INPUT -> inputItems()
                 STATE -> stateItems()
+                TAB_ROW -> tabRowItems()
                 else -> throw IllegalArgumentException("Unknown page: $it")
             }
         },
