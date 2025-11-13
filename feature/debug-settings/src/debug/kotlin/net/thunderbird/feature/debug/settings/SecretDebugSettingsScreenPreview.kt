@@ -70,6 +70,7 @@ private fun SecretDebugSettingsScreenPreview() {
             SecretDebugSettingsScreen(
                 starterTab = SecretDebugSettingsRoute().tab,
                 onNavigateBack = { },
+                onFinish = { },
                 modifier = Modifier.fillMaxSize(),
             )
         }
