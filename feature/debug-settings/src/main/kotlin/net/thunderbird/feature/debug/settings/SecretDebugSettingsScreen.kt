@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
@@ -23,15 +27,24 @@ import net.thunderbird.feature.notification.api.ui.InAppNotificationScaffold
 fun SecretDebugSettingsScreen(
     starterTab: SecretDebugSettingsRoute.Tab,
     onNavigateBack: () -> Unit,
+    onFinish: (SecretDebugSettingsRoute.Tab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isBackNavigationEnabled by remember { mutableStateOf(true) }
+    var showUnsavedChangesDialog by remember { mutableStateOf(false) }
     InAppNotificationScaffold(
         topBar = {
             TopAppBar(
                 title = stringResource(R.string.debug_settings_screen_title),
                 navigationIcon = {
                     ButtonIcon(
-                        onClick = onNavigateBack,
+                        onClick = {
+                            if (isBackNavigationEnabled) {
+                                onNavigateBack()
+                            } else {
+                                showUnsavedChangesDialog = true
+                            }
+                        },
                         imageVector = Icons.Outlined.ArrowBack,
                     )
                 },
@@ -59,8 +72,14 @@ fun SecretDebugSettingsScreen(
                     )
 
                     SecretDebugSettingsRoute.Tab.FeatureFlag -> DebugFeatureFlagSection(
-                        modifier = Modifier
-                            .fillMaxSize(),
+                        showUnsavedChangesDialog = showUnsavedChangesDialog,
+                        onNavigateBack = onNavigateBack,
+                        onFinish = onFinish,
+                        onFeatureFlagChange = { pendingChanges ->
+                            isBackNavigationEnabled = pendingChanges.isEmpty()
+                        },
+                        onStayClick = { showUnsavedChangesDialog = false },
+                        modifier = Modifier.fillMaxSize(),
                     )
                 }
             }
