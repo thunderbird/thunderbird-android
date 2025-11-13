@@ -40,7 +40,7 @@ sealed class FeatureLauncherTarget(
     )
 
     data object SecretDebugSettingsNotification : FeatureLauncherTarget(
-        deepLinkUri = SecretDebugSettingsRoute().route().toUri(),
+        deepLinkUri = SecretDebugSettingsRoute(tab = SecretDebugSettingsRoute.Tab.Notification).route().toUri(),
     )
 
     data object SecretDebugSettingsFeatureFlag : FeatureLauncherTarget(

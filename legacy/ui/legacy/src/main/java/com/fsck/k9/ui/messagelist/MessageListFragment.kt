@@ -1078,6 +1078,7 @@ class MessageListFragment :
         menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = showDebug
         menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = showDebug
         menu.findItem(R.id.debug_force_auth_failure).isVisible = showDebug
+        menu.findItem(R.id.debug_feature_flags).isVisible = BuildConfig.DEBUG
     }
 
     private fun hideMenu(menu: Menu) {
@@ -1095,6 +1096,7 @@ class MessageListFragment :
         menu.findItem(R.id.debug_invalidate_access_token_local).isVisible = false
         menu.findItem(R.id.debug_invalidate_access_token_server).isVisible = false
         menu.findItem(R.id.debug_force_auth_failure).isVisible = false
+        menu.findItem(R.id.debug_feature_flags).isVisible = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -1118,6 +1120,10 @@ class MessageListFragment :
             R.id.debug_invalidate_access_token_local -> onDebugInvalidateAccessTokenLocal()
             R.id.debug_invalidate_access_token_server -> onDebugInvalidateAccessTokenServer()
             R.id.debug_force_auth_failure -> onDebugForceAuthFailure()
+            R.id.debug_feature_flags -> FeatureLauncherActivity.launch(
+                context = requireContext(),
+                target = FeatureLauncherTarget.SecretDebugSettingsFeatureFlag,
+            )
             else -> return super.onOptionsItemSelected(item)
         }
 

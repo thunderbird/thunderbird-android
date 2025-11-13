@@ -82,6 +82,7 @@ val testModule = module {
             featureFlagFactory = mock {
                 on { createFeatureCatalog() } doReturn emptyList()
             },
+            featureFlagOverrides = mock(),
         )
     }
     single<LegacyAccountManager> { mock() }

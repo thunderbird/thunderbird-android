@@ -15,6 +15,7 @@ import app.k9mail.feature.onboarding.main.navigation.OnboardingNavigation
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
+import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import org.koin.compose.koinInject
 
 @Composable
@@ -83,7 +84,12 @@ fun FeatureLauncherNavHost(
         secretDebugSettingsNavigation.registerRoutes(
             navGraphBuilder = this,
             onBack = onBack,
-            onFinish = { onBack() },
+            onFinish = { route ->
+                when (route.tab) {
+                    SecretDebugSettingsRoute.Tab.Notification -> onBack()
+                    SecretDebugSettingsRoute.Tab.FeatureFlag -> messageListLauncher.launch(accountUuid = null)
+                }
+            },
         )
     }
 }

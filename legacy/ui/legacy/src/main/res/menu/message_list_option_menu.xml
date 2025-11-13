@@ -283,4 +283,10 @@
         android:visible="false"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/debug_feature_flags"
+        android:title="@string/debug_feature_flags"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>

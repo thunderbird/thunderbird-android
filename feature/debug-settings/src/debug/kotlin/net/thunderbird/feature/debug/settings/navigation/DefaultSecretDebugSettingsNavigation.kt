@@ -12,18 +12,17 @@ internal class DefaultSecretDebugSettingsNavigation : SecretDebugSettingsNavigat
         navGraphBuilder: NavGraphBuilder,
         onBack: () -> Unit,
         onFinish: (SecretDebugSettingsRoute) -> Unit,
-    ) {
-        with(navGraphBuilder) {
-            deepLinkComposable<SecretDebugSettingsRoute>(
-                basePath = SecretDebugSettingsRoute().basePath,
-            ) { backStackEntry ->
-                val route = backStackEntry.toRoute<SecretDebugSettingsRoute>()
-                SecretDebugSettingsScreen(
-                    starterTab = route.tab,
-                    onNavigateBack = onBack,
-                    modifier = Modifier.fillMaxSize(),
-                )
-            }
+    ) = with(navGraphBuilder) {
+        deepLinkComposable<SecretDebugSettingsRoute>(
+            basePath = SecretDebugSettingsRoute().basePath,
+        ) { backStackEntry ->
+            val route = backStackEntry.toRoute<SecretDebugSettingsRoute>()
+            SecretDebugSettingsScreen(
+                starterTab = route.tab,
+                onNavigateBack = onBack,
+                onFinish = { tab -> onFinish(SecretDebugSettingsRoute(tab)) },
+                modifier = Modifier.fillMaxSize(),
+            )
         }
     }
 }

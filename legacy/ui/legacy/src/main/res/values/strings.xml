@@ -1114,4 +1114,5 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="debug_force_auth_failure_unavailable">No OAuth configuration available for this account.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Could not modify stored access token. Try local invalidation.</string>
     <string name="debug_invalidate_access_token_already_modified">Stored access token already modified.</string>
+    <string name="debug_feature_flags">DEBUG: Feature Flags</string>
 </resources>
