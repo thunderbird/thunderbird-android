@@ -109,6 +109,7 @@ class MessageViewFragment :
     private lateinit var messageLoaderHelper: MessageLoaderHelper
     private lateinit var messageCryptoPresenter: MessageCryptoPresenter
     private var showProgressThreshold: Long? = null
+    private var mMessageViewInfo: MessageViewInfo? = null
     private var preferredUnsubscribeUri: UnsubscribeUri? = null
 
     private val messageExporter: MessageExporter by inject()
@@ -325,6 +326,9 @@ class MessageViewFragment :
             menu.findItem(R.id.refile).isVisible = false
         }
 
+        menu.findItem(R.id.set_format_plain).isVisible = !isRenderPlainFormat()
+        menu.findItem(R.id.set_format_html).isVisible = isRenderPlainFormat()
+
         if (isCopyCapable) {
             menu.findItem(R.id.copy).isVisible = K9.isMessageViewCopyActionVisible
             menu.findItem(R.id.refile_copy).isVisible = true
@@ -381,6 +385,8 @@ class MessageViewFragment :
             } else {
                 return true
             }
+            R.id.set_format_plain -> onDisplayPlainText()
+            R.id.set_format_html -> onDisplayHTML()
             else -> return false
         }
 
@@ -482,6 +488,20 @@ class MessageViewFragment :
         } else {
             delete()
         }
+    }
+
+    private fun onDisplayPlainText() {
+        messageTopView.renderPlainFormat = true
+        mMessageViewInfo?.let { showMessage(it) }
+    }
+
+    private fun onDisplayHTML() {
+        messageTopView.renderPlainFormat = false
+        mMessageViewInfo?.let { showMessage(it) }
+    }
+
+    private fun isRenderPlainFormat(): Boolean {
+        return messageTopView.renderPlainFormat
     }
 
     private fun delete() {
@@ -983,6 +1003,7 @@ class MessageViewFragment :
         }
 
         override fun onMessageViewInfoLoadFinished(messageViewInfo: MessageViewInfo) {
+            mMessageViewInfo = messageViewInfo
             showMessage(messageViewInfo)
             preferredUnsubscribeUri = messageViewInfo.preferredUnsubscribeUri
             showProgressThreshold = null

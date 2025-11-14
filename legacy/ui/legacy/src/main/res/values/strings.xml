@@ -88,6 +88,12 @@
     <string name="unsubscribe_action">Unsubscribe</string>
     <string name="show_headers_action">Show headers</string>
     <string name="message_view_menu_action_export_eml">Export as EML</string>
+
+    <string name="set_format_html_action">Use original formatting</string>
+    <string name="set_format_html_condensed_action">Show formatted</string>
+    <string name="set_format_plain_action">Show unformatted message</string>
+    <string name="set_format_plain_condensed_action">Show unformatted</string>
+
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Address copied to clipboard</item>
         <item quantity="other">Addresses copied to clipboard</item>
@@ -249,6 +255,10 @@
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain text messages</string>
     <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>
     <string name="global_settings_messageview_autofit_width_summary">Shrink messages to fit the screen</string>
+
+    <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Plain text (text/plain)</string>
 
     <!-- Name of the setting to configure the navigation action to perform after the user has deleted or moved a message from the message view screen -->
     <string name="general_settings_post_remove_action_title">After deleting or moving a message</string>
