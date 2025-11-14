@@ -2,6 +2,9 @@ plugins {
     id(ThunderbirdPlugins.Library.kmp)
 }
 
-android {
-    namespace = "net.thunderbird.core.architecture"
+kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.core.architecture"
+        withHostTest {}
+    }
 }
