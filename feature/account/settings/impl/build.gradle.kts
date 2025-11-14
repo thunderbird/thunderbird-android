@@ -29,6 +29,7 @@ dependencies {
     implementation(projects.core.logging.implLegacy)
     implementation(projects.core.ui.compose.designsystem)
     implementation(projects.core.ui.compose.navigation)
+    implementation(projects.core.common)
 
     debugImplementation(projects.core.ui.setting.implDialog)
 

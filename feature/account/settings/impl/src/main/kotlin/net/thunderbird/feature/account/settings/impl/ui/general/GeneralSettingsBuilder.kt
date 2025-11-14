@@ -1,8 +1,10 @@
 package net.thunderbird.feature.account.settings.impl.ui.general
 
+import androidx.compose.ui.graphics.Color
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.outcome.fold
 import net.thunderbird.core.ui.setting.Setting
@@ -12,19 +14,21 @@ import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
-import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract
+import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract.State
+import net.thunderbird.feature.account.settings.impl.ui.general.components.GeneralSettingsProfileView
 
 /**
  * Builds the General Settings from [State].
  */
 internal class GeneralSettingsBuilder(
-    private val resources: AccountSettingsDomainContract.ResourceProvider.GeneralResourceProvider,
-    private val provider: FeatureFlagProvider,
+    private val resources: StringsResourceManager,
+    private val accountColors: ImmutableList<Int>,
     private val monogramCreator: AvatarMonogramCreator,
     private val validator: GeneralSettingsContract.Validator,
+    private val featureFlagProvider: FeatureFlagProvider,
 ) : GeneralSettingsContract.SettingsBuilder {
 
     override fun build(state: State): Settings {
@@ -36,7 +40,7 @@ internal class GeneralSettingsBuilder(
             avatar = state.avatar,
         )
 
-        if (provider.provide(AccountSettingsFeatureFlags.EnableAvatarCustomization).isEnabled()) {
+        if (featureFlagProvider.provide(AccountSettingsFeatureFlags.EnableAvatarCustomization).isEnabled()) {
             settings += avatar(
                 name = state.name.value,
                 avatar = state.avatar,
@@ -61,8 +65,13 @@ internal class GeneralSettingsBuilder(
     ): Setting = SettingDecoration.Custom(
         id = GeneralSettingId.PROFILE,
     ) { modifier ->
-        val composable = resources.profileUi(name = name, color = color, avatar = avatar)
-        composable(modifier)
+        GeneralSettingsProfileView(
+            name = name,
+            email = null,
+            color = Color(color),
+            avatar = avatar,
+            modifier = modifier,
+        )
     }
 
     private fun avatar(
@@ -73,8 +82,8 @@ internal class GeneralSettingsBuilder(
         val selected = selectAvatarOption(avatar = avatar, options = options)
         return SettingValue.CompactSelectSingleOption(
             id = GeneralSettingId.AVATAR_OPTIONS,
-            title = resources.avatarTitle,
-            description = resources.avatarDescription,
+            title = { resources.stringResource(R.string.account_settings_general_avatar_title) },
+            description = { resources.stringResource(R.string.account_settings_general_avatar_description) },
             value = selected,
             options = options,
         )
@@ -84,17 +93,21 @@ internal class GeneralSettingsBuilder(
         name: String,
     ): Setting = SettingValue.Text(
         id = GeneralSettingId.NAME,
-        title = resources.nameTitle,
-        description = resources.nameDescription,
-        icon = resources.nameIcon,
+        title = { resources.stringResource(R.string.account_settings_general_name_title) },
+        description = { resources.stringResource(R.string.account_settings_general_name_description) },
+        icon = { null },
         value = name,
         validate = {
             validator.validateName(it).fold(
                 onSuccess = { null },
                 onFailure = { failure ->
                     when (failure) {
-                        is ValidateAccountNameError.EmptyName -> resources.nameEmptyError()
-                        is ValidateAccountNameError.TooLongName -> resources.nameTooLongError()
+                        is ValidateAccountNameError.EmptyName -> resources.stringResource(
+                            R.string.account_settings_general_name_error_empty,
+                        )
+                        is ValidateAccountNameError.TooLongName -> resources.stringResource(
+                            R.string.account_settings_general_name_error_too_long,
+                        )
                     }
                 },
             )
@@ -105,19 +118,19 @@ internal class GeneralSettingsBuilder(
         color: Int,
     ): Setting = SettingValue.Color(
         id = GeneralSettingId.COLOR,
-        title = resources.colorTitle,
-        description = resources.colorDescription,
-        icon = resources.colorIcon,
+        title = { resources.stringResource(R.string.account_settings_general_color_title) },
+        description = { resources.stringResource(R.string.account_settings_general_color_description) },
+        icon = { null },
         value = color,
-        colors = resources.colors,
+        colors = accountColors,
     )
 
     private fun monogram(
         monogram: String,
     ): Setting = SettingValue.Text(
         id = GeneralSettingId.AVATAR_MONOGRAM,
-        title = resources.monogramTitle,
-        description = resources.monogramDescription,
+        title = { resources.stringResource(R.string.account_settings_general_avatar_monogram_title) },
+        description = { resources.stringResource(R.string.account_settings_general_avatar_monogram_description) },
         icon = { null },
         value = monogram,
         transform = { it.uppercase() },
@@ -126,8 +139,12 @@ internal class GeneralSettingsBuilder(
                 onSuccess = { null },
                 onFailure = { failure ->
                     when (failure) {
-                        is ValidateMonogramError.EmptyMonogram -> resources.monogramEmptyError()
-                        is ValidateMonogramError.TooLongMonogram -> resources.monogramTooLongError()
+                        is ValidateMonogramError.EmptyMonogram -> resources.stringResource(
+                            R.string.account_settings_general_avatar_monogram_error_empty,
+                        )
+                        is ValidateMonogramError.TooLongMonogram -> resources.stringResource(
+                            R.string.account_settings_general_avatar_monogram_error_too_long,
+                        )
                     }
                 },
             )
@@ -141,21 +158,21 @@ internal class GeneralSettingsBuilder(
         persistentListOf(
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_MONOGRAM_ID,
-                title = resources.avatarOptionMonogram,
+                title = { resources.stringResource(R.string.account_settings_general_avatar_option_monogram) },
                 value = (avatar as? Avatar.Monogram) ?: Avatar.Monogram(
                     value = monogramCreator.create(name, null),
                 ),
             ),
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_IMAGE_ID,
-                title = resources.avatarOptionImage,
+                title = { resources.stringResource(R.string.account_settings_general_avatar_option_image) },
                 value = (avatar as? Avatar.Image) ?: Avatar.Image(
                     uri = "avatar_placeholder_uri",
                 ),
             ),
             SettingValue.CompactSelectSingleOption.CompactOption(
                 id = AVATAR_ICON_ID,
-                title = resources.avatarOptionIcon,
+                title = { resources.stringResource(R.string.account_settings_general_avatar_option_icon) },
                 value = (avatar as? Avatar.Icon) ?: Avatar.Icon(
                     name = "user",
                 ),

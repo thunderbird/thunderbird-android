@@ -9,6 +9,8 @@ import assertk.assertions.isNotNull
 import assertk.assertions.none
 import assertk.assertions.prop
 import kotlin.test.Test
+import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.common.resources.StringsResourceManager
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
@@ -20,14 +22,18 @@ import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.account.avatar.Avatar
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
+import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateMonogramError
-import net.thunderbird.feature.account.settings.impl.domain.usecase.FakeGeneralResourceProvider
 import net.thunderbird.feature.account.settings.impl.domain.usecase.FakeMonogramCreator
 
 internal class GeneralSettingsBuilderTest {
 
-    private val resources = FakeGeneralResourceProvider()
+    private val resources = object : StringsResourceManager {
+        override fun stringResource(resourceId: Int): String = "String for $resourceId"
+
+        override fun stringResource(resourceId: Int, vararg formatArgs: Any?): String = stringResource(resourceId)
+    }
     private val monogramCreator = FakeMonogramCreator()
     private val validator = object : GeneralSettingsContract.Validator {
         override fun validateName(name: String) = Outcome.success(Unit)
@@ -39,7 +45,8 @@ internal class GeneralSettingsBuilderTest {
         // Arrange
         val builder = GeneralSettingsBuilder(
             resources = resources,
-            provider = enabled(false),
+            accountColors = ACCOUNT_COLORS,
+            featureFlagProvider = enabled(false),
             monogramCreator = monogramCreator,
             validator = validator,
         )
@@ -72,7 +79,8 @@ internal class GeneralSettingsBuilderTest {
         // Arrange enabled
         val builderEnabled = GeneralSettingsBuilder(
             resources = resources,
-            provider = enabled(true),
+            accountColors = ACCOUNT_COLORS,
+            featureFlagProvider = enabled(true),
             monogramCreator = monogramCreator,
             validator = validator,
         )
@@ -94,7 +102,8 @@ internal class GeneralSettingsBuilderTest {
         // Arrange disabled
         val builderDisabled = GeneralSettingsBuilder(
             resources = resources,
-            provider = enabled(false),
+            accountColors = ACCOUNT_COLORS,
+            featureFlagProvider = enabled(false),
             monogramCreator = monogramCreator,
             validator = validator,
         )
@@ -138,7 +147,8 @@ internal class GeneralSettingsBuilderTest {
         // Arrange
         val builder = GeneralSettingsBuilder(
             resources = resources,
-            provider = enabled(true),
+            accountColors = ACCOUNT_COLORS,
+            featureFlagProvider = enabled(true),
             monogramCreator = monogramCreator,
             validator = validator,
         )
@@ -156,7 +166,9 @@ internal class GeneralSettingsBuilderTest {
         assertThat(monogramSetting).isNotNull()
         val textSetting = monogramSetting as SettingValue.Text
         assertThat(textSetting.value).isEqualTo("TB")
-        assertThat(textSetting.description()).isEqualTo(resources.monogramDescription())
+        assertThat(
+            textSetting.description(),
+        ).isEqualTo(resources.stringResource(R.string.account_settings_general_avatar_monogram_description))
     }
 
     @Test
@@ -170,7 +182,8 @@ internal class GeneralSettingsBuilderTest {
         }
         val builder = GeneralSettingsBuilder(
             resources = resources,
-            provider = enabled(true),
+            accountColors = ACCOUNT_COLORS,
+            featureFlagProvider = enabled(true),
             monogramCreator = monogramCreator,
             validator = failingValidator,
         )
@@ -186,9 +199,12 @@ internal class GeneralSettingsBuilderTest {
         val monogramSetting = settings.first { it.id == GeneralSettingId.AVATAR_MONOGRAM } as SettingValue.Text
 
         // Assert: name empty error and monogram too long error come from resource provider
-        assertThat(nameSetting.validate("")).isEqualTo(resources.nameEmptyError())
-        assertThat(monogramSetting.validate("TOO_LONG"))
-            .isEqualTo(resources.monogramTooLongError())
+        assertThat(nameSetting.validate("")).isEqualTo(
+            resources.stringResource(R.string.account_settings_general_name_error_empty)
+        )
+        assertThat(monogramSetting.validate("TOO_LONG")).isEqualTo(
+            resources.stringResource(R.string.account_settings_general_avatar_monogram_error_too_long)
+        )
     }
 
     private fun assertSelectedAvatarOption(
@@ -198,7 +214,8 @@ internal class GeneralSettingsBuilderTest {
         // Assert
         val builder = GeneralSettingsBuilder(
             resources = resources,
-            provider = enabled(true),
+            accountColors = ACCOUNT_COLORS,
+            featureFlagProvider = enabled(true),
             monogramCreator = monogramCreator,
             validator = validator,
         )
@@ -226,5 +243,9 @@ internal class GeneralSettingsBuilderTest {
             }
             else -> FeatureFlagResult.Enabled
         }
+    }
+
+    private companion object {
+        val ACCOUNT_COLORS = persistentListOf(0xFF0000, 0x00FF00, 0x0000FF)
     }
 }
