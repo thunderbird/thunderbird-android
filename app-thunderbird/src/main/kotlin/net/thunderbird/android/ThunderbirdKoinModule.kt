@@ -13,8 +13,10 @@ import net.thunderbird.android.widget.provider.MessageListWidgetProvider
 import net.thunderbird.android.widget.provider.UnreadWidgetProvider
 import net.thunderbird.android.widget.widgetModule
 import net.thunderbird.app.common.appCommonModule
+import net.thunderbird.app.common.core.featureflag.InMemoryMutableFeatureFlagFactory
 import net.thunderbird.core.common.oauth.OAuthConfigurationFactory
 import net.thunderbird.core.featureflag.FeatureFlagFactory
+import net.thunderbird.core.featureflag.MutableFeatureFlagFactory
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -30,6 +32,7 @@ val appModule = module {
     single<AppConfig> { appConfig }
     single<OAuthConfigurationFactory> { TbOAuthConfigurationFactory() }
     single<FeatureFlagFactory> { TbFeatureFlagFactory() }
+    single<MutableFeatureFlagFactory> { InMemoryMutableFeatureFlagFactory(featureFlagFactory = get()) }
 
     developmentModuleAdditions()
 }

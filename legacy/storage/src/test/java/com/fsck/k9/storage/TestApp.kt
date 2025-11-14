@@ -15,7 +15,6 @@ import com.fsck.k9.legacyCoreModules
 import com.fsck.k9.preferences.K9StoragePersister
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
-import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
 import net.thunderbird.core.logging.LogLevel
@@ -32,6 +31,7 @@ import net.thunderbird.core.preference.storage.StoragePersister
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 class TestApp : Application() {
@@ -78,8 +78,8 @@ val testModule = module {
     single<AccountDefaultsProvider> { mock<AccountDefaultsProvider>() }
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                emptyList<FeatureFlag>()
+            featureFlagFactory = mock {
+                on { createFeatureCatalog() } doReturn emptyList()
             },
         )
     }

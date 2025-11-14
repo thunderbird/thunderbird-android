@@ -1,11 +1,11 @@
 package net.thunderbird.core.featureflag
 
 class InMemoryFeatureFlagProvider(
-    featureFlagFactory: FeatureFlagFactory,
+    private val featureFlagFactory: MutableFeatureFlagFactory,
 ) : FeatureFlagProvider {
 
-    private val features: Map<FeatureFlagKey, FeatureFlag> =
-        featureFlagFactory.createFeatureCatalog().associateBy { it.key }
+    private val features: Map<FeatureFlagKey, FeatureFlag>
+        get() = featureFlagFactory.createFeatureCatalog().associateBy { it.key }
 
     override fun provide(key: FeatureFlagKey): FeatureFlagResult {
         return when (features[key]?.enabled) {

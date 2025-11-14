@@ -10,11 +10,12 @@ import app.k9mail.feature.account.edit.navigation.AccountEditNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupNavigation
 import app.k9mail.feature.account.setup.navigation.AccountSetupRoute
 import app.k9mail.feature.funding.api.FundingNavigation
-import app.k9mail.feature.launcher.FeatureLauncherExternalContract.AccountSetupFinishedLauncher
+import app.k9mail.feature.launcher.FeatureLauncherExternalContract.MessageListLauncher
 import app.k9mail.feature.onboarding.main.navigation.OnboardingNavigation
 import app.k9mail.feature.onboarding.main.navigation.OnboardingRoute
 import net.thunderbird.feature.account.settings.api.AccountSettingsNavigation
 import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsNavigation
+import net.thunderbird.feature.debug.settings.navigation.SecretDebugSettingsRoute
 import org.koin.compose.koinInject
 
 @Composable
@@ -22,7 +23,7 @@ fun FeatureLauncherNavHost(
     navController: NavHostController,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
-    accountSetupFinishedLauncher: AccountSetupFinishedLauncher = koinInject(),
+    messageListLauncher: MessageListLauncher = koinInject(),
     accountEditNavigation: AccountEditNavigation = koinInject(),
     accountSettingsNavigation: AccountSettingsNavigation = koinInject(),
     accountSetupNavigation: AccountSetupNavigation = koinInject(),
@@ -43,7 +44,7 @@ fun FeatureLauncherNavHost(
             onFinish = {
                 when (it) {
                     is OnboardingRoute.Onboarding -> {
-                        accountSetupFinishedLauncher.launch(it.accountId)
+                        messageListLauncher.launch(it.accountId)
                         activity.finish()
                     }
                 }
@@ -56,7 +57,7 @@ fun FeatureLauncherNavHost(
             onFinish = {
                 when (it) {
                     is AccountSetupRoute.AccountSetup -> {
-                        accountSetupFinishedLauncher.launch(it.accountId)
+                        messageListLauncher.launch(it.accountId)
                     }
                 }
             },
@@ -83,7 +84,12 @@ fun FeatureLauncherNavHost(
         secretDebugSettingsNavigation.registerRoutes(
             navGraphBuilder = this,
             onBack = onBack,
-            onFinish = { onBack() },
+            onFinish = { route ->
+                when (route.tab) {
+                    SecretDebugSettingsRoute.Tab.Notification -> onBack()
+                    SecretDebugSettingsRoute.Tab.FeatureFlag -> messageListLauncher.launch(accountUuid = null)
+                }
+            },
         )
     }
 }
