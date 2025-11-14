@@ -101,6 +101,8 @@ include(
     ":feature:mail:message:list",
     ":feature:mail:message:export:api",
     ":feature:mail:message:export:impl-eml",
+    ":feature:mail:message:reader:api",
+    ":feature:mail:message:reader:impl",
 )
 
 include(

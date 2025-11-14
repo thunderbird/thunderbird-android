@@ -35,6 +35,7 @@ dependencies {
     implementation(projects.feature.mail.message.list)
     implementation(projects.feature.mail.message.composer)
     implementation(projects.feature.mail.message.export.api)
+    implementation(projects.feature.mail.message.reader.api)
 
     compileOnly(projects.mail.protocols.imap)
 

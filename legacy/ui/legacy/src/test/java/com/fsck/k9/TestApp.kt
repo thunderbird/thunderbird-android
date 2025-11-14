@@ -7,6 +7,7 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
+import net.thunderbird.core.common.inject.factoryListOf
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
@@ -21,6 +22,9 @@ import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogLevelManager
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.storage.StoragePersister
+import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
+import net.thunderbird.feature.mail.message.reader.api.css.CssStyleProvider
+import net.thunderbird.feature.mail.message.reader.api.css.CssVariableNameProvider
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -81,4 +85,7 @@ val testModule = module {
 
     single<ContactPictureLoader> { mock() }
     single<LegacyAccountManager> { mock() }
+    single<CssVariableNameProvider> { mock() }
+    single<CssClassNameProvider> { mock() }
+    factoryListOf<CssStyleProvider>()
 }
