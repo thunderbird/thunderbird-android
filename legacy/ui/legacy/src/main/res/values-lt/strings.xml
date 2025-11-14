@@ -354,8 +354,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Visi juodraščiai bus saugomi užšifruoti</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Šifruoti juodraščius tik tada, jei įjungtas šifravimas</string>
     <string name="account_settings_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
-    <string name="account_settings_color_label">Paskyros spalva</string>
-    <string name="account_settings_color_summary">Šios paskyros spalva kuri bus naudojama aplankuose ir paskyrų sąraše</string>
     <string name="account_settings_mail_display_count_label">Vietinio aplanko dydis</string>
     <string name="account_settings_autodownload_message_size_label">Gauti laiškus iki</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -396,7 +394,6 @@
     <string name="account_settings_incoming_summary">Konfigūruoti gaunamųjų laiškų serverį</string>
     <string name="account_settings_outgoing_label">Siuntimo serveris</string>
     <string name="account_settings_outgoing_summary">Konfigūruoti siunčiamųjų laiškų(SMTP) serverį</string>
-    <string name="account_settings_description_label">Paskyros pavadinimas</string>
     <string name="account_settings_name_label">Jūsų vardas</string>
     <string name="notifications_title">Pranešimai</string>
     <string name="account_settings_vibration">Vibracija</string>

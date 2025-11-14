@@ -335,8 +335,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Ĉiuj malnetaj mesaĝoj estos konservitaj ĉifrite</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Ĉifri malnetojn nur kiam ĉifrado estas aktivigita</string>
     <string name="account_settings_mail_check_frequency_label">Ofteco de mesaĝuj-elŝuto</string>
-    <string name="account_settings_color_label">Konta koloro</string>
-    <string name="account_settings_color_summary">Distinga koloro por tiu ĉi konto uzata en listoj de mesaĝujoj kaj kontoj</string>
     <string name="account_settings_mail_display_count_label">Grando de loka mesaĝujo</string>
     <string name="account_settings_autodownload_message_size_label">Elŝuti mesaĝojn de maksimuma grando</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -377,7 +375,6 @@
     <string name="account_settings_incoming_summary">Agordoj de enira retpoŝta servilo</string>
     <string name="account_settings_outgoing_label">Elira servilo</string>
     <string name="account_settings_outgoing_summary">Agordoj de elira retpoŝta servilo (SMTP)</string>
-    <string name="account_settings_description_label">Konta nomo</string>
     <string name="account_settings_name_label">Via nomo</string>
     <string name="notifications_title">Sciigoj</string>
     <string name="account_settings_vibrate_enable">Vibri</string>

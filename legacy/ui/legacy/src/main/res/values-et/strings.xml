@@ -360,8 +360,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Kõik mustandid salvestatakse krüpteeritult</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Krüpteeri mustandid vaid siis, kui krüpteerimine on lubatud</string>
     <string name="account_settings_mail_check_frequency_label">Kausta pollimise sagedus</string>
-    <string name="account_settings_color_label">Konto värv</string>
-    <string name="account_settings_color_summary">Konto rõhutamise värvi kasutatakse selle konto kaustades ja nimekirjades</string>
     <string name="account_settings_mail_display_count_label">Lokaalse kausta suurus</string>
     <string name="account_settings_autodownload_message_size_label">Laadi kirju kuni</string>
     <string name="account_settings_autodownload_message_size_1">1 KB</string>
@@ -402,7 +400,6 @@
     <string name="account_settings_incoming_summary">Konfigureeri sisse tuleva meili server</string>
     <string name="account_settings_outgoing_label">Väljuva meili server</string>
     <string name="account_settings_outgoing_summary">Konfigureeri väljuva meili server (SMTP)</string>
-    <string name="account_settings_description_label">Konto nimi</string>
     <string name="account_settings_name_label">Sinu nimi</string>
     <string name="notifications_title">Teated</string>
     <string name="account_settings_vibration">Värinaalarm</string>

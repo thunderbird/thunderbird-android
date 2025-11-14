@@ -360,8 +360,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alla utkast kommer att lagras krypterade</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Kryptera utkast endast om kryptering är aktiverad</string>
     <string name="account_settings_mail_check_frequency_label">Frekvens för mappkontroll</string>
-    <string name="account_settings_color_label">Kontofärg</string>
-    <string name="account_settings_color_summary">Färg för detta konto i mapp- och kontolista</string>
     <string name="account_settings_mail_display_count_label">Mappstorlek lokalt</string>
     <string name="account_settings_autodownload_message_size_label">Hämta meddelanden upp till</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -402,7 +400,6 @@
     <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
     <string name="account_settings_outgoing_label">Utgående server</string>
     <string name="account_settings_outgoing_summary">Konfigurera servern för utgående e-post (SMTP)</string>
-    <string name="account_settings_description_label">Kontonamn</string>
     <string name="account_settings_name_label">Ditt namn</string>
     <string name="notifications_title">Aviseringar</string>
     <string name="account_settings_vibration">Vibration</string>

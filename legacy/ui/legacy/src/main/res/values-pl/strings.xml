@@ -364,8 +364,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Wszystkie wersje robocze będą szyfrowane</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Szyfruj wersje robocze tylko wtedy, gdy szyfrowanie jest włączone</string>
     <string name="account_settings_mail_check_frequency_label">Częstotliwość sprawdzania konta</string>
-    <string name="account_settings_color_label">Kolor konta</string>
-    <string name="account_settings_color_summary">Wybierz kolor, który będzie użyty przy wyświetlaniu folderów i listy kont</string>
     <string name="account_settings_mail_display_count_label">Liczba wiadomości</string>
     <string name="account_settings_autodownload_message_size_label">Rozmiar pobieranych wiadomości</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -406,7 +404,6 @@
     <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
     <string name="account_settings_outgoing_label">Serwer poczty wychodzącej</string>
     <string name="account_settings_outgoing_summary">Ustawienia serwera poczty wychodzącej (SMTP)</string>
-    <string name="account_settings_description_label">Nazwa konta</string>
     <string name="account_settings_name_label">Imię i nazwisko</string>
     <string name="notifications_title">Powiadomienia</string>
     <string name="account_settings_vibration">Wibracja</string>

@@ -361,8 +361,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Toate ciornele vor fi stocate criptate</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Criptează ciornele doar dacă criptarea este activată</string>
     <string name="account_settings_mail_check_frequency_label">Frecvență interogare dosar</string>
-    <string name="account_settings_color_label">Culoarea contului</string>
-    <string name="account_settings_color_summary">Culoarea contului folosită în lista de dosare și conturi</string>
     <string name="account_settings_mail_display_count_label">Mărimea dosarului local</string>
     <string name="account_settings_autodownload_message_size_label">Preia mesaje până la</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -403,7 +401,6 @@
     <string name="account_settings_incoming_summary">Configurare server primire</string>
     <string name="account_settings_outgoing_label">Server trimitere</string>
     <string name="account_settings_outgoing_summary">Configurare server trimitere (SMTP)</string>
-    <string name="account_settings_description_label">Nume cont</string>
     <string name="account_settings_name_label">Nume</string>
     <string name="notifications_title">Notificări</string>
     <string name="account_settings_vibration">Vibrație</string>

@@ -361,8 +361,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Les brouillons seront enregistrés chiffrés</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Ne chiffrer les brouillons que si le chiffrement est activé</string>
     <string name="account_settings_mail_check_frequency_label">Fréquence de synchronisation des dossiers</string>
-    <string name="account_settings_color_label">Couleur du compte</string>
-    <string name="account_settings_color_summary">La note de couleur du compte utilisée dans la liste des dossiers et des comptes</string>
     <string name="account_settings_mail_display_count_label">Taille du dossier local</string>
     <string name="account_settings_autodownload_message_size_label">Récupérer les courriels jusqu’à</string>
     <string name="account_settings_autodownload_message_size_1">1 Kio</string>
@@ -403,7 +401,6 @@
     <string name="account_settings_incoming_summary">Configurer le serveur de courriel entrant</string>
     <string name="account_settings_outgoing_label">Serveur sortant</string>
     <string name="account_settings_outgoing_summary">Configurer le serveur de courriel sortant (SMTP)</string>
-    <string name="account_settings_description_label">Nom du compte</string>
     <string name="account_settings_name_label">Votre nom</string>
     <string name="notifications_title">Notifications</string>
     <string name="account_settings_vibration">Vibration</string>

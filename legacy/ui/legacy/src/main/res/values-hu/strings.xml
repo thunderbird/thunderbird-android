@@ -359,8 +359,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Az összes piszkozat titkosítva lesz tárolva</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">A piszkozatok titkosítása csak a titkosítás engedélyezésekor</string>
     <string name="account_settings_mail_check_frequency_label">Mappa lekérdezésének gyakorisága</string>
-    <string name="account_settings_color_label">Fiókszín</string>
-    <string name="account_settings_color_summary">A fiókban és a fióklistában használt fiók kiemelt színe</string>
     <string name="account_settings_mail_display_count_label">Helyi mappa mérete</string>
     <string name="account_settings_autodownload_message_size_label">Legfeljebb ekkora levelek lekérése</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +399,6 @@
     <string name="account_settings_incoming_summary">A bejövő levelek kiszolgálójának beállítása</string>
     <string name="account_settings_outgoing_label">Kimenő kiszolgáló</string>
     <string name="account_settings_outgoing_summary">A kimenő levelek (SMTP) kiszolgálójának beállítása</string>
-    <string name="account_settings_description_label">Fióknév</string>
     <string name="account_settings_name_label">Saját név</string>
     <string name="notifications_title">Értesítések</string>
     <string name="account_settings_vibration">Rezgés</string>

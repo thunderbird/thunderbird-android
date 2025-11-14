@@ -341,8 +341,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">എല്ലാ ഡ്രാഫ്റ്റുകളും എൻ‌ക്രിപ്റ്റ് ചെയ്തതായി സൂക്ഷിക്കും</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">എൻ‌ക്രിപ്ഷൻ പ്രാപ്തമാക്കിയിട്ടുണ്ടെങ്കിൽ മാത്രം ഡ്രാഫ്റ്റുകൾ എൻ‌ക്രിപ്റ്റ് ചെയ്യുക</string>
     <string name="account_settings_mail_check_frequency_label">ഫോൾഡർ വോട്ടെടുപ്പ് ആവൃത്തി</string>
-    <string name="account_settings_color_label">അക്കൗണ്ട് നിറം</string>
-    <string name="account_settings_color_summary">ഫോൾഡറിലും അക്കൗണ്ട് ലിസ്റ്റിലും ഈ അക്കൗണ്ടിന്റെ ഊന്നിപ്പറഞ്ഞ നിറം ഉപയോഗിക്കുന്നു</string>
     <string name="account_settings_mail_display_count_label">പ്രാദേശിക ഫോൾഡർ വലുപ്പം</string>
     <string name="account_settings_autodownload_message_size_label">വരെ സന്ദേശങ്ങൾ നേടുക</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -383,7 +381,6 @@
     <string name="account_settings_incoming_summary">ഇൻകമിംഗ് മെയിൽ സെർവർ ക്രമീകരിക്കുക</string>
     <string name="account_settings_outgoing_label">ഔട്ട്‌ഗോയിംഗ് സെർവർ</string>
     <string name="account_settings_outgoing_summary">ഔട്ട്‌ഗോയിംഗ് മെയിൽ (SMTP) സെർവർ ക്രമീകരിക്കുക</string>
-    <string name="account_settings_description_label">അക്കൗണ്ടിന്റെ പേര്</string>
     <string name="account_settings_name_label">നിങ്ങളുടെ പേര്</string>
     <string name="notifications_title">അറിയിപ്പുകൾ</string>
     <string name="account_settings_vibrate_enable">വിറയ്ക്കുക</string>

@@ -348,8 +348,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Tüm taslaklar şifreli olarak saklanacak</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Taslakları yalnızca şifreleme etkinse şifrele</string>
     <string name="account_settings_mail_check_frequency_label">Klasör sorgulama sıklığı</string>
-    <string name="account_settings_color_label">Hesap rengi</string>
-    <string name="account_settings_color_summary">Klasör ve hesap listesinde bu hesap için kullanılacak renk</string>
     <string name="account_settings_mail_display_count_label">Yerel klasör boyutu</string>
     <string name="account_settings_autodownload_message_size_label">İndirilecek en büyük ileti boyutu</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -390,7 +388,6 @@
     <string name="account_settings_incoming_summary">Gelen posta sunucusunu yapılandır</string>
     <string name="account_settings_outgoing_label">Giden sunucusu</string>
     <string name="account_settings_outgoing_summary">Giden posta (SMTP) sunucusunu yapılandır</string>
-    <string name="account_settings_description_label">Hesap adı</string>
     <string name="account_settings_name_label">Adınız</string>
     <string name="notifications_title">Bildirimler</string>
     <string name="account_settings_vibrate_enable">Titreştir</string>

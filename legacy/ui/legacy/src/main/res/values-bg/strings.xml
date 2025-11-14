@@ -331,8 +331,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Всички чернови ще се съхраняват криптирани</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Шифрова чернови само ако шифроването е активирано</string>
     <string name="account_settings_mail_check_frequency_label">Честота на проверка на папката</string>
-    <string name="account_settings_color_label">Цвят на профила</string>
-    <string name="account_settings_color_summary">Акцентиращ цвят, който ще се използва в профила за показване на папки и списък</string>
     <string name="account_settings_mail_display_count_label">Размер на локалната папка</string>
     <string name="account_settings_autodownload_message_size_label">Получавай съобщения до</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -364,7 +362,6 @@
     <string name="account_settings_incoming_summary">Конфигуриране на сървър за входяща поща</string>
     <string name="account_settings_outgoing_label">Сървър изходяща поща</string>
     <string name="account_settings_outgoing_summary">Конфигуриране на сървър изходяща поща (SMTP)</string>
-    <string name="account_settings_description_label">Име на профила</string>
     <string name="account_settings_name_label">Вашето име</string>
     <string name="notifications_title">Известявания</string>
     <string name="account_settings_vibrate_enable">Вибрирай</string>

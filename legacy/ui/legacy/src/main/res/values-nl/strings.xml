@@ -359,8 +359,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle concepten zullen versleuteld worden opgeslagen</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Versleutel concepten alleen als versleuteling is ingeschakeld</string>
     <string name="account_settings_mail_check_frequency_label">Map-peilingsfrequentie</string>
-    <string name="account_settings_color_label">Accountkleur</string>
-    <string name="account_settings_color_summary">De accountkleur gebruikt bij mappen- en accountlijst</string>
     <string name="account_settings_mail_display_count_label">Grootte van lokale map</string>
     <string name="account_settings_autodownload_message_size_label">Automatisch berichten downloaden tot</string>
     <string name="account_settings_autodownload_message_size_1">1 KiB</string>
@@ -401,7 +399,6 @@
     <string name="account_settings_incoming_summary">Inkomende mailserver instellen</string>
     <string name="account_settings_outgoing_label">Uitgaande server</string>
     <string name="account_settings_outgoing_summary">Uitgaande (SMTP)-server instellen</string>
-    <string name="account_settings_description_label">Accountnaam</string>
     <string name="account_settings_name_label">Uw naam</string>
     <string name="notifications_title">Meldingen</string>
     <string name="account_settings_vibration">Trilling</string>

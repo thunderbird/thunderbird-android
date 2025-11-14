@@ -335,8 +335,6 @@
     <string name="account_settings_crypto_summary_off">Alcuna appiecazione OpenPGP ùn hè cunfigurata</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Cifrà e bruttacopie solu s’è a cifratura hè attivata</string>
     <string name="account_settings_mail_check_frequency_label">Frequenza di sullicitazione di i cartulari</string>
-    <string name="account_settings_color_label">Culore di u contu</string>
-    <string name="account_settings_color_summary">U culore accentuatu di stu contu impiegatu in a lista di i cartulari et di i conti</string>
     <string name="account_settings_mail_display_count_label">Dimensione di u cartulare lucale</string>
     <string name="account_settings_autodownload_message_size_1">1 Kio</string>
     <string name="account_settings_autodownload_message_size_512">512 Kio</string>
@@ -403,7 +401,6 @@
     <string name="account_settings_incoming_label">Servitore d’entrata</string>
     <string name="account_settings_incoming_summary">Cunfigurà u servitore d’entrata di i messaghji</string>
     <string name="account_settings_outgoing_label">Servitore d’esciuta</string>
-    <string name="account_settings_description_label">Nome di u contu</string>
     <string name="account_settings_name_label">U vostru nome</string>
     <string name="notifications_title">Nutificazioni</string>
     <string name="account_settings_ringtone">Suneria di messaghju novu</string>

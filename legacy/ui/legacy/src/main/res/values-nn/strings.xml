@@ -202,7 +202,6 @@
     <string name="account_settings_message_read_receipt_summary">Be alltid om lesekvittering</string>
     <string name="account_settings_general_title">Generelle innstilingar</string>
     <string name="account_settings_folders">Mapper</string>
-    <string name="account_settings_color_label">Kontofarge</string>
     <string name="account_settings_autodownload_message_size_label">Hent meldingar opp til</string>
     <string name="account_settings_autodownload_message_size_any">uendeleg (inga grense)</string>
     <string name="account_settings_message_age_label">Synkroniser meldingar frå</string>
@@ -220,7 +219,6 @@
     <string name="account_settings_message_age_1_year">det siste året</string>
     <string name="folder_settings_title">Mappeinnstillingar</string>
     <string name="folder_settings_clear_local_folder_action">Fjern lokale meldingar</string>
-    <string name="account_settings_description_label">Kontonamn</string>
     <string name="account_settings_name_label">Namnet ditt</string>
     <string name="notifications_title">Varsel</string>
     <string name="account_settings_notification_light_account_color">Kontofarge</string>
@@ -645,7 +643,6 @@
     <string name="account_settings_outgoing_label">Utgåande tenar</string>
     <string name="folder_settings_notifications_label">Notifikasjonar</string>
     <string name="folder_settings_push_label">Aktiver dytting</string>
-    <string name="account_settings_color_summary">Aksentfargen for denne kontoen er brukt i mappe- og kontolista</string>
     <string name="account_settings_autodownload_message_size_512">512 KiB</string>
     <string name="folder_settings_sync_label">Aktiver synkronisering</string>
     <string name="account_settings_incoming_summary">Konfigurer innkomande e-posttenar</string>
