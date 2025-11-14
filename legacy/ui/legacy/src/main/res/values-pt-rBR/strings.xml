@@ -908,4 +908,17 @@
     <string name="swipe_action_archive_folder_not_set">Definir pasta de arquivamento</string>
     <string name="swipe_action_change_swipe_gestures">Alterar\ngestos de deslizar</string>
     <string name="archiving_not_available_for_this_account">Arquivamento indisponível para esta conta.</string>
+    <string name="debug_invalidate_access_token_already_modified">Token de acesso já modificado.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Não foi possível modificar o token de acesso salvo. Tente invalidar localmente.</string>
+    <string name="debug_invalidate_access_token">Teste: Invalidar token de acesso</string>
+    <string name="debug_invalidate_access_token_done">Token de acesso foi invalidado. Próxima requisição atualizará o token.</string>
+    <string name="debug_invalidate_access_token_unavailable">Nenhum token OAuth disponível para esta conta.</string>
+    <string name="debug_invalidate_access_token_local">Teste: Invalidar token de acesso (local)</string>
+    <string name="debug_invalidate_access_token_local_done">Invalidação de local requisitada. Próxima requisição requisitará um novo token.</string>
+    <string name="debug_invalidate_access_token_server">Teste: Invalidar token de acesso (servidor)</string>
+    <string name="debug_invalidate_access_token_server_done">Token de acesso salvo corrompido. Próxima requisição falhará e então o token será atualizado.</string>
+    <string name="debug_force_auth_failure">Teste: Forçar erro de autenticação agora</string>
+    <string name="debug_force_auth_failure_done">Estado de OAuth removido. Próxima requisição falhará.</string>
+    <string name="debug_force_auth_failure_unavailable">Nenhuma configuração OAuth disponível para esta conta.</string>
+    <string name="message_view_menu_action_export_eml">Exportar como EML</string>
 </resources>

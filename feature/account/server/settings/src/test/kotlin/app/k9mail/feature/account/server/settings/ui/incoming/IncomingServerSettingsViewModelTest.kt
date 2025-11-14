@@ -14,8 +14,6 @@ import app.k9mail.feature.account.common.domain.entity.InteractionMode
 import app.k9mail.feature.account.common.domain.entity.MailConnectionSecurity
 import app.k9mail.feature.account.common.domain.entity.toImapDefaultPort
 import app.k9mail.feature.account.common.domain.entity.toPop3DefaultPort
-import app.k9mail.feature.account.common.domain.input.NumberInputField
-import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Effect
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.Event
 import app.k9mail.feature.account.server.settings.ui.incoming.IncomingServerSettingsContract.State
@@ -24,9 +22,11 @@ import assertk.assertions.isEqualTo
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.store.imap.ImapStoreSettings
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.testing.coroutines.MainDispatcherRule
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.input.NumberInputField
+import net.thunderbird.core.validation.input.StringInputField
 import org.junit.Rule
 import org.junit.Test
 
@@ -350,7 +350,7 @@ class IncomingServerSettingsViewModelTest {
             val testSubject = IncomingServerSettingsViewModel(
                 mode = InteractionMode.Create,
                 validator = FakeIncomingServerSettingsValidator(
-                    serverAnswer = ValidationResult.Failure(TestError),
+                    serverAnswer = Outcome.Failure(TestError),
                 ),
                 accountStateRepository = InMemoryAccountStateRepository(),
             )

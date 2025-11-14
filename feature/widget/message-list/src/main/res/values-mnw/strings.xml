@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_widget_compose_action">ချူလိက်</string>
+    <string name="message_list_widget_list_item_loading">စၟဳစၟတ်မံၚ်ဖိုဟ်…</string>
+</resources>

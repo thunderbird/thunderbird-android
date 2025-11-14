@@ -57,4 +57,6 @@
         <item quantity="one">1 üzenet</item>
         <item quantity="other">%d üzenet</item>
     </plurals>
+    <string name="account_setup_options_your_name_label">Saját név</string>
+    <string name="account_setup_options_your_name_error_required">A neve kötelező.</string>
 </resources>

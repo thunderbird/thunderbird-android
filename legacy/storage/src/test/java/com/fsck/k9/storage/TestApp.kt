@@ -1,6 +1,7 @@
 package com.fsck.k9.storage
 
 import android.app.Application
+import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.AppConfig
@@ -83,4 +84,9 @@ val testModule = module {
         )
     }
     single<LegacyAccountManager> { mock() }
+    single<NotificationIconResourceProvider> {
+        object : NotificationIconResourceProvider {
+            override val pushNotificationIcon: Int = 0
+        }
+    }
 }

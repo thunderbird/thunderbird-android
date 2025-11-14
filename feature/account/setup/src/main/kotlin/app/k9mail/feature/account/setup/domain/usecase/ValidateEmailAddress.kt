@@ -1,13 +1,15 @@
 package app.k9mail.feature.account.setup.domain.usecase
 
 import app.k9mail.feature.account.setup.domain.DomainContract.UseCase
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
 import net.thunderbird.core.common.mail.EmailAddressParserError
 import net.thunderbird.core.common.mail.EmailAddressParserException
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.core.common.mail.toUserEmailAddress
 import net.thunderbird.core.logging.legacy.Log
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
 
 /**
  * Validate an email address that the user wants to add to an account.
@@ -20,18 +22,18 @@ import net.thunderbird.core.logging.legacy.Log
  */
 class ValidateEmailAddress : UseCase.ValidateEmailAddress {
 
-    override fun execute(emailAddress: String): ValidationResult {
+    override fun execute(emailAddress: String): ValidationOutcome {
         if (emailAddress.isBlank()) {
-            return ValidationResult.Failure(ValidateEmailAddressError.EmptyEmailAddress)
+            return Outcome.Failure(ValidateEmailAddressError.EmptyEmailAddress)
         }
 
         return try {
             val parsedEmailAddress = emailAddress.toUserEmailAddress()
 
             if (parsedEmailAddress.warnings.isEmpty()) {
-                ValidationResult.Success
+                ValidationSuccess
             } else {
-                ValidationResult.Failure(ValidateEmailAddressError.NotAllowed)
+                Outcome.Failure(ValidateEmailAddressError.NotAllowed)
             }
         } catch (e: EmailAddressParserException) {
             Log.v(e, "Error parsing email address: %s", emailAddress)
@@ -60,7 +62,7 @@ class ValidateEmailAddress : UseCase.ValidateEmailAddress {
                 }
             }
 
-            ValidationResult.Failure(validationError)
+            Outcome.Failure(validationError)
         }
     }
 

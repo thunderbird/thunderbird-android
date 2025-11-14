@@ -6,7 +6,6 @@
     <issue id="ExtraTranslation" severity="error" />
     <issue id="ImpliedQuantity" severity="warning" />
     <issue id="HardcodedText" severity="error" />
-    <issue id="IncompleteTranslation" severity="error" />
     <issue id="StringFormatInvalid" severity="error" />
     <issue id="StringEscaping" severity="error" />
     <issue id="Untranslatable" severity="error" />

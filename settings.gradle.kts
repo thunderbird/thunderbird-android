@@ -97,7 +97,10 @@ include(
 include(
     ":feature:mail:account:api",
     ":feature:mail:folder:api",
+    ":feature:mail:message:composer",
     ":feature:mail:message:list",
+    ":feature:mail:message:export:api",
+    ":feature:mail:message:export:impl-eml",
 )
 
 include(
@@ -163,11 +166,13 @@ include(
     ":core:logging:impl-legacy",
     ":core:logging:impl-file",
     ":core:logging:testing",
+    ":core:file",
     ":core:mail:mailserver",
     ":core:preference:api",
     ":core:preference:impl",
     ":core:outcome",
     ":core:testing",
+    ":core:validation",
 )
 
 include(
@@ -181,11 +186,15 @@ include(
 )
 
 include(
+    ":core:ui:setting:api",
+    ":core:ui:setting:impl-dialog",
+)
+
+include(
     ":core:ui:account",
     ":core:ui:compose:common",
     ":core:ui:compose:designsystem",
     ":core:ui:compose:navigation",
-    ":core:ui:compose:preference",
     ":core:ui:compose:testing",
     ":core:ui:compose:theme2:common",
     ":core:ui:compose:theme2:k9mail",

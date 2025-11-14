@@ -844,4 +844,17 @@
     <string name="swipe_action_archive_folder_not_set">Cunfigurà u cartulare d’archiviera</string>
     <string name="swipe_action_change_swipe_gestures">Cambià \nI gesti di spazzatura</string>
     <string name="archiving_not_available_for_this_account">L’archiviera ùn hè micca dispunibule per stu contu.</string>
+    <string name="debug_invalidate_access_token">Prova : invalidà u gettone d’accessu</string>
+    <string name="debug_invalidate_access_token_done">U gettone d’accessu hè statu invalidatu. A prossima richiesta u rinfrescherà.</string>
+    <string name="debug_invalidate_access_token_unavailable">Nisunu gettone OAuth hè dispunibule per stu contu.</string>
+    <string name="debug_invalidate_access_token_local">Prova : invalidà u gettone d’accessu (lucale)</string>
+    <string name="debug_invalidate_access_token_local_done">L’invalidazione lucale hè stata richiesta. A prossima richiesta riguarerà un gettone novu.</string>
+    <string name="debug_invalidate_access_token_server">Prova : invalidà u gettone d’accessu (servitore)</string>
+    <string name="debug_invalidate_access_token_server_done">U gettone d’accessu arregistratu hè dannighjatu. A prossima richiesta si fiascherà eppò u rinfrescherà.</string>
+    <string name="debug_force_auth_failure">Prova : sfurzà un fiascu d’autenticazione subitu</string>
+    <string name="debug_force_auth_failure_done">U statu OAuth hè statu squassatu. A prossima richiesta si fiascherà.</string>
+    <string name="debug_force_auth_failure_unavailable">Nisuna cunfigurazione OAuth hè dispunibule per stu contu.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Ùn si pò micca mudificà u gettone d’accessu arregistratu. Pruvate un’invalidazione lucale.</string>
+    <string name="debug_invalidate_access_token_already_modified">U gettone d’accessu arregistratu hè dighjà mudificatu.</string>
+    <string name="message_view_menu_action_export_eml">Espurtà cum’è EML</string>
 </resources>

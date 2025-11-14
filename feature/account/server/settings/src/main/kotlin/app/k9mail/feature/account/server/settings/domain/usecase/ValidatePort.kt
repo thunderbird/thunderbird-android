@@ -1,16 +1,18 @@
 package app.k9mail.feature.account.server.settings.domain.usecase
 
 import app.k9mail.feature.account.server.settings.domain.ServerSettingsDomainContract.UseCase
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.ValidationError
+import net.thunderbird.core.validation.ValidationOutcome
+import net.thunderbird.core.validation.ValidationSuccess
 
 internal class ValidatePort : UseCase.ValidatePort {
 
-    override fun execute(port: Long?): ValidationResult {
+    override fun execute(port: Long?): ValidationOutcome {
         return when (port) {
-            null -> ValidationResult.Failure(ValidatePortError.EmptyPort)
-            in MIN_PORT_NUMBER..MAX_PORT_NUMBER -> ValidationResult.Success
-            else -> ValidationResult.Failure(ValidatePortError.InvalidPort)
+            null -> Outcome.Failure(ValidatePortError.EmptyPort)
+            in MIN_PORT_NUMBER..MAX_PORT_NUMBER -> ValidationSuccess
+            else -> Outcome.Failure(ValidatePortError.InvalidPort)
         }
     }
 

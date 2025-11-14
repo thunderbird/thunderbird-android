@@ -5,7 +5,7 @@ import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import kotlinx.coroutines.launch
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.handle
-import net.thunderbird.core.ui.compose.preference.api.PreferenceSetting
+import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.feature.account.AccountId
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.SettingsError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
@@ -16,8 +16,8 @@ import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsC
 internal class GeneralSettingsViewModel(
     private val accountId: AccountId,
     private val getAccountName: UseCase.GetAccountName,
-    private val getGeneralPreferences: UseCase.GetGeneralPreferences,
-    private val updateGeneralPreferences: UseCase.UpdateGeneralPreferences,
+    private val getGeneralSettings: UseCase.GetGeneralSettings,
+    private val updateGeneralSettings: UseCase.UpdateGeneralSettings,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), GeneralSettingsContract.ViewModel {
 
@@ -38,12 +38,12 @@ internal class GeneralSettingsViewModel(
         }
 
         viewModelScope.launch {
-            getGeneralPreferences(accountId).collect { outcome ->
+            getGeneralSettings(accountId).collect { outcome ->
                 outcome.handle(
-                    onSuccess = { preferences ->
+                    onSuccess = { settings ->
                         updateState { state ->
                             state.copy(
-                                preferences = preferences,
+                                settings = settings,
                             )
                         }
                     },
@@ -55,14 +55,14 @@ internal class GeneralSettingsViewModel(
 
     override fun event(event: Event) {
         when (event) {
-            is Event.OnPreferenceSettingChange -> updatePreference(event.preference)
+            is Event.OnSettingValueChange -> updatePreference(event.setting)
             is Event.OnBackPressed -> emitEffect(Effect.NavigateBack)
         }
     }
 
-    private fun updatePreference(preference: PreferenceSetting<*>) {
+    private fun updatePreference(setting: SettingValue<*>) {
         viewModelScope.launch {
-            updateGeneralPreferences(accountId, preference)
+            updateGeneralSettings(accountId, setting)
         }
     }
 

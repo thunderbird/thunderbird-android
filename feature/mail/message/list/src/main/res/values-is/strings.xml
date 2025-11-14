@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">Ekki sýna þessi skilaboð aftur</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Sleppa núna</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Nánari upplýsingar um villu: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Búa til nýja möppu</string>
+    <string name="setup_archive_folder_dialog_done">Lokið</string>
+    <string name="setup_archive_folder_dialog_cancel">Hætta við</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Búa til og setja nýja möppu]]></string>
+    <string name="setup_archive_folder_unhandled_error">Ómeðhöndluð villa: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Samstilli…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Bjó til fjartengda möppu.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Útbý möppu á póstþjónustu…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">Reikningurinn (%1$s) fannst ekki</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">Heiti möppu getur ekki verið tómt</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">\'%1$s\' er ógilt heiti á möppu</string>
+</resources>

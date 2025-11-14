@@ -4,7 +4,7 @@
     <!--This should make it easier for forks to change the branding-->
     <!--Used in AndroidManifest.xml-->
     <!--Used in the about dialog-->
-    <string name="about_app_authors_k9">The K-9 Dog Walkers</string>
+    <string name="about_app_authors_k9">Вигульники собак K-9</string>
     <string name="source_code">Програмний код</string>
     <string name="app_license">Ліцензія Apache версії 2.0</string>
     <string name="about_project_title">Проєкт з відкритим кодом</string>
@@ -572,10 +572,10 @@
     <string name="dialog_confirm_delete_title">Підтвердьте видалення</string>
     <string name="dialog_confirm_delete_message">Ви хочете видалити це повідомлення?</string>
     <plurals name="dialog_confirm_delete_messages">
-        <item quantity="one">Ви дійсно хочете видалити це повідомлення?</item>
-        <item quantity="few">Ви дійсно хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
-        <item quantity="many">Ви дійсно хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
-        <item quantity="other">Ви дійсно хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
+        <item quantity="one">Ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлення?</item>
+        <item quantity="few">Ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлення?</item>
+        <item quantity="many">Ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
+        <item quantity="other">Ви справді хочете видалити <xliff:g id="message_count">%1$d</xliff:g> повідомлень?</item>
     </plurals>
     <string name="dialog_confirm_delete_confirm_button">Так</string>
     <string name="dialog_confirm_delete_cancel_button">Ні</string>
@@ -587,10 +587,10 @@
     <string name="dialog_confirm_mark_all_as_read_cancel_button">Ні</string>
     <string name="dialog_confirm_spam_title">Підтвердьте переміщення в теку \"Спам\"</string>
     <plurals name="dialog_confirm_spam_message">
-        <item quantity="one">Ви дійсно хочете перемістити це повідомлення в спам?</item>
-        <item quantity="few">Ви дійсно хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення у спам?</item>
-        <item quantity="many">Ви дійсно хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень у спам?</item>
-        <item quantity="other">Ви дійсно хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень у спам?</item>
+        <item quantity="one">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до папка спаму?</item>
+        <item quantity="few">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлення до папки \"Спам\"?</item>
+        <item quantity="many">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до папки \"Спам\"?</item>
+        <item quantity="other">Ви справді хочете перемістити <xliff:g id="message_count">%1$d</xliff:g> повідомлень до папки \"Спам\"?</item>
     </plurals>
     <string name="dialog_confirm_spam_confirm_button">Так</string>
     <string name="dialog_confirm_spam_cancel_button">Ні</string>
@@ -919,4 +919,17 @@
     <string name="swipe_action_archive_folder_not_set">Налаштувати папку архіву</string>
     <string name="swipe_action_change_swipe_gestures">Зміна \nжестів проведення пальцем</string>
     <string name="debug_open_secret_debug_screen">Відкрити екран налагодження таємниці</string>
+    <string name="debug_invalidate_access_token">Тест: Визнати недійсним токен доступу</string>
+    <string name="debug_invalidate_access_token_done">Маркер доступу недійсний. Наступний запит буде оновлено.</string>
+    <string name="debug_invalidate_access_token_unavailable">Для цього облікового запису немає доступного токена OAuth.</string>
+    <string name="debug_invalidate_access_token_local">Тест: Визнати недійсним токен доступу (локальний)</string>
+    <string name="debug_invalidate_access_token_local_done">Запит на локальну ануляцію. Наступний запит призведе до отримання нового токена.</string>
+    <string name="debug_invalidate_access_token_server">Тест: Визнати недійсним токен доступу (сервер)</string>
+    <string name="debug_invalidate_access_token_server_done">Збережений токен доступу пошкоджено. Наступний запит завершиться невдачею, потім оновлення.</string>
+    <string name="debug_force_auth_failure">Тест: Примусова автентифікація не вдалася зараз</string>
+    <string name="debug_force_auth_failure_done">Стан OAuth очищено. Наступний запит не вдасться виконати.</string>
+    <string name="debug_force_auth_failure_unavailable">Для цього облікового запису недоступна конфігурація OAuth.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Не вдалося змінити збережений токен доступу. Спробуйте локальну ануляцію.</string>
+    <string name="debug_invalidate_access_token_already_modified">Збережений токен доступу вже змінено.</string>
+    <string name="message_view_menu_action_export_eml">Експортувати як EML</string>
 </resources>

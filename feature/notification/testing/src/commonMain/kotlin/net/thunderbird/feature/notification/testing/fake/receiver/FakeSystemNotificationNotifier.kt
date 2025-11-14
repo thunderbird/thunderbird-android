@@ -1,16 +1,9 @@
 package net.thunderbird.feature.notification.testing.fake.receiver
 
-import net.thunderbird.feature.notification.api.NotificationId
+import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.content.SystemNotification
-import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
+import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
 
-open class FakeSystemNotificationNotifier : NotificationNotifier<SystemNotification> {
-    override suspend fun show(
-        id: NotificationId,
-        notification: SystemNotification,
-    ) = Unit
-
-    override suspend fun dismiss(id: NotificationId) = Unit
-
-    override fun dispose() = Unit
-}
+open class FakeSystemNotificationNotifier(
+    registry: NotificationRegistry = FakeNotificationRegistry(),
+) : AbstractFakeNotificationNotifier<SystemNotification>(registry)

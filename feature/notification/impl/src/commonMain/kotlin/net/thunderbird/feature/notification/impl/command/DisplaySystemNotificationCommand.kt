@@ -4,7 +4,6 @@ import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.NotificationCommand
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
@@ -26,7 +25,6 @@ private const val TAG = "DisplaySystemNotificationCommand"
 internal class DisplaySystemNotificationCommand(
     private val logger: Logger,
     private val featureFlagProvider: FeatureFlagProvider,
-    private val notificationRegistry: NotificationRegistry,
     notification: SystemNotification,
     notifier: NotificationNotifier<SystemNotification>,
     private val isAppInBackground: () -> Boolean = {
@@ -49,8 +47,7 @@ internal class DisplaySystemNotificationCommand(
             )
 
             canExecuteCommand() -> {
-                val id = notificationRegistry.register(notification)
-                notifier.show(id = id, notification = notification)
+                val id = notifier.show(notification = notification)
                 Outcome.success(Success(notificationId = id, command = this))
             }
 

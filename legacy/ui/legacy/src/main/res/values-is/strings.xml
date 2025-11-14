@@ -901,4 +901,12 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
     <string name="open_camera">Opna myndavél</string>
     <string name="attach_file">Hengja við skrá</string>
     <string name="camera_permission_denied">Heimild til að nota myndavél var hafnað! Tekst ekki að taka mynd</string>
+    <string name="swipe_action_archive_folder_not_set">Setja upp safnmöppu</string>
+    <string name="swipe_action_change_swipe_gestures">Breyta \nstrokubendingum</string>
+    <string name="archiving_not_available_for_this_account">Ekki er hægt að setja í safn á þessum reikningi.</string>
+    <string name="message_view_menu_action_export_eml">Flytja út sem EML</string>
+    <string name="debug_enable_sync_debug_logging_title">Virkja villuskráningu samstillingar</string>
+    <string name="debug_enable_sync_debug_logging_summary">Virkja skráningu upplýsinga um samstillingu í 24 klst</string>
+    <string name="debug_sync_export_logs_title">Flytja út atvikaskrár samstillingar</string>
+    <string name="debug_open_secret_debug_screen">Opna leynilegan villuleitarskjá</string>
 </resources>

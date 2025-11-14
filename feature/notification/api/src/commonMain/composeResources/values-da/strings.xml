@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synkronisér (Push)</string>
+    <string name="notification_channel_push_description">Vist når der lyttes efter nye emails</string>
+    <string name="notification_channel_messages_title">Meddelelse</string>
+    <string name="notification_channel_messages_description">Påmindelser med forbindelse til beskeder</string>
+    <string name="notification_channel_miscellaneous_title">Diverse</string>
+    <string name="notification_channel_miscellaneous_description">Diverse påmindelser såsom fejl etc.</string>
+    <string name="notification_notify_error_title">Notifikation fejl</string>
+    <string name="notification_authentication_error_title">Godkendelse mislykkedes</string>
+    <string name="notification_certificate_error_public">Certifikat fejl</string>
+    <string name="notification_certificate_error_title">Certifikat fejl for %1$s</string>
+    <string name="notification_certificate_error_text">Kontroller dine serverindstillinger</string>
+    <string name="notification_bg_sync_ticker">Synkroniserer mail: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Kontrollere post</string>
+    <string name="notification_bg_send_ticker">Sender mail: %1$s</string>
+    <string name="notification_bg_send_title">Sender post</string>
+    <string name="send_failure_subject">Mislykkedes med at sende nogle beskeder</string>
+    <string name="notification_additional_messages">+ %1$d mere på %2$s</string>
+    <string name="push_notification_state_initializing">Initialiserer…</string>
+    <string name="push_notification_state_listening">Venter på nye emails</string>
+    <string name="push_notification_state_wait_background_sync">I dvale indtil baggrundssynkronisering er tilladt</string>
+    <string name="push_notification_state_wait_network">I dvale indtil netværk er tilgængelig</string>
+    <string name="push_notification_info">Tryk for at lære mere.</string>
+    <string name="push_info_disable_push_action">Deaktivere skub handling </string>
+    <string name="notification_action_reply">Svar</string>
+    <string name="notification_action_mark_as_read">Markér som læst</string>
+    <string name="notification_action_mark_all_as_read">Markér alle som læst</string>
+    <string name="notification_action_delete">Slet</string>
+    <string name="notification_action_delete_all">Slet alle</string>
+    <string name="notification_action_archive">Arkivér</string>
+    <string name="notification_action_archive_all">Arkivér alle</string>
+    <string name="notification_action_spam">Spam</string>
+</resources>

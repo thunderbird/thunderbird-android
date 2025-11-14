@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_push_title">Synkroniser (dytting)</string>
+    <string name="notification_channel_push_description">Vist i påvente av nye meldinger</string>
+    <string name="notification_channel_messages_title">Meldinger</string>
+    <string name="notification_channel_messages_description">Varslinger relatert til meldinger</string>
+    <string name="notification_channel_miscellaneous_title">Diverse</string>
+    <string name="notification_channel_miscellaneous_description">Forskjellige varslinger, som feil, etc.</string>
+    <string name="notification_notify_error_title">Merknadsfeil</string>
+    <string name="notification_notify_error_text">Kunne ikke opprette systemmerknad for ny melding. Dette skyldes antagelig merknadslyden.
+\n
+\nTrykk for å åpne merknadsinnstillinger.</string>
+    <string name="notification_authentication_error_title">Autentisering feilet</string>
+    <string name="notification_certificate_error_public">Sertifikatsfeil</string>
+    <string name="notification_certificate_error_title">Sertifikatfeil for %1$s</string>
+    <string name="notification_certificate_error_text">Sjekk dine tjenerinnstillinger</string>
+    <string name="notification_bg_sync_ticker">Sjekker e-post: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Sjekker e-post</string>
+    <string name="notification_bg_send_ticker">Sender e-post: %1$s</string>
+    <string name="notification_bg_send_title">Sender e-post</string>
+    <string name="send_failure_subject">Mislyktes i å sende noen meldinger</string>
+    <string name="notification_additional_messages">+ %1$d flere på %2$s</string>
+    <string name="push_notification_state_initializing">Igangsetter …</string>
+    <string name="push_notification_state_listening">Venter på nye e-poster</string>
+    <string name="push_notification_state_wait_background_sync">I dvale til bakgrunnssynkronisering er tillatt</string>
+    <string name="push_notification_state_wait_network">I dvale til nettverk er tilgjengelig</string>
+    <string name="push_notification_state_alarm_permission_missing">Mangler tillatelse til å planlegge alarmer</string>
+    <string name="push_notification_info">Trykk for å lære mer.</string>
+    <string name="push_notification_grant_alarm_permission">Trykk for å gi tillatelse.</string>
+    <string name="push_info_disable_push_action">Skru av dytting</string>
+    <string name="notification_action_reply">Svar</string>
+    <string name="notification_action_mark_as_read">Merk som lest</string>
+    <string name="notification_action_mark_all_as_read">Merk alle som lest</string>
+    <string name="notification_action_delete">Slett</string>
+    <string name="notification_action_delete_all">Slett alle</string>
+    <string name="notification_action_archive">Arkiver</string>
+    <string name="notification_action_archive_all">Arkiver alle</string>
+    <string name="notification_action_spam">Søppelpost</string>
+    <string name="notification_authentication_incoming_server_error_text">Autentisering mislyktes for %1$s. Oppdater innstillingene dine for den innkommende serveren.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Autentisering mislyktes for %1$s. Oppdater innstillingene dine for den utgående serveren.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d ny melding</item>
+        <item quantity="other">%1$d nye meldinger</item>
+    </plurals>
+    <string name="notification_action_retry">Prøv igjen</string>
+    <string name="notification_action_update_server_settings">Oppdater serverinnstilinger</string>
+    <string name="notification_action_assign_sent_folder">Sett mappe</string>
+    <string name="banner_inline_notification_check_error_notifications">Sjekk feilmeldinger</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Noen meldinger krever din oppmerksomhet.</string>
+    <string name="banner_inline_notification_open_notifications">Åpne notifikasjoner</string>
+    <string name="banner_inline_notification_learn_more">Les mer</string>
+    <string name="banner_inline_notification_view_support_article">Se støtteartikkel</string>
+    <string name="sent_folder_not_found_title">Sendt-mappe ikke tilgjengelig.</string>
+</resources>

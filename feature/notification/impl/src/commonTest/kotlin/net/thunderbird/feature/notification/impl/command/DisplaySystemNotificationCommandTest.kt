@@ -5,7 +5,6 @@ import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.prop
-import dev.mokkery.matcher.any
 import dev.mokkery.spy
 import dev.mokkery.verify.VerifyMode.Companion.exactly
 import dev.mokkery.verifySuspend
@@ -16,8 +15,6 @@ import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.FeatureFlagResult
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.outcome.Outcome
-import net.thunderbird.feature.notification.api.NotificationId
-import net.thunderbird.feature.notification.api.NotificationRegistry
 import net.thunderbird.feature.notification.api.NotificationSeverity
 import net.thunderbird.feature.notification.api.command.outcome.CommandExecutionFailed
 import net.thunderbird.feature.notification.api.command.outcome.Success
@@ -27,6 +24,7 @@ import net.thunderbird.feature.notification.api.receiver.NotificationNotifier
 import net.thunderbird.feature.notification.testing.fake.FakeNotification
 import net.thunderbird.feature.notification.testing.fake.FakeNotificationRegistry
 import net.thunderbird.feature.notification.testing.fake.FakeSystemOnlyNotification
+import net.thunderbird.feature.notification.testing.fake.receiver.FakeSystemNotificationNotifier
 
 @Suppress("MaxLineLength")
 class DisplaySystemNotificationCommandTest {
@@ -123,14 +121,13 @@ class DisplaySystemNotificationCommandTest {
             val notification = FakeNotification(
                 severity = NotificationSeverity.Information,
             )
-            val notifier = spy(FakeNotifier())
             val notificationRegistry = FakeNotificationRegistry()
+            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { true },
                 notifier = notifier,
-                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -148,7 +145,7 @@ class DisplaySystemNotificationCommandTest {
                 }
 
             verifySuspend(exactly(1)) {
-                notifier.show(any(), notification)
+                notifier.show(notification)
             }
         }
 
@@ -159,14 +156,13 @@ class DisplaySystemNotificationCommandTest {
             val notification = FakeNotification(
                 severity = NotificationSeverity.Fatal,
             )
-            val notifier = spy(FakeNotifier())
             val notificationRegistry = FakeNotificationRegistry()
+            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
-                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -184,7 +180,7 @@ class DisplaySystemNotificationCommandTest {
                 }
 
             verifySuspend(exactly(1)) {
-                notifier.show(any(), notification)
+                notifier.show(notification)
             }
         }
 
@@ -195,14 +191,13 @@ class DisplaySystemNotificationCommandTest {
             val notification = FakeNotification(
                 severity = NotificationSeverity.Critical,
             )
-            val notifier = spy(FakeNotifier())
             val notificationRegistry = FakeNotificationRegistry()
+            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
-                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -220,7 +215,7 @@ class DisplaySystemNotificationCommandTest {
                 }
 
             verifySuspend(exactly(1)) {
-                notifier.show(any(), notification)
+                notifier.show(notification)
             }
         }
 
@@ -231,14 +226,13 @@ class DisplaySystemNotificationCommandTest {
             val notification = FakeSystemOnlyNotification(
                 severity = NotificationSeverity.Information,
             )
-            val notifier = spy(FakeNotifier())
             val notificationRegistry = FakeNotificationRegistry()
+            val notifier = spy(FakeSystemNotificationNotifier(notificationRegistry))
             val testSubject = createTestSubject(
                 notification = notification,
                 // TODO(#9391): Verify if the app is backgrounded.
                 isAppInBackground = { false },
                 notifier = notifier,
-                notificationRegistry = notificationRegistry,
             )
 
             // Act
@@ -256,15 +250,14 @@ class DisplaySystemNotificationCommandTest {
                 }
 
             verifySuspend(exactly(1)) {
-                notifier.show(any(), notification)
+                notifier.show(notification)
             }
         }
 
     private fun createTestSubject(
         notification: SystemNotification = FakeNotification(),
         featureFlagProvider: FeatureFlagProvider = FeatureFlagProvider { FeatureFlagResult.Enabled },
-        notifier: NotificationNotifier<SystemNotification> = FakeNotifier(),
-        notificationRegistry: NotificationRegistry = FakeNotificationRegistry(),
+        notifier: NotificationNotifier<SystemNotification> = FakeSystemNotificationNotifier(),
         isAppInBackground: () -> Boolean = {
             // TODO(#9391): Verify if the app is backgrounded.
             false
@@ -274,21 +267,9 @@ class DisplaySystemNotificationCommandTest {
         return DisplaySystemNotificationCommand(
             logger = logger,
             featureFlagProvider = featureFlagProvider,
-            notificationRegistry = notificationRegistry,
             notification = notification,
             notifier = notifier,
             isAppInBackground = isAppInBackground,
         )
     }
-}
-
-private open class FakeNotifier : NotificationNotifier<SystemNotification> {
-    override suspend fun show(
-        id: NotificationId,
-        notification: SystemNotification,
-    ) = Unit
-
-    override suspend fun dismiss(id: NotificationId) = Unit
-
-    override fun dispose() = Unit
 }

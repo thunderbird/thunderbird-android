@@ -10,9 +10,9 @@
     <string name="settings_import_authorization_required">请登录</string>
     <!--Displayed after importing accounts when some accounts require entering a password and some to use the OAuth authorization flow-->
     <string name="settings_import_authorization_and_password_required">请登录并输入密码</string>
-    <string name="settings_import_failure">导入设置失败</string>
-    <string name="settings_import_read_failure">读取设置文件失败</string>
-    <string name="settings_import_partial_failure">无法导入某些设置</string>
+    <string name="settings_import_failure">无法导入设置</string>
+    <string name="settings_import_read_failure">无法读取设置文件‌</string>
+    <string name="settings_import_partial_failure">无法导入部分设置</string>
     <string name="settings_import_status_success">导入成功</string>
     <string name="settings_import_status_password_required">需要输入密码</string>
     <!--Content description for the icon that is displayed next to an imported account that requires sign-in-->

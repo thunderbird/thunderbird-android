@@ -30,6 +30,12 @@ dependencies {
     implementation(platform(libs.kotlin.gradle.bom))
 }
 
+kotlin {
+    compilerOptions {
+        allWarningsAsErrors = true
+    }
+}
+
 fun plugin(provider: Provider<PluginDependency>) = with(provider.get()) {
     "$pluginId:$pluginId.gradle.plugin:$version"
 }

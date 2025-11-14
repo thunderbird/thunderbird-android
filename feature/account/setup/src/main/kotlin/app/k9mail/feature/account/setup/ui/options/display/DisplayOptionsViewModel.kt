@@ -3,7 +3,6 @@ package app.k9mail.feature.account.setup.ui.options.display
 import androidx.lifecycle.viewModelScope
 import app.k9mail.core.ui.compose.common.mvi.BaseViewModel
 import app.k9mail.feature.account.common.domain.AccountDomainContract
-import app.k9mail.feature.account.common.domain.input.StringInputField
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Effect
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Event
@@ -11,7 +10,8 @@ import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContrac
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.Validator
 import app.k9mail.feature.account.setup.ui.options.display.DisplayOptionsContract.ViewModel
 import kotlinx.coroutines.launch
-import net.thunderbird.core.common.domain.usecase.validation.ValidationResult
+import net.thunderbird.core.outcome.Outcome
+import net.thunderbird.core.validation.input.StringInputField
 
 internal class DisplayOptionsViewModel(
     private val validator: Validator,
@@ -76,13 +76,13 @@ internal class DisplayOptionsViewModel(
             accountNameResult,
             displayNameResult,
             emailSignatureResult,
-        ).any { it is ValidationResult.Failure }
+        ).any { it is Outcome.Failure }
 
         updateState {
             it.copy(
-                accountName = it.accountName.updateFromValidationResult(accountNameResult),
-                displayName = it.displayName.updateFromValidationResult(displayNameResult),
-                emailSignature = it.emailSignature.updateFromValidationResult(emailSignatureResult),
+                accountName = it.accountName.updateFromValidationOutcome(accountNameResult),
+                displayName = it.displayName.updateFromValidationOutcome(displayNameResult),
+                emailSignature = it.emailSignature.updateFromValidationOutcome(emailSignatureResult),
             )
         }
 

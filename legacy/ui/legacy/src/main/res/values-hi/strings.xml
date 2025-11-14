@@ -159,5 +159,5 @@
     <string name="size_format_gigabytes">%.1f जीबी</string>
     <string name="debug_export_logs_failure">एक्सपोर्ट पूरा नहीं हुआ।</string>
     <string name="notification_action_delete_all">सब मिटाएं</string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="about_app_authors_thunderbird">थंडरबर्ड मोबाइल टीम</string>
 </resources>

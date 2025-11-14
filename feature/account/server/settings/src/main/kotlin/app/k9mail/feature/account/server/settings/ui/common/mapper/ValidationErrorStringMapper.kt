@@ -7,7 +7,7 @@ import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePasswor
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidatePort.ValidatePortError
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateServer.ValidateServerError
 import app.k9mail.feature.account.server.settings.domain.usecase.ValidateUsername.ValidateUsernameError
-import net.thunderbird.core.common.domain.usecase.validation.ValidationError
+import net.thunderbird.core.validation.ValidationError
 
 fun ValidationError.toResourceString(resources: Resources): String {
     return when (this) {

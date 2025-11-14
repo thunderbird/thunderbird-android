@@ -10,8 +10,9 @@ import org.koin.test.KoinTest
 import org.koin.test.verify.definition
 import org.koin.test.verify.verify
 
-@OptIn(KoinExperimentalAPI::class)
 class FeatureMessageListModuleKtTest : KoinTest {
+
+    @OptIn(KoinExperimentalAPI::class)
     @Test
     fun `should have a valid di module`() {
         featureMessageListModule.verify(

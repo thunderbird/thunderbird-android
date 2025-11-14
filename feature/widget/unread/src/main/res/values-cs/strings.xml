@@ -3,7 +3,7 @@
     <string name="unread_widget_select_account">Zobrazit počet nepřečtených pro…</string>
     <string name="unread_widget_account_title">Účet</string>
     <string name="unread_widget_account_summary">Účet pro který má  být zobrazen počet nepřečtených</string>
-    <string name="unread_widget_unified_inbox_account_summary">Sjednocená doručená pošta</string>
+    <string name="unread_widget_unified_inbox_account_summary">Jednotná schránka</string>
     <string name="unread_widget_folder_enabled_title">Počet ve složce</string>
     <string name="unread_widget_folder_enabled_summary">Zobrazit počet nepřečtených pouze pro jedinou složku</string>
     <string name="unread_widget_folder_title">Složka</string>

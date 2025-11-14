@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_cancel_action">Nuligi</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Sendi kaj forviŝi</string>
+</resources>

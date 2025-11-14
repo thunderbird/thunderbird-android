@@ -31,16 +31,24 @@ dependencies {
     implementation(projects.core.configstore.implBackend)
 
     implementation(projects.core.featureflag)
+    implementation(projects.core.file)
+
+    implementation(projects.core.ui.setting.api)
+    implementation(projects.core.ui.setting.implDialog)
     implementation(projects.core.ui.legacy.theme2.common)
 
     implementation(projects.feature.account.avatar.api)
     implementation(projects.feature.account.avatar.impl)
     implementation(projects.feature.account.setup)
     implementation(projects.feature.mail.account.api)
+    implementation(projects.feature.mail.message.composer)
     implementation(projects.feature.migration.provider)
     implementation(projects.feature.notification.api)
     implementation(projects.feature.notification.impl)
     implementation(projects.feature.widget.messageList)
+
+    implementation(projects.feature.mail.message.export.api)
+    implementation(projects.feature.mail.message.export.implEml)
 
     implementation(projects.mail.protocols.imap)
     implementation(projects.backend.imap)

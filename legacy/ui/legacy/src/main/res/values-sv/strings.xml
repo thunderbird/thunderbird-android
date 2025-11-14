@@ -908,4 +908,17 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="swipe_action_change_swipe_gestures">Ändra \nsvepgester</string>
     <string name="archiving_not_available_for_this_account">Arkivering är inte tillgängligt för det här kontot.</string>
     <string name="debug_open_secret_debug_screen">Öppna hemlig felsökningsskärm</string>
+    <string name="debug_invalidate_access_token">Test: Ogiltig åtkomsttoken</string>
+    <string name="debug_invalidate_access_token_done">Åtkomsttoken ogiltig. Nästa begäran uppdateras.</string>
+    <string name="debug_invalidate_access_token_unavailable">Inget OAuth-token tillgänglig för det här kontot.</string>
+    <string name="debug_invalidate_access_token_local">Test: Ogiltig åtkomsttoken (lokal)</string>
+    <string name="debug_invalidate_access_token_local_done">Lokal ogiltigförklaring begärd. Nästa begäran hämtar ett nytt token.</string>
+    <string name="debug_invalidate_access_token_server">Test: Ogiltig åtkomsttoken (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Lagrad åtkomsttoken skadad. Nästa begäran misslyckas, uppdatera sedan.</string>
+    <string name="debug_force_auth_failure">Test: Tvinga fram autentiseringsfel nu</string>
+    <string name="debug_force_auth_failure_done">OAuth-tillståndet har rensats. Nästa begäran kommer att misslyckas.</string>
+    <string name="debug_force_auth_failure_unavailable">Ingen OAuth-konfiguration är tillgänglig för det här kontot.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Kunde inte ändra den lagrade åtkomsttoken. Försök med lokal ogiltigförklaring.</string>
+    <string name="debug_invalidate_access_token_already_modified">Lagrad åtkomsttoken har redan ändrats.</string>
+    <string name="message_view_menu_action_export_eml">Exportera som EML</string>
 </resources>

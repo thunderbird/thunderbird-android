@@ -341,7 +341,7 @@
     <string name="account_settings_quote_style_prefix">Normal (wie in Gmail, Pine)</string>
     <string name="account_settings_quote_style_header">Erweitert (wie in Outlook, Yahoo!, Hotmail)</string>
     <string name="account_settings_upload_sent_messages_label">Gesendete Nachrichten hochladen</string>
-    <string name="account_settings_upload_sent_messages_summary">Nachrichten nach dem Senden in den Ordner Gesendet hochladen</string>
+    <string name="account_settings_upload_sent_messages_summary">Nachrichten nach dem Senden in den Ordner „Gesendet“ hochladen</string>
     <string name="account_settings_general_title">Allgemeine Einstellungen</string>
     <string name="account_settings_reading_mail">E-Mails lesen</string>
     <string name="account_settings_sync">E-Mails abrufen</string>
@@ -353,7 +353,7 @@
     <string name="account_settings_crypto_key">Ende-zu-Ende-Schlüssel konfigurieren</string>
     <string name="account_settings_crypto_summary_off">Keine OpenPGP-App konfiguriert</string>
     <string name="account_settings_crypto_summary_on">Verbunden mit %s</string>
-    <string name="account_settings_crypto_summary_config">Konfigurieren…</string>
+    <string name="account_settings_crypto_summary_config">Wird konfiguriert…</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Alle Entwürfe verschlüsselt speichern</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">Alle Entwürfe werden verschlüsselt gespeichert</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Entwürfe nur verschlüsseln, wenn Verschlüsselung aktiviert ist</string>
@@ -879,7 +879,7 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%1$s</xliff:g>\" wird aus <xliff:g id="app_name">%2$s</xliff:g> entfernt.</string>
     <string name="about_title">Über <xliff:g id="app_name">%s</xliff:g></string>
     <string name="push_info_notification_explanation_text">Wenn Push verwendet wird, hält <xliff:g id="app_name">%1$s</xliff:g> eine Verbindung zum Mailserver aufrecht. Bei Android muss eine laufende Benachrichtigung angezeigt werden, während die App im Hintergrund aktiv ist. <xliff:g id="optional_extended_explanation">%2$s</xliff:g></string>
-    <string name="about_app_authors_thunderbird">Thunderbird Mobile Team</string>
+    <string name="about_app_authors_thunderbird">Thunderbird-Mobile-Team</string>
     <string name="folder_settings_notifications_label">Benachrichtigungen</string>
     <string name="settings_ui_telemetry_description">Leistungs-, Nutzungs-, Hardware- und Individualisierungsdaten über diese App mit Mozilla teilen, um uns zu helfen, Thunderbird zu verbessern</string>
     <string name="settings_ui_data_collection">Datenerfassung</string>
@@ -906,4 +906,17 @@ Du kannst diese Nachricht aufheben und sie als Backup für deinen geheimen Schl�
     <string name="archiving_not_available_for_this_account">Archivierung ist für dieses Konto nicht verfügbar.</string>
     <string name="swipe_action_archive_folder_not_set">Archivordner einrichten</string>
     <string name="debug_open_secret_debug_screen">Geheime Fehleranalyse-Ansicht öffnen</string>
+    <string name="debug_invalidate_access_token">Test: Zugriffstoken ungültig machen</string>
+    <string name="debug_invalidate_access_token_local">Test: Zugriffstoken ungültig machen (lokal)</string>
+    <string name="debug_invalidate_access_token_server">Test: Zugriffstoken ungültig machen (Server)</string>
+    <string name="debug_invalidate_access_token_done">Zugriffstoken ungültig gemacht. Nächste Anfrage wird aufgefrischt.</string>
+    <string name="debug_invalidate_access_token_unavailable">Für dieses Konto ist kein OAuth-Token verfügbar.</string>
+    <string name="debug_invalidate_access_token_local_done">Lokale Ungültigkeitserklärung angefordert. Nächste Anfrage wird ein neues Token abrufen.</string>
+    <string name="debug_invalidate_access_token_server_done">Gespeichertes Zugriffstoken beschädigt. Nächste Anfrage wird fehlschlagen, dann auffrischen.</string>
+    <string name="debug_force_auth_failure">Test: Autorisierungsfehler jetzt erzwingen</string>
+    <string name="debug_force_auth_failure_done">OAuth-Status gelöscht. Nächste Anfrage wird fehlschlagen.</string>
+    <string name="debug_force_auth_failure_unavailable">Für dieses Konto ist keine OAuth-Konfiguration verfügbar.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Das gespeicherte Zugriffstoken konnte nicht geändert werden. Versuche eine lokale Ungültigkeitserklärung.</string>
+    <string name="debug_invalidate_access_token_already_modified">Gespeichertes Zugriffstoken bereits geändert.</string>
+    <string name="message_view_menu_action_export_eml">Als EML exportieren</string>
 </resources>

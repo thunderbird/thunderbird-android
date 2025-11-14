@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Složka Odeslané nenalezena</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Pro uložení tohoto e-mailu po odeslání nastavte složku Odeslané v nastavení účtu.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Přiřadit složku Odeslané</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Zrušit</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Odeslat a odstranit</string>
+</resources>

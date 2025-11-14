@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_cancel_action">Abbrechen</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Senden und löschen</string>
+    <string name="sent_folder_not_found_dialog_title">Ordner „Gesendet“ nicht gefunden</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Um diese E-Mail nach dem Senden zu speichern, richte in den Kontoeinstellungen einen Ordner „Gesendet“ ein.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Ordner „Gesendet“ zuweisen</string>
+</resources>

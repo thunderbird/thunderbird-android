@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_settings_general_title">Splošne nastavitve</string>
+    <string name="account_settings_general_profile_indicator_image">Slika</string>
+    <string name="account_settings_general_profile_indicator_icon">Ikona</string>
+    <string name="account_settings_general_name_title">Ime računa</string>
+    <string name="account_settings_general_name_description">Ime, povezano z vašim računom.</string>
+</resources>

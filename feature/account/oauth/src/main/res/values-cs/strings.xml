@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="account_oauth_sign_in_with_google_button">Přihlásit se prostřednictvím Google</string>
-    <string name="account_oauth_loading_error">Přihlášení pomocí OAuth se nezdařilo</string>
+    <string name="account_oauth_sign_in_with_google_button">Přihlášení přes Google</string>
+    <string name="account_oauth_loading_error">Přihlášení přes OAuth se nezdařilo</string>
     <string name="account_oauth_error_failed">Ověření se nezdařilo s následující chybou: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Nepodařilo se najít webový prohlížeč pro udělení přístupu k vašemu účtu.</string>
     <string name="account_oauth_error_not_supported">OAuth 2.0 není v současnosti tímto poskytovatelem podporováno.</string>
     <string name="account_oauth_error_canceled">Ověření zrušeno</string>
-    <string name="account_oauth_loading_message">Přihlašování pomocí OAuth</string>
-    <string name="account_oauth_sign_in_description">Pro přihlášení budete přesměrování k poskytovateli vaší e-mailové schránky. Budete muset aplikaci udělit oprávnění pro přístup ke svému e-mailovému účtu.</string>
+    <string name="account_oauth_loading_message">Přihlášení přes OAuth</string>
+    <string name="account_oauth_sign_in_description">Pro přihlášení vás přesměrujeme na vašeho e-mailového poskytovatele. Budete muset aplikaci udělit přístup k vašemu účtu.</string>
     <string name="account_oauth_sign_in_button">Přihlásit se</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">článek podpory</string>
     <string name="account_oauth_google_sign_in_support_text">Pokud máte problémy s přihlášením přes Google, podívejte se na náš {placeHolder}.</string>

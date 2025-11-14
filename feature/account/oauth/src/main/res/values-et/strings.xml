@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="account_oauth_sign_in_with_google_button">Logi sisse kasutades Google\'i teenuseid</string>
-    <string name="account_oauth_loading_error">OAuth\'i põhine sisselogimine ei õnnestunud</string>
+    <string name="account_oauth_loading_error">Sisselogimine OAuth-i abil ei õnnestunud</string>
     <string name="account_oauth_error_failed">Autentimine ei õnnestunud ja tekkis järgnev viga: <xliff:g id="error">%s</xliff:g></string>
     <string name="account_oauth_error_browser_not_available">Rakendus ei suutnud tuvastada veebibrauserit, mida saaks sinu kontole ligipääsu lubamiseks kasutada.</string>
     <string name="account_oauth_error_not_supported">See teenusepakkuja ei võimalda OAuth 2.0 kasutamist.</string>
     <string name="account_oauth_error_canceled">Autentimine on katkestatud</string>
-    <string name="account_oauth_loading_message">Logi sisse kasutades OAuth\'i</string>
-    <string name="account_oauth_sign_in_description">Me suuname nüüd sind sisselogimisele sinu e-postiteenusepakkuja juurde. Seal pead sa lubama meie rakendusele ligipääsu sinu e-posti kontole.</string>
+    <string name="account_oauth_loading_message">Sisselogimisel OAuth-i abil</string>
+    <string name="account_oauth_sign_in_description">Sisselogimiseks suuname sind sinu teenusepakkuja juurde. Pead lubama sellele rakendusele ligipääsu oma kasutajakontole.</string>
     <string name="account_oauth_sign_in_button">Logi sisse</string>
     <string name="account_oauth_google_sign_in_support_text">Kui sul tekib vigu Google\'i kontoga sisselogimisel, siis lisateavet {placeHolder}.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">leiad meie kasutajatoe artiklist</string>

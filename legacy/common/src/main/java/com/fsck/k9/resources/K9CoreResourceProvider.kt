@@ -1,7 +1,6 @@
 package com.fsck.k9.resources
 
 import android.content.Context
-import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.notification.PushNotificationState
 import com.fsck.k9.ui.R
@@ -34,8 +33,6 @@ class K9CoreResourceProvider(
 
     override fun searchUnifiedFoldersTitle(): String = context.getString(R.string.integrated_inbox_title)
     override fun searchUnifiedFoldersDetail(): String = context.getString(R.string.integrated_inbox_detail)
-
-    override val iconPushNotification: Int = Icons.Outlined.Notifications
 
     override fun pushNotificationText(notificationState: PushNotificationState): String {
         val resId = when (notificationState) {

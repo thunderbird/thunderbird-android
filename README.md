@@ -2,7 +2,7 @@
 
 <a href="https://play.google.com/store/apps/details?id=net.thunderbird.android&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dbadge" target="_blank"><img src="./docs/assets/get-it-on-play.png" alt="Get it on Google Play" height="28"></a>
 <a href="https://f-droid.org/packages/net.thunderbird.android"><img src="./docs/assets/get-it-on-fdroid.png" alt="Get it on F-Droid" height="28"></a>
-<a href="https://apps.obtainium.imranr.dev/"><img src="./docs/assets/get-it-on-obtanium.png" alt="Get it on Obtanium" height="28"></a>
+<a href="https://apps.obtainium.imranr.dev/"><img src="./docs/assets/get-it-on-obtainium.png" alt="Get it on Obtainium" height="28"></a>
 [![Latest release](https://img.shields.io/github/release/thunderbird/thunderbird-android.svg?style=for-the-badge&filter=THUNDERBIRD_*&logo=thunderbird)](https://github.com/thunderbird/thunderbird-android/releases/latest)
 [![Latest beta release](https://img.shields.io/github/release/thunderbird/thunderbird-android.svg?include_prereleases&style=for-the-badge&label=beta&filter=THUNDERBIRD_*b*&logo=thunderbird)](https://github.com/thunderbird/thunderbird-android/releases)
 
@@ -18,7 +18,7 @@ Thunderbird for Android can be downloaded from a couple of sources:
 - Thunderbird Beta on [Google Play](https://play.google.com/store/apps/details?id=net.thunderbird.android.beta&referrer=utm_campaign%3Dandroid_metadata%26utm_medium%3Dweb%26utm_source%3Dgithub.com%26utm_content%3Dlink) or [F-Droid](https://f-droid.org/packages/net.thunderbird.android.beta)
 - [Github Releases](https://github.com/thunderbird/thunderbird-android/releases)
 - [FFUpdater](https://f-droid.org/packages/de.marmaro.krt.ffupdater/) allows installing the latest versions from ftp.mozilla.org
-- [Obtanium](https://obtainium.imranr.dev/) requires app-specific configuration from the [Complex Obtanium Apps list](https://apps.obtainium.imranr.dev/)
+- [Obtainium](https://obtainium.imranr.dev/) requires app-specific configuration from the [Complex Obtainium Apps list](https://apps.obtainium.imranr.dev/)
 
 By using Thunderbird for Android Beta, you have early access to current development and are able to try new features earlier.
 

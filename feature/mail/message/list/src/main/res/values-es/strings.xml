@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setup_archive_folder_dialog_dont_show_again">No volver a ver este mensaje</string>
+    <string name="setup_archive_folder_dialog_email_can_not_be_archived">No se pudo archivar el correo</string>
+    <string name="setup_archive_folder_dialog_configure_archive_folder">Configurar tu carpeta donde archivar</string>
+    <string name="setup_archive_folder_dialog_skip_for_now">Saltar de momento</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders_detailed_message">Detalles del error: %1$s</string>
+    <string name="setup_archive_folder_dialog_create_new_folder">Crear carpeta nueva</string>
+    <string name="setup_archive_folder_dialog_done">Hecho</string>
+    <string name="setup_archive_folder_dialog_cancel">Cancelar</string>
+    <string name="setup_archive_folder_set_archive_error_account_not_found">No se pudo encontrar una cuenta asociada al UUID «%1$s»</string>
+    <string name="setup_archive_folder_create_archive_folder_syncing">Sincronizando…</string>
+    <string name="setup_archive_folder_create_archive_folder_local_folder_created">Se ha creado la carpeta, empezando la sincronización…</string>
+    <string name="setup_archive_folder_create_archive_folder_remote_folder_created">Carpeta remota creada.</string>
+    <string name="setup_archive_folder_create_archive_folder_creating_folder_email_provider">Creando carpeta en el proveedor de correo…</string>
+    <string name="setup_archive_folder_create_archive_folder_account_not_found">No se ha encontrado la cuenta (%1$s)</string>
+    <string name="setup_archive_folder_create_archive_folder_error_folder_name_blank">El nombre de la carpeta no puede estar en blanco</string>
+    <string name="setup_archive_folder_create_archive_folder_invalid_folder_name">«%1$s» no es un nombre de carpeta correcto</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_create_local_folder">No se ha podido crear la carpeta local «%1$s».</string>
+    <string name="setup_archive_folder_dialog_set_archive_folder">Asignar una carpeta para archivar</string>
+    <string name="setup_archive_folder_dialog_error_retrieve_folders">Vaya, algo ha ido mal al intentar obtener las carpetas de la cuenta</string>
+    <string name="setup_archive_folder_dialog_create_and_set_new_folder"><![CDATA[Crear y asignar una nueva carpeta]]></string>
+    <string name="setup_archive_folder_unhandled_error">Error no controlado: %1$s</string>
+    <string name="setup_archive_folder_create_archive_folder_updating_special_folder_rules">Actualizando las reglas de carpetas especiales…</string>
+    <string name="setup_archive_folder_create_archive_folder_failed_sync_folder">No se pudo sincronizar la carpeta «%1$s» con el servidor. Mensaje: %2$s</string>
+</resources>

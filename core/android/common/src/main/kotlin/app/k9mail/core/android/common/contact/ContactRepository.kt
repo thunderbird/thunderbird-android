@@ -1,7 +1,9 @@
 package app.k9mail.core.android.common.contact
 
+import android.net.Uri
 import net.thunderbird.core.common.cache.Cache
 import net.thunderbird.core.common.mail.EmailAddress
+import net.thunderbird.core.common.mail.toEmailAddressOrNull
 
 interface ContactRepository {
 
@@ -10,6 +12,8 @@ interface ContactRepository {
     fun hasContactFor(emailAddress: EmailAddress): Boolean
 
     fun hasAnyContactFor(emailAddresses: List<EmailAddress>): Boolean
+
+    fun getPhotoUri(emailAddress: String): Uri?
 }
 
 interface CachingRepository {
@@ -41,6 +45,12 @@ internal class CachingContactRepository(
 
     override fun hasAnyContactFor(emailAddresses: List<EmailAddress>): Boolean =
         emailAddresses.any { emailAddress -> hasContactFor(emailAddress) }
+
+    override fun getPhotoUri(emailAddress: String): Uri? {
+        return emailAddress.toEmailAddressOrNull()?.let { emailAddress ->
+            getContactFor(emailAddress)?.photoUri
+        }
+    }
 
     override fun clearCache() {
         cache.clear()

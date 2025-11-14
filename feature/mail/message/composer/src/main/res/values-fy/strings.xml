@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sent_folder_not_found_dialog_title">Map Ferstjoerd net fûn</string>
+    <string name="sent_folder_not_found_dialog_supporting_text">Stel yn Accountynstellingen in map Ferstjoerd yn, om dit e-mailberjocht nei ferstjoeren te bewarjen.</string>
+    <string name="sent_folder_not_found_dialog_assign_folder_action">Map Ferstjoerd takenne</string>
+    <string name="sent_folder_not_found_dialog_cancel_action">Annulearje</string>
+    <string name="sent_folder_not_found_dialog_send_and_delete_action">Ferstjoere en fuortsmite</string>
+</resources>

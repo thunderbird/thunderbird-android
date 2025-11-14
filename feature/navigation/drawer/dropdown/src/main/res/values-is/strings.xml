@@ -8,4 +8,7 @@
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Samstilla alla reikninga</string>
     <string name="navigation_drawer_dropdown_action_show_accounts">Sýna reikninga</string>
     <string name="navigation_drawer_dropdown_action_hide_accounts">Fela reikninga</string>
+    <string name="navigation_drawer_dropdown_avount_view_selection_title">Aðgangalisti</string>
+    <string name="navigation_drawer_dropdown_unified_account_title">Sameinaður aðgangur</string>
+    <string name="navigation_drawer_dropdown_action_add_account">Bæta við aðgangi</string>
 </resources>

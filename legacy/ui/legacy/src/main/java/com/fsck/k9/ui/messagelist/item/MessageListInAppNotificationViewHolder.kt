@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import kotlinx.collections.immutable.persistentSetOf
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
-import net.thunderbird.feature.notification.api.receiver.InAppNotificationEvent
+import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost
 import net.thunderbird.feature.notification.api.ui.action.NotificationAction
 import net.thunderbird.feature.notification.api.ui.host.DisplayInAppNotificationFlag
@@ -28,7 +28,7 @@ abstract class MessageListInAppNotificationViewHolder(protected val view: Compos
 
 class BannerInlineListInAppNotificationViewHolder(
     private val onNotificationActionClick: (NotificationAction) -> Unit,
-    private val eventFilter: (InAppNotificationEvent) -> Boolean,
+    private val eventFilter: (InAppNotification) -> Boolean,
     view: ComposeView,
 ) : MessageListInAppNotificationViewHolder(view) {
     @Composable

@@ -10,4 +10,7 @@
     <string name="account_server_certificate_not_valid_before">Ne valida antaŭ</string>
     <string name="account_server_certificate_not_valid_after">Ne valida post</string>
     <string name="account_server_certificate_unknown_error_description_format">La apo detektis eblan sekurecan minacon kaj ne daŭrigis kontekti al <xliff:g id="serverName">%s</xliff:g>.\nSe vi daŭrigas, atakantoj eble provos ŝteli informojn, interalie pasvortojn aŭ retpoŝtmesaĝojn.</string>
+    <string name="account_server_certificate_subject">Subjekto</string>
+    <string name="account_server_certificate_subject_alternative_names">Alternativaj nomoj de subjekto</string>
+    <string name="account_server_certificate_issuer">Eldonanto</string>
 </resources>

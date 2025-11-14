@@ -60,4 +60,6 @@
     </plurals>
     <string name="account_setup_options_email_signature_error_blank">Име потписа имејла не може бити празно.</string>
     <string name="account_setup_options_section_sync_options">Опције синхронизације</string>
+    <string name="account_setup_options_your_name_label">Ваше име</string>
+    <string name="account_setup_options_your_name_error_required">Ваше име је обавезно.</string>
 </resources>

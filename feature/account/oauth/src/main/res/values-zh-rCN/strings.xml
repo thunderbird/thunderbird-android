@@ -6,9 +6,9 @@
     <string name="account_oauth_error_browser_not_available">此应用找不到用于授权访问您账号的浏览器。</string>
     <string name="account_oauth_error_not_supported">此提供者目前不支持 OAuth 2.0。</string>
     <string name="account_oauth_error_canceled">授权已取消</string>
-    <string name="account_oauth_loading_message">使用 OAuth 登录</string>
-    <string name="account_oauth_sign_in_description">我们会将您重定向到您的邮件服务提供者网站进行登录。您需要授权此应用访问您的电子邮件账号。</string>
+    <string name="account_oauth_loading_message">正在使用 OAuth 登录</string>
+    <string name="account_oauth_sign_in_description">我们会将您重定向到您的电子邮件服务提供者进行登录。您需要授权此应用访问您的电子邮件账号。</string>
     <string name="account_oauth_sign_in_button">登录</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">支持文章</string>
-    <string name="account_oauth_google_sign_in_support_text">如果登录 Google 时遇到问题，请咨询我们的 {placeHolder}。</string>
+    <string name="account_oauth_google_sign_in_support_text">如果您在使用 Google 登录时遇到问题，请参阅我们的 {placeHolder}。</string>
 </resources>

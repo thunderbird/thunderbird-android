@@ -5,6 +5,12 @@ plugins {
 android {
     namespace = "app.k9mail.feature.migration.qrcode"
     resourcePrefix = "migration_qrcode_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

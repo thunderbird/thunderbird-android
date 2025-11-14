@@ -1,10 +1,12 @@
 package app.k9mail.featureflag
 
 import com.fsck.k9.ui.messagelist.MessageListFeatureFlags
+import com.fsck.k9.ui.messageview.MessageViewFeatureFlags
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
+import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 
 class K9FeatureFlagFactory : FeatureFlagFactory {
     override fun createFeatureCatalog(): List<FeatureFlag> {
@@ -18,6 +20,8 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
             FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
             FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
+            FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
+            FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
         )
     }
 }

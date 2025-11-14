@@ -5,7 +5,7 @@
     <string name="account_server_settings_outgoing_top_bar_title">Setări server de expediere</string>
     <string name="account_server_settings_validation_error_password_required">Parola este necesară.</string>
     <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
-    <string name="account_server_settings_authentication_none">Nimic</string>
+    <string name="account_server_settings_authentication_none">Niciuna</string>
     <string name="account_server_settings_authentication_password_encrypted">Parolă criptată</string>
     <string name="account_server_settings_incoming_imap_namespace_label">Auto-detectare IMAP namespace</string>
     <string name="account_server_settings_incoming_top_bar_title">Setări server de primire</string>
@@ -19,7 +19,7 @@
     <string name="account_server_settings_incoming_imap_prefix_label">Prefix cale IMAP</string>
     <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
     <string name="account_server_settings_protocol_type_label">Protocol</string>
-    <string name="account_server_settings_username_label">Nume de utilizator</string>
+    <string name="account_server_settings_username_label">Numele utilizatorului</string>
     <string name="account_server_settings_validation_error_port_invalid">Portul este greșit (trebuie să fie 1–65535).</string>
     <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
     <string name="account_server_settings_client_certificate_label">Certificat client</string>
@@ -32,4 +32,6 @@
     <string name="account_server_settings_password_authentication_screen_lock_required">Pentru a-ți vedea parola aici, activează ecranul de blocare pe acest dispozitiv.</string>
     <string name="account_server_settings_validation_error_server_invalid_ip_or_hostname">IP sau hostname invalid</string>
     <string name="account_server_settings_incoming_imap_send_client_info_label">Trimite informații despre client</string>
+    <string name="account_server_settings_password_authentication_failed">Autentificarea a eșuat!</string>
+    <string name="account_server_settings_password_authentication_unable_to_start">Nu s-a putut lansa solicitarea biometrică.</string>
 </resources>

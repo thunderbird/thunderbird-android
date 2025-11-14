@@ -4,11 +4,11 @@
     <string name="account_oauth_error_browser_not_available">Не найден браузер для предоставления доступа к вашей учётной записи.</string>
     <string name="account_oauth_sign_in_button">Войти</string>
     <string name="account_oauth_sign_in_with_google_button">Войти через Google</string>
-    <string name="account_oauth_loading_message">Войти через OAuth</string>
-    <string name="account_oauth_loading_error">Не удалось выполнить вход по протоколу OAuth</string>
+    <string name="account_oauth_loading_message">Войти с помощью OAuth</string>
+    <string name="account_oauth_loading_error">Вход через OAuth не выполнен</string>
     <string name="account_oauth_error_canceled">Авторизация отменена</string>
     <string name="account_oauth_error_failed">Авторизация не выполнена из-за ошибки: <xliff:g id="error">%s</xliff:g></string>
-    <string name="account_oauth_sign_in_description">Сейчас вы будете перенаправлены к вашему провайдеру электронной почты для входа в систему. Вам будет необходимо предоставить приложению доступ к вашему электронному адресу.</string>
+    <string name="account_oauth_sign_in_description">Произойдёт перенаправление на сайт поставщика услуг электронной почты для входа в систему. Вам нужно будет предоставить приложению доступ к своей учётной записи электронной почты.</string>
     <string name="account_oauth_google_sign_in_support_text_link_text">статье поддержки</string>
     <string name="account_oauth_google_sign_in_support_text">Если у вас возникли проблемы при входе в учётную запись Google, обратитесь к {placeHolder}.</string>
 </resources>

@@ -26,9 +26,11 @@ import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import app.k9mail.core.android.common.activity.CreateDocumentResultContract
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import app.k9mail.legacy.message.controller.MessageReference
+import com.eygraber.uri.toKmpUri
 import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.activity.MessageLoaderHelper
@@ -45,6 +47,7 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.LocalMessage
 import com.fsck.k9.mailstore.MessageViewInfo
+import com.fsck.k9.provider.RawMessageProvider
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.extensions.withArguments
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
@@ -55,13 +58,20 @@ import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.ui.share.ShareIntentBuilder
 import java.util.Locale
+import kotlin.time.Instant
+import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.android.account.LegacyAccountDtoManager
+import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
+import net.thunderbird.feature.mail.message.export.MessageExporter
+import net.thunderbird.feature.mail.message.export.MessageFileNameSuggester
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.util.OpenPgpIntentStarter
 
@@ -78,6 +88,7 @@ class MessageViewFragment :
     private val shareIntentBuilder: ShareIntentBuilder by inject()
     private val generalSettingsManager: GeneralSettingsManager by inject()
     private val outboxFolderManager: OutboxFolderManager by inject()
+    private val featureFlagProvider: FeatureFlagProvider by inject()
 
     private val createDocumentLauncher: ActivityResultLauncher<CreateDocumentResultContract.Input> =
         registerForActivityResult(CreateDocumentResultContract()) { documentUri ->
@@ -100,6 +111,10 @@ class MessageViewFragment :
     private var showProgressThreshold: Long? = null
     private var preferredUnsubscribeUri: UnsubscribeUri? = null
 
+    private val messageExporter: MessageExporter by inject()
+
+    private val fileNameSuggester: MessageFileNameSuggester by inject()
+
     /**
      * Used to temporarily store the destination folder for refile operations if a confirmation
      * dialog is shown.
@@ -114,6 +129,9 @@ class MessageViewFragment :
     private var currentAttachmentViewInfo: AttachmentViewInfo? = null
     private var isDeleteMenuItemDisabled: Boolean = false
     private var wasMessageMarkedAsOpened: Boolean = false
+
+    // Tracks whether the current Create Document flow is for exporting EML (and not for attachments)
+    private var pendingEmlExport: Boolean = false
 
     private var isActive: Boolean = false
         private set
@@ -318,6 +336,8 @@ class MessageViewFragment :
         menu.findItem(R.id.move_to_drafts).isVisible = isOutbox
         menu.findItem(R.id.unsubscribe).isVisible = canMessageBeUnsubscribed()
         menu.findItem(R.id.show_headers).isVisible = true
+        menu.findItem(R.id.export_eml).isVisible =
+            featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
         menu.findItem(R.id.compose).isVisible = true
 
         val toggleTheme = menu.findItem(R.id.toggle_message_view_theme)
@@ -354,6 +374,13 @@ class MessageViewFragment :
             R.id.move_to_drafts -> onMoveToDrafts()
             R.id.unsubscribe -> onUnsubscribe()
             R.id.show_headers -> onShowHeaders()
+            R.id.export_eml -> if (
+                featureFlagProvider.provide(MessageViewFeatureFlags.ActionExportEml).isEnabled()
+            ) {
+                onExportEml()
+            } else {
+                return true
+            }
             else -> return false
         }
 
@@ -631,6 +658,24 @@ class MessageViewFragment :
         if (uri == null) return
         require(uri.scheme == ContentResolver.SCHEME_CONTENT) { "content: URI required" }
 
+        if (pendingEmlExport) {
+            // Handle EML export via exporter and reset flag regardless of outcome
+            val exportUri = uri
+            pendingEmlExport = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                val ctx = requireContext()
+                val rawUri = RawMessageProvider.getRawMessageUri(messageReference)
+                val result = messageExporter.export(
+                    sourceUri = rawUri.toKmpUri(),
+                    destinationUri = exportUri.toKmpUri(),
+                )
+                if (result.isFailure) {
+                    Toast.makeText(ctx, R.string.message_view_status_attachment_not_saved, Toast.LENGTH_LONG).show()
+                }
+            }
+            return
+        }
+
         createAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(uri)
     }
 
@@ -660,6 +705,33 @@ class MessageViewFragment :
         account.setLastSelectedFolderId(destinationFolderId)
 
         copyMessage(messageReference, destinationFolderId)
+    }
+
+    @OptIn(kotlin.time.ExperimentalTime::class)
+    private fun onExportEml() {
+        // Mark this flow as an EML export so the result handler doesn't touch attachment logic
+        pendingEmlExport = true
+        val subject = message?.subject ?: ""
+        val dateMillis = (message?.sentDate ?: message?.internalDate)?.time
+        val localDateTime = if (dateMillis != null) {
+            Instant.fromEpochMilliseconds(dateMillis)
+                .toLocalDateTime(TimeZone.UTC)
+        } else {
+            // Fallback to current local time if message has no dates
+            Instant.fromEpochMilliseconds(System.currentTimeMillis())
+                .toLocalDateTime(TimeZone.currentSystemDefault())
+        }
+        val suggestedName = fileNameSuggester.suggestFileName(subject, localDateTime, "eml")
+        try {
+            createDocumentLauncher.launch(
+                input = CreateDocumentResultContract.Input(
+                    title = suggestedName,
+                    mimeType = "message/rfc822",
+                ),
+            )
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun onSendAlternate() {

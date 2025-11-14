@@ -2,9 +2,9 @@
 * @thunderbird/mobile-android-reviewers
 
 # Release Engineering
-/.github/ @thunderbird/build-release 
-/docs/ci/ @thunderbird/build-release 
+/.github/ @thunderbird/build-release
+/docs/release/ @thunderbird/build-release
 /scripts/ci/ @thunderbird/build-release
 
 # CODEOWNERS protection
-/.github/CODEOWNERS @kewisch
+/.github/CODEOWNERS @Herbal7ea

@@ -1,6 +1,6 @@
 package net.thunderbird.feature.notification.api.ui.icon
 
-private const val ERROR_MESSAGE = "Can't send notifications from a jvm library. Use android library or app instead."
+internal const val ERROR_MESSAGE = "Can't send notifications from a jvm library. Use android library or app instead."
 
 internal actual val NotificationIcons.AlarmPermissionMissing: NotificationIcon get() = error(ERROR_MESSAGE)
 internal actual val NotificationIcons.AuthenticationError: NotificationIcon get() = error(ERROR_MESSAGE)

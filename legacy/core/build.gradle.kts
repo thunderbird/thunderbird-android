@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.mime4j.core)
     implementation(libs.mime4j.dom)
+    implementation(libs.uri)
     implementation(projects.feature.navigation.drawer.api)
 
     testApi(projects.core.testing)
@@ -55,7 +56,7 @@ dependencies {
     testImplementation(projects.backend.imap)
     testImplementation(projects.mail.protocols.smtp)
     testImplementation(projects.legacy.storage)
-
+    testImplementation(projects.core.android.common)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.robolectric)
@@ -72,5 +73,11 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }

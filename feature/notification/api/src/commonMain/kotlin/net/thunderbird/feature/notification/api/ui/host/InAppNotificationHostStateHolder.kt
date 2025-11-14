@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import net.thunderbird.core.common.collections.maxPriorityQueueOf
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerGlobalVisual
 import net.thunderbird.feature.notification.api.ui.host.visual.BannerInlineVisual
@@ -22,20 +23,17 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
     private val internalState =
         MutableStateFlow<InAppNotificationHostStateImpl>(value = InAppNotificationHostStateImpl())
     internal val currentInAppNotificationHostState: StateFlow<InAppNotificationHostState> = internalState.asStateFlow()
+    private val bannerGlobalVisuals = maxPriorityQueueOf<BannerGlobalVisual>()
 
     fun showInAppNotification(
         notification: InAppNotification,
     ) {
         val newData = notification.toInAppNotificationData()
-        // TODO(#9572): If global is already present, show the one with the highest priority
-        //              show the previous one back once the higher priority has fixed and the
-        //              other wasn't
-        internalState.update {
-            newData.bannerGlobalVisual.showIfNeeded(
-                ifFlagEnabled = DisplayInAppNotificationFlag.BannerGlobalNotifications,
-                select = { bannerGlobalVisual },
-                transformIfDifferent = { copy(bannerGlobalVisual = it) },
-            )
+        if (isEnabled(DisplayInAppNotificationFlag.BannerGlobalNotifications)) {
+            newData.bannerGlobalVisual?.let { bannerGlobalVisual ->
+                bannerGlobalVisuals.add(bannerGlobalVisual)
+                internalState.update { it.copy(bannerGlobalVisual = bannerGlobalVisuals.peek()) }
+            }
         }
         internalState.update {
             newData.bannerInlineVisuals.showIfNeeded()
@@ -108,7 +106,11 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
     fun dismiss(visual: InAppNotificationVisual) {
         internalState.update { current ->
             current.copy(
-                bannerGlobalVisual = visual.nullIfDifferent(otherwise = current.bannerGlobalVisual),
+                bannerGlobalVisual = if (visual is BannerGlobalVisual && bannerGlobalVisuals.remove(visual)) {
+                    bannerGlobalVisuals.peek()
+                } else {
+                    current.bannerGlobalVisual
+                },
                 bannerInlineVisuals = (visual as? BannerInlineVisual)?.let { bannerInlineVisual ->
                     (current.bannerInlineVisuals - bannerInlineVisual).toPersistentSet()
                 } ?: current.bannerInlineVisuals,
@@ -132,7 +134,6 @@ class InAppNotificationHostStateHolder(private val enabled: ImmutableSet<Display
         override val bannerGlobalVisual: BannerGlobalVisual? = null,
         override val bannerInlineVisuals: ImmutableSet<BannerInlineVisual> = persistentSetOf(),
         override val snackbarVisual: SnackbarVisual? = null,
-        private val onDismissVisual: (InAppNotificationVisual) -> Unit = {},
     ) : InAppNotificationHostState
 
     private fun InAppNotification.toInAppNotificationData(): InAppNotificationHostState =

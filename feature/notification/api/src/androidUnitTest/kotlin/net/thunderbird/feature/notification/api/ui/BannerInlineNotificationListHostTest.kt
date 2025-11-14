@@ -48,7 +48,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
         // Arrange
         val title = "Notification in test"
         val supportingText = "The supporting text"
-        val action = createFakeNotificationAction(title = "Action 1")
+        val action = createFakeNotificationAction(label = "Action 1")
         val notification = createNotification(title = title, supportingText = supportingText, actions = setOf(action))
         mainClock.autoAdvance = false
         setContentWithTheme {
@@ -94,7 +94,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
 
                     actionButton
                         .onChildren()
-                        .filterToOne(hasTextExactly(action.title))
+                        .filterToOne(hasTextExactly(action.label))
                         .assertIsDisplayed()
                 },
             )
@@ -200,7 +200,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
         // Arrange
         val title = "Notification in test"
         val supportingText = "The supporting text"
-        val action = createFakeNotificationAction(title = "Action 1")
+        val action = createFakeNotificationAction(label = "Action 1")
         val notification = createNotification(title = title, supportingText = supportingText, actions = setOf(action))
         mainClock.autoAdvance = false
         val actionClicked = mutableStateOf<NotificationAction?>(value = null)
@@ -215,7 +215,7 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
         onNodeWithTag(BUTTON_NOTIFICATION_TEST_TAG).performClick()
         // Advance Animation
         mainClock.advanceTimeBy(1000L)
-        onNodeWithText(action.title).performClick()
+        onNodeWithText(action.label).performClick()
 
         // Assert
         printSemanticTree()
@@ -320,8 +320,8 @@ class BannerInlineNotificationListHostTest : ComposeTest() {
         title: String,
         supportingText: String,
         actions: Set<NotificationAction> = setOf(
-            createFakeNotificationAction(title = "Action 1"),
-            createFakeNotificationAction(title = "Action 2"),
+            createFakeNotificationAction(label = "Action 1"),
+            createFakeNotificationAction(label = "Action 2"),
         ),
     ): FakeInAppOnlyNotification {
         return FakeInAppOnlyNotification(

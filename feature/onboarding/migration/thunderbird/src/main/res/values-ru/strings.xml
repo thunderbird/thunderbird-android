@@ -6,9 +6,9 @@
     <string name="onboarding_migration_thunderbird_qr_code_import_button_text">Импортируйте настройки</string>
     <string name="onboarding_migration_thunderbird_import_title">Переходите с другого приложения или устройства?</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_1">\"Настройки\" в панели мест (внизу слева)</string>
-    <string name="onboarding_migration_thunderbird_qr_code_import_text">Можно легко импортировать настройки своего аккаунта сканированием QR-кода.</string>
+    <string name="onboarding_migration_thunderbird_qr_code_import_text">Можно легко импортировать настройки своей учётной записи сканированием QR-кода.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_intro">В Thunderbird на компьютере перейдите в:</string>
-    <string name="onboarding_migration_thunderbird_import_button_text">Импортируйте настройки своего аккаунта</string>
+    <string name="onboarding_migration_thunderbird_import_button_text">Импортируйте настройки своей учётной записи</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_learn_update">Узнайте, как обновить Thunderbird.</string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_require_latest">Для импортирования требуется последняя версия Thunderbird Desktop 128. <xliff:g id="link_text">%s</xliff:g></string>
     <string name="onboarding_migration_thunderbird_qr_code_import_instructions_bullet_2_v2">Выберите \"Экспорт для мобильного\"</string>

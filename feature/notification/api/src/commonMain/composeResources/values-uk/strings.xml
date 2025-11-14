@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_channel_push_title">Синхронізація (Push)</string>
+    <string name="notification_channel_push_description">Показується під час очікування нових повідомлень</string>
+    <string name="notification_channel_messages_title">Повідомлення</string>
+    <string name="notification_channel_messages_description">Сповіщення, пов\'язані з повідомленнями</string>
+    <string name="notification_channel_miscellaneous_title">Різне</string>
+    <string name="notification_channel_miscellaneous_description">Різні сповіщення, наприклад, про помилки тощо.</string>
+    <string name="notification_notify_error_title">Помилка сповіщення</string>
+    <string name="notification_notify_error_text">Сталася помилка під час створення системного сповіщення про нове повідомлення. Найчастіше це стається через відсутність звуку сповіщення.\n\nТоркніться, щоб відкрити налаштування сповіщень.</string>
+    <string name="notification_authentication_error_title">Не вдалося автентифікувати</string>
+    <string name="notification_certificate_error_public">Помилка сертифіката</string>
+    <string name="notification_certificate_error_title">Помилка сертифіката для %1$s</string>
+    <string name="notification_certificate_error_text">Перевірте налаштування вашого сервера</string>
+    <string name="notification_bg_sync_ticker">Перевірка пошти: %1$s:%2$s</string>
+    <string name="notification_bg_sync_title">Перевірка пошти</string>
+    <string name="notification_bg_send_ticker">Надсилання пошти: %1$s</string>
+    <string name="notification_bg_send_title">Надсилання пошти</string>
+    <string name="send_failure_subject">Не вдалося надіслати повідомлення</string>
+    <string name="notification_additional_messages">ще %1$d у %2$s</string>
+    <string name="push_notification_state_initializing">Ініціалізація…</string>
+    <string name="push_notification_state_listening">Очікування нових листів</string>
+    <string name="push_notification_state_wait_background_sync">Очікування дозволу на фонову синхронізацію</string>
+    <string name="push_notification_state_wait_network">Очікування доступності мережі</string>
+    <string name="push_notification_state_alarm_permission_missing">Відсутній дозвіл на планування оповіщень</string>
+    <string name="push_notification_info">Натисніть, щоб дізнатися більше.</string>
+    <string name="push_notification_grant_alarm_permission">Торкніться, щоб надати дозвіл.</string>
+    <string name="push_info_disable_push_action">Вимкнути Push</string>
+    <string name="notification_action_reply">Відповісти</string>
+    <string name="notification_action_mark_as_read">Позначити прочитаним</string>
+    <string name="notification_action_mark_all_as_read">Позначити всі прочитаними</string>
+    <string name="notification_action_delete">Видалити</string>
+    <string name="notification_action_delete_all">Видалити всі</string>
+    <string name="notification_action_archive">Архівувати</string>
+    <string name="notification_action_archive_all">Архівувати всі</string>
+    <string name="notification_action_spam">Спам</string>
+    <string name="notification_authentication_incoming_server_error_text">Не вдалося автентифікацію для %1$s. Оновіть налаштування сервера вхідної пошти.</string>
+    <string name="notification_authentication_outgoing_server_error_text">Не вдалося автентифікацію для %1$s. Оновіть налаштування сервера вихідної пошти.</string>
+    <string name="notification_bg_sync_text">%1$s: %2$s</string>
+    <plurals name="notification_new_messages_title">
+        <item quantity="one">%1$d нове повідомлення</item>
+        <item quantity="few">%1$d нових повідомлень</item>
+        <item quantity="many">%1$d нових повідомлень</item>
+        <item quantity="other">%1$d нових повідомлень</item>
+    </plurals>
+    <string name="notification_action_retry">Повторити спробу</string>
+    <string name="notification_action_update_server_settings">Оновлення налаштувань сервера</string>
+    <string name="notification_action_assign_sent_folder">Призначити папку</string>
+    <string name="banner_inline_notification_check_error_notifications">Перевірте сповіщення про помилки</string>
+    <string name="banner_inline_notification_some_messages_need_attention">Деякі повідомлення потребують вашої уваги.</string>
+    <string name="banner_inline_notification_open_notifications">Відкрити сповіщення</string>
+    <string name="banner_inline_notification_learn_more">Дізнатися більше</string>
+    <string name="banner_inline_notification_view_support_article">Переглянути статтю служби підтримки</string>
+    <string name="sent_folder_not_found_title">Папка «Надіслані» недоступна.</string>
+</resources>

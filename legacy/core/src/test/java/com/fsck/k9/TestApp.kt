@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import android.app.Application
 import androidx.work.WorkManager
+import app.k9mail.core.android.common.provider.NotificationIconResourceProvider
 import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.backend.BackendManager
@@ -10,6 +11,7 @@ import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.notification.NotificationActionCreator
 import com.fsck.k9.notification.NotificationResourceProvider
 import com.fsck.k9.notification.NotificationStrategy
+import com.fsck.k9.notification.TestNotificationIconResourceProvider
 import com.fsck.k9.storage.storageModule
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
@@ -93,4 +95,5 @@ val testModule = module {
     }
     single<OutboxFolderManager> { FakeOutboxFolderManager() }
     single<LegacyAccountManager> { mock() }
+    single<NotificationIconResourceProvider> { TestNotificationIconResourceProvider() }
 }

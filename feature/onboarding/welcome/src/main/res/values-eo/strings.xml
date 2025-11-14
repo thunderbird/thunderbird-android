@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="onboarding_welcome_start_button">Ek</string>
+    <string name="onboarding_welcome_start_button">Eki</string>
     <string name="onboarding_welcome_import_button">Enporti agordojn</string>
+    <string name="onboarding_welcome_developed_by">Evoluata de diligenta teamo ĉe MZLA Technologies kaj tutmonda komunumo da volontuloj. Parto de la familio Mozilla.</string>
+    <string name="onboarding_welcome_text">Malfermitkoda, privateco-gardanta kaj senreklama retpoŝtilo por Android.</string>
 </resources>

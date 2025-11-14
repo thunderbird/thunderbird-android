@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_list_glance_widget_compose_action">Nová zpráva</string>
+    <string name="message_list_glance_widget_inbox_title">Jednotná schránka</string>
+    <string name="message_list_glance_widget_label">Seznam zpráv</string>
+</resources>
