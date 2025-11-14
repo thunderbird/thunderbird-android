@@ -10,6 +10,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core.architecture.api)
+            api(projects.feature.account.avatar.api)
         }
     }
 }

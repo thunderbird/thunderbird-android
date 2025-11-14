@@ -55,6 +55,8 @@ dependencies {
 
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.lifecycle.process)
+    implementation(libs.kotlinx.collections.immutable)
 
     testImplementation(projects.feature.account.fake)
+    testImplementation(projects.core.testing)
 }

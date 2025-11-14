@@ -2,6 +2,7 @@ package net.thunderbird.core.ui.setting.dialog.ui.components.list.value
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,6 +30,7 @@ internal fun <T> CompactSelectSingleOptionItem(
             },
             options = setting.options,
             optionTitle = { it.title() },
+            modifier = Modifier.fillMaxWidth(),
             selectedOption = setting.value,
         )
 

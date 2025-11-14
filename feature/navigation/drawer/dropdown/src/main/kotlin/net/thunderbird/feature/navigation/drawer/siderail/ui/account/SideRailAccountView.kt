@@ -63,6 +63,7 @@ internal fun SideRailAccountView(
                         account = account,
                         onClick = null,
                         selected = false,
+                        showBadge = true,
                     )
                 }
             }

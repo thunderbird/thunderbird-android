@@ -7,10 +7,16 @@ import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomai
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetGeneralSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGeneralSettings
+import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAccountName
+import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAvatarMonogram
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralResourceProvider
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsBuilder
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsContract
+import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsValidator
 import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val featureAccountSettingsModule = module {
@@ -19,6 +25,7 @@ val featureAccountSettingsModule = module {
     factory<ResourceProvider.GeneralResourceProvider> {
         GeneralResourceProvider(
             context = androidContext(),
+            colors = get(named("AccountColors")),
         )
     }
 
@@ -31,15 +38,28 @@ val featureAccountSettingsModule = module {
     factory<UseCase.GetGeneralSettings> {
         GetGeneralSettings(
             repository = get(),
-            resourceProvider = get(),
-            monogramCreator = get(),
-            featureFlagProvider = get(),
         )
     }
 
     factory<UseCase.UpdateGeneralSettings> {
         UpdateGeneralSettings(
             repository = get(),
+        )
+    }
+
+    factory<GeneralSettingsContract.Validator> {
+        GeneralSettingsValidator(
+            accountNameValidator = ValidateAccountName(),
+            avatarMonogramValidator = ValidateAvatarMonogram(),
+        )
+    }
+
+    factory<GeneralSettingsContract.SettingsBuilder> {
+        GeneralSettingsBuilder(
+            resources = get(),
+            provider = get(),
+            monogramCreator = get(),
+            validator = get(),
         )
     }
 

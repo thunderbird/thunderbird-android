@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Generelle innstillinger</string>
-    <string name="account_settings_general_profile_indicator_title">Profilindikator</string>
-    <string name="account_settings_general_profile_indicator_monogram">Monogram</string>
-    <string name="account_settings_general_profile_indicator_image">Bilde</string>
-    <string name="account_settings_general_profile_indicator_icon">Ikon</string>
+    <string name="account_settings_general_avatar_option_monogram">Monogram</string>
+    <string name="account_settings_general_avatar_option_image">Bilde</string>
+    <string name="account_settings_general_avatar_option_icon">Ikon</string>
     <string name="account_settings_general_name_title">Kontonavn</string>
     <string name="account_settings_general_name_description">Navnet som er koblet til kontoen din.</string>
     <string name="account_settings_general_color_title">Kontofarge</string>

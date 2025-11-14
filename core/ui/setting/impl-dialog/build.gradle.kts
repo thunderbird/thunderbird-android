@@ -6,6 +6,12 @@ plugins {
 android {
     namespace = "net.thunderbird.core.ui.setting.dialog"
     resourcePrefix = "core_ui_setting_dialog_"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {

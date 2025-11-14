@@ -1,6 +1,8 @@
 package net.thunderbird.app.common.account
 
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import net.thunderbird.app.common.account.data.DefaultAccountProfileLocalDataSource
 import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
@@ -13,8 +15,11 @@ import net.thunderbird.feature.account.core.featureAccountCoreModule
 import net.thunderbird.feature.account.storage.legacy.featureAccountStorageLegacyModule
 import net.thunderbird.feature.mail.account.api.AccountManager
 import org.koin.android.ext.koin.androidApplication
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.binds
 import org.koin.dsl.module
+import app.k9mail.core.ui.legacy.theme2.common.R as ThemeCommonR
 
 internal val appCommonAccountModule = module {
     includes(
@@ -43,10 +48,16 @@ internal val appCommonAccountModule = module {
         )
     }
 
+    factory<ImmutableList<Int>>(named("AccountColors")) {
+        androidContext().resources.getIntArray(
+            ThemeCommonR.array.account_colors,
+        ).toList().toImmutableList()
+    }
+
     factory {
         AccountColorPicker(
-            accountManager = get(),
-            resources = get(),
+            repository = get(),
+            accountColors = get(named("AccountColors")),
         )
     }
 

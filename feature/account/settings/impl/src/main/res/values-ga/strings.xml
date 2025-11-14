@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Socruithe Ginearálta</string>
-    <string name="account_settings_general_profile_indicator_title">Táscaire Próifíle</string>
-    <string name="account_settings_general_profile_indicator_monogram">Monagram</string>
-    <string name="account_settings_general_profile_indicator_image">Íomhá</string>
-    <string name="account_settings_general_profile_indicator_icon">Deilbhín</string>
+    <string name="account_settings_general_avatar_option_monogram">Monagram</string>
+    <string name="account_settings_general_avatar_option_image">Íomhá</string>
+    <string name="account_settings_general_avatar_option_icon">Deilbhín</string>
     <string name="account_settings_general_name_title">Ainm an chuntais</string>
     <string name="account_settings_general_name_description">An t-ainm a bhaineann le do chuntas.</string>
     <string name="account_settings_general_color_title">Dath an chuntais</string>

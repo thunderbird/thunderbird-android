@@ -27,13 +27,10 @@ import androidx.compose.ui.unit.LayoutDirection
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyLarge
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import net.thunderbird.feature.account.avatar.ui.AvatarOutlined
-import net.thunderbird.feature.account.avatar.ui.AvatarSize
 import net.thunderbird.feature.navigation.drawer.dropdown.R
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.MailDisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.AnimatedExpandIcon
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountName
 
 @Composable
@@ -67,13 +64,12 @@ internal fun AccountView(
 private fun RowScope.AccountSelectedView(
     account: DisplayAccount,
 ) {
-    val color = getDisplayAccountColor(account)
     val name = getDisplayAccountName(account)
 
-    AvatarOutlined(
-        color = color,
-        name = name,
-        size = AvatarSize.MEDIUM,
+    AccountAvatar(
+        account = account,
+        selected = false,
+        modifier = Modifier,
     )
     Column(
         verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.half),

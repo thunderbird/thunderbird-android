@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Ajustes generales</string>
-    <string name="account_settings_general_profile_indicator_monogram">Iniciales</string>
-    <string name="account_settings_general_profile_indicator_image">Imagen</string>
-    <string name="account_settings_general_profile_indicator_icon">Icono</string>
+    <string name="account_settings_general_avatar_option_monogram">Iniciales</string>
+    <string name="account_settings_general_avatar_option_image">Imagen</string>
+    <string name="account_settings_general_avatar_option_icon">Icono</string>
     <string name="account_settings_general_name_title">Nombre de la cuenta</string>
     <string name="account_settings_general_name_description">El nombre asociado con tu cuenta.</string>
     <string name="account_settings_general_color_title">Color de la cuenta</string>
-    <string name="account_settings_general_profile_indicator_title">Indicador del perfil</string>
     <string name="account_settings_general_color_description">El color principal que se usa para las carpetas y en listados para esta cuenta.</string>
 </resources>

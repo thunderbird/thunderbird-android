@@ -19,7 +19,6 @@ dependencies {
     implementation(projects.core.ui.theme.api)
     implementation(projects.core.ui.compose.designsystem)
 
-    implementation(projects.feature.account.avatar.impl)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.mail.folder.api)
 
