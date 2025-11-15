@@ -268,7 +268,6 @@
     <string name="archive_folder_label">Arkiv mappen</string>
     <string name="spam_folder_label">Spam mappe</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Vis kun mapper du abonerer på</string>
-    <string name="account_setup_auto_expand_folder">Udvid mapper automatisk</string>
     <string name="account_setup_options_mail_check_frequency_never">Aldrig</string>
     <string name="account_setup_options_mail_check_frequency_15min">Hver 15 minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Hver 30 minut</string>

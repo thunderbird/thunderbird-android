@@ -273,7 +273,6 @@
     <string name="archive_folder_label">Arhīva mape</string>
     <string name="spam_folder_label">Mēstuļu mape</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Rādīt tikai izvēlētās mapes</string>
-    <string name="account_setup_auto_expand_folder">Automātiski izvērst mapi</string>
     <string name="account_setup_options_mail_check_frequency_never">Nekad</string>
     <string name="account_setup_options_mail_check_frequency_15min">Ik 15 minūtes</string>
     <string name="account_setup_options_mail_check_frequency_30min">Katras 30 minūtes</string>

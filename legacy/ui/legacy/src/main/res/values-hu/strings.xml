@@ -269,7 +269,6 @@
     <string name="archive_folder_label">Archívum mappa</string>
     <string name="spam_folder_label">Levélszemét mappa</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Csak feliratkozott mappák megjelenítése</string>
-    <string name="account_setup_auto_expand_folder">Mappa automatikus kinyitása</string>
     <string name="account_setup_options_mail_check_frequency_never">Soha</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 percenként</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 percenként</string>

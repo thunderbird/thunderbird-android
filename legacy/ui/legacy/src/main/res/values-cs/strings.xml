@@ -275,7 +275,6 @@
     <string name="archive_folder_label">Název složky Archív</string>
     <string name="spam_folder_label">Název složky Nevyžádaná</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Zobrazit jen odebírané složky</string>
-    <string name="account_setup_auto_expand_folder">Aut. rozbalená složka</string>
     <string name="account_setup_options_mail_check_frequency_never">Nikdy</string>
     <string name="account_setup_options_mail_check_frequency_15min">Každých 15 minut</string>
     <string name="account_setup_options_mail_check_frequency_30min">Každých 30 minut</string>

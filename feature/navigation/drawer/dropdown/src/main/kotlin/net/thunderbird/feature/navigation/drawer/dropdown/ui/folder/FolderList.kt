@@ -21,6 +21,7 @@ internal fun FolderList(
     onFolderClick: (DisplayFolder) -> Unit,
     showStarredCount: Boolean,
     modifier: Modifier = Modifier,
+    isExpandedInitial: Boolean = false,
 ) {
     val resources = LocalContext.current.resources
     val folderNameFormatter = remember { FolderNameFormatter(resources) }
@@ -45,6 +46,7 @@ internal fun FolderList(
                 onClick = onFolderClick,
                 folderNameFormatter = folderNameFormatter,
                 selectedFolderId = selectedFolder?.id,
+                isExpandInitial = isExpandedInitial,
             )
         }
     }

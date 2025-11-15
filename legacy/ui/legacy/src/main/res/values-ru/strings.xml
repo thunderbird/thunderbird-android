@@ -275,7 +275,6 @@
     <string name="archive_folder_label">Папка архива</string>
     <string name="spam_folder_label">Папка спам</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Только подписанные папки</string>
-    <string name="account_setup_auto_expand_folder">Автопереход в папку</string>
     <string name="account_setup_options_mail_check_frequency_never">Вручную</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 минут</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 минут</string>

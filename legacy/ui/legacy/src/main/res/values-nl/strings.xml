@@ -269,7 +269,6 @@
     <string name="archive_folder_label">Archief</string>
     <string name="spam_folder_label">Spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Alleen geabonneerde mappen tonen</string>
-    <string name="account_setup_auto_expand_folder">Map automatisch uitvouwen</string>
     <string name="account_setup_options_mail_check_frequency_never">Nooit</string>
     <string name="account_setup_options_mail_check_frequency_15min">Elke 15 minuten</string>
     <string name="account_setup_options_mail_check_frequency_30min">Elke 30 minuten</string>

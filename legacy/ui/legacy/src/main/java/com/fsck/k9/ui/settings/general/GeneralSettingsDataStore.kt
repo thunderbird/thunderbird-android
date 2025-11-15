@@ -64,6 +64,8 @@ class GeneralSettingsDataStore(
 
             "messageview_autofit_width" -> generalSettingsManager.getConfig()
                 .display.visualSettings.isAutoFitWidth
+            "drawerExpandAllFolder" -> generalSettingsManager.getConfig()
+                .display.visualSettings.drawerExpandAllFolder
 
             "quiet_time_enabled" -> generalSettingsManager.getConfig()
                 .notification.isQuietTimeEnabled
@@ -86,6 +88,7 @@ class GeneralSettingsDataStore(
         when (key) {
             "fixed_message_view_theme" -> setFixedMessageViewTheme(value)
             "animations" -> setIsShowAnimations(isShowAnimations = value)
+            "drawerExpandAllFolder" -> setDrawerExpandAllFolder(drawerExpandAllFolder = value)
             "show_unified_inbox" -> setIsShowUnifiedInbox(value)
             "show_starred_count" -> setIsShowStarredCount(isShowStarredCount = value)
             "messagelist_stars" -> setIsShowMessageListStars(isShowMessageListStars = value)
@@ -420,6 +423,19 @@ class GeneralSettingsDataStore(
                 display = settings.display.copy(
                     visualSettings = settings.display.visualSettings.copy(
                         isShowAnimations = isShowAnimations,
+                    ),
+                ),
+            )
+        }
+    }
+
+    private fun setDrawerExpandAllFolder(drawerExpandAllFolder: Boolean) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        drawerExpandAllFolder = drawerExpandAllFolder,
                     ),
                 ),
             )

@@ -201,6 +201,18 @@
         </PreferenceCategory>
 
         <PreferenceCategory
+            android:key="drawer_preferences"
+            android:title="@string/navigation_drawer_preferences"
+            >
+
+            <CheckBoxPreference
+                android:key="drawerExpandAllFolder"
+                android:title="@string/expand_folders"
+                />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
             android:key="accountlist_preferences"
             android:title="@string/accountlist_preferences"
             >

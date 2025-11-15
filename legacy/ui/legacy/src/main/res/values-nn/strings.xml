@@ -621,7 +621,6 @@
     <string name="account_settings_crypto_encrypt_all_drafts_off">Krypter malar kun om kryptering er aktivert</string>
     <string name="account_settings_autodownload_message_size_2">2 KiB</string>
     <string name="account_settings_mail_check_frequency_label">Spørjefrekvens for mappe</string>
-    <string name="account_setup_auto_expand_folder">Auto-utvid mapper</string>
     <string name="account_settings_notify_self_label">Inkluder utgåande e-post</string>
     <string name="account_notify_contacts_mail_only_label">Berre kontaktar</string>
     <string name="account_settings_mark_message_as_read_on_view_label">Marker som lesen etter opning</string>

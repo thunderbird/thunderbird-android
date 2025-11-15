@@ -271,7 +271,6 @@
     <string name="archive_folder_label">Dosar arhive</string>
     <string name="spam_folder_label">Dosar spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Arată doar dosarele înregistrate</string>
-    <string name="account_setup_auto_expand_folder">Auto-extinde dosar</string>
     <string name="account_setup_options_mail_check_frequency_never">Niciodată</string>
     <string name="account_setup_options_mail_check_frequency_15min">La fiecare 15 minute</string>
     <string name="account_setup_options_mail_check_frequency_30min">La fiecare 30 de minute</string>

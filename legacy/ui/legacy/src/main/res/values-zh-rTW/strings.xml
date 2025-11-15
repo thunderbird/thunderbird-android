@@ -267,7 +267,6 @@
     <string name="archive_folder_label">封存信件匣名稱</string>
     <string name="spam_folder_label">垃圾郵件匣名稱</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">只顯示訂閱的資料夾</string>
-    <string name="account_setup_auto_expand_folder">自動展開資料夾</string>
     <string name="account_setup_options_mail_check_frequency_never">不要</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 分鐘一次</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 分鐘一次</string>

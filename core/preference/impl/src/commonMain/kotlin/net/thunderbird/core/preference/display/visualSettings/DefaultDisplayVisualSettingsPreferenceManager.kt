@@ -74,6 +74,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_LIST_PREVIEW_LINES,
         ),
+        drawerExpandAllFolder = storage.getBoolean(
+            KEY_DRAWER_EXPAND_ALL_FOLDER,
+            DISPLAY_SETTINGS_DEFAULT_DRAWER_EXPAND_ALL_FOLDER,
+        ),
     )
 
     private fun writeConfig(config: DisplayVisualSettings) {
@@ -111,6 +115,7 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                     KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES,
                     config.messageListPreviewLines,
                 )
+                storageEditor.putBoolean(KEY_DRAWER_EXPAND_ALL_FOLDER, config.drawerExpandAllFolder)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

@@ -135,6 +135,7 @@ private fun FolderContent(
             modifier = Modifier.fillMaxSize(),
         ) {
             FolderList(
+                isExpandedInitial = state.config.expandAllFolder,
                 rootFolder = state.rootFolder,
                 selectedFolder = state.selectedFolder,
                 onFolderClick = { folder ->

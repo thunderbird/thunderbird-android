@@ -269,7 +269,6 @@
     <string name="archive_folder_label">Arkisto-kansio</string>
     <string name="spam_folder_label">Roskapostikansio</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Näytä vain tilatut kansiot</string>
-    <string name="account_setup_auto_expand_folder">Avaa kansio automaattisesti</string>
     <string name="account_setup_options_mail_check_frequency_never">Ei koskaan</string>
     <string name="account_setup_options_mail_check_frequency_15min">Joka 15 minuutti</string>
     <string name="account_setup_options_mail_check_frequency_30min">Joka 30 minuutti</string>

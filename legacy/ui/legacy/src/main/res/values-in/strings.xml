@@ -236,7 +236,6 @@
     <string name="archive_folder_label">Folder arsip</string>
     <string name="spam_folder_label">Folder spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Hanya tampilkan folder langganan</string>
-    <string name="account_setup_auto_expand_folder">Otomatis lebarkan folder</string>
     <string name="account_setup_options_mail_check_frequency_never">Tidak pernah</string>
     <string name="account_setup_options_mail_check_frequency_15min">Setiap 15 menit</string>
     <string name="account_setup_options_mail_check_frequency_30min">Setiap 30 menit</string>

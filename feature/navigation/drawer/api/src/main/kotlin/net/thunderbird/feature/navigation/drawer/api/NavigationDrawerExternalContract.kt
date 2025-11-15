@@ -8,6 +8,7 @@ interface NavigationDrawerExternalContract {
         val showUnifiedFolders: Boolean,
         val showStarredCount: Boolean,
         val showAccountSelector: Boolean,
+        val expandAllFolder: Boolean,
     )
 
     fun interface DrawerConfigLoader {

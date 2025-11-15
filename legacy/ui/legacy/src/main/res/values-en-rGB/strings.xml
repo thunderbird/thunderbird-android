@@ -533,7 +533,6 @@
     <string name="account_settings_autodownload_message_size_4">4 KiB</string>
     <string name="notification_bg_sync_title">Checking mail</string>
     <string name="account_settings_sync_remote_deletetions_summary">Remove messages when deleted on server</string>
-    <string name="account_setup_auto_expand_folder">Auto-expand folder</string>
     <string name="remove_attachment_action">Remove attachment</string>
     <string name="general_settings_swipe_action_delete">Delete</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Show only subscribed folders</string>

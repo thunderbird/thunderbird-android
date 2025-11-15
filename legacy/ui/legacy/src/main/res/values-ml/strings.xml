@@ -251,7 +251,6 @@
     <string name="archive_folder_label">ആർക്കൈവ് ഫോൾഡർ</string>
     <string name="spam_folder_label">സ്പാം ഫോൾഡർ</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">സബ്‌സ്‌ക്രൈബുചെയ്‌ത ഫോൾഡറുകൾ മാത്രം കാണിക്കുക</string>
-    <string name="account_setup_auto_expand_folder">ഫോൾഡർ യാന്ത്രികമായി വികസിപ്പിക്കുക</string>
     <string name="account_setup_options_mail_check_frequency_never">ഒരിക്കലും</string>
     <string name="account_setup_options_mail_check_frequency_15min">ഓരോ 15 മിനിറ്റിലും</string>
     <string name="account_setup_options_mail_check_frequency_30min">ഓരോ 33 മിനിറ്റിലും</string>

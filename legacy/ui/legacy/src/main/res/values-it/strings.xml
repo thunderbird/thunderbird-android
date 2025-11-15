@@ -271,7 +271,6 @@
     <string name="archive_folder_label">Cartella Archivio</string>
     <string name="spam_folder_label">Cartella Spam</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Mostra solo le cartelle sottoscritte</string>
-    <string name="account_setup_auto_expand_folder">Auto-espandi cartella</string>
     <string name="account_setup_options_mail_check_frequency_never">Mai</string>
     <string name="account_setup_options_mail_check_frequency_15min">Ogni 15 minuti</string>
     <string name="account_setup_options_mail_check_frequency_30min">Ogni 30 minuti</string>

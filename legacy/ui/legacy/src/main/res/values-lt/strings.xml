@@ -264,7 +264,6 @@
     <string name="archive_folder_label">Archyvas</string>
     <string name="spam_folder_label">Brukalo aplankas</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Rodyti tik prenumeruotus aplankus</string>
-    <string name="account_setup_auto_expand_folder">Automatiškai išskleisti aplanką</string>
     <string name="account_setup_options_mail_check_frequency_never">Niekada</string>
     <string name="account_setup_options_mail_check_frequency_15min">Kas 15 minučių</string>
     <string name="account_setup_options_mail_check_frequency_30min">Kas 30 minučių</string>

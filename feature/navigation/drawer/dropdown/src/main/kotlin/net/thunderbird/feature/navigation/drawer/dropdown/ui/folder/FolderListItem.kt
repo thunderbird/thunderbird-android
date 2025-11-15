@@ -42,11 +42,12 @@ internal fun FolderListItem(
     folderNameFormatter: FolderNameFormatter,
     selectedFolderId: String?,
     modifier: Modifier = Modifier,
+    isExpandInitial: Boolean = false,
     treeFolder: DisplayTreeFolder? = null,
     parentPrefix: String? = "",
     indentationLevel: Int = 1,
 ) {
-    val isExpanded = rememberSaveable { mutableStateOf(false) }
+    val isExpanded = rememberSaveable(isExpandInitial) { mutableStateOf(isExpandInitial) }
 
     var unreadCount = displayFolder.unreadMessageCount
     var starredCount = displayFolder.starredMessageCount
