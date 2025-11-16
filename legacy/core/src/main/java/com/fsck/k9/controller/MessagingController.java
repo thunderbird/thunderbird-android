@@ -205,7 +205,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
-        archiveOperations = new ArchiveOperations(this, featureFlagProvider, new ArchiveFolderResolver());
+        archiveOperations = new ArchiveOperations(this, featureFlagProvider, new ArchiveFolderResolver(messageStoreManager, preferences));
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
