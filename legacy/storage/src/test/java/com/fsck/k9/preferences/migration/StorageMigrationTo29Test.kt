@@ -26,13 +26,10 @@ class StorageMigrationTo29Test {
 
     @Test
     fun `migration should rename account_setup_auto_expand_folder to auto_select_folder`() {
-        // Arrange: Insert old data into the database
         migrationHelper.insertValue(database, "account_setup_auto_expand_folder", "some value")
 
-        // Act: Run the migration
         migration.renameAutoSelectFolderPreference()
 
-        // Assert: Verify the results
         val values = migrationHelper.readAllValues(database)
         assertThat(values).key("auto_select_folder").isEqualTo("some value")
         assertThat(values).doesNotContainKey("account_setup_auto_expand_folder")
