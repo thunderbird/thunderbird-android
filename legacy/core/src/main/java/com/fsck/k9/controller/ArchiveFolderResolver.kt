@@ -1,22 +1,17 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.mailstore.MessageStoreManager
 import com.fsck.k9.backend.api.FolderInfo
-import com.fsck.k9.backend.api.createFolder
-import com.fsck.k9.backend.api.updateFolders
-import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory
 import com.fsck.k9.mailstore.LocalMessage
 import java.util.Calendar
 import java.util.Date
 import net.thunderbird.core.android.account.LegacyAccountDto
-import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.mail.folder.api.ArchiveGranularity
 import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
 import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 internal class ArchiveFolderResolver(
-    private val messageStoreManager: MessageStoreManager,
-    private val backendStorageFactory: LegacyAccountDtoBackendStorageFactory,
+    private val folderIdResolver: FolderIdResolver,
+    private val folderCreator: ArchiveFolderCreator,
 ) {
 
     fun resolveArchiveFolder(
@@ -53,31 +48,19 @@ internal class ArchiveFolderResolver(
         parentFolderId: Long,
         subfolderName: String,
     ): Long? {
-        val messageStore = messageStoreManager.getMessageStore(account)
-
-        val parentServerId = messageStore.getFolderServerId(parentFolderId) ?: return null
+        val parentServerId = folderIdResolver.getFolderServerId(account, parentFolderId) ?: return null
 
         val delimiter = FOLDER_DEFAULT_PATH_DELIMITER
         val subfolderServerId = "$parentServerId$delimiter$subfolderName"
 
-        messageStore.getFolderId(subfolderServerId)?.let { return it }
+        folderIdResolver.getFolderId(account, subfolderServerId)?.let { return it }
 
-        return try {
-            val backendStorage = backendStorageFactory.createBackendStorage(account)
-            val folderInfo = FolderInfo(
-                serverId = subfolderServerId,
-                name = subfolderServerId,
-                type = LegacyFolderType.ARCHIVE,
-            )
-            backendStorage.updateFolders {
-                createFolder(folderInfo)
-            }
-        } catch (e: Exception) {
-            Log.e(e, "Failed to create archive subfolder: $subfolderServerId")
-            // TODO: Inform the user that archive folder creation failed. Currently returns null which
-            //  will skip archiving the message. Consider showing a notification or error message.
-            null
-        }
+        val folderInfo = FolderInfo(
+            serverId = subfolderServerId,
+            name = subfolderServerId,
+            type = LegacyFolderType.ARCHIVE,
+        )
+        return folderCreator.createFolder(account, folderInfo)
     }
 
     private fun getMessageDate(message: LocalMessage): Date {
