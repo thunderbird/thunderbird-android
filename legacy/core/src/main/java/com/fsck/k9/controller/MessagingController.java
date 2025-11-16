@@ -211,7 +211,14 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         draftOperations =
             new DraftOperations(this, messageStoreManager, saveMessageDataCreator, localMessageUidPrefixProvider);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
-        archiveOperations = new ArchiveOperations(this, featureFlagProvider, new ArchiveFolderResolver(messageStoreManager, backendStorageFactory));
+        archiveOperations = new ArchiveOperations(
+            this,
+            featureFlagProvider,
+            new ArchiveFolderResolver(
+                new MessageStoreFolderIdResolver(messageStoreManager),
+                new BackendStorageArchiveFolderCreator(backendStorageFactory)
+            )
+        );
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
