@@ -1,9 +1,10 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.mailstore.CreateFolderInfo
 import app.k9mail.legacy.mailstore.MessageStoreManager
-import com.fsck.k9.Preferences
-import com.fsck.k9.mailstore.FolderSettingsProvider
+import com.fsck.k9.backend.api.FolderInfo
+import com.fsck.k9.backend.api.createFolder
+import com.fsck.k9.backend.api.updateFolders
+import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory
 import com.fsck.k9.mailstore.LocalMessage
 import java.util.Calendar
 import java.util.Date
@@ -15,7 +16,7 @@ import com.fsck.k9.mail.FolderType as LegacyFolderType
 
 internal class ArchiveFolderResolver(
     private val messageStoreManager: MessageStoreManager,
-    private val preferences: Preferences,
+    private val backendStorageFactory: LegacyAccountDtoBackendStorageFactory,
 ) {
 
     fun resolveArchiveFolder(
@@ -62,15 +63,15 @@ internal class ArchiveFolderResolver(
         messageStore.getFolderId(subfolderServerId)?.let { return it }
 
         return try {
-            val folderSettingsProvider = FolderSettingsProvider(preferences, account)
-            val folderInfo = CreateFolderInfo(
+            val backendStorage = backendStorageFactory.createBackendStorage(account)
+            val folderInfo = FolderInfo(
                 serverId = subfolderServerId,
                 name = subfolderServerId,
                 type = LegacyFolderType.ARCHIVE,
-                settings = folderSettingsProvider.getFolderSettings(subfolderServerId),
             )
-            val folderIds = messageStore.createFolders(listOf(folderInfo))
-            folderIds.firstOrNull()
+            backendStorage.updateFolders {
+                createFolder(folderInfo)
+            }
         } catch (e: Exception) {
             Log.e(e, "Failed to create archive subfolder: $subfolderServerId")
             null
