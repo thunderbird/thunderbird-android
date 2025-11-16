@@ -152,6 +152,7 @@ class AuthenticationErrorNotificationControllerTest : RobolectricTest() {
                     display = DisplaySettings(),
                     notification = NotificationPreference(),
                     privacy = PrivacySettings(),
+                    platformConfigProvider = FakePlatformConfigProvider(),
                 )
             },
         ) {

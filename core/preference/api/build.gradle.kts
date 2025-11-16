@@ -8,3 +8,11 @@ android {
         buildConfig = true
     }
 }
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.common)
+        }
+    }
+}
