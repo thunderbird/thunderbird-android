@@ -75,8 +75,6 @@ internal class ArchiveOperations(
         sourceFolderId: Long,
         messages: List<LocalMessage>,
     ) {
-        // Group messages by their resolved archive destination folder
-        // This allows yearly/monthly granularity to route messages to different subfolders
         val messagesByDestination = messages.groupBy { message ->
             archiveFolderResolver.resolveArchiveFolder(account, message)
         }
@@ -87,7 +85,6 @@ internal class ArchiveOperations(
                 onDisabledOrUnavailable = { MoveOrCopyFlavor.MOVE },
             )
 
-        // Archive each group to its respective destination folder
         for ((destinationFolderId, messagesForFolder) in messagesByDestination) {
             if (destinationFolderId != null) {
                 messagingController.moveOrCopyMessageSynchronous(
