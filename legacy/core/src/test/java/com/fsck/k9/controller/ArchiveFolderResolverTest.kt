@@ -1,16 +1,9 @@
 package com.fsck.k9.controller
 
-import app.k9mail.legacy.mailstore.ListenableMessageStore
-import app.k9mail.legacy.mailstore.MessageStoreManager
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
-import com.fsck.k9.backend.api.BackendFolderUpdater
-import com.fsck.k9.backend.api.BackendStorage
-import com.fsck.k9.backend.api.FolderInfo
-import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory
 import com.fsck.k9.mailstore.LocalMessage
-import com.fsck.k9.mail.FolderType
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -20,10 +13,7 @@ import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.feature.mail.folder.api.ArchiveGranularity
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class ArchiveFolderResolverTest {
@@ -31,13 +21,6 @@ class ArchiveFolderResolverTest {
     fun setup() {
         Log.logger = mock<Logger>()
     }
-    private val messageStoreManager: MessageStoreManager = mock()
-    private val messageStore: ListenableMessageStore = mock()
-    private val backendStorageFactory: LegacyAccountDtoBackendStorageFactory = mock()
-    private val backendStorage: BackendStorage = mock()
-    private val backendFolderUpdater: BackendFolderUpdater = mock()
-
-    private val resolver = ArchiveFolderResolver(messageStoreManager, backendStorageFactory)
 
     private val account = LegacyAccountDto(UUID.randomUUID().toString()).apply {
         archiveFolderId = BASE_ARCHIVE_FOLDER_ID
@@ -49,10 +32,10 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.SINGLE_ARCHIVE_FOLDER
         val message = createMessage(year = 2025, month = 11)
 
+        val resolver = createResolver()
         val result = resolver.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(BASE_ARCHIVE_FOLDER_ID)
-        verify(messageStoreManager, never()).getMessageStore(any<LegacyAccountDto>())
     }
 
     @Test
@@ -60,12 +43,14 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.PER_YEAR_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 11)
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2025")).thenReturn(null)
-        whenever(backendStorageFactory.createBackendStorage(account)).thenReturn(backendStorage)
-        whenever(backendStorage.createFolderUpdater()).thenReturn(backendFolderUpdater)
-        whenever(backendFolderUpdater.createFolders(any<List<FolderInfo>>())).thenReturn(setOf(YEARLY_FOLDER_ID))
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
+            folderIds = mapOf("Archive/2025" to null),
+        )
+        val archiveFolderCreator = FakeArchiveFolderCreator(
+            createdFolderIds = mapOf("Archive/2025" to YEARLY_FOLDER_ID),
+        )
+        val resolver = createResolver(folderIdResolver, archiveFolderCreator)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
@@ -77,14 +62,23 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.PER_MONTH_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 11)
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2025")).thenReturn(null)
-        whenever(messageStore.getFolderServerId(YEARLY_FOLDER_ID)).thenReturn("Archive/2025")
-        whenever(messageStore.getFolderId("Archive/2025/11")).thenReturn(null)
-        whenever(backendStorageFactory.createBackendStorage(account)).thenReturn(backendStorage)
-        whenever(backendStorage.createFolderUpdater()).thenReturn(backendFolderUpdater)
-        whenever(backendFolderUpdater.createFolders(any<List<FolderInfo>>())).thenReturn(setOf(YEARLY_FOLDER_ID), setOf(MONTHLY_FOLDER_ID))
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(
+                BASE_ARCHIVE_FOLDER_ID to "Archive",
+                YEARLY_FOLDER_ID to "Archive/2025",
+            ),
+            folderIds = mapOf(
+                "Archive/2025" to null,
+                "Archive/2025/11" to null,
+            ),
+        )
+        val archiveFolderCreator = FakeArchiveFolderCreator(
+            createdFolderIds = mapOf(
+                "Archive/2025" to YEARLY_FOLDER_ID,
+                "Archive/2025/11" to MONTHLY_FOLDER_ID,
+            ),
+        )
+        val resolver = createResolver(folderIdResolver, archiveFolderCreator)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
@@ -96,6 +90,7 @@ class ArchiveFolderResolverTest {
         account.archiveFolderId = null
         val message = createMessage(year = 2025, month = 11)
 
+        val resolver = createResolver()
         val result = resolver.resolveArchiveFolder(account, message)
 
         assertThat(result).isNull()
@@ -106,14 +101,15 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.PER_YEAR_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 11)
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2025")).thenReturn(YEARLY_FOLDER_ID)
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
+            folderIds = mapOf("Archive/2025" to YEARLY_FOLDER_ID),
+        )
+        val resolver = createResolver(folderIdResolver)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(YEARLY_FOLDER_ID)
-        verify(backendStorageFactory, never()).createBackendStorage(any<LegacyAccountDto>())
     }
 
     @Test
@@ -121,16 +117,21 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.PER_MONTH_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 11)
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2025")).thenReturn(YEARLY_FOLDER_ID)
-        whenever(messageStore.getFolderServerId(YEARLY_FOLDER_ID)).thenReturn("Archive/2025")
-        whenever(messageStore.getFolderId("Archive/2025/11")).thenReturn(MONTHLY_FOLDER_ID)
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(
+                BASE_ARCHIVE_FOLDER_ID to "Archive",
+                YEARLY_FOLDER_ID to "Archive/2025",
+            ),
+            folderIds = mapOf(
+                "Archive/2025" to YEARLY_FOLDER_ID,
+                "Archive/2025/11" to MONTHLY_FOLDER_ID,
+            ),
+        )
+        val resolver = createResolver(folderIdResolver)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(MONTHLY_FOLDER_ID)
-        verify(backendStorageFactory, never()).createBackendStorage(any<LegacyAccountDto>())
     }
 
     @Test
@@ -139,9 +140,11 @@ class ArchiveFolderResolverTest {
         val message = createMessage(year = 2025, month = 11)
         whenever(message.internalDate).thenReturn(createDate(2024, 5))
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2024")).thenReturn(YEARLY_FOLDER_ID)
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
+            folderIds = mapOf("Archive/2024" to YEARLY_FOLDER_ID),
+        )
+        val resolver = createResolver(folderIdResolver)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
@@ -154,9 +157,11 @@ class ArchiveFolderResolverTest {
         val message = createMessage(year = 2025, month = 11, useInternalDate = false)
         whenever(message.internalDate).thenReturn(null)
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2025")).thenReturn(YEARLY_FOLDER_ID)
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
+            folderIds = mapOf("Archive/2025" to YEARLY_FOLDER_ID),
+        )
+        val resolver = createResolver(folderIdResolver)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
@@ -168,11 +173,17 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.PER_MONTH_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 3)
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2025")).thenReturn(YEARLY_FOLDER_ID)
-        whenever(messageStore.getFolderServerId(YEARLY_FOLDER_ID)).thenReturn("Archive/2025")
-        whenever(messageStore.getFolderId("Archive/2025/03")).thenReturn(MONTHLY_FOLDER_ID)
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(
+                BASE_ARCHIVE_FOLDER_ID to "Archive",
+                YEARLY_FOLDER_ID to "Archive/2025",
+            ),
+            folderIds = mapOf(
+                "Archive/2025" to YEARLY_FOLDER_ID,
+                "Archive/2025/03" to MONTHLY_FOLDER_ID,
+            ),
+        )
+        val resolver = createResolver(folderIdResolver)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
@@ -184,12 +195,14 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.PER_YEAR_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 11)
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2025")).thenReturn(null)
-        whenever(backendStorageFactory.createBackendStorage(account)).thenReturn(backendStorage)
-        whenever(backendStorage.createFolderUpdater()).thenReturn(backendFolderUpdater)
-        whenever(backendFolderUpdater.createFolders(any<List<FolderInfo>>())).thenThrow(RuntimeException("Folder creation failed"))
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
+            folderIds = mapOf("Archive/2025" to null),
+        )
+        val archiveFolderCreator = FakeArchiveFolderCreator(
+            failAfterCalls = 0,
+        )
+        val resolver = createResolver(folderIdResolver, archiveFolderCreator)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
@@ -201,20 +214,32 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.PER_MONTH_ARCHIVE_FOLDERS
         val message = createMessage(year = 2025, month = 11)
 
-        whenever(messageStoreManager.getMessageStore(account)).thenReturn(messageStore)
-        whenever(messageStore.getFolderServerId(BASE_ARCHIVE_FOLDER_ID)).thenReturn("Archive")
-        whenever(messageStore.getFolderId("Archive/2025")).thenReturn(null)
-        whenever(messageStore.getFolderServerId(YEARLY_FOLDER_ID)).thenReturn("Archive/2025")
-        whenever(messageStore.getFolderId("Archive/2025/11")).thenReturn(null)
-        whenever(backendStorageFactory.createBackendStorage(account)).thenReturn(backendStorage)
-        whenever(backendStorage.createFolderUpdater()).thenReturn(backendFolderUpdater)
-        whenever(backendFolderUpdater.createFolders(any<List<FolderInfo>>()))
-            .thenReturn(setOf(YEARLY_FOLDER_ID))
-            .thenThrow(RuntimeException("Monthly folder creation failed"))
+        val folderIdResolver = FakeFolderIdResolver(
+            folderServerIds = mapOf(
+                BASE_ARCHIVE_FOLDER_ID to "Archive",
+                YEARLY_FOLDER_ID to "Archive/2025",
+            ),
+            folderIds = mapOf(
+                "Archive/2025" to null,
+                "Archive/2025/11" to null,
+            ),
+        )
+        val archiveFolderCreator = FakeArchiveFolderCreator(
+            createdFolderIds = mapOf("Archive/2025" to YEARLY_FOLDER_ID),
+            failAfterCalls = 1,
+        )
+        val resolver = createResolver(folderIdResolver, archiveFolderCreator)
 
         val result = resolver.resolveArchiveFolder(account, message)
 
         assertThat(result).isNull()
+    }
+
+    private fun createResolver(
+        folderIdResolver: FolderIdResolver = FakeFolderIdResolver(),
+        archiveFolderCreator: ArchiveFolderCreator = FakeArchiveFolderCreator(),
+    ): ArchiveFolderResolver {
+        return ArchiveFolderResolver(folderIdResolver, archiveFolderCreator)
     }
 
     private fun createMessage(year: Int, month: Int, useInternalDate: Boolean = true): LocalMessage {
