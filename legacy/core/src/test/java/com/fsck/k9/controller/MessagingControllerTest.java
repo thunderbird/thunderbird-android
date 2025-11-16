@@ -17,6 +17,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateChainException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -96,6 +97,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private SpecialLocalFoldersCreator specialLocalFoldersCreator;
     @Mock
+    private LegacyAccountDtoBackendStorageFactory backendStorageFactory;
+    @Mock
     private SimpleMessagingListener listener;
     @Mock
     private LocalFolder localFolder;
@@ -163,7 +166,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
             featureFlagProvider,
             syncLogger,
             notificationManager,
-            fakeOutboxFolderManager
+            fakeOutboxFolderManager,
+            backendStorageFactory
         );
 
         configureAccount();
