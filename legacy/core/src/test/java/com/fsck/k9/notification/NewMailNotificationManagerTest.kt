@@ -68,6 +68,7 @@ class NewMailNotificationManagerTest {
                         quietTimeEnds = "00:00",
                     ),
                     privacy = PrivacySettings(),
+                    platformConfigProvider = FakePlatformConfigProvider(),
                 )
             },
         ),

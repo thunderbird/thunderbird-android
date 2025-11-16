@@ -8,6 +8,7 @@ import assertk.assertions.prop
 import com.fsck.k9.preferences.Settings.BooleanSetting
 import com.fsck.k9.preferences.Settings.StringSetting
 import kotlin.test.Test
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
 import net.thunderbird.core.preference.GeneralSettings
@@ -45,7 +46,12 @@ class AccountSettingsUpgraderTest {
                 ),
             ),
             upgraders = emptyMap(),
-            generalSettingsManager = mock { on { getConfig() } doReturn GeneralSettings() },
+            generalSettingsManager = mock {
+                on { getConfig() } doReturn
+                    GeneralSettings(
+                        platformConfigProvider = FakePlatformConfigProvider(),
+                    )
+            },
         )
         val combinedUpgraders = mapOf(
             2 to {
@@ -71,7 +77,12 @@ class AccountSettingsUpgraderTest {
             settingsDescriptions = accountSettingsDescriptions,
             upgraders = emptyMap(),
             combinedUpgraders = combinedUpgraders,
-            generalSettingsManager = mock { on { getConfig() } doReturn GeneralSettings() },
+            generalSettingsManager = mock {
+                on { getConfig() } doReturn
+                    GeneralSettings(
+                        platformConfigProvider = FakePlatformConfigProvider(),
+                    )
+            },
         )
         val account = ValidatedSettings.Account(
             uuid = "irrelevant",
@@ -123,7 +134,12 @@ class AccountSettingsUpgraderTest {
         return IdentitySettingsUpgrader(
             settingsDescriptions = emptyMap(),
             upgraders = emptyMap(),
-            generalSettingsManager = mock { on { getConfig() } doReturn GeneralSettings() },
+            generalSettingsManager = mock {
+                on { getConfig() } doReturn
+                    GeneralSettings(
+                        platformConfigProvider = FakePlatformConfigProvider(),
+                    )
+            },
         )
     }
 
@@ -131,11 +147,21 @@ class AccountSettingsUpgraderTest {
         return ServerSettingsUpgrader(
             settingsDescriptions = emptyMap(),
             upgraders = emptyMap(),
-            generalSettingsManager = mock { on { getConfig() } doReturn GeneralSettings() },
+            generalSettingsManager = mock {
+                on { getConfig() } doReturn
+                    GeneralSettings(
+                        platformConfigProvider = FakePlatformConfigProvider(),
+                    )
+            },
         )
     }
 
     private fun irrelevantServer(): ValidatedSettings.Server {
         return ValidatedSettings.Server(type = "irrelevant", settings = emptyMap(), extras = emptyMap())
     }
+}
+
+private class FakePlatformConfigProvider : PlatformConfigProvider {
+    override val isDebug: Boolean
+        get() = true
 }

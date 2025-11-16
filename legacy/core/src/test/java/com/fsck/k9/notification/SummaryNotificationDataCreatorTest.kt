@@ -43,6 +43,7 @@ class SummaryNotificationDataCreatorTest {
             quietTimeEnds = "00:00",
         ),
         privacy = PrivacySettings(),
+        platformConfigProvider = FakePlatformConfigProvider(),
     )
     private val notificationDataCreator = SummaryNotificationDataCreator(
         singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),

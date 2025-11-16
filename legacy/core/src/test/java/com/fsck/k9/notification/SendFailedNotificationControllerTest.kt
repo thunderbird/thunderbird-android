@@ -52,6 +52,7 @@ class SendFailedNotificationControllerTest : RobolectricTest() {
                 network = NetworkSettings(),
                 notification = NotificationPreference(),
                 privacy = PrivacySettings(),
+                platformConfigProvider = FakePlatformConfigProvider(),
             )
         },
         outboxFolderManager = mock(),
