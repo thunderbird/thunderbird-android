@@ -74,6 +74,8 @@ internal class ArchiveFolderResolver(
             }
         } catch (e: Exception) {
             Log.e(e, "Failed to create archive subfolder: $subfolderServerId")
+            // TODO: Inform the user that archive folder creation failed. Currently returns null which
+            //  will skip archiving the message. Consider showing a notification or error message.
             null
         }
     }
