@@ -32,8 +32,8 @@ class ArchiveFolderResolverTest {
         account.archiveGranularity = ArchiveGranularity.SINGLE_ARCHIVE_FOLDER
         val message = createMessage(year = 2025, month = 11)
 
-        val resolver = createResolver()
-        val result = resolver.resolveArchiveFolder(account, message)
+        val testSubject = createResolver()
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(BASE_ARCHIVE_FOLDER_ID)
     }
@@ -50,9 +50,9 @@ class ArchiveFolderResolverTest {
         val archiveFolderCreator = FakeArchiveFolderCreator(
             createdFolderIds = mapOf("Archive/2025" to YEARLY_FOLDER_ID),
         )
-        val resolver = createResolver(folderIdResolver, archiveFolderCreator)
+        val testSubject = createResolver(folderIdResolver, archiveFolderCreator)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(YEARLY_FOLDER_ID)
     }
@@ -78,9 +78,9 @@ class ArchiveFolderResolverTest {
                 "Archive/2025/11" to MONTHLY_FOLDER_ID,
             ),
         )
-        val resolver = createResolver(folderIdResolver, archiveFolderCreator)
+        val testSubject = createResolver(folderIdResolver, archiveFolderCreator)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(MONTHLY_FOLDER_ID)
     }
@@ -90,8 +90,8 @@ class ArchiveFolderResolverTest {
         account.archiveFolderId = null
         val message = createMessage(year = 2025, month = 11)
 
-        val resolver = createResolver()
-        val result = resolver.resolveArchiveFolder(account, message)
+        val testSubject = createResolver()
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isNull()
     }
@@ -105,9 +105,9 @@ class ArchiveFolderResolverTest {
             folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
             folderIds = mapOf("Archive/2025" to YEARLY_FOLDER_ID),
         )
-        val resolver = createResolver(folderIdResolver)
+        val testSubject = createResolver(folderIdResolver)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(YEARLY_FOLDER_ID)
     }
@@ -127,9 +127,9 @@ class ArchiveFolderResolverTest {
                 "Archive/2025/11" to MONTHLY_FOLDER_ID,
             ),
         )
-        val resolver = createResolver(folderIdResolver)
+        val testSubject = createResolver(folderIdResolver)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(MONTHLY_FOLDER_ID)
     }
@@ -144,9 +144,9 @@ class ArchiveFolderResolverTest {
             folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
             folderIds = mapOf("Archive/2024" to YEARLY_FOLDER_ID),
         )
-        val resolver = createResolver(folderIdResolver)
+        val testSubject = createResolver(folderIdResolver)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(YEARLY_FOLDER_ID)
     }
@@ -161,9 +161,9 @@ class ArchiveFolderResolverTest {
             folderServerIds = mapOf(BASE_ARCHIVE_FOLDER_ID to "Archive"),
             folderIds = mapOf("Archive/2025" to YEARLY_FOLDER_ID),
         )
-        val resolver = createResolver(folderIdResolver)
+        val testSubject = createResolver(folderIdResolver)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(YEARLY_FOLDER_ID)
     }
@@ -183,9 +183,9 @@ class ArchiveFolderResolverTest {
                 "Archive/2025/03" to MONTHLY_FOLDER_ID,
             ),
         )
-        val resolver = createResolver(folderIdResolver)
+        val testSubject = createResolver(folderIdResolver)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isEqualTo(MONTHLY_FOLDER_ID)
     }
@@ -202,9 +202,9 @@ class ArchiveFolderResolverTest {
         val archiveFolderCreator = FakeArchiveFolderCreator(
             failAfterCalls = 0,
         )
-        val resolver = createResolver(folderIdResolver, archiveFolderCreator)
+        val testSubject = createResolver(folderIdResolver, archiveFolderCreator)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isNull()
     }
@@ -228,9 +228,9 @@ class ArchiveFolderResolverTest {
             createdFolderIds = mapOf("Archive/2025" to YEARLY_FOLDER_ID),
             failAfterCalls = 1,
         )
-        val resolver = createResolver(folderIdResolver, archiveFolderCreator)
+        val testSubject = createResolver(folderIdResolver, archiveFolderCreator)
 
-        val result = resolver.resolveArchiveFolder(account, message)
+        val result = testSubject.resolveArchiveFolder(account, message)
 
         assertThat(result).isNull()
     }
