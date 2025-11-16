@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.DisplaySettings
@@ -32,6 +33,7 @@ class BuildSwipeActionsTest {
             network = NetworkSettings(),
             notification = NotificationPreference(),
             privacy = PrivacySettings(),
+            platformConfigProvider = FakePlatformConfigProvider(),
         )
 
     @Test
@@ -399,4 +401,9 @@ private class FakeStorage(
     override fun getStringOrDefault(key: String, defValue: String): String = error("not implemented")
 
     override fun getStringOrNull(key: String): String? = values[key]
+}
+
+private class FakePlatformConfigProvider : PlatformConfigProvider {
+    override val isDebug: Boolean
+        get() = true
 }
