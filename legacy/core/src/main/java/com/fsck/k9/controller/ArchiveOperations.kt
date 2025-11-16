@@ -13,7 +13,7 @@ import net.thunderbird.core.logging.legacy.Log
 internal class ArchiveOperations(
     private val messagingController: MessagingController,
     private val featureFlagProvider: FeatureFlagProvider,
-    private val archiveFolderResolver: ArchiveFolderResolver = ArchiveFolderResolver(),
+    private val archiveFolderResolver: ArchiveFolderResolver,
 ) {
     fun archiveThreads(messages: List<MessageReference>) {
         archiveByFolder("archiveThreads", messages) { account, folderId, messagesInFolder ->
