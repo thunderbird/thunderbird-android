@@ -13,6 +13,7 @@ import net.thunderbird.core.logging.legacy.Log
 internal class ArchiveOperations(
     private val messagingController: MessagingController,
     private val featureFlagProvider: FeatureFlagProvider,
+    private val archiveFolderResolver: ArchiveFolderResolver = ArchiveFolderResolver(),
 ) {
     fun archiveThreads(messages: List<MessageReference>) {
         archiveByFolder("archiveThreads", messages) { account, folderId, messagesInFolder, archiveFolderId ->
@@ -77,18 +78,28 @@ internal class ArchiveOperations(
         messages: List<LocalMessage>,
         archiveFolderId: Long,
     ) {
+        // Group messages by their resolved archive destination folder
+        // This allows yearly/monthly granularity to route messages to different subfolders
+        val messagesByDestination = messages.groupBy { message ->
+            archiveFolderResolver.resolveArchiveFolder(account, message) ?: archiveFolderId
+        }
+
         val operation = featureFlagProvider.provide("archive_marks_as_read".toFeatureFlagKey())
             .whenEnabledOrNot(
                 onEnabled = { MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ },
                 onDisabledOrUnavailable = { MoveOrCopyFlavor.MOVE },
             )
-        messagingController.moveOrCopyMessageSynchronous(
-            account,
-            sourceFolderId,
-            messages,
-            archiveFolderId,
-            operation,
-        )
+
+        // Archive each group to its respective destination folder
+        for ((destinationFolderId, messagesForFolder) in messagesByDestination) {
+            messagingController.moveOrCopyMessageSynchronous(
+                account,
+                sourceFolderId,
+                messagesForFolder,
+                destinationFolderId,
+                operation,
+            )
+        }
     }
 
     private fun actOnMessagesGroupedByAccountAndFolder(
