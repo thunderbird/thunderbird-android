@@ -4,6 +4,7 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mailstore.LocalMessage
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.feature.mail.folder.api.ArchiveGranularity
 import net.thunderbird.feature.mail.folder.api.FOLDER_DEFAULT_PATH_DELIMITER
@@ -14,6 +15,7 @@ internal class ArchiveFolderResolver(
     private val folderCreator: ArchiveFolderCreator,
 ) {
 
+    @Suppress("ReturnCount")
     fun resolveArchiveFolder(
         account: LegacyAccountDto,
         message: LocalMessage,
@@ -33,7 +35,7 @@ internal class ArchiveFolderResolver(
             ArchiveGranularity.PER_MONTH_ARCHIVE_FOLDERS -> {
                 val date = getMessageDate(message)
                 val year = getYear(date)
-                val month = String.format("%02d", getMonth(date))
+                val month = String.format(Locale.ROOT, "%02d", getMonth(date))
 
                 val yearFolderId = findOrCreateSubfolder(account, baseFolderId, year.toString())
                     ?: return baseFolderId
@@ -43,6 +45,7 @@ internal class ArchiveFolderResolver(
         }
     }
 
+    @Suppress("ReturnCount")
     private fun findOrCreateSubfolder(
         account: LegacyAccountDto,
         parentFolderId: Long,
