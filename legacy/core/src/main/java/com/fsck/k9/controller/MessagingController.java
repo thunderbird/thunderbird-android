@@ -69,6 +69,7 @@ import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
+import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -135,6 +136,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
     private final SaveMessageDataCreator saveMessageDataCreator;
     private final SpecialLocalFoldersCreator specialLocalFoldersCreator;
     private final LocalDeleteOperationDecider localDeleteOperationDecider;
+    private final LegacyAccountDtoBackendStorageFactory backendStorageFactory;
 
     private final Thread controllerThread;
 
@@ -174,7 +176,8 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         FeatureFlagProvider featureFlagProvider,
         Logger syncDebugLogger,
         NotificationManager notificationManager,
-        OutboxFolderManager outboxFolderManager
+        OutboxFolderManager outboxFolderManager,
+        LegacyAccountDtoBackendStorageFactory backendStorageFactory
     ) {
         this.context = context;
         this.notificationController = notificationController;
@@ -191,6 +194,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
         this.notificationSender = new NotificationSenderCompat(notificationManager);
         this.notificationDismisser = new NotificationDismisserCompat(notificationManager);
         this.outboxFolderManager = outboxFolderManager;
+        this.backendStorageFactory = backendStorageFactory;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -206,7 +210,7 @@ public class MessagingController implements MessagingControllerRegistry, Messagi
 
         draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
         notificationOperations = new NotificationOperations(notificationController, preferences, messageStoreManager);
-        archiveOperations = new ArchiveOperations(this, featureFlagProvider, new ArchiveFolderResolver(messageStoreManager, preferences));
+        archiveOperations = new ArchiveOperations(this, featureFlagProvider, new ArchiveFolderResolver(messageStoreManager, backendStorageFactory));
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
