@@ -10,6 +10,7 @@ import net.thunderbird.core.logging.legacy.Log
 internal class BackendStorageArchiveFolderCreator(
     private val backendStorageFactory: LegacyAccountDtoBackendStorageFactory,
 ) : ArchiveFolderCreator {
+    @Suppress("TooGenericExceptionCaught")
     override fun createFolder(account: LegacyAccountDto, folderInfo: FolderInfo): Long? {
         return try {
             val backendStorage = backendStorageFactory.createBackendStorage(account)
