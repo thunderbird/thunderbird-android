@@ -1,0 +1,9 @@
+Thunderbird for Android version 15.0b1, based on K-9 Mail. Changes include:
+- Add avatar to message list content
+- Enable in-app notifications for beta
+- In-app error notification improvements
+- Default sync interval changed to 15 minutes
+- Warn user in compose when no sent folder detected
+- Confirm when sending message without sent folder
+- 'Colorize contact pictures' default changed unexpectedly from true to false
+- Displaying IMAP password in did not prompt for authentication

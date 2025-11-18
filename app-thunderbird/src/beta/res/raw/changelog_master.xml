@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="15.0b1" versioncode="35" date="2025-11-17">
+        <change>Add avatar to message list content</change>
+        <change>Enable in-app notifications for beta</change>
+        <change>In-app error notification improvements</change>
+        <change>Default sync interval has been changed from 60 minutes to 15 minutes</change>
+        <change>Introduce warning in Message Compose screen when no sent folder is detected</change>
+        <change>Add confirmation dialog for sending a message without a sent folder</change>
+        <change>Use application icon in push notification messages</change>
+        <change>&#39;Colorize contact pictures&#39; default changed unexpectedly from true to false</change>
+        <change>Displaying IMAP password in plain text did not prompt for authentication</change>
+        <change>Sync debug logger did not write any logs</change>
+    </release>
     <release version="14.0b3" versioncode="34" date="2025-10-27">
         <change>Thunderbird could crash when deleting an account and returning to the message list</change>
     </release>
