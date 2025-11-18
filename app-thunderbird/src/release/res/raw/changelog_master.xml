@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <changelog>
+    <release version="14.0" versioncode="17" date="2025-11-17">
+        <change>&#39;Auto-fit messages&#39; display setting did not persist</change>
+        <change>Edge-to-edge regressed moving/copying message with 3-button navigation</change>
+        <change>Unified Account was displayed when there was only one account</change>
+        <change>Swiping message left or right with slight downward motion aborted prematurely</change>
+        <change>Crash occurred when setting archive folder via swipe after it was set to None</change>
+        <change>Outlook SMTP failed to authenticate for enterprise or educational accounts</change>
+        <change>Gmail folder prefixes appeared after refreshing folder list</change>
+        <change>During account setup, &#39;Your Name&#39; field was mislabeled as &#39;Display Name&#39;</change>
+        <change>Quiet time preferences were ignored</change>
+        <change>Thunderbird could crash when deleting an account and returning to the message list</change>
+    </release>
     <release version="13.0" versioncode="16" date="2025-10-20">
         <change>Sync logging duration is now limited to 24 hours</change>
         <change>Client certificate was not displayed in SMTP settings</change>

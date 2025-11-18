@@ -1,0 +1,8 @@
+Thunderbird for Android version 14.0, based on K-9 Mail. Changes include:
+- 'Auto-fit messages' setting did not persist
+- Edge-to-edge move/copy regressed with 3-button nav
+- Swiping message left/right could abort prematurely
+- Outlook SMTP failed authentication for some accounts
+- Gmail folder prefixes appeared after refreshing folder list
+- Quiet time preferences were ignored
+- Thunderbird could crash after deleting an account
