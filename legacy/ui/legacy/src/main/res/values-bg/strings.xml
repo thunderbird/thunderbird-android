@@ -246,7 +246,6 @@
     <string name="archive_folder_label">Папка Архиви</string>
     <string name="spam_folder_label">Папка Спам</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Показвай само абонираните папките</string>
-    <string name="account_setup_auto_expand_folder">Автоматично разгъване на папка</string>
     <string name="account_setup_options_mail_check_frequency_never">Никога</string>
     <string name="account_setup_options_mail_check_frequency_15min">На всеки 15 минути</string>
     <string name="account_setup_options_mail_check_frequency_30min">На всеки 30 минути</string>

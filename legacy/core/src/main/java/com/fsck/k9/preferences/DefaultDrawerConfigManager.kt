@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsPreferenceManager
+import net.thunderbird.core.preference.display.visualSettings.DisplayVisualSettingsPreferenceManager
 import net.thunderbird.core.preference.update
 import net.thunderbird.feature.navigation.drawer.api.NavigationDrawerExternalContract.DrawerConfig
 
@@ -18,14 +19,23 @@ internal class DefaultDrawerConfigManager(
     private val preferences: Preferences,
     coroutineScope: CoroutineScope,
     private val displayInboxSettingsPreferenceManager: DisplayInboxSettingsPreferenceManager,
+    private val displayVisualSettingsPreferenceManager: DisplayVisualSettingsPreferenceManager,
 ) : DrawerConfigManager {
     private val showAccountSelector = MutableStateFlow(K9.isShowAccountSelector)
     private val drawerConfig: StateFlow<DrawerConfig> = showAccountSelector
-        .combine(displayInboxSettingsPreferenceManager.getConfigFlow()) { showAccSelector, displayInboxSettings ->
+        .combine(
+            displayInboxSettingsPreferenceManager.getConfigFlow(),
+        ) { showAccSelector, displayInboxSettings ->
+            Pair(showAccSelector, displayInboxSettings)
+        }
+        .combine(
+            displayVisualSettingsPreferenceManager.getConfigFlow(),
+        ) { (showAccSelector, displayInboxSettings), displayVisualSettings ->
             DrawerConfig(
                 showAccountSelector = showAccSelector,
                 showStarredCount = displayInboxSettings.isShowStarredCount,
                 showUnifiedFolders = displayInboxSettings.isShowUnifiedInbox,
+                expandAllFolder = displayVisualSettings.drawerExpandAllFolder,
             )
         }
         .stateIn(
@@ -35,6 +45,7 @@ internal class DefaultDrawerConfigManager(
                 showAccountSelector = false,
                 showStarredCount = false,
                 showUnifiedFolders = false,
+                expandAllFolder = false,
             ),
         )
 

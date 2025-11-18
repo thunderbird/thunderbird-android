@@ -270,7 +270,6 @@
     <string name="archive_folder_label">Arhiivi kaust</string>
     <string name="spam_folder_label">Rämpsposti kaust</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Näita üksnes tellitud kaustu</string>
-    <string name="account_setup_auto_expand_folder">Kaustade automaatne laiendamine</string>
     <string name="account_setup_options_mail_check_frequency_never">Mitte kunagi</string>
     <string name="account_setup_options_mail_check_frequency_15min">Iga 15 minuti tagant</string>
     <string name="account_setup_options_mail_check_frequency_30min">Iga 30 minuti tagant</string>

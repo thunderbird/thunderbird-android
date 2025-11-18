@@ -269,7 +269,6 @@
     <string name="archive_folder_label">アーカイブフォルダー</string>
     <string name="spam_folder_label">迷惑メールフォルダー</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">購読したフォルダーのみ表示する</string>
-    <string name="account_setup_auto_expand_folder">自動展開するフォルダー</string>
     <string name="account_setup_options_mail_check_frequency_never">同期しない</string>
     <string name="account_setup_options_mail_check_frequency_15min">15 分ごと</string>
     <string name="account_setup_options_mail_check_frequency_30min">30 分ごと</string>

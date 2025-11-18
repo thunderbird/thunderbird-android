@@ -273,7 +273,6 @@
     <string name="archive_folder_label">Тека «Архів»</string>
     <string name="spam_folder_label">Тека «Спам»</string>
     <string name="account_setup_incoming_subscribed_folders_only_label">Показувати лише теки, на які ви підписані</string>
-    <string name="account_setup_auto_expand_folder">Автоматично відкривати теку</string>
     <string name="account_setup_options_mail_check_frequency_never">Ніколи</string>
     <string name="account_setup_options_mail_check_frequency_15min">Що 15 хвилин</string>
     <string name="account_setup_options_mail_check_frequency_30min">Що 30 хвилин</string>

@@ -239,7 +239,7 @@
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="account_setup_auto_expand_folder"
             app:useSimpleSummaryProvider="true"
-            android:title="@string/account_setup_auto_expand_folder"
+            android:title="@string/account_setup_auto_select_folder"
             />
 
         <CheckBoxPreference
