@@ -26,7 +26,7 @@ val appCommonCoreModule: Module = module {
 
     single<FileManager> {
         DefaultFileManager(
-            fileSystemManager = get(),
+            fileSystem = get(),
         )
     }
 }

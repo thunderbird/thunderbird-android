@@ -32,4 +32,8 @@ class FakeFileManager : FileManager {
             Outcome.Failure(FileOperationError.Unknown(t.message), cause = t)
         }
     }
+
+    override suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError> {
+        TODO("Not yet implemented")
+    }
 }
