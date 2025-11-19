@@ -41,4 +41,21 @@ class AndroidFileSystemManager(
             throw IOException("Invalid URI for deletion: $uri", error)
         }
     }
+
+    override fun createDirectories(uri: Uri) {
+        // On Android, directory creation is only supported for file:// URIs via java.io.File
+        val androidUri = uri.toAndroidUri()
+        val scheme = androidUri.scheme
+        if (scheme != null && scheme != "file") {
+            throw IOException("Unsupported URI scheme for creating directories: $scheme")
+        }
+        val path = androidUri.path ?: throw IOException("Missing path for URI: $uri")
+        val file = java.io.File(path)
+        if (file.exists()) return
+        if (!file.mkdirs()) {
+            if (!file.exists()) {
+                throw IOException("Failed to create directories for: $uri")
+            }
+        }
+    }
 }

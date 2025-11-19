@@ -50,4 +50,18 @@ class JvmFileSystemManager : FileSystemManager {
             throw IOException("Unable to delete file at: $uri", error)
         }
     }
+
+    override fun createDirectories(uri: Uri) {
+        try {
+            val file = File(uri.toURI())
+            if (file.exists()) return
+            if (!file.mkdirs()) {
+                if (!file.exists()) {
+                    throw IOException("Unable to create directories at: $uri")
+                }
+            }
+        } catch (error: Exception) {
+            throw IOException("Unable to create directories at: $uri", error)
+        }
+    }
 }

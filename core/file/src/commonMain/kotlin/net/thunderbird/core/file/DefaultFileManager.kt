@@ -2,6 +2,7 @@ package net.thunderbird.core.file
 
 import com.eygraber.uri.Uri
 import net.thunderbird.core.file.command.CopyCommand
+import net.thunderbird.core.file.command.CreateDirectoriesCommand
 import net.thunderbird.core.file.command.DeleteCommand
 import net.thunderbird.core.outcome.Outcome
 
@@ -16,4 +17,7 @@ class DefaultFileManager(
 
     override suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError> =
         DeleteCommand(uri).invoke(fileSystem)
+
+    override suspend fun createDirectories(uri: Uri): Outcome<Unit, FileOperationError> =
+        CreateDirectoriesCommand(uri).invoke(fileSystem)
 }

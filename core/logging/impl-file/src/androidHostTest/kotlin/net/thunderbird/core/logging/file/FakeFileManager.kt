@@ -34,6 +34,10 @@ class FakeFileManager : FileManager {
     }
 
     override suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError> {
-        TODO("Not yet implemented")
+        return Outcome.Success(Unit)
+    }
+
+    override suspend fun createDirectories(uri: Uri): Outcome<Unit, FileOperationError> {
+        return Outcome.Success(Unit)
     }
 }

@@ -10,8 +10,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.uri)
-
-            implementation(projects.core.outcome)
+            api(projects.core.outcome)
 
             implementation(libs.kotlinx.io.core)
         }

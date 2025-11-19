@@ -23,4 +23,12 @@ interface FileManager {
      * @return [Outcome] with [Unit] on success or [FileOperationError] on failure.
      */
     suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError>
+
+    /**
+     * Create the directory at [uri], including any missing parent directories.
+     *
+     * @param uri The [Uri] of the directory to create.
+     * @return [Outcome] with [Unit] on success or [FileOperationError] on failure.
+     */
+    suspend fun createDirectories(uri: Uri): Outcome<Unit, FileOperationError>
 }

@@ -18,6 +18,9 @@ class FakeFileSystemManager : FileSystemManager {
     /** If set to true, the next call to delete() will throw an IOException. */
     var nextDeleteThrowsIOException: Boolean = false
 
+    /** If set to true, the next call to createDirectories() will throw an IOException. */
+    var nextCreateDirectoriesThrowsIOException: Boolean = false
+
     override fun openSink(uri: Uri, mode: WriteMode): RawSink? {
         val key = uri.toString()
         return object : RawSink {
@@ -74,6 +77,14 @@ class FakeFileSystemManager : FileSystemManager {
         if (storage.remove(key) == null) {
             throw FileNotFoundException("$key not found")
         }
+    }
+
+    override fun createDirectories(uri: Uri) {
+        if (nextCreateDirectoriesThrowsIOException) {
+            nextCreateDirectoriesThrowsIOException = false
+            throw IOException("Simulated createDirectories IO error")
+        }
+        // Succeed; no storage effect for directories in this fake.
     }
 
     fun put(uriString: String, content: ByteArray) {

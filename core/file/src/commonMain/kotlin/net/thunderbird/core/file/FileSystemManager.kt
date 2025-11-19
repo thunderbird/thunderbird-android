@@ -36,4 +36,12 @@ interface FileSystemManager {
      * @throws kotlinx.io.IOException if the deletion fails.
      */
     fun delete(uri: Uri)
+
+    /**
+     * Create the directory at [uri], including any missing parent directories.
+     * If the directory already exists, this should succeed.
+     *
+     * @throws kotlinx.io.IOException if the creation fails or the scheme is unsupported.
+     */
+    fun createDirectories(uri: Uri)
 }
