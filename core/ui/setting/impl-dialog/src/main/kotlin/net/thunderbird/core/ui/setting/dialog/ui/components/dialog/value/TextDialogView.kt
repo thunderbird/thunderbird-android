@@ -53,8 +53,7 @@ internal fun TextDialogView(
 
     LaunchedEffect(textFieldValue.text) {
         delay(VALIDATION_DEBOUNCE_DELAY)
-        val transformedText = setting.transform(textFieldValue.text)
-        errorMessage = setting.validate(transformedText)
+        errorMessage = setting.validate(textFieldValue.text)
     }
 
     SettingDialogLayout(
