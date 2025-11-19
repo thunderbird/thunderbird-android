@@ -16,4 +16,8 @@ internal class FakeFileManager : FileManager {
         lastDestination = destinationUri
         return nextResult
     }
+
+    override suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError> {
+        TODO("Not yet implemented")
+    }
 }
