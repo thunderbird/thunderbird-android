@@ -9,9 +9,9 @@ The file system layer is split into two levels:
 - Public low-level I/O: `FileSystemManager` opens `RawSource`/`RawSink` for a given `Uri`.
   - Android actual: `AndroidFileSystemManager`
   - JVM actual: `JvmFileSystemManager`
-- Public high-level facade: `FileManager` for common operations (currently: copy).
+- Public high-level facade: `FileManager` for common operations (copy, delete, createDirectories).
   - Default implementation: `DefaultFileManager` delegating to internal commands
-- Internal commands: e.g., `CopyCommand(source, dest)` implement operations using `FileSystemManager`.
+- Internal commands: e.g., `CopyCommand(source, dest)`, `DeleteCommand(uri)`, `CreateDirectoriesCommand(dir)` implement operations using `FileSystemManager`.
   - Hidden from public API; return `Outcome<Unit, FileOperationError>` internally to preserve error context.
 - `RawSource`/`RawSink` come from `kotlinx-io` and are referenced in the public API.
 
@@ -69,9 +69,13 @@ val fileManager: FileManager = DefaultFileManager(fs)
 
 - FileManager
   - `suspend fun copy(sourceUri: Uri, destinationUri: Uri): Outcome<Unit, FileOperationError>`
+  - `suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError>`
+  - `suspend fun createDirectories(uri: Uri): Outcome<Unit, FileOperationError>`
 - FileSystemManager
   - `fun openSource(uri: Uri): RawSource?`
   - `fun openSink(uri: Uri, mode: WriteMode = WriteMode.Truncate): RawSink?`
+  - `fun delete(uri: Uri)`
+  - `fun createDirectories(uri: Uri)`
   - Behavior:
     - Sinks default to overwrite/truncate. Pass `WriteMode.Append` to append where supported.
     - Returns null when the URI cannot be opened (e.g., missing permissions, unsupported scheme).

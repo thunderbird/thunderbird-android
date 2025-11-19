@@ -8,6 +8,7 @@ import net.thunderbird.core.outcome.Outcome
 internal class FakeFileManager : FileManager {
     var lastSource: Uri? = null
     var lastDestination: Uri? = null
+    var lastCreatedDir: Uri? = null
 
     var nextResult: Outcome<Unit, FileOperationError> = Outcome.Success(Unit)
 
@@ -18,6 +19,11 @@ internal class FakeFileManager : FileManager {
     }
 
     override suspend fun delete(uri: Uri): Outcome<Unit, FileOperationError> {
-        TODO("Not yet implemented")
+        return nextResult
+    }
+
+    override suspend fun createDirectories(uri: Uri): Outcome<Unit, FileOperationError> {
+        lastCreatedDir = uri
+        return nextResult
     }
 }
