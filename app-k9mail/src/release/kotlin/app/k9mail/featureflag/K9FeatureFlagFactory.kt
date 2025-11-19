@@ -7,6 +7,7 @@ import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
 import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
+import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
 
 /**
  * Feature flags for K-9 Mail (release)
@@ -23,6 +24,7 @@ class K9FeatureFlagFactory : FeatureFlagFactory {
             FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
             FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = false),
             FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
+            FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = false),
         )
     }
 }

@@ -142,6 +142,7 @@ dependencies {
     implementation(projects.core.ui.legacy.theme2.k9mail)
     implementation(projects.feature.launcher)
     implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.mail.message.reader.api)
 
     implementation(projects.legacy.core)
     implementation(projects.legacy.ui.legacy)
