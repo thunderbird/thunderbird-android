@@ -30,6 +30,11 @@ enum class BackgroundSync {
     FOLLOW_SYSTEM_AUTO_SYNC,
 }
 
+enum class BodyContentType {
+    TEXT_HTML,
+    TEXT_PLAIN,
+}
+
 enum class AppTheme {
     LIGHT,
     DARK,

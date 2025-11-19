@@ -13,6 +13,8 @@ import kotlinx.coroutines.sync.withLock
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.getEnumOrDefault
+import net.thunderbird.core.preference.storage.putEnum
 
 private const val TAG = "DefaultDisplayVisualSettingsPreferenceManager"
 
@@ -70,6 +72,10 @@ class DefaultDisplayVisualSettingsPreferenceManager(
             KEY_SHOW_CONTACT_PICTURE,
             DISPLAY_SETTINGS_DEFAULT_IS_SHOW_CONTACT_PICTURE,
         ),
+        bodyContentType = storage.getEnumOrDefault(
+            KEY_MESSAGE_VIEW_BODY_CONTENT_TYPE,
+            DISPLAY_SETTINGS_DEFAULT_BODY_CONTENT_TYPE,
+        ),
         messageListPreviewLines = storage.getInt(
             KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES,
             DISPLAY_SETTINGS_DEFAULT_MESSAGE_LIST_PREVIEW_LINES,
@@ -111,6 +117,7 @@ class DefaultDisplayVisualSettingsPreferenceManager(
                     KEY_SHOW_CORRESPONDENT_NAMES,
                     config.isShowCorrespondentNames,
                 )
+                storageEditor.putEnum(KEY_MESSAGE_VIEW_BODY_CONTENT_TYPE, config.bodyContentType)
                 storageEditor.putInt(
                     KEY_MESSAGE_LIST_VIEW_PREVIEW_LINES,
                     config.messageListPreviewLines,

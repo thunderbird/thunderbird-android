@@ -10,6 +10,7 @@ import com.fsck.k9.ui.base.AppLanguageManager
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundOps
+import net.thunderbird.core.preference.BodyContentType
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
@@ -166,6 +167,8 @@ class GeneralSettingsDataStore(
             "background_ops" -> generalSettingsManager.getConfig().network.backgroundOps.name
             "quiet_time_starts" -> generalSettingsManager.getConfig().notification.quietTimeStarts
             "quiet_time_ends" -> generalSettingsManager.getConfig().notification.quietTimeEnds
+            "messageview_body_content_type" ->
+                generalSettingsManager.getConfig().display.visualSettings.bodyContentType.name
             "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
             "message_list_sender_font" -> K9.fontSizes.messageListSender.toString()
             "message_list_date_font" -> K9.fontSizes.messageListDate.toString()
@@ -208,6 +211,7 @@ class GeneralSettingsDataStore(
             }
 
             "background_ops" -> setBackgroundOps(value)
+            "messageview_body_content_type" -> setBodyContentType(value)
             "quiet_time_starts" -> setQuietTimeStarts(quietTimeStarts = value)
             "quiet_time_ends" -> setQuietTimeEnds(quietTimeEnds = value)
             "message_list_subject_font" -> K9.fontSizes.messageListSubject = value.toInt()
@@ -764,6 +768,19 @@ class GeneralSettingsDataStore(
         "spam" -> SwipeAction.Spam
         "move" -> SwipeAction.Move
         else -> throw AssertionError()
+    }
+
+    private fun setBodyContentType(value: String) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            settings.copy(
+                display = settings.display.copy(
+                    visualSettings = settings.display.visualSettings.copy(
+                        bodyContentType = BodyContentType.valueOf(value),
+                    ),
+                ),
+            )
+        }
     }
 
     private fun setTelemetryEnabled(enable: Boolean) {
