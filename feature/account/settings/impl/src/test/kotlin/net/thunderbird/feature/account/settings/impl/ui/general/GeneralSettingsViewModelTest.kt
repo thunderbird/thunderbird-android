@@ -150,7 +150,7 @@ private class GeneralSettingsRobot(
             getAccountName = {
                 flowOf(Outcome.success("Subtitle"))
             },
-            getGeneralSettings = {
+            getAccountProfile = {
                 profileState.map { profile ->
                     profile?.let { Outcome.success(it) }
                         ?: Outcome.failure(

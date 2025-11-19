@@ -13,7 +13,7 @@ import net.thunderbird.feature.account.profile.AccountProfile
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 
-internal class GetGeneralSettingsTest {
+internal class GetAccountProfileTest {
 
     @Test
     fun `should emit profile when account profile present`() = runTest {
@@ -59,8 +59,8 @@ internal class GetGeneralSettingsTest {
 
     private fun createTestSubject(
         accountProfile: AccountProfile? = null,
-    ): UseCase.GetGeneralSettings {
-        return GetGeneralSettings(
+    ): UseCase.GetAccountProfile {
+        return GetAccountProfile(
             repository = FakeAccountProfileRepository(accountProfile),
         )
     }

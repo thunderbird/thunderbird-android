@@ -20,7 +20,7 @@ import net.thunderbird.feature.account.settings.impl.ui.general.GeneralSettingsC
 internal class GeneralSettingsViewModel(
     private val accountId: AccountId,
     private val getAccountName: UseCase.GetAccountName,
-    private val getGeneralSettings: UseCase.GetGeneralSettings,
+    private val getAccountProfile: UseCase.GetAccountProfile,
     private val updateGeneralSettings: UseCase.UpdateGeneralSettings,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), GeneralSettingsContract.ViewModel {
@@ -50,7 +50,7 @@ internal class GeneralSettingsViewModel(
     }
 
     private fun observeGeneralSettings() {
-        getGeneralSettings(accountId)
+        getAccountProfile(accountId)
             .onEach { outcome ->
                 outcome.handle(
                     onSuccess = { profile ->

@@ -18,7 +18,7 @@ internal interface AccountSettingsDomainContract {
             operator fun invoke(accountId: AccountId): Flow<Outcome<String, AccountSettingError>>
         }
 
-        fun interface GetGeneralSettings {
+        fun interface GetAccountProfile {
             operator fun invoke(accountId: AccountId): Flow<Outcome<AccountProfile, AccountSettingError>>
         }
 

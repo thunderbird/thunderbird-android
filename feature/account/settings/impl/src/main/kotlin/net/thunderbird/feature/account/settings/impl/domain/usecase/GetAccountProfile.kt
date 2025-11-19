@@ -9,9 +9,9 @@ import net.thunderbird.feature.account.profile.AccountProfileRepository
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.AccountSettingError
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 
-internal class GetGeneralSettings(
+internal class GetAccountProfile(
     private val repository: AccountProfileRepository,
-) : UseCase.GetGeneralSettings {
+) : UseCase.GetAccountProfile {
     override fun invoke(accountId: AccountId): Flow<Outcome<AccountProfile, AccountSettingError>> {
         return repository.getById(accountId).map { profile ->
             if (profile != null) {
