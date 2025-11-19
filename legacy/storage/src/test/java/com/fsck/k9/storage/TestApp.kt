@@ -15,6 +15,7 @@ import com.fsck.k9.legacyCoreModules
 import com.fsck.k9.preferences.K9StoragePersister
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
@@ -89,4 +90,10 @@ val testModule = module {
             override val pushNotificationIcon: Int = 0
         }
     }
+    single<PlatformConfigProvider> { FakePlatformConfigProvider() }
+}
+
+class FakePlatformConfigProvider : PlatformConfigProvider {
+    override val isDebug: Boolean
+        get() = true
 }

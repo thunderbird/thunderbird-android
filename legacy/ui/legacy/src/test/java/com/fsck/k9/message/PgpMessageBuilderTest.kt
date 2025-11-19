@@ -48,6 +48,7 @@ import java.util.Date
 import kotlinx.coroutines.flow.Flow
 import net.thunderbird.core.android.account.Identity
 import net.thunderbird.core.android.account.QuoteStyle
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.exception.MessagingException
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.logging.testing.TestLogger
@@ -845,7 +846,11 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         private val fakeGeneralSettingsManager = object : GeneralSettingsManager {
             override fun getSettings() = GeneralSettings(
-                privacy = PrivacySettings(isHideUserAgent = false, isHideTimeZone = false),
+                privacy = PrivacySettings(
+                    isHideUserAgent = false,
+                    isHideTimeZone = false,
+                ),
+                platformConfigProvider = FakePlatformConfigProvider(),
             )
 
             override fun getSettingsFlow(): Flow<GeneralSettings> = error("not implemented")
@@ -856,4 +861,9 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             override fun getConfigFlow(): Flow<GeneralSettings> = error("not implemented")
         }
     }
+}
+
+private class FakePlatformConfigProvider : PlatformConfigProvider {
+    override val isDebug: Boolean
+        get() = false
 }

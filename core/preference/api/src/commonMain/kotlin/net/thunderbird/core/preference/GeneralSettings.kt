@@ -1,5 +1,6 @@
 package net.thunderbird.core.preference
 
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.preference.debugging.DebuggingSettings
 import net.thunderbird.core.preference.display.DisplaySettings
 import net.thunderbird.core.preference.interaction.InteractionSettings
@@ -16,11 +17,12 @@ import net.thunderbird.core.preference.privacy.PrivacySettings
  */
 // TODO: Move over settings from K9
 data class GeneralSettings(
+    val platformConfigProvider: PlatformConfigProvider,
     val network: NetworkSettings = NetworkSettings(),
     val notification: NotificationPreference = NotificationPreference(),
     val display: DisplaySettings = DisplaySettings(),
     val privacy: PrivacySettings = PrivacySettings(),
-    val debugging: DebuggingSettings = DebuggingSettings(),
+    val debugging: DebuggingSettings = DebuggingSettings(isDebugLoggingEnabled = platformConfigProvider.isDebug),
     val interaction: InteractionSettings = InteractionSettings(),
 )
 

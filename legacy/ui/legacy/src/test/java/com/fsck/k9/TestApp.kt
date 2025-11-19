@@ -7,6 +7,7 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
+import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
@@ -81,4 +82,10 @@ val testModule = module {
 
     single<ContactPictureLoader> { mock() }
     single<LegacyAccountManager> { mock() }
+    single<PlatformConfigProvider> { FakePlatformConfigProvider() }
+}
+
+class FakePlatformConfigProvider : PlatformConfigProvider {
+    override val isDebug: Boolean
+        get() = true
 }
