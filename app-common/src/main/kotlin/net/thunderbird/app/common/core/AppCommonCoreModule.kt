@@ -4,8 +4,10 @@ import android.content.Context
 import net.thunderbird.app.common.core.configstore.appCommonCoreConfigStoreModule
 import net.thunderbird.app.common.core.logging.appCommonCoreLogger
 import net.thunderbird.app.common.core.ui.appCommonCoreUiModule
+import net.thunderbird.core.file.AndroidDirectoryProvider
 import net.thunderbird.core.file.AndroidFileSystemManager
 import net.thunderbird.core.file.DefaultFileManager
+import net.thunderbird.core.file.DirectoryProvider
 import net.thunderbird.core.file.FileManager
 import net.thunderbird.core.file.FileSystemManager
 import org.koin.core.module.Module
@@ -27,6 +29,12 @@ val appCommonCoreModule: Module = module {
     single<FileManager> {
         DefaultFileManager(
             fileSystem = get(),
+        )
+    }
+
+    single<DirectoryProvider> {
+        AndroidDirectoryProvider(
+            context = get(),
         )
     }
 }
