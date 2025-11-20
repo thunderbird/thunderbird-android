@@ -9,7 +9,7 @@ src = "."
 edition = "2018"
 
 [build]
-build-dir = "../book/docs/latest"
+build-dir = "../book/docs/latest/html"
 create-missing = false
 use-default-preprocessors = true
 
