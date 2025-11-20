@@ -5,6 +5,11 @@
 
 set -e
 
+# Define versions
+MDBOOK_VERSION="0.5.0"
+MDBOOK_LAST_CHANGED_VERSION="0.4.0"
+MDBOOK_MERMAID_VERSION="0.17.0"
+
 # Define installation paths
 BASE_DIR=$(dirname -- "${BASH_SOURCE[0]}")
 MERMAID_JS_DIR="${BASE_DIR}/assets/additional/js/"
@@ -27,21 +32,13 @@ fi
 # Install mdbook
 if $FORCE_UPDATE; then
     echo "Forcing mdbook installation..."
-    cargo install --force mdbook
-    cargo install --force mdbook-alerts
-    cargo install --force mdbook-external-links
-    cargo install --force mdbook-last-changed
-    cargo install --force mdbook-linkcheck
-    cargo install --force mdbook-mermaid
-    cargo install --force mdbook-pagetoc
+    cargo install --force mdbook --version $MDBOOK_VERSION
+    cargo install --force mdbook-last-changed --version $MDBOOK_LAST_CHANGED_VERSION
+    cargo install --force mdbook-mermaid --version $MDBOOK_MERMAID_VERSION
 else
-    cargo install mdbook
-    cargo install mdbook-alerts
-    cargo install mdbook-external-links
-    cargo install mdbook-last-changed
-    cargo install mdbook-linkcheck
-    cargo install mdbook-mermaid
-    cargo install mdbook-pagetoc
+    cargo install mdbook --version $MDBOOK_VERSION
+    cargo install mdbook-last-changed --version $MDBOOK_LAST_CHANGED_VERSION
+    cargo install mdbook-mermaid --version $MDBOOK_MERMAID_VERSION
 fi
 
 # Fetch latest releases from GitHub
