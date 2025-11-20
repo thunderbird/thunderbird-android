@@ -9,6 +9,7 @@ set -e
 MDBOOK_VERSION="0.5.0"
 MDBOOK_LAST_CHANGED_VERSION="0.4.0"
 MDBOOK_MERMAID_VERSION="0.17.0"
+MERMAID_JS_VERSION="v10.9.5"
 
 # Define installation paths
 BASE_DIR=$(dirname -- "${BASH_SOURCE[0]}")
@@ -41,21 +42,14 @@ else
     cargo install mdbook-mermaid --version $MDBOOK_MERMAID_VERSION
 fi
 
-# Fetch latest releases from GitHub
-LATEST_RELEASES=$(curl -s "https://api.github.com/repos/mermaid-js/mermaid/releases" | jq -r '.[].tag_name')
-
-# Extract the latest valid mermaid version (filtering out layout-elk)
-LATEST_MERMAID_VERSION=$(echo "$LATEST_RELEASES" | grep -E '^mermaid@[0-9]+\.[0-9]+\.[0-9]+$' | sed 's/mermaid@//' | sort -V | tail -n 1)
-
-if [ -z "$LATEST_MERMAID_VERSION" ]; then
-    echo "Failed to fetch the latest Mermaid.js version."
-    exit 1
-fi
-
 mkdir -p "$MERMAID_JS_DIR"
 
-# Download the latest Mermaid.js
-echo "Downloading Mermaid.js version $LATEST_MERMAID_VERSION..."
-curl -L "https://cdn.jsdelivr.net/npm/mermaid@$LATEST_MERMAID_VERSION/dist/mermaid.min.js" -o "$MERMAID_JS_PATH"
+if [ ! -f "$MERMAID_JS_PATH" ]; then
+    echo "Mermaid.js not found. Downloading version ${MERMAID_JS_VERSION}..."
+    curl -L "https://cdn.jsdelivr.net/npm/mermaid@${MERMAID_JS_VERSION}/dist/mermaid.min.js" -o "$MERMAID_JS_PATH"
+else
+    echo "Mermaid.js version ${MERMAID_JS_VERSION} already exists at ${MERMAID_JS_PATH}."
+fi
+
 
 echo "Installation and update complete!"
