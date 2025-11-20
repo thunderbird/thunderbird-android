@@ -3,6 +3,9 @@ plugins {
 }
 
 kotlin {
+    androidLibrary {
+        namespace = "net.thunderbird.feature.mail.message.reader.impl"
+    }
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.common)
@@ -12,8 +15,4 @@ kotlin {
             implementation(projects.feature.mail.message.reader.api)
         }
     }
-}
-
-android {
-    namespace = "net.thunderbird.feature.mail.message.reader.impl"
 }
