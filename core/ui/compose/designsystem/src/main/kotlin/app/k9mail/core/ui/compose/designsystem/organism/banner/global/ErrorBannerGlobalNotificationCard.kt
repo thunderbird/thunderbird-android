@@ -2,9 +2,9 @@ package app.k9mail.core.ui.compose.designsystem.organism.banner.global
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.organism.banner.BannerNotificationCardDefaults
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 
 /**
  * Displays an error banner global notification card.

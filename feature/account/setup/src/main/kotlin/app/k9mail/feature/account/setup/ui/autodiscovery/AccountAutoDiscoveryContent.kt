@@ -12,7 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import app.k9mail.core.ui.compose.designsystem.molecule.ContentLoadingErrorView
 import app.k9mail.core.ui.compose.designsystem.molecule.ErrorView
@@ -87,7 +87,7 @@ internal fun AutoDiscoveryContent(
     oAuthViewModel: AccountOAuthContract.ViewModel,
     modifier: Modifier = Modifier,
 ) {
-    val resources = LocalContext.current.resources
+    val resources = LocalResources.current
 
     ContentLoadingErrorView(
         state = state,

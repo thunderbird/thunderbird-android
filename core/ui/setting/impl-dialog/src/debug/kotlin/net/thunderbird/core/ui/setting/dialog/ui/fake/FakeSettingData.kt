@@ -1,7 +1,7 @@
 package net.thunderbird.core.ui.setting.dialog.ui.fake
 
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import kotlinx.collections.immutable.persistentListOf
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.SettingValue.CompactSelectSingleOption.CompactOption
 import net.thunderbird.core.ui.setting.SettingValue.SelectSingleOption.Option

@@ -3,7 +3,7 @@ package app.k9mail.feature.onboarding.permissions.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import app.k9mail.core.ui.compose.designsystem.PreviewWithTheme
-import app.k9mail.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.IconsWithBottomRightOverlay
 
 @Composable
 @Preview(showBackground = true)

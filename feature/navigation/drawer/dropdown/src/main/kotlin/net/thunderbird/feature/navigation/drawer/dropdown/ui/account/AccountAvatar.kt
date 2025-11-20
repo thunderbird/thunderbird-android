@@ -6,7 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.Surface
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelSmall
@@ -53,7 +53,7 @@ private fun UnreadBadge(
     modifier: Modifier = Modifier,
 ) {
     if (unreadCount > 0) {
-        val resources = LocalContext.current.resources
+        val resources = LocalResources.current
 
         Surface(
             color = accountColorRoles.accent,

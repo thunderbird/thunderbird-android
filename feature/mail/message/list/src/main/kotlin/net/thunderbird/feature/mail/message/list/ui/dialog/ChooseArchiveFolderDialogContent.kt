@@ -19,10 +19,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
 import app.k9mail.core.ui.compose.designsystem.atom.button.RadioButton
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icon
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icons
 import net.thunderbird.feature.mail.folder.api.RemoteFolder
 import net.thunderbird.feature.mail.message.list.R
 import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract.State

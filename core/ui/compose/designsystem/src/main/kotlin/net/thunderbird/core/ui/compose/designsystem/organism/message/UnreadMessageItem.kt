@@ -1,19 +1,21 @@
 package net.thunderbird.core.ui.compose.designsystem.organism.message
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
-import app.k9mail.core.ui.compose.designsystem.atom.icon.Icons
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextLabelLarge
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlinx.datetime.LocalDateTime
 import net.thunderbird.core.ui.compose.designsystem.atom.button.FavouriteButtonIcon
-import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.UnreadMailBadge
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.BadgeIcons
 import net.thunderbird.core.ui.compose.designsystem.molecule.message.MessageItemSenderTitleSmall
+
+private const val UNREAD_MAIL_BADGE_COLOR = 0xFF34C759
 
 /**
  * Represents a message item in its Unread state.
@@ -64,10 +66,11 @@ fun UnreadMessageItem(
         leading = {
             Box {
                 avatar()
-                Image(
-                    imageVector = Icons.Filled.UnreadMailBadge,
+                BadgeIcon(
+                    imageVector = BadgeIcons.Filled.UnreadMail,
+                    tint = Color(UNREAD_MAIL_BADGE_COLOR),
                     contentDescription = null,
-                    modifier = Modifier.padding(start = MainTheme.spacings.half, top = MainTheme.spacings.half),
+                    modifier = Modifier.padding(start = MainTheme.spacings.quarter, top = MainTheme.spacings.quarter),
                 )
             }
         },
