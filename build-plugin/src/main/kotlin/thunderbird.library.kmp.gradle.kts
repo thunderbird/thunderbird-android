@@ -10,10 +10,8 @@ kotlin {
     androidLibrary {
         compileSdk = ThunderbirdProjectConfig.Android.sdkCompile
         minSdk = ThunderbirdProjectConfig.Android.sdkMin
-        compilations.configureEach {
-            compilerOptions.configure {
-                jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
-            }
+        compilerOptions {
+            jvmTarget.set(ThunderbirdProjectConfig.Compiler.jvmTarget)
         }
     }
 
@@ -39,3 +37,5 @@ kotlin {
         }
     }
 }
+
+configureKotlinJavaCompatibility()
