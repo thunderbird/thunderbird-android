@@ -255,7 +255,7 @@ include(
 
 include(
     ":library:html-cleaner",
-    ":library:TokenAutoComplete",
+    ":library:token-auto-complete",
 )
 
 include(
