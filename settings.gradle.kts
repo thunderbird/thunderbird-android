@@ -239,9 +239,9 @@ include(
 )
 
 include(
-    ":ui-utils:LinearLayoutManager",
-    ":ui-utils:ItemTouchHelper",
-    ":ui-utils:ToolbarBottomSheet",
+    ":ui-utils:item-touch-helper",
+    ":ui-utils:linear-layout-manager",
+    ":ui-utils:toolbar-bottom-sheet",
 )
 
 include(":plugins:openpgp-api-lib:openpgp-api")

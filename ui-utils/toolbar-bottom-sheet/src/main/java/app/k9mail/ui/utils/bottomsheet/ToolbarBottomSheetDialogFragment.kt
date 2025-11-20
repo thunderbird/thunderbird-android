@@ -55,6 +55,7 @@ open class ToolbarBottomSheetDialogFragment : AppCompatDialogFragment() {
     }
 
     override fun getDialog(): ToolbarBottomSheetDialog? {
+        @Suppress("CastToNullableType")
         return super.getDialog() as ToolbarBottomSheetDialog?
     }
 

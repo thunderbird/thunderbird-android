@@ -54,6 +54,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
  *
  * Based on [com.google.android.material.bottomsheet.BottomSheetDialog].
  */
+@Suppress("TooManyFunctions")
 class ToolbarBottomSheetDialog internal constructor(context: Context, @StyleRes theme: Int) :
     AppCompatDialog(context, getThemeResId(context, theme)) {
 
