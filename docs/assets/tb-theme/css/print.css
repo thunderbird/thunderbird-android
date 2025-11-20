@@ -1,18 +1,18 @@
 
-#sidebar,
-#menu-bar,
+#mdbook-sidebar,
+#mdbook-menu-bar,
 .nav-chapters,
 .mobile-nav-chapters {
     display: none;
 }
 
-#page-wrapper.page-wrapper {
+#mdbook-page-wrapper.page-wrapper {
     transform: none !important;
     margin-inline-start: 0px;
     overflow-y: initial;
 }
 
-#content {
+#mdbook-content {
     max-width: none;
     margin: 0;
     padding: 0;
@@ -43,14 +43,6 @@ h1, h2, h3, h4, h5, h6 {
 pre, code {
     page-break-inside: avoid;
     white-space: pre-wrap;
-}
-
-.mermaid {
-    page-break-inside: avoid;
-}
-
-.content a[target="_blank"]::after {
-    display: none !important;
 }
 
 .fa {
