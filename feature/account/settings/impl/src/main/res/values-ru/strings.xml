@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_settings_general_title">Основные настройки</string>
-    <string name="account_settings_general_profile_indicator_title">Индикатор профиля</string>
-    <string name="account_settings_general_profile_indicator_monogram">Монограмма</string>
-    <string name="account_settings_general_profile_indicator_image">Изображение</string>
-    <string name="account_settings_general_profile_indicator_icon">Значок</string>
+    <string name="account_settings_general_avatar_option_monogram">Монограмма</string>
+    <string name="account_settings_general_avatar_option_image">Изображение</string>
+    <string name="account_settings_general_avatar_option_icon">Значок</string>
     <string name="account_settings_general_name_title">Имя учётной записи</string>
     <string name="account_settings_general_name_description">Имя, связанное с вашей учётной записью.</string>
     <string name="account_settings_general_color_title">Цвет учётной записи</string>

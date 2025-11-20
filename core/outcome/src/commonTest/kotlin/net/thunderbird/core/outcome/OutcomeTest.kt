@@ -166,4 +166,34 @@ class OutcomeTest {
         assertThat(successCalledWith).isNull()
         assertThat(failureCalledWith).isEqualTo("failure")
     }
+
+    @Test
+    fun `given Success when fold is called then returns success result`() {
+        // Arrange
+        val outcome: Outcome<Int, String> = Outcome.Success(10)
+
+        // Act
+        val result = outcome.fold(
+            onSuccess = { it * 3 },
+            onFailure = { _ -> -1 },
+        )
+
+        // Assert
+        assertThat(result).isEqualTo(30)
+    }
+
+    @Test
+    fun `given Failure when fold is called then returns failure result`() {
+        // Arrange
+        val outcome: Outcome<Int, String> = Outcome.Failure("oops")
+
+        // Act
+        val result = outcome.fold(
+            onSuccess = { it * 3 },
+            onFailure = { err -> err + "!" },
+        )
+
+        // Assert
+        assertThat(result).isEqualTo("oops!")
+    }
 }

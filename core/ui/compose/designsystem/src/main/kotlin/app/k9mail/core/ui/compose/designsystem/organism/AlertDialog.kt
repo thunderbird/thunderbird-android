@@ -21,6 +21,7 @@ fun AlertDialog(
     icon: ImageVector? = null,
     dismissText: String? = null,
     onDismissClick: () -> Unit = {},
+    confirmButtonEnabled: Boolean = true,
 ) {
     AlertDialog(
         title = title,
@@ -31,6 +32,7 @@ fun AlertDialog(
         modifier = modifier,
         dismissText = dismissText,
         onDismissClick = onDismissClick,
+        confirmButtonEnabled = confirmButtonEnabled,
     ) {
         TextBodyMedium(text = text)
     }
@@ -46,6 +48,7 @@ fun AlertDialog(
     icon: ImageVector? = null,
     dismissText: String? = null,
     onDismissClick: () -> Unit = {},
+    confirmButtonEnabled: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     MaterialAlertDialog(
@@ -65,6 +68,7 @@ fun AlertDialog(
             ButtonText(
                 text = confirmText,
                 onClick = onConfirmClick,
+                enabled = confirmButtonEnabled,
             )
         },
         dismissButton = dismissText?.let {

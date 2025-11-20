@@ -20,6 +20,7 @@ internal fun SettingDialogLayout(
     onDismissClick: () -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
+    confirmButtonEnabled: Boolean = true,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     AlertDialog(
@@ -30,6 +31,7 @@ internal fun SettingDialogLayout(
         dismissText = stringResource(id = R.string.core_ui_setting_dialog_button_cancel),
         onDismissClick = onDismissClick,
         onDismissRequest = onDismissRequest,
+        confirmButtonEnabled = confirmButtonEnabled,
         modifier = modifier,
     ) {
         Column(
