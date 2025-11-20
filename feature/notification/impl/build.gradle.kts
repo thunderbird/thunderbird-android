@@ -28,7 +28,7 @@ kotlin {
             implementation(projects.feature.launcher)
             implementation(projects.core.ui.theme.api)
         }
-        getByName("androidHostTest").dependencies {
+        androidHostTest.dependencies {
             implementation(libs.androidx.test.core)
             implementation(libs.mockito.core)
             implementation(libs.mockito.kotlin)

@@ -15,7 +15,7 @@ kotlin {
 
             implementation(libs.kotlinx.io.core)
         }
-        getByName("androidHostTest").dependencies {
+        androidHostTest.dependencies {
             implementation(libs.robolectric)
         }
     }

@@ -27,7 +27,7 @@ kotlin {
             implementation(projects.core.ui.compose.designsystem)
             implementation(projects.core.ui.compose.theme2.common)
         }
-        getByName("androidHostTest").dependencies {
+        androidHostTest.dependencies {
             implementation(projects.core.ui.compose.testing)
             implementation(libs.bundles.shared.jvm.test.compose)
             implementation(libs.bundles.shared.jvm.android.compose.debug)
