@@ -6,6 +6,7 @@ import app.k9mail.legacy.message.controller.MessageCountsProvider
 import app.k9mail.legacy.message.controller.MessagingControllerRegistry
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
+import com.fsck.k9.mailstore.LegacyAccountDtoBackendStorageFactory
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.mailstore.SaveMessageDataCreator
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
@@ -37,6 +38,7 @@ val controllerModule = module {
             get<Logger>(named("syncDebug")),
             get<NotificationManager>(),
             get<OutboxFolderManager>(),
+            get<LegacyAccountDtoBackendStorageFactory>(),
         )
     } binds arrayOf(MessagingControllerRegistry::class)
 
