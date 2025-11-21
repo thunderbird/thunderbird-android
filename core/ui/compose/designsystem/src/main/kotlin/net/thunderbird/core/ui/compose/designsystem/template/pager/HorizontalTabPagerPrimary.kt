@@ -1,5 +1,6 @@
 package net.thunderbird.core.ui.compose.designsystem.template.pager
 
+import androidx.annotation.FloatRange
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +8,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -62,6 +64,8 @@ import net.thunderbird.core.ui.compose.designsystem.molecule.tab.TabRowPrimary
 fun <T> HorizontalTabPagerPrimary(
     initialSelected: T,
     modifier: Modifier = Modifier,
+    @FloatRange(from = -0.5, to = 0.5) initialPageOffsetFraction: Float = 0f,
+    onPageChange: (T) -> Unit = {},
     content: HorizontalTabPagerScope<T, TabPrimaryConfig>.() -> Unit,
 ) {
     val scope = remember(initialSelected, content) {
@@ -72,7 +76,13 @@ fun <T> HorizontalTabPagerPrimary(
     val state = rememberPagerState(
         initialPage = scope.initialPageIndex,
         pageCount = { scope.pages.size },
+        initialPageOffsetFraction = initialPageOffsetFraction,
     )
+
+    LaunchedEffect(state.settledPage, onPageChange) {
+        onPageChange(scope.pages[state.settledPage].value)
+    }
+
     val coroutineScope = rememberCoroutineScope()
     Column(modifier = modifier) {
         TabRowPrimary(

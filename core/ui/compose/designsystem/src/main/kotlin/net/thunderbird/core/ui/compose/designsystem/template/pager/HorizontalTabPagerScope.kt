@@ -1,6 +1,7 @@
 package net.thunderbird.core.ui.compose.designsystem.template.pager
 
 import androidx.compose.runtime.Composable
+import kotlinx.collections.immutable.ImmutableList
 
 @DslMarker
 private annotation class HorizontalTabPagerScopeDslMarker
@@ -32,6 +33,24 @@ interface HorizontalTabPagerScope<T, TConfig : TabConfig> {
         tabConfigBuilder: (T) -> TConfig,
         itemContent: @Composable HorizontalTabPagerScope<T, TConfig>.(item: T) -> Unit,
     )
+
+    /**
+     * Defines the pages for the Pager.
+     *
+     * This function should be called within the content lambda of the Horizontal Pager to specify
+     * the items that will be displayed as pages.
+     *
+     * @param items The list of data items to be represented as pages.
+     * @param tabConfigBuilder A lambda that returns a [TabConfig] for a given item,
+     *   used to configure the corresponding tab's appearance (e.g., its title).
+     * @param itemContent The composable content to display for each page. The lambda receives the
+     *   specific item for that page.
+     */
+    fun pages(
+        items: ImmutableList<T>,
+        tabConfigBuilder: (T) -> TConfig,
+        itemContent: @Composable HorizontalTabPagerScope<T, TConfig>.(item: T) -> Unit,
+    ) = pages(items.toList(), tabConfigBuilder, itemContent)
 }
 
 /**
