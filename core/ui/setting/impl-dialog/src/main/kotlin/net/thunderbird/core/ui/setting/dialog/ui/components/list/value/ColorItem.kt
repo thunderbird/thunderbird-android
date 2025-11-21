@@ -7,8 +7,8 @@ import app.k9mail.core.ui.compose.designsystem.atom.text.TextBodyMedium
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleMedium
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.setting.SettingValue
+import net.thunderbird.core.ui.setting.component.list.item.SettingItemLayout
 import net.thunderbird.core.ui.setting.dialog.ui.components.common.ColorView
-import net.thunderbird.core.ui.setting.dialog.ui.components.list.SettingItemLayout
 
 @Composable
 internal fun ColorItem(
