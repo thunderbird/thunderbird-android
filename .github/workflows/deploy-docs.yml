@@ -75,7 +75,7 @@ jobs:
           find docs/latest -mindepth 1 -delete  # Delete old files inside docs/latest
 
           # Copy new docs to gh-pages branch
-          cp -r book/docs/latest/html/* docs/latest/
+          cp -r book/docs/latest/* docs/latest/
 
           # Remove
           rm -rf book
