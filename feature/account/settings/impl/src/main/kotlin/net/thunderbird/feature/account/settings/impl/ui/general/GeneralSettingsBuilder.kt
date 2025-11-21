@@ -49,7 +49,7 @@ internal class GeneralSettingsBuilder(
         settings += profile(
             name = state.name.value,
             color = Color(state.color.value ?: 0),
-            avatar = state.avatar,
+            avatar = state.avatar ?: Avatar.Icon(name = iconCatalog.defaultName),
         )
 
         if (featureFlagProvider.provide(AccountSettingsFeatureFlags.EnableAvatarCustomization).isEnabled()) {
@@ -78,7 +78,7 @@ internal class GeneralSettingsBuilder(
     private fun profile(
         name: String,
         color: Color,
-        avatar: Avatar?,
+        avatar: Avatar,
     ): Setting = SettingDecoration.Custom(
         id = GeneralSettingId.PROFILE,
     ) { modifier ->
