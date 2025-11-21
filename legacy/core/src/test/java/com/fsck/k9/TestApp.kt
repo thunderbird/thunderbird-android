@@ -18,7 +18,6 @@ import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.common.inject.factoryListOf
-import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.featureflag.InMemoryFeatureFlagProvider
 import net.thunderbird.core.logging.LogLevel
@@ -95,8 +94,8 @@ val testModule = module {
     single { mock<WorkManager>() }
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                emptyList<FeatureFlag>()
+            featureFlagFactory = mock {
+                on { createFeatureCatalog() } doReturn emptyList()
             },
         )
     }

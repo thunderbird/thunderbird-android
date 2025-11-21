@@ -34,6 +34,7 @@ val legacyCommonAppModule = module {
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
             featureFlagFactory = get(),
+            featureFlagOverrides = get(),
         )
     }
 }

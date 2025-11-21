@@ -24,7 +24,6 @@ import app.k9mail.core.ui.compose.designsystem.molecule.input.TextInput
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import kotlin.reflect.KClass
 import kotlinx.collections.immutable.ImmutableList
-import net.thunderbird.feature.debug.settings.DebugSection
 import net.thunderbird.feature.debug.settings.DebugSubSection
 import net.thunderbird.feature.debug.settings.R
 import net.thunderbird.feature.debug.settings.notification.DebugNotificationSectionContract.Event
@@ -76,31 +75,27 @@ internal fun DebugNotificationSection(
     onPreviewChange: (String) -> Unit = {},
     onClearStatusLog: () -> Unit = {},
 ) {
-    DebugSection(
-        title = stringResource(R.string.debug_settings_notifications_title),
+    Column(
+        verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quadruple),
         modifier = modifier,
     ) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(MainTheme.spacings.quadruple),
-        ) {
-            CommonNotificationInformation(state, onAccountSelect)
-            SystemNotificationSection(
-                state = state,
-                onOptionChange = onOptionChange,
-                onClick = onTriggerSystemNotificationClick,
-                onSenderChange = onSenderChange,
-                onSubjectChange = onSubjectChange,
-                onSummaryChange = onSummaryChange,
-                onPreviewChange = onPreviewChange,
-            )
-            InAppNotificationSection(
-                selectedNotificationType = state.selectedInAppNotificationType,
-                options = state.inAppNotificationTypes,
-                onOptionChange = onOptionChange,
-                onClick = onTriggerInAppNotificationClick,
-            )
-            NotificationStatusLog(state.notificationStatusLog, onClearStatusLog)
-        }
+        CommonNotificationInformation(state, onAccountSelect)
+        SystemNotificationSection(
+            state = state,
+            onOptionChange = onOptionChange,
+            onClick = onTriggerSystemNotificationClick,
+            onSenderChange = onSenderChange,
+            onSubjectChange = onSubjectChange,
+            onSummaryChange = onSummaryChange,
+            onPreviewChange = onPreviewChange,
+        )
+        InAppNotificationSection(
+            selectedNotificationType = state.selectedInAppNotificationType,
+            options = state.inAppNotificationTypes,
+            onOptionChange = onOptionChange,
+            onClick = onTriggerInAppNotificationClick,
+        )
+        NotificationStatusLog(state.notificationStatusLog, onClearStatusLog)
     }
 }
 
