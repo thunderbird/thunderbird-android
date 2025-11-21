@@ -56,6 +56,7 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedS
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSmileIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSpaIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedStarIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedUploadIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedWarningIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedWorkIcon
 
@@ -142,6 +143,7 @@ object Icons {
         val Person: ImageVector = OutlinedPersonIcon
         val Pets: ImageVector = OutlinedPetsIcon
 
+        val Report: ImageVector = Icons.Outlined.Report
         val Rocket: ImageVector = OutlinedRocketIcon
 
         val School: ImageVector = OutlinedSchoolIcon
@@ -153,7 +155,7 @@ object Icons {
         val Star: ImageVector = OutlinedStarIcon
         val Sync: ImageVector = Icons.Outlined.Sync
 
-        val Report: ImageVector = Icons.Outlined.Report
+        val Upload: ImageVector = OutlinedUploadIcon
 
         val Visibility: ImageVector = Icons.Outlined.Visibility
         val VisibilityOff: ImageVector = Icons.Filled.VisibilityOff
