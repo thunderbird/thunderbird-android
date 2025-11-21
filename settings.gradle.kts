@@ -190,6 +190,7 @@ include(
 
 include(
     ":core:ui:setting:api",
+    ":core:ui:setting:component",
     ":core:ui:setting:impl-dialog",
 )
 
