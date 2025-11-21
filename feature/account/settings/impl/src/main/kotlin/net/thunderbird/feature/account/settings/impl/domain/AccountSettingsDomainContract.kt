@@ -56,6 +56,10 @@ internal interface AccountSettingsDomainContract {
         data class StorageError(
             val message: String,
         ) : AccountSettingError
+
+        data class UnsupportedFormat(
+            val message: String,
+        ) : AccountSettingError
     }
 
     sealed interface ValidateAccountNameError : ValidationError {

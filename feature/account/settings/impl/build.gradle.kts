@@ -21,6 +21,7 @@ dependencies {
     implementation(projects.feature.account.avatar.impl)
 
     implementation(projects.core.featureflag)
+    implementation(projects.core.file)
     implementation(projects.core.outcome)
     implementation(projects.core.validation)
 

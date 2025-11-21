@@ -37,6 +37,7 @@ val featureAccountSettingsModule = module {
     factory<UseCase.UpdateAvatarImage> {
         UpdateAvatarImage(
             repository = get(),
+            mimeTypeResolver = get(),
         )
     }
 
