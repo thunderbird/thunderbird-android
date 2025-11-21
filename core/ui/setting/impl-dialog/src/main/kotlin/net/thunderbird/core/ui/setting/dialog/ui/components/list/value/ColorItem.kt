@@ -23,6 +23,7 @@ internal fun ColorItem(
             ColorView(
                 color = setting.value,
                 onClick = null,
+                size = MainTheme.sizes.iconLarge,
                 modifier = Modifier.padding(start = MainTheme.spacings.default),
             )
         },
