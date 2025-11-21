@@ -10,6 +10,7 @@ enum class CatalogMoleculePage(
     INPUT("Inputs"),
     STATE("States"),
     PULL_TO_REFRESH("Pull to refresh", isFullScreen = true),
+    TAB_ROW("Tab Rows"),
     ;
 
     override fun toString(): String {

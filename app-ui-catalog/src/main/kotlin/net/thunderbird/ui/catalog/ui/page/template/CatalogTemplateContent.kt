@@ -5,7 +5,9 @@ import androidx.compose.ui.Modifier
 import kotlinx.collections.immutable.ImmutableList
 import net.thunderbird.ui.catalog.ui.page.CatalogPageContract
 import net.thunderbird.ui.catalog.ui.page.common.PagedContent
+import net.thunderbird.ui.catalog.ui.page.template.CatalogTemplatePage.HORIZONTAL_PAGER
 import net.thunderbird.ui.catalog.ui.page.template.CatalogTemplatePage.LAYOUT
+import net.thunderbird.ui.catalog.ui.page.template.items.horizontalPagerItems
 import net.thunderbird.ui.catalog.ui.page.template.items.layoutItems
 
 @Composable
@@ -22,6 +24,7 @@ fun CatalogTemplateContent(
         onRenderPage = {
             when (it) {
                 LAYOUT -> layoutItems()
+                HORIZONTAL_PAGER -> horizontalPagerItems()
             }
         },
         onRenderFullScreenPage = {},
