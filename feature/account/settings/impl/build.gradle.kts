@@ -31,6 +31,8 @@ dependencies {
     implementation(projects.core.ui.compose.navigation)
     implementation(projects.core.common)
 
+    implementation(libs.uri)
+
     debugImplementation(projects.core.ui.setting.implDialog)
 
     testImplementation(projects.core.logging.testing)

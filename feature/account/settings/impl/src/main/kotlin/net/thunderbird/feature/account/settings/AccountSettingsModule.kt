@@ -7,6 +7,7 @@ import net.thunderbird.feature.account.settings.impl.DefaultAccountSettingsNavig
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.UseCase
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.GetAccountProfile
+import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateAvatarImage
 import net.thunderbird.feature.account.settings.impl.domain.usecase.UpdateGeneralSettings
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAccountName
 import net.thunderbird.feature.account.settings.impl.domain.usecase.ValidateAvatarMonogram
@@ -29,6 +30,12 @@ val featureAccountSettingsModule = module {
 
     factory<UseCase.GetAccountProfile> {
         GetAccountProfile(
+            repository = get(),
+        )
+    }
+
+    factory<UseCase.UpdateAvatarImage> {
+        UpdateAvatarImage(
             repository = get(),
         )
     }

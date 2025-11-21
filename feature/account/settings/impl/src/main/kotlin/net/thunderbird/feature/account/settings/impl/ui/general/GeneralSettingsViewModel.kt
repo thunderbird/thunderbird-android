@@ -76,6 +76,7 @@ internal class GeneralSettingsViewModel(
     private fun handleError(error: AccountSettingError) {
         when (error) {
             is AccountSettingError.NotFound -> Log.w(error.message)
+            is AccountSettingError.StorageError -> TODO()
         }
     }
 }
