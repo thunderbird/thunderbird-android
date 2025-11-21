@@ -71,6 +71,7 @@ val featureAccountSettingsModule = module {
             getAccountName = get(),
             getAccountProfile = get(),
             updateGeneralSettings = get(),
+            updateAvatarImage = get(),
         )
     }
 }

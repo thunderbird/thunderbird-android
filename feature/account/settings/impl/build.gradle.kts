@@ -26,6 +26,7 @@ dependencies {
     implementation(projects.core.validation)
 
     implementation(projects.core.ui.setting.api)
+    implementation(projects.core.ui.setting.component)
 
     implementation(projects.core.logging.implLegacy)
     implementation(projects.core.ui.compose.designsystem)

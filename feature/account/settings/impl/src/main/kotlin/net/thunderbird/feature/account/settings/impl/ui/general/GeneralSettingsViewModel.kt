@@ -22,6 +22,7 @@ internal class GeneralSettingsViewModel(
     private val getAccountName: UseCase.GetAccountName,
     private val getAccountProfile: UseCase.GetAccountProfile,
     private val updateGeneralSettings: UseCase.UpdateGeneralSettings,
+    private val updateAvatarImage: UseCase.UpdateAvatarImage,
     initialState: State = State(),
 ) : BaseViewModel<State, Event, Effect>(initialState), GeneralSettingsContract.ViewModel {
 
@@ -36,6 +37,19 @@ internal class GeneralSettingsViewModel(
             is Event.OnAvatarChange -> updateSetting(UpdateGeneralSettingCommand.UpdateAvatar(event.avatar))
             is Event.OnColorChange -> updateSetting(UpdateGeneralSettingCommand.UpdateColor(event.color))
             is Event.OnNameChange -> updateSetting(UpdateGeneralSettingCommand.UpdateName(event.name))
+            is Event.OnSelectAvatarImageClick -> emitEffect(Effect.OpenAvatarImagePicker)
+            is Event.OnAvatarImagePicked -> onAvatarImagePicked(event)
+        }
+    }
+
+    private fun onAvatarImagePicked(event: Event.OnAvatarImagePicked) {
+        viewModelScope.launch {
+            updateAvatarImage(accountId, event.uri).handle(
+                onSuccess = { avatarImage ->
+                    updateSetting(UpdateGeneralSettingCommand.UpdateAvatar(avatarImage))
+                },
+                onFailure = { handleError(it) },
+            )
         }
     }
 
