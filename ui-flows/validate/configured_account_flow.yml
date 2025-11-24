@@ -1,0 +1,14 @@
+appId: net.thunderbird.android.beta
+#maestro test ui-flows/validate/configured_account_flow.yml
+---
+## Get started with Thunderbird using an account that is already configured
+- runFlow:
+    file: ../validate/init_with_configured_account.yml
+
+## Compose an email and send it
+- runFlow:
+    file: ../validate/compose_simple_message.yml
+
+## Open an email, save the sender to contacts and then delete that contact
+- runFlow:
+    file: ../validate/emulator_message_details_show_contact_names.yml

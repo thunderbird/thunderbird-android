@@ -1,56 +1,50 @@
-appId: net.thunderbird.android.debug
+appId: net.thunderbird.android.beta
+#maestro test ui-flows/validate/compose_simple_message.yml
 ---
+## Compose an email and send it
 - runFlow:
-    file: ../shared/onboard_with_demo_account.yml
+    file: ../shared/onboard_with_configured_account.yml
+    env:
+      EMAIL_ADDRESS: "johntest5890@gmail.com"
+      ACCOUNT_NAME: "Demo Account"
+      DISPLAY_NAME: "Demo User"
     when:
       visible:
         id: "onboarding_welcome_start_button"
 
 ## Start composing
 - tapOn:
-    id: "net.thunderbird.android.debug:id/floating_action_button"
+    id: "net.thunderbird.android.beta:id/floating_action_button"
 
 ## Compose email
-
 ## To
 - tapOn:
-    id: "net.thunderbird.android.debug:id/to"
+    id: "net.thunderbird.android.beta:id/to"
 - inputText: "simple_compose@example.com"
-
-## Subject
-- tapOn:
-    id: "net.thunderbird.android.debug:id/subject"
-- inputText: "Simple compose test"
 
 ## Message
 - tapOn:
-    id: "net.thunderbird.android.debug:id/message_content"
+    id: "net.thunderbird.android.beta:id/message_content"
+    point: "56%,33%"
 - inputText: "Lorem ipsum dolor sit amet."
 
-## Send
+## Subject
 - tapOn:
-    id: "net.thunderbird.android.debug:id/send"
-
-## Open message
-- tapOn:
-    id: "net.thunderbird.android.debug:id/subject"
-    index: 0
-    text: "Simple compose test"
+    id: "net.thunderbird.android.beta:id/subject"
+- inputText: "Simple compose test"
 
 ## Assert
 - assertVisible:
-    id: "net.thunderbird.android.debug:id/subject"
+    id: "net.thunderbird.android.beta:id/subject"
     text: "Simple compose test"
 - assertVisible:
-    id: "net.thunderbird.android.debug:id/from"
-    text: "Demo User"
+    id: "net.thunderbird.android.beta:id/identity"
+    text: "johntest5890@gmail.com"
 - assertVisible:
-    id: "net.thunderbird.android.debug:id/recipient_names"
-    text: "to simple_compose@example.com"
+    id: "net.thunderbird.android.beta:id/to"
+    text: "simple_compose@example.com, "
 
-## Delete message
+## Send
 - tapOn:
-    id: "net.thunderbird.android.debug:id/delete"
-- assertNotVisible:
-    id: "net.thunderbird.android.debug:id/subject"
-    text: "Simple compose test"
+    id: "net.thunderbird.android.beta:id/send"
+

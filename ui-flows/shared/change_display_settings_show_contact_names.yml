@@ -1,4 +1,5 @@
-appId: net.thunderbird.android.debug
+appId: net.thunderbird.android.beta
+#maestro test ui-flows/shared/change_display_settings_show_contact_names.yml
 ---
 
 ## Open settings
@@ -12,10 +13,14 @@ appId: net.thunderbird.android.debug
     direction: DOWN
     timeout: 10000
 
-### Enable "Show contact names"
+### Check if show contact names is enabled
+#to be updated
+
+## Enable "Show contact names"
 - tapOn:
     id: "android:id/title"
     text: "Show contact names"
+    checked: "false"
 
 ### Close settings
 - runFlow: close_display_settings.yml

@@ -1,11 +1,10 @@
 appId: net.thunderbird.android.beta
 ---
 
-- tapOn:
-    id: "net.thunderbird.android.beta:id/participants_container"
+- assertVisible:
+    id: "net.thunderbird.android.beta:id/message_details_list"
 - swipe:
     from:
       id: "net.thunderbird.android.beta:id/message_details_list"
-    direction: UP
-
-
+    direction: DOWN
+    duration: 200
