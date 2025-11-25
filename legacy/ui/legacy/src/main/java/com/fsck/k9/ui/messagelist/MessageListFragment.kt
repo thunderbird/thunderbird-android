@@ -98,6 +98,7 @@ import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.outcome.Outcome
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -240,6 +241,8 @@ class MessageListFragment :
     private var error: Error? = null
 
     private var messageListSwipeCallback: MessageListSwipeCallback? = null
+    private val interactionSettings: InteractionSettings
+        get() = generalSettingsManager.getConfig().interaction
 
     /**
      * Set this to `true` when the fragment should be considered active. When active, the fragment adds its actions to
@@ -933,7 +936,7 @@ class MessageListFragment :
     }
 
     private fun onDelete(messages: List<MessageReference>) {
-        if (K9.isConfirmDelete) {
+        if (interactionSettings.isConfirmDelete) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
             showDialog(R.id.dialog_confirm_delete)
@@ -1543,7 +1546,7 @@ class MessageListFragment :
     }
 
     private fun onSpam(messages: List<MessageReference>) {
-        if (K9.isConfirmSpam) {
+        if (interactionSettings.isConfirmSpam) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages
             showDialog(R.id.dialog_confirm_spam)
@@ -2049,7 +2052,7 @@ class MessageListFragment :
         get() = isSingleAccountMode && isSingleFolderMode && !isOutbox
 
     private fun confirmMarkAllAsRead() {
-        if (K9.isConfirmMarkAllRead) {
+        if (interactionSettings.isConfirmMarkAllRead) {
             showDialog(R.id.dialog_confirm_mark_all_as_read)
         } else {
             markAllAsRead()

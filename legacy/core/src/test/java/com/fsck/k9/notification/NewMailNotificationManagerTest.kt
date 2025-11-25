@@ -24,6 +24,7 @@ import kotlin.time.Instant
 import net.thunderbird.core.android.account.LegacyAccountDto
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
@@ -56,9 +57,17 @@ class NewMailNotificationManagerTest {
         notificationContentCreator,
         createNotificationRepository(),
         BaseNotificationDataCreator(),
-        SingleMessageNotificationDataCreator(),
+        SingleMessageNotificationDataCreator(
+            interactionPreferences = mock {
+                on { getConfig() } doReturn InteractionSettings()
+            },
+        ),
         SummaryNotificationDataCreator(
-            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(),
+            singleMessageNotificationDataCreator = SingleMessageNotificationDataCreator(
+                interactionPreferences = mock {
+                    on { getConfig() } doReturn InteractionSettings()
+                },
+            ),
             generalSettingsManager = mock {
                 on { getConfig() } doReturn GeneralSettings(
                     display = DisplaySettings(),

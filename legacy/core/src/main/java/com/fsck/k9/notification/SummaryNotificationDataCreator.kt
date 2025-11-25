@@ -10,6 +10,8 @@ internal class SummaryNotificationDataCreator(
     private val singleMessageNotificationDataCreator: SingleMessageNotificationDataCreator,
     private val generalSettingsManager: GeneralSettingsManager,
 ) {
+    private val interactionSettings get() = generalSettingsManager.getConfig().interaction
+
     fun createSummaryNotificationData(data: NotificationData, silent: Boolean): SummaryNotificationData {
         val timestamp = data.latestTimestamp
         val shouldBeSilent = silent || generalSettingsManager.getConfig().notification.isQuietTime
@@ -75,7 +77,7 @@ internal class SummaryNotificationDataCreator(
 
     // We don't support confirming actions on Wear devices. So don't show the action when confirmation is enabled.
     private fun isDeleteActionAvailableForWear(): Boolean {
-        return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification
+        return isDeleteActionEnabled() && !interactionSettings.isConfirmDeleteFromNotification
     }
 
     private val NotificationData.latestTimestamp: Long

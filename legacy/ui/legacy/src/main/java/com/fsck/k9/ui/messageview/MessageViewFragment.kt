@@ -67,6 +67,7 @@ import net.thunderbird.core.android.account.LegacyAccountDtoManager
 import net.thunderbird.core.featureflag.FeatureFlagProvider
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager
+import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
@@ -136,6 +137,9 @@ class MessageViewFragment :
 
     private var isActive: Boolean = false
         private set
+
+    private val interactionSettings: InteractionSettings
+        get() = generalSettingsManager.getConfig().interaction
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -483,7 +487,10 @@ class MessageViewFragment :
     fun onDelete() {
         val message = checkNotNull(message)
 
-        if (K9.isConfirmDelete || K9.isConfirmDeleteStarred && message.isSet(Flag.FLAGGED)) {
+        if (interactionSettings.isConfirmDelete ||
+            interactionSettings.isConfirmDeleteStarred &&
+            message.isSet(Flag.FLAGGED)
+        ) {
             showDialog(R.id.dialog_confirm_delete)
         } else {
             delete()
@@ -527,7 +534,7 @@ class MessageViewFragment :
             return
         }
 
-        if (destinationFolderId == account.spamFolderId && K9.isConfirmSpam) {
+        if (destinationFolderId == account.spamFolderId && interactionSettings.isConfirmSpam) {
             this.destinationFolderId = destinationFolderId
             showDialog(R.id.dialog_confirm_spam)
         } else {
