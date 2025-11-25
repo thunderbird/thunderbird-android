@@ -8,6 +8,7 @@ import com.fsck.k9.UiDensity
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.AppLanguageManager
 import net.thunderbird.core.common.action.SwipeAction
+import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.BackgroundOps
 import net.thunderbird.core.preference.BodyContentType
@@ -147,6 +148,7 @@ class GeneralSettingsDataStore(
     }
 
     override fun getString(key: String, defValue: String?): String? {
+        val interactionSettings = generalSettingsManager.getConfig().interaction
         return when (key) {
             "language" -> appLanguageManager.getAppLanguage()
             "theme" -> appThemeToString(generalSettingsManager.getConfig().display.coreSettings.appTheme)
@@ -179,10 +181,10 @@ class GeneralSettingsDataStore(
             "message_view_subject_font" -> K9.fontSizes.messageViewSubject.toString()
             "message_view_date_font" -> K9.fontSizes.messageViewDate.toString()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
-            "swipe_action_right" -> swipeActionToString(K9.swipeRightAction)
-            "swipe_action_left" -> swipeActionToString(K9.swipeLeftAction)
+            "swipe_action_right" -> swipeActionToString(interactionSettings.swipeActions.rightAction)
+            "swipe_action_left" -> swipeActionToString(interactionSettings.swipeActions.leftAction)
             "message_list_density" -> K9.messageListDensity.toString()
-            "post_remove_navigation" -> generalSettingsManager.getConfig().interaction.messageViewPostRemoveNavigation
+            "post_remove_navigation" -> interactionSettings.messageViewPostRemoveNavigation
             "post_mark_as_unread_navigation" -> K9.messageViewPostMarkAsUnreadNavigation.name
             else -> defValue
         }
@@ -224,8 +226,8 @@ class GeneralSettingsDataStore(
             "message_view_subject_font" -> K9.fontSizes.messageViewSubject = value.toInt()
             "message_view_date_font" -> K9.fontSizes.messageViewDate = value.toInt()
             "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
-            "swipe_action_right" -> K9.swipeRightAction = stringToSwipeAction(value)
-            "swipe_action_left" -> K9.swipeLeftAction = stringToSwipeAction(value)
+            "swipe_action_right" -> updateSwipeAction(value) { swipeAction -> copy(rightAction = swipeAction) }
+            "swipe_action_left" -> updateSwipeAction(value) { swipeAction -> copy(leftAction = swipeAction) }
             "message_list_density" -> K9.messageListDensity = UiDensity.valueOf(value)
             "post_remove_navigation" -> setMessageViewPostRemoveNavigation(value)
             "post_mark_as_unread_navigation" -> {
@@ -786,5 +788,17 @@ class GeneralSettingsDataStore(
     private fun setTelemetryEnabled(enable: Boolean) {
         K9.isTelemetryEnabled = enable
         telemetryManager.setEnabled(enable)
+    }
+
+    private fun updateSwipeAction(value: String, update: SwipeActions.(SwipeAction) -> SwipeActions) {
+        skipSaveSettings = true
+        generalSettingsManager.update { settings ->
+            val interaction = settings.interaction
+            settings.copy(
+                interaction = interaction.copy(
+                    swipeActions = interaction.swipeActions.update(stringToSwipeAction(value)),
+                ),
+            )
+        }
     }
 }

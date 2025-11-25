@@ -44,6 +44,7 @@ data class MessageListActivityConfig(
             generalSettingsManager: GeneralSettingsManager,
         ): MessageListActivityConfig {
             val settings = generalSettingsManager.getConfig()
+            val interactionSettings = generalSettingsManager.getConfig().interaction
             return MessageListActivityConfig(
                 appTheme = settings.display.coreSettings.appTheme,
                 isShowUnifiedInbox = settings.display.inboxSettings.isShowUnifiedInbox,
@@ -70,8 +71,8 @@ data class MessageListActivityConfig(
                 fontSizeMessageViewSubject = K9.fontSizes.messageViewSubject,
                 fontSizeMessageViewDate = K9.fontSizes.messageViewDate,
                 fontSizeMessageViewContentAsPercent = K9.fontSizes.messageViewContentAsPercent,
-                swipeRightAction = K9.swipeRightAction,
-                swipeLeftAction = K9.swipeLeftAction,
+                swipeRightAction = interactionSettings.swipeActions.rightAction,
+                swipeLeftAction = interactionSettings.swipeActions.leftAction,
                 generalSettingsManager = generalSettingsManager,
             )
         }
