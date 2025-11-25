@@ -41,7 +41,7 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.isUnifiedFolders
 import com.fsck.k9.ui.BuildConfig
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.fsck.k9.ui.messagelist.MessageListFragment
@@ -84,8 +84,9 @@ private const val TAG = "MessageList"
  *
  * From this Activity the user can perform all standard message operations.
  */
+@Suppress("TooManyFunctions", "LargeClass")
 open class MessageList :
-    K9Activity(),
+    BaseActivity(),
     MessageListFragmentListener,
     MessageViewFragmentListener,
     MessageViewContainerListener,

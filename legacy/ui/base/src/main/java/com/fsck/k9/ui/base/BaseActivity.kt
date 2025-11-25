@@ -20,7 +20,9 @@ import java.util.Locale
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
 
-abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity() {
+abstract class BaseActivity(
+    private val themeType: ThemeType,
+) : AppCompatActivity() {
     constructor() : this(ThemeType.DEFAULT)
 
     private val pushController: PushController by inject()
@@ -53,7 +55,7 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
     // On Android 12+ the layout direction doesn't seem to be updated when recreating the activity. This is a problem
     // when switching from an LTR to an RTL language (or the other way around) using the language picker in the app.
     private fun setLayoutDirection() {
-        if (Build.VERSION.SDK_INT >= 31) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             window.decorView.layoutDirection = resources.configuration.layoutDirection
         }
     }

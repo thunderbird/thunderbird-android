@@ -18,7 +18,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.service.DatabaseUpgradeService;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.base.K9Activity;
+import com.fsck.k9.ui.base.BaseActivity;
 import com.google.android.material.textview.MaterialTextView;
 
 
@@ -58,7 +58,7 @@ import com.google.android.material.textview.MaterialTextView;
  * {@link DatabaseUpgradeService} is performing the upgrade.
  * </p>
  */
-public class UpgradeDatabases extends K9Activity {
+public class UpgradeDatabases extends BaseActivity {
     private static final String ACTION_UPGRADE_DATABASES = "upgrade_databases";
     private static final String EXTRA_START_INTENT = "start_intent";
 
