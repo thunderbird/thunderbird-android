@@ -917,4 +917,14 @@ Palun jäta see kiri alles ning kasuta seda muu hulgas oma krüptovõtme varunda
     <string name="debug_force_auth_failure_done">OAuthi olek on kustutatud. Järgmine päring ei õnnestu.</string>
     <string name="debug_force_auth_failure">Katse: käivita autentimise ebaõnnestumine</string>
     <string name="message_view_menu_action_export_eml">Ekspordi EML-failina</string>
+    <string name="account_setup_auto_select_folder">Vali kaust automaatselt</string>
+    <string name="navigation_drawer_preferences">Külgmenüü</string>
+    <string name="expand_folders">Laienda kaustad</string>
+    <string name="set_format_html_action">Kasuta algset vormindust</string>
+    <string name="set_format_html_condensed_action">Näita vormindatuna</string>
+    <string name="set_format_plain_action">Näita vormindamata kirja</string>
+    <string name="set_format_plain_condensed_action">Näita vormindamata kujul</string>
+    <string name="global_settings_messageview_body_content_type_title">Kirja sisu „Content-Type“</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Vormindamata tekst (text/plain)</string>
 </resources>

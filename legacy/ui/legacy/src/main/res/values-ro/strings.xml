@@ -922,4 +922,14 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
     <string name="debug_invalidate_access_token_cannot_modify">Nu s-a putut modifica jetonul de acces stocat. Încercați invalidarea locală.</string>
     <string name="debug_invalidate_access_token_already_modified">Jetonul de acces stocat a fost deja modificat.</string>
     <string name="message_view_menu_action_export_eml">Exportă ca EML</string>
+    <string name="account_setup_auto_select_folder">Selectare automată a dosarului</string>
+    <string name="navigation_drawer_preferences">Meniu lateral</string>
+    <string name="expand_folders">Expandare dosare</string>
+    <string name="set_format_html_action">Utilizați formatarea originală</string>
+    <string name="set_format_html_condensed_action">Afișează formatat</string>
+    <string name="set_format_plain_action">Afișează mesajul neformatat</string>
+    <string name="set_format_plain_condensed_action">Afișează neformatat</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipul conținutului corpului</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Text simplu (text/plain)</string>
 </resources>

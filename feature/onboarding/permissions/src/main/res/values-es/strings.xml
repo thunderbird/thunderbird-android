@@ -3,7 +3,7 @@
     <string name="onboarding_permissions_contacts_description">Concede el permiso para poder buscar destinatarios entre los contactos y que aparezcan sus nombres y fotos de perfil.</string>
     <string name="onboarding_permissions_notifications_description">Activa las notificaciones para no perderte ningún correo electrónico.</string>
     <string name="onboarding_permissions_notifications_title">Notificaciones</string>
-    <string name="onboarding_permissions_screen_title">Mejorar la experiencia</string>
+    <string name="onboarding_permissions_screen_title">Mejora la experiencia</string>
     <string name="onboarding_permissions_contacts_title">Contactos</string>
     <string name="onboarding_permissions_allow_button">Permitir</string>
     <string name="onboarding_permissions_skip_button">Omitir</string>

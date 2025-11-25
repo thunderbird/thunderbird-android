@@ -867,4 +867,14 @@
     <string name="debug_invalidate_access_token_unavailable">Níl aon chomhartha OAuth ar fáil don chuntas seo.</string>
     <string name="debug_invalidate_access_token_local">Tástáil: Comhartha rochtana neamhbhailí (áitiúil)</string>
     <string name="message_view_menu_action_export_eml">Easpórtáil mar EML</string>
+    <string name="account_setup_auto_select_folder">Fillteán a roghnú go huathoibríoch</string>
+    <string name="navigation_drawer_preferences">Roghchlár Taobh</string>
+    <string name="expand_folders">Leathnaigh Fillteáin</string>
+    <string name="set_format_html_action">Úsáid an fhormáidiú bunaidh</string>
+    <string name="set_format_html_condensed_action">Taispeáin formáidithe</string>
+    <string name="set_format_plain_action">Taispeáin teachtaireacht neamhfhormáidithe</string>
+    <string name="set_format_plain_condensed_action">Taispeáin neamhfhormáidithe</string>
+    <string name="global_settings_messageview_body_content_type_title">Cineál Ábhair Choirp</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (téacs/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Téacs simplí (téacs/simplí)</string>
 </resources>

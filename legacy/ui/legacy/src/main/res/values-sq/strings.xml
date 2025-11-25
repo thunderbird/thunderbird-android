@@ -911,4 +911,14 @@
     <string name="debug_force_auth_failure_unavailable">Për këtë llogari s’ka të formësuar OAuth.</string>
     <string name="debug_invalidate_access_token_cannot_modify">S’u ndryshua dot token hyrjesh i depozituar. Provoni bërjen lokalisht të pavlefshëm.</string>
     <string name="debug_invalidate_access_token_already_modified">Token-i i depozituar i hyrjeve është ndryshuar tashmë.</string>
+    <string name="account_setup_auto_select_folder">Vetëpërzgjidhe dosjen</string>
+    <string name="set_format_html_action">Përdor formatimin origjinal</string>
+    <string name="set_format_html_condensed_action">Shfaqe të formatuar</string>
+    <string name="set_format_plain_action">Shfaq mesazh të paformatuar</string>
+    <string name="set_format_plain_condensed_action">Shfaqe të paformatuar</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (tekst/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Tekst i thjeshtë (tekst/plain)</string>
+    <string name="navigation_drawer_preferences">Menu Anësore</string>
+    <string name="expand_folders">Zgjeroji Dosjet</string>
+    <string name="global_settings_messageview_body_content_type_title">Lloj Lënde Mesazhi</string>
 </resources>

@@ -928,4 +928,14 @@
     <string name="debug_invalidate_access_token_cannot_modify">Не вдалося змінити збережений токен доступу. Спробуйте локальну ануляцію.</string>
     <string name="debug_invalidate_access_token_already_modified">Збережений токен доступу вже змінено.</string>
     <string name="message_view_menu_action_export_eml">Експортувати як EML</string>
+    <string name="account_setup_auto_select_folder">Автоматичний вибір папки</string>
+    <string name="navigation_drawer_preferences">Бічне меню</string>
+    <string name="expand_folders">Розгорнути папки</string>
+    <string name="set_format_html_action">Використати оригінальне форматування</string>
+    <string name="set_format_html_condensed_action">Показати відформатовані</string>
+    <string name="set_format_plain_action">Показати неформатоване повідомлення</string>
+    <string name="set_format_plain_condensed_action">Показати неформатовані</string>
+    <string name="global_settings_messageview_body_content_type_title">Тип вмісту тіла</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (текст/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Звичайний текст (текст/звичайний)</string>
 </resources>

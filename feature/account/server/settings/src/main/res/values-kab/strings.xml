@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_server_settings_protocol_type_label">Aneggaf</string>
+    <string name="account_server_settings_server_label">Aqeddac</string>
+    <string name="account_server_settings_security_label">Taɣellist</string>
+    <string name="account_server_settings_port_label">Tawwurt</string>
+    <string name="account_server_settings_authentication_label">Asesteb</string>
+    <string name="account_server_settings_username_label">Isem n useqdac</string>
+    <string name="account_server_settings_connection_security_none">Ula d yiwet</string>
+    <string name="account_server_settings_connection_security_start_tls">StartTLS</string>
+    <string name="account_server_settings_connection_security_ssl">SSL/TLS</string>
+    <string name="account_server_settings_authentication_none">Ula d yiwen</string>
+    <string name="account_server_settings_client_certificate_none_selected">Ula d yiwen</string>
+    <string name="account_server_settings_authentication_client_oauth">OAuth 2.0</string>
+    <string name="account_server_settings_incoming_imap_compression_label">Seqdec tussda</string>
+    <string name="account_server_settings_password_authentication_failed">Asesteb yecceḍ!</string>
+    <string name="account_server_settings_outgoing_top_bar_title">Iɣewwaren n uqeddac yessuffuɣen</string>
+</resources>

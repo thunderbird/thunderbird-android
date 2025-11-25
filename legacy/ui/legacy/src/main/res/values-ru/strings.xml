@@ -931,4 +931,14 @@
     <string name="debug_invalidate_access_token_cannot_modify">Невозможно изменить сохранённый токен доступа. Попробуйте локальное аннулирование.</string>
     <string name="debug_invalidate_access_token_already_modified">Сохранённый токен доступа уже изменён.</string>
     <string name="message_view_menu_action_export_eml">Экспорт как EML</string>
+    <string name="set_format_html_action">Использовать исходное форматирование</string>
+    <string name="set_format_html_condensed_action">Показать форматированное</string>
+    <string name="set_format_plain_action">Показать неформатированное сообщение</string>
+    <string name="set_format_plain_condensed_action">Показать неформатированное</string>
+    <string name="global_settings_messageview_body_content_type_title">Тип содержимого</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Обычный текст (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Автовыбор папки</string>
+    <string name="navigation_drawer_preferences">Боковое меню</string>
+    <string name="expand_folders">Развернуть папки</string>
 </resources>

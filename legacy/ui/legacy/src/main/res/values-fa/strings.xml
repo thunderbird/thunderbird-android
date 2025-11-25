@@ -911,4 +911,21 @@
     <string name="debug_invalidate_access_token_server">آزمون: بی‌اعتباری ژتون دسترسی (کارساز)</string>
     <string name="debug_force_auth_failure">آزمون: اجبار شکست فوری</string>
     <string name="debug_invalidate_access_token_already_modified">ژتون دسترسی ذخیره شده از پیش تغییر کرده.</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">متن خام (text/plain)</string>
+    <string name="set_format_html_action">استفاده از قالب‌بندی اصلی</string>
+    <string name="set_format_html_condensed_action">نمایش قالب بسته</string>
+    <string name="set_format_plain_action">نمایش پیام بدون قالب بندی</string>
+    <string name="set_format_plain_condensed_action">نمایش بدون قالب بندی</string>
+    <string name="global_settings_messageview_body_content_type_title">گونهٔ محتوای بدنه</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="account_setup_auto_select_folder">گزینش خودکار شاخه</string>
+    <string name="navigation_drawer_preferences">فهرست کناری</string>
+    <string name="expand_folders">گسترش شاخه‌ها</string>
+    <string name="debug_invalidate_access_token_done">ژتون دسترسی از اعتبار ساقط شد. درخواست بعدی باز خواهد خواند.</string>
+    <string name="debug_invalidate_access_token_unavailable">هیچ ژتون OAuthای برای این حساب موجود نیست.</string>
+    <string name="debug_invalidate_access_token_local_done">درخواست نامعتبر سازی محلی شد. درخواست بعدی ژتونی جدید واخواهد کشید.</string>
+    <string name="debug_invalidate_access_token_server_done">ژتون دسترسی ذخیره شده خراب شد. درخواست بعدی شکست خورده و سپس بازخواهد خوانده شد.</string>
+    <string name="debug_force_auth_failure_done">وضعیت OAuth پاک شد. درخواست بعدی شکست خواهد خورد.</string>
+    <string name="debug_force_auth_failure_unavailable">هیچ پیکربندی OAuthای برای این حساب موجود نیست.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">نتوانست ژتون دسترسی ذخیره شده را دستگاری کند. آزمودن نامعتبر سازی محلی.</string>
 </resources>

@@ -916,4 +916,12 @@
     <string name="debug_force_auth_failure_unavailable">Ingen OAuth-konfigurasjon tilgjengeleg for denne kontoen.</string>
     <string name="debug_invalidate_access_token_cannot_modify">Kunne ikkje endre lagra tilgjengepollett. Prøv lokal invalidering.</string>
     <string name="debug_invalidate_access_token_already_modified">Lagra tilgjengepollett er allereie endra.</string>
+    <string name="set_format_html_action">Bruk original formattering</string>
+    <string name="set_format_html_condensed_action">Vis formatert</string>
+    <string name="set_format_plain_action">Vis uformatert melding</string>
+    <string name="set_format_plain_condensed_action">Vis uformatert</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (tekst/html)</string>
+    <string name="account_setup_auto_select_folder">Autoselekter mappe</string>
+    <string name="navigation_drawer_preferences">Sidemeny</string>
+    <string name="expand_folders">Utvid mapper</string>
 </resources>

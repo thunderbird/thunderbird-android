@@ -914,4 +914,14 @@
     <string name="debug_invalidate_access_token_cannot_modify">Kunne ikke modifisere det lagrede tilgangstokenet. Prøv lokal ugyldiggjøring.</string>
     <string name="debug_invalidate_access_token_already_modified">Det lagrede tilgangstokenet er allerede modifisert.</string>
     <string name="message_view_menu_action_export_eml">Eksporter som EML</string>
+    <string name="set_format_html_action">Bruk originalformattering</string>
+    <string name="set_format_html_condensed_action">Vis formatert</string>
+    <string name="set_format_plain_action">Vis den uformaterte meldingen</string>
+    <string name="set_format_plain_condensed_action">Vis uformatert</string>
+    <string name="global_settings_messageview_body_content_type_title">Brødtekstens innholdstype</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Uformatert tekst (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Velg mappe automatisk</string>
+    <string name="navigation_drawer_preferences">Sidemeny</string>
+    <string name="expand_folders">Utvid mapper</string>
 </resources>

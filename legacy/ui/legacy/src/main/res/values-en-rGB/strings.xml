@@ -381,7 +381,7 @@
     <string name="idle_refresh_period_2min">Every 2 minutes</string>
     <string name="message_compose_description_edit_quoted_text">Edit quoted text</string>
     <string name="font_size_small">Small</string>
-    <string name="empty_trash_action">Empty Trash</string>
+    <string name="empty_trash_action">Empty Bin</string>
     <string name="account_setup_incoming_delete_policy_label">When I delete a message</string>
     <string name="account_settings_signature__location_before_quoted_text">Before quoted message</string>
     <string name="compose_error_incomplete_recipient">Recipient field contains incomplete input!</string>
@@ -921,4 +921,14 @@
     <string name="debug_invalidate_access_token_cannot_modify">Could not modify stored access token. Try local invalidation.</string>
     <string name="debug_invalidate_access_token_already_modified">Stored access token already modified.</string>
     <string name="message_view_menu_action_export_eml">Export as EML</string>
+    <string name="account_setup_auto_select_folder">Auto-select folder</string>
+    <string name="navigation_drawer_preferences">Side Menu</string>
+    <string name="expand_folders">Expand Folders</string>
+    <string name="set_format_html_action">Use original formatting</string>
+    <string name="set_format_html_condensed_action">Show formatted</string>
+    <string name="set_format_plain_action">Show unformatted message</string>
+    <string name="set_format_plain_condensed_action">Show unformatted</string>
+    <string name="global_settings_messageview_body_content_type_title">Body Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Plain text (text/plain)</string>
 </resources>
