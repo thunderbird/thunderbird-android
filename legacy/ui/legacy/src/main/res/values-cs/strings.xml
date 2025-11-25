@@ -931,4 +931,14 @@ Tuto zprávu si můžete ponechat a použít jí jako zálohu svého tajného kl
     <string name="debug_invalidate_access_token_cannot_modify">Nepodařilo se upravit uložený přístupový token. Zkuste lokální zneplatnění.</string>
     <string name="debug_invalidate_access_token_already_modified">Uložený přístupový token již byl upraven.</string>
     <string name="message_view_menu_action_export_eml">Exportovat jako EML</string>
+    <string name="account_setup_auto_select_folder">Automaticky vybrat složku</string>
+    <string name="navigation_drawer_preferences">Postranní nabídka</string>
+    <string name="expand_folders">Rozbalit složky</string>
+    <string name="set_format_html_action">Použít originální formátování</string>
+    <string name="set_format_html_condensed_action">Zobrazit formátované</string>
+    <string name="set_format_plain_action">Zobrazit nefromátovanou zprávu</string>
+    <string name="set_format_plain_condensed_action">Zobrazit neformátované</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Pouze text (text/plain)</string>
+    <string name="global_settings_messageview_body_content_type_title">Typ obsahu těla</string>
 </resources>

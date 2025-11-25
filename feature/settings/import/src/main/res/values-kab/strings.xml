@@ -1,2 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="settings_import_pick_document_button">Fren afaylu</string>
+    <string name="settings_import_oauth_sign_in">Tuqqna</string>
+    <string name="settings_import_general_settings_item">Iɣewwaren imuta</string>
+    <string name="settings_import_scan_qr_code_button">Semḍen tangalt QR</string>
+    <string name="settings_import_pick_app_button">Kter-d seg usnas</string>
+    <string name="settings_import_pick_app_dialog_title">Kter-d seg usnas</string>
+    <string name="settings_import_authorization_required">Ttxil qqen</string>
+    <string name="settings_import_later_button">Ticki</string>
+    <string name="settings_import_title">Kter-d iɣewwaren</string>
+</resources>

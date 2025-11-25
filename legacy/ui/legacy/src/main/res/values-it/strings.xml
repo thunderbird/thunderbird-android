@@ -904,4 +904,27 @@
     <string name="debug_enable_sync_debug_logging_summary">Registra le informazioni diagnostiche di sincronizzazione per 24 ore</string>
     <string name="debug_open_secret_debug_screen">Apri la schermata di debug segreta</string>
     <string name="swipe_action_change_swipe_gestures">Cambia</string>
+    <string name="debug_invalidate_access_token_already_modified">Token di accesso memorizzato già modificato.</string>
+    <string name="set_format_html_action">Usa formattazione originale</string>
+    <string name="set_format_html_condensed_action">Mostra formattato</string>
+    <string name="set_format_plain_action">Mostra messaggio non formattato</string>
+    <string name="set_format_plain_condensed_action">Mostra non formattato</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Testo semplice (text/plain)</string>
+    <string name="account_setup_auto_select_folder">Auto-seleziona cartella</string>
+    <string name="navigation_drawer_preferences">Menu Laterale</string>
+    <string name="expand_folders">Espandi Cartelle</string>
+    <string name="debug_invalidate_access_token">Test: invalida il token di accesso</string>
+    <string name="debug_invalidate_access_token_done">Token di accesso invalidato. La prossima richiesta verrà aggiornata.</string>
+    <string name="debug_invalidate_access_token_unavailable">Nessun token OAuth disponibile per questo account.</string>
+    <string name="debug_invalidate_access_token_local">Test: invalida il token di accesso (locale)</string>
+    <string name="debug_invalidate_access_token_local_done">Richiesta invalidazione locale. La prossima richiesta recupererà un nuovo token.</string>
+    <string name="debug_invalidate_access_token_server">Test: invalidare il token di accesso (server)</string>
+    <string name="debug_invalidate_access_token_server_done">Token di accesso memorizzato danneggiato. La richiesta successiva fallirà e poi verrà aggiornata.</string>
+    <string name="debug_force_auth_failure">Test: forza ora l\'errore di autenticazione</string>
+    <string name="debug_force_auth_failure_done">Stato di OAuth cancellato. La prossima richiesta fallirà.</string>
+    <string name="debug_force_auth_failure_unavailable">Nessuna configurazione OAuth disponibile per questo account.</string>
+    <string name="debug_invalidate_access_token_cannot_modify">Impossibile modificare il token di accesso memorizzato. Prova l\'invalidazione locale.</string>
+    <string name="message_view_menu_action_export_eml">Esporta come EML</string>
+    <string name="global_settings_messageview_body_content_type_title">Corpo del messaggio come</string>
 </resources>

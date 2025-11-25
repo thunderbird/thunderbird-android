@@ -911,4 +911,14 @@
     <string name="debug_invalidate_access_token_cannot_modify">Kan opgeslagen toegangstoken niet bewerken. Probeer lokale ongeldigheid.</string>
     <string name="debug_invalidate_access_token_already_modified">Opgeslagen toegangstoken is al aangepast.</string>
     <string name="message_view_menu_action_export_eml">Exporteren als EML</string>
+    <string name="account_setup_auto_select_folder">Map automatisch selecteren</string>
+    <string name="navigation_drawer_preferences">Zijmenu</string>
+    <string name="expand_folders">Mappen uitvouwen</string>
+    <string name="set_format_html_action">Originele opmaak gebruiken</string>
+    <string name="set_format_html_condensed_action">Opgemaakt tonen</string>
+    <string name="set_format_plain_action">Niet-opgemaakt bericht tonen</string>
+    <string name="set_format_plain_condensed_action">Niet-opgemaakt tonen</string>
+    <string name="global_settings_messageview_body_content_type_title">Inhoudstype tekst</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
 </resources>

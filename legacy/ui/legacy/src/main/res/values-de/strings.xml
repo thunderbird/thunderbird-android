@@ -915,4 +915,14 @@ Du kannst diese Nachricht aufheben und sie als Backup f체r deinen geheimen Schl�
     <string name="debug_invalidate_access_token_cannot_modify">Das gespeicherte Zugriffstoken konnte nicht ge채ndert werden. Versuche eine lokale Ung체ltigkeitserkl채rung.</string>
     <string name="debug_invalidate_access_token_already_modified">Gespeichertes Zugriffstoken bereits ge채ndert.</string>
     <string name="message_view_menu_action_export_eml">Als EML exportieren</string>
+    <string name="expand_folders">Ordner erweitern</string>
+    <string name="navigation_drawer_preferences">Seitenmen체</string>
+    <string name="set_format_html_action">Originalformatierung verwenden</string>
+    <string name="set_format_html_condensed_action">Formatiert anzeigen</string>
+    <string name="set_format_plain_condensed_action">Unformatiert anzeigen</string>
+    <string name="set_format_plain_action">Unformatierte Nachricht anzeigen</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (Text/HTML)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Nur Text (Text/Klartext)</string>
+    <string name="account_setup_auto_select_folder">Ordner automatisch ausw채hlen</string>
+    <string name="global_settings_messageview_body_content_type_title">Inhaltstyp des Textes</string>
 </resources>

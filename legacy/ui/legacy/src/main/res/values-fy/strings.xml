@@ -911,4 +911,14 @@
     <string name="debug_invalidate_access_token_cannot_modify">Kin bewarre tagongstoken net bewurkje. Probearje lokale ûnjildichheid.</string>
     <string name="debug_invalidate_access_token_already_modified">Bewarre tagongstoken is al oanpast.</string>
     <string name="message_view_menu_action_export_eml">Eksportearje as EML</string>
+    <string name="account_setup_auto_select_folder">Map automatysk selektearje</string>
+    <string name="navigation_drawer_preferences">Sidemenu</string>
+    <string name="expand_folders">Mappen útklappe</string>
+    <string name="set_format_html_action">Orizjinele opmaak brûke</string>
+    <string name="set_format_html_condensed_action">Opmakke toane</string>
+    <string name="set_format_plain_action">Net-opmakke berjocht toane</string>
+    <string name="set_format_plain_condensed_action">Net-opmakke toane</string>
+    <string name="global_settings_messageview_body_content_type_title">Ynhâldstype tekst</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Platte tekst (text/plain)</string>
 </resources>
