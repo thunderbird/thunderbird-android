@@ -669,7 +669,7 @@
     <string name="compose_error_no_key_configured">此账号未配置密钥！请检查您的设置。</string>
     <string name="error_crypto_provider_incompatible">加密提供程序使用不兼容的版本。请检查您的设置！</string>
     <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查您的设置或点击加密图标重试！</string>
-    <string name="error_crypto_provider_ui_required">无法初始化端到端加密，请检查您的设置‌</string>
+    <string name="error_crypto_provider_ui_required">无法初始化端到端加密，请检查您的设置</string>
     <string name="error_crypto_inline_attach">PGP/INLINE 模式不支持附件！</string>
     <string name="enable_inline_pgp">启用 PGP/INLINE</string>
     <string name="disable_inline_pgp">禁用 PGP/INLINE</string>
@@ -905,4 +905,14 @@
     <string name="debug_invalidate_access_token_cannot_modify">无法修改存储的访问令牌。请尝试本地失效。</string>
     <string name="debug_invalidate_access_token_already_modified">存储的访问令牌已修改。</string>
     <string name="message_view_menu_action_export_eml">导出为 EML</string>
+    <string name="account_setup_auto_select_folder">自动选择文件夹</string>
+    <string name="navigation_drawer_preferences">侧边菜单</string>
+    <string name="expand_folders">展开文件夹</string>
+    <string name="set_format_html_action">使用原始格式</string>
+    <string name="set_format_html_condensed_action">显示调整过格式的</string>
+    <string name="set_format_plain_action">显示未调整格式的消息</string>
+    <string name="set_format_plain_condensed_action">显示未调整格式的</string>
+    <string name="global_settings_messageview_body_content_type_title">正文内容类型</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">纯文本（text/plain）</string>
 </resources>

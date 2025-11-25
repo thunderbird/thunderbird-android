@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="account_server_validation_incoming_loading_message">Comprobando los ajustes del servidor entrante…</string>
-    <string name="account_server_validation_error_authentication">Error de autenticación</string>
+    <string name="account_server_validation_error_authentication">Error en la autenticación</string>
     <string name="account_server_validation_outgoing_loading_message">Comprobando los ajustes del servidor saliente…</string>
     <string name="account_server_validation_error_network">Error de red</string>
     <string name="account_server_validation_outgoing_success">Configuración del servidor saliente verificada</string>

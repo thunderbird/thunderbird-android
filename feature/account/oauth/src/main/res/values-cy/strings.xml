@@ -1,2 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="account_oauth_sign_in_description">Byddwn yn eich ailgyfeirio i\'ch darparwr e-bost er mwyn mewngofnodi. Mae angen i chi gyflwyno mynediad i\'r ap i\'ch cyfrif e-bost.</string>
+</resources>

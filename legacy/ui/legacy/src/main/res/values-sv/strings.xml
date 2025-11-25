@@ -917,4 +917,14 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
     <string name="debug_invalidate_access_token_cannot_modify">Kunde inte ändra den lagrade åtkomsttoken. Försök med lokal ogiltigförklaring.</string>
     <string name="debug_invalidate_access_token_already_modified">Lagrad åtkomsttoken har redan ändrats.</string>
     <string name="message_view_menu_action_export_eml">Exportera som EML</string>
+    <string name="account_setup_auto_select_folder">Välj mapp automatiskt</string>
+    <string name="navigation_drawer_preferences">Sidomeny</string>
+    <string name="expand_folders">Expandera mappar</string>
+    <string name="set_format_html_action">Använd originalformatering</string>
+    <string name="set_format_html_condensed_action">Visa formaterad</string>
+    <string name="set_format_plain_action">Visa oformaterat meddelande</string>
+    <string name="set_format_plain_condensed_action">Visa oformaterad</string>
+    <string name="global_settings_messageview_body_content_type_title">Innehållstyp för brödtext</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Oformaterad text (text/oformaterad)</string>
 </resources>

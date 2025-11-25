@@ -895,4 +895,21 @@
     <string name="archiving_not_available_for_this_account">このアカウントではアーカイブは利用できません。</string>
     <string name="swipe_action_change_swipe_gestures">スワイプ操作を \n変更してください</string>
     <string name="debug_open_secret_debug_screen">隠しデバッグ画面を開く</string>
+    <string name="message_view_menu_action_export_eml">EML にエクスポート</string>
+    <string name="set_format_html_action">オリジナルのフォーマットを使用</string>
+    <string name="set_format_plain_action">フォーマットなしでメッセージを表示</string>
+    <string name="global_settings_messageview_body_content_type_title">本文の Content-Type</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">プレーンテキスト (text/plain)</string>
+    <string name="navigation_drawer_preferences">サイドメニュー</string>
+    <string name="expand_folders">フォルダーを展開する</string>
+    <string name="set_format_html_condensed_action">フォーマット付きで表示</string>
+    <string name="set_format_plain_condensed_action">フォーマットなしで表示</string>
+    <string name="account_setup_auto_select_folder">自動選択のフォルダー</string>
+    <string name="debug_invalidate_access_token">テスト: 無効なアクセストークン</string>
+    <string name="debug_invalidate_access_token_done">アクセストークンが無効です。再度リクエストするとリフレッシュします。</string>
+    <string name="debug_invalidate_access_token_unavailable">このアカウントで利用可能な OAuth トークンはありません。</string>
+    <string name="debug_invalidate_access_token_local">テスト: 無効なアクセストークン (ローカル)</string>
+    <string name="debug_invalidate_access_token_local_done">ローカルで無効化が要求されました。次のリクエストで新しいトークンを取得します。</string>
+    <string name="debug_invalidate_access_token_server">テスト: 無効なアクセストークン (サーバー)</string>
 </resources>

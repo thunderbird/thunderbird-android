@@ -917,4 +917,14 @@
     <string name="debug_invalidate_access_token_cannot_modify">No se pudo guardar el token de acceso. Prueba recreándolo de forma local.</string>
     <string name="debug_invalidate_access_token_already_modified">El token de acceso almacenado ya se ha modificado.</string>
     <string name="message_view_menu_action_export_eml">Exportar como EML</string>
+    <string name="account_setup_auto_select_folder">Seleccionar carpeta automáticamente</string>
+    <string name="navigation_drawer_preferences">Menú lateral</string>
+    <string name="expand_folders">Expandir carpetas</string>
+    <string name="set_format_html_action">Utilizar el formato original</string>
+    <string name="set_format_html_condensed_action">Ver con formato</string>
+    <string name="set_format_plain_action">Ver correo sin formato</string>
+    <string name="set_format_plain_condensed_action">Ver sin formato</string>
+    <string name="global_settings_messageview_body_content_type_text_plain">Texto plano (text/plain)</string>
+    <string name="global_settings_messageview_body_content_type_title">Tipo de contenido del cuerpo del mensaje</string>
+    <string name="global_settings_messageview_body_content_type_text_html">HTML (text/html)</string>
 </resources>
