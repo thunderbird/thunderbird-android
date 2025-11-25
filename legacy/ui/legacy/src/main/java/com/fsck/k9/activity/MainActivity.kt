@@ -77,15 +77,23 @@ import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-private const val TAG = "MessageList"
+private const val TAG = "MainActivity"
 
 /**
- * MessageList is the primary user interface for the program. This Activity shows a list of messages.
+ * The primary user interface of the application, responsible for displaying and managing the main screen.
  *
- * From this Activity the user can perform all standard message operations.
+ * This Activity serves as the central hub for navigation and content display. It is launched when the
+ * application is started from the launcher icon and also handles deep links, such as when a user taps on a
+ * "View Message" notification.
+ *
+ * `MainActivity` manages the overall layout, including the navigation drawer and the main content area,
+ * which currently displays either a [MessageListFragment] or a [MessageViewContainerFragment]. It orchestrates
+ * the interactions between these fragments and handles the back stack. The responsibilities for managing the
+ * action bar, search functionality, and single-pane/split-view layout logic are currently handled here but
+ * are intended to be refactored into more dedicated components over time.
  */
 @Suppress("TooManyFunctions", "LargeClass")
-open class MessageList :
+open class MainActivity :
     BaseActivity(),
     MessageListFragmentListener,
     MessageViewFragmentListener,
@@ -141,6 +149,7 @@ open class MessageList :
     private val isShowAccountIndicator: Boolean
         get() = messageListFragment?.isShowAccountIndicator ?: true
 
+    @Suppress("ReturnCount")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -175,11 +184,11 @@ open class MessageList :
         } else {
             setLayout(R.layout.message_list)
             viewSwitcher = findViewById<ViewSwitcher>(R.id.container).apply {
-                firstInAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_in_left)
-                firstOutAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_out_right)
-                secondInAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_in_right)
-                secondOutAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_out_left)
-                setOnSwitchCompleteListener(this@MessageList)
+                firstInAnimation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.slide_in_left)
+                firstOutAnimation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.slide_out_right)
+                secondInAnimation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.slide_in_right)
+                secondOutAnimation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.slide_out_left)
+                setOnSwitchCompleteListener(this@MainActivity)
             }
         }
 
@@ -211,6 +220,7 @@ open class MessageList :
         }
     }
 
+    @Suppress("ReturnCount")
     public override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
@@ -259,9 +269,9 @@ open class MessageList :
 
     private fun findFragments() {
         val fragmentManager = supportFragmentManager
-        messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as MessageListFragment?
+        messageListFragment = fragmentManager.findFragmentById(R.id.message_list_container) as? MessageListFragment
         messageViewContainerFragment =
-            fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as MessageViewContainerFragment?
+            fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW_CONTAINER) as? MessageViewContainerFragment
 
         messageListFragment?.let { messageListFragment ->
             messageViewContainerFragment?.setViewModel(messageListFragment.viewModel)
@@ -413,6 +423,7 @@ open class MessageList :
         return true
     }
 
+    @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth", "ReturnCount")
     private fun decodeExtrasToLaunchData(intent: Intent): LaunchData {
         val action = intent.action
         val queryString = intent.getStringExtra(SearchManager.QUERY)
@@ -759,6 +770,7 @@ open class MessageList :
         return eventHandled
     }
 
+    @Suppress("NestedBlockDepth")
     override fun onBackPressed() {
         if (isDrawerEnabled && navigationDrawer!!.isOpen) {
             navigationDrawer!!.close()
@@ -800,6 +812,7 @@ open class MessageList :
      *
      * @return `true` if this event was consumed.
      */
+    @Suppress("LongMethod", "CyclomaticComplexMethod", "ReturnCount")
     private fun onCustomKeyDown(event: KeyEvent): Boolean {
         if (!event.hasNoModifiers()) return false
 
@@ -976,6 +989,7 @@ open class MessageList :
         return super.onKeyUp(keyCode, event)
     }
 
+    @Suppress("NestedBlockDepth")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == android.R.id.home) {
@@ -1549,7 +1563,7 @@ open class MessageList :
             newTask: Boolean,
             clearTop: Boolean,
         ): Intent {
-            return Intent(context, MessageList::class.java).apply {
+            return Intent(context, MainActivity::class.java).apply {
                 if (search != null) {
                     putExtra(EXTRA_SEARCH, LocalMessageSearchSerializer.serialize(search))
                 }
@@ -1566,7 +1580,7 @@ open class MessageList :
             context: Context,
             account: LegacyAccountDto,
         ): Intent {
-            return Intent(context, MessageList::class.java).apply {
+            return Intent(context, MainActivity::class.java).apply {
                 val search = SearchAccount.createUnifiedFoldersSearch(
                     title = coreResourceProvider.searchUnifiedFoldersTitle(),
                     detail = coreResourceProvider.searchUnifiedFoldersDetail(),
@@ -1594,7 +1608,7 @@ open class MessageList :
 
         @JvmStatic
         fun shortcutIntent(context: Context?, specialFolder: String?): Intent {
-            return Intent(context, MessageList::class.java).apply {
+            return Intent(context, MainActivity::class.java).apply {
                 action = ACTION_SHORTCUT
                 putExtra(EXTRA_SPECIAL_FOLDER, specialFolder)
 
@@ -1606,7 +1620,7 @@ open class MessageList :
 
         @JvmStatic
         fun shortcutIntentForAccount(context: Context, accountUuid: String): Intent {
-            return Intent(context, MessageList::class.java).apply {
+            return Intent(context, MainActivity::class.java).apply {
                 action = ACTION_SHORTCUT
                 putExtra(EXTRA_ACCOUNT, accountUuid)
 
@@ -1632,7 +1646,7 @@ open class MessageList :
             openInUnifiedInbox: Boolean,
             messageViewOnly: Boolean,
         ): Intent {
-            return Intent(context, MessageList::class.java).apply {
+            return Intent(context, MainActivity::class.java).apply {
                 if (openInUnifiedInbox) {
                     val search = SearchAccount.createUnifiedFoldersSearch(
                         title = coreResourceProvider.searchUnifiedFoldersTitle(),
@@ -1656,7 +1670,7 @@ open class MessageList :
 
         @JvmStatic
         fun launch(context: Context) {
-            val intent = Intent(context, MessageList::class.java).apply {
+            val intent = Intent(context, MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
@@ -1688,7 +1702,7 @@ open class MessageList :
 
         @JvmStatic
         fun recreateMessageList(context: Context) {
-            val intent = Intent(context, MessageList::class.java).apply {
+            val intent = Intent(context, MainActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }

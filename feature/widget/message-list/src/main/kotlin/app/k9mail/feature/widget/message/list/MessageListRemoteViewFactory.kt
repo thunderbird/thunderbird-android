@@ -9,7 +9,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService.RemoteViewsFactory
 import androidx.core.content.ContextCompat
 import com.fsck.k9.CoreResourceProvider
-import com.fsck.k9.activity.MessageList
+import com.fsck.k9.activity.MainActivity
 import net.thunderbird.core.android.account.SortType
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.feature.search.legacy.LocalMessageSearch
@@ -103,7 +103,7 @@ internal class MessageListRemoteViewFactory(private val context: Context) : Remo
             remoteView.setInt(R.id.attachment, "setVisibility", View.GONE)
         }
 
-        val intent = MessageList.actionDisplayMessageTemplateFillIntent(item.messageReference)
+        val intent = MainActivity.actionDisplayMessageTemplateFillIntent(item.messageReference)
         remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent)
 
         remoteView.setInt(R.id.chip, "setBackgroundColor", item.accountColor)
