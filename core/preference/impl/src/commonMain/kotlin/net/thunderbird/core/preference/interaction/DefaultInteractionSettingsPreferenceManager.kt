@@ -10,9 +10,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import net.thunderbird.core.common.action.SwipeActions
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.getEnumOrDefault
+import net.thunderbird.core.preference.storage.putEnum
 
 private const val TAG = "DefaultInteractionSettingsPreferenceManager"
 
@@ -44,6 +47,16 @@ class DefaultInteractionSettingsPreferenceManager(
             KEY_MESSAGE_VIEW_POST_DELETE_ACTION,
             INTERACTION_SETTINGS_DEFAULT_MESSAGE_VIEW_POST_REMOVE_NAVIGATION,
         ),
+        swipeActions = SwipeActions(
+            leftAction = storage.getEnumOrDefault(
+                key = KEY_SWIPE_ACTION_LEFT,
+                default = INTERACTION_SETTINGS_DEFAULT_SWIPE_ACTION.leftAction,
+            ),
+            rightAction = storage.getEnumOrDefault(
+                key = KEY_SWIPE_ACTION_RIGHT,
+                default = INTERACTION_SETTINGS_DEFAULT_SWIPE_ACTION.rightAction,
+            ),
+        ),
     )
 
     private fun writeConfig(config: InteractionSettings) {
@@ -52,6 +65,8 @@ class DefaultInteractionSettingsPreferenceManager(
             mutex.withLock {
                 storageEditor.putBoolean(KEY_USE_VOLUME_KEYS_FOR_NAVIGATION, config.useVolumeKeysForNavigation)
                 storageEditor.putString(KEY_MESSAGE_VIEW_POST_DELETE_ACTION, config.messageViewPostRemoveNavigation)
+                storageEditor.putEnum(KEY_SWIPE_ACTION_LEFT, config.swipeActions.leftAction)
+                storageEditor.putEnum(KEY_SWIPE_ACTION_RIGHT, config.swipeActions.rightAction)
                 storageEditor.commit().also { commited ->
                     logger.verbose(TAG) { "writeConfig: storageEditor.commit() resulted in: $commited" }
                 }

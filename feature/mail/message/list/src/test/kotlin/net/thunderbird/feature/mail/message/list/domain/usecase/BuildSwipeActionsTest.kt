@@ -17,10 +17,11 @@ import net.thunderbird.core.common.appConfig.PlatformConfigProvider
 import net.thunderbird.core.preference.GeneralSettings
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.display.DisplaySettings
+import net.thunderbird.core.preference.interaction.KEY_SWIPE_ACTION_LEFT
+import net.thunderbird.core.preference.interaction.KEY_SWIPE_ACTION_RIGHT
 import net.thunderbird.core.preference.network.NetworkSettings
 import net.thunderbird.core.preference.notification.NotificationPreference
 import net.thunderbird.core.preference.privacy.PrivacySettings
-import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.mail.message.list.fakes.FakeAccount
 import net.thunderbird.feature.mail.message.list.fakes.FakeAccountManager
 
@@ -56,7 +57,7 @@ class BuildSwipeActionsTest {
     }
 
     @Test
-    fun `invoke should return map with SwipeActions(ToggleRead, ToggleRead) when no user preference is stored`() {
+    fun `invoke should return map with SwipeActions(ToggleRead, ToggleSelection) when no user preference is stored`() {
         // Arrange
         val uuid = Uuid.random().toHexString()
         val uuids = setOf(uuid)
@@ -77,7 +78,7 @@ class BuildSwipeActionsTest {
             containsOnly(
                 uuid to SwipeActions(
                     leftAction = SwipeAction.ToggleRead,
-                    rightAction = SwipeAction.ToggleRead,
+                    rightAction = SwipeAction.ToggleSelection,
                 ),
             )
         }
@@ -107,7 +108,7 @@ class BuildSwipeActionsTest {
                     .associateWith {
                         SwipeActions(
                             leftAction = SwipeAction.ToggleRead,
-                            rightAction = SwipeAction.ToggleRead,
+                            rightAction = SwipeAction.ToggleSelection,
                         )
                     }
                     .map { it.key to it.value }
@@ -117,14 +118,14 @@ class BuildSwipeActionsTest {
     }
 
     @Test
-    fun `invoke should return map with SwipeActions(None, ToggleRead) when left action is stored as None but right is not`() {
+    fun `invoke should return map with SwipeActions(None, ToggleSelection) when left action is stored as None but right is not`() {
         // Arrange
         val uuid = Uuid.random().toHexString()
         val uuids = setOf(uuid)
         val testSubject = createTestSubject(
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
-                SwipeActions.KEY_SWIPE_ACTION_LEFT to SwipeAction.None.name,
+                KEY_SWIPE_ACTION_LEFT to SwipeAction.None,
             ),
         )
 
@@ -141,7 +142,7 @@ class BuildSwipeActionsTest {
             containsOnly(
                 uuid to SwipeActions(
                     leftAction = SwipeAction.None,
-                    rightAction = SwipeAction.ToggleRead,
+                    rightAction = SwipeAction.ToggleSelection,
                 ),
             )
         }
@@ -155,7 +156,7 @@ class BuildSwipeActionsTest {
         val testSubject = createTestSubject(
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
-                SwipeActions.KEY_SWIPE_ACTION_RIGHT to SwipeAction.Delete.name,
+                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Delete,
             ),
         )
 
@@ -186,8 +187,8 @@ class BuildSwipeActionsTest {
         val testSubject = createTestSubject(
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
-                SwipeActions.KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive.name,
-                SwipeActions.KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive.name,
+                KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
+                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
             ),
         )
 
@@ -218,8 +219,8 @@ class BuildSwipeActionsTest {
         val testSubject = createTestSubject(
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
-                SwipeActions.KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive.name,
-                SwipeActions.KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive.name,
+                KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
+                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
             ),
         )
 
@@ -257,8 +258,8 @@ class BuildSwipeActionsTest {
             ),
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
-                SwipeActions.KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive.name,
-                SwipeActions.KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive.name,
+                KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
+                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
             ),
         )
 
@@ -302,8 +303,8 @@ class BuildSwipeActionsTest {
             ),
             accountsUuids = uuids.toList(),
             storageValues = mapOf(
-                SwipeActions.KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive.name,
-                SwipeActions.KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive.name,
+                KEY_SWIPE_ACTION_LEFT to SwipeAction.Archive,
+                KEY_SWIPE_ACTION_RIGHT to SwipeAction.Archive,
             ),
         )
 
@@ -339,7 +340,7 @@ class BuildSwipeActionsTest {
         // Arrange
         val uuids = List(size = Random.nextInt(from = 1, until = 100)) { Uuid.random().toHexString() }
         val accountManagerUuids =
-            List(size = Random.nextInt(from = 1, until = 100)) { Uuid.random().toHexString() } - uuids
+            List(size = Random.nextInt(from = 1, until = 100)) { Uuid.random().toHexString() } - uuids.toSet()
         val testSubject = createTestSubject(accountsUuids = accountManagerUuids)
 
         // Act
@@ -356,11 +357,28 @@ class BuildSwipeActionsTest {
     private fun createTestSubject(
         initialGeneralSettings: GeneralSettings = defaultGeneralSettings,
         accountsUuids: List<String>,
-        storageValues: Map<String, String> = mapOf(),
+        storageValues: Map<String, SwipeAction> = mapOf(),
     ): BuildSwipeActions = BuildSwipeActions(
-        generalSettingsManager = FakeGeneralSettingsManager(initialGeneralSettings),
+        generalSettingsManager = FakeGeneralSettingsManager(
+            initialGeneralSettings.let { settings ->
+                if (storageValues.isNotEmpty() &&
+                    (KEY_SWIPE_ACTION_LEFT in storageValues || KEY_SWIPE_ACTION_RIGHT in storageValues)
+                ) {
+                    val swipeActions = settings.interaction.swipeActions
+                    settings.copy(
+                        interaction = settings.interaction.copy(
+                            swipeActions = swipeActions.copy(
+                                leftAction = storageValues[KEY_SWIPE_ACTION_LEFT] ?: swipeActions.leftAction,
+                                rightAction = storageValues[KEY_SWIPE_ACTION_RIGHT] ?: swipeActions.rightAction,
+                            ),
+                        ),
+                    )
+                } else {
+                    settings
+                }
+            },
+        ),
         accountManager = FakeAccountManager(accounts = accountsUuids.map { FakeAccount(uuid = it) }),
-        storage = FakeStorage(storageValues),
     )
 }
 
@@ -379,28 +397,6 @@ private class FakeGeneralSettingsManager(
     override fun getConfig(): GeneralSettings = generalSettings.value
 
     override fun getConfigFlow(): Flow<GeneralSettings> = generalSettings
-}
-
-private class FakeStorage(
-    private val values: Map<String, String>,
-) : Storage {
-    override fun isEmpty(): Boolean = error("not implemented")
-
-    override fun contains(key: String): Boolean = error("not implemented")
-
-    override fun getAll(): Map<String, String> = error("not implemented")
-
-    override fun getBoolean(key: String, defValue: Boolean): Boolean = error("not implemented")
-
-    override fun getInt(key: String, defValue: Int): Int = error("not implemented")
-
-    override fun getLong(key: String, defValue: Long): Long = error("not implemented")
-
-    override fun getString(key: String): String = error("not implemented")
-
-    override fun getStringOrDefault(key: String, defValue: String): String = error("not implemented")
-
-    override fun getStringOrNull(key: String): String? = values[key]
 }
 
 private class FakePlatformConfigProvider : PlatformConfigProvider {
