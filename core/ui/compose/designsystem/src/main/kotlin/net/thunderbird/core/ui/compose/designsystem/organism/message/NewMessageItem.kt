@@ -61,6 +61,8 @@ fun NewMessageItem(
     maxPreviewLines: Int = 2,
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
     swapSenderWithSubject: Boolean = false,
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Int?,
 ) {
     MessageItem(
         leading = {
@@ -108,5 +110,7 @@ fun NewMessageItem(
         selected = selected,
         maxPreviewLines = maxPreviewLines,
         contentPadding = contentPadding,
+        showAccountIndicator = showAccountIndicator,
+        accountIndicatorColor = accountIndicatorColor,
     )
 }

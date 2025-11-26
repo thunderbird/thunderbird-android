@@ -101,6 +101,9 @@ internal fun MessageItem(
     selected: Boolean = false,
     maxPreviewLines: Int = 2,
     contentPadding: PaddingValues = MessageItemDefaults.defaultContentPadding,
+    // TODO Eventually give these default values?
+    showAccountIndicator: Boolean,
+    accountIndicatorColor: Int?,
 ) {
     val outlineVariant = MainTheme.colors.outlineVariant
     var contentStart by remember { mutableFloatStateOf(0f) }

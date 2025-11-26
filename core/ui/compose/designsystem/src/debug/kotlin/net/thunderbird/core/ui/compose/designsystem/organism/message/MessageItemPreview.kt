@@ -1,5 +1,6 @@
 package net.thunderbird.core.ui.compose.designsystem.organism.message
 
+import android.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -119,6 +120,8 @@ private fun PreviewDefault(
             hasAttachments = params.hasAttachments,
             selected = params.selected,
             colors = MessageItemDefaults.newMessageItemColors(),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
         )
     }
 }
@@ -157,6 +160,8 @@ private fun PreviewCompact(
             selected = params.selected,
             contentPadding = MessageItemDefaults.compactContentPadding,
             colors = MessageItemDefaults.unreadMessageItemColors(),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
         )
     }
 }
@@ -196,6 +201,49 @@ private fun PreviewRelaxed(
             selected = params.selected,
             contentPadding = MessageItemDefaults.relaxedContentPadding,
             colors = MessageItemDefaults.readMessageItemColors(),
+            showAccountIndicator = true,
+            accountIndicatorColor = Color.RED,
         )
     }
 }
+
+@Preview
+@Composable
+private fun PreviewDefaultWithoutAccountIndicator(
+    @PreviewParameter(MessageItemPrevParamCol::class) params: MessageItemPrevParams,
+) {
+    PreviewWithThemes {
+        MessageItem(
+            leading = {
+                Box(
+                    modifier = Modifier
+                        .size(MainTheme.sizes.iconAvatar)
+                        .padding(MainTheme.spacings.half)
+                        .background(color = MainTheme.colors.primary, shape = CircleShape),
+                )
+            },
+            sender = { TextTitleSmall(text = params.sender) },
+            subject = { TextLabelLarge(text = params.subject) },
+            preview = params.preview,
+            action = {
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier.size(MainTheme.sizes.iconLarge),
+                ) {
+                    Image(imageVector = Icons.Filled.Star, contentDescription = null)
+                }
+            },
+            receivedAt = params.receivedAt,
+            onClick = { },
+            onLongClick = { },
+            onLeadingClick = { },
+            modifier = Modifier.padding(MainTheme.spacings.double),
+            hasAttachments = params.hasAttachments,
+            selected = params.selected,
+            colors = MessageItemDefaults.newMessageItemColors(),
+            showAccountIndicator = false,
+            accountIndicatorColor = null,
+        )
+    }
+}
+
