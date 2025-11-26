@@ -23,7 +23,7 @@ import kotlin.math.abs
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.common.action.SwipeActions
-import net.thunderbird.feature.mail.message.list.domain.DomainContract
+import net.thunderbird.feature.mail.message.list.api.domain.DomainContract
 
 @SuppressLint("InflateParams")
 @Suppress("LongParameterList")

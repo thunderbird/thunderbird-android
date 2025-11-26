@@ -25,7 +25,7 @@ import net.openid.appauth.AppAuthConfiguration
 import net.thunderbird.core.common.mail.html.HtmlSettings
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.feature.account.AccountId
-import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogContract
+import net.thunderbird.feature.mail.message.list.api.ui.dialog.SetupArchiveFolderDialogContract
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
