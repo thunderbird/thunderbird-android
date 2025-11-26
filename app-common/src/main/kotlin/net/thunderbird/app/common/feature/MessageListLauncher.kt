@@ -4,9 +4,9 @@ import android.content.Context
 import app.k9mail.feature.launcher.FeatureLauncherExternalContract
 import com.fsck.k9.activity.MessageList
 
-internal class AccountSetupFinishedLauncher(
+internal class MessageListLauncher(
     private val context: Context,
-) : FeatureLauncherExternalContract.AccountSetupFinishedLauncher {
+) : FeatureLauncherExternalContract.MessageListLauncher {
     override fun launch(accountUuid: String?) {
         if (accountUuid != null) {
             MessageList.launch(context, accountUuid)

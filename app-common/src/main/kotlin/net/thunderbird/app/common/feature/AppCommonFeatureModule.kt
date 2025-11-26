@@ -17,8 +17,8 @@ internal val appCommonFeatureModule = module {
     includes(appCommonFeatureMailModule)
     includes(featureMessageReaderModule)
 
-    factory<FeatureLauncherExternalContract.AccountSetupFinishedLauncher> {
-        AccountSetupFinishedLauncher(
+    factory<FeatureLauncherExternalContract.MessageListLauncher> {
+        MessageListLauncher(
             context = androidContext(),
         )
     }

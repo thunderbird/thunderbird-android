@@ -14,6 +14,7 @@ dependencies {
     implementation(projects.core.ui.compose.navigation)
     implementation(projects.core.common)
     implementation(projects.core.outcome)
+    implementation(projects.core.featureflag)
     implementation(projects.feature.mail.account.api)
     implementation(projects.feature.notification.api)
     implementation(projects.core.android.common)
