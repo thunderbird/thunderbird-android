@@ -25,7 +25,7 @@ import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Flag;
+import net.thunderbird.core.common.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.message.ReplyAction;
 import com.fsck.k9.message.ReplyActionStrategy;

@@ -1,4 +1,4 @@
-package com.fsck.k9.mail
+package net.thunderbird.core.common.mail
 
 /**
  * Flags that can be applied to Messages.

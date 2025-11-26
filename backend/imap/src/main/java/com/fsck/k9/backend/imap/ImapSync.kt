@@ -11,7 +11,6 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MessageExtractor
 import com.fsck.k9.mail.store.imap.FetchListener
@@ -23,6 +22,7 @@ import java.util.Collections
 import java.util.Date
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.max
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 
 internal class ImapSync(

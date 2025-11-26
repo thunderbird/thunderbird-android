@@ -3,7 +3,6 @@ package com.fsck.k9.notification
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.QuietTimeChecker
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalFolder
@@ -11,6 +10,7 @@ import com.fsck.k9.mailstore.LocalMessage
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.common.mail.toEmailAddressOrNull
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.GeneralSettingsManager

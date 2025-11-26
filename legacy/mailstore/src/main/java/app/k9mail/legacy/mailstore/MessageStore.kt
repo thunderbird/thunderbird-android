@@ -1,11 +1,11 @@
 package app.k9mail.legacy.mailstore
 
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
 import java.util.Date
 import kotlin.jvm.Throws
 import net.thunderbird.core.common.exception.MessagingException
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.mail.folder.api.FolderDetails
 import net.thunderbird.feature.search.legacy.SearchConditionTreeNode
 

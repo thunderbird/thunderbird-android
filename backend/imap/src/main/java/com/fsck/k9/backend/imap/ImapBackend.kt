@@ -7,13 +7,13 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.BodyFactory
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.feature.mail.folder.api.FolderPathDelimiter
 
 class ImapBackend(
