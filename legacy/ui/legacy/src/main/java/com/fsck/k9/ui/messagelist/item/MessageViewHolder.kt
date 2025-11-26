@@ -20,7 +20,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons
 import com.fsck.k9.FontSizes
-import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
@@ -31,6 +30,7 @@ import com.fsck.k9.ui.messagelist.MessageListItem
 import com.google.android.material.textview.MaterialTextView
 import java.util.Locale
 import kotlin.math.max
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 
 @Suppress("TooManyFunctions")
 class MessageViewHolder(

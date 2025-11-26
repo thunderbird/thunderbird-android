@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
 import com.fsck.k9.FontSizes
-import com.fsck.k9.UiDensity
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity
 
 data class MessageListAppearance(
     val fontSizes: FontSizes,

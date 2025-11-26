@@ -14,7 +14,6 @@ import app.k9mail.legacy.di.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.PostMarkAsUnreadNavigation;
-import com.fsck.k9.UiDensity;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
@@ -45,6 +44,7 @@ import net.thunderbird.core.preference.display.coreSettings.DisplayCoreSettingsK
 import net.thunderbird.core.preference.interaction.PostRemoveNavigation;
 import net.thunderbird.core.preference.network.NetworkSettingsKt;
 import net.thunderbird.core.preference.storage.Storage;
+import net.thunderbird.core.preference.display.visualSettings.message.list.UiDensity;
 
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 import static net.thunderbird.core.preference.display.inboxSettings.DisplayInboxSettingsKt.DISPLAY_SETTINGS_DEFAULT_IS_MESSAGE_LIST_SENDER_ABOVE_SUBJECT;
