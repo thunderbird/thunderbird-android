@@ -98,6 +98,8 @@ internal fun MessageItemContent(
             hasAttachments = item.hasAttachments,
             swapSenderWithSubject = !appearance.senderAboveSubject,
             contentPadding = contentPadding,
+            showAccountIndicator = appearance.showAccountIndicator,
+            accountIndicatorColor = item.account.profile.color,
         )
 
         item.isRead -> ReadMessageItem(
@@ -125,6 +127,8 @@ internal fun MessageItemContent(
             hasAttachments = item.hasAttachments,
             swapSenderWithSubject = !appearance.senderAboveSubject,
             contentPadding = contentPadding,
+            showAccountIndicator = appearance.showAccountIndicator,
+            accountIndicatorColor = item.account.profile.color,
         )
 
         else -> UnreadMessageItem(
@@ -152,6 +156,8 @@ internal fun MessageItemContent(
             hasAttachments = item.hasAttachments,
             swapSenderWithSubject = !appearance.senderAboveSubject,
             contentPadding = contentPadding,
+            showAccountIndicator = appearance.showAccountIndicator,
+            accountIndicatorColor = item.account.profile.color,
         )
     }
 }
