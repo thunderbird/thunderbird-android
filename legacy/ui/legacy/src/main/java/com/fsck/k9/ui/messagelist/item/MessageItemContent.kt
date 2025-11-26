@@ -23,7 +23,6 @@ import app.k9mail.core.ui.compose.designsystem.atom.CircularProgressIndicator
 import app.k9mail.core.ui.compose.designsystem.atom.image.RemoteImage
 import app.k9mail.core.ui.compose.designsystem.atom.text.TextTitleSmall
 import app.k9mail.core.ui.compose.theme2.MainTheme
-import com.fsck.k9.UiDensity
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import kotlin.time.ExperimentalTime
@@ -35,6 +34,7 @@ import net.thunderbird.core.ui.compose.designsystem.organism.message.MessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.ReadMessageItem
 import net.thunderbird.core.ui.compose.designsystem.organism.message.UnreadMessageItem
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.mail.message.list.api.preferences.UiDensity
 
 @Suppress("LongParameterList", "LongMethod")
 @OptIn(ExperimentalTime::class)

@@ -17,6 +17,7 @@ import net.thunderbird.core.featureflag.toFeatureFlagKey
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
 import net.thunderbird.core.preference.storage.getEnumOrDefault
+import net.thunderbird.feature.mail.message.list.api.preferences.UiDensity
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import timber.log.Timber

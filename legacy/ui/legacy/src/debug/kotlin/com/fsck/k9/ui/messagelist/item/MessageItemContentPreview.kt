@@ -6,7 +6,6 @@ import app.k9mail.core.android.common.contact.Contact
 import app.k9mail.core.android.common.contact.ContactRepository
 import app.k9mail.core.ui.compose.designsystem.PreviewWithThemesLightDark
 import com.fsck.k9.FontSizes
-import com.fsck.k9.UiDensity
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
@@ -20,6 +19,7 @@ import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
+import net.thunderbird.feature.mail.message.list.api.preferences.UiDensity
 
 @Composable
 @PreviewLightDark
