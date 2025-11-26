@@ -4,6 +4,7 @@ import android.app.Application
 import app.k9mail.feature.telemetry.telemetryModule
 import app.k9mail.legacy.di.DI
 import com.fsck.k9.contacts.ContactPictureLoader
+import kotlinx.coroutines.flow.emptyFlow
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
@@ -79,7 +80,7 @@ val testModule = module {
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
             featureFlagFactory = mock {
-                on { createFeatureCatalog() } doReturn emptyList()
+                on { getCatalog() } doReturn emptyFlow()
             },
             featureFlagOverrides = mock(),
         )

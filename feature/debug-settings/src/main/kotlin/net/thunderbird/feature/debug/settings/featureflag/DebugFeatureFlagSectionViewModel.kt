@@ -18,14 +18,20 @@ import net.thunderbird.feature.debug.settings.featureflag.DebugFeatureFlagSectio
 class DebugFeatureFlagSectionViewModel(
     private val featureFlagFactory: FeatureFlagFactory,
     private val featureFlagOverrides: FeatureFlagOverrides,
-) : BaseViewModel<State, Event, Effect>(
-    initialState = State(
-        defaults = featureFlagFactory.createFeatureCatalog().associateBy { it.key }.toPersistentMap(),
-    ),
-),
-    ViewModel {
+) : BaseViewModel<State, Event, Effect>(initialState = State()), ViewModel {
 
     init {
+        featureFlagFactory
+            .getCatalog()
+            .onEach { defaults ->
+                updateState { state ->
+                    state.copy(
+                        defaults = defaults.associateBy { it.key }.toPersistentMap(),
+                    )
+                }
+            }
+            .launchIn(viewModelScope)
+
         featureFlagOverrides
             .overrides
             .onEach { overrides ->

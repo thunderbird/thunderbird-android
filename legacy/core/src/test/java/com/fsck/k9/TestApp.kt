@@ -13,6 +13,7 @@ import com.fsck.k9.notification.NotificationResourceProvider
 import com.fsck.k9.notification.NotificationStrategy
 import com.fsck.k9.notification.TestNotificationIconResourceProvider
 import com.fsck.k9.storage.storageModule
+import kotlinx.coroutines.flow.emptyFlow
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.android.preferences.TestStoragePersister
@@ -95,7 +96,7 @@ val testModule = module {
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
             featureFlagFactory = mock {
-                on { createFeatureCatalog() } doReturn emptyList()
+                on { getCatalog() } doReturn emptyFlow()
             },
             featureFlagOverrides = mock(),
         )
