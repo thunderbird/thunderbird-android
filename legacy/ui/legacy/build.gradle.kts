@@ -32,7 +32,7 @@ dependencies {
     implementation(projects.feature.search.implLegacy)
     implementation(projects.feature.settings.import)
     implementation(projects.feature.telemetry.api)
-    implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.mail.message.list.api)
     implementation(projects.feature.mail.message.composer)
     implementation(projects.feature.mail.message.export.api)
     implementation(projects.feature.mail.message.reader.api)
