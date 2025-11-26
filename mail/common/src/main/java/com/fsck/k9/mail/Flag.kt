@@ -1,10 +1,9 @@
-
-package com.fsck.k9.mail;
+package com.fsck.k9.mail
 
 /**
  * Flags that can be applied to Messages.
  */
-public enum Flag {
+enum class Flag {
     DELETED,
     SEEN,
     ANSWERED,
@@ -13,9 +12,7 @@ public enum Flag {
     RECENT,
     FORWARDED,
 
-    /*
-     * The following flags are for internal library use only.
-     */
+    // The following flags are for internal library use only.
     /**
      * Delete and remove from the LocalStore immediately.
      */
