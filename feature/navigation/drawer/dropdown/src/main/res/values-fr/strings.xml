@@ -3,10 +3,8 @@
     <string name="navigation_drawer_dropdown_action_settings">Paramètres</string>
     <string name="navigation_drawer_dropdown_action_manage_folders">Gérer les dossiers</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">Boîte de réception</string>
-    <string name="navigation_drawer_dropdown_action_hide_accounts">Cacher les comptes</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">&gt;99</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">&gt;1 k</string>
-    <string name="navigation_drawer_dropdown_action_show_accounts">Afficher les comptes</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Synchroniser tous les comptes</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Liste des comptes</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Compte unifié</string>
