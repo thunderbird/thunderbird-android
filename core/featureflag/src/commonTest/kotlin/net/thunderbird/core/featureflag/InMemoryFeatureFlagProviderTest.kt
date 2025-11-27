@@ -7,6 +7,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import org.junit.Test
@@ -18,11 +19,7 @@ class InMemoryFeatureFlagProviderTest {
     fun `should return FeatureFlagResult#Enabled when feature is enabled`() {
         val feature1Key = FeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                listOf(
-                    FeatureFlag(key = feature1Key, enabled = true),
-                )
-            },
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = true))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
             mainDispatcher = UnconfinedTestDispatcher(),
         )
@@ -36,11 +33,7 @@ class InMemoryFeatureFlagProviderTest {
     fun `should return FeatureFlagResult#Disabled when feature is disabled`() {
         val feature1Key = FeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                listOf(
-                    FeatureFlag(key = feature1Key, enabled = false),
-                )
-            },
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = false))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
             mainDispatcher = UnconfinedTestDispatcher(),
         )
@@ -55,11 +48,7 @@ class InMemoryFeatureFlagProviderTest {
         val feature1Key = FeatureFlagKey("feature1")
         val feature2Key = FeatureFlagKey("feature2")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
-            featureFlagFactory = {
-                listOf(
-                    FeatureFlag(key = feature1Key, enabled = false),
-                )
-            },
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = feature1Key, enabled = false))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(),
             mainDispatcher = UnconfinedTestDispatcher(),
         )
@@ -74,7 +63,7 @@ class InMemoryFeatureFlagProviderTest {
         // Arrange
         val key = FeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
-            featureFlagFactory = { listOf(FeatureFlag(key = key, enabled = false)) },
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = key, enabled = false))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(
                 initialOverrides = mapOf(key to true),
             ),
@@ -94,7 +83,7 @@ class InMemoryFeatureFlagProviderTest {
         // Arrange
         val key = FeatureFlagKey("feature1")
         val featureFlagProvider = InMemoryFeatureFlagProvider(
-            featureFlagFactory = { listOf(FeatureFlag(key = key, enabled = true)) },
+            featureFlagFactory = { flowOf(listOf(FeatureFlag(key = key, enabled = true))) },
             featureFlagOverrides = FakeFeatureFlagOverrides(
                 initialOverrides = mapOf(key to false),
             ),

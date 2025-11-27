@@ -13,6 +13,7 @@ import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.legacyCoreModules
 import com.fsck.k9.preferences.K9StoragePersister
+import kotlinx.coroutines.flow.emptyFlow
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccountManager
 import net.thunderbird.core.common.appConfig.PlatformConfigProvider
@@ -80,7 +81,7 @@ val testModule = module {
     single<FeatureFlagProvider> {
         InMemoryFeatureFlagProvider(
             featureFlagFactory = mock {
-                on { createFeatureCatalog() } doReturn emptyList()
+                on { getCatalog() } doReturn emptyFlow()
             },
             featureFlagOverrides = mock(),
         )

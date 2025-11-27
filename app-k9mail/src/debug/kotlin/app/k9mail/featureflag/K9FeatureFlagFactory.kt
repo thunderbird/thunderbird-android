@@ -2,6 +2,8 @@ package app.k9mail.featureflag
 
 import com.fsck.k9.ui.messagelist.MessageListFeatureFlags
 import com.fsck.k9.ui.messageview.MessageViewFeatureFlags
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import net.thunderbird.core.featureflag.FeatureFlag
 import net.thunderbird.core.featureflag.FeatureFlagFactory
 import net.thunderbird.core.featureflag.FeatureFlagKey
@@ -10,18 +12,20 @@ import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.mail.message.reader.api.MessageReaderFeatureFlags
 
 class K9FeatureFlagFactory : FeatureFlagFactory {
-    override fun createFeatureCatalog(): List<FeatureFlag> {
-        return listOf(
-            FeatureFlag("archive_marks_as_read".toFeatureFlagKey(), enabled = true),
-            FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
-            FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
-            FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = true),
-            FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
-            FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
-            FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
-            FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
-            FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
-            FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
+    override fun getCatalog(): Flow<List<FeatureFlag>> = flow {
+        emit(
+            listOf(
+                FeatureFlag("archive_marks_as_read".toFeatureFlagKey(), enabled = true),
+                FeatureFlag("disable_font_size_config".toFeatureFlagKey(), enabled = true),
+                FeatureFlag("email_notification_default".toFeatureFlagKey(), enabled = true),
+                FeatureFlag("enable_dropdown_drawer_ui".toFeatureFlagKey(), enabled = true),
+                FeatureFlag(FeatureFlagKey.DisplayInAppNotifications, enabled = false),
+                FeatureFlag(FeatureFlagKey.UseNotificationSenderForSystemNotifications, enabled = false),
+                FeatureFlag(MessageListFeatureFlags.UseComposeForMessageListItems, enabled = false),
+                FeatureFlag(MessageViewFeatureFlags.ActionExportEml, enabled = true),
+                FeatureFlag(AccountSettingsFeatureFlags.EnableAvatarCustomization, enabled = false),
+                FeatureFlag(MessageReaderFeatureFlags.UseNewMessageReaderCssStyles, enabled = true),
+            ),
         )
     }
 }

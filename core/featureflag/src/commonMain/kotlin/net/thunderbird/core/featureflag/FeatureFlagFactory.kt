@@ -1,5 +1,7 @@
 package net.thunderbird.core.featureflag
 
+import kotlinx.coroutines.flow.Flow
+
 /**
  * Creates a catalog of all available feature flags.
  *
@@ -8,12 +10,14 @@ package net.thunderbird.core.featureflag
  */
 fun interface FeatureFlagFactory {
     /**
-     * Creates and returns a list of all available feature flags.
+     * Creates and returns a reactive stream of the feature flag catalog.
      *
      * This function is responsible for assembling the complete catalog of [FeatureFlag]s
-     * that the application recognizes.
+     * that the application recognizes. The returned [Flow] will emit a new list
+     * whenever the state of any feature flag changes.
      *
-     * @return A [List] of [FeatureFlag] objects representing the current state of all features.
+     * @return A [Flow] that emits a [List] of [FeatureFlag] objects representing the
+     * current state of all features.
      */
-    fun createFeatureCatalog(): List<FeatureFlag>
+    fun getCatalog(): Flow<List<FeatureFlag>>
 }
