@@ -115,24 +115,6 @@ object K9 : KoinComponent {
     val fontSizes = FontSizes()
 
     @JvmStatic
-    var isConfirmDelete = false
-
-    @JvmStatic
-    var isConfirmDiscardMessage = true
-
-    @JvmStatic
-    var isConfirmDeleteStarred = false
-
-    @JvmStatic
-    var isConfirmSpam = false
-
-    @JvmStatic
-    var isConfirmDeleteFromNotification = true
-
-    @JvmStatic
-    var isConfirmMarkAllRead = true
-
-    @JvmStatic
     var notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
 
     @JvmStatic
@@ -228,13 +210,6 @@ object K9 : KoinComponent {
         messageViewPostMarkAsUnreadNavigation =
             storage.getEnum("messageViewPostMarkAsUnreadAction", PostMarkAsUnreadNavigation.ReturnToMessageList)
 
-        isConfirmDelete = storage.getBoolean("confirmDelete", false)
-        isConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true)
-        isConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false)
-        isConfirmSpam = storage.getBoolean("confirmSpam", false)
-        isConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true)
-        isConfirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true)
-
         sortType = storage.getEnum("sortTypeEnum", AccountDefaultsProvider.DEFAULT_SORT_TYPE)
 
         val sortAscendingSetting = storage.getBoolean("sortAscending", AccountDefaultsProvider.DEFAULT_SORT_ASCENDING)
@@ -275,13 +250,6 @@ object K9 : KoinComponent {
         editor.putBoolean("showAccountSelector", isShowAccountSelector)
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putEnum("messageViewPostMarkAsUnreadAction", messageViewPostMarkAsUnreadNavigation)
-
-        editor.putBoolean("confirmDelete", isConfirmDelete)
-        editor.putBoolean("confirmDiscardMessage", isConfirmDiscardMessage)
-        editor.putBoolean("confirmDeleteStarred", isConfirmDeleteStarred)
-        editor.putBoolean("confirmSpam", isConfirmSpam)
-        editor.putBoolean("confirmDeleteFromNotification", isConfirmDeleteFromNotification)
-        editor.putBoolean("confirmMarkAllRead", isConfirmMarkAllRead)
 
         editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)

@@ -244,12 +244,13 @@ class GeneralSettingsDataStore(
         return when (key) {
             "confirm_actions" -> {
                 mutableSetOf<String>().apply {
-                    if (K9.isConfirmDelete) add("delete")
-                    if (K9.isConfirmDeleteStarred) add("delete_starred")
-                    if (K9.isConfirmDeleteFromNotification) add("delete_notif")
-                    if (K9.isConfirmSpam) add("spam")
-                    if (K9.isConfirmDiscardMessage) add("discard")
-                    if (K9.isConfirmMarkAllRead) add("mark_all_read")
+                    val interactionSettings = generalSettingsManager.getConfig().interaction
+                    if (interactionSettings.isConfirmDelete) add("delete")
+                    if (interactionSettings.isConfirmDeleteStarred) add("delete_starred")
+                    if (interactionSettings.isConfirmDeleteFromNotification) add("delete_notif")
+                    if (interactionSettings.isConfirmSpam) add("spam")
+                    if (interactionSettings.isConfirmDiscardMessage) add("discard")
+                    if (interactionSettings.isConfirmMarkAllRead) add("mark_all_read")
                 }
             }
 
@@ -271,12 +272,19 @@ class GeneralSettingsDataStore(
         val checkedValues = values ?: emptySet<String>()
         when (key) {
             "confirm_actions" -> {
-                K9.isConfirmDelete = "delete" in checkedValues
-                K9.isConfirmDeleteStarred = "delete_starred" in checkedValues
-                K9.isConfirmDeleteFromNotification = "delete_notif" in checkedValues
-                K9.isConfirmSpam = "spam" in checkedValues
-                K9.isConfirmDiscardMessage = "discard" in checkedValues
-                K9.isConfirmMarkAllRead = "mark_all_read" in checkedValues
+                skipSaveSettings = true
+                generalSettingsManager.update { settings ->
+                    settings.copy(
+                        interaction = settings.interaction.copy(
+                            isConfirmDelete = "delete" in checkedValues,
+                            isConfirmDeleteStarred = "delete_starred" in checkedValues,
+                            isConfirmDeleteFromNotification = "delete_notif" in checkedValues,
+                            isConfirmSpam = "spam" in checkedValues,
+                            isConfirmDiscardMessage = "discard" in checkedValues,
+                            isConfirmMarkAllRead = "mark_all_read" in checkedValues,
+                        ),
+                    )
+                }
             }
 
             "messageview_visible_refile_actions" -> {
