@@ -6,8 +6,6 @@
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1k+</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Uskladi vse račune</string>
-    <string name="navigation_drawer_dropdown_action_show_accounts">Prikaži račune</string>
-    <string name="navigation_drawer_dropdown_action_hide_accounts">Skrij račune</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Seznam računov</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Enoten račun</string>
     <string name="navigation_drawer_dropdown_action_add_account">Dodaj račun</string>

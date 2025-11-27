@@ -4,8 +4,6 @@
     <string name="navigation_drawer_dropdown_action_manage_folders">Кіраванне каталогамі</string>
     <string name="navigation_drawer_dropdown_unified_inbox_title">Усе атрыманыя</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Сінхранізаваць усе акаўнты</string>
-    <string name="navigation_drawer_dropdown_action_show_accounts">Паказаць акаўнты</string>
-    <string name="navigation_drawer_dropdown_action_hide_accounts">Схаваць акаўнты</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1000+</string>
 </resources>
