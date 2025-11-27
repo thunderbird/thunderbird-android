@@ -136,7 +136,7 @@ internal class K9NotificationActionCreator(
     }
 
     override fun createDeleteMessagePendingIntent(messageReference: MessageReference): PendingIntent {
-        return if (K9.isConfirmDeleteFromNotification) {
+        return if (interactionSettings.isConfirmDeleteFromNotification) {
             createDeleteConfirmationPendingIntent(messageReference)
         } else {
             createDeleteServicePendingIntent(messageReference)
