@@ -37,10 +37,27 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.dualtone.DualToneWarningIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledDotIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.filled.FilledStarIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedAccountIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBadgeIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBankIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedBookIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFingerprintIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFlowerIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedFolderManagedIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedGameIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedGroupIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedHearthIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedImageIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedOpenInNewIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedPersonIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedPetsIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedRocketIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSchoolIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSmileIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedSpaIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedStarIcon
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedWarningIcon
+import net.thunderbird.core.ui.compose.designsystem.atom.icon.outlined.OutlinedWorkIcon
 
 /**
  * Collection of standard icons for the design system using a 24x24 base grid.
@@ -75,12 +92,17 @@ object Icons {
      * Icons with outlined style.
      */
     object Outlined {
+        val Account: ImageVector = OutlinedAccountIcon
         val AccountCircle: ImageVector = Icons.Outlined.AccountCircle
         val Add: ImageVector = Icons.Outlined.Add
         val AllInbox: ImageVector = Icons.Outlined.AllInbox
         val Archive: ImageVector = Icons.Outlined.Archive
         val Attachment: ImageVector = Icons.Outlined.Attachment
         val ArrowBack: ImageVector = Icons.AutoMirrored.Outlined.ArrowBack
+
+        val Badge: ImageVector = OutlinedBadgeIcon
+        val Bank: ImageVector = OutlinedBankIcon
+        val Book: ImageVector = OutlinedBookIcon
 
         val Check: ImageVector = Icons.Outlined.Check
         val CheckCircle: ImageVector = Icons.Outlined.CheckCircle
@@ -95,9 +117,17 @@ object Icons {
         val ExpandMore: ImageVector = Icons.Outlined.ExpandMore
         val ExpandLess: ImageVector = Icons.Outlined.ExpandLess
 
+        val Fingerprint: ImageVector = OutlinedFingerprintIcon
+        val Flower: ImageVector = OutlinedFlowerIcon
         val Folder: ImageVector = Icons.Outlined.Folder
         val FolderManaged: ImageVector = OutlinedFolderManagedIcon
 
+        val Game: ImageVector = OutlinedGameIcon
+        val Group: ImageVector = OutlinedGroupIcon
+
+        val Hearth: ImageVector = OutlinedHearthIcon
+
+        val Image: ImageVector = OutlinedImageIcon
         val Inbox: ImageVector = Icons.Outlined.Inbox
         val Info: ImageVector = Icons.Outlined.Info
 
@@ -109,9 +139,17 @@ object Icons {
         val OpenInNew: ImageVector = OutlinedOpenInNewIcon
         val Outbox: ImageVector = Icons.Filled.Outbox
 
+        val Person: ImageVector = OutlinedPersonIcon
+        val Pets: ImageVector = OutlinedPetsIcon
+
+        val Rocket: ImageVector = OutlinedRocketIcon
+
+        val School: ImageVector = OutlinedSchoolIcon
         val Security: ImageVector = Icons.Outlined.Security
         val Send: ImageVector = Icons.AutoMirrored.Outlined.Send
         val Settings: ImageVector = Icons.Outlined.Settings
+        val Smile: ImageVector = OutlinedSmileIcon
+        val Spa: ImageVector = OutlinedSpaIcon
         val Star: ImageVector = OutlinedStarIcon
         val Sync: ImageVector = Icons.Outlined.Sync
 
@@ -121,5 +159,6 @@ object Icons {
         val VisibilityOff: ImageVector = Icons.Filled.VisibilityOff
 
         val Warning: ImageVector = OutlinedWarningIcon
+        val Work: ImageVector = OutlinedWorkIcon
     }
 }
