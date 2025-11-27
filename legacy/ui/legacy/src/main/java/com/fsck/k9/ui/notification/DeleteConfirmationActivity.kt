@@ -12,12 +12,12 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.notification.NotificationActionService
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.K9Activity
+import com.fsck.k9.ui.base.BaseActivity
 import com.fsck.k9.ui.base.ThemeType
 import net.thunderbird.core.android.account.LegacyAccountDto
 import org.koin.android.ext.android.inject
 
-class DeleteConfirmationActivity : K9Activity(ThemeType.DIALOG), ConfirmationDialogFragmentListener {
+class DeleteConfirmationActivity : BaseActivity(ThemeType.DIALOG), ConfirmationDialogFragmentListener {
     private val preferences: Preferences by inject()
     private val messagingController: MessagingController by inject()
 

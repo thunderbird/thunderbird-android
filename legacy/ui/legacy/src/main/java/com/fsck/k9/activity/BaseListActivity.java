@@ -5,10 +5,10 @@ import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.fsck.k9.ui.base.K9Activity;
+import com.fsck.k9.ui.base.BaseActivity;
 
 
-public abstract class K9ListActivity extends K9Activity {
+public abstract class BaseListActivity extends BaseActivity {
     protected ListAdapter adapter;
     protected ListView list;
 

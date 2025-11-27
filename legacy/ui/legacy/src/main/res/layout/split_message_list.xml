@@ -5,7 +5,7 @@
     android:id="@+id/navigation_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fsck.k9.activity.MessageList"
+    tools:context="com.fsck.k9.activity.MainActivity"
     >
 
     <RelativeLayout

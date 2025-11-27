@@ -119,7 +119,7 @@ import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.base.K9Activity;
+import com.fsck.k9.ui.base.BaseActivity;
 import com.fsck.k9.ui.compose.IntentData;
 import com.fsck.k9.ui.compose.IntentDataMapper;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
@@ -158,7 +158,7 @@ import static net.thunderbird.feature.notification.api.content.SentFolderNotFoun
 
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
-public class MessageCompose extends K9Activity implements OnClickListener,
+public class MessageCompose extends BaseActivity implements OnClickListener,
     CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener,
     OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
     AttachmentPresenter.AttachmentsChangedListener, OnOpenPgpDisableListener {
@@ -336,7 +336,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              * There are no accounts set up. This should not have happened. Prompt the
              * user to set up an account as an acceptable bailout.
              */
-            MessageList.launch(this);
+            MainActivity.launch(this);
             changesMadeSinceLastSave = false;
             finish();
             return;
@@ -1231,7 +1231,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         LocalMessageSearch search = new LocalMessageSearch();
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folderId);
-        MessageList.actionDisplaySearch(this, search, false, true);
+        MainActivity.actionDisplaySearch(this, search, false, true);
         finish();
     }
 

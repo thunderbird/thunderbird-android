@@ -26,7 +26,7 @@ import androidx.fragment.app.DialogFragment;
 import net.thunderbird.core.android.account.LegacyAccountDto;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.base.K9Activity;
+import com.fsck.k9.ui.base.BaseActivity;
 import com.fsck.k9.ui.base.ThemeType;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -34,7 +34,7 @@ import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import net.thunderbird.core.logging.legacy.Log;
 
 
-public class OpenPgpAppSelectDialog extends K9Activity {
+public class OpenPgpAppSelectDialog extends BaseActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";

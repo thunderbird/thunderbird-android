@@ -24,7 +24,7 @@ import androidx.glance.layout.width
 import androidx.glance.layout.wrapContentHeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import com.fsck.k9.activity.MessageList
+import com.fsck.k9.activity.MainActivity
 import kotlin.random.Random
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +38,7 @@ internal fun MessageListItemView(item: MessageListItem) {
     Row(
         GlanceModifier.Companion.fillMaxWidth().wrapContentHeight().clickable {
             CoroutineScope(Dispatchers.IO).launch {
-                val intent = MessageList.Companion.actionDisplayMessageIntent(context, item.messageReference)
+                val intent = MainActivity.Companion.actionDisplayMessageIntent(context, item.messageReference)
                 PendingIntentCompat.getActivity(
                     context,
                     Random.Default.nextInt(),
