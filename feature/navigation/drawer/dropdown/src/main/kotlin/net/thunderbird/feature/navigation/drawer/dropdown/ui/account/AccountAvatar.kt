@@ -6,11 +6,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import net.thunderbird.feature.account.avatar.ui.Avatar
 import net.thunderbird.feature.account.avatar.ui.AvatarSize
-import net.thunderbird.feature.account.avatar.ui.rememberCompatAvatar
 import net.thunderbird.feature.navigation.drawer.dropdown.domain.entity.DisplayAccount
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountAvatar
 import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountColor
-import net.thunderbird.feature.navigation.drawer.dropdown.ui.common.getDisplayAccountName
 
 @Composable
 internal fun AccountAvatar(
@@ -20,19 +18,17 @@ internal fun AccountAvatar(
     onClick: ((DisplayAccount) -> Unit)? = null,
     showBadge: Boolean = false,
 ) {
-    val name = getDisplayAccountName(account)
     val color = getDisplayAccountColor(account)
     val accountColor = rememberCalculatedAccountColor(color)
     val accountColorRoles = rememberCalculatedAccountColorRoles(accountColor)
     val avatar = getDisplayAccountAvatar(account)
-    val compatAvatar = rememberCompatAvatar(avatar, name)
 
     Box(
         modifier = modifier,
         contentAlignment = Alignment.BottomEnd,
     ) {
         Avatar(
-            avatar = compatAvatar,
+            avatar = avatar,
             color = accountColor,
             size = AvatarSize.MEDIUM,
             selected = selected,

@@ -12,10 +12,16 @@ val accountModule = module {
             localKeyStoreManager = get(),
             preferences = get(),
             unifiedInboxConfigurator = get(),
+            avatarImageRepository = get(),
         )
     }
     factory { BackgroundAccountRemover(get()) }
     factory { (parameters: WorkerParameters) ->
-        AccountRemoverWorker(accountRemover = get(), notificationController = get(), context = get(), parameters)
+        AccountRemoverWorker(
+            accountRemover = get(),
+            notificationController = get(),
+            context = get(),
+            workerParams = parameters,
+        )
     }
 }

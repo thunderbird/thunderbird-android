@@ -1,4 +1,4 @@
-package net.thunderbird.core.ui.setting.dialog.ui.components.list
+package net.thunderbird.core.ui.setting.component.list.item
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable

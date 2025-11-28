@@ -2,8 +2,10 @@ package net.thunderbird.core.file
 
 import com.eygraber.uri.Uri
 import kotlinx.io.Buffer
+import kotlinx.io.IOException
 import kotlinx.io.RawSink
 import kotlinx.io.RawSource
+import kotlinx.io.files.FileNotFoundException
 
 /**
  * In-memory fake implementation of FileSystemManager for common tests.
@@ -12,6 +14,12 @@ import kotlinx.io.RawSource
 class FakeFileSystemManager : FileSystemManager {
 
     private val storage = mutableMapOf<String, ByteArray>()
+
+    /** If set to true, the next call to delete() will throw an IOException. */
+    var nextDeleteThrowsIOException: Boolean = false
+
+    /** If set to true, the next call to createDirectories() will throw an IOException. */
+    var nextCreateDirectoriesThrowsIOException: Boolean = false
 
     override fun openSink(uri: Uri, mode: WriteMode): RawSink? {
         val key = uri.toString()
@@ -58,6 +66,25 @@ class FakeFileSystemManager : FileSystemManager {
                 // no-op
             }
         }
+    }
+
+    override fun delete(uri: Uri) {
+        val key = uri.toString()
+        if (nextDeleteThrowsIOException) {
+            nextDeleteThrowsIOException = false
+            throw IOException("Simulated delete IO error")
+        }
+        if (storage.remove(key) == null) {
+            throw FileNotFoundException("$key not found")
+        }
+    }
+
+    override fun createDirectories(uri: Uri) {
+        if (nextCreateDirectoriesThrowsIOException) {
+            nextCreateDirectoriesThrowsIOException = false
+            throw IOException("Simulated createDirectories IO error")
+        }
+        // Succeed; no storage effect for directories in this fake.
     }
 
     fun put(uriString: String, content: ByteArray) {
