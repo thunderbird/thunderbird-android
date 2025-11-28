@@ -221,7 +221,8 @@ dependencies {
     implementation(projects.core.featureflag)
 
     implementation(projects.feature.account.settings.impl)
-    implementation(projects.feature.mail.message.list)
+    implementation(projects.feature.mail.message.list.api)
+    implementation(projects.feature.mail.message.list.impl)
     implementation(projects.feature.mail.message.reader.api)
 
     implementation(projects.feature.widget.messageList)

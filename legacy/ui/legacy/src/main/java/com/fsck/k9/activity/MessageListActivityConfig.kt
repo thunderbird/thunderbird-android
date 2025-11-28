@@ -1,12 +1,12 @@
 package com.fsck.k9.activity
 
 import com.fsck.k9.K9
-import com.fsck.k9.UiDensity
 import net.thunderbird.core.common.action.SwipeAction
 import net.thunderbird.core.preference.AppTheme
 import net.thunderbird.core.preference.GeneralSettingsManager
 import net.thunderbird.core.preference.SplitViewMode
 import net.thunderbird.core.preference.SubTheme
+import net.thunderbird.feature.mail.message.list.api.preferences.UiDensity
 
 data class MessageListActivityConfig(
     val appTheme: AppTheme,

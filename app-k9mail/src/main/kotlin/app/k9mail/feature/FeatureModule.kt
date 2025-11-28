@@ -8,7 +8,7 @@ import app.k9mail.feature.telemetry.telemetryModule
 import com.fsck.k9.BuildConfig
 import net.thunderbird.android.feature.mail.message.reader.api.css.DefaultCssClassNameProvider
 import net.thunderbird.feature.account.settings.featureAccountSettingsModule
-import net.thunderbird.feature.mail.message.list.featureMessageListModule
+import net.thunderbird.feature.mail.message.list.impl.featureMessageListModule
 import net.thunderbird.feature.mail.message.reader.api.css.CssClassNameProvider
 import org.koin.dsl.module
 

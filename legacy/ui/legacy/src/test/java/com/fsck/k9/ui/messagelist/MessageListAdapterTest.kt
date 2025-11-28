@@ -19,7 +19,6 @@ import assertk.assertions.support.expected
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.Companion.FONT_DEFAULT
 import com.fsck.k9.FontSizes.Companion.LARGE
-import com.fsck.k9.UiDensity
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.AuthType
@@ -41,6 +40,7 @@ import net.thunderbird.feature.account.AccountIdFactory
 import net.thunderbird.feature.account.storage.profile.AvatarDto
 import net.thunderbird.feature.account.storage.profile.AvatarTypeDto
 import net.thunderbird.feature.account.storage.profile.ProfileDto
+import net.thunderbird.feature.mail.message.list.api.preferences.UiDensity
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.robolectric.Robolectric

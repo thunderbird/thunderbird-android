@@ -102,8 +102,8 @@ import net.thunderbird.core.preference.interaction.InteractionSettings
 import net.thunderbird.core.ui.theme.api.FeatureThemeProvider
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.mail.folder.api.OutboxFolderManager
-import net.thunderbird.feature.mail.message.list.domain.DomainContract
-import net.thunderbird.feature.mail.message.list.ui.dialog.SetupArchiveFolderDialogFragmentFactory
+import net.thunderbird.feature.mail.message.list.api.domain.DomainContract
+import net.thunderbird.feature.mail.message.list.api.ui.dialog.SetupArchiveFolderDialogFragmentFactory
 import net.thunderbird.feature.notification.api.content.InAppNotification
 import net.thunderbird.feature.notification.api.content.SentFolderNotFoundNotification
 import net.thunderbird.feature.notification.api.ui.InAppNotificationHost

@@ -13,6 +13,7 @@ dependencies {
 
     api(projects.core.logging.implLegacy)
     implementation(projects.core.common)
+    implementation(projects.feature.mail.folder.api)
 
     implementation(libs.mime4j.core)
     implementation(libs.mime4j.dom)
