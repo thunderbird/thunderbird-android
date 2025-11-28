@@ -5,8 +5,6 @@
     <string name="navigation_drawer_dropdown_unified_inbox_title">收件箱</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1000+</string>
-    <string name="navigation_drawer_dropdown_action_show_accounts">显示账号</string>
-    <string name="navigation_drawer_dropdown_action_hide_accounts">隐藏账号</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">同步全部账号</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">账号列表</string>
     <string name="navigation_drawer_dropdown_action_add_account">添加账号</string>

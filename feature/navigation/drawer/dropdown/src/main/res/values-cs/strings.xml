@@ -5,9 +5,7 @@
     <string name="navigation_drawer_dropdown_unified_inbox_title">Doručené</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_99">99+</string>
     <string name="navigation_drawer_dropdown_folder_item_badge_count_greater_than_1_000">1 tis.+</string>
-    <string name="navigation_drawer_dropdown_action_show_accounts">Zobrazit účty</string>
     <string name="navigation_drawer_dropdown_action_sync_all_accounts">Synchronizovat všechny účty</string>
-    <string name="navigation_drawer_dropdown_action_hide_accounts">Skrýt účty</string>
     <string name="navigation_drawer_dropdown_avount_view_selection_title">Seznam účtů</string>
     <string name="navigation_drawer_dropdown_unified_account_title">Jednotný účet</string>
     <string name="navigation_drawer_dropdown_action_add_account">Přidat účet</string>
