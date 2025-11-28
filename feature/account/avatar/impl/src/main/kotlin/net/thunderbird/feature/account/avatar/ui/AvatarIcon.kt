@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import app.k9mail.core.ui.compose.theme2.MainTheme
 import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
+import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import org.koin.compose.koinInject
 
@@ -16,15 +17,15 @@ internal fun AvatarIcon(
     iconName: String,
     size: AvatarSize,
     modifier: Modifier = Modifier,
-    iconCatalog: AvatarIconCatalog<ImageVector> = koinInject(),
+    iconCatalog: AvatarIconCatalog<AvatarIcon<ImageVector>> = koinInject(),
 ) {
-    val image = remember(iconName) {
-        iconCatalog.toIcon(iconName)
+    val avatarIcon = remember(iconName) {
+        iconCatalog.get(iconName)
     }
     val iconSize = getIconSize(size)
 
     Icon(
-        imageVector = image,
+        imageVector = avatarIcon.icon,
         contentDescription = null,
         tint = MainTheme.colors.onPrimary,
         modifier = modifier.size(iconSize),

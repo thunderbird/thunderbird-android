@@ -13,6 +13,7 @@ import net.thunderbird.core.ui.setting.SettingDecoration
 import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.Settings
 import net.thunderbird.feature.account.avatar.Avatar
+import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
@@ -39,7 +40,7 @@ internal class GeneralSettingsBuilder(
     private val monogramCreator: AvatarMonogramCreator,
     private val validator: GeneralSettingsContract.Validator,
     private val featureFlagProvider: FeatureFlagProvider,
-    private val iconCatalog: AvatarIconCatalog<ImageVector>,
+    private val iconCatalog: AvatarIconCatalog<AvatarIcon<ImageVector>>,
 ) : GeneralSettingsContract.SettingsBuilder {
 
     override fun build(state: State): Settings {
@@ -173,15 +174,15 @@ internal class GeneralSettingsBuilder(
         icon: Avatar.Icon,
         color: Color,
     ): Setting {
-        val names = iconCatalog.allNames()
-        val selectedName = if (iconCatalog.contains(icon.name)) icon.name else iconCatalog.defaultName
-        val icons = names.map { name ->
+        val selectedIconId = if (iconCatalog.contains(icon.name)) icon.name else iconCatalog.defaultIcon.id
+        val icons = iconCatalog.all().map { icon ->
             SettingValue.IconList.IconOption(
-                id = name,
-                icon = { iconCatalog.toIcon(name) },
+                id = icon.id,
+                icon = { icon.icon },
             )
         }
-        val selected = icons.firstOrNull { it.id == selectedName } ?: icons.first()
+        val selected = icons.firstOrNull { it.id == selectedIconId }
+            ?: icons.first { it.id == iconCatalog.defaultIcon.id }
         return SettingValue.IconList(
             id = GeneralSettingId.AVATAR_ICON,
             title = { resources.stringResource(R.string.account_settings_general_avatar_icon_title) },
@@ -215,7 +216,7 @@ internal class GeneralSettingsBuilder(
                 id = AVATAR_ICON_ID,
                 title = { resources.stringResource(R.string.account_settings_general_avatar_option_icon) },
                 value = (avatar as? Avatar.Icon) ?: Avatar.Icon(
-                    name = iconCatalog.defaultName,
+                    name = iconCatalog.defaultIcon.id,
                 ),
             ),
         )

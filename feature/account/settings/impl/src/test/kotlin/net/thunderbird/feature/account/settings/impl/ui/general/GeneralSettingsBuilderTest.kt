@@ -23,7 +23,9 @@ import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.validation.input.IntegerInputField
 import net.thunderbird.core.validation.input.StringInputField
 import net.thunderbird.feature.account.avatar.Avatar
+import net.thunderbird.feature.account.avatar.AvatarIcon
 import net.thunderbird.feature.account.avatar.AvatarIconCatalog
+import net.thunderbird.feature.account.avatar.DefaultAvatarIcons
 import net.thunderbird.feature.account.settings.AccountSettingsFeatureFlags
 import net.thunderbird.feature.account.settings.R
 import net.thunderbird.feature.account.settings.impl.domain.AccountSettingsDomainContract.ValidateAccountNameError
@@ -42,17 +44,31 @@ internal class GeneralSettingsBuilderTest {
         override fun validateName(name: String) = Outcome.success(Unit)
         override fun validateMonogram(monogram: String) = Outcome.success(Unit)
     }
-    private val iconCatalog = object : AvatarIconCatalog<ImageVector> {
-        override val defaultName: String = "person"
-        override val defaultIcon: ImageVector = Icons.Outlined.Person
-        override fun toIcon(name: String): ImageVector = when (name) {
-            "star" -> Icons.Outlined.Star
-            "person" -> Icons.Outlined.Person
-            "folder" -> Icons.Outlined.Folder
-            else -> defaultIcon
+    private val iconCatalog = object : AvatarIconCatalog<AvatarIcon<ImageVector>> {
+
+        private val folderIcon = object : AvatarIcon<ImageVector> {
+            override val id: String = "folder"
+            override val icon: ImageVector = Icons.Outlined.Folder
         }
-        override fun allNames(): List<String> = listOf("star", "person", "folder")
-        override fun contains(name: String): Boolean = allNames().any { it.equals(name, ignoreCase = true) }
+
+        override val defaultIcon: AvatarIcon<ImageVector> = DefaultAvatarIcons.Person
+
+        override fun get(id: String): AvatarIcon<ImageVector> {
+            return when (id) {
+                "star" -> DefaultAvatarIcons.Star
+                "person" -> DefaultAvatarIcons.Person
+                "folder" -> folderIcon
+                else -> defaultIcon
+            }
+        }
+
+        override fun all() = listOf(
+            DefaultAvatarIcons.Star,
+            DefaultAvatarIcons.Person,
+            folderIcon,
+        )
+
+        override fun contains(id: String) = all().any { it.id == id }
     }
 
     @Test
@@ -344,7 +360,7 @@ internal class GeneralSettingsBuilderTest {
         // Assert
         assertThat(iconSetting).isNotNull()
         val iconList = iconSetting as SettingValue.IconList
-        assertThat(iconList.value.id).isEqualTo(iconCatalog.defaultName)
+        assertThat(iconList.value.id).isEqualTo(iconCatalog.defaultIcon.id)
     }
 
     @Test
