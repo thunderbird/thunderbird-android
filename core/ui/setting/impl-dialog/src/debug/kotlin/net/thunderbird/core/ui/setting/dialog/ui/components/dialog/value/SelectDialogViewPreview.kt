@@ -7,10 +7,10 @@ import net.thunderbird.core.ui.setting.dialog.ui.fake.FakeSettingData
 
 @Composable
 @Preview(showBackground = true)
-internal fun SelectSingleOptionDialogViewPreview() {
+internal fun SelectDialogViewPreview() {
     PreviewWithTheme {
-        SelectSingleOptionDialogView(
-            setting = FakeSettingData.selectSingleOption,
+        SelectDialogView(
+            setting = FakeSettingData.select,
             onConfirmClick = {},
             onDismissClick = {},
             onDismissRequest = {},

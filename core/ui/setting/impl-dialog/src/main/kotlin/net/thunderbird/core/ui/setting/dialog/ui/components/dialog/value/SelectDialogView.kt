@@ -15,8 +15,8 @@ import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.dialog.ui.components.dialog.SettingDialogLayout
 
 @Composable
-internal fun SelectSingleOptionDialogView(
-    setting: SettingValue.SelectSingleOption,
+internal fun SelectDialogView(
+    setting: SettingValue.Select,
     onConfirmClick: (SettingValue<*>) -> Unit,
     onDismissClick: () -> Unit,
     onDismissRequest: () -> Unit,

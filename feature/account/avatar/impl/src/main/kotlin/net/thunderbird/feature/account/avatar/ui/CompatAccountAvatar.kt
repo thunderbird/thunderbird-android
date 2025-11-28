@@ -18,6 +18,7 @@ fun rememberCompatAvatar(
 ): Avatar = remember(avatar, name) {
     when (avatar) {
         is Avatar.Monogram -> avatar
+        is Avatar.Icon -> avatar
         else -> Avatar.Monogram(
             value = extractNameInitials(name),
         )

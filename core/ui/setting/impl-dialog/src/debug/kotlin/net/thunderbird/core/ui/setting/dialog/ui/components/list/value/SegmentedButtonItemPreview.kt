@@ -7,10 +7,10 @@ import net.thunderbird.core.ui.setting.dialog.ui.fake.FakeSettingData
 
 @Composable
 @Preview(showBackground = true)
-internal fun PreferenceItemSingleChoiceViewPreview() {
+internal fun SegmentedButtonItemingleChoiceViewPreview() {
     PreviewWithThemes {
-        CompactSelectSingleOptionItem(
-            setting = FakeSettingData.compactSelectSingleOption.copy(description = { null }),
+        SegmentedButtonItem(
+            setting = FakeSettingData.segmentedButton.copy(description = { null }),
             onSettingValueChange = {},
         )
     }
@@ -18,10 +18,10 @@ internal fun PreferenceItemSingleChoiceViewPreview() {
 
 @Composable
 @Preview(showBackground = true)
-internal fun PreferenceItemSingleChoiceViewWithDescriptionPreview() {
+internal fun SegmentedButtonItemSingleChoiceViewWithDescriptionPreview() {
     PreviewWithThemes {
-        CompactSelectSingleOptionItem(
-            setting = FakeSettingData.compactSelectSingleOption,
+        SegmentedButtonItem(
+            setting = FakeSettingData.segmentedButton,
             onSettingValueChange = {},
         )
     }

@@ -16,14 +16,17 @@ import net.thunderbird.core.ui.compose.designsystem.atom.icon.Icon
 
 @Composable
 internal fun SettingItemLayout(
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
     icon: ImageVector?,
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Box(
         modifier = modifier
-            .clickable(onClick = onClick),
+            .clickable(
+                enabled = onClick != null,
+                onClick = { onClick?.invoke() },
+            ),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

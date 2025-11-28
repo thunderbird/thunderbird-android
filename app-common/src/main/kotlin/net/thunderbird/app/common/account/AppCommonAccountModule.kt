@@ -1,5 +1,6 @@
 package net.thunderbird.app.common.account
 
+import androidx.compose.ui.graphics.vector.ImageVector
 import app.k9mail.feature.account.setup.AccountSetupExternalContract
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -8,7 +9,10 @@ import net.thunderbird.app.common.account.data.DefaultLegacyAccountManager
 import net.thunderbird.core.android.account.AccountDefaultsProvider
 import net.thunderbird.core.android.account.LegacyAccount
 import net.thunderbird.core.android.account.LegacyAccountManager
+import net.thunderbird.feature.account.avatar.AvatarIcon
+import net.thunderbird.feature.account.avatar.AvatarIconCatalog
 import net.thunderbird.feature.account.avatar.AvatarMonogramCreator
+import net.thunderbird.feature.account.avatar.DefaultAvatarIconCatalog
 import net.thunderbird.feature.account.avatar.DefaultAvatarMonogramCreator
 import net.thunderbird.feature.account.core.AccountCoreExternalContract.AccountProfileLocalDataSource
 import net.thunderbird.feature.account.core.featureAccountCoreModule
@@ -59,6 +63,10 @@ internal val appCommonAccountModule = module {
             repository = get(),
             accountColors = get(named("AccountColors")),
         )
+    }
+
+    single<AvatarIconCatalog<AvatarIcon<ImageVector>>> {
+        DefaultAvatarIconCatalog()
     }
 
     factory<AvatarMonogramCreator> {

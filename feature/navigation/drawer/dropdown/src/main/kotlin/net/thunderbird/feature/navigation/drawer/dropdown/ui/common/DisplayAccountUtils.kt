@@ -36,12 +36,10 @@ internal fun getDisplayAccountName(account: DisplayAccount): String {
     }
 }
 
-@Composable
 internal fun getDisplayAccountAvatar(account: DisplayAccount): Avatar {
     return when (account) {
         is UnifiedDisplayAccount -> {
-            val name = stringResource(R.string.navigation_drawer_dropdown_unified_account_title)
-            Avatar.Monogram(name.first().uppercase())
+            Avatar.Icon(name = "group")
         }
 
         is MailDisplayAccount -> {

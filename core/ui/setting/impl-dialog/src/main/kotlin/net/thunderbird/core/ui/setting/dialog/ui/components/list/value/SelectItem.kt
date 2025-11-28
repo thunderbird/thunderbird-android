@@ -11,8 +11,8 @@ import net.thunderbird.core.ui.setting.SettingValue
 import net.thunderbird.core.ui.setting.dialog.ui.components.list.SettingItemLayout
 
 @Composable
-internal fun SelectSingleOptionItem(
-    setting: SettingValue.SelectSingleOption,
+internal fun SelectItem(
+    setting: SettingValue.Select,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
