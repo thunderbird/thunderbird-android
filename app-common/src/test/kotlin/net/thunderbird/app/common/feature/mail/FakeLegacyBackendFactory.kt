@@ -7,10 +7,10 @@ import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.backends.ImapBackendFactory
 import com.fsck.k9.mail.BodyFactory
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.common.mail.Flag
 
 internal class FakeLegacyBackendFactory : ImapBackendFactory {
     var lastAccount: LegacyAccountDto? = null

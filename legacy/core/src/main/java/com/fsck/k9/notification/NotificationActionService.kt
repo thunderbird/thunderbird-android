@@ -8,11 +8,11 @@ import app.k9mail.legacy.message.controller.MessageReference
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReferenceHelper
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.mail.Flag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.thunderbird.core.android.account.LegacyAccountDto
+import net.thunderbird.core.common.mail.Flag
 import net.thunderbird.core.logging.legacy.Log
 import net.thunderbird.core.preference.interaction.InteractionSettingsPreferenceManager
 import org.koin.android.ext.android.inject

@@ -3,7 +3,7 @@ package com.fsck.k9.mail.store.imap;
 
 import java.util.Collections;
 
-import com.fsck.k9.mail.Flag;
+import net.thunderbird.core.common.mail.Flag;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
