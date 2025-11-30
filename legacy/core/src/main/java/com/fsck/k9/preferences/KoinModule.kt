@@ -52,35 +52,35 @@ val preferencesModule = module {
     single<PrivacySettingsPreferenceManager> {
         DefaultPrivacySettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<NotificationPreferenceManager> {
         DefaultNotificationPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<DisplayCoreSettingsPreferenceManager> {
         DefaultDisplayCoreSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<DisplayInboxSettingsPreferenceManager> {
         DefaultDisplayInboxSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<DisplayVisualSettingsPreferenceManager> {
         DefaultDisplayVisualSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
             messageListPreferences = get(),
         )
@@ -88,14 +88,14 @@ val preferencesModule = module {
     single<DisplayMiscSettingsPreferenceManager> {
         DefaultDisplayMiscSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<InteractionSettingsPreferenceManager> {
         DefaultInteractionSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
@@ -118,14 +118,14 @@ val preferencesModule = module {
     single<NetworkSettingsPreferenceManager> {
         DefaultNetworkSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
         )
     }
     single<DebuggingSettingsPreferenceManager> {
         DefaultDebuggingSettingsPreferenceManager(
             logger = get(),
-            storage = get<Preferences>().storage,
+            storagePersister = get(),
             storageEditor = get<Preferences>().createStorageEditor(),
             logLevelManager = get(),
             platformConfigProvider = get(),

@@ -16,12 +16,13 @@ import net.thunderbird.core.logging.LogLevelManager
 import net.thunderbird.core.logging.Logger
 import net.thunderbird.core.preference.storage.Storage
 import net.thunderbird.core.preference.storage.StorageEditor
+import net.thunderbird.core.preference.storage.StoragePersister
 
 private const val TAG = "DefaultDebuggingSettingsPreferenceManager"
 
 class DefaultDebuggingSettingsPreferenceManager(
     private val logger: Logger,
-    private val storage: Storage,
+    private val storagePersister: StoragePersister,
     private val storageEditor: StorageEditor,
     private val logLevelManager: LogLevelManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -30,6 +31,8 @@ class DefaultDebuggingSettingsPreferenceManager(
 ) : DebuggingSettingsPreferenceManager {
     private val configState: MutableStateFlow<DebuggingSettings> = MutableStateFlow(value = loadConfig())
     private val mutex = Mutex()
+    private val storage: Storage
+        get() = storagePersister.loadValues()
 
     override fun getConfig(): DebuggingSettings = configState.value
     override fun getConfigFlow(): Flow<DebuggingSettings> = configState
