@@ -110,7 +110,7 @@ timber = "5.0.1"
 turbine = "1.2.1"
 uri = "0.0.21"
 xmlpull = "1.0"
-zxing = "3.5.3"
+zxing = "3.5.4"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
