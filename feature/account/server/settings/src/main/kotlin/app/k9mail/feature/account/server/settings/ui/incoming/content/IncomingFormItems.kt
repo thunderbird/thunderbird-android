@@ -127,4 +127,8 @@ internal fun LazyListScope.incomingFormItems(
     if (state.protocolType == IncomingProtocolType.IMAP) {
         imapFormItems(state, onEvent, resources)
     }
+
+    item {
+        Spacer(modifier = Modifier.requiredHeight(MainTheme.sizes.smaller))
+    }
 }

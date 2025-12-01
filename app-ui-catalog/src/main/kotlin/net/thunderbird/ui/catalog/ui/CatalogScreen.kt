@@ -3,7 +3,6 @@ package net.thunderbird.ui.catalog.ui
 import android.app.Activity
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -40,7 +39,6 @@ fun CatalogScreen(
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .safeDrawingPadding()
                 .then(modifier),
         ) {
             CatalogContent(
