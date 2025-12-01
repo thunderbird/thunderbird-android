@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".messagesource.MessageSourceActivity"
     >
 
-    <include layout="@layout/toolbar" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        style="@style/Widget.App.AppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/message_headers_fragment"
+        <include layout="@layout/toolbar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <FrameLayout
+        android:id="@+id/content_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/message_view_headers"
-        />
-</LinearLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/message_headers_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout="@layout/message_view_headers"
+            />
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

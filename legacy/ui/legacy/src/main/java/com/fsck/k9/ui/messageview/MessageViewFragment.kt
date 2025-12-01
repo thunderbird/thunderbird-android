@@ -21,8 +21,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -211,19 +209,6 @@ class MessageViewFragment :
 
         messageTopView.setOnDownloadButtonClickListener {
             onDownloadButtonClicked()
-        }
-
-        initializeMessageTopViewInsets(messageTopView)
-    }
-
-    private fun initializeMessageTopViewInsets(messageTopView: MessageTopView) {
-        val view = messageTopView.findViewById<View>(R.id.message_container)
-
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(navigationBars())
-            v.setPadding(0, 0, 0, insets.bottom)
-
-            windowsInsets
         }
     }
 

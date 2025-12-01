@@ -49,10 +49,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.content.IntentCompat;
-import androidx.core.graphics.Insets;
 import androidx.core.os.BundleCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import app.k9mail.core.ui.legacy.designsystem.atom.icon.Icons;
@@ -377,12 +374,6 @@ public class MessageCompose extends BaseActivity implements OnClickListener,
 
         messageContentView = findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
-
-        ViewCompat.setOnApplyWindowInsetsListener(messageContentView.getRootView(), (v, windowInsets) -> {
-            final Insets newInsets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout() | WindowInsetsCompat.Type.ime());
-            v.setPadding(newInsets.left, 0, newInsets.right, newInsets.bottom);
-            return windowInsets;
-        });
 
         attachmentsView = findViewById(R.id.attachments);
 

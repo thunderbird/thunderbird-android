@@ -10,7 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.StringRes
@@ -23,7 +22,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -422,19 +420,6 @@ class MessageListFragment :
         initializeSortSettings()
 
         loadMessageList()
-
-        initializeInsets(view)
-    }
-
-    private fun initializeInsets(view: View) {
-        val messageList = view.findViewById<View>(R.id.message_list)
-
-        ViewCompat.setOnApplyWindowInsetsListener(messageList) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(navigationBars())
-            v.setPadding(0, 0, 0, insets.bottom)
-
-            windowsInsets
-        }
     }
 
     private fun initializeSwipeRefreshLayout(view: View) {
@@ -488,10 +473,10 @@ class MessageListFragment :
         val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
 
         ViewCompat.setOnApplyWindowInsetsListener(floatingActionButton) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val insets = windowInsets.getInsets(systemBars())
             val margin = resources.getDimensionPixelSize(R.dimen.floatingActionButtonMargin)
 
-            view.updateLayoutParams<MarginLayoutParams> {
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 leftMargin = margin + insets.left
                 bottomMargin = margin + insets.bottom
                 rightMargin = margin + insets.right
@@ -1142,6 +1127,7 @@ class MessageListFragment :
                 context = requireContext(),
                 target = FeatureLauncherTarget.SecretDebugSettingsFeatureFlag,
             )
+
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -1184,6 +1170,7 @@ class MessageListFragment :
                     Toast.LENGTH_SHORT,
                 ).show()
             }
+
             is Outcome.Failure -> {
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
@@ -1195,6 +1182,7 @@ class MessageListFragment :
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
+
                     is AuthDebugActions.Error.CannotModifyAccessToken -> {
                         Toast.makeText(
                             requireContext(),
@@ -1202,6 +1190,7 @@ class MessageListFragment :
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
+
                     is AuthDebugActions.Error.AlreadyModified -> {
                         Toast.makeText(
                             requireContext(),
@@ -1232,6 +1221,7 @@ class MessageListFragment :
                     Toast.LENGTH_SHORT,
                 ).show()
             }
+
             is Outcome.Failure -> {
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound,
@@ -1260,6 +1250,7 @@ class MessageListFragment :
             is Outcome.Success -> {
                 Toast.makeText(requireContext(), R.string.debug_force_auth_failure_done, Toast.LENGTH_SHORT).show()
             }
+
             is Outcome.Failure -> {
                 when (outcome.error) {
                     is AuthDebugActions.Error.AccountNotFound -> Toast.makeText(
@@ -1267,6 +1258,7 @@ class MessageListFragment :
                         R.string.debug_force_auth_failure_unavailable,
                         Toast.LENGTH_SHORT,
                     ).show()
+
                     is AuthDebugActions.Error.NoOAuthState -> {
                         // Clearing is already the desired state; still report done so user knows it's in effect
                         Toast.makeText(
@@ -1275,6 +1267,7 @@ class MessageListFragment :
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
+
                     is AuthDebugActions.Error.CannotModifyAccessToken,
                     is AuthDebugActions.Error.AlreadyModified,
                     -> {

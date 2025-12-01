@@ -3,8 +3,7 @@ package com.fsck.k9.ui.base
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -12,12 +11,15 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type.displayCutout
-import androidx.core.view.WindowInsetsCompat.Type.navigationBars
+import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.Type.systemBars
+import androidx.core.view.updatePadding
 import androidx.lifecycle.asLiveData
 import com.fsck.k9.controller.push.PushController
 import java.util.Locale
+import kotlin.math.max
 import net.thunderbird.core.ui.theme.api.Theme
 import net.thunderbird.core.ui.theme.manager.ThemeManager
 import org.koin.android.ext.android.inject
@@ -87,33 +89,52 @@ abstract class BaseActivity(
         pushController.init()
     }
 
+    /**
+     * Sets the activity's content view to the specified layout resource and configures
+     * the AppBarLayout and Toolbar for edge-to-edge display.
+     *
+     * It expects the layout to contain the following views with the specified IDs:
+     * - A ViewGroup with ID `R.id.coordinator_layout` as the root layout.
+     * - An AppBarLayout with ID `R.id.app_bar_layout` for the top app bar.
+     * - A Toolbar with ID `R.id.toolbar` to be set as the support action bar.
+     * - A ViewGroup with ID `R.id.content_container` to hold the main content of the activity or fragment.
+     *
+     * @param layoutResId The resource ID of the layout to be set as the content view.
+     * @throws IllegalStateException if the required AppBarLayout or Toolbar is not found.
+     */
     protected fun setLayout(@LayoutRes layoutResId: Int) {
         setContentView(layoutResId)
+
+        val coordinatorLayout = findViewById<ViewGroup>(R.id.coordinator_layout)
+            ?: error("TB layouts must provide a ViewGroup with id='coordinator_layout'.")
+        val appBarLayout = findViewById<com.google.android.material.appbar.AppBarLayout>(R.id.app_bar_layout)
+            ?: error("TB layouts must provide an AppBarLayout with id='app_bar_layout'.")
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-            ?: error("K9 layouts must provide a toolbar with id='toolbar'.")
+            ?: error("TB layouts must provide a Toolbar with id='toolbar'.")
+        val contentContainer = findViewById<ViewGroup>(R.id.content_container)
+            ?: error("TB layouts must provide a FrameLayout with id='content_container'.")
 
         setSupportActionBar(toolbar)
 
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(systemBars() or displayCutout())
-            v.setPadding(insets.left, insets.top, insets.right, 0)
+        ViewCompat.setOnApplyWindowInsetsListener(coordinatorLayout) { _, windowInsets ->
+            val insets = windowInsets.getInsets(
+                systemBars() or displayCutout(),
+            )
+            val imeInsets = windowInsets.getInsets(ime())
 
-            windowsInsets
-        }
-    }
+            appBarLayout.updatePadding(
+                top = insets.top,
+                left = insets.left,
+                right = insets.right,
+            )
 
-    override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
-        val newView = super.onCreateView(parent, name, context, attrs)
-        if (newView != null) initializeInsets(newView)
-        return newView
-    }
+            contentContainer.updatePadding(
+                left = insets.left,
+                right = insets.right,
+                bottom = max(insets.bottom, imeInsets.bottom),
+            )
 
-    private fun initializeInsets(view: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, windowsInsets ->
-            val insets = windowsInsets.getInsets(displayCutout() or navigationBars())
-            v.setPadding(insets.left, 0, insets.right, insets.bottom)
-
-            windowsInsets
+            WindowInsetsCompat.CONSUMED
         }
     }
 
