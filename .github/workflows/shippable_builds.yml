@@ -281,8 +281,8 @@ jobs:
             fi
           elif [[ "$RELEASE_TYPE" = "daily" ]]; then
             NEW_VERSION_CODE=$(date_version_code "$RELEASE_DATE")
-            # Max version code for "2025-11-30 23:59" is "23342359"
-            MAX_VERSION_CODE="23342359"
+            # Max version code for "2026-11-30 23:59" is "33342359"
+            MAX_VERSION_CODE="33342359"
           fi
           if [[ "$NEW_VERSION_CODE" -gt "$MAX_VERSION_CODE" ]]; then
             echo "New version code ${NEW_VERSION_CODE} is greater than ${MAX_VERSION_CODE}"
