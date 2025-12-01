@@ -206,7 +206,7 @@ com.google.firebase:firebase-encoders-json:18.0.0
 com.google.firebase:firebase-encoders-proto:16.0.0
 com.google.firebase:firebase-encoders:17.0.0
 com.google.guava:listenablefuture:1.0
-com.google.zxing:core:3.5.3
+com.google.zxing:core:3.5.4
 com.jakewharton.timber:timber:5.0.1
 com.jcraft:jzlib:1.0.7
 com.mikepenz:fastadapter-extensions-drag:5.7.0
